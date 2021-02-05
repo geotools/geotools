@@ -17,7 +17,6 @@
 package org.geotools.geopkg.geom;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import org.geotools.geometry.jts.GeometryBuilder;
@@ -32,7 +31,7 @@ public class GeoPkgIOTest {
         byte[] bytes = new GeoPkgGeomWriter().write(g1);
 
         Geometry g2 = new GeoPkgGeomReader(bytes).get();
-        assertTrue(g1.equals(g2));
+        assertEquals(g1, g2);
     }
 
     @Test

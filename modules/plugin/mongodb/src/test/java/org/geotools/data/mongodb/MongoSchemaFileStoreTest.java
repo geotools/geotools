@@ -88,7 +88,7 @@ public class MongoSchemaFileStoreTest extends MongoSchemaStoreTest<MongoSchemaFi
         File test = createUniqueTempDirectory();
         try {
             assertThat(test.exists(), is(equalTo(false)));
-            MongoSchemaStore mss = new MongoSchemaFileStore(test.toURI().toString());
+            new MongoSchemaFileStore(test.toURI().toString());
             assertThat(test.exists(), is(equalTo(true)));
             assertThat(test.isDirectory(), is(equalTo(true)));
         } finally {
@@ -101,7 +101,7 @@ public class MongoSchemaFileStoreTest extends MongoSchemaStoreTest<MongoSchemaFi
         File test = createUniqueTempDirectory();
         try {
             assertThat(test.exists(), is(equalTo(false)));
-            MongoSchemaStore mss = new MongoSchemaFileStore(test.toURI());
+            new MongoSchemaFileStore(test.toURI());
             assertThat(test.exists(), is(equalTo(true)));
             assertThat(test.isDirectory(), is(equalTo(true)));
         } finally {
@@ -217,7 +217,7 @@ public class MongoSchemaFileStoreTest extends MongoSchemaStoreTest<MongoSchemaFi
         File test = createUniqueTempDirectory();
         try {
             assertThat(test.exists(), is(equalTo(false)));
-            MongoSchemaStore mss = new MongoSchemaFileStore(test);
+            new MongoSchemaFileStore(test);
             assertThat(test.exists(), is(equalTo(true)));
             assertThat(test.isDirectory(), is(equalTo(true)));
         } finally {

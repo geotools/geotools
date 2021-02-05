@@ -58,10 +58,10 @@ public class TeradataDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
                                 @Override
                                 public void run() {
                                     for (int j = 0; j < 50; j++) {
-                                        try {
-                                            FeatureWriter w =
-                                                    dataStore.getFeatureWriter(
-                                                            tname("ft2"), Transaction.AUTO_COMMIT);
+                                        try (FeatureWriter w =
+                                                dataStore.getFeatureWriter(
+                                                        tname("ft2"), Transaction.AUTO_COMMIT)) {
+
                                             while (w.hasNext()) {
                                                 w.next();
                                             }
@@ -69,7 +69,6 @@ public class TeradataDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
                                             f.setAttribute(1, Integer.valueOf((id * 100) + j));
                                             f.setAttribute(2, "one");
                                             w.write();
-                                            w.close();
                                         } catch (Exception ex) {
                                             java.util.logging.Logger.getGlobal()
                                                     .log(java.util.logging.Level.INFO, "", ex);
@@ -84,7 +83,7 @@ public class TeradataDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
             thread.join();
         }
         ContentFeatureSource featureSource = dataStore.getFeatureSource(tname("ft2"));
-        int size = featureSource.getFeatures().size();
+        featureSource.getFeatures().size();
         if (errors[0]) fail();
     }
 
@@ -100,14 +99,14 @@ public class TeradataDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
         SimpleFeatureType featureType = builder.buildFeatureType();
         dataStore.createSchema(featureType);
 
-        FeatureWriter w = dataStore.getFeatureWriter(tname("ft2"), Transaction.AUTO_COMMIT);
-        w.hasNext();
+        try (FeatureWriter w = dataStore.getFeatureWriter(tname("ft2"), Transaction.AUTO_COMMIT)) {
+            w.hasNext();
 
-        SimpleFeature f = (SimpleFeature) w.next();
-        f.setAttribute(1, Integer.valueOf(0));
-        f.setAttribute(2, "one");
-        w.write();
-        w.close();
+            SimpleFeature f = (SimpleFeature) w.next();
+            f.setAttribute(1, Integer.valueOf(0));
+            f.setAttribute(2, "one");
+            w.write();
+        }
 
         FilterFactory ff = dataStore.getFilterFactory();
         PropertyIsEqualTo correct =

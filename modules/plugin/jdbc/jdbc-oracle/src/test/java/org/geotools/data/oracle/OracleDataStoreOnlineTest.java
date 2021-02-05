@@ -17,7 +17,6 @@
 package org.geotools.data.oracle;
 
 import java.sql.Date;
-import java.util.List;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Transaction;
@@ -33,7 +32,6 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.identity.FeatureId;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class OracleDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
@@ -124,6 +122,7 @@ public class OracleDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
         fBuilder.add(vBuffer.toString());
         SimpleFeature f = fBuilder.buildFeature(null);
         // used to fail here
+        @SuppressWarnings("PMD.CloseResource") // need it available for rollback in the catch
         Transaction transaction = new DefaultTransaction("create");
         SimpleFeatureSource featureSource =
                 dataStore.getFeatureSource(featureType.getName().getLocalPart());
@@ -132,7 +131,7 @@ public class OracleDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
         outStore.setTransaction(transaction);
 
         try {
-            List<FeatureId> ids = outStore.addFeatures(collection);
+            outStore.addFeatures(collection);
 
             transaction.commit();
         } catch (Exception problem) {

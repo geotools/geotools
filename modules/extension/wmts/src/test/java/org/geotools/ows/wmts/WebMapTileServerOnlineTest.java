@@ -47,14 +47,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Richard Gould
  * @author ian
  */
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // this is a Junit3 test case
 public class WebMapTileServerOnlineTest extends OnlineTestCase {
     URL serverURL;
 
-    URL serverWithSpacedLayerNamesURL;
-
     URL brokenURL;
-
-    private URL featureURL;
 
     private URL restWMTS;
 
@@ -68,7 +65,6 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
     @Override
     protected void setUpInternal() throws Exception {
         String kvp_prop = fixture.getProperty("kvp_server");
-        System.out.println(kvp_prop);
         serverURL = new URL(kvp_prop);
         brokenURL = new URL("http://afjklda.com");
         restWMTS = new URL(fixture.getProperty("rest_server"));
@@ -284,7 +280,7 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
             for (int scale : scales) {
                 Set<Tile> tiles = service.findTilesInExtent(env, scale, true, 100);
                 // System.out.println(tiles.size());
-                assertTrue(tiles.size() > 0);
+                assertFalse(tiles.isEmpty());
             }
         }
     }

@@ -59,7 +59,7 @@ public class DecoratingFeatureCollectionTest {
 
         @SuppressWarnings("unchecked")
         FeatureCollection<FeatureType, Feature> mock = EasyMock.createMock(FeatureCollection.class);
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings({"unchecked", "PMD.CloseResource"})
         FeatureIterator<Feature> iterator = EasyMock.createNiceMock(FeatureIterator.class);
         EasyMock.expect(mock.features()).andReturn(iterator);
         EasyMock.replay(mock, iterator);

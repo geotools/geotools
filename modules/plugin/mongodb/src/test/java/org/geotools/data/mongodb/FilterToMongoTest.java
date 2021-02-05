@@ -335,10 +335,10 @@ public class FilterToMongoTest {
         testLiteralEncoding(10f, Double.class, 10d);
         testLiteralEncoding("true", Boolean.class, true);
         testLiteralEncoding(10, String.class, "10");
-        testLiteralEncoding(new BigInteger("10"), Long.class, 10L);
+        testLiteralEncoding(BigInteger.valueOf(10), Long.class, 10L);
         // test not supported and invalid types conversions
         testLiteralEncoding("10", Boolean.class, "10");
-        testLiteralEncoding(new BigInteger("10"), BigInteger.class, "10");
+        testLiteralEncoding(BigInteger.valueOf(10), BigInteger.class, "10");
     }
 
     /** Helper method that test literal conversions. */

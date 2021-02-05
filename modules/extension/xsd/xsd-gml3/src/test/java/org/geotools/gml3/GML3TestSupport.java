@@ -25,6 +25,7 @@ import org.custommonkey.xmlunit.SimpleNamespaceContext;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.test.XMLTestSupport;
+import org.junit.Before;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -75,6 +76,7 @@ import org.w3c.dom.NodeList;
 public abstract class GML3TestSupport extends XMLTestSupport {
 
     @Override
+    @Before
     public void setUp() throws Exception {
         super.setUp();
 

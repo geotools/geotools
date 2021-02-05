@@ -29,6 +29,7 @@ import org.geotools.data.DataStoreFinder;
  * @author Christian Mueller
  *     <p>Abstract test class for getting a jdbc data source via JNDI lookup
  */
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCJNDIDataSourceOnlineTest extends JDBCTestSupport {
 
     @Override

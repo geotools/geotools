@@ -256,12 +256,13 @@ public class ZonalStatisticsTest {
 
         // Selection of the input geometries and creation of the related list.
         List<SimpleFeature> polygonList = new ArrayList<>();
-        FeatureIterator<SimpleFeature> featureIterator = ZonalStasTest.testPolygons.features();
-        while (featureIterator.hasNext()) {
-            SimpleFeature feature = featureIterator.next();
-            polygonList.add(feature);
+        try (FeatureIterator<SimpleFeature> featureIterator =
+                ZonalStatsTest.testPolygons.features()) {
+            while (featureIterator.hasNext()) {
+                SimpleFeature feature = featureIterator.next();
+                polygonList.add(feature);
+            }
         }
-        featureIterator.close();
 
         // choose the stats
         Set<StatsType> statsSet = new LinkedHashSet<>();
@@ -373,12 +374,13 @@ public class ZonalStatisticsTest {
 
         // Selection of the input geometries and creation of the related list.
         List<SimpleFeature> polygonList = new ArrayList<>();
-        FeatureIterator<SimpleFeature> featureIterator = ZonalStasTest.testPolygons.features();
-        while (featureIterator.hasNext()) {
-            SimpleFeature feature = featureIterator.next();
-            polygonList.add(feature);
+        try (FeatureIterator<SimpleFeature> featureIterator =
+                ZonalStatsTest.testPolygons.features()) {
+            while (featureIterator.hasNext()) {
+                SimpleFeature feature = featureIterator.next();
+                polygonList.add(feature);
+            }
         }
-        featureIterator.close();
 
         // choose the stats
         Set<StatsType> statsSet = new LinkedHashSet<>();

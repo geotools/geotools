@@ -24,7 +24,6 @@ import org.geotools.graph.build.basic.BasicGraphGenerator;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.GraphVisitor;
 import org.geotools.graph.structure.Graphable;
-import org.geotools.graph.structure.Node;
 import org.geotools.graph.util.graph.GraphFuser;
 import org.junit.Assert;
 import org.junit.Before;
@@ -36,7 +35,6 @@ public class GraphFuserTest {
 
     @Before
     public void setUp() throws Exception {
-
         m_gen = createGenerator();
     }
 
@@ -50,8 +48,7 @@ public class GraphFuserTest {
     @Test
     public void test_0() {
         final int nnodes = 100;
-        Node[] ends = GraphTestUtil.buildNoBifurcations(generator(), nnodes);
-        GraphGenerator fused = createGenerator();
+        GraphTestUtil.buildNoBifurcations(generator(), nnodes);
 
         GraphFuser fuser =
                 new GraphFuser(
@@ -102,9 +99,8 @@ public class GraphFuserTest {
         final int nnodes = 100;
         final int cyc = 50;
 
-        Node[] ends = GraphTestUtil.buildNoBifurcations(generator(), nnodes);
+        GraphTestUtil.buildNoBifurcations(generator(), nnodes);
         generator().add(new Object[] {String.valueOf(cyc), String.valueOf(cyc + 1)});
-        GraphGenerator fused = createGenerator();
 
         GraphFuser fuser =
                 new GraphFuser(
@@ -165,9 +161,8 @@ public class GraphFuserTest {
         final int nnodes = 100;
         final int cyc = 50;
 
-        Node[] ends = GraphTestUtil.buildNoBifurcations(generator(), nnodes);
+        GraphTestUtil.buildNoBifurcations(generator(), nnodes);
         generator().add(new Object[] {String.valueOf(cyc), String.valueOf(cyc + 2)});
-        GraphGenerator fused = createGenerator();
 
         GraphFuser fuser =
                 new GraphFuser(
@@ -225,8 +220,6 @@ public class GraphFuserTest {
         int nnodes = 100;
         GraphTestUtil.buildCircular(generator(), nnodes);
 
-        GraphGenerator fused = createGenerator();
-
         GraphFuser fuser =
                 new GraphFuser(
                         generator().getGraph(), generator().getGraphBuilder(), createEdgeMerger());
@@ -267,7 +260,7 @@ public class GraphFuserTest {
                             end1.getNodeA().getDegree() == 2
                                     ? end1.getNodeB().getObject()
                                     : end1.getNodeA().getObject();
-                } else if (ends.size() == 0) {
+                } else if (ends.isEmpty()) {
                     obj[0] = edges.get(0).getNodeA().getObject();
                     obj[1] = edges.get(0).getNodeA().getObject();
                 } else throw new IllegalStateException("Found " + ends.size() + " ends.");

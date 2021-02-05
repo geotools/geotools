@@ -41,7 +41,7 @@ public class DynamicSymbolFactoryFinderTest {
     public void testLookupExternalGraphicFactories() {
         List<ExternalGraphicFactory> result =
                 loadIterator(DynamicSymbolFactoryFinder.getExternalGraphicFactories());
-        Assert.assertTrue(result.size() >= 1);
+        Assert.assertFalse(result.isEmpty());
         assertContainsClassInstance(result, ImageGraphicFactory.class);
     }
 

@@ -2,6 +2,7 @@ package org.geotools.data.h2;
 
 import org.geotools.jdbc.JDBCGeometryTestSetup;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class H2GeometryTestSetup extends JDBCGeometryTestSetup {
 
     protected H2GeometryTestSetup() {

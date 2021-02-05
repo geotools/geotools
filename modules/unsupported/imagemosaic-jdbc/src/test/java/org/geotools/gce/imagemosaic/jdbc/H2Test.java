@@ -131,6 +131,7 @@ public class H2Test extends AbstractTest {
         return dialect;
     }
 
+    @org.junit.Test
     public void testReproject1() {
         JDBCAccess access = getJDBCAccess();
         ImageLevelInfo li = access.getLevelInfo(access.getNumOverviews());

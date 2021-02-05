@@ -122,10 +122,10 @@ public final class SubsampleAverageTest extends GridProcessingTestBase {
          * unexpectedly. I think it is a JAI issue because here below I am using
          * the rule they claim to follow.
          */
-        if (false) {
-            assertEquals(w / 3.0, scaledImage.getWidth(), EPS);
-            assertEquals(h / 3.0, scaledImage.getHeight(), EPS);
-        }
+        //        if (false) {
+        //            assertEquals(w / 3.0, scaledImage.getWidth(), EPS);
+        //            assertEquals(h / 3.0, scaledImage.getHeight(), EPS);
+        //        }
         if (SHOW) {
             Viewer.show(scaled);
         } else {

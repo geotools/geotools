@@ -32,9 +32,9 @@ import org.junit.Test;
 public final class WeakObjectCacheTest {
     private Integer key1 = 1;
     private Integer key2 = 2;
-    private String value1 = new String("value 1");
-    private String value2 = new String("value 2");
-    private String value3 = new String("value 3");
+    private String value1 = "value 1";
+    private String value2 = "value 2";
+    private String value3 = "value 3";
 
     @Test
     public void testSimple() {

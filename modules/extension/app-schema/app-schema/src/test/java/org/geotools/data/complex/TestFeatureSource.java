@@ -49,10 +49,10 @@ public class TestFeatureSource implements Closeable {
         this.filename = filename;
         this.nsUri = nsUri;
         this.mappedTypeName = Types.typeName(null, mappedTypeName);
-        setUp();
+        initialize();
     }
 
-    protected void setUp() {
+    protected void initialize() {
         factory = new AppSchemaDataAccessFactory();
         params = new HashMap<>();
         params.put("dbtype", "app-schema");

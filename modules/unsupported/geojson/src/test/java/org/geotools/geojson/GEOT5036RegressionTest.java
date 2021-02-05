@@ -55,7 +55,7 @@ public class GEOT5036RegressionTest {
     }
 
     @Before
-    public void setUp() throws java.lang.Exception {
+    public void setUp() throws Exception {
         // perform 50 conversions
         for (int i = 0; i < 50; i++) {
             final Date date =

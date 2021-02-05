@@ -51,16 +51,17 @@ public class GeobufFeatureTest {
         SimpleFeature feature = featureBuilder.buildFeature("point.1");
 
         GeobufFeature geobufFeature = new GeobufFeature(new GeobufGeometry());
-        OutputStream out = new FileOutputStream(file);
-        geobufFeature.encode(feature, out);
-        out.close();
-        InputStream inputStream = new FileInputStream(file);
-        SimpleFeature decodedFeature = geobufFeature.decode(inputStream);
-        inputStream.close();
-        assertEquals(
-                feature.getDefaultGeometry().toString(),
-                decodedFeature.getDefaultGeometry().toString());
-        assertEquals(feature.getAttribute("name"), decodedFeature.getAttribute("name"));
-        assertEquals(feature.getAttribute("id"), decodedFeature.getAttribute("id"));
+        try (OutputStream out = new FileOutputStream(file)) {
+            geobufFeature.encode(feature, out);
+        }
+        try (InputStream inputStream = new FileInputStream(file)) {
+            SimpleFeature decodedFeature = geobufFeature.decode(inputStream);
+
+            assertEquals(
+                    feature.getDefaultGeometry().toString(),
+                    decodedFeature.getDefaultGeometry().toString());
+            assertEquals(feature.getAttribute("name"), decodedFeature.getAttribute("name"));
+            assertEquals(feature.getAttribute("id"), decodedFeature.getAttribute("id"));
+        }
     }
 }

@@ -30,6 +30,7 @@ import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.FeatureTypeImpl;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.util.factory.Hints;
+import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
@@ -53,6 +54,7 @@ public class AttributeCountFunctionTest extends FunctionTestSupport {
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 
     @Override
+    @Before
     public void setUp() throws Exception {
         // set up simple features
         super.setUp();

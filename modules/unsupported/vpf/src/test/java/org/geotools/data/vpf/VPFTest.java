@@ -18,9 +18,9 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.OnlineTestCase;
 import org.geotools.util.URLs;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.Name;
 
@@ -66,6 +66,7 @@ public class VPFTest extends OnlineTestCase {
         return fixture;
     }
 
+    @Test
     public void testFactory() throws Exception {
         assertNotNull("Check fixture is provided", vmap);
         assertTrue("vmap found", vmap.exists());
@@ -90,6 +91,7 @@ public class VPFTest extends OnlineTestCase {
         VPFLogger.log(names.toString());
     }
 
+    @Test
     public void testSchema() throws Exception {
         assertNotNull("Check fixture is provided", vmap);
         assertTrue("vmap found", vmap.exists());
@@ -110,16 +112,10 @@ public class VPFTest extends OnlineTestCase {
         GeometryDescriptor geom = schema.getGeometryDescriptor();
         assertNotNull("spatial", geom);
         // assertNotNull("crs", geom.getCoordinateReferenceSystem() );
-
-        for (AttributeDescriptor attribute : schema.getAttributeDescriptors()) {
-            System.out.print(attribute.getName());
-            System.out.print(",");
-        }
-        VPFLogger.log("");
     }
 
+    @Test
     public void testFeatureReader() throws Exception {
-        File lht = new File(vmap, "lht");
         VPFDataStoreFactory factory = new VPFDataStoreFactory();
         URL url = URLs.fileToUrl(vmap);
         Map<String, Serializable> params = new HashMap<>();
@@ -148,8 +144,8 @@ public class VPFTest extends OnlineTestCase {
         VPFLogger.log("bounds:" + bounds);
     }
 
+    @Test
     public void testFeatureSource() throws Exception {
-        File lht = new File(vmap, "lht");
         VPFDataStoreFactory factory = new VPFDataStoreFactory();
         URL url = URLs.fileToUrl(vmap);
         Map<String, Serializable> params = new HashMap<>();

@@ -120,7 +120,6 @@ public abstract class JMapPaneTestBase {
                         TYPE, new Object[] {JTS.toGeometry(env), "a rectangle"}, null);
 
         SimpleFeatureCollection fc = new ListFeatureCollection(TYPE, Arrays.asList(feature));
-        ReferencedEnvelope bounds = fc.getBounds();
         return fc;
     }
 }

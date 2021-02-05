@@ -102,22 +102,28 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
         Filter filter = ff.equals(ff.property("NAME"), ff.literal("E 58th St"));
 
         Query query = new Query("tiger_tiger_roads", filter);
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                wfs.getFeatureReader(query, new DefaultTransaction());
         int expected = 0;
-        while (reader.hasNext()) {
-            expected++;
-            reader.next();
+        try (Transaction t = new DefaultTransaction();
+                FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                        wfs.getFeatureReader(query, t)) {
+
+            while (reader.hasNext()) {
+                expected++;
+                reader.next();
+            }
         }
         query = new Query("tiger_tiger_roads", filter, 100, new String[] {"CFCC"}, "");
-        reader = wfs.getFeatureReader(query, new DefaultTransaction());
-        int count = 0;
-        while (reader.hasNext()) {
-            count++;
-            reader.next();
-        }
+        try (Transaction t = new DefaultTransaction();
+                FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                        wfs.getFeatureReader(query, t)) {
+            int count = 0;
+            while (reader.hasNext()) {
+                count++;
+                reader.next();
+            }
 
-        assertEquals(expected, count);
+            assertEquals(expected, count);
+        }
     }
 
     public static final String ATTRIBUTE_TO_EDIT = "STATE_FIPS";
@@ -193,16 +199,17 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
             Id fp = WFSOnlineTestSupport.doInsert(wfs, ft, inserts);
 
             // / okay now count ...
-            FeatureReader<SimpleFeatureType, SimpleFeature> count =
-                    wfs.getFeatureReader(new Query(ft.getTypeName()), Transaction.AUTO_COMMIT);
-            int i = 0;
-            while (count.hasNext() && i < 3) {
-                f = count.next();
-                i++;
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> count =
+                    wfs.getFeatureReader(new Query(ft.getTypeName()), Transaction.AUTO_COMMIT)) {
+                int i = 0;
+                while (count.hasNext() && i < 3) {
+                    f = count.next();
+                    i++;
+                }
+                count.close();
+                WFSOnlineTestSupport.doDelete(wfs, ft, fp);
+                WFSOnlineTestSupport.doUpdate(wfs, ft, ATTRIBUTE_TO_EDIT, NEW_EDIT_VALUE);
             }
-            count.close();
-            WFSOnlineTestSupport.doDelete(wfs, ft, fp);
-            WFSOnlineTestSupport.doUpdate(wfs, ft, ATTRIBUTE_TO_EDIT, NEW_EDIT_VALUE);
         } finally {
             try {
                 ((SimpleFeatureStore) fs).removeFeatures(filterFac.not(startingFeatures));

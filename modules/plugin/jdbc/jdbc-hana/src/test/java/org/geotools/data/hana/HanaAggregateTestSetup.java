@@ -20,6 +20,7 @@ import java.sql.Connection;
 import org.geotools.jdbc.JDBCAggregateTestSetup;
 
 /** @author Stefan Uhrig, SAP SE */
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class HanaAggregateTestSetup extends JDBCAggregateTestSetup {
 
     private static final String TABLE = "aggregate";

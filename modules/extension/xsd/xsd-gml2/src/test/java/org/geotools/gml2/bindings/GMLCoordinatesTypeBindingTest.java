@@ -24,6 +24,7 @@ import org.geotools.xs.XS;
 import org.geotools.xsd.AttributeInstance;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
+import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -38,6 +39,7 @@ public class GMLCoordinatesTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance coordinates;
     MutablePicoContainer container;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
 

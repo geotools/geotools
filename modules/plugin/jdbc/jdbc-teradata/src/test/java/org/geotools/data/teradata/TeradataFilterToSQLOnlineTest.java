@@ -25,10 +25,11 @@ public class TeradataFilterToSQLOnlineTest extends JDBCTestSupport {
                                 ff.equals(ff.literal("intProperty"), ff.literal(5)),
                                 ff.equals(ff.literal("doubleProperty"), ff.literal(5))));
         ff.equals(ff.literal("intProperty"), ff.literal(5));
-        SimpleFeatureIterator features =
-                dataStore.getFeatureSource("cpi").getFeatures(filter).features();
-        while (features.hasNext()) {
-            features.next();
+        try (SimpleFeatureIterator features =
+                dataStore.getFeatureSource("cpi").getFeatures(filter).features()) {
+            while (features.hasNext()) {
+                features.next();
+            }
         }
         // if we made it here, we passed
     }

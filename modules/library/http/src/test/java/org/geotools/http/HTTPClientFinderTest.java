@@ -16,6 +16,7 @@
  */
 package org.geotools.http;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.geotools.http.CustomHTTPClientFactory.CustomHttpClient;
@@ -36,7 +37,7 @@ public class HTTPClientFinderTest {
     public void findingSimpleHttpClientAsDefault() throws Exception {
         HTTPClient client = HTTPClientFinder.createClient();
 
-        assertTrue(client != null);
+        assertNotNull(client);
         assertTrue(client instanceof SimpleHttpClient);
     }
 

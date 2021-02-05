@@ -181,23 +181,25 @@ public class ParsingTest {
         }
 
         File file = TestData.file(this, "LiteralDataTypeTestFile.xml");
-        BufferedReader in = new BufferedReader(new FileReader(file));
-        Configuration config = new WPSConfiguration();
-        Parser parser = new Parser(config);
+        try (BufferedReader in = new BufferedReader(new FileReader(file))) {
+            Configuration config = new WPSConfiguration();
+            Parser parser = new Parser(config);
 
-        Object object = parser.parse(in);
+            Object object = parser.parse(in);
 
-        // try casting the response
-        ExecuteResponseType exeResponse = null;
-        if (object instanceof ExecuteResponseType) {
-            exeResponse = (ExecuteResponseType) object;
+            // try casting the response
+            ExecuteResponseType exeResponse = null;
+            if (object instanceof ExecuteResponseType) {
+                exeResponse = (ExecuteResponseType) object;
+            }
+
+            // try to get the output datatype
+            OutputDataType odt =
+                    (OutputDataType) exeResponse.getProcessOutputs().getOutput().get(0);
+            String dataType = odt.getData().getLiteralData().getDataType();
+
+            assertNotNull(dataType);
         }
-
-        // try to get the output datatype
-        OutputDataType odt = (OutputDataType) exeResponse.getProcessOutputs().getOutput().get(0);
-        String dataType = odt.getData().getLiteralData().getDataType();
-
-        assertNotNull(dataType);
     }
 
     @Test

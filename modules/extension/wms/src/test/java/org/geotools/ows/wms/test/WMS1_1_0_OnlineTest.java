@@ -157,7 +157,9 @@ public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {
     //        GetStylesRequest request = wms.createGetStylesRequest();
     //        assertNotNull(request);
     //
-    //    }@Test
+    //    }
+
+    @Test
     public void testCreateParser() throws Exception {
         WMSCapabilities capabilities = createCapabilities("1.1.0Capabilities.xml");
         try {
@@ -269,7 +271,7 @@ public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {
             assertNotNull(layer2.getBoundingBoxes().get("EPSG:42304"));
         } catch (Exception e) {
             if (e.getMessage().indexOf("timed out") > 0) {
-                // System.err.println("Unable to test - timed out: " + e);
+                LOGGER.warning("Unable to test - timed out: " + e);
             } else {
                 throw (e);
             }
@@ -280,7 +282,7 @@ public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {
     public void testCreateGetMapRequest() throws Exception {
         try {
             WebMapServer wms = new WebMapServer(server);
-            WMSCapabilities caps = wms.getCapabilities();
+            wms.getCapabilities();
             GetMapRequest request = wms.createGetMapRequest();
             request.setFormat("image/jpeg");
             // System.out.println(request.getFinalURL().toExternalForm());
@@ -289,7 +291,7 @@ public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {
             assertTrue(externalForm.indexOf("image%2Fjpeg") >= 0);
         } catch (java.net.ConnectException ce) {
             if (ce.getMessage().indexOf("timed out") > 0) {
-                // System.err.println("Unable to test - timed out: " + ce);
+                LOGGER.warning("Unable to test - timed out: " + ce);
             } else {
                 throw (ce);
             }

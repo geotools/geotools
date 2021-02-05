@@ -2,6 +2,7 @@ package org.geotools.data.postgis;
 
 import org.geotools.jdbc.JDBCDelegatingTestSetup;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class PostGISPartitionedTestSetup extends JDBCDelegatingTestSetup {
 
     protected PostGISPartitionedTestSetup() {

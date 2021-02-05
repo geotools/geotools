@@ -299,15 +299,14 @@ public class BoreholeTest extends AppSchemaTestSupport {
                         + " Query used should be min_time_d = 'carnian'";
         assertEquals(msg, EXPECTED_RESULT_COUNT, resultCount);
 
-        Feature feature;
         int count = 0;
-        FeatureIterator<Feature> it = features.features();
-        for (; it.hasNext(); ) {
-            feature = it.next();
-            count++;
+        try (FeatureIterator<Feature> it = features.features()) {
+            while (it.hasNext()) {
+                it.next();
+                count++;
+            }
+            assertEquals(EXPECTED_RESULT_COUNT, count);
         }
-        it.close();
-        assertEquals(EXPECTED_RESULT_COUNT, count);
     }
 
     private int size(FeatureCollection<FeatureType, Feature> features) {
@@ -362,9 +361,6 @@ public class BoreholeTest extends AppSchemaTestSupport {
     public void testTraverseDeep() throws Exception {
         final FeatureSource<FeatureType, Feature> fSource =
                 mappingDataStore.getFeatureSource(typeName);
-        final String queryProperty = "sa:shape/geo:LineByVector/geo:origin/@xlink:href";
-        final String queryLiteral = "#bh.176909a.start";
-
         NamespaceSupport namespaces = new NamespaceSupport();
         namespaces.declarePrefix("sa", SANS);
         namespaces.declarePrefix("geo", GEONS);

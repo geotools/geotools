@@ -17,7 +17,6 @@
 package org.geotools.graph.io.standard;
 
 import java.io.File;
-import java.util.Map;
 import org.geotools.graph.GraphTestUtil;
 import org.geotools.graph.build.opt.OptDirectedGraphBuilder;
 import org.geotools.graph.build.opt.OptGraphBuilder;
@@ -51,11 +50,7 @@ public class OptDirectedGraphSerializerTest {
     @Test
     public void test_0() {
         final int nnodes = 100;
-        Object[] obj = GraphTestUtil.buildNoBifurcations(builder(), nnodes);
-
-        final Map node2id = (Map) obj[2];
-        final Map edge2id = (Map) obj[3];
-
+        GraphTestUtil.buildNoBifurcations(builder(), nnodes);
         try {
             File victim = File.createTempFile("graph", null);
             victim.deleteOnExit();

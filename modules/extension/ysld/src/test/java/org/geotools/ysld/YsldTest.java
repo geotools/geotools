@@ -27,6 +27,7 @@ import org.junit.Test;
 public class YsldTest {
 
     @Test
+    @SuppressWarnings("PMD.CloseResource") // odd test about resource management
     public void readerTest() throws IOException {
         InputStream inputStream = YsldTest.class.getResourceAsStream("point.yml");
         YsldInput reader = Ysld.reader(inputStream);

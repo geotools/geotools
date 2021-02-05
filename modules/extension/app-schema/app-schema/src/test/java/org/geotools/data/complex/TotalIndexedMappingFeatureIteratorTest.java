@@ -50,15 +50,16 @@ public class TotalIndexedMappingFeatureIteratorTest extends IndexesTest {
                         "stationsIndexed")) {
             FeatureCollection<FeatureType, Feature> fcoll =
                     fsource.getMappedSource().getFeatures(this.totalIndexedFilterCase());
-            FeatureIterator<Feature> iterator = fcoll.features();
-            assertTrue(iterator instanceof TotalIndexedMappingFeatureIterator);
-            List<Feature> features =
-                    FeatureStreams.toFeatureStream(fcoll).collect(Collectors.toList());
-            assertEquals(features.size(), 4);
-            assertTrue(checkExists(features, "st.1"));
-            assertTrue(checkExists(features, "st.2"));
-            assertTrue(checkExists(features, "st.10"));
-            assertTrue(checkExists(features, "st.11"));
+            try (FeatureIterator<Feature> iterator = fcoll.features()) {
+                assertTrue(iterator instanceof TotalIndexedMappingFeatureIterator);
+                List<Feature> features =
+                        FeatureStreams.toFeatureStream(fcoll).collect(Collectors.toList());
+                assertEquals(features.size(), 4);
+                assertTrue(checkExists(features, "st.1"));
+                assertTrue(checkExists(features, "st.2"));
+                assertTrue(checkExists(features, "st.10"));
+                assertTrue(checkExists(features, "st.11"));
+            }
         }
     }
 
@@ -72,11 +73,13 @@ public class TotalIndexedMappingFeatureIteratorTest extends IndexesTest {
                         "stationsIndexed")) {
             FeatureCollection<FeatureType, Feature> fcoll =
                     fsource.getMappedSource().getFeatures(this.totalIndexedFilterCase());
-            FeatureIterator<Feature> iterator = fcoll.features();
-            assertTrue(iterator instanceof TotalIndexedMappingFeatureIterator);
-            TotalIndexedMappingFeatureIterator titer =
-                    (TotalIndexedMappingFeatureIterator) iterator;
-            assertEquals("ID", titer.getFidAttrMap().getIndexField());
+            try (FeatureIterator<Feature> iterator = fcoll.features()) {
+                assertTrue(iterator instanceof TotalIndexedMappingFeatureIterator);
+                @SuppressWarnings("PMD.CloseResource") // just a cast, try above does close
+                TotalIndexedMappingFeatureIterator titer =
+                        (TotalIndexedMappingFeatureIterator) iterator;
+                assertEquals("ID", titer.getFidAttrMap().getIndexField());
+            }
         }
     }
 

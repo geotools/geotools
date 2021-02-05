@@ -122,8 +122,7 @@ public class ArithmeticFilterTest extends AppSchemaTestSupport {
         try (FeatureIterator<Feature> iterator = features.features()) {
 
             Feature f = iterator.next();
-            Property val = (Property) positionalAccuracy.evaluate(f);
-            System.out.println(val.getValue());
+            assertTrue(positionalAccuracy.evaluate(f) instanceof Property);
             // try all filters
             assertTrue(arithmeticMultiplyFilter.evaluate(f));
             assertTrue(arithmeticDivideFilter.evaluate(f));

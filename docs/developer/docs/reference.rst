@@ -208,7 +208,6 @@ gathering up the other pages.
            :maxdepth: 1
            
            arcgrid
-           arcsde
            geotiff
            image
            imageio

@@ -103,6 +103,7 @@ public class CommandLineArgumentsTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.CloseResource") // no need to actually close the PrintStream
     public void testInvalidArgs() {
         PrintStream ps = new PrintStream(new ByteArrayOutputStream());
         PrintStream out = System.out;

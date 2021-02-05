@@ -115,10 +115,10 @@ public class SchemasTest {
     void write(File f, String xsd) throws IOException {
         f.deleteOnExit();
         f.createNewFile();
-        FileWriter w = new FileWriter(f);
-        w.write(xsd);
-        w.flush();
-        w.close();
+        try (FileWriter w = new FileWriter(f)) {
+            w.write(xsd);
+            w.flush();
+        }
     }
 
     @After

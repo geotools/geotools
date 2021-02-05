@@ -183,8 +183,7 @@ public class ImageMosaicCogOnlineTest {
             URL source =
                     new URL(
                             "https://s3-us-west-2.amazonaws.com/landsat-pds/c1/L8/153/075/LC08_L1TP_153075_20190515_20190515_01_RT/LC08_L1TP_153075_20190515_20190515_01_RT_B3.TIF");
-            List<HarvestedSource> summary = reader.harvest(null, source, null);
-            HarvestedSource hf = summary.get(0);
+            reader.harvest(null, source, null);
 
             // check the granule catalog
             granules = reader.getGranules(coverageName, true);

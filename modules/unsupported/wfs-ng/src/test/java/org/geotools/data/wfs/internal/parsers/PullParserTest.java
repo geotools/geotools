@@ -23,6 +23,8 @@ import java.net.URL;
 import javax.xml.namespace.QName;
 import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.xsd.Configuration;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -42,6 +44,7 @@ public class PullParserTest extends AbstractGetFeatureParserTest {
             Configuration wfsConfiguration)
             throws IOException {
 
+        @SuppressWarnings("PMD.CloseResource") // wrapped and returned
         InputStream inputStream = new BufferedInputStream(getFeaturesRequest.openStream());
         GetParser<SimpleFeature> parser =
                 new PullParserFeatureReader(wfsConfiguration, inputStream, featureType, axisOrder);
@@ -49,6 +52,8 @@ public class PullParserTest extends AbstractGetFeatureParserTest {
         return parser;
     }
 
+    @Test
+    @Ignore
     public void testParseGeoServer_States_100() {
         // TODO: support custom number format parsing in coordinates, such as
         // <gml:coordinates xmlns:gml="http://www.opengis.net/gml" decimal="#" cs="$" ts="_">

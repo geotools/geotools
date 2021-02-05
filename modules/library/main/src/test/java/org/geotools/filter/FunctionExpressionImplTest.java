@@ -151,7 +151,7 @@ public class FunctionExpressionImplTest {
             Function function = (Function) functionClass.getDeclaredConstructor().newInstance();
             testFunction(function, errors);
         }
-        if (errors.size() > 0) {
+        if (!errors.isEmpty()) {
             String errorsMessage = buildErrosMessage(errors);
             LOGGER.info(errorsMessage);
             Assert.fail(errorsMessage);
@@ -199,7 +199,7 @@ public class FunctionExpressionImplTest {
         }
 
         try {
-            String toString = function.toString();
+            function.toString();
         } catch (Exception e) {
             addExceptionError(errors, functionClass, "toString", e);
         }
@@ -283,19 +283,21 @@ public class FunctionExpressionImplTest {
     private List<Class<?>> loadFunctionClasses() throws IOException, ClassNotFoundException {
         final String spiDefinitionResource =
                 "/META-INF/services/org.opengis.filter.expression.Function";
-        InputStream in = getClass().getResourceAsStream(spiDefinitionResource);
-        if (in == null) {
-            throw new FileNotFoundException(spiDefinitionResource);
-        }
+        try (InputStream in = getClass().getResourceAsStream(spiDefinitionResource)) {
+            if (in == null) {
+                throw new FileNotFoundException(spiDefinitionResource);
+            }
 
-        List<Class<?>> functionClasses = new LinkedList<>();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-        String className;
-        while ((className = reader.readLine()) != null) {
-            Class<?> functionClazz = Class.forName(className);
-            functionClasses.add(functionClazz);
+            List<Class<?>> functionClasses = new LinkedList<>();
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
+                String className;
+                while ((className = reader.readLine()) != null) {
+                    Class<?> functionClazz = Class.forName(className);
+                    functionClasses.add(functionClazz);
+                }
+                return functionClasses;
+            }
         }
-        return functionClasses;
     }
 
     /**

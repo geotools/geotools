@@ -30,9 +30,7 @@ public class PartiallyOrderedSetTest {
     @Test
     public void testIterationOverEmptySet() {
         PartiallyOrderedSet<String> poset = new PartiallyOrderedSet<>();
-        for (String s : poset) {
-            fail();
-        }
+        if (!poset.isEmpty()) fail();
     }
 
     @Test

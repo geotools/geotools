@@ -25,6 +25,7 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.test.TestData;
+import org.junit.Test;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 
@@ -41,6 +42,7 @@ public class GT30DecimationTest extends GT30TestBase {
      * into a coverage object, therefore it writes it back onto the disk. Once the coverage is
      * written back\ it loads it again building a new coverage which is finally visualized.
      */
+    @Test
     public void test() throws Exception {
 
         URL statURL =

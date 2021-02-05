@@ -87,9 +87,8 @@ public class EmfAppSchemaParserTest {
         // setting expectedAttributeCount back to 10
         final int expectedAttributeCount = 10;
 
-        SimpleFeatureType ftype =
-                testParseDescribeSimpleFeatureType(
-                        featureTypeName, schemaLocation, expectedAttributeCount);
+        // SimpleFeatureType ftype =
+        testParseDescribeSimpleFeatureType(featureTypeName, schemaLocation, expectedAttributeCount);
         /*
         for (AttributeDescriptor descriptor : ftype.getAttributeDescriptors()) {
              System.out.print(descriptor.getName().getNamespaceURI());

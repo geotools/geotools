@@ -61,50 +61,54 @@ public abstract class MongoComplexUtilitiesTest extends MongoTestSupport {
         // test that in case of a jsonpath can be resolved against the feature,
         // the feature value is picked up instead of the one from the DBObject
         SimpleFeatureSource source = dataStore.getFeatureSource("ft3");
-        FeatureIterator<SimpleFeature> it = source.getFeatures().features();
-        GeometryCoordinateSequenceTransformer transformer =
-                new GeometryCoordinateSequenceTransformer();
-        CoordinateReferenceSystem original = source.getSchema().getCoordinateReferenceSystem();
-        CoordinateReferenceSystem target = CRS.decode("urn:x-ogc:def:crs:EPSG:6.11.2:4326");
-        transformer.setMathTransform(CRS.findMathTransform(original, target, false));
-        while (it.hasNext()) {
-            SimpleFeature f = it.next();
-            // transforming the geometry so that the SimpleFeature geometry will be different from
-            // the one in the DBObject
-            Geometry geom = transformer.transform((Geometry) f.getDefaultGeometry());
-            f.setDefaultGeometry(geom);
-            Geometry geometry2 = (Geometry) MongoComplexUtilities.getValue(f, "geometry");
-            assertEquals(geom, geometry2);
-            MongoFeature mongoFeature = (MongoFeature) f;
-            Geometry dbGeom =
-                    new MongoGeometryBuilder()
-                            .toGeometry((DBObject) mongoFeature.getMongoObject().get("geometry"));
-            assertFalse(geometry2.equals(dbGeom));
+        try (FeatureIterator<SimpleFeature> it = source.getFeatures().features()) {
+            GeometryCoordinateSequenceTransformer transformer =
+                    new GeometryCoordinateSequenceTransformer();
+            CoordinateReferenceSystem original = source.getSchema().getCoordinateReferenceSystem();
+            CoordinateReferenceSystem target = CRS.decode("urn:x-ogc:def:crs:EPSG:6.11.2:4326");
+            transformer.setMathTransform(CRS.findMathTransform(original, target, false));
+            while (it.hasNext()) {
+                SimpleFeature f = it.next();
+                // transforming the geometry so that the SimpleFeature geometry will be different
+                // from
+                // the one in the DBObject
+                Geometry geom = transformer.transform((Geometry) f.getDefaultGeometry());
+                f.setDefaultGeometry(geom);
+                Geometry geometry2 = (Geometry) MongoComplexUtilities.getValue(f, "geometry");
+                assertEquals(geom, geometry2);
+                MongoFeature mongoFeature = (MongoFeature) f;
+                Geometry dbGeom =
+                        new MongoGeometryBuilder()
+                                .toGeometry(
+                                        (DBObject) mongoFeature.getMongoObject().get("geometry"));
+                assertFalse(geometry2.equals(dbGeom));
+            }
         }
     }
 
     public void testReprojectedValuesNotIgnored()
             throws IOException, FactoryException, TransformException, SchemaException {
         SimpleFeatureSource source = dataStore.getFeatureSource("ft3");
-        FeatureIterator<SimpleFeature> it = source.getFeatures().features();
-        GeometryCoordinateSequenceTransformer transformer =
-                new GeometryCoordinateSequenceTransformer();
-        CoordinateReferenceSystem original = source.getSchema().getCoordinateReferenceSystem();
-        CoordinateReferenceSystem target = CRS.decode("urn:x-ogc:def:crs:EPSG:6.11.2:4326");
-        transformer.setMathTransform(CRS.findMathTransform(original, target, false));
-        SimpleFeatureType ft = FeatureTypes.transform(source.getSchema(), target);
-        while (it.hasNext()) {
-            SimpleFeature f = it.next();
-            Geometry geom = transformer.transform((Geometry) f.getDefaultGeometry());
-            f.setDefaultGeometry(geom);
-            // Mocking the case when a feature is reprojected
-            // and the MongoFeature in userData is copied in the newly built feature
-            SimpleFeature rep = SimpleFeatureBuilder.build(ft, f.getAttributes(), f.getID());
-            if (f.hasUserData()) {
-                rep.getUserData().putAll(f.getUserData());
+        try (FeatureIterator<SimpleFeature> it = source.getFeatures().features()) {
+            GeometryCoordinateSequenceTransformer transformer =
+                    new GeometryCoordinateSequenceTransformer();
+            CoordinateReferenceSystem original = source.getSchema().getCoordinateReferenceSystem();
+            CoordinateReferenceSystem target = CRS.decode("urn:x-ogc:def:crs:EPSG:6.11.2:4326");
+            transformer.setMathTransform(CRS.findMathTransform(original, target, false));
+            SimpleFeatureType ft = FeatureTypes.transform(source.getSchema(), target);
+            while (it.hasNext()) {
+                SimpleFeature f = it.next();
+                Geometry geom = transformer.transform((Geometry) f.getDefaultGeometry());
+                f.setDefaultGeometry(geom);
+                // Mocking the case when a feature is reprojected
+                // and the MongoFeature in userData is copied in the newly built feature
+                SimpleFeature rep = SimpleFeatureBuilder.build(ft, f.getAttributes(), f.getID());
+                if (f.hasUserData()) {
+                    rep.getUserData().putAll(f.getUserData());
+                }
+                Geometry geometry2 = (Geometry) MongoComplexUtilities.getValue(rep, "geometry");
+                assertEquals(geom, geometry2);
             }
-            Geometry geometry2 = (Geometry) MongoComplexUtilities.getValue(rep, "geometry");
-            assertEquals(geom, geometry2);
         }
     }
 }

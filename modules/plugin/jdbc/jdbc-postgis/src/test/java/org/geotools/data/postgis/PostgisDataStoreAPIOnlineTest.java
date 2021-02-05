@@ -41,10 +41,11 @@ public class PostgisDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
 
     /** Test PostGIS specific collapsed simplified geometries (GEOT-4737) */
     public void testSimplificationPreserveCollapsed() throws Exception {
-        Connection cx = dataStore.getDataSource().getConnection();
-        PostGISDialect dialect = ((PostGISDialect) dataStore.getSQLDialect());
-        Version version = dialect.getVersion(cx);
-        dataStore.closeSafe(cx);
+        Version version;
+        try (Connection cx = dataStore.getDataSource().getConnection()) {
+            PostGISDialect dialect = ((PostGISDialect) dataStore.getSQLDialect());
+            version = dialect.getVersion(cx);
+        }
 
         // Would use Assume.assumeTrue here, but this class extends TestCase
         // and thus is run as a JUnit 3 test, which reports false assumptions
@@ -58,14 +59,11 @@ public class PostgisDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
         if (fs.getSupportedHints().contains(Hints.GEOMETRY_SIMPLIFICATION) == false) return;
 
         SimpleFeatureCollection fColl = fs.getFeatures();
-        SimpleFeatureIterator iterator = fColl.features();
         Geometry original = null;
-        try {
+        try (SimpleFeatureIterator iterator = fColl.features()) {
             if (iterator.hasNext()) {
                 original = (Geometry) iterator.next().getDefaultGeometry();
             }
-        } finally {
-            iterator.close();
         }
         double width = original.getEnvelope().getEnvelopeInternal().getWidth();
 
@@ -75,11 +73,8 @@ public class PostgisDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
 
         Geometry simplified = null;
         fColl = fs.getFeatures(query);
-        iterator = fColl.features();
-        try {
+        try (SimpleFeatureIterator iterator = fColl.features()) {
             if (iterator.hasNext()) simplified = (Geometry) iterator.next().getDefaultGeometry();
-        } finally {
-            iterator.close();
         }
 
         // PostGIS 2.2+ should use ST_Simplify's preserveCollapsed flag

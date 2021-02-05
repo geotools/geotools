@@ -34,22 +34,22 @@ public class SolrTemporalTest extends SolrTestSupport {
         Filter f = ff.lessOrEqual(ff.property("installed_tdt"), ff.literal(testDate));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(4, features.size());
-        SimpleFeatureIterator it = features.features();
-        while (it.hasNext()) {
-            Date date = (Date) it.next().getAttribute("installed_tdt");
-            assertTrue(date.before(testDate) || date.equals(testDate));
+        try (SimpleFeatureIterator it = features.features()) {
+            while (it.hasNext()) {
+                Date date = (Date) it.next().getAttribute("installed_tdt");
+                assertTrue(date.before(testDate) || date.equals(testDate));
+            }
         }
-        it.close();
 
         f = ff.greaterOrEqual(ff.property("installed_tdt"), ff.literal(testDate));
         features = featureSource.getFeatures(f);
         assertEquals(5, features.size());
-        it = features.features();
-        while (it.hasNext()) {
-            Date date = (Date) it.next().getAttribute("installed_tdt");
-            assertTrue(date.after(testDate) || date.equals(testDate));
+        try (SimpleFeatureIterator it = features.features()) {
+            while (it.hasNext()) {
+                Date date = (Date) it.next().getAttribute("installed_tdt");
+                assertTrue(date.after(testDate) || date.equals(testDate));
+            }
         }
-        it.close();
     }
 
     public void testAfterFilter() throws Exception {

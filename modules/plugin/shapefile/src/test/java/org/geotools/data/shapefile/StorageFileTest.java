@@ -77,11 +77,9 @@ public class StorageFileTest implements FileReader {
         File file = storage.getFile();
         file.deleteOnExit();
 
-        FileWriter writer = new FileWriter(file);
-
-        writer.write(writtenToStorageFile);
-
-        writer.close();
+        try (FileWriter writer = new FileWriter(file)) {
+            writer.write(writtenToStorageFile);
+        }
     }
 
     private void assertCorrectData(ShpFiles files1, ShpFileType type, String writtenToStorageFile)

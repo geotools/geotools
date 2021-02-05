@@ -76,12 +76,11 @@ public class ForceCoordinateSystemFeatureReaderTest {
         Point p = fac.createPoint(new Coordinate(10, 10));
 
         SimpleFeatureCollection features = createTestFeatureCollection(crs, p);
-        FeatureReader<SimpleFeatureType, SimpleFeature> original = DataUtilities.reader(features);
-        // FeatureReader<SimpleFeatureType, SimpleFeature> original = new CollectionFeatureReader(
-        // features, features.getSchema() );
-
-        try (ForceCoordinateSystemFeatureReader modified =
-                new ForceCoordinateSystemFeatureReader(DataUtilities.reader(features), crs); ) {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> original =
+                        DataUtilities.reader(features);
+                ForceCoordinateSystemFeatureReader modified =
+                        new ForceCoordinateSystemFeatureReader(
+                                DataUtilities.reader(features), crs)) {
             SimpleFeature f1 = original.next();
             SimpleFeature f2 = modified.next();
 
@@ -101,11 +100,12 @@ public class ForceCoordinateSystemFeatureReaderTest {
         Point p = fac.createPoint(new Coordinate(10, 10));
 
         SimpleFeatureCollection features = createTestFeatureCollection(srcCRS, p);
-        FeatureReader<SimpleFeatureType, SimpleFeature> original = DataUtilities.reader(features);
-
         CoordinateReferenceSystem destCRS = DefaultEngineeringCRS.CARTESIAN_2D;
-        try (ForceCoordinateSystemFeatureReader modified =
-                new ForceCoordinateSystemFeatureReader(DataUtilities.reader(features), destCRS); ) {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> original =
+                        DataUtilities.reader(features);
+                ForceCoordinateSystemFeatureReader modified =
+                        new ForceCoordinateSystemFeatureReader(
+                                DataUtilities.reader(features), destCRS); ) {
             SimpleFeature f1 = original.next();
             SimpleFeature f2 = modified.next();
 
@@ -154,11 +154,12 @@ public class ForceCoordinateSystemFeatureReaderTest {
         Point p = fac.createPoint(new Coordinate(10, 10));
 
         SimpleFeatureCollection features = createTestFeatureCollection(srcCRS, p);
-        FeatureReader<SimpleFeatureType, SimpleFeature> original = DataUtilities.reader(features);
-
         CoordinateReferenceSystem destCRS = DefaultEngineeringCRS.CARTESIAN_2D;
-        try (ForceCoordinateSystemFeatureReader modified =
-                new ForceCoordinateSystemFeatureReader(DataUtilities.reader(features), destCRS)) {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> original =
+                        DataUtilities.reader(features);
+                ForceCoordinateSystemFeatureReader modified =
+                        new ForceCoordinateSystemFeatureReader(
+                                DataUtilities.reader(features), destCRS)) {
             SimpleFeature f1 = original.next();
             SimpleFeature f2 = modified.next();
 

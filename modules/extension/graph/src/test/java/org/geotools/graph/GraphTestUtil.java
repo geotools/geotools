@@ -201,7 +201,7 @@ public class GraphTestUtil {
 
         // a balanced binary tree
         Node root = builder.buildNode();
-        root.setObject(new String("0"));
+        root.setObject("0");
         id2node.put(root.getObject(), root);
 
         builder.addNode(root);

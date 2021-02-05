@@ -55,9 +55,7 @@ public class ExpressionBuilderTest {
 
     @Test
     public void testNullHandling() {
-        FilterFactory ff = CommonFactoryFinder.getFilterFactory2(null);
         ExpressionBuilder b = new ExpressionBuilder();
-        Expression e;
 
         assertEquals(Expression.NIL, b.reset().build());
         assertNull(b.reset(null).build());
@@ -67,7 +65,6 @@ public class ExpressionBuilderTest {
     public void testPropertyName() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory2(null);
         ExpressionBuilder b = new ExpressionBuilder();
-        Expression e;
 
         assertEquals(ff.property("x"), b.property("x").build());
         assertEquals(ff.property("x"), b.property().property("x").build());
@@ -80,7 +77,6 @@ public class ExpressionBuilderTest {
     public void testFunction() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory2(null);
         ExpressionBuilder b = new ExpressionBuilder();
-        Expression e;
 
         // function
         assertEquals(ff.function("pi"), b.function().name("pi").build());
@@ -149,7 +145,6 @@ public class ExpressionBuilderTest {
     public void testAdd() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory2(null);
         ExpressionBuilder b = new ExpressionBuilder();
-        Expression e;
 
         assertEquals(
                 ff.add(ff.literal(1), ff.literal(2)),

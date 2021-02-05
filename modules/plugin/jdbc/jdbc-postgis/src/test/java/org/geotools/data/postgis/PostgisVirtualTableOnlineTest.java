@@ -38,7 +38,7 @@ public class PostgisVirtualTableOnlineTest extends JDBCVirtualTableOnlineTest {
         Logger logger = Logging.getLogger(PostgisVirtualTableOnlineTest.class);
         Level oldLevel = logger.getLevel();
         try {
-            logger.setLevel(java.util.logging.Level.WARNING);
+            logger.setLevel(Level.WARNING);
             logger.addHandler(handler);
 
             super.testBounds();

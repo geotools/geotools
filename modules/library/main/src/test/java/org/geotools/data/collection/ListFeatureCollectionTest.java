@@ -118,16 +118,17 @@ public class ListFeatureCollectionTest {
     @Test
     public void iterator() {
         createPointFeaturesAtCorners(WORLD);
-        SimpleFeatureIterator iter = featureCollection.features();
-        assertNotNull(iter);
-        assertTrue(iter.hasNext());
+        try (SimpleFeatureIterator iter = featureCollection.features()) {
+            assertNotNull(iter);
+            assertTrue(iter.hasNext());
 
-        List<SimpleFeature> copy = new ArrayList<>(featureList);
-        while (iter.hasNext()) {
-            SimpleFeature f = iter.next();
-            assertTrue(copy.remove(f));
+            List<SimpleFeature> copy = new ArrayList<>(featureList);
+            while (iter.hasNext()) {
+                SimpleFeature f = iter.next();
+                assertTrue(copy.remove(f));
+            }
+            assertTrue(copy.isEmpty());
         }
-        assertTrue(copy.isEmpty());
     }
 
     /** Test for ticket GEOT-5684 Bounds cache was wrong after features were removed from list */

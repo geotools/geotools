@@ -114,15 +114,14 @@ public class SchemaFactoryResolveTest {
     }
 
     private void copy(String sourceFile, String name, File outFolder) throws IOException {
-        InputStream in = this.getClass().getResource(sourceFile).openStream();
-        OutputStream out =
-                new FileOutputStream(outFolder.getAbsolutePath() + File.separator + name);
-        final byte[] buffer = new byte[4096];
-        int count;
-        while ((count = in.read(buffer)) >= 0) {
-            out.write(buffer, 0, count);
+        try (InputStream in = this.getClass().getResource(sourceFile).openStream();
+                OutputStream out =
+                        new FileOutputStream(outFolder.getAbsolutePath() + File.separator + name)) {
+            final byte[] buffer = new byte[4096];
+            int count;
+            while ((count = in.read(buffer)) >= 0) {
+                out.write(buffer, 0, count);
+            }
         }
-        out.close();
-        in.close();
     }
 }

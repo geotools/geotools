@@ -37,8 +37,7 @@ public class TeradataDialectOnlineTest extends JDBCTestSupport {
         Handler handler = Logging.getLogger(TeradataDialectOnlineTest.class).getHandlers()[0];
         handler.setLevel(level);
 
-        org.geotools.util.logging.Logging.getLogger(TeradataDialectOnlineTest.class)
-                .setLevel(level);
+        Logging.getLogger(TeradataDialectOnlineTest.class).setLevel(level);
     }
 
     @Override
@@ -100,15 +99,14 @@ public class TeradataDialectOnlineTest extends JDBCTestSupport {
             coords++;
         }
         geom.append(")");
-        Connection conn = dataStore.getDataSource().getConnection();
-        PreparedStatement ps =
-                conn.prepareStatement(
-                        "INSERT INTO \"ft3\" VALUES(?,new ST_Geometry(?),0,0.0,'zero')");
-        ps.setInt(1, cnt++);
-        ps.setCharacterStream(2, new StringReader(geom.toString()), geom.length());
-        ps.execute();
-        ps.close();
-        conn.close();
+        try (Connection conn = dataStore.getDataSource().getConnection();
+                PreparedStatement ps =
+                        conn.prepareStatement(
+                                "INSERT INTO \"ft3\" VALUES(?,new ST_Geometry(?),0,0.0,'zero')")) {
+            ps.setInt(1, cnt++);
+            ps.setCharacterStream(2, new StringReader(geom.toString()), geom.length());
+            ps.execute();
+        }
         return coords;
     }
 
@@ -138,8 +136,9 @@ public class TeradataDialectOnlineTest extends JDBCTestSupport {
         assertEquals(size, g.getCoordinates().length);
 
         // verify autoconnect set by dialog
-        Connection connection = dataStore.getConnection(Transaction.AUTO_COMMIT);
-        assertTrue(connection.getAutoCommit());
+        try (Connection connection = dataStore.getConnection(Transaction.AUTO_COMMIT)) {
+            assertTrue(connection.getAutoCommit());
+        }
 
         // and LOB workaround
         assertInline(id, expectInline);
@@ -152,23 +151,24 @@ public class TeradataDialectOnlineTest extends JDBCTestSupport {
         dialect.encodePostSelect(featureSource.getSchema(), buf);
         // ensure order by or ids aren't in sequence
         buf.append(" from ft3 order by id");
-        Connection connection = dataStore.getConnection(Transaction.AUTO_COMMIT);
-        Statement s = connection.createStatement();
-        ResultSet rs = s.executeQuery(buf.toString());
-        // geometry column is always Clob
-        assertEquals("java.sql.Clob", rs.getMetaData().getColumnClassName(2));
-        // geometry_inline derived column is String
-        assertEquals("java.lang.String", rs.getMetaData().getColumnClassName(3));
+        try (Connection connection = dataStore.getConnection(Transaction.AUTO_COMMIT);
+                Statement s = connection.createStatement();
+                ResultSet rs = s.executeQuery(buf.toString())) {
+            // geometry column is always Clob
+            assertEquals("java.sql.Clob", rs.getMetaData().getColumnClassName(2));
+            // geometry_inline derived column is String
+            assertEquals("java.lang.String", rs.getMetaData().getColumnClassName(3));
 
-        // make sure that starting from startIdx we get an inline String or not
-        for (boolean b : expectInline) {
-            rs.next();
-            String result = rs.getString(3);
-            if (b) {
-                assertNotNull(result);
-                new WKTReader().read(result);
-            } else {
-                assertNull(result);
+            // make sure that starting from startIdx we get an inline String or not
+            for (boolean b : expectInline) {
+                assertTrue(rs.next());
+                String result = rs.getString(3);
+                if (b) {
+                    assertNotNull(result);
+                    new WKTReader().read(result);
+                } else {
+                    assertNull(result);
+                }
             }
         }
     }

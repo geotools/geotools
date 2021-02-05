@@ -132,8 +132,7 @@ public class SimpleFeatureBuilderTest {
     @Test
     public void testConverting() throws Exception {
         builder.set("integer", "1");
-        SimpleFeature feature = builder.buildFeature("fid");
-
+        builder.buildFeature("fid");
         try {
             builder.set("integer", "foo");
             Assert.fail("should have failed");

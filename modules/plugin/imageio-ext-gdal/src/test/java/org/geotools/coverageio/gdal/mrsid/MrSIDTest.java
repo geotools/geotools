@@ -33,7 +33,6 @@ import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverageio.gdal.BaseGDALGridFormat;
 import org.geotools.coverageio.gdal.GDALTestCase;
-import org.geotools.data.ServiceInfo;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.test.TestData;
@@ -232,7 +231,6 @@ public final class MrSIDTest extends GDALTestCase {
         final int numImages = reader.getGridCoverageCount();
         Assert.assertEquals(1, numImages);
 
-        final ServiceInfo serviceInfo = reader.getInfo();
         reader.getInfo("coverage");
         reader.dispose();
 
@@ -258,6 +256,7 @@ public final class MrSIDTest extends GDALTestCase {
         reader.getInfo();
         reader.dispose();
 
+        @SuppressWarnings("PMD.CloseResource") // closed with the reader
         FileImageInputStreamExtImpl fiis = new FileImageInputStreamExtImpl(file);
         reader = new MrSIDReader(fiis);
         reader.dispose();

@@ -124,8 +124,6 @@ public final class ErdasImgTest extends GDALTestCase {
         //
         // /////////////////////////////////////////////////////////////////////
         final double cropFactor = 2.0;
-        final int oldW = gc.getRenderedImage().getWidth();
-        final int oldH = gc.getRenderedImage().getHeight();
         final Rectangle range = ((GridEnvelope2D) reader.getOriginalGridRange());
         final GeneralEnvelope oldEnvelope = reader.getOriginalEnvelope();
         final GeneralEnvelope cropEnvelope =

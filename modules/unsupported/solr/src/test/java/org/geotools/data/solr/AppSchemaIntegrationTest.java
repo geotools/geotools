@@ -128,16 +128,6 @@ public final class AppSchemaIntegrationTest extends OnlineTestCase {
         return result;
     }
 
-    private int size(FeatureCollection<FeatureType, Feature> features) {
-        int size = 0;
-        try (FeatureIterator<Feature> i = features.features()) {
-            for (; i.hasNext(); i.next()) {
-                size++;
-            }
-        }
-        return size;
-    }
-
     @Override
     protected void setUpInternal() throws Exception {
         client = new HttpSolrClient.Builder(getSolrCoreURL()).build();

@@ -36,7 +36,12 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -142,6 +147,7 @@ public class JDBCDataStoreTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.CloseResource") // mock resources
     public void testReaderCallback() throws Exception {
         JDBCReaderCallback callback = mock(JDBCReaderCallback.class);
 

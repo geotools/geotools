@@ -82,7 +82,6 @@ public class WKTParserTest {
         Object geometry = parser.parse(WKT);
         Assert.assertNotNull(geometry);
         Assert.assertTrue(geometry instanceof Curve);
-        Curve linestring = (Curve) geometry;
     }
 
     @Test
@@ -93,6 +92,5 @@ public class WKTParserTest {
         Object geometry = parser.parse(WKT);
         Assert.assertNotNull(geometry);
         Assert.assertTrue(geometry instanceof Curve);
-        Curve linestring = (Curve) geometry;
     }
 }

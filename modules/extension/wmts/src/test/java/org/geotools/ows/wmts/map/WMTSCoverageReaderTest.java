@@ -114,11 +114,11 @@ public class WMTSCoverageReaderTest {
         final URL wmtsUrl = new URL("http://fake.local/wmts");
 
         // Mock HTTPClient
-        final File kvpCapaFile = WMTSCoverageReaderTest.this.getResourceFile(KVP_CAPA_RESOURCENAME);
+        final File kvpCapaFile = getResourceFile(KVP_CAPA_RESOURCENAME);
         HTTPResponse getCapabilitiesResponse =
                 new MockHttpResponse(kvpCapaFile, "application/xml; UTF-8");
 
-        final File worldFile = WMTSCoverageReaderTest.this.getResourceFile("test-data/world.png");
+        final File worldFile = getResourceFile("test-data/world.png");
         HTTPResponse getTileResponse = new MockHttpResponse(worldFile, "application/xml; UTF-8");
 
         final Map<String, String> getTileHeadersCalled = new HashMap<>();
@@ -218,7 +218,7 @@ public class WMTSCoverageReaderTest {
         coverageReader.read(new GeneralParameterValue[] {paramInterpolation, paramGridGeometry});
     }
 
-    public List<Tile> testInitMapRequest(WMTSCoverageReader wcr, ReferencedEnvelope bbox)
+    protected List<Tile> testInitMapRequest(WMTSCoverageReader wcr, ReferencedEnvelope bbox)
             throws Exception {
 
         int width = 400;

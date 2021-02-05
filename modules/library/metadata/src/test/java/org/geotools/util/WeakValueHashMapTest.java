@@ -54,13 +54,6 @@ public final class WeakValueHashMapTest {
                 final Integer key = random.nextInt(SAMPLE_SIZE);
                 final Integer value = random.nextInt(SAMPLE_SIZE);
                 assertEquals("containsKey:", strongMap.containsKey(key), weakMap.containsKey(key));
-                if (false) {
-                    // Can't test this one, since 'WeakValueHashMap.entrySet()' is not implemented.
-                    assertEquals(
-                            "containsValue:",
-                            strongMap.containsValue(value),
-                            weakMap.containsValue(value));
-                }
                 assertSame("get:", strongMap.get(key), weakMap.get(key));
                 if (random.nextBoolean()) {
                     // Test addition.
@@ -116,11 +109,6 @@ public final class WeakValueHashMapTest {
                     if (strongPrevious != null) {
                         assertSame("remove:", strongPrevious, weakPrevious);
                     }
-                }
-                if (false) {
-                    // Can't test this one, since 'WeakValueHashMap.entrySet()' is not implemented.
-                    assertTrue(
-                            "containsAll:", weakMap.entrySet().containsAll(strongMap.entrySet()));
                 }
             }
             // Do our best to lets GC finish its work.

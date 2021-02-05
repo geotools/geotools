@@ -39,33 +39,39 @@ public class UnWrapperTest {
         ds.setUrl("jdbc:h2:mem:test_mem");
         ds.setAccessToUnderlyingConnectionAllowed(true);
 
+        // some weird stuff happening in connection management, the H2 connection
+        // has been already closed once the try-resource block finishes, so not using it here,
+        // not our job to debug the connection pool nor H2
+        @SuppressWarnings("PMD.CloseResource")
         Connection conn = ds.getConnection();
         UnWrapper uw = DataSourceFinder.getUnWrapper(conn);
         Assert.assertNotNull(uw);
         Assert.assertTrue(uw.canUnwrap(conn));
-        Connection unwrapped = uw.unwrap(conn);
-        Assert.assertNotNull(unwrapped);
-        Assert.assertTrue(unwrapped instanceof JdbcConnection);
+        try (Connection unwrapped = uw.unwrap(conn)) {
+            Assert.assertNotNull(unwrapped);
+            Assert.assertTrue(unwrapped instanceof JdbcConnection);
 
-        Statement st = conn.createStatement();
-        uw = DataSourceFinder.getUnWrapper(st);
-        Assert.assertNotNull(uw);
-        Assert.assertTrue(uw.canUnwrap(st));
-        Statement uwst = uw.unwrap(st);
-        Assert.assertNotNull(uwst);
-        Assert.assertTrue(uwst instanceof JdbcStatement);
-        st.close();
+            try (Statement st = conn.createStatement()) {
+                uw = DataSourceFinder.getUnWrapper(st);
+                Assert.assertNotNull(uw);
+                Assert.assertTrue(uw.canUnwrap(st));
 
-        PreparedStatement ps = conn.prepareStatement("select curtime()");
-        uw = DataSourceFinder.getUnWrapper(ps);
-        Assert.assertNotNull(uw);
-        Assert.assertTrue(uw.canUnwrap(ps));
-        PreparedStatement uwps = (PreparedStatement) uw.unwrap(ps);
-        Assert.assertNotNull(uwps);
-        Assert.assertTrue(uwps instanceof JdbcPreparedStatement);
-        ps.close();
+                try (Statement uwst = uw.unwrap(st)) {
+                    Assert.assertNotNull(uwst);
+                    Assert.assertTrue(uwst instanceof JdbcStatement);
+                }
+            }
 
-        conn.close();
-        ds.close();
+            try (PreparedStatement ps = conn.prepareStatement("select curtime()")) {
+                uw = DataSourceFinder.getUnWrapper(ps);
+                Assert.assertNotNull(uw);
+                Assert.assertTrue(uw.canUnwrap(ps));
+
+                try (PreparedStatement uwps = (PreparedStatement) uw.unwrap(ps)) {
+                    Assert.assertNotNull(uwps);
+                    Assert.assertTrue(uwps instanceof JdbcPreparedStatement);
+                }
+            }
+        }
     }
 }

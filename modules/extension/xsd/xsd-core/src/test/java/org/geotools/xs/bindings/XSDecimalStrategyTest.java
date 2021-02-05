@@ -32,7 +32,6 @@ import org.eclipse.xsd.impl.XSDMinInclusiveFacetImpl;
 import org.eclipse.xsd.impl.XSDSimpleTypeDefinitionImpl;
 import org.eclipse.xsd.impl.XSDTotalDigitsFacetImpl;
 import org.geotools.xsd.ElementInstance;
-import org.geotools.xsd.Node;
 import org.geotools.xsd.impl.ElementImpl;
 import org.junit.Assert;
 import org.junit.Test;
@@ -102,16 +101,13 @@ public class XSDecimalStrategyTest {
         XSDElementDeclaration declaration =
                 makeDeclaration(
                         totalDigits,
-                        new BigDecimal(minExc),
-                        new BigDecimal(minInc),
-                        new BigDecimal(maxInc),
-                        new BigDecimal(maxExc));
+                        BigDecimal.valueOf(minExc),
+                        BigDecimal.valueOf(minInc),
+                        BigDecimal.valueOf(maxInc),
+                        BigDecimal.valueOf(maxExc));
 
         ElementInstance element = new ElementImpl(declaration);
         element.setText(elementText);
-
-        Node[] children = new Node[] {};
-        Object value = null;
 
         BigDecimal decimal = (BigDecimal) strat.parse(element, element.getText().trim());
 

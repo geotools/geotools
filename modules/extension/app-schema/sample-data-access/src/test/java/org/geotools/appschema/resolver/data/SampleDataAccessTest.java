@@ -48,11 +48,12 @@ public class SampleDataAccessTest {
                 dataAccess.getFeatureSource(SampleDataAccessData.MAPPEDFEATURE_TYPE_NAME);
         FeatureCollection<FeatureType, Feature> featureCollection = featureSource.getFeatures();
         int count = 0;
-        for (FeatureIterator<Feature> iterator = featureCollection.features();
-                iterator.hasNext();
-                iterator.next()) {
-            count++;
+        try (FeatureIterator<Feature> iterator = featureCollection.features()) {
+            while (iterator.hasNext()) {
+                count++;
+                iterator.next();
+            }
+            Assert.assertEquals(2, count);
         }
-        Assert.assertEquals(2, count);
     }
 }

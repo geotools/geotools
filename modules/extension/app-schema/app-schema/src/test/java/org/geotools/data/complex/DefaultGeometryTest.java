@@ -140,13 +140,13 @@ public class DefaultGeometryTest {
 
     private static int size(FeatureCollection features) {
         int size = 0;
-        FeatureIterator iterator = features.features();
-        while (iterator.hasNext()) {
-            iterator.next();
-            size++;
+        try (FeatureIterator iterator = features.features()) {
+            while (iterator.hasNext()) {
+                iterator.next();
+                size++;
+            }
+            return size;
         }
-        iterator.close();
-        return size;
     }
 
     /**

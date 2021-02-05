@@ -23,10 +23,10 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCNoPrimaryKeyOnlineTest extends JDBCTestSupport {
 
     protected static final String LAKE = "lake";
@@ -59,7 +59,7 @@ public abstract class JDBCNoPrimaryKeyOnlineTest extends JDBCTestSupport {
         assertEquals(1, fc.size());
         try (SimpleFeatureIterator fr = fc.features()) {
             assertTrue(fr.hasNext());
-            SimpleFeature f = fr.next();
+            fr.next();
             assertFalse(fr.hasNext());
         }
     }

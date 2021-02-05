@@ -79,6 +79,7 @@ import org.xml.sax.ext.LexicalHandler;
  *
  * @author GDavis
  */
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation")
 public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
     private WebProcessingService wps;
@@ -86,8 +87,6 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
     private URL url;
 
     private String processIden;
-
-    private ResponseFormType response;
 
     /** The wps.geoserver fixture consisting of service and processId. */
     @Override
@@ -301,8 +300,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         Geometry result = (Geometry) output.getData().getComplexData().getData().get(0);
         // System.out.println(expected);
         // System.out.println(result);
-        // assertTrue(expected.equals(result));
-
+        assertEquals(expected, result);
     }
 
     private void setLocalInputDataBufferPoly(
@@ -664,11 +662,9 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         // do a full describeprocess on my process
         DescribeProcessRequest descRequest = wps.createDescribeProcessRequest();
         descRequest.setIdentifier(processIdenLocal);
-
-        DescribeProcessResponse descResponse = wps.issueRequest(descRequest);
+        wps.issueRequest(descRequest);
 
         // based on the describeprocess, setup the execute
-        ProcessDescriptionsType processDesc = descResponse.getProcessDesc();
         ExecuteProcessRequest exeRequest = wps.createExecuteProcessRequest();
         exeRequest.setIdentifier(processIdenLocal);
         exeRequest.addInput(
@@ -699,15 +695,16 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         assertNull(exceptionResponse);
 
         // check result correctness
-        assertEquals("application/arcgrid", response.getRawContentType());
-        BufferedReader reader =
-                new BufferedReader(new InputStreamReader(response.getRawResponseStream()));
         StringBuilder sb = new StringBuilder();
-        String line = null;
-        while ((line = reader.readLine()) != null) {
-            sb.append(line).append("\n");
+        assertEquals("application/arcgrid", response.getRawContentType());
+        try (BufferedReader reader =
+                new BufferedReader(new InputStreamReader(response.getRawResponseStream()))) {
+
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line).append("\n");
+            }
         }
-        reader.close();
         String arcgrid = sb.toString();
         String expectedHeader =
                 "NCOLS 2\n"
@@ -877,15 +874,16 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         assertNotNull(output.getReference().getHref());
 
         URL dataURL = new URL(output.getReference().getHref());
-        BufferedReader reader = new BufferedReader(new InputStreamReader(dataURL.openStream()));
         StringBuilder sb = new StringBuilder();
-        String line = null;
-        int count = 0;
-        while ((line = reader.readLine()) != null && count <= 5) {
-            sb.append(line).append("\n");
-            count++;
+        try (BufferedReader reader =
+                new BufferedReader(new InputStreamReader(dataURL.openStream()))) {
+            String line = null;
+            int count = 0;
+            while ((line = reader.readLine()) != null && count <= 5) {
+                sb.append(line).append("\n");
+                count++;
+            }
         }
-        reader.close();
         String arcgrid = sb.toString();
         String expectedHeader =
                 "NCOLS 100\n"
@@ -1102,8 +1100,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
         // send the request
         ExecuteProcessResponse response = wps.issueRequest(exeRequest);
-        Object result = response.getExecuteResponse().getProcessOutputs().getOutput().get(0);
-        // System.out.println(result);
+        assertNotNull(response.getExecuteResponse().getProcessOutputs().getOutput().get(0));
     }
 }
 

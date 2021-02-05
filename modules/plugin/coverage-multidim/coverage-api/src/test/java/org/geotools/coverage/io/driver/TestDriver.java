@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Map;
-import java.util.logging.Logger;
 import org.geotools.coverage.io.CoverageAccess;
 import org.geotools.coverage.io.CoverageAccess.AccessType;
 import org.geotools.coverage.io.CoverageReadRequest;
@@ -54,12 +53,7 @@ public class TestDriver extends DefaultFileDriver implements Driver {
 
     public static final String TEST_DRIVER = "test driver";
 
-    private static TestDriver testDriver = new TestDriver();
-
     private static Map<String, Parameter<?>> emptyMap = Collections.emptyMap();
-
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(TestDriver.class);
 
     private static final String EXTENSION = ".EXT";
 

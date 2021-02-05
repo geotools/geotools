@@ -16,7 +16,12 @@
  */
 package org.geotools.ows.wms.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -188,7 +193,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
             assertEquals(bbox.getMaxY(), 68.6906585693359, 0.0);
         } catch (java.net.ConnectException ce) {
             if (ce.getMessage().indexOf("timed out") > 0) {
-                // System.err.println("Unable to test - timed out: " + ce);
+                LOGGER.warning("Unable to test - timed out: " + ce);
             } else {
                 throw (ce);
             }
@@ -262,7 +267,6 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
             //
             // http://demo.cubewerx.com/cipi12/cubeserv/cubeserv.cgi?INFO_FORMAT=text/html&LAYERS=ETOPO2:Foundation&FORMAT=image/png&HEIGHT=400&J=200&REQUEST=GetFeatureInfo&I=200&BBOX=-34.12087,15.503481,1.8462441,35.6043956&WIDTH=400&STYLES=&SRS=EPSG:4326&QUERY_LAYERS=ETOPO2:Foundation&VERSION=1.3.0
             getMapRequest.setBBox("-34.12087,15.503481,1.8462441,35.6043956");
-            URL url2 = getMapRequest.getFinalURL();
 
             GetFeatureInfoRequest request = wms.createGetFeatureInfoRequest(getMapRequest);
             //        request.setQueryLayers(request.getQueryableLayers());
@@ -275,23 +279,24 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
             //     TODO   Currently this server rtreturns code 400 !?
             GetFeatureInfoResponse response = wms.issueRequest(request);
             // System.out.println(response.getContentType());
-            assertTrue(response.getContentType().indexOf("text/html") != -1);
-            BufferedReader in =
-                    new BufferedReader(new InputStreamReader(response.getInputStream()));
-            String line;
+            assertNotEquals(response.getContentType().indexOf("text/html"), -1);
+            try (BufferedReader in =
+                    new BufferedReader(new InputStreamReader(response.getInputStream()))) {
+                String line;
 
-            boolean textFound = false;
-            while ((line = in.readLine()) != null) {
-                // System.out.println(line);
-                if (line.indexOf("CubeSERV Feature Query") != -1) {
-                    textFound = true;
-                    break;
+                boolean textFound = false;
+                while ((line = in.readLine()) != null) {
+                    // System.out.println(line);
+                    if (line.indexOf("CubeSERV Feature Query") != -1) {
+                        textFound = true;
+                        break;
+                    }
                 }
+                assertTrue(textFound);
             }
-            assertTrue(textFound);
         } catch (java.net.ConnectException ce) {
             if (ce.getMessage().indexOf("timed out") > 0) {
-                // System.err.println("Unable to test - timed out: " + ce);
+                LOGGER.warning("Unable to test - timed out: " + ce);
             } else {
                 throw (ce);
             }

@@ -82,6 +82,7 @@ public final class ArcGridVisualizationTest extends ArcGridTestCaseAdapter {
 
         LOGGER.info("Reading the gzipped coverage through an ImageInputStream");
         // Reading the coverage through an ImageInputStream
+        @SuppressWarnings("PMD.CloseResource")
         final ImageInputStream iiStream =
                 ImageIO.createImageInputStream(new GZIPInputStream(new FileInputStream(f)));
         reader = new ArcGridReader(iiStream, hints);

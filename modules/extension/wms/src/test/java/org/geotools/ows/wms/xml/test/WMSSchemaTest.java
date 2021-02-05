@@ -56,7 +56,6 @@ public class WMSSchemaTest {
 
         Object object = DocumentFactory.getInstance(getCapsURL.openStream(), null, Level.WARNING);
 
-        Schema schema = WMSSchema.getInstance();
         SchemaFactory.getInstance(WMSSchema.NAMESPACE);
 
         Assert.assertTrue("Capabilities failed to parse", object instanceof WMSCapabilities);

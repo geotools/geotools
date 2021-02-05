@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 import org.geotools.TestData;
 import org.geotools.data.DataStore;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -79,15 +80,14 @@ public class IntersectionFeatureCollectionTest {
         toRemoveFst.add("cat2");
         ArrayList<String> toRemoveSnd = new ArrayList<>();
         toRemoveSnd.add("cat");
-        SimpleFeatureCollection output =
-                process.execute(
-                        polylineCollection,
-                        featuresCollection,
-                        toRemoveFst,
-                        toRemoveSnd,
-                        IntersectionMode.INTERSECTION,
-                        true,
-                        false);
+        process.execute(
+                polylineCollection,
+                featuresCollection,
+                toRemoveFst,
+                toRemoveSnd,
+                IntersectionMode.INTERSECTION,
+                true,
+                false);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -97,15 +97,14 @@ public class IntersectionFeatureCollectionTest {
         toRetainFst.add("cat2");
         ArrayList<String> toRetainSnd = new ArrayList<>();
         toRetainSnd.add("cat");
-        SimpleFeatureCollection output =
-                process.execute(
-                        zonesCollection,
-                        polylineCollection,
-                        toRetainFst,
-                        toRetainSnd,
-                        IntersectionMode.INTERSECTION,
-                        true,
-                        false);
+        process.execute(
+                zonesCollection,
+                polylineCollection,
+                toRetainFst,
+                toRetainSnd,
+                IntersectionMode.INTERSECTION,
+                true,
+                false);
     }
 
     private Polygon createRectangularPolygonByCoords(
@@ -132,30 +131,28 @@ public class IntersectionFeatureCollectionTest {
     // given as first collection
     @Test(expected = IllegalArgumentException.class)
     public void testProcessArguments1() throws IllegalArgumentException {
-        SimpleFeatureCollection output2 =
-                process.execute(
-                        multipointCollection,
-                        featuresCollection,
-                        null,
-                        null,
-                        IntersectionMode.INTERSECTION,
-                        null,
-                        null);
+        process.execute(
+                multipointCollection,
+                featuresCollection,
+                null,
+                null,
+                IntersectionMode.INTERSECTION,
+                null,
+                null);
     }
 
     // this test verifies if the Illegal argument exception is thrown when a MultiPointCollection is
     // given as second collection and area attributes are required
     @Test(expected = IllegalArgumentException.class)
     public void testProcessArguments2() throws IllegalArgumentException {
-        SimpleFeatureCollection output2 =
-                process.execute(
-                        featuresCollection,
-                        multipointCollection,
-                        null,
-                        null,
-                        IntersectionMode.INTERSECTION,
-                        true,
-                        false);
+        process.execute(
+                featuresCollection,
+                multipointCollection,
+                null,
+                null,
+                IntersectionMode.INTERSECTION,
+                true,
+                false);
     }
 
     @Test
@@ -210,9 +207,7 @@ public class IntersectionFeatureCollectionTest {
         assertNotNull(output2.getSchema().getDescriptor("areaB"));
         assertNotNull(output2.getSchema().getDescriptor("INTERSECTION_ID"));
         assertEquals(8, output2.getSchema().getAttributeCount());
-        SimpleFeatureIterator sfTemp2 = output2.features();
-        sfTemp2.hasNext();
-        SimpleFeature sf = sfTemp2.next();
+        SimpleFeature sf = DataUtilities.first(output2);
 
         // test with both area and percentage attributes
         assertNotNull(sf.getAttribute("the_geom"));
@@ -234,9 +229,7 @@ public class IntersectionFeatureCollectionTest {
                         IntersectionMode.INTERSECTION,
                         false,
                         false);
-        SimpleFeatureIterator sfTemp3 = output3.features();
-        sfTemp3.hasNext();
-        SimpleFeature sf2 = sfTemp3.next();
+        SimpleFeature sf2 = DataUtilities.first(output3);
         assertNotNull(sf2.getAttribute("the_geom"));
         assertNotNull(sf2.getAttribute("zones_str1"));
         assertNotNull(sf2.getAttribute("features_str2"));
@@ -294,17 +287,21 @@ public class IntersectionFeatureCollectionTest {
                 process.execute(features, secondFeatures, null, null, null, false, false);
 
         assertEquals(1, output3.size());
-        SimpleFeatureIterator iterator = output3.features();
 
         GeometryCollection firstCollection = null;
         GeometryCollection secondCollection = null;
         firstCollection = new GeometryCollection(firstArrayGeometry, new GeometryFactory());
         secondCollection = new GeometryCollection(secondArrayGeometry, new GeometryFactory());
-        for (int i = 0; i < firstCollection.getNumGeometries() && iterator.hasNext(); i++) {
-            Geometry expected =
-                    firstCollection.getGeometryN(i).intersection(secondCollection.getGeometryN(i));
-            SimpleFeature sf = iterator.next();
-            assertTrue(expected.equals((Geometry) sf.getDefaultGeometry()));
+        try (SimpleFeatureIterator iterator = output3.features()) {
+            for (int i = 0; i < firstCollection.getNumGeometries() && iterator.hasNext(); i++) {
+                Geometry expected =
+                        firstCollection
+                                .getGeometryN(i)
+                                .intersection(secondCollection.getGeometryN(i));
+                SimpleFeature sf = iterator.next();
+                // geometry.equals(geometry) behaves differently than geometry.equals(object)
+                assertTrue(expected.equals((Geometry) sf.getDefaultGeometry())); // NOPMD
+            }
         }
     }
 }

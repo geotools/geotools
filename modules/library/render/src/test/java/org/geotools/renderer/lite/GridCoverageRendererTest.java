@@ -1868,7 +1868,6 @@ public class GridCoverageRendererTest {
         }
 
         // crate the first reader
-        URL harvestSingleURL = URLs.fileToUrl(directory1);
         ImageMosaicReader reader = new ImageMosaicReader(directory1, null);
 
         // now create a second reader that won't be informed of the harvesting changes
@@ -1936,7 +1935,7 @@ public class GridCoverageRendererTest {
     /** Checks the pixel i/j is fully transparent */
     protected void assertPixelIsTransparent(BufferedImage image, int i, int j) {
         int pixel = image.getRGB(i, j);
-        assertTrue((pixel >> 24) == 0x00);
+        assertEquals((pixel >> 24), 0x00);
     }
 
     private RasterSymbolizer buildChannelSelectingSymbolizer(int band) {
@@ -2402,7 +2401,6 @@ public class GridCoverageRendererTest {
                         GridCoverageRendererTest.class.getResource(
                                 "gridcoverage2d/test-data/pacific_radar.tif"));
         GeoTiffReader reader = new GeoTiffReader(file);
-        System.out.println(reader.getCoordinateReferenceSystem());
         ReferencedEnvelope readerEnvelope =
                 ReferencedEnvelope.reference(reader.getOriginalEnvelope());
         CoordinateReferenceSystem crs = CRS.decode("AUTO:97003,9001,170,-16", true);
@@ -2433,8 +2431,6 @@ public class GridCoverageRendererTest {
                         GridCoverageRendererTest.class.getResource(
                                 "gridcoverage2d/test-data/pacific_radar.tif"));
         GeoTiffReader reader = new GeoTiffReader(file);
-        ReferencedEnvelope readerEnvelope =
-                ReferencedEnvelope.reference(reader.getOriginalEnvelope());
         CoordinateReferenceSystem crs = CRS.decode("AUTO:97003,9001,0,0", true);
         ReferencedEnvelope azeqEnvelope =
                 new ReferencedEnvelope(-10698974, 10065735, -18709397, -1.4979931, crs);

@@ -37,14 +37,14 @@ public class GeobufGeometryTest {
         File file = temporaryFolder.newFile("geom.pbf");
         WKTReader wkt = new WKTReader();
         GeobufGeometry geobufGeometry = new GeobufGeometry();
-        OutputStream out = new FileOutputStream(file);
-        geobufGeometry.encode(wkt.read(geometryWkt), out);
-        out.close();
-        InputStream inputStream = new FileInputStream(file);
-        Geometry g = geobufGeometry.decode(inputStream);
-        inputStream.close();
+        try (OutputStream out = new FileOutputStream(file)) {
+            geobufGeometry.encode(wkt.read(geometryWkt), out);
+        }
+        try (InputStream inputStream = new FileInputStream(file)) {
+            Geometry g = geobufGeometry.decode(inputStream);
+            assertEquals(geometryWkt, g.toText());
+        }
         file.delete();
-        assertEquals(geometryWkt, g.toText());
     }
 
     @Test

@@ -56,6 +56,7 @@ public class SDOOnlineTest extends JDBCTestSupport {
         this.connection = setup.getDataSource().getConnection();
 
         UnWrapper unwrapper = DataSourceFinder.getUnWrapper(this.connection);
+        @SuppressWarnings("PMD.CloseResource") // will be closed in #disconnect
         OracleConnection oraConn = (OracleConnection) unwrapper.unwrap(this.connection);
         converter = new GeometryConverter(oraConn);
     }
@@ -274,6 +275,7 @@ public class SDOOnlineTest extends JDBCTestSupport {
         assertEquals(fixture.multiPolygon, geom);
     }
 
+    @SuppressWarnings("PMD.UseAssertEqualsInsteadOfAssertTrue")
     public final void testDecodeMultiPolygonWithHole() throws SQLException {
         if (this.connection == null) return;
 

@@ -16,7 +16,7 @@
  */
 package org.geotools.jdbc;
 
-import static org.opengis.filter.sort.SortOrder.*;
+import static org.opengis.filter.sort.SortOrder.ASCENDING;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -47,6 +47,7 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
 
     boolean visited = false;

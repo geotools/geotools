@@ -17,6 +17,7 @@
 package org.geotools.process.factory;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
@@ -29,7 +30,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import org.geotools.data.Parameter;
-import org.geotools.data.Query;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.NameImpl;
@@ -108,7 +108,7 @@ public class BeanProcessFactoryTest {
     @Test
     public void testNames() {
         Set<Name> names = factory.getNames();
-        assertTrue(names.size() > 0);
+        assertFalse(names.isEmpty());
         // System.out.println(names);
         // Identity
         assertTrue(names.contains(new NameImpl("bean", "Identity")));
@@ -179,7 +179,8 @@ public class BeanProcessFactoryTest {
         inputs.put("value", 10);
 
         RenderingProcess tx = (RenderingProcess) transformation;
-        Query dummyQuery = tx.invertQuery(inputs, null, null);
+        // just making sure it does not explode?
+        tx.invertQuery(inputs, null, null);
 
         Map<String, Object> result = transformation.execute(inputs, null);
 

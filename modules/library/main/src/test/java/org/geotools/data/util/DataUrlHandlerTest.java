@@ -34,10 +34,11 @@ public class DataUrlHandlerTest {
     }
 
     private void checkDataUrlContent(URL url) throws IOException {
-        InputStreamReader in = new InputStreamReader(url.openStream());
-        BufferedReader reader = new BufferedReader(in);
-        String data = reader.readLine();
-        Assert.assertEquals("a", data);
+        try (InputStreamReader in = new InputStreamReader(url.openStream());
+                BufferedReader reader = new BufferedReader(in)) {
+            String data = reader.readLine();
+            Assert.assertEquals("a", data);
+        }
     }
 
     @Test

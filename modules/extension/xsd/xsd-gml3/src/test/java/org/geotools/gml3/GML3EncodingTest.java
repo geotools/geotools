@@ -25,7 +25,6 @@ import java.util.Map;
 import org.custommonkey.xmlunit.SimpleNamespaceContext;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gml2.SrsSyntax;
@@ -207,7 +206,6 @@ public class GML3EncodingTest {
                             new WKTReader().read("POINT(0 0)"), "One " + ((char) 0x7) + " test"
                         },
                         "123");
-        SimpleFeatureCollection fc = DataUtilities.collection(feature);
 
         TestConfiguration configuration = new TestConfiguration();
         Encoder encoder = new Encoder(configuration);

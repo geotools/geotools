@@ -410,8 +410,7 @@ public final class PostGisIndexTest extends OnlineTestCase {
 
     /** recursively delete indexes */
     private void cleanupFolders(final File file) {
-        if (file.isFile()) {
-        } else {
+        if (!file.isFile()) {
             final File[] files = file.listFiles();
 
             for (File f : files) {

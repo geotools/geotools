@@ -27,7 +27,6 @@ public class DbaseFieldFormatterTest {
         // assertEquals("Formatted Output", xpected, s.trim());
         boolean ascii = true;
         int i, c = 0;
-        ;
         for (i = 0; i < s.length(); i++) {
             c = s.charAt(i);
             if (c > 127) {

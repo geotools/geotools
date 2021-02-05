@@ -51,11 +51,12 @@ public class MemoryDataStoreConcurrencyTest extends DataTestCase {
                 // just run through the features
                 assertNotNull(dataStore);
                 Query query = new Query(roadType.getTypeName());
-                FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
-                        dataStore.getFeatureReader(query, Transaction.AUTO_COMMIT);
-                assertNotNull(featureReader);
-                while (featureReader.hasNext()) {
-                    featureReader.next();
+                try (FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
+                        dataStore.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
+                    assertNotNull(featureReader);
+                    while (featureReader.hasNext()) {
+                        featureReader.next();
+                    }
                 }
             }
         } catch (Exception e) {

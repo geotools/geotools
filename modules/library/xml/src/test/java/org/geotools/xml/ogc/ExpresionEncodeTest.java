@@ -29,7 +29,6 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
 import org.opengis.filter.PropertyIsLike;
-import org.opengis.filter.expression.Expression;
 
 /**
  * For now just writes the expression built.
@@ -73,7 +72,6 @@ public class ExpresionEncodeTest {
     public void testLikeFilter()
             throws IllegalFilterException, OperationNotSupportedException, IOException {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-        Expression testAttribute = ff.property("testString");
 
         PropertyIsLike lf = ff.like(ff.property("testString"), "test*", "*", ".", "!");
 

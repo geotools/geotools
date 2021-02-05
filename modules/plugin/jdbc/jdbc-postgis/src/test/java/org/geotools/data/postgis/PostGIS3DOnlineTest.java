@@ -53,15 +53,15 @@ public class PostGIS3DOnlineTest extends JDBC3DOnlineTest {
             Query q, ContentFeatureSource fs, Predicate<Coordinate> testCondition)
             throws IOException {
         SimpleFeatureCollection fc = fs.getFeatures(q);
-        FeatureIterator<SimpleFeature> fi = fc.features();
-        while (fi.hasNext()) {
-            SimpleFeature f = fi.next();
-            Geometry geom = (Geometry) f.getDefaultGeometry();
-            Coordinate[] coors = geom.getCoordinates();
-            for (Coordinate c : coors) {
-                assertTrue(testCondition.test(c));
+        try (FeatureIterator<SimpleFeature> fi = fc.features()) {
+            while (fi.hasNext()) {
+                SimpleFeature f = fi.next();
+                Geometry geom = (Geometry) f.getDefaultGeometry();
+                Coordinate[] coors = geom.getCoordinates();
+                for (Coordinate c : coors) {
+                    assertTrue(testCondition.test(c));
+                }
             }
         }
-        fi.close();
     }
 }

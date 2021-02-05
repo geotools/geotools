@@ -29,6 +29,7 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCConnectionLifecycleOnlineTest extends JDBCTestSupport {
 
     protected MockListener mockListener = new MockListener();

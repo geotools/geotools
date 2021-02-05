@@ -169,7 +169,7 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
 
     public DataStoreFactorySpi.Param[] getParametersInfo() {
         return new DataStoreFactorySpi.Param[] {
-            AppSchemaDataAccessFactory.DBTYPE, AppSchemaDataAccessFactory.URL
+            AppSchemaDataAccessFactory.DBTYPE, AppSchemaDataAccessFactory.URL,
         };
     }
 

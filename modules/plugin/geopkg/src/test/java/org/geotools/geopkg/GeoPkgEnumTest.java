@@ -88,40 +88,42 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
                 Arrays.asList("one", "two", "three"), FeatureTypes.getFieldOptions(enumDescriptor));
 
         // go low level and verify inputs
-        GeoPackage geoPackage = new GeoPackage(dataStore);
-        GeoPkgSchemaExtension schemas = geoPackage.getExtension(GeoPkgSchemaExtension.class);
-        List<GeoPkgExtension.Association> extensionAssociations = schemas.getAssociations();
-        assertThat(
-                extensionAssociations,
-                Matchers.hasItem(new GeoPkgExtension.Association("gpkg_data_columns")));
-        assertThat(
-                extensionAssociations,
-                Matchers.hasItem(new GeoPkgExtension.Association("gpkg_data_column_constraints")));
-        assertThat(
-                extensionAssociations,
-                Matchers.hasItem(new GeoPkgExtension.Association("ft2", "enumProperty")));
-        List<DataColumn> dataColumns =
-                geoPackage.getExtension(GeoPkgSchemaExtension.class).getDataColumns("ft2");
-        assertEquals(1, dataColumns.size());
-        DataColumn dc = dataColumns.get(0);
-        assertEquals("enumProperty", dc.getColumnName());
-        assertEquals("enumProperty", dc.getName());
-        DataColumnConstraint.Enum dcc = (DataColumnConstraint.Enum) dc.getConstraint();
-        assertNotNull(dcc);
-        assertEquals("ft2_enumProperty_enum", dcc.getName());
-        Map<String, String> values = dcc.getValues();
-        assertEquals(3, values.size());
-        assertEquals("one", values.get("0"));
-        assertEquals("two", values.get("1"));
-        assertEquals("three", values.get("2"));
+        try (GeoPackage geoPackage = new GeoPackage(dataStore)) {
+            GeoPkgSchemaExtension schemas = geoPackage.getExtension(GeoPkgSchemaExtension.class);
+            List<GeoPkgExtension.Association> extensionAssociations = schemas.getAssociations();
+            assertThat(
+                    extensionAssociations,
+                    Matchers.hasItem(new GeoPkgExtension.Association("gpkg_data_columns")));
+            assertThat(
+                    extensionAssociations,
+                    Matchers.hasItem(
+                            new GeoPkgExtension.Association("gpkg_data_column_constraints")));
+            assertThat(
+                    extensionAssociations,
+                    Matchers.hasItem(new GeoPkgExtension.Association("ft2", "enumProperty")));
+            List<DataColumn> dataColumns =
+                    geoPackage.getExtension(GeoPkgSchemaExtension.class).getDataColumns("ft2");
+            assertEquals(1, dataColumns.size());
+            DataColumn dc = dataColumns.get(0);
+            assertEquals("enumProperty", dc.getColumnName());
+            assertEquals("enumProperty", dc.getName());
+            DataColumnConstraint.Enum dcc = (DataColumnConstraint.Enum) dc.getConstraint();
+            assertNotNull(dcc);
+            assertEquals("ft2_enumProperty_enum", dcc.getName());
+            Map<String, String> values = dcc.getValues();
+            assertEquals(3, values.size());
+            assertEquals("one", values.get("0"));
+            assertEquals("two", values.get("1"));
+            assertEquals("three", values.get("2"));
 
-        // check also the enum map is there, to support reading
-        EnumMapper mapper =
-                (EnumMapper) enumDescriptor.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
-        assertNotNull(mapper);
-        assertEquals("one", mapper.fromInteger(0));
-        assertEquals("two", mapper.fromInteger(1));
-        assertEquals("three", mapper.fromInteger(2));
+            // check also the enum map is there, to support reading
+            EnumMapper mapper =
+                    (EnumMapper) enumDescriptor.getUserData().get(JDBCDataStore.JDBC_ENUM_MAP);
+            assertNotNull(mapper);
+            assertEquals("one", mapper.fromInteger(0));
+            assertEquals("two", mapper.fromInteger(1));
+            assertEquals("three", mapper.fromInteger(2));
+        }
     }
 
     public void createTwoSchemaWithEnum() throws Exception {
@@ -130,6 +132,7 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
         dataStore.createSchema(getEnumFeatureType("ft3"));
 
         // there used to be a key violation, just check that both enums have been recored
+        @SuppressWarnings("PMD.CloseResource") // dataStore is closed elsewhere
         GeoPackage geoPackage = new GeoPackage(dataStore);
         GeoPkgSchemaExtension schemas = geoPackage.getExtension(GeoPkgSchemaExtension.class);
         Map<String, DataColumn> ft2Columns =
@@ -173,6 +176,7 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
                 Arrays.asList("one", "two", "three"), FeatureTypes.getFieldOptions(enumDescriptor));
 
         // go low level and verify inputs
+        @SuppressWarnings("PMD.CloseResource") // dataStore is closed elsewhere
         GeoPackage geoPackage = new GeoPackage(dataStore);
         GeoPkgSchemaExtension schemas = geoPackage.getExtension(GeoPkgSchemaExtension.class);
         List<GeoPkgExtension.Association> extensionAssociations = schemas.getAssociations();
@@ -246,6 +250,7 @@ public class GeoPkgEnumTest extends JDBCTestSupport {
                 FeatureTypes.getFieldOptions(enumDescriptor2));
 
         // go low level and verify inputs
+        @SuppressWarnings("PMD.CloseResource") // dataStore is closed elsewhere
         GeoPackage geoPackage = new GeoPackage(dataStore);
         GeoPkgSchemaExtension schemas = geoPackage.getExtension(GeoPkgSchemaExtension.class);
         List<GeoPkgExtension.Association> extensionAssociations = schemas.getAssociations();

@@ -115,32 +115,32 @@ public class PropSelectionTest extends AppSchemaTestSupport {
 
         FeatureCollection<FeatureType, Feature> mfCollection = mfSource.getFeatures(query);
 
-        FeatureIterator iterator = mfCollection.features();
+        try (FeatureIterator iterator = mfCollection.features()) {
+            int i = 0;
+            while (iterator.hasNext()) {
+                Feature feature = iterator.next();
+                assertNotNull(propertyName1.evaluate(feature));
+                assertNull(propertyName2.evaluate(feature));
+                i++;
+            }
+            assertEquals(4, i);
 
-        int i = 0;
-        while (iterator.hasNext()) {
-            Feature feature = iterator.next();
-            assertNotNull(propertyName1.evaluate(feature));
-            assertNull(propertyName2.evaluate(feature));
-            i++;
+            properties = new ArrayList<>();
+            properties.add(propertyName2);
+            query.setProperties(properties);
+
+            mfCollection = mfSource.getFeatures(query);
         }
-        assertEquals(4, i);
 
-        properties = new ArrayList<>();
-        properties.add(propertyName2);
-        query.setProperties(properties);
-
-        mfCollection = mfSource.getFeatures(query);
-
-        iterator = mfCollection.features();
-
-        i = 0;
-        while (iterator.hasNext()) {
-            Feature feature = iterator.next();
-            assertNotNull(propertyName2.evaluate(feature));
-            assertNull(propertyName1.evaluate(feature));
-            i++;
+        try (FeatureIterator iterator = mfCollection.features()) {
+            int i = 0;
+            while (iterator.hasNext()) {
+                Feature feature = iterator.next();
+                assertNotNull(propertyName2.evaluate(feature));
+                assertNull(propertyName1.evaluate(feature));
+                i++;
+            }
+            assertEquals(4, i);
         }
-        assertEquals(4, i);
     }
 }

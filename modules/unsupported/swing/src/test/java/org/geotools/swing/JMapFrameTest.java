@@ -60,8 +60,6 @@ import org.junit.runner.RunWith;
 @RunWith(GraphicsTestRunner.class)
 public class JMapFrameTest extends GraphicsTestBase<FrameFixture, Frame, FrameDriver> {
 
-    private static final double TOL = 1.0e-8;
-
     private static final ReferencedEnvelope WORLD =
             new ReferencedEnvelope(0, 100, 0, 100, DefaultEngineeringCRS.GENERIC_2D);
 

@@ -17,6 +17,7 @@
 package org.geotools.gml2.bindings;
 
 import java.util.StringTokenizer;
+import java.util.regex.Pattern;
 import javax.xml.namespace.QName;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.gml2.GML;
@@ -131,13 +132,13 @@ public class GMLCoordinatesTypeBinding extends AbstractComplexBinding {
             String tuple = tuples.nextToken();
 
             // next tokenize by coordinate seperator
-            String[] oords = tuple.split(cs);
+            String[] coords = tuple.split(Pattern.quote(cs));
 
-            if (cs.equals(ts) && oords.length == 1 && tuples.hasMoreTokens()) {
-                String tempX = oords[0];
-                oords = new String[2];
-                oords[0] = tempX;
-                oords[1] = tuples.nextToken();
+            if (cs.equals(ts) && coords.length == 1 && tuples.hasMoreTokens()) {
+                String tempX = coords[0];
+                coords = new String[2];
+                coords[0] = tempX;
+                coords[1] = tuples.nextToken();
             }
 
             // next tokenize by decimal
@@ -150,19 +151,19 @@ public class GMLCoordinatesTypeBinding extends AbstractComplexBinding {
             String z = null;
 
             // must be at least 1D
-            x = ".".equals(decimal) ? oords[0] : oords[0].replaceAll(decimal, ".");
+            x = ".".equals(decimal) ? coords[0] : coords[0].replaceAll(decimal, ".");
 
             // check for 2 and 3 D
-            if (oords.length > 1) {
-                y = ".".equals(decimal) ? oords[1] : oords[1].replaceAll(decimal, ".");
+            if (coords.length > 1) {
+                y = ".".equals(decimal) ? coords[1] : coords[1].replaceAll(decimal, ".");
             }
 
-            if (oords.length > 2) {
-                z = ".".equals(decimal) ? oords[2] : oords[2].replaceAll(decimal, ".");
+            if (coords.length > 2) {
+                z = ".".equals(decimal) ? coords[2] : coords[2].replaceAll(decimal, ".");
             }
 
             if (seq == null) {
-                seq = JTS.createCS(csFactory, ncoords, oords.length);
+                seq = JTS.createCS(csFactory, ncoords, coords.length);
             }
 
             seq.setOrdinate(i, CoordinateSequence.X, Double.parseDouble(x));

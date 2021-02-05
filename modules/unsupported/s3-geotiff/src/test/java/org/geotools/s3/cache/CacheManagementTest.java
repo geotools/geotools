@@ -103,6 +103,7 @@ public class CacheManagementTest {
         testGetChunk();
     }
 
+    @SuppressWarnings("PMD.CloseResource")
     private void testGetChunk() {
         byte[] content = new byte[128];
         InputStream objectContent = new ByteArrayInputStream(content);

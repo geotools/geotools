@@ -16,7 +16,12 @@
  */
 package org.geotools.data.memory;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -189,9 +194,11 @@ public class MemoryDataStoreTest extends DataTestCase {
      */
     @Test
     public void testMemoryDataStoreFeatureReader() throws IOException {
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = DataUtilities.reader(roadFeatures);
-        DataStore store = new MemoryDataStore(reader);
-        assertStoreHasFeatureType(store, "road");
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                DataUtilities.reader(roadFeatures)) {
+            DataStore store = new MemoryDataStore(reader);
+            assertStoreHasFeatureType(store, "road");
+        }
     }
 
     private void assertStoreHasFeatureType(DataStore store, String featureType) throws IOException {
@@ -275,37 +282,40 @@ public class MemoryDataStoreTest extends DataTestCase {
 
         SimpleFeature f;
 
-        for (SimpleFeatureIterator i = c1.features(); i.hasNext(); ) {
-            f = i.next();
-            assertTrue(msg + " " + f.getID(), c2.contains(f));
+        try (SimpleFeatureIterator i = c1.features()) {
+            while (i.hasNext()) {
+                f = i.next();
+                assertTrue(msg + " " + f.getID(), c2.contains(f));
+            }
         }
     }
 
     @Test
     public void testGetFeatureReader() throws IOException {
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                data.getFeatureSource("road").getReader();
-        assertCovered(roadFeatures, reader);
-        assertFalse(reader.hasNext());
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                data.getFeatureSource("road").getReader()) {
+            assertCovered(roadFeatures, reader);
+            assertFalse(reader.hasNext());
+        }
     }
 
     @Test
     public void testGetFeatureReaderMutability() throws IOException {
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                data.getFeatureSource("road").getReader();
-        SimpleFeature feature;
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                data.getFeatureSource("road").getReader()) {
+            SimpleFeature feature;
 
-        while (reader.hasNext()) {
-            feature = reader.next();
-            feature.setAttribute("name", null);
+            while (reader.hasNext()) {
+                feature = reader.next();
+                feature.setAttribute("name", null);
+            }
         }
 
-        reader.close();
-
-        reader = data.getFeatureSource("road").getReader();
-
+        @SuppressWarnings("PMD.CloseResource") // need to test behavior after close
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                data.getFeatureSource("road").getReader();
         while (reader.hasNext()) {
-            feature = reader.next();
+            SimpleFeature feature = reader.next();
             assertNotNull(feature.getAttribute("name"));
         }
 
@@ -320,119 +330,136 @@ public class MemoryDataStoreTest extends DataTestCase {
 
     @Test
     public void testGetFeatureReaderConcurancy() throws NoSuchElementException, IOException {
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader1 =
-                data.getFeatureSource("road").getReader();
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader2 =
-                data.getFeatureSource("road").getReader();
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader3 =
-                data.getFeatureSource("river").getReader();
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader1 =
+                        data.getFeatureSource("road").getReader();
+                FeatureReader<SimpleFeatureType, SimpleFeature> reader2 =
+                        data.getFeatureSource("road").getReader();
+                FeatureReader<SimpleFeatureType, SimpleFeature> reader3 =
+                        data.getFeatureSource("river").getReader()) {
 
-        while (reader1.hasNext() || reader2.hasNext() || reader3.hasNext()) {
-            assertTrue(contains(roadFeatures, reader1.next()));
-            assertTrue(contains(roadFeatures, reader2.next()));
+            while (reader1.hasNext() || reader2.hasNext() || reader3.hasNext()) {
+                assertTrue(contains(roadFeatures, reader1.next()));
+                assertTrue(contains(roadFeatures, reader2.next()));
 
-            if (reader3.hasNext()) {
-                assertTrue(contains(riverFeatures, reader3.next()));
+                if (reader3.hasNext()) {
+                    assertTrue(contains(riverFeatures, reader3.next()));
+                }
+            }
+
+            try {
+                reader1.next();
+                fail("next should fail with an IOException");
+            } catch (IOException expected) {
+            }
+
+            try {
+                reader2.next();
+                fail("next should fail with an IOException");
+            } catch (IOException expected) {
+            }
+
+            try {
+                reader3.next();
+                fail("next should fail with an IOException");
+            } catch (IOException expected) {
             }
         }
-
-        try {
-            reader1.next();
-            fail("next should fail with an IOException");
-        } catch (IOException expected) {
-        }
-
-        try {
-            reader2.next();
-            fail("next should fail with an IOException");
-        } catch (IOException expected) {
-        }
-
-        try {
-            reader3.next();
-            fail("next should fail with an IOException");
-        } catch (IOException expected) {
-        }
-
-        reader1.close();
-        reader2.close();
-        reader3.close();
     }
 
     @Test
     public void testGetFeatureReaderFilterAutoCommit() throws NoSuchElementException, IOException {
         SimpleFeatureType type = data.getSchema("road");
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
 
-        reader = data.getFeatureReader(new Query("road"), Transaction.AUTO_COMMIT);
-        assertFalse(reader instanceof FilteringFeatureReader);
-        Assert.assertEquals(type, reader.getFeatureType());
-        Assert.assertEquals(roadFeatures.length, count(reader));
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                data.getFeatureReader(new Query("road"), Transaction.AUTO_COMMIT)) {
+            assertFalse(reader instanceof FilteringFeatureReader);
+            Assert.assertEquals(type, reader.getFeatureType());
+            Assert.assertEquals(roadFeatures.length, count(reader));
+        }
 
-        reader = data.getFeatureReader(new Query("road", Filter.EXCLUDE), Transaction.AUTO_COMMIT);
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                data.getFeatureReader(new Query("road", Filter.EXCLUDE), Transaction.AUTO_COMMIT)) {
+            Assert.assertEquals(type, reader.getFeatureType());
+            Assert.assertEquals(0, count(reader));
+        }
 
-        Assert.assertEquals(type, reader.getFeatureType());
-        Assert.assertEquals(0, count(reader));
-
-        reader = data.getFeatureReader(new Query("road", rd1Filter), Transaction.AUTO_COMMIT);
-        assertTrue(reader instanceof FilteringFeatureReader);
-        Assert.assertEquals(type, reader.getFeatureType());
-        Assert.assertEquals(1, count(reader));
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                data.getFeatureReader(new Query("road", rd1Filter), Transaction.AUTO_COMMIT)) {
+            assertTrue(reader instanceof FilteringFeatureReader);
+            Assert.assertEquals(type, reader.getFeatureType());
+            Assert.assertEquals(1, count(reader));
+        }
     }
 
     @Test
     public void testGetFeatureReaderFilterTransaction() throws NoSuchElementException, IOException {
 
         SimpleFeatureType type = data.getSchema("road");
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
 
-        reader = data.getFeatureReader(new Query("road", Filter.EXCLUDE), defaultTransaction);
-        Assert.assertEquals(type, reader.getFeatureType());
-        Assert.assertEquals(0, count(reader));
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                data.getFeatureReader(new Query("road", Filter.EXCLUDE), defaultTransaction)) {
+            Assert.assertEquals(type, reader.getFeatureType());
+            Assert.assertEquals(0, count(reader));
+        }
 
-        reader = data.getFeatureReader(new Query("road"), defaultTransaction);
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                data.getFeatureReader(new Query("road"), defaultTransaction)) {
+            assertTrue(reader instanceof DiffFeatureReader);
+            Assert.assertEquals(type, reader.getFeatureType());
+            Assert.assertEquals(roadFeatures.length, count(reader));
+        }
 
-        assertTrue(reader instanceof DiffFeatureReader);
-        Assert.assertEquals(type, reader.getFeatureType());
-        Assert.assertEquals(roadFeatures.length, count(reader));
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                data.getFeatureReader(new Query("road", rd1Filter), defaultTransaction)) {
 
-        reader = data.getFeatureReader(new Query("road", rd1Filter), defaultTransaction);
+            Assert.assertEquals(type, reader.getFeatureType());
+            Assert.assertEquals(1, count(reader));
+        }
 
-        Assert.assertEquals(type, reader.getFeatureType());
-        Assert.assertEquals(1, count(reader));
-
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
                 ((ContentFeatureStore) data.getFeatureSource("road", defaultTransaction))
-                        .getWriter(Filter.INCLUDE);
-        SimpleFeature feature;
+                        .getWriter(Filter.INCLUDE)) {
+            SimpleFeature feature;
 
-        while (writer.hasNext()) {
-            feature = writer.next();
+            while (writer.hasNext()) {
+                feature = writer.next();
 
-            if (feature.getID().equals("road.rd1")) {
-                writer.remove();
+                if (feature.getID().equals("road.rd1")) {
+                    writer.remove();
+                }
             }
         }
 
-        reader = data.getFeatureReader(new Query("road", Filter.EXCLUDE), defaultTransaction);
-        Assert.assertEquals(0, count(reader));
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                data.getFeatureReader(new Query("road", Filter.EXCLUDE), defaultTransaction)) {
+            Assert.assertEquals(0, count(reader));
+        }
 
-        reader = data.getFeatureReader(new Query("road"), defaultTransaction);
-        Assert.assertEquals(roadFeatures.length - 1, count(reader));
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                data.getFeatureReader(new Query("road"), defaultTransaction)) {
+            Assert.assertEquals(roadFeatures.length - 1, count(reader));
+        }
 
-        reader = data.getFeatureReader(new Query("road", rd1Filter), defaultTransaction);
-        Assert.assertEquals(0, count(reader));
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                data.getFeatureReader(new Query("road", rd1Filter), defaultTransaction)) {
+            Assert.assertEquals(0, count(reader));
+        }
 
         defaultTransaction.rollback();
-        reader = data.getFeatureReader(new Query("road", Filter.EXCLUDE), defaultTransaction);
-        Assert.assertEquals(0, count(reader));
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                data.getFeatureReader(new Query("road", Filter.EXCLUDE), defaultTransaction)) {
+            Assert.assertEquals(0, count(reader));
+        }
 
-        reader = data.getFeatureReader(new Query("road"), defaultTransaction);
-        Assert.assertEquals(roadFeatures.length, count(reader));
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                data.getFeatureReader(new Query("road"), defaultTransaction)) {
+            Assert.assertEquals(roadFeatures.length, count(reader));
+        }
 
-        reader = data.getFeatureReader(new Query("road", rd1Filter), defaultTransaction);
-
-        Assert.assertEquals(1, count(reader));
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                data.getFeatureReader(new Query("road", rd1Filter), defaultTransaction)) {
+            Assert.assertEquals(1, count(reader));
+        }
     }
 
     /**
@@ -477,9 +504,11 @@ public class MemoryDataStoreTest extends DataTestCase {
 
     void assertOrderSame(SimpleFeature[] features) throws Exception {
         // init using readers
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = DataUtilities.reader(features);
-        DataStore store1 = new MemoryDataStore(reader);
-        assertReaderOrderSame(features, store1);
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                DataUtilities.reader(features)) {
+            DataStore store1 = new MemoryDataStore(reader);
+            assertReaderOrderSame(features, store1);
+        }
 
         // init using array directly
         DataStore store2 = new MemoryDataStore(features);
@@ -488,20 +517,20 @@ public class MemoryDataStoreTest extends DataTestCase {
 
     private void assertReaderOrderSame(SimpleFeature[] features, DataStore store)
             throws IOException {
-        FeatureReader<SimpleFeatureType, SimpleFeature> r1 =
-                store.getFeatureReader(
-                        new Query(features[0].getFeatureType().getTypeName()),
-                        Transaction.AUTO_COMMIT);
-        FeatureReader<SimpleFeatureType, SimpleFeature> r2 = DataUtilities.reader(features);
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> r1 =
+                        store.getFeatureReader(
+                                new Query(features[0].getFeatureType().getTypeName()),
+                                Transaction.AUTO_COMMIT);
+                FeatureReader<SimpleFeatureType, SimpleFeature> r2 =
+                        DataUtilities.reader(features)) {
 
-        while (r1.hasNext() && r2.hasNext()) {
-            SimpleFeature f1 = r1.next();
-            SimpleFeature f2 = r2.next();
-            Assert.assertEquals(f1, f2);
+            while (r1.hasNext() && r2.hasNext()) {
+                SimpleFeature f1 = r1.next();
+                SimpleFeature f2 = r2.next();
+                Assert.assertEquals(f1, f2);
+            }
+            Assert.assertEquals(r1.hasNext(), r2.hasNext());
         }
-        Assert.assertEquals(r1.hasNext(), r2.hasNext());
-        r1.close();
-        r2.close();
     }
 
     void assertCovered(
@@ -613,117 +642,93 @@ public class MemoryDataStoreTest extends DataTestCase {
         return count == array.length;
     }
 
-    void dump(FeatureReader<SimpleFeatureType, SimpleFeature> reader)
-            throws NoSuchElementException, IOException {
-        SimpleFeature feature;
-        int count = 0;
-
-        try {
-            while (reader.hasNext()) {
-                feature = reader.next();
-                // System.out.println(count + " feature:" + feature);
-                count++;
-            }
-        } finally {
-            reader.close();
-        }
-    }
-
-    void dump(Object[] array) {
-        for (int i = 0; i < array.length; i++) {
-            // System.out.println(i + " feature:" + array[i]);
-        }
-    }
-
     /*
      * Test for FeatureWriter getFeatureWriter(String, Filter, Transaction)
      */
-    @Test
+    @Test(expected = IOException.class)
     public void testGetFeatureWriter() throws NoSuchElementException, IOException {
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                data.getFeatureWriter("road", Transaction.AUTO_COMMIT);
-        Assert.assertEquals(roadFeatures.length, count(writer));
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                data.getFeatureWriter("road", Transaction.AUTO_COMMIT)) {
+            Assert.assertEquals(roadFeatures.length, count(writer));
 
-        assertFalse(writer.hasNext());
-
-        try {
+            assertFalse(writer.hasNext());
             writer.next();
             fail("Should not be able to use a closed writer");
-        } catch (IOException expected) {
         }
     }
 
     @Test
     public void testGetFeatureWriterRemove() throws IOException {
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                data.getFeatureWriter("road", Transaction.AUTO_COMMIT);
-        SimpleFeature feature;
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                data.getFeatureWriter("road", Transaction.AUTO_COMMIT)) {
+            SimpleFeature feature;
 
-        while (writer.hasNext()) {
-            feature = writer.next();
+            while (writer.hasNext()) {
+                feature = writer.next();
 
-            if (feature.getID().equals("road.rd1")) {
-                writer.remove();
+                if (feature.getID().equals("road.rd1")) {
+                    writer.remove();
+                }
             }
-        }
 
-        Assert.assertEquals(roadFeatures.length - 1, data.entry("road").getMemory().size());
+            Assert.assertEquals(roadFeatures.length - 1, data.entry("road").getMemory().size());
+        }
     }
 
     @Test
     public void testGetFeaturesWriterAdd() throws IOException {
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                data.getFeatureWriter("road", Transaction.AUTO_COMMIT);
-        SimpleFeature feature;
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                data.getFeatureWriter("road", Transaction.AUTO_COMMIT)) {
+            SimpleFeature feature;
 
-        while (writer.hasNext()) {
+            while (writer.hasNext()) {
+                feature = writer.next();
+            }
+
+            assertFalse(writer.hasNext());
             feature = writer.next();
+            feature.setAttributes(newRoad.getAttributes());
+            writer.write();
+            assertFalse(writer.hasNext());
+            Assert.assertEquals(roadFeatures.length + 1, data.entry("road").getMemory().size());
         }
-
-        assertFalse(writer.hasNext());
-        feature = writer.next();
-        feature.setAttributes(newRoad.getAttributes());
-        writer.write();
-        assertFalse(writer.hasNext());
-        Assert.assertEquals(roadFeatures.length + 1, data.entry("road").getMemory().size());
     }
 
     @Test
     public void testGetFeaturesWriterModify() throws IOException {
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                data.getFeatureWriter("road", Transaction.AUTO_COMMIT);
-        SimpleFeature feature;
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                data.getFeatureWriter("road", Transaction.AUTO_COMMIT)) {
+            SimpleFeature feature;
 
-        while (writer.hasNext()) {
-            feature = writer.next();
+            while (writer.hasNext()) {
+                feature = writer.next();
 
-            if (feature.getID().equals("road.rd1")) {
-                feature.setAttribute("name", "changed");
-                writer.write();
+                if (feature.getID().equals("road.rd1")) {
+                    feature.setAttribute("name", "changed");
+                    writer.write();
+                }
             }
-        }
 
-        feature = data.entry("road").getMemory().get("road.rd1");
-        Assert.assertEquals("changed", feature.getAttribute("name"));
+            feature = data.entry("road").getMemory().get("road.rd1");
+            Assert.assertEquals("changed", feature.getAttribute("name"));
+        }
     }
 
     @Test
     public void testGetFeatureWriterTypeNameTransaction()
             throws NoSuchElementException, IOException {
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
-
-        writer = data.getFeatureWriter("road", Transaction.AUTO_COMMIT);
-        Assert.assertEquals(roadFeatures.length, count(writer));
-        writer.close();
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                data.getFeatureWriter("road", Transaction.AUTO_COMMIT)) {
+            Assert.assertEquals(roadFeatures.length, count(writer));
+        }
     }
 
     @Test
     public void testGetFeatureWriterAppendTypeNameTransaction() throws Exception {
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
-
-        writer = data.getFeatureWriterAppend("road", Transaction.AUTO_COMMIT);
-        Assert.assertEquals(0, count(writer));
-        writer.close();
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                data.getFeatureWriterAppend("road", Transaction.AUTO_COMMIT)) {
+            Assert.assertEquals(0, count(writer));
+        }
     }
 
     /*
@@ -731,16 +736,21 @@ public class MemoryDataStoreTest extends DataTestCase {
      */
     @Test
     public void testGetFeatureWriterFilter() throws NoSuchElementException, IOException {
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
 
-        writer = data.getFeatureWriter("road", Filter.EXCLUDE, Transaction.AUTO_COMMIT);
-        Assert.assertEquals(0, count(writer));
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                data.getFeatureWriter("road", Filter.EXCLUDE, Transaction.AUTO_COMMIT)) {
+            Assert.assertEquals(0, count(writer));
+        }
 
-        writer = data.getFeatureWriter("road", Filter.INCLUDE, Transaction.AUTO_COMMIT);
-        Assert.assertEquals(roadFeatures.length, count(writer));
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                data.getFeatureWriter("road", Filter.INCLUDE, Transaction.AUTO_COMMIT)) {
+            Assert.assertEquals(roadFeatures.length, count(writer));
+        }
 
-        writer = data.getFeatureWriter("road", rd1Filter, Transaction.AUTO_COMMIT);
-        Assert.assertEquals(1, count(writer));
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                data.getFeatureWriter("road", rd1Filter, Transaction.AUTO_COMMIT)) {
+            Assert.assertEquals(1, count(writer));
+        }
     }
 
     /** Test two transactions one removing feature, and one adding a feature. */
@@ -748,14 +758,11 @@ public class MemoryDataStoreTest extends DataTestCase {
     public void testGetFeatureWriterTransaction() throws Exception {
 
         try (Transaction t1 = new DefaultTransaction();
-                Transaction t2 = new DefaultTransaction()) {
-            FeatureWriter<SimpleFeatureType, SimpleFeature> writer1 =
-                    data.getFeatureWriter("road", rd1Filter, t1);
-            FeatureWriter<SimpleFeatureType, SimpleFeature> writer2 =
-                    data.getFeatureWriterAppend("road", t2);
-
-            data.getSchema("road");
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader;
+                Transaction t2 = new DefaultTransaction();
+                FeatureWriter<SimpleFeatureType, SimpleFeature> writer1 =
+                        data.getFeatureWriter("road", rd1Filter, t1);
+                FeatureWriter<SimpleFeatureType, SimpleFeature> writer2 =
+                        data.getFeatureWriterAppend("road", t2); ) {
             SimpleFeature feature;
             SimpleFeature[] ORIGIONAL = roadFeatures;
             SimpleFeature[] REMOVE = new SimpleFeature[ORIGIONAL.length - 1];
@@ -786,8 +793,10 @@ public class MemoryDataStoreTest extends DataTestCase {
             FINAL[i] = newRoad;
 
             // start of with ORIGINAL
-            reader = data.getFeatureReader(new Query("road"), Transaction.AUTO_COMMIT);
-            assertTrue(covers(reader, ORIGIONAL));
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                    data.getFeatureReader(new Query("road"), Transaction.AUTO_COMMIT)) {
+                assertTrue(covers(reader, ORIGIONAL));
+            }
 
             // writer 1 removes road.rd1 on t1
             // -------------------------------
@@ -799,10 +808,14 @@ public class MemoryDataStoreTest extends DataTestCase {
             }
 
             // still have ORIGIONAL and t1 has REMOVE
-            reader = data.getFeatureReader(new Query("road"), Transaction.AUTO_COMMIT);
-            assertTrue(covers(reader, ORIGIONAL));
-            reader = data.getFeatureReader(new Query("road"), t1);
-            assertTrue(covers(reader, REMOVE));
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                    data.getFeatureReader(new Query("road"), Transaction.AUTO_COMMIT)) {
+                assertTrue(covers(reader, ORIGIONAL));
+            }
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                    data.getFeatureReader(new Query("road"), t1)) {
+                assertTrue(covers(reader, REMOVE));
+            }
 
             // close writer1
             // --------------
@@ -810,10 +823,14 @@ public class MemoryDataStoreTest extends DataTestCase {
             writer1.close();
 
             // We still have ORIGIONAL and t1 has REMOVE
-            reader = data.getFeatureReader(new Query("road"), Transaction.AUTO_COMMIT);
-            assertTrue(covers(reader, ORIGIONAL));
-            reader = data.getFeatureReader(new Query("road"), t1);
-            assertTrue(covers(reader, REMOVE));
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                    data.getFeatureReader(new Query("road"), Transaction.AUTO_COMMIT)) {
+                assertTrue(covers(reader, ORIGIONAL));
+            }
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                    data.getFeatureReader(new Query("road"), t1)) {
+                assertTrue(covers(reader, REMOVE));
+            }
 
             // writer 2 adds road.rd4 on t2
             // ----------------------------
@@ -823,10 +840,14 @@ public class MemoryDataStoreTest extends DataTestCase {
             writer2.write();
 
             // We still have ORIGIONAL and t2 has ADD
-            reader = data.getFeatureReader(new Query("road"), Transaction.AUTO_COMMIT);
-            assertTrue(covers(reader, ORIGIONAL));
-            reader = data.getFeatureReader(new Query("road"), t2);
-            assertTrue(coversLax(reader, ADD));
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                    data.getFeatureReader(new Query("road"), Transaction.AUTO_COMMIT)) {
+                assertTrue(covers(reader, ORIGIONAL));
+            }
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                    data.getFeatureReader(new Query("road"), t2)) {
+                assertTrue(coversLax(reader, ADD));
+            }
 
             // close writer2
             // -------------
@@ -834,10 +855,14 @@ public class MemoryDataStoreTest extends DataTestCase {
             writer2.close();
 
             // Still have ORIGIONAL and t2 has ADD
-            reader = data.getFeatureReader(new Query("road"), Transaction.AUTO_COMMIT);
-            assertTrue(covers(reader, ORIGIONAL));
-            reader = data.getFeatureReader(new Query("road"), t2);
-            assertTrue(coversLax(reader, ADD));
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                    data.getFeatureReader(new Query("road"), Transaction.AUTO_COMMIT)) {
+                assertTrue(covers(reader, ORIGIONAL));
+            }
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                    data.getFeatureReader(new Query("road"), t2)) {
+                assertTrue(coversLax(reader, ADD));
+            }
 
             // commit t1
             // ---------
@@ -847,12 +872,18 @@ public class MemoryDataStoreTest extends DataTestCase {
 
             // We now have REMOVE, as does t1 (which has not additional diffs)
             // t2 will have FINAL
-            reader = data.getFeatureReader(new Query("road"), Transaction.AUTO_COMMIT);
-            assertTrue(covers(reader, REMOVE));
-            reader = data.getFeatureReader(new Query("road"), t1);
-            assertTrue(covers(reader, REMOVE));
-            reader = data.getFeatureReader(new Query("road"), t2);
-            assertTrue(coversLax(reader, FINAL));
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                    data.getFeatureReader(new Query("road"), Transaction.AUTO_COMMIT)) {
+                assertTrue(covers(reader, REMOVE));
+            }
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                    data.getFeatureReader(new Query("road"), t1)) {
+                assertTrue(covers(reader, REMOVE));
+            }
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                    data.getFeatureReader(new Query("road"), t2)) {
+                assertTrue(coversLax(reader, FINAL));
+            }
 
             // commit t2
             // ---------
@@ -860,13 +891,18 @@ public class MemoryDataStoreTest extends DataTestCase {
             t2.commit();
 
             // We now have Number( remove one and add one)
-            reader = data.getFeatureReader(new Query("road"), Transaction.AUTO_COMMIT);
-            reader = data.getFeatureReader(new Query("road"), Transaction.AUTO_COMMIT);
-            assertTrue(coversLax(reader, FINAL));
-            reader = data.getFeatureReader(new Query("road"), t1);
-            assertTrue(coversLax(reader, FINAL));
-            reader = data.getFeatureReader(new Query("road"), t2);
-            assertTrue(coversLax(reader, FINAL));
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                    data.getFeatureReader(new Query("road"), Transaction.AUTO_COMMIT)) {
+                assertTrue(coversLax(reader, FINAL));
+            }
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                    data.getFeatureReader(new Query("road"), t1)) {
+                assertTrue(coversLax(reader, FINAL));
+            }
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                    data.getFeatureReader(new Query("road"), t2)) {
+                assertTrue(coversLax(reader, FINAL));
+            }
         }
     }
 
@@ -875,71 +911,81 @@ public class MemoryDataStoreTest extends DataTestCase {
     public void testModifyInTransactionFidFilter() throws Exception {
         GeometryFactory fac = new GeometryFactory();
 
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer1 =
-                data.getFeatureWriter("road", rd1Filter, defaultTransaction);
-        writer1.next()
-                .setDefaultGeometry(
-                        fac.createLineString(
-                                new Coordinate[] {new Coordinate(0, 0), new Coordinate(0, 1)}));
-        writer1.write();
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer1 =
+                data.getFeatureWriter("road", rd1Filter, defaultTransaction)) {
+            writer1.next()
+                    .setDefaultGeometry(
+                            fac.createLineString(
+                                    new Coordinate[] {new Coordinate(0, 0), new Coordinate(0, 1)}));
+            writer1.write();
+        }
 
-        writer1.close();
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                data.getFeatureReader(new Query("road", rd1Filter), defaultTransaction)) {
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                data.getFeatureReader(new Query("road", rd1Filter), defaultTransaction);
+            Geometry geom1 = (Geometry) reader.next().getDefaultGeometry();
 
-        Geometry geom1 = (Geometry) reader.next().getDefaultGeometry();
-        reader.close();
-        Assert.assertEquals(new Coordinate(0, 0), geom1.getCoordinates()[0]);
-        Assert.assertEquals(new Coordinate(0, 1), geom1.getCoordinates()[1]);
+            Assert.assertEquals(new Coordinate(0, 0), geom1.getCoordinates()[0]);
+            Assert.assertEquals(new Coordinate(0, 1), geom1.getCoordinates()[1]);
+        }
 
-        writer1 = data.getFeatureWriter("road", rd1Filter, defaultTransaction);
-        writer1.next()
-                .setDefaultGeometry(
-                        fac.createLineString(
-                                new Coordinate[] {new Coordinate(10, 0), new Coordinate(10, 1)}));
-        writer1.write();
-        writer1.close();
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer1 =
+                data.getFeatureWriter("road", rd1Filter, defaultTransaction)) {
+            writer1.next()
+                    .setDefaultGeometry(
+                            fac.createLineString(
+                                    new Coordinate[] {
+                                        new Coordinate(10, 0), new Coordinate(10, 1)
+                                    }));
+            writer1.write();
+        }
 
-        reader = data.getFeatureReader(new Query("road", rd1Filter), defaultTransaction);
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                data.getFeatureReader(new Query("road", rd1Filter), defaultTransaction)) {
+            Geometry geom1 = (Geometry) reader.next().getDefaultGeometry();
+            Assert.assertEquals(new Coordinate(10, 0), geom1.getCoordinates()[0]);
+            Assert.assertEquals(new Coordinate(10, 1), geom1.getCoordinates()[1]);
+        }
 
-        geom1 = (Geometry) reader.next().getDefaultGeometry();
-        reader.close();
-        Assert.assertEquals(new Coordinate(10, 0), geom1.getCoordinates()[0]);
-        Assert.assertEquals(new Coordinate(10, 1), geom1.getCoordinates()[1]);
+        SimpleFeature feature;
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                data.getFeatureWriterAppend("road", defaultTransaction)) {
+            feature = writer.next();
+            feature.setDefaultGeometry(
+                    fac.createLineString(
+                            new Coordinate[] {new Coordinate(20, 0), new Coordinate(20, 1)}));
+            writer.write();
+        }
 
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                data.getFeatureWriterAppend("road", defaultTransaction);
-        SimpleFeature feature = writer.next();
-        feature.setDefaultGeometry(
-                fac.createLineString(
-                        new Coordinate[] {new Coordinate(20, 0), new Coordinate(20, 1)}));
-        writer.write();
-        writer.close();
         FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
         Id filter =
                 filterFactory.id(Collections.singleton(filterFactory.featureId(feature.getID())));
 
-        reader = data.getFeatureReader(new Query("road", filter), defaultTransaction);
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                data.getFeatureReader(new Query("road", filter), defaultTransaction)) {
+            Geometry geom1 = (Geometry) reader.next().getDefaultGeometry();
+            reader.close();
+            Assert.assertEquals(new Coordinate(20, 0), geom1.getCoordinates()[0]);
+            Assert.assertEquals(new Coordinate(20, 1), geom1.getCoordinates()[1]);
+        }
 
-        geom1 = (Geometry) reader.next().getDefaultGeometry();
-        reader.close();
-        Assert.assertEquals(new Coordinate(20, 0), geom1.getCoordinates()[0]);
-        Assert.assertEquals(new Coordinate(20, 1), geom1.getCoordinates()[1]);
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer1 =
+                data.getFeatureWriter("road", filter, defaultTransaction)) {
+            writer1.next()
+                    .setDefaultGeometry(
+                            fac.createLineString(
+                                    new Coordinate[] {
+                                        new Coordinate(30, 0), new Coordinate(30, 1)
+                                    }));
+            writer1.write();
+        }
 
-        writer1 = data.getFeatureWriter("road", filter, defaultTransaction);
-        writer1.next()
-                .setDefaultGeometry(
-                        fac.createLineString(
-                                new Coordinate[] {new Coordinate(30, 0), new Coordinate(30, 1)}));
-        writer1.write();
-        writer1.close();
-
-        reader = data.getFeatureReader(new Query("road", filter), defaultTransaction);
-        geom1 = (Geometry) reader.next().getDefaultGeometry();
-        reader.close();
-        Assert.assertEquals(new Coordinate(30, 0), geom1.getCoordinates()[0]);
-        Assert.assertEquals(new Coordinate(30, 1), geom1.getCoordinates()[1]);
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                data.getFeatureReader(new Query("road", filter), defaultTransaction)) {
+            Geometry geom1 = (Geometry) reader.next().getDefaultGeometry();
+            Assert.assertEquals(new Coordinate(30, 0), geom1.getCoordinates()[0]);
+            Assert.assertEquals(new Coordinate(30, 1), geom1.getCoordinates()[1]);
+        }
     }
 
     // Feature Source Testing
@@ -971,21 +1017,21 @@ public class MemoryDataStoreTest extends DataTestCase {
         SimpleFeatureCollection half = road.getFeatures(query);
         Assert.assertEquals(2, half.size());
         Assert.assertEquals(2, half.getSchema().getAttributeCount());
-        SimpleFeatureIterator reader = half.features();
-        SimpleFeatureType type = half.getSchema();
-        reader.close();
-        SimpleFeatureType actual = half.getSchema();
+        try (SimpleFeatureIterator reader = half.features()) {
+            SimpleFeatureType type = reader.next().getType();
+            SimpleFeatureType actual = half.getSchema();
 
-        Assert.assertEquals(type.getTypeName(), actual.getTypeName());
-        Assert.assertEquals(type.getName(), actual.getName());
-        Assert.assertEquals(type.getAttributeCount(), actual.getAttributeCount());
-        for (int i = 0; i < type.getAttributeCount(); i++) {
-            Assert.assertEquals(type.getDescriptor(i), actual.getDescriptor(i));
+            Assert.assertEquals(type.getTypeName(), actual.getTypeName());
+            Assert.assertEquals(type.getName(), actual.getName());
+            Assert.assertEquals(type.getAttributeCount(), actual.getAttributeCount());
+            for (int i = 0; i < type.getAttributeCount(); i++) {
+                Assert.assertEquals(type.getDescriptor(i), actual.getDescriptor(i));
+            }
+            Assert.assertEquals(type.getGeometryDescriptor(), actual.getGeometryDescriptor());
+            Assert.assertEquals(type, actual);
+            Envelope b = half.getBounds();
+            Assert.assertEquals(new Envelope(1, 5, 0, 4), b);
         }
-        Assert.assertEquals(type.getGeometryDescriptor(), actual.getGeometryDescriptor());
-        Assert.assertEquals(type, actual);
-        Envelope b = half.getBounds();
-        Assert.assertEquals(new Envelope(1, 5, 0, 4), b);
     }
 
     @Test
@@ -1033,30 +1079,32 @@ public class MemoryDataStoreTest extends DataTestCase {
             targetCRS = forcedCRS;
         }
 
-        SimpleFeatureIterator i = sourceFeatures.features();
-        SimpleFeatureIterator j = transformedFeatures.features();
+        try (SimpleFeatureIterator i = sourceFeatures.features();
+                SimpleFeatureIterator j = transformedFeatures.features()) {
 
-        // Go through all the features
-        while (i.hasNext() && j.hasNext()) {
-            SimpleFeature sourceFeature = i.next();
-            SimpleFeature transformedFeature = j.next();
-            Assert.assertEquals(
-                    targetCRS, transformedFeature.getFeatureType().getCoordinateReferenceSystem());
+            // Go through all the features
+            while (i.hasNext() && j.hasNext()) {
+                SimpleFeature sourceFeature = i.next();
+                SimpleFeature transformedFeature = j.next();
+                Assert.assertEquals(
+                        targetCRS,
+                        transformedFeature.getFeatureType().getCoordinateReferenceSystem());
 
-            for (int k = 0; k < sourceFeature.getAttributes().size(); k++) {
-                Object o = sourceFeature.getAttributes().get(k);
+                for (int k = 0; k < sourceFeature.getAttributes().size(); k++) {
+                    Object o = sourceFeature.getAttributes().get(k);
 
-                // Check that the geometry was transformed correctly
-                if (o instanceof Geometry) {
-                    Geometry sourceGeometry = (Geometry) o;
-                    Geometry transformedGeometry =
-                            (Geometry) transformedFeature.getAttributes().get(k);
+                    // Check that the geometry was transformed correctly
+                    if (o instanceof Geometry) {
+                        Geometry sourceGeometry = (Geometry) o;
+                        Geometry transformedGeometry =
+                                (Geometry) transformedFeature.getAttributes().get(k);
 
-                    Geometry expectedGeometry = sourceGeometry.copy();
-                    if (reprojectCRS != null) {
-                        expectedGeometry = transformer.transform(expectedGeometry);
+                        Geometry expectedGeometry = sourceGeometry.copy();
+                        if (reprojectCRS != null) {
+                            expectedGeometry = transformer.transform(expectedGeometry);
+                        }
+                        assertEquals(expectedGeometry, transformedGeometry);
                     }
-                    assertEquals(expectedGeometry, transformedGeometry);
                 }
             }
         }
@@ -1156,119 +1204,122 @@ public class MemoryDataStoreTest extends DataTestCase {
 
     @Test
     public void testGetFeatureStoreAddFeatures() throws IOException {
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 DataUtilities.reader(
                         new SimpleFeature[] {
                             newRoad,
-                        });
-        SimpleFeatureStore road = (SimpleFeatureStore) data.getFeatureSource("road");
+                        })) {
+            SimpleFeatureStore road = (SimpleFeatureStore) data.getFeatureSource("road");
 
-        road.addFeatures(DataUtilities.collection(reader));
-        Assert.assertEquals(roadFeatures.length + 1, road.getFeatures().size());
+            road.addFeatures(DataUtilities.collection(reader));
+            Assert.assertEquals(roadFeatures.length + 1, road.getFeatures().size());
+        }
     }
 
     @Test
     public void testGetFeatureStoreSetFeatures() throws IOException {
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 DataUtilities.reader(
                         new SimpleFeature[] {
                             newRoad,
-                        });
-        SimpleFeatureStore road = (SimpleFeatureStore) data.getFeatureSource("road");
+                        })) {
+            SimpleFeatureStore road = (SimpleFeatureStore) data.getFeatureSource("road");
 
-        road.setFeatures(reader);
-        Assert.assertEquals(1, road.getFeatures().size());
+            road.setFeatures(reader);
+            Assert.assertEquals(1, road.getFeatures().size());
+        }
     }
 
     @Test
     public void testGetFeatureStoreTransactionSupport() throws Exception {
-        Transaction t1 = new DefaultTransaction();
-        Transaction t2 = new DefaultTransaction();
+        try (Transaction t1 = new DefaultTransaction();
+                Transaction t2 = new DefaultTransaction()) {
+            SimpleFeatureStore road = (SimpleFeatureStore) data.getFeatureSource("road");
+            SimpleFeatureStore road1 = (SimpleFeatureStore) data.getFeatureSource("road");
+            SimpleFeatureStore road2 = (SimpleFeatureStore) data.getFeatureSource("road");
 
-        SimpleFeatureStore road = (SimpleFeatureStore) data.getFeatureSource("road");
-        SimpleFeatureStore road1 = (SimpleFeatureStore) data.getFeatureSource("road");
-        SimpleFeatureStore road2 = (SimpleFeatureStore) data.getFeatureSource("road");
+            road1.setTransaction(t1);
+            road2.setTransaction(t2);
 
-        road1.setTransaction(t1);
-        road2.setTransaction(t2);
+            SimpleFeature feature;
+            SimpleFeature[] ORIGIONAL = roadFeatures;
+            SimpleFeature[] REMOVE = new SimpleFeature[ORIGIONAL.length - 1];
+            SimpleFeature[] ADD = new SimpleFeature[ORIGIONAL.length + 1];
+            SimpleFeature[] FINAL = new SimpleFeature[ORIGIONAL.length];
+            int i;
+            int index;
+            index = 0;
 
-        SimpleFeature feature;
-        SimpleFeature[] ORIGIONAL = roadFeatures;
-        SimpleFeature[] REMOVE = new SimpleFeature[ORIGIONAL.length - 1];
-        SimpleFeature[] ADD = new SimpleFeature[ORIGIONAL.length + 1];
-        SimpleFeature[] FINAL = new SimpleFeature[ORIGIONAL.length];
-        int i;
-        int index;
-        index = 0;
+            for (i = 0; i < ORIGIONAL.length; i++) {
+                feature = ORIGIONAL[i];
 
-        for (i = 0; i < ORIGIONAL.length; i++) {
-            feature = ORIGIONAL[i];
-
-            if (!feature.getID().equals("road.rd1")) {
-                REMOVE[index++] = feature;
+                if (!feature.getID().equals("road.rd1")) {
+                    REMOVE[index++] = feature;
+                }
             }
+
+            for (i = 0; i < ORIGIONAL.length; i++) {
+                ADD[i] = ORIGIONAL[i];
+            }
+
+            ADD[i] = newRoad;
+
+            for (i = 0; i < REMOVE.length; i++) {
+                FINAL[i] = REMOVE[i];
+            }
+
+            FINAL[i] = newRoad;
+
+            // start of with ORIGINAL
+            assertTrue(covers(road.getFeatures().features(), ORIGIONAL));
+
+            // road1 removes road.rd1 on t1
+            // -------------------------------
+            // - tests transaction independence from DataStore
+            road1.removeFeatures(rd1Filter);
+
+            // still have ORIGIONAL and t1 has REMOVE
+            assertTrue(covers(road.getFeatures().features(), ORIGIONAL));
+            assertTrue(covers(road1.getFeatures().features(), REMOVE));
+
+            // road2 adds road.rd4 on t2
+            // ----------------------------
+            // - tests transaction independence from each other
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                    DataUtilities.reader(
+                            new SimpleFeature[] {
+                                newRoad,
+                            })) {
+                road2.addFeatures(DataUtilities.collection(reader));
+            }
+
+            // We still have ORIGIONAL, t1 has REMOVE, and t2 has ADD
+            assertTrue(covers(road.getFeatures().features(), ORIGIONAL));
+            assertTrue(covers(road1.getFeatures().features(), REMOVE));
+            assertTrue(coversLax(road2.getFeatures().features(), ADD));
+
+            // commit t1
+            // ---------
+            // -ensure that delayed writing of transactions takes place
+            //
+            t1.commit();
+
+            // We now have REMOVE, as does t1 (which has not additional diffs)
+            // t2 will have FINAL
+            assertTrue(covers(road.getFeatures().features(), REMOVE));
+            assertTrue(covers(road1.getFeatures().features(), REMOVE));
+            assertTrue(coversLax(road2.getFeatures().features(), FINAL));
+
+            // commit t2
+            // ---------
+            // -ensure that everyone is FINAL at the end of the day
+            t2.commit();
+
+            // We now have Number( remove one and add one)
+            assertTrue(coversLax(road.getFeatures().features(), FINAL));
+            assertTrue(coversLax(road1.getFeatures().features(), FINAL));
+            assertTrue(coversLax(road2.getFeatures().features(), FINAL));
         }
-
-        for (i = 0; i < ORIGIONAL.length; i++) {
-            ADD[i] = ORIGIONAL[i];
-        }
-
-        ADD[i] = newRoad;
-
-        for (i = 0; i < REMOVE.length; i++) {
-            FINAL[i] = REMOVE[i];
-        }
-
-        FINAL[i] = newRoad;
-
-        // start of with ORIGINAL
-        assertTrue(covers(road.getFeatures().features(), ORIGIONAL));
-
-        // road1 removes road.rd1 on t1
-        // -------------------------------
-        // - tests transaction independence from DataStore
-        road1.removeFeatures(rd1Filter);
-
-        // still have ORIGIONAL and t1 has REMOVE
-        assertTrue(covers(road.getFeatures().features(), ORIGIONAL));
-        assertTrue(covers(road1.getFeatures().features(), REMOVE));
-
-        // road2 adds road.rd4 on t2
-        // ----------------------------
-        // - tests transaction independence from each other
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                DataUtilities.reader(
-                        new SimpleFeature[] {
-                            newRoad,
-                        });
-        road2.addFeatures(DataUtilities.collection(reader));
-
-        // We still have ORIGIONAL, t1 has REMOVE, and t2 has ADD
-        assertTrue(covers(road.getFeatures().features(), ORIGIONAL));
-        assertTrue(covers(road1.getFeatures().features(), REMOVE));
-        assertTrue(coversLax(road2.getFeatures().features(), ADD));
-
-        // commit t1
-        // ---------
-        // -ensure that delayed writing of transactions takes place
-        //
-        t1.commit();
-
-        // We now have REMOVE, as does t1 (which has not additional diffs)
-        // t2 will have FINAL
-        assertTrue(covers(road.getFeatures().features(), REMOVE));
-        assertTrue(covers(road1.getFeatures().features(), REMOVE));
-        assertTrue(coversLax(road2.getFeatures().features(), FINAL));
-
-        // commit t2
-        // ---------
-        // -ensure that everyone is FINAL at the end of the day
-        t2.commit();
-
-        // We now have Number( remove one and add one)
-        assertTrue(coversLax(road.getFeatures().features(), FINAL));
-        assertTrue(coversLax(road1.getFeatures().features(), FINAL));
-        assertTrue(coversLax(road2.getFeatures().features(), FINAL));
     }
 
     boolean isLocked(String typeName, String fid) {
@@ -1404,17 +1455,17 @@ public class MemoryDataStoreTest extends DataTestCase {
             fail("unlock should fail due on AUTO_COMMIT");
         } catch (IOException expected) {
         }
-        Transaction t = new DefaultTransaction();
-        road.setTransaction(t);
-        try {
-            road.unLockFeatures();
-            fail("unlock should fail due lack of authorization");
-        } catch (IOException expected) {
+        try (Transaction t = new DefaultTransaction()) {
+            road.setTransaction(t);
+            try {
+                road.unLockFeatures();
+                fail("unlock should fail due lack of authorization");
+            } catch (IOException expected) {
 
+            }
+            t.addAuthorization(lock.getAuthorization());
+            road.unLockFeatures();
         }
-        t.addAuthorization(lock.getAuthorization());
-        road.unLockFeatures();
-        t.close();
     }
 
     @Test
@@ -1561,36 +1612,44 @@ public class MemoryDataStoreTest extends DataTestCase {
     @Test
     public void testCallingAddFeaturesWithReaderTwiceAndExtentInitialCollection()
             throws IOException {
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = DataUtilities.reader(roadFeatures);
-        MemoryDataStore mds = new MemoryDataStore(reader);
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                DataUtilities.reader(roadFeatures)) {
+            MemoryDataStore mds = new MemoryDataStore(reader);
 
-        Assert.assertEquals(
-                roadFeatures.length, mds.entry(roadType.getTypeName()).getMemory().size());
+            Assert.assertEquals(
+                    roadFeatures.length, mds.entry(roadType.getTypeName()).getMemory().size());
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> secondReader =
-                DataUtilities.reader(
-                        new SimpleFeature[] {SimpleFeatureBuilder.template(roadType, null)});
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> secondReader =
+                    DataUtilities.reader(
+                            new SimpleFeature[] {SimpleFeatureBuilder.template(roadType, null)})) {
 
-        mds.addFeatures(secondReader);
-        Assert.assertEquals(roadFeatures.length + 1, mds.entry("road").getMemory().size());
+                mds.addFeatures(secondReader);
+                Assert.assertEquals(roadFeatures.length + 1, mds.entry("road").getMemory().size());
+            }
+        }
     }
 
     @Test
     public void testCallingAddFeaturesWithIteratorTwiceAndExtentInitialCollection()
             throws IOException {
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = DataUtilities.reader(roadFeatures);
-        MemoryDataStore mds = new MemoryDataStore(reader);
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                DataUtilities.reader(roadFeatures)) {
+            MemoryDataStore mds = new MemoryDataStore(reader);
 
-        Assert.assertEquals(
-                roadFeatures.length, mds.entry(roadType.getTypeName()).getMemory().size());
+            Assert.assertEquals(
+                    roadFeatures.length, mds.entry(roadType.getTypeName()).getMemory().size());
 
-        SimpleFeatureIterator featureIterator =
-                DataUtilities.collection(
-                                new SimpleFeature[] {SimpleFeatureBuilder.template(roadType, null)})
-                        .features();
+            try (SimpleFeatureIterator featureIterator =
+                    DataUtilities.collection(
+                                    new SimpleFeature[] {
+                                        SimpleFeatureBuilder.template(roadType, null)
+                                    })
+                            .features()) {
 
-        mds.addFeatures(featureIterator);
+                mds.addFeatures(featureIterator);
 
-        Assert.assertEquals(roadFeatures.length + 1, mds.entry("road").getMemory().size());
+                Assert.assertEquals(roadFeatures.length + 1, mds.entry("road").getMemory().size());
+            }
+        }
     }
 }

@@ -17,6 +17,7 @@
 package org.geotools.wfs;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -67,7 +68,7 @@ public class GMLTest {
         out.close();
 
         String xsd = out.toString();
-        assertTrue(xsd.indexOf("gml/2.1.2/feature.xsd") != -1);
+        assertNotEquals(xsd.indexOf("gml/2.1.2/feature.xsd"), -1);
     }
 
     @Test
@@ -93,7 +94,7 @@ public class GMLTest {
         out.close();
 
         String gml = out.toString();
-        assertTrue(gml.indexOf("<gml:Point>") != -1);
+        assertNotEquals(gml.indexOf("<gml:Point>"), -1);
     }
 
     @Test
@@ -113,14 +114,13 @@ public class GMLTest {
         URL locationURL = locationFile.toURI().toURL();
         URL baseURL = locationFile.getParentFile().toURI().toURL();
 
-        FileOutputStream out = new FileOutputStream(locationFile);
+        try (FileOutputStream out = new FileOutputStream(locationFile)) {
 
-        GML encode = new GML(Version.GML2);
-        encode.setBaseURL(baseURL);
-        encode.setNamespace("location", locationURL.toExternalForm());
-        encode.encode(out, TYPE);
-
-        out.close();
+            GML encode = new GML(Version.GML2);
+            encode.setBaseURL(baseURL);
+            encode.setNamespace("location", locationURL.toExternalForm());
+            encode.encode(out, TYPE);
+        }
 
         DefaultFeatureCollection collection = new DefaultFeatureCollection();
         WKTReader2 wkt = new WKTReader2();
@@ -137,12 +137,9 @@ public class GMLTest {
         encode2.setBaseURL(baseURL);
         encode2.setNamespace("location", "location.xsd");
         encode2.encode(out2, collection);
+        String gml = out2.toString();
 
-        out.close();
-
-        String gml = out.toString();
-
-        assertTrue(gml.indexOf("<gml:Point>") != -1);
+        assertNotEquals(gml.indexOf("<gml:Point>"), -1);
     }
 
     @Test
@@ -173,7 +170,7 @@ public class GMLTest {
 
         out.close();
         String gml = out.toString();
-        assertTrue(gml.indexOf("<gml:Point>") != -1);
+        assertNotEquals(gml.indexOf("<gml:Point>"), -1);
     }
 
     @Test
@@ -204,7 +201,7 @@ public class GMLTest {
 
         out.close();
         String gml = out.toString();
-        assertTrue(gml.indexOf("<gml:Point") != -1);
+        assertNotEquals(gml.indexOf("<gml:Point"), -1);
     }
 
     //
@@ -224,7 +221,7 @@ public class GMLTest {
 
         String xsd = out.toString();
 
-        assertTrue(xsd.indexOf("gml/3.1.1/base/gml.xsd") != -1);
+        assertNotEquals(xsd.indexOf("gml/3.1.1/base/gml.xsd"), -1);
     }
 
     // WFS 1.1
@@ -275,13 +272,14 @@ public class GMLTest {
     @Test
     public void testWFS1_0FeatureCollection() throws Exception {
         URL url = TestData.getResource(this, "states_gml2.xml");
-        InputStream in = url.openStream();
+        try (InputStream in = url.openStream()) {
 
-        GML gml = new GML(Version.WFS1_0);
-        SimpleFeatureCollection featureCollection = gml.decodeFeatureCollection(in);
+            GML gml = new GML(Version.WFS1_0);
+            SimpleFeatureCollection featureCollection = gml.decodeFeatureCollection(in);
 
-        assertNotNull(featureCollection);
-        assertEquals(49, featureCollection.size());
+            assertNotNull(featureCollection);
+            assertEquals(49, featureCollection.size());
+        }
     }
 
     @Test
@@ -292,13 +290,13 @@ public class GMLTest {
             log.setLevel(Level.ALL);
 
             URL url = TestData.getResource(this, "states.gml");
-            InputStream in = url.openStream();
+            try (InputStream in = url.openStream()) {
+                GML gml = new GML(Version.GML3);
+                SimpleFeatureCollection featureCollection = gml.decodeFeatureCollection(in);
 
-            GML gml = new GML(Version.GML3);
-            SimpleFeatureCollection featureCollection = gml.decodeFeatureCollection(in);
-
-            assertNotNull(featureCollection);
-            assertEquals(2, featureCollection.size());
+                assertNotNull(featureCollection);
+                assertEquals(2, featureCollection.size());
+            }
         } finally {
             log.setLevel(level);
         }
@@ -307,101 +305,103 @@ public class GMLTest {
     @Test
     public void testWFS1_2FeatureCollection() throws Exception {
         URL url = TestData.getResource(this, "states.xml");
-        InputStream in = url.openStream();
+        try (InputStream in = url.openStream()) {
 
-        GML gml = new GML(Version.WFS1_1);
-        SimpleFeatureCollection featureCollection = gml.decodeFeatureCollection(in);
+            GML gml = new GML(Version.WFS1_1);
+            SimpleFeatureCollection featureCollection = gml.decodeFeatureCollection(in);
 
-        assertNotNull(featureCollection);
-        assertEquals(2, featureCollection.size());
+            assertNotNull(featureCollection);
+            assertEquals(2, featureCollection.size());
+        }
     }
 
     @Test
     public void testGML3FeatureIterator() throws Exception {
         URL url = TestData.getResource(this, "states.xml");
-        InputStream in = url.openStream();
-
         GML gml = new GML(Version.GML3);
-        SimpleFeatureIterator iter = gml.decodeFeatureIterator(in);
-        assertTrue(iter.hasNext());
-        int count = 0;
-        while (iter.hasNext()) {
-            SimpleFeature feature = iter.next();
-            assertNotNull(feature);
-            count++;
+        try (InputStream in = url.openStream();
+                SimpleFeatureIterator iter = gml.decodeFeatureIterator(in)) {
+            assertTrue(iter.hasNext());
+            int count = 0;
+            while (iter.hasNext()) {
+                SimpleFeature feature = iter.next();
+                assertNotNull(feature);
+                count++;
+            }
+            assertEquals(2, count);
         }
-        assertEquals(2, count);
     }
 
     @Test
     public void testGML3FeatureIteratorGeometryMorph() throws Exception {
         URL url = TestData.getResource(this, "states.xml");
-        InputStream in = url.openStream();
-
         QName name = new QName("http://www.opengis.net/gml", "MultiSurface");
-
         GML gml = new GML(Version.GML3);
-        SimpleFeatureIterator iter = gml.decodeFeatureIterator(in, name);
-        assertTrue(iter.hasNext());
-        int count = 0;
-        while (iter.hasNext()) {
-            SimpleFeature feature = iter.next();
-            assertNotNull(feature);
-            count++;
+        try (InputStream in = url.openStream();
+                SimpleFeatureIterator iter = gml.decodeFeatureIterator(in, name)) {
+            assertTrue(iter.hasNext());
+            int count = 0;
+            while (iter.hasNext()) {
+                SimpleFeature feature = iter.next();
+                assertNotNull(feature);
+                count++;
+            }
+            assertEquals(2, count);
         }
-        assertEquals(2, count);
     }
 
     @Test
     public void testGMLNoSchemaUnrelated() throws Exception {
         URL url = TestData.getResource(this, "states_noschema_unrelated_atts.xml");
-        InputStream in = url.openStream();
+        try (InputStream in = url.openStream()) {
 
-        GML gml = new GML(Version.GML3);
-        SimpleFeatureCollection fc = gml.decodeFeatureCollection(in, true);
-        assertEquals(2, fc.size());
-        SimpleFeatureType schema = fc.getSchema();
-        assertNotNull(schema.getGeometryDescriptor());
-        assertEquals(9, schema.getAttributeDescriptors().size());
-        Map<String, Integer> attributePositions = getAttributePositionsMap(schema);
-        // System.out.println(attributePositions);
-        assertTrue(
-                attributePositions
-                        .keySet()
-                        .containsAll(
-                                Arrays.asList(
-                                        "the_geom",
-                                        "P_MALE",
-                                        "STATE_NAME",
-                                        "P_FEMALE",
-                                        "STATE_FIPS",
-                                        "SAMP_POP")));
-        assertTrue(attributePositions.get("STATE_NAME") < attributePositions.get("STATE_FIPS"));
-        assertTrue(attributePositions.get("P_MALE") < attributePositions.get("P_FEMALE"));
-        assertTrue(attributePositions.get("P_FEMALE") < attributePositions.get("SAMP_POP"));
+            GML gml = new GML(Version.GML3);
+            SimpleFeatureCollection fc = gml.decodeFeatureCollection(in, true);
+            assertEquals(2, fc.size());
+            SimpleFeatureType schema = fc.getSchema();
+            assertNotNull(schema.getGeometryDescriptor());
+            assertEquals(9, schema.getAttributeDescriptors().size());
+            Map<String, Integer> attributePositions = getAttributePositionsMap(schema);
+            // System.out.println(attributePositions);
+            assertTrue(
+                    attributePositions
+                            .keySet()
+                            .containsAll(
+                                    Arrays.asList(
+                                            "the_geom",
+                                            "P_MALE",
+                                            "STATE_NAME",
+                                            "P_FEMALE",
+                                            "STATE_FIPS",
+                                            "SAMP_POP")));
+            assertTrue(attributePositions.get("STATE_NAME") < attributePositions.get("STATE_FIPS"));
+            assertTrue(attributePositions.get("P_MALE") < attributePositions.get("P_FEMALE"));
+            assertTrue(attributePositions.get("P_FEMALE") < attributePositions.get("SAMP_POP"));
+        }
     }
 
     @Test
     public void testGMLNoSchemaRelated() throws Exception {
         URL url = TestData.getResource(this, "states_noschema_linked_atts.xml");
-        InputStream in = url.openStream();
+        try (InputStream in = url.openStream()) {
 
-        GML gml = new GML(Version.GML3);
-        SimpleFeatureCollection fc = gml.decodeFeatureCollection(in, true);
-        assertEquals(2, fc.size());
-        SimpleFeatureType schema = fc.getSchema();
-        assertNotNull(schema.getGeometryDescriptor());
-        Map<String, Integer> attributePositions = getAttributePositionsMap(schema);
-        // System.out.println(attributePositions);
-        assertTrue(
-                attributePositions
-                        .keySet()
-                        .containsAll(
-                                Arrays.asList("the_geom", "P_MALE", "STATE_NAME", "P_FEMALE")));
-        assertTrue(attributePositions.get("STATE_NAME") < attributePositions.get("STATE_FIPS"));
-        assertTrue(attributePositions.get("STATE_FIPS") < attributePositions.get("SUB_REGION"));
-        assertTrue(attributePositions.get("STATE_NAME") < attributePositions.get("P_MALE"));
-        assertTrue(attributePositions.get("P_MALE") < attributePositions.get("P_FEMALE"));
+            GML gml = new GML(Version.GML3);
+            SimpleFeatureCollection fc = gml.decodeFeatureCollection(in, true);
+            assertEquals(2, fc.size());
+            SimpleFeatureType schema = fc.getSchema();
+            assertNotNull(schema.getGeometryDescriptor());
+            Map<String, Integer> attributePositions = getAttributePositionsMap(schema);
+            // System.out.println(attributePositions);
+            assertTrue(
+                    attributePositions
+                            .keySet()
+                            .containsAll(
+                                    Arrays.asList("the_geom", "P_MALE", "STATE_NAME", "P_FEMALE")));
+            assertTrue(attributePositions.get("STATE_NAME") < attributePositions.get("STATE_FIPS"));
+            assertTrue(attributePositions.get("STATE_FIPS") < attributePositions.get("SUB_REGION"));
+            assertTrue(attributePositions.get("STATE_NAME") < attributePositions.get("P_MALE"));
+            assertTrue(attributePositions.get("P_MALE") < attributePositions.get("P_FEMALE"));
+        }
     }
 
     Map<String, Integer> getAttributePositionsMap(SimpleFeatureType schema) {

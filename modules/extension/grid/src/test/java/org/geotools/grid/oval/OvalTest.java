@@ -44,22 +44,22 @@ public class OvalTest extends TestBase {
 
     @Test(expected = IllegalArgumentException.class)
     public void negativeWidth() {
-        PolygonElement oval = new OvalImpl(0, 0, -1, HEIGHT, null);
+        new OvalImpl(0, 0, -1, HEIGHT, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void zeroWidth() {
-        PolygonElement oval = new OvalImpl(0, 0, 0, HEIGHT, null);
+        new OvalImpl(0, 0, 0, HEIGHT, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void negativeHeight() {
-        PolygonElement oval = new OvalImpl(0, 0, WIDTH, -1, null);
+        new OvalImpl(0, 0, WIDTH, -1, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void zeroHeight() {
-        PolygonElement oval = new OvalImpl(0, 0, WIDTH, 0, null);
+        new OvalImpl(0, 0, WIDTH, 0, null);
     }
 
     @Test

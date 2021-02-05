@@ -75,7 +75,7 @@ import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
-import org.geotools.xml.styling.SLDTransformer;
+import org.hamcrest.CoreMatchers;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -324,7 +324,7 @@ public class StyleTransformTest {
         List<MBLayer> layers = mbStyle.layers("test-source");
         assertEquals(1, layers.size());
         assertTrue(layers.get(0) instanceof LineMBLayer);
-        LineMBLayer mbLine = (LineMBLayer) layers.get(0);
+        assertThat(layers.get(0), CoreMatchers.instanceOf(LineMBLayer.class));
 
         StyledLayerDescriptor sld = mbStyle.transform();
         List<FeatureTypeStyle> fts = MapboxTestUtils.getStyle(sld, 0).featureTypeStyles();
@@ -702,10 +702,6 @@ public class StyleTransformTest {
         assertEquals(true, layout.get("text-ignore-placement"));
 
         MBStyle mbStyle = new MBStyle(jsonObject);
-        StyledLayerDescriptor sld = mbStyle.transform();
-        SLDTransformer styleTransform = new SLDTransformer();
-        String xml = styleTransform.transform(sld);
-        // System.out.print(xml);
         List<MBLayer> layers = mbStyle.layers("testsource");
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
@@ -728,12 +724,12 @@ public class StyleTransformTest {
         MBStyleTransformer transformer =
                 new MBStyleTransformer(new MBObjectParser(SymbolMBLayer.class));
         Expression e = transformer.cqlExpressionFromTokens("Replace text here: \"{text}\"");
-        Map<String, String> m = new HashMap<>();
 
-        SimpleFeatureIterator sfi = pointFS.getFeatures().features();
-        while (sfi.hasNext()) {
-            SimpleFeature sf = sfi.next();
-            String s = e.evaluate(sf, String.class);
+        try (SimpleFeatureIterator sfi = pointFS.getFeatures().features()) {
+            while (sfi.hasNext()) {
+                SimpleFeature sf = sfi.next();
+                assertNotNull(e.evaluate(sf, String.class));
+            }
         }
     }
 

@@ -46,6 +46,7 @@ import org.opengis.filter.temporal.TEquals;
 import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCTemporalFilterOnlineTest extends JDBCTestSupport {
 
     /* dates(d:Date,dt:Datetime,t:Time)

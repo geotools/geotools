@@ -146,6 +146,8 @@ public final class CrsTest {
 
     /** Tests the transformations of an envelope. */
     @Test
+    // code is using equals with extra parameters and semantics compared to the built-in equals
+    @SuppressWarnings("PMD.UseAssertEqualsInsteadOfAssertTrue")
     public void testEnvelopeTransformation() throws FactoryException, TransformException {
         final CoordinateReferenceSystem mapCRS = CRS.parseWKT(WKT.UTM_10N);
         final CoordinateReferenceSystem WGS84 = DefaultGeographicCRS.WGS84;
@@ -438,7 +440,7 @@ public final class CrsTest {
                         + "  AXIS[\"Easting\", EAST], \n"
                         + "  AXIS[\"Northing\", NORTH], \n"
                         + "  AUTHORITY[\"EPSG\",\"3857\"]]";
-        CoordinateReferenceSystem epsg3857 = CRS.parseWKT(wkt);
+        CoordinateReferenceSystem epsg3857 = CRS.parseWKT(wkt3857);
 
         assertTrue(CRS.equalsIgnoreMetadata(esriCrs, epsg3857));
     }

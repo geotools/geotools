@@ -19,18 +19,18 @@ package org.geotools.http;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertFalse;
 
 import java.io.File;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.complex.AppSchemaDataAccess;
-import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
 import org.geotools.xml.resolver.SchemaCache;
 import org.junit.AfterClass;
@@ -103,11 +103,7 @@ public final class HttpConfigTest {
         Name name = new NameImpl("http://www.stations.org/1.0", "Station");
         assertThat(store.getTypeNames()[0], is(name));
         // read the complex features
-        FeatureIterator iterator = store.getFeatureSource(name).getFeatures().features();
-        List<Feature> features = new ArrayList<>();
-        while (iterator.hasNext()) {
-            features.add(iterator.next());
-        }
+        List<Feature> features = DataUtilities.list(store.getFeatureSource(name).getFeatures());
         // three stations should be available
         assertThat(features.size(), is(3));
         for (Feature feature : features) {
@@ -116,7 +112,7 @@ public final class HttpConfigTest {
             Property property = feature.getProperty(measurements);
             assertThat(property.getValue(), instanceOf(List.class));
             List values = (List) property.getValue();
-            assertThat(values.size() > 0, is(true));
+            assertFalse(values.isEmpty());
         }
     }
 

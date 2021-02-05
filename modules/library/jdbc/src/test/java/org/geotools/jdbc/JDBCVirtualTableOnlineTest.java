@@ -29,6 +29,7 @@ import org.opengis.filter.Id;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
     protected String dbSchemaName = null;
 
@@ -318,7 +319,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         Logger logger = Logging.getLogger(JDBCVirtualTableOnlineTest.class);
         Level oldLevel = logger.getLevel();
 
-        logger.setLevel(java.util.logging.Level.SEVERE);
+        logger.setLevel(Level.SEVERE);
         logger.addHandler(handler);
         dataStore.createVirtualTable(vt);
         ContentFeatureSource fs = dataStore.getFeatureSource("invalid_attribute");

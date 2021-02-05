@@ -18,7 +18,6 @@ package org.geotools.renderer.lite.gridcoverage2d;
 
 import static org.junit.Assert.fail;
 
-import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -58,14 +57,10 @@ import org.opengis.style.ContrastMethod;
 public class DisplayCoverageTest {
 
     private static final int WIDTH = 10;
-    private static final String LOGGER_NAME = "org.geotools.rendering";
-
-    private final boolean headless;
     private final Rectangle bounds;
     private final ReferencedEnvelope env;
 
     public DisplayCoverageTest() {
-        headless = GraphicsEnvironment.isHeadless();
         bounds = new Rectangle(0, 0, WIDTH, WIDTH);
         env = new ReferencedEnvelope(bounds, DefaultEngineeringCRS.GENERIC_2D);
     }

@@ -32,7 +32,6 @@ import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.memory.MemoryFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.data.wfs.integration.IntegrationTestWFSClient;
@@ -207,50 +206,45 @@ public class WFSFeatureStoreTest {
 
         collection.add(feat);
 
-        Transaction transaction = new DefaultTransaction();
-        store.setTransaction(transaction);
+        try (Transaction transaction = new DefaultTransaction()) {
+            store.setTransaction(transaction);
 
-        List<FeatureId> fids = store.addFeatures((SimpleFeatureCollection) collection);
-        assertEquals(1, fids.size());
+            List<FeatureId> fids = store.addFeatures((SimpleFeatureCollection) collection);
+            assertEquals(1, fids.size());
 
-        Filter filterRemove = filterfac.id(filterfac.featureId("poi.2"));
-        store.removeFeatures(filterRemove);
+            Filter filterRemove = filterfac.id(filterfac.featureId("poi.2"));
+            store.removeFeatures(filterRemove);
 
-        Filter filterUpdate = filterfac.id(filterfac.featureId("poi.3"));
-        store.modifyFeatures("NAME", "blah", filterUpdate);
+            Filter filterUpdate = filterfac.id(filterfac.featureId("poi.3"));
+            store.modifyFeatures("NAME", "blah", filterUpdate);
 
-        transaction.commit();
+            transaction.commit();
 
-        ContentFeatureCollection coll = store.getFeatures();
-        SimpleFeatureIterator it = coll.features();
-        // while (it.hasNext()) {
-        // System.err.println(it.next());
-        // }
-        assertEquals(3, coll.size());
+            ContentFeatureCollection coll = store.getFeatures();
+            assertEquals(3, coll.size());
 
-        coll =
-                store.getFeatures(
-                        new Query(
-                                simpleTypeName1.getLocalPart(),
-                                filterfac.equals(
-                                        filterfac.property("NAME"), filterfac.literal("mypoint"))));
-        it = coll.features();
-        // while (it.hasNext()) {
-        // System.err.println(it.next());
-        // }
-        assertEquals(1, coll.size());
+            coll =
+                    store.getFeatures(
+                            new Query(
+                                    simpleTypeName1.getLocalPart(),
+                                    filterfac.equals(
+                                            filterfac.property("NAME"),
+                                            filterfac.literal("mypoint"))));
 
-        SimpleFeature feature = coll.features().next();
-        assertEquals(feat.getAttributes(), feature.getAttributes());
+            assertEquals(1, coll.size());
 
-        coll = store.getFeatures(new Query(simpleTypeName1.getLocalPart(), filterRemove));
-        assertEquals(0, coll.size());
+            SimpleFeature feature = coll.features().next();
+            assertEquals(feat.getAttributes(), feature.getAttributes());
 
-        coll = store.getFeatures(new Query(simpleTypeName1.getLocalPart(), filterUpdate));
-        assertEquals(1, coll.size());
+            coll = store.getFeatures(new Query(simpleTypeName1.getLocalPart(), filterRemove));
+            assertEquals(0, coll.size());
 
-        feature = coll.features().next();
-        assertEquals("blah", feature.getAttribute("NAME"));
+            coll = store.getFeatures(new Query(simpleTypeName1.getLocalPart(), filterUpdate));
+            assertEquals(1, coll.size());
+
+            feature = coll.features().next();
+            assertEquals("blah", feature.getAttribute("NAME"));
+        }
     }
 
     /** Tests that WFS Transactions causing an ExceptionReport also end in a proper WFSException. */
@@ -276,13 +270,12 @@ public class WFSFeatureStoreTest {
 
         collection.add(feat);
 
-        Transaction transaction = new DefaultTransaction();
-        store.setTransaction(transaction);
+        try (Transaction transaction = new DefaultTransaction()) {
+            store.setTransaction(transaction);
 
-        List<FeatureId> fids = store.addFeatures((SimpleFeatureCollection) collection);
-        assertEquals(1, fids.size());
+            List<FeatureId> fids = store.addFeatures((SimpleFeatureCollection) collection);
+            assertEquals(1, fids.size());
 
-        try {
             transaction.commit();
         } catch (WFSException e) {
             // WFS 1.0.0: Parser fails to parse the response properly

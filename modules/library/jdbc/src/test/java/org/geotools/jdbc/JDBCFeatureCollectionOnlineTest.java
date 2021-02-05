@@ -30,6 +30,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCFeatureCollectionOnlineTest extends JDBCTestSupport {
     SimpleFeatureCollection collection;
     JDBCFeatureStore source;
@@ -42,29 +43,29 @@ public abstract class JDBCFeatureCollectionOnlineTest extends JDBCTestSupport {
     }
 
     public void testIterator() throws Exception {
-        FeatureIterator<SimpleFeature> i = collection.features();
-        assertNotNull(i);
+        try (FeatureIterator<SimpleFeature> i = collection.features()) {
+            assertNotNull(i);
+            assertFeatureIterator(
+                    0,
+                    3,
+                    i,
+                    new SimpleFeatureAssertion() {
 
-        assertFeatureIterator(
-                0,
-                3,
-                i,
-                new SimpleFeatureAssertion() {
+                        public int toIndex(SimpleFeature feature) {
+                            return ((Number) feature.getAttribute(aname("intProperty"))).intValue();
+                        }
 
-                    public int toIndex(SimpleFeature feature) {
-                        return ((Number) feature.getAttribute(aname("intProperty"))).intValue();
-                    }
+                        public void check(int index, SimpleFeature feature) {
+                            assertNotNull(feature);
 
-                    public void check(int index, SimpleFeature feature) {
-                        assertNotNull(feature);
+                            String fid = feature.getID();
 
-                        String fid = feature.getID();
+                            int id = Integer.parseInt(fid.substring(fid.indexOf('.') + 1));
 
-                        int id = Integer.parseInt(fid.substring(fid.indexOf('.') + 1));
-
-                        assertEquals(index, id);
-                    }
-                });
+                            assertEquals(index, id);
+                        }
+                    });
+        }
     }
 
     public void testBounds() throws IOException {

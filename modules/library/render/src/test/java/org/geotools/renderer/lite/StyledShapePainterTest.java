@@ -208,7 +208,6 @@ public class StyledShapePainterTest {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         legend.setRotation(ff.literal(0));
         legend.setOpacity(ff.literal(1));
-        Style pStyle = RendererBaseTest.loadStyle(this, "externalGraphic.sld");
         URL url = StreamingRenderer.class.getResource("test-data/");
         StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
         ExternalGraphic eg = sf.createExternalGraphic(url + "icon64.png", "image/png");

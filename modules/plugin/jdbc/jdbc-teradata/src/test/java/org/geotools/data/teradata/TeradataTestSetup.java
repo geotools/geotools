@@ -16,6 +16,8 @@
  */
 package org.geotools.data.teradata;
 
+import static org.junit.Assert.assertTrue;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -24,6 +26,7 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCTestSetup;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class TeradataTestSetup extends JDBCTestSetup {
 
     protected int srid4326 = 1619;
@@ -38,14 +41,13 @@ public class TeradataTestSetup extends JDBCTestSetup {
 
         // figure out the 4326 native srid
         try (Connection cx = getConnection()) {
-            try (Statement st = cx.createStatement()) {
-                ResultSet rs =
-                        st.executeQuery(
-                                "SELECT srid FROM sysspatial.spatial_ref_sys "
-                                        + "WHERE auth_srid = 4326");
-                rs.next();
+            try (Statement st = cx.createStatement();
+                    ResultSet rs =
+                            st.executeQuery(
+                                    "SELECT srid FROM sysspatial.spatial_ref_sys "
+                                            + "WHERE auth_srid = 4326")) {
+                assertTrue(rs.next());
                 srid4326 = rs.getInt(1);
-                rs.close();
             }
         }
     }

@@ -43,7 +43,6 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.Query;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.imageio.netcdf.NetCDFImageReader;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
@@ -53,7 +52,6 @@ import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValue;
@@ -439,7 +437,7 @@ public class NetCDFMultiDimTest {
     }
 
     /** @throws Exception */
-    public void test2DTime_DiffSize(File file) throws Exception {
+    protected void test2DTime_DiffSize(File file) throws Exception {
 
         NetCDFImageReaderSpi readerSpi = new NetCDFImageReaderSpi();
         assertTrue(readerSpi.canDecodeInput(file));
@@ -713,10 +711,6 @@ public class NetCDFMultiDimTest {
             // Get the envelope
             final ParameterValue<GridGeometry2D> gg =
                     AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-            final GeneralEnvelope originalEnvelope = reader.getOriginalEnvelope(coverageName);
-
-            // Selecting the same gridRange
-            GridEnvelope gridRange = reader.getOriginalGridRange(coverageName);
 
             final ParameterValue<List> time =
                     new DefaultParameterDescriptor<>("TIME", List.class, null, null).createValue();

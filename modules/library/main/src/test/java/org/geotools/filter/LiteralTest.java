@@ -48,21 +48,11 @@ public class LiteralTest {
 
     @Test
     public void testValidConstruction() throws Exception {
-        Literal a = new LiteralExpressionImpl(Double.valueOf(10));
-        Literal b = new LiteralExpressionImpl("Label");
-        Literal c = new LiteralExpressionImpl(Integer.valueOf(10));
+        new LiteralExpressionImpl(Double.valueOf(10));
+        new LiteralExpressionImpl("Label");
+        new LiteralExpressionImpl(Integer.valueOf(10));
         GeometryFactory gf = new GeometryFactory(new PrecisionModel());
-        Literal d = new LiteralExpressionImpl(gf.createGeometryCollection(null));
-    }
-
-    @Test
-    public void testInvalidConstruction1() throws Exception {
-        try {
-            Literal a = new LiteralExpressionImpl(Double.valueOf(10));
-            Literal b = new LiteralExpressionImpl(a);
-        } catch (IllegalFilterException ife) {
-            return;
-        }
+        new LiteralExpressionImpl(gf.createGeometryCollection(null));
     }
 
     @Test

@@ -134,9 +134,7 @@ public abstract class TestCaseSupport {
 
     private void dieDieDIE(File file) {
         if (file.exists()) {
-            if (file.delete()) {
-                // dead
-            } else {
+            if (!file.delete()) {
                 file.deleteOnExit(); // dead later
             }
         }
@@ -164,18 +162,16 @@ public abstract class TestCaseSupport {
      * @throws IOException if reading failed.
      */
     protected Geometry readGeometry(final String wktResource) throws IOException {
-        final BufferedReader stream = TestData.openReader("wkt/" + wktResource + ".wkt");
-        final WKTReader reader = new WKTReader();
-        final Geometry geom;
-        try {
-            geom = reader.read(stream);
-        } catch (ParseException pe) {
-            IOException e = new IOException("parsing error in resource " + wktResource);
-            e.initCause(pe);
-            throw e;
+        try (final BufferedReader stream = TestData.openReader("wkt/" + wktResource + ".wkt")) {
+            final WKTReader reader = new WKTReader();
+            try {
+                return reader.read(stream);
+            } catch (ParseException pe) {
+                IOException e = new IOException("parsing error in resource " + wktResource);
+                e.initCause(pe);
+                throw e;
+            }
         }
-        stream.close();
-        return geom;
     }
 
     /** Returns the first feature in the given feature collection. */

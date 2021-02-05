@@ -18,7 +18,6 @@
 package org.geotools.process.vector;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -83,11 +82,11 @@ public class InclusionFeatureCollectionTest {
         InclusionFeatureCollection process = new InclusionFeatureCollection();
         SimpleFeatureCollection output = process.execute(features, secondFeatures);
         assertEquals(1, output.size());
-        SimpleFeatureIterator iterator = output.features();
-
-        Geometry expected = (Geometry) features.features().next().getDefaultGeometry();
-        SimpleFeature sf = iterator.next();
-        assertTrue(expected.equals((Geometry) sf.getDefaultGeometry()));
+        try (SimpleFeatureIterator iterator = output.features()) {
+            Geometry expected = (Geometry) features.features().next().getDefaultGeometry();
+            SimpleFeature sf = iterator.next();
+            assertEquals(expected, sf.getDefaultGeometry());
+        }
     }
 
     @Test
@@ -131,10 +130,10 @@ public class InclusionFeatureCollectionTest {
         InclusionFeatureCollection process = new InclusionFeatureCollection();
         SimpleFeatureCollection output = process.execute(features, secondFeatures);
         assertEquals(1, output.size());
-        SimpleFeatureIterator iterator = output.features();
-
-        Geometry expected = (Geometry) features.features().next().getDefaultGeometry();
-        SimpleFeature sf = iterator.next();
-        assertTrue(expected.equals((Geometry) sf.getDefaultGeometry()));
+        try (SimpleFeatureIterator iterator = output.features()) {
+            Geometry expected = (Geometry) features.features().next().getDefaultGeometry();
+            SimpleFeature sf = iterator.next();
+            assertEquals(expected, sf.getDefaultGeometry());
+        }
     }
 }

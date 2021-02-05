@@ -125,7 +125,6 @@ public abstract class AbstractGetFeatureParserTest {
                 assertNotNull(name + " property was not parsed", property);
                 assertNotNull("got null value for property " + name, property.getValue());
                 if (descriptor instanceof GeometryDescriptor) {
-                    GeometryDescriptor gd = (GeometryDescriptor) descriptor;
                     Geometry geometry = (Geometry) property.getValue();
                     assertNotNull(geometry);
                     if (expectedGeometries != null && featureCount < expectedGeometries.size()) {

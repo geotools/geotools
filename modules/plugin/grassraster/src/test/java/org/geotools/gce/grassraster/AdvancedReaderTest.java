@@ -257,22 +257,6 @@ public class AdvancedReaderTest {
         checkMatrixEqual(readCoverage.getRenderedImage(), mapData, 0);
     }
 
-    protected void printImage(RenderedImage image) {
-        RectIter rectIter = RectIterFactory.create(image, null);
-        int y = 0;
-        do {
-            int x = 0;
-            do {
-                double value = rectIter.getSampleDouble();
-                // System.out.print(value + " ");
-                x++;
-            } while (!rectIter.nextPixelDone());
-            rectIter.startPixels();
-            y++;
-            // System.out.println();
-        } while (!rectIter.nextLineDone());
-    }
-
     private GridCoverage2D read(File file, JGrassRegion r, CoordinateReferenceSystem crs)
             throws IOException {
         GeneralParameterValue[] readParams = new GeneralParameterValue[1];

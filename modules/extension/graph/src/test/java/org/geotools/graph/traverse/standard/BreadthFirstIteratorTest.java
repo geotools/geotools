@@ -225,15 +225,6 @@ public class BreadthFirstIteratorTest {
         int k = 4;
         Object[] obj = GraphTestUtil.buildPerfectBinaryTree(builder(), k);
         Node root = (Node) obj[0];
-        final Map obj2node = (Map) obj[1];
-
-        GraphVisitor initializer =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-                        component.setCount(-1);
-                        return 0;
-                    }
-                };
 
         CountingWalker walker =
                 new CountingWalker() {
@@ -305,7 +296,6 @@ public class BreadthFirstIteratorTest {
                                 return (GraphTraversal.SUSPEND);
                             }
                         } else if (m_mode == 1) {
-                            String eid = element.getObject().toString();
                             if (ln.isVisited()) Assert.assertSame(element, rn);
                             else Assert.assertSame(element, ln);
 

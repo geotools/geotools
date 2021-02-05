@@ -23,10 +23,10 @@ import java.io.FileFilter;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import junit.framework.Protectable;
-import junit.framework.Test;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import junit.framework.Protectable; // NOPMD
+import junit.framework.Test; // NOPMD
+import junit.framework.TestResult; // NOPMD
+import junit.framework.TestSuite; // NOPMD
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -44,6 +44,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+@SuppressWarnings("PMD.DisallowJUnit3") // weird stuff going on here
 public class DOMParserTestSuite extends TestSuite {
 
     /** Standard logging instance */
@@ -93,7 +94,7 @@ public class DOMParserTestSuite extends TestSuite {
         // Builds the test feature
         Object[] attributes = new Object[11];
         attributes[0] = geomFac.createLineString(coords);
-        attributes[1] = Boolean.valueOf(true);
+        attributes[1] = Boolean.TRUE;
         attributes[2] = Character.valueOf('t');
         attributes[3] = Byte.valueOf("10");
         attributes[4] = Short.valueOf("101");
@@ -115,6 +116,7 @@ public class DOMParserTestSuite extends TestSuite {
      *
      * @return Test
      */
+    @SuppressWarnings("PMD.DisallowJunit3")
     public static Test suite() {
         DOMParserTestSuite suite = new DOMParserTestSuite();
 
@@ -142,6 +144,7 @@ public class DOMParserTestSuite extends TestSuite {
     }
 
     /** Quick test of a single xml document */
+    @SuppressWarnings("PMD.DisallowJunit3")
     class DomTestXml implements Test {
         String document;
 

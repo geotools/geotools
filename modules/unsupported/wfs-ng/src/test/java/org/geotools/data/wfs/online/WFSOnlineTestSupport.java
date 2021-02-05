@@ -155,7 +155,7 @@ public class WFSOnlineTestSupport {
                 fr.next();
                 j++;
             }
-            // System.out.println(j + " Features");
+            assertTrue(j > 0);
         } finally {
             fr.close();
         }
@@ -189,200 +189,207 @@ public class WFSOnlineTestSupport {
         Filter filter = ff.bbox(theGeom, bbox);
 
         query.setFilter(filter);
-        FeatureReader<SimpleFeatureType, SimpleFeature> fr =
-                wfs.getFeatureReader(query, Transaction.AUTO_COMMIT);
-        assertNotNull("GET " + typeName + " FeatureType was null", featureType);
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> fr =
+                wfs.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
+            assertNotNull("GET " + typeName + " FeatureType was null", featureType);
 
-        assertTrue("GET " + typeName + " has next?", fr.hasNext());
-        assertNotNull("GET " + typeName + " has feature type", fr.getFeatureType());
+            assertTrue("GET " + typeName + " has next?", fr.hasNext());
+            assertNotNull("GET " + typeName + " has feature type", fr.getFeatureType());
 
-        SimpleFeature feature = fr.next();
+            SimpleFeature feature = fr.next();
 
-        assertNotNull("GET " + typeName + " has non null feature", feature);
+            assertNotNull("GET " + typeName + " has non null feature", feature);
 
-        int j = 0;
-        while (fr.hasNext()) {
-            fr.next();
-            j++;
+            int j = 0;
+            while (fr.hasNext()) {
+                fr.next();
+                j++;
+            }
+            assertTrue(j > 0);
         }
-        // System.out.println("bbox selected " + j + " Features");
-        fr.close();
     }
 
     public static Id doInsert(DataStore ds, SimpleFeatureType ft, SimpleFeatureCollection insert)
             throws Exception {
-        Transaction t = new DefaultTransaction();
-        ContentFeatureStore fs = (ContentFeatureStore) ds.getFeatureSource(ft.getTypeName());
-        fs.setTransaction(t);
-        // System.out.println("Insert Read 1");
-        SimpleFeatureIterator fr = fs.getFeatures().features();
-        int count1 = 0;
-        while (fr.hasNext()) {
-            count1++;
-            fr.next();
-        }
-        fr.close();
-        // System.out.println("Insert Add Features");
-        List<FeatureId> fids1 = fs.addFeatures(insert);
-
-        // System.out.println("Insert Read 2");
-        fr = fs.getFeatures().features();
         int count2 = 0;
-        while (fr.hasNext()) {
-            count2++;
-            fr.next();
+        try (Transaction t = new DefaultTransaction()) {
+            ContentFeatureStore fs = (ContentFeatureStore) ds.getFeatureSource(ft.getTypeName());
+            fs.setTransaction(t);
+            // System.out.println("Insert Read 1");
+            int count1 = 0;
+            try (SimpleFeatureIterator fr = fs.getFeatures().features()) {
+
+                while (fr.hasNext()) {
+                    count1++;
+                    fr.next();
+                }
+            }
+            // System.out.println("Insert Add Features");
+            List<FeatureId> fids1 = fs.addFeatures(insert);
+
+            // System.out.println("Insert Read 2");
+
+            try (SimpleFeatureIterator fr = fs.getFeatures().features()) {
+
+                while (fr.hasNext()) {
+                    count2++;
+                    fr.next();
+                }
+            }
+            assertEquals(count1 + insert.size(), count2);
+
+            FilterFactory fac = CommonFactoryFinder.getFilterFactory(null);
+            Set<FeatureId> featureIds = new HashSet<>();
+            for (FeatureId id : fids1) {
+                featureIds.add(id);
+            }
+            Id fidfilter = fac.id(featureIds);
+
+            // System.out.println("Remove Inserted Features");
+            fs.removeFeatures(fidfilter);
+
+            // System.out.println("Insert Read 3");
+            try (SimpleFeatureIterator fr = fs.getFeatures().features()) {
+                count2 = 0;
+                while (fr.hasNext()) {
+                    count2++;
+                    fr.next();
+                }
+            }
+            assertEquals(count1, count2);
+
+            // System.out.println("Insert Add Features");
+            fs.addFeatures(insert);
+
+            // System.out.println("Insert Read 2");
+            try (SimpleFeatureIterator fr = fs.getFeatures().features()) {
+                count2 = 0;
+                while (fr.hasNext()) {
+                    count2++;
+                    fr.next();
+                }
+            }
+            assertEquals(count1 + insert.size(), count2);
+
+            // System.out.println("Insert Commit");
+            t.commit();
+
+            // System.out.println("Insert Read 3");
+            try (SimpleFeatureIterator fr = fs.getFeatures().features()) {
+                int count3 = 0;
+                while (fr.hasNext()) {
+                    count3++;
+                    fr.next();
+                }
+                assertEquals(count2, count3);
+            }
+
+            return fidfilter;
         }
-        fr.close();
-        assertEquals(count1 + insert.size(), count2);
-
-        FilterFactory fac = CommonFactoryFinder.getFilterFactory(null);
-        Set<FeatureId> featureIds = new HashSet<>();
-        for (FeatureId id : fids1) {
-            featureIds.add(id);
-        }
-        Id fidfilter = fac.id(featureIds);
-
-        // System.out.println("Remove Inserted Features");
-        fs.removeFeatures(fidfilter);
-
-        // System.out.println("Insert Read 3");
-        fr = fs.getFeatures().features();
-        count2 = 0;
-        while (fr.hasNext()) {
-            count2++;
-            fr.next();
-        }
-        fr.close();
-        assertEquals(count1, count2);
-
-        // System.out.println("Insert Add Features");
-        fs.addFeatures(insert);
-
-        // System.out.println("Insert Read 2");
-        fr = fs.getFeatures().features();
-        count2 = 0;
-        while (fr.hasNext()) {
-            count2++;
-            fr.next();
-        }
-        fr.close();
-        assertEquals(count1 + insert.size(), count2);
-
-        // System.out.println("Insert Commit");
-        t.commit();
-
-        // System.out.println("Insert Read 3");
-        fr = fs.getFeatures().features();
-        int count3 = 0;
-        while (fr.hasNext()) {
-            count3++;
-            fr.next();
-        }
-        fr.close();
-        assertEquals(count2, count3);
-
-        return fidfilter;
     }
 
     public static void doDelete(DataStore ds, SimpleFeatureType ft, Id ff) throws Exception {
         assertNotNull("doInsertFailed?", ff);
-        Transaction t = new DefaultTransaction();
-        SimpleFeatureStore fs = (SimpleFeatureStore) ds.getFeatureSource(ft.getTypeName());
-        fs.setTransaction(t);
+        try (Transaction t = new DefaultTransaction()) {
+            SimpleFeatureStore fs = (SimpleFeatureStore) ds.getFeatureSource(ft.getTypeName());
+            fs.setTransaction(t);
 
-        // System.out.println("Delete Read 1");
-        SimpleFeatureIterator fr = fs.getFeatures().features();
-        int count1 = 0;
-        while (fr.hasNext()) {
-            count1++;
-            fr.next();
+            // System.out.println("Delete Read 1");
+            int count1 = 0;
+            try (SimpleFeatureIterator fr = fs.getFeatures().features()) {
+                while (fr.hasNext()) {
+                    count1++;
+                    fr.next();
+                }
+            }
+
+            // System.out.println("Delete Remove " + ff);
+            fs.removeFeatures(ff);
+
+            // System.out.println("Delete Read 2");
+            int count2 = 0;
+            try (SimpleFeatureIterator fr = fs.getFeatures().features()) {
+
+                while (fr.hasNext()) {
+                    count2++;
+                    fr.next();
+                }
+            }
+            assertTrue("Read 1 == " + count1 + " Read 2 == " + count2, count2 < count1);
+
+            // System.out.println("Delete Commit");
+            t.commit();
+
+            // System.out.println("Delete Read 3");
+            int count3 = 0;
+            try (SimpleFeatureIterator fr = fs.getFeatures().features()) {
+                while (fr.hasNext()) {
+                    count3++;
+                    fr.next();
+                }
+            }
+            assertEquals(count2, count3);
         }
-        fr.close();
-
-        // System.out.println("Delete Remove " + ff);
-        fs.removeFeatures(ff);
-
-        // System.out.println("Delete Read 2");
-        fr = fs.getFeatures().features();
-        int count2 = 0;
-        while (fr.hasNext()) {
-            count2++;
-            fr.next();
-        }
-        fr.close();
-        assertTrue("Read 1 == " + count1 + " Read 2 == " + count2, count2 < count1);
-
-        // System.out.println("Delete Commit");
-        t.commit();
-
-        // System.out.println("Delete Read 3");
-        fr = fs.getFeatures().features();
-        int count3 = 0;
-        while (fr.hasNext()) {
-            count3++;
-            fr.next();
-        }
-        fr.close();
-        assertEquals(count2, count3);
     }
 
     public static void doUpdate(
             DataStore ds, SimpleFeatureType ft, String attributeToChange, Object newValue)
             throws Exception {
-        Transaction t = new DefaultTransaction();
-        SimpleFeatureStore fs = (SimpleFeatureStore) ds.getFeatureSource(ft.getTypeName());
-        fs.setTransaction(t);
+        try (Transaction t = new DefaultTransaction()) {
+            SimpleFeatureStore fs = (SimpleFeatureStore) ds.getFeatureSource(ft.getTypeName());
+            fs.setTransaction(t);
 
-        AttributeDescriptor at = ft.getDescriptor(attributeToChange);
-        assertNotNull("Attribute " + attributeToChange + " does not exist", at);
+            AttributeDescriptor at = ft.getDescriptor(attributeToChange);
+            assertNotNull("Attribute " + attributeToChange + " does not exist", at);
 
-        FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
-        Filter f =
-                filterFactory.equals(
-                        filterFactory.property(at.getLocalName()), filterFactory.literal(newValue));
+            FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
+            Filter f =
+                    filterFactory.equals(
+                            filterFactory.property(at.getLocalName()),
+                            filterFactory.literal(newValue));
 
-        // System.out.println("Update Read 1");
-        SimpleFeatureIterator fr = fs.getFeatures(f).features();
-
-        int count1 = 0;
-        Object oldValue = null;
-        if (fr != null)
-            while (fr.hasNext()) {
-                count1++;
-                oldValue = fr.next().getAttribute(attributeToChange);
+            // System.out.println("Update Read 1");
+            int count1 = 0;
+            Object oldValue = null;
+            try (SimpleFeatureIterator fr = fs.getFeatures(f).features()) {
+                if (fr != null)
+                    while (fr.hasNext()) {
+                        count1++;
+                        oldValue = fr.next().getAttribute(attributeToChange);
+                    }
             }
+            // System.out.println("Update Modify");
+            fs.modifyFeatures(at.getName(), newValue, Filter.INCLUDE);
 
-        fr.close();
-        // System.out.println("Update Modify");
-        fs.modifyFeatures(at.getName(), newValue, Filter.INCLUDE);
+            // System.out.println("Update Read 2");
+            int count2 = 0;
+            try (SimpleFeatureIterator fr = fs.getFeatures(f).features()) {
 
-        // System.out.println("Update Read 2");
-        fr = fs.getFeatures(f).features();
-        int count2 = 0;
-        while (fr.hasNext()) {
-            count2++;
-            fr.next();
-        }
-        fr.close();
-        assertTrue("Read 1 == " + count1 + " Read 2 == " + count2, count2 > count1);
-
-        // System.out.println("Update Commit");
-        try {
-            t.commit();
-
-            // System.out.println("Update Read 3");
-            fr = fs.getFeatures(f).features();
-            int count3 = 0;
-            while (fr.hasNext()) {
-                count3++;
-                fr.next();
+                while (fr.hasNext()) {
+                    count2++;
+                    fr.next();
+                }
             }
-            fr.close();
-            assertEquals(count2, count3);
-        } finally {
-            // cleanup
-            fs.modifyFeatures(at.getName(), oldValue, Filter.INCLUDE);
-            t.commit();
+            assertTrue("Read 1 == " + count1 + " Read 2 == " + count2, count2 > count1);
+
+            // System.out.println("Update Commit");
+            try {
+                t.commit();
+
+                // System.out.println("Update Read 3");
+                int count3 = 0;
+                try (SimpleFeatureIterator fr = fs.getFeatures(f).features()) {
+                    while (fr.hasNext()) {
+                        count3++;
+                        fr.next();
+                    }
+                }
+                assertEquals(count2, count3);
+            } finally {
+                // cleanup
+                fs.modifyFeatures(at.getName(), oldValue, Filter.INCLUDE);
+                t.commit();
+            }
         }
     }
 }

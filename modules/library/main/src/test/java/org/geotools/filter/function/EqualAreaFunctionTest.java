@@ -88,7 +88,6 @@ public class EqualAreaFunctionTest {
         @Test
         public void testMoreClassesThanFeatures() throws SchemaException, IOException {
             ListFeatureCollection fc = getSimplifiedStatesCollection();
-            Expression areaFunction = EqualAreaFunction.getCartesianAreaFunction();
 
             // twice as many classes
             org.opengis.filter.expression.Expression function =

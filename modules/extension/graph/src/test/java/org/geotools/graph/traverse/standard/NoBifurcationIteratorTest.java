@@ -87,7 +87,6 @@ public class NoBifurcationIteratorTest {
         int nnodes = 100;
         Node[] ends = GraphTestUtil.buildNoBifurcations(builder(), nnodes);
         final int suspend = 50;
-        ;
 
         CountingWalker walker =
                 new CountingWalker() {

@@ -27,14 +27,11 @@ import java.util.Iterator;
 import java.util.List;
 import org.geotools.TestData;
 import org.geotools.data.CloseableIterator;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.After;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory2;
 
 /**
@@ -110,9 +107,7 @@ public class TestCaseSupport {
 
     private void dieDieDIE(File file) {
         if (file.exists()) {
-            if (file.delete()) {
-                // dead
-            } else {
+            if (!file.delete()) {
                 // System.out.println("Couldn't delete " + file);
                 file.deleteOnExit(); // dead later
             }
@@ -141,26 +136,16 @@ public class TestCaseSupport {
      * @throws IOException if reading failed.
      */
     protected Geometry readGeometry(final String wktResource) throws IOException {
-        final BufferedReader stream = TestData.openReader("wkt/" + wktResource + ".wkt");
-        final WKTReader reader = new WKTReader();
-        final Geometry geom;
-        try {
-            geom = reader.read(stream);
-        } catch (ParseException pe) {
-            IOException e = new IOException("parsing error in resource " + wktResource);
-            e.initCause(pe);
-            throw e;
+        try (final BufferedReader stream = TestData.openReader("wkt/" + wktResource + ".wkt")) {
+            final WKTReader reader = new WKTReader();
+            try {
+                return reader.read(stream);
+            } catch (ParseException pe) {
+                IOException e = new IOException("parsing error in resource " + wktResource);
+                e.initCause(pe);
+                throw e;
+            }
         }
-        stream.close();
-        return geom;
-    }
-
-    /** Returns the first feature in the given feature collection. */
-    protected SimpleFeature firstFeature(SimpleFeatureCollection fc) {
-        SimpleFeatureIterator features = fc.features();
-        SimpleFeature next = features.next();
-        features.close();
-        return next;
     }
 
     /** Creates a temporary file, to be automatically deleted at the end of the test suite. */

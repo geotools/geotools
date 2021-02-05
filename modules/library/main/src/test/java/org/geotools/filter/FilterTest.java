@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import junit.framework.TestSuite;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -98,9 +97,6 @@ public class FilterTest {
 
     org.opengis.filter.FilterFactory2 fac = CommonFactoryFinder.getFilterFactory2(null);
 
-    /** Test suite for this test case */
-    TestSuite suite = null;
-
     private Calendar calDateTime;
     private Calendar calTime;
     private Calendar calDate;
@@ -153,7 +149,7 @@ public class FilterTest {
         Object[] attributes = new Object[17];
         GeometryFactory gf = new GeometryFactory(new PrecisionModel());
         attributes[0] = gf.createLineString(coords);
-        attributes[1] = Boolean.valueOf(true);
+        attributes[1] = Boolean.TRUE;
         attributes[2] = Character.valueOf('t');
         attributes[3] = Byte.valueOf("10");
         attributes[4] = Short.valueOf("101");
@@ -338,21 +334,21 @@ public class FilterTest {
             boolean test2,
             boolean test3)
             throws IllegalFilterException {
-        Literal testLiteral = new LiteralExpressionImpl(new String("1001.0"));
+        Literal testLiteral = new LiteralExpressionImpl("1001.0");
         org.opengis.filter.Filter filter = compare(filterType, testAttribute, testLiteral);
 
         // LOGGER.finer( filter.toString());
         // LOGGER.finer( "contains feature: " + filter.contains(testFeature));
         Assert.assertEquals(filter.evaluate(testFeature), test1);
 
-        testLiteral = new LiteralExpressionImpl(new String("1002.0"));
+        testLiteral = new LiteralExpressionImpl("1002.0");
         filter = compare(filterType, testAttribute, testLiteral);
 
         // LOGGER.finer( filter.toString());
         // LOGGER.finer( "contains feature: " + filter.contains(testFeature));
         Assert.assertEquals(filter.evaluate(testFeature), test2);
 
-        testLiteral = new LiteralExpressionImpl(new String("1003.0"));
+        testLiteral = new LiteralExpressionImpl("1003.0");
         filter = compare(filterType, testAttribute, testLiteral);
 
         // LOGGER.finer( filter.toString());

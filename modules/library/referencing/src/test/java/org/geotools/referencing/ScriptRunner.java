@@ -58,31 +58,32 @@ public final class ScriptRunner extends Console {
     /** Prints the number of tests executed, the number of errors and the success rate. */
     private void printStatistics() throws IOException {
         NumberFormat f = NumberFormat.getNumberInstance();
-        final TableWriter table = new TableWriter(out, 1);
-        table.setMultiLinesCells(true);
-        table.writeHorizontalSeparator();
-        table.write("Tests:");
-        table.nextColumn();
-        table.setAlignment(TableWriter.ALIGN_RIGHT);
-        table.write(f.format(testRun));
-        table.nextLine();
-        table.setAlignment(TableWriter.ALIGN_LEFT);
-        table.write("Errors:");
-        table.nextColumn();
-        table.setAlignment(TableWriter.ALIGN_RIGHT);
-        table.write(f.format(testRun - testPassed));
-        table.nextLine();
-        if (testRun != 0) {
-            f = NumberFormat.getPercentInstance();
-            table.setAlignment(TableWriter.ALIGN_LEFT);
-            table.write("Success rate:");
+        try (TableWriter table = new TableWriter(out, 1)) {
+            table.setMultiLinesCells(true);
+            table.writeHorizontalSeparator();
+            table.write("Tests:");
             table.nextColumn();
             table.setAlignment(TableWriter.ALIGN_RIGHT);
-            table.write(f.format((double) testPassed / (double) testRun));
+            table.write(f.format(testRun));
             table.nextLine();
+            table.setAlignment(TableWriter.ALIGN_LEFT);
+            table.write("Errors:");
+            table.nextColumn();
+            table.setAlignment(TableWriter.ALIGN_RIGHT);
+            table.write(f.format(testRun - testPassed));
+            table.nextLine();
+            if (testRun != 0) {
+                f = NumberFormat.getPercentInstance();
+                table.setAlignment(TableWriter.ALIGN_LEFT);
+                table.write("Success rate:");
+                table.nextColumn();
+                table.setAlignment(TableWriter.ALIGN_RIGHT);
+                table.write(f.format((double) testPassed / (double) testRun));
+                table.nextLine();
+            }
+            table.writeHorizontalSeparator();
+            table.flush();
         }
-        table.writeHorizontalSeparator();
-        table.flush();
     }
 
     /** Run all tests scripts specified on the command line. */
@@ -90,18 +91,18 @@ public final class ScriptRunner extends Console {
         final String lineSeparator = System.getProperty("line.separator", "\r");
         try {
             for (final String filename : args) {
-                final LineNumberReader in = new LineNumberReader(new FileReader(filename));
-                final ScriptRunner test = new ScriptRunner(in);
-                test.out.write("Running \"");
-                test.out.write(filename);
-                test.out.write('"');
-                test.out.write(lineSeparator);
-                test.out.flush();
-                test.run();
-                test.printStatistics();
-                test.out.write(lineSeparator);
-                test.out.flush();
-                in.close();
+                try (final LineNumberReader in = new LineNumberReader(new FileReader(filename))) {
+                    final ScriptRunner test = new ScriptRunner(in);
+                    test.out.write("Running \"");
+                    test.out.write(filename);
+                    test.out.write('"');
+                    test.out.write(lineSeparator);
+                    test.out.flush();
+                    test.run();
+                    test.printStatistics();
+                    test.out.write(lineSeparator);
+                    test.out.flush();
+                }
             }
         } catch (IOException exception) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", exception);

@@ -65,9 +65,6 @@ public final class SampleDimensionTest {
     /** The offset value for the sample dimension to test. */
     private static final double offset = 5.0;
 
-    /** Small number for comparaison. */
-    private static final double EPS = 1E-7;
-
     /** The sample dimension to test. */
     private GridSampleDimension test;
 

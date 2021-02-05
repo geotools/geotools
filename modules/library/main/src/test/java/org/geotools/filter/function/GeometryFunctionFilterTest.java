@@ -29,26 +29,24 @@ public class GeometryFunctionFilterTest extends FunctionTestSupport {
     @Test
     public void testBasicTest() throws Exception {
         Function exp = ff.function("geometryType", ff.property("geom"));
-        SimpleFeatureIterator iter = featureCollection.features();
-        while (iter.hasNext()) {
-            SimpleFeature feature = iter.next();
-            assertEquals("Point", exp.evaluate(feature));
+        try (SimpleFeatureIterator iter = featureCollection.features()) {
+            while (iter.hasNext()) {
+                SimpleFeature feature = iter.next();
+                assertEquals("Point", exp.evaluate(feature));
+            }
         }
-
-        iter.close();
     }
 
     @Test
     public void testNullTest() throws Exception {
         Function exp = ff.function("geometryType", ff.property("geom"));
-        SimpleFeatureIterator iter = featureCollection.features();
-        while (iter.hasNext()) {
-            SimpleFeature feature = iter.next();
-            feature.setAttribute("geom", null);
-            assertNull(exp.evaluate(feature));
+        try (SimpleFeatureIterator iter = featureCollection.features()) {
+            while (iter.hasNext()) {
+                SimpleFeature feature = iter.next();
+                feature.setAttribute("geom", null);
+                assertNull(exp.evaluate(feature));
+            }
         }
-
-        iter.close();
     }
 
     @Test

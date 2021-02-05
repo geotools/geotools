@@ -67,8 +67,6 @@ public class TestAxisOrder {
 
         assertNotNull(store);
         features = store.getFeatureSource(store.getTypeNames()[0]).getFeatures();
-        CoordinateReferenceSystem coordinateReferenceSystem =
-                features.getSchema().getCoordinateReferenceSystem();
 
         try { // Make sure the CRS is correctly set features = new
             ReprojectingFeatureCollection(features, CRS.decode("EPSG:4269"));
@@ -85,7 +83,7 @@ public class TestAxisOrder {
                 throw new IOException("could not delete: " + directory);
             }
         }
-        boolean created = directory.mkdirs();
+        directory.mkdirs();
     }
 
     private static void ReprojectingFeatureCollection(

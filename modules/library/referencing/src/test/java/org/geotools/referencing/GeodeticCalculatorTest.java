@@ -262,7 +262,7 @@ public final class GeodeticCalculatorTest {
         GeodeticCalculator calculator = new GeodeticCalculator();
         calculator.setStartingGeographicPoint(6.95997388, 50.9383611);
         calculator.setDirection(-156.512, 13.04);
-        Point2D dest = calculator.getDestinationGeographicPoint();
+        calculator.getDestinationGeographicPoint();
         long end = System.currentTimeMillis();
         long timeDelta = end - start;
         assertTrue(timeDelta < 10);
@@ -299,26 +299,27 @@ public final class GeodeticCalculatorTest {
         // check pairs of points known to fail with the Vincenty method
         // taken from Wikipedia Talk page.
         // https://en.wikipedia.org/wiki/Talk:Geodesics_on_an_ellipsoid#Computations
-        InputStream in = TestData.openStream(this, "vincenty.csv");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-        CsvReader creader = new CsvReader(reader);
-        creader.setComment('#');
-        creader.setUseComments(true);
-        while (creader.readRecord()) {
+        try (InputStream in = TestData.openStream(this, "vincenty.csv");
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in)); ) {
+            CsvReader creader = new CsvReader(reader);
+            creader.setComment('#');
+            creader.setUseComments(true);
+            while (creader.readRecord()) {
 
-            double lat1 = Double.parseDouble(creader.get(0));
-            double lon1 = Double.parseDouble(creader.get(1));
-            double lat2 = Double.parseDouble(creader.get(2));
-            double lon2 = Double.parseDouble(creader.get(3));
+                double lat1 = Double.parseDouble(creader.get(0));
+                double lon1 = Double.parseDouble(creader.get(1));
+                double lat2 = Double.parseDouble(creader.get(2));
+                double lon2 = Double.parseDouble(creader.get(3));
 
-            GeodeticCalculator calculator = new GeodeticCalculator();
-            calculator.setStartingGeographicPoint(lon1, lat1);
-            calculator.setDestinationGeographicPoint(lon2, lat2);
-            double dist = calculator.getOrthodromicDistance();
-            // really we are just proving it works as previous code failed
-            // to converge for these points.
-            // but this way there is no chance of optimising the call away.
-            assertTrue("Bad distance calculation", dist > 0.0d);
+                GeodeticCalculator calculator = new GeodeticCalculator();
+                calculator.setStartingGeographicPoint(lon1, lat1);
+                calculator.setDestinationGeographicPoint(lon2, lat2);
+                double dist = calculator.getOrthodromicDistance();
+                // really we are just proving it works as previous code failed
+                // to converge for these points.
+                // but this way there is no chance of optimising the call away.
+                assertTrue("Bad distance calculation", dist > 0.0d);
+            }
         }
     }
 }

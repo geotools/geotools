@@ -44,10 +44,10 @@ public final class ScriptTest {
      * @throws Exception If a test failed.
      */
     private void runScript(final String filename) throws Exception {
-        final LineNumberReader in = TestData.openReader(this, filename);
-        final ScriptRunner test = new ScriptRunner(in);
-        test.executeAll();
-        in.close();
+        try (LineNumberReader in = TestData.openReader(this, filename)) {
+            final ScriptRunner test = new ScriptRunner(in);
+            test.executeAll();
+        }
     }
 
     /**

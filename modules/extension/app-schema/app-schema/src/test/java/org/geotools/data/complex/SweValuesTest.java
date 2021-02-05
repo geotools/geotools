@@ -108,13 +108,13 @@ public class SweValuesTest {
 
     static int size(FeatureCollection features) {
         int size = 0;
-        FeatureIterator iterator = features.features();
-        while (iterator.hasNext()) {
-            iterator.next();
-            size++;
+        try (FeatureIterator iterator = features.features()) {
+            while (iterator.hasNext()) {
+                iterator.next();
+                size++;
+            }
+            return size;
         }
-        iterator.close();
-        return size;
     }
 
     @Test
@@ -127,17 +127,20 @@ public class SweValuesTest {
                 "ID2.2",
                 "16.2 17.1 22.0 25.1 23.9 22.8 17.0 10.2 9.2 7.1 12.3 12.9 17.2 23.6 21.6 21.9 17.6 14.0 9.3 3.8");
 
-        FeatureIterator<? extends Feature> featIt = obsFeatures.features();
-        while (featIt.hasNext()) {
-            Feature f = featIt.next();
-            PropertyName pf = ff.property("om:result/swe:DataArray/swe:values", namespaces);
-            Object sweValues = pf.evaluate(f);
-            assertNotNull(sweValues);
-            assertTrue(sweValues instanceof ComplexAttribute);
-            ComplexAttribute sweValuesAttr = (ComplexAttribute) sweValues;
-            assertEquals(
-                    expected.get(f.getIdentifier().getID()),
-                    sweValuesAttr.getProperty(ComplexFeatureConstants.SIMPLE_CONTENT).getValue());
+        try (FeatureIterator<? extends Feature> featIt = obsFeatures.features()) {
+            while (featIt.hasNext()) {
+                Feature f = featIt.next();
+                PropertyName pf = ff.property("om:result/swe:DataArray/swe:values", namespaces);
+                Object sweValues = pf.evaluate(f);
+                assertNotNull(sweValues);
+                assertTrue(sweValues instanceof ComplexAttribute);
+                ComplexAttribute sweValuesAttr = (ComplexAttribute) sweValues;
+                assertEquals(
+                        expected.get(f.getIdentifier().getID()),
+                        sweValuesAttr
+                                .getProperty(ComplexFeatureConstants.SIMPLE_CONTENT)
+                                .getValue());
+            }
         }
     }
 }

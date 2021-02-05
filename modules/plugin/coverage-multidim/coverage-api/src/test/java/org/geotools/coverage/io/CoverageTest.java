@@ -205,7 +205,7 @@ public class CoverageTest {
         // Ensure the result is not null
         Collection<? extends Coverage> results = response.getResults(null);
         assertNotNull(results);
-        assertTrue(results.size() > 0);
+        assertFalse(results.isEmpty());
         assertTrue(results.iterator().next() instanceof GridCoverage2D);
     }
 

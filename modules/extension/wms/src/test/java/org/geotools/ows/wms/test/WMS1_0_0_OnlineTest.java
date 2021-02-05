@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.data.ows.GetCapabilitiesRequest;
 import org.geotools.data.ows.Specification;
 import org.geotools.ows.wms.CRSEnvelope;
@@ -36,15 +37,18 @@ import org.geotools.ows.wms.WebMapServer;
 import org.geotools.ows.wms.request.GetMapRequest;
 import org.geotools.ows.wms.xml.WMSSchema;
 import org.geotools.test.TestData;
+import org.geotools.util.logging.Logging;
 import org.geotools.xml.DocumentFactory;
 import org.geotools.xml.SchemaFactory;
 import org.geotools.xml.handlers.DocumentHandler;
-import org.geotools.xml.schema.Schema;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
 public class WMS1_0_0_OnlineTest {
+    protected static final Logger LOGGER = Logging.getLogger(WMS1_0_0_OnlineTest.class);
+
     protected URL server;
     protected WMSSpecification spec;
 
@@ -75,28 +79,16 @@ public class WMS1_0_0_OnlineTest {
         }
 
         checkProperties(properties);
-        try {
-            WebMapServer wms = new WebMapServer(server);
-            WMSCapabilities capabilities = wms.getCapabilities();
+        WebMapServer wms = new WebMapServer(server);
+        WMSCapabilities capabilities = wms.getCapabilities();
 
-            Assert.assertNotNull(capabilities);
-        } catch (java.net.ConnectException ce) {
-            if (ce.getMessage().indexOf("timed out") > 0) {
-                // System.err.println("Unable to test - timed out: " + ce);
-            } else {
-                throw (ce);
-            }
-        }
+        Assert.assertNotNull(capabilities);
     }
 
-    @Test
+    @Test(expected = UnsupportedOperationException.class)
     public void testCreateDescribeLayerRequest() throws Exception {
-        try {
-            spec.createDescribeLayerRequest(null);
-            Assert.fail("Shouldn't be able to create DescribeLayer requests for version 1.0.0");
-        } catch (UnsupportedOperationException e) {
-
-        }
+        spec.createDescribeLayerRequest(null);
+        Assert.fail("Shouldn't be able to create DescribeLayer requests for version 1.0.0");
     }
 
     protected void checkProperties(Properties properties) {
@@ -107,59 +99,48 @@ public class WMS1_0_0_OnlineTest {
     @Test
     public void testCreateParser() throws Exception {
         WMSCapabilities capabilities = createCapabilities("1.0.0Capabilities.xml");
-        try {
-            Assert.assertEquals(capabilities.getVersion(), "1.0.0");
-            Assert.assertEquals(capabilities.getService().getName(), "GetMap");
-            Assert.assertEquals(capabilities.getService().getTitle(), "World Map");
+        Assert.assertEquals(capabilities.getVersion(), "1.0.0");
+        Assert.assertEquals(capabilities.getService().getName(), "GetMap");
+        Assert.assertEquals(capabilities.getService().getTitle(), "World Map");
 
-            for (int i = 0; i < capabilities.getService().getKeywordList().length; i++) {
-                Assert.assertEquals(
-                        capabilities.getService().getKeywordList()[i],
-                        "OpenGIS WMS Web Map Server".split(" ")[i]);
-            }
-
+        for (int i = 0; i < capabilities.getService().getKeywordList().length; i++) {
             Assert.assertEquals(
-                    capabilities.getService().getOnlineResource(), new URL("http://www2.demis.nl"));
-            Assert.assertEquals(
-                    capabilities.getRequest().getGetCapabilities().getFormats().get(0),
-                    "application/vnd.ogc.wms_xml");
-            Assert.assertEquals(
-                    capabilities.getRequest().getGetFeatureInfo().getGet(),
-                    new URL("http://www2.demis.nl/wms/wms.asp?wms=WorldMap&"));
-            Assert.assertEquals(capabilities.getRequest().getGetMap().getFormats().size(), 4);
-
-            Assert.assertEquals(capabilities.getLayerList().size(), 21);
-
-            Layer[] layers =
-                    capabilities
-                            .getLayerList()
-                            .toArray(new Layer[capabilities.getLayerList().size()]);
-            Assert.assertEquals(layers[0].getTitle(), "World Map");
-            Assert.assertNull(layers[0].getParent());
-            Assert.assertTrue(layers[0].getSrs().contains("EPSG:4326")); //  case should not matter
-            Assert.assertTrue(layers[0].getSrs().contains("EPSG:4327"));
-            Assert.assertEquals(layers[1].getTitle(), "Bathymetry");
-            Assert.assertEquals(layers[1].getName(), "Bathymetry");
-            Assert.assertEquals(layers[20].getTitle(), "Ocean features");
-            Assert.assertEquals(layers[20].getName(), "Ocean features");
-            Assert.assertEquals(layers[0].getBoundingBoxes().size(), 1);
-
-            CRSEnvelope bbox = layers[1].getBoundingBoxes().get("EPSG:4326");
-            Assert.assertNotNull(bbox);
-        } catch (Exception e) {
-            if (e.getMessage().indexOf("timed out") > 0) {
-                // System.err.println("Unable to test - timed out: " + e);
-            } else {
-                throw (e);
-            }
+                    capabilities.getService().getKeywordList()[i],
+                    "OpenGIS WMS Web Map Server".split(" ")[i]);
         }
+
+        Assert.assertEquals(
+                capabilities.getService().getOnlineResource(), new URL("http://www2.demis.nl"));
+        Assert.assertEquals(
+                capabilities.getRequest().getGetCapabilities().getFormats().get(0),
+                "application/vnd.ogc.wms_xml");
+        Assert.assertEquals(
+                capabilities.getRequest().getGetFeatureInfo().getGet(),
+                new URL("http://www2.demis.nl/wms/wms.asp?wms=WorldMap&"));
+        Assert.assertEquals(capabilities.getRequest().getGetMap().getFormats().size(), 4);
+
+        Assert.assertEquals(capabilities.getLayerList().size(), 21);
+
+        Layer[] layers =
+                capabilities.getLayerList().toArray(new Layer[capabilities.getLayerList().size()]);
+        Assert.assertEquals(layers[0].getTitle(), "World Map");
+        Assert.assertNull(layers[0].getParent());
+        Assert.assertTrue(layers[0].getSrs().contains("EPSG:4326")); //  case should not matter
+        Assert.assertTrue(layers[0].getSrs().contains("EPSG:4327"));
+        Assert.assertEquals(layers[1].getTitle(), "Bathymetry");
+        Assert.assertEquals(layers[1].getName(), "Bathymetry");
+        Assert.assertEquals(layers[20].getTitle(), "Ocean features");
+        Assert.assertEquals(layers[20].getName(), "Ocean features");
+        Assert.assertEquals(layers[0].getBoundingBoxes().size(), 1);
+
+        CRSEnvelope bbox = layers[1].getBoundingBoxes().get("EPSG:4326");
+        Assert.assertNotNull(bbox);
     }
 
     @Test
     public void testCreateGetMapRequest() throws Exception {
         try {
             CustomWMS wms = new CustomWMS(server);
-            WMSCapabilities caps = wms.getCapabilities();
             GetMapRequest request = wms.createGetMapRequest();
             request.setFormat("image/jpeg");
             // System.out.println(request.getFinalURL().toExternalForm());
@@ -167,7 +148,7 @@ public class WMS1_0_0_OnlineTest {
             Assert.assertTrue(request.getFinalURL().toExternalForm().indexOf("jpeg") >= 0);
         } catch (java.net.ConnectException ce) {
             if (ce.getMessage().indexOf("timed out") > 0) {
-                // System.err.println("Unable to test - timed out: " + ce);
+                LOGGER.warning("Unable to test - timed out: " + ce);
             } else {
                 throw (ce);
             }
@@ -175,6 +156,7 @@ public class WMS1_0_0_OnlineTest {
     }
 
     @Test
+    @Ignore
     public void testCreateGetFeatureInfoRequest() throws Exception {
         /* TODO FIX THIS
         try{
@@ -257,7 +239,6 @@ public class WMS1_0_0_OnlineTest {
             Object object =
                     DocumentFactory.getInstance(getCapsURL.openStream(), hints, Level.WARNING);
 
-            Schema schema = WMSSchema.getInstance();
             SchemaFactory.getInstance(WMSSchema.NAMESPACE);
 
             Assert.assertTrue("Capabilities failed to parse", object instanceof WMSCapabilities);

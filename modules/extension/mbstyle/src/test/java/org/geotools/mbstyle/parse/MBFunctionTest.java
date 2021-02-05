@@ -397,10 +397,6 @@ public class MBFunctionTest {
         Color result = fn.evaluate(feature, Color.class);
         // System.out.println("The interpolated color is: " + result);
 
-        Expression zoomLevel = fn.getParameters().get(0);
-        Number n = zoomLevel.evaluate(null, Number.class);
-        // System.out.println("(the function's interpolate value was " + n + ")");
-
         assertTrue(
                 "Color has no red, but should be interpolated mix of red and green",
                 result.getRed() > 0);
@@ -459,9 +455,6 @@ public class MBFunctionTest {
         Function fn = (Function) function.color();
         Color result = fn.evaluate(feature, Color.class);
 
-        Expression zoomLevel = fn.getParameters().get(0);
-        Number n = zoomLevel.evaluate(null, Number.class);
-
         assertTrue(
                 "Color has no red, but should be interpolated mix of red and green",
                 result.getRed() > 0);
@@ -518,9 +511,6 @@ public class MBFunctionTest {
 
         Function fn = (Function) function.color();
         Color result = fn.evaluate(feature, Color.class);
-
-        Expression zoomLevel = fn.getParameters().get(0);
-        Number n = zoomLevel.evaluate(null, Number.class);
 
         assertTrue(
                 "Color has no red, but should be interpolated mix of red and green",

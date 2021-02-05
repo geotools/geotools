@@ -78,11 +78,12 @@ public class ZMHandlersTest {
         ShapefileDataStore store = new ShapefileDataStore(url);
         Query q = new Query(store.getTypeNames()[0]);
         q.getHints().put(Hints.FEATURE_2D, Boolean.TRUE);
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                store.getFeatureReader(q, Transaction.AUTO_COMMIT);
-        while (reader.hasNext()) {
-            SimpleFeature f = reader.next();
-            assertNotNull(f.getDefaultGeometry());
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                store.getFeatureReader(q, Transaction.AUTO_COMMIT)) {
+            while (reader.hasNext()) {
+                SimpleFeature f = reader.next();
+                assertNotNull(f.getDefaultGeometry());
+            }
         }
     }
 
@@ -220,14 +221,15 @@ public class ZMHandlersTest {
             assertEquals("wrong z", expected[k + 2], coordinate.getZ(), 0.00001);
         }
 
-        Query query = new Query();
-        query.getHints().put(Hints.FEATURE_2D, Boolean.TRUE);
-        try (SimpleFeatureIterator itr = store.getFeatureSource().getFeatures(query).features()) {
-            while (itr.hasNext()) {
-                SimpleFeature f = itr.next();
-                System.out.println(f.getDefaultGeometryProperty());
-            }
-        }
+        //        Query query = new Query();
+        //        query.getHints().put(Hints.FEATURE_2D, Boolean.TRUE);
+        //        try (SimpleFeatureIterator itr =
+        // store.getFeatureSource().getFeatures(query).features()) {
+        //            while (itr.hasNext()) {
+        //                SimpleFeature f = itr.next();
+        //                System.out.println(f.getDefaultGeometryProperty());
+        //            }
+        //        }
     }
 
     /**
@@ -241,14 +243,15 @@ public class ZMHandlersTest {
         ShapefileDataStore store = new ShapefileDataStore(url);
         Query q = new Query(store.getTypeNames()[0]);
         q.getHints().put(Hints.FEATURE_2D, Boolean.TRUE);
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                store.getFeatureReader(q, Transaction.AUTO_COMMIT);
-        while (reader.hasNext()) {
-            SimpleFeature f = reader.next();
-            assertNotNull(f.getDefaultGeometry());
-            numFeatures++;
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                store.getFeatureReader(q, Transaction.AUTO_COMMIT)) {
+            while (reader.hasNext()) {
+                SimpleFeature f = reader.next();
+                assertNotNull(f.getDefaultGeometry());
+                numFeatures++;
+            }
+            return numFeatures;
         }
-        return numFeatures;
     }
 
     @Test
@@ -282,14 +285,15 @@ public class ZMHandlersTest {
         URL url = TestData.url(ShapefileDataStore.class, filename);
         ShapefileDataStore store = new ShapefileDataStore(url);
         Query q = new Query(store.getTypeNames()[0]);
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                store.getFeatureReader(q, Transaction.AUTO_COMMIT);
-        while (reader.hasNext()) {
-            SimpleFeature f = reader.next();
-            assertNotNull(f.getDefaultGeometry());
-            numFeatures++;
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                store.getFeatureReader(q, Transaction.AUTO_COMMIT)) {
+            while (reader.hasNext()) {
+                SimpleFeature f = reader.next();
+                assertNotNull(f.getDefaultGeometry());
+                numFeatures++;
+            }
+            return numFeatures;
         }
-        return numFeatures;
     }
 
     @Test
@@ -427,7 +431,7 @@ public class ZMHandlersTest {
                 if (geom != null) {
                     // System.out.println(geom.getDimension());
                     // System.out.println(geom.getCoordinate());
-                    Geometry geometry = LiteCoordinateSequence.cloneGeometry(geom);
+                    LiteCoordinateSequence.cloneGeometry(geom);
                 }
             }
         } catch (Exception e) {
@@ -444,11 +448,12 @@ public class ZMHandlersTest {
         ShapefileDataStore store = new ShapefileDataStore(url);
         Query q = new Query(store.getTypeNames()[0]);
         q.getHints().put(Hints.FEATURE_2D, Boolean.FALSE);
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                store.getFeatureReader(q, Transaction.AUTO_COMMIT);
-        while (reader.hasNext()) {
-            SimpleFeature f = reader.next();
-            assertNotNull(f.getDefaultGeometry());
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                store.getFeatureReader(q, Transaction.AUTO_COMMIT)) {
+            while (reader.hasNext()) {
+                SimpleFeature f = reader.next();
+                assertNotNull(f.getDefaultGeometry());
+            }
         }
     }
 }

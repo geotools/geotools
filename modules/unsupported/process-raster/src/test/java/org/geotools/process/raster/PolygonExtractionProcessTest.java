@@ -26,11 +26,9 @@ import java.awt.image.Raster;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import javax.imageio.ImageIO;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -79,8 +77,6 @@ public class PolygonExtractionProcessTest {
         final int perimeters[] = {4, 16, 4};
         final int areas[] = {1, 7, 1};
 
-        int band = 0;
-        Set<Double> outsideValues = Collections.singleton(0D);
         SimpleFeatureCollection fc = process.execute(cov, 0, Boolean.TRUE, null, null, null, null);
         assertEquals(3, fc.size());
 
@@ -211,8 +207,6 @@ public class PolygonExtractionProcessTest {
                         DATA,
                         new ReferencedEnvelope(0, DATA[0].length, 0, DATA.length, null));
 
-        Set<Double> outsideValues = Collections.singleton(0D);
-
         SimpleFeatureCollection fc = process.execute(cov, 0, Boolean.TRUE, null, null, null, null);
         assertEquals(1, fc.size());
 
@@ -325,11 +319,10 @@ public class PolygonExtractionProcessTest {
         assertEquals(2, fc.size());
 
         // Expected result is 2 polygons, each with area == 16.0
-        SimpleFeatureIterator iter = fc.features();
         List<Integer> expectedValues = new ArrayList<>();
         expectedValues.add(1);
         expectedValues.add(2);
-        try {
+        try (SimpleFeatureIterator iter = fc.features()) {
             while (iter.hasNext()) {
                 SimpleFeature feature = iter.next();
                 Integer value = ((Number) feature.getAttribute("value")).intValue();
@@ -338,8 +331,6 @@ public class PolygonExtractionProcessTest {
                 Polygon poly = (Polygon) feature.getDefaultGeometry();
                 assertEquals(16.0, poly.getArea(), TOL);
             }
-        } finally {
-            iter.close();
         }
     }
 

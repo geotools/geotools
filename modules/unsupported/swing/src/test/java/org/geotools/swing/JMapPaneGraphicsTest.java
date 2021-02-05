@@ -23,7 +23,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.io.IOException;
@@ -54,12 +53,6 @@ import org.junit.runner.RunWith;
  */
 @RunWith(GraphicsTestRunner.class)
 public class JMapPaneGraphicsTest extends JMapPaneGraphicsTestBase {
-
-    /**
-     * Set this to true to display the screen shot image of the label in the test {@linkplain
-     * #labelTextIsFittedProperly()}.
-     */
-    private static final boolean displayLabelImage = false;
 
     @BeforeClass
     public static void setUpOnce() {
@@ -197,7 +190,6 @@ public class JMapPaneGraphicsTest extends JMapPaneGraphicsTestBase {
     @Test
     public void mapPaneShouldHonourInitialViewportBounds() throws Exception {
         window.show(new Dimension(WIDTH, HEIGHT));
-        Rectangle visRect = mapPane.getVisibleRect();
         GuiActionRunner.execute(
                 new GuiTask() {
                     @Override

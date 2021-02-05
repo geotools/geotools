@@ -18,6 +18,7 @@ package org.geotools.gml3.v3_2;
 
 import org.geotools.geometry.jts.CurvedGeometryFactory;
 import org.geotools.gml3.GML3CurveParsingTest;
+import org.junit.Before;
 
 /**
  * Checks that the GML 3.2 bindings can do the work as well as the GML 3 ones
@@ -27,6 +28,7 @@ import org.geotools.gml3.GML3CurveParsingTest;
 public class GML32CurveParsingTest extends GML3CurveParsingTest {
 
     @Override
+    @Before
     public void setUp() throws Exception {
         GMLConfiguration configuration = new GMLConfiguration(true);
         configuration.setGeometryFactory(new CurvedGeometryFactory(TOLERANCE));

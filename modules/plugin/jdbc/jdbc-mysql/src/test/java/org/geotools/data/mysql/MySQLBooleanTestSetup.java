@@ -19,6 +19,7 @@ package org.geotools.data.mysql;
 import org.geotools.jdbc.JDBCBooleanTestSetup;
 import org.geotools.jdbc.JDBCDataStore;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class MySQLBooleanTestSetup extends JDBCBooleanTestSetup {
 
     protected MySQLBooleanTestSetup() {

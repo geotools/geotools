@@ -55,15 +55,16 @@ public class CentroidProcessTest {
         CentroidProcess cp = new CentroidProcess();
         SimpleFeatureCollection result = cp.execute(fc);
 
-        SimpleFeatureIterator it = result.features();
-        assertTrue(it.hasNext());
-        SimpleFeature f = it.next();
-        assertEquals(0, ((Point) f.getDefaultGeometry()).getX(), 1e-6);
-        assertEquals(0, ((Point) f.getDefaultGeometry()).getY(), 1e-6);
-        assertEquals("one", f.getAttribute("name"));
-        f = it.next();
-        assertEquals(10, ((Point) f.getDefaultGeometry()).getX(), 1e-6);
-        assertEquals(0, ((Point) f.getDefaultGeometry()).getY(), 1e-6);
-        assertEquals("two", f.getAttribute("name"));
+        try (SimpleFeatureIterator it = result.features()) {
+            assertTrue(it.hasNext());
+            SimpleFeature f = it.next();
+            assertEquals(0, ((Point) f.getDefaultGeometry()).getX(), 1e-6);
+            assertEquals(0, ((Point) f.getDefaultGeometry()).getY(), 1e-6);
+            assertEquals("one", f.getAttribute("name"));
+            f = it.next();
+            assertEquals(10, ((Point) f.getDefaultGeometry()).getX(), 1e-6);
+            assertEquals(0, ((Point) f.getDefaultGeometry()).getY(), 1e-6);
+            assertEquals("two", f.getAttribute("name"));
+        }
     }
 }

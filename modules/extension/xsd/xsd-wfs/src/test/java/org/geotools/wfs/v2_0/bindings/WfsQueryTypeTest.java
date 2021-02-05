@@ -19,8 +19,8 @@ package org.geotools.wfs.v2_0.bindings;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 import javax.xml.namespace.QName;
@@ -58,7 +58,7 @@ public class WfsQueryTypeTest extends WFSTestSupport {
         String tmp = typeName.getLocalPart();
 
         assertFalse(attr.startsWith("[{"));
-        assertTrue(attr.indexOf(tmp) != -1);
+        assertNotEquals(attr.indexOf(tmp), -1);
         assertEquals(attr.length(), attr.indexOf(tmp) + tmp.length()); // 8 == ":theType".length
 
         HashMap<String, String> m = new HashMap<>();

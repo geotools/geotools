@@ -34,6 +34,7 @@ import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 
 /** Tests that measurements coordinates (M) are correctly handled. */
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCMeasuredGeometriesOnlineTest extends JDBCTestSupport {
 
     public void testRetrievingPointM() {

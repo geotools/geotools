@@ -53,6 +53,7 @@ public class ContentEntryTest {
                     }
                 };
 
+        @SuppressWarnings("PMD.CloseResource") // need to test after closing
         Transaction transaction = new DefaultTransaction();
 
         ContentEntry entry = new ContentEntry(dataStore, new NameImpl("test"));

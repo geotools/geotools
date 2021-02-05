@@ -18,6 +18,7 @@ package org.geotools.data.oracle;
 
 import org.geotools.jdbc.JDBCPrimaryKeyTestSetup;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public class OraclePrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
 
     protected OraclePrimaryKeyTestSetup() {

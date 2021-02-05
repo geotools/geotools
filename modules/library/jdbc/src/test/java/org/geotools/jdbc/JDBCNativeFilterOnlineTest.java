@@ -32,6 +32,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.NativeFilter;
 import org.opengis.filter.spatial.BBOX;
 
+@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
 public abstract class JDBCNativeFilterOnlineTest extends JDBCTestSupport {
 
     protected final FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2(null);
@@ -46,15 +47,15 @@ public abstract class JDBCNativeFilterOnlineTest extends JDBCTestSupport {
         ContentFeatureSource featureSource =
                 dataStore.getFeatureSource(tname("gt_jdbc_test_measurements"));
         assertThat(featureSource, notNullValue());
-        SimpleFeatureIterator iterator = featureSource.getFeatures(filter).features();
-        List<SimpleFeature> features = new ArrayList<>();
-        while (iterator.hasNext()) {
-            features.add(iterator.next());
+        try (SimpleFeatureIterator iterator = featureSource.getFeatures(filter).features()) {
+            List<SimpleFeature> features = new ArrayList<>();
+            while (iterator.hasNext()) {
+                features.add(iterator.next());
+            }
+            // check that we retrieved the necessary features
+            assertThat(features.size(), is(1));
+            assertThat(features.get(0).getAttribute(tname("code")), is("#2"));
         }
-        iterator.close();
-        // check that we retrieved the necessary features
-        assertThat(features.size(), is(1));
-        assertThat(features.get(0).getAttribute(tname("code")), is("#2"));
     }
 
     /**

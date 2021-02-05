@@ -38,8 +38,6 @@ public class BasicEdgeTest {
     private BasicEdge m_other4;
 
     private BasicEdge m_same;
-    private BasicEdge m_same2;
-    private BasicEdge m_diff;
     private BasicEdge m_opp;
     private BasicEdge m_loopA;
     private BasicEdge m_loopB;
@@ -75,7 +73,6 @@ public class BasicEdgeTest {
 
         // dont add these to the graph yet
         m_same = new BasicEdge(m_nodeA, m_nodeB);
-        m_same2 = new BasicEdge(m_nodeA, m_nodeB);
         m_opp = new BasicEdge(m_nodeB, m_nodeA);
         m_loopA = new BasicEdge(m_nodeA, m_nodeA);
         m_loopB = new BasicEdge(m_nodeB, m_nodeB);

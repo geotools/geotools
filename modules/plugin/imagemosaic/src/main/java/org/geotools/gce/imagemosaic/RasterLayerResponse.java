@@ -709,6 +709,9 @@ public class RasterLayerResponse {
                 List<SubmosaicProducer> collectors =
                         submosaicProducerFactory.createProducers(
                                 this.getRequest(), this.getRasterManager(), this, true);
+                for (SubmosaicProducer producer : collectors) {
+                    producer.init(query);
+                }
                 final MosaicProducer dryRunVisitor = new MosaicProducer(true, collectors);
                 final Utils.BBOXFilterExtractor bboxExtractor = new Utils.BBOXFilterExtractor();
                 query.getFilter().accept(bboxExtractor, null);

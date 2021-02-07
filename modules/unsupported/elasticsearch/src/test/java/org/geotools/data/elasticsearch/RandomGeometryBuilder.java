@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
 import org.geotools.data.geojson.GeoJSONWriter;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
@@ -40,14 +39,13 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.WKTWriter;
 
-
 class RandomGeometryBuilder {
 
     private final GeometryFactory geometryFactory;
 
     private final Random random;
 
-    //private final GeometryJSON geometryJson;
+    // private final GeometryJSON geometryJson;
 
     private final int decimals;
 
@@ -63,7 +61,7 @@ class RandomGeometryBuilder {
         decimals = 4;
         numPoints = 10;
         numGeometries = 2;
-        //geometryJson = new GeometryJSON(decimals);
+        // geometryJson = new GeometryJSON(decimals);
         wktWriter = new WKTWriter();
     }
 

@@ -105,12 +105,11 @@ public class GeoJSONFeatureSource extends ContentFeatureSource {
 
         try (GeoJSONReader reader = getDataStore().read()) {
             try (FeatureIterator<SimpleFeature> itr = reader.getIterator()) {
-                boolean empty = true;
+
                 while (itr.hasNext()) {
-                    empty = false;
                     itr.next();
                     schema = (SimpleFeatureType) reader.getSchema();
-                    if (quick) {
+                    if (isQuick()) {
                         break;
                     }
                 }
@@ -118,7 +117,9 @@ public class GeoJSONFeatureSource extends ContentFeatureSource {
                  * In the event we are dealing with an empty file the schema may have
                  * been set in the datastore.
                  */
-
+                if (schema == null) {
+                    schema = getDataStore().getSchema();
+                }
             }
 
             return schema;

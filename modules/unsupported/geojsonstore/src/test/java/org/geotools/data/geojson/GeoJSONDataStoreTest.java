@@ -130,7 +130,7 @@ public class GeoJSONDataStoreTest {
     }
 
     @Test
-    public void testVeryChangableSchema() throws IOException {
+    public void testVeryChangeableSchema() throws IOException {
         URL url = TestData.url(GeoJSONDataStore.class, "jagged.json");
         GeoJSONDataStore fds = new GeoJSONDataStore(url);
         fds.setQuickSchema(false);

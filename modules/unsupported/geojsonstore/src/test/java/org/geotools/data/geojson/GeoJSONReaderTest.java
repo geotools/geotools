@@ -37,6 +37,7 @@ import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 
 /** @author ian */
 public class GeoJSONReaderTest {
@@ -57,7 +58,7 @@ public class GeoJSONReaderTest {
 
     @Test
     public void testGetChangingSchema() throws IOException, ParseException {
-        URL url = TestData.url(GeoJSONDataStore.class, "locations-changable.json");
+        URL url = TestData.url(GeoJSONDataStore.class, "locations-changeable.json");
 
         try (GeoJSONReader reader = new GeoJSONReader(url)) {
             SimpleFeatureCollection features = reader.getFeatures();
@@ -193,11 +194,7 @@ public class GeoJSONReaderTest {
                 "POLYGON ((100 0, 101 0, 101 1, 100 1, 100 0), (100.8 0.8, 100.8 0.2, 100.2 0.2, 100.2 0.8, 100.8 0.8))";
         testGeometry(line, expected);
     }
-    /**
-     * @param line
-     * @param expected
-     * @throws ParseException
-     */
+
     private void testGeometry(String json, String wkt) throws ParseException {
         Geometry p = GeoJSONReader.parseGeometry(json);
 
@@ -234,7 +231,7 @@ public class GeoJSONReaderTest {
         SimpleFeature f = null;
         try (GeoJSONReader reader =
                 new GeoJSONReader(new ByteArrayInputStream(geojson1.getBytes()))) {
-            FeatureCollection features = reader.getFeatures();
+            FeatureCollection<SimpleFeatureType, SimpleFeature> features = reader.getFeatures();
             assertNotNull(features);
             assertFalse(features.isEmpty());
             f = (SimpleFeature) DataUtilities.first(features);

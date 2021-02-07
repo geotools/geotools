@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
@@ -238,7 +239,6 @@ public class GeoJSONReader implements AutoCloseable {
                     // we haven't seen this attribute before
                     restart = true;
                     builder = null;
-                    schema = null;
                     // rebuild the schema
                     builder = getBuilder(props);
                     setSchemaChanged(true);
@@ -274,38 +274,53 @@ public class GeoJSONReader implements AutoCloseable {
     /** Create a simpleFeatureBuilder for the current schema + these new properties. */
     private SimpleFeatureBuilder getBuilder(JsonNode props) {
 
-        if (schema == null) {
-            typeBuilder = new SimpleFeatureTypeBuilder();
-            // GeoJSON is always WGS84
-            typeBuilder.setCRS(DefaultGeographicCRS.WGS84);
-            typeBuilder.setName(baseName);
-            if (typeBuilder.getDefaultGeometry() == null) {
-                typeBuilder.setDefaultGeometry(GEOMETRY_NAME);
+        typeBuilder = new SimpleFeatureTypeBuilder();
+        // GeoJSON is always WGS84
+        typeBuilder.setCRS(DefaultGeographicCRS.WGS84);
+        typeBuilder.setName(baseName);
+        HashSet<String> existing = new HashSet<>();
+        if (schema != null) {
+            // copy the existing types to the new schema
+            for (AttributeDescriptor att : schema.getAttributeDescriptors()) {
+                typeBuilder.add(att);
+                existing.add(att.getLocalName());
+            }
+        }
+
+        if (typeBuilder.getDefaultGeometry() == null) {
+            typeBuilder.setDefaultGeometry(GEOMETRY_NAME);
+            if (!existing.contains(GEOMETRY_NAME)) {
                 typeBuilder.add(GEOMETRY_NAME, Geometry.class, DefaultGeographicCRS.WGS84);
             }
-            Iterator<Entry<String, JsonNode>> fields = props.fields();
-            while (fields.hasNext()) {
-                Entry<String, JsonNode> n = fields.next();
-                typeBuilder.nillable(true);
-                JsonNode value = n.getValue();
-
-                if (value instanceof IntNode) {
-                    typeBuilder.add(n.getKey(), Integer.class);
-                } else if (value instanceof DoubleNode) {
-                    typeBuilder.add(n.getKey(), Double.class);
-                } else if (value instanceof ObjectNode) {
-                    String type = value.get("type").asText();
-                    Geometries namedType = Geometries.getForName(type);
-                    if (namedType != null) {
-                        typeBuilder.add(n.getKey(), Geometry.class, DefaultGeographicCRS.WGS84);
-                    }
-                } else {
-                    typeBuilder.defaultValue("");
-                    typeBuilder.add(n.getKey(), String.class);
-                }
-            }
-            schema = typeBuilder.buildFeatureType();
         }
+        Iterator<Entry<String, JsonNode>> fields = props.fields();
+        while (fields.hasNext()) {
+            Entry<String, JsonNode> n = fields.next();
+            if (existing.contains(n.getKey())) {
+                continue;
+            } else {
+                existing.add(n.getKey());
+            }
+            typeBuilder.nillable(true);
+            JsonNode value = n.getValue();
+
+            if (value instanceof IntNode) {
+                typeBuilder.add(n.getKey(), Integer.class);
+            } else if (value instanceof DoubleNode) {
+                typeBuilder.add(n.getKey(), Double.class);
+            } else if (value instanceof ObjectNode) {
+                String type = value.get("type").asText();
+                Geometries namedType = Geometries.getForName(type);
+                if (namedType != null) {
+                    typeBuilder.add(n.getKey(), Geometry.class, DefaultGeographicCRS.WGS84);
+                }
+            } else {
+                typeBuilder.defaultValue("");
+                typeBuilder.add(n.getKey(), String.class);
+            }
+        }
+        schema = typeBuilder.buildFeatureType();
+
         return new SimpleFeatureBuilder(schema);
     }
 

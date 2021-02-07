@@ -45,7 +45,7 @@ public class GenericGeometryParser extends BaseParser implements GeometryParser<
 
     public GenericGeometryParser(GeometryFactory geometryFactory) {
         super(geometryFactory);
-        parsers = new HashMap<String, GeometryParser>();
+        parsers = new HashMap<>();
         parsers.put(POINT, new PointParser(geometryFactory));
         parsers.put(MULTI_POINT, new MultiPointParser(geometryFactory));
         parsers.put(LINE_STRING, new LineStringParser(geometryFactory));

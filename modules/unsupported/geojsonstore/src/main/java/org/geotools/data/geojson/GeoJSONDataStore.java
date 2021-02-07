@@ -84,6 +84,9 @@ public class GeoJSONDataStore extends ContentDataStore implements FileDataStore 
 
     @Override
     protected List<Name> createTypeNames() throws IOException {
+        if (schema != null) {
+            return Collections.singletonList(new NameImpl(schema.getTypeName()));
+        }
         String name = new File(getUrl().getFile()).getName();
         int index = name.lastIndexOf('.');
         if (index > 0) {

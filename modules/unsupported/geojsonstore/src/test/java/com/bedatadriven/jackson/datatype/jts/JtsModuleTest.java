@@ -27,10 +27,8 @@ import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
 
 public class JtsModuleTest {
-    private GeometryFactory gf = new GeometryFactory();
     private ObjectMapper mapper;
 
     @Before

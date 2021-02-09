@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.factory.epsg.CoordinateOperationFactoryUsingWKT;
 import org.geotools.referencing.factory.epsg.FactoryUsingWKT;
 import org.geotools.util.factory.AbstractFactory;
@@ -27,6 +28,7 @@ import org.geotools.util.factory.Hints;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.ConcatenatedOperation;
 import org.opengis.referencing.operation.CoordinateOperation;
@@ -112,5 +114,42 @@ public class LongitudeFirstFactoryOverrideTest {
         ConcatenatedOperation cco = (ConcatenatedOperation) co;
         // the EPSG one only has two steps, the non EPSG one 4
         assertEquals(2, cco.getOperations().size());
+    }
+
+    @Test
+    public void testCreateFromCRSCodesWGS84() throws FactoryException {
+        CoordinateReferenceSystem crs5681 = CRS.decode("EPSG:5681");
+        // Getting a transformation from a EPSG code to the WGS84 constant, should still
+        // pick up the transformation override
+        CoordinateOperation operation =
+                CRS.getCoordinateOperationFactory(true)
+                        .createOperation(crs5681, DefaultGeographicCRS.WGS84);
+
+        String expected =
+                "CONCAT_MT[PARAM_MT[\"Ellipsoid_To_Geocentric\", \n"
+                        + "    PARAMETER[\"dim\", 2], \n"
+                        + "    PARAMETER[\"semi_major\", 6377397.155], \n"
+                        + "    PARAMETER[\"semi_minor\", 6356078.962818189]], \n"
+                        + "  PARAM_MT[\"Coordinate Frame Rotation (geog2D domain)\", \n"
+                        + "    PARAMETER[\"dx\", 584.9636], \n"
+                        + "    PARAMETER[\"dy\", 107.7175], \n"
+                        + "    PARAMETER[\"dz\", 413.8067], \n"
+                        + "    PARAMETER[\"ex\", -1.1155], \n"
+                        + "    PARAMETER[\"ey\", -0.2824], \n"
+                        + "    PARAMETER[\"ez\", 3.1384], \n"
+                        + "    PARAMETER[\"ppm\", 7.99220000002876]], \n"
+                        + "  PARAM_MT[\"Geocentric_To_Ellipsoid\", \n"
+                        + "    PARAMETER[\"dim\", 2], \n"
+                        + "    PARAMETER[\"semi_major\", 6378137.0], \n"
+                        + "    PARAMETER[\"semi_minor\", 6356752.314245179]]]";
+        assertEquals(normalize(expected), normalize(operation.getMathTransform().toWKT()));
+    }
+
+    /**
+     * Replaces all whitespace (including newlines) with a single space. Avoids issues with platform
+     * dependent newlines in WKT representations
+     */
+    private String normalize(String s) {
+        return s.replaceAll("\\s+", " ");
     }
 }

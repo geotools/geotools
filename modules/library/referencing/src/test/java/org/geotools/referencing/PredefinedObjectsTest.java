@@ -29,6 +29,7 @@ import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import org.geotools.metadata.iso.citation.CitationImpl;
 import org.geotools.referencing.crs.AbstractCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.cs.AbstractCS;
@@ -235,7 +236,7 @@ public final class PredefinedObjectsTest {
         assertEquals(
                 "WGS84 3D", 3, DefaultGeographicCRS.WGS84_3D.getCoordinateSystem().getDimension());
 
-        // Test WKT
+        // Test WKT for 2D system
         assertEquals(
                 "WGS84",
                 "GEOGCS[\"WGS84(DD)\", "
@@ -244,8 +245,14 @@ public final class PredefinedObjectsTest {
                         + "PRIMEM[\"Greenwich\", 0.0], "
                         + "UNIT[\"degree\", 0.017453292519943295], "
                         + "AXIS[\"Geodetic longitude\", EAST], "
-                        + "AXIS[\"Geodetic latitude\", NORTH]]",
+                        + "AXIS[\"Geodetic latitude\", NORTH], "
+                        + "AUTHORITY[\"EPSG\",\"4326\"]]",
                 DefaultGeographicCRS.WGS84.toWKT(0));
+
+        // check identifier for the 3D one as well
+        assertEquals(
+                "4327",
+                DefaultGeographicCRS.WGS84_3D.getIdentifier(new CitationImpl("EPSG")).getCode());
     }
 
     /** Test serialization of various objects. */

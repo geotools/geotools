@@ -229,7 +229,7 @@ public class StreamingRendererTest {
     }
 
     @Test
-    public void testDensificationWithInvalidDomain() throws Exception {
+    public void testDensificationWithSmallDomain() throws Exception {
         // build a feature source with two zig-zag line occupying the same position
         LiteCoordinateSequence cs = new LiteCoordinateSequence(new double[] {10, 10, 10, 40});
         SimpleFeature line =
@@ -258,7 +258,8 @@ public class StreamingRendererTest {
         ArgumentCaptor<Shape> shape = ArgumentCaptor.forClass(Shape.class);
         Mockito.verify(graphics).draw(shape.capture());
         LiteShape2 drawnShape = (LiteShape2) shape.getValue();
-        assertTrue(drawnShape.getGeometry().getCoordinates().length > 2);
+        // no densification performed
+        assertEquals(2, drawnShape.getGeometry().getCoordinates().length);
         graphics.dispose();
     }
 

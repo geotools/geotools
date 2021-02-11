@@ -104,6 +104,10 @@ public class WarpBuilderTest {
         env = new GeneralEnvelope(new double[] {-110, -90}, new double[] {-80, 0});
         env.setCoordinateReferenceSystem(WGS84);
         assertRowCols(env, WGS84, polar, screen, new int[] {32, 32}, new boolean[] {false, true});
+        // less than a unit, but still valid, and in a place with high deformation
+        env = new GeneralEnvelope(new double[] {-110, -109.1}, new double[] {-80, -79.9});
+        env.setCoordinateReferenceSystem(WGS84);
+        assertRowCols(env, WGS84, polar, screen, new int[] {16, 32}, new boolean[] {false, true});
     }
 
     private void assertRowCols(

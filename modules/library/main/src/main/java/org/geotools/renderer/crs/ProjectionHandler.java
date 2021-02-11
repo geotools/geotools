@@ -722,7 +722,11 @@ public class ProjectionHandler {
     protected Geometry densify(Geometry geometry) {
         if (geometry != null && densify > 0.0) {
             try {
-                geometry = Densifier.densify(geometry, densify);
+                // disable validation, it runs an expensive buffer operation that
+                // can bring the VM to an OOM when run on large geometries.
+                Densifier densifier = new Densifier(geometry);
+                densifier.setDistanceTolerance(densify);
+                return densifier.getResultGeometry();
             } catch (Throwable t) {
                 LOGGER.warning("Cannot densify geometry");
             }

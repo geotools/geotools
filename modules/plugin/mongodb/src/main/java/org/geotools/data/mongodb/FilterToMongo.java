@@ -113,6 +113,9 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
     /** The schmema the encoder will use as reference to drive filter encoding */
     SimpleFeatureType featureType;
 
+    /** The whole world in WGS84 */
+    private static final Envelope WORLD = new Envelope(-179.99, 179.99, -89.99, 89.99);
+
     public FilterToMongo(CollectionMapper mapper) {
         this(mapper, new MongoGeometryBuilder());
     }
@@ -447,6 +450,11 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
         Object e1 = filter.getExpression1().accept(this, Geometry.class);
 
         Envelope envelope = filter.getExpression2().evaluate(null, Envelope.class);
+
+        // Mongodb cannot deal with filters using geometries that span beyond the whole world
+        if (!WORLD.contains(envelope)) {
+            envelope = envelope.intersection(WORLD);
+        }
 
         DBObject geometryDBObject = geometryBuilder.toObject(envelope);
         addCrsToGeometryDBObject(geometryDBObject);

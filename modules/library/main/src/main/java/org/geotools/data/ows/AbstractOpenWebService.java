@@ -50,6 +50,8 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
 
     private HTTPClient httpClient;
     protected final URL serverURL;
+    protected final Map<String, String> headers;
+
     protected C capabilities;
     protected ServiceInfo info;
     protected Map<R, ResourceInfo> resourceInfo = new HashMap<>();
@@ -75,6 +77,11 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
         this(serverURL, HTTPClientFinder.createClient(), null);
     }
 
+    public AbstractOpenWebService(final URL serverURL, HTTPClient httpClient)
+            throws IOException, ServiceException {
+        this(serverURL, httpClient, null);
+    }
+
     public AbstractOpenWebService(
             final URL serverURL, final HTTPClient httpClient, final C capabilities)
             throws ServiceException, IOException {
@@ -87,6 +94,17 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
             final C capabilities,
             Map<String, Object> hints)
             throws ServiceException, IOException {
+        this(serverURL, httpClient, capabilities, hints, null);
+    }
+
+    public AbstractOpenWebService(
+            final URL serverURL,
+            final HTTPClient httpClient,
+            final C capabilities,
+            Map<String, Object> hints,
+            Map<String, String> headers)
+            throws ServiceException, IOException {
+
         if (serverURL == null) {
             throw new NullPointerException("serverURL");
         }
@@ -96,6 +114,8 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
 
         this.serverURL = serverURL;
         this.httpClient = httpClient;
+        this.headers = headers;
+
         this.hints = hints;
 
         setupSpecifications();
@@ -127,6 +147,11 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
         }
     }
 
+    /**
+     * @deprecated httpClient should be treated as a final
+     * @param httpClient
+     */
+    @Deprecated
     public void setHttpClient(HTTPClient httpClient) {
         this.httpClient = httpClient;
     }
@@ -419,6 +444,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
 
                 final String postContentType = request.getPostContentType();
 
+                // For logging use the internals of HTTPClientFactory
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 request.performPostOutput(out);
                 InputStream in;
@@ -435,7 +461,11 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
                     in.close();
                 }
             } else {
-                httpResponse = httpClient.get(finalURL);
+                if (headers == null) {
+                    httpResponse = httpClient.get(finalURL);
+                } else {
+                    httpResponse = httpClient.get(finalURL, headers);
+                }
             }
 
             final Response response = request.createResponse(httpResponse);

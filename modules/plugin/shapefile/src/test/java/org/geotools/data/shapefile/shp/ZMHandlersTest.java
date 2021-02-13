@@ -57,6 +57,7 @@ public class ZMHandlersTest {
         assertEquals("wrong y", 5, geom.getCoordinate().getY(), 0.00001);
         assertEquals("wrong z", 1, geom.getCoordinate().getZ(), 0.00001);
         assertEquals("wrong m", 20, geom.getCoordinate().getM(), 0.00001);
+        store.dispose();
     }
 
     @Test
@@ -69,6 +70,7 @@ public class ZMHandlersTest {
         assertEquals("wrong y", 5, geom.getCoordinate().getY(), 0.00001);
 
         assertEquals("wrong m", 20, geom.getCoordinate().getM(), 0.00001);
+        store.dispose();
     }
 
     @Test
@@ -85,6 +87,7 @@ public class ZMHandlersTest {
                 assertNotNull(f.getDefaultGeometry());
             }
         }
+        store.dispose();
     }
 
     @Test
@@ -99,6 +102,7 @@ public class ZMHandlersTest {
         assertEquals("wrong y", 924.8555, coordinate.getY(), 0.001);
         assertEquals("wrong z", 20, coordinate.getZ(), 0.00001);
         assertEquals("wrong m", 10, coordinate.getM(), 0.00001);
+        store.dispose();
     }
 
     @Test
@@ -113,6 +117,7 @@ public class ZMHandlersTest {
         assertEquals("wrong x", 24.54682976316134, coordinate.getX(), 0d);
         assertEquals("wrong y", 60.81447758588624, coordinate.getY(), 0d);
         assertEquals("wrong z", 0d, coordinate.getZ(), 0d);
+        store.dispose();
     }
 
     @Test
@@ -126,6 +131,7 @@ public class ZMHandlersTest {
         assertEquals("wrong x", 1208.5983, coordinate.getX(), 0.001);
         assertEquals("wrong y", 924.8555, coordinate.getY(), 0.001);
         assertEquals("wrong m", 10, coordinate.getM(), 0.00001);
+        store.dispose();
     }
 
     @Test
@@ -141,6 +147,7 @@ public class ZMHandlersTest {
         assertEquals("wrong y", 909.9963, coordinate.getY(), 0.001);
         assertEquals("wrong z", 20, coordinate.getZ(), 0.00001);
         assertEquals("wrong m", 10, coordinate.getM(), 0.00001);
+        store.dispose();
     }
 
     @Test
@@ -154,6 +161,7 @@ public class ZMHandlersTest {
         assertEquals("wrong x", 589.4648, coordinate.getX(), 0.001);
         assertEquals("wrong y", 909.9963, coordinate.getY(), 0.001);
         assertEquals("wrong m", 10, coordinate.getM(), 0.00001);
+        store.dispose();
     }
 
     @Test
@@ -167,6 +175,7 @@ public class ZMHandlersTest {
         assertEquals("wrong x", 340d, coordinate.getX(), 0.001);
         assertEquals("wrong y", 377d, coordinate.getY(), 0.001);
         assertEquals("wrong z", 3d, coordinate.getZ(), 0.00001);
+        store.dispose();
     }
 
     @Test
@@ -230,6 +239,7 @@ public class ZMHandlersTest {
         //                System.out.println(f.getDefaultGeometryProperty());
         //            }
         //        }
+        store.dispose();
     }
 
     /**
@@ -241,16 +251,20 @@ public class ZMHandlersTest {
         int numFeatures = 0;
         URL url = TestData.url(ShapefileDataStore.class, filename);
         ShapefileDataStore store = new ShapefileDataStore(url);
-        Query q = new Query(store.getTypeNames()[0]);
-        q.getHints().put(Hints.FEATURE_2D, Boolean.TRUE);
-        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                store.getFeatureReader(q, Transaction.AUTO_COMMIT)) {
-            while (reader.hasNext()) {
-                SimpleFeature f = reader.next();
-                assertNotNull(f.getDefaultGeometry());
-                numFeatures++;
+        try {
+            Query q = new Query(store.getTypeNames()[0]);
+            q.getHints().put(Hints.FEATURE_2D, Boolean.TRUE);
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                    store.getFeatureReader(q, Transaction.AUTO_COMMIT)) {
+                while (reader.hasNext()) {
+                    SimpleFeature f = reader.next();
+                    assertNotNull(f.getDefaultGeometry());
+                    numFeatures++;
+                }
+                return numFeatures;
             }
-            return numFeatures;
+        } finally {
+            store.dispose();
         }
     }
 
@@ -284,15 +298,19 @@ public class ZMHandlersTest {
         int numFeatures = 0;
         URL url = TestData.url(ShapefileDataStore.class, filename);
         ShapefileDataStore store = new ShapefileDataStore(url);
-        Query q = new Query(store.getTypeNames()[0]);
-        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                store.getFeatureReader(q, Transaction.AUTO_COMMIT)) {
-            while (reader.hasNext()) {
-                SimpleFeature f = reader.next();
-                assertNotNull(f.getDefaultGeometry());
-                numFeatures++;
+        try {
+            Query q = new Query(store.getTypeNames()[0]);
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                    store.getFeatureReader(q, Transaction.AUTO_COMMIT)) {
+                while (reader.hasNext()) {
+                    SimpleFeature f = reader.next();
+                    assertNotNull(f.getDefaultGeometry());
+                    numFeatures++;
+                }
+                return numFeatures;
             }
-            return numFeatures;
+        } finally {
+            store.dispose();
         }
     }
 
@@ -356,6 +374,7 @@ public class ZMHandlersTest {
         assertEquals("wrong y", 653.67509, coordinate.getY(), 0.001);
         assertEquals("wrong z", 20, coordinate.getZ(), 0.00001);
         assertEquals("wrong m", 10, coordinate.getM(), 0.00001);
+        store.dispose();
     }
 
     @Test
@@ -369,6 +388,7 @@ public class ZMHandlersTest {
         assertEquals("wrong x", 96.944404, coordinate.getX(), 0.001);
         assertEquals("wrong y", 653.67509, coordinate.getY(), 0.001);
         assertEquals("wrong m", 10, coordinate.getM(), 0.00001);
+        store.dispose();
     }
 
     @Test
@@ -383,6 +403,7 @@ public class ZMHandlersTest {
         assertEquals("wrong x", 665d, coordinate.getX(), 0.001);
         assertEquals("wrong y", 294d, coordinate.getY(), 0.001);
         assertEquals("wrong z", 1d, coordinate.getZ(), 0.00001);
+        store.dispose();
     }
 
     /**
@@ -438,6 +459,7 @@ public class ZMHandlersTest {
             e.printStackTrace();
             fail();
         }
+        store.dispose();
     }
 
     @Test
@@ -455,5 +477,6 @@ public class ZMHandlersTest {
                 assertNotNull(f.getDefaultGeometry());
             }
         }
+        store.dispose();
     }
 }

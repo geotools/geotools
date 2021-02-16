@@ -57,10 +57,14 @@ import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.SortByImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCFeatureSource;
 import org.geotools.jdbc.JDBCFeatureStore;
+import org.geotools.jdbc.PrimaryKey;
+import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.util.factory.Hints;
 import org.opengis.feature.Feature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.FeatureType;
@@ -500,7 +504,6 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
             if (query instanceof JoiningQuery) {
                 FilterAttributeExtractor extractor = new FilterAttributeExtractor();
                 mapping.getFeatureIdExpression().accept(extractor, null);
-
                 if (!Expression.NIL.equals(mapping.getFeatureIdExpression())
                         && !(mapping.getFeatureIdExpression() instanceof Literal)
                         && extractor.getAttributeNameSet().isEmpty()) {
@@ -535,11 +538,44 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
             } else {
                 unrolledQuery = newQuery;
             }
-
+            Integer startIndex = unrolledQuery.getStartIndex();
+            boolean paging = startIndex != null && startIndex.intValue() > -1;
+            // if there are no sortBy try there is no FeatureIdExpression
+            // try to use primaryKeys
+            if (sort.isEmpty() && paging) {
+                populateSortByFromPrimaryKeys(mapping, sort);
+            }
             unrolledQuery.setSortBy(sort.toArray(new SortBy[sort.size()]));
         }
 
         return unrolledQuery;
+    }
+
+    // if the store is a jdbc one, tries to build sortBy on Primary keys
+    private void populateSortByFromPrimaryKeys(FeatureTypeMapping mappings, List<SortBy> sorts) {
+        FeatureSource source = mappings.getSource();
+        FeatureType featureType = source.getSchema();
+        JDBCDataStore store = null;
+        if (source instanceof JDBCFeatureSource) {
+            JDBCFeatureSource jdbcSource = (JDBCFeatureSource) source;
+            store = jdbcSource.getDataStore();
+        } else if (source instanceof JDBCFeatureStore)
+            store = ((JDBCFeatureStore) source).getDataStore();
+        if (store != null) {
+            try {
+                PrimaryKey primaryKey = store.getPrimaryKey((SimpleFeatureType) source.getSchema());
+                if (primaryKey != null) {
+                    for (PrimaryKeyColumn column : primaryKey.getColumns()) {
+                        PropertyName pn = filterFac.property(column.getName());
+                        // check the that the attribute exists in mappings/featureType
+                        if (pn.evaluate(featureType) != null)
+                            sorts.add(new SortByImpl(pn, SortOrder.ASCENDING));
+                    }
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     /**

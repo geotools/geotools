@@ -428,6 +428,11 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
 
                 joinClause.append(" INNER JOIN ");
 
+                // for count query the table joined might be different from
+                // the lastTypeName (last table joining)
+                if (isCount && join.getJoinedTypeName() != null)
+                    lastTypeName = join.getJoinedTypeName();
+
                 FilterToSQL toSQL1 =
                         createFilterToSQL(getDataStore().getSchema(lastTypeName), toSQLref != null);
                 FilterToSQL toSQL2 =
@@ -462,7 +467,10 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                 }
 
                 joinClause.append(" = ");
-                String fromTypeName = curTypeName;
+                String fromTypeName;
+                if (isCount && join.getJoinedTypeName() != null)
+                    fromTypeName = join.getJoinedTypeName();
+                else fromTypeName = curTypeName;
                 toSQL1.setFieldEncoder(new JoiningFieldEncoder(fromTypeName, getDataStore()));
                 joinClause.append(toSQL1.encodeToString(join.getJoiningKeyName()));
                 joinClause.append(") ");

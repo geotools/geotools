@@ -399,10 +399,14 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
                     JoiningQuery.QueryJoin join = new JoiningQuery.QueryJoin();
                     join.setForeignKeyName(nested);
                     join.setJoiningKeyName(parent);
-                    FeatureTypeMapping featureTypeMapping = link2.getFeatureTypeMapping();
+                    FeatureTypeMapping nestedTypeMapping = link2.getFeatureTypeMapping();
                     ContentFeatureSource source =
-                            (ContentFeatureSource) featureTypeMapping.getSource();
+                            (ContentFeatureSource) nestedTypeMapping.getSource();
                     join.setJoiningTypeName(source.getEntry().getTypeName());
+                    FeatureTypeMapping parentTypeMapping = link.getFeatureTypeMapping();
+                    ContentFeatureSource sourceParent =
+                            (ContentFeatureSource) parentTypeMapping.getSource();
+                    join.setJoinedTypeName(sourceParent.getEntry().getTypeName());
                     if (!joins.contains(join)) joins.add(join);
                 }
             }

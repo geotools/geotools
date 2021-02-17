@@ -673,11 +673,13 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         }
 
         // sorting
-        if (!isCount) sort(query, sql, aliases, pkColumnNames);
+        if (!isCount) {
+            sort(query, sql, aliases, pkColumnNames);
 
-        // finally encode limit/offset, if not already done in the INNER JOIN
-        if (!pagingApplied) {
-            getDataStore().applyLimitOffset(sql, query);
+            // finally encode limit/offset, if not already done in the INNER JOIN
+            if (!pagingApplied) {
+                getDataStore().applyLimitOffset(sql, query);
+            }
         }
 
         if (toSQLref != null && toSQL instanceof PreparedFilterToSQL) {

@@ -154,6 +154,7 @@ public class PartiallyOrderedSetTest {
     }
 
     @Test(expected = IllegalStateException.class)
+    @SuppressWarnings("ReturnValueIgnored")
     public void testLoop() {
         PartiallyOrderedSet<String> poset = new PartiallyOrderedSet<>();
         poset.add("a");

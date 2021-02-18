@@ -17,6 +17,7 @@
 package org.geotools.referencing.factory;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
@@ -53,7 +54,7 @@ public final class URN_ParserTest {
         assertEquals("EPSG:4326", parser.getAuthorityCode());
 
         final URN_Parser emptyVersionParser = URN_Parser.buildParser("urn:ogc:def:crs:EPSG::4326");
-        emptyVersionParser.toString();
+        assertNotNull(emptyVersionParser.toString());
         assertEquals("crs", emptyVersionParser.type.name);
         assertEquals("EPSG", emptyVersionParser.authority);
         assertNull(emptyVersionParser.version);

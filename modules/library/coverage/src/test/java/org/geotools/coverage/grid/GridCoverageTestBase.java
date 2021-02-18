@@ -400,6 +400,7 @@ public class GridCoverageTestBase extends CoverageTestBase {
      * @throws IOException if an I/O operation was needed and failed.
      * @throws ClassNotFoundException Should never happen.
      */
+    @SuppressWarnings("BanSerializableRead")
     protected static GridCoverage2D serialize(GridCoverage2D coverage)
             throws IOException, ClassNotFoundException {
         coverage.tileEncoding = null;

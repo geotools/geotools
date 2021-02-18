@@ -199,7 +199,8 @@ public class WebMapTileServerTest {
         GetTileRequest tileRequest = server.createGetTileRequest();
         WMTSLayer layer = server.getCapabilities().getLayer("83637_2");
         tileRequest.setLayer(layer);
-        tileRequest.getFinalURL().toString();
+        // exception would have occurred here
+        assertNotNull(tileRequest.getFinalURL());
     }
 
     private static class CheckHeadersHttpClient extends AbstractHttpClient {

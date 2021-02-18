@@ -92,7 +92,7 @@ public final class InternationalStringTest {
     }
 
     /** Performs basic test on the given object. */
-    @SuppressWarnings({"unchecked", "SelfComparison"})
+    @SuppressWarnings({"unchecked", "SelfComparison", "BanSerializableRead"})
     private <T extends Comparable> void basicTests(final T toTest)
             throws IOException, ClassNotFoundException {
         assertEquals("CompareTo: ", 0, toTest.compareTo(toTest));

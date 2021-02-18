@@ -14,6 +14,7 @@ import org.opengis.feature.type.Name;
 public class NameImplTest {
 
     @Test
+    @SuppressWarnings("BanSerializableRead")
     public void testSerialize() throws Exception {
         NameImpl name = new NameImpl("hello", "world");
 

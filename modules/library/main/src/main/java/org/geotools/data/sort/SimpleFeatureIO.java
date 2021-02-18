@@ -267,6 +267,7 @@ public class SimpleFeatureIO {
         return buffer;
     }
 
+    @SuppressWarnings("BanSerializableRead")
     private Object readObject() throws IOException {
         int length = raf.readInt();
         byte[] buffer = new byte[length];

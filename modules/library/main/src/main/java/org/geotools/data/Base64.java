@@ -404,6 +404,7 @@ public class Base64 {
      * @see Base64#DONT_BREAK_LINES
      * @since 2.0
      */
+    @Deprecated // deserialization is unsafe, so deprecated serialization too
     public static String encodeObject(java.io.Serializable serializableObject, int options) {
         // Streams
         java.io.ByteArrayOutputStream baos = null;
@@ -899,6 +900,8 @@ public class Base64 {
      * @return The decoded and deserialized object
      * @since 1.5
      */
+    @SuppressWarnings("BanSerializableRead")
+    @Deprecated // unsafe
     public static Object decodeToObject(String encodedObject) {
         // Decode and gunzip if necessary
         byte[] objBytes = decode(encodedObject);

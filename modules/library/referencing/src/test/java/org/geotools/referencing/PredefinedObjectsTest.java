@@ -270,6 +270,7 @@ public final class PredefinedObjectsTest {
     }
 
     /** Test the serialization of the given object. */
+    @SuppressWarnings("BanSerializableRead")
     private static void serialize(final Object object) throws IOException, ClassNotFoundException {
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
         final ObjectOutputStream outs = new ObjectOutputStream(out);

@@ -2533,11 +2533,6 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
         ensureNonNull("properties", properties);
         Object value = properties.get(IdentifiedObject.NAME_KEY);
         ensureNonNull("name", value);
-        if (value instanceof Identifier) {
-            ((Identifier) value).getCode();
-        } else {
-            value.toString();
-        }
         if (aliases != null && aliases.length > 0) {
             /*
              * Aliases have been found. Before to add them to the properties map, overrides them

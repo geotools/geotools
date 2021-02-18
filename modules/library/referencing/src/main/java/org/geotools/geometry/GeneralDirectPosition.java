@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -292,13 +293,8 @@ public class GeneralDirectPosition extends AbstractDirectPosition
 
     /** Returns a deep copy of this position. */
     @Override
+    @SuppressFBWarnings("CN_IDIOM_NO_SUPER_CALL")
     public GeneralDirectPosition clone() {
-        try {
-            super.clone();
-        } catch (CloneNotSupportedException e) {
-            // should not happen
-            throw new RuntimeException(e);
-        }
         return new GeneralDirectPosition(ordinates);
     }
 }

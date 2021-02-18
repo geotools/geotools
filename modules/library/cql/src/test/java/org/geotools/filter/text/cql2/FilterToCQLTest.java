@@ -139,7 +139,7 @@ public class FilterToCQLTest {
         EndedBy filter = ff.endedBy(ff.property("date"), newSampleDate());
 
         FilterToCQL toCQL = new FilterToCQL();
-        filter.accept(toCQL, null).toString();
+        filter.accept(toCQL, null);
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -149,7 +149,7 @@ public class FilterToCQLTest {
         Ends filter = ff.ends(ff.property("date"), newSampleDate());
 
         FilterToCQL toCQL = new FilterToCQL();
-        filter.accept(toCQL, null).toString();
+        filter.accept(toCQL, null);
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -159,7 +159,7 @@ public class FilterToCQLTest {
         Meets filter = ff.meets(ff.property("date"), newSampleDate());
 
         FilterToCQL toCQL = new FilterToCQL();
-        filter.accept(toCQL, null).toString();
+        filter.accept(toCQL, null);
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -169,7 +169,7 @@ public class FilterToCQLTest {
         MetBy filter = ff.metBy(ff.property("date"), newSampleDate());
 
         FilterToCQL toCQL = new FilterToCQL();
-        filter.accept(toCQL, null).toString();
+        filter.accept(toCQL, null);
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -179,7 +179,7 @@ public class FilterToCQLTest {
         OverlappedBy filter = ff.overlappedBy(ff.property("date"), newSampleDate());
 
         FilterToCQL toCQL = new FilterToCQL();
-        filter.accept(toCQL, null).toString();
+        filter.accept(toCQL, null);
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -189,7 +189,7 @@ public class FilterToCQLTest {
         TContains filter = ff.tcontains(ff.property("date"), newSampleDate());
 
         FilterToCQL toCQL = new FilterToCQL();
-        filter.accept(toCQL, null).toString();
+        filter.accept(toCQL, null);
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -199,7 +199,7 @@ public class FilterToCQLTest {
         TEquals filter = ff.tequals(ff.property("date"), newSampleDate());
 
         FilterToCQL toCQL = new FilterToCQL();
-        filter.accept(toCQL, null).toString();
+        filter.accept(toCQL, null);
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -209,7 +209,7 @@ public class FilterToCQLTest {
         TOverlaps filter = ff.toverlaps(ff.property("date"), newSampleDate());
 
         FilterToCQL toCQL = new FilterToCQL();
-        filter.accept(toCQL, null).toString();
+        filter.accept(toCQL, null);
     }
 
     protected Literal newSampleDate() throws ParseException {
@@ -228,7 +228,7 @@ public class FilterToCQLTest {
         Begins filter = ff.begins(ff.property("date"), newSampleDate());
 
         FilterToCQL toCQL = new FilterToCQL();
-        filter.accept(toCQL, null).toString();
+        filter.accept(toCQL, null);
     }
 
     @Test
@@ -249,7 +249,7 @@ public class FilterToCQLTest {
         BegunBy filter = ff.begunBy(ff.property("date"), newSampleDate());
 
         FilterToCQL toCQL = new FilterToCQL();
-        filter.accept(toCQL, null).toString();
+        filter.accept(toCQL, null);
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -259,7 +259,7 @@ public class FilterToCQLTest {
         AnyInteracts filter = ff.anyInteracts(ff.property("date"), newSampleDate());
 
         FilterToCQL toCQL = new FilterToCQL();
-        filter.accept(toCQL, null).toString();
+        filter.accept(toCQL, null);
     }
 
     @Test

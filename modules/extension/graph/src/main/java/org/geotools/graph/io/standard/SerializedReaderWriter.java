@@ -42,6 +42,7 @@ import org.geotools.graph.structure.Node;
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  */
+@SuppressWarnings("BanSerializableRead")
 public class SerializedReaderWriter extends AbstractReaderWriter implements FileReaderWriter {
 
     /**

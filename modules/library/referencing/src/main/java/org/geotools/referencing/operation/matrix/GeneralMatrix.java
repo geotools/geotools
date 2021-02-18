@@ -33,6 +33,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.ContentFormatException;
 import org.geotools.util.LineFormat;
+import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.Utilities;
 import org.geotools.util.XArray;
 import org.opengis.geometry.Envelope;
@@ -828,13 +829,8 @@ public class GeneralMatrix implements XMatrix, Serializable {
     // Method Compatibility
     /** Returns a clone of this matrix. */
     @Override
+    @SuppressFBWarnings("CN_IDIOM_NO_SUPER_CALL")
     public GeneralMatrix clone() {
-        try {
-            super.clone();
-        } catch (CloneNotSupportedException e) {
-            // should not happen
-            throw new RuntimeException(e);
-        }
         return new GeneralMatrix(this);
     }
 

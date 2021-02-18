@@ -175,6 +175,7 @@ public class FunctionExpressionImplTest {
         return sb.toString();
     }
 
+    @SuppressWarnings("ReturnValueIgnored")
     private void testFunction(Function function, List<String> errors)
             throws InstantiationException, IllegalAccessException, NoSuchMethodException,
                     InvocationTargetException {

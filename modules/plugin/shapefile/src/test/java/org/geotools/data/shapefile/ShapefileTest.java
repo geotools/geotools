@@ -222,7 +222,6 @@ public class ShapefileTest extends TestCaseSupport {
                 assertEquals(
                         new Envelope(record.minX, record.maxX, record.minY, record.maxY),
                         geom.getEnvelopeInternal());
-                record.toString();
             }
             copyShapefiles(STATEPOP);
             reader.close();

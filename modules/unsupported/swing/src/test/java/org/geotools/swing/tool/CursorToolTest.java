@@ -17,6 +17,7 @@
 
 package org.geotools.swing.tool;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import java.awt.Cursor;
@@ -53,6 +54,6 @@ public class CursorToolTest extends GraphicsTestBase {
 
     @Test
     public void returnsDefaultCursor() throws Exception {
-        Cursor.getDefaultCursor().equals(tool.getCursor());
+        assertEquals(Cursor.getDefaultCursor(), tool.getCursor());
     }
 }

@@ -74,6 +74,7 @@ public class UnitsTest {
      * @throws IOException Should never occurs.
      * @throws ClassNotFoundException Should never occurs.
      */
+    @SuppressWarnings("BanSerializableRead")
     private static Object serialize(final Object object)
             throws IOException, ClassNotFoundException {
         final ByteArrayOutputStream buffer = new ByteArrayOutputStream();

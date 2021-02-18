@@ -1331,6 +1331,7 @@ public class Utils {
      * @return a sample image from which we can take the sample model and color model to be used to
      *     fill holes in responses.
      */
+    @SuppressWarnings("BanSerializableRead")
     public static RenderedImage loadSampleImage(final File sampleImageFile) {
         // serialize it
         // do we have the sample image??
@@ -1785,6 +1786,7 @@ public class Utils {
      *
      * @return the deserialized histogram.
      */
+    @SuppressWarnings("BanSerializableRead")
     public static Histogram getHistogram(final String file) {
         Utilities.ensureNonNull("file", file);
         Histogram histogram = null;

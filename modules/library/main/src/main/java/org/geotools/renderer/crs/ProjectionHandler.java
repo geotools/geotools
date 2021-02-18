@@ -628,11 +628,11 @@ public class ProjectionHandler {
      */
     public Geometry preProcess(Geometry geometry) throws TransformException, FactoryException {
         // if there is no valid area, no cutting is required either
-        if (validAreaBounds == null) return densify(geometry);
+        if (validAreaBounds == null) return densify(geometry, true);
 
         // if not reprojection is going on, we don't need to cut
         if (noReprojection) {
-            return densify(geometry);
+            return densify(geometry, false);
         }
 
         Geometry mask;
@@ -648,7 +648,7 @@ public class ProjectionHandler {
             // if the geometry is within the valid area for this projection
             // just skip expensive cutting
             if (validAreaBounds.contains((Envelope) geWGS84)) {
-                return densify(geometry);
+                return densify(geometry, true);
             }
 
             // we need to cut, first thing, we intersect the geometry envelope
@@ -667,7 +667,7 @@ public class ProjectionHandler {
                     ReferencedEnvelope translated = new ReferencedEnvelope(validAreaBounds);
                     translated.translate(-360, 0);
                     if (translated.contains((Envelope) geWGS84)) {
-                        return densify(geometry);
+                        return densify(geometry, false);
                     }
                     envIntWgs84 = translated.intersection(geWGS84);
                 } else if (validAreaBounds.contains(
@@ -675,7 +675,7 @@ public class ProjectionHandler {
                     ReferencedEnvelope translated = new ReferencedEnvelope(validAreaBounds);
                     translated.translate(360, 0);
                     if (translated.contains((Envelope) geWGS84)) {
-                        return densify(geometry);
+                        return densify(geometry, false);
                     }
                     envIntWgs84 = translated.intersection(geWGS84);
                 }
@@ -690,7 +690,7 @@ public class ProjectionHandler {
             // if the geometry is within the valid area for this projection
             // just skip expensive cutting
             if (validaAreaTester.contains(JTS.toGeometry(geWGS84))) {
-                return densify(geometry);
+                return densify(geometry, false);
             }
 
             // we need to cut, first thing, we intersect the geometry envelope
@@ -714,7 +714,7 @@ public class ProjectionHandler {
             mask = JTS.transform(maskWgs84, CRS.findMathTransform(WGS84, geometryCRS));
         }
 
-        return densify(intersect(geometry, mask, geometryCRS));
+        return densify(intersect(geometry, mask, geometryCRS), false);
     }
 
     /**
@@ -722,10 +722,15 @@ public class ProjectionHandler {
      *
      * <p>It returns the original geometry if densification is not enabled.
      */
-    protected Geometry densify(Geometry geometry) {
+    protected Geometry densify(Geometry geometry, boolean validate) {
         if (geometry != null && densify > 0.0) {
             try {
-                geometry = Densifier.densify(geometry, densify);
+                // disable validation, it runs an expensive buffer operation that
+                // can bring the VM to an OOM when run on large geometries.
+                Densifier densifier = new Densifier(geometry);
+                densifier.setDistanceTolerance(densify);
+                densifier.setValidate(validate);
+                return densifier.getResultGeometry();
             } catch (Throwable t) {
                 LOGGER.warning("Cannot densify geometry");
             }

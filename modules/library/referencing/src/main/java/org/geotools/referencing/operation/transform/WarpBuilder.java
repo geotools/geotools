@@ -83,8 +83,11 @@ public class WarpBuilder {
     }
 
     /**
-     * Returns true if the given domain is valid for the splitting alghoritm. Can be called before
-     * getRowColsSplit to prevent exceptions.
+     * Returns true if the given domain is valid for the splitting algorithm. Can be called before
+     * getRowColsSplit to prevent exceptions. Unlike {@link #buildWarp(MathTransform2D, Rectangle)}
+     * the domain here can be expressed in geographic coordinates, so there is no requirement that
+     * the area is at least 1x1 (in geographic coordiantes, that's a massive area), but only that
+     * it's not empty
      *
      * @param domain domain to check
      */
@@ -94,8 +97,8 @@ public class WarpBuilder {
     }
 
     private boolean isValidDomain(double minx, double maxx, double miny, double maxy) {
-        final int width = (int) (maxx - minx);
-        final int height = (int) (maxy - miny);
+        final double width = maxx - minx;
+        final double height = maxy - miny;
         return width > 0 && height > 0;
     }
 

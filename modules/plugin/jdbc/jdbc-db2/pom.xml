@@ -26,11 +26,11 @@
   <groupId>org.geotools.jdbc</groupId>
   <artifactId>gt-jdbc-db2</artifactId>
   <packaging>jar</packaging>
-  <name>DB2 DataStore</name>
+  <name>Db2 DataStore</name>
 
 
   <description>
-	DataStore for DB2 Database.
+	DataStore for Db2 Database.
   </description>
 
   <licenses>
@@ -39,20 +39,19 @@
       <url>http://www.gnu.org/copyleft/lesser.txt</url>
       <distribution>repo</distribution>
     </license>
+    <license>
+      <name>International Program License Agreement (IPLA)</name>
+      <url>http://www-03.ibm.com/software/sla/sladb.nsf/lilookup/179A6D1769B0A44D8525862400329FB8?OpenDocument</url>
+      <distribution>repo</distribution>
+      <comments>You can use the IBM Db2 JDBC driver for Java applications that access the Db2 LUW database server</comments>
+    </license>
   </licenses>
-
-  <!-- Must be commented out to build without DB2 driver
-       Need to figure out how to do DB2 online tests in
-       GeoTools regression environment.
-       Uncomment for unit test and local regression test.       
-    <dependencies>
-        <dependency>
+  <dependencies>
+    <dependency>
         <groupId>com.ibm.db2</groupId>
-        <artifactId>db2jcc4</artifactId>
-        <version>11.5</version>
+        <artifactId>jcc</artifactId>
     </dependency>
-    </dependencies>
-  =========================================================== -->    
+  </dependencies>
 
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->

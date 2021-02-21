@@ -140,11 +140,8 @@ public class GeoJSONReader implements AutoCloseable {
             SimpleFeatureCollection features = (SimpleFeatureCollection) reader.getFeatures();
             return features;
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new RuntimeException("problem parsing FeatureCollection", e);
         }
-
-        return null;
     }
 
     /**
@@ -161,10 +158,9 @@ public class GeoJSONReader implements AutoCloseable {
             Geometry g = gParser.geometryFromJson(node);
             return g;
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new RuntimeException("problem parsing Geometry", e);
         }
-        return null;
+
     }
 
     public SimpleFeatureCollection getFeatures() throws IOException {

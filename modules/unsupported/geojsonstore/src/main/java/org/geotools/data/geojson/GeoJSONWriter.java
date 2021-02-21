@@ -121,7 +121,7 @@ public class GeoJSONWriter implements AutoCloseable {
         if (!initalised) {
             initialise();
         }
-        // System.out.println("JSONWriter writing " + currentFeature.getID());
+
         writeFeature(currentFeature, generator);
     }
 

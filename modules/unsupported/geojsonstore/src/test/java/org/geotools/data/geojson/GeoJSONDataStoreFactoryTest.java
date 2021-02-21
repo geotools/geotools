@@ -25,8 +25,11 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import org.geotools.data.DataStore;
+import org.geotools.data.DataStoreFactorySpi;
+import org.geotools.data.DataStoreFinder;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.test.TestData;
@@ -99,6 +102,22 @@ public class GeoJSONDataStoreFactoryTest {
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 store.getFeatureReader(new Query(names[0], Filter.INCLUDE), null)) {
             assertNotNull("failed to get FeatureReader", reader);
+        }
+    }
+
+    @Test
+    public void testAvailability() {
+
+        Iterator<DataStoreFactorySpi> stores = DataStoreFinder.getAllDataStores();
+        boolean found = false;
+        GeoJSONDataStoreFactory expected = new GeoJSONDataStoreFactory();
+        while (stores.hasNext()) {
+            if (stores.next().getDisplayName().equalsIgnoreCase(expected.getDisplayName())) {
+                found = true;
+            }
+        }
+        if (!found) {
+            fail("GeoJSONDataStoreFactory not available");
         }
     }
 }

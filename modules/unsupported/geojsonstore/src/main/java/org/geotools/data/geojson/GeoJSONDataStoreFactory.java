@@ -24,6 +24,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.geotools.data.DataStore;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFactorySpi;
@@ -56,9 +59,7 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
                     "Should the schema be described by the first element of the collection (Default true)",
                     false);
 
-    public GeoJSONDataStoreFactory() {
-        // TODO Auto-generated constructor stub
-    }
+    public GeoJSONDataStoreFactory() {}
 
     /** No implementation hints required at this time */
     @Override
@@ -92,11 +93,11 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
 
         Boolean bounds = (Boolean) WRITE_BOUNDS.lookUp(params);
         if (bounds != null) {
-            ret.setWriteBounds(bounds.booleanValue());
+            ret.setWriteBounds(bounds);
         }
         Boolean quick = (Boolean) QUICK_SCHEMA.lookUp(params);
         if (quick != null) {
-            ret.setQuickSchema(quick.booleanValue());
+            ret.setQuickSchema(quick);
         }
         return ret;
     }
@@ -114,7 +115,10 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
         GeoJSONDataStore ret;
         if (file != null) {
             if (!file.exists()) {
-                file.createNewFile();
+                boolean ok = file.createNewFile();
+                if (!ok) {
+                    throw new IOException("Unable to create file " + file.getAbsoluteFile());
+                }
             }
             ret = new GeoJSONDataStore(file);
         } else {
@@ -123,11 +127,11 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
 
         Boolean bounds = (Boolean) WRITE_BOUNDS.lookUp(params);
         if (bounds != null) {
-            ret.setWriteBounds(bounds.booleanValue());
+            ret.setWriteBounds(bounds);
         }
         Boolean quick = (Boolean) QUICK_SCHEMA.lookUp(params);
         if (quick != null) {
-            ret.setQuickSchema(quick.booleanValue());
+            ret.setQuickSchema(quick);
         }
         return ret;
     }
@@ -156,7 +160,6 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
 
     @Override
     public String[] getFileExtensions() {
-
         return EXTENSIONS;
     }
 
@@ -177,11 +180,9 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
             } else {
                 name = url.getPath().toLowerCase();
             }
-            if (name != null) {
-                for (String ext : EXTENSIONS) {
-                    if (name.endsWith(ext)) {
-                        return true;
-                    }
+            for (String ext : EXTENSIONS) {
+                if (name.endsWith(ext)) {
+                    return true;
                 }
             }
         } catch (IOException e) {
@@ -192,21 +193,24 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
 
     @Override
     public boolean canProcess(URL url) {
-        return false;
+        final String s = url.toString().toLowerCase();
+        String extension = s.substring(s.lastIndexOf(".") + 1);
+        Set<String> set = (Set<String>) Stream.of(EXTENSIONS).collect(Collectors.toSet());
+
+        return set.contains(extension);
     }
 
     @Override
-    public FileDataStore createDataStore(URL url) throws IOException {
+    public FileDataStore createDataStore(URL url) {
         return new GeoJSONDataStore(url);
     }
 
-    public FileDataStore createDataStore(File f) throws IOException {
+    public FileDataStore createDataStore(File f) {
         return new GeoJSONDataStore(f);
     }
 
     @Override
-    public String getTypeName(URL url) throws IOException {
-        // TODO Auto-generated method stub
+    public String getTypeName(URL url) {
         return null;
     }
 }

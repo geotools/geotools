@@ -36,11 +36,9 @@ public final class DirectionAlongMeridianTest {
     /** Tests the {@link DirectionAlongMeridian#parse} method. */
     @Test
     public void testParse() {
-        DirectionAlongMeridian dir;
-        String name;
 
-        name = "South along 180 deg";
-        dir = DirectionAlongMeridian.parse(name);
+        String name = "South along 180 deg";
+        DirectionAlongMeridian dir = DirectionAlongMeridian.parse(name);
         assertNotNull(dir);
         assertEquals(AxisDirection.SOUTH, dir.baseDirection);
         assertEquals(180, dir.meridian, 0);

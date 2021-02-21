@@ -177,9 +177,9 @@ public class WFSDataStoreTest {
 
     @Test
     public void testGetFeatureSource() throws Exception {
-        ContentFeatureSource source;
 
-        source = (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
+        ContentFeatureSource source =
+                (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
         assertNotNull(source);
         assertTrue(source instanceof WFSFeatureStore);
 

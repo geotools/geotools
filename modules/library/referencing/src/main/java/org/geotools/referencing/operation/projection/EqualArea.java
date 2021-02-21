@@ -68,7 +68,7 @@ public class EqualArea extends MapProjection {
     @Override
     protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
             throws ProjectionException {
-        double yc, tol, y2, y6, f, fder;
+        double tol, y2, y6, f, fder;
 
         /* make sure y is inside valid range */
         if (y > MAX_Y) {
@@ -77,7 +77,7 @@ public class EqualArea extends MapProjection {
             y = -MAX_Y;
         }
 
-        yc = y;
+        double yc = y;
 
         for (int i = MAX_ITER; ; ) {
             /* Newton-Raphson */

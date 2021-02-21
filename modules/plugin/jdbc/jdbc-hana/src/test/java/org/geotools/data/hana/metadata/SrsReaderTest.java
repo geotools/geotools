@@ -34,9 +34,8 @@ public class SrsReaderTest {
                         + "\"WGS 84 (planar)\",1000004326,\"EPSG\",4326,\"GEOGCS[\"\"WGS 84\"\",DATUM[\"\"WGS_1984\"\",SPHEROID[\"\"WGS 84\"\",6378137,298.257223563,AUTHORITY[\"\"EPSG\"\",\"\"7030\"\"]],AUTHORITY[\"\"EPSG\"\",\"\"6326\"\"]],PRIMEM[\"\"Greenwich\"\",0,AUTHORITY[\"\"EPSG\"\",\"\"8901\"\"]],UNIT[\"\"degree\"\",0.0174532925199433,AUTHORITY[\"\"EPSG\"\",\"\"9122\"\"]],AUTHORITY[\"\"EPSG\"\",\"\"4326\"\"]]\",\"+proj=longlat +datum=WGS84 +no_defs \",\"planar degree\",\"degree\",\"flat\",6378137.0,null,298.257223563,-180.0,180.0,-90.0,90.0";
         InputStream is = new ByteArrayInputStream(csv.getBytes("UTF-8"));
         SrsReader reader = new SrsReader(is);
-        Srs srs;
 
-        srs = reader.readNextSrs();
+        Srs srs = reader.readNextSrs();
         Assert.assertNotNull(srs);
         Assert.assertEquals("WGS 84 / Pseudo-Mercator", srs.getName());
         Assert.assertEquals(3857, srs.getSrid());

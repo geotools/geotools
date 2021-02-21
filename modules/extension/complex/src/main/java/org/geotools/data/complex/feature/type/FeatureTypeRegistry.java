@@ -393,7 +393,6 @@ public class FeatureTypeRegistry {
      * type does not exists in the registry uses a proxy.
      */
     private AttributeType getTypeOf(XSDElementDeclaration elemDecl, CoordinateReferenceSystem crs) {
-        XSDTypeDefinition typeDefinition;
 
         // TODO REVISIT, I'm not sure this is the way to find out if the
         // element's type is defined in line (an thus no need to register it
@@ -402,7 +401,7 @@ public class FeatureTypeRegistry {
             elemDecl = elemDecl.getResolvedElementDeclaration();
         }
         boolean hasToBeRegistered = false;
-        typeDefinition = elemDecl.getAnonymousTypeDefinition();
+        XSDTypeDefinition typeDefinition = elemDecl.getAnonymousTypeDefinition();
         if (typeDefinition == null) {
             // anonymous types already has type definition inline in the element
             // so the handling is different
@@ -530,8 +529,7 @@ public class FeatureTypeRegistry {
         }
 
         if (typeDefinition instanceof XSDComplexTypeDefinition) {
-            XSDComplexTypeDefinition complexTypeDef;
-            complexTypeDef = (XSDComplexTypeDefinition) typeDefinition;
+            XSDComplexTypeDefinition complexTypeDef = (XSDComplexTypeDefinition) typeDefinition;
             boolean includeParents = true;
             List<XSDElementDeclaration> children =
                     Schemas.getChildElementDeclarations(typeDefinition, includeParents);

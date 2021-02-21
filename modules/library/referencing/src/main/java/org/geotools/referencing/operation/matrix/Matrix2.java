@@ -447,9 +447,8 @@ public class Matrix2 implements XMatrix, Serializable {
     @Override
     public void mul(Matrix matrix) {
         final Matrix2 k = internal(matrix);
-        double m0, m1;
-        m0 = m00;
-        m1 = m01;
+        double m0 = m00;
+        double m1 = m01;
         m00 = m0 * k.m00 + m1 * k.m10;
         m01 = m0 * k.m01 + m1 * k.m11;
         m0 = m10;

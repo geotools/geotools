@@ -92,12 +92,8 @@ public class GridCoverageTestBase extends CoverageTestBase {
          * (longitude,latitude) coordinates, pixels of 0.25 degrees and a lower
          * left corner at 10°W 30°N.
          */
-        final GridCoverage2D coverage; // The final grid coverage.
-        final BufferedImage image; // The GridCoverage's data.
-        final WritableRaster raster; // The image's data as a raster.
-        final Rectangle2D bounds; // The GridCoverage's envelope.
-        final GridSampleDimension band; // The only image's band.
-        band =
+        // The only image's band.
+        final GridSampleDimension band =
                 new GridSampleDimension(
                         "Temperature",
                         new Category[] {
@@ -107,14 +103,17 @@ public class GridCoverageTestBase extends CoverageTestBase {
                             new Category("Temperature", null, BEGIN_VALID, 256)
                         },
                         SI.CELSIUS);
-        image = new BufferedImage(120, 80, BufferedImage.TYPE_BYTE_INDEXED);
-        raster = image.getRaster();
+        // The GridCoverage's data.
+        final BufferedImage image = new BufferedImage(120, 80, BufferedImage.TYPE_BYTE_INDEXED);
+        // The image's data as a raster.
+        final WritableRaster raster = image.getRaster();
         for (int i = raster.getWidth(); --i >= 0; ) {
             for (int j = raster.getHeight(); --j >= 0; ) {
                 raster.setSample(i, j, 0, random.nextInt(256));
             }
         }
-        bounds =
+        // The GridCoverage's envelope.
+        final Rectangle2D bounds =
                 new Rectangle2D.Double(
                         -10, 30, PIXEL_SIZE * image.getWidth(), PIXEL_SIZE * image.getHeight());
         final GeneralEnvelope envelope = new GeneralEnvelope(crs);
@@ -126,7 +125,8 @@ public class GridCoverageTestBase extends CoverageTestBase {
         }
         final Hints hints = new Hints(Hints.TILE_ENCODING, "raw");
         final GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(hints);
-        coverage =
+        // The final grid coverage.
+        final GridCoverage2D coverage =
                 factory.create(
                         "Test", image, envelope, new GridSampleDimension[] {band}, null, null);
         assertEquals("raw", coverage.tileEncoding);

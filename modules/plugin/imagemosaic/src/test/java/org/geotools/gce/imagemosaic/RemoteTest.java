@@ -45,7 +45,6 @@ public class RemoteTest {
         ImageMosaicFormat format = new ImageMosaicFormat();
         ImageMosaicReader reader = format.getReader(TestData.file(this, "remote_test"));
 
-        final GridCoverage2D gc;
         GridEnvelope originalRange = reader.getOriginalGridRange();
         GeneralEnvelope envelope = reader.getOriginalEnvelope();
         CoordinateReferenceSystem nativeCRS = envelope.getCoordinateReferenceSystem();
@@ -66,7 +65,7 @@ public class RemoteTest {
         testEnvelope.setCoordinateReferenceSystem(nativeCRS);
         ParameterValue<GridGeometry2D> pam = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         pam.setValue(new GridGeometry2D(testRange, testEnvelope));
-        gc = reader.read(new ParameterValue<?>[] {pam});
+        final GridCoverage2D gc = reader.read(new ParameterValue<?>[] {pam});
         Assert.assertNotNull(gc);
         assertNotBlank(
                 "remote image mosaic",

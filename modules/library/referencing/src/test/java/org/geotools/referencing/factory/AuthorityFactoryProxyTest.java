@@ -72,13 +72,13 @@ public final class AuthorityFactoryProxyTest {
         final CRSAuthorityFactory factory =
                 ReferencingFactoryFinder.getCRSAuthorityFactory("CRS", null);
         final CoordinateReferenceSystem expected = factory.createCoordinateReferenceSystem("83");
-        AuthorityFactoryProxy proxy;
         /*
          * Try the proxy using the 'createGeographicCRS', 'createCoordinateReferenceSystem'
          * and 'createObject' methods. The later uses a generic implementation, while the
          * first two should use specialized implementations.
          */
-        proxy = AuthorityFactoryProxy.getInstance(factory, GeographicCRS.class);
+        AuthorityFactoryProxy proxy =
+                AuthorityFactoryProxy.getInstance(factory, GeographicCRS.class);
         assertTrue(proxy.getClass().getName().endsWith("Geographic"));
         assertSame(expected, proxy.create("83"));
         assertSame(expected, proxy.create("CRS:83"));

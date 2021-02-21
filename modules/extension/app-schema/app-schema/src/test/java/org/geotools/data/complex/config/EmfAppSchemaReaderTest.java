@@ -91,9 +91,8 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
                                     .getTypeDescriptors()
                                     .toArray(new PropertyDescriptor[0]));
             Assert.assertEquals(8, attributes.size());
-            AttributeDescriptor descriptor;
 
-            descriptor = (AttributeDescriptor) attributes.get(5);
+            AttributeDescriptor descriptor = (AttributeDescriptor) attributes.get(5);
             Name name = Types.typeName(NS_URI, "the_geom");
             typeName = Types.typeName(GML.NAMESPACE, "GeometryPropertyType");
 
@@ -125,7 +124,6 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
             Class<?> binding,
             int minOccurs,
             int maxOccurs) {
-        AttributeType type;
         Assert.assertEquals(name, descriptor.getName());
         Assert.assertEquals(minOccurs, descriptor.getMinOccurs());
         Assert.assertEquals(maxOccurs, descriptor.getMaxOccurs());
@@ -133,7 +131,7 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
                 descriptor.getUserData().get(XSDElementDeclaration.class)
                         instanceof XSDElementDeclaration);
 
-        type = descriptor.getType();
+        AttributeType type = descriptor.getType();
         Assert.assertNotNull(type);
         Assert.assertFalse(type instanceof ComplexType);
         Assert.assertEquals(typeName, type.getName());
@@ -197,8 +195,8 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
             Assert.assertEquals(2, measurementType.getDescriptors().size());
 
             name = Types.typeName(NS_URI, "measurement");
-            AttributeDescriptor descriptor;
-            descriptor = (AttributeDescriptor) Types.descriptor(wq_plus_Type, name);
+            AttributeDescriptor descriptor =
+                    (AttributeDescriptor) Types.descriptor(wq_plus_Type, name);
             Assert.assertNotNull(descriptor);
             Assert.assertEquals(name, descriptor.getName());
             Assert.assertNotNull(descriptor.getType());

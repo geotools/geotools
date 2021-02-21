@@ -122,8 +122,7 @@ public final class DirectCreationTest {
             MathTransform transform,
             final double[] tolerance)
             throws TransformException {
-        DirectPosition calculated;
-        calculated = transform.transform(source, null);
+        DirectPosition calculated = transform.transform(source, null);
         assertPositionEquals(target, calculated, tolerance);
 
         // The inverse
@@ -152,18 +151,16 @@ public final class DirectCreationTest {
         if (VERBOSE) {
             printParameters("Equidistant_Cylindrical");
         }
-        MathTransform transform;
-        ParameterValueGroup params;
 
         // approx bristol UK
-        params = mtFactory.getDefaultParameters("Equidistant_Cylindrical");
+        ParameterValueGroup params = mtFactory.getDefaultParameters("Equidistant_Cylindrical");
         params.parameter("semi_major").setValue(6378137);
         params.parameter("semi_minor").setValue(6378137);
         params.parameter("central_meridian").setValue(0.000);
         params.parameter("standard_parallel_1").setValue(0.000);
         params.parameter("false_easting").setValue(0.0);
         params.parameter("false_northing").setValue(0.0);
-        transform = mtFactory.createParameterizedTransform(params);
+        MathTransform transform = mtFactory.createParameterizedTransform(params);
         doTransform(
                 new DirectPosition2D(-2.5, 51.37),
                 new DirectPosition2D(-278298.73, 5718482.24),
@@ -180,18 +177,16 @@ public final class DirectCreationTest {
         if (VERBOSE) {
             printParameters("Mercator_1SP");
         }
-        MathTransform transform;
-        ParameterValueGroup params;
 
         // epsg example (p. 26)
-        params = mtFactory.getDefaultParameters("Mercator_1SP");
+        ParameterValueGroup params = mtFactory.getDefaultParameters("Mercator_1SP");
         params.parameter("semi_major").setValue(6377397.155);
         params.parameter("semi_minor").setValue(6356078.963);
         params.parameter("central_meridian").setValue(110.000);
         params.parameter("scale_factor").setValue(0.997);
         params.parameter("false_easting").setValue(3900000.0);
         params.parameter("false_northing").setValue(900000.0);
-        transform = mtFactory.createParameterizedTransform(params);
+        MathTransform transform = mtFactory.createParameterizedTransform(params);
         doTransform(
                 new DirectPosition2D(120.0, -3.0),
                 new DirectPosition2D(5009726.58, 569150.82),
@@ -278,12 +273,10 @@ public final class DirectCreationTest {
         if (VERBOSE) {
             printParameters("Oblique Mercator");
         }
-        MathTransform transform;
-        ParameterValueGroup params;
 
-        params = mtFactory.getDefaultParameters("Oblique Mercator");
+        ParameterValueGroup params = mtFactory.getDefaultParameters("Oblique Mercator");
         setObliqueMercatorParameter(params);
-        transform = mtFactory.createParameterizedTransform(params);
+        MathTransform transform = mtFactory.createParameterizedTransform(params);
         assertEquals(transform.getClass(), ObliqueMercator.class);
         assertEquals(transform, new ObliqueMercator(params));
         ParameterDescriptorGroup descriptor = ((MapProjection) transform).getParameterDescriptors();
@@ -325,11 +318,9 @@ public final class DirectCreationTest {
         if (VERBOSE) {
             printParameters("Lambert_Conformal_Conic_1SP");
         }
-        MathTransform transform;
-        ParameterValueGroup params;
 
         // EPGS p. 18
-        params = mtFactory.getDefaultParameters("Lambert_Conformal_Conic_1SP");
+        ParameterValueGroup params = mtFactory.getDefaultParameters("Lambert_Conformal_Conic_1SP");
         params.parameter("semi_major").setValue(6378206.4);
         params.parameter("semi_minor").setValue(6356583.8);
         params.parameter("central_meridian").setValue(-77.0);
@@ -337,7 +328,7 @@ public final class DirectCreationTest {
         params.parameter("scale_factor").setValue(1.0);
         params.parameter("false_easting").setValue(250000.0);
         params.parameter("false_northing").setValue(150000.0);
-        transform = mtFactory.createParameterizedTransform(params);
+        MathTransform transform = mtFactory.createParameterizedTransform(params);
         doTransform(
                 new DirectPosition2D(-76.943683333, 17.932166666),
                 new DirectPosition2D(255966.58, 142493.51),
@@ -442,10 +433,8 @@ public final class DirectCreationTest {
         if (VERBOSE) {
             printParameters("Krovak");
         }
-        MathTransform transform;
-        ParameterValueGroup params;
 
-        params = mtFactory.getDefaultParameters("Krovak");
+        ParameterValueGroup params = mtFactory.getDefaultParameters("Krovak");
         params.parameter("semi_major").setValue(6377397.155);
         params.parameter("semi_minor").setValue(6356078.963);
         params.parameter("latitude_of_center").setValue(49.5);
@@ -453,7 +442,7 @@ public final class DirectCreationTest {
         params.parameter("azimuth").setValue(30.28813972222222);
         params.parameter("pseudo_standard_parallel_1").setValue(78.5);
         params.parameter("scale_factor").setValue(0.9999);
-        transform = mtFactory.createParameterizedTransform(params);
+        MathTransform transform = mtFactory.createParameterizedTransform(params);
         doTransform(
                 new DirectPosition2D(14.370530947, 50.071153856),
                 new DirectPosition2D(-746742.6075, -1044389.4516),
@@ -470,13 +459,11 @@ public final class DirectCreationTest {
         if (VERBOSE) {
             printParameters("Polar_Stereographic");
         }
-        MathTransform transform;
-        ParameterValueGroup params;
 
         //
         // http://www.remotesensing.org/geotiff/proj_list/polar_stereographic.html
         //
-        params = mtFactory.getDefaultParameters("Stereographic_North_Pole");
+        ParameterValueGroup params = mtFactory.getDefaultParameters("Stereographic_North_Pole");
         params.parameter("semi_major").setValue(6378137.0);
         params.parameter("semi_minor").setValue(6356752.31424518);
         params.parameter("standard_parallel_1").setValue(71.0);
@@ -484,7 +471,7 @@ public final class DirectCreationTest {
         params.parameter("scale_factor").setValue(1.0);
         params.parameter("false_easting").setValue(0);
         params.parameter("false_northing").setValue(0);
-        transform = mtFactory.createParameterizedTransform(params);
+        MathTransform transform = mtFactory.createParameterizedTransform(params);
         doTransform(
                 new DirectPosition2D(-121.33955, 39.1012523), // 121°20'22.38"W 39°6'4.508"N
                 new DirectPosition2D(-2529570, -5341800),

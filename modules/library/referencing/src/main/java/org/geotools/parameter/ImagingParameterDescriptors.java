@@ -317,8 +317,8 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
              * can be used to contact the individual or organisation - it is information about an
              * image operation, and I'm not sure that anyone wants to phone to an image operation).
              */
-            final InternationalString description;
-            description = new ImagingParameterDescription(op, "Description", null);
+            final InternationalString description =
+                    new ImagingParameterDescription(op, "Description", null);
             try {
                 final URI uri = new URI(bundle.getString("DocURL"));
                 final OnLineResourceImpl resource = new OnLineResourceImpl(uri);

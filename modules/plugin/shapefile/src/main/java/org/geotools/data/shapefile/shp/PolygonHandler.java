@@ -98,8 +98,7 @@ public class PolygonHandler implements ShapeHandler {
         int nrings = 0;
 
         for (int t = 0; t < multi.getNumGeometries(); t++) {
-            Polygon p;
-            p = (Polygon) multi.getGeometryN(t);
+            Polygon p = (Polygon) multi.getGeometryN(t);
             nrings = nrings + 1 + p.getNumInteriorRing();
         }
 
@@ -125,13 +124,11 @@ public class PolygonHandler implements ShapeHandler {
         // bounds
         ((Buffer) buffer).position(buffer.position() + 4 * 8);
 
-        int[] partOffsets;
-
         int numParts = buffer.getInt();
         int numPoints = buffer.getInt();
         int dimensions = (shapeType == ShapeType.POLYGONZ) && !flatFeature ? 3 : 2;
 
-        partOffsets = new int[numParts];
+        int[] partOffsets = new int[numParts];
 
         for (int i = 0; i < numParts; i++) {
             partOffsets[i] = buffer.getInt();
@@ -453,8 +450,7 @@ public class PolygonHandler implements ShapeHandler {
         {
             List<CoordinateSequence> allCoords = new ArrayList<>();
             for (int t = 0; t < multi.getNumGeometries(); t++) {
-                Polygon p;
-                p = (Polygon) multi.getGeometryN(t);
+                Polygon p = (Polygon) multi.getGeometryN(t);
                 allCoords.add(p.getExteriorRing().getCoordinateSequence());
                 for (int ringN = 0; ringN < p.getNumInteriorRing(); ringN++) {
                     allCoords.add(p.getInteriorRingN(ringN).getCoordinateSequence());

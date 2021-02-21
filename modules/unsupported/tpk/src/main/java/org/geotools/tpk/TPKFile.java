@@ -426,11 +426,10 @@ public class TPKFile {
             // "LevelID" folder
             String levelFolder = String.format(LEVEL_FOLDER, levelId);
 
-            List<String> bundles;
             List<String> indexes = null;
 
             // find names of all bundles for level
-            bundles =
+            List<String> bundles =
                     zipEntryMap
                             .keySet()
                             .stream()

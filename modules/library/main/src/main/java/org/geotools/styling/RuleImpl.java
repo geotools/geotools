@@ -114,9 +114,7 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
 
     public org.geotools.styling.Symbolizer[] getSymbolizers() {
 
-        final org.geotools.styling.Symbolizer[] ret;
-
-        ret = new org.geotools.styling.Symbolizer[symbolizers.size()];
+        final Symbolizer[] ret = new Symbolizer[symbolizers.size()];
         for (int i = 0, n = symbolizers.size(); i < n; i++) {
             ret[i] = symbolizers.get(i);
         }

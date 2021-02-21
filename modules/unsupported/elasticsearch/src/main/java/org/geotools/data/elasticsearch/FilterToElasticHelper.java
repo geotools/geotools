@@ -204,11 +204,10 @@ class FilterToElasticHelper {
             boolean swapped,
             Object extraData) {
 
-        AttributeDescriptor attType;
-        attType = (AttributeDescriptor) e1.evaluate(delegate.featureType);
+        AttributeDescriptor attType = (AttributeDescriptor) e1.evaluate(delegate.featureType);
 
-        ElasticGeometryType geometryType;
-        geometryType = (ElasticGeometryType) attType.getUserData().get(GEOMETRY_TYPE);
+        ElasticGeometryType geometryType =
+                (ElasticGeometryType) attType.getUserData().get(GEOMETRY_TYPE);
         if (geometryType == ElasticGeometryType.GEO_POINT) {
             visitGeoPointBinarySpatialOperator(filter, e1, e2, swapped, extraData);
         } else {

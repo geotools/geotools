@@ -150,9 +150,8 @@ public class AbstractDatum extends AbstractIdentifiedObject implements Datum {
     private AbstractDatum(
             final Map<String, ?> properties, final Map<String, Object> subProperties) {
         super(properties, subProperties, LOCALIZABLES);
-        final Date realizationEpoch;
         anchorPoint = (InternationalString) subProperties.get(ANCHOR_POINT_KEY);
-        realizationEpoch = (Date) subProperties.get(REALIZATION_EPOCH_KEY);
+        final Date realizationEpoch = (Date) subProperties.get(REALIZATION_EPOCH_KEY);
         domainOfValidity = (Extent) subProperties.get(DOMAIN_OF_VALIDITY_KEY);
         scope = (InternationalString) subProperties.get(SCOPE_KEY);
         this.realizationEpoch =

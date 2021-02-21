@@ -124,16 +124,14 @@ public final class FactoryRegistryTest {
         final DummyFactory factory2 = new DummyFactory.Example2();
         final DummyFactory factory3 = new DummyFactory.Example3();
         final FactoryRegistry registry = getRegistry(false, factory1, factory2, factory3);
-        Hints hints;
-        DummyFactory factory;
         // ------------------------------------------------
         //     PART 1: SIMPLE HINT (not a Factory hint)
         // ------------------------------------------------
         /*
          * No hints. The fist factory should be selected.
          */
-        hints = null;
-        factory = registry.getFactory(DummyFactory.class, null, hints, key);
+        Hints hints = null;
+        DummyFactory factory = registry.getFactory(DummyFactory.class, null, hints, key);
         assertSame("No preferences; should select the first factory. ", factory1, factory);
         /*
          * A hint compatible with one of our factories. Factory #1 declares explicitly that it uses
@@ -241,14 +239,12 @@ public final class FactoryRegistryTest {
         final DummyFactory factory2 = new DummyFactory.Example2();
         final DummyFactory factory3 = new DummyFactory.Example3();
         final FactoryRegistry registry = getRegistry(true, factory1, factory2, factory3);
-        Hints hints;
-        DummyFactory factory;
         /*
          * Same tests than above (at least some of them).
          * See comments in 'testGetProvider()' for explanation.
          */
-        hints = new Hints(Hints.KEY_INTERPOLATION, Hints.VALUE_INTERPOLATION_BILINEAR);
-        factory = registry.getFactory(DummyFactory.class, null, hints, key);
+        Hints hints = new Hints(Hints.KEY_INTERPOLATION, Hints.VALUE_INTERPOLATION_BILINEAR);
+        DummyFactory factory = registry.getFactory(DummyFactory.class, null, hints, key);
         assertSame("First factory matches; it should be selected. ", factory1, factory);
 
         hints = new Hints(DummyFactory.DUMMY_FACTORY, DummyFactory.Example2.class);

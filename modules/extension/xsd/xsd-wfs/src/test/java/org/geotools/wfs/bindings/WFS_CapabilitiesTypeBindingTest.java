@@ -172,8 +172,8 @@ public class WFS_CapabilitiesTypeBindingTest extends WFSTestSupport {
             idCaps = filterFac.idCapabilities(eid, fid);
         }
 
-        FilterCapabilities filterCaps;
-        filterCaps = filterFac.capabilities(version, scalarCaps, spatialCaps, idCaps);
+        FilterCapabilities filterCaps =
+                filterFac.capabilities(version, scalarCaps, spatialCaps, idCaps);
         return filterCaps;
     }
 }

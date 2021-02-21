@@ -368,8 +368,8 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
      */
     public GridCoordinates getHigh() {
         if (high == null) {
-            final GeneralGridCoordinates.Immutable coords;
-            coords = new GeneralGridCoordinates.Immutable(index, index.length / 2, index.length);
+            final GeneralGridCoordinates.Immutable coords =
+                    new GeneralGridCoordinates.Immutable(index, index.length / 2, index.length);
             coords.translate(-1);
             high = coords;
         }

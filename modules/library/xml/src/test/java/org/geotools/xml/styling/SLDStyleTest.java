@@ -457,7 +457,6 @@ public class SLDStyleTest {
     public void testSLDTransformer() throws Exception {
         // create an SLD
         StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
-        StyledLayerDescriptor sld2;
         sld.setName("SLD Name");
         sld.setTitle("SLD Title");
         UserLayer layer = sf.createUserLayer();
@@ -484,7 +483,7 @@ public class SLDStyleTest {
 
         SLDParser stylereader = new SLDParser(sf, is);
 
-        sld2 = stylereader.parseSLD();
+        StyledLayerDescriptor sld2 = stylereader.parseSLD();
         // UNCOMMENT FOR DEBUGGING
         //        assertEquals(SLD.rules(SLD.styles(sld)[0]).length,
         // SLD.rules(SLD.styles(sld2)[0]).length);

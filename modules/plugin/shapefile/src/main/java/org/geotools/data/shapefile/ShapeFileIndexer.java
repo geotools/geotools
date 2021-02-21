@@ -204,13 +204,12 @@ class ShapeFileIndexer implements FileWriter {
         }
 
         IndexFile shpIndex = new IndexFile(shpFiles, false);
-        QuadTree tree = null;
         int cnt = 0;
         int numRecs = shpIndex.getRecordCount();
         ShapefileHeader header = reader.getHeader();
         Envelope bounds = new Envelope(header.minX(), header.maxX(), header.minY(), header.maxY());
 
-        tree = new QuadTree(numRecs, max, bounds, shpIndex);
+        QuadTree tree = new QuadTree(numRecs, max, bounds, shpIndex);
         try {
             Record rec = null;
 

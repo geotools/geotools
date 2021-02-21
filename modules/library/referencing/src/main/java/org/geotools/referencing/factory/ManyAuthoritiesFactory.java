@@ -490,8 +490,8 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
         } else {
             message = Errors.format(ErrorKeys.UNKNOW_AUTHORITY_$1, authority);
         }
-        final NoSuchAuthorityCodeException exception;
-        exception = new NoSuchAuthorityCodeException(message, authority, code);
+        final NoSuchAuthorityCodeException exception =
+                new NoSuchAuthorityCodeException(message, authority, code);
         exception.initCause(cause);
         return exception;
     }

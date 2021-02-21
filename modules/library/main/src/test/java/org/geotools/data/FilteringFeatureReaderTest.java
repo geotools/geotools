@@ -59,38 +59,43 @@ public class FilteringFeatureReaderTest extends DataTestCase {
 
     @Test
     public void testFilteringFeatureReaderALL() throws IOException {
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
 
-        reader = new FilteringFeatureReader<>(DataUtilities.reader(roadFeatures), Filter.EXCLUDE);
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                new FilteringFeatureReader<>(DataUtilities.reader(roadFeatures), Filter.EXCLUDE)) {
             assertFalse(reader.hasNext());
-        } finally {
-            reader.close();
         }
-        reader = new FilteringFeatureReader<>(DataUtilities.reader(roadFeatures), Filter.EXCLUDE);
-        assertEquals(0, count(reader));
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                new FilteringFeatureReader<>(DataUtilities.reader(roadFeatures), Filter.EXCLUDE)) {
+            assertEquals(0, count(reader));
+        }
 
-        reader = new FilteringFeatureReader<>(DataUtilities.reader(roadFeatures), Filter.EXCLUDE);
-        assertContents(new SimpleFeature[0], reader);
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                new FilteringFeatureReader<>(DataUtilities.reader(roadFeatures), Filter.EXCLUDE)) {
+            assertContents(new SimpleFeature[0], reader);
+        }
     }
 
     @Test
     public void testFilteringFeatureReaderNONE() throws IOException {
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
-        reader = new FilteringFeatureReader<>(DataUtilities.reader(roadFeatures), Filter.INCLUDE);
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                new FilteringFeatureReader<>(DataUtilities.reader(roadFeatures), Filter.INCLUDE)) {
             assertTrue(reader.hasNext());
-        } finally {
-            reader.close();
         }
-        reader = DataUtilities.reader(roadFeatures);
-        assertEquals(roadFeatures.length, count(reader));
 
-        reader = new FilteringFeatureReader<>(DataUtilities.reader(roadFeatures), Filter.INCLUDE);
-        assertEquals(roadFeatures.length, count(reader));
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                DataUtilities.reader(roadFeatures)) {
+            assertEquals(roadFeatures.length, count(reader));
+        }
 
-        reader = new FilteringFeatureReader<>(DataUtilities.reader(roadFeatures), Filter.INCLUDE);
-        assertContents(roadFeatures, reader);
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                new FilteringFeatureReader<>(DataUtilities.reader(roadFeatures), Filter.INCLUDE)) {
+            assertEquals(roadFeatures.length, count(reader));
+        }
+
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                new FilteringFeatureReader<>(DataUtilities.reader(roadFeatures), Filter.INCLUDE)) {
+            assertContents(roadFeatures, reader);
+        }
     }
 
     void assertContents(

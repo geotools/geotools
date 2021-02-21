@@ -417,12 +417,11 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
         @Override
         public boolean accept(GranuleDescriptor granuleDescriptor) {
             // make sure the CRSs match
-            boolean shouldAccept = false;
 
             // need to check that the granule matches CRS
             CoordinateReferenceSystem granuleCRS =
                     granuleDescriptor.getGranuleEnvelope().getCoordinateReferenceSystem();
-            shouldAccept = CRS.equalsIgnoreMetadata(granuleCRS, this.crs);
+            boolean shouldAccept = CRS.equalsIgnoreMetadata(granuleCRS, this.crs);
 
             return shouldAccept && super.accept(granuleDescriptor);
         }

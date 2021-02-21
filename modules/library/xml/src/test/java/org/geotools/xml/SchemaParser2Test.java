@@ -64,8 +64,7 @@ public class SchemaParser2Test {
         Assert.assertNotNull("Schema missing", s);
         // System.out.println(s);
 
-        Schema s2 = null;
-        s2 = SchemaFactory.getInstance(targetNS);
+        Schema s2 = SchemaFactory.getInstance(targetNS);
         Assert.assertSame("Should be the same", s, s2);
     }
 }

@@ -716,9 +716,8 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
          */
         @Override
         public IdentifiedObject find(final IdentifiedObject object) throws FactoryException {
-            IdentifiedObject candidate;
 
-            candidate = (IdentifiedObject) findCache.get(object);
+            IdentifiedObject candidate = (IdentifiedObject) findCache.get(object);
             if (candidate != null) {
                 return candidate;
             }
@@ -743,8 +742,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
         /** Returns the identifier for the specified object. */
         @Override
         public String findIdentifier(final IdentifiedObject object) throws FactoryException {
-            IdentifiedObject candidate;
-            candidate = (IdentifiedObject) findCache.get(object);
+            IdentifiedObject candidate = (IdentifiedObject) findCache.get(object);
             if (candidate != null) {
                 return getIdentifier(candidate);
             }

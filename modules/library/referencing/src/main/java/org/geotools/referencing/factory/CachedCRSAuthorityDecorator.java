@@ -435,8 +435,7 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
         /** Returns the identifier for the specified object. */
         @Override
         public String findIdentifier(final IdentifiedObject object) throws FactoryException {
-            IdentifiedObject candidate;
-            candidate = (IdentifiedObject) findCache.get(object);
+            IdentifiedObject candidate = (IdentifiedObject) findCache.get(object);
             if (candidate != null) {
                 return getIdentifier(candidate);
             }

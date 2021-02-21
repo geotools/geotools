@@ -597,7 +597,6 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         URL url = shpFile.toURI().toURL();
         ShapefileDataStore ds = new ShapefileDataStore(url);
         SimpleFeatureSource featureSource = ds.getFeatureSource();
-        SimpleFeatureCollection features; // = featureSource.getFeatures();
 
         GeometryFactory geometryFactory = new GeometryFactory();
         Coordinate coordinate = new Coordinate(-99.0, 38.0);
@@ -605,7 +604,8 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         final Filter testFilter = ff.intersects(ff.literal(p), ff.property("the_geom"));
         // System.out.println(testFilter);
-        features = featureSource.getFeatures(testFilter);
+        // = featureSource.getFeatures();
+        SimpleFeatureCollection features = featureSource.getFeatures(testFilter);
         assertNotNull(features);
     }
 
@@ -614,18 +614,16 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
             ShapefileDataStore baselineDS,
             ReferencedEnvelope newBounds)
             throws FactoryRegistryException, IllegalFilterException, IOException {
-        SimpleFeatureCollection features;
-        SimpleFeatureIterator indexIter;
         FilterFactory2 fac = CommonFactoryFinder.getFilterFactory2(null);
         String geometryName = indexedDS.getSchema().getGeometryDescriptor().getLocalName();
 
         Filter filter = fac.bbox(fac.property(geometryName), newBounds);
 
-        features = indexedDS.getFeatureSource().getFeatures(filter);
+        SimpleFeatureCollection features = indexedDS.getFeatureSource().getFeatures(filter);
         SimpleFeatureCollection features2 = baselineDS.getFeatureSource().getFeatures(filter);
 
         SimpleFeatureIterator baselineIter = features2.features();
-        indexIter = features.features();
+        SimpleFeatureIterator indexIter = features.features();
 
         ArrayList<SimpleFeature> baselineFeatures = new ArrayList<>();
         ArrayList<SimpleFeature> indexedFeatures = new ArrayList<>();
@@ -1612,7 +1610,6 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         Date date, timestamp, timestamp2, timestamp3;
         try (FeatureWriter<SimpleFeatureType, SimpleFeature> fw =
                 ds.getFeatureWriterAppend(ds.getSchema().getTypeName(), Transaction.AUTO_COMMIT)) {
-            final SimpleFeature sf;
 
             DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd Z");
 
@@ -1636,7 +1633,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
             timestamp3 = timestampCal.getTime();
 
             // Write the values to the shapefile and close the datastore.
-            sf = fw.next();
+            final SimpleFeature sf = fw.next();
             sf.setAttribute(0, new GeometryFactory().createPoint(new Coordinate(1, -1)));
             sf.setAttribute(1, timestamp);
             sf.setAttribute(2, date);
@@ -1728,8 +1725,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     @Test
     public void testWipesOutInvalidFidsFromFilters() throws Exception {
         final ShapefileDataStore ds = createDataStore();
-        SimpleFeatureStore store;
-        store = (SimpleFeatureStore) ds.getFeatureSource();
+        SimpleFeatureStore store = (SimpleFeatureStore) ds.getFeatureSource();
 
         final String validFid1, validFid2, invalidFid1, invalidFid2;
         try (SimpleFeatureIterator features = store.getFeatures().features()) {
@@ -1767,8 +1763,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         // http://jira.codehaus.org/browse/GEOT-2357
 
         final ShapefileDataStore ds = createDataStore();
-        SimpleFeatureStore store;
-        store = (SimpleFeatureStore) ds.getFeatureSource();
+        SimpleFeatureStore store = (SimpleFeatureStore) ds.getFeatureSource();
         try (Transaction t = new DefaultTransaction()) {
             store.setTransaction(t);
 
@@ -1798,8 +1793,8 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
 
     private int count(DataStore ds, String typeName, Filter filter, Transaction t)
             throws Exception {
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
-        reader = ds.getFeatureReader(new Query(typeName, filter), t);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                ds.getFeatureReader(new Query(typeName, filter), t);
         int count = 0;
         try {
             while (reader.hasNext()) {

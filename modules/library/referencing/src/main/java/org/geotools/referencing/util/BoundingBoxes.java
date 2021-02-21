@@ -77,8 +77,8 @@ public final class BoundingBoxes {
                     && !startsWith(crs, DefaultGeographicCRS.WGS84)
                     && !startsWith(crs, DefaultGeographicCRS.WGS84_3D)) {
                 final CoordinateOperation operation;
-                final CoordinateOperationFactory factory;
-                factory = ReferencingFactoryFinder.getCoordinateOperationFactory(LENIENT);
+                final CoordinateOperationFactory factory =
+                        ReferencingFactoryFinder.getCoordinateOperationFactory(LENIENT);
                 try {
                     operation = factory.createOperation(crs, standardCRS);
                 } catch (FactoryException exception) {
@@ -112,8 +112,8 @@ public final class BoundingBoxes {
      */
     public static String toString(
             final GeographicBoundingBox box, final String pattern, final Locale locale) {
-        final AngleFormat format;
-        format = (locale != null) ? new AngleFormat(pattern, locale) : new AngleFormat(pattern);
+        final AngleFormat format =
+                (locale != null) ? new AngleFormat(pattern, locale) : new AngleFormat(pattern);
         final FieldPosition pos = new FieldPosition(0);
         final StringBuffer buffer = new StringBuffer();
         format.format(new Latitude(box.getNorthBoundLatitude()), buffer, pos).append(", ");

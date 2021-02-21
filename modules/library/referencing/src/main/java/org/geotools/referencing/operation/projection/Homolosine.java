@@ -150,10 +150,7 @@ public class Homolosine extends MapProjection {
         double[] central_merids;
         double offset = computeOffset();
         int i = 0;
-        double central_merid = 0;
-        double lam_shift = 0;
         Point2D p;
-        Point2D shift;
 
         lam = wrapLongitude(lam);
         phi = wrapLatitude(phi);
@@ -170,8 +167,8 @@ public class Homolosine extends MapProjection {
         if (lam >= interruptions[interruptions.length - 1]) i = interruptions.length - 1;
         else while (lam >= interruptions[i]) i++;
 
-        central_merid = central_merids[i - 1];
-        lam_shift = lam - central_merid;
+        double central_merid = central_merids[i - 1];
+        double lam_shift = lam - central_merid;
 
         if (phi > LAT_THRESH || phi < -LAT_THRESH) { // Mollweide
             p = moll.transformNormalized(lam_shift, phi, ptDst);
@@ -180,7 +177,7 @@ public class Homolosine extends MapProjection {
             p = new Point2D.Double(lam_shift * Math.cos(phi), phi);
         }
 
-        shift = sinu.transformNormalized(central_merid, 0., null);
+        Point2D shift = sinu.transformNormalized(central_merid, 0., null);
         p.setLocation(p.getX() + shift.getX(), p.getY());
 
         if (ptDst != null) {
@@ -202,9 +199,7 @@ public class Homolosine extends MapProjection {
         double[] central_merids;
         double offset = computeOffset();
         int i = 0;
-        double central_merid = 0;
         Point2D p;
-        Point2D shift;
         double thresh_map = LAT_THRESH; // spherical model
 
         if (y >= 0) {
@@ -224,8 +219,8 @@ public class Homolosine extends MapProjection {
         else if (x < interruptions[0]) i = 1;
         else while (x >= interruptions[i]) i++;
 
-        central_merid = central_merids[i - 1];
-        shift = sinu.transformNormalized(central_merid, 0, null);
+        double central_merid = central_merids[i - 1];
+        Point2D shift = sinu.transformNormalized(central_merid, 0, null);
 
         if (y > thresh_map || y < -thresh_map) { // Mollweide
             p = moll.inverseTransformNormalized(x - shift.getX(), y + offset, ptDst);

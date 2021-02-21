@@ -103,7 +103,6 @@ public class SVGGraphicFactory implements Factory, ExternalGraphicFactory, Graph
 
     protected RenderableSVG toRenderableSVG(String svgfile, URL svgUrl)
             throws SAXException, IOException {
-        RenderableSVG svg;
         String parser = XMLResourceDescriptor.getXMLParserClassName();
         SAXSVGDocumentFactory f = new SAXSVGDocumentFactory(parser);
         String svgUri = svgfile;
@@ -119,7 +118,7 @@ public class SVGGraphicFactory implements Factory, ExternalGraphicFactory, Graph
         if (!parameters.isEmpty() || hasParameters(doc.getDocumentElement())) {
             replaceParameters(doc.getDocumentElement(), parameters);
         }
-        svg = new RenderableSVG(doc);
+        RenderableSVG svg = new RenderableSVG(doc);
         return svg;
     }
 

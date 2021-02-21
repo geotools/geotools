@@ -631,9 +631,8 @@ public abstract class AbstractFilterBuilder {
     }
 
     public Literal buildDistanceUnit(IToken token) throws CQLException {
-        Literal unit = null;
 
-        unit = filterFactory.literal(token.toString());
+        Literal unit = filterFactory.literal(token.toString());
 
         return unit;
     }
@@ -1135,7 +1134,6 @@ public abstract class AbstractFilterBuilder {
 
         // transforms CQL envelop envelop(West,East,North,South) to
         // GS84 West=minX, East=maxX, North=maxY, South=minY
-        double minX, minY, maxX, maxY;
 
         cur = cur + ENVELOPE_TYPE.length() + 1;
 
@@ -1146,24 +1144,24 @@ public abstract class AbstractFilterBuilder {
 
         int end = argument.indexOf(comma, cur);
         String west = argument.substring(cur, end);
-        minX = Double.parseDouble(west);
+        double minX = Double.parseDouble(west);
 
         cur = end + 1;
         end = argument.indexOf(comma, cur);
 
         String east = argument.substring(cur, end);
-        maxX = Double.parseDouble(east);
+        double maxX = Double.parseDouble(east);
 
         cur = end + 1;
         end = argument.indexOf(comma, cur);
 
         String north = argument.substring(cur, end);
-        maxY = Double.parseDouble(north);
+        double maxY = Double.parseDouble(north);
 
         cur = end + 1;
 
         String south = argument.substring(cur);
-        minY = Double.parseDouble(south);
+        double minY = Double.parseDouble(south);
 
         // ReferencedEnvelope envelope = new
         // ReferencedEnvelope(DefaultGeographicCRS.WGS84);

@@ -232,8 +232,8 @@ public class IntegrationTestWFSClient extends WFSClient {
             allFeaturesReader = DataUtilities.reader(originalFeatures);
         }
 
-        final DiffFeatureReader<SimpleFeatureType, SimpleFeature> serverFilteredReader;
-        serverFilteredReader = new DiffFeatureReader<>(allFeaturesReader, diff, serverFiler);
+        final DiffFeatureReader<SimpleFeatureType, SimpleFeature> serverFilteredReader =
+                new DiffFeatureReader<>(allFeaturesReader, diff, serverFiler);
         final GetParser<SimpleFeature> filteredParser =
                 new GetParser<SimpleFeature>() {
 
@@ -264,8 +264,7 @@ public class IntegrationTestWFSClient extends WFSClient {
                                     all = DataUtilities.reader(originalFeatures);
                                 }
                                 final DiffFeatureReader<SimpleFeatureType, SimpleFeature>
-                                        serverFiltered;
-                                serverFiltered = new DiffFeatureReader<>(all, diff);
+                                        serverFiltered = new DiffFeatureReader<>(all, diff);
                                 try {
                                     int count = 0;
                                     while (serverFiltered.hasNext()) {

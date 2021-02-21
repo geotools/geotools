@@ -167,39 +167,34 @@ class ElasticParserUtil {
         switch (String.valueOf(properties.get("type")).toUpperCase()) {
             case "POINT":
                 {
-                    final List posList;
-                    posList = (List) properties.get("coordinates");
+                    final List posList = (List) properties.get("coordinates");
                     final Coordinate coordinate = createCoordinate(posList);
                     geometry = geometryFactory.createPoint(coordinate);
                     break;
                 }
             case "LINESTRING":
                 {
-                    final List<List<Object>> posList;
-                    posList = (List) properties.get("coordinates");
+                    final List<List<Object>> posList = (List) properties.get("coordinates");
                     final Coordinate[] coordinates = createCoordinates(posList);
                     geometry = geometryFactory.createLineString(coordinates);
                     break;
                 }
             case "POLYGON":
                 {
-                    final List<List<List<Object>>> posList;
-                    posList = (List) properties.get("coordinates");
+                    final List<List<List<Object>>> posList = (List) properties.get("coordinates");
                     geometry = createPolygon(posList);
                     break;
                 }
             case "MULTIPOINT":
                 {
-                    final List<List<Object>> posList;
-                    posList = (List) properties.get("coordinates");
+                    final List<List<Object>> posList = (List) properties.get("coordinates");
                     final Coordinate[] coordinates = createCoordinates(posList);
                     geometry = geometryFactory.createMultiPointFromCoords(coordinates);
                     break;
                 }
             case "MULTILINESTRING":
                 {
-                    final List<List<List<Object>>> posList;
-                    posList = (List) properties.get("coordinates");
+                    final List<List<List<Object>>> posList = (List) properties.get("coordinates");
                     final LineString[] lineStrings = new LineString[posList.size()];
                     for (int i = 0; i < posList.size(); i++) {
                         final Coordinate[] coordinates = createCoordinates(posList.get(i));
@@ -210,8 +205,8 @@ class ElasticParserUtil {
                 }
             case "MULTIPOLYGON":
                 {
-                    final List<List<List<List<Object>>>> posList;
-                    posList = (List) properties.get("coordinates");
+                    final List<List<List<List<Object>>>> posList =
+                            (List) properties.get("coordinates");
                     final Polygon[] polygons = new Polygon[posList.size()];
                     for (int i = 0; i < posList.size(); i++) {
                         polygons[i] = createPolygon(posList.get(i));
@@ -221,8 +216,7 @@ class ElasticParserUtil {
                 }
             case "GEOMETRYCOLLECTION":
                 {
-                    final List<Map<String, Object>> list;
-                    list = (List) properties.get("geometries");
+                    final List<Map<String, Object>> list = (List) properties.get("geometries");
                     final Geometry[] geometries = new Geometry[list.size()];
                     for (int i = 0; i < geometries.length; i++) {
                         geometries[i] = createGeometry(list.get(i));
@@ -232,8 +226,7 @@ class ElasticParserUtil {
                 }
             case "ENVELOPE":
                 {
-                    final List<List<Object>> posList;
-                    posList = (List) properties.get("coordinates");
+                    final List<List<Object>> posList = (List) properties.get("coordinates");
                     final Coordinate[] coords = createCoordinates(posList);
                     final Envelope envelope = new Envelope(coords[0], coords[1]);
                     geometry = geometryFactory.toGeometry(envelope);
@@ -241,8 +234,7 @@ class ElasticParserUtil {
                 }
             case "CIRCLE":
                 {
-                    final List posList;
-                    posList = (List) properties.get("coordinates");
+                    final List posList = (List) properties.get("coordinates");
                     final String radius = (String) properties.get("radius");
                     final Coordinate coordinate = createCoordinate(posList);
                     geometry = createCircle(coordinate, radius);

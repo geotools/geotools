@@ -156,9 +156,8 @@ public class RenderUtilitiesTest {
         final AffineTransform worldToScreen = screenToWord.createInverse();
 
         final CoordinateReferenceSystem crs = DefaultEngineeringCRS.CARTESIAN_2D;
-        double scale;
 
-        scale = RendererUtilities.calculateOGCScaleAffine(crs, worldToScreen, new HashMap());
+        double scale = RendererUtilities.calculateOGCScaleAffine(crs, worldToScreen, new HashMap());
         Assert.assertEquals(500 / 0.00028, scale, 0.0001);
 
         worldToScreen.rotate(1.0);
@@ -179,9 +178,8 @@ public class RenderUtilitiesTest {
         final AffineTransform worldToScreen = screenToWord.createInverse();
 
         final CoordinateReferenceSystem crs = DefaultGeographicCRS.WGS84;
-        double scale;
 
-        scale = RendererUtilities.calculateOGCScaleAffine(crs, worldToScreen, new HashMap());
+        double scale = RendererUtilities.calculateOGCScaleAffine(crs, worldToScreen, new HashMap());
         Assert.assertEquals(0.5 * RendererUtilities.OGC_DEGREE_TO_METERS / 0.00028, scale, 0.0001);
 
         worldToScreen.rotate(1.0);

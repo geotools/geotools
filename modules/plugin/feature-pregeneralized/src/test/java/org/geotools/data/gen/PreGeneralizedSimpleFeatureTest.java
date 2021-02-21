@@ -225,9 +225,7 @@ public class PreGeneralizedSimpleFeatureTest {
 
             Assert.assertTrue(feature1 instanceof PreGeneralizedSimpleFeature);
 
-            boolean error;
-
-            error = true;
+            boolean error = true;
             try {
                 feature1.setAttribute(0, null);
             } catch (UnsupportedOperationException ex) {

@@ -1553,16 +1553,14 @@ public class FilterComplexTypes {
             }
 
             String msg = (String) value[0].getValue();
-            String locator = null;
-            String code = null;
 
-            locator = attrs1.getValue(null, "locator");
+            String locator = attrs1.getValue(null, "locator");
 
             if (locator == null) {
                 locator = attrs1.getValue(getNamespace().toString(), "locator");
             }
 
-            code = attrs1.getValue(null, "code");
+            String code = attrs1.getValue(null, "code");
 
             if (code == null) {
                 code = attrs1.getValue(getNamespace().toString(), "code");

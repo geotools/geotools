@@ -145,12 +145,11 @@ public class StyleGeneratorTest extends DataTestCase {
         brewer.loadPalettes();
 
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-        Expression expr = null;
 
         final String attribName = "river";
         SimpleFeatureCollection fc = DataUtilities.collection(riverFeatures);
 
-        expr = ff.property(attribName);
+        Expression expr = ff.property(attribName);
 
         String paletteName = "YlGn"; // type = Sequential
 

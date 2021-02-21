@@ -148,7 +148,6 @@ public abstract class ComplexTestData {
      */
     public static FeatureType createExample01MultiValuedComplexProperty(
             FeatureTypeFactory typeFactory) {
-        FeatureType wqPlusType;
 
         TypeBuilder builder = new TypeBuilder(typeFactory);
         builder.setNamespaceURI(NSURI);
@@ -189,7 +188,7 @@ public abstract class ComplexTestData {
         builder.cardinality(0, 1);
         builder.addAttribute("project_no", PROJECT_NO);
 
-        wqPlusType = builder.feature();
+        FeatureType wqPlusType = builder.feature();
 
         return wqPlusType;
     }
@@ -402,7 +401,6 @@ public abstract class ComplexTestData {
      * @return FeatureType
      */
     public static FeatureType createExample05NoNamespaceURI(FeatureTypeFactory typeFactory) {
-        FeatureType wqPlusType;
 
         TypeBuilder builder = new TypeBuilder(typeFactory);
 
@@ -442,7 +440,7 @@ public abstract class ComplexTestData {
         builder.cardinality(0, 1);
         builder.addAttribute("project_no", PROJECT_NO);
 
-        wqPlusType = builder.feature();
+        FeatureType wqPlusType = builder.feature();
 
         return wqPlusType;
     }

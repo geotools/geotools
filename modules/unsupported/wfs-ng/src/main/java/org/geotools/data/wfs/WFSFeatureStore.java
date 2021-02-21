@@ -234,19 +234,19 @@ class WFSFeatureStore extends ContentFeatureStore {
 
                 WFSDiff diff = localState.getDiff();
 
-                ReferencedEnvelope bounds;
-                bounds = diff.batchModify(properties, values, filter, oldFeatures, contentState);
+                ReferencedEnvelope bounds =
+                        diff.batchModify(properties, values, filter, oldFeatures, contentState);
                 affectedBounds.expandToInclude(bounds);
                 committingState.commit();
 
             } else {
                 // we're in a transaction, record to local state and wait for commit to be called
-                WFSLocalTransactionState localState;
-                localState = (WFSLocalTransactionState) transaction.getState(getEntry());
+                WFSLocalTransactionState localState =
+                        (WFSLocalTransactionState) transaction.getState(getEntry());
                 WFSDiff diff = localState.getDiff();
 
-                ReferencedEnvelope bounds;
-                bounds = diff.batchModify(properties, values, filter, oldFeatures, contentState);
+                ReferencedEnvelope bounds =
+                        diff.batchModify(properties, values, filter, oldFeatures, contentState);
                 affectedBounds.expandToInclude(bounds);
             }
 

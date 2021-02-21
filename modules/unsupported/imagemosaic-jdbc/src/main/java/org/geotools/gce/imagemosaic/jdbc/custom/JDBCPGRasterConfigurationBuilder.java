@@ -256,8 +256,8 @@ public class JDBCPGRasterConfigurationBuilder {
 
     /** Initialize the string template parsing the available resource */
     private static void initTemplate() {
-        InputStream stream = null;
-        stream = JDBCPGRasterConfigurationBuilder.class.getResourceAsStream(TEMPLATE_FILE_NAME);
+        InputStream stream =
+                JDBCPGRasterConfigurationBuilder.class.getResourceAsStream(TEMPLATE_FILE_NAME);
 
         InputStreamReader streamReader = null;
         BufferedReader reader = null;

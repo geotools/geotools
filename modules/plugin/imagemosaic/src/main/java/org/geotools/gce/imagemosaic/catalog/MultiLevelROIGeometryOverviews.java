@@ -100,9 +100,8 @@ public class MultiLevelROIGeometryOverviews implements MultiLevelROI {
         }
         ROIGeometry roiGeometry = roiCache.get(at);
         if (roiGeometry == null) {
-            Geometry rescaled;
             boolean useOverviews = imageIndex != 0 && numOverviews > 0;
-            rescaled =
+            Geometry rescaled =
                     (useOverviews
                             ? multilevelFootprints.get(imageIndex - 1).copy()
                             : originalFootprint.copy());

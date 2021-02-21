@@ -39,8 +39,7 @@ public class GetCapabilitiesRequestTest {
         URL finalURL = request.getFinalURL();
 
         int index = finalURL.toExternalForm().lastIndexOf("?");
-        String urlWithoutQuery = null;
-        urlWithoutQuery = finalURL.toExternalForm().substring(0, index);
+        String urlWithoutQuery = finalURL.toExternalForm().substring(0, index);
 
         Assert.assertEquals(urlWithoutQuery, "http://office.refractions.net:4001/cgi-bin/mapserv");
 

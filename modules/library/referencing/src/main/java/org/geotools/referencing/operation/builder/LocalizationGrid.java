@@ -543,7 +543,7 @@ public class LocalizationGrid implements Serializable {
          *           1 + 2 + 3 ... + n    =    n*(n+1)/2              (arithmetic series)
          *        1² + 2² + 3² ... + n²   =    n*(n+0.5)*(n+1)/3
          */
-        double x, y, z, xx, yy, xy, zx, zy;
+        double z, zx, zy;
         z = zx = zy = 0; // To be computed in the loop.
         int n = offset;
         for (int yi = 0; yi < height; yi++) {
@@ -558,11 +558,11 @@ public class LocalizationGrid implements Serializable {
         }
         n = (n - offset) / CP_LENGTH;
         assert n == width * height : n;
-        x = (n * (double) (width - 1)) / 2;
-        y = (n * (double) (height - 1)) / 2;
-        xx = (n * (width - 0.5) * (width - 1)) / 3;
-        yy = (n * (height - 0.5) * (height - 1)) / 3;
-        xy = (n * (double) ((height - 1) * (width - 1))) / 4;
+        double x = (n * (double) (width - 1)) / 2;
+        double y = (n * (double) (height - 1)) / 2;
+        double xx = (n * (width - 0.5) * (width - 1)) / 3;
+        double yy = (n * (height - 0.5) * (height - 1)) / 3;
+        double xy = (n * (double) ((height - 1) * (width - 1))) / 4;
         /*
          * Solve the following equations for cx and cy:
          *

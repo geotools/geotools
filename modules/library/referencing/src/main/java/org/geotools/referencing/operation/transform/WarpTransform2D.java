@@ -275,8 +275,7 @@ public class WarpTransform2D extends AbstractMathTransform
             if (scaleX != 1 || scaleY != 1) {
                 final int n = numCoords * 2;
                 if (cloneCoords) {
-                    float[] o;
-                    o = srcCoords;
+                    float[] o = srcCoords;
                     srcCoords = new float[n];
                     System.arraycopy(o, srcOffset, srcCoords, 0, n);
                     srcOffset = 0;

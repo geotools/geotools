@@ -275,13 +275,12 @@ public class CSVWriteTest {
         DataStore store = DataStoreFinder.getDataStore(params);
 
         final SimpleFeatureType type = store.getSchema("locations");
-        SimpleFeature f;
         DefaultFeatureCollection collection = new DefaultFeatureCollection();
 
         // 45.52, -122.681944, Portland, 800, 2014
         GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
         Point portland = gf.createPoint(new Coordinate(45.52, -122.681944));
-        f =
+        SimpleFeature f =
                 SimpleFeatureBuilder.build(
                         type, new Object[] {portland, "Portland", 800, 2014}, "locations.1");
         collection.add(f);
@@ -337,14 +336,14 @@ public class CSVWriteTest {
         DataStore duplicate = factory.createNewDataStore(params2);
         duplicate.createSchema(featureType);
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
         SimpleFeature feature, newFeature;
 
         Query query = new Query(featureType.getTypeName(), Filter.INCLUDE);
-        reader = store.getFeatureReader(query, Transaction.AUTO_COMMIT);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                store.getFeatureReader(query, Transaction.AUTO_COMMIT);
 
-        writer = duplicate.getFeatureWriterAppend("duplicate", Transaction.AUTO_COMMIT);
+        FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                duplicate.getFeatureWriterAppend("duplicate", Transaction.AUTO_COMMIT);
         try {
             while (reader.hasNext()) {
                 feature = reader.next();
@@ -395,13 +394,11 @@ public class CSVWriteTest {
 
         duplicate.createSchema(featureType);
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
         SimpleFeature feature, newFeature;
 
-        reader = store.getFeatureReader();
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader = store.getFeatureReader();
 
-        writer =
+        FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
                 duplicate.getFeatureWriterAppend(
                         duplicate.getTypeNames()[0], Transaction.AUTO_COMMIT);
         try {
@@ -441,13 +438,12 @@ public class CSVWriteTest {
 
         final SimpleFeatureType type = store.getSchema("locations");
 
-        SimpleFeature f;
         DefaultFeatureCollection collection = new DefaultFeatureCollection();
 
         // 45.52, -122.681944, Portland, 800, 2014
         GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
         Point portland = gf.createPoint(new Coordinate(45.52, -122.681944));
-        f =
+        SimpleFeature f =
                 SimpleFeatureBuilder.build(
                         type, new Object[] {portland, "Portland", 800, 2014}, "locations.1");
         collection.add(f);
@@ -464,13 +460,12 @@ public class CSVWriteTest {
 
         duplicate.createSchema(featureType);
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
         SimpleFeature feature, newFeature;
 
-        reader = store.getFeatureReader(new Query("locations"), Transaction.AUTO_COMMIT);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                store.getFeatureReader(new Query("locations"), Transaction.AUTO_COMMIT);
 
-        writer =
+        FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
                 duplicate.getFeatureWriterAppend(
                         duplicate.getTypeNames()[0], Transaction.AUTO_COMMIT);
         try {
@@ -549,13 +544,11 @@ public class CSVWriteTest {
 
         duplicate.createSchema(featureType);
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
         SimpleFeature feature, newFeature;
 
-        reader = store.getFeatureReader();
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader = store.getFeatureReader();
 
-        writer =
+        FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
                 duplicate.getFeatureWriterAppend(
                         duplicate.getTypeNames()[0], Transaction.AUTO_COMMIT);
         try {

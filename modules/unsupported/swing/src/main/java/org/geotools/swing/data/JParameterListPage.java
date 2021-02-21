@@ -101,9 +101,8 @@ public class JParameterListPage extends JPage {
         for (Entry<Parameter<?>, ParamField> entry : fields.entrySet()) {
             Parameter<?> param = entry.getKey();
             ParamField field = entry.getValue();
-            Object value = null;
             Object object = connectionParameters.get(param.key);
-            value = Converters.convert(object, param.type);
+            Object value = Converters.convert(object, param.type);
             if (value == null) {
                 value = object;
             }

@@ -73,10 +73,8 @@ public class PaletteTest {
         BrewerPalette[] pal = brewer.getPalettes();
         Assert.assertEquals(35, pal.length);
 
-        BrewerPalette[] palettes;
-
         // test palette filtering abilities
-        palettes = brewer.getPalettes(ColorBrewer.SUITABLE_RANGED);
+        BrewerPalette[] palettes = brewer.getPalettes(ColorBrewer.SUITABLE_RANGED);
         Assert.assertEquals(27, palettes.length);
         palettes = brewer.getPalettes(ColorBrewer.SUITABLE_UNIQUE);
         Assert.assertEquals(8, palettes.length);

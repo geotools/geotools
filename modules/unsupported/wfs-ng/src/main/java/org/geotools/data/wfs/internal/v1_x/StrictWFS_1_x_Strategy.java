@@ -514,8 +514,7 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
     /** @see WFSStrategy#getFilterCapabilities() */
     @Override
     public FilterCapabilities getFilterCapabilities() {
-        FilterCapabilities wfsFilterCapabilities;
-        wfsFilterCapabilities = capabilities.getFilterCapabilities();
+        FilterCapabilities wfsFilterCapabilities = capabilities.getFilterCapabilities();
         return wfsFilterCapabilities;
     }
 
@@ -609,9 +608,8 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
 
         final OperationType operationMetadata = getOperationMetadata(operation);
 
-        Set<String> serverSupportedFormats;
         LOGGER.fine("requesting " + parameterName + " from " + operationMetadata);
-        serverSupportedFormats = findParameters(operationMetadata, parameterName);
+        Set<String> serverSupportedFormats = findParameters(operationMetadata, parameterName);
         return serverSupportedFormats;
     }
 
@@ -663,8 +661,8 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
     @Override
     public List<String> getClientSupportedOutputFormats(WFSOperationType operation) {
 
-        List<WFSResponseFactory> operationResponseFactories;
-        operationResponseFactories = WFSExtensions.findResponseFactories(operation);
+        List<WFSResponseFactory> operationResponseFactories =
+                WFSExtensions.findResponseFactories(operation);
 
         List<String> outputFormats = new LinkedList<>();
         for (WFSResponseFactory factory : operationResponseFactories) {

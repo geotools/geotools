@@ -993,8 +993,7 @@ public class CssTranslator {
         }
 
         // ok, build the rule
-        RuleBuilder ruleBuilder;
-        ruleBuilder = fts.rule();
+        RuleBuilder ruleBuilder = fts.rule();
         ruleBuilder.filter(filter);
         String title = getCombinedTag(cssRule.getComment(), TITLE_PATTERN, ", ");
         if (title != null) {

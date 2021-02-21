@@ -124,9 +124,8 @@ public class EmfAppSchemaParser {
      */
     public static SimpleFeatureType toSimpleFeatureType(final FeatureType realType)
             throws DataSourceException {
-        List<PropertyDescriptor> attributes;
         Collection<PropertyDescriptor> descriptors = realType.getDescriptors();
-        attributes = new ArrayList<>(descriptors);
+        List<PropertyDescriptor> attributes = new ArrayList<>(descriptors);
         List<String> simpleProperties = new ArrayList<>();
 
         // HACK HACK!! the parser sets no namespace to the properties so we're
@@ -290,8 +289,8 @@ public class EmfAppSchemaParser {
             throw new DataSourceException("Error parsing feature type for " + featureTypeName, e);
         }
 
-        XSDElementDeclaration elementDeclaration;
-        elementDeclaration = schemaIndex.getElementDeclaration(featureTypeName);
+        XSDElementDeclaration elementDeclaration =
+                schemaIndex.getElementDeclaration(featureTypeName);
         schemaIndex.destroy();
         if (elementDeclaration == null) {
             throw new DataSourceException("No XSDElementDeclaration found for " + featureTypeName);

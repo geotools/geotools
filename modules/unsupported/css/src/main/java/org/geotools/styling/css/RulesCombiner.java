@@ -38,7 +38,6 @@ class RulesCombiner {
     }
 
     CssRule combineRules(List<CssRule> rules) {
-        CssRule combined;
         // build the main rule
         Selector combinedSelector = combineSelectors(rules);
 
@@ -77,7 +76,7 @@ class RulesCombiner {
             newProperties.put(entry.getKey(), new ArrayList<>(entry.getValue().values()));
         }
         String comment = getCombinedComment(rules);
-        combined = new CssRule(combinedSelector, newProperties, comment);
+        CssRule combined = new CssRule(combinedSelector, newProperties, comment);
         combined.setAncestry(rules);
         return combined;
     }

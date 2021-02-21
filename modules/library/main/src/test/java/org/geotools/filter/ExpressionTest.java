@@ -222,9 +222,8 @@ public class ExpressionTest {
      */
     @Test
     public void testMinFunctionOld() throws IllegalFilterException {
-        org.opengis.filter.expression.Expression a, b;
-        a = new AttributeExpressionImpl(testSchema, "testInteger");
-        b = new LiteralExpressionImpl(Double.valueOf(1004));
+        Expression a = new AttributeExpressionImpl(testSchema, "testInteger");
+        Expression b = new LiteralExpressionImpl(Double.valueOf(1004));
 
         Function min = ff.function("min", a, b);
 
@@ -261,9 +260,8 @@ public class ExpressionTest {
      */
     @Test
     public void testMaxFunction() throws IllegalFilterException {
-        org.opengis.filter.expression.Expression a, b;
-        a = new AttributeExpressionImpl(testSchema, "testInteger");
-        b = new LiteralExpressionImpl(Double.valueOf(1004));
+        Expression a = new AttributeExpressionImpl(testSchema, "testInteger");
+        Expression b = new LiteralExpressionImpl(Double.valueOf(1004));
 
         Function max = ff.function("max", a, b);
         Assert.assertEquals(1004d, ((Double) max.evaluate(testFeature)).doubleValue(), 0);

@@ -826,7 +826,6 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         Statement st = null;
         ResultSet rs = null;
         try {
-            String sql;
             // avoid actually running the query as it might be very expensive
             // and just grab the metadata instead
             StringBuffer sb = new StringBuffer();
@@ -836,7 +835,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
             dialect.encodeTableAlias("vtable", sb);
             // state we don't want rows, we just want to gather the results metadata
             sb.append(" where 1 = 0");
-            sql = sb.toString();
+            String sql = sb.toString();
 
             st = cx.createStatement();
 

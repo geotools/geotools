@@ -136,8 +136,7 @@ public class JProgressWindow implements ProgressListener {
         final String title = resources.getString(VocabularyKeys.PROGRESSION);
         final JDesktopPane desktop = JOptionPane.getDesktopPaneForComponent(parent);
         if (desktop != null) {
-            final JInternalFrame frame;
-            frame = new JInternalFrame(title);
+            final JInternalFrame frame = new JInternalFrame(title);
             window = frame;
             content = new JPanel(); // Pour avoir un fond opaque
             parentSize = desktop.getSize();
@@ -145,8 +144,7 @@ public class JProgressWindow implements ProgressListener {
             frame.setDefaultCloseOperation(JInternalFrame.HIDE_ON_CLOSE);
             desktop.add(frame, JLayeredPane.PALETTE_LAYER);
         } else {
-            final JDialog dialog;
-            dialog = new JDialog((Frame) null, title);
+            final JDialog dialog = new JDialog((Frame) null, title);
             window = dialog;
             content = (JComponent) dialog.getContentPane();
             parentSize = Toolkit.getDefaultToolkit().getScreenSize();

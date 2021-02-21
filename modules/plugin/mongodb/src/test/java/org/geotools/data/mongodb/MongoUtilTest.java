@@ -37,10 +37,9 @@ public class MongoUtilTest {
     @Test
     public void set() {
         DBObject dbo = new BasicDBObject();
-        Object result;
 
         MongoUtil.setDBOValue(dbo, "root.child1", 1d);
-        result = MongoUtil.getDBOValue(dbo, "root.child1");
+        Object result = MongoUtil.getDBOValue(dbo, "root.child1");
 
         assertThat(result, is(CoreMatchers.instanceOf(Double.class)));
         assertThat((Double) result, is(equalTo(1d)));

@@ -197,7 +197,6 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
     /** Compute the set of tiles needed to generate the image. */
     @Override
     public Set<Tile> getTiles() throws ServiceException {
-        Set<Tile> tiles;
         if (layer == null) {
             throw new ServiceException("GetTiles called with no layer set");
         }
@@ -275,7 +274,8 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
                         RendererUtilities.calculateOGCScale(requestedBBox, requestedWidth, null));
 
         // these are all the tiles available in the tilematrix within the requested bbox
-        tiles = wmtsService.findTilesInExtent(requestedBBox, (int) scale, false, MAXTILES);
+        Set<Tile> tiles =
+                wmtsService.findTilesInExtent(requestedBBox, (int) scale, false, MAXTILES);
         if (LOGGER.isLoggable(Level.FINE))
             LOGGER.fine("found " + tiles.size() + " tiles in " + requestedBBox);
         if (tiles.isEmpty()) {

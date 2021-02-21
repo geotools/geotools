@@ -450,7 +450,6 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
     private RenderedImage mosaicHeterogeneousImages(List<ImageInTile> sources) {
         // at the time of writing, only JAI-EXT mosaic can handle a mix of different
         // color models, we need to use it explicitly
-        RenderedImage image;
         final ParameterBlockJAI pb =
                 new ParameterBlockJAI(new it.geosolutions.jaiext.mosaic.MosaicDescriptor());
         for (ImageInTile it : sources) {
@@ -473,7 +472,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
 
         RenderingHints hints = new Hints(JAI.getDefaultInstance().getRenderingHints());
         hints.putAll(GeoTools.getDefaultHints());
-        image = new MosaicRIF().create(pb, hints);
+        RenderedImage image = new MosaicRIF().create(pb, hints);
         return image;
     }
 

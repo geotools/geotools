@@ -1175,7 +1175,7 @@ public class Encoder {
     }
 
     protected void start(Element element, XSDElementDeclaration declaration) throws SAXException {
-        String uri, local, qName;
+        String uri, local;
 
         if (element.getLocalName() != null) {
             uri = element.getNamespaceURI();
@@ -1191,7 +1191,7 @@ public class Encoder {
                 uri = null;
             }
         }
-        qName = local;
+        String qName = local;
 
         NamespaceSupport namespaces = this.namespaces;
 

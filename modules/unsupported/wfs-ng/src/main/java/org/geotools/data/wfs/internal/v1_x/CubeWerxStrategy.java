@@ -134,13 +134,12 @@ public class CubeWerxStrategy extends StrictWFS_1_x_Strategy {
         Filter[] splitFilters = super.splitFilters(typeName, queryFilter);
 
         Filter serverFilter = splitFilters[0];
-        Filter postFilter = splitFilters[1];
 
         if (!(serverFilter instanceof BinaryLogicOperator)) {
             return splitFilters;
         }
 
-        postFilter = queryFilter;
+        Filter postFilter = queryFilter;
 
         if (serverFilter instanceof Or) {
             // can't know...

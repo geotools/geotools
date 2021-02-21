@@ -261,8 +261,7 @@ public class Config {
     }
 
     private void initStatements() {
-        StringBuffer buff = null;
-        buff = new StringBuffer("update ").append(masterTable).append(" set ");
+        StringBuffer buff = new StringBuffer("update ").append(masterTable).append(" set ");
         buff.append(maxXAttribute).append(" = ?,");
         buff.append(maxYAttribute).append(" = ?,");
         buff.append(minXAttribute).append(" = ?,");

@@ -216,10 +216,8 @@ public class WFSDataStore extends ContentDataStore {
     public StoredQueryDescriptionType getStoredQueryDescriptionType(String storedQueryId)
             throws IOException {
 
-        StoredQueryDescriptionType desc = null;
-
         storedQueryDescriptionTypesLock.readLock().lock();
-        desc = storedQueryDescriptionTypes.get(storedQueryId);
+        StoredQueryDescriptionType desc = storedQueryDescriptionTypes.get(storedQueryId);
         storedQueryDescriptionTypesLock.readLock().unlock();
 
         if (desc == null) {
@@ -259,9 +257,9 @@ public class WFSDataStore extends ContentDataStore {
             throws IOException {
 
         final FeatureType remoteFeatureType = getRemoteFeatureType(remoteTypeName);
-        final SimpleFeatureType remoteSimpleFeatureType;
         // remove GML properties
-        remoteSimpleFeatureType = EmfAppSchemaParser.toSimpleFeatureType(remoteFeatureType);
+        final SimpleFeatureType remoteSimpleFeatureType =
+                EmfAppSchemaParser.toSimpleFeatureType(remoteFeatureType);
 
         return remoteSimpleFeatureType;
     }

@@ -157,9 +157,8 @@ public class TileViewer {
     private void addTestShape(MapContent map, String shapeFilename) {
         try {
             File shpFile = new File(shapeFilename);
-            FileDataStore dataStore;
 
-            dataStore = FileDataStoreFinder.getDataStore(shpFile);
+            FileDataStore dataStore = FileDataStoreFinder.getDataStore(shpFile);
 
             SimpleFeatureSource shapefileSource = dataStore.getFeatureSource();
             Style shpStyle = SLD.createPolygonStyle(Color.BLUE, null, 0.50f);

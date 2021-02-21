@@ -386,13 +386,12 @@ public class GrassBinaryRasterReadHandler implements Closeable {
             LinkedHashMap<String, String> readerFileHeaderMap = new LinkedHashMap<>();
             /* Read contents of 'cellhd/name' file from the current mapset */
             String line;
-            BufferedReader cellhead;
             String reclassedFile = null;
             String reclassedMapset = null;
 
             reclassTable = null;
             File cellhd = readerGrassEnv.getCELLHD();
-            cellhead = new BufferedReader(new FileReader(cellhd));
+            BufferedReader cellhead = new BufferedReader(new FileReader(cellhd));
             cellhead.mark(128);
             /*
              * Read first line to determine if file is a reclasses file. If it
@@ -470,10 +469,8 @@ public class GrassBinaryRasterReadHandler implements Closeable {
                     // n-s resol: 0:00:00.055381
                     String key = lineSplit[0].trim();
 
-                    double value = 0.0;
-
                     String degrees = lineSplit[1];
-                    value = Double.parseDouble(degrees);
+                    double value = Double.parseDouble(degrees);
 
                     String minutes = lineSplit[2];
                     if (minutes.lastIndexOf('N') != -1
@@ -1254,8 +1251,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
     public CoordinateReferenceSystem getCrs() throws IOException {
         String locationPath = readerGrassEnv.getLOCATION().getAbsolutePath();
         CoordinateReferenceSystem readCrs = null;
-        String projWtkFilePath;
-        projWtkFilePath =
+        String projWtkFilePath =
                 locationPath
                         + File.separator
                         + JGrassConstants.PERMANENT_MAPSET

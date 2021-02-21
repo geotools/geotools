@@ -294,14 +294,13 @@ public class GeoJSONWriteTest {
         final SimpleFeatureType type = store.getSchema("locations");
         assertNotNull(type);
 
-        SimpleFeature f;
         DefaultFeatureCollection collection = new DefaultFeatureCollection();
 
         // 45.52, -122.681944, Portland, 800, 2014
         GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
         Point portland = gf.createPoint(new Coordinate(45.52, -122.681944));
 
-        f =
+        SimpleFeature f =
                 SimpleFeatureBuilder.build(
                         type,
                         new Object[] {portland, 45.52, -122.681944, "Portland", 800, 2014},

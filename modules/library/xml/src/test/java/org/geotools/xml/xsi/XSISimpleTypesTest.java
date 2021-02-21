@@ -47,16 +47,12 @@ public class XSISimpleTypesTest {
         Element element = null;
         Attributes attrs = null;
         Map<String, Object> hints = null;
-        ElementValue[] value;
-        Date expected;
-        String sval;
-        Object actual;
 
-        sval = "2012-02-14";
-        value = new ElementValue[] {new ElementValueGT(null, sval)};
-        actual = dateBinding.getValue(element, value, attrs, hints);
+        String sval = "2012-02-14";
+        ElementValue[] value = new ElementValue[] {new ElementValueGT(null, sval)};
+        Object actual = dateBinding.getValue(element, value, attrs, hints);
         Assert.assertNotNull(actual);
-        expected = Converters.convert(sval, java.sql.Date.class);
+        Date expected = Converters.convert(sval, Date.class);
         Assert.assertEquals(
                 expected.getClass().getName()
                         + "["
@@ -124,16 +120,12 @@ public class XSISimpleTypesTest {
         Element element = null;
         Attributes attrs = null;
         Map<String, Object> hints = null;
-        ElementValue[] value;
-        java.util.Date expected;
-        String sval;
-        Object actual;
 
-        sval = "2012-02-14";
-        value = new ElementValue[] {new ElementValueGT(null, sval)};
-        actual = dateTimeBinding.getValue(element, value, attrs, hints);
+        String sval = "2012-02-14";
+        ElementValue[] value = new ElementValue[] {new ElementValueGT(null, sval)};
+        Object actual = dateTimeBinding.getValue(element, value, attrs, hints);
         Assert.assertNotNull(actual);
-        expected = Converters.convert(sval, java.sql.Timestamp.class);
+        java.util.Date expected = Converters.convert(sval, java.sql.Timestamp.class);
         Assert.assertEquals(
                 expected.getClass().getName()
                         + "["
@@ -218,16 +210,12 @@ public class XSISimpleTypesTest {
         Element element = null;
         Attributes attrs = null;
         Map<String, Object> hints = null;
-        ElementValue[] value;
-        java.util.Date expected;
-        String sval;
-        Object actual;
 
-        sval = "10:53:24Z";
-        value = new ElementValue[] {new ElementValueGT(null, sval)};
-        actual = timeBinding.getValue(element, value, attrs, hints);
+        String sval = "10:53:24Z";
+        ElementValue[] value = new ElementValue[] {new ElementValueGT(null, sval)};
+        Object actual = timeBinding.getValue(element, value, attrs, hints);
         Assert.assertNotNull(actual);
-        expected = Converters.convert(sval, java.sql.Time.class);
+        java.util.Date expected = Converters.convert(sval, java.sql.Time.class);
         Assert.assertEquals(
                 expected.getClass().getName()
                         + "["
@@ -295,12 +283,10 @@ public class XSISimpleTypesTest {
         Element element = null;
         Map<String, Object> hints = null;
         Attributes attrs = null;
-        ElementValue[] value;
         String sval = "";
-        Object actual;
 
-        value = new ElementValue[] {new ElementValueGT(null, sval)};
-        actual = durationBinding.getValue(element, value, attrs, hints);
+        ElementValue[] value = new ElementValue[] {new ElementValueGT(null, sval)};
+        Object actual = durationBinding.getValue(element, value, attrs, hints);
         Assert.assertNull(actual);
     }
 

@@ -342,7 +342,6 @@ public class OGRDataStore extends ContentDataStore {
             String[] options,
             FeatureTypeMapper mapper)
             throws IOException, DataSourceException {
-        Object layer;
         // get the spatial reference corresponding to the default geometry
         GeometryDescriptor geomType = schema.getGeometryDescriptor();
         long ogrGeomType = mapper.getOGRGeometryType(geomType);
@@ -350,7 +349,7 @@ public class OGRDataStore extends ContentDataStore {
                 mapper.getSpatialReference(geomType.getCoordinateReferenceSystem());
 
         // create the layer
-        layer =
+        Object layer =
                 dataSource.createLayer(
                         schema.getTypeName(), spatialReference, ogrGeomType, options);
         if (layer == null) {

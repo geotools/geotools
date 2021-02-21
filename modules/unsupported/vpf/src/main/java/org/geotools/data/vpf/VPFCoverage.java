@@ -173,9 +173,8 @@ public class VPFCoverage {
      * @throws IOException on any IO problems, particularly not being able to find the char.vdt file
      */
     private VPFFile getCharVDT() throws IOException {
-        VPFFile charvdtInputStream = null;
         String charvdtFileName = pathName + File.separator + CHARACTER_VALUE_DESCRIPTION_TABLE;
-        charvdtInputStream = VPFFileFactory.getInstance().getFile(charvdtFileName);
+        VPFFile charvdtInputStream = VPFFileFactory.getInstance().getFile(charvdtFileName);
 
         return charvdtInputStream;
     }

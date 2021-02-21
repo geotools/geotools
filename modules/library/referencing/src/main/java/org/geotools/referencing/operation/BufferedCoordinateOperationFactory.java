@@ -226,8 +226,7 @@ public class BufferedCoordinateOperationFactory extends AbstractCoordinateOperat
         ensureNonNull("sourceCRS", sourceCRS);
         ensureNonNull("targetCRS", targetCRS);
         final CRSPair key = new CRSPair(sourceCRS, targetCRS);
-        CoordinateOperation op;
-        op = pool.get(key);
+        CoordinateOperation op = pool.get(key);
         if (op == null) {
             op = getBackingFactory().createOperation(sourceCRS, targetCRS);
             pool.put(key, op);

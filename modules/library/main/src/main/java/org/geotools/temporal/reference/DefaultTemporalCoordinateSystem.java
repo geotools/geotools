@@ -121,7 +121,6 @@ public class DefaultTemporalCoordinateSystem extends DefaultTemporalReferenceSys
      * millisecond.
      */
     public TemporalCoordinate transformDateTime(Date dateTime) {
-        TemporalCoordinate response;
         final long yearMS = 31536000000L;
         final long monthMS = 2628000000L;
         final long weekMS = 604800000L;
@@ -146,7 +145,7 @@ public class DefaultTemporalCoordinateSystem extends DefaultTemporalReferenceSys
         } else if (interval.toString().equals("second")) {
             coordinateValue = (float) coordinateValue.longValue() / (float) secondMS;
         }
-        response = new DefaultTemporalCoordinate(this, null, coordinateValue);
+        TemporalCoordinate response = new DefaultTemporalCoordinate(this, null, coordinateValue);
         return response;
     }
 

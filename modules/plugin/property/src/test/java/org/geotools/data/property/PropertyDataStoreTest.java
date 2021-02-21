@@ -218,9 +218,7 @@ public class PropertyDataStoreTest {
             Assert.assertEquals(5, count);
         }
 
-        Filter selectFid1;
-
-        selectFid1 = ff.id(Collections.singleton(ff.featureId("fid1")));
+        Filter selectFid1 = ff.id(Collections.singleton(ff.featureId("fid1")));
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 store.getFeatureReader(new Query("road", selectFid1), Transaction.AUTO_COMMIT)) {
             Assert.assertEquals(1, count(reader));
@@ -336,8 +334,7 @@ public class PropertyDataStoreTest {
         try (PropertyFeatureWriter writer =
                 (PropertyFeatureWriter) featureStore.getWriterInternal(query, 0x01 << 0)) {
 
-            SimpleFeature f;
-            f = writer.next();
+            SimpleFeature f = writer.next();
             f.setAttribute(1, "changed");
             writer.write();
         }
@@ -351,11 +348,10 @@ public class PropertyDataStoreTest {
         try (PropertyFeatureWriter writer =
                 (PropertyFeatureWriter) featureStore.getWriterInternal(query, 0x01 << 0)) {
 
-            SimpleFeature f;
             writer.next();
             writer.next();
             writer.next();
-            f = writer.next();
+            SimpleFeature f = writer.next();
             f.setAttribute(1, "changed");
             writer.write();
         }
@@ -369,14 +365,13 @@ public class PropertyDataStoreTest {
         try (PropertyFeatureWriter writer =
                 (PropertyFeatureWriter) featureStore.getWriterInternal(query, 0x01 << 0)) {
 
-            SimpleFeature f;
             writer.next();
             writer.next();
             writer.next();
             writer.next();
             writer.next();
             Assert.assertFalse(writer.hasNext());
-            f = writer.next();
+            SimpleFeature f = writer.next();
             Assert.assertNotNull(f);
             f.setAttribute(0, Integer.valueOf(-1));
             f.setAttribute(1, "new");
@@ -390,9 +385,8 @@ public class PropertyDataStoreTest {
         try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
                 store.getFeatureWriterAppend("road", Transaction.AUTO_COMMIT)) {
 
-            SimpleFeature f;
             Assert.assertFalse(writer.hasNext());
-            f = writer.next();
+            SimpleFeature f = writer.next();
             Assert.assertNotNull(f);
             f.setAttribute(0, Integer.valueOf(-1));
             f.setAttribute(1, null); // this made the datastore break
@@ -436,7 +430,6 @@ public class PropertyDataStoreTest {
         try (PropertyFeatureWriter writer =
                 (PropertyFeatureWriter) featureStore.getWriterInternal(query, 0x01 << 0)) {
 
-            SimpleFeature f;
             writer.next();
             writer.next();
             writer.next();
@@ -444,7 +437,7 @@ public class PropertyDataStoreTest {
             writer.next();
 
             Assert.assertFalse(writer.hasNext());
-            f = writer.next();
+            SimpleFeature f = writer.next();
             Assert.assertNotNull(f);
             f.setAttribute(0, Integer.valueOf(-1));
             f.setAttribute(1, "new");
@@ -460,14 +453,13 @@ public class PropertyDataStoreTest {
         try (PropertyFeatureWriter writer =
                 (PropertyFeatureWriter) featureStore.getWriterInternal(query, 0x01 << 0)) {
 
-            SimpleFeature f;
             writer.next();
             writer.next();
             writer.next();
             writer.next();
             writer.next();
             Assert.assertFalse(writer.hasNext());
-            f = writer.next();
+            SimpleFeature f = writer.next();
             Assert.assertNotNull(f);
             f.setAttribute(0, Integer.valueOf(-1));
             f.setAttribute(1, "new");

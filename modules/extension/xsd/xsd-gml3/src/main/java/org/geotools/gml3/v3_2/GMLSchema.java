@@ -4852,8 +4852,7 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType CURVEPROPERTYTYPE_TYPE = build_CURVEPROPERTYTYPE_TYPE();
 
     private static AttributeType build_CURVEPROPERTYTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AbstractLazyAttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml/3.2", "CurvePropertyType"),
                         LineString.class,
@@ -16658,8 +16657,7 @@ public class GMLSchema extends SchemaImpl {
             build_MULTICURVEPROPERTYTYPE_TYPE();
 
     private static AttributeType build_MULTICURVEPROPERTYTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AbstractLazyAttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml/3.2", "MultiCurvePropertyType"),
                         org.locationtech.jts.geom.MultiLineString.class,
@@ -25292,8 +25290,7 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType MULTICURVETYPE_TYPE = build_MULTICURVETYPE_TYPE();
 
     private static AttributeType build_MULTICURVETYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AbstractLazyAttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml/3.2", "MultiCurveType"),
                         org.locationtech.jts.geom.MultiLineString.class,

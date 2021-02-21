@@ -874,8 +874,8 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
                 }
                 final int sourceDim = getDimension(sourceCRS);
                 final int targetDim = getDimension(targetCRS);
-                final ParameterValueGroup parameters;
-                parameters = getMathTransformFactory().getDefaultParameters(molodenskiMethod);
+                final ParameterValueGroup parameters =
+                        getMathTransformFactory().getDefaultParameters(molodenskiMethod);
                 parameters.parameter("src_semi_major").setValue(sourceEllipsoid.getSemiMajorAxis());
                 parameters.parameter("src_semi_minor").setValue(sourceEllipsoid.getSemiMinorAxis());
                 parameters.parameter("tgt_semi_major").setValue(targetEllipsoid.getSemiMajorAxis());
@@ -885,14 +885,13 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
                 parameters.parameter("dz").setValue(bursaWolf.dz);
                 parameters.parameter("dim").setValue(sourceDim);
                 if (sourceDim == targetDim) {
-                    final CoordinateOperation step1, step2, step3;
                     final GeographicCRS normSourceCRS = normalize(sourceCRS, true);
                     final GeographicCRS normTargetCRS = normalize(targetCRS, true);
-                    step1 = createOperationStep(sourceCRS, normSourceCRS);
-                    step2 =
+                    final CoordinateOperation step1 = createOperationStep(sourceCRS, normSourceCRS);
+                    final CoordinateOperation step2 =
                             createFromParameters(
                                     identifier, normSourceCRS, normTargetCRS, parameters);
-                    step3 = createOperationStep(normTargetCRS, targetCRS);
+                    final CoordinateOperation step3 = createOperationStep(normTargetCRS, targetCRS);
                     return concatenate(step1, step2, step3);
                 }
                 // TODO: Need some way to pass 'targetDim' to Molodenski.
@@ -998,14 +997,13 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
          */
         final GeographicCRS sourceGeo = sourceCRS.getBaseCRS();
         final GeographicCRS targetGeo = targetCRS.getBaseCRS();
-        Set<CoordinateOperation> step1, step2, step3;
 
-        step1 = tryDB(sourceCRS, sourceGeo, limit);
+        Set<CoordinateOperation> step1 = tryDB(sourceCRS, sourceGeo, limit);
         if (step1.isEmpty()) step1 = findOperationSteps(sourceCRS, sourceGeo, limit);
-        step2 = tryDB(sourceGeo, targetGeo, limit);
+        Set<CoordinateOperation> step2 = tryDB(sourceGeo, targetGeo, limit);
         if (step2.isEmpty())
             step2 = Collections.singleton(createOperationStep(sourceGeo, targetGeo));
-        step3 = tryDB(targetGeo, targetCRS, limit);
+        Set<CoordinateOperation> step3 = tryDB(targetGeo, targetCRS, limit);
         if (step3.isEmpty()) step3 = findOperationSteps(targetGeo, targetCRS, limit);
         return concatenate(step1, step2, step3);
     }
@@ -1176,9 +1174,8 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
         final GeodeticDatum targetDatum = targetCRS.getDatum();
         final CoordinateSystem sourceCS = sourceCRS.getCoordinateSystem();
         final CoordinateSystem targetCS = targetCRS.getCoordinateSystem();
-        final double sourcePM, targetPM;
-        sourcePM = getGreenwichLongitude(sourceDatum.getPrimeMeridian());
-        targetPM = getGreenwichLongitude(targetDatum.getPrimeMeridian());
+        final double sourcePM = getGreenwichLongitude(sourceDatum.getPrimeMeridian());
+        final double targetPM = getGreenwichLongitude(targetDatum.getPrimeMeridian());
         if (equalsIgnorePrimeMeridian(sourceDatum, targetDatum)) {
             if (sourcePM == targetPM) {
                 /*
@@ -1270,16 +1267,16 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
         final GeocentricCRS normTargetCRS = normalize(targetCRS, datum);
         final Ellipsoid ellipsoid = datum.getEllipsoid();
         final Unit unit = ellipsoid.getAxisUnit();
-        final ParameterValueGroup param;
-        param = getMathTransformFactory().getDefaultParameters("Ellipsoid_To_Geocentric");
+        final ParameterValueGroup param =
+                getMathTransformFactory().getDefaultParameters("Ellipsoid_To_Geocentric");
         param.parameter("semi_major").setValue(ellipsoid.getSemiMajorAxis(), unit);
         param.parameter("semi_minor").setValue(ellipsoid.getSemiMinorAxis(), unit);
         param.parameter("dim").setValue(getDimension(normSourceCRS));
 
-        final CoordinateOperation step1, step2, step3;
-        step1 = createOperationStep(sourceCRS, normSourceCRS);
-        step2 = createFromParameters(GEOCENTRIC_CONVERSION, normSourceCRS, normTargetCRS, param);
-        step3 = createOperationStep(normTargetCRS, targetCRS);
+        final CoordinateOperation step1 = createOperationStep(sourceCRS, normSourceCRS);
+        final CoordinateOperation step2 =
+                createFromParameters(GEOCENTRIC_CONVERSION, normSourceCRS, normTargetCRS, param);
+        final CoordinateOperation step3 = createOperationStep(normTargetCRS, targetCRS);
         return concatenate(step1, step2, step3);
     }
 
@@ -1299,16 +1296,16 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
         final GeocentricCRS normSourceCRS = normalize(sourceCRS, datum);
         final Ellipsoid ellipsoid = datum.getEllipsoid();
         final Unit unit = ellipsoid.getAxisUnit();
-        final ParameterValueGroup param;
-        param = getMathTransformFactory().getDefaultParameters("Geocentric_To_Ellipsoid");
+        final ParameterValueGroup param =
+                getMathTransformFactory().getDefaultParameters("Geocentric_To_Ellipsoid");
         param.parameter("semi_major").setValue(ellipsoid.getSemiMajorAxis(), unit);
         param.parameter("semi_minor").setValue(ellipsoid.getSemiMinorAxis(), unit);
         param.parameter("dim").setValue(getDimension(normTargetCRS));
 
-        final CoordinateOperation step1, step2, step3;
-        step1 = createOperationStep(sourceCRS, normSourceCRS);
-        step2 = createFromParameters(GEOCENTRIC_CONVERSION, normSourceCRS, normTargetCRS, param);
-        step3 = createOperationStep(normTargetCRS, targetCRS);
+        final CoordinateOperation step1 = createOperationStep(sourceCRS, normSourceCRS);
+        final CoordinateOperation step2 =
+                createFromParameters(GEOCENTRIC_CONVERSION, normSourceCRS, normTargetCRS, param);
+        final CoordinateOperation step3 = createOperationStep(normTargetCRS, targetCRS);
         return concatenate(step1, step2, step3);
     }
 

@@ -119,8 +119,7 @@ public class EmfAppSchemaParserTest {
 
         Configuration configuration = new WFSConfiguration();
 
-        SimpleFeatureType featureType;
-        featureType =
+        SimpleFeatureType featureType =
                 EmfAppSchemaParser.parseSimpleFeatureType(
                         configuration, featureTypeName, schemaLocation, crs);
 

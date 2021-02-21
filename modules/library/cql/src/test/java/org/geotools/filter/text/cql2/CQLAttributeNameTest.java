@@ -124,14 +124,12 @@ public class CQLAttributeNameTest {
     }
 
     private void testAttributeBetweenDoubleQuotes(final String attSample) throws CQLException {
-        PropertyIsLike result;
-        PropertyName attResult = null;
 
-        result =
+        PropertyIsLike result =
                 (PropertyIsLike)
                         CompilerUtil.parseFilter(this.language, attSample + " LIKE 'abc%'");
 
-        attResult = (PropertyName) result.getExpression();
+        PropertyName attResult = (PropertyName) result.getExpression();
 
         String expected = attSample.replace('.', '/');
         expected = expected.substring(1, expected.length() - 1);
@@ -141,14 +139,12 @@ public class CQLAttributeNameTest {
     }
 
     private void testAttribute(final String attSample) throws CQLException {
-        PropertyIsLike result;
-        PropertyName attResult = null;
 
-        result =
+        PropertyIsLike result =
                 (PropertyIsLike)
                         CompilerUtil.parseFilter(this.language, attSample + " LIKE 'abc%'");
 
-        attResult = (PropertyName) result.getExpression();
+        PropertyName attResult = (PropertyName) result.getExpression();
 
         final String expected = attSample.replace('.', '/');
 

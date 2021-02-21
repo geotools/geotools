@@ -392,9 +392,7 @@ public abstract class AbstractTest extends TestCase {
             // should not happen
         }
 
-        List<ImportParam> importParamList = null;
-
-        importParamList = new ArrayList<>();
+        List<ImportParam> importParamList = new ArrayList<>();
         Import.fillImportParamList(
                 "SPAT", "TILE", dirFileUrl, "tif", ImportTyp.DIR, importParamList);
         assertEquals(3, importParamList.size());

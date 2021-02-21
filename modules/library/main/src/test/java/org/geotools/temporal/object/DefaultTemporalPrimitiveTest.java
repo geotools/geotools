@@ -60,12 +60,11 @@ public class DefaultTemporalPrimitiveTest {
     /** Test of relativePosition method, of class DefaultTemporalPrimitive. */
     @Test
     public void testRelativePosition() {
-        TemporalPrimitive other;
 
         // relative position between Instant objects
         cal.set(2000, 0, 1);
         Position position = new DefaultPosition(cal.getTime());
-        other = new DefaultInstant(position);
+        TemporalPrimitive other = new DefaultInstant(position);
         RelativePosition result = temporalPrimitive1.relativePosition(other);
         assertNotEquals(temporalPrimitive2.relativePosition(other), result);
 

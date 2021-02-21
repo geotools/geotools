@@ -1026,8 +1026,7 @@ public class FilterOpsComplexTypes {
                 throw new SAXException("Invalid type name for element provided");
             }
 
-            String fid = null;
-            fid = attrs1.getValue("", FeatureIdType.attrs[0].getName());
+            String fid = attrs1.getValue("", FeatureIdType.attrs[0].getName());
 
             if ((fid == null) || "".equals(fid)) {
                 fid =

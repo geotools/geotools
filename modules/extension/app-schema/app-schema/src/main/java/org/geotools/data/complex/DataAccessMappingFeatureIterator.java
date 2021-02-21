@@ -1211,7 +1211,6 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
      * prefilter but there might be denormalised rows with same id that don't.
      */
     private List<Feature> setNextFilteredFeature(String fId) throws IOException {
-        FeatureCollection<? extends FeatureType, ? extends Feature> matchingFeatures;
         Query query = new Query();
         if (reprojection != null) {
             if (sourceFeatures.getSchema().getGeometryDescriptor() != null
@@ -1254,7 +1253,8 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         // END OF HACK
 
         query.setFilter(fidFilter);
-        matchingFeatures = this.mappedSource.getFeatures(query);
+        FeatureCollection<? extends FeatureType, ? extends Feature> matchingFeatures =
+                this.mappedSource.getFeatures(query);
 
         List<Feature> features = new ArrayList<>();
         try (FeatureIterator<? extends Feature> iterator = matchingFeatures.features()) {

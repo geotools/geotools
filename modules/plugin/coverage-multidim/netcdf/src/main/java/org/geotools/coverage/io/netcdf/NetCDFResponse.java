@@ -526,7 +526,6 @@ class NetCDFResponse extends CoverageResponse {
     private void initTransformations() throws Exception {
         // compute final world to grid
         // base grid to world for the center of pixels
-        final AffineTransform g2w;
         CoverageProperties properties = request.spatialRequestHelper.getCoverageProperties();
         baseGridToWorld = (AffineTransform) properties.getGridToWorld2D();
         double[] coverageFullResolution = properties.getFullResolution();
@@ -534,7 +533,7 @@ class NetCDFResponse extends CoverageResponse {
         final double resY = coverageFullResolution[1];
         final double[] requestRes = request.spatialRequestHelper.getRequestedResolution();
 
-        g2w = new AffineTransform(baseGridToWorld);
+        final AffineTransform g2w = new AffineTransform(baseGridToWorld);
         g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
 
         if ((requestRes[0] < resX || requestRes[1] < resY)) {
@@ -903,10 +902,9 @@ class NetCDFResponse extends CoverageResponse {
             return;
         }
 
-        final int rasterWidth, rasterHeight;
         // highest resolution
-        rasterWidth = coverageRasterArea.width;
-        rasterHeight = coverageRasterArea.height;
+        final int rasterWidth = coverageRasterArea.width;
+        final int rasterHeight = coverageRasterArea.height;
 
         // /////////////////////////////////////////////////////////////////////
         // DECIMATION ON READING

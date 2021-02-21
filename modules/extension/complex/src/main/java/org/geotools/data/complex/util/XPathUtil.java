@@ -523,8 +523,6 @@ public class XPathUtil {
             throw new NullPointerException("prefixedName");
         }
 
-        QName name = null;
-
         String prefix;
         final String namespaceUri;
         final String localName;
@@ -572,7 +570,7 @@ public class XPathUtil {
             namespaceUri = namespaces.getURI(prefix);
         }
 
-        name = new QName(namespaceUri, localName, prefix);
+        QName name = new QName(namespaceUri, localName, prefix);
 
         return name;
     }

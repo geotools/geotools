@@ -136,10 +136,9 @@ public abstract class LambertConformal extends MapProjection {
         final boolean sp2 = expected.contains(AbstractProvider.STANDARD_PARALLEL_2);
         this.belgium = belgium;
         if (sp2) {
-            double phi2;
             phi1 = doubleValue(expected, AbstractProvider.STANDARD_PARALLEL_1, parameters);
             ensureLatitudeInRange(AbstractProvider.STANDARD_PARALLEL_1, phi1, true);
-            phi2 = doubleValue(expected, AbstractProvider.STANDARD_PARALLEL_2, parameters);
+            double phi2 = doubleValue(expected, AbstractProvider.STANDARD_PARALLEL_2, parameters);
             if (Double.isNaN(phi2)) {
                 phi2 = phi1;
             }

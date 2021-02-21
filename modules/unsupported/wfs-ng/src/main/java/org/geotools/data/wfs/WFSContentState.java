@@ -50,8 +50,8 @@ public class WFSContentState extends ContentState {
             synchronized (WFSRemoteTransactionState.class) {
                 WFSDataStore dataStore = (WFSDataStore) entry.getDataStore();
 
-                WFSRemoteTransactionState remoteStateKeeper;
-                remoteStateKeeper = (WFSRemoteTransactionState) tx.getState(dataStore);
+                WFSRemoteTransactionState remoteStateKeeper =
+                        (WFSRemoteTransactionState) tx.getState(dataStore);
                 if (remoteStateKeeper == null) {
                     remoteStateKeeper = new WFSRemoteTransactionState(dataStore);
                     tx.putState(dataStore, remoteStateKeeper);

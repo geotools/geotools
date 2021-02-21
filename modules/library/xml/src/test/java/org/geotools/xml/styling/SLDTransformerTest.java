@@ -589,11 +589,8 @@ public class SLDTransformerTest {
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
-            Document dom = null;
-            DocumentBuilder db = null;
-
-            db = dbf.newDocumentBuilder();
-            dom = db.parse(new InputSource(new StringReader(xmlFragment)));
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
             PointSymbolizer pointSymbolizer2 = parser.parsePointSymbolizer(dom.getFirstChild());
 
@@ -616,11 +613,8 @@ public class SLDTransformerTest {
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
-        Document dom = null;
-        DocumentBuilder db = null;
-
-        db = dbf.newDocumentBuilder();
-        dom = db.parse(new InputSource(new StringReader(xmlFragment)));
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
         PolygonSymbolizer polygonSymbolizer2 = parser.parsePolygonSymbolizer(dom.getFirstChild());
 
@@ -640,11 +634,8 @@ public class SLDTransformerTest {
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
-        Document dom = null;
-        DocumentBuilder db = null;
-
-        db = dbf.newDocumentBuilder();
-        dom = db.parse(new InputSource(new StringReader(xmlFragment)));
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
         RasterSymbolizer rasterSymbolizer2 = parser.parseRasterSymbolizer(dom.getFirstChild());
 
@@ -695,11 +686,8 @@ public class SLDTransformerTest {
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
-        Document dom = null;
-        DocumentBuilder db = null;
-
-        db = dbf.newDocumentBuilder();
-        dom = db.parse(new InputSource(new StringReader(xmlFragment)));
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
         LineSymbolizer lineSymbolizer2 = parser.parseLineSymbolizer(dom.getFirstChild());
 
@@ -724,11 +712,8 @@ public class SLDTransformerTest {
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
-        Document dom = null;
-        DocumentBuilder db = null;
-
-        db = dbf.newDocumentBuilder();
-        dom = db.parse(new InputSource(new StringReader(xmlFragment)));
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
         TextSymbolizer textSymbolizer2 = parser.parseTextSymbolizer(dom.getFirstChild());
 
@@ -748,11 +733,8 @@ public class SLDTransformerTest {
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
-            Document dom = null;
-            DocumentBuilder db = null;
-
-            db = dbf.newDocumentBuilder();
-            dom = db.parse(new InputSource(new StringReader(xmlFragment)));
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
             PointSymbolizer pointSymbolizer2 = parser.parsePointSymbolizer(dom.getFirstChild());
 
@@ -774,11 +756,8 @@ public class SLDTransformerTest {
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
-        Document dom = null;
-        DocumentBuilder db = null;
-
-        db = dbf.newDocumentBuilder();
-        dom = db.parse(new InputSource(new StringReader(xmlFragment)));
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
         PolygonSymbolizer polygonSymbolizer2 = parser.parsePolygonSymbolizer(dom.getFirstChild());
 
@@ -797,11 +776,8 @@ public class SLDTransformerTest {
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
-        Document dom = null;
-        DocumentBuilder db = null;
-
-        db = dbf.newDocumentBuilder();
-        dom = db.parse(new InputSource(new StringReader(xmlFragment)));
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
         RasterSymbolizer rasterSymbolizer2 = parser.parseRasterSymbolizer(dom.getFirstChild());
 
@@ -820,11 +796,8 @@ public class SLDTransformerTest {
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
-        Document dom = null;
-        DocumentBuilder db = null;
-
-        db = dbf.newDocumentBuilder();
-        dom = db.parse(new InputSource(new StringReader(xmlFragment)));
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
         LineSymbolizer lineSymbolizer2 = parser.parseLineSymbolizer(dom.getFirstChild());
 
@@ -843,11 +816,8 @@ public class SLDTransformerTest {
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
-        Document dom = null;
-        DocumentBuilder db = null;
-
-        db = dbf.newDocumentBuilder();
-        dom = db.parse(new InputSource(new StringReader(xmlFragment)));
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document dom = db.parse(new InputSource(new StringReader(xmlFragment)));
 
         TextSymbolizer textSymbolizer2 = parser.parseTextSymbolizer(dom.getFirstChild());
 
@@ -859,8 +829,7 @@ public class SLDTransformerTest {
     public void testDisplacement() throws Exception {
         StyleBuilder sb = new StyleBuilder();
 
-        Graphic graphic;
-        graphic = sb.createGraphic();
+        Graphic graphic = sb.createGraphic();
         Displacement disp = sb.createDisplacement(10.1, -5.5);
         graphic.setDisplacement(disp);
 
@@ -1806,8 +1775,7 @@ public class SLDTransformerTest {
     public void testAnchorPointInGraphic() throws Exception {
         StyleBuilder sb = new StyleBuilder();
 
-        Graphic graphic;
-        graphic = sb.createGraphic();
+        Graphic graphic = sb.createGraphic();
         Displacement disp = sb.createDisplacement(10, 10);
         AnchorPoint ap = sb.createAnchorPoint(1, 0.3);
         graphic.setDisplacement(disp);

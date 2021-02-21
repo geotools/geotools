@@ -244,8 +244,7 @@ public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
         Object median;
         Collections.sort(list);
 
-        int index = -1;
-        index = list.size() / 2;
+        int index = list.size() / 2;
 
         if ((list.size() % 2) == 0) {
             // even number of elements, so we must average the 2 middle ones, or

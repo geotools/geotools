@@ -161,8 +161,7 @@ public class ProcessParameterPage extends JPage {
 
     private void createAddButton(final Parameter<?> parameter) {
         JPanel page = getPanel();
-        JLabel buttLabel;
-        buttLabel = new JLabel("Press '+' to add a new " + parameter.title + " field: ");
+        JLabel buttLabel = new JLabel("Press '+' to add a new " + parameter.title + " field: ");
         page.add(buttLabel);
 
         JButton butt = new JButton("+");
@@ -183,8 +182,7 @@ public class ProcessParameterPage extends JPage {
     private ParamField createNewField(Parameter<?> parameter, boolean resize) {
         JPanel page = getPanel();
 
-        JLabel label;
-        label = new JLabel(parameter.title.toString());
+        JLabel label = new JLabel(parameter.title.toString());
         page.add(label);
 
         ParamField widget;

@@ -234,8 +234,8 @@ public class CRSLab {
 
         newDataStore.createSchema(featureCollection.getSchema());
         Transaction transaction = new DefaultTransaction("Reproject");
-        SimpleFeatureStore featureStore;
-        featureStore = (SimpleFeatureStore) newDataStore.getFeatureSource(typeName);
+        SimpleFeatureStore featureStore =
+                (SimpleFeatureStore) newDataStore.getFeatureSource(typeName);
         featureStore.setTransaction(transaction);
         try {
             featureStore.addFeatures(featureCollection);

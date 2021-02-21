@@ -549,9 +549,8 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
 
         int i = postStack.size();
 
-        Expression leftGeometry, rightGeometry;
-        leftGeometry = filter.getExpression1();
-        rightGeometry = filter.getExpression2();
+        Expression leftGeometry = filter.getExpression1();
+        Expression rightGeometry = filter.getExpression2();
 
         if (leftGeometry == null || rightGeometry == null) {
             postStack.push(filter);

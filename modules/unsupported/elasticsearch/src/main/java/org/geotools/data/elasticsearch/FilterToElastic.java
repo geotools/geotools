@@ -1163,8 +1163,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
             // convert LinearRing to LineString
             final GeometryFactory factory = currentGeometry.getFactory();
             final LinearRing linearRing = (LinearRing) currentGeometry;
-            final CoordinateSequence coordinates;
-            coordinates = linearRing.getCoordinateSequence();
+            final CoordinateSequence coordinates = linearRing.getCoordinateSequence();
             currentGeometry = factory.createLineString(coordinates);
         }
 
@@ -1262,8 +1261,8 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
                 }
                 if (entry.getKey().equalsIgnoreCase("a")) {
                     final ObjectMapper mapper = new ObjectMapper();
-                    final TypeReference<Map<String, Map<String, Map<String, Object>>>> type;
-                    type = new TypeReference<Map<String, Map<String, Map<String, Object>>>>() {};
+                    final TypeReference<Map<String, Map<String, Map<String, Object>>>> type =
+                            new TypeReference<Map<String, Map<String, Map<String, Object>>>>() {};
                     final String value = entry.getValue();
                     try {
                         this.aggregations = mapper.readValue(value, type);

@@ -172,12 +172,10 @@ public class ShapefileReadWriteTest extends TestCaseSupport {
             Charset charset)
             throws IOException, MalformedURLException, Exception {
 
-        ShapefileDataStore shapefile;
-        String typeName;
         Map<String, Serializable> params = new HashMap<>();
         params.put(ShapefileDataStoreFactory.URLP.key, tmp.toURI().toURL());
         params.put(ShapefileDataStoreFactory.MEMORY_MAPPED.key, memorymapped);
-        shapefile = (ShapefileDataStore) maker.createDataStore(params);
+        ShapefileDataStore shapefile = (ShapefileDataStore) maker.createDataStore(params);
         if (charset != null) shapefile.setCharset(charset);
 
         shapefile.createSchema(type);
@@ -194,7 +192,7 @@ public class ShapefileReadWriteTest extends TestCaseSupport {
         if (charset != null) {
             review.setCharset(charset);
         }
-        typeName = review.getTypeNames()[0];
+        String typeName = review.getTypeNames()[0];
         SimpleFeatureSource featureSource = review.getFeatureSource(typeName);
         SimpleFeatureCollection again = featureSource.getFeatures();
 

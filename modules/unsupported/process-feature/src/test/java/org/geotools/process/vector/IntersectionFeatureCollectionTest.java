@@ -288,10 +288,10 @@ public class IntersectionFeatureCollectionTest {
 
         assertEquals(1, output3.size());
 
-        GeometryCollection firstCollection = null;
-        GeometryCollection secondCollection = null;
-        firstCollection = new GeometryCollection(firstArrayGeometry, new GeometryFactory());
-        secondCollection = new GeometryCollection(secondArrayGeometry, new GeometryFactory());
+        GeometryCollection firstCollection =
+                new GeometryCollection(firstArrayGeometry, new GeometryFactory());
+        GeometryCollection secondCollection =
+                new GeometryCollection(secondArrayGeometry, new GeometryFactory());
         try (SimpleFeatureIterator iterator = output3.features()) {
             for (int i = 0; i < firstCollection.getNumGeometries() && iterator.hasNext(); i++) {
                 Geometry expected =

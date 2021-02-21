@@ -111,13 +111,12 @@ public final class ImageUtilities {
     static {
 
         // do we wrappers at hand?
-        boolean mediaLib = false;
         Class<?> mediaLibImage = null;
         try {
             mediaLibImage = Class.forName("com.sun.medialib.mlib.Image");
         } catch (ClassNotFoundException e) {
         }
-        mediaLib = (mediaLibImage != null);
+        boolean mediaLib = (mediaLibImage != null);
 
         // npw check if we either wanted to disable explicitly and if we installed the native libs
         if (mediaLib) {
@@ -354,10 +353,8 @@ public final class ImageUtilities {
             if (defaultSize == null) {
                 defaultSize = GEOTOOLS_DEFAULT_TILE_SIZE;
             }
-            int sw;
-            int sh;
-            sw = toTileSize(image.getWidth(), defaultSize.width);
-            sh = toTileSize(image.getHeight(), defaultSize.height);
+            int sw = toTileSize(image.getWidth(), defaultSize.width);
+            int sh = toTileSize(image.getHeight(), defaultSize.height);
             boolean smallTileWidth = image.getTileWidth() <= STRIPE_SIZE;
             boolean smallTileHeight = image.getTileHeight() < STRIPE_SIZE;
             if (sw != 0 || sh != 0 || smallTileHeight || smallTileWidth) {
@@ -956,27 +953,25 @@ public final class ImageUtilities {
         int h = source.getHeight();
 
         // Variables to store the calculated destination upper left coordinate
-        long dx0Num, dx0Denom, dy0Num, dy0Denom;
 
         // Variables to store the calculated destination bottom right
         // coordinate
-        long dx1Num, dx1Denom, dy1Num, dy1Denom;
 
         // Start calculations for destination
 
-        dx0Num = x0;
-        dx0Denom = 1;
+        long dx0Num = x0;
+        long dx0Denom = 1;
 
-        dy0Num = y0;
-        dy0Denom = 1;
+        long dy0Num = y0;
+        long dy0Denom = 1;
 
         // Formula requires srcMaxX + 1 = (x0 + w - 1) + 1 = x0 + w
-        dx1Num = x0 + w;
-        dx1Denom = 1;
+        long dx1Num = x0 + w;
+        long dx1Denom = 1;
 
         // Formula requires srcMaxY + 1 = (y0 + h - 1) + 1 = y0 + h
-        dy1Num = y0 + h;
-        dy1Denom = 1;
+        long dy1Num = y0 + h;
+        long dy1Denom = 1;
 
         dx0Num *= scaleXRationalNum;
         dx0Denom *= scaleXRationalDenom;
@@ -1023,13 +1018,12 @@ public final class ImageUtilities {
         dy1Denom *= transYRationalDenom;
 
         // Get the integral coordinates
-        int l_x0, l_y0, l_x1, l_y1;
 
-        l_x0 = Rational.ceil(dx0Num, dx0Denom);
-        l_y0 = Rational.ceil(dy0Num, dy0Denom);
+        int l_x0 = Rational.ceil(dx0Num, dx0Denom);
+        int l_y0 = Rational.ceil(dy0Num, dy0Denom);
 
-        l_x1 = Rational.ceil(dx1Num, dx1Denom);
-        l_y1 = Rational.ceil(dy1Num, dy1Denom);
+        int l_x1 = Rational.ceil(dx1Num, dx1Denom);
+        int l_y1 = Rational.ceil(dy1Num, dy1Denom);
 
         // Set the top left coordinate of the destination
         final Rectangle2D retValue = new Rectangle2D.Double();

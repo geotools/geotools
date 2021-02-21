@@ -475,10 +475,10 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
          */
         if (crs instanceof CompoundCRS) {
             int count = 0, lowerDimension = 0, lowerIndex = 0;
-            final List<CoordinateReferenceSystem> sources;
-            final CoordinateReferenceSystem[] targets;
-            sources = ((CompoundCRS) crs).getCoordinateReferenceSystems();
-            targets = new CoordinateReferenceSystem[sources.size()];
+            final List<CoordinateReferenceSystem> sources =
+                    ((CompoundCRS) crs).getCoordinateReferenceSystems();
+            final CoordinateReferenceSystem[] targets =
+                    new CoordinateReferenceSystem[sources.size()];
             search:
             for (final CoordinateReferenceSystem source : sources) {
                 final int upperDimension =

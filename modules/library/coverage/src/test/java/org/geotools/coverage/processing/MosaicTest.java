@@ -985,8 +985,8 @@ public class MosaicTest extends GridProcessingTestBase {
             }
 
             MathTransform2D mt = coverages.get(0).getGridGeometry().getCRSToGrid2D();
-            Rectangle rasterSpaceEnvelope;
-            rasterSpaceEnvelope = CRS.transform(mt, targetEnvelope).toRectangle2D().getBounds();
+            Rectangle rasterSpaceEnvelope =
+                    CRS.transform(mt, targetEnvelope).toRectangle2D().getBounds();
             GridEnvelope2D gridRange = new GridEnvelope2D(rasterSpaceEnvelope);
             GridGeometry2D gridGeometry = new GridGeometry2D(gridRange, targetEnvelope);
 

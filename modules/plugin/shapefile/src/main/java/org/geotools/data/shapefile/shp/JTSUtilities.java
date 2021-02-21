@@ -55,12 +55,10 @@ public class JTSUtilities {
         if (cs.getDimension() < 3) {
             return;
         }
-        double zmin;
-        double zmax;
         boolean validZFound = false;
 
-        zmin = Double.NaN;
-        zmax = Double.NaN;
+        double zmin = Double.NaN;
+        double zmax = Double.NaN;
 
         double z;
         final int size = cs.size();
@@ -170,9 +168,8 @@ public class JTSUtilities {
         GeometryFactory factory = p.getFactory();
         LinearRing outer;
         LinearRing[] holes = new LinearRing[p.getNumInteriorRing()];
-        Coordinate[] coords;
 
-        coords = p.getExteriorRing().getCoordinates();
+        Coordinate[] coords = p.getExteriorRing().getCoordinates();
 
         if (Orientation.isCCW(coords)) {
             outer = reverseRing(p.getExteriorRing());
@@ -200,7 +197,6 @@ public class JTSUtilities {
      * @return The "nicified" MultiPolygon.
      */
     public static final MultiPolygon makeGoodShapeMultiPolygon(MultiPolygon mp) {
-        MultiPolygon result;
         Polygon[] ps = new Polygon[mp.getNumGeometries()];
 
         // check each sub-polygon
@@ -208,7 +204,7 @@ public class JTSUtilities {
             ps[t] = makeGoodShapePolygon((Polygon) mp.getGeometryN(t));
         }
 
-        result = mp.getFactory().createMultiPolygon(ps);
+        MultiPolygon result = mp.getFactory().createMultiPolygon(ps);
 
         return result;
     }

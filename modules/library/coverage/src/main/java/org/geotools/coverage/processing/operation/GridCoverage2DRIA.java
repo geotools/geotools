@@ -578,7 +578,6 @@ public class GridCoverage2DRIA extends GeometricOpImage {
         // If a ROI is present, then only the part contained inside the current tile bounds is
         // taken.
         if (hasROI) {
-            Rectangle srcRectExpanded = null;
             int x = (int) destRect.getMinX();
             int y = (int) destRect.getMinY();
             int w = (int) destRect.getWidth();
@@ -599,7 +598,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
                 maxX = xi > maxX ? xi : maxX;
                 maxY = yi > maxY ? yi : maxY;
             }
-            srcRectExpanded =
+            Rectangle srcRectExpanded =
                     new Rectangle(
                             (int) minX,
                             (int) minY,
@@ -1556,12 +1555,11 @@ public class GridCoverage2DRIA extends GeometricOpImage {
                 GridCoverage2D input =
                         new GridCoverageFactory(GeoTools.getDefaultHints())
                                 .create(name, constantImage, op.src.getEnvelope());
-                PlanarImage roiImage = null;
 
                 // Creating warped roi by the same way (Warp, Interpolation, source ROI) we warped
                 // the
                 // input image.
-                roiImage = create(input, op.dst, new double[] {0d}, null, srcROI);
+                PlanarImage roiImage = create(input, op.dst, new double[] {0d}, null, srcROI);
 
                 ROI dstROI = new ROI(roiImage, 1);
 

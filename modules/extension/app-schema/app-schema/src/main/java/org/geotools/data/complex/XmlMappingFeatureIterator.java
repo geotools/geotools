@@ -588,8 +588,6 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
             return !isNextSourceFeatureNull();
         }
 
-        boolean exists = false;
-
         if (featureCounter >= requestMaxFeatures) {
             return false;
         }
@@ -597,7 +595,7 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
             return false;
         }
         // make sure features are unique by mapped id
-        exists = unprocessedFeatureExists();
+        boolean exists = unprocessedFeatureExists();
 
         if (!exists) {
             LOGGER.finest("no more features, produced " + featureCounter);

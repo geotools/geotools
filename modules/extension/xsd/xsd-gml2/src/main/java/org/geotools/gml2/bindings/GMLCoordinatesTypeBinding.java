@@ -142,7 +142,6 @@ public class GMLCoordinatesTypeBinding extends AbstractComplexBinding {
             }
 
             // next tokenize by decimal
-            String x = null;
 
             // next tokenize by decimal
             String y = null;
@@ -151,7 +150,7 @@ public class GMLCoordinatesTypeBinding extends AbstractComplexBinding {
             String z = null;
 
             // must be at least 1D
-            x = ".".equals(decimal) ? coords[0] : coords[0].replaceAll(decimal, ".");
+            String x = ".".equals(decimal) ? coords[0] : coords[0].replaceAll(decimal, ".");
 
             // check for 2 and 3 D
             if (coords.length > 1) {

@@ -85,8 +85,7 @@ public final class CategoryListTest {
     /** Tests the {@link CategoryList} constructor. */
     @Test
     public void testArgumentChecks() {
-        Category[] categories;
-        categories =
+        Category[] categories =
                 new Category[] {
                     new Category("No data", null, 0),
                     new Category("Land", null, 10),

@@ -169,7 +169,6 @@ public class TPKReader extends AbstractGridCoverage2DReader {
         }
 
         long zoomLevel = 0;
-        long leftTile, topTile, rightTile, bottomTile;
 
         if (requestedEnvelope != null && dim != null) {
             // find the closest zoom based on horizontal resolution
@@ -201,10 +200,10 @@ public class TPKReader extends AbstractGridCoverage2DReader {
         double offsetX = WORLD_ENVELOPE.getMinimum(0);
         double offsetY = WORLD_ENVELOPE.getMinimum(1);
 
-        leftTile = file.getMinColumn(zoomLevel);
-        rightTile = file.getMaxColumn(zoomLevel);
-        bottomTile = file.getMinRow(zoomLevel);
-        topTile = file.getMaxRow(zoomLevel);
+        long leftTile = file.getMinColumn(zoomLevel);
+        long rightTile = file.getMaxColumn(zoomLevel);
+        long bottomTile = file.getMinRow(zoomLevel);
+        long topTile = file.getMaxRow(zoomLevel);
 
         if (requestedEnvelope != null) { // crop tiles to requested envelope
             leftTile =

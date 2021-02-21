@@ -99,32 +99,31 @@ public final class FactoriesTest {
         final MathTransformFactory mtFactory =
                 ReferencingFactoryFinder.getMathTransformFactory(null);
 
-        final Ellipsoid airy1830;
         final Unit<Length> meters = SI.METRE;
-        airy1830 = datumFactory.createEllipsoid(name("Airy1830"), 6377563.396, 6356256.910, meters);
+        final Ellipsoid airy1830 =
+                datumFactory.createEllipsoid(name("Airy1830"), 6377563.396, 6356256.910, meters);
         out.println();
         out.println("create Coodinate Reference System....2: ");
         out.println(airy1830.toWKT());
 
-        final PrimeMeridian greenwich;
         final Unit<Angle> degrees = NonSI.DEGREE_ANGLE;
-        greenwich = datumFactory.createPrimeMeridian(name("Greenwich"), 0, degrees);
+        final PrimeMeridian greenwich =
+                datumFactory.createPrimeMeridian(name("Greenwich"), 0, degrees);
         out.println();
         out.println("create Coodinate Reference System....3: ");
         out.println(greenwich.toWKT());
 
         // NOTE: we could use the following pre-defined constant instead:
         //       DefaultPrimeMeridian.GREENWICH;
-        final GeodeticDatum datum;
-        datum = datumFactory.createGeodeticDatum(name("Airy1830"), airy1830, greenwich);
+        final GeodeticDatum datum =
+                datumFactory.createGeodeticDatum(name("Airy1830"), airy1830, greenwich);
         out.println();
         out.println("create Coodinate Reference System....4: ");
         out.println(datum.toWKT());
 
         // NOTE: we could use the following pre-defined constant instead:
         //       DefaultEllipsoidalCS.GEODETIC_2D;
-        final EllipsoidalCS ellCS;
-        ellCS =
+        final EllipsoidalCS ellCS =
                 csFactory.createEllipsoidalCS(
                         name("Ellipsoidal"),
                         csFactory.createCoordinateSystemAxis(
@@ -135,8 +134,8 @@ public final class FactoriesTest {
         out.println("create Coodinate Reference System....5: ");
         out.println(ellCS); // No WKT for coordinate systems
 
-        final GeographicCRS geogCRS;
-        geogCRS = crsFactory.createGeographicCRS(name("Airy1830"), datum, ellCS);
+        final GeographicCRS geogCRS =
+                crsFactory.createGeographicCRS(name("Airy1830"), datum, ellCS);
         out.println();
         out.println("create Coodinate Reference System....6: ");
         out.println(geogCRS.toWKT());
@@ -154,8 +153,7 @@ public final class FactoriesTest {
 
         // NOTE: we could use the following pre-defined constant instead:
         //       DefaultCartesianCS.PROJECTED;
-        final CartesianCS cartCS;
-        cartCS =
+        final CartesianCS cartCS =
                 csFactory.createCartesianCS(
                         name("Cartesian"),
                         csFactory.createCoordinateSystemAxis(

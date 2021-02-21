@@ -157,8 +157,7 @@ public class CurvedGeometryFactory extends GeometryFactory {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((delegate == null) ? 0 : delegate.hashCode());
-        long temp;
-        temp = Double.doubleToLongBits(tolerance);
+        long temp = Double.doubleToLongBits(tolerance);
         result = prime * result + (int) (temp ^ (temp >>> 32));
         return result;
     }

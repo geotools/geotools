@@ -39,8 +39,7 @@ public class GeneralizationInfosTest {
         Assert.assertEquals("DSInfos", infos.getDataSourceName());
         Assert.assertEquals("WSInfos", infos.getDataSourceNameSpace());
 
-        Collection<String> coll = null;
-        coll = infos.getBaseFeatureNames();
+        Collection<String> coll = infos.getBaseFeatureNames();
         Assert.assertEquals(2, coll.size());
         Assert.assertTrue(coll.contains("BaseFeature1"));
         Assert.assertTrue(coll.contains("BaseFeature2"));

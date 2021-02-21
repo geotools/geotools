@@ -470,8 +470,7 @@ public class GridToEnvelopeMapper {
     /** Returns the coordinate system in use with the envelope. */
     private CoordinateSystem getCoordinateSystem() {
         if (envelope != null) {
-            final CoordinateReferenceSystem crs;
-            crs = envelope.getCoordinateReferenceSystem();
+            final CoordinateReferenceSystem crs = envelope.getCoordinateReferenceSystem();
             if (crs != null) {
                 return crs.getCoordinateSystem();
             }

@@ -74,8 +74,6 @@ public class TestData {
         FeatureTypeFactory tfac = new UniqueNameFeatureTypeFactoryImpl();
         TypeBuilder builder = new TypeBuilder(tfac);
 
-        FeatureType wq_plusType;
-
         AttributeType detdesc =
                 builder.name("determinand_description").bind(String.class).attribute();
         AttributeType result = builder.name("result").bind(Float.class).attribute();
@@ -108,7 +106,7 @@ public class TestData {
         builder.cardinality(1, 1);
         builder.addAttribute("location", location);
 
-        wq_plusType = builder.feature();
+        FeatureType wq_plusType = builder.feature();
 
         return wq_plusType;
     }
@@ -116,8 +114,6 @@ public class TestData {
     public static FeatureType createComplexWaterSampleType() {
         FeatureTypeFactory tfac = new UniqueNameFeatureTypeFactoryImpl();
         TypeBuilder builder = new TypeBuilder(tfac);
-
-        FeatureType sampleType;
 
         AttributeType parameter = builder.name("parameter").bind(String.class).attribute();
         AttributeType value = builder.name("value").bind(Double.class).attribute();
@@ -131,7 +127,7 @@ public class TestData {
         builder.cardinality(0, Integer.MAX_VALUE);
         builder.addAttribute("measurement", MEASUREMENT);
 
-        sampleType = builder.feature();
+        FeatureType sampleType = builder.feature();
 
         return sampleType;
     }
@@ -146,17 +142,14 @@ public class TestData {
             AttributeDescriptor targetFeature) throws Exception {
 
         List<AttributeMapping> mappings = new LinkedList<>();
-        AttributeMapping attMapping;
-        Expression source;
-        String target;
 
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
-        source = ff.literal("ph");
-        target = "sample/measurement[1]/parameter";
+        Expression source = ff.literal("ph");
+        String target = "sample/measurement[1]/parameter";
         // empty nssupport as the test properties have no namespace
         NamespaceSupport namespaces = new NamespaceSupport();
-        attMapping =
+        AttributeMapping attMapping =
                 new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces));
         mappings.add(attMapping);
 
@@ -252,15 +245,12 @@ public class TestData {
                         targetType, targetType.getName(), 0, Integer.MAX_VALUE, true, null);
 
         List<AttributeMapping> mappings = new LinkedList<>();
-        Expression id;
-        Expression source;
-        String target;
 
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
-        id = ff.property("station_no");
-        source = Expression.NIL;
-        target = "wq_plus";
+        Expression id = ff.property("station_no");
+        Expression source = Expression.NIL;
+        String target = "wq_plus";
         NamespaceSupport namespaces = new NamespaceSupport();
         mappings.add(
                 new AttributeMapping(id, source, XPath.steps(targetFeature, target, namespaces)));

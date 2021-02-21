@@ -503,11 +503,9 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         Collection<Property> properties = feature.getProperties(Types.typeName(GMLNS, "name"));
         assertEquals(3, properties.size());
         Iterator<Property> propIterator = properties.iterator();
-        ComplexAttribute complexAttribute;
-        Collection<? extends Property> values;
         // first
-        complexAttribute = (ComplexAttribute) propIterator.next();
-        values = complexAttribute.getValue();
+        ComplexAttribute complexAttribute = (ComplexAttribute) propIterator.next();
+        Collection<? extends Property> values = complexAttribute.getValue();
         assertEquals(1, values.size());
         assertEquals(
                 "Yaugher Volcanic Group 1", GML3EncodingUtils.getSimpleContent(complexAttribute));

@@ -293,9 +293,9 @@ public final class CoordinateOperationFactoryTest extends TransformTestBase {
         /*
          * Try again with hints, asking for a lenient factory.
          */
-        CoordinateOperationFactory lenientFactory;
         Hints hints = new Hints(Hints.LENIENT_DATUM_SHIFT, Boolean.FALSE);
-        lenientFactory = ReferencingFactoryFinder.getCoordinateOperationFactory(hints);
+        CoordinateOperationFactory lenientFactory =
+                ReferencingFactoryFinder.getCoordinateOperationFactory(hints);
         assertSame(opFactory, lenientFactory);
         hints.put(Hints.LENIENT_DATUM_SHIFT, Boolean.TRUE);
         lenientFactory = ReferencingFactoryFinder.getCoordinateOperationFactory(hints);

@@ -677,8 +677,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
                     FeatureWriter<SimpleFeatureType, SimpleFeature> writer2 =
                             dataStore.getFeatureWriterAppend(tname("road"), t2)) {
                 int i;
-                int index;
-                index = 0;
+                int index = 0;
 
                 for (i = 0; i < ORIGINAL.length; i++) {
                     feature = ORIGINAL[i];

@@ -76,15 +76,13 @@ public class ImageComposerThread extends Thread {
     }
 
     private Dimension getStartDimension() {
-        int width;
-        int height;
 
-        width =
+        int width =
                 (int)
                         Math.round(
                                 state.getRequestedEnvelopeTransformedExpanded().getSpan(0)
                                         / state.getImageLevelInfo().getResX());
-        height =
+        int height =
                 (int)
                         Math.round(
                                 state.getRequestedEnvelopeTransformedExpanded().getSpan(1)

@@ -228,10 +228,9 @@ public class CylindricalEqualArea extends MapProjection {
         private static final double P20 = .01641501294219154443;
 
         public static double[] authset(double es) {
-            double t;
             double[] APA = new double[3];
             APA[0] = es * P00;
-            t = es * es;
+            double t = es * es;
             APA[0] += t * P01;
             APA[1] = t * P10;
             t *= es;

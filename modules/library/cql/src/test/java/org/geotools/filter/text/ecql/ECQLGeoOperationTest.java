@@ -132,9 +132,8 @@ public final class ECQLGeoOperationTest extends CQLGeoOperationTest {
 
     @Test
     public void overlaps() throws Exception {
-        Filter resultFilter;
 
-        resultFilter = CompilerUtil.parseFilter(language, "OVERLAPS(the_geom, POINT(1 2))");
+        Filter resultFilter = CompilerUtil.parseFilter(language, "OVERLAPS(the_geom, POINT(1 2))");
 
         assertTrue("Overlaps was expected", resultFilter instanceof Overlaps);
     }

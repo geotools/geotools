@@ -560,8 +560,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
         final OperationType operationMetadata = getOperationMetadata(operation);
 
-        Set<String> serverSupportedFormats;
-        serverSupportedFormats = findParameters(operationMetadata, parameterName);
+        Set<String> serverSupportedFormats = findParameters(operationMetadata, parameterName);
         return serverSupportedFormats;
     }
 
@@ -584,8 +583,8 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
     @Override
     public List<String> getClientSupportedOutputFormats(WFSOperationType operation) {
-        List<WFSResponseFactory> operationResponseFactories;
-        operationResponseFactories = WFSExtensions.findResponseFactories(operation);
+        List<WFSResponseFactory> operationResponseFactories =
+                WFSExtensions.findResponseFactories(operation);
 
         List<String> outputFormats = new LinkedList<>();
         for (WFSResponseFactory factory : operationResponseFactories) {

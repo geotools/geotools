@@ -54,7 +54,6 @@ public class MultiResolutionTest {
         // the following code is copied from GeoServer's CatalogBuilder
         // which is the code our case failed on
         // the idea is to create a 5x5 test sample image
-        final GridCoverage2D gc;
         GridEnvelope originalRange = reader.getOriginalGridRange();
         GeneralEnvelope envelope = reader.getOriginalEnvelope();
         CoordinateReferenceSystem nativeCRS = envelope.getCoordinateReferenceSystem();
@@ -76,7 +75,7 @@ public class MultiResolutionTest {
         testEnvelope.setCoordinateReferenceSystem(nativeCRS);
         ParameterValue<GridGeometry2D> pam = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         pam.setValue(new GridGeometry2D(testRange, testEnvelope));
-        gc = reader.read(new ParameterValue<?>[] {pam});
+        final GridCoverage2D gc = reader.read(new ParameterValue<?>[] {pam});
         // gc would be null before bug fix
         Assert.assertNotNull(gc);
         reader.dispose();

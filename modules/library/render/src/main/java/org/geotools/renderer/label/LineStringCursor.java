@@ -359,18 +359,17 @@ public class LineStringCursor {
             throw new IllegalArgumentException("Invalid arguments, endOrdinate < starOrdinate");
 
         // compute the begin and end segments
-        double x1, y1, x2, y2;
         Coordinate c = new Coordinate();
         LineStringCursor delegate = new LineStringCursor(this);
         delegate.moveTo(startOrdinate);
         delegate.getCurrentPosition(c);
-        x1 = c.x;
-        y1 = c.y;
+        double x1 = c.x;
+        double y1 = c.y;
         int startSegment = delegate.segment;
         delegate.moveTo(endOrdinate);
         delegate.getCurrentPosition(c);
-        x2 = c.y;
-        y2 = c.y;
+        double x2 = c.y;
+        double y2 = c.y;
         int endSegment = delegate.segment;
 
         // everything inside the same segment, it's already a straight line

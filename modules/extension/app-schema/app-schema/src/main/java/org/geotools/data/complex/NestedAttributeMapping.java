@@ -389,9 +389,8 @@ public class NestedAttributeMapping extends AttributeMapping {
         Query query = new Query();
         query.setCoordinateSystemReproject(reprojection);
 
-        Filter filter;
         PropertyName propertyName = filterFac.property(this.nestedTargetXPath.toString());
-        filter = filterFac.equals(propertyName, filterFac.literal(foreignKeyValue));
+        Filter filter = filterFac.equals(propertyName, filterFac.literal(foreignKeyValue));
         query.setFilter(filter);
 
         if (selectedProperties != null && !selectedProperties.isEmpty()) {

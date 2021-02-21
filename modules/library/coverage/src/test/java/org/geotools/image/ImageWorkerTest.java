@@ -1757,13 +1757,13 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         Range nodata = RangeFactory.create(noDataValue, noDataValue);
         double[] background = new double[] {noDataValue};
 
-        RenderedImage twoBands = null;
         PlanarImage pi = PlanarImage.wrapRenderedImage(imageWithNodata2);
         pi.setProperty("GC_NODATA", new NoDataContainer(nodata));
 
         ImageWorker worker = new ImageWorker(pi).setNoData(nodata).setBackground(background);
 
-        twoBands = worker.addBand(worker.getRenderedImage(), false).getRenderedImage();
+        RenderedImage twoBands =
+                worker.addBand(worker.getRenderedImage(), false).getRenderedImage();
         RenderedImage oneBand = new ImageWorker(twoBands).retainBands(1).getRenderedImage();
         RenderedImage threeBands =
                 new ImageWorker(twoBands).addBand(oneBand, false).getRenderedImage();

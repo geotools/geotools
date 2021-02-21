@@ -230,11 +230,9 @@ public class LiteShape implements Shape, Cloneable {
 
         // get out corners. the documentation doens't specify in which
         // order the bounding box coordinates are returned
-        double x1;
 
         // get out corners. the documentation doens't specify in which
         // order the bounding box coordinates are returned
-        double y1;
 
         // get out corners. the documentation doens't specify in which
         // order the bounding box coordinates are returned
@@ -243,8 +241,8 @@ public class LiteShape implements Shape, Cloneable {
         // get out corners. the documentation doens't specify in which
         // order the bounding box coordinates are returned
         double y2;
-        x1 = x2 = coords[0].x;
-        y1 = y2 = coords[0].y;
+        double x1 = x2 = coords[0].x;
+        double y1 = y2 = coords[0].y;
 
         for (int i = 1; i < 3; i++) {
             double x = coords[i].x;

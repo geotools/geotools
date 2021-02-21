@@ -128,9 +128,8 @@ public class EmfComplexFeatureReader {
         // create stream parser
 
         try (InputStream input = resolvedLocation.openStream()) {
-            XmlPullParser parser = null;
             // parse root element
-            parser = new MXParser();
+            XmlPullParser parser = new MXParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true);
             parser.setInput(input, "UTF-8");
             parser.nextTag();

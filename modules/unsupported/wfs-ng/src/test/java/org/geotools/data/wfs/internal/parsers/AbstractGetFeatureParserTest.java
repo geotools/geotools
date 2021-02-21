@@ -288,8 +288,8 @@ public abstract class AbstractGetFeatureParserTest {
         final URL data = GEOS_ARCHSITES_11.DATA;
 
         final String[] properties = {"cat", "str1", "the_geom"};
-        final SimpleFeatureType featureType;
-        featureType = getTypeView(featureName, schemaLocation, GEOS_ARCHSITES_11.CRS, properties);
+        final SimpleFeatureType featureType =
+                getTypeView(featureName, schemaLocation, GEOS_ARCHSITES_11.CRS, properties);
 
         final FeatureAssertor assertor = new FeatureAssertor(featureType);
         List<Geometry> geometries = new ArrayList<>();
@@ -319,8 +319,8 @@ public abstract class AbstractGetFeatureParserTest {
         final URL data = GEOS_ARCHSITES_11.DATA;
 
         final String[] properties = {"cat", "str1", "the_geom"};
-        final SimpleFeatureType featureType;
-        featureType = getTypeView(featureName, schemaLocation, GEOS_ARCHSITES_11.CRS, properties);
+        final SimpleFeatureType featureType =
+                getTypeView(featureName, schemaLocation, GEOS_ARCHSITES_11.CRS, properties);
 
         final FeatureAssertor assertor = new FeatureAssertor(featureType);
         List<Geometry> geometries = new ArrayList<>();
@@ -357,8 +357,8 @@ public abstract class AbstractGetFeatureParserTest {
         final String[] properties = {
             "the_geom", "STATE_NAME", "STATE_FIPS", "SUB_REGION", "SAMP_POP"
         };
-        final SimpleFeatureType featureType;
-        featureType = getTypeView(featureName, schemaLocation, GEOS_STATES_11.CRS, properties);
+        final SimpleFeatureType featureType =
+                getTypeView(featureName, schemaLocation, GEOS_STATES_11.CRS, properties);
 
         final FeatureVisitor assertor =
                 new FeatureAssertor(featureType) {
@@ -414,8 +414,8 @@ public abstract class AbstractGetFeatureParserTest {
         final String[] properties = {
             "the_geom", "STATE_NAME", "STATE_FIPS", "SUB_REGION", "SAMP_POP"
         };
-        final SimpleFeatureType featureType;
-        featureType = getTypeView(featureName, schemaLocation, GEOS_STATES_11.CRS, properties);
+        final SimpleFeatureType featureType =
+                getTypeView(featureName, schemaLocation, GEOS_STATES_11.CRS, properties);
 
         final FeatureVisitor assertor =
                 new FeatureAssertor(featureType) {
@@ -470,8 +470,8 @@ public abstract class AbstractGetFeatureParserTest {
         final URL schemaLocation = GEOS_ROADS_11.SCHEMA;
 
         final String[] properties = {"the_geom", "label"};
-        final SimpleFeatureType featureType;
-        featureType = getTypeView(featureName, schemaLocation, GEOS_ROADS_11.CRS, properties);
+        final SimpleFeatureType featureType =
+                getTypeView(featureName, schemaLocation, GEOS_ROADS_11.CRS, properties);
 
         final FeatureVisitor assertor = new FeatureAssertor(featureType);
 
@@ -493,8 +493,8 @@ public abstract class AbstractGetFeatureParserTest {
         final URL schemaLocation = GEOS_ROADS_10.SCHEMA;
 
         final String[] properties = {"the_geom", "label"};
-        final SimpleFeatureType featureType;
-        featureType = getTypeView(featureName, schemaLocation, GEOS_ROADS_10.CRS, properties);
+        final SimpleFeatureType featureType =
+                getTypeView(featureName, schemaLocation, GEOS_ROADS_10.CRS, properties);
 
         final FeatureVisitor assertor = new FeatureAssertor(featureType);
 
@@ -514,8 +514,7 @@ public abstract class AbstractGetFeatureParserTest {
         final URL schemaLocation = GEOS_TASMANIA_CITIES_11.SCHEMA;
 
         final String[] properties = {"the_geom", "CNTRY_NAME", "POP_CLASS"};
-        final SimpleFeatureType featureType;
-        featureType =
+        final SimpleFeatureType featureType =
                 getTypeView(featureName, schemaLocation, GEOS_TASMANIA_CITIES_11.CRS, properties);
 
         final FeatureVisitor assertor = new FeatureAssertor(featureType);

@@ -108,9 +108,7 @@ public class CQLGeoOperationTest {
     @Test
     public void Intersects() throws CQLException {
 
-        Filter resultFilter;
-
-        resultFilter = CompilerUtil.parseFilter(language, "INTERSECTS(ATTR1, POINT(1 2))");
+        Filter resultFilter = CompilerUtil.parseFilter(language, "INTERSECTS(ATTR1, POINT(1 2))");
 
         assertTrue("Intersects was expected", resultFilter instanceof Intersects);
 
@@ -125,13 +123,12 @@ public class CQLGeoOperationTest {
     @Test
     public void relate() throws CQLException {
 
-        PropertyIsEqualTo resultFilter;
-
-        resultFilter =
+        PropertyIsEqualTo resultFilter =
                 (PropertyIsEqualTo)
                         CompilerUtil.parseFilter(
                                 language,
-                                "RELATE(the_geom, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), T*****FF*)");
+                                "RELATE(the_geom, LINESTRING (-134.921387 58.687767, -135.303391 59"
+                                        + ".092838), T*****FF*)");
 
         Expression relateFunction = resultFilter.getExpression1();
         assertTrue(relateFunction instanceof FilterFunction_relatePattern);
@@ -154,13 +151,12 @@ public class CQLGeoOperationTest {
 
     private void testRelatePatten(final String pattern) throws CQLException {
 
-        PropertyIsEqualTo resultFilter;
-
-        resultFilter =
+        PropertyIsEqualTo resultFilter =
                 (PropertyIsEqualTo)
                         CompilerUtil.parseFilter(
                                 language,
-                                "RELATE(the_geom, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), "
+                                "RELATE(the_geom, LINESTRING (-134.921387 58.687767, -135.303391 59"
+                                        + ".092838), "
                                         + pattern
                                         + ")");
 
@@ -209,10 +205,8 @@ public class CQLGeoOperationTest {
     @Test
     public void touches() throws CQLException {
 
-        Filter resultFilter;
-
         // TOUCHES
-        resultFilter = CompilerUtil.parseFilter(language, "TOUCHES(ATTR1, POINT(1 2))");
+        Filter resultFilter = CompilerUtil.parseFilter(language, "TOUCHES(ATTR1, POINT(1 2))");
 
         assertTrue("Touches was expected", resultFilter instanceof Touches);
     }
@@ -221,9 +215,7 @@ public class CQLGeoOperationTest {
     @Test
     public void crosses() throws CQLException {
 
-        Filter resultFilter;
-
-        resultFilter = CompilerUtil.parseFilter(language, "CROSSES(ATTR1, POINT(1 2))");
+        Filter resultFilter = CompilerUtil.parseFilter(language, "CROSSES(ATTR1, POINT(1 2))");
 
         assertTrue("Crosses was expected", resultFilter instanceof Crosses);
     }
@@ -238,9 +230,8 @@ public class CQLGeoOperationTest {
     /** OVERLAPS geooperation operation test */
     @Test
     public void overlaps() throws Exception {
-        Filter resultFilter;
 
-        resultFilter = CompilerUtil.parseFilter(language, "OVERLAPS(ATTR1, POINT(1 2))");
+        Filter resultFilter = CompilerUtil.parseFilter(language, "OVERLAPS(ATTR1, POINT(1 2))");
 
         assertTrue("Overlaps was expected", resultFilter instanceof Overlaps);
     }
@@ -248,10 +239,9 @@ public class CQLGeoOperationTest {
     /** EQULS geooperation operation test */
     @Test
     public void equals() throws CQLException {
-        Filter resultFilter;
 
         // EQUALS
-        resultFilter = CompilerUtil.parseFilter(language, "EQUALS(ATTR1, POINT(1 2))");
+        Filter resultFilter = CompilerUtil.parseFilter(language, "EQUALS(ATTR1, POINT(1 2))");
 
         assertTrue("not an instance of Equals", resultFilter instanceof Equals);
     }
@@ -272,10 +262,9 @@ public class CQLGeoOperationTest {
     @SuppressWarnings("PMD.UseAssertEqualsInsteadOfAssertTrue") // not the same equals
     public void bbox() throws CQLException, FactoryException {
 
-        Filter resultFilter;
-
         // BBOX
-        resultFilter = CompilerUtil.parseFilter(language, "BBOX(ATTR1, 10.0,20.0,30.0,40.0)");
+        Filter resultFilter =
+                CompilerUtil.parseFilter(language, "BBOX(ATTR1, 10.0,20.0,30.0,40.0)");
         assertTrue("BBox was expected", resultFilter instanceof BBOX);
         BBOX bboxFilter = (BBOX) resultFilter;
         assertTrue(

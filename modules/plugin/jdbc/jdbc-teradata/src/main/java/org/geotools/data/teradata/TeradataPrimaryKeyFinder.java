@@ -103,9 +103,8 @@ class TeradataPrimaryKeyFinder extends PrimaryKeyFinder {
 
                     for (int i = 1; i <= md.getColumnCount(); i++) {
                         if (md.isAutoIncrement(i)) {
-                            String columnLabel;
                             //                        columnLabel = viewColumnNames[i - 1];
-                            columnLabel = md.getColumnLabel(i);
+                            String columnLabel = md.getColumnLabel(i);
                             Class<?> columnType;
                             try {
                                 columnType =

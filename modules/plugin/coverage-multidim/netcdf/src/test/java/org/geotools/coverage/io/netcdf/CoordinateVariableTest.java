@@ -140,19 +140,16 @@ public class CoordinateVariableTest extends Assert {
             boolean singularForm)
             throws IOException {
 
-        String units = "";
-        CoordinateVariable<?> cv = null;
-        GregorianCalendar cal = null;
-
         String unitsOriginSuffix =
                 (singularForm ? "" : "s") // day vs days, hour vs hours, and so on
                         + " since "
                         + refTime;
 
         // MONTHS
-        units = "month" + unitsOriginSuffix;
-        cv = getCoordinateVariable(dataset, coordinateAxis, units);
-        cal = getCalendar(year, month, day, hour, minute, second, GregorianCalendar.MONTH);
+        String units = "month" + unitsOriginSuffix;
+        CoordinateVariable<?> cv = getCoordinateVariable(dataset, coordinateAxis, units);
+        GregorianCalendar cal =
+                getCalendar(year, month, day, hour, minute, second, GregorianCalendar.MONTH);
         assertEquals(cal.getTime(), cv.getMaximum());
 
         // DAYS

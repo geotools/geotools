@@ -103,8 +103,7 @@ public class ParsingTest {
         try {
             Configuration config = new WPSConfiguration();
 
-            URL url;
-            url = TestData.url(this, "deegree3Capabilities.xml");
+            URL url = TestData.url(this, "deegree3Capabilities.xml");
 
             Parser parser = new Parser(config);
             in = new BufferedReader(new InputStreamReader(url.openStream()));
@@ -131,8 +130,7 @@ public class ParsingTest {
         try {
             Configuration config = new WPSConfiguration();
 
-            URL url;
-            url = TestData.url(this, "geoserverCapabilities.xml");
+            URL url = TestData.url(this, "geoserverCapabilities.xml");
 
             Parser parser = new Parser(config);
             in = new BufferedReader(new InputStreamReader(url.openStream()));
@@ -159,8 +157,7 @@ public class ParsingTest {
         try {
             Configuration config = new WPSConfiguration();
 
-            URL url;
-            url = TestData.url(this, "deegree3ProcessDescriptions.xml");
+            URL url = TestData.url(this, "deegree3ProcessDescriptions.xml");
 
             Parser parser = new Parser(config);
             in = new BufferedReader(new InputStreamReader(url.openStream()));

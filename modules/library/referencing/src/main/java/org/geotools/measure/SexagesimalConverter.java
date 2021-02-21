@@ -97,12 +97,11 @@ class SexagesimalConverter extends AbstractConverter {
 
     /** Performs a conversion from fractional degrees to sexagesimal degrees. */
     public double degreeToSexagesimalDegrees(double value) {
-        final int deg, min, sec;
-        deg = (int) value; // Round toward 0
+        final int deg = (int) value; // Round toward 0
         value = (value - deg) * 60;
-        min = (int) value; // Round toward 0
+        final int min = (int) value; // Round toward 0
         value = (value - min) * 60;
-        sec = (int) value; // Round toward 0
+        final int sec = (int) value; // Round toward 0
         value -= sec; // The remainer (fraction of seconds)
         return (((deg * 100 + min) * 100 + sec) + value) / divider;
     }
@@ -110,10 +109,9 @@ class SexagesimalConverter extends AbstractConverter {
     /** Performs a conversion from sexagesimal degrees to fractional degrees. */
     public double sexagesimalDegreesToDegrees(double value) {
         value *= this.divider;
-        int deg, min;
-        deg = (int) (value / 10000);
+        int deg = (int) (value / 10000);
         value -= 10000 * deg;
-        min = (int) (value / 100);
+        int min = (int) (value / 100);
         value -= 100 * min;
         if (min <= -60 || min >= 60) { // Accepts NaN
             if (Math.abs(Math.abs(min) - 100) <= EPS) {

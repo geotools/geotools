@@ -68,8 +68,7 @@ public class WFSExtensions {
     public static WFSResponseFactory findResponseFactory(
             final WFSRequest originatingRequest, final String contentType) {
 
-        Iterator<WFSResponseFactory> serviceProviders;
-        serviceProviders = getServiceProviders();
+        Iterator<WFSResponseFactory> serviceProviders = getServiceProviders();
 
         WFSResponseFactory factory;
         while (serviceProviders.hasNext()) {
@@ -124,9 +123,9 @@ public class WFSExtensions {
                         /*
                          * Now that we're on the correct classloader lets perform the lookup
                          */
-                        Iterator<WFSResponseFactory> providers;
 
-                        providers = ServiceLoader.load(WFSResponseFactory.class).iterator();
+                        Iterator<WFSResponseFactory> providers =
+                                ServiceLoader.load(WFSResponseFactory.class).iterator();
                         Set<WFSResponseFactory> tmp = new HashSet<>();
                         while (providers.hasNext()) {
                             WFSResponseFactory provider = providers.next();

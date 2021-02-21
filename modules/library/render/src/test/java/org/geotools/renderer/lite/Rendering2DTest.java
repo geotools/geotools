@@ -173,12 +173,11 @@ public class Rendering2DTest {
     }
 
     private PolygonSymbolizer polysym(StyleFactory sFac) throws IllegalFilterException {
-        Stroke myStroke;
         PolygonSymbolizer polysym = sFac.createPolygonSymbolizer();
         Fill myFill = sFac.getDefaultFill();
         myFill.setColor(filterFactory.literal("#ff0000"));
         polysym.setFill(myFill);
-        myStroke = sFac.getDefaultStroke();
+        Stroke myStroke = sFac.getDefaultStroke();
         myStroke.setColor(filterFactory.literal("#0000ff"));
         myStroke.setWidth(filterFactory.literal(Integer.valueOf(2)));
         polysym.setStroke(myStroke);

@@ -217,8 +217,7 @@ public class MathTransformParser extends AbstractParser {
     private MathTransform parseInverseMT(final Element parent) throws ParseException {
         final Element element = parent.pullElement("INVERSE_MT");
         try {
-            final MathTransform transform;
-            transform = parseMathTransform(element, true).inverse();
+            final MathTransform transform = parseMathTransform(element, true).inverse();
             element.close();
             return transform;
         } catch (NoninvertibleTransformException exception) {

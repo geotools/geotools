@@ -55,16 +55,14 @@ public class IsStaticExpressionVisitor implements ExpressionVisitor {
     }
     /** visit each expression and check that they are static */
     public Boolean visit(Add expression, Object data) {
-        boolean isStatic;
-        isStatic = (Boolean) expression.getExpression1().accept(this, data);
+        boolean isStatic = (Boolean) expression.getExpression1().accept(this, data);
         if (isStatic == false) return false;
         isStatic = (Boolean) expression.getExpression2().accept(this, data);
         return isStatic;
     }
     /** visit each expression and check that they are static */
     public Boolean visit(Divide expression, Object data) {
-        boolean isStatic;
-        isStatic = (Boolean) expression.getExpression1().accept(this, data);
+        boolean isStatic = (Boolean) expression.getExpression1().accept(this, data);
         if (isStatic == false) return false;
         isStatic = (Boolean) expression.getExpression2().accept(this, data);
         return isStatic;
@@ -94,8 +92,7 @@ public class IsStaticExpressionVisitor implements ExpressionVisitor {
      * @return true if getExpression1 and getExpression2 are static
      */
     public Boolean visit(Multiply expression, Object data) {
-        boolean isStatic;
-        isStatic = (Boolean) expression.getExpression1().accept(this, data);
+        boolean isStatic = (Boolean) expression.getExpression1().accept(this, data);
         if (isStatic == false) return false;
         isStatic = (Boolean) expression.getExpression2().accept(this, data);
         return isStatic;
@@ -114,8 +111,7 @@ public class IsStaticExpressionVisitor implements ExpressionVisitor {
      * @return true if getExpression1 and getExpression2 are static
      */
     public Boolean visit(Subtract expression, Object data) {
-        boolean isStatic;
-        isStatic = (Boolean) expression.getExpression1().accept(this, data);
+        boolean isStatic = (Boolean) expression.getExpression1().accept(this, data);
         if (isStatic == false) return false;
         isStatic = (Boolean) expression.getExpression2().accept(this, data);
         return isStatic;

@@ -92,8 +92,7 @@ public class TableColumnDef implements DataTypesDefinition {
     public String toString() {
         String emptyStr = "";
         StringBuffer buff = new StringBuffer();
-        StringBuffer sb = null;
-        sb = new StringBuffer(emptyStr + name);
+        StringBuffer sb = new StringBuffer(emptyStr + name);
         sb.setLength(16);
         buff.append(sb);
         sb = new StringBuffer(emptyStr + type);

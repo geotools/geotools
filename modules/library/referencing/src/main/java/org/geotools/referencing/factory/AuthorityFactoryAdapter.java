@@ -960,9 +960,10 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
     @Override
     public Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(
             final String sourceCRS, final String targetCRS) throws FactoryException {
-        final CoordinateOperationAuthorityFactory factory, check;
-        factory = getCoordinateOperationAuthorityFactory(sourceCRS);
-        check = getCoordinateOperationAuthorityFactory(targetCRS);
+        final CoordinateOperationAuthorityFactory factory =
+                getCoordinateOperationAuthorityFactory(sourceCRS);
+        final CoordinateOperationAuthorityFactory check =
+                getCoordinateOperationAuthorityFactory(targetCRS);
         if (factory != check) {
             /*
              * No coordinate operation because of mismatched factories. This is not

@@ -76,15 +76,13 @@ public class CQLLiteralTest {
      */
     @Test
     public void geometryLiterals() throws Exception {
-        BinarySpatialOperator result;
-        Literal geom;
 
         // Point":" <time-second> "Z"
-        result =
+        BinarySpatialOperator result =
                 (BinarySpatialOperator)
                         CompilerUtil.parseFilter(this.language, "WITHIN(ATTR1, POINT(1 2))");
 
-        geom = (Literal) result.getExpression2();
+        Literal geom = (Literal) result.getExpression2();
 
         Assert.assertNotNull(geom.getValue());
         Assert.assertTrue(geom.getValue() instanceof org.locationtech.jts.geom.Point);
@@ -182,8 +180,6 @@ public class CQLLiteralTest {
     @Test
     public void characterStringLiteral() throws Exception {
 
-        PropertyIsEqualTo eqFilter;
-
         // space check
         final String strWithSpace = "ALL PRACTICES";
         Filter filterWithSpace =
@@ -191,7 +187,7 @@ public class CQLLiteralTest {
         Assert.assertNotNull(filterWithSpace);
         Assert.assertTrue(filterWithSpace instanceof PropertyIsEqualTo);
 
-        eqFilter = (PropertyIsEqualTo) filterWithSpace;
+        PropertyIsEqualTo eqFilter = (PropertyIsEqualTo) filterWithSpace;
         Expression spacesLiteral = eqFilter.getExpression2();
         Assert.assertEquals(strWithSpace, spacesLiteral.toString());
 
@@ -330,13 +326,12 @@ public class CQLLiteralTest {
             Assert.assertEquals(Long.parseLong(expected), actual.longValue());
         }
         {
-            PropertyIsEqualTo resultFilter;
-
-            resultFilter =
+            PropertyIsEqualTo resultFilter =
                     (PropertyIsEqualTo)
                             CompilerUtil.parseFilter(
                                     language,
-                                    "RELATE(the_geom, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), 201000002)");
+                                    "RELATE(the_geom, LINESTRING (-134.921387 58.687767, -135.303391 59"
+                                            + ".092838), 201000002)");
 
             Expression relateFunction = resultFilter.getExpression1();
             Assert.assertTrue(relateFunction instanceof FilterFunction_relatePattern);
@@ -364,13 +359,12 @@ public class CQLLiteralTest {
 
     private void testRelatePatten(final String pattern) throws CQLException {
 
-        PropertyIsEqualTo resultFilter;
-
-        resultFilter =
+        PropertyIsEqualTo resultFilter =
                 (PropertyIsEqualTo)
                         CompilerUtil.parseFilter(
                                 language,
-                                "RELATE(the_geom, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), "
+                                "RELATE(the_geom, LINESTRING (-134.921387 58.687767, -135.303391 59"
+                                        + ".092838), "
                                         + pattern
                                         + ")");
 
@@ -450,8 +444,7 @@ public class CQLLiteralTest {
             final String strGeomExpected, final Geometry actualGeometry) throws Exception {
 
         WKTReader reader = new WKTReader();
-        Geometry expectedGeometry;
-        expectedGeometry = reader.read(strGeomExpected);
+        Geometry expectedGeometry = reader.read(strGeomExpected);
 
         if (expectedGeometry instanceof GeometryCollection) {
             Assert.assertTrue(expectedGeometry.equalsExact(actualGeometry));

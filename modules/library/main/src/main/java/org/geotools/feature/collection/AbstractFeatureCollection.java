@@ -100,8 +100,7 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
      * @return <tt>true</tt> if this collection contains the specified element.
      */
     public boolean contains(Object o) {
-        Iterator<SimpleFeature> e = null;
-        e = iterator();
+        Iterator<SimpleFeature> e = iterator();
         try {
             if (o == null) {
                 while (e.hasNext()) if (e.next() == null) return true;

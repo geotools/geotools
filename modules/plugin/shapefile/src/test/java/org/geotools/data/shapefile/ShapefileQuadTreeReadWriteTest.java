@@ -117,8 +117,7 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
             ShapefileDataStoreFactory maker,
             boolean memorymapped)
             throws IOException, MalformedURLException {
-        DataStore s;
-        s = createDataStore(maker, tmp.toURI().toURL(), memorymapped);
+        DataStore s = createDataStore(maker, tmp.toURI().toURL(), memorymapped);
 
         s.createSchema(type);
         SimpleFeatureStore store = (SimpleFeatureStore) s.getFeatureSource(s.getTypeNames()[0]);
@@ -154,9 +153,7 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
             ShapefileDataStoreFactory maker,
             boolean memorymapped)
             throws IOException, MalformedURLException, Exception {
-        DataStore s;
-        String typeName;
-        s = createDataStore(maker, tmp.toURI().toURL(), memorymapped);
+        DataStore s = createDataStore(maker, tmp.toURI().toURL(), memorymapped);
 
         s.createSchema(type);
 
@@ -166,7 +163,7 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
         s.dispose();
 
         s = createDataStore(new ShapefileDataStoreFactory(), tmp.toURI().toURL(), true);
-        typeName = s.getTypeNames()[0];
+        String typeName = s.getTypeNames()[0];
 
         SimpleFeatureCollection two = s.getFeatureSource(typeName).getFeatures();
 

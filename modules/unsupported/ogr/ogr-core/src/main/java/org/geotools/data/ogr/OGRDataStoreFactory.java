@@ -129,7 +129,6 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
     protected abstract OGR createOGR();
 
     public boolean canProcess(Map<String, ?> params) {
-        boolean accept = false;
         String ogrName = null;
         String ogrDriver = null;
         try {
@@ -143,7 +142,7 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
             // yes, I am eating this
         }
 
-        accept = canProcess(ogrName, ogrDriver);
+        boolean accept = canProcess(ogrName, ogrDriver);
         return accept;
     }
 
@@ -154,13 +153,11 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
     /** Not implemented yet. */
     public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
 
-        DataStore ds;
-
         String ogrName = (String) OGR_NAME.lookUp(params);
         String ogrDriver = (String) OGR_DRIVER_NAME.lookUp(params);
         URI namespace = (URI) NAMESPACEP.lookUp(params);
         OGR ogr = createOGR();
-        ds =
+        DataStore ds =
                 new OGRDataStore(
                         ogrName,
                         ogrDriver,

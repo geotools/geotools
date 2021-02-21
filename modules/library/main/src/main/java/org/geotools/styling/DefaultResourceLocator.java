@@ -87,8 +87,7 @@ public class DefaultResourceLocator implements ResourceLocator {
     }
 
     protected URL validateRelativeURL(URL relativeUrl) {
-        File f;
-        f = URLs.urlToFile(relativeUrl);
+        File f = URLs.urlToFile(relativeUrl);
         if (f != null && f.exists()) {
             // bingo!
             return relativeUrl;

@@ -96,8 +96,6 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
             DataAccessMap sourceDataStoreMap,
             final Set<AppSchemaDataAccess> registeredAppSchemaStores)
             throws IOException {
-        Set<FeatureTypeMapping> mappings;
-        AppSchemaDataAccess dataStore;
 
         URL configFileUrl = (URL) AppSchemaDataAccessFactory.URL.lookUp(params);
         XMLConfigDigester configReader = new XMLConfigDigester();
@@ -119,9 +117,10 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
             createDataStore(extendedParams, true, sourceDataStoreMap, registeredAppSchemaStores);
         }
 
-        mappings = AppSchemaDataAccessConfigurator.buildMappings(config, sourceDataStoreMap);
+        Set<FeatureTypeMapping> mappings =
+                AppSchemaDataAccessConfigurator.buildMappings(config, sourceDataStoreMap);
 
-        dataStore = new AppSchemaDataAccess(mappings, hidden);
+        AppSchemaDataAccess dataStore = new AppSchemaDataAccess(mappings, hidden);
         registeredAppSchemaStores.add(dataStore);
         return dataStore;
     }

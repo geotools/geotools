@@ -151,8 +151,8 @@ public class LongitudeFirstFactory extends DeferredAuthorityFactory
          * false since forcing axis directions / units is handled by OrderedAxisAuthorityFactory
          * and we don't want the backing store to interfer with that.
          */
-        final Hints backingStoreHints;
-        backingStoreHints = new Hints(Hints.CRS_AUTHORITY_FACTORY, ThreadedEpsgFactory.class);
+        final Hints backingStoreHints =
+                new Hints(Hints.CRS_AUTHORITY_FACTORY, ThreadedEpsgFactory.class);
         backingStoreHints.put(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE);
         backingStoreHints.put(Hints.FORCE_STANDARD_AXIS_DIRECTIONS, Boolean.FALSE);
         backingStoreHints.put(Hints.FORCE_STANDARD_AXIS_UNITS, Boolean.FALSE);

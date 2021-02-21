@@ -372,8 +372,7 @@ public class BoreholeTest extends AppSchemaTestSupport {
     }
 
     private void traverse(Attribute f) {
-        Object value;
-        value = f.getValue();
+        Object value = f.getValue();
         if (f instanceof ComplexAttribute) {
             Collection values = (Collection) value;
             for (Object o : values) {

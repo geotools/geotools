@@ -155,8 +155,7 @@ public class RestElasticClient implements ElasticClient {
                         this.mapper.readValue(
                                 inputStream, new TypeReference<Map<String, ElasticMappings>>() {});
             } else {
-                final Map<String, ElasticMappings.Untyped> res;
-                res =
+                final Map<String, ElasticMappings.Untyped> res =
                         this.mapper.readValue(
                                 inputStream,
                                 new TypeReference<Map<String, ElasticMappings.Untyped>>() {});
@@ -366,8 +365,7 @@ public class RestElasticClient implements ElasticClient {
         try {
             final Response response = performRequest("GET", "/_alias/" + alias, null, true);
             try (final InputStream inputStream = response.getEntity().getContent()) {
-                final Map<String, Object> result;
-                result =
+                final Map<String, Object> result =
                         this.mapper.readValue(
                                 inputStream, new TypeReference<Map<String, Object>>() {});
                 indices = result.keySet();

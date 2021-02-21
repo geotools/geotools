@@ -271,9 +271,7 @@ public class AreaGeometryFactory extends VPFGeometryFactory implements FileConst
                     coordinateArray[cnx] = coordinates.get(cnx);
                 }
 
-                LinearRing ring = null;
-
-                ring = geometryFactory.createLinearRing(coordinateArray);
+                LinearRing ring = geometryFactory.createLinearRing(coordinateArray);
 
                 if (outerRing == null) {
                     outerRing = ring;

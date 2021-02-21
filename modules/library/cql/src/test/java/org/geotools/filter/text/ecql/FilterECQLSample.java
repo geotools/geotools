@@ -95,13 +95,12 @@ final class FilterECQLSample {
     public static Map<String, Object> SAMPLES = new HashMap<>();
 
     static {
-        Filter filter;
 
         // (1+3)
         Add simpleAddExpression = FACTORY.add(FACTORY.literal(1), FACTORY.literal(3));
 
         // sample "(1+3) > prop1"
-        filter = FACTORY.greater(simpleAddExpression, FACTORY.property("aProperty"));
+        Filter filter = FACTORY.greater(simpleAddExpression, FACTORY.property("aProperty"));
 
         SAMPLES.put(EXPRESION_GREATER_PROPERTY, filter);
 

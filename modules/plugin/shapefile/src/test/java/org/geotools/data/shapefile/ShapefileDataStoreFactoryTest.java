@@ -112,8 +112,6 @@ public class ShapefileDataStoreFactoryTest extends TestCaseSupport {
 
     @Test
     public void testEnableIndexParameter() throws Exception {
-        Map<String, Serializable> params;
-        ShapefileDataStore ds;
 
         // remote (jar file) shapefiles
         URL remoteUrl = TestData.url(STATE_POP);
@@ -123,8 +121,8 @@ public class ShapefileDataStoreFactoryTest extends TestCaseSupport {
         URL localUrl = f.toURI().toURL();
 
         // test remote file has spatial index disabled even if requested
-        params = map(URLP.key, remoteUrl, ENABLE_SPATIAL_INDEX.key, true);
-        ds = (ShapefileDataStore) factory.createDataStore(params);
+        Map<String, Serializable> params = map(URLP.key, remoteUrl, ENABLE_SPATIAL_INDEX.key, true);
+        ShapefileDataStore ds = (ShapefileDataStore) factory.createDataStore(params);
         assertNotNull("Null datastore should not be returned", ds);
         assertTrue(
                 "should be a non indexed shapefile",

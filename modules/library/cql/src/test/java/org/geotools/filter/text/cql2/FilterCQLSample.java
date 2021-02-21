@@ -282,10 +282,9 @@ public class FilterCQLSample {
     static {
         // Samples initialization
         {
-            Filter filter;
 
             // ---------------------------------------
-            filter = FACTORY.less(FACTORY.property("ATTR1"), FACTORY.literal(1));
+            Filter filter = FACTORY.less(FACTORY.property("ATTR1"), FACTORY.literal(1));
             SAMPLES.put(LESS_FILTER_SAMPLE, filter);
 
             // ---------------------------------------
@@ -456,13 +455,12 @@ public class FilterCQLSample {
 
                 Date firstDate = strToDate(FIRST_DATE);
 
-                Date lastDate;
                 // adds Days
                 CALENDAR.setTime(firstDate);
 
                 int days = Integer.parseInt(DURATION_DATE);
                 CALENDAR.add(Calendar.DATE, days);
-                lastDate = CALENDAR.getTime();
+                Date lastDate = CALENDAR.getTime();
 
                 afterFilter = FACTORY.after(FACTORY.property("ATTR1"), FACTORY.literal(lastDate));
 

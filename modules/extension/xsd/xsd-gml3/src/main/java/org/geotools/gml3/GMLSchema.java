@@ -80,7 +80,6 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTCURVESEGMENTTYPE_TYPE();
 
     private static ComplexType build_ABSTRACTCURVESEGMENTTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -106,7 +105,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractCurveSegmentType"),
                         schema,
@@ -138,11 +137,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType DOUBLELIST_TYPE = build_DOUBLELIST_TYPE();
 
     private static AttributeType build_DOUBLELIST_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "doubleList"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -171,11 +169,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType NCNAMELIST_TYPE = build_NCNAMELIST_TYPE();
 
     private static AttributeType build_NCNAMELIST_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "NCNameList"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -211,7 +208,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType DIRECTPOSITIONTYPE_TYPE = build_DIRECTPOSITIONTYPE_TYPE();
 
     private static ComplexType build_DIRECTPOSITIONTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -245,7 +241,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DirectPositionType"),
                         schema,
@@ -285,7 +281,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType VECTORTYPE_TYPE = build_VECTORTYPE_TYPE();
 
     private static ComplexType build_VECTORTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -319,7 +314,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "VectorType"),
                         schema,
@@ -405,7 +400,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType AFFINEPLACEMENTTYPE_TYPE = build_AFFINEPLACEMENTTYPE_TYPE();
 
     private static ComplexType build_AFFINEPLACEMENTTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -439,7 +433,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AffinePlacementType"),
                         schema,
@@ -477,7 +471,6 @@ public class GMLSchema extends SchemaImpl {
             build_CLOTHOIDTYPE_REFLOCATION_TYPE();
 
     private static ComplexType build_CLOTHOIDTYPE_REFLOCATION_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -487,7 +480,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ClothoidType_refLocation"),
                         schema,
@@ -587,7 +580,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType CLOTHOIDTYPE_TYPE = build_CLOTHOIDTYPE_TYPE();
 
     private static ComplexType build_CLOTHOIDTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -621,7 +613,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ClothoidType"),
                         schema,
@@ -658,7 +650,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType METADATAPROPERTYTYPE_TYPE = build_METADATAPROPERTYTYPE_TYPE();
 
     private static ComplexType build_METADATAPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -732,7 +723,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MetaDataPropertyType"),
                         schema,
@@ -768,7 +759,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType STRINGORREFTYPE_TYPE = build_STRINGORREFTYPE_TYPE();
 
     private static ComplexType build_STRINGORREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -834,7 +824,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "StringOrRefType"),
                         schema,
@@ -874,7 +864,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType CODETYPE_TYPE = build_CODETYPE_TYPE();
 
     private static ComplexType build_CODETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -884,7 +873,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CodeType"),
                         schema,
@@ -921,7 +910,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ABSTRACTGMLTYPE_TYPE = build_ABSTRACTGMLTYPE_TYPE();
 
     private static ComplexType build_ABSTRACTGMLTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -955,7 +943,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractGMLType"),
                         schema,
@@ -1002,8 +990,7 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType ABSTRACTGEOMETRYTYPE_TYPE = build_ABSTRACTGEOMETRYTYPE_TYPE();
 
     private static AttributeType build_ABSTRACTGEOMETRYTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractGeometryType"),
                         org.locationtech.jts.geom.Geometry.class,
@@ -1040,8 +1027,7 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTGEOMETRICPRIMITIVETYPE_TYPE();
 
     private static ComplexType build_ABSTRACTGEOMETRICPRIMITIVETYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "AbstractGeometricPrimitiveType"),
@@ -1087,7 +1073,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType COORDINATESTYPE_TYPE = build_COORDINATESTYPE_TYPE();
 
     private static ComplexType build_COORDINATESTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -1113,7 +1098,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CoordinatesType"),
                         schema,
@@ -1150,7 +1135,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType COORDTYPE_TYPE = build_COORDTYPE_TYPE();
 
     private static ComplexType build_COORDTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -1176,7 +1160,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CoordType"),
                         schema,
@@ -1233,8 +1217,7 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType POINTTYPE_TYPE = build_POINTTYPE_TYPE();
 
     private static AttributeType build_POINTTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "PointType"),
                         org.locationtech.jts.geom.Point.class,
@@ -1280,8 +1263,7 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType POINTPROPERTYTYPE_TYPE = build_POINTPROPERTYTYPE_TYPE();
 
     private static AttributeType build_POINTPROPERTYTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "PointPropertyType"),
                         org.locationtech.jts.geom.Point.class,
@@ -1325,7 +1307,6 @@ public class GMLSchema extends SchemaImpl {
             build_DIRECTPOSITIONLISTTYPE_TYPE();
 
     private static ComplexType build_DIRECTPOSITIONLISTTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -1367,7 +1348,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DirectPositionListType"),
                         schema,
@@ -1404,7 +1385,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType MEASURETYPE_TYPE = build_MEASURETYPE_TYPE();
 
     private static ComplexType build_MEASURETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -1414,7 +1394,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MeasureType"),
                         schema,
@@ -1448,8 +1428,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType LENGTHTYPE_TYPE = build_LENGTHTYPE_TYPE();
 
     private static ComplexType build_LENGTHTYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "LengthType"),
                         Collections.emptyList(),
@@ -1483,8 +1462,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ANGLETYPE_TYPE = build_ANGLETYPE_TYPE();
 
     private static ComplexType build_ANGLETYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AngleType"),
                         Collections.emptyList(),
@@ -1530,11 +1508,10 @@ public class GMLSchema extends SchemaImpl {
             build_CURVEINTERPOLATIONTYPE_TYPE();
 
     private static AttributeType build_CURVEINTERPOLATIONTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CurveInterpolationType"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -1617,7 +1594,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ARCBYCENTERPOINTTYPE_TYPE = build_ARCBYCENTERPOINTTYPE_TYPE();
 
     private static ComplexType build_ARCBYCENTERPOINTTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -1699,7 +1675,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ArcByCenterPointType"),
                         schema,
@@ -1734,8 +1710,7 @@ public class GMLSchema extends SchemaImpl {
             build_CIRCLEBYCENTERPOINTTYPE_TYPE();
 
     private static ComplexType build_CIRCLEBYCENTERPOINTTYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CircleByCenterPointType"),
                         Collections.emptyList(),
@@ -1777,7 +1752,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType DEFINITIONTYPE_TYPE = build_DEFINITIONTYPE_TYPE();
 
     private static ComplexType build_DEFINITIONTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -1811,7 +1785,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DefinitionType"),
                         schema,
@@ -1852,7 +1826,6 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTREFERENCESYSTEMBASETYPE_TYPE();
 
     private static ComplexType build_ABSTRACTREFERENCESYSTEMBASETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -1878,7 +1851,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "AbstractReferenceSystemBaseType"),
@@ -1923,7 +1896,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType IDENTIFIERTYPE_TYPE = build_IDENTIFIERTYPE_TYPE();
 
     private static ComplexType build_IDENTIFIERTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -1949,7 +1921,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "IdentifierType"),
                         schema,
@@ -1983,8 +1955,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ABSTRACTSURFACETYPE_TYPE = build_ABSTRACTSURFACETYPE_TYPE();
 
     private static ComplexType build_ABSTRACTSURFACETYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractSurfaceType"),
                         Collections.emptyList(),
@@ -2018,8 +1989,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ABSTRACTRINGTYPE_TYPE = build_ABSTRACTRINGTYPE_TYPE();
 
     private static ComplexType build_ABSTRACTRINGTYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractRingType"),
                         Collections.emptyList(),
@@ -2054,7 +2024,6 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTRINGPROPERTYTYPE_TYPE();
 
     private static ComplexType build_ABSTRACTRINGPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -2064,7 +2033,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractRingPropertyType"),
                         schema,
@@ -2103,8 +2072,7 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType POLYGONTYPE_TYPE = build_POLYGONTYPE_TYPE();
 
     private static AttributeType build_POLYGONTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "PolygonType"),
                         org.locationtech.jts.geom.Polygon.class,
@@ -2162,7 +2130,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ENVELOPETYPE_TYPE = build_ENVELOPETYPE_TYPE();
 
     private static ComplexType build_ENVELOPETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -2236,7 +2203,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "EnvelopeType"),
                         schema,
@@ -2271,8 +2238,7 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTTIMEOBJECTTYPE_TYPE();
 
     private static ComplexType build_ABSTRACTTIMEOBJECTTYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractTimeObjectType"),
                         Collections.emptyList(),
@@ -2311,8 +2277,7 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTTIMEPRIMITIVETYPE_TYPE();
 
     private static ComplexType build_ABSTRACTTIMEPRIMITIVETYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractTimePrimitiveType"),
                         Collections.emptyList(),
@@ -2353,7 +2318,6 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTTIMEGEOMETRICPRIMITIVETYPE_TYPE();
 
     private static ComplexType build_ABSTRACTTIMEGEOMETRICPRIMITIVETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -2363,7 +2327,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "AbstractTimeGeometricPrimitiveType"),
@@ -2408,11 +2372,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType TIMEPOSITIONUNION_TYPE = build_TIMEPOSITIONUNION_TYPE();
 
     private static AttributeType build_TIMEPOSITIONUNION_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TimePositionUnion"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -2447,11 +2410,10 @@ public class GMLSchema extends SchemaImpl {
             build_TIMEINDETERMINATEVALUETYPE_TYPE();
 
     private static AttributeType build_TIMEINDETERMINATEVALUETYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TimeIndeterminateValueType"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -2492,7 +2454,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TIMEPOSITIONTYPE_TYPE = build_TIMEPOSITIONTYPE_TYPE();
 
     private static ComplexType build_TIMEPOSITIONTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -2518,7 +2479,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TimePositionType"),
                         schema,
@@ -2556,7 +2517,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TIMEINSTANTTYPE_TYPE = build_TIMEINSTANTTYPE_TYPE();
 
     private static ComplexType build_TIMEINSTANTTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -2566,7 +2526,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TimeInstantType"),
                         schema,
@@ -2599,7 +2559,6 @@ public class GMLSchema extends SchemaImpl {
             build_TIMEINSTANTPROPERTYTYPE_TYPE();
 
     private static ComplexType build_TIMEINSTANTPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -2673,7 +2632,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TimeInstantPropertyType"),
                         schema,
@@ -2720,11 +2679,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType TIMEUNITTYPE_TYPE = build_TIMEUNITTYPE_TYPE();
 
     private static AttributeType build_TIMEUNITTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TimeUnitType"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -2765,7 +2723,6 @@ public class GMLSchema extends SchemaImpl {
             build_TIMEINTERVALLENGTHTYPE_TYPE();
 
     private static ComplexType build_TIMEINTERVALLENGTHTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -2791,7 +2748,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TimeIntervalLengthType"),
                         schema,
@@ -2834,7 +2791,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TIMEPERIODTYPE_TYPE = build_TIMEPERIODTYPE_TYPE();
 
     private static ComplexType build_TIMEPERIODTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -2884,7 +2840,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TimePeriodType"),
                         schema,
@@ -2947,7 +2903,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType EXTENTTYPE_TYPE = build_EXTENTTYPE_TYPE();
 
     private static ComplexType build_EXTENTTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -2989,7 +2944,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ExtentType"),
                         schema,
@@ -3039,7 +2994,6 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTREFERENCESYSTEMTYPE_TYPE();
 
     private static ComplexType build_ABSTRACTREFERENCESYSTEMTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -3073,7 +3027,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractReferenceSystemType"),
                         schema,
@@ -3114,7 +3068,6 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTCOORDINATESYSTEMBASETYPE_TYPE();
 
     private static ComplexType build_ABSTRACTCOORDINATESYSTEMBASETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -3140,7 +3093,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "AbstractCoordinateSystemBaseType"),
@@ -3186,7 +3139,6 @@ public class GMLSchema extends SchemaImpl {
             build_COORDINATESYSTEMAXISBASETYPE_TYPE();
 
     private static ComplexType build_COORDINATESYSTEMAXISBASETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -3212,7 +3164,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CoordinateSystemAxisBaseType"),
                         schema,
@@ -3263,7 +3215,6 @@ public class GMLSchema extends SchemaImpl {
             build_COORDINATESYSTEMAXISTYPE_TYPE();
 
     private static ComplexType build_COORDINATESYSTEMAXISTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -3305,7 +3256,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CoordinateSystemAxisType"),
                         schema,
@@ -3341,7 +3292,6 @@ public class GMLSchema extends SchemaImpl {
             build_COORDINATESYSTEMAXISREFTYPE_TYPE();
 
     private static ComplexType build_COORDINATESYSTEMAXISREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -3415,7 +3365,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CoordinateSystemAxisRefType"),
                         schema,
@@ -3468,7 +3418,6 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTCOORDINATESYSTEMTYPE_TYPE();
 
     private static ComplexType build_ABSTRACTCOORDINATESYSTEMTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -3494,7 +3443,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractCoordinateSystemType"),
                         schema,
@@ -3528,8 +3477,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ELLIPSOIDALCSTYPE_TYPE = build_ELLIPSOIDALCSTYPE_TYPE();
 
     private static ComplexType build_ELLIPSOIDALCSTYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "EllipsoidalCSType"),
                         Collections.emptyList(),
@@ -3564,7 +3512,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ELLIPSOIDALCSREFTYPE_TYPE = build_ELLIPSOIDALCSREFTYPE_TYPE();
 
     private static ComplexType build_ELLIPSOIDALCSREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -3638,7 +3585,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "EllipsoidalCSRefType"),
                         schema,
@@ -3678,7 +3625,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ABSTRACTDATUMBASETYPE_TYPE = build_ABSTRACTDATUMBASETYPE_TYPE();
 
     private static ComplexType build_ABSTRACTDATUMBASETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -3704,7 +3650,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractDatumBaseType"),
                         schema,
@@ -3755,7 +3701,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ABSTRACTDATUMTYPE_TYPE = build_ABSTRACTDATUMTYPE_TYPE();
 
     private static ComplexType build_ABSTRACTDATUMTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -3805,7 +3750,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractDatumType"),
                         schema,
@@ -3845,7 +3790,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType PRIMEMERIDIANBASETYPE_TYPE = build_PRIMEMERIDIANBASETYPE_TYPE();
 
     private static ComplexType build_PRIMEMERIDIANBASETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -3871,7 +3815,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "PrimeMeridianBaseType"),
                         schema,
@@ -3905,11 +3849,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType DEGREEVALUETYPE_TYPE = build_DEGREEVALUETYPE_TYPE();
 
     private static AttributeType build_DEGREEVALUETYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DegreeValueType"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -3958,8 +3901,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType DEGREESTYPE_TYPE = build_DEGREESTYPE_TYPE();
 
     private static ComplexType build_DEGREESTYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DegreesType"),
                         Collections.emptyList(),
@@ -3994,11 +3936,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType DECIMALMINUTESTYPE_TYPE = build_DECIMALMINUTESTYPE_TYPE();
 
     private static AttributeType build_DECIMALMINUTESTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DecimalMinutesType"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -4029,11 +3970,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType ARCMINUTESTYPE_TYPE = build_ARCMINUTESTYPE_TYPE();
 
     private static AttributeType build_ARCMINUTESTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ArcMinutesType"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -4065,11 +4005,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType ARCSECONDSTYPE_TYPE = build_ARCSECONDSTYPE_TYPE();
 
     private static AttributeType build_ARCSECONDSTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ArcSecondsType"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -4107,7 +4046,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType DMSANGLETYPE_TYPE = build_DMSANGLETYPE_TYPE();
 
     private static ComplexType build_DMSANGLETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -4141,7 +4079,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DMSAngleType"),
                         schema,
@@ -4176,7 +4114,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ANGLECHOICETYPE_TYPE = build_ANGLECHOICETYPE_TYPE();
 
     private static ComplexType build_ANGLECHOICETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -4194,7 +4131,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AngleChoiceType"),
                         schema,
@@ -4242,7 +4179,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType PRIMEMERIDIANTYPE_TYPE = build_PRIMEMERIDIANTYPE_TYPE();
 
     private static ComplexType build_PRIMEMERIDIANTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -4268,7 +4204,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "PrimeMeridianType"),
                         schema,
@@ -4303,7 +4239,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType PRIMEMERIDIANREFTYPE_TYPE = build_PRIMEMERIDIANREFTYPE_TYPE();
 
     private static ComplexType build_PRIMEMERIDIANREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -4377,7 +4312,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "PrimeMeridianRefType"),
                         schema,
@@ -4417,7 +4352,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ELLIPSOIDBASETYPE_TYPE = build_ELLIPSOIDBASETYPE_TYPE();
 
     private static ComplexType build_ELLIPSOIDBASETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -4443,7 +4377,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "EllipsoidBaseType"),
                         schema,
@@ -4474,11 +4408,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType _ISSPHERE_TYPE = build__ISSPHERE_TYPE();
 
     private static AttributeType build__ISSPHERE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "_isSphere"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -4512,7 +4445,6 @@ public class GMLSchema extends SchemaImpl {
             build_SECONDDEFININGPARAMETERTYPE_TYPE();
 
     private static ComplexType build_SECONDDEFININGPARAMETERTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -4538,7 +4470,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "SecondDefiningParameterType"),
                         schema,
@@ -4587,7 +4519,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ELLIPSOIDTYPE_TYPE = build_ELLIPSOIDTYPE_TYPE();
 
     private static ComplexType build_ELLIPSOIDTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -4621,7 +4552,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "EllipsoidType"),
                         schema,
@@ -4656,7 +4587,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ELLIPSOIDREFTYPE_TYPE = build_ELLIPSOIDREFTYPE_TYPE();
 
     private static ComplexType build_ELLIPSOIDREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -4730,7 +4660,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "EllipsoidRefType"),
                         schema,
@@ -4769,7 +4699,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType GEODETICDATUMTYPE_TYPE = build_GEODETICDATUMTYPE_TYPE();
 
     private static ComplexType build_GEODETICDATUMTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -4787,7 +4716,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GeodeticDatumType"),
                         schema,
@@ -4822,7 +4751,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType GEODETICDATUMREFTYPE_TYPE = build_GEODETICDATUMREFTYPE_TYPE();
 
     private static ComplexType build_GEODETICDATUMREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -4896,7 +4824,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GeodeticDatumRefType"),
                         schema,
@@ -4935,7 +4863,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType GEOGRAPHICCRSTYPE_TYPE = build_GEOGRAPHICCRSTYPE_TYPE();
 
     private static ComplexType build_GEOGRAPHICCRSTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -4953,7 +4880,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GeographicCRSType"),
                         schema,
@@ -4988,7 +4915,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType GEOGRAPHICCRSREFTYPE_TYPE = build_GEOGRAPHICCRSREFTYPE_TYPE();
 
     private static ComplexType build_GEOGRAPHICCRSREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -5062,7 +4988,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GeographicCRSRefType"),
                         schema,
@@ -5126,8 +5052,7 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType LINEARRINGTYPE_TYPE = build_LINEARRINGTYPE_TYPE();
 
     private static AttributeType build_LINEARRINGTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "LinearRingType"),
                         org.locationtech.jts.geom.LinearRing.class,
@@ -5162,8 +5087,7 @@ public class GMLSchema extends SchemaImpl {
             build_LINEARRINGPROPERTYTYPE_TYPE();
 
     private static AttributeType build_LINEARRINGPROPERTYTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "LinearRingPropertyType"),
                         org.locationtech.jts.geom.LinearRing.class,
@@ -5197,8 +5121,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ABSTRACTSOLIDTYPE_TYPE = build_ABSTRACTSOLIDTYPE_TYPE();
 
     private static ComplexType build_ABSTRACTSOLIDTYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractSolidType"),
                         Collections.emptyList(),
@@ -5238,7 +5161,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType SOLIDPROPERTYTYPE_TYPE = build_SOLIDPROPERTYTYPE_TYPE();
 
     private static ComplexType build_SOLIDPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -5312,7 +5234,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "SolidPropertyType"),
                         schema,
@@ -5363,7 +5285,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType COMPOSITESOLIDTYPE_TYPE = build_COMPOSITESOLIDTYPE_TYPE();
 
     private static ComplexType build_COMPOSITESOLIDTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -5373,7 +5294,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CompositeSolidType"),
                         schema,
@@ -5406,7 +5327,6 @@ public class GMLSchema extends SchemaImpl {
             build_COMPOSITESOLIDPROPERTYTYPE_TYPE();
 
     private static ComplexType build_COMPOSITESOLIDPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -5480,7 +5400,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CompositeSolidPropertyType"),
                         schema,
@@ -5512,11 +5432,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType NULLTYPE_TYPE = build_NULLTYPE_TYPE();
 
     private static AttributeType build_NULLTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "NullType"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -5550,7 +5469,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType BOUNDINGSHAPETYPE_TYPE = build_BOUNDINGSHAPETYPE_TYPE();
 
     private static ComplexType build_BOUNDINGSHAPETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -5568,7 +5486,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "BoundingShapeType"),
                         schema,
@@ -5611,7 +5529,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType LOCATIONPROPERTYTYPE_TYPE = build_LOCATIONPROPERTYTYPE_TYPE();
 
     private static ComplexType build_LOCATIONPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -5709,7 +5626,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "LocationPropertyType"),
                         schema,
@@ -5754,7 +5671,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ABSTRACTFEATURETYPE_TYPE = build_ABSTRACTFEATURETYPE_TYPE();
 
     private static ComplexType build_ABSTRACTFEATURETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -5772,7 +5688,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractFeatureType"),
                         schema,
@@ -5816,7 +5732,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType DOMAINSETTYPE_TYPE = build_DOMAINSETTYPE_TYPE();
 
     private static ComplexType build_DOMAINSETTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -5898,7 +5813,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DomainSetType"),
                         schema,
@@ -5937,8 +5852,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType COMPOSITEVALUETYPE_TYPE = build_COMPOSITEVALUETYPE_TYPE();
 
     private static ComplexType build_COMPOSITEVALUETYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CompositeValueType"),
                         Collections.emptyList(),
@@ -5974,7 +5888,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType VALUEARRAYTYPE_TYPE = build_VALUEARRAYTYPE_TYPE();
 
     private static ComplexType build_VALUEARRAYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -5992,7 +5905,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ValueArrayType"),
                         schema,
@@ -6024,11 +5937,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType BOOLEANORNULLLIST_TYPE = build_BOOLEANORNULLLIST_TYPE();
 
     private static AttributeType build_BOOLEANORNULLLIST_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "booleanOrNullList"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -6057,11 +5969,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType NAMEORNULLLIST_TYPE = build_NAMEORNULLLIST_TYPE();
 
     private static AttributeType build_NAMEORNULLLIST_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "NameOrNullList"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -6098,7 +6009,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType CODEORNULLLISTTYPE_TYPE = build_CODEORNULLLISTTYPE_TYPE();
 
     private static ComplexType build_CODEORNULLLISTTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -6108,7 +6018,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CodeOrNullListType"),
                         schema,
@@ -6144,8 +6054,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType CATEGORYEXTENTTYPE_TYPE = build_CATEGORYEXTENTTYPE_TYPE();
 
     private static ComplexType build_CATEGORYEXTENTTYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CategoryExtentType"),
                         Collections.emptyList(),
@@ -6177,11 +6086,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType DOUBLEORNULLLIST_TYPE = build_DOUBLEORNULLLIST_TYPE();
 
     private static AttributeType build_DOUBLEORNULLLIST_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "doubleOrNullList"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -6217,7 +6125,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType MEASUREORNULLLISTTYPE_TYPE = build_MEASUREORNULLLISTTYPE_TYPE();
 
     private static ComplexType build_MEASUREORNULLLISTTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -6227,7 +6134,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MeasureOrNullListType"),
                         schema,
@@ -6263,8 +6170,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType QUANTITYEXTENTTYPE_TYPE = build_QUANTITYEXTENTTYPE_TYPE();
 
     private static ComplexType build_QUANTITYEXTENTTYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "QuantityExtentType"),
                         Collections.emptyList(),
@@ -6296,11 +6202,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType INTEGERORNULLLIST_TYPE = build_INTEGERORNULLLIST_TYPE();
 
     private static AttributeType build_INTEGERORNULLLIST_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "integerOrNullList"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -6331,11 +6236,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType COUNTEXTENTTYPE_TYPE = build_COUNTEXTENTTYPE_TYPE();
 
     private static AttributeType build_COUNTEXTENTTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CountExtentType"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -6369,7 +6273,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType RANGEPARAMETERSTYPE_TYPE = build_RANGEPARAMETERSTYPE_TYPE();
 
     private static ComplexType build_RANGEPARAMETERSTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -6531,7 +6434,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "RangeParametersType"),
                         schema,
@@ -6566,7 +6469,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType DATABLOCKTYPE_TYPE = build_DATABLOCKTYPE_TYPE();
 
     private static ComplexType build_DATABLOCKTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -6592,7 +6494,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DataBlockType"),
                         schema,
@@ -6626,11 +6528,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType FILEVALUEMODELTYPE_TYPE = build_FILEVALUEMODELTYPE_TYPE();
 
     private static AttributeType build_FILEVALUEMODELTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "FileValueModelType"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -6662,7 +6563,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType FILETYPE_TYPE = build_FILETYPE_TYPE();
 
     private static ComplexType build_FILETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -6704,7 +6604,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "FileType"),
                         schema,
@@ -6754,7 +6654,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType RANGESETTYPE_TYPE = build_RANGESETTYPE_TYPE();
 
     private static ComplexType build_RANGESETTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -6812,7 +6711,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "RangeSetType"),
                         schema,
@@ -6852,7 +6751,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ABSTRACTCOVERAGETYPE_TYPE = build_ABSTRACTCOVERAGETYPE_TYPE();
 
     private static ComplexType build_ABSTRACTCOVERAGETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -6878,7 +6776,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractCoverageType"),
                         schema,
@@ -6917,11 +6815,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType SEQUENCERULENAMES_TYPE = build_SEQUENCERULENAMES_TYPE();
 
     private static AttributeType build_SEQUENCERULENAMES_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "SequenceRuleNames"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -6955,11 +6852,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType INCREMENTORDER_TYPE = build_INCREMENTORDER_TYPE();
 
     private static AttributeType build_INCREMENTORDER_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "IncrementOrder"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -6989,7 +6885,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType SEQUENCERULETYPE_TYPE = build_SEQUENCERULETYPE_TYPE();
 
     private static ComplexType build_SEQUENCERULETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -6999,7 +6894,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "SequenceRuleType"),
                         schema,
@@ -7031,11 +6926,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType INTEGERLIST_TYPE = build_INTEGERLIST_TYPE();
 
     private static AttributeType build_INTEGERLIST_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "integerList"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -7075,7 +6969,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType GRIDFUNCTIONTYPE_TYPE = build_GRIDFUNCTIONTYPE_TYPE();
 
     private static ComplexType build_GRIDFUNCTIONTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -7093,7 +6986,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GridFunctionType"),
                         schema,
@@ -7129,7 +7022,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType COVERAGEFUNCTIONTYPE_TYPE = build_COVERAGEFUNCTIONTYPE_TYPE();
 
     private static ComplexType build_COVERAGEFUNCTIONTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -7147,7 +7039,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CoverageFunctionType"),
                         schema,
@@ -7186,7 +7078,6 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTDISCRETECOVERAGETYPE_TYPE();
 
     private static ComplexType build_ABSTRACTDISCRETECOVERAGETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -7196,7 +7087,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractDiscreteCoverageType"),
                         schema,
@@ -7231,7 +7122,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType GRIDENVELOPETYPE_TYPE = build_GRIDENVELOPETYPE_TYPE();
 
     private static ComplexType build_GRIDENVELOPETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -7249,7 +7139,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GridEnvelopeType"),
                         schema,
@@ -7280,7 +7170,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType GRIDLIMITSTYPE_TYPE = build_GRIDLIMITSTYPE_TYPE();
 
     private static ComplexType build_GRIDLIMITSTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -7290,7 +7179,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GridLimitsType"),
                         schema,
@@ -7330,7 +7219,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType GRIDTYPE_TYPE = build_GRIDTYPE_TYPE();
 
     private static ComplexType build_GRIDTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -7356,7 +7244,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GridType"),
                         schema,
@@ -7395,7 +7283,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType RECTIFIEDGRIDTYPE_TYPE = build_RECTIFIEDGRIDTYPE_TYPE();
 
     private static ComplexType build_RECTIFIEDGRIDTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -7413,7 +7300,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "RectifiedGridType"),
                         schema,
@@ -7450,7 +7337,6 @@ public class GMLSchema extends SchemaImpl {
             build_RECTIFIEDGRIDDOMAINTYPE_TYPE();
 
     private static ComplexType build_RECTIFIEDGRIDDOMAINTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -7524,7 +7410,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "RectifiedGridDomainType"),
                         schema,
@@ -7564,7 +7450,6 @@ public class GMLSchema extends SchemaImpl {
             build_RECTIFIEDGRIDCOVERAGETYPE_TYPE();
 
     private static ComplexType build_RECTIFIEDGRIDCOVERAGETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -7622,7 +7507,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "RectifiedGridCoverageType"),
                         schema,
@@ -7658,7 +7543,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType GRIDDOMAINTYPE_TYPE = build_GRIDDOMAINTYPE_TYPE();
 
     private static ComplexType build_GRIDDOMAINTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -7732,7 +7616,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GridDomainType"),
                         schema,
@@ -7771,7 +7655,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType GRIDCOVERAGETYPE_TYPE = build_GRIDCOVERAGETYPE_TYPE();
 
     private static ComplexType build_GRIDCOVERAGETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -7829,7 +7712,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GridCoverageType"),
                         schema,
@@ -7863,8 +7746,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType SPEEDTYPE_TYPE = build_SPEEDTYPE_TYPE();
 
     private static ComplexType build_SPEEDTYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "SpeedType"),
                         Collections.emptyList(),
@@ -7899,8 +7781,7 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTGEOMETRICAGGREGATETYPE_TYPE();
 
     private static ComplexType build_ABSTRACTGEOMETRICAGGREGATETYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "AbstractGeometricAggregateType"),
@@ -7937,7 +7818,6 @@ public class GMLSchema extends SchemaImpl {
             build_POINTARRAYPROPERTYTYPE_TYPE();
 
     private static ComplexType build_POINTARRAYPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -7947,7 +7827,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "PointArrayPropertyType"),
                         schema,
@@ -7990,8 +7870,7 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType MULTIPOINTTYPE_TYPE = build_MULTIPOINTTYPE_TYPE();
 
     private static AttributeType build_MULTIPOINTTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiPointType"),
                         org.locationtech.jts.geom.MultiPoint.class,
@@ -8032,8 +7911,7 @@ public class GMLSchema extends SchemaImpl {
             build_MULTIPOINTPROPERTYTYPE_TYPE();
 
     private static AttributeType build_MULTIPOINTPROPERTYTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiPointPropertyType"),
                         org.locationtech.jts.geom.MultiPoint.class,
@@ -8117,7 +7995,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ARCSTRINGBYBULGETYPE_TYPE = build_ARCSTRINGBYBULGETYPE_TYPE();
 
     private static ComplexType build_ARCSTRINGBYBULGETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -8191,7 +8068,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ArcStringByBulgeType"),
                         schema,
@@ -8268,7 +8145,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ARCBYBULGETYPE_TYPE = build_ARCBYBULGETYPE_TYPE();
 
     private static ComplexType build_ARCBYBULGETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -8334,7 +8210,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ArcByBulgeType"),
                         schema,
@@ -8375,7 +8251,6 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTCOORDINATEOPERATIONBASETYPE_TYPE();
 
     private static ComplexType build_ABSTRACTCOORDINATEOPERATIONBASETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -8401,7 +8276,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml",
@@ -8438,7 +8313,6 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTPOSITIONALACCURACYTYPE_TYPE();
 
     private static ComplexType build_ABSTRACTPOSITIONALACCURACYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -8448,7 +8322,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "AbstractPositionalAccuracyType"),
@@ -8484,7 +8358,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType CRSREFTYPE_TYPE = build_CRSREFTYPE_TYPE();
 
     private static ComplexType build_CRSREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -8558,7 +8431,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CRSRefType"),
                         schema,
@@ -8616,7 +8489,6 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTCOORDINATEOPERATIONTYPE_TYPE();
 
     private static ComplexType build_ABSTRACTCOORDINATEOPERATIONTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -8682,7 +8554,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "AbstractCoordinateOperationType"),
@@ -8734,7 +8606,6 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTGENERALTRANSFORMATIONTYPE_TYPE();
 
     private static ComplexType build_ABSTRACTGENERALTRANSFORMATIONTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -8824,7 +8695,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "AbstractGeneralTransformationType"),
@@ -8866,7 +8737,6 @@ public class GMLSchema extends SchemaImpl {
             build_OPERATIONMETHODBASETYPE_TYPE();
 
     private static ComplexType build_OPERATIONMETHODBASETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -8892,7 +8762,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "OperationMethodBaseType"),
                         schema,
@@ -8931,7 +8801,6 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTGENERALOPERATIONPARAMETERTYPE_TYPE();
 
     private static ComplexType build_ABSTRACTGENERALOPERATIONPARAMETERTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -8941,7 +8810,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml",
@@ -8979,7 +8848,6 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTGENERALOPERATIONPARAMETERREFTYPE_TYPE();
 
     private static ComplexType build_ABSTRACTGENERALOPERATIONPARAMETERREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -9053,7 +8921,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml",
@@ -9110,7 +8978,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType OPERATIONMETHODTYPE_TYPE = build_OPERATIONMETHODTYPE_TYPE();
 
     private static ComplexType build_OPERATIONMETHODTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -9160,7 +9027,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "OperationMethodType"),
                         schema,
@@ -9196,7 +9063,6 @@ public class GMLSchema extends SchemaImpl {
             build_OPERATIONMETHODREFTYPE_TYPE();
 
     private static ComplexType build_OPERATIONMETHODREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -9270,7 +9136,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "OperationMethodRefType"),
                         schema,
@@ -9305,8 +9171,7 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTGENERALPARAMETERVALUETYPE_TYPE();
 
     private static ComplexType build_ABSTRACTGENERALPARAMETERVALUETYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "AbstractGeneralParameterValueType"),
@@ -9345,7 +9210,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType MEASURELISTTYPE_TYPE = build_MEASURELISTTYPE_TYPE();
 
     private static ComplexType build_MEASURELISTTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -9355,7 +9219,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MeasureListType"),
                         schema,
@@ -9397,7 +9261,6 @@ public class GMLSchema extends SchemaImpl {
             build_OPERATIONPARAMETERBASETYPE_TYPE();
 
     private static ComplexType build_OPERATIONPARAMETERBASETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -9431,7 +9294,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "OperationParameterBaseType"),
                         schema,
@@ -9479,7 +9342,6 @@ public class GMLSchema extends SchemaImpl {
             build_OPERATIONPARAMETERTYPE_TYPE();
 
     private static ComplexType build_OPERATIONPARAMETERTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -9497,7 +9359,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "OperationParameterType"),
                         schema,
@@ -9533,7 +9395,6 @@ public class GMLSchema extends SchemaImpl {
             build_OPERATIONPARAMETERREFTYPE_TYPE();
 
     private static ComplexType build_OPERATIONPARAMETERREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -9607,7 +9468,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "OperationParameterRefType"),
                         schema,
@@ -9655,7 +9516,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType PARAMETERVALUETYPE_TYPE = build_PARAMETERVALUETYPE_TYPE();
 
     private static ComplexType build_PARAMETERVALUETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -9729,7 +9589,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ParameterValueType"),
                         schema,
@@ -9774,7 +9634,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TRANSFORMATIONTYPE_TYPE = build_TRANSFORMATIONTYPE_TYPE();
 
     private static ComplexType build_TRANSFORMATIONTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -9792,7 +9651,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TransformationType"),
                         schema,
@@ -9827,7 +9686,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TRANSFORMATIONREFTYPE_TYPE = build_TRANSFORMATIONREFTYPE_TYPE();
 
     private static ComplexType build_TRANSFORMATIONREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -9901,7 +9759,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TransformationRefType"),
                         schema,
@@ -9937,7 +9795,6 @@ public class GMLSchema extends SchemaImpl {
             build_COORDINATEREFERENCESYSTEMREFTYPE_TYPE();
 
     private static ComplexType build_COORDINATEREFERENCESYSTEMREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -10011,7 +9868,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "CoordinateReferenceSystemRefType"),
@@ -10060,7 +9917,6 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTGENERALCONVERSIONTYPE_TYPE();
 
     private static ComplexType build_ABSTRACTGENERALCONVERSIONTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -10126,7 +9982,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractGeneralConversionType"),
                         schema,
@@ -10162,7 +10018,6 @@ public class GMLSchema extends SchemaImpl {
             build_GENERALCONVERSIONREFTYPE_TYPE();
 
     private static ComplexType build_GENERALCONVERSIONREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -10236,7 +10091,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GeneralConversionRefType"),
                         schema,
@@ -10276,7 +10131,6 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTGENERALDERIVEDCRSTYPE_TYPE();
 
     private static ComplexType build_ABSTRACTGENERALDERIVEDCRSTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -10294,7 +10148,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractGeneralDerivedCRSType"),
                         schema,
@@ -10334,7 +10188,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType DERIVEDCRSTYPETYPE_TYPE = build_DERIVEDCRSTYPETYPE_TYPE();
 
     private static ComplexType build_DERIVEDCRSTYPETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -10344,7 +10197,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DerivedCRSTypeType"),
                         schema,
@@ -10380,7 +10233,6 @@ public class GMLSchema extends SchemaImpl {
             build_COORDINATESYSTEMREFTYPE_TYPE();
 
     private static ComplexType build_COORDINATESYSTEMREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -10454,7 +10306,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CoordinateSystemRefType"),
                         schema,
@@ -10493,7 +10345,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType DERIVEDCRSTYPE_TYPE = build_DERIVEDCRSTYPE_TYPE();
 
     private static ComplexType build_DERIVEDCRSTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -10511,7 +10362,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DerivedCRSType"),
                         schema,
@@ -10546,7 +10397,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType DERIVEDCRSREFTYPE_TYPE = build_DERIVEDCRSREFTYPE_TYPE();
 
     private static ComplexType build_DERIVEDCRSREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -10620,7 +10470,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DerivedCRSRefType"),
                         schema,
@@ -10661,7 +10511,6 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTTIMEREFERENCESYSTEMTYPE_TYPE();
 
     private static ComplexType build_ABSTRACTTIMEREFERENCESYSTEMTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -10671,7 +10520,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "AbstractTimeReferenceSystemType"),
@@ -10705,7 +10554,6 @@ public class GMLSchema extends SchemaImpl {
             build_TIMEPERIODPROPERTYTYPE_TYPE();
 
     private static ComplexType build_TIMEPERIODPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -10779,7 +10627,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TimePeriodPropertyType"),
                         schema,
@@ -10847,7 +10695,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TIMECALENDARERATYPE_TYPE = build_TIMECALENDARERATYPE_TYPE();
 
     private static ComplexType build_TIMECALENDARERATYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -10881,7 +10728,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TimeCalendarEraType"),
                         schema,
@@ -10914,7 +10761,6 @@ public class GMLSchema extends SchemaImpl {
             build_TIMECALENDARERAPROPERTYTYPE_TYPE();
 
     private static ComplexType build_TIMECALENDARERAPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -10988,7 +10834,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TimeCalendarEraPropertyType"),
                         schema,
@@ -11032,7 +10878,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TIMECALENDARTYPE_TYPE = build_TIMECALENDARTYPE_TYPE();
 
     private static ComplexType build_TIMECALENDARTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -11042,7 +10887,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TimeCalendarType"),
                         schema,
@@ -11075,7 +10920,6 @@ public class GMLSchema extends SchemaImpl {
             build_TIMECALENDARPROPERTYTYPE_TYPE();
 
     private static ComplexType build_TIMECALENDARPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -11149,7 +10993,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TimeCalendarPropertyType"),
                         schema,
@@ -11207,7 +11051,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TIMECLOCKTYPE_TYPE = build_TIMECLOCKTYPE_TYPE();
 
     private static ComplexType build_TIMECLOCKTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -11241,7 +11084,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TimeClockType"),
                         schema,
@@ -11273,7 +11116,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TIMECLOCKPROPERTYTYPE_TYPE = build_TIMECLOCKPROPERTYTYPE_TYPE();
 
     private static ComplexType build_TIMECLOCKPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -11347,7 +11189,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TimeClockPropertyType"),
                         schema,
@@ -11387,8 +11229,7 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType SURFACEPROPERTYTYPE_TYPE = build_SURFACEPROPERTYTYPE_TYPE();
 
     private static AttributeType build_SURFACEPROPERTYTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "SurfacePropertyType"),
                         org.locationtech.jts.geom.Polygon.class,
@@ -11423,7 +11264,6 @@ public class GMLSchema extends SchemaImpl {
             build_SURFACEARRAYPROPERTYTYPE_TYPE();
 
     private static ComplexType build_SURFACEARRAYPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -11433,7 +11273,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "SurfaceArrayPropertyType"),
                         schema,
@@ -11476,8 +11316,7 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType MULTISURFACETYPE_TYPE = build_MULTISURFACETYPE_TYPE();
 
     private static AttributeType build_MULTISURFACETYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiSurfaceType"),
                         org.locationtech.jts.geom.MultiPolygon.class,
@@ -11514,7 +11353,6 @@ public class GMLSchema extends SchemaImpl {
             build_MULTISURFACEDOMAINTYPE_TYPE();
 
     private static ComplexType build_MULTISURFACEDOMAINTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -11588,7 +11426,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiSurfaceDomainType"),
                         schema,
@@ -11631,7 +11469,6 @@ public class GMLSchema extends SchemaImpl {
             build_MULTISURFACECOVERAGETYPE_TYPE();
 
     private static ComplexType build_MULTISURFACECOVERAGETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -11689,7 +11526,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiSurfaceCoverageType"),
                         schema,
@@ -11728,7 +11565,6 @@ public class GMLSchema extends SchemaImpl {
             build_RELATIVEINTERNALPOSITIONALACCURACYTYPE_TYPE();
 
     private static ComplexType build_RELATIVEINTERNALPOSITIONALACCURACYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -11738,7 +11574,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml",
@@ -11773,8 +11609,7 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTSURFACEPATCHTYPE_TYPE();
 
     private static ComplexType build_ABSTRACTSURFACEPATCHTYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractSurfacePatchType"),
                         Collections.emptyList(),
@@ -11809,8 +11644,7 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTPARAMETRICCURVESURFACETYPE_TYPE();
 
     private static ComplexType build_ABSTRACTPARAMETRICCURVESURFACETYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "AbstractParametricCurveSurfaceType"),
@@ -11843,7 +11677,6 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTGRIDDEDSURFACETYPE_ROW_TYPE();
 
     private static ComplexType build_ABSTRACTGRIDDEDSURFACETYPE_ROW_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -11869,7 +11702,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "AbstractGriddedSurfaceType_row"),
@@ -11953,7 +11786,6 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTGRIDDEDSURFACETYPE_TYPE();
 
     private static ComplexType build_ABSTRACTGRIDDEDSURFACETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -11979,7 +11811,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractGriddedSurfaceType"),
                         schema,
@@ -12050,7 +11882,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType SPHERETYPE_TYPE = build_SPHERETYPE_TYPE();
 
     private static ComplexType build_SPHERETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -12068,7 +11899,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "SphereType"),
                         schema,
@@ -12103,8 +11934,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ABSTRACTCURVETYPE_TYPE = build_ABSTRACTCURVETYPE_TYPE();
 
     private static ComplexType build_ABSTRACTCURVETYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractCurveType"),
                         Collections.emptyList(),
@@ -12175,8 +12005,7 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType LINESTRINGTYPE_TYPE = build_LINESTRINGTYPE_TYPE();
 
     private static AttributeType build_LINESTRINGTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "LineStringType"),
                         org.locationtech.jts.geom.LineString.class,
@@ -12224,8 +12053,7 @@ public class GMLSchema extends SchemaImpl {
             build_LINESTRINGPROPERTYTYPE_TYPE();
 
     private static AttributeType build_LINESTRINGPROPERTYTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "LineStringPropertyType"),
                         org.locationtech.jts.geom.LineString.class,
@@ -12263,8 +12091,7 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType MULTILINESTRINGTYPE_TYPE = build_MULTILINESTRINGTYPE_TYPE();
 
     private static AttributeType build_MULTILINESTRINGTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiLineStringType"),
                         org.locationtech.jts.geom.MultiLineString.class,
@@ -12306,8 +12133,7 @@ public class GMLSchema extends SchemaImpl {
             build_MULTILINESTRINGPROPERTYTYPE_TYPE();
 
     private static AttributeType build_MULTILINESTRINGPROPERTYTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiLineStringPropertyType"),
                         org.locationtech.jts.geom.MultiLineString.class,
@@ -12350,7 +12176,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType COMPOSITESURFACETYPE_TYPE = build_COMPOSITESURFACETYPE_TYPE();
 
     private static ComplexType build_COMPOSITESURFACETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -12360,7 +12185,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CompositeSurfaceType"),
                         schema,
@@ -12393,7 +12218,6 @@ public class GMLSchema extends SchemaImpl {
             build_COMPOSITESURFACEPROPERTYTYPE_TYPE();
 
     private static ComplexType build_COMPOSITESURFACEPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -12467,7 +12291,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CompositeSurfacePropertyType"),
                         schema,
@@ -12506,7 +12330,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType UNITDEFINITIONTYPE_TYPE = build_UNITDEFINITIONTYPE_TYPE();
 
     private static ComplexType build_UNITDEFINITIONTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -12524,7 +12347,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "UnitDefinitionType"),
                         schema,
@@ -12557,7 +12380,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType REFERENCETYPE_TYPE = build_REFERENCETYPE_TYPE();
 
     private static ComplexType build_REFERENCETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -12623,7 +12445,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ReferenceType"),
                         schema,
@@ -12661,7 +12483,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType BASEUNITTYPE_TYPE = build_BASEUNITTYPE_TYPE();
 
     private static ComplexType build_BASEUNITTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -12671,7 +12492,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "BaseUnitType"),
                         schema,
@@ -12717,8 +12538,7 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType CURVEPROPERTYTYPE_TYPE = build_CURVEPROPERTYTYPE_TYPE();
 
     private static AttributeType build_CURVEPROPERTYTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CurvePropertyType"),
                         CurvedGeometry.class,
@@ -12755,11 +12575,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType SIGNTYPE_TYPE = build_SIGNTYPE_TYPE();
 
     private static AttributeType build_SIGNTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "SignType"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -12804,7 +12623,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ORIENTABLECURVETYPE_TYPE = build_ORIENTABLECURVETYPE_TYPE();
 
     private static ComplexType build_ORIENTABLECURVETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -12822,7 +12640,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "OrientableCurveType"),
                         schema,
@@ -12857,7 +12675,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType VALUEPROPERTYTYPE_TYPE = build_VALUEPROPERTYTYPE_TYPE();
 
     private static ComplexType build_VALUEPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -13035,7 +12852,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ValuePropertyType"),
                         schema,
@@ -13075,7 +12892,6 @@ public class GMLSchema extends SchemaImpl {
             build_SCALARVALUEPROPERTYTYPE_TYPE();
 
     private static ComplexType build_SCALARVALUEPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -13109,7 +12925,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ScalarValuePropertyType"),
                         schema,
@@ -13150,8 +12966,7 @@ public class GMLSchema extends SchemaImpl {
             build_MULTISURFACEPROPERTYTYPE_TYPE();
 
     private static AttributeType build_MULTISURFACEPROPERTYTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiSurfacePropertyType"),
                         org.locationtech.jts.geom.MultiPolygon.class,
@@ -13184,7 +12999,6 @@ public class GMLSchema extends SchemaImpl {
             build_TIMEPRIMITIVEPROPERTYTYPE_TYPE();
 
     private static ComplexType build_TIMEPRIMITIVEPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -13258,7 +13072,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TimePrimitivePropertyType"),
                         schema,
@@ -13293,7 +13107,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType FEATUREPROPERTYTYPE_TYPE = build_FEATUREPROPERTYTYPE_TYPE();
 
     private static ComplexType build_FEATUREPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -13367,7 +13180,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "FeaturePropertyType"),
                         schema,
@@ -13405,7 +13218,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TARGETPROPERTYTYPE_TYPE = build_TARGETPROPERTYTYPE_TYPE();
 
     private static ComplexType build_TARGETPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -13487,7 +13299,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TargetPropertyType"),
                         schema,
@@ -13532,7 +13344,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ASSOCIATIONTYPE_TYPE = build_ASSOCIATIONTYPE_TYPE();
 
     private static ComplexType build_ASSOCIATIONTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -13606,7 +13417,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AssociationType"),
                         schema,
@@ -13644,7 +13455,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType OBSERVATIONTYPE_TYPE = build_OBSERVATIONTYPE_TYPE();
 
     private static ComplexType build_OBSERVATIONTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -13678,7 +13488,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ObservationType"),
                         schema,
@@ -13716,7 +13526,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType DIRECTIONVECTORTYPE_TYPE = build_DIRECTIONVECTORTYPE_TYPE();
 
     private static ComplexType build_DIRECTIONVECTORTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -13742,7 +13551,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DirectionVectorType"),
                         schema,
@@ -13789,11 +13598,10 @@ public class GMLSchema extends SchemaImpl {
             build_COMPASSPOINTENUMERATION_TYPE();
 
     private static AttributeType build_COMPASSPOINTENUMERATION_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CompassPointEnumeration"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -13828,7 +13636,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType DIRECTIONPROPERTYTYPE_TYPE = build_DIRECTIONPROPERTYTYPE_TYPE();
 
     private static ComplexType build_DIRECTIONPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -13926,7 +13733,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DirectionPropertyType"),
                         schema,
@@ -13962,7 +13769,6 @@ public class GMLSchema extends SchemaImpl {
             build_DIRECTEDOBSERVATIONTYPE_TYPE();
 
     private static ComplexType build_DIRECTEDOBSERVATIONTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -13972,7 +13778,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DirectedObservationType"),
                         schema,
@@ -14008,7 +13814,6 @@ public class GMLSchema extends SchemaImpl {
             build_DIRECTEDOBSERVATIONATDISTANCETYPE_TYPE();
 
     private static ComplexType build_DIRECTEDOBSERVATIONATDISTANCETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -14018,7 +13823,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "DirectedObservationAtDistanceType"),
@@ -14061,7 +13866,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType COMPOUNDCRSTYPE_TYPE = build_COMPOUNDCRSTYPE_TYPE();
 
     private static ComplexType build_COMPOUNDCRSTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -14071,7 +13875,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CompoundCRSType"),
                         schema,
@@ -14106,7 +13910,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType COMPOUNDCRSREFTYPE_TYPE = build_COMPOUNDCRSREFTYPE_TYPE();
 
     private static ComplexType build_COMPOUNDCRSREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -14180,7 +13983,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CompoundCRSRefType"),
                         schema,
@@ -14217,11 +14020,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType CALDATE_TYPE = build_CALDATE_TYPE();
 
     private static AttributeType build_CALDATE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CalDate"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -14254,7 +14056,6 @@ public class GMLSchema extends SchemaImpl {
             build_COORDINATEOPERATIONREFTYPE_TYPE();
 
     private static ComplexType build_COORDINATEOPERATIONREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -14328,7 +14129,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CoordinateOperationRefType"),
                         schema,
@@ -14373,7 +14174,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType RINGTYPE_TYPE = build_RINGTYPE_TYPE();
 
     private static ComplexType build_RINGTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -14383,7 +14183,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "RingType"),
                         schema,
@@ -14417,7 +14217,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType RINGPROPERTYTYPE_TYPE = build_RINGPROPERTYTYPE_TYPE();
 
     private static ComplexType build_RINGPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -14427,7 +14226,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "RingPropertyType"),
                         schema,
@@ -14463,7 +14262,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType MULTIPOINTDOMAINTYPE_TYPE = build_MULTIPOINTDOMAINTYPE_TYPE();
 
     private static ComplexType build_MULTIPOINTDOMAINTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -14537,7 +14335,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiPointDomainType"),
                         schema,
@@ -14580,7 +14378,6 @@ public class GMLSchema extends SchemaImpl {
             build_MULTIPOINTCOVERAGETYPE_TYPE();
 
     private static ComplexType build_MULTIPOINTCOVERAGETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -14638,7 +14435,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiPointCoverageType"),
                         schema,
@@ -14676,7 +14473,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType COUNTPROPERTYTYPE_TYPE = build_COUNTPROPERTYTYPE_TYPE();
 
     private static ComplexType build_COUNTPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -14686,7 +14482,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CountPropertyType"),
                         schema,
@@ -14734,7 +14530,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType CONETYPE_TYPE = build_CONETYPE_TYPE();
 
     private static ComplexType build_CONETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -14752,7 +14547,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ConeType"),
                         schema,
@@ -14792,7 +14587,6 @@ public class GMLSchema extends SchemaImpl {
             build_ENVELOPEWITHTIMEPERIODTYPE_TYPE();
 
     private static ComplexType build_ENVELOPEWITHTIMEPERIODTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -14810,7 +14604,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "EnvelopeWithTimePeriodType"),
                         schema,
@@ -14848,7 +14642,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType CATEGORYPROPERTYTYPE_TYPE = build_CATEGORYPROPERTYTYPE_TYPE();
 
     private static ComplexType build_CATEGORYPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -14858,7 +14651,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CategoryPropertyType"),
                         schema,
@@ -14893,7 +14686,6 @@ public class GMLSchema extends SchemaImpl {
             build_SURFACEPATCHARRAYPROPERTYTYPE_TYPE();
 
     private static ComplexType build_SURFACEPATCHARRAYPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -14903,7 +14695,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "SurfacePatchArrayPropertyType"),
                         schema,
@@ -14946,8 +14738,7 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType SURFACETYPE_TYPE = build_SURFACETYPE_TYPE();
 
     private static AttributeType build_SURFACETYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "SurfaceType"),
                         org.locationtech.jts.geom.Polygon.class,
@@ -14992,11 +14783,10 @@ public class GMLSchema extends SchemaImpl {
             build_SURFACEINTERPOLATIONTYPE_TYPE();
 
     private static AttributeType build_SURFACEINTERPOLATIONTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "SurfaceInterpolationType"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -15037,7 +14827,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType POLYGONPATCHTYPE_TYPE = build_POLYGONPATCHTYPE_TYPE();
 
     private static ComplexType build_POLYGONPATCHTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -15063,7 +14852,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "PolygonPatchType"),
                         schema,
@@ -15103,7 +14892,6 @@ public class GMLSchema extends SchemaImpl {
             build_POLYGONPATCHARRAYPROPERTYTYPE_TYPE();
 
     private static ComplexType build_POLYGONPATCHARRAYPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -15113,7 +14901,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "PolygonPatchArrayPropertyType"),
                         schema,
@@ -15160,7 +14948,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType POLYHEDRALSURFACETYPE_TYPE = build_POLYHEDRALSURFACETYPE_TYPE();
 
     private static ComplexType build_POLYHEDRALSURFACETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -15194,7 +14981,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "PolyhedralSurfaceType"),
                         schema,
@@ -15230,7 +15017,6 @@ public class GMLSchema extends SchemaImpl {
             build_SINGLEOPERATIONREFTYPE_TYPE();
 
     private static ComplexType build_SINGLEOPERATIONREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -15304,7 +15090,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "SingleOperationRefType"),
                         schema,
@@ -15347,7 +15133,6 @@ public class GMLSchema extends SchemaImpl {
             build_CONCATENATEDOPERATIONTYPE_TYPE();
 
     private static ComplexType build_CONCATENATEDOPERATIONTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -15357,7 +15142,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ConcatenatedOperationType"),
                         schema,
@@ -15393,7 +15178,6 @@ public class GMLSchema extends SchemaImpl {
             build_CONCATENATEDOPERATIONREFTYPE_TYPE();
 
     private static ComplexType build_CONCATENATEDOPERATIONREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -15467,7 +15251,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ConcatenatedOperationRefType"),
                         schema,
@@ -15510,7 +15294,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType COMPOSITECURVETYPE_TYPE = build_COMPOSITECURVETYPE_TYPE();
 
     private static ComplexType build_COMPOSITECURVETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -15520,7 +15303,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CompositeCurveType"),
                         schema,
@@ -15553,7 +15336,6 @@ public class GMLSchema extends SchemaImpl {
             build_COMPOSITECURVEPROPERTYTYPE_TYPE();
 
     private static ComplexType build_COMPOSITECURVEPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -15627,7 +15409,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CompositeCurvePropertyType"),
                         schema,
@@ -15662,8 +15444,7 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTTIMECOMPLEXTYPE_TYPE();
 
     private static ComplexType build_ABSTRACTTIMECOMPLEXTYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractTimeComplexType"),
                         Collections.emptyList(),
@@ -15702,7 +15483,6 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTTIMETOPOLOGYPRIMITIVETYPE_TYPE();
 
     private static ComplexType build_ABSTRACTTIMETOPOLOGYPRIMITIVETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -15712,7 +15492,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "AbstractTimeTopologyPrimitiveType"),
@@ -15752,7 +15532,6 @@ public class GMLSchema extends SchemaImpl {
             build_TIMETOPOLOGYPRIMITIVEPROPERTYTYPE_TYPE();
 
     private static ComplexType build_TIMETOPOLOGYPRIMITIVEPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -15826,7 +15605,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "TimeTopologyPrimitivePropertyType"),
@@ -15866,7 +15645,6 @@ public class GMLSchema extends SchemaImpl {
             build_TIMETOPOLOGYCOMPLEXTYPE_TYPE();
 
     private static ComplexType build_TIMETOPOLOGYCOMPLEXTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -15876,7 +15654,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TimeTopologyComplexType"),
                         schema,
@@ -15915,7 +15693,6 @@ public class GMLSchema extends SchemaImpl {
             build_TIMETOPOLOGYCOMPLEXPROPERTYTYPE_TYPE();
 
     private static ComplexType build_TIMETOPOLOGYCOMPLEXPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -15989,7 +15766,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "TimeTopologyComplexPropertyType"),
@@ -16022,11 +15799,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType DOUBLEORNULL_TYPE = build_DOUBLEORNULL_TYPE();
 
     private static AttributeType build_DOUBLEORNULL_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "doubleOrNull"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -16054,8 +15830,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ABSTRACTTOPOLOGYTYPE_TYPE = build_ABSTRACTTOPOLOGYTYPE_TYPE();
 
     private static ComplexType build_ABSTRACTTOPOLOGYTYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractTopologyType"),
                         Collections.emptyList(),
@@ -16092,8 +15867,7 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTTOPOPRIMITIVETYPE_TYPE();
 
     private static ComplexType build_ABSTRACTTOPOPRIMITIVETYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractTopoPrimitiveType"),
                         Collections.emptyList(),
@@ -16133,7 +15907,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType FACETYPE_TYPE = build_FACETYPE_TYPE();
 
     private static ComplexType build_FACETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -16143,7 +15916,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "FaceType"),
                         schema,
@@ -16177,7 +15950,6 @@ public class GMLSchema extends SchemaImpl {
             build_DIRECTEDFACEPROPERTYTYPE_TYPE();
 
     private static ComplexType build_DIRECTEDFACEPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -16259,7 +16031,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DirectedFacePropertyType"),
                         schema,
@@ -16297,7 +16069,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TOPOSOLIDTYPE_TYPE = build_TOPOSOLIDTYPE_TYPE();
 
     private static ComplexType build_TOPOSOLIDTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -16307,7 +16078,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TopoSolidType"),
                         schema,
@@ -16342,7 +16113,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType CONTAINERPROPERTYTYPE_TYPE = build_CONTAINERPROPERTYTYPE_TYPE();
 
     private static ComplexType build_CONTAINERPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -16424,7 +16194,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ContainerPropertyType"),
                         schema,
@@ -16506,7 +16276,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType CUBICSPLINETYPE_TYPE = build_CUBICSPLINETYPE_TYPE();
 
     private static ComplexType build_CUBICSPLINETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -16580,7 +16349,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CubicSplineType"),
                         schema,
@@ -16612,11 +16381,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType STRINGORNULL_TYPE = build_STRINGORNULL_TYPE();
 
     private static AttributeType build_STRINGORNULL_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "stringOrNull"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -16647,8 +16415,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ABSTRACTSTYLETYPE_TYPE = build_ABSTRACTSTYLETYPE_TYPE();
 
     private static ComplexType build_ABSTRACTSTYLETYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractStyleType"),
                         Collections.emptyList(),
@@ -16685,11 +16452,10 @@ public class GMLSchema extends SchemaImpl {
             build_SYMBOLTYPEENUMERATION_TYPE();
 
     private static AttributeType build_SYMBOLTYPEENUMERATION_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "SymbolTypeEnumeration"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -16724,7 +16490,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType SYMBOLTYPE_TYPE = build_SYMBOLTYPE_TYPE();
 
     private static ComplexType build_SYMBOLTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -16814,7 +16579,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "SymbolType"),
                         schema,
@@ -16848,8 +16613,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType SCALETYPE_TYPE = build_SCALETYPE_TYPE();
 
     private static ComplexType build_SCALETYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ScaleType"),
                         Collections.emptyList(),
@@ -16886,7 +16650,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType STYLEVARIATIONTYPE_TYPE = build_STYLEVARIATIONTYPE_TYPE();
 
     private static ComplexType build_STYLEVARIATIONTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -16904,7 +16667,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "StyleVariationType"),
                         schema,
@@ -16949,7 +16712,6 @@ public class GMLSchema extends SchemaImpl {
             build_BASESTYLEDESCRIPTORTYPE_TYPE();
 
     private static ComplexType build_BASESTYLEDESCRIPTORTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -16999,7 +16761,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "BaseStyleDescriptorType"),
                         schema,
@@ -17035,7 +16797,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType LABELTYPE_TYPE = build_LABELTYPE_TYPE();
 
     private static ComplexType build_LABELTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -17053,7 +16814,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "LabelType"),
                         schema,
@@ -17092,7 +16853,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType LABELSTYLETYPE_TYPE = build_LABELSTYLETYPE_TYPE();
 
     private static ComplexType build_LABELSTYLETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -17110,7 +16870,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "LabelStyleType"),
                         schema,
@@ -17147,7 +16907,6 @@ public class GMLSchema extends SchemaImpl {
             build_LABELSTYLEPROPERTYTYPE_TYPE();
 
     private static ComplexType build_LABELSTYLEPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -17229,7 +16988,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "LabelStylePropertyType"),
                         schema,
@@ -17278,7 +17037,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType GEOMETRYSTYLETYPE_TYPE = build_GEOMETRYSTYLETYPE_TYPE();
 
     private static ComplexType build_GEOMETRYSTYLETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -17320,7 +17078,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GeometryStyleType"),
                         schema,
@@ -17357,7 +17115,6 @@ public class GMLSchema extends SchemaImpl {
             build_GEOMETRYSTYLEPROPERTYTYPE_TYPE();
 
     private static ComplexType build_GEOMETRYSTYLEPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -17439,7 +17196,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GeometryStylePropertyType"),
                         schema,
@@ -17488,7 +17245,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TOPOLOGYSTYLETYPE_TYPE = build_TOPOLOGYSTYLETYPE_TYPE();
 
     private static ComplexType build_TOPOLOGYSTYLETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -17530,7 +17286,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TopologyStyleType"),
                         schema,
@@ -17567,7 +17323,6 @@ public class GMLSchema extends SchemaImpl {
             build_TOPOLOGYSTYLEPROPERTYTYPE_TYPE();
 
     private static ComplexType build_TOPOLOGYSTYLEPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -17649,7 +17404,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TopologyStylePropertyType"),
                         schema,
@@ -17686,11 +17441,10 @@ public class GMLSchema extends SchemaImpl {
             build_QUERYGRAMMARENUMERATION_TYPE();
 
     private static AttributeType build_QUERYGRAMMARENUMERATION_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "QueryGrammarEnumeration"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -17731,7 +17485,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType FEATURESTYLETYPE_TYPE = build_FEATURESTYLETYPE_TYPE();
 
     private static ComplexType build_FEATURESTYLETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -17789,7 +17542,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "FeatureStyleType"),
                         schema,
@@ -17826,7 +17579,6 @@ public class GMLSchema extends SchemaImpl {
             build_FEATURESTYLEPROPERTYTYPE_TYPE();
 
     private static ComplexType build_FEATURESTYLEPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -17908,7 +17660,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "FeatureStylePropertyType"),
                         schema,
@@ -17943,11 +17695,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType GRAPHTYPETYPE_TYPE = build_GRAPHTYPETYPE_TYPE();
 
     private static AttributeType build_GRAPHTYPETYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GraphTypeType"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -17979,11 +17730,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType DRAWINGTYPETYPE_TYPE = build_DRAWINGTYPETYPE_TYPE();
 
     private static AttributeType build_DRAWINGTYPETYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DrawingTypeType"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -18015,11 +17765,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType LINETYPETYPE_TYPE = build_LINETYPETYPE_TYPE();
 
     private static AttributeType build_LINETYPETYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "LineTypeType"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -18061,11 +17810,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType AESHETICCRITERIATYPE_TYPE = build_AESHETICCRITERIATYPE_TYPE();
 
     private static AttributeType build_AESHETICCRITERIATYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AesheticCriteriaType"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -18109,7 +17857,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType GRAPHSTYLETYPE_TYPE = build_GRAPHSTYLETYPE_TYPE();
 
     private static ComplexType build_GRAPHSTYLETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -18183,7 +17930,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GraphStyleType"),
                         schema,
@@ -18220,7 +17967,6 @@ public class GMLSchema extends SchemaImpl {
             build_GRAPHSTYLEPROPERTYTYPE_TYPE();
 
     private static ComplexType build_GRAPHSTYLEPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -18302,7 +18048,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GraphStylePropertyType"),
                         schema,
@@ -18341,7 +18087,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType STYLETYPE_TYPE = build_STYLETYPE_TYPE();
 
     private static ComplexType build_STYLETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -18359,7 +18104,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "StyleType"),
                         schema,
@@ -18412,7 +18157,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType GEODESICSTRINGTYPE_TYPE = build_GEODESICSTRINGTYPE_TYPE();
 
     private static ComplexType build_GEODESICSTRINGTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -18446,7 +18190,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GeodesicStringType"),
                         schema,
@@ -18487,8 +18231,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType GEODESICTYPE_TYPE = build_GEODESICTYPE_TYPE();
 
     private static ComplexType build_GEODESICTYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GeodesicType"),
                         Collections.emptyList(),
@@ -18539,8 +18282,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType RELATEDTIMETYPE_TYPE = build_RELATEDTIMETYPE_TYPE();
 
     private static ComplexType build_RELATEDTIMETYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "RelatedTimeType"),
                         Collections.emptyList(),
@@ -18580,7 +18322,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TIMEEDGETYPE_TYPE = build_TIMEEDGETYPE_TYPE();
 
     private static ComplexType build_TIMEEDGETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -18590,7 +18331,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TimeEdgeType"),
                         schema,
@@ -18627,7 +18368,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TIMEEDGEPROPERTYTYPE_TYPE = build_TIMEEDGEPROPERTYTYPE_TYPE();
 
     private static ComplexType build_TIMEEDGEPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -18701,7 +18441,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TimeEdgePropertyType"),
                         schema,
@@ -18743,7 +18483,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TIMENODETYPE_TYPE = build_TIMENODETYPE_TYPE();
 
     private static ComplexType build_TIMENODETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -18769,7 +18508,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TimeNodeType"),
                         schema,
@@ -18806,7 +18545,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TIMENODEPROPERTYTYPE_TYPE = build_TIMENODEPROPERTYTYPE_TYPE();
 
     private static ComplexType build_TIMENODEPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -18880,7 +18618,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TimeNodePropertyType"),
                         schema,
@@ -18944,7 +18682,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TIMEORDINALERATYPE_TYPE = build_TIMEORDINALERATYPE_TYPE();
 
     private static ComplexType build_TIMEORDINALERATYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -18986,7 +18723,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TimeOrdinalEraType"),
                         schema,
@@ -19019,7 +18756,6 @@ public class GMLSchema extends SchemaImpl {
             build_TIMEORDINALERAPROPERTYTYPE_TYPE();
 
     private static ComplexType build_TIMEORDINALERAPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -19093,7 +18829,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TimeOrdinalEraPropertyType"),
                         schema,
@@ -19134,7 +18870,6 @@ public class GMLSchema extends SchemaImpl {
             build_TIMEORDINALREFERENCESYSTEMTYPE_TYPE();
 
     private static ComplexType build_TIMEORDINALREFERENCESYSTEMTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -19144,7 +18879,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "TimeOrdinalReferenceSystemType"),
@@ -19179,8 +18914,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType VERTICALCSTYPE_TYPE = build_VERTICALCSTYPE_TYPE();
 
     private static ComplexType build_VERTICALCSTYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "VerticalCSType"),
                         Collections.emptyList(),
@@ -19215,7 +18949,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType VERTICALCSREFTYPE_TYPE = build_VERTICALCSREFTYPE_TYPE();
 
     private static ComplexType build_VERTICALCSREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -19289,7 +19022,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "VerticalCSRefType"),
                         schema,
@@ -19329,7 +19062,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType VERTICALDATUMTYPETYPE_TYPE = build_VERTICALDATUMTYPETYPE_TYPE();
 
     private static ComplexType build_VERTICALDATUMTYPETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -19339,7 +19071,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "VerticalDatumTypeType"),
                         schema,
@@ -19377,7 +19109,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType VERTICALDATUMTYPE_TYPE = build_VERTICALDATUMTYPE_TYPE();
 
     private static ComplexType build_VERTICALDATUMTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -19387,7 +19118,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "VerticalDatumType"),
                         schema,
@@ -19422,7 +19153,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType VERTICALDATUMREFTYPE_TYPE = build_VERTICALDATUMREFTYPE_TYPE();
 
     private static ComplexType build_VERTICALDATUMREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -19496,7 +19226,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "VerticalDatumRefType"),
                         schema,
@@ -19535,7 +19265,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType VERTICALCRSTYPE_TYPE = build_VERTICALCRSTYPE_TYPE();
 
     private static ComplexType build_VERTICALCRSTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -19553,7 +19282,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "VerticalCRSType"),
                         schema,
@@ -19588,7 +19317,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType VERTICALCRSREFTYPE_TYPE = build_VERTICALCRSREFTYPE_TYPE();
 
     private static ComplexType build_VERTICALCRSREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -19662,7 +19390,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "VerticalCRSRefType"),
                         schema,
@@ -19704,7 +19432,6 @@ public class GMLSchema extends SchemaImpl {
             build_OPERATIONPARAMETERGROUPBASETYPE_TYPE();
 
     private static ComplexType build_OPERATIONPARAMETERGROUPBASETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -19738,7 +19465,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "OperationParameterGroupBaseType"),
@@ -19793,7 +19520,6 @@ public class GMLSchema extends SchemaImpl {
             build_OPERATIONPARAMETERGROUPTYPE_TYPE();
 
     private static ComplexType build_OPERATIONPARAMETERGROUPTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -19827,7 +19553,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "OperationParameterGroupType"),
                         schema,
@@ -19863,7 +19589,6 @@ public class GMLSchema extends SchemaImpl {
             build_OPERATIONPARAMETERGROUPREFTYPE_TYPE();
 
     private static ComplexType build_OPERATIONPARAMETERGROUPREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -19937,7 +19662,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "OperationParameterGroupRefType"),
@@ -19982,7 +19707,6 @@ public class GMLSchema extends SchemaImpl {
             build_PARAMETERVALUEGROUPTYPE_TYPE();
 
     private static ComplexType build_PARAMETERVALUEGROUPTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -20000,7 +19724,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ParameterValueGroupType"),
                         schema,
@@ -20032,11 +19756,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType INTEGERORNULL_TYPE = build_INTEGERORNULL_TYPE();
 
     private static AttributeType build_INTEGERORNULL_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "integerOrNull"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -20074,8 +19797,7 @@ public class GMLSchema extends SchemaImpl {
             build_MULTIGEOMETRYPROPERTYTYPE_TYPE();
 
     private static AttributeType build_MULTIGEOMETRYPROPERTYTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiGeometryPropertyType"),
                         org.locationtech.jts.geom.GeometryCollection.class,
@@ -20122,7 +19844,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType RECTANGLETYPE_TYPE = build_RECTANGLETYPE_TYPE();
 
     private static ComplexType build_RECTANGLETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -20140,7 +19861,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "RectangleType"),
                         schema,
@@ -20177,7 +19898,6 @@ public class GMLSchema extends SchemaImpl {
             build_DEFAULTSTYLEPROPERTYTYPE_TYPE();
 
     private static ComplexType build_DEFAULTSTYLEPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -20259,7 +19979,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DefaultStylePropertyType"),
                         schema,
@@ -20299,7 +20019,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType EDGETYPE_TYPE = build_EDGETYPE_TYPE();
 
     private static ComplexType build_EDGETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -20317,7 +20036,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "EdgeType"),
                         schema,
@@ -20351,7 +20070,6 @@ public class GMLSchema extends SchemaImpl {
             build_DIRECTEDEDGEPROPERTYTYPE_TYPE();
 
     private static ComplexType build_DIRECTEDEDGEPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -20433,7 +20151,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DirectedEdgePropertyType"),
                         schema,
@@ -20472,7 +20190,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TOPOCURVETYPE_TYPE = build_TOPOCURVETYPE_TYPE();
 
     private static ComplexType build_TOPOCURVETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -20482,7 +20199,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TopoCurveType"),
                         schema,
@@ -20513,7 +20230,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TOPOCURVEPROPERTYTYPE_TYPE = build_TOPOCURVEPROPERTYTYPE_TYPE();
 
     private static ComplexType build_TOPOCURVEPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -20523,7 +20239,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TopoCurvePropertyType"),
                         schema,
@@ -20557,8 +20273,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType VOLUMETYPE_TYPE = build_VOLUMETYPE_TYPE();
 
     private static ComplexType build_VOLUMETYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "VolumeType"),
                         Collections.emptyList(),
@@ -20593,7 +20308,6 @@ public class GMLSchema extends SchemaImpl {
             build_SOLIDARRAYPROPERTYTYPE_TYPE();
 
     private static ComplexType build_SOLIDARRAYPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -20603,7 +20317,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "SolidArrayPropertyType"),
                         schema,
@@ -20646,7 +20360,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType MULTISOLIDTYPE_TYPE = build_MULTISOLIDTYPE_TYPE();
 
     private static ComplexType build_MULTISOLIDTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -20664,7 +20377,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiSolidType"),
                         schema,
@@ -20700,7 +20413,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType MULTISOLIDDOMAINTYPE_TYPE = build_MULTISOLIDDOMAINTYPE_TYPE();
 
     private static ComplexType build_MULTISOLIDDOMAINTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -20774,7 +20486,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiSolidDomainType"),
                         schema,
@@ -20817,7 +20529,6 @@ public class GMLSchema extends SchemaImpl {
             build_MULTISOLIDCOVERAGETYPE_TYPE();
 
     private static ComplexType build_MULTISOLIDCOVERAGETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -20875,7 +20586,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiSolidCoverageType"),
                         schema,
@@ -20920,7 +20631,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType DICTIONARYENTRYTYPE_TYPE = build_DICTIONARYENTRYTYPE_TYPE();
 
     private static ComplexType build_DICTIONARYENTRYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -20994,7 +20704,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DictionaryEntryType"),
                         schema,
@@ -21036,7 +20746,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType DEFINITIONPROXYTYPE_TYPE = build_DEFINITIONPROXYTYPE_TYPE();
 
     private static ComplexType build_DEFINITIONPROXYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -21046,7 +20755,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DefinitionProxyType"),
                         schema,
@@ -21080,7 +20789,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType INDIRECTENTRYTYPE_TYPE = build_INDIRECTENTRYTYPE_TYPE();
 
     private static ComplexType build_INDIRECTENTRYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -21090,7 +20798,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "IndirectEntryType"),
                         schema,
@@ -21139,7 +20847,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType DICTIONARYTYPE_TYPE = build_DICTIONARYTYPE_TYPE();
 
     private static ComplexType build_DICTIONARYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -21157,7 +20864,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DictionaryType"),
                         schema,
@@ -21205,7 +20912,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType KNOTTYPE_TYPE = build_KNOTTYPE_TYPE();
 
     private static ComplexType build_KNOTTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -21231,7 +20937,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "KnotType"),
                         schema,
@@ -21265,7 +20971,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType KNOTPROPERTYTYPE_TYPE = build_KNOTPROPERTYTYPE_TYPE();
 
     private static ComplexType build_KNOTPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -21275,7 +20980,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "KnotPropertyType"),
                         schema,
@@ -21311,11 +21016,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType KNOTTYPESTYPE_TYPE = build_KNOTTYPESTYPE_TYPE();
 
     private static AttributeType build_KNOTTYPESTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "KnotTypesType"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -21398,7 +21102,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType BSPLINETYPE_TYPE = build_BSPLINETYPE_TYPE();
 
     private static ComplexType build_BSPLINETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -21480,7 +21183,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "BSplineType"),
                         schema,
@@ -21565,7 +21268,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType BEZIERTYPE_TYPE = build_BEZIERTYPE_TYPE();
 
     private static ComplexType build_BEZIERTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -21647,7 +21349,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "BezierType"),
                         schema,
@@ -21682,7 +21384,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType DATUMREFTYPE_TYPE = build_DATUMREFTYPE_TYPE();
 
     private static ComplexType build_DATUMREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -21756,7 +21457,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DatumRefType"),
                         schema,
@@ -21790,8 +21491,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TEMPORALCSTYPE_TYPE = build_TEMPORALCSTYPE_TYPE();
 
     private static ComplexType build_TEMPORALCSTYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TemporalCSType"),
                         Collections.emptyList(),
@@ -21826,7 +21526,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TEMPORALCSREFTYPE_TYPE = build_TEMPORALCSREFTYPE_TYPE();
 
     private static ComplexType build_TEMPORALCSREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -21900,7 +21599,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TemporalCSRefType"),
                         schema,
@@ -21943,7 +21642,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TEMPORALDATUMBASETYPE_TYPE = build_TEMPORALDATUMBASETYPE_TYPE();
 
     private static ComplexType build_TEMPORALDATUMBASETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -21993,7 +21691,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TemporalDatumBaseType"),
                         schema,
@@ -22031,7 +21729,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TEMPORALDATUMTYPE_TYPE = build_TEMPORALDATUMTYPE_TYPE();
 
     private static ComplexType build_TEMPORALDATUMTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -22041,7 +21738,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TemporalDatumType"),
                         schema,
@@ -22076,7 +21773,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TEMPORALDATUMREFTYPE_TYPE = build_TEMPORALDATUMREFTYPE_TYPE();
 
     private static ComplexType build_TEMPORALDATUMREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -22150,7 +21846,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TemporalDatumRefType"),
                         schema,
@@ -22189,7 +21885,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TEMPORALCRSTYPE_TYPE = build_TEMPORALCRSTYPE_TYPE();
 
     private static ComplexType build_TEMPORALCRSTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -22207,7 +21902,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TemporalCRSType"),
                         schema,
@@ -22242,7 +21937,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TEMPORALCRSREFTYPE_TYPE = build_TEMPORALCRSREFTYPE_TYPE();
 
     private static ComplexType build_TEMPORALCRSREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -22316,7 +22010,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TemporalCRSRefType"),
                         schema,
@@ -22354,7 +22048,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TOPOSURFACETYPE_TYPE = build_TOPOSURFACETYPE_TYPE();
 
     private static ComplexType build_TOPOSURFACETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -22364,7 +22057,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TopoSurfaceType"),
                         schema,
@@ -22396,7 +22089,6 @@ public class GMLSchema extends SchemaImpl {
             build_TOPOSURFACEPROPERTYTYPE_TYPE();
 
     private static ComplexType build_TOPOSURFACEPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -22406,7 +22098,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TopoSurfacePropertyType"),
                         schema,
@@ -22442,7 +22134,6 @@ public class GMLSchema extends SchemaImpl {
             build_REFERENCESYSTEMREFTYPE_TYPE();
 
     private static ComplexType build_REFERENCESYSTEMREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -22516,7 +22207,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ReferenceSystemRefType"),
                         schema,
@@ -22550,8 +22241,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType AREATYPE_TYPE = build_AREATYPE_TYPE();
 
     private static ComplexType build_AREATYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AreaType"),
                         Collections.emptyList(),
@@ -22585,8 +22275,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ENGINEERINGDATUMTYPE_TYPE = build_ENGINEERINGDATUMTYPE_TYPE();
 
     private static ComplexType build_ENGINEERINGDATUMTYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "EngineeringDatumType"),
                         Collections.emptyList(),
@@ -22622,7 +22311,6 @@ public class GMLSchema extends SchemaImpl {
             build_ENGINEERINGDATUMREFTYPE_TYPE();
 
     private static ComplexType build_ENGINEERINGDATUMREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -22696,7 +22384,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "EngineeringDatumRefType"),
                         schema,
@@ -22738,7 +22426,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ENGINEERINGCRSTYPE_TYPE = build_ENGINEERINGCRSTYPE_TYPE();
 
     private static ComplexType build_ENGINEERINGCRSTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -22756,7 +22443,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "EngineeringCRSType"),
                         schema,
@@ -22791,7 +22478,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ENGINEERINGCRSREFTYPE_TYPE = build_ENGINEERINGCRSREFTYPE_TYPE();
 
     private static ComplexType build_ENGINEERINGCRSREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -22865,7 +22551,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "EngineeringCRSRefType"),
                         schema,
@@ -22905,7 +22591,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType NODETYPE_TYPE = build_NODETYPE_TYPE();
 
     private static ComplexType build_NODETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -22923,7 +22608,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "NodeType"),
                         schema,
@@ -22956,7 +22641,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ISOLATEDPROPERTYTYPE_TYPE = build_ISOLATEDPROPERTYTYPE_TYPE();
 
     private static ComplexType build_ISOLATEDPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -23038,7 +22722,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "IsolatedPropertyType"),
                         schema,
@@ -23098,11 +22782,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType NULLENUMERATION_TYPE = build_NULLENUMERATION_TYPE();
 
     private static AttributeType build_NULLENUMERATION_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "NullEnumeration"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -23135,7 +22818,6 @@ public class GMLSchema extends SchemaImpl {
             build_CURVEARRAYPROPERTYTYPE_TYPE();
 
     private static ComplexType build_CURVEARRAYPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -23145,7 +22827,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CurveArrayPropertyType"),
                         schema,
@@ -23188,8 +22870,7 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType MULTICURVETYPE_TYPE = build_MULTICURVETYPE_TYPE();
 
     private static AttributeType build_MULTICURVETYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiCurveType"),
                         MultiCurvedGeometry.class,
@@ -23225,7 +22906,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType MULTICURVEDOMAINTYPE_TYPE = build_MULTICURVEDOMAINTYPE_TYPE();
 
     private static ComplexType build_MULTICURVEDOMAINTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -23299,7 +22979,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiCurveDomainType"),
                         schema,
@@ -23342,7 +23022,6 @@ public class GMLSchema extends SchemaImpl {
             build_MULTICURVECOVERAGETYPE_TYPE();
 
     private static ComplexType build_MULTICURVECOVERAGETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -23400,7 +23079,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiCurveCoverageType"),
                         schema,
@@ -23432,11 +23111,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType NAMELIST_TYPE = build_NAMELIST_TYPE();
 
     private static AttributeType build_NAMELIST_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "NameList"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -23472,7 +23150,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType CODELISTTYPE_TYPE = build_CODELISTTYPE_TYPE();
 
     private static ComplexType build_CODELISTTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -23482,7 +23159,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CodeListType"),
                         schema,
@@ -23520,7 +23197,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType BOOLEANPROPERTYTYPE_TYPE = build_BOOLEANPROPERTYTYPE_TYPE();
 
     private static ComplexType build_BOOLEANPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -23530,7 +23206,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "BooleanPropertyType"),
                         schema,
@@ -23577,7 +23253,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TRIANGLETYPE_TYPE = build_TRIANGLETYPE_TYPE();
 
     private static ComplexType build_TRIANGLETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -23595,7 +23270,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TriangleType"),
                         schema,
@@ -23635,7 +23310,6 @@ public class GMLSchema extends SchemaImpl {
             build_TRIANGLEPATCHARRAYPROPERTYTYPE_TYPE();
 
     private static ComplexType build_TRIANGLEPATCHARRAYPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -23645,7 +23319,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "TrianglePatchArrayPropertyType"),
@@ -23693,7 +23367,6 @@ public class GMLSchema extends SchemaImpl {
             build_TRIANGULATEDSURFACETYPE_TYPE();
 
     private static ComplexType build_TRIANGULATEDSURFACETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -23727,7 +23400,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TriangulatedSurfaceType"),
                         schema,
@@ -23793,7 +23466,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType LINESTRINGSEGMENTTYPE_TYPE = build_LINESTRINGSEGMENTTYPE_TYPE();
 
     private static ComplexType build_LINESTRINGSEGMENTTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -23843,7 +23515,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "LineStringSegmentType"),
                         schema,
@@ -23875,7 +23547,6 @@ public class GMLSchema extends SchemaImpl {
             build_LINESTRINGSEGMENTARRAYPROPERTYTYPE_TYPE();
 
     private static ComplexType build_LINESTRINGSEGMENTARRAYPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -23885,7 +23556,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "LineStringSegmentArrayPropertyType"),
@@ -23918,7 +23589,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TINTYPE_CONTROLPOINT_TYPE = build_TINTYPE_CONTROLPOINT_TYPE();
 
     private static ComplexType build_TINTYPE_CONTROLPOINT_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -23944,7 +23614,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TinType_controlPoint"),
                         schema,
@@ -24040,7 +23710,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TINTYPE_TYPE = build_TINTYPE_TYPE();
 
     private static ComplexType build_TINTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -24074,7 +23743,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TinType"),
                         schema,
@@ -24136,7 +23805,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType SOLIDTYPE_TYPE = build_SOLIDTYPE_TYPE();
 
     private static ComplexType build_SOLIDTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -24154,7 +23822,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "SolidType"),
                         schema,
@@ -24188,7 +23856,6 @@ public class GMLSchema extends SchemaImpl {
             build_DIRECTEDNODEPROPERTYTYPE_TYPE();
 
     private static ComplexType build_DIRECTEDNODEPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -24270,7 +23937,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DirectedNodePropertyType"),
                         schema,
@@ -24308,7 +23975,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TOPOPOINTTYPE_TYPE = build_TOPOPOINTTYPE_TYPE();
 
     private static ComplexType build_TOPOPOINTTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -24318,7 +23984,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TopoPointType"),
                         schema,
@@ -24349,7 +24015,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TOPOPOINTPROPERTYTYPE_TYPE = build_TOPOPOINTPROPERTYTYPE_TYPE();
 
     private static ComplexType build_TOPOPOINTPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -24359,7 +24024,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TopoPointPropertyType"),
                         schema,
@@ -24404,7 +24069,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType BOUNDEDFEATURETYPE_TYPE = build_BOUNDEDFEATURETYPE_TYPE();
 
     private static ComplexType build_BOUNDEDFEATURETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -24446,7 +24110,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "BoundedFeatureType"),
                         schema,
@@ -24480,8 +24144,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType GRIDLENGTHTYPE_TYPE = build_GRIDLENGTHTYPE_TYPE();
 
     private static ComplexType build_GRIDLENGTHTYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GridLengthType"),
                         Collections.emptyList(),
@@ -24516,7 +24179,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType OPERATIONREFTYPE_TYPE = build_OPERATIONREFTYPE_TYPE();
 
     private static ComplexType build_OPERATIONREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -24590,7 +24252,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "OperationRefType"),
                         schema,
@@ -24634,7 +24296,6 @@ public class GMLSchema extends SchemaImpl {
             build_PASSTHROUGHOPERATIONTYPE_TYPE();
 
     private static ComplexType build_PASSTHROUGHOPERATIONTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -24652,7 +24313,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "PassThroughOperationType"),
                         schema,
@@ -24688,7 +24349,6 @@ public class GMLSchema extends SchemaImpl {
             build_PASSTHROUGHOPERATIONREFTYPE_TYPE();
 
     private static ComplexType build_PASSTHROUGHOPERATIONREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -24762,7 +24422,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "PassThroughOperationRefType"),
                         schema,
@@ -24797,7 +24457,6 @@ public class GMLSchema extends SchemaImpl {
             build_FEATUREARRAYPROPERTYTYPE_TYPE();
 
     private static ComplexType build_FEATUREARRAYPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -24807,7 +24466,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "FeatureArrayPropertyType"),
                         schema,
@@ -24847,7 +24506,6 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTFEATURECOLLECTIONTYPE_TYPE();
 
     private static ComplexType build_ABSTRACTFEATURECOLLECTIONTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -24865,7 +24523,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractFeatureCollectionType"),
                         schema,
@@ -24899,8 +24557,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType FEATURECOLLECTIONTYPE_TYPE = build_FEATURECOLLECTIONTYPE_TYPE();
 
     private static ComplexType build_FEATURECOLLECTIONTYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "FeatureCollectionType"),
                         Collections.emptyList(),
@@ -24941,7 +24598,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ABSTRACTTIMESLICETYPE_TYPE = build_ABSTRACTTIMESLICETYPE_TYPE();
 
     private static ComplexType build_ABSTRACTTIMESLICETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -24959,7 +24615,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractTimeSliceType"),
                         schema,
@@ -24993,7 +24649,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType HISTORYPROPERTYTYPE_TYPE = build_HISTORYPROPERTYTYPE_TYPE();
 
     private static ComplexType build_HISTORYPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -25003,7 +24658,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "HistoryPropertyType"),
                         schema,
@@ -25040,7 +24695,6 @@ public class GMLSchema extends SchemaImpl {
             build_DYNAMICFEATURECOLLECTIONTYPE_TYPE();
 
     private static ComplexType build_DYNAMICFEATURECOLLECTIONTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -25066,7 +24720,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DynamicFeatureCollectionType"),
                         schema,
@@ -25102,7 +24756,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType DYNAMICFEATURETYPE_TYPE = build_DYNAMICFEATURETYPE_TYPE();
 
     private static ComplexType build_DYNAMICFEATURETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -25128,7 +24781,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DynamicFeatureType"),
                         schema,
@@ -25162,8 +24815,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType POLARCSTYPE_TYPE = build_POLARCSTYPE_TYPE();
 
     private static ComplexType build_POLARCSTYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "PolarCSType"),
                         Collections.emptyList(),
@@ -25198,7 +24850,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType POLARCSREFTYPE_TYPE = build_POLARCSREFTYPE_TYPE();
 
     private static ComplexType build_POLARCSREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -25272,7 +24923,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "PolarCSRefType"),
                         schema,
@@ -25311,7 +24962,6 @@ public class GMLSchema extends SchemaImpl {
             build_ABSOLUTEEXTERNALPOSITIONALACCURACYTYPE_TYPE();
 
     private static ComplexType build_ABSOLUTEEXTERNALPOSITIONALACCURACYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -25321,7 +24971,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml",
@@ -25360,7 +25010,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ARRAYASSOCIATIONTYPE_TYPE = build_ARRAYASSOCIATIONTYPE_TYPE();
 
     private static ComplexType build_ARRAYASSOCIATIONTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -25370,7 +25019,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ArrayAssociationType"),
                         schema,
@@ -25421,7 +25070,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType BAGTYPE_TYPE = build_BAGTYPE_TYPE();
 
     private static ComplexType build_BAGTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -25439,7 +25087,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "BagType"),
                         schema,
@@ -25473,8 +25121,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType CARTESIANCSTYPE_TYPE = build_CARTESIANCSTYPE_TYPE();
 
     private static ComplexType build_CARTESIANCSTYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CartesianCSType"),
                         Collections.emptyList(),
@@ -25509,7 +25156,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType CARTESIANCSREFTYPE_TYPE = build_CARTESIANCSREFTYPE_TYPE();
 
     private static ComplexType build_CARTESIANCSREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -25583,7 +25229,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CartesianCSRefType"),
                         schema,
@@ -25617,8 +25263,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType SPHERICALCSTYPE_TYPE = build_SPHERICALCSTYPE_TYPE();
 
     private static ComplexType build_SPHERICALCSTYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "SphericalCSType"),
                         Collections.emptyList(),
@@ -25653,7 +25298,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType SPHERICALCSREFTYPE_TYPE = build_SPHERICALCSREFTYPE_TYPE();
 
     private static ComplexType build_SPHERICALCSREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -25727,7 +25371,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "SphericalCSRefType"),
                         schema,
@@ -25769,7 +25413,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType GEOCENTRICCRSTYPE_TYPE = build_GEOCENTRICCRSTYPE_TYPE();
 
     private static ComplexType build_GEOCENTRICCRSTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -25795,7 +25438,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GeocentricCRSType"),
                         schema,
@@ -25830,7 +25473,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType GEOCENTRICCRSREFTYPE_TYPE = build_GEOCENTRICCRSREFTYPE_TYPE();
 
     private static ComplexType build_GEOCENTRICCRSREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -25904,7 +25546,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GeocentricCRSRefType"),
                         schema,
@@ -25974,7 +25616,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ARCSTRINGTYPE_TYPE = build_ARCSTRINGTYPE_TYPE();
 
     private static ComplexType build_ARCSTRINGTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -26032,7 +25673,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ArcStringType"),
                         schema,
@@ -26096,7 +25737,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ARCTYPE_TYPE = build_ARCTYPE_TYPE();
 
     private static ComplexType build_ARCTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -26146,7 +25786,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ArcType"),
                         schema,
@@ -26180,8 +25820,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType CIRCLETYPE_TYPE = build_CIRCLETYPE_TYPE();
 
     private static ComplexType build_CIRCLETYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CircleType"),
                         Collections.emptyList(),
@@ -26219,7 +25858,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType QUANTITYPROPERTYTYPE_TYPE = build_QUANTITYPROPERTYTYPE_TYPE();
 
     private static ComplexType build_QUANTITYPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -26229,7 +25867,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "QuantityPropertyType"),
                         schema,
@@ -26272,7 +25910,6 @@ public class GMLSchema extends SchemaImpl {
             build_TIMECOORDINATESYSTEMTYPE_TYPE();
 
     private static ComplexType build_TIMECOORDINATESYSTEMTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -26298,7 +25935,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TimeCoordinateSystemType"),
                         schema,
@@ -26339,7 +25976,6 @@ public class GMLSchema extends SchemaImpl {
             build_MULTISOLIDPROPERTYTYPE_TYPE();
 
     private static ComplexType build_MULTISOLIDPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -26413,7 +26049,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiSolidPropertyType"),
                         schema,
@@ -26446,7 +26082,6 @@ public class GMLSchema extends SchemaImpl {
             build_TIMEGEOMETRICPRIMITIVEPROPERTYTYPE_TYPE();
 
     private static ComplexType build_TIMEGEOMETRICPRIMITIVEPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -26520,7 +26155,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "TimeGeometricPrimitivePropertyType"),
@@ -26553,11 +26188,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType QNAMELIST_TYPE = build_QNAMELIST_TYPE();
 
     private static AttributeType build_QNAMELIST_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "QNameList"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -26592,7 +26226,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType INDEXMAPTYPE_TYPE = build_INDEXMAPTYPE_TYPE();
 
     private static ComplexType build_INDEXMAPTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -26602,7 +26235,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "IndexMapType"),
                         schema,
@@ -26649,7 +26282,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ORIENTABLESURFACETYPE_TYPE = build_ORIENTABLESURFACETYPE_TYPE();
 
     private static ComplexType build_ORIENTABLESURFACETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -26667,7 +26299,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "OrientableSurfaceType"),
                         schema,
@@ -26699,11 +26331,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType BOOLEANORNULL_TYPE = build_BOOLEANORNULL_TYPE();
 
     private static AttributeType build_BOOLEANORNULL_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "booleanOrNull"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -26737,7 +26368,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType UNITOFMEASURETYPE_TYPE = build_UNITOFMEASURETYPE_TYPE();
 
     private static ComplexType build_UNITOFMEASURETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -26747,7 +26377,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "UnitOfMeasureType"),
                         schema,
@@ -26784,7 +26414,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType FORMULATYPE_TYPE = build_FORMULATYPE_TYPE();
 
     private static ComplexType build_FORMULATYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -26818,7 +26447,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "FormulaType"),
                         schema,
@@ -26866,7 +26495,6 @@ public class GMLSchema extends SchemaImpl {
             build_CONVERSIONTOPREFERREDUNITTYPE_TYPE();
 
     private static ComplexType build_CONVERSIONTOPREFERREDUNITTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -26884,7 +26512,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ConversionToPreferredUnitType"),
                         schema,
@@ -26921,7 +26549,6 @@ public class GMLSchema extends SchemaImpl {
             build_DERIVATIONUNITTERMTYPE_TYPE();
 
     private static ComplexType build_DERIVATIONUNITTERMTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -26931,7 +26558,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DerivationUnitTermType"),
                         schema,
@@ -26973,7 +26600,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType CONVENTIONALUNITTYPE_TYPE = build_CONVENTIONALUNITTYPE_TYPE();
 
     private static ComplexType build_CONVENTIONALUNITTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -27000,7 +26626,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ConventionalUnitType"),
                         schema,
@@ -27034,8 +26660,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType LINEARCSTYPE_TYPE = build_LINEARCSTYPE_TYPE();
 
     private static ComplexType build_LINEARCSTYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "LinearCSType"),
                         Collections.emptyList(),
@@ -27070,7 +26695,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType LINEARCSREFTYPE_TYPE = build_LINEARCSREFTYPE_TYPE();
 
     private static ComplexType build_LINEARCSREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -27144,7 +26768,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "LinearCSRefType"),
                         schema,
@@ -27182,7 +26806,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType PROJECTEDCRSTYPE_TYPE = build_PROJECTEDCRSTYPE_TYPE();
 
     private static ComplexType build_PROJECTEDCRSTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -27192,7 +26815,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ProjectedCRSType"),
                         schema,
@@ -27227,7 +26850,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType PROJECTEDCRSREFTYPE_TYPE = build_PROJECTEDCRSREFTYPE_TYPE();
 
     private static ComplexType build_PROJECTEDCRSREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -27301,7 +26923,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ProjectedCRSRefType"),
                         schema,
@@ -27337,7 +26959,6 @@ public class GMLSchema extends SchemaImpl {
             build_TOPOPRIMITIVEMEMBERTYPE_TYPE();
 
     private static ComplexType build_TOPOPRIMITIVEMEMBERTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -27411,7 +27032,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TopoPrimitiveMemberType"),
                         schema,
@@ -27452,7 +27073,6 @@ public class GMLSchema extends SchemaImpl {
             build_TOPOPRIMITIVEARRAYASSOCIATIONTYPE_TYPE();
 
     private static ComplexType build_TOPOPRIMITIVEARRAYASSOCIATIONTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -27462,7 +27082,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "TopoPrimitiveArrayAssociationType"),
@@ -27506,7 +27126,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TOPOCOMPLEXTYPE_TYPE = build_TOPOCOMPLEXTYPE_TYPE();
 
     private static ComplexType build_TOPOCOMPLEXTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -27532,7 +27151,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TopoComplexType"),
                         schema,
@@ -27567,7 +27186,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TOPOCOMPLEXMEMBERTYPE_TYPE = build_TOPOCOMPLEXMEMBERTYPE_TYPE();
 
     private static ComplexType build_TOPOCOMPLEXMEMBERTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -27641,7 +27259,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TopoComplexMemberType"),
                         schema,
@@ -27676,8 +27294,7 @@ public class GMLSchema extends SchemaImpl {
             build_OBLIQUECARTESIANCSTYPE_TYPE();
 
     private static ComplexType build_OBLIQUECARTESIANCSTYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ObliqueCartesianCSType"),
                         Collections.emptyList(),
@@ -27713,7 +27330,6 @@ public class GMLSchema extends SchemaImpl {
             build_OBLIQUECARTESIANCSREFTYPE_TYPE();
 
     private static ComplexType build_OBLIQUECARTESIANCSREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -27787,7 +27403,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ObliqueCartesianCSRefType"),
                         schema,
@@ -27827,7 +27443,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType PIXELINCELLTYPE_TYPE = build_PIXELINCELLTYPE_TYPE();
 
     private static ComplexType build_PIXELINCELLTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -27837,7 +27452,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "PixelInCellType"),
                         schema,
@@ -27875,7 +27490,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType IMAGEDATUMTYPE_TYPE = build_IMAGEDATUMTYPE_TYPE();
 
     private static ComplexType build_IMAGEDATUMTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -27885,7 +27499,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ImageDatumType"),
                         schema,
@@ -27920,7 +27534,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType IMAGEDATUMREFTYPE_TYPE = build_IMAGEDATUMREFTYPE_TYPE();
 
     private static ComplexType build_IMAGEDATUMREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -27994,7 +27607,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ImageDatumRefType"),
                         schema,
@@ -28036,7 +27649,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType IMAGECRSTYPE_TYPE = build_IMAGECRSTYPE_TYPE();
 
     private static ComplexType build_IMAGECRSTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -28062,7 +27674,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ImageCRSType"),
                         schema,
@@ -28097,7 +27709,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType IMAGECRSREFTYPE_TYPE = build_IMAGECRSREFTYPE_TYPE();
 
     private static ComplexType build_IMAGECRSREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -28171,7 +27782,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ImageCRSRefType"),
                         schema,
@@ -28205,8 +27816,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType USERDEFINEDCSTYPE_TYPE = build_USERDEFINEDCSTYPE_TYPE();
 
     private static ComplexType build_USERDEFINEDCSTYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "UserDefinedCSType"),
                         Collections.emptyList(),
@@ -28241,7 +27851,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType USERDEFINEDCSREFTYPE_TYPE = build_USERDEFINEDCSREFTYPE_TYPE();
 
     private static ComplexType build_USERDEFINEDCSREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -28315,7 +27924,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "UserDefinedCSRefType"),
                         schema,
@@ -28363,7 +27972,6 @@ public class GMLSchema extends SchemaImpl {
             build_GEOMETRICPRIMITIVEPROPERTYTYPE_TYPE();
 
     private static ComplexType build_GEOMETRICPRIMITIVEPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -28437,7 +28045,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "GeometricPrimitivePropertyType"),
@@ -28476,7 +28084,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType GEOMETRICCOMPLEXTYPE_TYPE = build_GEOMETRICCOMPLEXTYPE_TYPE();
 
     private static ComplexType build_GEOMETRICCOMPLEXTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -28486,7 +28093,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GeometricComplexType"),
                         schema,
@@ -28533,7 +28140,6 @@ public class GMLSchema extends SchemaImpl {
             build_GEOMETRICCOMPLEXPROPERTYTYPE_TYPE();
 
     private static ComplexType build_GEOMETRICCOMPLEXPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -28631,7 +28237,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GeometricComplexPropertyType"),
                         schema,
@@ -28675,7 +28281,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType CYLINDERTYPE_TYPE = build_CYLINDERTYPE_TYPE();
 
     private static ComplexType build_CYLINDERTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -28693,7 +28298,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CylinderType"),
                         schema,
@@ -28725,11 +28330,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType NAMEORNULL_TYPE = build_NAMEORNULL_TYPE();
 
     private static AttributeType build_NAMEORNULL_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "NameOrNull"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -28768,11 +28372,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType SUCCESSIONTYPE_TYPE = build_SUCCESSIONTYPE_TYPE();
 
     private static AttributeType build_SUCCESSIONTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "SuccessionType"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -28810,8 +28413,7 @@ public class GMLSchema extends SchemaImpl {
             build_MULTICURVEPROPERTYTYPE_TYPE();
 
     private static AttributeType build_MULTICURVEPROPERTYTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiCurvePropertyType"),
                         MultiCurvedGeometry.class,
@@ -28857,7 +28459,6 @@ public class GMLSchema extends SchemaImpl {
             build_MOVINGOBJECTSTATUSTYPE_TYPE();
 
     private static ComplexType build_MOVINGOBJECTSTATUSTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -28907,7 +28508,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MovingObjectStatusType"),
                         schema,
@@ -28945,7 +28546,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TRACKTYPE_TYPE = build_TRACKTYPE_TYPE();
 
     private static ComplexType build_TRACKTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -28955,7 +28555,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TrackType"),
                         schema,
@@ -28989,8 +28589,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TIMETYPE_TYPE = build_TIMETYPE_TYPE();
 
     private static ComplexType build_TIMETYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TimeType"),
                         Collections.emptyList(),
@@ -29031,8 +28630,7 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType POLYGONPROPERTYTYPE_TYPE = build_POLYGONPROPERTYTYPE_TYPE();
 
     private static AttributeType build_POLYGONPROPERTYTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "PolygonPropertyType"),
                         org.locationtech.jts.geom.Polygon.class,
@@ -29070,8 +28668,7 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType MULTIPOLYGONTYPE_TYPE = build_MULTIPOLYGONTYPE_TYPE();
 
     private static AttributeType build_MULTIPOLYGONTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiPolygonType"),
                         org.locationtech.jts.geom.MultiPolygon.class,
@@ -29114,8 +28711,7 @@ public class GMLSchema extends SchemaImpl {
             build_MULTIPOLYGONPROPERTYTYPE_TYPE();
 
     private static AttributeType build_MULTIPOLYGONPROPERTYTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiPolygonPropertyType"),
                         org.locationtech.jts.geom.MultiPolygon.class,
@@ -29147,11 +28743,10 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType BOOLEANLIST_TYPE = build_BOOLEANLIST_TYPE();
 
     private static AttributeType build_BOOLEANLIST_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "booleanList"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -29180,7 +28775,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ABSTRACTMETADATATYPE_TYPE = build_ABSTRACTMETADATATYPE_TYPE();
 
     private static ComplexType build_ABSTRACTMETADATATYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -29190,7 +28784,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractMetaDataType"),
                         schema,
@@ -29228,8 +28822,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType GENERICMETADATATYPE_TYPE = build_GENERICMETADATATYPE_TYPE();
 
     private static ComplexType build_GENERICMETADATATYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GenericMetaDataType"),
                         Collections.emptyList(),
@@ -29265,7 +28858,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType COVARIANCEELEMENTTYPE_TYPE = build_COVARIANCEELEMENTTYPE_TYPE();
 
     private static ComplexType build_COVARIANCEELEMENTTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -29291,7 +28883,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CovarianceElementType"),
                         schema,
@@ -29338,7 +28930,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType COVARIANCEMATRIXTYPE_TYPE = build_COVARIANCEMATRIXTYPE_TYPE();
 
     private static ComplexType build_COVARIANCEMATRIXTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -29356,7 +28947,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CovarianceMatrixType"),
                         schema,
@@ -29391,7 +28982,6 @@ public class GMLSchema extends SchemaImpl {
             build_CURVESEGMENTARRAYPROPERTYTYPE_TYPE();
 
     private static ComplexType build_CURVESEGMENTARRAYPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -29401,7 +28991,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CurveSegmentArrayPropertyType"),
                         schema,
@@ -29445,8 +29035,7 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType CURVETYPE_TYPE = build_CURVETYPE_TYPE();
 
     private static AttributeType build_CURVETYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CurveType"),
                         CurvedGeometry.class,
@@ -29484,7 +29073,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType ARRAYTYPE_TYPE = build_ARRAYTYPE_TYPE();
 
     private static ComplexType build_ARRAYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -29494,7 +29082,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ArrayType"),
                         schema,
@@ -29529,7 +29117,6 @@ public class GMLSchema extends SchemaImpl {
             build_VALUEARRAYPROPERTYTYPE_TYPE();
 
     private static ComplexType build_VALUEARRAYPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -29643,7 +29230,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ValueArrayPropertyType"),
                         schema,
@@ -29682,7 +29269,6 @@ public class GMLSchema extends SchemaImpl {
             build_ABSTRACTCONTINUOUSCOVERAGETYPE_TYPE();
 
     private static ComplexType build_ABSTRACTCONTINUOUSCOVERAGETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -29692,7 +29278,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl(
                                 "http://www.opengis.net/gml", "AbstractContinuousCoverageType"),
@@ -29731,7 +29317,6 @@ public class GMLSchema extends SchemaImpl {
             build_PRIORITYLOCATIONPROPERTYTYPE_TYPE();
 
     private static ComplexType build_PRIORITYLOCATIONPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -29741,7 +29326,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "PriorityLocationPropertyType"),
                         schema,
@@ -29779,7 +29364,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType DERIVEDUNITTYPE_TYPE = build_DERIVEDUNITTYPE_TYPE();
 
     private static ComplexType build_DERIVEDUNITTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -29789,7 +29373,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DerivedUnitType"),
                         schema,
@@ -29834,7 +29418,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType CONVERSIONTYPE_TYPE = build_CONVERSIONTYPE_TYPE();
 
     private static ComplexType build_CONVERSIONTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -29852,7 +29435,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ConversionType"),
                         schema,
@@ -29887,7 +29470,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType CONVERSIONREFTYPE_TYPE = build_CONVERSIONREFTYPE_TYPE();
 
     private static ComplexType build_CONVERSIONREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -29961,7 +29543,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "ConversionRefType"),
                         schema,
@@ -29995,7 +29577,6 @@ public class GMLSchema extends SchemaImpl {
             build_DIRECTEDTOPOSOLIDPROPERTYTYPE_TYPE();
 
     private static ComplexType build_DIRECTEDTOPOSOLIDPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -30077,7 +29658,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "DirectedTopoSolidPropertyType"),
                         schema,
@@ -30115,7 +29696,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType TOPOVOLUMETYPE_TYPE = build_TOPOVOLUMETYPE_TYPE();
 
     private static ComplexType build_TOPOVOLUMETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -30125,7 +29705,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TopoVolumeType"),
                         schema,
@@ -30157,7 +29737,6 @@ public class GMLSchema extends SchemaImpl {
             build_TOPOVOLUMEPROPERTYTYPE_TYPE();
 
     private static ComplexType build_TOPOVOLUMEPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -30167,7 +29746,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "TopoVolumePropertyType"),
                         schema,
@@ -30203,7 +29782,6 @@ public class GMLSchema extends SchemaImpl {
             build_GENERALTRANSFORMATIONREFTYPE_TYPE();
 
     private static ComplexType build_GENERALTRANSFORMATIONREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -30277,7 +29855,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GeneralTransformationRefType"),
                         schema,
@@ -30324,8 +29902,7 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType GEOMETRYPROPERTYTYPE_TYPE = build_GEOMETRYPROPERTYTYPE_TYPE();
 
     private static AttributeType build_GEOMETRYPROPERTYTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GeometryPropertyType"),
                         org.locationtech.jts.geom.Geometry.class,
@@ -30361,7 +29938,6 @@ public class GMLSchema extends SchemaImpl {
             build_GEOMETRYARRAYPROPERTYTYPE_TYPE();
 
     private static ComplexType build_GEOMETRYARRAYPROPERTYTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -30371,7 +29947,7 @@ public class GMLSchema extends SchemaImpl {
                         2147483647,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GeometryArrayPropertyType"),
                         schema,
@@ -30414,8 +29990,7 @@ public class GMLSchema extends SchemaImpl {
     public static final AttributeType MULTIGEOMETRYTYPE_TYPE = build_MULTIGEOMETRYTYPE_TYPE();
 
     private static AttributeType build_MULTIGEOMETRYTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiGeometryType"),
                         org.locationtech.jts.geom.GeometryCollection.class,
@@ -30449,8 +30024,7 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType CYLINDRICALCSTYPE_TYPE = build_CYLINDRICALCSTYPE_TYPE();
 
     private static ComplexType build_CYLINDRICALCSTYPE_TYPE() {
-        ComplexType builtType;
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CylindricalCSType"),
                         Collections.emptyList(),
@@ -30485,7 +30059,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType CYLINDRICALCSREFTYPE_TYPE = build_CYLINDRICALCSREFTYPE_TYPE();
 
     private static ComplexType build_CYLINDRICALCSREFTYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -30559,7 +30132,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         true,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "CylindricalCSRefType"),
                         schema,
@@ -30649,7 +30222,6 @@ public class GMLSchema extends SchemaImpl {
     public static final ComplexType OFFSETCURVETYPE_TYPE = build_OFFSETCURVETYPE_TYPE();
 
     private static ComplexType build_OFFSETCURVETYPE_TYPE() {
-        ComplexType builtType;
         List<PropertyDescriptor> schema = new ArrayList<>();
         schema.add(
                 new AttributeDescriptorImpl(
@@ -30675,7 +30247,7 @@ public class GMLSchema extends SchemaImpl {
                         1,
                         false,
                         null));
-        builtType =
+        ComplexType builtType =
                 new ComplexTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "OffsetCurveType"),
                         schema,

@@ -97,8 +97,8 @@ public final class ParametersTest {
      */
     @Test
     public void testRangeIntegers() {
-        Parameter<Integer> param;
-        param = new Parameter<>(DefaultParameterDescriptor.create("Range", 15, -30, +40));
+        Parameter<Integer> param =
+                new Parameter<>(DefaultParameterDescriptor.create("Range", 15, -30, +40));
         assertEquals("intValue", 15, param.intValue());
         assertEquals("doubleValue", 15, param.doubleValue(), 0.0);
         param.setValue(12);
@@ -134,8 +134,7 @@ public final class ParametersTest {
      */
     @Test
     public void testRangeDoubles() {
-        Parameter<Double> param;
-        param =
+        Parameter<Double> param =
                 new Parameter<>(
                         DefaultParameterDescriptor.create("Range", 15.0, -30.0, +40.0, null));
         assertEquals("intValue", 15, param.intValue());
@@ -205,11 +204,10 @@ public final class ParametersTest {
     /** Test {@link DefaultParameterDescriptor} construction. */
     @Test
     public void testParameterDescriptor() {
-        ParameterDescriptor<Double> dDescriptor;
-        ParameterValue<Double> parameter;
 
-        dDescriptor = DefaultParameterDescriptor.create("Test", 12, 4, 20, SI.METRE);
-        parameter = dDescriptor.createValue();
+        ParameterDescriptor<Double> dDescriptor =
+                DefaultParameterDescriptor.create("Test", 12, 4, 20, SI.METRE);
+        ParameterValue<Double> parameter = dDescriptor.createValue();
         assertEquals("name", "Test", dDescriptor.getName().getCode());
         assertEquals("unit", SI.METRE, dDescriptor.getUnit());
         assertEquals("class", Double.class, dDescriptor.getValueClass());
@@ -262,12 +260,9 @@ public final class ParametersTest {
     /** Test {@link Parameter} construction. */
     @Test
     public void testParameterValue() throws IOException, ClassNotFoundException {
-        Parameter<?> parameter;
-        ParameterDescriptor<?> descriptor;
-        Set<?> validValues;
 
-        parameter = Parameter.create("Test", 14);
-        descriptor = parameter.getDescriptor();
+        Parameter<?> parameter = Parameter.create("Test", 14);
+        ParameterDescriptor<?> descriptor = parameter.getDescriptor();
         assertNull("unit", parameter.getUnit());
         assertEquals("intValue", 14, parameter.intValue());
         assertEquals("doubleValue", 14, parameter.doubleValue(), 0);
@@ -315,7 +310,7 @@ public final class ParametersTest {
 
         parameter = Parameter.create("Test", AxisDirection.class, AxisDirection.NORTH);
         descriptor = parameter.getDescriptor();
-        validValues = descriptor.getValidValues();
+        Set<?> validValues = descriptor.getValidValues();
         assertEquals("value", AxisDirection.NORTH, parameter.getValue());
         assertEquals("name", "Test", descriptor.getName().getCode());
         assertNull("unit", descriptor.getUnit());
@@ -344,8 +339,7 @@ public final class ParametersTest {
     public void testGroup() throws IOException {
         final ParameterWriter writer = new ParameterWriter(new StringWriter());
         final Integer ONE = 1;
-        final ParameterDescriptor<Integer> p1, p2, p3, p4;
-        p1 =
+        final ParameterDescriptor<Integer> p1 =
                 new DefaultParameterDescriptor<>(
                         Collections.singletonMap("name", "1"),
                         Integer.class,
@@ -355,7 +349,7 @@ public final class ParametersTest {
                         null,
                         null,
                         true);
-        p2 =
+        final ParameterDescriptor<Integer> p2 =
                 new DefaultParameterDescriptor<>(
                         Collections.singletonMap("name", "2"),
                         Integer.class,
@@ -365,7 +359,7 @@ public final class ParametersTest {
                         null,
                         null,
                         true);
-        p3 =
+        final ParameterDescriptor<Integer> p3 =
                 new DefaultParameterDescriptor<>(
                         Collections.singletonMap("name", "3"),
                         Integer.class,
@@ -375,7 +369,7 @@ public final class ParametersTest {
                         null,
                         null,
                         false);
-        p4 =
+        final ParameterDescriptor<Integer> p4 =
                 new DefaultParameterDescriptor<Integer>(
                         Collections.singletonMap("name", "4"),
                         Integer.class,
@@ -396,29 +390,22 @@ public final class ParametersTest {
                     }
                 };
 
-        final Parameter v1, v2, v3, v4, v1b, v2b, v3b, v4b;
-        v1 = new Parameter<>(p1);
+        final Parameter v1 = new Parameter<>(p1);
         v1.setValue(10);
-        v2 = new Parameter<>(p2);
+        final Parameter v2 = new Parameter<>(p2);
         v2.setValue(20);
-        v3 = new Parameter<>(p3);
+        final Parameter v3 = new Parameter<>(p3);
         v3.setValue(30);
-        v4 = new Parameter<>(p4);
+        final Parameter v4 = new Parameter<>(p4);
         v4.setValue(40);
-        v1b = new Parameter<>(p1);
+        final Parameter v1b = new Parameter<>(p1);
         v1b.setValue(-10);
-        v2b = new Parameter<>(p2);
+        final Parameter v2b = new Parameter<>(p2);
         v2b.setValue(-20);
-        v3b = new Parameter<>(p3);
+        final Parameter v3b = new Parameter<>(p3);
         v3b.setValue(-30);
-        v4b = new Parameter<>(p4);
+        final Parameter v4b = new Parameter<>(p4);
         v4b.setValue(-40);
-
-        ParameterDescriptorGroup descriptor;
-        ParameterGroup group;
-        Collection content;
-        Map<String, ?> properties;
-        Parameter automatic;
 
         /* --------------------------------------------- *
          * Case (v1, v2, v3) where:
@@ -426,10 +413,10 @@ public final class ParametersTest {
          *    - v2   is mandatory
          *    - v3   is optional
          * --------------------------------------------- */
-        properties = Collections.singletonMap("name", "group");
-        group = new ParameterGroup(properties, new Parameter[] {v1, v2, v3});
-        descriptor = group.getDescriptor();
-        content = descriptor.descriptors();
+        Map<String, ?> properties = Collections.singletonMap("name", "group");
+        ParameterGroup group = new ParameterGroup(properties, new Parameter[] {v1, v2, v3});
+        ParameterDescriptorGroup descriptor = group.getDescriptor();
+        Collection content = descriptor.descriptors();
         writer.format(group); // Ensure there is no exception there.
         assertEquals("name", "group", descriptor.getName().getCode());
         assertEquals("descriptors", 3, content.size());
@@ -502,7 +489,7 @@ public final class ParametersTest {
         group = new ParameterGroup(descriptor, new Parameter[] {v1, v2});
         descriptor = group.getDescriptor();
         content = group.values();
-        automatic = (Parameter) v3.getDescriptor().createValue();
+        Parameter automatic = (Parameter) v3.getDescriptor().createValue();
         writer.format(group); // Ensure there is no exception there.
         assertEquals("values.size()", 2, content.size());
         assertTrue("contains(v1)", content.contains(v1));

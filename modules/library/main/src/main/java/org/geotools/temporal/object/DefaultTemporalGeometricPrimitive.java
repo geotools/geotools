@@ -39,7 +39,6 @@ public abstract class DefaultTemporalGeometricPrimitive extends DefaultTemporalP
      * the absolute value of the difference between their temporal positions.
      */
     public Duration distance(TemporalGeometricPrimitive other) {
-        Duration response = null;
         long diff = 0L;
 
         if (this instanceof Instant && other instanceof Instant) {
@@ -193,7 +192,7 @@ public abstract class DefaultTemporalGeometricPrimitive extends DefaultTemporalP
             }
         }
 
-        response = new DefaultPeriodDuration(Math.abs(diff));
+        Duration response = new DefaultPeriodDuration(Math.abs(diff));
         return response;
     }
 

@@ -101,9 +101,8 @@ public class WFSOnlineTestSupport {
         Query query = new Query(typeName);
         query.setMaxFeatures(5);
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
-
-        reader = wfs.getFeatureReader(query, Transaction.AUTO_COMMIT);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                wfs.getFeatureReader(query, Transaction.AUTO_COMMIT);
         try {
             assertNotNull("FeatureType was null", reader);
             assertTrue("must have 1 feature -- fair assumption", reader.hasNext());
@@ -119,8 +118,7 @@ public class WFSOnlineTestSupport {
         SimpleFeatureType ft = wfs.getSchema(typeName);
         // take atleast attributeType 3 to avoid the undeclared one .. inherited optional attrs
 
-        String[] props;
-        props = new String[] {ft.getGeometryDescriptor().getLocalName()};
+        String[] props = new String[] {ft.getGeometryDescriptor().getLocalName()};
 
         Query query = new Query(ft.getTypeName());
         query.setPropertyNames(props);

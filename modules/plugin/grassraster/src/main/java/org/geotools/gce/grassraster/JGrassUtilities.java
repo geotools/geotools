@@ -85,16 +85,14 @@ public class JGrassUtilities {
      * @return the array of strings containing the full path to the involved files
      */
     public static boolean checkRasterMapConsistence(String mapsetPath, String mapname) {
-        File file = null;
-        File file2 = null;
-        file =
+        File file =
                 new File(
                         mapsetPath
                                 + File.separator
                                 + JGrassConstants.FCELL
                                 + File.separator
                                 + mapname);
-        file2 =
+        File file2 =
                 new File(
                         mapsetPath
                                 + File.separator

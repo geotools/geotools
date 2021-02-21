@@ -1062,8 +1062,8 @@ public final class GridCoverageRenderer {
             RasterSymbolizer symbolizer) {
         int[] bandIndices =
                 ChannelSelectionUpdateStyleVisitor.getBandIndicesFromSelectionChannels(symbolizer);
-        Parameter<int[]> bandIndicesParam = null;
-        bandIndicesParam = (Parameter<int[]>) AbstractGridFormat.BANDS.createValue();
+        Parameter<int[]> bandIndicesParam =
+                (Parameter<int[]>) AbstractGridFormat.BANDS.createValue();
         bandIndicesParam.setValue(bandIndices);
         List<GeneralParameterValue> paramList = new ArrayList<>();
         if (readParams != null) {

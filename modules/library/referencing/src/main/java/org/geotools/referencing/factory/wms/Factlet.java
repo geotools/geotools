@@ -55,8 +55,8 @@ abstract class Factlet {
     public final ProjectedCRS create(final Code code, final ReferencingFactoryContainer factories)
             throws FactoryException {
         final String classification = getClassification();
-        final ParameterValueGroup parameters;
-        parameters = factories.getMathTransformFactory().getDefaultParameters(classification);
+        final ParameterValueGroup parameters =
+                factories.getMathTransformFactory().getDefaultParameters(classification);
         setProjectionParameters(parameters, code);
         final String name = getName();
         final DefiningConversion conversion = new DefiningConversion(name, parameters);

@@ -690,14 +690,12 @@ public final class GridCoverageRendererUtilities {
             return null;
         }
 
-        RenderedImage im = null;
-
         ImageWorker iw = new ImageWorker(finalImage);
         iw.setRenderingHints(hints);
         iw.setROI(roi);
         iw.setNoData(noData);
         iw.affine(finalRasterTransformation, interpolation, bkgValues);
-        im = iw.getRenderedImage();
+        RenderedImage im = iw.getRenderedImage();
         roi = iw.getROI();
         noData = iw.extractNoDataProperty(im);
 

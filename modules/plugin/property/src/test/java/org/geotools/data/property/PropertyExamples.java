@@ -254,9 +254,8 @@ public class PropertyExamples {
 
         final SimpleFeatureType type = store.getSchema("example");
 
-        SimpleFeature f;
         DefaultFeatureCollection collection = new DefaultFeatureCollection();
-        f = SimpleFeatureBuilder.build(type, new Object[] {1, "jody"}, "fid1");
+        SimpleFeature f = SimpleFeatureBuilder.build(type, new Object[] {1, "jody"}, "fid1");
         collection.add(f);
         f = SimpleFeatureBuilder.build(type, new Object[] {2, "brent"}, "fid3");
         collection.add(f);

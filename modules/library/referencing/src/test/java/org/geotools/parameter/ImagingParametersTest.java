@@ -54,11 +54,9 @@ public final class ImagingParametersTest {
         final String author = Citations.JAI.getTitle().toString();
         final String vendor = "com.sun.media.jai";
         final String mode = RenderedRegistryMode.MODE_NAME;
-        final RegistryElementDescriptor descriptor;
-        final ImagingParameterDescriptors parameters;
-        descriptor =
+        final RegistryElementDescriptor descriptor =
                 JAI.getDefaultInstance().getOperationRegistry().getDescriptor(mode, "AddConst");
-        parameters = new ImagingParameterDescriptors(descriptor);
+        final ImagingParameterDescriptors parameters = new ImagingParameterDescriptors(descriptor);
         final GenericName alias = parameters.getAlias().iterator().next();
         /*
          * Tests the operation-wide properties.

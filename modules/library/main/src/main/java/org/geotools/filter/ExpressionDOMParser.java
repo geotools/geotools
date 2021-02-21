@@ -584,8 +584,7 @@ public final class ExpressionDOMParser {
             coordList =
                     new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory2()).coords(child);
 
-            org.locationtech.jts.geom.LineString line = null;
-            line = gfac.createLineString(coordList.toArray(new Coordinate[] {}));
+            LineString line = gfac.createLineString(coordList.toArray(new Coordinate[] {}));
 
             return line;
         }
@@ -595,8 +594,7 @@ public final class ExpressionDOMParser {
             coordList =
                     new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory2()).coords(child);
 
-            org.locationtech.jts.geom.Point point = null;
-            point = gfac.createPoint(coordList.get(0));
+            Point point = gfac.createPoint(coordList.get(0));
 
             return point;
         }

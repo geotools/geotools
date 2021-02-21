@@ -177,11 +177,6 @@ public class CustomGlyphRenderer implements GlyphRenderer {
             wedgeColor = Color.decode((String) e.evaluate(feature));
         }
 
-        int circleCenterX, circleCenterY, imageHeight, imageWidth;
-
-        BufferedImage image;
-        Graphics2D imageGraphic;
-
         // calculate maximum value of barHeight + barUncertainty & use that instead of "barHeight +
         // barUncertainty"
         Expression tempExp = (Expression) list.getPropertyValue("bar height");
@@ -221,19 +216,20 @@ public class CustomGlyphRenderer implements GlyphRenderer {
         //            }
         //        }
 
-        circleCenterX = Math.max(pointerLength, radius);
-        circleCenterY = Math.max(maxBarHeight, Math.max(pointerLength, radius));
+        int circleCenterX = Math.max(pointerLength, radius);
+        int circleCenterY = Math.max(maxBarHeight, Math.max(pointerLength, radius));
 
-        imageHeight =
+        int imageHeight =
                 Math.max(
                         radius * 2,
                         Math.max(
                                 radius + pointerLength,
                                 Math.max(radius + maxBarHeight, pointerLength + maxBarHeight)));
-        imageWidth = Math.max(radius * 2, pointerLength * 2);
-        image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
+        int imageWidth = Math.max(radius * 2, pointerLength * 2);
+        BufferedImage image =
+                new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
         pointerLength = Math.max(pointerLength, radius);
-        imageGraphic = image.createGraphics();
+        Graphics2D imageGraphic = image.createGraphics();
         imageGraphic.setColor(circleColor);
         imageGraphic.fillOval(
                 circleCenterX - radius, circleCenterY - radius, radius * 2, radius * 2);

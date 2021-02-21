@@ -549,8 +549,7 @@ public class Console extends AbstractConsole {
         if (position2 != null) {
             if (crs instanceof AbstractCRS)
                 try {
-                    final Measure distance;
-                    distance =
+                    final Measure distance =
                             ((AbstractCRS) crs)
                                     .distance(position1.getCoordinate(), position2.getCoordinate());
                     table.setAlignment(TableWriter.ALIGN_RIGHT);

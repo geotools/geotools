@@ -62,16 +62,13 @@ public class XPathUtilTest {
         } catch (NullPointerException e) {
         }
 
-        List expected;
-        String xpath;
-
-        xpath = "/";
+        String xpath = "/";
         assertEquals(1, XPathUtil.steps(descriptor, xpath, namespaces).size());
         XPathUtil.Step step = XPathUtil.steps(descriptor, xpath, namespaces).get(0);
         QName rootQName = new QName(name.getNamespaceURI(), name.getLocalPart());
         assertEquals(rootQName, step.getName());
 
-        expected = Collections.singletonList(new XPathUtil.Step(rootQName, 1));
+        List expected = Collections.singletonList(new XPathUtil.Step(rootQName, 1));
         xpath = "wq_plus";
         assertEquals(expected, XPathUtil.steps(descriptor, xpath, namespaces));
 

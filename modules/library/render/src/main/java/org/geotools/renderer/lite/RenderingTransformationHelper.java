@@ -257,7 +257,6 @@ public abstract class RenderingTransformationHelper {
         if (result == null && !isRasterData) {
             // it's a transformation starting from vector data, let's see if we can optimize the
             // query
-            FeatureCollection originalFeatures;
             Query optimizedQuery = null;
             if (transformation instanceof RenderingTransformation) {
                 RenderingTransformation tx = (RenderingTransformation) transformation;
@@ -278,7 +277,7 @@ public abstract class RenderingTransformationHelper {
 
             // grab the original features
             Query mixedQuery = DataUtilities.mixQueries(layerQuery, optimizedQuery, null);
-            originalFeatures = featureSource.getFeatures(mixedQuery);
+            FeatureCollection originalFeatures = featureSource.getFeatures(mixedQuery);
             if (featureSource.getSupportedHints().contains(Hints.GEOMETRY_CLIP)
                     && originalFeatures instanceof SimpleFeatureCollection) {
                 originalFeatures =

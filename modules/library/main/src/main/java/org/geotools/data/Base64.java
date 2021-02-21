@@ -988,7 +988,6 @@ public class Base64 {
         try {
             // Set up some useful variables
             java.io.File file = new java.io.File(filename);
-            byte[] buffer = null;
             int length = 0;
             int numBytes = 0;
 
@@ -1000,7 +999,7 @@ public class Base64 {
                 //                                + " bytes).");
                 return null;
             } // end if: file too big for int index
-            buffer = new byte[(int) file.length()];
+            byte[] buffer = new byte[(int) file.length()];
 
             // Open a stream
             bis =

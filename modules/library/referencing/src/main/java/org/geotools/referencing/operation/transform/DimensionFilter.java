@@ -369,10 +369,9 @@ public class DimensionFilter {
         if (transform instanceof ConcatenatedTransform) {
             final ConcatenatedTransform ctr = (ConcatenatedTransform) transform;
             final int[] original = sourceDimensions;
-            final MathTransform step1, step2;
-            step1 = separateInput(ctr.transform1);
+            final MathTransform step1 = separateInput(ctr.transform1);
             sourceDimensions = targetDimensions;
-            step2 = separateInput(ctr.transform2);
+            final MathTransform step2 = separateInput(ctr.transform2);
             sourceDimensions = original;
             return factory.createConcatenatedTransform(step1, step2);
         }

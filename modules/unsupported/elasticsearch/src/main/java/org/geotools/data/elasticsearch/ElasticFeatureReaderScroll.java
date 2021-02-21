@@ -56,8 +56,8 @@ class ElasticFeatureReaderScroll implements FeatureReader<SimpleFeatureType, Sim
     }
 
     private void advanceScroll() throws IOException {
-        final ElasticDataStore dataStore;
-        dataStore = (ElasticDataStore) contentState.getEntry().getDataStore();
+        final ElasticDataStore dataStore =
+                (ElasticDataStore) contentState.getEntry().getDataStore();
         processResponse(dataStore.getClient().scroll(nextScrollId, dataStore.getScrollTime()));
     }
 
@@ -106,8 +106,8 @@ class ElasticFeatureReaderScroll implements FeatureReader<SimpleFeatureType, Sim
     @Override
     public void close() throws IOException {
         if (!scrollIds.isEmpty()) {
-            final ElasticDataStore dataStore;
-            dataStore = (ElasticDataStore) contentState.getEntry().getDataStore();
+            final ElasticDataStore dataStore =
+                    (ElasticDataStore) contentState.getEntry().getDataStore();
             dataStore.getClient().clearScroll(scrollIds);
         }
         delegate.close();

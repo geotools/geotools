@@ -1337,9 +1337,8 @@ public class DataUtilities {
         }
         // go through the attributes and strip out complicated contents
         //
-        List<PropertyDescriptor> attributes;
         Collection<PropertyDescriptor> descriptors = featureType.getDescriptors();
-        attributes = new ArrayList<>(descriptors);
+        List<PropertyDescriptor> attributes = new ArrayList<>(descriptors);
 
         List<String> simpleProperties = new ArrayList<>();
         List<AttributeDescriptor> simpleAttributes = new ArrayList<>();

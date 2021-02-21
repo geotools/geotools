@@ -176,7 +176,6 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
 
     /** Make graphics (such as used with PointSymbolizer) bigger */
     public void visit(Graphic gr) {
-        Graphic copy = null;
 
         Displacement displacementCopy = null;
 
@@ -206,7 +205,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
         Expression rotationCopy = copy(gr.getRotation());
         Expression sizeCopy = rescaleGraphicSize(gr);
 
-        copy = sf.createDefaultGraphic();
+        Graphic copy = sf.createDefaultGraphic();
         copy.setDisplacement(displacementCopy);
         copy.setAnchorPoint(anchorCopy);
         copy.graphicalSymbols().clear();

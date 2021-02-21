@@ -54,19 +54,15 @@ public class DynamicLineStyle2D extends org.geotools.renderer.style.LineStyle2D 
         }
 
         // resolve join type into a join code
-        String joinType;
-        int joinCode;
 
-        joinType = evaluateExpression(stroke.getLineJoin(), feature, "miter");
+        String joinType = evaluateExpression(stroke.getLineJoin(), feature, "miter");
 
-        joinCode = SLDStyleFactory.lookUpJoin(joinType);
+        int joinCode = SLDStyleFactory.lookUpJoin(joinType);
 
         // resolve cap type into a cap code
-        String capType;
-        int capCode;
 
-        capType = evaluateExpression(stroke.getLineCap(), feature, "square");
-        capCode = SLDStyleFactory.lookUpCap(capType);
+        String capType = evaluateExpression(stroke.getLineCap(), feature, "square");
+        int capCode = SLDStyleFactory.lookUpCap(capType);
 
         // get the other properties needed for the stroke
         float[] dashes = SLDStyleFactory.evaluateDashArray(stroke, feature);

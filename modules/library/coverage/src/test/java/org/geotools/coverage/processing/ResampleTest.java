@@ -199,14 +199,13 @@ public final class ResampleTest extends GridProcessingTestBase {
     /** Tests the "Resample" operation with a "Crop" transform. */
     @Test
     public void testCrop() {
-        final GridGeometry2D g1, g2;
         final MathTransform gridToCRS = null;
-        g1 =
+        final GridGeometry2D g1 =
                 new GridGeometry2D(
                         new GeneralGridEnvelope(new Rectangle(50, 50, 100, 100), 2),
                         gridToCRS,
                         null);
-        g2 =
+        final GridGeometry2D g2 =
                 new GridGeometry2D(
                         new GeneralGridEnvelope(new Rectangle(50, 50, 200, 200), 2),
                         gridToCRS,

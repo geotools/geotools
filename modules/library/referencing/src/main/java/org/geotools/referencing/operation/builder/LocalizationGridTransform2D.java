@@ -520,8 +520,8 @@ final class LocalizationGridTransform2D extends AbstractMathTransform
                 return;
             }
         } catch (NoninvertibleTransformException exception) {
-            final TransformException e;
-            e = new TransformException(Errors.format(ErrorKeys.NONINVERTIBLE_TRANSFORM));
+            final TransformException e =
+                    new TransformException(Errors.format(ErrorKeys.NONINVERTIBLE_TRANSFORM));
             e.initCause(exception);
             throw e;
         }

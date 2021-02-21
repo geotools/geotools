@@ -356,9 +356,11 @@ public class Range<T extends Comparable<? super T>> implements Serializable {
      */
     final Range<? extends T> intersectNC(final Range<? extends T> range)
             throws IllegalArgumentException {
-        final Range<? extends T> intersect, min, max;
-        min = compareMinTo(range.minValue, range.isMinIncluded ? 0 : +1) < 0 ? range : this;
-        max = compareMaxTo(range.maxValue, range.isMaxIncluded ? 0 : -1) > 0 ? range : this;
+        final Range<? extends T> intersect;
+        final Range<? extends T> min =
+                compareMinTo(range.minValue, range.isMinIncluded ? 0 : +1) < 0 ? range : this;
+        final Range<? extends T> max =
+                compareMaxTo(range.maxValue, range.isMaxIncluded ? 0 : -1) > 0 ? range : this;
         if (min == max) {
             intersect = min;
         } else {
@@ -446,9 +448,11 @@ public class Range<T extends Comparable<? super T>> implements Serializable {
      * "No Cast" - this method do not try to cast the value to a compatible type.
      */
     final Range<?> unionNC(final Range<? extends T> range) throws IllegalArgumentException {
-        final Range<? extends T> union, min, max;
-        min = compareMinTo(range.minValue, range.isMinIncluded ? 0 : +1) > 0 ? range : this;
-        max = compareMaxTo(range.maxValue, range.isMaxIncluded ? 0 : -1) < 0 ? range : this;
+        final Range<? extends T> union;
+        final Range<? extends T> min =
+                compareMinTo(range.minValue, range.isMinIncluded ? 0 : +1) > 0 ? range : this;
+        final Range<? extends T> max =
+                compareMaxTo(range.maxValue, range.isMaxIncluded ? 0 : -1) < 0 ? range : this;
         if (min == max) {
             union = min;
         } else {

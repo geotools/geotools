@@ -104,9 +104,8 @@ public final class FactoryUsingWktTest {
      */
     @Test
     public void test42101() throws FactoryException {
-        CoordinateReferenceSystem actual, expected;
-        expected = factory.createCoordinateReferenceSystem("42101");
-        actual = CRS.decode("EPSG:42101");
+        CoordinateReferenceSystem expected = factory.createCoordinateReferenceSystem("42101");
+        CoordinateReferenceSystem actual = CRS.decode("EPSG:42101");
         assertSame(expected, actual);
         assertTrue(actual instanceof ProjectedCRS);
         Collection ids = actual.getIdentifiers();

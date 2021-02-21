@@ -35,10 +35,9 @@ public class ExpressionBuilderTest {
     public void testLiteral() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory2(null);
         ExpressionBuilder b = new ExpressionBuilder();
-        Expression e;
 
         b.literal("hello world");
-        e = b.build();
+        Expression e = b.build();
         assertEquals(ff.literal("hello world"), e);
 
         assertEquals(ff.literal(1), b.literal().value(1).build());

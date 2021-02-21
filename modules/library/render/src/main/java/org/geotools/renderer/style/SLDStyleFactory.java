@@ -279,10 +279,9 @@ public class SLDStyleFactory {
      * @return A rendered style equivalent to the symbolizer
      */
     public Style2D createStyle(Object drawMe, Symbolizer symbolizer, Range scaleRange) {
-        Style2D style = null;
 
         SymbolizerKey key = new SymbolizerKey(symbolizer, scaleRange);
-        style = staticSymbolizers.get(key);
+        Style2D style = staticSymbolizers.get(key);
 
         requests++;
 
@@ -929,10 +928,9 @@ public class SLDStyleFactory {
         }
 
         // resolve join type into a join code
-        String joinType;
         int joinCode;
 
-        joinType = evalToString(stroke.getLineJoin(), feature, "miter");
+        String joinType = evalToString(stroke.getLineJoin(), feature, "miter");
 
         if (JOIN_LOOKUP.containsKey(joinType)) {
             joinCode = JOIN_LOOKUP.get(joinType).intValue();
@@ -941,10 +939,9 @@ public class SLDStyleFactory {
         }
 
         // resolve cap type into a cap code
-        String capType;
         int capCode;
 
-        capType = evalToString(stroke.getLineCap(), feature, "square");
+        String capType = evalToString(stroke.getLineCap(), feature, "square");
 
         if (CAP_LOOKUP.containsKey(capType)) {
             capCode = CAP_LOOKUP.get(capType).intValue();
@@ -1166,7 +1163,6 @@ public class SLDStyleFactory {
 
     private BufferedImage markToTilableImage(
             org.geotools.styling.Graphic gr, Object feature, Mark mark, Shape shape) {
-        BufferedImage image;
         Rectangle2D shapeBounds = shape.getBounds2D();
 
         // The aspect ratio is the relation between the width and height of
@@ -1214,7 +1210,7 @@ public class SLDStyleFactory {
                 repeat = 1;
             }
         }
-        image =
+        BufferedImage image =
                 new BufferedImage(
                         (int) Math.ceil(sizeX * repeat),
                         (int) Math.ceil(sizeY * repeat),

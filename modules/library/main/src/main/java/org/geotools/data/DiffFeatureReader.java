@@ -240,8 +240,7 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature>
 
     protected List getIndexedFeatures() {
         // TODO: check geom is default geom.
-        Envelope env = null;
-        env = extractBboxForSpatialIndexQuery((BinarySpatialOperator) filter);
+        Envelope env = extractBboxForSpatialIndexQuery((BinarySpatialOperator) filter);
         return diff.queryIndex(env);
     }
 

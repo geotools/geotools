@@ -92,9 +92,7 @@ public class StyleObjectTest {
         FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle();
         fts.featureTypeNames().add(new NameImpl("feature-type"));
 
-        Rule rule1;
-
-        rule1 = styleFactory.createRule();
+        Rule rule1 = styleFactory.createRule();
         rule1.setName("rule1");
         rule1.setFilter(filterFactory.id(Collections.singleton(filterFactory.featureId("FID"))));
 

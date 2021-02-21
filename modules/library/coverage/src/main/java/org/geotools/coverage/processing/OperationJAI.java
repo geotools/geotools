@@ -592,8 +592,8 @@ public class OperationJAI extends Operation2D {
                 if (visibleBand >= sampleDims.length) {
                     visibleBand = 0;
                 }
-                final ColorModel colors;
-                colors = sampleDims[visibleBand].getColorModel(visibleBand, sampleDims.length);
+                final ColorModel colors =
+                        sampleDims[visibleBand].getColorModel(visibleBand, sampleDims.length);
                 if (colors != null) {
                     if (layout == null) {
                         layout = new ImageLayout();

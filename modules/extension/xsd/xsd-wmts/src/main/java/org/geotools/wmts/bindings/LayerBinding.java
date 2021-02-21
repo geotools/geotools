@@ -85,8 +85,7 @@ public class LayerBinding extends AbstractSimpleBinding {
     @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         LayerType layer = factory.createLayerType();
-        List<Node> children;
-        children = node.getChildren("Abstract");
+        List<Node> children = node.getChildren("Abstract");
         for (Node c : children) {
             layer.getAbstract().add(c.getValue());
         }

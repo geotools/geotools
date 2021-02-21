@@ -175,8 +175,6 @@ public class DefaultGeographicCRS extends AbstractSingleCRS implements Geographi
     @Override
     public Measure distance(final double[] coord1, final double[] coord2)
             throws UnsupportedOperationException, MismatchedDimensionException {
-        final DefaultEllipsoidalCS cs;
-        final DefaultEllipsoid e;
         if (!(coordinateSystem instanceof DefaultEllipsoidalCS)) {
             throw new UnsupportedImplementationException(coordinateSystem.getClass());
         }
@@ -184,8 +182,8 @@ public class DefaultGeographicCRS extends AbstractSingleCRS implements Geographi
         if (!(ellipsoid instanceof DefaultEllipsoid)) {
             throw new UnsupportedImplementationException(ellipsoid.getClass());
         }
-        cs = (DefaultEllipsoidalCS) coordinateSystem;
-        e = (DefaultEllipsoid) ellipsoid;
+        final DefaultEllipsoidalCS cs = (DefaultEllipsoidalCS) coordinateSystem;
+        final DefaultEllipsoid e = (DefaultEllipsoid) ellipsoid;
         if (coord1.length != 2 || coord2.length != 2 || cs.getDimension() != 2) {
             /*
              * Not yet implemented (an exception will be thrown later).

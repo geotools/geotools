@@ -51,10 +51,9 @@ public class CoordinateSequenceTransformerTest {
     /** Compares the current implementation with a simplier one. */
     @Test
     public void testTransform() throws FactoryException, TransformException {
-        final MathTransform2D t;
-        final CoordinateReferenceSystem crs;
-        crs = ReferencingFactoryFinder.getCRSFactory(null).createFromWKT(JTSTest.UTM_ZONE_10N);
-        t =
+        final CoordinateReferenceSystem crs =
+                ReferencingFactoryFinder.getCRSFactory(null).createFromWKT(JTSTest.UTM_ZONE_10N);
+        final MathTransform2D t =
                 (MathTransform2D)
                         ReferencingFactoryFinder.getCoordinateOperationFactory(null)
                                 .createOperation(DefaultGeographicCRS.WGS84, crs)
@@ -99,8 +98,8 @@ public class CoordinateSequenceTransformerTest {
         CoordinateReferenceSystem sourceCrs = CRS.parseWKT(JTSTest.UTM_ZONE_10N);
         CoordinateReferenceSystem destCrs = DefaultGeographicCRS.WGS84;
 
-        DefaultCoordinateSequenceTransformer cst;
-        cst = new DefaultCoordinateSequenceTransformer(new LiteCoordinateSequenceFactory());
+        DefaultCoordinateSequenceTransformer cst =
+                new DefaultCoordinateSequenceTransformer(new LiteCoordinateSequenceFactory());
         MathTransform tx = CRS.findMathTransform(sourceCrs, destCrs, true);
         LiteCoordinateSequence transformed = (LiteCoordinateSequence) cst.transform(cs, tx);
 
@@ -115,8 +114,8 @@ public class CoordinateSequenceTransformerTest {
         CoordinateReferenceSystem sourceCrs = CRS.parseWKT(JTSTest.UTM_ZONE_10N);
         CoordinateReferenceSystem destCrs = DefaultGeographicCRS.WGS84;
 
-        DefaultCoordinateSequenceTransformer cst;
-        cst = new DefaultCoordinateSequenceTransformer(/* standard cs factory */ );
+        DefaultCoordinateSequenceTransformer cst = new DefaultCoordinateSequenceTransformer(/*
+        standard cs factory */ );
         MathTransform tx = CRS.findMathTransform(sourceCrs, destCrs, true);
         CoordinateSequence transformed = cst.transform(cs, tx);
         CoordinateSequence reference = transform(cs, tx);

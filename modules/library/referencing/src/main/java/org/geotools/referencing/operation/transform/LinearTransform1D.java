@@ -129,8 +129,7 @@ public class LinearTransform1D extends AbstractMathTransform
             if (isIdentity()) {
                 inverse = this;
             } else if (scale != 0) {
-                final LinearTransform1D inverse;
-                inverse = create(1 / scale, -offset / scale);
+                final LinearTransform1D inverse = create(1 / scale, -offset / scale);
                 inverse.inverse = this;
                 this.inverse = inverse;
             } else {

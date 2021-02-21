@@ -119,11 +119,10 @@ public class ElasticFilterTest {
         typeBuilder.add("floatAttr", Float.class);
         typeBuilder.add("dateAttr", Date.class);
 
-        AttributeDescriptor geoPointAtt;
         AttributeTypeBuilder geoPointAttBuilder = new AttributeTypeBuilder();
         geoPointAttBuilder.setName("geo_point");
         geoPointAttBuilder.setBinding(Point.class);
-        geoPointAtt =
+        AttributeDescriptor geoPointAtt =
                 geoPointAttBuilder.buildDescriptor("geo_point", geoPointAttBuilder.buildType());
         geoPointAtt
                 .getUserData()
@@ -132,11 +131,11 @@ public class ElasticFilterTest {
                         ElasticAttribute.ElasticGeometryType.GEO_POINT);
         typeBuilder.add(geoPointAtt);
 
-        AttributeDescriptor geoShapeAtt;
         AttributeTypeBuilder geoShapeAttBuilder = new AttributeTypeBuilder();
         geoShapeAttBuilder.setName("geom");
         geoShapeAttBuilder.setBinding(Geometry.class);
-        geoShapeAtt = geoShapeAttBuilder.buildDescriptor("geom", geoShapeAttBuilder.buildType());
+        AttributeDescriptor geoShapeAtt =
+                geoShapeAttBuilder.buildDescriptor("geom", geoShapeAttBuilder.buildType());
         geoShapeAtt
                 .getUserData()
                 .put(
@@ -144,29 +143,27 @@ public class ElasticFilterTest {
                         ElasticAttribute.ElasticGeometryType.GEO_SHAPE);
         typeBuilder.add(geoShapeAtt);
 
-        AttributeDescriptor analyzedAtt;
         AttributeTypeBuilder analyzedAttBuilder = new AttributeTypeBuilder();
         analyzedAttBuilder.setName("analyzed");
         analyzedAttBuilder.setBinding(String.class);
-        analyzedAtt =
+        AttributeDescriptor analyzedAtt =
                 analyzedAttBuilder.buildDescriptor("analyzed", analyzedAttBuilder.buildType());
         analyzedAtt.getUserData().put(ElasticConstants.ANALYZED, true);
         typeBuilder.add(analyzedAtt);
 
-        AttributeDescriptor netsedAtt;
         AttributeTypeBuilder nestedAttBuilder = new AttributeTypeBuilder();
         nestedAttBuilder.setName("nested.hej");
         nestedAttBuilder.setBinding(String.class);
-        netsedAtt = nestedAttBuilder.buildDescriptor("nested.hej", nestedAttBuilder.buildType());
+        AttributeDescriptor netsedAtt =
+                nestedAttBuilder.buildDescriptor("nested.hej", nestedAttBuilder.buildType());
         netsedAtt.getUserData().put(ElasticConstants.NESTED, true);
         netsedAtt.getUserData().put(ElasticConstants.ANALYZED, true);
         typeBuilder.add(netsedAtt);
 
-        AttributeDescriptor netsedDateAtt;
         AttributeTypeBuilder nestedDateAttBuilder = new AttributeTypeBuilder();
         nestedDateAttBuilder.setName("nested.datehej");
         nestedDateAttBuilder.setBinding(Date.class);
-        netsedDateAtt =
+        AttributeDescriptor netsedDateAtt =
                 nestedDateAttBuilder.buildDescriptor(
                         "nested.datehej", nestedDateAttBuilder.buildType());
         netsedDateAtt.getUserData().put(ElasticConstants.NESTED, true);
@@ -196,11 +193,11 @@ public class ElasticFilterTest {
         SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
         typeBuilder.init(featureType);
 
-        AttributeDescriptor dateAtt;
         AttributeTypeBuilder dateAttBuilder = new AttributeTypeBuilder();
         dateAttBuilder.setName("dateAttrWithFormat");
         dateAttBuilder.setBinding(Date.class);
-        dateAtt = dateAttBuilder.buildDescriptor("dateAttrWithFormat", dateAttBuilder.buildType());
+        AttributeDescriptor dateAtt =
+                dateAttBuilder.buildDescriptor("dateAttrWithFormat", dateAttBuilder.buildType());
         List<String> validFormats = new ArrayList<>();
         validFormats.add(format);
         dateAtt.getUserData().put(ElasticConstants.DATE_FORMAT, validFormats);

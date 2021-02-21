@@ -185,8 +185,7 @@ final class DurationUtil {
     private static Date computeDateFromDurationDate(
             final Date date, final String duration, int sign) {
 
-        int[] durationDate = new int[3];
-        durationDate = extractDurationDate(duration);
+        int[] durationDate = extractDurationDate(duration);
 
         if (isNull(durationDate)) {
             return date;

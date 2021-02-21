@@ -280,9 +280,8 @@ public class VectorToRasterProcessTest {
         WKTReader reader = new WKTReader();
 
         DefaultFeatureCollection fc = new DefaultFeatureCollection();
-        SimpleFeature feature;
 
-        feature =
+        SimpleFeature feature =
                 buildFeature(
                         builder,
                         reader,
@@ -373,9 +372,9 @@ public class VectorToRasterProcessTest {
         WKTReader reader = new WKTReader();
 
         DefaultFeatureCollection fc = new DefaultFeatureCollection();
-        SimpleFeature feature;
 
-        feature = buildFeature(builder, reader, "LINESTRING(10 0, 10 20)", "horizontal", "1");
+        SimpleFeature feature =
+                buildFeature(builder, reader, "LINESTRING(10 0, 10 20)", "horizontal", "1");
         fc.add(feature);
 
         feature = buildFeature(builder, reader, "LINESTRING(0 10, 20 10)", "vertical", "2");
@@ -400,9 +399,8 @@ public class VectorToRasterProcessTest {
         WKTReader reader = new WKTReader();
 
         DefaultFeatureCollection fc = new DefaultFeatureCollection();
-        SimpleFeature feature;
 
-        feature =
+        SimpleFeature feature =
                 buildFeature(builder, reader, "LINESTRING(10 0, 10 20)", "horizontal", (float) 1.1);
         fc.add(feature);
 

@@ -533,7 +533,6 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
         assert inputImage.getSampleModel().getNumBands() == 1 : inputImage;
 
         final int dataType = inputImage.getSampleModel().getDataType();
-        RenderedImage result = inputImage;
         if (!Double.isNaN(gammaValue) && Math.abs(gammaValue - 1.0) > 1E-6) {
             if (dataType == DataBuffer.TYPE_BYTE) {
 
@@ -569,7 +568,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
                 worker.piecewise(transform, Integer.valueOf(0));
             }
         }
-        result = worker.getRenderedImage();
+        RenderedImage result = worker.getRenderedImage();
         assert result.getSampleModel().getNumBands() == 1 : result;
         return result;
     }

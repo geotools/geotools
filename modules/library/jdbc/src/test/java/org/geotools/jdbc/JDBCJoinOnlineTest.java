@@ -506,12 +506,11 @@ public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
         assertEquals(6, features.size());
 
         try (SimpleFeatureIterator it = features.features()) {
-            SimpleFeature f;
 
             Set<String> s = new HashSet<>(Arrays.asList("zero", "one", "two"));
 
             assertTrue(it.hasNext());
-            f = it.next();
+            SimpleFeature f = it.next();
             assertEquals(0, ((Number) f.getAttribute(aname("intProperty"))).intValue());
             s.remove(((SimpleFeature) f.getAttribute(tname("ftjoin"))).getAttribute(aname("name")));
 

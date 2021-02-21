@@ -46,14 +46,12 @@ public class VPFDataBase {
      * @param directory A <code>File</code> representing the base directory of the database
      */
     public VPFDataBase(File directory) throws IOException, SchemaException {
-        VPFFile vpfTable;
-        String vpfTableName;
         SimpleFeature feature;
         VPFLibrary library;
 
         // read libraries info
-        vpfTableName = new File(directory, LIBRARY_ATTTIBUTE_TABLE).toString();
-        vpfTable = VPFFileFactory.getInstance().getFile(vpfTableName);
+        String vpfTableName = new File(directory, LIBRARY_ATTTIBUTE_TABLE).toString();
+        VPFFile vpfTable = VPFFileFactory.getInstance().getFile(vpfTableName);
 
         Iterator iter = vpfTable.readAllRows().iterator();
 

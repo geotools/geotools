@@ -2283,7 +2283,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     protected String createTableSQL(SimpleFeatureType featureType, Connection cx) throws Exception {
         // figure out the names and types of the columns
         String[] columnNames = new String[featureType.getAttributeCount()];
-        String[] sqlTypeNames = null;
         Class[] classes = new Class[featureType.getAttributeCount()];
 
         // figure out which columns can not be null
@@ -2304,7 +2303,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             // eventual options
         }
 
-        sqlTypeNames = getSQLTypeNames(featureType.getAttributeDescriptors(), cx);
+        String[] sqlTypeNames = getSQLTypeNames(featureType.getAttributeDescriptors(), cx);
         for (int i = 0; i < sqlTypeNames.length; i++) {
             if (sqlTypeNames[i] == null) {
                 String msg = "Unable to map " + columnNames[i] + "( " + classes[i].getName() + ")";

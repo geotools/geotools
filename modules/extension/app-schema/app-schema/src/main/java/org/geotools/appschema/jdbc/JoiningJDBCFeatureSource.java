@@ -908,7 +908,6 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             StringBuffer sortBySQL,
             int i)
             throws SQLException, FilterToSQLException {
-        boolean hasSortBy;
         // skip if inner join is already done in paging
         getDataStore()
                 .dialect
@@ -948,7 +947,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         if (i < lastSortBy.length - 1) {
             sortBySQL.append(" AND ");
         }
-        hasSortBy = true;
+        boolean hasSortBy = true;
         return hasSortBy;
     }
 

@@ -220,7 +220,6 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
         // final RootNode sourceNode = new RootNode(sourceCoverage, adopt,
         // hints);
 
-        CoverageProcessingNode currNode;
         CoverageProcessingNode prevNode = this.getSource(0);
 
         // /////////////////////////////////////////////////////////////////////
@@ -230,7 +229,7 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
         // /////////////////////////////////////////////////////////////////////
 
         final ChannelSelectionNode csNode = new ChannelSelectionNode();
-        currNode = csNode;
+        CoverageProcessingNode currNode = csNode;
 
         currNode.addSource(prevNode);
         prevNode = currNode;

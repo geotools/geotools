@@ -97,8 +97,7 @@ public final class SampleDimensionTest {
     /** Tests the {@link GridSampleDimension}'s cloning. */
     @Test
     public void testCloningSampleDimension() {
-        GridSampleDimension original;
-        original = test;
+        GridSampleDimension original = test;
         assertEquals("Temperature", original.getDescription().toString());
 
         GridSampleDimension wrapped = new WrappedGridSampleDimension(original);

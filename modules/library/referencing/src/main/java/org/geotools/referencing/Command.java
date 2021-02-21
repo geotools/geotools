@@ -299,8 +299,8 @@ final class Command {
         char[] separator = null;
         for (int i = 0; i < args.length; i++) {
             for (int j = i + 1; j < args.length; j++) {
-                final Set<CoordinateOperation> op;
-                op = factory.createFromCoordinateReferenceSystemCodes(args[i], args[j]);
+                final Set<CoordinateOperation> op =
+                        factory.createFromCoordinateReferenceSystemCodes(args[i], args[j]);
                 for (final CoordinateOperation operation : op) {
                     if (separator == null) {
                         separator = getSeparator();

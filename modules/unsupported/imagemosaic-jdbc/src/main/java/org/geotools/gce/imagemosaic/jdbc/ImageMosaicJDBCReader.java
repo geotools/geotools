@@ -544,10 +544,9 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
             return coverage; // nothing to do
         }
 
-        GridCoverage2D result = null;
         LOGGER.info("Image reprojection necessairy");
         // coverage.show();
-        result =
+        GridCoverage2D result =
                 (GridCoverage2D)
                         Operations.DEFAULT.resample(
                                 coverage,

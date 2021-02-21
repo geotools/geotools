@@ -535,7 +535,6 @@ public class Types {
      */
     public static Name degloseName(String prefixedName, NamespaceSupport namespaces)
             throws IllegalArgumentException {
-        Name name = null;
 
         if (prefixedName == null) {
             return null;
@@ -563,7 +562,7 @@ public class Types {
                             + " [Check the Namespaces section in the config file] ");
         }
 
-        name = Types.typeName(nsUri, localName);
+        Name name = Types.typeName(nsUri, localName);
 
         return name;
     }

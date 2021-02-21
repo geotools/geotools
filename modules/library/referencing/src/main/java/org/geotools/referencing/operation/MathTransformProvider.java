@@ -321,8 +321,7 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
                 /*
                  * Contains sub-group - invokes 'copy' recursively.
                  */
-                final GeneralParameterDescriptor descriptor;
-                descriptor = copy.getDescriptor().descriptor(name);
+                final GeneralParameterDescriptor descriptor = copy.getDescriptor().descriptor(name);
                 if (descriptor instanceof ParameterDescriptorGroup) {
                     final ParameterValueGroup groups =
                             (ParameterValueGroup) descriptor.createValue();
@@ -397,8 +396,7 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
          * TODO: A simplier solution would be to add a 'isDefined' method in GeoAPI,
          *       or something similar.
          */
-        final GeneralParameterDescriptor search;
-        search = group.getDescriptor().descriptor(name);
+        final GeneralParameterDescriptor search = group.getDescriptor().descriptor(name);
         if (search instanceof ParameterDescriptor) {
             for (final GeneralParameterValue candidate : group.values()) {
                 if (search.equals(candidate.getDescriptor())) {

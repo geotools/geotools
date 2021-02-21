@@ -185,9 +185,8 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
         // decoding source
         //
         // ///////////////////////////////////////////////////////////
-        final String filename;
 
-        filename = URLs.urlToFile(urlToUse).getName();
+        final String filename = URLs.urlToFile(urlToUse).getName();
 
         boolean recognized = false;
         boolean extUpperCase = false;
@@ -369,15 +368,11 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
         final double yDim = header.getYDim(); // dy
         final int imageWidth = header.getNCols();
         final int imageHeight = header.getNRows();
-        final double longMin;
-        final double latMax;
-        final double longMax;
-        final double latMin;
 
-        longMin = xULC - xDim / 2.0;
-        latMax = yULC + yDim / 2.0;
-        longMax = longMin + imageWidth * xDim;
-        latMin = latMax - imageHeight * yDim;
+        final double longMin = xULC - xDim / 2.0;
+        final double latMax = yULC + yDim / 2.0;
+        final double longMax = longMin + imageWidth * xDim;
+        final double latMin = latMax - imageHeight * yDim;
 
         // longitude
         env.setRange(0, longMin, longMax);

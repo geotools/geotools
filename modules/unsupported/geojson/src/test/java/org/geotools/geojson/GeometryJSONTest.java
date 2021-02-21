@@ -143,8 +143,7 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
     }
 
     Polygon polygon2() {
-        Polygon poly;
-        poly =
+        Polygon poly =
                 gf.createPolygon(
                         gf.createLinearRing(
                                 array(
@@ -170,8 +169,7 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
     }
 
     Polygon polygon3() {
-        Polygon poly;
-        poly =
+        Polygon poly =
                 gf.createPolygon(
                         gf.createLinearRing(
                                 array(

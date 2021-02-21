@@ -269,9 +269,8 @@ public class MapLayerTable extends JPanel {
 
         JPanel btnPanel = new JPanel();
         Icon showIcon = MapLayerTableCellRenderer.LayerControlItem.VISIBLE.getIcon();
-        JButton btn = null;
 
-        btn = new JButton(showIcon);
+        JButton btn = new JButton(showIcon);
         btn.setToolTipText(SHOW_ALL_LAYERS);
         btn.addActionListener(
                 new ActionListener() {

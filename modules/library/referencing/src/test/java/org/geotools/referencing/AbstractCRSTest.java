@@ -212,12 +212,10 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
     /** Makes sure that the authority factory has the proper name. */
     @Test
     public void testAuthority() {
-        CRSAuthorityFactory factory;
-        Citation authority;
 
         // Tests the official factory.
-        factory = ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null);
-        authority = factory.getAuthority();
+        CRSAuthorityFactory factory = ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null);
+        Citation authority = factory.getAuthority();
         assertNotNull(authority);
         assertEquals("European Petroleum Survey Group", authority.getTitle().toString(Locale.US));
         assertTrue(Citations.identifierMatches(authority, "EPSG"));
@@ -232,11 +230,9 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
     /** Tests the vendor name. */
     @Test
     public void testVendor() {
-        CRSAuthorityFactory factory;
-        Citation vendor;
 
-        factory = new OrderedAxisAuthorityFactory("EPSG", null, null);
-        vendor = factory.getVendor();
+        CRSAuthorityFactory factory = new OrderedAxisAuthorityFactory("EPSG", null, null);
+        Citation vendor = factory.getVendor();
         assertNotNull(vendor);
         assertEquals("Geotools", vendor.getTitle().toString(Locale.US));
         assertFalse(Citations.identifierMatches(vendor, "EPSG"));

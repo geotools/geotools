@@ -305,10 +305,8 @@ public class Resample extends Operation2D {
              * target image should have the same size). Then create again a new grid geometry,
              * this time with the target envelope.
              */
-            GridEnvelope gridRange;
             try {
-                final GeneralEnvelope transformed;
-                transformed =
+                final GeneralEnvelope transformed =
                         CRS.transform(
                                 CRS.getCoordinateOperationFactory(true)
                                         .createOperation(targetCRS, reducedCRS),
@@ -330,7 +328,7 @@ public class Resample extends Operation2D {
             } // Will use the grid range from the original geometry,
             // which will result in keeping the same image size.
 
-            gridRange = gridGeometry.getGridRange();
+            GridEnvelope gridRange = gridGeometry.getGridRange();
             gridGeometry = new GridGeometry2D(gridRange, target);
         }
         return gridGeometry;

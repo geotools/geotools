@@ -82,8 +82,7 @@ public class CSVAttributesOnlyStrategy extends CSVStrategy {
     public SimpleFeature decode(String recordId, String[] csvRecord) {
         SimpleFeatureType featureType = getFeatureType();
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureType);
-        String[] headers;
-        headers = csvFileState.getCSVHeaders();
+        String[] headers = csvFileState.getCSVHeaders();
         for (int i = 0; i < headers.length; i++) {
             String header = headers[i];
             if (i < csvRecord.length) {

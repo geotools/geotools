@@ -72,10 +72,9 @@ public class VPFFileFeatureReader implements FeatureReader<SimpleFeatureType, Si
      * @see org.geotools.data.FeatureReader#hasNext()
      */
     public boolean hasNext() throws IOException {
-        boolean result = false;
 
         // Ask the stream if it has space for another object
-        result = file != null ? file.hasNext() : false;
+        boolean result = file != null ? file.hasNext() : false;
         return result;
     }
 

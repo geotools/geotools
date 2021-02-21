@@ -87,14 +87,12 @@ public final class CodeListTest {
     /** Ensures that the name declared in the code list match the field names. */
     private static void assertValid(final Class<? extends CodeList> classe) {
         Method method;
-        int modifiers;
-        String fullName;
         /*
          * Gets the values() method, which should public and static.
          * Then gets every CodeList instances returned by values().
          */
         final String className = classe.getName();
-        fullName = className + ".values()";
+        String fullName = className + ".values()";
         try {
             method = classe.getMethod("values", (Class[]) null);
         } catch (NoSuchMethodException e) {
@@ -102,7 +100,7 @@ public final class CodeListTest {
             return;
         }
         assertNotNull(method);
-        modifiers = method.getModifiers();
+        int modifiers = method.getModifiers();
         assertTrue(fullName + " is not public.", Modifier.isPublic(modifiers));
         assertTrue(fullName + " is not static.", Modifier.isStatic(modifiers));
         final CodeList[] values;

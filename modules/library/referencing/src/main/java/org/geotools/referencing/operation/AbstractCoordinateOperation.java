@@ -209,11 +209,10 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
             final CoordinateReferenceSystem targetCRS,
             final MathTransform transform) {
         super(properties, subProperties, LOCALIZABLES);
-        PositionalAccuracy[] positionalAccuracy;
         domainOfValidity = (Extent) subProperties.get(DOMAIN_OF_VALIDITY_KEY);
         scope = (InternationalString) subProperties.get(SCOPE_KEY);
         operationVersion = (String) subProperties.get(OPERATION_VERSION_KEY);
-        positionalAccuracy =
+        PositionalAccuracy[] positionalAccuracy =
                 (PositionalAccuracy[]) subProperties.get(COORDINATE_OPERATION_ACCURACY_KEY);
         if (positionalAccuracy == null || positionalAccuracy.length == 0) {
             positionalAccuracy = null;

@@ -104,8 +104,6 @@ final class OverviewsController {
         }
 
         // the requested resolutions
-        double requestedScaleFactorX;
-        double requestedScaleFactorY;
         double virtualRequestedScaleFactorX;
         double virtualRequestedScaleFactorY;
         double virtualRequestedScaleFactor = Double.NaN;
@@ -131,8 +129,8 @@ final class OverviewsController {
             return 0;
         }
 
-        requestedScaleFactorX = reqx / max.resolutionX;
-        requestedScaleFactorY = reqy / max.resolutionY;
+        double requestedScaleFactorX = reqx / max.resolutionX;
+        double requestedScaleFactorY = reqy / max.resolutionY;
 
         final int leastReduceAxis = requestedScaleFactorX <= requestedScaleFactorY ? 0 : 1;
         final double requestedScaleFactor =

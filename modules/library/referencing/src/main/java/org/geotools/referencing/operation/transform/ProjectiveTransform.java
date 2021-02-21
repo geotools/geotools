@@ -248,8 +248,7 @@ public class ProjectiveTransform extends AbstractMathTransform
      * @return A copy of the parameter values for this math transform.
      */
     static ParameterValueGroup getParameterValues(final Matrix matrix) {
-        final MatrixParameters values;
-        values = (MatrixParameters) ProviderAffine.PARAMETERS.createValue();
+        final MatrixParameters values = (MatrixParameters) ProviderAffine.PARAMETERS.createValue();
         values.setMatrix(matrix);
         return values;
     }
@@ -597,8 +596,8 @@ public class ProjectiveTransform extends AbstractMathTransform
          */
         protected MathTransform createMathTransform(final ParameterValueGroup values)
                 throws ParameterNotFoundException {
-            final MathTransform transform;
-            transform = create(((MatrixParameterDescriptors) getParameters()).getMatrix(values));
+            final MathTransform transform =
+                    create(((MatrixParameterDescriptors) getParameters()).getMatrix(values));
             return new Delegate(
                     transform,
                     getProvider(transform.getSourceDimensions(), transform.getTargetDimensions()));

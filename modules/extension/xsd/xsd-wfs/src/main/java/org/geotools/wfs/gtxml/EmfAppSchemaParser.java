@@ -85,11 +85,10 @@ class EmfAppSchemaParser {
     public static SimpleFeatureType parse(
             URL schemaLocation, QName featureName, CoordinateReferenceSystem crs)
             throws IOException {
-        Configuration configuration;
         // use GML3 application Schema by default
         String namespaceURI = featureName.getNamespaceURI();
         String uri = schemaLocation.toExternalForm();
-        configuration = new ApplicationSchemaConfiguration(namespaceURI, uri);
+        Configuration configuration = new ApplicationSchemaConfiguration(namespaceURI, uri);
 
         XSDElementDeclaration elementDecl = parseFeatureType(featureName, configuration);
         return parse(configuration, elementDecl, crs);
@@ -170,8 +169,8 @@ class EmfAppSchemaParser {
             throw new DataSourceException("Error parsing feature type for " + featureTypeName, e);
         }
 
-        XSDElementDeclaration elementDeclaration;
-        elementDeclaration = schemaIndex.getElementDeclaration(featureTypeName);
+        XSDElementDeclaration elementDeclaration =
+                schemaIndex.getElementDeclaration(featureTypeName);
         schemaIndex.destroy();
         return elementDeclaration;
     }

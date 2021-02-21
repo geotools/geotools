@@ -101,9 +101,8 @@ public class FilterExamples {
     public void id() {
         // id start
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-        Filter filter;
 
-        filter =
+        Filter filter =
                 ff.id(
                         ff.featureId("CITY.98734597823459687235"),
                         ff.featureId("CITY.98734592345235823474"));
@@ -167,13 +166,12 @@ public class FilterExamples {
     public void idSet() {
         // idSet start
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-        Filter filter;
 
         Set<FeatureId> selected = new HashSet<>();
         selected.add(ff.featureId("CITY.98734597823459687235"));
         selected.add(ff.featureId("CITY.98734592345235823474"));
 
-        filter = ff.id(selected);
+        Filter filter = ff.id(selected);
         // idSet end
     }
 
@@ -241,41 +239,37 @@ public class FilterExamples {
 
     public void matchAction() {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-        Filter filter;
         // matchAction start
-        filter = ff.greater(ff.property("child/age"), ff.literal(12), true, MatchAction.ALL);
+        Filter filter = ff.greater(ff.property("child/age"), ff.literal(12), true, MatchAction.ALL);
         // matchAction end
     }
 
     public void matchActionAny() {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-        Filter filter;
         // matchActionAny start
         List<Integer> ages = Arrays.asList(new Integer[] {7, 8, 10, 15});
 
-        filter = ff.greater(ff.literal(ages), ff.literal(12), false, MatchAction.ANY);
+        Filter filter = ff.greater(ff.literal(ages), ff.literal(12), false, MatchAction.ANY);
         System.out.println("Any: " + filter.evaluate(null)); // prints Any: true
         // matchActionAny end
     }
 
     public void matchActionAll() {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-        Filter filter;
         // matchActionAll start
         List<Integer> ages = Arrays.asList(new Integer[] {7, 8, 10, 15});
 
-        filter = ff.greater(ff.literal(ages), ff.literal(12), false, MatchAction.ALL);
+        Filter filter = ff.greater(ff.literal(ages), ff.literal(12), false, MatchAction.ALL);
         System.out.println("All: " + filter.evaluate(null)); // prints All: false
         // matchActionAll end
     }
 
     public void matchActionOne() {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-        Filter filter;
         // matchActionOne start
         List<Integer> ages = Arrays.asList(new Integer[] {7, 8, 10, 15});
 
-        filter = ff.greater(ff.literal(ages), ff.literal(12), false, MatchAction.ONE);
+        Filter filter = ff.greater(ff.literal(ages), ff.literal(12), false, MatchAction.ONE);
         System.out.println("One: " + filter.evaluate(null)); // prints One: true
         // matchActionOne end
     }

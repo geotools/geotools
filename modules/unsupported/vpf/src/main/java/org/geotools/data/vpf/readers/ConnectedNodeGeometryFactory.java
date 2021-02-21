@@ -52,7 +52,6 @@ public class ConnectedNodeGeometryFactory extends VPFGeometryFactory implements 
      */
     public synchronized Geometry buildGeometry(VPFFeatureClass featureClass, SimpleFeature values)
             throws SQLException, IOException, IllegalAttributeException {
-        Geometry result = null;
         int nodeId = Integer.parseInt(values.getAttribute("cnd_id").toString());
         //        VPFFeatureType featureType = (VPFFeatureType)values.getFeatureType();
 
@@ -83,7 +82,7 @@ public class ConnectedNodeGeometryFactory extends VPFGeometryFactory implements 
                 tileDirectory.concat(File.separator).concat(CONNECTED_NODE_PRIMITIVE);
         VPFFile nodeFile = VPFFileFactory.getInstance().getFile(nodeTableName);
         SimpleFeature row = nodeFile.getRowFromId("id", nodeId);
-        result = (Geometry) row.getAttribute("coordinate");
+        Geometry result = (Geometry) row.getAttribute("coordinate");
         return result;
     }
 }

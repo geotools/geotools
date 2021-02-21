@@ -770,8 +770,7 @@ public class MemoryDataStoreTest extends DataTestCase {
             SimpleFeature[] ADD = new SimpleFeature[ORIGIONAL.length + 1];
             SimpleFeature[] FINAL = new SimpleFeature[ORIGIONAL.length];
             int i;
-            int index;
-            index = 0;
+            int index = 0;
 
             for (i = 0; i < ORIGIONAL.length; i++) {
                 feature = ORIGIONAL[i];
@@ -1242,8 +1241,7 @@ public class MemoryDataStoreTest extends DataTestCase {
             SimpleFeature[] ADD = new SimpleFeature[ORIGIONAL.length + 1];
             SimpleFeature[] FINAL = new SimpleFeature[ORIGIONAL.length];
             int i;
-            int index;
-            index = 0;
+            int index = 0;
 
             for (i = 0; i < ORIGIONAL.length; i++) {
                 feature = ORIGIONAL[i];

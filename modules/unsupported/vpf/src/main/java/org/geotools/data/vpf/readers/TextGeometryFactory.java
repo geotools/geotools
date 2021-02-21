@@ -48,8 +48,6 @@ public class TextGeometryFactory extends VPFGeometryFactory implements FileConst
     public synchronized Geometry buildGeometry(VPFFeatureClass featureClass, SimpleFeature values)
             throws SQLException, IOException, IllegalAttributeException {
 
-        Geometry result = null;
-
         int textId = Integer.parseInt(values.getAttribute("txt_id").toString());
 
         // Get the right text table
@@ -76,7 +74,7 @@ public class TextGeometryFactory extends VPFGeometryFactory implements FileConst
         String textTableName = tileDirectory.concat(File.separator).concat(TEXT_PRIMITIVE);
         VPFFile textFile = VPFFileFactory.getInstance().getFile(textTableName);
         SimpleFeature row = textFile.getRowFromId("id", textId);
-        result = (Geometry) row.getAttribute("shape_line");
+        Geometry result = (Geometry) row.getAttribute("shape_line");
 
         return result;
     }

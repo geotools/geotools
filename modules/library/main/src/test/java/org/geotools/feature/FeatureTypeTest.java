@@ -136,9 +136,8 @@ public class FeatureTypeTest extends DataTestCase {
     @Test
     public void testAncestors() throws Exception {
         URI uri = new URI("http://www.geotools.org/example");
-        SimpleFeatureTypeBuilder tb;
 
-        tb = new SimpleFeatureTypeBuilder();
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("A");
         tb.setNamespaceURI(uri);
         final SimpleFeatureType typeA = tb.buildFeatureType();

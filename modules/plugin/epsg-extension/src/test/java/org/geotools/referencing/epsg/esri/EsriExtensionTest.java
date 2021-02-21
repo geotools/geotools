@@ -142,11 +142,10 @@ public class EsriExtensionTest {
                 asString, identifiers.contains(new NamedIdentifier(Citations.EPSG, "30591")));
 
         final Iterator iterator = identifiers.iterator();
-        Identifier identifier;
 
         // Checks the first identifier.
         Assert.assertTrue(iterator.hasNext());
-        identifier = (Identifier) iterator.next();
+        Identifier identifier = (Identifier) iterator.next();
         Assert.assertTrue(identifier instanceof NamedIdentifier);
         Assert.assertEquals(Citations.ESRI, identifier.getAuthority());
         Assert.assertEquals("30591", identifier.getCode());

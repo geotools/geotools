@@ -80,8 +80,8 @@ public class OrderedAxisAuthorityFactoryTest {
 
     /** Returns the ordered axis factory for the specified set of hints. */
     private static OrderedAxisAuthorityFactory getFactory(final Hints hints) {
-        CRSAuthorityFactory factory;
-        factory = ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", hints);
+        CRSAuthorityFactory factory =
+                ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", hints);
 
         Assert.assertTrue(factory.getClass().toString(), factory instanceof LongitudeFirstFactory);
         final LongitudeFirstFactory asLongitudeFirst = (LongitudeFirstFactory) factory;
@@ -114,8 +114,7 @@ public class OrderedAxisAuthorityFactoryTest {
     @Test
     public void testRegistration() {
         final Hints hints = new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
-        OrderedAxisAuthorityFactory factory;
-        factory = getFactory(hints);
+        OrderedAxisAuthorityFactory factory = getFactory(hints);
         Assert.assertFalse(factory.forceStandardDirections);
         Assert.assertFalse(factory.forceStandardUnits);
 
@@ -157,9 +156,8 @@ public class OrderedAxisAuthorityFactoryTest {
          *    - The "official" axis order must have precedence over the modified one.
          *    - The hints are correctly understood by FactoryFinder.
          */
-        final AbstractAuthorityFactory factory0, factory1;
         final Hints hints = new Hints(Hints.CRS_AUTHORITY_FACTORY, AbstractAuthorityFactory.class);
-        factory0 =
+        final AbstractAuthorityFactory factory0 =
                 (AbstractAuthorityFactory)
                         ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", hints);
         Assert.assertFalse(factory0 instanceof OrderedAxisAuthorityFactory);
@@ -167,7 +165,7 @@ public class OrderedAxisAuthorityFactoryTest {
         hints.put(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
         hints.put(Hints.FORCE_STANDARD_AXIS_DIRECTIONS, Boolean.TRUE);
         hints.put(Hints.FORCE_STANDARD_AXIS_UNITS, Boolean.TRUE);
-        factory1 =
+        final AbstractAuthorityFactory factory1 =
                 (AbstractAuthorityFactory)
                         ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", hints);
         Assert.assertTrue(factory1 instanceof LongitudeFirstFactory);
@@ -175,19 +173,15 @@ public class OrderedAxisAuthorityFactoryTest {
          * The local variables to be used for all remaining tests
          * (usefull to setup in the debugger).
          */
-        String code;
-        CoordinateReferenceSystem crs0, crs1;
         CoordinateOperationFactory opFactory =
                 ReferencingFactoryFinder.getCoordinateOperationFactory(null);
-        MathTransform mt;
-        Matrix matrix;
         /*
          * Tests a WGS84 geographic CRS (2D) with (NORTH, EAST) axis directions.
          * The factory should reorder the axis with no more operation than an axis swap.
          */
-        code = "4326";
-        crs0 = factory0.createCoordinateReferenceSystem(code);
-        crs1 = factory1.createCoordinateReferenceSystem(code);
+        String code = "4326";
+        CoordinateReferenceSystem crs0 = factory0.createCoordinateReferenceSystem(code);
+        CoordinateReferenceSystem crs1 = factory1.createCoordinateReferenceSystem(code);
         final CoordinateReferenceSystem cacheTest = crs1;
         Assert.assertNotSame(crs0, crs1);
         Assert.assertNotSame(crs0.getCoordinateSystem(), crs1.getCoordinateSystem());
@@ -200,10 +194,10 @@ public class OrderedAxisAuthorityFactoryTest {
         } else {
             Assert.assertEquals(crs0.getIdentifiers(), crs1.getIdentifiers());
         }
-        mt = opFactory.createOperation(crs0, crs1).getMathTransform();
+        MathTransform mt = opFactory.createOperation(crs0, crs1).getMathTransform();
         Assert.assertFalse(mt.isIdentity());
         Assert.assertTrue(mt instanceof LinearTransform);
-        matrix = ((LinearTransform) mt).getMatrix();
+        Matrix matrix = ((LinearTransform) mt).getMatrix();
         Assert.assertEquals(
                 new GeneralMatrix(
                         new double[][] {

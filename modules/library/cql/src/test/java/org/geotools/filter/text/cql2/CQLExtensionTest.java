@@ -217,14 +217,11 @@ public class CQLExtensionTest {
      */
     @Test
     public void testFuncitionExpression() throws Exception {
-        Expression arg1;
-        Expression arg2;
-        Expression resultExpr;
 
         final String cqlExpression = "strConcat(A, B)";
 
         // simple attribute as argument
-        resultExpr = CQL.toExpression(cqlExpression);
+        Expression resultExpr = CQL.toExpression(cqlExpression);
 
         Assert.assertNotNull(resultExpr);
         Assert.assertTrue(resultExpr instanceof Function);
@@ -232,11 +229,11 @@ public class CQLExtensionTest {
         Function function1 = (Function) resultExpr;
         Assert.assertEquals(2, function1.getParameters().size());
 
-        arg1 = function1.getParameters().get(0);
+        Expression arg1 = function1.getParameters().get(0);
         Assert.assertTrue(arg1 instanceof PropertyName);
         Assert.assertEquals("A", ((PropertyName) arg1).getPropertyName());
 
-        arg2 = function1.getParameters().get(1);
+        Expression arg2 = function1.getParameters().get(1);
         Assert.assertTrue(arg2 instanceof PropertyName);
         Assert.assertEquals("B", ((PropertyName) arg2).getPropertyName());
 
@@ -285,12 +282,10 @@ public class CQLExtensionTest {
      */
     @Test
     public void testFunctionComposition() throws Exception {
-        String cqlExpression;
-        Expression expression;
 
         // Test 1
-        cqlExpression = "strConcat(A, abs(B))";
-        expression = CQL.toExpression(cqlExpression);
+        String cqlExpression = "strConcat(A, abs(B))";
+        Expression expression = CQL.toExpression(cqlExpression);
 
         // Test 2
         cqlExpression = "strConcat(A, strConcat(B, strConcat(C, '.')))";
@@ -408,16 +403,13 @@ public class CQLExtensionTest {
      */
     @Test
     public void testUnaryExpressionFunction() throws Exception {
-        Filter result;
-        Filter expected;
-        String cqlUnaryExp;
 
-        cqlUnaryExp = FilterCQLSample.FILTER_WITH_FUNCTION_ABS;
-        result = CQL.toFilter(cqlUnaryExp);
+        String cqlUnaryExp = FilterCQLSample.FILTER_WITH_FUNCTION_ABS;
+        Filter result = CQL.toFilter(cqlUnaryExp);
 
         Assert.assertNotNull("filter expected", result);
 
-        expected = FilterCQLSample.getSample(cqlUnaryExp);
+        Filter expected = FilterCQLSample.getSample(cqlUnaryExp);
 
         Assert.assertEquals("Equals Functions is expected", expected, result);
 

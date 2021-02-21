@@ -391,10 +391,8 @@ public class SqlServerBinaryReader {
     }
 
     private void readShapes() throws IOException {
-        int numberOfShapes;
-        Shape[] shapesMetadata;
-        numberOfShapes = dis.readInt();
-        shapesMetadata = new Shape[numberOfShapes];
+        int numberOfShapes = dis.readInt();
+        Shape[] shapesMetadata = new Shape[numberOfShapes];
         for (int i = 0; i < numberOfShapes; i++) {
             int parentOffset = dis.readInt();
             int figureOffset = dis.readInt();
@@ -405,10 +403,8 @@ public class SqlServerBinaryReader {
     }
 
     private void readFigures() throws IOException {
-        int numberOfFigures;
-        Figure[] figuresMetadata;
-        numberOfFigures = dis.readInt();
-        figuresMetadata = new Figure[numberOfFigures];
+        int numberOfFigures = dis.readInt();
+        Figure[] figuresMetadata = new Figure[numberOfFigures];
         for (int i = 0; i < numberOfFigures; i++) {
             byte figureAttribute = dis.readByte();
             int figurePointOffset = dis.readInt();

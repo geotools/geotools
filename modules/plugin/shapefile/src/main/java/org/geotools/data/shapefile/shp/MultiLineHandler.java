@@ -77,12 +77,10 @@ public class MultiLineHandler implements ShapeHandler {
     public int getLength(Object geometry) {
         MultiLineString multi = (MultiLineString) geometry;
 
-        int numlines;
-        int numpoints;
         int length;
 
-        numlines = multi.getNumGeometries();
-        numpoints = multi.getNumPoints();
+        int numlines = multi.getNumGeometries();
+        int numpoints = multi.getNumPoints();
 
         if (shapeType == ShapeType.ARC) {
             length = 44 + (4 * numlines) + (numpoints * 16);

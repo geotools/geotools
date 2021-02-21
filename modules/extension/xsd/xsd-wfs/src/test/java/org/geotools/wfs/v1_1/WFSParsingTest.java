@@ -310,8 +310,8 @@ public class WFSParsingTest {
             List featureCollections = fc.getFeature();
             assertEquals(1, featureCollections.size());
 
-            SimpleFeatureCollection featureCollection;
-            featureCollection = (SimpleFeatureCollection) featureCollections.get(0);
+            SimpleFeatureCollection featureCollection =
+                    (SimpleFeatureCollection) featureCollections.get(0);
             assertEquals(5, featureCollection.size());
             assertNotNull(featureCollection.getBounds().getCoordinateReferenceSystem());
 

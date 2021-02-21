@@ -145,7 +145,6 @@ public class MaskOverviewProvider {
         SourceSPIProvider ovrProvider = null;
 
         // Getting number of Overviews
-        int numOverviews = 0;
         if (hasDatasetLayout) {
             numInternalOverviews = layout.getNumInternalOverviews();
             // layout.getNumExternalOverviews() may return -1 when no external file is present
@@ -175,7 +174,7 @@ public class MaskOverviewProvider {
                                         + 1;
             }
         }
-        numOverviews = numInternalOverviews + numExternalOverviews;
+        int numOverviews = numInternalOverviews + numExternalOverviews;
         if (numOverviews < 0) {
             numOverviews = 0;
         }
@@ -269,7 +268,6 @@ public class MaskOverviewProvider {
     private SourceSPIProvider externalOverviewsCheck(
             URL inputFile, ImageInputStreamSpi streamSpi, ImageReaderSpi readerSpi)
             throws IOException {
-        SourceSPIProvider ovrProvider;
         ovrURL = new URL(inputFile.toString() + OVR_EXTENSION);
         if (hasDatasetLayout && layout.getExternalOverviews() != null) {
             ovrURL = URLs.fileToUrl(layout.getExternalOverviews());
@@ -277,7 +275,7 @@ public class MaskOverviewProvider {
         // Creating overview file URL
         overviewStreamSpi = streamSpi == null ? getInputStreamSPIFromURL(ovrURL) : streamSpi;
         ImageInputStream ovrStream = null;
-        ovrProvider = sourceSpiProvider.getCompatibleSourceProvider(ovrURL);
+        SourceSPIProvider ovrProvider = sourceSpiProvider.getCompatibleSourceProvider(ovrURL);
         try {
             ovrStream = ovrProvider.getStream();
             if (ovrStream == null) {

@@ -64,17 +64,13 @@ public class MBFilterTest {
 
     @Test
     public void type() throws ParseException {
-        JSONArray json;
-        MBFilter mbfilter;
-        Filter filter;
-        Set<SemanticType> types;
 
         // common $type examples
-        json = array("['in', '$type','LineString']");
-        mbfilter = new MBFilter(json);
-        types = mbfilter.semanticTypeIdentifiers();
+        JSONArray json = array("['in', '$type','LineString']");
+        MBFilter mbfilter = new MBFilter(json);
+        Set<SemanticType> types = mbfilter.semanticTypeIdentifiers();
         assertTrue(types.contains(SemanticType.LINE) && types.size() == 1);
-        filter = mbfilter.filter();
+        Filter filter = mbfilter.filter();
         assertEquals("dimension(geometry()) IN (1)", ECQL.toCQL(filter));
 
         json = array("['in', '$type','Polygon']");
@@ -131,13 +127,10 @@ public class MBFilterTest {
 
     @Test
     public void id() throws ParseException {
-        JSONArray json;
-        MBFilter mbfilter;
-        Filter filter;
 
-        json = array("['has', '$id','foo.1']");
-        mbfilter = new MBFilter(json);
-        filter = mbfilter.filter();
+        JSONArray json = array("['has', '$id','foo.1']");
+        MBFilter mbfilter = new MBFilter(json);
+        Filter filter = mbfilter.filter();
         assertEquals("IN ('foo.1')", ECQL.toCQL(filter));
 
         json = array("['in', '$id','foo.1','foo.2']");
@@ -172,12 +165,10 @@ public class MBFilterTest {
 
     @Test
     public void comparisonFilters() throws ParseException {
-        JSONArray json;
-        MBFilter mbfilter;
 
         // being really quick here, no need to check null / instanceof if we just cast
-        json = array("['==', 'key', 'value']");
-        mbfilter = new MBFilter(json);
+        JSONArray json = array("['==', 'key', 'value']");
+        MBFilter mbfilter = new MBFilter(json);
         PropertyIsEqualTo equal = (PropertyIsEqualTo) mbfilter.filter();
         assertEquals("key", ((PropertyName) equal.getExpression1()).getPropertyName());
         assertEquals("value", ((Literal) equal.getExpression2()).getValue());
@@ -213,11 +204,9 @@ public class MBFilterTest {
 
     @Test
     public void comparisonFilterExpressions() throws ParseException {
-        JSONArray json;
-        MBFilter mbfilter;
 
-        json = array("['==', ['get', 'key'], 'value']");
-        mbfilter = new MBFilter(json);
+        JSONArray json = array("['==', ['get', 'key'], 'value']");
+        MBFilter mbfilter = new MBFilter(json);
         PropertyIsEqualTo equal = (PropertyIsEqualTo) mbfilter.filter();
         assertEquals("key", ((PropertyName) equal.getExpression1()).getPropertyName());
         assertEquals("value", ((Literal) equal.getExpression2()).getValue());

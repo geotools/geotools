@@ -1136,13 +1136,12 @@ public class XSISimpleTypes {
             if ((value.length == 1)
                     && (value[0].getValue() != null)
                     && (!"".equals(value[0].getValue()))) {
-                int year;
                 int month;
                 int day;
                 int hour;
                 int minute;
                 int second;
-                year = month = day = hour = minute = second = 0;
+                int year = month = day = hour = minute = second = 0;
 
                 int index = 0;
                 java.lang.String svalue = (java.lang.String) value[0].getValue();

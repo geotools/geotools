@@ -631,12 +631,11 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             throws SchemaException, IOException {
         Utilities.ensureNonNull("typeSpec", typeSpec);
         Utilities.ensureNonNull("identification", identification);
-        String typeName = null;
         checkStore();
         final SimpleFeatureType featureType = DataUtilities.createType(identification, typeSpec);
         checkMosaicSchema(featureType);
         getTileIndexStore().createSchema(featureType);
-        typeName = featureType.getTypeName();
+        String typeName = featureType.getTypeName();
         if (typeName != null) {
             addTypeName(typeName, true);
         }

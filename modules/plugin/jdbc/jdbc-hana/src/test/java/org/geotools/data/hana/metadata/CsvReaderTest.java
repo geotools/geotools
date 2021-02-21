@@ -31,9 +31,8 @@ public class CsvReaderTest {
         String csv = "a,\"b\",\"c\"\"d\"\n\",\",\u00e4,";
         InputStream is = new ByteArrayInputStream(csv.getBytes("UTF-8"));
         CsvReader reader = new CsvReader(is);
-        List<String> row;
 
-        row = reader.readNextRow();
+        List<String> row = reader.readNextRow();
         Assert.assertEquals(3, row.size());
         Assert.assertEquals("a", row.get(0));
         Assert.assertEquals("b", row.get(1));

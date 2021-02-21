@@ -241,8 +241,7 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
         AppSchemaDataAccessDTO config = configReader.parse(configFileUrl);
 
         // generate the set of mappings needed to build the application-schema datastore
-        Set<FeatureTypeMapping> mappings;
-        mappings = AppSchemaDataAccessConfigurator.buildMappings(config);
+        Set<FeatureTypeMapping> mappings = AppSchemaDataAccessConfigurator.buildMappings(config);
         AppSchemaDataAccess datastore = new AppSchemaDataAccess(mappings);
 
         return datastore;

@@ -20,6 +20,7 @@ package org.geotools.data.complex;
 import static org.geotools.data.complex.util.ComplexFeatureConstants.DEFAULT_GEOMETRY_LOCAL_NAME;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -103,6 +104,15 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      * longer needed by any accessible data access.
      */
     boolean hidden = false;
+
+    /** URL of the data access */
+    URL url;
+
+    /**
+     * URL of data access that included this data access (for hidden data accesses). Should be null
+     * if hidden is false.
+     */
+    URL parentUrl;
 
     /**
      * Constructor.
@@ -880,5 +890,13 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
             }
         }
         return null;
+    }
+
+    public URL getUrl() {
+        return url;
+    }
+
+    public URL getParentUrl() {
+        return parentUrl;
     }
 }

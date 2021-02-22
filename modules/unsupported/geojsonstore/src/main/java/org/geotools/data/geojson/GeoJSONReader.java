@@ -160,7 +160,6 @@ public class GeoJSONReader implements AutoCloseable {
         } catch (IOException e) {
             throw new RuntimeException("problem parsing Geometry", e);
         }
-
     }
 
     public SimpleFeatureCollection getFeatures() throws IOException {

@@ -41,7 +41,7 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-public class TestAxisOrder {
+public class AxisOrderTest {
 
     private static DataStore store;
     private static SimpleFeatureCollection features;
@@ -52,7 +52,7 @@ public class TestAxisOrder {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         URL states = TestData.url("shapes/statepop.shp");
-        states = org.geotools.test.TestData.url(TestAxisOrder.class, "atlas.shp");
+        states = org.geotools.test.TestData.url(AxisOrderTest.class, "atlas.shp");
         Map<String, Object> params = new HashMap<>();
         params.put(ShapefileDataStoreFactory.URLP.key, states);
         try {
@@ -73,7 +73,7 @@ public class TestAxisOrder {
         } catch (FactoryException e) {
             e.printStackTrace();
         }
-        File parks = org.geotools.test.TestData.file(TestAxisOrder.class, "national-parks.shp");
+        File parks = org.geotools.test.TestData.file(AxisOrderTest.class, "national-parks.shp");
         parkStore = FileDataStoreFinder.getDataStore(parks);
         directory = File.createTempFile("geojson", "");
         boolean exists = directory.exists();

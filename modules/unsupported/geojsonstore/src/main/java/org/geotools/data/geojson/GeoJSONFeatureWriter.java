@@ -56,9 +56,11 @@ public class GeoJSONFeatureWriter
     private boolean appending = false;
 
     private int nextRow = 0;
+    private boolean writeBounds;
 
     public GeoJSONFeatureWriter(ContentEntry entry, Query query) throws IOException {
         this.state = entry.getState(Transaction.AUTO_COMMIT);
+        this.writeBounds = ((GeoJSONDataStore) entry.getDataStore()).isWriteBounds();
         String typeName = query.getTypeName();
         File file = URLs.urlToFile(((GeoJSONDataStore) state.getEntry().getDataStore()).getUrl());
         File directory = file.getParentFile();
@@ -66,6 +68,7 @@ public class GeoJSONFeatureWriter
                 File.createTempFile(typeName + System.currentTimeMillis(), "geojson", directory);
 
         this.writer = new GeoJSONWriter(new FileOutputStream(this.temp));
+        this.writer.setEncodeFeatureCollectionBounds(writeBounds);
         this.delegate = new GeoJSONFeatureReader(state, query);
     }
 
@@ -155,5 +158,10 @@ public class GeoJSONFeatureWriter
         } finally {
             temp.delete();
         }
+    }
+
+    /** @param writeBounds */
+    public void setWriteBounds(boolean writeBounds) {
+        this.writeBounds = writeBounds;
     }
 }

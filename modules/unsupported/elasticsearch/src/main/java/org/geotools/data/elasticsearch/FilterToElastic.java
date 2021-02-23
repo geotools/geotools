@@ -31,9 +31,9 @@ import java.util.Map;
 import java.util.logging.Logger;
 import org.elasticsearch.common.joda.Joda;
 import org.geotools.data.Query;
+import org.geotools.data.geojson.GeoJSONWriter;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.Capabilities;
-import org.geotools.geojson.geom.GeometryJSON;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
@@ -1167,7 +1167,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
             currentGeometry = factory.createLineString(coordinates);
         }
 
-        final String geoJson = new GeometryJSON().toString(currentGeometry);
+        final String geoJson = GeoJSONWriter.toGeoJSON(currentGeometry);
         currentShapeBuilder = mapReader.readValue(geoJson);
     }
 

@@ -45,6 +45,8 @@ public class GeoJSONDataStore extends ContentDataStore implements FileDataStore 
     private URL url;
     private CoordinateReferenceSystem crs = DefaultGeographicCRS.WGS84;
     private NameImpl typeName;
+    private boolean writeBounds;
+    private boolean quick = true;
 
     public GeoJSONDataStore(URL url) {
         this.setUrl(url);
@@ -70,14 +72,20 @@ public class GeoJSONDataStore extends ContentDataStore implements FileDataStore 
                 }
             }
             if (f.canWrite()) {
-                return new GeoJSONFeatureStore(entry, Query.ALL);
+                GeoJSONFeatureStore store = new GeoJSONFeatureStore(entry, Query.ALL);
+                store.setWriteBounds(writeBounds);
+                return store;
             }
         }
+
         return new GeoJSONFeatureSource(entry, Query.ALL);
     }
 
     @Override
     protected List<Name> createTypeNames() throws IOException {
+        if (schema != null) {
+            return Collections.singletonList(new NameImpl(schema.getTypeName()));
+        }
         String name = new File(getUrl().getFile()).getName();
         int index = name.lastIndexOf('.');
         if (index > 0) {
@@ -96,6 +104,9 @@ public class GeoJSONDataStore extends ContentDataStore implements FileDataStore 
 
     @Override
     public SimpleFeatureType getSchema() throws IOException {
+        if (schema == null) {
+            schema = getSchema(typeName);
+        }
         return schema;
     }
 
@@ -163,5 +174,25 @@ public class GeoJSONDataStore extends ContentDataStore implements FileDataStore 
         } else {
             return typeName;
         }
+    }
+
+    /** @param booleanValue */
+    public void setWriteBounds(boolean booleanValue) {
+        writeBounds = booleanValue;
+    }
+
+    /** @return the writeBounds */
+    public boolean isWriteBounds() {
+        return writeBounds;
+    }
+
+    /** @param booleanValue */
+    public void setQuickSchema(boolean booleanValue) {
+        quick = booleanValue;
+    }
+
+    /** @return the quick */
+    public boolean isQuick() {
+        return quick;
     }
 }

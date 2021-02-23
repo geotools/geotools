@@ -17,14 +17,23 @@
 package org.geotools.ows.wmts.map;
 
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import javax.xml.parsers.ParserConfigurationException;
 import net.opengis.wmts.v_1.CapabilitiesType;
 import org.apache.commons.lang3.NotImplementedException;
@@ -140,7 +149,24 @@ public class WMTSCoverageReaderTest {
                 getTileHeadersCalled.containsKey("header1"));
     }
 
-    public List<Tile> testInitMapRequest(WMTSCoverageReader wcr, ReferencedEnvelope bbox)
+    @Test
+    public void testRESTInitMapRequestWithJpegTemplatesOnly() throws Exception {
+        WebMapTileServer server = createServer("test-data/GetCapaJPEGOnly.xml");
+        WMTSLayer layer = server.getCapabilities().getLayer("bmaphidpi");
+        WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
+        ReferencedEnvelope bbox = new ReferencedEnvelope(5, 12, 45, 49, CRS.decode("EPSG:4326"));
+        int width = 400;
+        int height = 200;
+        ReferencedEnvelope grid = wcr.initTileRequest(bbox, width, height, null);
+        assertNotNull(grid);
+        GetTileRequest mapRequest = wcr.getTileRequest();
+        String templateURL = mapRequest.getFinalURL().toExternalForm();
+        assertEquals(
+                "https://maps.wien.gv.at/basemap/bmaphidpi/{Style}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpeg",
+                templateURL);
+    }
+
+    protected List<Tile> testInitMapRequest(WMTSCoverageReader wcr, ReferencedEnvelope bbox)
             throws Exception {
 
         int width = 400;

@@ -18,6 +18,7 @@ package org.geotools.ows.wmts.map;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -216,6 +217,23 @@ public class WMTSCoverageReaderTest {
         paramGridGeometry.setValue(gridGeometry);
 
         coverageReader.read(new GeneralParameterValue[] {paramInterpolation, paramGridGeometry});
+    }
+
+    @Test
+    public void testRESTInitMapRequestWithJpegTemplatesOnly() throws Exception {
+        WebMapTileServer server = createServer("test-data/GetCapaJPEGOnly.xml");
+        WMTSLayer layer = server.getCapabilities().getLayer("bmaphidpi");
+        WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
+        ReferencedEnvelope bbox = new ReferencedEnvelope(5, 12, 45, 49, CRS.decode("EPSG:4326"));
+        int width = 400;
+        int height = 200;
+        ReferencedEnvelope grid = wcr.initTileRequest(bbox, width, height, null);
+        assertNotNull(grid);
+        GetTileRequest mapRequest = wcr.getTileRequest();
+        String templateURL = mapRequest.getFinalURL().toExternalForm();
+        assertEquals(
+                "https://maps.wien.gv.at/basemap/bmaphidpi/{Style}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpeg",
+                templateURL);
     }
 
     protected List<Tile> testInitMapRequest(WMTSCoverageReader wcr, ReferencedEnvelope bbox)

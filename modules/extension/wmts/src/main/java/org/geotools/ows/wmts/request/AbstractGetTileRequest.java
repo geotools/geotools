@@ -79,8 +79,6 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
 
     public static final String TILEMATRIXSET = "TileMatrixSet";
 
-    public static final String FORMAT = "Format";
-
     private final HTTPClient client;
 
     protected WMTSLayer layer = null;
@@ -107,7 +105,7 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
 
     private final Map<String, String> headers = new HashMap<>();
 
-    private String format = "image/png";
+    private String format;
 
     /**
      * Constructs a GetMapRequest. The data passed in represents valid values that can be used.
@@ -234,7 +232,6 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
                             + requestedHeight);
 
         TileMatrixSet matrixSet = selectMatrixSet();
-        String format = (String) getProperties().get(FORMAT);
         if (StringUtils.isEmpty(format)) {
             if (!layer.getFormats().isEmpty()) {
                 format = layer.getFormats().get(0);

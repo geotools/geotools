@@ -1101,7 +1101,7 @@ public final class GeoTools {
      *
      * @param args Command line arguments.
      */
-    public static void main(String[] args) {
+    public static void main(String... args) {
         final Arguments arguments = new Arguments(args);
         arguments.getRemainingArguments(0);
         arguments.out.print("GeoTools version ");

@@ -108,14 +108,12 @@ public class BasicEdgeTest {
 
     @Test
     public void test_getRelated() {
-        BasicEdge be;
-        Iterator<Edge> itr;
 
         // nodes share single edge
-        itr = m_edge.getRelated();
+        Iterator<Edge> itr = m_edge.getRelated();
         Assert.assertTrue(itr.hasNext());
 
-        be = (BasicEdge) itr.next();
+        BasicEdge be = (BasicEdge) itr.next();
         Assert.assertTrue(
                 be.equals(m_other1)
                         || be.equals(m_other2)

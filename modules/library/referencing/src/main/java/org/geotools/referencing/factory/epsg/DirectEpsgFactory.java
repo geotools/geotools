@@ -702,8 +702,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                  * to return the newly created set, check again in the cached sets using the
                  * type computed by AuthorityCodes itself.
                  */
-                final AuthorityCodes codes;
-                codes = new AuthorityCodes(table, type, this);
+                final AuthorityCodes codes = new AuthorityCodes(table, type, this);
                 reference = authorityCodes.get(codes.type);
                 candidate = (reference != null) ? reference.get() : null;
                 final boolean cache;
@@ -1013,8 +1012,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
          * Search for alias.
          */
         List<GenericName> alias = null;
-        final PreparedStatement stmt;
-        stmt =
+        final PreparedStatement stmt =
                 prepareStatement(
                         "Alias",
                         "SELECT NAMING_SYSTEM_NAME, ALIAS"
@@ -1221,8 +1219,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
             final String primaryKey =
                     toPrimaryKey(
                             Unit.class, code, "[Unit of Measure]", "UOM_CODE", "UNIT_OF_MEAS_NAME");
-            final PreparedStatement stmt;
-            stmt =
+            final PreparedStatement stmt =
                     prepareStatement(
                             "Unit",
                             "SELECT UOM_CODE,"
@@ -1288,8 +1285,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                             "[Ellipsoid]",
                             "ELLIPSOID_CODE",
                             "ELLIPSOID_NAME");
-            final PreparedStatement stmt;
-            stmt =
+            final PreparedStatement stmt =
                     prepareStatement(
                             "Ellipsoid",
                             "SELECT ELLIPSOID_CODE,"
@@ -1389,8 +1385,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                             "[Prime Meridian]",
                             "PRIME_MERIDIAN_CODE",
                             "PRIME_MERIDIAN_NAME");
-            final PreparedStatement stmt;
-            stmt =
+            final PreparedStatement stmt =
                     prepareStatement(
                             "PrimeMeridian",
                             "SELECT PRIME_MERIDIAN_CODE,"
@@ -1443,8 +1438,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
         try {
             final String primaryKey =
                     toPrimaryKey(Extent.class, code, "[Area]", "AREA_CODE", "AREA_NAME");
-            final PreparedStatement stmt;
-            stmt =
+            final PreparedStatement stmt =
                     prepareStatement(
                             "Area",
                             "SELECT AREA_OF_USE,"
@@ -1519,8 +1513,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
              */
             return null;
         }
-        PreparedStatement stmt;
-        stmt =
+        PreparedStatement stmt =
                 prepareStatement(
                         "BursaWolfParametersSet",
                         "SELECT CO.COORD_OP_CODE,"
@@ -1649,8 +1642,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
         try {
             final String primaryKey =
                     toPrimaryKey(Datum.class, code, "[Datum]", "DATUM_CODE", "DATUM_NAME");
-            final PreparedStatement stmt;
-            stmt =
+            final PreparedStatement stmt =
                     prepareStatement(
                             "Datum",
                             "SELECT DATUM_CODE,"
@@ -1753,8 +1745,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
         AxisName returnValue = axisNames.get(code);
         if (returnValue == null)
             try {
-                final PreparedStatement stmt;
-                stmt =
+                final PreparedStatement stmt =
                         prepareStatement(
                                 "AxisName",
                                 "SELECT COORD_AXIS_NAME, DESCRIPTION, REMARKS"
@@ -1799,8 +1790,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
         CoordinateSystemAxis returnValue = null;
         try {
             final String primaryKey = trimAuthority(code);
-            final PreparedStatement stmt;
-            stmt =
+            final PreparedStatement stmt =
                     prepareStatement(
                             "Axis",
                             "SELECT COORD_AXIS_CODE,"
@@ -1872,8 +1862,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
             final String code, final int dimension) throws SQLException, FactoryException {
         assert Thread.holdsLock(this);
         final CoordinateSystemAxis[] axis = new CoordinateSystemAxis[dimension];
-        final PreparedStatement stmt;
-        stmt =
+        final PreparedStatement stmt =
                 prepareStatement(
                         "AxisOrder",
                         "SELECT COORD_AXIS_CODE"
@@ -2065,8 +2054,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
         CoordinateReferenceSystem returnValue = null;
         try {
             final String primaryKey = toPrimaryKeyCRS(code);
-            final PreparedStatement stmt;
-            stmt =
+            final PreparedStatement stmt =
                     prepareStatement(
                             "CoordinateReferenceSystem",
                             "SELECT COORD_REF_SYS_CODE,"
@@ -2184,9 +2172,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                         // Note: Don't invoke 'createProperties' sooner.
                         final Map<String, Object> properties =
                                 createProperties(name, epsg, area, scope, remarks);
-                        crs =
-                                factory.createCompoundCRS(
-                                        properties, new CoordinateReferenceSystem[] {crs1, crs2});
+                        crs = factory.createCompoundCRS(properties, crs1, crs2);
                     }
                     /* ----------------------------------------------------------------------
                      *   GEOCENTRIC CRS
@@ -2316,9 +2302,8 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                     /*
                      * Now creates the parameter descriptor.
                      */
-                    final ParameterDescriptor<? extends Object> descriptor;
                     final Map<String, Object> properties = createProperties(name, epsg, remarks);
-                    descriptor =
+                    final ParameterDescriptor<? extends Object> descriptor =
                             new DefaultParameterDescriptor<>(
                                     properties, type, null, null, null, null, unit, true);
                     returnValue = ensureSingleton(descriptor, returnValue, code);
@@ -2342,8 +2327,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      */
     private ParameterDescriptor[] createParameterDescriptors(final String method)
             throws FactoryException, SQLException {
-        final PreparedStatement stmt;
-        stmt =
+        final PreparedStatement stmt =
                 prepareStatement(
                         "ParameterDescriptors", // Must be plural form.
                         "SELECT PARAMETER_CODE"
@@ -2373,8 +2357,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
     private void fillParameterValues(
             final String method, final String operation, final ParameterValueGroup parameters)
             throws FactoryException, SQLException {
-        final PreparedStatement stmt;
-        stmt =
+        final PreparedStatement stmt =
                 prepareStatement(
                         "ParameterValues",
                         "SELECT CP.PARAMETER_NAME,"
@@ -2543,7 +2526,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
         return returnValue;
     }
 
-    private Map<String, Object> addAliases(Map<String, Object> properties, GenericName[] aliases) {
+    private Map<String, Object> addAliases(Map<String, Object> properties, GenericName... aliases) {
         ensureNonNull("properties", properties);
         Object value = properties.get(IdentifiedObject.NAME_KEY);
         ensureNonNull("name", value);
@@ -2615,8 +2598,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      * database.
      */
     private int getDimensionsForMethod(final String code) throws SQLException {
-        final PreparedStatement stmt;
-        stmt =
+        final PreparedStatement stmt =
                 prepareStatement(
                         "MethodDimensions",
                         "SELECT SOURCE_CRS_CODE,"
@@ -2759,8 +2741,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                             "[Coordinate_Operation]",
                             "COORD_OP_CODE",
                             "COORD_OP_NAME");
-            final PreparedStatement stmt;
-            stmt =
+            final PreparedStatement stmt =
                     prepareStatement(
                             "CoordinateOperation",
                             "SELECT COORD_OP_CODE,"
@@ -2886,15 +2867,15 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                     properties.put(CoordinateOperation.OPERATION_VERSION_KEY, version);
                 }
                 if (!Double.isNaN(accuracy)) {
-                    final QuantitativeResultImpl accuracyResult;
-                    final AbsoluteExternalPositionalAccuracyImpl accuracyElement;
-                    accuracyResult = new QuantitativeResultImpl(new double[] {accuracy});
+                    final QuantitativeResultImpl accuracyResult =
+                            new QuantitativeResultImpl(new double[] {accuracy});
                     // TODO: Need to invoke something equivalent to:
                     // accuracyResult.setValueType(Float.class);
                     // This is the type declared in the MS-Access database.
                     accuracyResult.setValueUnit(
                             SI.METRE); // In meters by definition in the EPSG database.
-                    accuracyElement = new AbsoluteExternalPositionalAccuracyImpl(accuracyResult);
+                    final AbsoluteExternalPositionalAccuracyImpl accuracyElement =
+                            new AbsoluteExternalPositionalAccuracyImpl(accuracyResult);
                     accuracyElement.setMeasureDescription(TRANSFORMATION_ACCURACY);
                     accuracyElement.setEvaluationMethodType(EvaluationMethodType.DIRECT_EXTERNAL);
                     properties.put(
@@ -3156,12 +3137,11 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      *     string objects, then the {@link Object#toString} method must returns the code for each
      *     element.
      */
-    private void sort(final Object[] codes) throws SQLException, FactoryException {
+    private void sort(final Object... codes) throws SQLException, FactoryException {
         if (codes.length <= 1) {
             return; // Nothing to sort.
         }
-        final PreparedStatement stmt;
-        stmt =
+        final PreparedStatement stmt =
                 prepareStatement(
                         "Supersession",
                         "SELECT SUPERSEDED_BY"

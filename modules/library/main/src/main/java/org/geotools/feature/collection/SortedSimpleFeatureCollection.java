@@ -35,7 +35,7 @@ public class SortedSimpleFeatureCollection extends DecoratingSimpleFeatureCollec
     private SortBy[] sort;
     private int maxMemoryFeatures = -1;
 
-    public SortedSimpleFeatureCollection(SimpleFeatureCollection delegate, SortBy[] sort) {
+    public SortedSimpleFeatureCollection(SimpleFeatureCollection delegate, SortBy... sort) {
         super(delegate);
         this.sort = sort;
     }

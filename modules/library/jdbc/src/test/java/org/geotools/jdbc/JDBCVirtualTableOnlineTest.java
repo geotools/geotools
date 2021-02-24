@@ -26,7 +26,6 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
-import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
 @SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation") // not yet a JUnit4 test
@@ -256,7 +255,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         Query q = new Query(Query.ALL);
         q.setHints(
                 new Hints(Hints.VIRTUAL_TABLE_PARAMETERS, Collections.singletonMap("mul", "10")));
-        q.setSortBy(new SortBy[] {ff.sort(aname("mulflow"), SortOrder.ASCENDING)});
+        q.setSortBy(ff.sort(aname("mulflow"), SortOrder.ASCENDING));
         try (FeatureIterator fi = fsView.getFeatures(q).features()) {
             assertTrue(fi.hasNext());
             SimpleFeature f = (SimpleFeature) fi.next();

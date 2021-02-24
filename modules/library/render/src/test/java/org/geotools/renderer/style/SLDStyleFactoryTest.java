@@ -144,21 +144,18 @@ public class SLDStyleFactoryTest {
     /** Test of createPolygonStyle method, of class org.geotools.renderer.style.SLDStyleFactory. */
     @Test
     public void testCreateIncompletePolygonStyle() {
-        PolygonSymbolizer symb;
 
         // full symbolizer
-        symb = sf.createPolygonSymbolizer();
+        PolygonSymbolizer symb = sf.createPolygonSymbolizer();
         sld.createPolygonStyle(null, symb, range);
     }
 
     /** Test of createPointStyle method, of class org.geotools.renderer.style.SLDStyleFactory. */
     @Test
     public void testCreateCompletePointStyle() {
-        PointSymbolizer symb;
-        Mark myMark;
         // full symbolizer
-        symb = sf.createPointSymbolizer();
-        myMark = sf.createMark();
+        PointSymbolizer symb = sf.createPointSymbolizer();
+        Mark myMark = sf.createMark();
 
         myMark.setFill(sf.createFill(ff.literal("#ffff00")));
         symb.getGraphic().setSize(ff.literal(10));
@@ -170,11 +167,9 @@ public class SLDStyleFactoryTest {
 
     @Test
     public void testCreateIncompletePointStyle() {
-        PointSymbolizer symb;
-        Mark myMark;
         // full symbolizer
-        symb = sf.createPointSymbolizer();
-        myMark = sf.createMark();
+        PointSymbolizer symb = sf.createPointSymbolizer();
+        Mark myMark = sf.createMark();
 
         symb.getGraphic().graphicalSymbols().add(myMark);
 

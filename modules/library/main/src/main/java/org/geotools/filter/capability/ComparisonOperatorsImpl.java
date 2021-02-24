@@ -46,7 +46,7 @@ public class ComparisonOperatorsImpl implements ComparisonOperators {
         this.operators = new HashSet<>(operators);
     }
 
-    public ComparisonOperatorsImpl(Operator[] operators) {
+    public ComparisonOperatorsImpl(Operator... operators) {
         if (operators == null) {
             operators = new Operator[] {};
         }

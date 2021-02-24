@@ -79,8 +79,7 @@ public class MapServerOnlineTest {
         url_200 = new URL(SERVER_URL_200);
         if (url_100 != null) {
             try {
-                Map<String, Serializable> params;
-                params = new HashMap<>();
+                Map<String, Serializable> params = new HashMap<>();
                 params.put(WFSDataStoreFactory.URL.key, url_100);
                 params.put(WFSDataStoreFactory.WFS_STRATEGY.key, "mapserver");
                 params.put(WFSDataStoreFactory.GML_COMPATIBLE_TYPENAMES.key, Boolean.TRUE);
@@ -168,7 +167,7 @@ public class MapServerOnlineTest {
         query.setTypeName(typeName);
         query.setFilter(filter);
         // test property names
-        query.setPropertyNames(new String[] {"POPULATION", "NAME"});
+        query.setPropertyNames("POPULATION", "NAME");
 
         features = source.getFeatures(query);
 
@@ -213,7 +212,7 @@ public class MapServerOnlineTest {
         query.setTypeName(typeName);
         query.setFilter(filter);
         // test property names
-        query.setPropertyNames(new String[] {"codice", "nome"});
+        query.setPropertyNames("codice", "nome");
 
         features = source.getFeatures(query);
 

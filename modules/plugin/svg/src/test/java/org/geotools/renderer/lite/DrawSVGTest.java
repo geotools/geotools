@@ -142,13 +142,12 @@ public class DrawSVGTest {
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(lineFS, lStyle));
         mc.addLayer(new FeatureLayer(pointFS, pStyle));
-        Document document = null;
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
 
         // Create an instance of org.w3c.dom.Document
-        document = db.getDOMImplementation().createDocument(null, "svg", null);
+        Document document = db.getDOMImplementation().createDocument(null, "svg", null);
 
         // Set up the map
         SVGGeneratorContext ctx1 = SVGGeneratorContext.createDefault(document);
@@ -193,13 +192,11 @@ public class DrawSVGTest {
 
         mc.getViewport().setBounds(lineFS.getBounds());
 
-        Document document = null;
-
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
 
         // Create an instance of org.w3c.dom.Document
-        document = db.getDOMImplementation().createDocument(null, "svg", null);
+        Document document = db.getDOMImplementation().createDocument(null, "svg", null);
 
         // Set up the map
         SVGGeneratorContext ctx1 = SVGGeneratorContext.createDefault(document);
@@ -244,13 +241,11 @@ public class DrawSVGTest {
         mc.addLayer(new FeatureLayer(lineFS, baseStyle));
         mc.addLayer(new FeatureLayer(lineFS, lStyle));
 
-        Document document = null;
-
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
 
         // Create an instance of org.w3c.dom.Document
-        document = db.getDOMImplementation().createDocument(null, "svg", null);
+        Document document = db.getDOMImplementation().createDocument(null, "svg", null);
 
         // Set up the map
         SVGGeneratorContext ctx1 = SVGGeneratorContext.createDefault(document);

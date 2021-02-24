@@ -67,7 +67,7 @@ public interface CRSFactory extends ObjectFactory {
      * @throws FactoryException if the object creation failed.
      */
     @UML(identifier = "createCompoundCoordinateSystem", specification = OGC_01009)
-    CompoundCRS createCompoundCRS(Map<String, ?> properties, CoordinateReferenceSystem[] elements)
+    CompoundCRS createCompoundCRS(Map<String, ?> properties, CoordinateReferenceSystem... elements)
             throws FactoryException;
 
     /**

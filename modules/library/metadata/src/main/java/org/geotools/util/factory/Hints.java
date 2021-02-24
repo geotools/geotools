@@ -1083,7 +1083,7 @@ public class Hints extends RenderingHints {
      * @param pairs An array of Key/Value pairs.
      * @throws IllegalArgumentException if a value is illegal.
      */
-    private void fromPairs(final Object[] pairs) throws IllegalArgumentException {
+    private void fromPairs(final Object... pairs) throws IllegalArgumentException {
         if ((pairs.length & 1) != 0) {
             throw new IllegalArgumentException(
                     Errors.format(ErrorKeys.ODD_ARRAY_LENGTH_$1, pairs.length));
@@ -1246,10 +1246,8 @@ public class Hints extends RenderingHints {
      * @since 2.4
      */
     public static Object getSystemDefault(final RenderingHints.Key key) {
-        final boolean changed;
-        final Object value;
-        changed = ensureSystemDefaultLoaded();
-        value = GLOBAL.get(key);
+        final boolean changed = ensureSystemDefaultLoaded();
+        final Object value = GLOBAL.get(key);
         if (changed) {
             GeoTools.fireConfigurationChanged();
         }
@@ -1270,10 +1268,8 @@ public class Hints extends RenderingHints {
      * @since 2.4
      */
     public static Object putSystemDefault(final RenderingHints.Key key, final Object value) {
-        final boolean changed;
-        final Object old;
-        changed = ensureSystemDefaultLoaded();
-        old = GLOBAL.put(key, value);
+        final boolean changed = ensureSystemDefaultLoaded();
+        final Object old = GLOBAL.put(key, value);
         if (changed || !Utilities.equals(value, old)) {
             GeoTools.fireConfigurationChanged();
         }
@@ -1290,10 +1286,8 @@ public class Hints extends RenderingHints {
      * @since 2.4
      */
     public static Object removeSystemDefault(final RenderingHints.Key key) {
-        final boolean changed;
-        final Object old;
-        changed = ensureSystemDefaultLoaded();
-        old = GLOBAL.remove(key);
+        final boolean changed = ensureSystemDefaultLoaded();
+        final Object old = GLOBAL.remove(key);
         if (changed || old != null) {
             GeoTools.fireConfigurationChanged();
         }
@@ -1313,8 +1307,7 @@ public class Hints extends RenderingHints {
         final StringBuilder buffer = new StringBuilder("Hints:"); // TODO: localize
         buffer.append(lineSeparator).append(AbstractFactory.toString(this));
         Map<?, ?> extra = null;
-        final boolean changed;
-        changed = ensureSystemDefaultLoaded();
+        final boolean changed = ensureSystemDefaultLoaded();
         if (!GLOBAL.isEmpty()) {
             extra = new HashMap<>(GLOBAL);
         }

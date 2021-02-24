@@ -228,9 +228,8 @@ public class NetCDFCRSUtilities {
                 AxisType axisType = zAxis.getAxisType();
 
                 String v_crsName = "Unknown";
-                String v_datumName = "Unknown";
                 String v_datumType = null;
-                v_datumName =
+                String v_datumName =
                         new Identification("Mean Sea Level", null, null, "EPSG:5100").getName();
 
                 if (axisType == AxisType.RadialAzimuth

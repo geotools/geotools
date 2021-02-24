@@ -484,11 +484,10 @@ public abstract class MapProjection extends AbstractMathTransform
     private static boolean verifyGeographicRanges(
             final AbstractMathTransform tr, final double x, final double y) {
         // Note: the following tests should not fails for NaN values.
-        final boolean xOut, yOut;
-        xOut =
+        final boolean xOut =
                 (x < (Longitude.MIN_VALUE - ANGLE_TOLERANCE)
                         || x > (Longitude.MAX_VALUE + ANGLE_TOLERANCE));
-        yOut =
+        final boolean yOut =
                 (y < (Latitude.MIN_VALUE - ANGLE_TOLERANCE)
                         || y > (Latitude.MAX_VALUE + ANGLE_TOLERANCE));
         if (!xOut && !yOut) {
@@ -1367,9 +1366,9 @@ public abstract class MapProjection extends AbstractMathTransform
      * @throws ProjectionException if the itteration does not converge.
      */
     protected final double inv_mlfn(double arg) throws ProjectionException {
-        double s, t, phi, k = 1.0 / (1.0 - excentricitySquared);
+        double s, t, k = 1.0 / (1.0 - excentricitySquared);
         int i;
-        phi = arg;
+        double phi = arg;
         for (i = MAXIMUM_ITERATIONS; true; ) { // rarely goes over 5 iterations
             if (--i < 0) {
                 throw new ProjectionException(Errors.format(ErrorKeys.NO_CONVERGENCE));

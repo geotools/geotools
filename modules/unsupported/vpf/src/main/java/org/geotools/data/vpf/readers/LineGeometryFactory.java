@@ -52,7 +52,6 @@ public class LineGeometryFactory extends VPFGeometryFactory implements FileConst
      */
     public synchronized Geometry buildGeometry(VPFFeatureClass featureClass, SimpleFeature values)
             throws SQLException, IOException, IllegalAttributeException {
-        Geometry result = null;
         int edgeId = Integer.parseInt(values.getAttribute("edg_id").toString());
         //        VPFFeatureType featureType = (VPFFeatureType) values.getFeatureType();
 
@@ -80,7 +79,7 @@ public class LineGeometryFactory extends VPFGeometryFactory implements FileConst
         String edgeTableName = tileDirectory.concat(File.separator).concat(EDGE_PRIMITIVE);
         VPFFile edgeFile = VPFFileFactory.getInstance().getFile(edgeTableName);
         SimpleFeature row = edgeFile.getRowFromId("id", edgeId);
-        result = (Geometry) row.getAttribute("coordinates");
+        Geometry result = (Geometry) row.getAttribute("coordinates");
         return result;
     }
 }

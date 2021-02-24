@@ -42,7 +42,7 @@ class TriangulationFactory {
      * @param pt Array of points for triangulation.
      * @throws TriangulationException when the vertices are outside of the specified quad.
      */
-    protected TriangulationFactory(Quadrilateral quad, DirectPosition[] pt)
+    protected TriangulationFactory(Quadrilateral quad, DirectPosition... pt)
             throws TriangulationException {
 
         List<DirectPosition> vertices = new ArrayList<>(Arrays.asList(pt));

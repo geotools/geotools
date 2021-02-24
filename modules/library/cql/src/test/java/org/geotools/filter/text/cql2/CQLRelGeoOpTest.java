@@ -65,11 +65,11 @@ public class CQLRelGeoOpTest {
 
     @Test
     public void dwithin() throws CQLException {
-        Filter resultFilter;
 
         // DWITHIN
-        resultFilter =
-                CompilerUtil.parseFilter(language, "DWITHIN(ATTR1, POINT(1 2), 10, kilometers)");
+        Filter resultFilter =
+                CompilerUtil.parseFilter(
+                        language, "DWITHIN(ATTR1, POINT(1 2), 10, " + "kilometers)");
 
         Assert.assertTrue(resultFilter instanceof DistanceBufferOperator);
 
@@ -91,9 +91,8 @@ public class CQLRelGeoOpTest {
 
     @Test
     public void beyon() throws CQLException {
-        Filter resultFilter;
         // Beyond
-        resultFilter =
+        Filter resultFilter =
                 CompilerUtil.parseFilter(
                         language, "BEYOND(ATTR1, POINT(1.0 2.0), 10.0, kilometers)");
         Assert.assertTrue(resultFilter instanceof Beyond);

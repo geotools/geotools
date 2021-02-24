@@ -202,7 +202,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
                 ff.equals(ff.property(aname("stringProperty")), ff.literal("one"));
 
         Query query = new Query();
-        query.setPropertyNames(new String[] {aname("doubleProperty"), aname("intProperty")});
+        query.setPropertyNames(aname("doubleProperty"), aname("intProperty"));
         query.setFilter(filter);
 
         SimpleFeatureCollection features = featureSource.getFeatures(query);
@@ -236,7 +236,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         FilterFactory ff = dataStore.getFilterFactory();
         SortBy sort = ff.sort(aname("stringProperty"), SortOrder.ASCENDING);
         Query query = new Query();
-        query.setSortBy(new SortBy[] {sort});
+        query.setSortBy(sort);
 
         SimpleFeatureCollection features = featureSource.getFeatures(query);
         assertEquals(3, features.size());
@@ -258,7 +258,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         }
 
         sort = ff.sort(aname("stringProperty"), SortOrder.DESCENDING);
-        query.setSortBy(new SortBy[] {sort});
+        query.setSortBy(sort);
         features = featureSource.getFeatures(query);
 
         try (SimpleFeatureIterator iterator = features.features()) {
@@ -302,10 +302,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
 
     public void testGetFeaturesWithOffset() throws Exception {
         Query q = new Query(featureSource.getSchema().getTypeName());
-        q.setSortBy(
-                new SortBy[] {
-                    dataStore.getFilterFactory().sort(aname("intProperty"), SortOrder.ASCENDING)
-                });
+        q.setSortBy(dataStore.getFilterFactory().sort(aname("intProperty"), SortOrder.ASCENDING));
         q.setStartIndex(2);
         SimpleFeatureCollection features = featureSource.getFeatures(q);
 
@@ -396,20 +393,12 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         QueryCapabilities caps = featureSource.getQueryCapabilities();
 
         // check we advertise support for sorting on basic attributes
-        assertTrue(
-                caps.supportsSorting(
-                        new SortBy[] {ff.sort(aname("intProperty"), SortOrder.ASCENDING)}));
-        assertTrue(
-                caps.supportsSorting(
-                        new SortBy[] {ff.sort(aname("stringProperty"), SortOrder.DESCENDING)}));
-        assertTrue(
-                caps.supportsSorting(
-                        new SortBy[] {ff.sort(aname("doubleProperty"), SortOrder.ASCENDING)}));
+        assertTrue(caps.supportsSorting(ff.sort(aname("intProperty"), SortOrder.ASCENDING)));
+        assertTrue(caps.supportsSorting(ff.sort(aname("stringProperty"), SortOrder.DESCENDING)));
+        assertTrue(caps.supportsSorting(ff.sort(aname("doubleProperty"), SortOrder.ASCENDING)));
 
         // but we cannot sort geometries
-        assertFalse(
-                caps.supportsSorting(
-                        new SortBy[] {ff.sort(aname("geometry"), SortOrder.ASCENDING)}));
+        assertFalse(caps.supportsSorting(ff.sort(aname("geometry"), SortOrder.ASCENDING)));
     }
 
     public void testQueryCapabilitiesReliableFid() throws Exception {
@@ -420,7 +409,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
 
     public void testNaturalSortingAsc() throws Exception {
         Query q = new Query(featureSource.getSchema().getTypeName());
-        q.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
+        q.setSortBy(SortBy.NATURAL_ORDER);
         try (SimpleFeatureIterator features = featureSource.getFeatures(q).features()) {
             String prevId = null;
             while (features.hasNext()) {
@@ -433,7 +422,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
 
     public void testNaturalSortingdesc() throws Exception {
         Query q = new Query(featureSource.getSchema().getTypeName());
-        q.setSortBy(new SortBy[] {SortBy.REVERSE_ORDER});
+        q.setSortBy(SortBy.REVERSE_ORDER);
         try (SimpleFeatureIterator features = featureSource.getFeatures(q).features()) {
             String prevId = null;
             while (features.hasNext()) {

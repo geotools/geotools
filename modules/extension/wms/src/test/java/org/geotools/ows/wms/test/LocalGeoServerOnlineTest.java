@@ -445,8 +445,6 @@ public class LocalGeoServerOnlineTest {
 
         URL url = new URL(baseUrl);
 
-        GetStylesResponse wmsResponse = null;
-        GetStylesRequest wmsRequest = null;
         StyleFactory styleFactory = new StyleFactoryImpl();
 
         WebMapServer server =
@@ -458,7 +456,7 @@ public class LocalGeoServerOnlineTest {
                     }
                 };
 
-        wmsRequest = server.createGetStylesRequest();
+        GetStylesRequest wmsRequest = server.createGetStylesRequest();
         wmsRequest.setLayers(layers);
         // Test URL
         String queryParamters = wmsRequest.getFinalURL().getQuery();
@@ -475,7 +473,7 @@ public class LocalGeoServerOnlineTest {
         Assert.assertEquals("1.1.1", parameters.get("VERSION"));
         Assert.assertEquals(layers, parameters.get("LAYERS"));
 
-        wmsResponse = server.issueRequest(wmsRequest);
+        GetStylesResponse wmsResponse = server.issueRequest(wmsRequest);
 
         // Set encoding of response from HTTP content-type header
         ContentType contentType = new ContentType(wmsResponse.getContentType());

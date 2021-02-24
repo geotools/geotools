@@ -247,9 +247,9 @@ public class AppSchemaDataAccessConfigurator {
      */
     public static Set<FeatureTypeMapping> buildMappings(
             AppSchemaDataAccessDTO config, DataAccessMap sourceDataStoreMap) throws IOException {
-        AppSchemaDataAccessConfigurator mappingsBuilder;
 
-        mappingsBuilder = new AppSchemaDataAccessConfigurator(config, sourceDataStoreMap);
+        AppSchemaDataAccessConfigurator mappingsBuilder =
+                new AppSchemaDataAccessConfigurator(config, sourceDataStoreMap);
         Set<FeatureTypeMapping> mappingObjects = mappingsBuilder.buildMappings();
 
         return mappingObjects;
@@ -358,9 +358,7 @@ public class AppSchemaDataAccessConfigurator {
                 FeatureSource<SimpleFeatureType, SimpleFeature> indexFeatureSource =
                         getIndexFeatureSource(dto, sourceDataStores);
 
-                FeatureTypeMapping mapping;
-
-                mapping =
+                FeatureTypeMapping mapping =
                         FeatureTypeMappingFactory.getInstance(
                                 featureSource,
                                 indexFeatureSource,
@@ -506,8 +504,8 @@ public class AppSchemaDataAccessConfigurator {
         /** Label and parent label are specific for web service backend */
         for (Object dto : attDtos) {
 
-            org.geotools.data.complex.config.AttributeMapping attDto;
-            attDto = (org.geotools.data.complex.config.AttributeMapping) dto;
+            org.geotools.data.complex.config.AttributeMapping attDto =
+                    (org.geotools.data.complex.config.AttributeMapping) dto;
 
             String idExpr = attDto.getIdentifierExpression();
             String idXpath = null;
@@ -551,9 +549,8 @@ public class AppSchemaDataAccessConfigurator {
                                             this.namespaces));
             // if the data source is a data access, the input XPath expression is the source
             // expression
-            final Expression sourceExpression;
 
-            sourceExpression =
+            final Expression sourceExpression =
                     (inputXPath == null)
                             ? parseOgcCqlExpression(sourceExpr)
                             : new AttributeExpressionImpl(
@@ -809,8 +806,7 @@ public class AppSchemaDataAccessConfigurator {
 
         final List schemaFiles = config.getTargetSchemasUris();
 
-        EmfComplexFeatureReader schemaParser;
-        schemaParser = EmfComplexFeatureReader.newInstance();
+        EmfComplexFeatureReader schemaParser = EmfComplexFeatureReader.newInstance();
         schemaParser.setResolver(buildResolver());
 
         // create a single type registry for all the schemas in the config

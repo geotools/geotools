@@ -183,7 +183,7 @@ public class CollectionFeatureSource implements SimpleFeatureSource {
                                 + "so there is no way a stable paging (offset/limit) can be performed");
             }
             Query copy = new Query(query);
-            copy.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
+            copy.setSortBy(SortBy.NATURAL_ORDER);
             query = copy;
         }
         SimpleFeatureCollection features = collection;
@@ -266,7 +266,7 @@ public class CollectionFeatureSource implements SimpleFeatureSource {
         @Override
         public SimpleFeatureCollection sort(SortBy order) {
             Query q = new Query(getSchema().getTypeName());
-            q.setSortBy(new SortBy[] {order});
+            q.setSortBy(order);
 
             Query subQuery = DataUtilities.mixQueries(query, q, q.getHandle());
             return CollectionFeatureSource.this.getFeatures(subQuery);

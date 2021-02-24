@@ -220,9 +220,8 @@ public class TransformProcess implements VectorProcess {
      */
     private static String[] splitDefinitions(String defList) {
         // clean up cross platform differences of linefeed
-        String defListLF = defList.replaceAll("\r", "\n").replaceAll("[\n\r][\n\r]", "\n");
         // convert explicit delimiter to linefeed
-        defListLF = defList.replaceAll(";", "\n");
+        String defListLF = defList.replaceAll(";", "\n");
 
         // split on linefeed
         return defListLF.split("\n");

@@ -102,15 +102,14 @@ public class OperationFactoryTest {
      */
     @Test
     public void testCreate() throws FactoryException {
-        CoordinateReferenceSystem sourceCRS;
-        CoordinateReferenceSystem targetCRS;
-        CoordinateOperation operation;
 
         crsAuthFactory = ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null);
         opFactory = ReferencingFactoryFinder.getCoordinateOperationFactory(null);
-        sourceCRS = crsAuthFactory.createCoordinateReferenceSystem("4230");
-        targetCRS = crsAuthFactory.createCoordinateReferenceSystem("4326");
-        operation = opFactory.createOperation(sourceCRS, targetCRS);
+        CoordinateReferenceSystem sourceCRS =
+                crsAuthFactory.createCoordinateReferenceSystem("4230");
+        CoordinateReferenceSystem targetCRS =
+                crsAuthFactory.createCoordinateReferenceSystem("4326");
+        CoordinateOperation operation = opFactory.createOperation(sourceCRS, targetCRS);
 
         Assert.assertSame(sourceCRS, operation.getSourceCRS());
         Assert.assertSame(targetCRS, operation.getTargetCRS());
@@ -407,35 +406,35 @@ public class OperationFactoryTest {
      */
     @Test
     public void testCreateOperationCompound2CompoundVertical() throws Exception {
-        final CRSAuthorityFactory crsAuthFactory;
-        final CoordinateOperationFactory opFactory;
-        CoordinateReferenceSystem sourceCRS, sourceHorizontalCRS, sourceVerticalCRS;
-        CoordinateReferenceSystem targetCRS;
-        CoordinateOperation operation;
-        Map<String, Object> properties;
-        CoordinateReferenceSystem[] elements;
 
         CRSFactory crsFactory = ReferencingFactoryFinder.getCRSFactory(null);
-        crsAuthFactory = ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null);
-        opFactory = ReferencingFactoryFinder.getCoordinateOperationFactory(null);
+        final CRSAuthorityFactory crsAuthFactory =
+                ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null);
+        final CoordinateOperationFactory opFactory =
+                ReferencingFactoryFinder.getCoordinateOperationFactory(null);
 
-        sourceCRS = crsAuthFactory.createCoordinateReferenceSystem("EPSG:5555");
-        targetCRS = crsAuthFactory.createCoordinateReferenceSystem("EPSG:5554");
+        CoordinateReferenceSystem sourceCRS =
+                crsAuthFactory.createCoordinateReferenceSystem("EPSG:5555");
+        CoordinateReferenceSystem targetCRS =
+                crsAuthFactory.createCoordinateReferenceSystem("EPSG:5554");
         // direct order
-        operation = opFactory.createOperation(sourceCRS, targetCRS);
+        CoordinateOperation operation = opFactory.createOperation(sourceCRS, targetCRS);
         assertOperation(operation, sourceCRS, targetCRS);
 
         // try reverse order
         operation = opFactory.createOperation(targetCRS, sourceCRS);
         assertOperation(operation, targetCRS, sourceCRS);
 
-        sourceHorizontalCRS = crsAuthFactory.createCoordinateReferenceSystem("EPSG:25831");
-        sourceVerticalCRS = crsAuthFactory.createCoordinateReferenceSystem("EPSG:5783");
-        properties = new HashMap<>();
+        CoordinateReferenceSystem sourceHorizontalCRS =
+                crsAuthFactory.createCoordinateReferenceSystem("EPSG:25831");
+        CoordinateReferenceSystem sourceVerticalCRS =
+                crsAuthFactory.createCoordinateReferenceSystem("EPSG:5783");
+        Map<String, Object> properties = new HashMap<>();
         properties.put(
                 IdentifiedObject.NAME_KEY,
                 new NamedIdentifier(Citations.fromName("TEST"), "Compound 28530+5783"));
-        elements = new CoordinateReferenceSystem[] {sourceHorizontalCRS, sourceVerticalCRS};
+        CoordinateReferenceSystem[] elements =
+                new CoordinateReferenceSystem[] {sourceHorizontalCRS, sourceVerticalCRS};
         sourceCRS = crsFactory.createCompoundCRS(properties, elements);
 
         // direct order

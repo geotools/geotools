@@ -416,8 +416,8 @@ public class GeocentricTranslation extends ProjectiveTransform {
             }
             ensureValid(major, semiMajor);
             ensureValid(minor, semiMinor);
-            final GeocentricTransform step;
-            step = new GeocentricTransform(semiMajor, semiMinor, SI.METRE, dimension == 3);
+            final GeocentricTransform step =
+                    new GeocentricTransform(semiMajor, semiMinor, SI.METRE, dimension == 3);
             // Note: dimension may be 0 if not user-provided, which is treated as 2.
             if (dim == SRC_DIM) {
                 return ConcatenatedTransform.create(step, transform);

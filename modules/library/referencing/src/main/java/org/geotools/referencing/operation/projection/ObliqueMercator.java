@@ -366,8 +366,8 @@ public class ObliqueMercator extends MapProjection {
             latitudeOf2ndPoint =
                     doubleValue(expected, Provider_TwoPoint.LAT_OF_2ND_POINT, parameters);
             ensureLatitudeInRange(Provider_TwoPoint.LAT_OF_2ND_POINT, latitudeOf2ndPoint, true);
-            double longitudeOf2ndPoint; // Will be assigned to the field later.
-            longitudeOf2ndPoint =
+            // Will be assigned to the field later.
+            double longitudeOf2ndPoint =
                     doubleValue(expected, Provider_TwoPoint.LONG_OF_2ND_POINT, parameters);
             ensureLongitudeInRange(Provider_TwoPoint.LONG_OF_2ND_POINT, longitudeOf2ndPoint, true);
             /*

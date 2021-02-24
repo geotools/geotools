@@ -138,19 +138,18 @@ public class QuadTree implements Closeable {
              * Otherwise, consider creating four subnodes if could fit into
              * them, and adding to the appropriate subnode.
              */
-            Envelope half1, half2, quad1, quad2, quad3, quad4;
 
             Envelope[] tmp = this.splitBounds(node.getBounds());
-            half1 = tmp[0];
-            half2 = tmp[1];
+            Envelope half1 = tmp[0];
+            Envelope half2 = tmp[1];
 
             tmp = this.splitBounds(half1);
-            quad1 = tmp[0];
-            quad2 = tmp[1];
+            Envelope quad1 = tmp[0];
+            Envelope quad2 = tmp[1];
 
             tmp = this.splitBounds(half2);
-            quad3 = tmp[0];
-            quad4 = tmp[1];
+            Envelope quad3 = tmp[0];
+            Envelope quad4 = tmp[1];
 
             Node subnode = null;
             if (quad1.contains(bounds)) {

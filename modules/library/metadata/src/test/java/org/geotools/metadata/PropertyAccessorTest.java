@@ -55,11 +55,10 @@ public final class PropertyAccessorTest {
     @Test
     public void testConstructor() {
         final Citation citation = Citations.EPSG;
-        PropertyAccessor accessor;
         assertNull(
                 "No dummy interface expected.",
                 PropertyAccessor.getType(citation.getClass(), "org.opengis.dummy"));
-        accessor = createPropertyAccessor(citation);
+        PropertyAccessor accessor = createPropertyAccessor(citation);
         assertTrue("Count of 'get' methods.", accessor.count() >= 13);
     }
 

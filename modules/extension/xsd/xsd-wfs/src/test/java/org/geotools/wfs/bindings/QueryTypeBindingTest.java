@@ -77,8 +77,7 @@ public class QueryTypeBindingTest extends WFSTestSupport {
         assertEquals("property1", query.getPropertyName().get(0));
         assertEquals("property2", query.getPropertyName().get(1));
 
-        XlinkPropertyNameType xlink;
-        xlink = (XlinkPropertyNameType) query.getXlinkPropertyName().get(0);
+        XlinkPropertyNameType xlink = (XlinkPropertyNameType) query.getXlinkPropertyName().get(0);
         assertEquals("gt:propertyA/gt:propertyB", xlink.getValue());
         assertEquals("*", xlink.getTraverseXlinkDepth());
         assertEquals(BigInteger.valueOf(10), xlink.getTraverseXlinkExpiry());
@@ -88,8 +87,7 @@ public class QueryTypeBindingTest extends WFSTestSupport {
         assertEquals("1", xlink.getTraverseXlinkDepth());
         assertNull(xlink.getTraverseXlinkExpiry());
 
-        Function function;
-        function = (Function) query.getFunction().get(0);
+        Function function = (Function) query.getFunction().get(0);
         assertNotNull(function);
         assertEquals("max", function.getName());
 

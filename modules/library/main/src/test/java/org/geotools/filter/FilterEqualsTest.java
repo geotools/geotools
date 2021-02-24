@@ -99,14 +99,12 @@ public class FilterEqualsTest {
     @Test
     public void testExpressionMath() {
         try {
-            MathExpressionImpl testMath1;
-            MathExpressionImpl testMath2;
             testExp1 = new LiteralExpressionImpl(Double.valueOf(5));
             testExp2 = new LiteralExpressionImpl(Double.valueOf(5));
-            testMath1 = new AddImpl(null, null);
+            MathExpressionImpl testMath1 = new AddImpl(null, null);
             testMath1.setExpression1(testExp1);
             testMath1.setExpression2(testExp2);
-            testMath2 = new AddImpl(null, null);
+            MathExpressionImpl testMath2 = new AddImpl(null, null);
             testMath2.setExpression1(testExp2);
             testMath2.setExpression2(testExp1);
             Assert.assertEquals(testMath1, testMath2);

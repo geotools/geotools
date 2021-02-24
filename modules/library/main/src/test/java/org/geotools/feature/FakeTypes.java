@@ -71,8 +71,7 @@ public class FakeTypes {
     public static final AttributeType GEOMETRYPROPERTYTYPE_TYPE = build_GEOMETRYPROPERTYTYPE_TYPE();
 
     private static AttributeType build_GEOMETRYPROPERTYTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GeometryPropertyType"),
                         org.locationtech.jts.geom.Geometry.class,
@@ -88,11 +87,10 @@ public class FakeTypes {
     public static final AttributeType NULLTYPE_TYPE = build_NULLTYPE_TYPE();
 
     private static AttributeType build_NULLTYPE_TYPE() {
-        AttributeType builtType;
-        builtType =
+        AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "NullType"),
-                        java.lang.Object.class,
+                        Object.class,
                         false,
                         false,
                         Collections.emptyList(),

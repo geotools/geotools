@@ -3422,11 +3422,11 @@ public class ImageWorker {
          * transparent index value can hold in the amount of bits allowed for this color model (the mapSize value may not use all bits). It works as
          * expected with the -1 special value. It also make sure that "transparent + 1" do not exeed the maximum map size allowed.
          */
-        final boolean forceBitmask;
         final IndexColorModel oldCM = (IndexColorModel) image.getColorModel();
         final int pixelSize = oldCM.getPixelSize();
         transparent &= (1 << pixelSize) - 1;
-        forceBitmask = !translucent && oldCM.getTransparency() == Transparency.TRANSLUCENT;
+        final boolean forceBitmask =
+                !translucent && oldCM.getTransparency() == Transparency.TRANSLUCENT;
         if (forceBitmask || oldCM.getTransparentPixel() != transparent) {
             final int mapSize = Math.max(oldCM.getMapSize(), transparent + 1);
             final byte[][] RGBA = new byte[translucent ? 4 : 3][mapSize];
@@ -5340,8 +5340,7 @@ public class ImageWorker {
         if (cm instanceof IndexColorModel) {
             IndexColorModel icm = (IndexColorModel) cm;
             // try to find the index that matches the requested background color
-            final int bgColorIndex;
-            bgColorIndex = icm.getTransparentPixel();
+            final int bgColorIndex = icm.getTransparentPixel();
 
             // we did not find the background color, well we have to expand to RGB and then tell
             // Mosaic to use the RGB(A) color as the
@@ -5657,8 +5656,8 @@ public class ImageWorker {
         try {
             c = Class.forName("org.geotools.gui.swing.image.OperationTreeBrowser");
         } catch (ClassNotFoundException cause) {
-            final HeadlessException e;
-            e = new HeadlessException("The \"gt2-widgets-swing.jar\" file is required.");
+            final HeadlessException e =
+                    new HeadlessException("The \"gt2-widgets-swing.jar\" file" + " is required.");
             e.initCause(cause);
             throw e;
         }

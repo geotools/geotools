@@ -146,7 +146,6 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     }
 
     public void visit(StyledLayerDescriptor sld) {
-        StyledLayerDescriptor copy = null;
 
         StyledLayer[] layers = sld.getStyledLayers();
         StyledLayer[] layersCopy = new StyledLayer[layers.length];
@@ -161,7 +160,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
             }
         }
 
-        copy = sf.createStyledLayerDescriptor();
+        StyledLayerDescriptor copy = sf.createStyledLayerDescriptor();
         copy.setAbstract(sld.getAbstract());
         copy.setName(sld.getName());
         copy.setTitle(sld.getTitle());
@@ -174,7 +173,6 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     }
 
     public void visit(NamedLayer layer) {
-        NamedLayer copy = null;
 
         Style[] style = layer.getStyles();
         Style[] styleCopy = new Style[style.length];
@@ -197,7 +195,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
             }
         }
 
-        copy = sf.createNamedLayer();
+        NamedLayer copy = sf.createNamedLayer();
         copy.setName(layer.getName());
         length = styleCopy.length;
         for (int i = 0; i < length; i++) {
@@ -209,7 +207,6 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     }
 
     public void visit(UserLayer layer) {
-        UserLayer copy = null;
 
         Style[] style = layer.getUserStyles();
         int length = style.length;
@@ -232,7 +229,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
             }
         }
 
-        copy = sf.createUserLayer();
+        UserLayer copy = sf.createUserLayer();
         copy.setName(layer.getName());
         copy.setUserStyles(styleCopy);
         copy.setLayerFeatureConstraints(lfcCopy);
@@ -244,7 +241,6 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     }
 
     public void visit(Style style) {
-        Style copy = null;
 
         List<FeatureTypeStyle> ftsCopy = new ArrayList<>();
         for (FeatureTypeStyle fts : style.featureTypeStyles()) {
@@ -254,7 +250,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
             }
         }
 
-        copy = sf.createStyle();
+        Style copy = sf.createStyle();
         copy.getDescription().setAbstract(style.getDescription().getAbstract());
         copy.setName(style.getName());
         copy.getDescription().setTitle(style.getDescription().getTitle());
@@ -268,7 +264,6 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     }
 
     public void visit(Rule rule) {
-        Rule copy = null;
 
         Filter filterCopy = null;
 
@@ -285,7 +280,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         Description descCopy = rule.getDescription();
         descCopy = copy(descCopy);
 
-        copy = sf.createRule();
+        Rule copy = sf.createRule();
         copy.symbolizers().addAll(symsCopy);
         copy.setDescription(descCopy);
         copy.setLegend(legendCopy);
@@ -534,7 +529,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         return (ColorMap) pages.pop();
     }
 
-    protected SelectedChannelType[] copy(SelectedChannelType[] channels) {
+    protected SelectedChannelType[] copy(SelectedChannelType... channels) {
         if (channels == null) return null;
 
         SelectedChannelType[] copy = new SelectedChannelType[channels.length];
@@ -558,8 +553,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         if (channelSelection == null) return null;
 
         if (channelSelection.getGrayChannel() != null) {
-            return sf.createChannelSelection(
-                    new SelectedChannelType[] {copy(channelSelection.getGrayChannel())});
+            return sf.createChannelSelection(copy(channelSelection.getGrayChannel()));
         } else {
             return sf.createChannelSelection(copy(channelSelection.getRGBChannels()));
         }
@@ -791,7 +785,6 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     }
 
     public void visit(Graphic gr) {
-        Graphic copy = null;
 
         Displacement displacementCopy = copy(gr.getDisplacement());
         List<GraphicalSymbol> symbolsCopy = copy(gr.graphicalSymbols());
@@ -800,7 +793,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         Expression sizeCopy = copy(gr.getSize());
         AnchorPoint anchorCopy = copy(gr.getAnchorPoint());
 
-        copy = sf.createDefaultGraphic();
+        Graphic copy = sf.createDefaultGraphic();
 
         copy.setDisplacement(displacementCopy);
         copy.graphicalSymbols().clear();
@@ -831,9 +824,8 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     }
 
     public void visit(Mark mark) {
-        Mark copy = null;
 
-        copy = sf.createMark();
+        Mark copy = sf.createMark();
         copy.setFill(copy(mark.getFill()));
         copy.setStroke(copy(mark.getStroke()));
         copy.setWellKnownName(copy(mark.getWellKnownName()));
@@ -943,7 +935,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
-    protected Extent[] copy(Extent[] extents) {
+    protected Extent[] copy(Extent... extents) {
         if (extents == null) {
             return null;
         }

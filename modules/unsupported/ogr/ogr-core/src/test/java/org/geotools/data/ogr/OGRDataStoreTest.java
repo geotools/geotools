@@ -232,7 +232,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
 
         // query just the geometry field, check the collection returned
         Query query = new Query("statepop");
-        query.setPropertyNames(new String[] {"the_geom"});
+        query.setPropertyNames("the_geom");
         SimpleFeatureCollection fc = fs.getFeatures(query);
         assertTrue(fc.size() > 0);
         SimpleFeatureType schema = fc.getSchema();
@@ -729,10 +729,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         assertEquals(1, s.getTypeNames().length);
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Query query = new Query();
-        query.setSortBy(
-                new org.opengis.filter.sort.SortBy[] {
-                    ff.sort("float", org.opengis.filter.sort.SortOrder.ASCENDING)
-                });
+        query.setSortBy(ff.sort("float", org.opengis.filter.sort.SortOrder.ASCENDING));
         SimpleFeatureCollection fc = s.getFeatureSource("junk").getFeatures(query);
         assertEquals(features.size(), fc.size());
         // Read
@@ -789,10 +786,8 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
             features.add(
                     fb.buildFeature(
                             null,
-                            new Object[] {
-                                new GeometryFactory().createPoint(new Coordinate(1, -1)),
-                                "Point" + String.valueOf(i)
-                            }));
+                            new GeometryFactory().createPoint(new Coordinate(1, -1)),
+                            "Point" + String.valueOf(i)));
         }
         return features;
     }
@@ -911,20 +906,18 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
             features.add(
                     fb.buildFeature(
                             null,
-                            new Object[] {
-                                new GeometryFactory().createPoint(new Coordinate(1, -1)),
-                                Byte.valueOf((byte) i),
-                                Short.valueOf((short) i),
-                                Double.valueOf(i),
-                                Float.valueOf(i),
-                                new String(i + " "),
-                                new Date(i),
-                                Boolean.TRUE,
-                                Integer.valueOf(22),
-                                Long.valueOf(1234567890123456789L),
-                                new BigDecimal(new BigInteger("12345678901234567890123456789"), 2),
-                                new BigInteger("12345678901234567890123456789")
-                            }));
+                            new GeometryFactory().createPoint(new Coordinate(1, -1)),
+                            Byte.valueOf((byte) i),
+                            Short.valueOf((short) i),
+                            Double.valueOf(i),
+                            Float.valueOf(i),
+                            i + " ",
+                            new Date(i),
+                            Boolean.TRUE,
+                            Integer.valueOf(22),
+                            Long.valueOf(1234567890123456789L),
+                            new BigDecimal(new BigInteger("12345678901234567890123456789"), 2),
+                            new BigInteger("12345678901234567890123456789")));
         }
         return features;
     }

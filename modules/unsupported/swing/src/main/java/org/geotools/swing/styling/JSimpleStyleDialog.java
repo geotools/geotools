@@ -456,10 +456,7 @@ public class JSimpleStyleDialog extends JDialog {
         JPanel panel = new JPanel(layout);
         controls = new HashMap<>();
 
-        JLabel label = null;
-        JButton btn = null;
-
-        label = new JLabel("Feature type");
+        JLabel label = new JLabel("Feature type");
         label.setForeground(Color.BLUE);
         panel.add(label, "wrap");
 
@@ -473,7 +470,7 @@ public class JSimpleStyleDialog extends JDialog {
         label.setForeground(Color.BLUE);
         panel.add(label, "wrap");
 
-        btn = new JButton("Color...");
+        JButton btn = new JButton("Color...");
         btn.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent e) {

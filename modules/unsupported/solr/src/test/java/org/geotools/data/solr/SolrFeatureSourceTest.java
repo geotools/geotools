@@ -222,7 +222,7 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
         PropertyIsEqualTo filter = ff.equals(ff.property("modem_b"), ff.literal(true));
 
         Query query = new Query();
-        query.setPropertyNames(new String[] {"standard_ss", "security_ss"});
+        query.setPropertyNames("standard_ss", "security_ss");
         query.setFilter(filter);
 
         SimpleFeatureCollection features = featureSource.getFeatures(query);
@@ -242,7 +242,7 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
         FilterFactory ff = dataStore.getFilterFactory();
         SortBy sort = ff.sort("vendor_s", SortOrder.ASCENDING);
         Query query = new Query();
-        query.setSortBy(new SortBy[] {sort});
+        query.setSortBy(sort);
 
         SimpleFeatureCollection features = featureSource.getFeatures(query);
         assertEquals(13, features.size());
@@ -266,7 +266,7 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
         }
 
         sort = ff.sort("vendor_s", SortOrder.DESCENDING);
-        query.setSortBy(new SortBy[] {sort});
+        query.setSortBy(sort);
         features = featureSource.getFeatures(query);
         iterator = features.features();
         try {
@@ -307,7 +307,7 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
     public void testNaturalSortingAsc() throws Exception {
         init();
         Query q = new Query(featureSource.getSchema().getTypeName());
-        q.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
+        q.setSortBy(SortBy.NATURAL_ORDER);
         try (SimpleFeatureIterator features = featureSource.getFeatures(q).features()) {
             String prevId = null;
             while (features.hasNext()) {
@@ -321,7 +321,7 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
     public void testNaturalSortingDesc() throws Exception {
         init();
         Query q = new Query(featureSource.getSchema().getTypeName());
-        q.setSortBy(new SortBy[] {SortBy.REVERSE_ORDER});
+        q.setSortBy(SortBy.REVERSE_ORDER);
         try (SimpleFeatureIterator features = featureSource.getFeatures(q).features()) {
             String prevId = null;
             while (features.hasNext()) {

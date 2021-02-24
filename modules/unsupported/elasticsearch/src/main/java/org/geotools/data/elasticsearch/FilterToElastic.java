@@ -31,9 +31,9 @@ import java.util.Map;
 import java.util.logging.Logger;
 import org.elasticsearch.common.joda.Joda;
 import org.geotools.data.Query;
+import org.geotools.data.geojson.GeoJSONWriter;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.Capabilities;
-import org.geotools.geojson.geom.GeometryJSON;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
@@ -1163,12 +1163,11 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
             // convert LinearRing to LineString
             final GeometryFactory factory = currentGeometry.getFactory();
             final LinearRing linearRing = (LinearRing) currentGeometry;
-            final CoordinateSequence coordinates;
-            coordinates = linearRing.getCoordinateSequence();
+            final CoordinateSequence coordinates = linearRing.getCoordinateSequence();
             currentGeometry = factory.createLineString(coordinates);
         }
 
-        final String geoJson = new GeometryJSON().toString(currentGeometry);
+        final String geoJson = GeoJSONWriter.toGeoJSON(currentGeometry);
         currentShapeBuilder = mapReader.readValue(geoJson);
     }
 
@@ -1262,8 +1261,8 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
                 }
                 if (entry.getKey().equalsIgnoreCase("a")) {
                     final ObjectMapper mapper = new ObjectMapper();
-                    final TypeReference<Map<String, Map<String, Map<String, Object>>>> type;
-                    type = new TypeReference<Map<String, Map<String, Map<String, Object>>>>() {};
+                    final TypeReference<Map<String, Map<String, Map<String, Object>>>> type =
+                            new TypeReference<Map<String, Map<String, Map<String, Object>>>>() {};
                     final String value = entry.getValue();
                     try {
                         this.aggregations = mapper.readValue(value, type);

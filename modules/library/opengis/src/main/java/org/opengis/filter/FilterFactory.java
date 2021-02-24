@@ -589,7 +589,7 @@ public interface FilterFactory {
     Operator operator(String name);
 
     /** spatial operator */
-    SpatialOperator spatialOperator(String name, GeometryOperand[] geometryOperands);
+    SpatialOperator spatialOperator(String name, GeometryOperand... geometryOperands);
 
     /** temporal operator */
     TemporalOperator temporalOperator(String name);
@@ -601,13 +601,13 @@ public interface FilterFactory {
     FunctionName functionName(Name name, int nargs);
 
     /** functions */
-    Functions functions(FunctionName[] functionNames);
+    Functions functions(FunctionName... functionNames);
 
     /** spatial operators */
-    SpatialOperators spatialOperators(SpatialOperator[] spatialOperators);
+    SpatialOperators spatialOperators(SpatialOperator... spatialOperators);
 
     /** comparison operators */
-    ComparisonOperators comparisonOperators(Operator[] comparisonOperators);
+    ComparisonOperators comparisonOperators(Operator... comparisonOperators);
 
     /** arithmetic operators */
     ArithmeticOperators arithmeticOperators(boolean simple, Functions functions);
@@ -624,7 +624,7 @@ public interface FilterFactory {
     IdCapabilities idCapabilities(boolean eid, boolean fid);
 
     /** temporal capabilities */
-    TemporalCapabilities temporalCapabilities(TemporalOperator[] temporalOperators);
+    TemporalCapabilities temporalCapabilities(TemporalOperator... temporalOperators);
 
     /** filter capabilities */
     FilterCapabilities capabilities(

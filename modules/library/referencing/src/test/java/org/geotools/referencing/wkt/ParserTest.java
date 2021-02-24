@@ -58,14 +58,11 @@ public final class ParserTest {
     @Test
     public void testHardCoded() throws ParseException {
         final Parser parser = new Parser();
-        String wkt1, wkt2;
-        DefaultProjectedCRS crs1, crs2;
-        ParameterValueGroup param;
         /*
          * First, rather simple Mercator projection.
          * Uses standard units and axis order.
          */
-        wkt1 =
+        String wkt1 =
                 "PROJCS[\"Mercator test\",\n"
                         + "  GEOGCS[\"WGS84\",\n"
                         + "    DATUM[\"WGS84\",\n"
@@ -83,10 +80,10 @@ public final class ParserTest {
                         + "  AXIS[\"x\", EAST],\n"
                         + "  AXIS[\"y\", NORTH]]\n";
         assertTrue(Symbols.DEFAULT.containsAxis(wkt1));
-        crs1 = (DefaultProjectedCRS) parser.parseObject(wkt1);
-        wkt2 = parser.format(crs1);
-        crs2 = (DefaultProjectedCRS) parser.parseObject(wkt2);
-        param = crs1.getConversionFromBase().getParameterValues();
+        DefaultProjectedCRS crs1 = (DefaultProjectedCRS) parser.parseObject(wkt1);
+        String wkt2 = parser.format(crs1);
+        DefaultProjectedCRS crs2 = (DefaultProjectedCRS) parser.parseObject(wkt2);
+        ParameterValueGroup param = crs1.getConversionFromBase().getParameterValues();
         assertEquals(crs1, crs2);
         assertEquals("Mercator_1SP", crs1.getConversionFromBase().getMethod().getName().getCode());
         assertTrue(

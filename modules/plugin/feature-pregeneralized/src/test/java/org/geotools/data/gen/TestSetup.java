@@ -306,7 +306,6 @@ public class TestSetup {
     }
 
     private static void createShapeFilePyramd() throws IOException {
-        URL url = null;
 
         File baseDir = new File("target" + File.separator + "0");
         if (baseDir.exists() == false) baseDir.mkdir();
@@ -322,7 +321,7 @@ public class TestSetup {
         }
         // ////////
 
-        url = TestData.url("shapes/streams.shp");
+        URL url = TestData.url("shapes/streams.shp");
 
         ShapefileDataStore shapeDS =
                 (ShapefileDataStore) new ShapefileDataStoreFactory().createDataStore(url);

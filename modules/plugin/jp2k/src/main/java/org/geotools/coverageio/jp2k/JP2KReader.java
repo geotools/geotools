@@ -808,16 +808,13 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
         final String worldFilePath =
                 new StringBuffer(this.parentPath).append(SEPARATOR).append(coverageName).toString();
 
-        File file2Parse = null;
-        boolean worldFileExists = false;
-
         // //
         //
         // Check for a world file with the format specific extension
         //
         // //
-        file2Parse = new File(worldFilePath + ".j2w");
-        worldFileExists = file2Parse.exists();
+        File file2Parse = new File(worldFilePath + ".j2w");
+        boolean worldFileExists = file2Parse.exists();
 
         // //
         //

@@ -51,7 +51,7 @@ public interface NamedLayer extends StyledLayer {
 
     public FeatureTypeConstraint[] getLayerFeatureConstraints();
 
-    public void setLayerFeatureConstraints(FeatureTypeConstraint[] constraints);
+    public void setLayerFeatureConstraints(FeatureTypeConstraint... constraints);
 
     public List<Style> styles();
 

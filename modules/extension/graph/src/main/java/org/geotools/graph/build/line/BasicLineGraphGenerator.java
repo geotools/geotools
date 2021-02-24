@@ -104,19 +104,17 @@ public class BasicLineGraphGenerator implements LineGraphGenerator {
      */
     public Graphable add(Object obj) {
         LineSegment line = (LineSegment) obj;
-        Coordinate first, last;
-        Node n1, n2;
 
         // check first coordinate
-        first = line.p0;
-        n1 = retrieveNode(first);
+        Coordinate first = line.p0;
+        Node n1 = retrieveNode(first);
         if (n1 == null) {
             n1 = createNode(first);
         }
 
         // check second coordinate
-        last = line.p1;
-        n2 = retrieveNode(last);
+        Coordinate last = line.p1;
+        Node n2 = retrieveNode(last);
         if (n2 == null) {
             n2 = createNode(last);
         }
@@ -235,8 +233,7 @@ public class BasicLineGraphGenerator implements LineGraphGenerator {
     }
 
     private Node createNode(Coordinate c) {
-        Node node;
-        node = getGraphBuilder().buildNode();
+        Node node = getGraphBuilder().buildNode();
         setObject(node, c);
         getGraphBuilder().addNode(node);
         m_coord2node.put(c, node);

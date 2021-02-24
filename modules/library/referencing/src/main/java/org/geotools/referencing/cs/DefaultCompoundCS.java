@@ -55,7 +55,7 @@ public class DefaultCompoundCS extends AbstractCS {
      *
      * @param cs The set of coordinate syztem.
      */
-    public DefaultCompoundCS(CoordinateSystem[] cs) {
+    public DefaultCompoundCS(CoordinateSystem... cs) {
         super(getName(cs = clone(cs)), getAxis(cs));
         this.cs = cs;
     }
@@ -64,7 +64,7 @@ public class DefaultCompoundCS extends AbstractCS {
      * Returns a clone of the specified array. This method would be bundle right into the
      * constructor if RFE #4093999 was fixed.
      */
-    private static CoordinateSystem[] clone(CoordinateSystem[] cs) {
+    private static CoordinateSystem[] clone(CoordinateSystem... cs) {
         ensureNonNull("cs", cs);
         cs = cs.clone();
         for (int i = 0; i < cs.length; i++) {
@@ -74,7 +74,7 @@ public class DefaultCompoundCS extends AbstractCS {
     }
 
     /** Returns the axis of all coordinate systems. */
-    private static CoordinateSystemAxis[] getAxis(final CoordinateSystem[] cs) {
+    private static CoordinateSystemAxis[] getAxis(final CoordinateSystem... cs) {
         int count = 0;
         for (CoordinateSystem coordinateSystem : cs) {
             count += coordinateSystem.getDimension();
@@ -96,7 +96,7 @@ public class DefaultCompoundCS extends AbstractCS {
      *
      * @param cs The coordinate systems.
      */
-    private static String getName(final CoordinateSystem[] cs) {
+    private static String getName(final CoordinateSystem... cs) {
         final StringBuilder buffer = new StringBuilder();
         for (CoordinateSystem c : cs) {
             if (buffer.length() != 0) {

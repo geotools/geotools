@@ -26,7 +26,7 @@ public class CalcUtil {
      *
      * @return the sum contained in the most appropriate number class
      */
-    static Number sum(Number[] numbers) {
+    static Number sum(Number... numbers) {
         Number newSum = (Number) getObject(numbers);
 
         if (newSum == null) {
@@ -115,7 +115,7 @@ public class CalcUtil {
     }
 
     /** Calculates the average, and returns it in the correct class. */
-    static Number average(Number[] numbers) {
+    static Number average(Number... numbers) {
         Number sum = sum(numbers);
 
         return divide(sum, Integer.valueOf(numbers.length));
@@ -126,7 +126,7 @@ public class CalcUtil {
      *
      * @return the most
      */
-    static Class bestClass(Object[] objects) {
+    static Class bestClass(Object... objects) {
         boolean hasInt = false;
         boolean hasFloat = false;
         boolean hasLong = false;
@@ -227,7 +227,7 @@ public class CalcUtil {
      * Given an array of objects, traverses the array and determines the most suitable data type to
      * perform the calculation in. An empty object of the correct class is returned;
      */
-    static Object getObject(Object[] objects) {
+    static Object getObject(Object... objects) {
         Class bestClass = bestClass(objects);
 
         if (bestClass == String.class) {

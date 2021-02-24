@@ -54,12 +54,11 @@ public class DataAccessFinderTest {
 
     @Test
     public void testGetDataStore() throws IOException {
-        DataStore dataStore;
 
         Map<String, Serializable> params = new HashMap<>();
         params.put(MOCK_DS_PARAM_KEY, MockUnavailableDataStoreFactory.class);
 
-        dataStore = DataStoreFinder.getDataStore(params);
+        DataStore dataStore = DataStoreFinder.getDataStore(params);
         Assert.assertNull(dataStore);
 
         params.put(MOCK_DS_PARAM_KEY, MockDataStoreFactory.class);
@@ -71,12 +70,11 @@ public class DataAccessFinderTest {
     /** Can both DataStores and plain DataAccess be aquired through {@link DataAccessFinder}? */
     @Test
     public void testGetDataAccess() throws IOException {
-        DataAccess<FeatureType, Feature> dataStore;
 
         Map<String, Serializable> params = new HashMap<>();
         params.put(MOCK_DS_PARAM_KEY, MockUnavailableDataStoreFactory.class);
 
-        dataStore = DataAccessFinder.getDataStore(params);
+        DataAccess<FeatureType, Feature> dataStore = DataAccessFinder.getDataStore(params);
         Assert.assertNull(dataStore);
 
         params.put(MOCK_DS_PARAM_KEY, MockDataStoreFactory.class);
@@ -93,8 +91,7 @@ public class DataAccessFinderTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testGetAllDataStores() {
-        Iterator<DataStoreFactorySpi> availableDataStores;
-        availableDataStores = DataStoreFinder.getAllDataStores();
+        Iterator<DataStoreFactorySpi> availableDataStores = DataStoreFinder.getAllDataStores();
 
         Assert.assertNotNull(availableDataStores);
         Assert.assertTrue(availableDataStores.hasNext());
@@ -119,8 +116,7 @@ public class DataAccessFinderTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testGetAllDataAccess() {
-        Iterator<DataAccessFactory> availableDataStores;
-        availableDataStores = DataAccessFinder.getAllDataStores();
+        Iterator<DataAccessFactory> availableDataStores = DataAccessFinder.getAllDataStores();
 
         Assert.assertNotNull(availableDataStores);
         Assert.assertTrue(availableDataStores.hasNext());
@@ -150,8 +146,8 @@ public class DataAccessFinderTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testGetAvailableDataStores() {
-        Iterator<DataStoreFactorySpi> availableDataStores;
-        availableDataStores = DataStoreFinder.getAvailableDataStores();
+        Iterator<DataStoreFactorySpi> availableDataStores =
+                DataStoreFinder.getAvailableDataStores();
 
         Assert.assertNotNull(availableDataStores);
         Assert.assertTrue(availableDataStores.hasNext());
@@ -170,16 +166,14 @@ public class DataAccessFinderTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testGetAvailableDataAccess() {
-        Iterator<DataAccessFactory> availableDataAccess;
-        availableDataAccess = DataAccessFinder.getAvailableDataStores();
+        Iterator<DataAccessFactory> availableDataAccess = DataAccessFinder.getAvailableDataStores();
 
         Assert.assertNotNull(availableDataAccess);
         Assert.assertTrue(availableDataAccess.hasNext());
 
         Set<Class> classes = new HashSet<>();
-        DataAccessFactory daf;
 
-        daf = availableDataAccess.next();
+        DataAccessFactory daf = availableDataAccess.next();
         Assert.assertNotNull(daf);
         classes.add(daf.getClass());
 

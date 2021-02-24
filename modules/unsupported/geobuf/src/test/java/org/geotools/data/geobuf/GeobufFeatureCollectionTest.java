@@ -70,8 +70,7 @@ public class GeobufFeatureCollectionTest {
                             2
                         },
                         "location.2");
-        SimpleFeatureCollection collection =
-                DataUtilities.collection(new SimpleFeature[] {feature1, feature2});
+        SimpleFeatureCollection collection = DataUtilities.collection(feature1, feature2);
         featureStore.addFeatures(collection);
 
         GeobufFeatureCollection geobufFeatureCollection = new GeobufFeatureCollection();

@@ -204,7 +204,7 @@ public class Console extends AbstractConsole {
      * @param args the command line arguments
      */
     @SuppressWarnings({"PMD.SystemPrintln", "PMD.CloseResource"})
-    public static void main(String[] args) {
+    public static void main(String... args) {
         final Arguments arguments = new Arguments(args);
         final String load = arguments.getOptionalString("-load");
         final String file = arguments.getOptionalString("-file");
@@ -549,8 +549,7 @@ public class Console extends AbstractConsole {
         if (position2 != null) {
             if (crs instanceof AbstractCRS)
                 try {
-                    final Measure distance;
-                    distance =
+                    final Measure distance =
                             ((AbstractCRS) crs)
                                     .distance(position1.getCoordinate(), position2.getCoordinate());
                     table.setAlignment(TableWriter.ALIGN_RIGHT);

@@ -195,7 +195,7 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
 
             org.geotools.util.logging.Logging.getLogger(GeoServerOnlineTest.class)
                     .setLevel(Level.FINE);
-            SimpleFeatureCollection inserts = DataUtilities.collection(new SimpleFeature[] {f, f2});
+            SimpleFeatureCollection inserts = DataUtilities.collection(f, f2);
             Id fp = WFSOnlineTestSupport.doInsert(wfs, ft, inserts);
 
             // / okay now count ...

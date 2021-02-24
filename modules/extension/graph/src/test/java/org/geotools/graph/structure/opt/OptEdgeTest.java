@@ -208,14 +208,12 @@ public class OptEdgeTest {
 
     @Test
     public void test_getRelated() {
-        OptEdge be;
-        Iterator itr;
 
         // nodes share single edge
-        itr = m_edge.getRelated();
+        Iterator itr = m_edge.getRelated();
         Assert.assertTrue(itr.hasNext());
 
-        be = (OptEdge) itr.next();
+        OptEdge be = (OptEdge) itr.next();
         Assert.assertTrue(
                 be.equals(m_other1)
                         || be.equals(m_other2)

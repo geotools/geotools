@@ -31,6 +31,46 @@ But first to upgrade - change your dependency geotools.version to |release| (or 
 GeoTools 25.x
 -------------
 
+More variable arguments support in core classes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Several code classes have been switched to use ``varargs`` instead of explicit arrays. 
+While the old clients are compatible with these changes, there's now an opportunity
+to simplify code.
+
+BEFORE
+
+.. code-block:: java
+
+   // style creation
+   FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(new Rule[] {rule});
+   // query handling
+   Query q = new Query(tname("ft1"));
+   q.setSortBy(new SortBy[] {new SortByImpl("prop", ASCENDING)});
+   q.setPropertyNames(new String[] {"geom"});
+   // feature building
+   SimpleFeatureBuilder fb = new SimpleFeatureBuilder(targetType);
+   SimpleFeature = fb.buildFeature("f1", new Object[] {null, 1}));
+   // test collection creation
+   SimpleFeatureCollection collection = DataUtilities.collection(new SimpleFeature[] {feature1, feature2});
+
+
+AFTER
+
+.. code-block:: java
+
+   // style creation
+   FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(rule);
+   // query handling
+   Query q = new Query(tname("ft1"));
+   q.setSortBy(new SortByImpl("prop", ASCENDING));
+   q.setPropertyNames("geom");
+   // feature building
+   SimpleFeatureBuilder fb = new SimpleFeatureBuilder(targetType);
+   SimpleFeature = fb.buildFeature("f1", null, 1));
+   // test collection creation
+   SimpleFeatureCollection collection = DataUtilities.collection(feature1, feature2);
+
 DataStore creation parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

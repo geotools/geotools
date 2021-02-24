@@ -113,8 +113,7 @@ public class DefaultFunctionFactory implements FunctionFactory {
             functionName = function.getFunctionName();
         }
         if (functionName == null) {
-            int argc;
-            argc = function.getParameters().size();
+            int argc = function.getParameters().size();
             functionName = filterFactory.functionName(name, argc);
             if (!functionName.getName().equals(name)) {
                 LOGGER.warning(

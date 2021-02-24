@@ -113,7 +113,7 @@ public class DefaultEllipsoidalCS extends AbstractCS implements EllipsoidalCS {
      */
     public DefaultEllipsoidalCS(
             final String name, final CoordinateSystemAxis axis0, final CoordinateSystemAxis axis1) {
-        super(name, new CoordinateSystemAxis[] {axis0, axis1});
+        super(name, axis0, axis1);
     }
 
     /**
@@ -129,7 +129,7 @@ public class DefaultEllipsoidalCS extends AbstractCS implements EllipsoidalCS {
             final CoordinateSystemAxis axis0,
             final CoordinateSystemAxis axis1,
             final CoordinateSystemAxis axis2) {
-        super(name, new CoordinateSystemAxis[] {axis0, axis1, axis2});
+        super(name, axis0, axis1, axis2);
     }
 
     /**
@@ -145,7 +145,7 @@ public class DefaultEllipsoidalCS extends AbstractCS implements EllipsoidalCS {
             final Map<String, ?> properties,
             final CoordinateSystemAxis axis0,
             final CoordinateSystemAxis axis1) {
-        super(properties, new CoordinateSystemAxis[] {axis0, axis1});
+        super(properties, axis0, axis1);
     }
 
     /**
@@ -163,12 +163,12 @@ public class DefaultEllipsoidalCS extends AbstractCS implements EllipsoidalCS {
             final CoordinateSystemAxis axis0,
             final CoordinateSystemAxis axis1,
             final CoordinateSystemAxis axis2) {
-        super(properties, new CoordinateSystemAxis[] {axis0, axis1, axis2});
+        super(properties, axis0, axis1, axis2);
     }
 
     /** For {@link #usingUnit} usage only. */
     private DefaultEllipsoidalCS(
-            final Map<String, ?> properties, final CoordinateSystemAxis[] axis) {
+            final Map<String, ?> properties, final CoordinateSystemAxis... axis) {
         super(properties, axis);
     }
 

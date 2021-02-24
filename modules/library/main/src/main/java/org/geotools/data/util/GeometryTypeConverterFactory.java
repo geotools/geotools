@@ -333,7 +333,7 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                 /**
                  * Gets a set of coordinates valid to create a linestring: - at least 2 coordinates
                  */
-                private Coordinate[] getLineStringCoordinates(Coordinate[] coordinates) {
+                private Coordinate[] getLineStringCoordinates(Coordinate... coordinates) {
                     // at least 2 points
                     coordinates = growCoordinatesNum(coordinates, 2);
                     return coordinates;
@@ -343,7 +343,7 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                  * Gets a set of coordinates valid to create a polygon: - at least 4 coordinates -
                  * closed path
                  */
-                private Coordinate[] getPolygonCoordinates(Coordinate[] coordinates) {
+                private Coordinate[] getPolygonCoordinates(Coordinate... coordinates) {
                     // at least 4 points
                     coordinates = growCoordinatesNum(coordinates, 4);
 

@@ -283,7 +283,6 @@ public class Crop extends Operation2D {
 
         final Geometry cropRoi; // extracted from parameters
         GeneralEnvelope cropEnvelope = null; // extracted from parameters
-        final GridCoverage2D source; // extracted from parameters
         final double roiTolerance = parameters.parameter(Crop.PARAMNAME_ROITOLERANCE).doubleValue();
         final boolean forceMosaic = parameters.parameter(Crop.PARAMNAME_FORCEMOSAIC).booleanValue();
         Range nodata = (Range) parameters.parameter(Crop.PARAMNAME_NODATA).getValue();
@@ -305,7 +304,8 @@ public class Crop extends Operation2D {
                             "Source",
                             GridCoverage2D.class.toString()));
         }
-        source = (GridCoverage2D) sourceParameter.getValue();
+        // extracted from parameters
+        final GridCoverage2D source = (GridCoverage2D) sourceParameter.getValue();
 
         // Getting NoData value if not defined
         if (nodata == null) {
@@ -634,7 +634,6 @@ public class Crop extends Operation2D {
             // Check if we need to use mosaic or crop
             //
             // //
-            final PlanarImage croppedImage;
             ImageWorker worker = new ImageWorker();
             java.awt.Polygon rasterSpaceROI = null;
             double[] background =
@@ -749,7 +748,7 @@ public class Crop extends Operation2D {
             // Apply operation
             //
             // //
-            croppedImage = worker.getPlanarImage();
+            final PlanarImage croppedImage = worker.getPlanarImage();
 
             // conserve the input grid to world transformation
             @SuppressWarnings("unchecked")

@@ -154,7 +154,7 @@ public class LineFormat extends Format {
      * @throws IllegalArgumentException if {@code formats} is null or an element of {@code format}
      *     is null.
      */
-    public LineFormat(final Format[] formats) throws IllegalArgumentException {
+    public LineFormat(final Format... formats) throws IllegalArgumentException {
         this.data = new Object[formats.length];
         this.format = new Format[formats.length];
         this.limits = new int[formats.length + 1];

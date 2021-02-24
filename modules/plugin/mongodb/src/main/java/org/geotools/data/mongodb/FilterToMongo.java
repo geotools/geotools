@@ -313,9 +313,8 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
     }
 
     private Class<?> getValueType(Expression e) {
-        Class<?> valueType = null;
 
-        valueType = getJsonSelectType(e);
+        Class<?> valueType = getJsonSelectType(e);
         if (valueType != null) {
             return valueType;
         }

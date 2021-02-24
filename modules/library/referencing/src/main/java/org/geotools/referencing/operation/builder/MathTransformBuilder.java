@@ -187,9 +187,10 @@ public abstract class MathTransformBuilder {
     public void setMappedPositions(final List<MappedPosition> positions)
             throws IllegalArgumentException, MismatchedDimensionException,
                     MismatchedReferenceSystemException {
-        final CoordinateReferenceSystem source, target;
-        source = ensureValid(getPoints(positions, false), "sourcePoints");
-        target = ensureValid(getPoints(positions, true), "targetPoints");
+        final CoordinateReferenceSystem source =
+                ensureValid(getPoints(positions, false), "sourcePoints");
+        final CoordinateReferenceSystem target =
+                ensureValid(getPoints(positions, true), "targetPoints");
         /*
          * Now stores the informations. Note that we set the source and target CRS
          * only after 'ensureValid' succeed for both CRS.
@@ -271,7 +272,7 @@ public abstract class MathTransformBuilder {
      *     #getDimension expected number of dimensions}.
      * @throws MismatchedReferenceSystemException if CRS is not the same for all points.
      */
-    public void setSourcePoints(final DirectPosition[] points)
+    public void setSourcePoints(final DirectPosition... points)
             throws IllegalArgumentException, MismatchedDimensionException,
                     MismatchedReferenceSystemException {
         // Set the points only after we checked them.
@@ -299,7 +300,7 @@ public abstract class MathTransformBuilder {
      *     #getDimension expected number of dimensions}.
      * @throws MismatchedReferenceSystemException if CRS is not the same for all points.
      */
-    public void setTargetPoints(final DirectPosition[] points)
+    public void setTargetPoints(final DirectPosition... points)
             throws IllegalArgumentException, MismatchedDimensionException,
                     MismatchedReferenceSystemException {
         // Set the points only after we checked them.

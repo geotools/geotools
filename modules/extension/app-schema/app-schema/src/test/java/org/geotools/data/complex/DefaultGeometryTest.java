@@ -128,11 +128,9 @@ public class DefaultGeometryTest {
         URL url = DefaultGeometryTest.class.getResource(STATIONS_SCHEMA_BASE + mappingFile);
         assertNotNull(url);
 
-        DataAccess dataAccess = null;
-
         dsParams.put("dbtype", "app-schema");
         dsParams.put("url", url.toExternalForm());
-        dataAccess = DataAccessFinder.getDataStore(dsParams);
+        DataAccess dataAccess = DataAccessFinder.getDataStore(dsParams);
         assertNotNull(dataAccess);
         assertTrue(dataAccess instanceof AppSchemaDataAccess);
         return (AppSchemaDataAccess) dataAccess;

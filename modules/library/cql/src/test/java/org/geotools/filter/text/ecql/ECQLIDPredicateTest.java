@@ -70,12 +70,11 @@ public class ECQLIDPredicateTest {
     @Test
     public void notFilterId() throws Exception {
 
-        Filter filter;
-
         final String strId1 = "states.1";
         final String strId2 = "states.2";
         final String strId3 = "states.3";
-        filter = ECQL.toFilter("NOT IN ('" + strId1 + "','" + strId2 + "', '" + strId3 + "')");
+        Filter filter =
+                ECQL.toFilter("NOT IN ('" + strId1 + "','" + strId2 + "', '" + strId3 + "')");
 
         Assert.assertNotNull(filter);
         Assert.assertTrue("Not filter was expected", filter instanceof Not);
@@ -100,12 +99,10 @@ public class ECQLIDPredicateTest {
     @Test
     public void idUsingIntegerValues() throws Exception {
 
-        Filter filter;
-
         final String strId1 = "1";
         final String strId2 = "2";
         final String strId3 = "3";
-        filter = ECQL.toFilter("IN (" + strId1 + "," + strId2 + ", " + strId3 + ")");
+        Filter filter = ECQL.toFilter("IN (" + strId1 + "," + strId2 + ", " + strId3 + ")");
 
         Id filterId = (Id) filter;
         Set<?> resultIdentifiers = filterId.getIDs();
@@ -121,12 +118,10 @@ public class ECQLIDPredicateTest {
     @Test
     public void IdUsingDateValues() throws Exception {
 
-        Filter filter;
-
         final String date1 = "2010-01-01";
         final String date2 = "2010-02-02";
         final String date3 = "2010-03-03";
-        filter = ECQL.toFilter("IN ('" + date1 + "','" + date2 + "', '" + date3 + "')");
+        Filter filter = ECQL.toFilter("IN ('" + date1 + "','" + date2 + "', '" + date3 + "')");
 
         Assert.assertNotNull(filter);
         Assert.assertTrue("Not filter was expected", filter instanceof Id);
@@ -146,12 +141,10 @@ public class ECQLIDPredicateTest {
     @Test
     public void IdUsingTimeStamp() throws Exception {
 
-        Filter filter;
-
         final String timeStamp1 = "2010-01-01 00:01:01";
         final String timeStamp2 = "2010-02-02 00:01:01";
         final String timeStamp3 = "2010-03-03 00:01:01";
-        filter =
+        Filter filter =
                 ECQL.toFilter(
                         "IN ('" + timeStamp1 + "','" + timeStamp2 + "', '" + timeStamp3 + "')");
 

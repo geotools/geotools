@@ -429,7 +429,7 @@ final class Resampler2D extends GridCoverage2D {
          *                   ^              ^
          *                 step 1         step 3
          */
-        final MathTransform step1, step2, step3, allSteps, allSteps2D;
+        final MathTransform step1, step2, step3, allSteps;
         if (CRS.equalsIgnoreMetadata(sourceCRS, targetCRS)) {
             /*
              * Note: targetGG should not be null, otherwise 'existingCoverage(...)' should
@@ -466,16 +466,15 @@ final class Resampler2D extends GridCoverage2D {
             if (sourceCRS == null) {
                 throw new CannotReprojectException(Errors.format(ErrorKeys.UNSPECIFIED_CRS));
             }
-            final Envelope sourceEnvelope;
-            final GeneralEnvelope targetEnvelope;
             final CoordinateOperation operation = factory.createOperation(sourceCRS, targetCRS);
             final boolean force2D = (sourceCRS != compatibleSourceCRS);
             step2 = factory.createOperation(targetCRS, compatibleSourceCRS).getMathTransform();
             step3 =
                     (force2D ? sourceGG.getGridToCRS2D(CORNER) : sourceGG.getGridToCRS(CORNER))
                             .inverse();
-            sourceEnvelope = sourceCoverage.getEnvelope(); // Don't force this one to 2D.
-            targetEnvelope = CRS.transform(operation, sourceEnvelope);
+            final Envelope sourceEnvelope =
+                    sourceCoverage.getEnvelope(); // Don't force this one to 2D.
+            final GeneralEnvelope targetEnvelope = CRS.transform(operation, sourceEnvelope);
             targetEnvelope.setCoordinateReferenceSystem(targetCRS);
             // 'targetCRS' may be different than the one set by CRS.transform(...).
             /*
@@ -495,8 +494,7 @@ final class Resampler2D extends GridCoverage2D {
              *   big enough to hold the result.
              */
             if (targetGG == null) {
-                final GridEnvelope targetGR;
-                targetGR =
+                final GridEnvelope targetGR =
                         force2D
                                 ? new GridEnvelope2D(sourceGG.getGridRange2D())
                                 : sourceGG.getGridRange();
@@ -524,7 +522,7 @@ final class Resampler2D extends GridCoverage2D {
                     mtFactory.createConcatenatedTransform(
                             mtFactory.createConcatenatedTransform(step1, step2), step3);
         }
-        allSteps2D = toMathTransform2D(allSteps, mtFactory, targetGG);
+        final MathTransform allSteps2D = toMathTransform2D(allSteps, mtFactory, targetGG);
         if (!(allSteps2D instanceof MathTransform2D)) {
             // Should not happen with Geotools implementations. May happen
             // with some external implementations, but should stay unusual.

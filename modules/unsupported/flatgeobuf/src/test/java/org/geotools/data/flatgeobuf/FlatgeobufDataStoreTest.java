@@ -121,8 +121,7 @@ public class FlatgeobufDataStoreTest {
                             2
                         },
                         "location.2");
-        SimpleFeatureCollection collection =
-                DataUtilities.collection(new SimpleFeature[] {feature1, feature2});
+        SimpleFeatureCollection collection = DataUtilities.collection(feature1, feature2);
         featureStore.addFeatures(collection);
 
         // Read
@@ -230,8 +229,7 @@ public class FlatgeobufDataStoreTest {
                             2
                         },
                         "location.2");
-        SimpleFeatureCollection collection =
-                DataUtilities.collection(new SimpleFeature[] {feature1, feature2});
+        SimpleFeatureCollection collection = DataUtilities.collection(feature1, feature2);
         featureStore.addFeatures(collection);
 
         // Read
@@ -379,8 +377,7 @@ public class FlatgeobufDataStoreTest {
                         },
                         "location.4");
         SimpleFeatureCollection collection =
-                DataUtilities.collection(
-                        new SimpleFeature[] {feature1, feature2, feature3, feature4});
+                DataUtilities.collection(feature1, feature2, feature3, feature4);
         featureStore.addFeatures(collection);
 
         // Read
@@ -501,8 +498,7 @@ public class FlatgeobufDataStoreTest {
                         featureType,
                         new Object[] {reader.read("MULTIPOINT ((100 0), (101 1))"), "TYU", 56},
                         "location.2");
-        SimpleFeatureCollection collection =
-                DataUtilities.collection(new SimpleFeature[] {feature1, feature2});
+        SimpleFeatureCollection collection = DataUtilities.collection(feature1, feature2);
         featureStore.addFeatures(collection);
 
         // Read
@@ -606,8 +602,7 @@ public class FlatgeobufDataStoreTest {
                             56
                         },
                         "location.2");
-        SimpleFeatureCollection collection =
-                DataUtilities.collection(new SimpleFeature[] {feature1, feature2});
+        SimpleFeatureCollection collection = DataUtilities.collection(feature1, feature2);
         featureStore.addFeatures(collection);
 
         // Read
@@ -749,8 +744,7 @@ public class FlatgeobufDataStoreTest {
                         },
                         "location.3");
 
-        SimpleFeatureCollection collection =
-                DataUtilities.collection(new SimpleFeature[] {feature1, feature2, feature3});
+        SimpleFeatureCollection collection = DataUtilities.collection(feature1, feature2, feature3);
         featureStore.addFeatures(collection);
 
         // Read

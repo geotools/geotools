@@ -92,7 +92,7 @@ public class ListFeatureCollection extends AbstractFeatureCollection
      *
      * <p>The provided array is directly used with a {@link CopyOnWriteArrayList} for storage.
      */
-    public ListFeatureCollection(SimpleFeatureType schema, SimpleFeature array[]) {
+    public ListFeatureCollection(SimpleFeatureType schema, SimpleFeature... array) {
         super(schema);
         this.list = new CopyOnWriteArrayList<>(array);
     }
@@ -213,7 +213,7 @@ public class ListFeatureCollection extends AbstractFeatureCollection
     @Override
     public SimpleFeatureCollection sort(SortBy order) {
         Query subQuery = new Query(getSchema().getTypeName());
-        subQuery.setSortBy(new SortBy[] {order});
+        subQuery.setSortBy(order);
 
         CollectionFeatureSource temp = new CollectionFeatureSource(this);
         return temp.getFeatures(subQuery);

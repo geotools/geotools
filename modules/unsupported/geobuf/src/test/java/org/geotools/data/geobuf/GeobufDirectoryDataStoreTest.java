@@ -115,8 +115,7 @@ public class GeobufDirectoryDataStoreTest {
                             2
                         },
                         "location.2");
-        SimpleFeatureCollection collection =
-                DataUtilities.collection(new SimpleFeature[] {feature1, feature2});
+        SimpleFeatureCollection collection = DataUtilities.collection(feature1, feature2);
         featureStore.addFeatures(collection);
         assertEquals(2, featureStore.getCount(Query.ALL));
     }

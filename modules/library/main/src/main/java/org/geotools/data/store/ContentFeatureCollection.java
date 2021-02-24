@@ -322,7 +322,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
 
     public SimpleFeatureCollection sort(org.opengis.filter.sort.SortBy sort) {
         Query query = new Query();
-        query.setSortBy(new org.opengis.filter.sort.SortBy[] {sort});
+        query.setSortBy(sort);
 
         query = DataUtilities.mixQueries(this.query, query, null);
         return new ContentFeatureCollection(featureSource, query);

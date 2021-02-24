@@ -92,8 +92,7 @@ public class SimpleElementHandler extends XMLElementHandler {
             throws OperationNotSupportedException, SAXException {
         text = (text == null) ? null : text.trim();
 
-        ElementValue[] vals;
-        vals = new ElementValue[1];
+        ElementValue[] vals = new ElementValue[1];
         vals[0] = new DefaultElementValue(text, elem);
         value = type.getValue(elem, vals, attr, hints);
         attr = null;

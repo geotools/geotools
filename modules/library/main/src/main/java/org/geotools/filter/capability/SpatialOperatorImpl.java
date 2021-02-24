@@ -41,7 +41,7 @@ public class SpatialOperatorImpl extends OperatorImpl implements SpatialOperator
         this.geometryOperands = new HashSet<>(geometryOperands);
     }
 
-    public SpatialOperatorImpl(String name, GeometryOperand[] geometryOperands) {
+    public SpatialOperatorImpl(String name, GeometryOperand... geometryOperands) {
         super(name);
         this.geometryOperands = new HashSet<>();
         if (geometryOperands != null) {

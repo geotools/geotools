@@ -169,7 +169,7 @@ public class OrderedAxisAuthorityFactory extends TransformedAuthorityFactory
      * @since 2.3
      */
     public OrderedAxisAuthorityFactory(
-            final String authority, final Hints userHints, final AxisDirection[] axisOrder)
+            final String authority, final Hints userHints, final AxisDirection... axisOrder)
             throws FactoryRegistryException, IllegalArgumentException {
         super(authority, userHints);
         forceStandardUnits = booleanValue(userHints, Hints.FORCE_STANDARD_AXIS_UNITS);
@@ -199,7 +199,7 @@ public class OrderedAxisAuthorityFactory extends TransformedAuthorityFactory
     public OrderedAxisAuthorityFactory(
             final AbstractAuthorityFactory factory,
             final Hints userHints,
-            final AxisDirection[] axisOrder)
+            final AxisDirection... axisOrder)
             throws IllegalArgumentException {
         super(factory);
         forceStandardUnits = booleanValue(userHints, Hints.FORCE_STANDARD_AXIS_UNITS);
@@ -241,7 +241,7 @@ public class OrderedAxisAuthorityFactory extends TransformedAuthorityFactory
      *
      * @throws IllegalArgumentException If at least two axis directions are colinear.
      */
-    private static int[] computeDirectionRanks(AxisDirection[] axisOrder)
+    private static int[] computeDirectionRanks(AxisDirection... axisOrder)
             throws IllegalArgumentException {
         if (axisOrder == null) {
             axisOrder = DEFAULT_ORDER;

@@ -335,11 +335,10 @@ public class Line implements Cloneable, Serializable {
             }
             y = x * slope + y0;
         }
-        double eps;
         /*
          * Ensures that the intersection is in the range of valid x values.
          */
-        eps = EPS * Math.abs(x);
+        double eps = EPS * Math.abs(x);
         if (x1 <= x2) {
             if (!(x >= x1 - eps && x <= x2 + eps)) {
                 return null;

@@ -793,7 +793,7 @@ public class DataUtilities {
      * @throws ArrayIndexOutOfBoundsException If the number of provided values does not match the
      *     featureType
      */
-    public static SimpleFeature template(SimpleFeatureType featureType, Object[] providedValues) {
+    public static SimpleFeature template(SimpleFeatureType featureType, Object... providedValues) {
         return SimpleFeatureBuilder.build(
                 featureType, defaultValues(featureType, providedValues), null);
     }
@@ -808,7 +808,7 @@ public class DataUtilities {
      *     featureType
      */
     public static SimpleFeature template(
-            SimpleFeatureType featureType, String featureID, Object[] providedValues) {
+            SimpleFeatureType featureType, String featureID, Object... providedValues) {
         return SimpleFeatureBuilder.build(
                 featureType, defaultValues(featureType, providedValues), featureID);
     }
@@ -820,7 +820,7 @@ public class DataUtilities {
      * @throws ArrayIndexOutOfBoundsException If the number of provided values does not match the
      *     featureType
      */
-    public static Object[] defaultValues(SimpleFeatureType featureType, Object[] values) {
+    public static Object[] defaultValues(SimpleFeatureType featureType, Object... values) {
         if (values == null) {
             values = new Object[featureType.getAttributeCount()];
         } else if (values.length != featureType.getAttributeCount()) {
@@ -955,7 +955,7 @@ public class DataUtilities {
      * @throws IOException If provided features Are null or empty
      */
     public static FeatureReader<SimpleFeatureType, SimpleFeature> reader(
-            final SimpleFeature[] features) throws IOException {
+            final SimpleFeature... features) throws IOException {
         if ((features == null) || (features.length == 0)) {
             throw new IOException("Provided features where empty");
         }
@@ -994,7 +994,7 @@ public class DataUtilities {
      * @param featureArray Array of features
      * @return FeatureSource
      */
-    public static SimpleFeatureSource source(final SimpleFeature[] featureArray) {
+    public static SimpleFeatureSource source(final SimpleFeature... featureArray) {
         final SimpleFeatureType featureType;
 
         if ((featureArray == null) || (featureArray.length == 0)) {
@@ -1166,7 +1166,7 @@ public class DataUtilities {
      * @param features Array of features
      * @return FeatureCollection
      */
-    public static SimpleFeatureCollection collection(SimpleFeature[] features) {
+    public static SimpleFeatureCollection collection(SimpleFeature... features) {
         // JG: There may be some performance to be gained by using ListFeatureCollection here
         DefaultFeatureCollection collection = new DefaultFeatureCollection(null, null);
         for (SimpleFeature feature : features) {
@@ -1337,9 +1337,8 @@ public class DataUtilities {
         }
         // go through the attributes and strip out complicated contents
         //
-        List<PropertyDescriptor> attributes;
         Collection<PropertyDescriptor> descriptors = featureType.getDescriptors();
-        attributes = new ArrayList<>(descriptors);
+        List<PropertyDescriptor> attributes = new ArrayList<>(descriptors);
 
         List<String> simpleProperties = new ArrayList<>();
         List<AttributeDescriptor> simpleAttributes = new ArrayList<>();
@@ -1767,7 +1766,7 @@ public class DataUtilities {
      * @return type limited to the named properties provided
      */
     public static SimpleFeatureType createSubType(
-            SimpleFeatureType featureType, String[] properties) throws SchemaException {
+            SimpleFeatureType featureType, String... properties) throws SchemaException {
         if (properties == null) {
             return featureType;
         }
@@ -2185,7 +2184,7 @@ public class DataUtilities {
      * @param text Text representation of values
      * @return newly created feature
      */
-    public static SimpleFeature parse(SimpleFeatureType type, String fid, String[] text)
+    public static SimpleFeature parse(SimpleFeatureType type, String fid, String... text)
             throws IllegalAttributeException {
         Object[] attributes = new Object[text.length];
 
@@ -2871,7 +2870,7 @@ public class DataUtilities {
      * @return true if params is in agreement with getParametersInfo, override for additional
      *     checks.
      */
-    public static boolean canProcess(Map<String, ?> params, Param[] arrayParameters) {
+    public static boolean canProcess(Map<String, ?> params, Param... arrayParameters) {
         if (params == null) {
             return false;
         }

@@ -199,11 +199,9 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
         }
 
         org.opengis.filter.FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-        PropertyName expr;
-        Object value;
 
-        expr = ff.property("measurement[1]");
-        value = expr.evaluate(complexFeature);
+        PropertyName expr = ff.property("measurement[1]");
+        Object value = expr.evaluate(complexFeature);
         assertNotNull(value);
 
         expr = ff.property("measurement[1]/parameter");
@@ -306,8 +304,8 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
 
         FeatureType type = source.getSchema();
 
-        AttributeDescriptor node;
-        node = (AttributeDescriptor) Types.descriptor(type, Types.typeName(nsUri, "the_geom"));
+        AttributeDescriptor node =
+                (AttributeDescriptor) Types.descriptor(type, Types.typeName(nsUri, "the_geom"));
         assertNotNull(node);
         assertEquals("LineStringPropertyType", node.getType().getName().getLocalPart());
 

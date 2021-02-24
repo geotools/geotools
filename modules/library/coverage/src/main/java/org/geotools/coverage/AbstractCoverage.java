@@ -650,7 +650,6 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
         public RenderedImage createRendering(final RenderContext context) {
             final AffineTransform crsToGrid = context.getTransform();
             final Shape area = context.getAreaOfInterest();
-            final Rectangle gridBounds;
             /*
              * Computes the grid bounds for the coverage bounds (or the area of interest).
              * The default implementation of Rectangle uses Math.floor and Math.ceil for
@@ -664,7 +663,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
             final int ymin = (int) Math.round(bounds.getMinY());
             final int xmax = (int) Math.round(bounds.getMaxX());
             final int ymax = (int) Math.round(bounds.getMaxY());
-            gridBounds = new Rectangle(xmin, ymin, xmax - xmin, ymax - ymin);
+            final Rectangle gridBounds = new Rectangle(xmin, ymin, xmax - xmin, ymax - ymin);
             /*
              * Computes some properties of the image to be created.
              */

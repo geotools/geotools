@@ -1605,8 +1605,7 @@ public class ImageMosaicConfigHandler {
             final String inputCoverageName,
             CoordinateReferenceSystem mosaicCRS)
             throws IOException, FactoryException, TransformException {
-        double[][] resolutionLevels;
-        resolutionLevels = coverageReader.getResolutionLevels(inputCoverageName);
+        double[][] resolutionLevels = coverageReader.getResolutionLevels(inputCoverageName);
         final CoordinateReferenceSystem readerCRS = coverageReader.getCoordinateReferenceSystem();
         if (mosaicCRS != null
                 && readerCRS != null

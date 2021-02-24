@@ -822,7 +822,7 @@ public class VisualTransformerTest {
                 styleFactory.createStroke(
                         filterFactory.literal(Color.BLACK), filterFactory.literal(1));
         rule.symbolizers().add(styleFactory.createLineSymbolizer(stroke, null));
-        FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(new Rule[] {rule});
+        FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(rule);
         Style lineStyle = styleFactory.createStyle();
         lineStyle.featureTypeStyles().addAll(Arrays.asList(fts));
         return lineStyle;
@@ -845,7 +845,7 @@ public class VisualTransformerTest {
         PointSymbolizer p = styleFactory.createPointSymbolizer(gr, null);
 
         rule.symbolizers().add(p);
-        FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(new Rule[] {rule});
+        FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(rule);
         Style pointStyle = styleFactory.createStyle();
         pointStyle.featureTypeStyles().addAll(Arrays.asList(fts));
         return pointStyle;
@@ -872,7 +872,7 @@ public class VisualTransformerTest {
 
         Rule rule = styleFactory.createRule();
         rule.symbolizers().add(sym);
-        FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(new Rule[] {rule});
+        FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(rule);
         Style style = styleFactory.createStyle();
         style.featureTypeStyles().add(fts);
 

@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import org.geotools.geojson.geom.GeometryJSON;
+import org.geotools.data.geojson.GeoJSONWriter;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -45,7 +45,7 @@ class RandomGeometryBuilder {
 
     private final Random random;
 
-    private final GeometryJSON geometryJson;
+    // private final GeometryJSON geometryJson;
 
     private final int decimals;
 
@@ -61,7 +61,7 @@ class RandomGeometryBuilder {
         decimals = 4;
         numPoints = 10;
         numGeometries = 2;
-        geometryJson = new GeometryJSON(decimals);
+        // geometryJson = new GeometryJSON(decimals);
         wktWriter = new WKTWriter();
     }
 
@@ -150,7 +150,7 @@ class RandomGeometryBuilder {
     }
 
     public Map<String, Object> toMap(Geometry geometry) throws IOException {
-        final String json = geometryJson.toString(geometry);
+        final String json = GeoJSONWriter.toGeoJSON(geometry);
         return new ObjectMapper().readValue(json, new TypeReference<Map<String, Object>>() {});
     }
 

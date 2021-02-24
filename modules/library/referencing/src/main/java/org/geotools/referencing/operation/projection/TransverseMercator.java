@@ -563,7 +563,7 @@ public class TransverseMercator extends MapProjection {
     public static class Provider extends AbstractProvider {
         /** Returns a descriptor group for the specified parameters. */
         static ParameterDescriptorGroup createDescriptorGroup(
-                final ReferenceIdentifier[] identifiers) {
+                final ReferenceIdentifier... identifiers) {
             return createDescriptorGroup(
                     identifiers,
                     new ParameterDescriptor[] {
@@ -577,19 +577,17 @@ public class TransverseMercator extends MapProjection {
         /** The parameters group. */
         static final ParameterDescriptorGroup PARAMETERS =
                 createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "Transverse_Mercator"),
-                            new NamedIdentifier(Citations.EPSG, "Transverse Mercator"),
-                            new NamedIdentifier(Citations.EPSG, "Gauss-Kruger"),
-                            new NamedIdentifier(Citations.EPSG, "9807"),
-                            new NamedIdentifier(Citations.GEOTIFF, "CT_TransverseMercator"),
-                            new NamedIdentifier(Citations.ESRI, "Transverse_Mercator"),
-                            new NamedIdentifier(Citations.ESRI, "Gauss_Kruger"),
-                            new NamedIdentifier(
-                                    Citations.GEOTOOLS,
-                                    Vocabulary.formatInternational(
-                                            VocabularyKeys.TRANSVERSE_MERCATOR_PROJECTION))
-                        });
+                        new NamedIdentifier(Citations.OGC, "Transverse_Mercator"),
+                        new NamedIdentifier(Citations.EPSG, "Transverse Mercator"),
+                        new NamedIdentifier(Citations.EPSG, "Gauss-Kruger"),
+                        new NamedIdentifier(Citations.EPSG, "9807"),
+                        new NamedIdentifier(Citations.GEOTIFF, "CT_TransverseMercator"),
+                        new NamedIdentifier(Citations.ESRI, "Transverse_Mercator"),
+                        new NamedIdentifier(Citations.ESRI, "Gauss_Kruger"),
+                        new NamedIdentifier(
+                                Citations.GEOTOOLS,
+                                Vocabulary.formatInternational(
+                                        VocabularyKeys.TRANSVERSE_MERCATOR_PROJECTION)));
 
         /** Constructs a new provider. */
         public Provider() {
@@ -674,11 +672,9 @@ public class TransverseMercator extends MapProjection {
         public Provider_SouthOrientated() {
             super(
                     createDescriptorGroup(
-                            new NamedIdentifier[] {
-                                new NamedIdentifier(
-                                        Citations.EPSG, "Transverse Mercator (South Orientated)"),
-                                new NamedIdentifier(Citations.EPSG, "9808")
-                            }));
+                            new NamedIdentifier(
+                                    Citations.EPSG, "Transverse Mercator (South Orientated)"),
+                            new NamedIdentifier(Citations.EPSG, "9808")));
         }
 
         /**

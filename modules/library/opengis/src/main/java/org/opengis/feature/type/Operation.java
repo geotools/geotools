@@ -62,5 +62,5 @@ public interface Operation extends PropertyDescriptor {
      * @return the result of the operation
      * @throws InvoationTargetException if an error occurred while processing
      */
-    Object invoke(Attribute target, Object params[]) throws InvocationTargetException;
+    Object invoke(Attribute target, Object... params) throws InvocationTargetException;
 }

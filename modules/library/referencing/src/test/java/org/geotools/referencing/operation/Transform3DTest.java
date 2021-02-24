@@ -29,7 +29,6 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;
 import org.opengis.referencing.crs.CRSFactory;
 import org.opengis.referencing.crs.CompoundCRS;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeocentricCRS;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.crs.ProjectedCRS;
@@ -192,8 +191,7 @@ public final class Transform3DTest {
                         utm_cartesian_2d_cs);
         final CompoundCRS compound_3d =
                 crsFactory.createCompoundCRS(
-                        name("3D Compound WGS 84 / UTM Zone 12"),
-                        new CoordinateReferenceSystem[] {proj_2d, height_crs});
+                        name("3D Compound WGS 84 / UTM Zone 12"), proj_2d, height_crs);
         final double[] out1 =
                 checkTransformation(opFactory.createOperation(compound_3d, output_crs));
 

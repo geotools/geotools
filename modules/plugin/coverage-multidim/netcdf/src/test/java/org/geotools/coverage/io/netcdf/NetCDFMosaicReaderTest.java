@@ -108,7 +108,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.PropertyIsLike;
-import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.parameter.GeneralParameterValue;
@@ -178,7 +177,7 @@ public class NetCDFMosaicReaderTest {
             GranuleSource source = reader.getGranules("O3", true);
             FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
             Query q = new Query(Query.ALL);
-            q.setSortBy(new SortBy[] {ff.sort("time", SortOrder.ASCENDING)});
+            q.setSortBy(ff.sort("time", SortOrder.ASCENDING));
             SimpleFeatureCollection granules = source.getGranules(q);
             assertEquals(2, granules.size());
             it = granules.features();
@@ -481,7 +480,7 @@ public class NetCDFMosaicReaderTest {
             GranuleSource source = reader.getGranules(name, true);
             FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
             Query q = new Query(Query.ALL);
-            q.setSortBy(new SortBy[] {ff.sort("time", SortOrder.ASCENDING)});
+            q.setSortBy(ff.sort("time", SortOrder.ASCENDING));
             SimpleFeatureCollection granules = source.getGranules(q);
             assertEquals(4, granules.size());
             it = granules.features();
@@ -577,7 +576,7 @@ public class NetCDFMosaicReaderTest {
             GranuleSource source = reader.getGranules(name, true);
             FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
             Query q = new Query(Query.ALL);
-            q.setSortBy(new SortBy[] {ff.sort("time", SortOrder.ASCENDING)});
+            q.setSortBy(ff.sort("time", SortOrder.ASCENDING));
             SimpleFeatureCollection granules = source.getGranules(q);
             assertEquals(2, granules.size());
             it = granules.features();
@@ -629,7 +628,7 @@ public class NetCDFMosaicReaderTest {
             GranuleSource source = reader.getGranules("NO2", true);
             FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
             Query q = new Query(Query.ALL);
-            q.setSortBy(new SortBy[] {ff.sort("time", SortOrder.ASCENDING)});
+            q.setSortBy(ff.sort("time", SortOrder.ASCENDING));
             SimpleFeatureCollection granules = source.getGranules(q);
             assertEquals(2, granules.size());
             it = granules.features();
@@ -706,7 +705,7 @@ public class NetCDFMosaicReaderTest {
             GranuleSource source = reader.getGranules("O3", true);
             FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
             Query q = new Query(Query.ALL);
-            q.setSortBy(new SortBy[] {ff.sort("time", SortOrder.ASCENDING)});
+            q.setSortBy(ff.sort("time", SortOrder.ASCENDING));
             SimpleFeatureCollection granules = source.getGranules(q);
             assertEquals(2, granules.size());
             it = granules.features();
@@ -847,7 +846,7 @@ public class NetCDFMosaicReaderTest {
             GranuleSource source = reader.getGranules("O3", true);
             FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
             Query q = new Query(Query.ALL);
-            q.setSortBy(new SortBy[] {ff.sort("time", SortOrder.ASCENDING)});
+            q.setSortBy(ff.sort("time", SortOrder.ASCENDING));
             SimpleFeatureCollection granules = source.getGranules(q);
             assertEquals(2, granules.size());
             it = granules.features();
@@ -1035,7 +1034,7 @@ public class NetCDFMosaicReaderTest {
             GranuleSource source = reader.getGranules("NO2", true);
             FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
             Query q = new Query(Query.ALL);
-            q.setSortBy(new SortBy[] {ff.sort("time", SortOrder.DESCENDING)});
+            q.setSortBy(ff.sort("time", SortOrder.DESCENDING));
             SimpleFeatureCollection granules = source.getGranules(q);
             assertEquals(1, granules.size());
             it = granules.features();

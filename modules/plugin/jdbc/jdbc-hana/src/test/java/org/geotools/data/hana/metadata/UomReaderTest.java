@@ -30,9 +30,8 @@ public class UomReaderTest {
         String csv = "meter,linear,1.0\ndegree,angular,0.017453292519943278";
         InputStream is = new ByteArrayInputStream(csv.getBytes("UTF-8"));
         UomReader reader = new UomReader(is);
-        Uom uom;
 
-        uom = reader.readNextUom();
+        Uom uom = reader.readNextUom();
         Assert.assertNotNull(uom);
         Assert.assertEquals("meter", uom.getName());
         Assert.assertEquals(Uom.Type.LINEAR, uom.getType());

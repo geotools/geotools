@@ -168,9 +168,7 @@ public class DuplicatingStyleVisitorTest {
         fts.featureTypeNames().add(new NameImpl("feature-type"));
         fts.getOptions().put("key", "value");
 
-        Rule rule1;
-
-        rule1 = sf.createRule();
+        Rule rule1 = sf.createRule();
         rule1.setName("rule1");
         rule1.setFilter(ff.id(Collections.singleton(ff.featureId("FID"))));
 

@@ -169,8 +169,7 @@ public class WarpTransform2DProvider extends MathTransformProvider {
                                     postScaleY);
                     break;
             }
-            Class<? extends MathTransform> transformClass;
-            transformClass =
+            Class<? extends MathTransform> transformClass =
                     (Class<? extends MathTransform>)
                             Class.forName(
                                     "org.geotools.referencing.operation.transform.WarpTransform2D");

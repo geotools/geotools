@@ -116,13 +116,12 @@ public class TestData implements Runnable {
     static {
 
         // do we wrappers at hand?
-        boolean mediaLib = false;
         Class mediaLibImage = null;
         try {
             mediaLibImage = Class.forName("com.sun.medialib.mlib.Image");
         } catch (ClassNotFoundException e) {
         }
-        mediaLib = (mediaLibImage != null);
+        boolean mediaLib = (mediaLibImage != null);
 
         // npw check if we either wanted to disable explicitly and if we installed the native libs
         if (mediaLib) {

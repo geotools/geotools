@@ -278,7 +278,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         PropertyIsEqualTo f = ff.equals(ff.property(aname("flow")), ff.literal(4.5));
 
         Query q = new Query(tname("river"));
-        q.setPropertyNames(new String[] {aname("geom")});
+        q.setPropertyNames(aname("geom"));
         q.setFilter(f);
 
         // with GEOT-1069 an exception is thrown here
@@ -302,7 +302,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         PropertyIsEqualTo f = ff.equals(ceil, ff.literal(5));
 
         Query q = new Query(tname("river"));
-        q.setPropertyNames(new String[] {aname("geom")});
+        q.setPropertyNames(aname("geom"));
         q.setFilter(f);
 
         // with GEOT-1069 an exception is thrown here
@@ -322,7 +322,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         PropertyIsEqualTo f = ff.equals(ff.property("invalidAttribute"), ff.literal(5));
 
         Query q = new Query(tname("river"));
-        q.setPropertyNames(new String[] {aname("geom")});
+        q.setPropertyNames(aname("geom"));
         q.setFilter(f);
 
         // make sure a complaint related to the invalid filter is thrown here
@@ -677,8 +677,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
                     FeatureWriter<SimpleFeatureType, SimpleFeature> writer2 =
                             dataStore.getFeatureWriterAppend(tname("road"), t2)) {
                 int i;
-                int index;
-                index = 0;
+                int index = 0;
 
                 for (i = 0; i < ORIGINAL.length; i++) {
                     feature = ORIGINAL[i];
@@ -1051,10 +1050,8 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
     public void testGetFeatureStoreAddFeatures() throws IOException {
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                DataUtilities.reader(
-                        new SimpleFeature[] {
-                            td.newRoad,
-                        })) {
+                DataUtilities.reader(td.newRoad)) {
+
             SimpleFeatureStore road =
                     (SimpleFeatureStore) dataStore.getFeatureSource(tname("road"));
 
@@ -1066,11 +1063,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     public void testGetFeatureStoreSetFeatures()
             throws NoSuchElementException, IOException, IllegalAttributeException {
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                DataUtilities.reader(
-                        new SimpleFeature[] {
-                            td.newRoad,
-                        })) {
-
+                DataUtilities.reader(td.newRoad)) {
             SimpleFeatureStore road =
                     (SimpleFeatureStore) dataStore.getFeatureSource(tname("road"));
             assertEquals(3, count(tname("road")));

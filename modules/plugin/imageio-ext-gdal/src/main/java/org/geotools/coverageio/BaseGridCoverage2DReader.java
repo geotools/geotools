@@ -381,10 +381,9 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
      * looking for a related PRJ.
      */
     protected void parsePRJFile() {
-        String prjPath = null;
 
         this.crs = null;
-        prjPath = this.parentPath + File.separatorChar + coverageName + ".prj";
+        String prjPath = this.parentPath + File.separatorChar + coverageName + ".prj";
 
         // read the prj serviceInfo from the file
         PrjFileReader projReader = null;

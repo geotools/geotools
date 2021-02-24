@@ -666,7 +666,7 @@ public class SimpleFeatureTypeBuilder {
      *
      * <p>Use of this method is discouraged. Consider using {@link #add(String, Class)}.
      */
-    public void addAll(AttributeDescriptor[] descriptors) {
+    public void addAll(AttributeDescriptor... descriptors) {
         if (descriptors != null) {
             for (AttributeDescriptor ad : descriptors) {
                 add(ad);
@@ -807,7 +807,7 @@ public class SimpleFeatureTypeBuilder {
      *
      * @param attributes the new list of attributes, or null to reset the list
      */
-    public void setAttributes(AttributeDescriptor[] attributes) {
+    public void setAttributes(AttributeDescriptor... attributes) {
         List<AttributeDescriptor> atts = attributes();
         atts.clear();
         if (attributes != null) atts.addAll(Arrays.asList(attributes));
@@ -981,7 +981,7 @@ public class SimpleFeatureTypeBuilder {
      * @param types name of types to include in result
      * @return SimpleFeatureType containing just the types indicated by name
      */
-    public static SimpleFeatureType retype(SimpleFeatureType original, String[] types) {
+    public static SimpleFeatureType retype(SimpleFeatureType original, String... types) {
         return retype(original, Arrays.asList(types));
     }
 

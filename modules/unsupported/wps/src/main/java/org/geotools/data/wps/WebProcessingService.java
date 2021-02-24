@@ -203,9 +203,8 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
 
     public ExecuteProcessResponse issueStatusRequest(URL statusURL)
             throws IOException, ServiceException {
-        final HTTPResponse httpResponse;
 
-        httpResponse = httpClient.get(statusURL);
+        final HTTPResponse httpResponse = httpClient.get(statusURL);
 
         // a request with status can never use raw requests
         return new ExecuteProcessResponse(httpResponse, false);

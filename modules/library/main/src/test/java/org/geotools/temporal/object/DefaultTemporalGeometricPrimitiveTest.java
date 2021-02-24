@@ -62,12 +62,11 @@ public class DefaultTemporalGeometricPrimitiveTest {
     /** Test of distance method, of class DefaultTemporalGeometricPrimitive. */
     @Test
     public void testDistance() {
-        TemporalGeometricPrimitive other;
 
         // calcul Distance with instant objects
         cal.set(2000, 0, 1);
         Position position = new DefaultPosition(cal.getTime());
-        other = new DefaultInstant(position);
+        TemporalGeometricPrimitive other = new DefaultInstant(position);
         Duration result = temporalGeomericPrimitive1.distance(other);
         assertNotEquals(temporalGeomericPrimitive2.distance(other), result);
 

@@ -121,17 +121,15 @@ public class Circle {
      * @param p3 A point on the desired circle
      */
     private void initThreePointCircle(Coordinate p1, Coordinate p2, Coordinate p3) {
-        double a13, b13, c13;
-        double a23, b23, c23;
         double x = 0., y = 0., rad = 0.;
 
         // begin pre-calculations for linear system reduction
-        a13 = 2 * (p1.x - p3.x);
-        b13 = 2 * (p1.y - p3.y);
-        c13 = (p1.y * p1.y - p3.y * p3.y) + (p1.x * p1.x - p3.x * p3.x);
-        a23 = 2 * (p2.x - p3.x);
-        b23 = 2 * (p2.y - p3.y);
-        c23 = (p2.y * p2.y - p3.y * p3.y) + (p2.x * p2.x - p3.x * p3.x);
+        double a13 = 2 * (p1.x - p3.x);
+        double b13 = 2 * (p1.y - p3.y);
+        double c13 = (p1.y * p1.y - p3.y * p3.y) + (p1.x * p1.x - p3.x * p3.x);
+        double a23 = 2 * (p2.x - p3.x);
+        double b23 = 2 * (p2.y - p3.y);
+        double c23 = (p2.y * p2.y - p3.y * p3.y) + (p2.x * p2.x - p3.x * p3.x);
         // testsuite-suite to be certain we have three distinct points passed
         double smallNumber = 0.01;
         if ((Math.abs(a13) < smallNumber && Math.abs(b13) < smallNumber)

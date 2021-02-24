@@ -2974,7 +2974,7 @@ public class ImageMosaicReaderTest {
 
         // another variant that used to cause problems
         Query q = new Query("rgba");
-        q.setPropertyNames(new String[] {"location"});
+        q.setPropertyNames("location");
         features = gs.getGranules(q);
         first = DataUtilities.first(features);
         assertEquals("rgba", first.getType().getTypeName());

@@ -65,8 +65,8 @@ public final class DataStoreFinder {
      */
     public static synchronized DataStore getDataStore(Map<String, ?> params) throws IOException {
         Iterator<DataStoreFactorySpi> ps = getAvailableDataStores();
-        DataAccess<? extends FeatureType, ? extends Feature> dataStore;
-        dataStore = DataAccessFinder.getDataStore(params, ps);
+        DataAccess<? extends FeatureType, ? extends Feature> dataStore =
+                DataAccessFinder.getDataStore(params, ps);
         return (DataStore) dataStore;
     }
 
@@ -88,9 +88,8 @@ public final class DataStoreFinder {
      *     available method returns true.
      */
     public static synchronized Iterator<DataStoreFactorySpi> getAvailableDataStores() {
-        Set<DataStoreFactorySpi> availableDS;
         FactoryRegistry serviceRegistry = getServiceRegistry();
-        availableDS =
+        Set<DataStoreFactorySpi> availableDS =
                 DataAccessFinder.getAvailableDataStores(serviceRegistry, DataStoreFactorySpi.class);
         return availableDS.iterator();
     }

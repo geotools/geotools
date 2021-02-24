@@ -360,9 +360,8 @@ public final class SDO {
 
         int LEN = D(GTYPE) + L(GTYPE);
         int offset = STARTING_OFFSET;
-        LineString ring;
 
-        ring = polygon.getExteriorRing();
+        LineString ring = polygon.getExteriorRing();
         addInt(elemInfoList, offset);
         addInt(elemInfoList, elemInfoEType(polygon));
         addInt(elemInfoList, elemInfoInterpretation(polygon, ETYPE.POLYGON_EXTERIOR));

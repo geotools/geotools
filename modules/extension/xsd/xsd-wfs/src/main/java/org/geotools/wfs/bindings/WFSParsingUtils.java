@@ -43,10 +43,9 @@ public class WFSParsingUtils {
     public static EObject FeatureCollectionType_parse(
             EObject fct, ElementInstance instance, Node node) {
 
-        SimpleFeatureCollection fc = null;
-
         // gml:featureMembers
-        fc = (SimpleFeatureCollection) node.getChildValue(FeatureCollection.class);
+        SimpleFeatureCollection fc =
+                (SimpleFeatureCollection) node.getChildValue(FeatureCollection.class);
         if (fc == null) {
             fc = new DefaultFeatureCollection(null, null);
         }

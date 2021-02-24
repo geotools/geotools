@@ -45,7 +45,7 @@ public class SortedFeatureReader implements SimpleFeatureReader {
      * Checks if the schema and the sortBy are suitable for merge/sort. All attributes need to be
      * {@link Serializable}, all sorting attributes need to be {@link Comparable}
      */
-    public static final boolean canSort(SimpleFeatureType schema, SortBy[] sortBy) {
+    public static final boolean canSort(SimpleFeatureType schema, SortBy... sortBy) {
         return MergeSortDumper.canSort(schema, sortBy);
     }
 
@@ -95,7 +95,7 @@ public class SortedFeatureReader implements SimpleFeatureReader {
     }
 
     /** Builds a comparator that can be used to sort SimpleFeature instances in memory */
-    public static Comparator<SimpleFeature> getComparator(SortBy[] sortBy) {
+    public static Comparator<SimpleFeature> getComparator(SortBy... sortBy) {
         return getComparator(sortBy, null);
     }
 

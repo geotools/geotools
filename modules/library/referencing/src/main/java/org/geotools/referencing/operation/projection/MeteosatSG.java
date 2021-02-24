@@ -148,26 +148,20 @@ public class MeteosatSG extends MapProjection {
 
         /* x - lon, y -lat */
 
-        double c_lat = 0.0;
-        double r1 = 0.0, r2 = 0.0, r3 = 0.0, rn = 0.0, re = 0.0, rl = 0.0;
-        double xx = 0.0, yy = 0.0;
-        double cc = 0.0, ll = 0.0;
-        double dotprod = 0.0;
-        long coff, loff;
-        double cfac, lfac;
+        double r1 = 0.0, r2 = 0.0, r3 = 0.0;
         double col_norm, row_norm;
 
         // For non-HRV images
-        lfac = LFAC_NONHRV;
-        cfac = CFAC_NONHRV;
+        double lfac = LFAC_NONHRV;
+        double cfac = CFAC_NONHRV;
 
-        coff = COFF_NONHRV;
-        loff = LOFF_NONHRV;
+        long coff = COFF_NONHRV;
+        long loff = LOFF_NONHRV;
 
         /* calculate the geocentric latitude from the */
         /* geographic one using equations on page 24, Ref. [1] */
 
-        c_lat = atan((0.993243 * (sin(y) / cos(y))));
+        double c_lat = atan((0.993243 * (sin(y) / cos(y))));
 
         // Pre-compute some values
         double cos_c_lat = cos(c_lat);
@@ -177,16 +171,16 @@ public class MeteosatSG extends MapProjection {
         /* centre to the surface of the Earth ellipsoid */
         /* equations on page 23, Ref. [1] */
 
-        re = R_POL / sqrt((1.0 - 0.00675701 * cos_c_lat * cos_c_lat));
+        double re = R_POL / sqrt((1.0 - 0.00675701 * cos_c_lat * cos_c_lat));
 
         /* calculate the forward projection using equations on */
         /* page 24, Ref. [1] */
 
-        rl = re;
+        double rl = re;
         r1 = SAT_HEIGHT - rl * cos_c_lat * cos_x_SUB_LON;
         r2 = -rl * cos_c_lat * sin(x - SUB_LON);
         r3 = rl * sin(c_lat);
-        rn = sqrt(r1 * r1 + r2 * r2 + r3 * r3);
+        double rn = sqrt(r1 * r1 + r2 * r2 + r3 * r3);
 
         /* check for visibility, whether the point on the Earth given by the */
         /* latitude/longitude pair is visible from the satellite or not. This */
@@ -196,7 +190,7 @@ public class MeteosatSG extends MapProjection {
         /* If the dot product is positive the point is visible otherwise it */
         /* is invisible. */
 
-        dotprod =
+        double dotprod =
                 r1 * (rl * cos_c_lat * cos_x_SUB_LON)
                         - r2 * r2
                         - r3 * r3 * (pow((R_EQ / R_POL), 2));
@@ -229,14 +223,14 @@ public class MeteosatSG extends MapProjection {
 
         /* the forward projection is x and y */
 
-        xx = atan((-r2 / r1));
-        yy = asin((-r3 / rn));
+        double xx = atan((-r2 / r1));
+        double yy = asin((-r3 / rn));
 
         /* convert to pixel column and row using the scaling functions on */
         /* page 28, Ref. [1]. And finding nearest integer value for them. */
 
-        cc = coff + xx * pow(2, -16) * cfac;
-        ll = loff + yy * pow(2, -16) * lfac;
+        double cc = coff + xx * pow(2, -16) * cfac;
+        double ll = loff + yy * pow(2, -16) * lfac;
 
         col_norm = cc / SCALE_FACTOR;
         row_norm = ll / SCALE_FACTOR;
@@ -257,19 +251,15 @@ public class MeteosatSG extends MapProjection {
             throws ProjectionException {
 
         // x- column, y -row
-        double s1 = 0.0, s2 = 0.0, s3 = 0.0, sn = 0.0, sd = 0.0, sxy = 0.0, sa = 0.0;
-        double x1 = 0.0, y1 = 0.0;
+        double s1 = 0.0, s2 = 0.0, s3 = 0.0, sn = 0.0;
         double lat, lon;
-        long coff, loff;
-        double cfac, lfac;
-        double sin_y1, cos_x1, cos_y1;
 
         // For non-HRV images
-        lfac = LFAC_NONHRV;
-        cfac = CFAC_NONHRV;
+        double lfac = LFAC_NONHRV;
+        double cfac = CFAC_NONHRV;
 
-        coff = COFF_NONHRV;
-        loff = LOFF_NONHRV;
+        long coff = COFF_NONHRV;
+        long loff = LOFF_NONHRV;
 
         /* Normalization(?) */
         x = x * SCALE_FACTOR;
@@ -278,12 +268,12 @@ public class MeteosatSG extends MapProjection {
         /* calculate viewing angle of the satellite by use of the equation */
         /* on page 28, Ref [1]. */
 
-        x1 = 65536 * (x - coff) / cfac;
-        y1 = 65536 * (y - loff) / lfac;
+        double x1 = 65536 * (x - coff) / cfac;
+        double y1 = 65536 * (y - loff) / lfac;
 
-        sin_y1 = sin(y1);
-        cos_x1 = cos(x1);
-        cos_y1 = cos(y1);
+        double sin_y1 = sin(y1);
+        double cos_x1 = cos(x1);
+        double cos_y1 = cos(y1);
 
         /* now calculate the inverse projection */
 
@@ -294,7 +284,7 @@ public class MeteosatSG extends MapProjection {
         /* located in space, otherwise all is fine and the pixel is located on the */
         /* Earth surface. */
 
-        sa =
+        double sa =
                 pow(SAT_HEIGHT * cos_x1 * cos_y1, 2)
                         - (cos_y1 * cos_y1 + 1.006803 * sin_y1 * sin_y1) * 1737121856.;
 
@@ -320,7 +310,7 @@ public class MeteosatSG extends MapProjection {
         /* now calculate the rest of the formulas using equations on */
         /* page 25, Ref. [1] */
 
-        sd =
+        double sd =
                 sqrt(
                         pow((SAT_HEIGHT * cos_x1 * cos_y1), 2)
                                 - (cos_y1 * cos_y1 + 1.006803 * sin_y1 * sin_y1) * 1737121856.);
@@ -330,7 +320,7 @@ public class MeteosatSG extends MapProjection {
         s2 = sn * sin(x1) * cos_y1;
         s3 = -sn * sin_y1;
 
-        sxy = sqrt(s1 * s1 + s2 * s2);
+        double sxy = sqrt(s1 * s1 + s2 * s2);
 
         /* using the previous calculations the inverse projection can be */
         /* calculated now, which means calculating the lat./long. from */

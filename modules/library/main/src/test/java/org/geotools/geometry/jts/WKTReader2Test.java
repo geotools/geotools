@@ -134,16 +134,14 @@ public class WKTReader2Test {
     public void curvePolygon() throws Exception {
         // perfect circle!
         WKTReader reader = new WKTReader2();
-        String WKT;
-        Polygon polygon;
-        Geometry geometry;
 
-        WKT =
-                "CURVEPOLYGON(CIRCULARSTRING(143.62025166838282 -30.037497356076827, 142.92857147299705 -32.75101196874403, 143.62025166838282 -30.037497356076827))";
-        geometry = reader.read(WKT);
+        String WKT =
+                "CURVEPOLYGON(CIRCULARSTRING(143.62025166838282 -30.037497356076827, 142"
+                        + ".92857147299705 -32.75101196874403, 143.62025166838282 -30.037497356076827))";
+        Geometry geometry = reader.read(WKT);
         assertNotNull("read curvepolygon", geometry);
         assertTrue(geometry instanceof Polygon);
-        polygon = (Polygon) geometry;
+        Polygon polygon = (Polygon) geometry;
         assertTrue(polygon.getExteriorRing() instanceof CircularRing);
         assertTrue("ring", polygon.getExteriorRing().isClosed());
         assertEquals("segmented ring", 51, polygon.getExteriorRing().getNumPoints());

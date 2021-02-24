@@ -87,14 +87,12 @@ public class CQLBooleanValueExpressionTest {
      */
     @Test
     public void andOr() throws CQLException {
-        Filter result;
-        Filter expected;
         // ATTR1 < 10 AND ATTR2 < 2 OR ATTR3 > 10
-        result = CompilerUtil.parseFilter(language, FilterCQLSample.FILTER_OR_AND);
+        Filter result = CompilerUtil.parseFilter(language, FilterCQLSample.FILTER_OR_AND);
 
         Assert.assertNotNull("filter expected", result);
 
-        expected = FilterCQLSample.getSample(FilterCQLSample.FILTER_OR_AND);
+        Filter expected = FilterCQLSample.getSample(FilterCQLSample.FILTER_OR_AND);
 
         Assert.assertEquals("a bad filter was expected", expected, result);
 
@@ -139,15 +137,13 @@ public class CQLBooleanValueExpressionTest {
      */
     @Test
     public void andNot() throws Exception {
-        Filter result;
-        Filter expected;
 
         // ATTR3 < 4 AND (NOT( ATTR1 < 10 AND ATTR2 < 2))
-        result = CompilerUtil.parseFilter(language, FilterCQLSample.FILTER_AND_NOT_AND);
+        Filter result = CompilerUtil.parseFilter(language, FilterCQLSample.FILTER_AND_NOT_AND);
 
         Assert.assertNotNull("filter expected", result);
 
-        expected = FilterCQLSample.getSample(FilterCQLSample.FILTER_AND_NOT_AND);
+        Filter expected = FilterCQLSample.getSample(FilterCQLSample.FILTER_AND_NOT_AND);
 
         Assert.assertEquals("a bad filter was produced", expected, result);
 

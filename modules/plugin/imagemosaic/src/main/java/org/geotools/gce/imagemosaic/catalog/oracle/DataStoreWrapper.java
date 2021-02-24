@@ -386,9 +386,9 @@ public abstract class DataStoreWrapper implements DataStore {
      * the specified {@link Properties} object
      */
     protected FeatureTypeMapper getFeatureTypeMapper(final Properties props) throws Exception {
-        SimpleFeatureType indexSchema;
         // Creating schema
-        indexSchema = DataUtilities.createType(props.getProperty(NAME), props.getProperty(SCHEMA));
+        SimpleFeatureType indexSchema =
+                DataUtilities.createType(props.getProperty(NAME), props.getProperty(SCHEMA));
         CoordinateReferenceSystem crs =
                 CRS.parseWKT(props.getProperty(COORDINATE_REFERENCE_SYSTEM));
         indexSchema =

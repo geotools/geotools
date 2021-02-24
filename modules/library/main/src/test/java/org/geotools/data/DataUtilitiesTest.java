@@ -223,9 +223,8 @@ public class DataUtilitiesTest extends DataTestCase {
 
     @Test
     public void testAttributeNamesFeatureType() {
-        String[] names;
 
-        names = DataUtilities.attributeNames(roadType);
+        String[] names = DataUtilities.attributeNames(roadType);
         Assert.assertEquals(4, names.length);
         Assert.assertEquals("id", names[0]);
         Assert.assertEquals("geom", names[1]);
@@ -244,12 +243,11 @@ public class DataUtilitiesTest extends DataTestCase {
     @Test
     public void testAttributeNamesFilter() throws IllegalFilterException {
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
-        String[] names;
 
         Filter filter = null;
 
         // check null
-        names = DataUtilities.attributeNames(filter);
+        String[] names = DataUtilities.attributeNames(filter);
         Assert.assertEquals(names.length, 0);
 
         Id fidFilter = factory.id(Collections.singleton(factory.featureId("fid")));
@@ -322,9 +320,7 @@ public class DataUtilitiesTest extends DataTestCase {
                         factory.property("id"),
                         factory.add(factory.property("geom"), factory.property("gml:name")));
 
-        String[] names;
-
-        names = DataUtilities.attributeNames(filter, roadType);
+        String[] names = DataUtilities.attributeNames(filter, roadType);
         Assert.assertEquals(3, names.length);
         List namesList = Arrays.asList(names);
         assertTrue(namesList.contains("id"));
@@ -337,9 +333,7 @@ public class DataUtilitiesTest extends DataTestCase {
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         Expression expression = factory.add(factory.property("geom"), factory.property("gml:name"));
 
-        String[] names;
-
-        names = DataUtilities.attributeNames(expression, roadType);
+        String[] names = DataUtilities.attributeNames(expression, roadType);
         Assert.assertEquals(2, names.length);
         List namesList = Arrays.asList(names);
         assertTrue(namesList.contains("geom"));
@@ -550,10 +544,10 @@ public class DataUtilitiesTest extends DataTestCase {
      */
     @Test
     public void testDecodeGeometrySpec() throws Exception {
-        SimpleFeatureType featureType1, featureType2;
 
-        featureType1 = DataUtilities.createType("Contact", "id:Integer,party:String,geom:Geometry");
-        featureType2 =
+        SimpleFeatureType featureType1 =
+                DataUtilities.createType("Contact", "id:Integer," + "party:String,geom:Geometry");
+        SimpleFeatureType featureType2 =
                 DataUtilities.createType(
                         "Contact",
                         "id:Integer,party:String,geom:org.locationtech.jts.geom.Geometry");
@@ -671,7 +665,7 @@ public class DataUtilitiesTest extends DataTestCase {
     public void testCreateSubType() throws Exception {
         SimpleFeatureType before =
                 DataUtilities.createType("cities", "the_geom:Point:srid=4326,name:String");
-        SimpleFeatureType after = DataUtilities.createSubType(before, new String[] {"the_geom"});
+        SimpleFeatureType after = DataUtilities.createSubType(before, "the_geom");
         Assert.assertEquals(1, after.getAttributeCount());
 
         before =
@@ -692,14 +686,14 @@ public class DataUtilitiesTest extends DataTestCase {
         before =
                 DataUtilities.createType(
                         "cities", "the_geom:Point:srid=4326,name:String,population:Integer");
-        after = DataUtilities.createSubType(before, new String[] {"the_geom"});
+        after = DataUtilities.createSubType(before, "the_geom");
         Assert.assertEquals(before.getGeometryDescriptor(), after.getGeometryDescriptor());
 
         // check that subtyping does not cause the geometry attribute structure to change
         before =
                 DataUtilities.createType(
                         "cities", "the_geom:Point:srid=4326,name:String,population:Integer");
-        after = DataUtilities.createSubType(before, new String[] {"the_geom"});
+        after = DataUtilities.createSubType(before, "the_geom");
         Assert.assertEquals(before.getGeometryDescriptor(), after.getGeometryDescriptor());
     }
 
@@ -714,8 +708,7 @@ public class DataUtilitiesTest extends DataTestCase {
         tb.setDefaultGeometry("the_geom2");
         SimpleFeatureType before = tb.buildFeatureType();
         SimpleFeatureType after =
-                DataUtilities.createSubType(
-                        before, new String[] {"name", "the_geom1", "the_geom3"});
+                DataUtilities.createSubType(before, "name", "the_geom1", "the_geom3");
         Assert.assertEquals(3, after.getAttributeCount());
         Assert.assertEquals("the_geom1", after.getGeometryDescriptor().getLocalName());
 
@@ -727,9 +720,7 @@ public class DataUtilitiesTest extends DataTestCase {
         Assert.assertEquals(3, after.getAttributeCount());
         Assert.assertEquals("the_geom1", after.getGeometryDescriptor().getLocalName());
 
-        after =
-                DataUtilities.createSubType(
-                        before, new String[] {"name", "the_geom1", "the_geom2"});
+        after = DataUtilities.createSubType(before, "name", "the_geom1", "the_geom2");
         Assert.assertEquals(3, after.getAttributeCount());
         Assert.assertEquals("the_geom2", after.getGeometryDescriptor().getLocalName());
 
@@ -748,8 +739,7 @@ public class DataUtilitiesTest extends DataTestCase {
         SimpleFeatureType before =
                 DataUtilities.createType("cities", "the_geom:Point:srid=4326,name:String");
         SimpleFeatureType after =
-                DataUtilities.createSubType(
-                        before, new String[] {"the_geom", "name", "not_existing"});
+                DataUtilities.createSubType(before, "the_geom", "name", "not_existing");
         // the not_existing property should have been ignored
         Assert.assertEquals(2, after.getAttributeCount());
         assertNotNull(after.getDescriptor("the_geom"));
@@ -771,17 +761,15 @@ public class DataUtilitiesTest extends DataTestCase {
     /** tests the policy of DataUtilities.mixQueries */
     @Test
     public void testMixQueries() throws Exception {
-        Query firstQuery;
-        Query secondQuery;
 
-        firstQuery =
+        Query firstQuery =
                 new Query(
                         "typeName",
                         Filter.EXCLUDE,
                         100,
                         new String[] {"att1", "att2", "att3"},
                         "handle");
-        secondQuery =
+        Query secondQuery =
                 new Query(
                         "typeName",
                         Filter.EXCLUDE,
@@ -801,12 +789,10 @@ public class DataUtilitiesTest extends DataTestCase {
         Assert.assertEquals(4, (int) mixed.getStartIndex());
 
         // now use some filters
-        Filter filter1 = null;
-        Filter filter2 = null;
         FilterFactory ffac = CommonFactoryFinder.getFilterFactory(null);
 
-        filter1 = ffac.equals(ffac.property("att1"), ffac.literal("val1"));
-        filter2 = ffac.equals(ffac.property("att2"), ffac.literal("val2"));
+        Filter filter1 = ffac.equals(ffac.property("att1"), ffac.literal("val1"));
+        Filter filter2 = ffac.equals(ffac.property("att2"), ffac.literal("val2"));
 
         firstQuery = new Query("typeName", filter1, 100, (String[]) null, "handle");
         secondQuery =
@@ -1003,7 +989,7 @@ public class DataUtilitiesTest extends DataTestCase {
         // simple merge, no conflict
         Query q1 = new Query();
         Query q2 = new Query();
-        q2.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
+        q2.setSortBy(SortBy.NATURAL_ORDER);
         assertThat(
                 DataUtilities.mixQueries(q1, q2, null).getSortBy(),
                 arrayContaining(SortBy.NATURAL_ORDER));
@@ -1013,7 +999,7 @@ public class DataUtilitiesTest extends DataTestCase {
 
         // more complex, override (the second wins)
         Query q3 = new Query();
-        q3.setSortBy(new SortBy[] {SortBy.REVERSE_ORDER});
+        q3.setSortBy(SortBy.REVERSE_ORDER);
         assertThat(
                 DataUtilities.mixQueries(q2, q3, null).getSortBy(),
                 arrayContaining(SortBy.REVERSE_ORDER));

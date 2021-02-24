@@ -43,13 +43,12 @@ public final class AbstractCSTest {
     /** Tests the swapping of axis. */
     @Test
     public void testAxisSwapping() {
-        CoordinateSystem cs1, cs2;
-        cs1 =
+        CoordinateSystem cs1 =
                 new DefaultEllipsoidalCS(
                         "cs1",
                         DefaultCoordinateSystemAxis.GEODETIC_LONGITUDE,
                         DefaultCoordinateSystemAxis.GEODETIC_LATITUDE);
-        cs2 =
+        CoordinateSystem cs2 =
                 new DefaultEllipsoidalCS(
                         "cs2",
                         DefaultCoordinateSystemAxis.GEODETIC_LATITUDE,
@@ -145,8 +144,7 @@ public final class AbstractCSTest {
     /** Tests {@link AbstractCS#standard}. */
     @Test
     public void testStandards() {
-        CoordinateSystem cs;
-        cs = DefaultCartesianCS.GRID;
+        CoordinateSystem cs = DefaultCartesianCS.GRID;
         assertSame(cs, AbstractCS.standard(cs));
         cs = DefaultCartesianCS.GEOCENTRIC;
         assertSame(cs, AbstractCS.standard(cs));

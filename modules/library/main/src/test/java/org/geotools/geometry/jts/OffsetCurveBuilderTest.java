@@ -431,7 +431,7 @@ public class OffsetCurveBuilderTest {
         return offset;
     }
 
-    public static void main(String[] args) throws ParseException {
+    public static void main(String... args) throws ParseException {
         // simple utility to take a random WKT and make it into something looking like test data
         // (simplify large coordinates, excess precision)
         final double tolerance = 1;

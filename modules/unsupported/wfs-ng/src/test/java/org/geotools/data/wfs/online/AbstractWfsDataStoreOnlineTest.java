@@ -173,8 +173,7 @@ public abstract class AbstractWfsDataStoreOnlineTest {
             return;
         }
 
-        SimpleFeatureSource featureSource;
-        featureSource = wfs.getFeatureSource(testType.FEATURETYPENAME);
+        SimpleFeatureSource featureSource = wfs.getFeatureSource(testType.FEATURETYPENAME);
 
         assertNotNull(featureSource);
 
@@ -194,8 +193,7 @@ public abstract class AbstractWfsDataStoreOnlineTest {
             return;
         }
 
-        SimpleFeatureSource featureSource;
-        featureSource = wfs.getFeatureSource(testType.FEATURETYPENAME);
+        SimpleFeatureSource featureSource = wfs.getFeatureSource(testType.FEATURETYPENAME);
         assertNotNull(featureSource);
 
         ReferencedEnvelope infoBounds = featureSource.getInfo().getBounds();
@@ -226,8 +224,7 @@ public abstract class AbstractWfsDataStoreOnlineTest {
             return;
         }
 
-        SimpleFeatureSource featureSource;
-        featureSource = wfs.getFeatureSource(testType.FEATURETYPENAME);
+        SimpleFeatureSource featureSource = wfs.getFeatureSource(testType.FEATURETYPENAME);
         assertNotNull(featureSource);
 
         assertEquals(featureCount, featureSource.getCount(Query.ALL));
@@ -251,8 +248,7 @@ public abstract class AbstractWfsDataStoreOnlineTest {
                 return;
             }
 
-            SimpleFeatureSource featureSource;
-            featureSource = wfs.getFeatureSource(testType.FEATURETYPENAME);
+            SimpleFeatureSource featureSource = wfs.getFeatureSource(testType.FEATURETYPENAME);
             assertNotNull(featureSource);
 
             Query query = new Query(featureSource.getInfo().getName());
@@ -274,12 +270,10 @@ public abstract class AbstractWfsDataStoreOnlineTest {
             return;
         }
 
-        SimpleFeatureSource featureSource;
-        featureSource = wfs.getFeatureSource(testType.FEATURETYPENAME);
+        SimpleFeatureSource featureSource = wfs.getFeatureSource(testType.FEATURETYPENAME);
         assertNotNull(featureSource);
 
-        SimpleFeatureCollection features;
-        features = featureSource.getFeatures();
+        SimpleFeatureCollection features = featureSource.getFeatures();
         assertNotNull(features);
 
         SimpleFeatureType schema = features.getSchema();
@@ -308,15 +302,13 @@ public abstract class AbstractWfsDataStoreOnlineTest {
             return;
         }
 
-        SimpleFeatureSource featureSource;
-        featureSource = wfs.getFeatureSource(testType.FEATURETYPENAME);
+        SimpleFeatureSource featureSource = wfs.getFeatureSource(testType.FEATURETYPENAME);
         assertNotNull(featureSource);
 
         Query query = new Query(testType.FEATURETYPENAME);
         query.setFilter(spatialFilter);
 
-        SimpleFeatureCollection features;
-        features = featureSource.getFeatures(query);
+        SimpleFeatureCollection features = featureSource.getFeatures(query);
         assertNotNull(features);
 
         SimpleFeatureType schema = features.getSchema();
@@ -473,7 +465,7 @@ public abstract class AbstractWfsDataStoreOnlineTest {
                 };
 
         final Query query = new Query(ft.getTypeName());
-        query.setPropertyNames(new String[] {"the_geom"});
+        query.setPropertyNames("the_geom");
         query.setFilter(strictBBox);
         query.setHandle("testDataStoreSupportsPlainBBOXInterface");
 
@@ -528,15 +520,14 @@ public abstract class AbstractWfsDataStoreOnlineTest {
                         null);
 
         final Query query = new Query(ft.getTypeName());
-        query.setPropertyNames(new String[] {"the_geom"});
+        query.setPropertyNames("the_geom");
         query.setFilter(lonLatFilter);
         query.setCoordinateSystem(wgs84LonLat);
 
         final int expectedCount = wfs.getFeatureSource(query.getTypeName()).getFeatures().size();
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
-
-        reader = wfs.getFeatureReader(query, Transaction.AUTO_COMMIT);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                wfs.getFeatureReader(query, Transaction.AUTO_COMMIT);
         try {
             assertTrue(reader.hasNext());
             int count = 0;

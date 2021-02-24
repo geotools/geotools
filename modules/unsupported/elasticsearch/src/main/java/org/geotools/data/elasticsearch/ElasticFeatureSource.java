@@ -285,8 +285,8 @@ class ElasticFeatureSource extends ContentFeatureSource {
     @Override
     protected SimpleFeatureType buildFeatureType() {
         final ElasticDataStore ds = getDataStore();
-        final ElasticLayerConfiguration layerConfig;
-        layerConfig = ds.getLayerConfigurations().get(entry.getTypeName());
+        final ElasticLayerConfiguration layerConfig =
+                ds.getLayerConfigurations().get(entry.getTypeName());
         final List<ElasticAttribute> attributes;
         if (layerConfig != null) {
             attributes = layerConfig.getAttributes();
@@ -294,8 +294,8 @@ class ElasticFeatureSource extends ContentFeatureSource {
             attributes = null;
         }
 
-        final ElasticFeatureTypeBuilder typeBuilder;
-        typeBuilder = new ElasticFeatureTypeBuilder(attributes, entry.getName());
+        final ElasticFeatureTypeBuilder typeBuilder =
+                new ElasticFeatureTypeBuilder(attributes, entry.getName());
         return typeBuilder.buildFeatureType();
     }
 

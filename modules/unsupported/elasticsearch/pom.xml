@@ -102,12 +102,6 @@
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-geojson</artifactId>
-      <version>${project.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.geotools</groupId>
       <artifactId>gt-cql</artifactId>
       <version>${project.version}</version>
       <scope>provided</scope>
@@ -164,6 +158,11 @@
         <artifactId>elasticsearch</artifactId>
         <version>1.15.1</version>
         <scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>org.geotools</groupId>
+    	<artifactId>gt-geojsondatastore</artifactId>
+    	<version>${project.version}</version>
     </dependency>
   </dependencies>
   <build>

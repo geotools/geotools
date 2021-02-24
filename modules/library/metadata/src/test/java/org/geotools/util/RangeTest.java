@@ -171,9 +171,8 @@ public final class RangeTest {
 
     @Test
     public void testUnionN() {
-        Range<?> range;
 
-        range = new Range<>(Integer.class, 0);
+        Range<?> range = new Range<>(Integer.class, 0);
         assertEquals(new Range<>(Integer.class, 0), range);
 
         range = range.union(new Range<>(Integer.class, 1));

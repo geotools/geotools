@@ -152,8 +152,7 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
         final GridCoverageWriter writer = new ArcGridWriter(wf);
 
         // setting write parameters
-        ParameterValueGroup params;
-        params = writer.getFormat().getWriteParameters();
+        ParameterValueGroup params = writer.getFormat().getWriteParameters();
         params.parameter("GRASS").setValue(true);
         final ArcGridWriteParams wp = new ArcGridWriteParams();
         wp.setSourceBands(new int[] {0});
@@ -197,8 +196,7 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
         final GridCoverageWriter writer = new ArcGridWriter(wf);
 
         // setting write parameters
-        ParameterValueGroup params;
-        params = writer.getFormat().getWriteParameters();
+        ParameterValueGroup params = writer.getFormat().getWriteParameters();
         params.parameter("GRASS").setValue(false);
         final ArcGridWriteParams wp = new ArcGridWriteParams();
         wp.setSourceBands(new int[] {0});

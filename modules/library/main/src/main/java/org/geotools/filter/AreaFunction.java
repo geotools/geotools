@@ -48,8 +48,7 @@ public class AreaFunction extends FunctionExpressionImpl {
     }
 
     public Object evaluate(Object feature) {
-        org.opengis.filter.expression.Expression geom;
-        geom = getParameters().get(0);
+        org.opengis.filter.expression.Expression geom = getParameters().get(0);
         Geometry g = (Geometry) geom.evaluate(feature);
 
         return Double.valueOf(getArea(g));

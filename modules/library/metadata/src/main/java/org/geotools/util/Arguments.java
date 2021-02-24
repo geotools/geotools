@@ -86,7 +86,7 @@ public class Arguments {
      *     be automatically parsed.
      */
     @SuppressWarnings("PMD.CloseResource") // we don't close System.out
-    public Arguments(final String[] args) {
+    public Arguments(final String... args) {
         this.arguments = args.clone();
         this.locale = getLocale(getOptionalString("-locale"));
         this.encoding = getOptionalString("-encoding");

@@ -270,7 +270,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      *
      * @see #addAuthorityCode
      */
-    public void setAuthorityCodes(final String[] codes) {
+    public void setAuthorityCodes(final String... codes) {
         final Map<String, IdentifiedObject> copy = new HashMap<>(objects);
         objects.clear();
         for (final String code : codes) {

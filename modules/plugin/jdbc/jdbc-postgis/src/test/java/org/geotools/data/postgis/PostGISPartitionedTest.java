@@ -29,7 +29,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.identity.FeatureId;
-import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
 public class PostGISPartitionedTest extends JDBCTestSupport {
@@ -55,7 +54,7 @@ public class PostGISPartitionedTest extends JDBCTestSupport {
         SimpleFeatureSource fs = dataStore.getFeatureSource(tname("customers"));
         FilterFactory ff = dataStore.getFilterFactory();
         Query q = new Query();
-        q.setSortBy(new SortBy[] {ff.sort(aname("status"), SortOrder.ASCENDING)});
+        q.setSortBy(ff.sort(aname("status"), SortOrder.ASCENDING));
         List<SimpleFeature> features = DataUtilities.list(fs.getFeatures(q));
         String statusAttribute = aname("status");
         assertEquals("ACTIVE", features.get(0).getAttribute(statusAttribute));

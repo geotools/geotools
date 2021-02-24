@@ -174,8 +174,7 @@ public class DefaultFeatureResults extends DataFeatureCollection {
      */
     protected Transaction getTransaction() {
         if (featureSource instanceof FeatureStore) {
-            SimpleFeatureStore featureStore;
-            featureStore = (SimpleFeatureStore) featureSource;
+            SimpleFeatureStore featureStore = (SimpleFeatureStore) featureSource;
 
             return featureStore.getTransaction();
         } else {
@@ -189,9 +188,9 @@ public class DefaultFeatureResults extends DataFeatureCollection {
      * @return FeatureReader<SimpleFeatureType, SimpleFeature> for this Query
      * @throws IOException If results could not be obtained
      */
+    @SuppressWarnings("PMD.CloseResource") // returned, the caller will close
     public FeatureReader<SimpleFeatureType, SimpleFeature> reader() throws IOException {
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
-        reader =
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 ((DataStore) featureSource.getDataStore())
                         .getFeatureReader(query, getTransaction());
 
@@ -280,8 +279,7 @@ public class DefaultFeatureResults extends DataFeatureCollection {
      * @see org.geotools.data.FeatureResults#getCount()
      */
     public int getCount() throws IOException {
-        int count;
-        count = featureSource.getCount(query);
+        int count = featureSource.getCount(query);
 
         if (count != -1) {
             // optimization worked, return maxFeatures if count is

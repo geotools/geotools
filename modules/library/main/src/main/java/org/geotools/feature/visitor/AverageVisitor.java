@@ -462,8 +462,7 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
                                         + moreResults.averageStrategy.getCount());
                 Number[] params = new Number[] {newSum, newCount};
                 Object newAverage = CalcUtil.getObject(params);
-                AverageStrategy newAverageObj;
-                newAverageObj = createStrategy(newAverage.getClass());
+                AverageStrategy newAverageObj = createStrategy(newAverage.getClass());
                 newAverageObj.set(newCount.intValue(), newSum);
 
                 return new AverageResult(newAverageObj);

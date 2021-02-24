@@ -238,15 +238,13 @@ public class GridCoverageRendererTest {
      */
     private final GridCoverage2D getGC()
             throws IOException, IllegalArgumentException, ParseException {
-        final String path;
-        final Rectangle2D bounds;
 
         // unit = "°C";
-        path = "TestGridCoverage.tif";
+        final String path = "TestGridCoverage.tif";
         final CoordinateReferenceSystem crs = DefaultGeographicCRS.WGS84;
 
         // 41°S - 5°N ; 35°E - 80°E (450 x 460 pixels)
-        bounds = new Rectangle2D.Double(35, -41, 45, 46);
+        final Rectangle2D bounds = new Rectangle2D.Double(35, -41, 45, 46);
         final GeneralEnvelope envelope = new GeneralEnvelope(bounds);
         final RenderedImage image = ImageIO.read(TestData.getResource(this, path));
         final int numBands = image.getSampleModel().getNumBands();
@@ -1944,9 +1942,7 @@ public class GridCoverageRendererTest {
         StyleFactory sf = sb.getStyleFactory();
         symbolizer.setChannelSelection(
                 sf.createChannelSelection(
-                        new SelectedChannelType[] {
-                            sf.createSelectedChannelType(String.valueOf(band), null)
-                        }));
+                        sf.createSelectedChannelType(String.valueOf(band), null)));
         return symbolizer;
     }
 
@@ -1958,11 +1954,9 @@ public class GridCoverageRendererTest {
         final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         symbolizer.setChannelSelection(
                 sf.createChannelSelection(
-                        new SelectedChannelType[] {
-                            sf.createSelectedChannelType(
-                                    ff.function("env", ff.literal(envVar), ff.literal(band)),
-                                    (ContrastEnhancement) null)
-                        }));
+                        sf.createSelectedChannelType(
+                                ff.function("env", ff.literal(envVar), ff.literal(band)),
+                                (ContrastEnhancement) null)));
         return symbolizer;
     }
 

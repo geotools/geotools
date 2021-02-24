@@ -501,10 +501,8 @@ public class FilterTest {
 
         Assert.assertTrue(matcher.matches());
 
-        PropertyName testAttribute = null;
-
         // Set up string
-        testAttribute = new AttributeExpressionImpl(testSchema, "testString");
+        PropertyName testAttribute = new AttributeExpressionImpl(testSchema, "testString");
 
         PropertyIsLike filter = fac.like(testAttribute, "test*", "*", ".", "!");
         Assert.assertTrue(filter.evaluate(testFeature));
@@ -1117,8 +1115,7 @@ public class FilterTest {
 
     @Test
     public void testLiteralExpression() {
-        LiteralExpressionImpl literal;
-        literal = new LiteralExpressionImpl(1.0D);
+        LiteralExpressionImpl literal = new LiteralExpressionImpl(1.0D);
         Assert.assertEquals(ExpressionType.LITERAL_DOUBLE, Filters.getExpressionType(literal));
         Assert.assertEquals(Double.valueOf(1.0D), literal.evaluate(null));
 

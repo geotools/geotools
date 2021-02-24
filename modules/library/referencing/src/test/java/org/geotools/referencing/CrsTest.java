@@ -154,14 +154,15 @@ public final class CrsTest {
         final MathTransform crsTransform = CRS.findMathTransform(WGS84, mapCRS, true);
         assertFalse(crsTransform.isIdentity());
 
-        final GeneralEnvelope firstEnvelope, transformedEnvelope, oldEnvelope;
-        firstEnvelope = new GeneralEnvelope(new double[] {-124, 42}, new double[] {-122, 43});
+        final GeneralEnvelope firstEnvelope =
+                new GeneralEnvelope(new double[] {-124, 42}, new double[] {-122, 43});
         firstEnvelope.setCoordinateReferenceSystem(WGS84);
 
-        transformedEnvelope = CRS.transform(crsTransform, firstEnvelope);
+        final GeneralEnvelope transformedEnvelope = CRS.transform(crsTransform, firstEnvelope);
         transformedEnvelope.setCoordinateReferenceSystem(mapCRS);
 
-        oldEnvelope = CRS.transform(crsTransform.inverse(), transformedEnvelope);
+        final GeneralEnvelope oldEnvelope =
+                CRS.transform(crsTransform.inverse(), transformedEnvelope);
         oldEnvelope.setCoordinateReferenceSystem(WGS84);
 
         assertTrue(oldEnvelope.contains(firstEnvelope, true));
@@ -179,8 +180,8 @@ public final class CrsTest {
         final MathTransform crsTransform = CRS.findMathTransform(WGS84, WGS84Altered, true);
         assertTrue(crsTransform.isIdentity());
 
-        final GeneralEnvelope firstEnvelope;
-        firstEnvelope = new GeneralEnvelope(new double[] {-124, 42}, new double[] {-122, 43});
+        final GeneralEnvelope firstEnvelope =
+                new GeneralEnvelope(new double[] {-124, 42}, new double[] {-122, 43});
         firstEnvelope.setCoordinateReferenceSystem(WGS84);
 
         // this triggered a assertion error in GEOT-2934
@@ -199,8 +200,7 @@ public final class CrsTest {
     @Ignore
     public void testEnvelopeTransformClipping() throws Exception {
         final CoordinateReferenceSystem source = WGS84;
-        final CoordinateReferenceSystem target;
-        target =
+        final CoordinateReferenceSystem target =
                 CRS.parseWKT(
                         "GEOGCS[\"GCS_North_American_1983\","
                                 + "DATUM[\"North_American_Datum_1983\", "

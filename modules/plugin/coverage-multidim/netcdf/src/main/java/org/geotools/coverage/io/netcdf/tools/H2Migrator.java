@@ -226,7 +226,7 @@ public class H2Migrator {
 
         // query the location attribute
         Query q = new Query(table);
-        q.setPropertyNames(new String[] {locationAttribute});
+        q.setPropertyNames(locationAttribute);
         // extract unique values
         UniqueVisitor uniqueLocations = new UniqueVisitor(locationAttribute);
         featureSource.getFeatures(q).accepts(uniqueLocations, null);
@@ -292,7 +292,7 @@ public class H2Migrator {
         // query the location attribute
         final String locationAttribute = catalogConfiguration.getLocationAttribute();
         Query q = new Query(coverage);
-        q.setPropertyNames(new String[] {locationAttribute});
+        q.setPropertyNames(locationAttribute);
         // extract unique values
         UniqueVisitor uniqueLocations = new UniqueVisitor(locationAttribute);
         final SimpleFeatureCollection granules = granuleSource.getGranules(q);

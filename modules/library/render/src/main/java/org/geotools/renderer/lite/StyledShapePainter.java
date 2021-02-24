@@ -519,7 +519,6 @@ public class StyledShapePainter {
             Graphics2D graphics, Shape shape, Style2D graphicStroke, boolean isLabelObstacle) {
         PathIterator pi = shape.getPathIterator(null);
         double[] coords = new double[4];
-        int type;
 
         // I suppose the image has been already scaled and its square
         double imageSize;
@@ -542,7 +541,7 @@ public class StyledShapePainter {
 
         double[] first = new double[2];
         double[] previous = new double[2];
-        type = pi.currentSegment(coords);
+        int type = pi.currentSegment(coords);
         first[0] = coords[0];
         first[1] = coords[1];
         previous[0] = coords[0];
@@ -554,8 +553,8 @@ public class StyledShapePainter {
 
         pi.next();
 
-        double remainder, dx, dy, len;
-        remainder = imageSize / 2.0;
+        double dx, dy, len;
+        double remainder = imageSize / 2.0;
 
         while (!pi.isDone()) {
             type = pi.currentSegment(coords);

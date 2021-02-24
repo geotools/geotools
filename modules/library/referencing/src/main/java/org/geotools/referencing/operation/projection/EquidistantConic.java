@@ -130,10 +130,9 @@ public class EquidistantConic extends MapProjection {
             rho0 = c - latitudeOfOrigin;
             en0 = en1 = en2 = en3 = en4 = 0.0;
         } else {
-            double ml1, m1;
-            m1 = msfn(sinphi, cosphi);
+            double m1 = msfn(sinphi, cosphi);
 
-            ml1 = mlfn(phi1, sinphi, cosphi);
+            double ml1 = mlfn(phi1, sinphi, cosphi);
             if (secant) {
                 sinphi = sin(phi2);
                 cosphi = cos(phi2);

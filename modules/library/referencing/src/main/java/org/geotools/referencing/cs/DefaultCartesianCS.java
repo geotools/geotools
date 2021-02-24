@@ -215,7 +215,7 @@ public class DefaultCartesianCS extends DefaultAffineCS implements CartesianCS {
     }
 
     /** For {@link #usingUnit} and {@link PredefinedCS#rightHanded} usage only. */
-    DefaultCartesianCS(final Map<String, ?> properties, final CoordinateSystemAxis[] axis) {
+    DefaultCartesianCS(final Map<String, ?> properties, final CoordinateSystemAxis... axis) {
         super(properties, axis);
         ensurePerpendicularAxis();
     }

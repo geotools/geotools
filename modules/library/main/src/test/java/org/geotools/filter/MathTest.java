@@ -79,8 +79,7 @@ public class MathTest {
         AttributeExpressionImpl e1 = new AttributeExpressionImpl(schema, "value");
         AttributeExpressionImpl e2 = new AttributeExpressionImpl(schema, "name");
         boolean pass = false;
-        Object value = null;
-        value = e1.evaluate(f[0]);
+        Object value = e1.evaluate(f[0]);
 
         if (value instanceof Integer) {
             pass = true;

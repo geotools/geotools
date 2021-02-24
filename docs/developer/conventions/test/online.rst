@@ -92,7 +92,7 @@ Example fixture ~/.geotools/postgis/local.properties::
    wkbEnabled=true
 
 
-In windows you cannot create a ".geotools" folder!
+In Windows you cannot create a ".geotools" folder!
 
 1. Open up a CMD window
 2. cd to your home directory and use mkdir::
@@ -109,9 +109,9 @@ In windows you cannot create a ".geotools" folder!
 
 
 4. And use these as a guide: https://github.com/geotools/geotools/tree/master/build/fixtures
-   
+
    Examples:
-   
+
    * PostgisOnlineTestCase - Abstract Testcase class which connects to a specified database and creates a datastore
    * PostgisPermissionOnlineTest - Simple online test which makes use of PostgisOnlineTestCase
 
@@ -120,15 +120,17 @@ Setting up a database for online testing
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 You can use `docker <https://www.docker.com/>`_ to run a database flavour of your choice,
-some examples are given below. Also the GitHub workflows show how to run SQL Server, MySQL 
+some examples are given below. Also the GitHub workflows show how to run SQL Server, MySQL, Db2, PostgreSQL  
 and Oracle XE (see `.github/workflows/ <https://github.com/geotools/geotools/tree/master/.github/workflows>`_).
 Using docker will prevent the hassle of local installation on your computer possibly messing up your configuration.
+Note that not all docker images are available for each and every operating system that supports docker; 
+you may need to setup a Linux virtual machine to run docker.
 
 Oracle XE
 _________
 
 Oracle Database Express Edition (XE) is an unsupported version
-of Oracle Database an can be used for free (`FAQ / details <https://www.oracle.com/database/technologies/appdev/xe/faq.html>`_).
+of Oracle Database and can be used for free (`FAQ / details <https://www.oracle.com/database/technologies/appdev/xe/faq.html>`_).
 You can use the following to start a dockerized instance of Oracle Express (unfortunately Oracle does not provide an
 official docker image so we are using one from the community). ::
 
@@ -305,5 +307,53 @@ Shell scripts for the above steps are provided in directory ``build/ci/mysql/`` 
 To run the online tests for the ``gt-jdbc-mysql`` module use the following Maven command:::
 
     mvn install -Dall -pl :gt-jdbc-mysql -Ponline -T1.1C -Dfmt.skip=true -am
+
+When done use ``docker stop geotools`` to stop and cleanup/remove the container.
+
+IBM Db2
+____________________
+
+Db2 images are provided by `ibmcom on dockerhub <https://hub.docker.com/r/ibmcom/db2/>`_.
+
+Use the following to create and start a Db2 11.5.5.0 container listening on port 50000:::
+
+    docker pull ibmcom/db2:11.5.5.0
+    docker run -e 'LICENSE=accept' -e 'DB2INST1_PASSWORD=db2inst1' -e 'DBNAME=geotools' -e 'ARCHIVE_LOGS=false' --rm -p 50000:50000 --name geotools --privileged=true -d ibmcom/db2:11.5.5.0
+
+Note that the ``--rm`` option will delete the container after stopping it, the image is preserved so you won't need
+to pull it next time, but you may want to preserve the container or map some volumes so you don't have to setup a new one.
+The Docker page linked above provides more documentation on how to do this with this image.
+
+Then "spatially enable" the ``geotools`` database using:::
+
+    docker exec -u db2inst1 -e 'DB2INSTANCE=db2inst1' -i geotools /database/config/db2inst1/sqllib/bin/db2se enable_db geotools
+
+Then create a schema ``geotools`` in the database using:::
+
+    docker cp ./build/ci/db2/setup_db2.commands geotools:/home/
+    docker exec -u db2inst1 -e 'DB2INSTANCE=db2inst1' -i geotools /database/config/db2inst1/sqllib/bin/db2 -vf /home/setup_db2.commands
+
+This will copy the setup command into the container and execute.
+
+The appropriate fixture for using the above database schema would be::
+
+    url=jdbc:db2://127.0.0.1:50000/geotools
+    port=50000
+    password=db2inst1
+    passwd=db2inst1
+    user=db2inst1
+    username=db2inst1
+    host=127.0.0.1
+    dbtype=db2
+    database=geotools
+    driver=com.ibm.db2.jcc.DB2Driver
+
+In file ``~/.geotools/db2.properties``
+
+Shell scripts ``start-db2.sh`` and ``setup-db2.sh`` for the above steps are provided in directory ``build/ci/db2/`` of the source tree.
+
+To run the online tests for the ``gt-jdbc-db2`` module use the following Maven command:::
+
+    mvn install -Dall -pl :gt-jdbc-db2 -Ponline -T1.1C -Dfmt.skip=true -am
 
 When done use ``docker stop geotools`` to stop and cleanup/remove the container.

@@ -829,8 +829,7 @@ public class LabelCacheImpl implements LabelCache {
                     }
 
                     // We check each letters for collision
-                    boolean collision = false;
-                    collision =
+                    boolean collision =
                             glyphVectorProcessor.process(
                                     new GlyphProcessor.ConflictDetector(
                                             painter, displayArea, paintedBounds, groupLabels),
@@ -1271,7 +1270,6 @@ public class LabelCacheImpl implements LabelCache {
 
         // undo the above if its point placement!
         double rotation;
-        double displacementX = 0;
         double displacementY = 0;
         Rectangle2D textBounds = painter.getLabelBounds();
         if (textStyle.isPointPlacement() && !followLine) {
@@ -1294,7 +1292,7 @@ public class LabelCacheImpl implements LabelCache {
             anchorY = painter.getLinePlacementYAnchor();
         }
 
-        displacementX = (anchorX * (-textBounds.getWidth())) + textStyle.getDisplacementX();
+        double displacementX = (anchorX * (-textBounds.getWidth())) + textStyle.getDisplacementX();
         displacementY += (anchorY * (textBounds.getHeight())) - textStyle.getDisplacementY();
 
         if (Double.isNaN(rotation) || Double.isInfinite(rotation)) rotation = 0.0;

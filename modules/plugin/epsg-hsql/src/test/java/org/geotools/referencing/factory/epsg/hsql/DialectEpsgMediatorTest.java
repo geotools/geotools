@@ -81,8 +81,7 @@ public class DialectEpsgMediatorTest {
         if (!TestData.isExtensiveTest()) {
             return;
         }
-        String wkt;
-        wkt =
+        String wkt =
                 "GEOGCS[\"WGS 84\",\n"
                         + "  DATUM[\"World Geodetic System 1984\",\n"
                         + "    SPHEROID[\"WGS 84\", 6378137.0, 298.257223563]],\n"

@@ -835,14 +835,13 @@ public abstract class AbstractIntegrationTest {
     public void testGetFeaturesWriterAdd() throws Exception {
         try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
                 data.getFeatureWriter(first.typeName, Transaction.AUTO_COMMIT)) {
-            SimpleFeature feature;
 
             while (writer.hasNext()) {
                 writer.next();
             }
 
             assertFalse(writer.hasNext());
-            feature = writer.next();
+            SimpleFeature feature = writer.next();
             feature.setAttributes(first.newFeature.getAttributes());
             writer.write();
             assertFalse(writer.hasNext());
@@ -941,8 +940,7 @@ public abstract class AbstractIntegrationTest {
             SimpleFeature[] ADD = new SimpleFeature[ORIGIONAL.length + 1];
             SimpleFeature[] FINAL = new SimpleFeature[ORIGIONAL.length];
             int i;
-            int index;
-            index = 0;
+            int index = 0;
 
             for (i = 0; i < ORIGIONAL.length; i++) {
                 feature = ORIGIONAL[i];
@@ -1190,10 +1188,7 @@ public abstract class AbstractIntegrationTest {
     @Test
     public void testGetFeatureStoreAddFeatures() throws IOException {
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                DataUtilities.reader(
-                        new SimpleFeature[] {
-                            first.newFeature,
-                        })) {
+                DataUtilities.reader(first.newFeature)) {
             SimpleFeatureStore road = (SimpleFeatureStore) data.getFeatureSource(first.typeName);
 
             road.addFeatures(DataUtilities.collection(reader));
@@ -1204,10 +1199,7 @@ public abstract class AbstractIntegrationTest {
     @Test
     public void testGetFeatureStoreSetFeatures() throws IOException {
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                DataUtilities.reader(
-                        new SimpleFeature[] {
-                            first.newFeature,
-                        })) {
+                DataUtilities.reader(first.newFeature)) {
             SimpleFeatureStore road = (SimpleFeatureStore) data.getFeatureSource(first.typeName);
 
             assertEquals(3, road.getFeatures().size());
@@ -1239,8 +1231,7 @@ public abstract class AbstractIntegrationTest {
             SimpleFeature[] ADD = new SimpleFeature[ORIGINAL.length + 1];
             SimpleFeature[] FINAL = new SimpleFeature[ORIGINAL.length];
             int i;
-            int index;
-            index = 0;
+            int index = 0;
 
             for (i = 0; i < ORIGINAL.length; i++) {
                 feature = ORIGINAL[i];
@@ -1277,11 +1268,7 @@ public abstract class AbstractIntegrationTest {
             // road2 adds road.rd4 on t2
             // ----------------------------
             // - tests transaction independence from each other
-            SimpleFeatureCollection collection =
-                    DataUtilities.collection(
-                            new SimpleFeature[] {
-                                first.newFeature,
-                            });
+            SimpleFeatureCollection collection = DataUtilities.collection(first.newFeature);
             road2.addFeatures(collection);
 
             // We still have ORIGIONAL, t1 has REMOVE, and t2 has ADD
@@ -1330,13 +1317,13 @@ public abstract class AbstractIntegrationTest {
     @Test
     public void testLockFeatures() throws IOException {
         FeatureLock lock = new FeatureLock("test", 3600);
-        FeatureLocking<SimpleFeatureType, SimpleFeature> road;
         SimpleFeatureSource source = data.getFeatureSource(first.typeName);
         if (!(source instanceof FeatureLocking)) {
             LOGGER.info("testLockFeature ignored, store does not support locking");
             return;
         }
-        road = (FeatureLocking<SimpleFeatureType, SimpleFeature>) source;
+        FeatureLocking<SimpleFeatureType, SimpleFeature> road =
+                (FeatureLocking<SimpleFeatureType, SimpleFeature>) source;
         road.setFeatureLock(lock);
 
         assertFalse(isLocked(first.typeName, first.features[0].getID()));

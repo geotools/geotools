@@ -157,8 +157,7 @@ public final class LinearConversionTest {
                         "Test",
                         new DefaultCoordinateSystemAxis("y", SOUTH, cm),
                         new DefaultCoordinateSystemAxis("x", EAST, mm));
-        Matrix matrix;
-        matrix = AbstractCS.swapAndScaleAxis(DefaultCartesianCS.GENERIC_2D, cs);
+        Matrix matrix = AbstractCS.swapAndScaleAxis(DefaultCartesianCS.GENERIC_2D, cs);
         assertEquals(
                 new GeneralMatrix(
                         new double[][] {
@@ -189,21 +188,20 @@ public final class LinearConversionTest {
         final double EPS = 1E-12;
         final MathTransformFactory factory = new DefaultMathTransformFactory();
         final ParameterValueGroup parameters = factory.getDefaultParameters("Mercator_1SP");
-        DefaultProjectedCRS sourceCRS, targetCRS;
-        MathTransform transform;
-        Matrix conversion;
 
         parameters.parameter("semi_major").setValue(DefaultEllipsoid.WGS84.getSemiMajorAxis());
         parameters.parameter("semi_minor").setValue(DefaultEllipsoid.WGS84.getSemiMinorAxis());
-        transform = factory.createParameterizedTransform(parameters);
-        sourceCRS = new DefaultProjectedCRS("source", WGS84, transform, PROJECTED);
+        MathTransform transform = factory.createParameterizedTransform(parameters);
+        DefaultProjectedCRS sourceCRS =
+                new DefaultProjectedCRS("source", WGS84, transform, PROJECTED);
 
         parameters.parameter("false_easting").setValue(1000);
         parameters.parameter("false_northing").setValue(2000);
         transform = factory.createParameterizedTransform(parameters);
-        targetCRS = new DefaultProjectedCRS("source", WGS84, transform, PROJECTED);
+        DefaultProjectedCRS targetCRS =
+                new DefaultProjectedCRS("source", WGS84, transform, PROJECTED);
 
-        conversion = ProjectionAnalyzer.createLinearConversion(sourceCRS, targetCRS, EPS);
+        Matrix conversion = ProjectionAnalyzer.createLinearConversion(sourceCRS, targetCRS, EPS);
         assertEquals(new Matrix3(1, 0, 1000, 0, 1, 2000, 0, 0, 1), conversion);
 
         parameters.parameter("scale_factor").setValue(2);

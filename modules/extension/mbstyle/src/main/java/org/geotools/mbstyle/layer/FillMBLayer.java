@@ -266,7 +266,6 @@ public class FillMBLayer extends MBLayer {
      */
     public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
         MBStyleTransformer transformer = new MBStyleTransformer(parse);
-        PolygonSymbolizer symbolizer;
         // use factory to avoid defaults values
         org.geotools.styling.Stroke stroke =
                 sf.stroke(
@@ -310,7 +309,7 @@ public class FillMBLayer extends MBLayer {
             fill = sf.fill(null, fillColor(), fillOpacity());
         }
 
-        symbolizer =
+        PolygonSymbolizer symbolizer =
                 sf.polygonSymbolizer(
                         getId(),
                         ff.property((String) null),

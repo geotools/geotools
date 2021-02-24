@@ -379,8 +379,8 @@ public class WFS_2_0_0_ParsingTest {
             List featureCollections = fc.getMember();
             Assert.assertEquals(1, featureCollections.size());
 
-            SimpleFeatureCollection featureCollection;
-            featureCollection = (SimpleFeatureCollection) featureCollections.get(0);
+            SimpleFeatureCollection featureCollection =
+                    (SimpleFeatureCollection) featureCollections.get(0);
             Assert.assertEquals(5, featureCollection.size());
 
             try (SimpleFeatureIterator features = featureCollection.features()) {

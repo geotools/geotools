@@ -58,7 +58,7 @@ public interface FeatureTypeConstraint {
 
     public Extent[] getExtents();
 
-    public void setExtents(Extent[] extents);
+    public void setExtents(Extent... extents);
 
     public void accept(org.geotools.styling.StyleVisitor visitor);
 }

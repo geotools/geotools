@@ -361,7 +361,6 @@ public class SchemaHandler extends XSIElementHandler {
                         "compressing include " + (inc != null ? inc.getSchemaLocation() : null));
 
                 if (inc != null && inc.getSchemaLocation() != null) {
-                    Schema cs;
                     URI incURI = null;
                     if (thisURI == null) {
                         try {
@@ -372,7 +371,8 @@ public class SchemaHandler extends XSIElementHandler {
                     } else {
                         incURI = thisURI.normalize().resolve(inc.getSchemaLocation());
                     }
-                    cs = SchemaFactory.getInstance(targetNamespace, incURI, logger.getLevel());
+                    Schema cs =
+                            SchemaFactory.getInstance(targetNamespace, incURI, logger.getLevel());
 
                     if (uri != null) {
                         uri = incURI.resolve(uri);
@@ -1207,9 +1207,8 @@ public class SchemaHandler extends XSIElementHandler {
      * helper method that merges the provided Schema into this Schema
      */
     private void addSchema(Schema s) {
-        Object[] objs = null;
 
-        objs = s.getAttributes();
+        Object[] objs = s.getAttributes();
 
         if (objs != null) {
             if ((attributes == null) && (objs.length > 0)) {
@@ -1593,8 +1592,7 @@ public class SchemaHandler extends XSIElementHandler {
             if (arg0 == null) return 1;
             if (arg1 == null) return -1;
 
-            int i = 0;
-            i = arg0.getGrouping() - arg1.getGrouping();
+            int i = arg0.getGrouping() - arg1.getGrouping();
             if (i != 0) return i;
 
             i = arg0.getMaxOccurs() - arg1.getMaxOccurs();
@@ -1729,8 +1727,7 @@ public class SchemaHandler extends XSIElementHandler {
             if (arg0 == null) return 1;
             if (arg1 == null) return -1;
 
-            int i = 0;
-            i = arg0.getFacetType() - arg1.getFacetType();
+            int i = arg0.getFacetType() - arg1.getFacetType();
             if (i != 0) return i;
 
             i =

@@ -138,7 +138,7 @@ public class CurvedGeometryFactory extends GeometryFactory {
     }
 
     /** Explicitly creates a {@link CurvePolygon} */
-    public Polygon createCurvePolygon(LinearRing shell, LinearRing[] holes) {
+    public Polygon createCurvePolygon(LinearRing shell, LinearRing... holes) {
         return new CurvePolygon(shell, holes, this, tolerance);
     }
 
@@ -157,8 +157,7 @@ public class CurvedGeometryFactory extends GeometryFactory {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((delegate == null) ? 0 : delegate.hashCode());
-        long temp;
-        temp = Double.doubleToLongBits(tolerance);
+        long temp = Double.doubleToLongBits(tolerance);
         result = prime * result + (int) (temp ^ (temp >>> 32));
         return result;
     }

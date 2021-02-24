@@ -229,8 +229,7 @@ public enum TestUtils {
     }
 
     public static Matcher<Object> isColor(String s) {
-        Color c;
-        c = new Color(Integer.parseInt(s, 16));
+        Color c = new Color(Integer.parseInt(s, 16));
         return isColor(c);
     }
 

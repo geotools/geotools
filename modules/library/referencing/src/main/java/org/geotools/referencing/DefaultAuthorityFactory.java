@@ -56,11 +56,7 @@ final class DefaultAuthorityFactory extends ThreadedAuthorityFactory
      * List of codes without authority space. We can not defines them in an ordinary authority
      * factory.
      */
-    private static List<String> AUTHORITY_LESS =
-            UnmodifiableArrayList.wrap(
-                    new String[] {
-                        "WGS84(DD)" // (longitude,latitude) with decimal degrees.
-                    });
+    private static List<String> AUTHORITY_LESS = UnmodifiableArrayList.wrap("WGS84(DD)");
 
     /** Creates a new authority factory. */
     DefaultAuthorityFactory(final boolean longitudeFirst) {

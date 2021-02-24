@@ -457,7 +457,6 @@ public class SLDStyleTest {
     public void testSLDTransformer() throws Exception {
         // create an SLD
         StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
-        StyledLayerDescriptor sld2;
         sld.setName("SLD Name");
         sld.setTitle("SLD Title");
         UserLayer layer = sf.createUserLayer();
@@ -469,11 +468,11 @@ public class SLDStyleTest {
         Rule rule1 = sb.createRule(sb.createLineSymbolizer(new Color(0), 2));
         // note: symbolizers containing a fill will likely fail, as the SLD
         // transformation loses a little data (background colour?)
-        FeatureTypeStyle fts1 = sf.createFeatureTypeStyle(new Rule[] {rule1});
+        FeatureTypeStyle fts1 = sf.createFeatureTypeStyle(rule1);
         fts1.semanticTypeIdentifiers().add(SemanticType.valueOf("generic:geometry"));
         style.featureTypeStyles().add(fts1);
-        layer.setUserStyles(new Style[] {style});
-        sld.setStyledLayers(new UserLayer[] {layer});
+        layer.setUserStyles(style);
+        sld.setStyledLayers(layer);
 
         // convert it to XML
         SLDTransformer aTransformer = new SLDTransformer();
@@ -484,7 +483,7 @@ public class SLDStyleTest {
 
         SLDParser stylereader = new SLDParser(sf, is);
 
-        sld2 = stylereader.parseSLD();
+        StyledLayerDescriptor sld2 = stylereader.parseSLD();
         // UNCOMMENT FOR DEBUGGING
         //        assertEquals(SLD.rules(SLD.styles(sld)[0]).length,
         // SLD.rules(SLD.styles(sld2)[0]).length);

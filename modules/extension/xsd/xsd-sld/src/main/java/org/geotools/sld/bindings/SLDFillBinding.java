@@ -111,9 +111,8 @@ public class SLDFillBinding extends AbstractComplexBinding {
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Expression color = null;
         Expression opacity = null;
-        Graphic graphicFill = null;
 
-        graphicFill = (Graphic) node.getChildValue("GraphicFill");
+        Graphic graphicFill = (Graphic) node.getChildValue("GraphicFill");
 
         // &quot;fill&quot; (color)
         // &quot;fill-opacity&quot;

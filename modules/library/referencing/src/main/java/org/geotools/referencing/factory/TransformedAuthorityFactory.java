@@ -440,7 +440,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
     private CoordinateSystem createCS(
             final Class<? extends CoordinateSystem> type,
             final Map<String, ?> properties,
-            final CoordinateSystemAxis[] axis)
+            final CoordinateSystemAxis... axis)
             throws FactoryException {
         final int dimension = axis.length;
         final ReferencingFactoryContainer factories = getFactoryContainer(false);
@@ -526,9 +526,10 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
     @SuppressWarnings("PMD.ForLoopCanBeForeach")
     public Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(
             final String sourceCode, final String targetCode) throws FactoryException {
-        final Set<CoordinateOperation> operations, modified;
-        operations = super.createFromCoordinateReferenceSystemCodes(sourceCode, targetCode);
-        modified = new LinkedHashSet<>((int) (operations.size() / 0.75f) + 1);
+        final Set<CoordinateOperation> operations =
+                super.createFromCoordinateReferenceSystemCodes(sourceCode, targetCode);
+        final Set<CoordinateOperation> modified =
+                new LinkedHashSet<>((int) (operations.size() / 0.75f) + 1);
         for (final Iterator<CoordinateOperation> it = operations.iterator(); it.hasNext(); ) {
             final CoordinateOperation operation;
             try {

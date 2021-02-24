@@ -88,9 +88,7 @@ public class CQLTest {
     @Test
     public void comparisonPredicate() throws Exception {
 
-        Filter filter;
-
-        filter = CQL.toFilter("POP_RANK > 6");
+        Filter filter = CQL.toFilter("POP_RANK > 6");
 
         Assert.assertTrue(filter instanceof PropertyIsGreaterThan);
     }
@@ -103,9 +101,7 @@ public class CQLTest {
     @Test
     public void geoOperationPredicate() throws CQLException {
 
-        Filter filter;
-
-        filter = CQL.toFilter("DISJOINT(the_geom, POINT(1 2))");
+        Filter filter = CQL.toFilter("DISJOINT(the_geom, POINT(1 2))");
 
         Assert.assertTrue("Disjoint was expected", filter instanceof Disjoint);
     }
@@ -127,10 +123,9 @@ public class CQLTest {
 
     @Test
     public void dwithinGeometry() throws Exception {
-        Filter resultFilter;
 
         // DWITHIN
-        resultFilter = CQL.toFilter("DWITHIN(the_geom, POINT(1 2), 10, kilometers)");
+        Filter resultFilter = CQL.toFilter("DWITHIN(the_geom, POINT(1 2), 10, kilometers)");
 
         Assert.assertTrue(resultFilter instanceof DistanceBufferOperator);
     }
@@ -156,10 +151,8 @@ public class CQLTest {
     @Test
     public void booleanPredicate() throws Exception {
 
-        Filter filter;
-
         // and sample
-        filter = CQL.toFilter("QUANTITY < 10 AND QUANTITY < 2 ");
+        Filter filter = CQL.toFilter("QUANTITY < 10 AND QUANTITY < 2 ");
 
         Assert.assertTrue(filter instanceof And);
 

@@ -98,7 +98,7 @@ public final class Locales {
      *
      * @param args Command-lines arguments.
      */
-    public static void main(String[] args) {
+    public static void main(String... args) {
         final Arguments arguments = new Arguments(args);
         arguments.getRemainingArguments(0);
         final String[] locales = getAvailableLocales(arguments.locale);

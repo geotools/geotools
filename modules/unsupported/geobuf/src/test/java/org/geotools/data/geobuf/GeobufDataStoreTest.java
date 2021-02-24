@@ -118,8 +118,7 @@ public class GeobufDataStoreTest {
                             2
                         },
                         "location.2");
-        SimpleFeatureCollection collection =
-                DataUtilities.collection(new SimpleFeature[] {feature1, feature2});
+        SimpleFeatureCollection collection = DataUtilities.collection(feature1, feature2);
         featureStore.addFeatures(collection);
 
         // Read
@@ -234,8 +233,7 @@ public class GeobufDataStoreTest {
                             2
                         },
                         "location.2");
-        SimpleFeatureCollection collection =
-                DataUtilities.collection(new SimpleFeature[] {feature1, feature2});
+        SimpleFeatureCollection collection = DataUtilities.collection(feature1, feature2);
         featureStore.addFeatures(collection);
 
         // Read
@@ -383,8 +381,7 @@ public class GeobufDataStoreTest {
                         },
                         "location.4");
         SimpleFeatureCollection collection =
-                DataUtilities.collection(
-                        new SimpleFeature[] {feature1, feature2, feature3, feature4});
+                DataUtilities.collection(feature1, feature2, feature3, feature4);
         featureStore.addFeatures(collection);
 
         // Read
@@ -505,8 +502,7 @@ public class GeobufDataStoreTest {
                         featureType,
                         new Object[] {reader.read("MULTIPOINT ((100 0), (101 1))"), "TYU", 56},
                         "location.2");
-        SimpleFeatureCollection collection =
-                DataUtilities.collection(new SimpleFeature[] {feature1, feature2});
+        SimpleFeatureCollection collection = DataUtilities.collection(feature1, feature2);
         featureStore.addFeatures(collection);
 
         // Read
@@ -610,8 +606,7 @@ public class GeobufDataStoreTest {
                             56
                         },
                         "location.2");
-        SimpleFeatureCollection collection =
-                DataUtilities.collection(new SimpleFeature[] {feature1, feature2});
+        SimpleFeatureCollection collection = DataUtilities.collection(feature1, feature2);
         featureStore.addFeatures(collection);
 
         // Read
@@ -733,8 +728,7 @@ public class GeobufDataStoreTest {
                         },
                         "location.3");
 
-        SimpleFeatureCollection collection =
-                DataUtilities.collection(new SimpleFeature[] {feature1, feature2, feature3});
+        SimpleFeatureCollection collection = DataUtilities.collection(feature1, feature2, feature3);
         featureStore.addFeatures(collection);
 
         // Read
@@ -839,8 +833,7 @@ public class GeobufDataStoreTest {
                             9
                         },
                         "location.1");
-        SimpleFeatureCollection collection =
-                DataUtilities.collection(new SimpleFeature[] {feature1});
+        SimpleFeatureCollection collection = DataUtilities.collection(feature1);
         featureStore.addFeatures(collection);
 
         // Read

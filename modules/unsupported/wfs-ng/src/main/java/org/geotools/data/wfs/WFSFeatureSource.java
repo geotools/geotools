@@ -233,8 +233,8 @@ class WFSFeatureSource extends ContentFeatureSource {
         final WFSDataStore dataStore = getDataStore();
 
         final QName remoteTypeName = dataStore.getRemoteTypeName(getEntry().getName());
-        final SimpleFeatureType remoteSimpleFeatureType;
-        remoteSimpleFeatureType = dataStore.getRemoteSimpleFeatureType(remoteTypeName);
+        final SimpleFeatureType remoteSimpleFeatureType =
+                dataStore.getRemoteSimpleFeatureType(remoteTypeName);
 
         request.setTypeName(remoteTypeName);
         request.setFullType(remoteSimpleFeatureType);
@@ -262,6 +262,7 @@ class WFSFeatureSource extends ContentFeatureSource {
      * @see org.geotools.data.store.ContentFeatureSource#getReaderInternal(org.geotools.data.Query)
      */
     @Override
+    @SuppressWarnings("PMD.CloseResource") // the reader is returned and managed outside
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query localQuery)
             throws IOException {
 
@@ -281,8 +282,7 @@ class WFSFeatureSource extends ContentFeatureSource {
         GeometryFactory geometryFactory = findGeometryFactory(localQuery.getHints());
         GetParser<SimpleFeature> features = response.getSimpleFeatures(geometryFactory);
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
-        reader = new WFSFeatureReader(features);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader = new WFSFeatureReader(features);
 
         if (request.getUnsupportedFilter() != null
                 && request.getUnsupportedFilter() != Filter.INCLUDE) {
@@ -360,8 +360,8 @@ class WFSFeatureSource extends ContentFeatureSource {
     private GeometryFactory findGeometryFactory(Hints hints) {
         GeometryFactory geomFactory = (GeometryFactory) hints.get(Hints.JTS_GEOMETRY_FACTORY);
         if (geomFactory == null) {
-            CoordinateSequenceFactory seqFac;
-            seqFac = (CoordinateSequenceFactory) hints.get(Hints.JTS_COORDINATE_SEQUENCE_FACTORY);
+            CoordinateSequenceFactory seqFac =
+                    (CoordinateSequenceFactory) hints.get(Hints.JTS_COORDINATE_SEQUENCE_FACTORY);
             if (seqFac == null) {
                 seqFac = PackedCoordinateSequenceFactory.DOUBLE_FACTORY;
             }
@@ -377,8 +377,8 @@ class WFSFeatureSource extends ContentFeatureSource {
         final Name localTypeName = getEntry().getName();
         final QName remoteTypeName = dataStore.getRemoteTypeName(localTypeName);
 
-        final SimpleFeatureType remoteSimpleFeatureType;
-        remoteSimpleFeatureType = dataStore.getRemoteSimpleFeatureType(remoteTypeName);
+        final SimpleFeatureType remoteSimpleFeatureType =
+                dataStore.getRemoteSimpleFeatureType(remoteTypeName);
 
         // adapt the feature type name
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();

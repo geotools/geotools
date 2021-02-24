@@ -35,8 +35,6 @@ class CommandLineArguments {
     public static CommandLineArguments parse(String[] args) {
 
         ConnectionType connType;
-        String user;
-        String host;
         int port = 0;
         int instance = 0;
         String database = null;
@@ -47,8 +45,8 @@ class CommandLineArguments {
             showUsage();
             return null;
         }
-        user = args[aidx++];
-        host = args[aidx++];
+        String user = args[aidx++];
+        String host = args[aidx++];
         int colonIdx = host.indexOf(':');
         if (colonIdx != -1) {
             connType = ConnectionType.USING_PORT;

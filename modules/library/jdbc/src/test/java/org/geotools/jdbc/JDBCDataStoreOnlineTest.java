@@ -396,7 +396,7 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
                     });
         }
 
-        query.setPropertyNames(new String[] {aname("intProperty")});
+        query.setPropertyNames(aname("intProperty"));
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 dataStore.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
             for (int i = 0; i < 3; i++) {

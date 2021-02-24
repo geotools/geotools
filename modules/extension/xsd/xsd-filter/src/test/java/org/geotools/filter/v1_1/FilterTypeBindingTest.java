@@ -98,11 +98,9 @@ public class FilterTypeBindingTest extends FilterTestSupport {
 
     @Test
     public void testEncodeDateTimeLiterals() throws Exception {
-        Object literal;
-        String expected;
 
-        literal = new java.util.Date(1000000);
-        expected = "1970-01-01T00:16:40Z";
+        Object literal = new java.util.Date(1000000);
+        String expected = "1970-01-01T00:16:40Z";
         testEncodeLiteral(literal, expected);
 
         literal = new java.sql.Timestamp(1000000);

@@ -38,7 +38,7 @@ public class DefaultClockTime extends DefaultTemporalPosition implements ClockTi
     public DefaultClockTime(
             TemporalReferenceSystem frame,
             IndeterminateValue indeterminatePosition,
-            Number[] clockTime) {
+            Number... clockTime) {
         super(frame, indeterminatePosition);
         this.clockTime = clockTime;
     }
@@ -54,7 +54,7 @@ public class DefaultClockTime extends DefaultTemporalPosition implements ClockTi
         return clockTime;
     }
 
-    public void setClockTime(Number[] clockTime) {
+    public void setClockTime(Number... clockTime) {
         this.clockTime = clockTime;
     }
 

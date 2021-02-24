@@ -193,8 +193,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
             crs2D = gg.crs2D;
             cornerToCRS2D = gg.cornerToCRS2D;
         } else {
-            final int[] dimensions;
-            dimensions = new int[4];
+            final int[] dimensions = new int[4];
             gridToCRS2D = getMathTransform2D(gridToCRS, gridRange, dimensions, null);
             gridFromCRS2D = inverse(gridToCRS2D);
             gridDimensionX = dimensions[0];
@@ -279,8 +278,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
             final Hints hints)
             throws MismatchedDimensionException, IllegalArgumentException {
         super(gridRange, anchor, gridToCRS, crs);
-        final int[] dimensions;
-        dimensions = new int[4];
+        final int[] dimensions = new int[4];
         gridToCRS2D = getMathTransform2D(super.gridToCRS, gridRange, dimensions, hints);
         gridFromCRS2D = inverse(gridToCRS2D);
         gridDimensionX = dimensions[0];
@@ -428,8 +426,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
             final Hints hints)
             throws MismatchedDimensionException, IllegalArgumentException {
         super(anchor, gridToCRS, envelope);
-        final int[] dimensions;
-        dimensions = new int[4];
+        final int[] dimensions = new int[4];
         gridToCRS2D = getMathTransform2D(this.gridToCRS, gridRange, dimensions, hints);
         gridFromCRS2D = inverse(gridToCRS2D);
         gridDimensionX = dimensions[0];
@@ -472,8 +469,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
             final boolean automatic)
             throws IllegalArgumentException, MismatchedDimensionException {
         super(gridRange, userRange, reverse, swapXY, automatic);
-        final int[] dimensions;
-        dimensions = new int[4];
+        final int[] dimensions = new int[4];
         gridToCRS2D = getMathTransform2D(gridToCRS, gridRange, dimensions, null);
         gridFromCRS2D = inverse(gridToCRS2D);
         gridDimensionX = dimensions[0];
@@ -703,8 +699,8 @@ public class GridGeometry2D extends GeneralGridGeometry {
             // No need to synchronize: this is not a big deal if
             // two ReferencingFactoryContainer instances are created.
         }
-        final CoordinateReferenceSystem reducedCRS;
-        reducedCRS = FACTORIES.separate(crs, new int[] {axisDimensionX, axisDimensionY});
+        final CoordinateReferenceSystem reducedCRS =
+                FACTORIES.separate(crs, new int[] {axisDimensionX, axisDimensionY});
         assert reducedCRS.getCoordinateSystem().getDimension() == 2 : reducedCRS;
         return reducedCRS;
     }

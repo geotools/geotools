@@ -845,8 +845,8 @@ public class Parser extends MathTransformParser {
         final PrimeMeridian meridian = parsePrimem(element, NonSI.DEGREE_ANGLE);
         final GeodeticDatum datum = parseDatum(element, meridian);
         final Unit<Length> linearUnit = parseUnit(element, SI.METRE);
-        CoordinateSystemAxis axis0, axis1, axis2;
-        axis0 = parseAxis(element, linearUnit, false);
+        CoordinateSystemAxis axis1, axis2;
+        CoordinateSystemAxis axis0 = parseAxis(element, linearUnit, false);
         try {
             if (axis0 != null) {
                 axis1 = parseAxis(element, linearUnit, true);
@@ -1180,7 +1180,7 @@ public class Parser extends MathTransformParser {
      * @param args The command line arguments.
      */
     @SuppressWarnings("PMD.CloseResource")
-    public static void main(String[] args) {
+    public static void main(String... args) {
         final Arguments arguments = new Arguments(args);
         final Integer indentation = arguments.getOptionalInteger(Formattable.INDENTATION);
         final String authority = arguments.getOptionalString("-authority");

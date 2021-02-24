@@ -64,7 +64,7 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
     protected Map<String, String> options;
 
     /** Creates a new instance of FeatureTypeStyleImpl */
-    protected FeatureTypeStyleImpl(Rule[] rules) {
+    protected FeatureTypeStyleImpl(Rule... rules) {
         this(Arrays.asList(rules));
     }
 

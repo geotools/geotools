@@ -105,7 +105,7 @@ public interface CoordinateOperationFactory extends ObjectFactory {
      */
     @Extension
     CoordinateOperation createConcatenatedOperation(
-            Map<String, ?> properties, CoordinateOperation[] operations) throws FactoryException;
+            Map<String, ?> properties, CoordinateOperation... operations) throws FactoryException;
 
     /**
      * Constructs a defining conversion from a set of properties. Defining conversions have no

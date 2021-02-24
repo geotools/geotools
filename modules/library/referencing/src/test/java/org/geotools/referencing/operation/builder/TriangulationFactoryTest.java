@@ -18,7 +18,6 @@ package org.geotools.referencing.operation.builder;
 
 import static org.junit.Assert.assertFalse;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.geotools.geometry.DirectPosition2D;
@@ -85,10 +84,8 @@ public final class TriangulationFactoryTest {
 
         Quadrilateral quad = new Quadrilateral(leftDown, rightDown, rightTop, leftTop);
 
-        List<TINTriangle> triangles = new ArrayList<>();
-
         TriangulationFactory trigfac = new TriangulationFactory(quad, vertices);
-        triangles = trigfac.getTriangulation();
+        List<TINTriangle> triangles = trigfac.getTriangulation();
 
         int j = 1;
 

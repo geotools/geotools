@@ -101,8 +101,7 @@ public class ThreadedTransformTest {
             throws URISyntaxException, OperationNotFoundException, FactoryException,
                     TransformException {
         for (int iter = 0; iter < NUM_ITERATIONS; iter++) {
-            CoordinateOperationFactory coordinateOperationFactory;
-            coordinateOperationFactory =
+            CoordinateOperationFactory coordinateOperationFactory =
                     ReferencingFactoryFinder.getCoordinateOperationFactory(HINTS);
             // The problem also appears using :
             // coordinateOperationFactory = CRS

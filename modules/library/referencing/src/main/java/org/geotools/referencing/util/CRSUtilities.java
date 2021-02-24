@@ -138,8 +138,8 @@ public final class CRSUtilities {
     /** Returns the components of the specified CRS, or {@code null} if none. */
     private static List<CoordinateReferenceSystem> getComponents(CoordinateReferenceSystem crs) {
         if (crs instanceof CompoundCRS) {
-            final List<CoordinateReferenceSystem> components;
-            components = ((CompoundCRS) crs).getCoordinateReferenceSystems();
+            final List<CoordinateReferenceSystem> components =
+                    ((CompoundCRS) crs).getCoordinateReferenceSystems();
             if (!components.isEmpty()) {
                 return components;
             }

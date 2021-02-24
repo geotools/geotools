@@ -33,7 +33,7 @@ public class SQLServerFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTes
     public void testGetFeaturesWithOffset() throws Exception {
         SimpleFeatureSource featureSource = dataStore.getFeatureSource(tname("ft_from"));
         Query q = new Query(featureSource.getSchema().getTypeName());
-        q.setPropertyNames(new String[] {aname("ORIGIN_FROM")});
+        q.setPropertyNames(aname("ORIGIN_FROM"));
         q.setStartIndex(1);
         q.setMaxFeatures(1);
         SimpleFeatureCollection features = featureSource.getFeatures(q);

@@ -197,8 +197,8 @@ public class SimplifyingFilterVisitorTest {
     @Test
     public void testTypeNameDotNumberValidator() {
         final String typeName = "states";
-        FIDValidator validator;
-        validator = new SimplifyingFilterVisitor.TypeNameDotNumberFidValidator(typeName);
+        FIDValidator validator =
+                new SimplifyingFilterVisitor.TypeNameDotNumberFidValidator(typeName);
         simpleVisitor.setFIDValidator(validator);
 
         Set<Identifier> ids = new HashSet<>();

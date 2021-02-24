@@ -135,10 +135,10 @@ public final class GeoToolsTest {
     /** Test version lookup */
     @Test
     public void testVersion() {
-        String location;
 
-        location =
-                "jar:file:/Users/jody/.m2/repository/org.locationtech/jts/1.14/jts-1.14.jar!/org.locationtech/jts/geom/Geometry.class";
+        String location =
+                "jar:file:/Users/jody/.m2/repository/org.locationtech/jts/1.14/jts-1.14"
+                        + ".jar!/org.locationtech/jts/geom/Geometry.class";
         assertEquals("1.14", GeoTools.jarVersion(location));
 
         location =
@@ -205,9 +205,8 @@ public final class GeoToolsTest {
     public void testEntityResolver() {
 
         // confirm instantiate works
-        EntityResolver resolver;
 
-        resolver =
+        EntityResolver resolver =
                 GeoTools.instantiate(
                         "org.geotools.util.factory.PlaceholderEntityResolver",
                         EntityResolver.class,

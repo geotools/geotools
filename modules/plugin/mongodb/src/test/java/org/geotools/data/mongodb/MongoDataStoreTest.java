@@ -226,7 +226,7 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
 
         Query q = new Query("ft1", Filter.INCLUDE);
-        q.setSortBy(new SortBy[] {f});
+        q.setSortBy(f);
 
         SimpleFeatureCollection features = source.getFeatures(q);
         try (SimpleFeatureIterator it = features.features()) {

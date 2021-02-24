@@ -95,18 +95,16 @@ public class XSDateTimeStrategyTest extends TestSchema {
 
     @Test
     public void testDate() throws Exception {
-        java.sql.Date expected;
 
-        expected = new java.sql.Date(timestamp(2011, 9, 24));
+        java.sql.Date expected = new java.sql.Date(timestamp(2011, 9, 24));
         checkParseEncode(XS.DATE, "2011-10-24Z", expected, "2011-10-24Z");
     }
 
     @Test
     public void testTime() throws Exception {
         Integer nil = null;
-        java.sql.Time expected;
 
-        expected = new java.sql.Time(timestamp(nil, nil, nil, 10, 53, 24));
+        java.sql.Time expected = new java.sql.Time(timestamp(nil, nil, nil, 10, 53, 24));
         checkParseEncode(XS.TIME, "10:53:24Z", expected, "10:53:24Z");
 
         expected =
@@ -123,9 +121,8 @@ public class XSDateTimeStrategyTest extends TestSchema {
 
     @Test
     public void testTimeStamp() throws Exception {
-        java.sql.Timestamp expected;
 
-        expected = new java.sql.Timestamp(timestamp(2011, 9, 24, 10, 53, 24));
+        java.sql.Timestamp expected = new java.sql.Timestamp(timestamp(2011, 9, 24, 10, 53, 24));
         checkParseEncode(XS.DATETIME, "2011-10-24T10:53:24Z", expected, "2011-10-24T10:53:24Z");
 
         expected = new java.sql.Timestamp(timestamp(2011, 9, 24, 10, 53, 24, 200));
@@ -151,9 +148,7 @@ public class XSDateTimeStrategyTest extends TestSchema {
     @Test
     public void testEncodeCalendarDate() throws Exception {
 
-        Calendar cal;
-
-        cal = calendar(2011, 9, 24);
+        Calendar cal = calendar(2011, 9, 24);
         testEncodeCalendar(cal, TEST.DATE, "2011-10-24Z");
 
         cal = calendar(TimeZone.getTimeZone("GMT+14:00"), 2011, 9, 24);
@@ -164,9 +159,8 @@ public class XSDateTimeStrategyTest extends TestSchema {
     public void testEncodeCalendarTime() throws Exception {
 
         Integer nil = null;
-        Calendar cal;
 
-        cal = calendar(nil, nil, nil, 10, 53, 31);
+        Calendar cal = calendar(nil, nil, nil, 10, 53, 31);
         testEncodeCalendar(cal, TEST.TIME, "10:53:31Z");
 
         cal = calendar(nil, nil, nil, 10, 53, 31, 125);
@@ -176,9 +170,7 @@ public class XSDateTimeStrategyTest extends TestSchema {
     @Test
     public void testEncodeCalendarDateTime() throws Exception {
 
-        Calendar cal;
-
-        cal = calendar(2011, 9, 24, 10, 53, 31);
+        Calendar cal = calendar(2011, 9, 24, 10, 53, 31);
         testEncodeCalendar(cal, TEST.DATETIME, "2011-10-24T10:53:31Z");
 
         cal = calendar(2011, 9, 24, 10, 53, 31, 999);

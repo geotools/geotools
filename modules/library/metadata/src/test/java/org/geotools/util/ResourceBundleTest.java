@@ -35,9 +35,8 @@ public final class ResourceBundleTest {
     /** Tests some simple vocabulary words. */
     @Test
     public void testVocabulary() {
-        Vocabulary resources;
 
-        resources = Vocabulary.getResources(Locale.ENGLISH);
+        Vocabulary resources = Vocabulary.getResources(Locale.ENGLISH);
         assertSame(resources, Vocabulary.getResources(Locale.US));
         assertSame(resources, Vocabulary.getResources(Locale.UK));
         assertSame(resources, Vocabulary.getResources(Locale.CANADA));

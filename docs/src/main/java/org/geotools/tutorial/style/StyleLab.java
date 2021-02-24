@@ -203,7 +203,7 @@ public class StyleLab {
 
         Rule rule = styleFactory.createRule();
         rule.symbolizers().add(sym);
-        FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(new Rule[] {rule});
+        FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(rule);
         Style style = styleFactory.createStyle();
         style.featureTypeStyles().add(fts);
 
@@ -224,7 +224,7 @@ public class StyleLab {
 
         Rule rule = styleFactory.createRule();
         rule.symbolizers().add(sym);
-        FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(new Rule[] {rule});
+        FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(rule);
         Style style = styleFactory.createStyle();
         style.featureTypeStyles().add(fts);
 
@@ -255,7 +255,7 @@ public class StyleLab {
 
         Rule rule = styleFactory.createRule();
         rule.symbolizers().add(sym);
-        FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(new Rule[] {rule});
+        FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(rule);
         Style style = styleFactory.createStyle();
         style.featureTypeStyles().add(fts);
 

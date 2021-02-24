@@ -95,7 +95,7 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
     }
 
     /** Builds a new packed coordinate sequence out of a coordinate array */
-    public LiteCoordinateSequence(Coordinate[] coordinates) {
+    public LiteCoordinateSequence(Coordinate... coordinates) {
         super(guessDimension(coordinates == null ? new Coordinate[0] : coordinates), 0);
         if (coordinates == null) coordinates = new Coordinate[0];
         this.dimension = guessDimension(coordinates);
@@ -113,7 +113,7 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
         this.size = coordinates.length;
     }
 
-    private static int guessDimension(Coordinate[] coordinates) {
+    private static int guessDimension(Coordinate... coordinates) {
         for (Coordinate c : coordinates) {
             if (!java.lang.Double.isNaN(c.getZ())) {
                 return 3;

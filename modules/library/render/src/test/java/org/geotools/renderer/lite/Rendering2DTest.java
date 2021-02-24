@@ -125,12 +125,12 @@ public class Rendering2DTest {
 
         Rule rule = sFac.createRule();
         rule.symbolizers().add(polysym(sFac));
-        FeatureTypeStyle fts = sFac.createFeatureTypeStyle(new Rule[] {rule});
+        FeatureTypeStyle fts = sFac.createFeatureTypeStyle(rule);
         fts.featureTypeNames().add(new NameImpl("polygonfeature"));
 
         Rule rule1 = sFac.createRule();
         rule.symbolizers().add(polysym(sFac));
-        FeatureTypeStyle fts1 = sFac.createFeatureTypeStyle(new Rule[] {rule1});
+        FeatureTypeStyle fts1 = sFac.createFeatureTypeStyle(rule1);
         fts1.featureTypeNames().add(new NameImpl("polygonfeature"));
 
         Rule rule2 = sFac.createRule();
@@ -173,12 +173,11 @@ public class Rendering2DTest {
     }
 
     private PolygonSymbolizer polysym(StyleFactory sFac) throws IllegalFilterException {
-        Stroke myStroke;
         PolygonSymbolizer polysym = sFac.createPolygonSymbolizer();
         Fill myFill = sFac.getDefaultFill();
         myFill.setColor(filterFactory.literal("#ff0000"));
         polysym.setFill(myFill);
-        myStroke = sFac.getDefaultStroke();
+        Stroke myStroke = sFac.getDefaultStroke();
         myStroke.setColor(filterFactory.literal("#0000ff"));
         myStroke.setWidth(filterFactory.literal(Integer.valueOf(2)));
         polysym.setStroke(myStroke);

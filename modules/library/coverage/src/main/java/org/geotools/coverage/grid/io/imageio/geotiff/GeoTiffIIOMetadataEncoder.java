@@ -685,10 +685,9 @@ public class GeoTiffIIOMetadataEncoder {
         Element field = createFieldElement(getGeoKeyDirectoryTag());
         Element data = newElement(GeoTiffConstants.GEOTIFF_SHORTS_TAG);
         field.appendChild(data);
-        int[] values;
 
         // GeoKey directory root tag
-        values = getGeoKeyEntryAt(0).getValues();
+        int[] values = getGeoKeyEntryAt(0).getValues();
         data.appendChild(createShortElement(values[0]));
         data.appendChild(createShortElement(values[1]));
         data.appendChild(createShortElement(values[3]));

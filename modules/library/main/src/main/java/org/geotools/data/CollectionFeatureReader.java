@@ -70,7 +70,7 @@ public class CollectionFeatureReader implements FeatureReader<SimpleFeatureType,
      *
      * @param featuresArg an of features. <b>All features must be of the same FeatureType</b>
      */
-    public CollectionFeatureReader(SimpleFeature[] featuresArg) {
+    public CollectionFeatureReader(SimpleFeature... featuresArg) {
         assert featuresArg.length > 0;
         Iterator<SimpleFeature> iterator = Arrays.asList(featuresArg).iterator();
         this.features = new DelegateSimpleFeatureIterator(iterator);

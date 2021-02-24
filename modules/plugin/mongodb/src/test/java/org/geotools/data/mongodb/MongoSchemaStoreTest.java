@@ -63,9 +63,8 @@ public abstract class MongoSchemaStoreTest<S extends MongoSchemaStore> {
             store.deleteSchema(null); // no exception expected
 
             // store, retreive then test for equality
-            List<String> typeNames;
             store.storeSchema(dummy0);
-            typeNames = store.typeNames();
+            List<String> typeNames = store.typeNames();
             assertThat(typeNames, is(equalTo(Arrays.asList("dummy0"))));
             FeatureTypeDBObjectTest.compareFeatureTypes(
                     store.retrieveSchema(new NameImpl("dummy0")), dummy0, false);

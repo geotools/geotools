@@ -75,7 +75,7 @@ public final class NameFactory {
      * @param names The local names as an array of strings or international strings. This array must
      *     contains at least one element.
      */
-    public static GenericName create(final CharSequence[] names) {
+    public static GenericName create(final CharSequence... names) {
         return create(names, org.geotools.util.GenericName.DEFAULT_SEPARATOR);
     }
 

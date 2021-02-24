@@ -78,10 +78,9 @@ public class AStarIterator extends SourceGraphIterator {
     private HashMap<Node, AStarNode> m_nodemap;
 
     public AStarIterator(Node source, AStarFunctions afuncs) {
-        AStarNode asn;
 
         m_afuncs = afuncs;
-        asn = new AStarNode(source, afuncs.h(source));
+        AStarNode asn = new AStarNode(source, afuncs.h(source));
         asn.setG(0);
         setSource(source);
         m_nodemap = new HashMap<>();
@@ -121,10 +120,9 @@ public class AStarIterator extends SourceGraphIterator {
     @Override
     public void cont(Graphable current, GraphTraversal traversal) {
         Node currdn = (Node) current;
-        AStarNode currAsn;
         AStarNode nextAsn;
 
-        currAsn = m_nodemap.get(currdn);
+        AStarNode currAsn = m_nodemap.get(currdn);
         if (currAsn == null) {
             throw new IllegalArgumentException("AStarIterator: The node is not in the open list");
         }

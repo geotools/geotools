@@ -24,6 +24,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.geotools.data.DataStore;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFactorySpi;
@@ -33,10 +36,30 @@ import org.geotools.util.URLs;
 public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
 
     private static final String[] EXTENSIONS = new String[] {"geojson", "json", "gjson"};
+    private Boolean isAvailable;
 
-    public GeoJSONDataStoreFactory() {
-        // TODO Auto-generated constructor stub
-    }
+    /** Parameter description of information required to connect */
+    public static final Param FILE_PARAM =
+            new Param(
+                    "file", File.class, "GeoJSON file", false, null, new KVP(Param.EXT, "geojson"));
+
+    public static final Param URL_PARAM =
+            new Param("url", URL.class, "GeoJSON URL", false, null, new KVP(Param.EXT, "geojson"));
+
+    public static final Param WRITE_BOUNDS =
+            new Param(
+                    "bounds",
+                    Boolean.class,
+                    "Should a bounding box be written out if available",
+                    false);
+    public static final Param QUICK_SCHEMA =
+            new Param(
+                    "quick",
+                    Boolean.class,
+                    "Should the schema be described by the first element of the collection (Default true)",
+                    false);
+
+    public GeoJSONDataStoreFactory() {}
 
     /** No implementation hints required at this time */
     @Override
@@ -61,11 +84,22 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
         if (url == null && file == null) {
             throw new IOException("No file or url parameter provided");
         }
+        GeoJSONDataStore ret;
         if (file != null) {
-            return new GeoJSONDataStore(file);
+            ret = new GeoJSONDataStore(file);
         } else {
-            return new GeoJSONDataStore(url);
+            ret = new GeoJSONDataStore(url);
         }
+
+        Boolean bounds = (Boolean) WRITE_BOUNDS.lookUp(params);
+        if (bounds != null) {
+            ret.setWriteBounds(bounds);
+        }
+        Boolean quick = (Boolean) QUICK_SCHEMA.lookUp(params);
+        if (quick != null) {
+            ret.setQuickSchema(quick);
+        }
+        return ret;
     }
 
     @Override
@@ -78,17 +112,29 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
         if (url != null && "file".equalsIgnoreCase(url.getProtocol())) {
             file = URLs.urlToFile(url);
         }
+        GeoJSONDataStore ret;
         if (file != null) {
             if (!file.exists()) {
-                file.createNewFile();
+                boolean ok = file.createNewFile();
+                if (!ok) {
+                    throw new IOException("Unable to create file " + file.getAbsoluteFile());
+                }
             }
-            return new GeoJSONDataStore(file);
+            ret = new GeoJSONDataStore(file);
         } else {
-            return new GeoJSONDataStore(url);
+            ret = new GeoJSONDataStore(url);
         }
-    }
 
-    Boolean isAvailable;
+        Boolean bounds = (Boolean) WRITE_BOUNDS.lookUp(params);
+        if (bounds != null) {
+            ret.setWriteBounds(bounds);
+        }
+        Boolean quick = (Boolean) QUICK_SCHEMA.lookUp(params);
+        if (quick != null) {
+            ret.setQuickSchema(quick);
+        }
+        return ret;
+    }
 
     @Override
     public synchronized boolean isAvailable() {
@@ -107,14 +153,6 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
         return isAvailable;
     }
 
-    /** Parameter description of information required to connect */
-    public static final Param FILE_PARAM =
-            new Param(
-                    "file", File.class, "GeoJSON file", false, null, new KVP(Param.EXT, "geojson"));
-
-    public static final Param URL_PARAM =
-            new Param("url", URL.class, "GeoJSON URL", false, null, new KVP(Param.EXT, "geojson"));
-
     @Override
     public Param[] getParametersInfo() {
         return new Param[] {FILE_PARAM, URL_PARAM};
@@ -122,7 +160,6 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
 
     @Override
     public String[] getFileExtensions() {
-
         return EXTENSIONS;
     }
 
@@ -143,11 +180,9 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
             } else {
                 name = url.getPath().toLowerCase();
             }
-            if (name != null) {
-                for (String ext : EXTENSIONS) {
-                    if (name.endsWith(ext)) {
-                        return true;
-                    }
+            for (String ext : EXTENSIONS) {
+                if (name.endsWith(ext)) {
+                    return true;
                 }
             }
         } catch (IOException e) {
@@ -158,19 +193,24 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
 
     @Override
     public boolean canProcess(URL url) {
-        // TODO Auto-generated method stub
-        return false;
+        final String s = url.toString().toLowerCase();
+        String extension = s.substring(s.lastIndexOf(".") + 1);
+        Set<String> set = (Set<String>) Stream.of(EXTENSIONS).collect(Collectors.toSet());
+
+        return set.contains(extension);
     }
 
     @Override
-    public FileDataStore createDataStore(URL url) throws IOException {
-        // TODO Auto-generated method stub
-        return null;
+    public FileDataStore createDataStore(URL url) {
+        return new GeoJSONDataStore(url);
+    }
+
+    public FileDataStore createDataStore(File f) {
+        return new GeoJSONDataStore(f);
     }
 
     @Override
-    public String getTypeName(URL url) throws IOException {
-        // TODO Auto-generated method stub
+    public String getTypeName(URL url) {
         return null;
     }
 }

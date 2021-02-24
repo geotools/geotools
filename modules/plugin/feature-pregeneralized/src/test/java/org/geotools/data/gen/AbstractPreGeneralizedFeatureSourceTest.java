@@ -47,7 +47,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.xml.sax.helpers.NamespaceSupport;
 
@@ -66,8 +65,7 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest {
         if (ds != null) return ds;
 
         GeneralizationInfosProvider provider = new GeneralizationInfosProviderImpl();
-        GeneralizationInfos ginfos = null;
-        ginfos = provider.getGeneralizationInfos(configName);
+        GeneralizationInfos ginfos = provider.getGeneralizationInfos(configName);
         ds = new PreGeneralizedDataStore(ginfos, getRepository());
         DSMap.put(configName, ds);
         return ds;
@@ -341,12 +339,9 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest {
 
             for (Query q : queries) {
 
-                SimpleFeatureCollection fCollection;
-                String typeName;
-
                 q.getHints().put(Hints.GEOMETRY_DISTANCE, 1.0);
-                fCollection = fs.getFeatures(q);
-                typeName = fCollection.getSchema().getTypeName();
+                SimpleFeatureCollection fCollection = fs.getFeatures(q);
+                String typeName = fCollection.getSchema().getTypeName();
                 Assert.assertEquals("GenStreams", typeName);
                 Assert.assertEquals(
                         "the_geom", fCollection.getSchema().getGeometryDescriptor().getLocalName());
@@ -445,11 +440,8 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest {
             SimpleFeatureSource fs = ds.getFeatureSource("GenStreams");
             Assert.assertTrue(fs.getSupportedHints().contains(Hints.GEOMETRY_DISTANCE));
 
-            SimpleFeatureCollection fCollection;
-            String typeName;
-
-            fCollection = fs.getFeatures();
-            typeName = fCollection.getSchema().getTypeName();
+            SimpleFeatureCollection fCollection = fs.getFeatures();
+            String typeName = fCollection.getSchema().getTypeName();
             Assert.assertEquals("GenStreams", typeName);
             Assert.assertTrue(fCollection.size() > 0);
             Assert.assertFalse(fCollection.isEmpty());
@@ -492,11 +484,8 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest {
             SimpleFeatureSource fs = ds.getFeatureSource("GenStreams");
             Assert.assertTrue(fs.getSupportedHints().contains(Hints.GEOMETRY_DISTANCE));
 
-            SimpleFeatureCollection fCollection;
-            String typeName;
-
-            fCollection = fs.getFeatures();
-            typeName = fCollection.getSchema().getTypeName();
+            SimpleFeatureCollection fCollection = fs.getFeatures();
+            String typeName = fCollection.getSchema().getTypeName();
             Assert.assertEquals("GenStreams", typeName);
             Assert.assertTrue(fCollection.size() > 0);
             Assert.assertFalse(fCollection.isEmpty());
@@ -598,8 +587,7 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest {
 
             SortOrder so = SortOrder.valueOf("CAT_ID");
             Assert.assertTrue(
-                    fs.getQueryCapabilities()
-                            .supportsSorting(new SortBy[] {new SortByImpl(propertyName, so)}));
+                    fs.getQueryCapabilities().supportsSorting(new SortByImpl(propertyName, so)));
 
             ds.dispose();
 

@@ -432,7 +432,7 @@ public class Types {
      *
      * <p>The ith name has getLocalPart() == names[i] and getNamespaceURI() == null
      */
-    public static Name[] toNames(String[] names) {
+    public static Name[] toNames(String... names) {
         if (names == null) {
             return null;
         }
@@ -452,7 +452,7 @@ public class Types {
      *
      * <p>The ith name has getLocalPart() == names[i] and getNamespaceURI() == null
      */
-    public static Name[] toTypeNames(String[] names) {
+    public static Name[] toTypeNames(String... names) {
         if (names == null) {
             return null;
         }
@@ -470,7 +470,7 @@ public class Types {
      * Convenience method for turning an array of qualified names into a list of non qualified
      * names.
      */
-    public static String[] fromNames(Name[] attributeNames) {
+    public static String[] fromNames(Name... attributeNames) {
         if (attributeNames == null) {
             return null;
         }
@@ -487,7 +487,7 @@ public class Types {
      * Convenience method for turning an array of qualified names into a list of non qualified
      * names.
      */
-    public static String[] fromTypeNames(Name[] typeNames) {
+    public static String[] fromTypeNames(Name... typeNames) {
         if (typeNames == null) return null;
 
         String[] names = new String[typeNames.length];
@@ -535,7 +535,6 @@ public class Types {
      */
     public static Name degloseName(String prefixedName, NamespaceSupport namespaces)
             throws IllegalArgumentException {
-        Name name = null;
 
         if (prefixedName == null) {
             return null;
@@ -563,7 +562,7 @@ public class Types {
                             + " [Check the Namespaces section in the config file] ");
         }
 
-        name = Types.typeName(nsUri, localName);
+        Name name = Types.typeName(nsUri, localName);
 
         return name;
     }

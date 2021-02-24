@@ -768,7 +768,7 @@ public final class ReferencingFactoryFinder extends FactoryFinder {
      *
      * @param args Command line arguments.
      */
-    public static void main(String[] args) {
+    public static void main(String... args) {
         final Arguments arguments = new Arguments(args);
         arguments.getRemainingArguments(0);
         try {

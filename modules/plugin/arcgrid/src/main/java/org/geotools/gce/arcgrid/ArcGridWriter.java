@@ -120,8 +120,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
         else if (destination instanceof URL) {
             final URL dest = (URL) destination;
             if (dest.getProtocol().equalsIgnoreCase("file")) {
-                File destFile;
-                destFile = URLs.urlToFile(dest);
+                File destFile = URLs.urlToFile(dest);
                 try {
                     super.outStream = ImageIOExt.createImageOutputStream(null, destFile);
                 } catch (IOException e) {

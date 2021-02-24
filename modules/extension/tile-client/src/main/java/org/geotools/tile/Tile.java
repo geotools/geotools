@@ -209,10 +209,9 @@ public abstract class Tile implements ImageLoader {
 
     /** Gets an image showing an error, possibly indicating a failure to load the tile image. */
     protected BufferedImage createErrorImage(final String message) {
-        BufferedImage buffImage = null;
 
         final int size = getTileSize();
-        buffImage = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage buffImage = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
 
         Graphics2D graphics = buffImage.createGraphics();
         graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) 0.5));

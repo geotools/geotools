@@ -439,12 +439,9 @@ public class GMLComplexTypes {
         }
 
         AttributesImpl ai = new AttributesImpl();
-        String dec;
-        String cs;
-        String ts;
-        dec = ".";
-        cs = ",";
-        ts = " ";
+        String dec = ".";
+        String cs = ",";
+        String ts = " ";
         ai.addAttribute("", "decimal", "", "string", dec);
         ai.addAttribute("", "cs", "", "string", cs);
         ai.addAttribute("", "ts", "", "string", ts);
@@ -486,12 +483,9 @@ public class GMLComplexTypes {
         }
 
         AttributesImpl ai = new AttributesImpl();
-        String dec;
-        String cs;
-        String ts;
-        dec = ".";
-        cs = ",";
-        ts = " ";
+        String dec = ".";
+        String cs = ",";
+        String ts = " ";
         ai.addAttribute("", "decimal", "", "string", dec);
         ai.addAttribute("", "cs", "", "string", cs);
         ai.addAttribute("", "ts", "", "string", ts);
@@ -3343,10 +3337,9 @@ public class GMLComplexTypes {
                 return null;
             }
 
-            Double x;
             Double y;
             Double z;
-            x = y = z = null;
+            Double x = y = z = null;
 
             for (ElementValue elementValue : value) {
                 if (elements[0].getName().equals(elementValue.getElement().getName())) {
@@ -3499,10 +3492,7 @@ public class GMLComplexTypes {
                         "Internal error, ElementValues require an associated Element.");
             }
 
-            String dec;
-            String cs;
-            String ts;
-            dec = attrs.getValue("", "decimal");
+            String dec = attrs.getValue("", "decimal");
 
             if (dec == null) {
                 dec = attrs.getValue(GMLSchema.NAMESPACE.toString(), "decimal");
@@ -3510,14 +3500,14 @@ public class GMLComplexTypes {
 
             dec = ((dec == null) || (dec == "")) ? "." : dec;
 
-            cs = attrs.getValue("", "cs");
+            String cs = attrs.getValue("", "cs");
 
             if (cs == null) {
                 cs = attrs.getValue(GMLSchema.NAMESPACE.toString(), "cs");
             }
 
             cs = ((cs == null) || (cs == "")) ? ",\\s*" : (cs + "\\s*");
-            ts = attrs.getValue("", "ts");
+            String ts = attrs.getValue("", "ts");
 
             if (ts == null) {
                 ts = attrs.getValue(GMLSchema.NAMESPACE.toString(), "ts");
@@ -4245,8 +4235,7 @@ public class GMLComplexTypes {
 
         private SimpleFeatureCollection getCollection(Attributes attrs, ElementValue[] value) {
 
-            String id = "";
-            id = attrs.getValue("", "ID");
+            String id = attrs.getValue("", "ID");
             if (id == null) id = attrs.getValue(GMLSchema.NAMESPACE.toString(), "ID");
             Object value2 = value[0].getValue();
             Envelope envelopeInternal = ((Geometry) value2).getEnvelopeInternal();

@@ -87,8 +87,8 @@ class ElasticFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFea
         }
 
         if (contentState.getEntry() != null && contentState.getEntry().getDataStore() != null) {
-            final ElasticDataStore dataStore;
-            dataStore = (ElasticDataStore) contentState.getEntry().getDataStore();
+            final ElasticDataStore dataStore =
+                    (ElasticDataStore) contentState.getEntry().getDataStore();
             this.arrayEncoding = dataStore.getArrayEncoding();
         } else {
             this.arrayEncoding =

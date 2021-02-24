@@ -205,12 +205,11 @@ public class GrassBinaryRasterWriteHandler implements Closeable {
      * @return true is the structure is ok.
      */
     private boolean checkStructure() {
-        File ds;
 
         File mapset = writerGrassEnv.getMAPSET();
         String name = writerGrassEnv.getCELL().getName();
         String mapsetPath = mapset.getAbsolutePath();
-        ds = new File(mapsetPath + File.separator + JGrassConstants.CATS + File.separator);
+        File ds = new File(mapsetPath + File.separator + JGrassConstants.CATS + File.separator);
         if (!ds.exists()) if (!ds.mkdir()) return false;
         ds = new File(mapsetPath + File.separator + JGrassConstants.CELL + File.separator);
         if (!ds.exists()) if (!ds.mkdir()) return false;
@@ -439,8 +438,7 @@ public class GrassBinaryRasterWriteHandler implements Closeable {
     public CoordinateReferenceSystem getCrs() throws IOException {
         String locationPath = writerGrassEnv.getLOCATION().getAbsolutePath();
         CoordinateReferenceSystem readCrs = null;
-        String projWtkFilePath;
-        projWtkFilePath =
+        String projWtkFilePath =
                 locationPath
                         + File.separator
                         + JGrassConstants.PERMANENT_MAPSET

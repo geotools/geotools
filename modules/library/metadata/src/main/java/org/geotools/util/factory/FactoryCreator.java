@@ -74,7 +74,7 @@ public class FactoryCreator extends FactoryRegistry {
      * @param categories The categories.
      * @since 2.4
      */
-    public FactoryCreator(final Class<?>[] categories) {
+    public FactoryCreator(final Class<?>... categories) {
         super(categories);
     }
 

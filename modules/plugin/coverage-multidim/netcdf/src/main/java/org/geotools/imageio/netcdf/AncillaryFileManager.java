@@ -86,7 +86,6 @@ public class AncillaryFileManager implements FileSetManager {
     enum AuxiliaryFileType {
         INDEXER_XML {
             File lookup(String baseName, File parentDirectory, File destinationDirectory) {
-                File file;
                 // CASE 1: side file (for backward compatibility)
                 // Compose the path to an optional XML auxiliary file in the same directory of the
                 // input file
@@ -96,7 +95,7 @@ public class AncillaryFileManager implements FileSetManager {
                                 + File.separator
                                 + baseName
                                 + INDEX_SUFFIX;
-                file = new File(optionalAuxiliaryPath);
+                File file = new File(optionalAuxiliaryPath);
                 if (!file.exists() || !file.canRead()) {
                     // CASE 2: side file in hidden folder (for retrocompatibility)
                     // Compose the path to an optional XML auxiliary file inside a directory of with
@@ -127,7 +126,6 @@ public class AncillaryFileManager implements FileSetManager {
 
         INDEXER_DATASTORE {
             File lookup(String baseName, File parentDirectory, File destinationDirectory) {
-                File file = null;
 
                 // CASE 1: side file (for backward compatibility)
                 // Compose the path to an optional datastore file in the same directory of the input
@@ -136,7 +134,7 @@ public class AncillaryFileManager implements FileSetManager {
                         parentDirectory.getAbsolutePath()
                                 + File.separator
                                 + DEFAULT_DATASTORE_PROPERTIES;
-                file = new File(optionalAuxiliaryDatastorePath);
+                File file = new File(optionalAuxiliaryDatastorePath);
                 if (!file.exists() || !file.canRead()) {
                     // CASE 2: side file in hidden folder (for backward compatibility)
                     // Compose the path to an optional datastore file inside a directory with the

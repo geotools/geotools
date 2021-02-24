@@ -84,8 +84,8 @@ public class GeohashUtilTest {
     public void updatePrecision() {
         final Map<String, Object> geohashGridAgg =
                 new HashMap<>(ImmutableMap.of("field", "name", "precision", 0));
-        final Map<String, Map<String, Map<String, Object>>> aggregations;
-        aggregations = ImmutableMap.of("first", ImmutableMap.of("geohash_grid", geohashGridAgg));
+        final Map<String, Map<String, Map<String, Object>>> aggregations =
+                ImmutableMap.of("first", ImmutableMap.of("geohash_grid", geohashGridAgg));
         final Map<String, Object> expected =
                 ImmutableMap.of(
                         "first",

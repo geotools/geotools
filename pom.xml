@@ -107,7 +107,7 @@
     <fork.javac>false</fork.javac>
     <javac.maxHeapSize>256M</javac.maxHeapSize>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <postgresql.jdbc.version>42.2.18</postgresql.jdbc.version>
+    <postgresql.jdbc.version>42.2.19</postgresql.jdbc.version>
     <ojdbc8.version>19.8.0.0</ojdbc8.version>
     <mssql-jdbc.version>9.2.0.jre8</mssql-jdbc.version>
     <db2.jdbc.version>11.5.5.0</db2.jdbc.version>

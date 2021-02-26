@@ -168,7 +168,7 @@ public class ProjectionHandlerTest {
         params.put(ProjectionHandler.ADVANCED_PROJECTION_DENSIFY, 1.0);
         handler = ProjectionHandlerFinder.getHandler(wgs84Envelope, WGS84, true, params);
         LineString densified = (LineString) handler.preProcess(line);
-        assertEquals(45, densified.getCoordinates().length);
+        assertEquals(44, densified.getCoordinates().length);
     }
 
     @Test

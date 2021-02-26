@@ -32,6 +32,7 @@ import org.geotools.jdbc.SQLDialect;
 import org.locationtech.jts.io.ByteArrayInStream;
 import org.locationtech.jts.io.ByteOrderDataInStream;
 import org.locationtech.jts.io.ByteOrderValues;
+import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKBConstants;
 
 /**
@@ -206,6 +207,8 @@ public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {
                 int geometryType = dis.readInt();
                 if (geometryType == 1001) di.setHasOGCWkbZTyps(true);
             }
+        } catch (ParseException e) {
+            throw new IOException(e.getMessage());
         } catch (SQLException e) {
             throw new IOException(e.getMessage());
         } finally {

@@ -75,14 +75,22 @@ public class GeoPkgGeomReader {
 
     public GeometryHeader getHeader() throws IOException {
         if (header == null) {
-            header = readHeader();
+            try {
+                header = readHeader();
+            } catch (ParseException e) {
+                throw new IOException(e);
+            }
         }
         return header;
     }
 
     public Geometry get() throws IOException {
         if (header == null) {
-            header = readHeader();
+            try {
+                header = readHeader();
+            } catch (ParseException e) {
+                throw new IOException(e);
+            }
         }
 
         if (geometry == null) {
@@ -204,7 +212,7 @@ public class GeoPkgGeomReader {
     *       0 = Big Endian   (most significant bit first)
     *       1 = Little Endian (least significant bit first)
     */
-    protected GeometryHeader readHeader() throws IOException {
+    protected GeometryHeader readHeader() throws IOException, ParseException {
         GeometryHeader h = new GeometryHeader();
 
         // read first 4 bytes

@@ -346,7 +346,7 @@ public class GeoJSONWriteTest {
         String contents =
                 "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\""
                         + ":{\"LAT\":45.52,\"LON\":-122.681944,\"CITY\":\"Portland\",\"NUMBER\":800,\"YEAR\":2014},"
-                        + "\"geometry\":{\"type\":\"Point\",\"coordinates\":[45.52,-122.681944]},\"id\":\"locations.0\"}]}";
+                        + "\"geometry\":{\"type\":\"Point\",\"coordinates\":[45.52,-122.6819]},\"id\":\"locations.0\"}]}";
         assertEquals(
                 "Ensure the file has only the one feature we created",
                 contents.trim(),

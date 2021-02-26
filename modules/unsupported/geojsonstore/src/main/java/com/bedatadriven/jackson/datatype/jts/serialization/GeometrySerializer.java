@@ -36,6 +36,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import java.io.IOException;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.util.Arrays;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -48,6 +50,19 @@ import org.locationtech.jts.geom.Polygon;
 
 public class GeometrySerializer extends JsonSerializer<Geometry> {
 
+    private final RoundingMode roundingMode = RoundingMode.HALF_UP;
+    NumberFormat format = NumberFormat.getNumberInstance();
+    /** Maximum number of decimal places (see https://xkcd.com/2170/ before changing it) */
+    int maximumFractionDigits = 4;
+
+    int minimumFractionDigits = 1;
+
+    public GeometrySerializer() {
+        format.setMinimumFractionDigits(minimumFractionDigits);
+        format.setMaximumFractionDigits(maximumFractionDigits);
+        format.setRoundingMode(roundingMode);
+    }
+
     @Override
     public void serialize(Geometry value, JsonGenerator jgen, SerializerProvider provider)
             throws IOException {
@@ -56,6 +71,7 @@ public class GeometrySerializer extends JsonSerializer<Geometry> {
     }
 
     public void writeGeometry(JsonGenerator jgen, Geometry value) throws IOException {
+
         if (value instanceof Polygon) {
             writePolygon(jgen, (Polygon) value);
 
@@ -201,12 +217,36 @@ public class GeometrySerializer extends JsonSerializer<Geometry> {
     private void writePointCoords(JsonGenerator jgen, Point p) throws IOException {
         jgen.writeStartArray();
 
-        jgen.writeNumber(p.getCoordinate().x);
-        jgen.writeNumber(p.getCoordinate().y);
+        writeNumber(jgen, p.getCoordinate().x);
+        writeNumber(jgen, p.getCoordinate().y);
 
         if (!Double.isNaN(p.getCoordinate().getZ())) {
-            jgen.writeNumber(p.getCoordinate().getZ());
+            writeNumber(jgen, p.getCoordinate().getZ());
         }
         jgen.writeEndArray();
+    }
+
+    private void writeNumber(final JsonGenerator jgen, final double n) throws IOException {
+        jgen.writeNumber(format.format(n));
+    }
+
+    public RoundingMode getRoundingMode() {
+        return roundingMode;
+    }
+
+    public int getMaximumFractionDigits() {
+        return maximumFractionDigits;
+    }
+
+    public void setMaximumFractionDigits(int maximumFractionDigits) {
+        this.maximumFractionDigits = maximumFractionDigits;
+    }
+
+    public int getMinimumFractionDigits() {
+        return minimumFractionDigits;
+    }
+
+    public void setMinimumFractionDigits(int minimumFractionDigits) {
+        this.minimumFractionDigits = minimumFractionDigits;
     }
 }

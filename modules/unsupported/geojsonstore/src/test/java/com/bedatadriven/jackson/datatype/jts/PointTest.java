@@ -32,7 +32,7 @@ public class PointTest extends BaseJtsModuleTest<Point> {
 
     @Override
     protected String createGeometryAsGeoJson() {
-        return "{\"type\":\"Point\",\"coordinates\":[1.2345678,2.3456789]}";
+        return "{\"type\":\"Point\",\"coordinates\":[1.2346,2.3457]}";
     }
 
     @Override

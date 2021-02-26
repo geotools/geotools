@@ -33,7 +33,7 @@ public class GeometryCollectionParserTest extends BaseJtsModuleTest<GeometryColl
 
     @Override
     protected String createGeometryAsGeoJson() {
-        return "{\"type\":\"GeometryCollection\",\"geometries\":[{\"type\":\"Point\",\"coordinates\":[1.2345678,2.3456789]}]}";
+        return "{\"type\":\"GeometryCollection\",\"geometries\":[{\"type\":\"Point\",\"coordinates\":[1.2346,2.3457]}]}";
     }
 
     @Override

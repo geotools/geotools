@@ -214,7 +214,7 @@ In addition a new plugin ``gt-http-commons`` has been added for MultithreadedHtt
 WMTS - WebMapTileServer initialisation
 --------------------------------------
 
-We have introdused a new contructor for the WebMapTileServer.
+We have introduced a new contructor for the WebMapTileServer.
 The reason is that any HTTP headers must be specified prior to initialisation.
 
 This might introduce a problem where a constuctor taking three arguments are used.
@@ -228,7 +228,7 @@ See list of available constructors:
   public WebMapTileServer(URL serverURL, HTTPClient httpClient, WMTSCapabilities capabilities)
   public WebMapTileServer(URL serverURL, HTTPClient httpClient, WMTSCapabilities capabilities, Map<String, Object> hints)
 
-By the same reason we will not allow changes to the headers after initialisation,
+For the same reason we will not allow changes to the headers after initialisation,
 and have deprecated ``public Map<String, String> getHeaders()``.
 
 

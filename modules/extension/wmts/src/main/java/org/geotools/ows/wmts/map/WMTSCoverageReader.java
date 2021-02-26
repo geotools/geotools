@@ -484,6 +484,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
         tileRequest.setRequestedBBox(gridEnvelope); // should be
         // requestEnvelope?
         tileRequest.setRequestedTime(time);
+        tileRequest.setFormat(format);
 
         try {
             this.requestCRS = CRS.decode(requestSrs);

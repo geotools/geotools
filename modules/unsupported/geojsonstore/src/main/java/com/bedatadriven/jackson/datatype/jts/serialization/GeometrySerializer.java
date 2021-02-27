@@ -50,14 +50,14 @@ import org.locationtech.jts.geom.Polygon;
 
 public class GeometrySerializer extends JsonSerializer<Geometry> {
 
-    private final RoundingMode roundingMode = RoundingMode.HALF_UP;
+    private RoundingMode roundingMode = RoundingMode.HALF_UP;
     NumberFormat format = NumberFormat.getNumberInstance();
     /** Maximum number of decimal places (see https://xkcd.com/2170/ before changing it) */
     int maximumFractionDigits = 4;
 
     int minimumFractionDigits = 1;
 
-    public GeometrySerializer() {
+    public GeometrySerializer(int minDecimals, int maxDecimals, RoundingMode rounding) {
         format.setMinimumFractionDigits(minimumFractionDigits);
         format.setMaximumFractionDigits(maximumFractionDigits);
         format.setRoundingMode(roundingMode);
@@ -240,6 +240,7 @@ public class GeometrySerializer extends JsonSerializer<Geometry> {
 
     public void setMaximumFractionDigits(int maximumFractionDigits) {
         this.maximumFractionDigits = maximumFractionDigits;
+        format.setMaximumFractionDigits(maximumFractionDigits);
     }
 
     public int getMinimumFractionDigits() {
@@ -248,5 +249,6 @@ public class GeometrySerializer extends JsonSerializer<Geometry> {
 
     public void setMinimumFractionDigits(int minimumFractionDigits) {
         this.minimumFractionDigits = minimumFractionDigits;
+        format.setMinimumFractionDigits(minimumFractionDigits);
     }
 }

@@ -49,6 +49,7 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.util.URLs;
@@ -77,6 +78,8 @@ public class GeoJSONWriteTest {
     URL url;
 
     GeoJSONDataStoreFactory fac = new GeoJSONDataStoreFactory();
+
+    private static Logger log = Logging.getLogger(GeoJSONWriter.class);
 
     @Before
     public void createTemporaryLocations() throws IOException {
@@ -467,8 +470,6 @@ public class GeoJSONWriteTest {
         assertTrue(out.contains("\"Illinois\""));
     }
 
-    private static Logger log = Logging.getLogger(GeoJSONWriter.class);
-
     @Test
     public void testBoundsinStore() throws IOException {
         URL states = TestData.url("shapes/statepop.shp");
@@ -507,5 +508,35 @@ public class GeoJSONWriteTest {
                 //   System.out.println(line);
             }
         }*/
+    }
+
+    @Test
+    public void testNumberDecimals() throws SchemaException, IOException {
+        GeometryFactory gf = new GeometryFactory();
+        SimpleFeatureType type = DataUtilities.createType("test", "the_geom:Point:srid=4326");
+        SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
+        builder.add(gf.createPoint(new Coordinate(1.23456789, 0.123456789)));
+        SimpleFeature feature = builder.buildFeature(null);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        GeoJSONWriter writer = new GeoJSONWriter(out);
+        writer.setMaxDecimals(6);
+
+        writer.write(feature);
+
+        assertTrue("Incorrect number of decimals", out.toString().contains("[0.123457,1.234568]"));
+        out.close();
+        writer.close();
+        out = new ByteArrayOutputStream();
+        writer = new GeoJSONWriter(out);
+        writer.write(feature);
+        assertTrue("Incorrect number of decimals", out.toString().contains("[0.1235,1.2346]"));
+        out.close();
+        writer.close();
+        out = new ByteArrayOutputStream();
+        writer = new GeoJSONWriter(out);
+        writer.setMaxDecimals(0);
+        writer.write(feature);
+
+        assertTrue("Incorrect number of decimals", out.toString().contains("[0,1]"));
     }
 }

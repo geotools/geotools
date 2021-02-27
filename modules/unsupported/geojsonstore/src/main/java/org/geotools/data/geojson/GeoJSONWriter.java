@@ -53,6 +53,8 @@ import org.opengis.referencing.operation.TransformException;
 public class GeoJSONWriter implements AutoCloseable {
     static Logger LOGGER = Logging.getLogger("org.geotools.data.geojson");
 
+    private int maxDecimals = 4;
+
     private OutputStream out;
 
     JsonGenerator generator;
@@ -74,6 +76,7 @@ public class GeoJSONWriter implements AutoCloseable {
     private boolean inArray = false;
 
     private boolean encodeFeatureCollectionCRS = false;
+    private final JtsModule module;
 
     public GeoJSONWriter(OutputStream outputStream) throws IOException {
         // force the output CRS to be long, lat as required by spec
@@ -84,7 +87,8 @@ public class GeoJSONWriter implements AutoCloseable {
             throw new RuntimeException("CRS factory not found in GeoJSONDatastore writer", e);
         }
         mapper = new ObjectMapper();
-        mapper.registerModule(new JtsModule());
+        module = new JtsModule(maxDecimals);
+        mapper.registerModule(module);
 
         if (outputStream instanceof BufferedOutputStream) {
             this.out = outputStream;
@@ -288,11 +292,26 @@ public class GeoJSONWriter implements AutoCloseable {
         encodeFeatureCollectionCRS = b;
     }
 
-    /** @return the encodeFeatureCollectionCRS */
+    /** @return true if the feature collections CRS will be encoded in the output */
     public boolean isEncodeFeatureCollectionCRS() {
         return encodeFeatureCollectionCRS;
     }
 
+    public int getMaxDecimals() {
+        return maxDecimals;
+    }
+
+    /**
+     * Set how many decimals should be used in writing out the coordinates. Users should consult
+     * https://xkcd.com/2170/ before changing this value, unless they are using a CRS different from
+     * 4326.
+     *
+     * @param number - the number of digits after the decimal place marker
+     */
+    public void setMaxDecimals(int number) {
+        maxDecimals = number;
+        module.setMaxDecimals(number);
+    }
     /**
      * @param features
      * @throws IOException

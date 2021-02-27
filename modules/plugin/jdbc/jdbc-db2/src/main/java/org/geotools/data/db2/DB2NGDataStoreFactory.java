@@ -207,9 +207,7 @@ public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {
                 int geometryType = dis.readInt();
                 if (geometryType == 1001) di.setHasOGCWkbZTyps(true);
             }
-        } catch (ParseException e) {
-            throw new IOException(e.getMessage());
-        } catch (SQLException e) {
+        } catch (ParseException | SQLException e) {
             throw new IOException(e.getMessage());
         } finally {
             dataStore.closeSafe(con);

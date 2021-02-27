@@ -34,6 +34,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.algorithm.Orientation;
 import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
@@ -115,6 +116,33 @@ public class FilterToMongoTest {
         Assert.assertNotNull(filterIntersectsCrsPropertiesName);
         Assert.assertEquals(
                 "urn:x-mongodb:crs:strictwinding:EPSG:4326", filterIntersectsCrsPropertiesName);
+    }
+
+    @Test
+    public void testBBOXOutsideOfWorld() {
+        // Special case, verify we clip queries to the world bounds so mongodb doesnt have an error
+        Envelope WORLD = new Envelope(-179.99, 179.99, -89.99, 89.99);
+        BBOX bbox = ff.bbox("loc", 190d, 10d, 20d, 20d, "epsg:4326");
+
+        // As is, the world does not contain the bbox
+        Assert.assertFalse(WORLD.contains(bbox.getExpression2().evaluate(null, Envelope.class)));
+
+        BasicDBObject obj = (BasicDBObject) bbox.accept(filterToMongo, null);
+        Assert.assertNotNull(obj);
+
+        BasicDBObject filterGeometry = (BasicDBObject) obj.get("geometry");
+        Assert.assertNotNull(filterGeometry);
+
+        BasicDBObject filterIntersects = (BasicDBObject) filterGeometry.get("$geoIntersects");
+        Assert.assertNotNull(filterIntersects);
+
+        BasicDBObject filterIntersectsGeometry = (BasicDBObject) filterIntersects.get("$geometry");
+        Assert.assertNotNull(filterIntersectsGeometry);
+
+        Geometry geometry = geometryBuilder.toGeometry(filterIntersectsGeometry);
+
+        // Verify the world now contains the clipped bbox
+        Assert.assertTrue(WORLD.contains(geometry.getEnvelopeInternal()));
     }
 
     @Test

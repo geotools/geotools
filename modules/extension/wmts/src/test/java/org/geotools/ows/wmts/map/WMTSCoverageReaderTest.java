@@ -18,6 +18,7 @@ package org.geotools.ows.wmts.map;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -30,9 +31,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.media.jai.Interpolation;
@@ -97,9 +97,9 @@ public class WMTSCoverageReaderTest {
         WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
         ReferencedEnvelope bbox =
                 new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326"));
-        List<Tile> responses = testInitMapRequest(wcr, bbox);
+        Set<Tile> responses = testInitMapRequest(wcr, bbox);
         assertFalse(responses.isEmpty());
-        URL url = responses.get(0).getUrl();
+        URL url = responses.iterator().next().getUrl();
         assertThat(
                 "Expect format=image/jpeg in the request url",
                 url.toString(),
@@ -128,16 +128,18 @@ public class WMTSCoverageReaderTest {
 
                     @Override
                     public HTTPResponse get(URL url) throws IOException {
-                        return this.get(url, null);
+                        throw new NotImplementedException(
+                                "For this test. GET with headers should be called.\n"
+                                        + url.toExternalForm());
                     }
 
                     @Override
                     public HTTPResponse get(URL url, Map<String, String> headers) {
+                        getTileHeadersCalled.clear();
+                        getTileHeadersCalled.putAll(headers);
                         if (url.toString().toLowerCase().contains("request=getcapabilities")) {
                             return getCapabilitiesResponse;
                         } else if (url.toString().toLowerCase().contains("request=gettile")) {
-                            getTileHeadersCalled.clear();
-                            getTileHeadersCalled.putAll(headers);
                             return getTileResponse;
                         } else {
                             throw new NotImplementedException(
@@ -149,24 +151,28 @@ public class WMTSCoverageReaderTest {
                     public HTTPResponse post(
                             URL url, InputStream postContent, String postContentType)
                             throws IOException {
-                        throw new UnsupportedOperationException(
-                                "POST not supported, if needed you have to override and implement");
+                        throw new UnsupportedOperationException("POST shouldn't be called.");
                     }
                 };
         owsHttpClient.setUser("username");
         owsHttpClient.setPassword("userpassword");
 
-        WebMapTileServer server = new WebMapTileServer(wmtsUrl, owsHttpClient, null);
-        server.getHeaders().put("header1", "value1");
+        WebMapTileServer server =
+                new WebMapTileServer(
+                        wmtsUrl, owsHttpClient, Collections.singletonMap("header1", "value1"));
         assertNotNull(server.getCapabilities());
+        assertTrue(
+                "Expected header1 in the GetCapabilities request",
+                getTileHeadersCalled.containsKey("header1"));
 
         WMTSLayer layer = server.getCapabilities().getLayer("topp:states");
         WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
         ReferencedEnvelope bbox =
                 new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326"));
-        List<Tile> responses = testInitMapRequest(wcr, bbox);
+        Set<Tile> responses = testInitMapRequest(wcr, bbox);
         assertFalse(responses.isEmpty());
-        BufferedImage bufferedImage = responses.get(0).loadImageTileImage(responses.get(0));
+        Tile firstTile = responses.iterator().next();
+        BufferedImage bufferedImage = firstTile.getBufferedImage();
         assertNotNull(bufferedImage);
 
         // check headers defined at WebMapTileServer are sent with GetTileRequest
@@ -218,7 +224,24 @@ public class WMTSCoverageReaderTest {
         coverageReader.read(new GeneralParameterValue[] {paramInterpolation, paramGridGeometry});
     }
 
-    protected List<Tile> testInitMapRequest(WMTSCoverageReader wcr, ReferencedEnvelope bbox)
+    @Test
+    public void testRESTInitMapRequestWithJpegTemplatesOnly() throws Exception {
+        WebMapTileServer server = createServer("test-data/GetCapaJPEGOnly.xml");
+        WMTSLayer layer = server.getCapabilities().getLayer("bmaphidpi");
+        WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
+        ReferencedEnvelope bbox = new ReferencedEnvelope(5, 12, 45, 49, CRS.decode("EPSG:4326"));
+        int width = 400;
+        int height = 200;
+        ReferencedEnvelope grid = wcr.initTileRequest(bbox, width, height, null);
+        assertNotNull(grid);
+        GetTileRequest mapRequest = wcr.getTileRequest();
+        String templateURL = mapRequest.getFinalURL().toExternalForm();
+        assertEquals(
+                "https://maps.wien.gv.at/basemap/bmaphidpi/{Style}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpeg",
+                templateURL);
+    }
+
+    protected Set<Tile> testInitMapRequest(WMTSCoverageReader wcr, ReferencedEnvelope bbox)
             throws Exception {
 
         int width = 400;
@@ -233,7 +256,7 @@ public class WMTSCoverageReaderTest {
             // System.out.println(t.getTileIdentifier() + " " + t.getExtent());*/
             assertNotNull(t);
         }
-        return new ArrayList<>(responses);
+        return responses;
     }
 
     private WebMapTileServer createServer(String resourceName) throws Exception {

@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.ows.wmts.client;
+package org.geotools.ows.wmts.online;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -26,6 +26,8 @@ import java.net.URL;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
+import org.geotools.ows.wmts.client.WMTSTileFactory4326Test;
+import org.geotools.ows.wmts.client.WMTSTileService;
 import org.geotools.ows.wmts.model.TileMatrixSet;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.ows.wmts.model.WMTSLayer;
@@ -36,30 +38,24 @@ import org.geotools.swing.SingleLayerMapContent;
 import org.geotools.test.OnlineTestCase;
 import org.geotools.tile.util.AsyncTileLayer;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
  * @author Ludovic Pecquot (E-IS) on 21/12/2017.
  * @link {org.geotools.tile.util.TileLayer}
  */
-public class WMTSTransparentTileTest extends OnlineTestCase {
+public class WMTSTransparentTileOnlineTest extends OnlineTestCase {
 
     private WMTSTileService service;
 
-    @Before
-    public void setup() throws Exception {
+    @Override
+    public void setUpInternal() throws Exception {
         service = createKVPService();
     }
 
     @Override
-    protected void tearDownInternal() throws Exception {
-        service = null;
-    }
-
-    @Override
     protected String getFixtureId() {
-        return "wmts";
+        return "wmts-unesco";
     }
 
     private WMTSTileService createKVPService() throws Exception {

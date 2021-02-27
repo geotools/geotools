@@ -360,7 +360,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
      * @throws ServiceException if the server responds with an error
      */
     public WebMapServer(final URL serverURL) throws IOException, ServiceException {
-        this(serverURL, HTTPClientFinder.createClient());
+        super(serverURL);
     }
 
     /**
@@ -373,7 +373,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
      */
     public WebMapServer(final URL serverURL, final HTTPClient httpClient)
             throws IOException, ServiceException {
-        super(serverURL, httpClient, null);
+        super(serverURL, httpClient);
     }
 
     /**
@@ -402,7 +402,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
      * @throws ServiceException if the server responds with an error
      */
     public WebMapServer(final URL serverURL, int timeout) throws IOException, ServiceException {
-        super(serverURL, getHttpClient(timeout), null);
+        super(serverURL, getHttpClient(timeout));
     }
 
     public static HTTPClient getHttpClient(int timeout) {

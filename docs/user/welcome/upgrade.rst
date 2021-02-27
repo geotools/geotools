@@ -211,6 +211,27 @@ In addition a new plugin ``gt-http-commons`` has been added for MultithreadedHtt
    HTTPClient http = HTTPClientFinder.createClient(hints);
    HTTPResponse response = http.get();
 
+WMTS - WebMapTileServer initialisation
+--------------------------------------
+
+We have introduced a new contructor for the WebMapTileServer.
+The reason is that any HTTP headers must be specified prior to initialisation.
+
+This might introduce a problem where a constuctor taking three arguments are used.
+
+See list of available constructors:
+
+.. code-block:: java
+
+  public WebMapTileServer(URL serverURL, HTTPClient httpClient)
+  public WebMapTileServer(URL serverURL, HTTPClient httpClient, Map<String, String> headers) // <- NEW CONSTRUCTOR
+  public WebMapTileServer(URL serverURL, HTTPClient httpClient, WMTSCapabilities capabilities)
+  public WebMapTileServer(URL serverURL, HTTPClient httpClient, WMTSCapabilities capabilities, Map<String, Object> hints)
+
+For the same reason we will not allow changes to the headers after initialisation,
+and have deprecated ``public Map<String, String> getHeaders()``.
+
+
 GeoTools 24.x
 -------------
 

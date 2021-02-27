@@ -18,7 +18,6 @@ package org.geotools.ows.wmts;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -54,9 +53,63 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
 
     private WMTSServiceType type;
 
-    private final Map<String, String> headers = new HashMap<>();
+    /**
+     * Set up the WebMapTileServer by the given serverUrl using the given http client.
+     *
+     * @param serverURL
+     * @param httpClient
+     * @throws ServiceException
+     * @throws IOException
+     */
+    public WebMapTileServer(URL serverURL, HTTPClient httpClient)
+            throws ServiceException, IOException {
+        super(serverURL, httpClient);
+        setupType();
+    }
 
-    /** */
+    /**
+     * Set up the WebMapTileServer by the given serverUrl, using the http client with additional
+     * headers.
+     *
+     * @param serverURL
+     * @param httpClient
+     * @param headers
+     * @throws ServiceException
+     * @throws IOException
+     */
+    public WebMapTileServer(URL serverURL, HTTPClient httpClient, Map<String, String> headers)
+            throws ServiceException, IOException {
+        super(serverURL, httpClient, null, null, headers);
+        setupType();
+    }
+
+    /**
+     * Set up the WebMapTileServer by the given capabilities, with the given serverURL. Using the
+     * given httpClient.
+     *
+     * @param serverURL
+     * @param httpClient
+     * @param capabilities
+     * @throws ServiceException
+     * @throws IOException
+     */
+    public WebMapTileServer(URL serverURL, HTTPClient httpClient, WMTSCapabilities capabilities)
+            throws ServiceException, IOException {
+        super(serverURL, httpClient, capabilities);
+        setupType();
+    }
+
+    /**
+     * Set up the WebMapTileServer by the given capabilities, with the given serverURL and
+     * additional hints. Using the given http client.
+     *
+     * @param serverURL
+     * @param httpClient
+     * @param capabilities
+     * @param hints
+     * @throws ServiceException
+     * @throws IOException
+     */
     public WebMapTileServer(
             URL serverURL,
             HTTPClient httpClient,
@@ -64,32 +117,43 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
             Map<String, Object> hints)
             throws ServiceException, IOException {
         super(serverURL, httpClient, capabilities, hints);
-        setType(capabilities.getType());
+        setupType();
     }
 
-    /** */
-    public WebMapTileServer(URL serverURL, HTTPClient httpClient, WMTSCapabilities capabilities)
-            throws ServiceException, IOException {
-        super(serverURL, httpClient, capabilities);
-        setType(super.capabilities.getType());
-    }
-
-    /** */
+    /**
+     * Set up the WebMapTileServer by calling serverURL with the default http client.
+     *
+     * @param serverURL
+     * @throws IOException
+     * @throws ServiceException
+     */
     public WebMapTileServer(URL serverURL) throws IOException, ServiceException {
-        this(serverURL, HTTPClientFinder.createClient(), null);
-        setType(capabilities.getType());
+        super(serverURL);
+        setupType();
     }
 
-    /** */
+    /**
+     * Set up the WebMapTileServer with the given capabilities. Using the default http client.
+     *
+     * @param capabilities
+     * @throws ServiceException
+     * @throws IOException
+     */
     public WebMapTileServer(WMTSCapabilities capabilities) throws ServiceException, IOException {
         super(
                 capabilities.getRequest().getGetCapabilities().getGet(),
                 HTTPClientFinder.createClient(),
                 capabilities);
-        setType(capabilities.getType());
+        setupType();
     }
 
-    /** */
+    /**
+     * Set up a WebMapTileServer by the same serverURL as delegate
+     *
+     * @param delegate
+     * @throws ServiceException
+     * @throws IOException
+     */
     public WebMapTileServer(WebMapTileServer delegate) throws ServiceException, IOException {
         this(delegate.serverURL);
     }
@@ -102,13 +166,11 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
 
     @Override
     protected ServiceInfo createInfo() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     protected ResourceInfo createInfo(Layer resource) {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -120,7 +182,6 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
 
     /** */
     public Set<Tile> issueRequest(GetTileRequest tileRequest) throws ServiceException {
-
         return tileRequest.getTiles();
     }
 
@@ -144,8 +205,9 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
                 ((WMTSSpecification) specification)
                         .createGetTileRequest(url, props, capabilities, this.getHTTPClient());
 
-        request.getHeaders().putAll(headers);
-
+        if (headers != null) {
+            request.getHeaders().putAll(headers);
+        }
         return request;
     }
 
@@ -167,14 +229,16 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
 
     /** */
     public GetFeatureInfoRequest createGetFeatureInfoRequest(GetTileRequest getmap) {
-        // TODO Auto-generated method stub
         return null;
     }
 
     /** */
     public GetFeatureInfoResponse issueRequest(GetFeatureInfoRequest request) {
-        // TODO Auto-generated method stub
         return null;
+    }
+
+    private void setupType() {
+        this.type = getCapabilities().getType();
     }
 
     /** @param type */
@@ -186,6 +250,11 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
         return type;
     }
 
+    /**
+     * @deprecated headers should be set by a constructor
+     * @return
+     */
+    @Deprecated
     public Map<String, String> getHeaders() {
         return headers;
     }

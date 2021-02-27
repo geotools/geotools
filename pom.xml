@@ -103,7 +103,7 @@
     <jaxb.api.version>2.4.0-b180830.0359</jaxb.api.version>
     <jaxb.runtime.version>2.4.0-b180830.0438</jaxb.runtime.version>
     <javax.activation-api.version>1.2.0</javax.activation-api.version>
-    <mockito.core.version>2.23.0</mockito.core.version>
+    <mockito.core.version>3.8.0</mockito.core.version>
     <java.awt.headless>true</java.awt.headless>
     <sun.java2d.d3d>true</sun.java2d.d3d>
     <jvm.opts></jvm.opts>
@@ -1493,7 +1493,6 @@
         <version>${mockito.core.version}</version>
         <scope>test</scope>
       </dependency>
-
      <!-- ArcSDE -->
       <dependency>
         <groupId>com.ibm.icu</groupId>

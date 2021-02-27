@@ -70,7 +70,7 @@ public class DocumentFactoryTest {
         uri = new URI("http://geotools.org");
         hints = new HashMap<>();
 
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         hints.put(XMLHandlerHints.SAX_PARSER_FACTORY, mockSaxParserFactory);
         when(mockSaxParserFactory.newSAXParser()).thenReturn(mockSaxParser);
 

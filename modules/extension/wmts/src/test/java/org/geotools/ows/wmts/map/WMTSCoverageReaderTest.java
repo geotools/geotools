@@ -241,7 +241,7 @@ public class WMTSCoverageReaderTest {
                 templateURL);
     }
 
-    protected List<Tile> testInitMapRequest(WMTSCoverageReader wcr, ReferencedEnvelope bbox)
+    protected Set<Tile> testInitMapRequest(WMTSCoverageReader wcr, ReferencedEnvelope bbox)
             throws Exception {
 
         int width = 400;

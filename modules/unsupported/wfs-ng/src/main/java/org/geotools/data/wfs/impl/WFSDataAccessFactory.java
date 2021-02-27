@@ -331,7 +331,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
      *   <li>{@link XMLHandlerHints#VALUE_FILTER_COMPLIANCE_HIGH}
      * </ul>
      */
-    public static final WFSFactoryParam<Integer> FILTER_COMPLIANCE;;
+    public static final WFSFactoryParam<Integer> FILTER_COMPLIANCE;
 
     static {
         String key = "WFSDataStoreFactory:FILTER_COMPLIANCE";
@@ -387,7 +387,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
                                 options);
     }
 
-    /** Optional {@code String} namespace URI to override the originial namespaces */
+    /** Optional {@code String} namespace URI to override the original namespaces */
     public static final WFSFactoryParam<String> NAMESPACE;
 
     static {

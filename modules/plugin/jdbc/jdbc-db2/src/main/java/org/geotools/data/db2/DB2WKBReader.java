@@ -203,24 +203,24 @@ public class DB2WKBReader {
         return g;
     }
 
-    private Point readPoint() throws IOException {
+    private Point readPoint() throws IOException, ParseException {
         CoordinateSequence pts = readCoordinateSequence(1);
         return factory.createPoint(pts);
     }
 
-    private LineString readLineString() throws IOException {
+    private LineString readLineString() throws IOException, ParseException {
         int size = dis.readInt();
         CoordinateSequence pts = readCoordinateSequence(size);
         return factory.createLineString(pts);
     }
 
-    private LinearRing readLinearRing() throws IOException {
+    private LinearRing readLinearRing() throws IOException, ParseException {
         int size = dis.readInt();
         CoordinateSequence pts = readCoordinateSequence(size);
         return factory.createLinearRing(pts);
     }
 
-    private Polygon readPolygon() throws IOException {
+    private Polygon readPolygon() throws IOException, ParseException {
         int numRings = dis.readInt();
         LinearRing[] holes = null;
         if (numRings > 1) holes = new LinearRing[numRings - 1];
@@ -277,7 +277,7 @@ public class DB2WKBReader {
         return factory.createGeometryCollection(geoms);
     }
 
-    private CoordinateSequence readCoordinateSequence(int size) throws IOException {
+    private CoordinateSequence readCoordinateSequence(int size) throws IOException, ParseException {
         CoordinateSequence seq =
                 JTS.createCS(factory.getCoordinateSequenceFactory(), size, inputDimension);
         int targetDim = seq.getDimension();
@@ -295,7 +295,7 @@ public class DB2WKBReader {
      * Reads a coordinate value with the specified dimensionality. Makes the X and Y ordinates
      * precise according to the precision model in use.
      */
-    private void readCoordinate() throws IOException {
+    private void readCoordinate() throws IOException, ParseException {
         for (int i = 0; i < inputDimension; i++) {
             if (i <= 1) {
                 ordValues[i] = precisionModel.makePrecise(dis.readDouble());

@@ -197,11 +197,7 @@ public class GMLLinearRingTypeBindingTest extends AbstractGMLBindingTest {
                         new ElementInstance[] {coords},
                         new Object[] {
                             createCoordinateSequence(
-                                    new Coordinate[] {
-                                        new Coordinate(1, 2),
-                                        new Coordinate(3, 4),
-                                        new Coordinate(1, 2)
-                                    }),
+                                    new Coordinate[] {new Coordinate(1, 2), new Coordinate(1, 2)}),
                         },
                         null,
                         null);
@@ -212,7 +208,7 @@ public class GMLLinearRingTypeBindingTest extends AbstractGMLBindingTest {
 
         try {
             s.parse(ring, node, null);
-            fail("Should have thrown an exception with less then 4 points");
+            fail("Should have thrown an exception with less then 3 points");
         } catch (Exception e) {
             // ok
         }

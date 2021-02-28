@@ -185,10 +185,11 @@ public class WKBAttributeIO {
             this.position = 0;
         }
 
-        public void read(final byte[] buf) throws IOException {
+        public int read(final byte[] buf) throws IOException {
             final int size = buf.length;
             System.arraycopy(buffer, position, buf, 0, size);
             position += size;
+            return size;
         }
     }
 
@@ -199,8 +200,8 @@ public class WKBAttributeIO {
             this.in = in;
         }
 
-        public void read(final byte[] buf) throws IOException {
-            in.read(buf);
+        public int read(final byte[] buf) throws IOException {
+            return in.read(buf);
         }
     }
 }

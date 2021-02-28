@@ -30,6 +30,7 @@ import java.util.stream.Stream;
 import org.geotools.data.DataStore;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFactorySpi;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.KVP;
 import org.geotools.util.URLs;
 
@@ -45,7 +46,12 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
 
     public static final Param URL_PARAM =
             new Param("url", URL.class, "GeoJSON URL", false, null, new KVP(Param.EXT, "geojson"));
-
+    public static final Param BOUNDING_BOX =
+            new Param(
+                    "bbox",
+                    ReferencedEnvelope.class,
+                    "A bounding box for the features to be written",
+                    false);
     public static final Param WRITE_BOUNDS =
             new Param(
                     "bounds",
@@ -95,6 +101,10 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
         if (bounds != null) {
             ret.setWriteBounds(bounds);
         }
+        ReferencedEnvelope bbox = (ReferencedEnvelope) BOUNDING_BOX.lookUp(params);
+        if (bbox != null) {
+            ret.setBbox(bbox);
+        }
         Boolean quick = (Boolean) QUICK_SCHEMA.lookUp(params);
         if (quick != null) {
             ret.setQuickSchema(quick);
@@ -128,6 +138,10 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
         Boolean bounds = (Boolean) WRITE_BOUNDS.lookUp(params);
         if (bounds != null) {
             ret.setWriteBounds(bounds);
+        }
+        ReferencedEnvelope bbox = (ReferencedEnvelope) BOUNDING_BOX.lookUp(params);
+        if (bbox != null) {
+            ret.setBbox(bbox);
         }
         Boolean quick = (Boolean) QUICK_SCHEMA.lookUp(params);
         if (quick != null) {

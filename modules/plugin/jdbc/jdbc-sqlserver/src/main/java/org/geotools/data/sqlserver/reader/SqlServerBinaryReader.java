@@ -80,7 +80,6 @@ public class SqlServerBinaryReader {
             parse(is);
         } catch (ParseException e) {
             throw new IOException(e);
-            return null;
         }
         readCoordinateSequences();
         Type type = getTypeFromBinary();

@@ -29,6 +29,7 @@ import org.geotools.data.Transaction;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentState;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
@@ -61,6 +62,7 @@ public class GeoJSONFeatureWriter
     public GeoJSONFeatureWriter(ContentEntry entry, Query query) throws IOException {
         this.state = entry.getState(Transaction.AUTO_COMMIT);
         this.writeBounds = ((GeoJSONDataStore) entry.getDataStore()).isWriteBounds();
+        ReferencedEnvelope bbox = ((GeoJSONDataStore) entry.getDataStore()).getBbox();
         String typeName = query.getTypeName();
         File file = URLs.urlToFile(((GeoJSONDataStore) state.getEntry().getDataStore()).getUrl());
         File directory = file.getParentFile();
@@ -68,7 +70,10 @@ public class GeoJSONFeatureWriter
                 File.createTempFile(typeName + System.currentTimeMillis(), "geojson", directory);
 
         this.writer = new GeoJSONWriter(new FileOutputStream(this.temp));
-        this.writer.setEncodeFeatureCollectionBounds(writeBounds);
+        this.writer.setEncodeFeatureBounds(writeBounds);
+        if (bbox != null) {
+            this.writer.setBounds(bbox);
+        }
         this.delegate = new GeoJSONFeatureReader(state, query);
     }
 

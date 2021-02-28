@@ -21,8 +21,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
@@ -52,6 +54,7 @@ import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 import org.junit.After;
@@ -419,7 +422,7 @@ public class GeoJSONWriteTest {
     }
 
     @Test
-    public void testBoundsinWriter() throws IOException {
+    public void testBoundsInWriter() throws IOException {
         URL states = TestData.url("shapes/statepop.shp");
         FileDataStore ds = FileDataStoreFinder.getDataStore(states);
         assertNotNull(ds);
@@ -449,12 +452,56 @@ public class GeoJSONWriteTest {
                 writer.write();
             }
         }
-        /*
-        BufferedReader r = new BufferedReader(new FileReader(out));
-        String line;
-        while ((line = r.readLine()) != null) {
-            System.out.println(WordUtils.wrap(line, 80));
-        }*/
+
+        try (BufferedReader r = new BufferedReader(new FileReader(out))) {
+            assertTrue(
+                    "missing bbox",
+                    r.readLine().endsWith("\"bbox\":[-124.7314,24.956,-66.9698,49.3717]}"));
+        }
+    }
+
+    @Test
+    public void testProvidedBoundsInWriter() throws IOException {
+        URL states = TestData.url("shapes/statepop.shp");
+        FileDataStore ds = FileDataStoreFinder.getDataStore(states);
+        assertNotNull(ds);
+        String name = ds.getTypeNames()[0];
+        File out = new File(tmp, "statepop2.json");
+        ReferencedEnvelope bbox = ds.getFeatureSource().getBounds();
+
+        HashMap<String, Serializable> params = new HashMap<>();
+        params.put(GeoJSONDataStoreFactory.FILE_PARAM.key, out);
+        params.put(GeoJSONDataStoreFactory.WRITE_BOUNDS.key, true);
+        params.put(GeoJSONDataStoreFactory.BOUNDING_BOX.key, bbox);
+        GeoJSONDataStoreFactory factory = new GeoJSONDataStoreFactory();
+        DataStore outDS = factory.createNewDataStore(params);
+        SimpleFeature feature, newFeature;
+
+        SimpleFeatureType featureType = ds.getSchema();
+        outDS.createSchema(featureType);
+        Query query = new Query(featureType.getTypeName(), Filter.INCLUDE);
+        assertNotNull(outDS);
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                        ds.getFeatureReader(query, Transaction.AUTO_COMMIT);
+                FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                        outDS.getFeatureWriterAppend(name, Transaction.AUTO_COMMIT)) {
+            while (reader.hasNext()) {
+                feature = reader.next();
+                newFeature = writer.next();
+
+                newFeature.setAttributes(feature.getAttributes());
+                writer.write();
+            }
+        }
+
+        try (BufferedReader r = new BufferedReader(new FileReader(out))) {
+
+            assertTrue(
+                    "missing bbox",
+                    r.readLine()
+                            .startsWith(
+                                    "{\"type\":\"FeatureCollection\",\"bbox\":[-124.7314,24.956,-66.9698,49.3717],"));
+        }
     }
 
     @Test
@@ -538,5 +585,31 @@ public class GeoJSONWriteTest {
         writer.write(feature);
 
         assertTrue("Incorrect number of decimals", out.toString().contains("[0,1]"));
+    }
+
+    @Test
+    public void testBoundingBox() throws SchemaException, IOException {
+        GeometryFactory gf = new GeometryFactory();
+        SimpleFeatureType type = DataUtilities.createType("test", "the_geom:Polygon:srid=27700");
+        SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
+        Coordinate[] coords = {
+            new Coordinate(100, 200),
+            new Coordinate(140, 500),
+            new Coordinate(300, 600),
+            new Coordinate(100, 200)
+        };
+        builder.add(gf.createPolygon(coords));
+        SimpleFeature feature = builder.buildFeature(null);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        GeoJSONWriter writer = new GeoJSONWriter(out);
+        writer.setEncodeFeatureBounds(true);
+
+        writer.write(feature);
+
+        assertTrue(
+                "missing bbox in " + out.toString(),
+                out.toString().contains("\"bbox\":[-7.556,49.7687,-7.5536,49.7724]"));
+        out.close();
+        writer.close();
     }
 }

@@ -40,7 +40,6 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -416,40 +415,31 @@ public class GeoTiffReaderTest {
     @Test
     public void testThreadedTransformations() throws Exception {
         Callable<Void> callable =
-                new Callable<Void>() {
-
-                    @Override
-                    public Void call() throws Exception {
-                        final File baseDirectory = TestData.file(GeoTiffReaderTest.class, ".");
-                        final File files[] =
-                                baseDirectory.listFiles(
-                                        new FilenameFilter() {
-
-                                            @Override
-                                            public boolean accept(File dir, String name) {
-                                                String lcName = name.toLowerCase();
-                                                return lcName.endsWith("tif")
-                                                        || lcName.endsWith("tiff");
-                                            }
-                                        });
-                        final AbstractGridFormat format = new GeoTiffFormat();
-                        for (File file : files) {
-                            AbstractGridCoverage2DReader reader = null;
-                            try {
-                                reader = format.getReader(file);
-                                if (reader != null) {
-                                    GridCoverage2D coverage = reader.read(null);
-                                    ImageIOUtilities.disposeImage(coverage.getRenderedImage());
-                                    coverage.dispose(true);
-                                }
-                            } finally {
-                                if (reader != null) {
-                                    reader.dispose();
-                                }
+                () -> {
+                    final File baseDirectory = TestData.file(GeoTiffReaderTest.class, ".");
+                    final File files[] =
+                            baseDirectory.listFiles(
+                                    (dir, name) -> {
+                                        String lcName = name.toLowerCase();
+                                        return lcName.endsWith("tif") || lcName.endsWith("tiff");
+                                    });
+                    final AbstractGridFormat format = new GeoTiffFormat();
+                    for (File file : files) {
+                        AbstractGridCoverage2DReader reader = null;
+                        try {
+                            reader = format.getReader(file);
+                            if (reader != null) {
+                                GridCoverage2D coverage = reader.read(null);
+                                ImageIOUtilities.disposeImage(coverage.getRenderedImage());
+                                coverage.dispose(true);
+                            }
+                        } finally {
+                            if (reader != null) {
+                                reader.dispose();
                             }
                         }
-                        return null;
                     }
+                    return null;
                 };
 
         // used to deadlock under load, check it does not now

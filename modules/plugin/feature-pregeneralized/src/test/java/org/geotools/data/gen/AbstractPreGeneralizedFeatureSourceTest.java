@@ -40,7 +40,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -516,14 +515,11 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest {
 
             final List<Long> catIds = new ArrayList<>();
             FeatureVisitor checkSortVisitor =
-                    new FeatureVisitor() {
-
-                        public void visit(Feature feature) {
-                            SimpleFeature sf = (SimpleFeature) feature;
-                            Assert.assertTrue(feature instanceof PreGeneralizedSimpleFeature);
-                            long catid = (Long) sf.getAttribute("CAT_ID");
-                            catIds.add(catid);
-                        }
+                    feature -> {
+                        SimpleFeature sf = (SimpleFeature) feature;
+                        Assert.assertTrue(feature instanceof PreGeneralizedSimpleFeature);
+                        long catid = (Long) sf.getAttribute("CAT_ID");
+                        catIds.add(catid);
                     };
 
             try {

@@ -27,7 +27,6 @@ import org.geotools.graph.build.GraphGenerator;
 import org.geotools.graph.build.opt.OptDirectedGraphBuilder;
 import org.geotools.graph.build.opt.OptGraphBuilder;
 import org.geotools.graph.structure.Edge;
-import org.geotools.graph.structure.GraphVisitor;
 import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
 import org.geotools.graph.structure.opt.OptDirectedNode;
@@ -166,15 +165,12 @@ public class GraphTestUtil {
 
         builder.getGraph()
                 .visitNodes(
-                        new GraphVisitor() {
-                            @Override
-                            public int visit(Graphable component) {
-                                if (component.getID() == bifurcation) {
-                                    bif.add(component);
-                                }
-
-                                return (0);
+                        component -> {
+                            if (component.getID() == bifurcation) {
+                                bif.add(component);
                             }
+
+                            return (0);
                         });
 
         Edge e = builder.buildEdge(n, (Node) bif.get(0));

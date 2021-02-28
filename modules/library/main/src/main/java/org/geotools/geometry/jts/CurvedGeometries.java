@@ -40,15 +40,12 @@ public class CurvedGeometries {
 
         final AtomicBoolean curveFound = new AtomicBoolean(false);
         geometry.apply(
-                new GeometryComponentFilter() {
-
-                    @Override
-                    public void filter(Geometry geom) {
-                        if (geom instanceof CurvedGeometry<?>) {
-                            curveFound.set(true);
-                        }
-                    }
-                });
+                (GeometryComponentFilter)
+                        geom -> {
+                            if (geom instanceof CurvedGeometry<?>) {
+                                curveFound.set(true);
+                            }
+                        });
 
         return curveFound.get();
     }

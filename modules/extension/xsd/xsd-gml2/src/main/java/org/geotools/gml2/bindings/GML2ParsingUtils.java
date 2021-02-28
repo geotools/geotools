@@ -261,12 +261,7 @@ public class GML2ParsingUtils {
             }
 
             final List<Binding> bindings = new ArrayList<>();
-            BindingWalker.Visitor visitor =
-                    new BindingWalker.Visitor() {
-                        public void visit(Binding binding) {
-                            bindings.add(binding);
-                        }
-                    };
+            BindingWalker.Visitor visitor = binding -> bindings.add(binding);
 
             bwFactory.walk(property, visitor);
 

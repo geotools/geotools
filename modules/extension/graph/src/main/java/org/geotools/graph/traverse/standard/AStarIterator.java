@@ -175,13 +175,10 @@ public class AStarIterator extends SourceGraphIterator {
 
     /** Decides which node has more priority */
     private static Comparator<AStarNode> comparator =
-            new Comparator<AStarNode>() {
-                @Override
-                public int compare(AStarNode o1, AStarNode o2) {
-                    AStarNode n1 = o1;
-                    AStarNode n2 = o2;
-                    return (n1.getF() < n2.getF() ? -1 : n1.getF() > n2.getF() ? 1 : 0);
-                }
+            (o1, o2) -> {
+                AStarNode n1 = o1;
+                AStarNode n2 = o2;
+                return (n1.getF() < n2.getF() ? -1 : n1.getF() > n2.getF() ? 1 : 0);
             };
 
     /**

@@ -65,8 +65,6 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.PrecisionModel;
 import org.locationtech.jts.geom.impl.PackedCoordinateSequence;
 import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
-import org.opengis.feature.Feature;
-import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -504,12 +502,10 @@ public class PropertyDataStoreTest {
         Filter select = ff.id(Collections.singleton(fid1));
         SimpleFeatureCollection featureCollection = road.getFeatures(select);
         featureCollection.accepts(
-                new FeatureVisitor() {
-                    public void visit(Feature f) {
-                        SimpleFeature feature = (SimpleFeature) f;
-                        String name = (String) feature.getAttribute("name");
-                        Assert.assertEquals("jody \ngarnett", name);
-                    }
+                f -> {
+                    SimpleFeature feature = (SimpleFeature) f;
+                    String name = (String) feature.getAttribute("name");
+                    Assert.assertEquals("jody \ngarnett", name);
                 },
                 null);
     }
@@ -525,12 +521,10 @@ public class PropertyDataStoreTest {
         q.getHints().put(Hints.JTS_GEOMETRY_FACTORY, gf);
         SimpleFeatureCollection featureCollection = road.getFeatures(q);
         featureCollection.accepts(
-                new FeatureVisitor() {
-                    public void visit(Feature f) {
-                        SimpleFeature feature = (SimpleFeature) f;
-                        Geometry g = (Geometry) feature.getDefaultGeometry();
-                        Assert.assertEquals(1234, g.getSRID());
-                    }
+                f -> {
+                    SimpleFeature feature = (SimpleFeature) f;
+                    Geometry g = (Geometry) feature.getDefaultGeometry();
+                    Assert.assertEquals(1234, g.getSRID());
                 },
                 null);
     }
@@ -545,14 +539,11 @@ public class PropertyDataStoreTest {
         q.getHints().put(Hints.JTS_COORDINATE_SEQUENCE_FACTORY, csFactory);
         SimpleFeatureCollection featureCollection = road.getFeatures(q);
         featureCollection.accepts(
-                new FeatureVisitor() {
-                    public void visit(Feature f) {
-                        SimpleFeature feature = (SimpleFeature) f;
-                        Point p = (Point) feature.getDefaultGeometry();
-                        assertThat(
-                                p.getCoordinateSequence(),
-                                instanceOf(PackedCoordinateSequence.class));
-                    }
+                f -> {
+                    SimpleFeature feature = (SimpleFeature) f;
+                    Point p = (Point) feature.getDefaultGeometry();
+                    assertThat(
+                            p.getCoordinateSequence(), instanceOf(PackedCoordinateSequence.class));
                 },
                 null);
     }
@@ -571,12 +562,10 @@ public class PropertyDataStoreTest {
         Filter select = ff.id(Collections.singleton(fid1));
         SimpleFeatureCollection featureCollection = table.getFeatures(select);
         featureCollection.accepts(
-                new FeatureVisitor() {
-                    public void visit(Feature f) {
-                        SimpleFeature feature = (SimpleFeature) f;
-                        String name = (String) feature.getAttribute("name");
-                        Assert.assertEquals("name-f004", name);
-                    }
+                f -> {
+                    SimpleFeature feature = (SimpleFeature) f;
+                    String name = (String) feature.getAttribute("name");
+                    Assert.assertEquals("name-f004", name);
                 },
                 null);
         // GenericEntity.f003=description-f003|<null>
@@ -584,12 +573,10 @@ public class PropertyDataStoreTest {
         select = ff.id(Collections.singleton(fid1));
         featureCollection = table.getFeatures(select);
         featureCollection.accepts(
-                new FeatureVisitor() {
-                    public void visit(Feature f) {
-                        SimpleFeature feature = (SimpleFeature) f;
-                        String name = (String) feature.getAttribute("name");
-                        Assert.assertNull("represent null", name);
-                    }
+                f -> {
+                    SimpleFeature feature = (SimpleFeature) f;
+                    String name = (String) feature.getAttribute("name");
+                    Assert.assertNull("represent null", name);
                 },
                 null);
         // GenericEntity.f007=description-f007|
@@ -597,12 +584,10 @@ public class PropertyDataStoreTest {
         select = ff.id(Collections.singleton(fid1));
         featureCollection = table.getFeatures(select);
         featureCollection.accepts(
-                new FeatureVisitor() {
-                    public void visit(Feature f) {
-                        SimpleFeature feature = (SimpleFeature) f;
-                        String name = (String) feature.getAttribute("name");
-                        Assert.assertEquals("represent empty string", "", name);
-                    }
+                f -> {
+                    SimpleFeature feature = (SimpleFeature) f;
+                    String name = (String) feature.getAttribute("name");
+                    Assert.assertEquals("represent empty string", "", name);
                 },
                 null);
         // "  GenericEntity.f009=description-f009| "
@@ -610,12 +595,10 @@ public class PropertyDataStoreTest {
         select = ff.id(Collections.singleton(fid1));
         featureCollection = table.getFeatures(select);
         featureCollection.accepts(
-                new FeatureVisitor() {
-                    public void visit(Feature f) {
-                        SimpleFeature feature = (SimpleFeature) f;
-                        String name = (String) feature.getAttribute("name");
-                        Assert.assertEquals("represent empty string", " ", name);
-                    }
+                f -> {
+                    SimpleFeature feature = (SimpleFeature) f;
+                    String name = (String) feature.getAttribute("name");
+                    Assert.assertEquals("represent empty string", " ", name);
                 },
                 null);
     }

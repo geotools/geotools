@@ -36,8 +36,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
-import org.xml.sax.ContentHandler;
 import org.xml.sax.ext.LexicalHandler;
+import org.xml.sax.helpers.AttributesImpl;
 
 public class ComplexDataTypeBindingTest extends WPSTestSupport {
     @Test
@@ -114,21 +114,18 @@ public class ComplexDataTypeBindingTest extends WPSTestSupport {
                 .getData()
                 .add(
                         0,
-                        new EncoderDelegate() {
-
-                            @Override
-                            public void encode(ContentHandler output) throws Exception {
-                                ((LexicalHandler) output).startCDATA();
-                                Reader r = new StringReader("test data");
-                                char[] buffer = new char[1024];
-                                int read;
-                                while ((read = r.read(buffer)) > 0) {
-                                    output.characters(buffer, 0, read);
-                                }
-                                r.close();
-                                ((LexicalHandler) output).endCDATA();
-                            }
-                        });
+                        (EncoderDelegate)
+                                output -> {
+                                    ((LexicalHandler) output).startCDATA();
+                                    Reader r = new StringReader("test data");
+                                    char[] buffer = new char[1024];
+                                    int read;
+                                    while ((read = r.read(buffer)) > 0) {
+                                        output.characters(buffer, 0, read);
+                                    }
+                                    r.close();
+                                    ((LexicalHandler) output).endCDATA();
+                                });
 
         Encoder encoder = new Encoder(new WPSConfiguration());
         encoder.setIndenting(true);
@@ -155,24 +152,17 @@ public class ComplexDataTypeBindingTest extends WPSTestSupport {
                 .getData()
                 .add(
                         0,
-                        new EncoderDelegate() {
-
-                            @Override
-                            public void encode(ContentHandler output) throws Exception {
-                                String ns = "http://www.geotools.org";
-                                String local = "myElement";
-                                String qualified = "gt:myElement";
-                                output.startPrefixMapping("gt", ns);
-                                output.startElement(
-                                        ns,
-                                        local,
-                                        qualified,
-                                        new org.xml.sax.helpers.AttributesImpl());
-                                String txt = "hello world";
-                                output.characters(txt.toCharArray(), 0, txt.length());
-                                output.endElement(ns, local, qualified);
-                            }
-                        });
+                        (EncoderDelegate)
+                                output -> {
+                                    String ns = "http://www.geotools.org";
+                                    String local = "myElement";
+                                    String qualified = "gt:myElement";
+                                    output.startPrefixMapping("gt", ns);
+                                    output.startElement(ns, local, qualified, new AttributesImpl());
+                                    String txt = "hello world";
+                                    output.characters(txt.toCharArray(), 0, txt.length());
+                                    output.endElement(ns, local, qualified);
+                                });
 
         Encoder encoder = new Encoder(new WPSConfiguration());
         encoder.setIndenting(true);

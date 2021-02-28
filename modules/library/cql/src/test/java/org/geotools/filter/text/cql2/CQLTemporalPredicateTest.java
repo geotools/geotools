@@ -648,17 +648,15 @@ public class CQLTemporalPredicateTest {
     public void issueCOT2157() throws Exception {
 
         Runnable cqlRunner =
-                new Runnable() {
-                    public void run() {
-                        final String predicate =
-                                "( ZONE_VALID_FROM BEFORE 2008-09-15T00:00:00Z AND ( ZONE_VALID_TO IS NULL OR ZONE_VALID_TO AFTER 2008-09-15T00:00:00Z))";
-                        try {
-                            Filter filter = CompilerUtil.parseFilter(language, predicate);
-                            Assert.assertNotNull(filter);
-                        } catch (CQLException e) {
-                            java.util.logging.Logger.getGlobal()
-                                    .log(java.util.logging.Level.INFO, "", e);
-                        }
+                () -> {
+                    final String predicate =
+                            "( ZONE_VALID_FROM BEFORE 2008-09-15T00:00:00Z AND ( ZONE_VALID_TO IS NULL OR ZONE_VALID_TO AFTER 2008-09-15T00:00:00Z))";
+                    try {
+                        Filter filter = CompilerUtil.parseFilter(language, predicate);
+                        Assert.assertNotNull(filter);
+                    } catch (CQLException e) {
+                        java.util.logging.Logger.getGlobal()
+                                .log(java.util.logging.Level.INFO, "", e);
                     }
                 };
 

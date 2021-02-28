@@ -22,7 +22,6 @@ import java.util.List;
 import org.geotools.graph.build.GraphBuilder;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
-import org.geotools.graph.structure.GraphVisitor;
 import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
 import org.geotools.graph.traverse.GraphTraversal;
@@ -143,12 +142,9 @@ public class GraphFuser {
 
         // reset edge visited flags
         m_graph.visitNodes(
-                new GraphVisitor() {
-                    @Override
-                    public int visit(Graphable component) {
-                        component.setVisited(false);
-                        return 0;
-                    }
+                component -> {
+                    component.setVisited(false);
+                    return 0;
                 });
 
         // perform the traversal
@@ -184,13 +180,10 @@ public class GraphFuser {
             if (!sources.hasNext()) {
                 sources =
                         m_graph.queryNodes(
-                                        new GraphVisitor() {
-                                            @Override
-                                            public int visit(Graphable component) {
-                                                if (!component.isVisited())
-                                                    return (Graph.PASS_AND_STOP);
-                                                return (Graph.FAIL_QUERY);
-                                            }
+                                        component -> {
+                                            if (!component.isVisited())
+                                                return (Graph.PASS_AND_STOP);
+                                            return (Graph.FAIL_QUERY);
                                         })
                                 .iterator();
             }

@@ -24,8 +24,6 @@ import java.util.stream.DoubleStream;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.junit.Test;
-import org.opengis.feature.Feature;
-import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
@@ -76,16 +74,13 @@ public class StandardDeviationFunctionTest extends FunctionTestSupport {
         final Classifier classifer =
                 standardDeviation.evaluate(featureCollection, Classifier.class);
         featureCollection.accepts(
-                new FeatureVisitor() {
-                    @Override
-                    public void visit(Feature f) {
-                        SimpleFeature feature = (SimpleFeature) f;
-                        Object value = feature.getAttribute("foo");
-                        assertNotNull(feature.getID() + " foo", value);
+                f -> {
+                    SimpleFeature feature = (SimpleFeature) f;
+                    Object value = feature.getAttribute("foo");
+                    assertNotNull(feature.getID() + " foo", value);
 
-                        int slot = classifer.classify(value);
-                        assertNotNull("Slot " + slot, classifer.getTitle(slot));
-                    }
+                    int slot = classifer.classify(value);
+                    assertNotNull("Slot " + slot, classifer.getTitle(slot));
                 },
                 null);
 

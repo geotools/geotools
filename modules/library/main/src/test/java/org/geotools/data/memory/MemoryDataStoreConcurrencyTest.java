@@ -25,22 +25,19 @@ public class MemoryDataStoreConcurrencyTest extends DataTestCase {
 
         // start thread to write each second a feature
         Runnable writeSomeFeatures =
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        for (int i = 0; i < 10000; i++) {
-                            if (Thread.interrupted()) break;
-                            SimpleFeature feature =
-                                    SimpleFeatureBuilder.build(
-                                            roadType,
-                                            new Object[] {
-                                                Integer.valueOf(i),
-                                                line(new int[] {10, 10, 20, 10}),
-                                                "r" + i
-                                            },
-                                            "road.rd" + i);
-                            dataStore.addFeature(feature);
-                        }
+                () -> {
+                    for (int i = 0; i < 10000; i++) {
+                        if (Thread.interrupted()) break;
+                        SimpleFeature feature =
+                                SimpleFeatureBuilder.build(
+                                        roadType,
+                                        new Object[] {
+                                            Integer.valueOf(i),
+                                            line(new int[] {10, 10, 20, 10}),
+                                            "r" + i
+                                        },
+                                        "road.rd" + i);
+                        dataStore.addFeature(feature);
                     }
                 };
         Thread writeThread = new Thread(writeSomeFeatures);

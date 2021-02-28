@@ -119,12 +119,10 @@ public class NoBifurcationIteratorTest {
 
         // stopping node should be visited and nodes with greater id should not
         GraphVisitor visitor =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-                        if (component.getID() <= suspend) Assert.assertTrue(component.isVisited());
-                        else Assert.assertFalse(component.isVisited());
-                        return (0);
-                    }
+                component -> {
+                    if (component.getID() <= suspend) Assert.assertTrue(component.isVisited());
+                    else Assert.assertFalse(component.isVisited());
+                    return (0);
                 };
         builder().getGraph().visitNodes(visitor);
         Assert.assertEquals(walker.getCount(), nnodes - suspend + 1);
@@ -133,11 +131,9 @@ public class NoBifurcationIteratorTest {
 
         // every node should now be visited
         visitor =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-                        Assert.assertTrue(component.isVisited());
-                        return (0);
-                    }
+                component -> {
+                    Assert.assertTrue(component.isVisited());
+                    return (0);
                 };
         builder().getGraph().visitNodes(visitor);
         Assert.assertEquals(walker.getCount(), nnodes);
@@ -186,12 +182,10 @@ public class NoBifurcationIteratorTest {
 
         // kill node should be visited and nodes with greater id should not
         GraphVisitor visitor =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-                        if (component.getID() <= kill) Assert.assertTrue(component.isVisited());
-                        else Assert.assertFalse(component.isVisited());
-                        return (0);
-                    }
+                component -> {
+                    if (component.getID() <= kill) Assert.assertTrue(component.isVisited());
+                    else Assert.assertFalse(component.isVisited());
+                    return (0);
                 };
         builder().getGraph().visitNodes(visitor);
         Assert.assertEquals(walker.getCount(), nnodes - kill + 1);
@@ -222,16 +216,14 @@ public class NoBifurcationIteratorTest {
         traversal.traverse();
 
         GraphVisitor visitor =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-                        if (component.getID() < bif) {
-                            Assert.assertTrue(component.isVisited());
-                        } else if (component.getID() >= bif) {
-                            Assert.assertFalse(component.isVisited());
-                        }
-
-                        return (0);
+                component -> {
+                    if (component.getID() < bif) {
+                        Assert.assertTrue(component.isVisited());
+                    } else if (component.getID() >= bif) {
+                        Assert.assertFalse(component.isVisited());
                     }
+
+                    return (0);
                 };
         builder().getGraph().visitNodes(visitor);
         Assert.assertEquals(walker.getCount(), nnodes - bif);
@@ -247,11 +239,9 @@ public class NoBifurcationIteratorTest {
         int nnodes = 100;
         GraphTestUtil.buildCircular(builder(), nnodes);
         GraphVisitor visitor =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-                        if (component.getID() == 50) return (Graph.PASS_AND_CONTINUE);
-                        return (Graph.FAIL_QUERY);
-                    }
+                component -> {
+                    if (component.getID() == 50) return (Graph.PASS_AND_CONTINUE);
+                    return (Graph.FAIL_QUERY);
                 };
         Node source = builder().getGraph().queryNodes(visitor).get(0);
 
@@ -266,11 +256,9 @@ public class NoBifurcationIteratorTest {
 
         // ensure all nodes visisited
         visitor =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-                        Assert.assertTrue(component.isVisited());
-                        return (0);
-                    }
+                component -> {
+                    Assert.assertTrue(component.isVisited());
+                    return (0);
                 };
 
         builder().getGraph().visitNodes(visitor);

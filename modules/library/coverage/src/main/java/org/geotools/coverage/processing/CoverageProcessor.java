@@ -86,11 +86,7 @@ public class CoverageProcessor {
 
     /** The comparator for ordering operation names. */
     private static final Comparator<String> COMPARATOR =
-            new Comparator<String>() {
-                public int compare(final String name1, final String name2) {
-                    return name1.toLowerCase().compareTo(name2.toLowerCase());
-                }
-            };
+            (name1, name2) -> name1.toLowerCase().compareTo(name2.toLowerCase());
 
     /** The grid coverage logging level type. */
     private static final class LogLevel extends Level {

@@ -23,7 +23,6 @@ import org.geotools.graph.build.opt.OptGraphBuilder;
 import org.geotools.graph.structure.DirectedNode;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.GraphVisitor;
-import org.geotools.graph.structure.Graphable;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -67,24 +66,20 @@ public class OptDirectedGraphSerializerTest {
 
             // ensure two nodes of degree 1, and nnodes-2 nodes of degree 2
             GraphVisitor visitor =
-                    new GraphVisitor() {
-                        public int visit(Graphable component) {
-                            DirectedNode node = (DirectedNode) component;
-                            if (node.getInDegree() == 0 || node.getOutDegree() == 0)
-                                return (Graph.PASS_AND_CONTINUE);
-                            return (Graph.FAIL_QUERY);
-                        }
+                    component -> {
+                        DirectedNode node = (DirectedNode) component;
+                        if (node.getInDegree() == 0 || node.getOutDegree() == 0)
+                            return (Graph.PASS_AND_CONTINUE);
+                        return (Graph.FAIL_QUERY);
                     };
             Assert.assertEquals(2, after.queryNodes(visitor).size());
 
             visitor =
-                    new GraphVisitor() {
-                        public int visit(Graphable component) {
-                            DirectedNode node = (DirectedNode) component;
-                            if (node.getInDegree() == 1 || node.getOutDegree() == 1)
-                                return (Graph.PASS_AND_CONTINUE);
-                            return (Graph.FAIL_QUERY);
-                        }
+                    component -> {
+                        DirectedNode node = (DirectedNode) component;
+                        if (node.getInDegree() == 1 || node.getOutDegree() == 1)
+                            return (Graph.PASS_AND_CONTINUE);
+                        return (Graph.FAIL_QUERY);
                     };
 
             Assert.assertEquals(after.getNodesOfDegree(2).size(), nnodes - 2);
@@ -120,36 +115,30 @@ public class OptDirectedGraphSerializerTest {
             Assert.assertEquals(before.getEdges().size(), after.getEdges().size());
 
             GraphVisitor visitor =
-                    new GraphVisitor() {
-                        public int visit(Graphable component) {
-                            DirectedNode node = (DirectedNode) component;
-                            if (node.getInDegree() == 0 && node.getOutDegree() == 2)
-                                return (Graph.PASS_AND_CONTINUE);
-                            return (Graph.FAIL_QUERY);
-                        }
+                    component -> {
+                        DirectedNode node = (DirectedNode) component;
+                        if (node.getInDegree() == 0 && node.getOutDegree() == 2)
+                            return (Graph.PASS_AND_CONTINUE);
+                        return (Graph.FAIL_QUERY);
                     };
             Assert.assertEquals(1, after.queryNodes(visitor).size()); // root
 
             visitor =
-                    new GraphVisitor() {
-                        public int visit(Graphable component) {
-                            DirectedNode node = (DirectedNode) component;
-                            if (node.getInDegree() == 1 && node.getOutDegree() == 2)
-                                return (Graph.PASS_AND_CONTINUE);
-                            return (Graph.FAIL_QUERY);
-                        }
+                    component -> {
+                        DirectedNode node = (DirectedNode) component;
+                        if (node.getInDegree() == 1 && node.getOutDegree() == 2)
+                            return (Graph.PASS_AND_CONTINUE);
+                        return (Graph.FAIL_QUERY);
                     };
             Assert.assertEquals(
                     after.queryNodes(visitor).size(), (int) Math.pow(2, k) - 2); // internal
 
             visitor =
-                    new GraphVisitor() {
-                        public int visit(Graphable component) {
-                            DirectedNode node = (DirectedNode) component;
-                            if (node.getInDegree() == 1 && node.getOutDegree() == 0)
-                                return (Graph.PASS_AND_CONTINUE);
-                            return (Graph.FAIL_QUERY);
-                        }
+                    component -> {
+                        DirectedNode node = (DirectedNode) component;
+                        if (node.getInDegree() == 1 && node.getOutDegree() == 0)
+                            return (Graph.PASS_AND_CONTINUE);
+                        return (Graph.FAIL_QUERY);
                     };
             Assert.assertEquals(after.queryNodes(visitor).size(), (int) Math.pow(2, k)); // leaves
         } catch (Exception e) {

@@ -95,12 +95,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
     /**
      * A 'null-object' fid validator that assumes any feature id in an {@link Id} filter is valid
      */
-    public static final FIDValidator ANY_FID_VALID =
-            new FIDValidator() {
-                public boolean isValid(String fid) {
-                    return true;
-                }
-            };
+    public static final FIDValidator ANY_FID_VALID = fid -> true;
 
     /**
      * A FID validator that matches the fids with a given regular expression to determine the fid's

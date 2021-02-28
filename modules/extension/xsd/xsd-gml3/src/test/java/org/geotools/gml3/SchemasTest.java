@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -28,16 +27,11 @@ public class SchemasTest {
         for (int i = 0; i < 128; i++) {
             Future<Void> future =
                     es.submit(
-                            new Callable<Void>() {
-
-                                @Override
-                                public Void call() throws Exception {
-                                    XSDSchema schema =
-                                            Schemas.parse(
-                                                    schemaFile.getAbsolutePath(), locators, null);
-                                    Schemas.dispose(schema);
-                                    return null;
-                                }
+                            () -> {
+                                XSDSchema schema =
+                                        Schemas.parse(schemaFile.getAbsolutePath(), locators, null);
+                                Schemas.dispose(schema);
+                                return null;
                             });
             results.add(future);
         }

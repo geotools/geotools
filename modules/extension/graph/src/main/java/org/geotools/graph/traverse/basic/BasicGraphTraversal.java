@@ -17,7 +17,6 @@
 package org.geotools.graph.traverse.basic;
 
 import org.geotools.graph.structure.Graph;
-import org.geotools.graph.structure.GraphVisitor;
 import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.traverse.GraphIterator;
 import org.geotools.graph.traverse.GraphTraversal;
@@ -100,12 +99,10 @@ public class BasicGraphTraversal implements GraphTraversal {
     public void init() {
         // initialize the nodes of the graph
         m_graph.visitNodes(
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-                        component.setVisited(false);
-                        component.setCount(0);
-                        return (0);
-                    }
+                component -> {
+                    component.setVisited(false);
+                    component.setCount(0);
+                    return (0);
                 });
     }
 

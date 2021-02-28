@@ -49,21 +49,18 @@ public class ProcessFunctionFactory implements FunctionFactory {
 
     /** Compares process factories by their title */
     static final Comparator<ProcessFactory> FACTORY_COMPARATOR =
-            new Comparator<ProcessFactory>() {
-
-                public int compare(ProcessFactory pf1, ProcessFactory pf2) {
-                    if (pf1.getTitle() == null) {
-                        if (pf2.getTitle() == null) {
-                            return 0;
-                        } else {
-                            return -1;
-                        }
+            (pf1, pf2) -> {
+                if (pf1.getTitle() == null) {
+                    if (pf2.getTitle() == null) {
+                        return 0;
                     } else {
-                        if (pf2.getTitle() == null) {
-                            return 1;
-                        } else {
-                            return pf1.getTitle().compareTo(pf2.getTitle());
-                        }
+                        return -1;
+                    }
+                } else {
+                    if (pf2.getTitle() == null) {
+                        return 1;
+                    } else {
+                        return pf1.getTitle().compareTo(pf2.getTitle());
                     }
                 }
             };

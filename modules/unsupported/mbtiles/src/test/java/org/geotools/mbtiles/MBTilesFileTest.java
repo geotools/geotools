@@ -76,15 +76,10 @@ public class MBTilesFileTest {
             // Define a counter thread
             Thread th =
                     new Thread(
-                            new Runnable() {
-
-                                @Override
-                                public void run() {
-
-                                    while (true) {
-                                        if (journal.exists()) {
-                                            counter.incrementAndGet();
-                                        }
+                            () -> {
+                                while (true) {
+                                    if (journal.exists()) {
+                                        counter.incrementAndGet();
                                     }
                                 }
                             });

@@ -38,12 +38,7 @@ public class MetadataImportTest extends JDBCTestSupport {
             args.add(database);
         }
         MetadataImport.IPasswordReader passwordReader =
-                new MetadataImport.IPasswordReader() {
-                    @Override
-                    public char[] readPassword() {
-                        return fixture.getProperty("password").toCharArray();
-                    }
-                };
+                () -> fixture.getProperty("password").toCharArray();
 
         PrintStream out = System.out;
         System.setOut(new PrintStream(new ByteArrayOutputStream()));

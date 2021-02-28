@@ -20,7 +20,6 @@ import org.geotools.graph.build.line.BasicLineGraphGenerator;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.GraphVisitor;
-import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
 import org.junit.Assert;
 import org.junit.Before;
@@ -68,34 +67,29 @@ public class LineGraphGeneratorTest {
         Assert.assertEquals(built.getNodes().size(), n + 1);
 
         GraphVisitor visitor =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-                        Node node = (Node) component;
-                        Coordinate c = (Coordinate) node.getObject();
+                component -> {
+                    Node node = (Node) component;
+                    Coordinate c = (Coordinate) node.getObject();
 
-                        if (node.getDegree() == 1) {
-                            Assert.assertTrue(node.getID() == 0 || node.getID() == n);
-                        } else {
-                            Assert.assertEquals(2, node.getDegree());
-                        }
-
-                        Assert.assertTrue(
-                                c.x == base.x + node.getID() && c.y == base.y + node.getID());
-                        return (0);
+                    if (node.getDegree() == 1) {
+                        Assert.assertTrue(node.getID() == 0 || node.getID() == n);
+                    } else {
+                        Assert.assertEquals(2, node.getDegree());
                     }
+
+                    Assert.assertTrue(c.x == base.x + node.getID() && c.y == base.y + node.getID());
+                    return (0);
                 };
         built.visitNodes(visitor);
 
         visitor =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-                        Edge edge = (Edge) component;
-                        LineSegment line = (LineSegment) edge.getObject();
+                component -> {
+                    Edge edge = (Edge) component;
+                    LineSegment line = (LineSegment) edge.getObject();
 
-                        Assert.assertTrue(line.p1.x == line.p0.x + 1 && line.p1.y == line.p0.y + 1);
+                    Assert.assertTrue(line.p1.x == line.p0.x + 1 && line.p1.y == line.p0.y + 1);
 
-                        return (0);
-                    }
+                    return (0);
                 };
         built.visitEdges(visitor);
     }

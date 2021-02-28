@@ -24,7 +24,6 @@ import java.awt.Rectangle;
 import java.awt.event.ComponentListener;
 import java.awt.event.HierarchyBoundsAdapter;
 import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
@@ -173,13 +172,10 @@ public abstract class AbstractMapPane extends JPanel
          * is often accompanied by resizing this is not reliable in Swing.
          */
         addHierarchyListener(
-                new HierarchyListener() {
-                    @Override
-                    public void hierarchyChanged(HierarchyEvent he) {
-                        if ((he.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
-                            if (isShowing()) {
-                                onShownOrResized();
-                            }
+                he -> {
+                    if ((he.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
+                        if (isShowing()) {
+                            onShownOrResized();
                         }
                     }
                 });
@@ -363,15 +359,12 @@ public abstract class AbstractMapPane extends JPanel
 
         resizedFuture =
                 paneTaskExecutor.schedule(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                setForNewSize();
+                        () -> {
+                            setForNewSize();
 
-                                // Call repaint here rather than within setForNewSize so that
-                                // drawingLock will be available in paintComponent
-                                repaint();
-                            }
+                            // Call repaint here rather than within setForNewSize so that
+                            // drawingLock will be available in paintComponent
+                            repaint();
                         },
                         paintDelay,
                         TimeUnit.MILLISECONDS);
@@ -440,13 +433,10 @@ public abstract class AbstractMapPane extends JPanel
 
         imageMovedFuture =
                 paneTaskExecutor.schedule(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                afterImageMoved();
-                                clearLabelCache.set(true);
-                                drawLayers(false);
-                            }
+                        () -> {
+                            afterImageMoved();
+                            clearLabelCache.set(true);
+                            drawLayers(false);
                         },
                         paintDelay,
                         TimeUnit.MILLISECONDS);

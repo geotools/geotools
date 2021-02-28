@@ -64,23 +64,19 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
      * The comparator for ranges. Defined only in order to comply to {@link #comparator} contract,
      * but not used for internal working in this class.
      */
+    @SuppressWarnings("unchecked")
     private static final Comparator<Range> COMPARATOR =
-            new Comparator<Range>() {
-                @SuppressWarnings("unchecked")
-                public int compare(final Range r1, final Range r2) {
-                    int cmin = r1.getMinValue().compareTo(r2.getMinValue());
-                    int cmax = r1.getMaxValue().compareTo(r2.getMaxValue());
-                    if (cmin == 0)
-                        cmin = (r1.isMinIncluded() ? -1 : 0) - (r2.isMinIncluded() ? -1 : 0);
-                    if (cmax == 0)
-                        cmax = (r1.isMaxIncluded() ? +1 : 0) - (r2.isMaxIncluded() ? +1 : 0);
-                    if (cmin == cmax)
-                        return cmax; // Easy case: min and max are both greater, smaller or eq.
-                    if (cmin == 0) return cmax; // Easy case: only max value differ.
-                    if (cmax == 0) return cmin; // Easy case: only min value differ.
-                    // One range is included in the other.
-                    throw new IllegalArgumentException("Unordered ranges");
-                }
+            (r1, r2) -> {
+                int cmin = r1.getMinValue().compareTo(r2.getMinValue());
+                int cmax = r1.getMaxValue().compareTo(r2.getMaxValue());
+                if (cmin == 0) cmin = (r1.isMinIncluded() ? -1 : 0) - (r2.isMinIncluded() ? -1 : 0);
+                if (cmax == 0) cmax = (r1.isMaxIncluded() ? +1 : 0) - (r2.isMaxIncluded() ? +1 : 0);
+                if (cmin == cmax)
+                    return cmax; // Easy case: min and max are both greater, smaller or eq.
+                if (cmin == 0) return cmax; // Easy case: only max value differ.
+                if (cmax == 0) return cmin; // Easy case: only min value differ.
+                // One range is included in the other.
+                throw new IllegalArgumentException("Unordered ranges");
             };
 
     /** The {@linkplain #getElementClass element class} of ranges. */

@@ -20,7 +20,6 @@ import org.geotools.graph.build.line.OptDirectedLineGraphGenerator;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.GraphVisitor;
-import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.line.XYNode;
 import org.junit.Assert;
 import org.junit.Before;
@@ -65,20 +64,18 @@ public class OptDirectedLineGraphGeneratorTest {
 
         // ensure coordinates
         GraphVisitor visitor =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-                        Edge e = (Edge) component;
-                        XYNode a = (XYNode) e.getNodeA();
-                        XYNode b = (XYNode) e.getNodeB();
+                component -> {
+                    Edge e = (Edge) component;
+                    XYNode a = (XYNode) e.getNodeA();
+                    XYNode b = (XYNode) e.getNodeB();
 
-                        // coordinats should be a distance of sqrt(2)
-                        // assertTrue(b.getX() == a.getX() + 1 && b.getY() == a.getY() + 1);
-                        Assert.assertEquals(
-                                b.getCoordinate(),
-                                new Coordinate(a.getCoordinate().x + 1, a.getCoordinate().y + 1));
+                    // coordinats should be a distance of sqrt(2)
+                    // assertTrue(b.getX() == a.getX() + 1 && b.getY() == a.getY() + 1);
+                    Assert.assertEquals(
+                            b.getCoordinate(),
+                            new Coordinate(a.getCoordinate().x + 1, a.getCoordinate().y + 1));
 
-                        return (0);
-                    }
+                    return (0);
                 };
         built.visitEdges(visitor);
     }
@@ -114,28 +111,25 @@ public class OptDirectedLineGraphGeneratorTest {
 
         // ensure coordinates
         GraphVisitor visitor =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-                        Edge e = (Edge) component;
-                        XYNode a = (XYNode) e.getNodeA();
-                        XYNode b = (XYNode) e.getNodeB();
+                component -> {
+                    Edge e = (Edge) component;
+                    XYNode a = (XYNode) e.getNodeA();
+                    XYNode b = (XYNode) e.getNodeB();
 
-                        // coordinats should be a distance of sqrt(2)
-                        if (b.getCoordinate().equals(base))
-                            Assert.assertEquals(a.getCoordinate(), new Coordinate(n, n));
-                        else
-                            Assert.assertEquals(
-                                    b.getCoordinate(),
-                                    new Coordinate(
-                                            a.getCoordinate().x + 1, a.getCoordinate().y + 1));
+                    // coordinats should be a distance of sqrt(2)
+                    if (b.getCoordinate().equals(base))
+                        Assert.assertEquals(a.getCoordinate(), new Coordinate(n, n));
+                    else
+                        Assert.assertEquals(
+                                b.getCoordinate(),
+                                new Coordinate(a.getCoordinate().x + 1, a.getCoordinate().y + 1));
 
-                        //        if (b.getX() == base.x && b.getY() == base.y)
-                        //          assertTrue(a.getX() == n && a.getY() == n);
-                        //        else assertTrue(b.getX() == a.getX() + 1 && b.getY() == a.getY() +
-                        // 1);
+                    //        if (b.getX() == base.x && b.getY() == base.y)
+                    //          assertTrue(a.getX() == n && a.getY() == n);
+                    //        else assertTrue(b.getX() == a.getX() + 1 && b.getY() == a.getY() +
+                    // 1);
 
-                        return (0);
-                    }
+                    return (0);
                 };
         built.visitEdges(visitor);
     }

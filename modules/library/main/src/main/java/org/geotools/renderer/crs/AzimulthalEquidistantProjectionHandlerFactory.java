@@ -322,13 +322,8 @@ public class AzimulthalEquidistantProjectionHandlerFactory implements Projection
         private Envelope getFullEnvelope(Geometry transformed) {
             final Envelope envelope = transformed.getEnvelopeInternal();
             transformed.apply(
-                    new GeometryComponentFilter() {
-
-                        @Override
-                        public void filter(Geometry geom) {
-                            envelope.expandToInclude(geom.getEnvelopeInternal());
-                        }
-                    });
+                    (GeometryComponentFilter)
+                            geom -> envelope.expandToInclude(geom.getEnvelopeInternal()));
 
             return envelope;
         }

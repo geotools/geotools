@@ -452,14 +452,12 @@ class FilterToSqlHelper {
         // filter out only polygonal parts
         final List<Polygon> polygons = new ArrayList<>();
         geometry.apply(
-                new GeometryComponentFilter() {
-
-                    public void filter(Geometry geom) {
-                        if (geom instanceof Polygon) {
-                            polygons.add((Polygon) geom);
-                        }
-                    }
-                });
+                (GeometryComponentFilter)
+                        geom -> {
+                            if (geom instanceof Polygon) {
+                                polygons.add((Polygon) geom);
+                            }
+                        });
 
         // turn filtered selection into a geometry
         return toPolygon(geometry.getFactory(), polygons);

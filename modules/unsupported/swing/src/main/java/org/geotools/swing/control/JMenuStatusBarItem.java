@@ -17,8 +17,6 @@
 
 package org.geotools.swing.control;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPopupMenu;
@@ -87,13 +85,7 @@ public class JMenuStatusBarItem extends StatusBarItem {
 
         final JButton btn = new JButton(icon);
         btn.setBorderPainted(false);
-        btn.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent ae) {
-                        menuProvider.getMenu().show(btn, 0, 0);
-                    }
-                });
+        btn.addActionListener(ae -> menuProvider.getMenu().show(btn, 0, 0));
 
         if (toolTip != null && toolTip.trim().length() > 0) {
             btn.setToolTipText(toolTip);

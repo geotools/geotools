@@ -43,15 +43,12 @@ class PolygonExtractor {
             polygons.add((Polygon) preProcessed);
         } else {
             preProcessed.apply(
-                    new GeometryComponentFilter() {
-
-                        @Override
-                        public void filter(Geometry geom) {
-                            if (geom instanceof Polygon) {
-                                polygons.add((Polygon) geom);
-                            }
-                        }
-                    });
+                    (GeometryComponentFilter)
+                            geom -> {
+                                if (geom instanceof Polygon) {
+                                    polygons.add((Polygon) geom);
+                                }
+                            });
         }
         return polygons;
     }

@@ -328,11 +328,7 @@ public class FrequencySortedSet<E> extends AbstractSet<E>
      * implementation.
      */
     private static final Comparator<Map.Entry<?, Integer>> COMPARATOR =
-            new Comparator<Map.Entry<?, Integer>>() {
-                public int compare(Map.Entry<?, Integer> o1, Map.Entry<?, Integer> o2) {
-                    return o1.getValue().compareTo(o2.getValue());
-                }
-            };
+            (o1, o2) -> o1.getValue().compareTo(o2.getValue());
 
     /**
      * Returns the comparator used to order the elements in this set. For a {@code

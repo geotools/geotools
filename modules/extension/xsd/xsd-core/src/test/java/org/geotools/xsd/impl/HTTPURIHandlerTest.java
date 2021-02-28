@@ -19,7 +19,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.function.ThrowingRunnable;
 
 public class HTTPURIHandlerTest {
     HttpURLConnection conn;
@@ -154,13 +153,6 @@ public class HTTPURIHandlerTest {
 
         URI uri = URI.createURI("http://example.com");
         Assert.assertThrows(
-                IOException.class,
-                new ThrowingRunnable() {
-
-                    @Override
-                    public void run() throws Throwable {
-                        handler.createInputStream(uri, Collections.EMPTY_MAP);
-                    }
-                });
+                IOException.class, () -> handler.createInputStream(uri, Collections.EMPTY_MAP));
     }
 }

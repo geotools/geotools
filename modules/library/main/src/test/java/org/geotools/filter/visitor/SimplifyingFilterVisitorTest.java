@@ -153,12 +153,7 @@ public class SimplifyingFilterVisitorTest {
 
     @Test
     public void testFidValidity() {
-        simpleVisitor.setFIDValidator(
-                new SimplifyingFilterVisitor.FIDValidator() {
-                    public boolean isValid(String fid) {
-                        return fid.startsWith("pass");
-                    }
-                });
+        simpleVisitor.setFIDValidator(fid -> fid.startsWith("pass"));
 
         Set<Identifier> ids = new HashSet<>();
         ids.add(ff.featureId("notPass"));

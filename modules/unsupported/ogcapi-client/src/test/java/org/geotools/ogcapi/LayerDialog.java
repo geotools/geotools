@@ -18,8 +18,6 @@ package org.geotools.ogcapi;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Arrays;
@@ -159,26 +157,18 @@ public class LayerDialog extends JDialog {
         gbpanel0.setConstraints(ok, gbcpanel0);
         panel0.add(ok);
         ok.addActionListener(
-                new ActionListener() {
-
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        setLayer((String) combo0.getSelectedItem());
-                        setStyle((String) combo0.getSelectedItem());
-                        setVisible(false);
-                    }
+                e -> {
+                    setLayer((String) combo0.getSelectedItem());
+                    setStyle((String) combo0.getSelectedItem());
+                    setVisible(false);
                 });
 
         cancel = new JButton("Cancel");
         cancel.addActionListener(
-                new ActionListener() {
-
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        setLayer(null);
-                        setStyle(null);
-                        dispose();
-                    }
+                e -> {
+                    setLayer(null);
+                    setStyle(null);
+                    dispose();
                 });
         gbcpanel0.gridx = 13;
         gbcpanel0.gridy = 16;

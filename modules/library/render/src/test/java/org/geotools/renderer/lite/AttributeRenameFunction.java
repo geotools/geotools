@@ -16,8 +16,6 @@ import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.filter.function.RenderingTransformation;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.opengis.coverage.grid.GridGeometry;
-import org.opengis.feature.Feature;
-import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -67,14 +65,10 @@ public class AttributeRenameFunction extends FunctionExpressionImpl
         final List<SimpleFeature> features = new ArrayList<>();
         try {
             fc.accepts(
-                    new FeatureVisitor() {
-
-                        @Override
-                        public void visit(Feature feature) {
-                            fb.init((SimpleFeature) feature);
-                            SimpleFeature f = fb.buildFeature(feature.getIdentifier().getID());
-                            features.add(f);
-                        }
+                    feature -> {
+                        fb.init((SimpleFeature) feature);
+                        SimpleFeature f = fb.buildFeature(feature.getIdentifier().getID());
+                        features.add(f);
                     },
                     null);
         } catch (IOException e) {

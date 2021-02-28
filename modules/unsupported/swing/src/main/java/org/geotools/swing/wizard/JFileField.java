@@ -16,8 +16,6 @@
  */
 package org.geotools.swing.wizard;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -55,12 +53,7 @@ public class JFileField extends ParamField {
         // field.setActionCommand(FINISH); // pressing return will Finish wizard
 
         panel.add(browse = new JButton("Browse"), "wrap");
-        browse.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        browse();
-                    }
-                });
+        browse.addActionListener(e -> browse());
         return panel;
     }
 

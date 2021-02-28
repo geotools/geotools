@@ -128,17 +128,15 @@ public class BreadthFirstTopologicalIteratorTest {
 
         // ensure that each node in lower level visited before node in higher level
         GraphVisitor visitor =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-                        String id = component.getObject().toString();
+                component -> {
+                    String id = component.getObject().toString();
 
-                        for (Node other : builder().getGraph().getNodes()) {
-                            if (other.getObject().toString().length() < id.length()) {
-                                Assert.assertTrue(other.getCount() > component.getCount());
-                            }
+                    for (Node other : builder().getGraph().getNodes()) {
+                        if (other.getObject().toString().length() < id.length()) {
+                            Assert.assertTrue(other.getCount() > component.getCount());
                         }
-                        return 0;
                     }
+                    return 0;
                 };
         builder().getGraph().visitNodes(visitor);
 
@@ -164,11 +162,9 @@ public class BreadthFirstTopologicalIteratorTest {
         traversal.traverse();
 
         GraphVisitor visitor =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-                        Assert.assertFalse(component.isVisited());
-                        return 0;
-                    }
+                component -> {
+                    Assert.assertFalse(component.isVisited());
+                    return 0;
                 };
         builder().getGraph().visitNodes(visitor);
 

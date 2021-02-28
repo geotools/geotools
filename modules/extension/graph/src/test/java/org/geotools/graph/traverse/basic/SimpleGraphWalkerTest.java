@@ -17,7 +17,6 @@
 package org.geotools.graph.traverse.basic;
 
 import org.geotools.graph.structure.GraphVisitor;
-import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
 import org.geotools.graph.structure.basic.BasicNode;
 import org.geotools.graph.traverse.GraphTraversal;
@@ -32,11 +31,9 @@ public class SimpleGraphWalkerTest {
         m_visited = false;
 
         GraphVisitor visitor =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-                        m_visited = true;
-                        return (GraphTraversal.CONTINUE);
-                    }
+                component -> {
+                    m_visited = true;
+                    return (GraphTraversal.CONTINUE);
                 };
 
         Node n = new BasicNode();

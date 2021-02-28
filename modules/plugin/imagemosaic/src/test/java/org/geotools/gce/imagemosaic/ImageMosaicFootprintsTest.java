@@ -95,8 +95,6 @@ import org.locationtech.jts.io.WKBWriter;
 import org.locationtech.jts.io.WKTReader;
 import org.locationtech.jts.io.WKTWriter;
 import org.locationtech.jts.precision.EnhancedPrecisionOp;
-import org.opengis.feature.Feature;
-import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
@@ -164,24 +162,18 @@ public class ImageMosaicFootprintsTest {
         ds.getFeatureSource()
                 .getFeatures()
                 .accepts(
-                        new FeatureVisitor() {
-
-                            @Override
-                            public void visit(Feature feature) {
-                                try {
-                                    SimpleFeature sf = (SimpleFeature) feature;
-                                    String fileName = (String) sf.getAttribute("location");
-                                    int idx = fileName.lastIndexOf(".");
-                                    Geometry g = (Geometry) sf.getDefaultGeometry();
-                                    File wkbFile =
-                                            new File(
-                                                    testMosaic,
-                                                    fileName.substring(0, idx) + ".wkb");
-                                    byte[] bytes = new WKBWriter().write(g);
-                                    FileUtils.writeByteArrayToFile(wkbFile, bytes);
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
+                        feature -> {
+                            try {
+                                SimpleFeature sf = (SimpleFeature) feature;
+                                String fileName = (String) sf.getAttribute("location");
+                                int idx = fileName.lastIndexOf(".");
+                                Geometry g = (Geometry) sf.getDefaultGeometry();
+                                File wkbFile =
+                                        new File(testMosaic, fileName.substring(0, idx) + ".wkb");
+                                byte[] bytes = new WKBWriter().write(g);
+                                FileUtils.writeByteArrayToFile(wkbFile, bytes);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
                             }
                         },
                         null);
@@ -198,24 +190,18 @@ public class ImageMosaicFootprintsTest {
         ds.getFeatureSource()
                 .getFeatures()
                 .accepts(
-                        new FeatureVisitor() {
-
-                            @Override
-                            public void visit(Feature feature) {
-                                try {
-                                    SimpleFeature sf = (SimpleFeature) feature;
-                                    String fileName = (String) sf.getAttribute("location");
-                                    int idx = fileName.lastIndexOf(".");
-                                    Geometry g = (Geometry) sf.getDefaultGeometry();
-                                    File wkbFile =
-                                            new File(
-                                                    testMosaic,
-                                                    fileName.substring(0, idx) + ".wkt");
-                                    String wkt = new WKTWriter().write(g);
-                                    FileUtils.writeStringToFile(wkbFile, wkt, "UTF-8");
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
+                        feature -> {
+                            try {
+                                SimpleFeature sf = (SimpleFeature) feature;
+                                String fileName = (String) sf.getAttribute("location");
+                                int idx = fileName.lastIndexOf(".");
+                                Geometry g = (Geometry) sf.getDefaultGeometry();
+                                File wkbFile =
+                                        new File(testMosaic, fileName.substring(0, idx) + ".wkt");
+                                String wkt = new WKTWriter().write(g);
+                                FileUtils.writeStringToFile(wkbFile, wkt, "UTF-8");
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
                             }
                         },
                         null);
@@ -341,40 +327,34 @@ public class ImageMosaicFootprintsTest {
         ds.getFeatureSource()
                 .getFeatures()
                 .accepts(
-                        new FeatureVisitor() {
+                        feature -> {
+                            try {
+                                SimpleFeature sf = (SimpleFeature) feature;
+                                String fileName = (String) sf.getAttribute("location");
+                                int idx = fileName.lastIndexOf(".");
+                                Geometry g = (Geometry) sf.getDefaultGeometry();
+                                String filename = fileName.substring(0, idx);
+                                File shpFile = new File(testMosaic, filename + ".shp");
+                                ShapefileDataStore sds =
+                                        new ShapefileDataStore(URLs.fileToUrl(shpFile));
+                                SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+                                tb.setName(filename);
+                                GeometryDescriptor gd = sf.getFeatureType().getGeometryDescriptor();
+                                tb.add(
+                                        "the_geom",
+                                        gd.getType().getBinding(),
+                                        gd.getCoordinateReferenceSystem());
+                                SimpleFeatureType sft = tb.buildFeatureType();
+                                sds.createSchema(sft);
 
-                            @Override
-                            public void visit(Feature feature) {
-                                try {
-                                    SimpleFeature sf = (SimpleFeature) feature;
-                                    String fileName = (String) sf.getAttribute("location");
-                                    int idx = fileName.lastIndexOf(".");
-                                    Geometry g = (Geometry) sf.getDefaultGeometry();
-                                    String filename = fileName.substring(0, idx);
-                                    File shpFile = new File(testMosaic, filename + ".shp");
-                                    ShapefileDataStore sds =
-                                            new ShapefileDataStore(URLs.fileToUrl(shpFile));
-                                    SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
-                                    tb.setName(filename);
-                                    GeometryDescriptor gd =
-                                            sf.getFeatureType().getGeometryDescriptor();
-                                    tb.add(
-                                            "the_geom",
-                                            gd.getType().getBinding(),
-                                            gd.getCoordinateReferenceSystem());
-                                    SimpleFeatureType sft = tb.buildFeatureType();
-                                    sds.createSchema(sft);
-
-                                    SimpleFeatureBuilder fb = new SimpleFeatureBuilder(sft);
-                                    fb.add(g);
-                                    SimpleFeature footprintFeature = fb.buildFeature(null);
-                                    SimpleFeatureStore fs =
-                                            (SimpleFeatureStore) sds.getFeatureSource();
-                                    fs.addFeatures(DataUtilities.collection(footprintFeature));
-                                    sds.dispose();
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
+                                SimpleFeatureBuilder fb = new SimpleFeatureBuilder(sft);
+                                fb.add(g);
+                                SimpleFeature footprintFeature = fb.buildFeature(null);
+                                SimpleFeatureStore fs = (SimpleFeatureStore) sds.getFeatureSource();
+                                fs.addFeatures(DataUtilities.collection(footprintFeature));
+                                sds.dispose();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
                             }
                         },
                         null);

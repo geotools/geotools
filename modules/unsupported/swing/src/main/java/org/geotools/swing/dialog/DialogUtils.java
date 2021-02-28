@@ -60,13 +60,7 @@ public class DialogUtils {
             doShowCentred(parent, dialog);
 
         } else {
-            EventQueue.invokeLater(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            doShowCentred(parent, dialog);
-                        }
-                    });
+            EventQueue.invokeLater(() -> doShowCentred(parent, dialog));
         }
     }
 
@@ -160,12 +154,7 @@ public class DialogUtils {
         } else {
             try {
                 SwingUtilities.invokeAndWait(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                result[0] = doGetHtmlTextExtent(labelText, fixedDimSize, width);
-                            }
-                        });
+                        () -> result[0] = doGetHtmlTextExtent(labelText, fixedDimSize, width));
 
             } catch (Exception ex) {
                 // Either an InterruptedException or an InvocationTargetException

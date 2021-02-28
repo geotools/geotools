@@ -301,12 +301,7 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
     private void startPolling() {
         watcher =
                 watchExecutor.scheduleAtFixedRate(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                pollTaskResult();
-                            }
-                        },
+                        () -> pollTaskResult(),
                         pollingInterval,
                         pollingInterval,
                         TimeUnit.MILLISECONDS);

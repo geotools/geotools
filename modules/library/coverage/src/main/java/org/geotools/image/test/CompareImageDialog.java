@@ -21,8 +21,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -78,55 +76,45 @@ class CompareImageDialog extends JDialog {
         JPanel commands = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton accept = new JButton("Overwrite reference");
         accept.addActionListener(
-                new ActionListener() {
-
-                    public void actionPerformed(ActionEvent e) {
-                        CompareImageDialog.this.accept = true;
-                        CompareImageDialog.this.setVisible(false);
-                    }
+                e -> {
+                    this.accept = true;
+                    setVisible(false);
                 });
         JButton reject = new JButton("Images are different");
         reject.addActionListener(
-                new ActionListener() {
-
-                    public void actionPerformed(ActionEvent e) {
-                        CompareImageDialog.this.accept = false;
-                        CompareImageDialog.this.setVisible(false);
-                    }
+                e -> {
+                    this.accept = false;
+                    setVisible(false);
                 });
         JButton save = new JButton(("Save comparison"));
         save.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        {
-                            // File location = getStartupLocation();
-                            JFileChooser chooser = new JFileChooser();
-                            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                            chooser.setFileFilter(
-                                    new FileFilter() {
+                e -> {
+                    {
+                        // File location = getStartupLocation();
+                        JFileChooser chooser = new JFileChooser();
+                        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                        chooser.setFileFilter(
+                                new FileFilter() {
 
-                                        @Override
-                                        public boolean accept(File file) {
-                                            return file.isDirectory();
-                                        }
+                                    @Override
+                                    public boolean accept(File file) {
+                                        return file.isDirectory();
+                                    }
 
-                                        @Override
-                                        public String getDescription() {
-                                            return "Directories (will save a expected.png and actual.png there)";
-                                        }
-                                    });
+                                    @Override
+                                    public String getDescription() {
+                                        return "Directories (will save a expected.png and actual.png there)";
+                                    }
+                                });
 
-                            int result = chooser.showSaveDialog(CompareImageDialog.this);
-                            if (result == JFileChooser.APPROVE_OPTION) {
-                                File selected = chooser.getSelectedFile();
-                                try {
-                                    ImageIO.write(
-                                            expected, "PNG", new File(selected, "expected.png"));
-                                    ImageIO.write(actual, "PNG", new File(selected, "actual.png"));
-                                } catch (IOException e1) {
-                                    LOGGER.log(Level.WARNING, "Failed to save images", e);
-                                }
+                        int result = chooser.showSaveDialog(this);
+                        if (result == JFileChooser.APPROVE_OPTION) {
+                            File selected = chooser.getSelectedFile();
+                            try {
+                                ImageIO.write(expected, "PNG", new File(selected, "expected.png"));
+                                ImageIO.write(actual, "PNG", new File(selected, "actual.png"));
+                            } catch (IOException e1) {
+                                LOGGER.log(Level.WARNING, "Failed to save images", e);
                             }
                         }
                     }

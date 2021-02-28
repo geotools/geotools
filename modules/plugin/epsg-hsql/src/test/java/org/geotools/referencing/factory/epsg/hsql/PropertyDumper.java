@@ -9,7 +9,6 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
@@ -51,16 +50,13 @@ public class PropertyDumper {
             List<String> codes = new ArrayList<>(CRS.getSupportedCodes("EPSG"));
             Collections.sort(
                     codes,
-                    new Comparator<String>() {
-
-                        public int compare(String c1, String c2) {
-                            try {
-                                Long n1 = Long.valueOf(c1);
-                                Long n2 = Long.valueOf(c2);
-                                return n1.compareTo(n2);
-                            } catch (NumberFormatException e) {
-                                return c1.compareTo(c2);
-                            }
+                    (c1, c2) -> {
+                        try {
+                            Long n1 = Long.valueOf(c1);
+                            Long n2 = Long.valueOf(c2);
+                            return n1.compareTo(n2);
+                        } catch (NumberFormatException e) {
+                            return c1.compareTo(c2);
                         }
                     });
             for (String code : codes) {

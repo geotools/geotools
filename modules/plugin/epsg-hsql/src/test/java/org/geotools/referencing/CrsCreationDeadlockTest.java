@@ -20,17 +20,15 @@ public class CrsCreationDeadlockTest {
         // prepare the loaders
         final AtomicInteger ai = new AtomicInteger(NUMBER_OF_THREADS);
         final Runnable runnable =
-                new Runnable() {
-                    public void run() {
-                        try {
-                            final CRSAuthorityFactory authorityFactory =
-                                    ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null);
-                            authorityFactory.createCoordinateReferenceSystem("4326");
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        } finally {
-                            ai.decrementAndGet();
-                        }
+                () -> {
+                    try {
+                        final CRSAuthorityFactory authorityFactory =
+                                ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null);
+                        authorityFactory.createCoordinateReferenceSystem("4326");
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    } finally {
+                        ai.decrementAndGet();
                     }
                 };
 

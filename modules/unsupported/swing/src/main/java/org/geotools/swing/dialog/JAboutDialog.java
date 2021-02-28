@@ -23,8 +23,6 @@ import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.AbstractListModel;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -32,8 +30,6 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import org.geotools.util.factory.GeoTools;
 
 /**
@@ -176,13 +172,7 @@ public class JAboutDialog extends AbstractSimpleDialog {
         categoryList.setPreferredSize(new Dimension(LIST_WIDTH, DEFAULT_HEIGHT));
         categoryList.setBorder(BorderFactory.createTitledBorder("Categories"));
 
-        categoryList.addListSelectionListener(
-                new ListSelectionListener() {
-                    @Override
-                    public void valueChanged(ListSelectionEvent e) {
-                        showInfo(categoryList.getSelectedIndex());
-                    }
-                });
+        categoryList.addListSelectionListener(e -> showInfo(categoryList.getSelectedIndex()));
 
         panel.add(categoryList, BorderLayout.WEST);
 
@@ -213,23 +203,11 @@ public class JAboutDialog extends AbstractSimpleDialog {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
 
         JButton copyBtn = new JButton("Copy to clipboard");
-        copyBtn.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        copyToClipboard();
-                    }
-                });
+        copyBtn.addActionListener(e -> copyToClipboard());
         panel.add(copyBtn);
 
         JButton okBtn = new JButton("Done");
-        okBtn.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        onOK();
-                    }
-                });
+        okBtn.addActionListener(e -> onOK());
         panel.add(okBtn);
 
         return panel;

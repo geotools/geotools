@@ -22,7 +22,6 @@ import java.util.Queue;
 import org.geotools.graph.structure.DirectedGraphable;
 import org.geotools.graph.structure.DirectedNode;
 import org.geotools.graph.structure.Graph;
-import org.geotools.graph.structure.GraphVisitor;
 import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.traverse.GraphTraversal;
 import org.geotools.graph.traverse.basic.AbstractGraphIterator;
@@ -38,18 +37,15 @@ public class DirectedBreadthFirstTopologicalIterator extends AbstractGraphIterat
 
         // initialize nodes
         graph.visitNodes(
-                new GraphVisitor() {
-                    @Override
-                    public int visit(Graphable component) {
-                        DirectedNode node = (DirectedNode) component;
+                component -> {
+                    DirectedNode node = (DirectedNode) component;
 
-                        node.setVisited(false);
-                        node.setCount(0);
+                    node.setVisited(false);
+                    node.setCount(0);
 
-                        if (node.getInDegree() == 0) m_queue.add(node);
+                    if (node.getInDegree() == 0) m_queue.add(node);
 
-                        return (0);
-                    }
+                    return (0);
                 });
     }
 

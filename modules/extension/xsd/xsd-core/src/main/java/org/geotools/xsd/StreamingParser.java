@@ -224,16 +224,14 @@ public class StreamingParser {
     public Object parse() {
         if (thread == null) {
             Runnable runnable =
-                    new Runnable() {
-                        public void run() {
-                            try {
-                                parser.parse(input, handler);
-                            } catch (Exception e) {
-                                // close the buffer
-                                handler.getBuffer().close();
-                                throw new RuntimeException(e);
-                            }
-                        };
+                    () -> {
+                        try {
+                            parser.parse(input, handler);
+                        } catch (Exception e) {
+                            // close the buffer
+                            handler.getBuffer().close();
+                            throw new RuntimeException(e);
+                        }
                     };
 
             thread = new Thread(runnable);

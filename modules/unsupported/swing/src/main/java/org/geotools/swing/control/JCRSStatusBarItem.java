@@ -17,8 +17,6 @@
 
 package org.geotools.swing.control;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPopupMenu;
@@ -85,13 +83,7 @@ public class JCRSStatusBarItem extends StatusBarItem {
                 });
 
         final JPopupMenu menu = new JCRSPopupMenu(mapPane);
-        btn.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        menu.show(btn, 0, 0);
-                    }
-                });
+        btn.addActionListener(e -> menu.show(btn, 0, 0));
     }
 
     /**

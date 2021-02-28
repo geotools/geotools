@@ -22,7 +22,6 @@ import org.geotools.graph.build.GraphBuilder;
 import org.geotools.graph.build.basic.BasicGraphBuilder;
 import org.geotools.graph.path.DijkstraShortestPathFinder;
 import org.geotools.graph.path.Path;
-import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Node;
 import org.geotools.graph.traverse.standard.DijkstraIterator;
 import org.junit.Assert;
@@ -113,11 +112,7 @@ public class DijkstraShortestPathFinderTest {
     }
 
     protected DijkstraIterator.EdgeWeighter costFunction() {
-        return (new DijkstraIterator.EdgeWeighter() {
-            public double getWeight(Edge e) {
-                return 1;
-            }
-        });
+        return (e -> 1);
     }
 
     protected GraphBuilder createBuilder() {

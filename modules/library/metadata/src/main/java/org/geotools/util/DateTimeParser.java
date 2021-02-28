@@ -24,7 +24,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
@@ -270,36 +269,33 @@ public class DateTimeParser {
 
         final Set result =
                 new TreeSet(
-                        new Comparator() {
+                        (o1, o2) -> {
+                            final boolean o1Date = o1 instanceof Date;
+                            final boolean o2Date = o2 instanceof Date;
 
-                            public int compare(Object o1, Object o2) {
-                                final boolean o1Date = o1 instanceof Date;
-                                final boolean o2Date = o2 instanceof Date;
+                            if (o1 == o2) {
+                                return 0;
+                            }
 
-                                if (o1 == o2) {
-                                    return 0;
-                                }
-
-                                // o1 date
-                                if (o1Date) {
-                                    final Date dateLeft = (Date) o1;
-                                    if (o2Date) {
-                                        // o2 date
-                                        return dateLeft.compareTo((Date) o2);
-                                    }
-                                    // o2 daterange
-                                    return dateLeft.compareTo(((DateRange) o2).getMinValue());
-                                }
-
-                                // o1 date range
-                                final DateRange left = (DateRange) o1;
+                            // o1 date
+                            if (o1Date) {
+                                final Date dateLeft = (Date) o1;
                                 if (o2Date) {
                                     // o2 date
-                                    return left.getMinValue().compareTo(((Date) o2));
+                                    return dateLeft.compareTo((Date) o2);
                                 }
                                 // o2 daterange
-                                return left.getMinValue().compareTo(((DateRange) o2).getMinValue());
+                                return dateLeft.compareTo(((DateRange) o2).getMinValue());
                             }
+
+                            // o1 date range
+                            final DateRange left = (DateRange) o1;
+                            if (o2Date) {
+                                // o2 date
+                                return left.getMinValue().compareTo(((Date) o2));
+                            }
+                            // o2 daterange
+                            return left.getMinValue().compareTo(((DateRange) o2).getMinValue());
                         });
         String[] listDates = value.split(",");
         int maxValues = maxTimes;

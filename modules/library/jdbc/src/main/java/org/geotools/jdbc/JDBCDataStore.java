@@ -35,13 +35,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -682,17 +680,14 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
                     Collections.sort(
                             matches,
-                            new Comparator<Map.Entry<Class<?>, Integer>>() {
-                                public int compare(
-                                        Entry<Class<?>, Integer> o1, Entry<Class<?>, Integer> o2) {
-                                    if (o1.getKey().isAssignableFrom(o2.getKey())) {
-                                        return 1;
-                                    }
-                                    if (o2.getKey().isAssignableFrom(o1.getKey())) {
-                                        return -1;
-                                    }
-                                    return 0;
+                            (o1, o2) -> {
+                                if (o1.getKey().isAssignableFrom(o2.getKey())) {
+                                    return 1;
                                 }
+                                if (o2.getKey().isAssignableFrom(o1.getKey())) {
+                                    return -1;
+                                }
+                                return 0;
                             });
                     if (matches.get(1).getKey().isAssignableFrom(matches.get(0).getKey())) {
                         mapping = matches.get(0).getValue();

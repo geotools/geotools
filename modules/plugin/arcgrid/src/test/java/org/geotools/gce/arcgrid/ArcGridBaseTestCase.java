@@ -18,7 +18,6 @@
 package org.geotools.gce.arcgrid;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.StringWriter;
 import java.util.logging.Logger;
 import org.geotools.TestData;
@@ -47,14 +46,7 @@ public abstract class ArcGridBaseTestCase {
 
         testFiles =
                 TestData.file(this, "arcgrid/")
-                        .listFiles(
-                                new FileFilter() {
-
-                                    public boolean accept(File pathname) {
-
-                                        return new ArcGridFormat().accepts(pathname);
-                                    }
-                                });
+                        .listFiles(pathname -> new ArcGridFormat().accepts(pathname));
     }
 
     @After

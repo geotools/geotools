@@ -56,12 +56,10 @@ import org.geotools.util.XArray;
 public final class Logging {
     /** Compares {@link Logging} or {@link String} objects for alphabetical order. */
     private static final Comparator<Object> COMPARATOR =
-            new Comparator<Object>() {
-                public int compare(final Object o1, final Object o2) {
-                    final String n1 = (o1 instanceof Logging) ? ((Logging) o1).name : o1.toString();
-                    final String n2 = (o2 instanceof Logging) ? ((Logging) o2).name : o2.toString();
-                    return n1.compareTo(n2);
-                }
+            (o1, o2) -> {
+                final String n1 = (o1 instanceof Logging) ? ((Logging) o1).name : o1.toString();
+                final String n2 = (o2 instanceof Logging) ? ((Logging) o2).name : o2.toString();
+                return n1.compareTo(n2);
             };
 
     /** An empty array of logging. Also used for locks. */

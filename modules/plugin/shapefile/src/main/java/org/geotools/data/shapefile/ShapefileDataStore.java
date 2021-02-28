@@ -499,14 +499,7 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
     public void removeSchema(Name typeName) throws IOException {
         // check file
         ContentEntry entry = ensureEntry(typeName);
-        org.geotools.data.shapefile.files.FileWriter writer =
-                new org.geotools.data.shapefile.files.FileWriter() {
-
-                    @Override
-                    public String id() {
-                        return "TheShapefileRemover";
-                    }
-                };
+        org.geotools.data.shapefile.files.FileWriter writer = () -> "TheShapefileRemover";
         for (ShpFileType type : ShpFileType.values()) {
             File file = shpFiles.acquireWriteFile(type, writer);
             try {

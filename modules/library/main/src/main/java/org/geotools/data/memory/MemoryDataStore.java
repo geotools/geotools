@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import org.geotools.data.DataSourceException;
@@ -298,13 +297,7 @@ public class MemoryDataStore extends ContentDataStore {
      */
     protected List<Name> createTypeNames() {
         List<Name> names = new ArrayList<>(this.entries.keySet());
-        Collections.sort(
-                names,
-                new Comparator<Name>() {
-                    public int compare(Name n1, Name n2) {
-                        return n1.toString().compareTo(n2.toString());
-                    }
-                });
+        Collections.sort(names, (n1, n2) -> n1.toString().compareTo(n2.toString()));
         return names;
     }
 

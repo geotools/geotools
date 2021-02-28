@@ -135,14 +135,7 @@ public class JMapFrame extends JFrame {
         if (SwingUtilities.isEventDispatchThread()) {
             doShowMap(content);
         } else {
-            SwingUtilities.invokeLater(
-                    new Runnable() {
-
-                        @Override
-                        public void run() {
-                            doShowMap(content);
-                        }
-                    });
+            SwingUtilities.invokeLater(() -> doShowMap(content));
         }
     }
 

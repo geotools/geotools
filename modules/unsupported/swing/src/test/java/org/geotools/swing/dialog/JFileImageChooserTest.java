@@ -26,7 +26,6 @@ import java.awt.Toolkit;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -176,13 +175,7 @@ public class JFileImageChooserTest extends GraphicsTestBase<DialogFixture, Dialo
             throws Exception {
 
         Future<File> future =
-                executor.submit(
-                        new Callable<File>() {
-                            @Override
-                            public File call() throws Exception {
-                                return JFileImageChooser.showOpenFile(parent, workingDir);
-                            }
-                        });
+                executor.submit(() -> JFileImageChooser.showOpenFile(parent, workingDir));
 
         assertComponentDisplayed(DIALOG_CLASS);
         windowFixture = listener.getFixture(DISPLAY_TIMEOUT);
@@ -201,13 +194,7 @@ public class JFileImageChooserTest extends GraphicsTestBase<DialogFixture, Dialo
             throws Exception {
 
         Future<File> future =
-                executor.submit(
-                        new Callable<File>() {
-                            @Override
-                            public File call() throws Exception {
-                                return JFileImageChooser.showSaveFile(parent, workingDir);
-                            }
-                        });
+                executor.submit(() -> JFileImageChooser.showSaveFile(parent, workingDir));
 
         assertComponentDisplayed(DIALOG_CLASS);
         windowFixture = listener.getFixture(DISPLAY_TIMEOUT);

@@ -372,15 +372,12 @@ public class ClippedFeatureIterator implements SimpleFeatureIterator {
         public LinearElevationInterpolator(Geometry original, CoordinateReferenceSystem crs) {
             originalLines = new ArrayList<>();
             original.apply(
-                    new GeometryComponentFilter() {
-
-                        @Override
-                        public void filter(Geometry geom) {
-                            if (geom instanceof LineString) {
-                                originalLines.add((LineString) geom);
-                            }
-                        }
-                    });
+                    (GeometryComponentFilter)
+                            geom -> {
+                                if (geom instanceof LineString) {
+                                    originalLines.add((LineString) geom);
+                                }
+                            });
         }
 
         @Override

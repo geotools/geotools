@@ -32,7 +32,6 @@ import org.geotools.feature.visitor.CountVisitor;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -88,13 +87,7 @@ public class FilteringSimpleFeatureCollectionTest extends FeatureCollectionWrapp
         Filter filter = ff.equal(ff.property("someAtt"), ff.literal("1"), false);
         SimpleFeatureCollection collection = new FilteringSimpleFeatureCollection(delegate, filter);
         collection.accepts(
-                new FeatureVisitor() {
-
-                    public void visit(Feature feature) {
-                        assertEquals(1, feature.getProperty("someAtt").getValue());
-                    }
-                },
-                null);
+                feature -> assertEquals(1, feature.getProperty("someAtt").getValue()), null);
     }
 
     @Test

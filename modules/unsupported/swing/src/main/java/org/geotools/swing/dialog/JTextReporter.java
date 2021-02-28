@@ -20,8 +20,6 @@ package org.geotools.swing.dialog;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedWriter;
@@ -323,13 +321,7 @@ public class JTextReporter {
 
                     } else {
                         try {
-                            SwingUtilities.invokeAndWait(
-                                    new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            rtnText[0] = dialog.getText();
-                                        }
-                                    });
+                            SwingUtilities.invokeAndWait(() -> rtnText[0] = dialog.getText());
                         } catch (InterruptedException ex) {
                             LOGGER.severe(
                                     "Thread interrupted while getting text from text reporter");
@@ -364,14 +356,7 @@ public class JTextReporter {
                 if (active.get()) {
                     final TextDialog dialog = dialogRef.get();
                     if (dialog != null) {
-                        SwingUtilities.invokeAndWait(
-                                new Runnable() {
-
-                                    @Override
-                                    public void run() {
-                                        dialog.closeDialog();
-                                    }
-                                });
+                        SwingUtilities.invokeAndWait(() -> dialog.closeDialog());
                     }
 
                 } else {
@@ -395,13 +380,7 @@ public class JTextReporter {
         private void doAppendOnEDT(final TextDialog dialog, final String text, final int indent) {
 
             try {
-                SwingUtilities.invokeAndWait(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                dialog.append(text, indent);
-                            }
-                        });
+                SwingUtilities.invokeAndWait(() -> dialog.append(text, indent));
 
             } catch (InterruptedException ex) {
                 LOGGER.severe("Interrupted while appending text");
@@ -502,14 +481,10 @@ public class JTextReporter {
             final CountDownLatch latch = new CountDownLatch(1);
 
             SwingUtilities.invokeLater(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            conn[0] =
-                                    doShowDialog(
-                                            title, initialText, flags, textAreaRows, textAreaCols);
-                            latch.countDown();
-                        }
+                    () -> {
+                        conn[0] =
+                                doShowDialog(title, initialText, flags, textAreaRows, textAreaCols);
+                        latch.countDown();
                     });
 
             try {
@@ -626,43 +601,19 @@ public class JTextReporter {
             JPanel panel = new JPanel(new MigLayout());
 
             JButton copyBtn = new JButton("Copy to clipboard");
-            copyBtn.addActionListener(
-                    new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            onCopyToClipboard();
-                        }
-                    });
+            copyBtn.addActionListener(e -> onCopyToClipboard());
             panel.add(copyBtn, "align center");
 
             JButton saveBtn = new JButton("Save...");
-            saveBtn.addActionListener(
-                    new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            onSave();
-                        }
-                    });
+            saveBtn.addActionListener(e -> onSave());
             panel.add(saveBtn);
 
             JButton clearBtn = new JButton("Clear");
-            clearBtn.addActionListener(
-                    new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            onClear();
-                        }
-                    });
+            clearBtn.addActionListener(e -> onClear());
             panel.add(clearBtn);
 
             JButton closeBtn = new JButton("Close");
-            closeBtn.addActionListener(
-                    new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            closeDialog();
-                        }
-                    });
+            closeBtn.addActionListener(e -> closeDialog());
             panel.add(closeBtn);
 
             return panel;

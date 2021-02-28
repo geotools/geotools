@@ -307,15 +307,12 @@ public class CurvedGeometryFactory extends GeometryFactory {
 
         final AtomicBoolean hasCurves = new AtomicBoolean(false);
         g.apply(
-                new GeometryComponentFilter() {
-
-                    @Override
-                    public void filter(Geometry geom) {
-                        if (geom instanceof CurvedGeometry) {
-                            hasCurves.set(true);
-                        }
-                    }
-                });
+                (GeometryComponentFilter)
+                        geom -> {
+                            if (geom instanceof CurvedGeometry) {
+                                hasCurves.set(true);
+                            }
+                        });
 
         return hasCurves.get();
     }

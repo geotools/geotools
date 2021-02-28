@@ -20,7 +20,6 @@ import org.geotools.graph.build.line.OptLineGraphGenerator;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.GraphVisitor;
-import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.line.XYNode;
 import org.junit.Assert;
 import org.junit.Before;
@@ -66,24 +65,21 @@ public class OptLineGraphGeneratorTest {
 
         // ensure coordinates
         GraphVisitor visitor =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-                        Edge e = (Edge) component;
-                        XYNode a = (XYNode) e.getNodeA();
-                        XYNode b = (XYNode) e.getNodeB();
+                component -> {
+                    Edge e = (Edge) component;
+                    XYNode a = (XYNode) e.getNodeA();
+                    XYNode b = (XYNode) e.getNodeB();
 
-                        // coordinats should be a distance of sqrt(2)
-                        Assert.assertTrue(
-                                Math.abs(a.getCoordinate().x - b.getCoordinate().x) == 1
-                                        && Math.abs(a.getCoordinate().y - b.getCoordinate().y)
-                                                == 1);
+                    // coordinats should be a distance of sqrt(2)
+                    Assert.assertTrue(
+                            Math.abs(a.getCoordinate().x - b.getCoordinate().x) == 1
+                                    && Math.abs(a.getCoordinate().y - b.getCoordinate().y) == 1);
 
-                        //        assertTrue(
-                        //            Math.abs(a.getX() - b.getX()) == 1
-                        //         && Math.abs(a.getY() - b.getY()) == 1
-                        //        );
-                        return (0);
-                    }
+                    //        assertTrue(
+                    //            Math.abs(a.getX() - b.getX()) == 1
+                    //         && Math.abs(a.getY() - b.getY()) == 1
+                    //        );
+                    return (0);
                 };
         built.visitEdges(visitor);
     }
@@ -120,23 +116,21 @@ public class OptLineGraphGeneratorTest {
 
         // ensure coordinates
         GraphVisitor visitor =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-                        Edge e = (Edge) component;
-                        XYNode a = (XYNode) e.getNodeA();
-                        XYNode b = (XYNode) e.getNodeB();
+                component -> {
+                    Edge e = (Edge) component;
+                    XYNode a = (XYNode) e.getNodeA();
+                    XYNode b = (XYNode) e.getNodeB();
 
-                        if (b.getCoordinate().equals(base)) {
-                            Assert.assertEquals(a.getCoordinate(), new Coordinate(n, n));
-                        } else {
-                            Assert.assertTrue(
-                                    Math.abs(a.getCoordinate().x - b.getCoordinate().x) == 1
-                                            && Math.abs(a.getCoordinate().y - b.getCoordinate().y)
-                                                    == 1);
-                        }
-
-                        return (0);
+                    if (b.getCoordinate().equals(base)) {
+                        Assert.assertEquals(a.getCoordinate(), new Coordinate(n, n));
+                    } else {
+                        Assert.assertTrue(
+                                Math.abs(a.getCoordinate().x - b.getCoordinate().x) == 1
+                                        && Math.abs(a.getCoordinate().y - b.getCoordinate().y)
+                                                == 1);
                     }
+
+                    return (0);
                 };
         built.visitEdges(visitor);
     }

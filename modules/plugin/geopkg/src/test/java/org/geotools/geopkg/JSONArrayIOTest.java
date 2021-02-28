@@ -26,7 +26,6 @@ import java.util.TimeZone;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.function.ThrowingRunnable;
 
 public class JSONArrayIOTest {
 
@@ -56,16 +55,9 @@ public class JSONArrayIOTest {
     public void testParseNestedObject() {
         assertThrows(
                 java.lang.IllegalArgumentException.class,
-                new ThrowingRunnable() {
-
-                    @Override
-                    public void run() throws Throwable {
-                        String[] parsed =
-                                io.parse(
-                                        "[\"a\",\"b\", { \"key\" = \"value\"}]",
-                                        String.class,
-                                        null);
-                    }
+                () -> {
+                    String[] parsed =
+                            io.parse("[\"a\",\"b\", { \"key\" = \"value\"}]", String.class, null);
                 });
     }
 

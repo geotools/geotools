@@ -18,7 +18,6 @@ package org.geotools.xsd;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -299,12 +298,9 @@ public abstract class Configuration {
         PriorityQueue<DepNode> q =
                 new PriorityQueue<>(
                         g.nodes.size(),
-                        new Comparator<DepNode>() {
-                            public int compare(DepNode o1, DepNode o2) {
-                                return Integer.valueOf(o1.outgoing().size())
-                                        .compareTo(o2.outgoing().size());
-                            }
-                        });
+                        (o1, o2) ->
+                                Integer.valueOf(o1.outgoing().size())
+                                        .compareTo(o2.outgoing().size()));
         for (DepNode n : g.nodes.values()) {
             q.add(n);
         }

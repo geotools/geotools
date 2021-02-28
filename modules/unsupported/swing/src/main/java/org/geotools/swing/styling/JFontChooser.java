@@ -18,8 +18,6 @@ package org.geotools.swing.styling;
 
 import java.awt.Component;
 import java.awt.GraphicsEnvironment;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -184,11 +182,9 @@ public class JFontChooser extends JDialog {
         familyCBox = new JComboBox<>(families);
         familyCBox.setSelectedIndex(familyIndex);
         familyCBox.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        familyIndex = familyCBox.getSelectedIndex();
-                        showSample();
-                    }
+                e -> {
+                    familyIndex = familyCBox.getSelectedIndex();
+                    showSample();
                 });
         panel.add(familyCBox);
 
@@ -198,11 +194,9 @@ public class JFontChooser extends JDialog {
         styleCBox = new JComboBox<>(styles);
         styleCBox.setSelectedIndex(styleIndex);
         styleCBox.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        styleIndex = styleCBox.getSelectedIndex();
-                        showSample();
-                    }
+                e -> {
+                    styleIndex = styleCBox.getSelectedIndex();
+                    showSample();
                 });
         panel.add(styleCBox);
 
@@ -212,11 +206,9 @@ public class JFontChooser extends JDialog {
         weightCBox = new JComboBox<>(weights);
         weightCBox.setSelectedIndex(weightIndex);
         weightCBox.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        weightIndex = weightCBox.getSelectedIndex();
-                        showSample();
-                    }
+                e -> {
+                    weightIndex = weightCBox.getSelectedIndex();
+                    showSample();
                 });
         panel.add(weightCBox);
 
@@ -226,11 +218,9 @@ public class JFontChooser extends JDialog {
         sizeCBox = new JComboBox<>(sizes);
         sizeCBox.setSelectedIndex(sizeIndex);
         sizeCBox.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        sizeIndex = sizeCBox.getSelectedIndex();
-                        showSample();
-                    }
+                e -> {
+                    sizeIndex = sizeCBox.getSelectedIndex();
+                    showSample();
                 });
         panel.add(sizeCBox, "wrap");
 
@@ -247,24 +237,18 @@ public class JFontChooser extends JDialog {
          */
         JButton btn = new JButton("Apply");
         btn.addActionListener(
-                new ActionListener() {
-
-                    public void actionPerformed(ActionEvent e) {
-                        completed = true;
-                        createSelectedFont();
-                        setVisible(false);
-                    }
+                e -> {
+                    completed = true;
+                    createSelectedFont();
+                    setVisible(false);
                 });
         panel.add(btn, "span, split 2, align right");
 
         btn = new JButton("Cancel");
         btn.addActionListener(
-                new ActionListener() {
-
-                    public void actionPerformed(ActionEvent e) {
-                        selectedFont = null;
-                        setVisible(false);
-                    }
+                e -> {
+                    selectedFont = null;
+                    setVisible(false);
                 });
         panel.add(btn);
 

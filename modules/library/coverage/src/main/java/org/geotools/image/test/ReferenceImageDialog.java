@@ -18,8 +18,6 @@ package org.geotools.image.test;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.RenderedImage;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -45,21 +43,15 @@ class ReferenceImageDialog extends JDialog {
         JPanel commands = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton accept = new JButton("Accept as reference");
         accept.addActionListener(
-                new ActionListener() {
-
-                    public void actionPerformed(ActionEvent e) {
-                        ReferenceImageDialog.this.accept = true;
-                        ReferenceImageDialog.this.setVisible(false);
-                    }
+                e -> {
+                    this.accept = true;
+                    setVisible(false);
                 });
         JButton reject = new JButton("Reject output");
         reject.addActionListener(
-                new ActionListener() {
-
-                    public void actionPerformed(ActionEvent e) {
-                        ReferenceImageDialog.this.accept = false;
-                        ReferenceImageDialog.this.setVisible(false);
-                    }
+                e -> {
+                    this.accept = false;
+                    setVisible(false);
                 });
         commands.add(accept);
         commands.add(reject);

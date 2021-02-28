@@ -284,17 +284,15 @@ public class FeatureJSON {
                 if (encodeFeatureCollectionBounds) {
                     obj.put(
                             "bbox",
-                            new JSONStreamAware() {
-                                public void writeJSONString(Writer out) throws IOException {
-                                    JSONArray.writeJSONString(
-                                            Arrays.asList(
-                                                    bounds.getMinX(),
-                                                    bounds.getMinY(),
-                                                    bounds.getMaxX(),
-                                                    bounds.getMaxY()),
-                                            out);
-                                }
-                            });
+                            (JSONStreamAware)
+                                    out ->
+                                            JSONArray.writeJSONString(
+                                                    Arrays.asList(
+                                                            bounds.getMinX(),
+                                                            bounds.getMinY(),
+                                                            bounds.getMaxX(),
+                                                            bounds.getMaxY()),
+                                                    out));
                 }
             }
 

@@ -1911,12 +1911,7 @@ public final class Geobuf {
                 }
 
                 private static final com.google.protobuf.Internal.EnumLiteMap<Type>
-                        internalValueMap =
-                                new com.google.protobuf.Internal.EnumLiteMap<Type>() {
-                                    public Type findValueByNumber(int number) {
-                                        return Type.forNumber(number);
-                                    }
-                                };
+                        internalValueMap = number -> Type.forNumber(number);
 
                 private final int value;
 

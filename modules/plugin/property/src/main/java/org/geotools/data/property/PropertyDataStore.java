@@ -20,7 +20,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -112,13 +111,7 @@ public class PropertyDataStore extends ContentDataStore {
 
     @Override
     protected java.util.List<Name> createTypeNames() throws IOException {
-        String list[] =
-                dir.list(
-                        new FilenameFilter() {
-                            public boolean accept(File dir, String name) {
-                                return name.endsWith(".properties");
-                            }
-                        });
+        String list[] = dir.list((dir, name) -> name.endsWith(".properties"));
         List<Name> typeNames = new ArrayList<>();
         if (list != null) {
             for (String s : list) {

@@ -120,12 +120,9 @@ public class StreamingRendererDirectLayerTest {
 
     private void displayImage(final BufferedImage image, final CountDownLatch latch) {
         SwingUtilities.invokeLater(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        TestImageFrame frame = new TestImageFrame(image, latch);
-                        frame.setVisible(true);
-                    }
+                () -> {
+                    TestImageFrame frame = new TestImageFrame(image, latch);
+                    frame.setVisible(true);
                 });
     }
 

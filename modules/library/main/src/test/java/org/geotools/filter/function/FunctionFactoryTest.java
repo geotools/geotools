@@ -24,7 +24,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -135,15 +134,12 @@ public class FunctionFactoryTest {
         for (int i = 0; i < 100; i++) {
             Future<Exception> f =
                     es.submit(
-                            new Callable<Exception>() {
-
-                                public Exception call() throws Exception {
-                                    try {
-                                        ff.function("Length", ff.property("."));
-                                        return null;
-                                    } catch (Exception e) {
-                                        return e;
-                                    }
+                            () -> {
+                                try {
+                                    ff.function("Length", ff.property("."));
+                                    return null;
+                                } catch (Exception e) {
+                                    return e;
                                 }
                             });
             tests.add(f);

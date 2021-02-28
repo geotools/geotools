@@ -42,7 +42,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.util.URLs;
 import org.hamcrest.Matchers;
 import org.junit.Test;
-import org.junit.function.ThrowingRunnable;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
@@ -61,29 +60,13 @@ public class MBTilesDataStoreTest {
     @Test
     public void testRasterTiles() throws Exception {
         File file = URLs.urlToFile(this.getClass().getResource("mosaic/world_lakes.mbtiles"));
-        assertThrows(
-                DataSourceException.class,
-                new ThrowingRunnable() {
-
-                    @Override
-                    public void run() throws Throwable {
-                        new MBTilesDataStore(new MBTilesFile(file));
-                    }
-                });
+        assertThrows(DataSourceException.class, () -> new MBTilesDataStore(new MBTilesFile(file)));
     }
 
     @Test
     public void testPBFNoSchemaFile() throws Exception {
         File file = URLs.urlToFile(this.getClass().getResource("planet.mbtiles"));
-        assertThrows(
-                DataSourceException.class,
-                new ThrowingRunnable() {
-
-                    @Override
-                    public void run() throws Throwable {
-                        new MBTilesDataStore(new MBTilesFile(file));
-                    }
-                });
+        assertThrows(DataSourceException.class, () -> new MBTilesDataStore(new MBTilesFile(file)));
     }
 
     @Test

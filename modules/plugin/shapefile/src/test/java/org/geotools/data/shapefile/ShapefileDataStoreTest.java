@@ -92,8 +92,6 @@ import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.feature.Feature;
-import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -486,13 +484,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         ReferencedEnvelope bounds = features.getBounds();
 
         final Set<FeatureId> selection = new LinkedHashSet<>();
-        features.accepts(
-                new FeatureVisitor() {
-                    public void visit(Feature feature) {
-                        selection.add(feature.getIdentifier());
-                    }
-                },
-                null);
+        features.accepts(feature -> selection.add(feature.getIdentifier()), null);
         assertFalse(selection.isEmpty());
 
         // try with filter and no attributes

@@ -26,8 +26,6 @@ import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.BoundedRangeModel;
 import javax.swing.Box;
@@ -171,12 +169,7 @@ public class JProgressWindow implements ProgressListener {
          * Creates the cancel button.
          */
         cancel = new JButton(resources.getString(VocabularyKeys.CANCEL));
-        cancel.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        setCanceled(true);
-                    }
-                });
+        cancel.addActionListener(e -> setCanceled(true));
         final Box cancelBox = Box.createHorizontalBox();
         cancelBox.add(Box.createGlue());
         cancelBox.add(cancel);

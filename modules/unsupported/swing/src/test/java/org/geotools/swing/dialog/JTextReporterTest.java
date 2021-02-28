@@ -30,7 +30,6 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -438,14 +437,7 @@ public class JTextReporterTest extends GraphicsTestBase<DialogFixture, Dialog, D
             final String title, final String initialText) throws Exception {
 
         Future<Connection> future =
-                executor.submit(
-                        new Callable<JTextReporter.Connection>() {
-
-                            @Override
-                            public Connection call() throws Exception {
-                                return JTextReporter.showDialog(title, initialText);
-                            }
-                        });
+                executor.submit(() -> JTextReporter.showDialog(title, initialText));
 
         assertComponentDisplayed(DIALOG_CLASS);
         windowFixture = listener.getFixture(DISPLAY_TIMEOUT);

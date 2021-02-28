@@ -49,8 +49,6 @@ import org.hamcrest.Matchers;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.opengis.feature.Feature;
-import org.opengis.feature.FeatureVisitor;
 
 /** @author Simone Giannecchini, GeoSolutions SAS */
 public class PropertiesCollectorTest {
@@ -184,23 +182,17 @@ public class PropertiesCollectorTest {
             reader.getGranules(null, true)
                     .getGranules(Query.ALL)
                     .accepts(
-                            new FeatureVisitor() {
-                                @Override
-                                public void visit(Feature feature) {
-                                    String location =
-                                            (String) feature.getProperty("location").getValue();
-                                    int idxSlash = location.lastIndexOf('\\');
-                                    int idxBackslash = location.lastIndexOf('/');
-                                    String name = location;
-                                    if (idxSlash > -1 || idxBackslash > -1) {
-                                        name =
-                                                location.substring(
-                                                        Math.max(idxSlash, idxBackslash) + 1);
-                                    }
-                                    Date ingest =
-                                            (Date) feature.getProperty("ingestion").getValue();
-                                    mappedDates.put(name, ingest);
+                            feature -> {
+                                String location =
+                                        (String) feature.getProperty("location").getValue();
+                                int idxSlash = location.lastIndexOf('\\');
+                                int idxBackslash = location.lastIndexOf('/');
+                                String name = location;
+                                if (idxSlash > -1 || idxBackslash > -1) {
+                                    name = location.substring(Math.max(idxSlash, idxBackslash) + 1);
                                 }
+                                Date ingest = (Date) feature.getProperty("ingestion").getValue();
+                                mappedDates.put(name, ingest);
                             },
                             null);
 

@@ -193,31 +193,31 @@ public final class NIOUtilities {
 
         Boolean b =
                 AccessController.doPrivileged(
-                        new PrivilegedAction<Boolean>() {
-                            public Boolean run() {
-                                Boolean success = Boolean.FALSE;
-                                try {
-                                    Method getCleanerMethod = getCleanerMethod(buffer);
-                                    if (getCleanerMethod != null) {
-                                        Object cleaner =
-                                                getCleanerMethod.invoke(buffer, (Object[]) null);
-                                        if (cleaner != null) {
-                                            Method clean =
-                                                    cleaner.getClass()
-                                                            .getMethod("clean", (Class[]) null);
-                                            clean.invoke(cleaner, (Object[]) null);
-                                            success = Boolean.TRUE;
+                        (PrivilegedAction<Boolean>)
+                                () -> {
+                                    Boolean success = Boolean.FALSE;
+                                    try {
+                                        Method getCleanerMethod = getCleanerMethod(buffer);
+                                        if (getCleanerMethod != null) {
+                                            Object cleaner =
+                                                    getCleanerMethod.invoke(
+                                                            buffer, (Object[]) null);
+                                            if (cleaner != null) {
+                                                Method clean =
+                                                        cleaner.getClass()
+                                                                .getMethod("clean", (Class[]) null);
+                                                clean.invoke(cleaner, (Object[]) null);
+                                                success = Boolean.TRUE;
+                                            }
+                                        }
+                                    } catch (Exception e) {
+                                        // This really is a show stopper on windows
+                                        if (isLoggable()) {
+                                            log(e, buffer);
                                         }
                                     }
-                                } catch (Exception e) {
-                                    // This really is a show stopper on windows
-                                    if (isLoggable()) {
-                                        log(e, buffer);
-                                    }
-                                }
-                                return success;
-                            }
-                        });
+                                    return success;
+                                });
         return b.booleanValue();
     }
 

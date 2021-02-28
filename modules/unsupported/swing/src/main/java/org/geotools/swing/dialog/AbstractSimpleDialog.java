@@ -18,8 +18,6 @@
 package org.geotools.swing.dialog;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -165,23 +163,11 @@ public abstract class AbstractSimpleDialog extends JDialog {
         JPanel panel = new JPanel(new MigLayout());
 
         JButton okBtn = new JButton("OK");
-        okBtn.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        onOK();
-                    }
-                });
+        okBtn.addActionListener(e -> onOK());
         panel.add(okBtn, "align center");
 
         JButton cancelBtn = new JButton("Cancel");
-        cancelBtn.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        onCancel();
-                    }
-                });
+        cancelBtn.addActionListener(e -> onCancel());
         panel.add(cancelBtn);
 
         return panel;

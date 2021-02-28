@@ -21,8 +21,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -123,12 +121,7 @@ public class JMapStatusBar extends JPanel {
         } else {
             try {
                 SwingUtilities.invokeAndWait(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                statusBar[0] = doCreateDefaultStatusBar(mapPane);
-                            }
-                        });
+                        () -> statusBar[0] = doCreateDefaultStatusBar(mapPane));
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
@@ -169,14 +162,11 @@ public class JMapStatusBar extends JPanel {
         URL url = this.getClass().getResource("icons/configure-3.png");
         ImageIcon icon = new ImageIcon(url);
         PopupMenuProvider menuProvider =
-                new PopupMenuProvider() {
-                    @Override
-                    public JPopupMenu getMenu() {
-                        if (configMenu == null) {
-                            configMenu = createItemMenu();
-                        }
-                        return configMenu;
+                () -> {
+                    if (configMenu == null) {
+                        configMenu = createItemMenu();
                     }
+                    return configMenu;
                 };
 
         StatusBarItem item = new JMenuStatusBarItem("", icon, CONFIGURE_TOOL_TIP, menuProvider);
@@ -296,20 +286,16 @@ public class JMapStatusBar extends JPanel {
             if (info.configurable) {
                 JMenuItem menuItem = new JCheckBoxMenuItem(info.item.getName(), info.showing);
                 menuItem.addActionListener(
-                        new ActionListener() {
-
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                info.showing = !info.showing;
-                                Rectangle r = info.item.getBounds();
-                                if (info.showing) {
-                                    add(info.item, info.componentIndex);
-                                } else {
-                                    remove(info.item);
-                                }
-                                revalidate();
-                                repaint(r);
+                        e -> {
+                            info.showing = !info.showing;
+                            Rectangle r = info.item.getBounds();
+                            if (info.showing) {
+                                add(info.item, info.componentIndex);
+                            } else {
+                                remove(info.item);
                             }
+                            revalidate();
+                            repaint(r);
                         });
                 menu.add(menuItem);
             }
@@ -317,14 +303,7 @@ public class JMapStatusBar extends JPanel {
 
         menu.addSeparator();
         JMenuItem menuItem = new JMenuItem(SET_DECIMALS_STRING);
-        menuItem.addActionListener(
-                new ActionListener() {
-
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        setNumDecimals();
-                    }
-                });
+        menuItem.addActionListener(e -> setNumDecimals());
         menu.add(menuItem);
 
         return menu;

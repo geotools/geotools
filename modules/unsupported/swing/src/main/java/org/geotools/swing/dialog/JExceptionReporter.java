@@ -19,8 +19,6 @@ package org.geotools.swing.dialog;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -85,14 +83,7 @@ public class JExceptionReporter {
             doShowDialog(exception, message);
 
         } else {
-            SwingUtilities.invokeLater(
-                    new Runnable() {
-
-                        @Override
-                        public void run() {
-                            doShowDialog(exception, message);
-                        }
-                    });
+            SwingUtilities.invokeLater(() -> doShowDialog(exception, message));
         }
     }
 
@@ -158,13 +149,7 @@ public class JExceptionReporter {
             JPanel panel = new JPanel();
 
             JButton button = new JButton("Close");
-            button.addActionListener(
-                    new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            onOK();
-                        }
-                    });
+            button.addActionListener(e -> onOK());
 
             panel.add(button);
             return panel;

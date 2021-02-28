@@ -17,7 +17,6 @@
 package org.geotools.data.mongodb.data;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.ServiceLoader;
 
@@ -53,13 +52,7 @@ public final class SchemaStoreDirectoryProvider {
     public static SchemaStoreDirectory getHighestPriority() {
         return directoriies
                 .stream()
-                .sorted(
-                        new Comparator<SchemaStoreDirectory>() {
-                            @Override
-                            public int compare(SchemaStoreDirectory o1, SchemaStoreDirectory o2) {
-                                return o2.getPriority() - o1.getPriority();
-                            }
-                        })
+                .sorted((o1, o2) -> o2.getPriority() - o1.getPriority())
                 .findFirst()
                 .get();
     }
@@ -67,14 +60,7 @@ public final class SchemaStoreDirectoryProvider {
     public static SchemaStoreDirectory getLowestPriority() {
         return directoriies
                 .stream()
-                .sorted(
-                        new Comparator<SchemaStoreDirectory>() {
-
-                            @Override
-                            public int compare(SchemaStoreDirectory o1, SchemaStoreDirectory o2) {
-                                return o1.getPriority() - o2.getPriority();
-                            }
-                        })
+                .sorted((o1, o2) -> o1.getPriority() - o2.getPriority())
                 .findFirst()
                 .get();
     }

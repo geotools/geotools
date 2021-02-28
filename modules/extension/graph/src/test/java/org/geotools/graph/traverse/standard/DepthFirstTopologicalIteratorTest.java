@@ -97,11 +97,9 @@ public class DepthFirstTopologicalIteratorTest {
         traversal.traverse();
 
         GraphVisitor visitor =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-                        Assert.assertFalse(component.isVisited());
-                        return 0;
-                    }
+                component -> {
+                    Assert.assertFalse(component.isVisited());
+                    return 0;
                 };
         builder().getGraph().visitNodes(visitor);
 

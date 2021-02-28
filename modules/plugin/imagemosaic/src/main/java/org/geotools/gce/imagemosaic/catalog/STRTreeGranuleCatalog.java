@@ -195,14 +195,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
         try {
 
             wrappedCatalogue.getGranuleDescriptors(
-                    new Query(typeName),
-                    new GranuleCatalogVisitor() {
-
-                        @Override
-                        public void visit(GranuleDescriptor granule, SimpleFeature o) {
-                            features.add(granule);
-                        }
-                    });
+                    new Query(typeName), (granule, o) -> features.add(granule));
             if (features == null)
                 throw new NullPointerException(
                         "The provided SimpleFeatureCollection is null, it's impossible to create an index!");

@@ -41,16 +41,12 @@ public class YsldParser extends YamlParser {
     UomMapper uomMapper = new UomMapper();
 
     ResourceLocator locator =
-            new ResourceLocator() {
-
-                @Override
-                public URL locateResource(String uri) {
-                    try {
-                        return new URL(uri);
-                    } catch (MalformedURLException e) {
-                        throw new IllegalArgumentException(
-                                String.format("'%s' is not a valid URI", uri), e);
-                    }
+            uri -> {
+                try {
+                    return new URL(uri);
+                } catch (MalformedURLException e) {
+                    throw new IllegalArgumentException(
+                            String.format("'%s' is not a valid URI", uri), e);
                 }
             };
 

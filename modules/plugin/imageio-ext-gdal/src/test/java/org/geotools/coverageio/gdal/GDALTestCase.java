@@ -53,13 +53,7 @@ public class GDALTestCase {
                             new javax.media.jai.widget.ScrollingImagePanel(
                                     gc.getRenderedImage(), 800, 800));
             frame.pack();
-            SwingUtilities.invokeLater(
-                    new Runnable() {
-
-                        public void run() {
-                            frame.setVisible(true);
-                        }
-                    });
+            SwingUtilities.invokeLater(() -> frame.setVisible(true));
         } else {
             PlanarImage.wrapRenderedImage(gc.getRenderedImage()).getTiles();
         }

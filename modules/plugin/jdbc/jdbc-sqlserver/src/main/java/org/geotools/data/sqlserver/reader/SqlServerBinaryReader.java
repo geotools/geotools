@@ -79,7 +79,7 @@ public class SqlServerBinaryReader {
         try {
             parse(is);
         } catch (ParseException e) {
-            e.printStackTrace();
+            throw new IOException(e)
             return null;
         }
         readCoordinateSequences();

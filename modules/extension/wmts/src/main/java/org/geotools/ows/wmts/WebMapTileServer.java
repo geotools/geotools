@@ -238,7 +238,7 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
     }
 
     private void setupType() {
-        this.type = getCapabilities().getType();
+        this.type = this.capabilities.getType();
     }
 
     /** @param type */

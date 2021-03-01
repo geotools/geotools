@@ -43,6 +43,7 @@ import org.locationtech.jts.io.ByteArrayInStream;
 import org.locationtech.jts.io.ByteOrderDataInStream;
 import org.locationtech.jts.io.ByteOrderValues;
 import org.locationtech.jts.io.InStream;
+import org.locationtech.jts.io.ParseException;
 
 /**
  * Decode Sql Server binary format to JTS
@@ -75,7 +76,11 @@ public class SqlServerBinaryReader {
     }
 
     public Geometry read(InStream is) throws IOException {
-        parse(is);
+        try {
+            parse(is);
+        } catch (ParseException e) {
+            throw new IOException(e);
+        }
         readCoordinateSequences();
         Type type = getTypeFromBinary();
         Geometry geometry = decode(0, type);
@@ -329,7 +334,7 @@ public class SqlServerBinaryReader {
         binary.setSequences(sequences);
     }
 
-    private void parse(InStream is) throws IOException {
+    private void parse(InStream is) throws IOException, ParseException {
         dis.setInStream(is);
         dis.setOrder(ByteOrderValues.LITTLE_ENDIAN);
         binary.setSrid(dis.readInt());
@@ -359,7 +364,7 @@ public class SqlServerBinaryReader {
         }
     }
 
-    private void readSegments() throws IOException {
+    private void readSegments() throws IOException, ParseException {
         if (binary.getVersion() > 1) {
             if (binary.hasSegments()) {
                 int numberOfSegments = dis.readInt();
@@ -372,7 +377,7 @@ public class SqlServerBinaryReader {
         }
     }
 
-    private void readNumberOfPoints() throws IOException {
+    private void readNumberOfPoints() throws IOException, ParseException {
         if (binary.isSinglePoint()) {
             binary.setNumberOfPoints(1);
         } else if (binary.hasSingleLineSegment()) {
@@ -382,7 +387,7 @@ public class SqlServerBinaryReader {
         }
     }
 
-    private void readCoordinates() throws IOException {
+    private void readCoordinates() throws IOException, ParseException {
         Coordinate[] coordinates = new Coordinate[binary.getNumberOfPoints()];
         for (int i = 0; i < binary.getNumberOfPoints(); i++) {
             coordinates[i] = readCoordinate();
@@ -390,7 +395,7 @@ public class SqlServerBinaryReader {
         binary.setCoordinates(coordinates);
     }
 
-    private void readShapes() throws IOException {
+    private void readShapes() throws IOException, ParseException {
         int numberOfShapes = dis.readInt();
         Shape[] shapesMetadata = new Shape[numberOfShapes];
         for (int i = 0; i < numberOfShapes; i++) {
@@ -402,7 +407,7 @@ public class SqlServerBinaryReader {
         binary.setShapes(shapesMetadata);
     }
 
-    private void readFigures() throws IOException {
+    private void readFigures() throws IOException, ParseException {
         int numberOfFigures = dis.readInt();
         Figure[] figuresMetadata = new Figure[numberOfFigures];
         for (int i = 0; i < numberOfFigures; i++) {
@@ -413,7 +418,7 @@ public class SqlServerBinaryReader {
         binary.setFigures(figuresMetadata);
     }
 
-    private void readMValues() throws IOException {
+    private void readMValues() throws IOException, ParseException {
         // measure values are currently discarded, as they cannot be represented in a JTS Geometry
         if (binary.hasM()) {
             for (int i = 0; i < binary.getNumberOfPoints(); i++) {
@@ -422,7 +427,7 @@ public class SqlServerBinaryReader {
         }
     }
 
-    private void readZValues() throws IOException {
+    private void readZValues() throws IOException, ParseException {
         if (binary.hasZ()) {
             for (int i = 0; i < binary.getNumberOfPoints(); i++) {
                 binary.getCoordinates()[i].setZ(dis.readDouble());
@@ -430,7 +435,7 @@ public class SqlServerBinaryReader {
         }
     }
 
-    private Coordinate readCoordinate() throws IOException {
+    private Coordinate readCoordinate() throws IOException, ParseException {
         return new Coordinate(dis.readDouble(), dis.readDouble());
     }
 }

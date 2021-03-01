@@ -31,6 +31,7 @@ import com.bedatadriven.jackson.datatype.jts.serialization.GeometryDeserializer;
 import com.bedatadriven.jackson.datatype.jts.serialization.GeometrySerializer;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import java.math.RoundingMode;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -46,14 +47,29 @@ public class JtsModule extends SimpleModule {
     /** serialVersionUID */
     private static final long serialVersionUID = 3387512874441967803L;
 
+    private GeometrySerializer geometrySerializer;
+
+    public JtsModule(int maxDecimals) {
+        this(new GeometryFactory(), maxDecimals, 1, RoundingMode.HALF_UP);
+    }
+
     public JtsModule() {
         this(new GeometryFactory());
     }
 
     public JtsModule(GeometryFactory geometryFactory) {
+        this(geometryFactory, 4, 1, RoundingMode.HALF_UP);
+    }
+
+    public JtsModule(
+            GeometryFactory geometryFactory,
+            int maxDecimals,
+            int minDecimals,
+            RoundingMode rounding) {
         super("JtsModule", new Version(1, 0, 0, null, "com.bedatadriven", "jackson-datatype-jts"));
 
-        addSerializer(Geometry.class, new GeometrySerializer());
+        geometrySerializer = new GeometrySerializer(minDecimals, maxDecimals, rounding);
+        addSerializer(Geometry.class, geometrySerializer);
         GenericGeometryParser genericGeometryParser = new GenericGeometryParser(geometryFactory);
         addDeserializer(Geometry.class, new GeometryDeserializer<Geometry>(genericGeometryParser));
         addDeserializer(
@@ -83,5 +99,9 @@ public class JtsModule extends SimpleModule {
     @Override
     public void setupModule(SetupContext context) {
         super.setupModule(context);
+    }
+
+    public void setMaxDecimals(int number) {
+        geometrySerializer.setMaximumFractionDigits(number);
     }
 }

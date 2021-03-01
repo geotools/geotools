@@ -126,8 +126,8 @@ public class AxisOrderTest {
         String contents = GeoJSONTestSupport.getFileContents(file2);
         int index = contents.indexOf("coordinates");
         assertTrue("No Coordinates in output file", index > 0);
-        String test = contents.substring(index + 17, index + 53);
-        assertTrue("bad coords", "-3.349553814356446,56.82150229321035".equalsIgnoreCase(test));
+        String test = contents.substring(index + 17, index + 32);
+        assertTrue("bad coords", "-3.3496,56.8215".equalsIgnoreCase(test));
         String[] c = test.split(",");
         assertTrue(Double.parseDouble(c[0]) < Double.parseDouble(c[1]));
     }
@@ -187,7 +187,7 @@ public class AxisOrderTest {
     }
 
     private void assertCoordsMatch(Point expected, Point dgeom) {
-        assertEquals("Wrong x", expected.getCoordinate().x, dgeom.getCoordinate().x, 0.00001);
-        assertEquals("Wrong y", expected.getCoordinate().y, dgeom.getCoordinate().y, 0.00001);
+        assertEquals("Wrong x", expected.getCoordinate().x, dgeom.getCoordinate().x, 0.0001);
+        assertEquals("Wrong y", expected.getCoordinate().y, dgeom.getCoordinate().y, 0.0001);
     }
 }

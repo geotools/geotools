@@ -259,18 +259,18 @@ public class WKBReader {
         return g;
     }
 
-    private Point readPoint() throws IOException {
+    private Point readPoint() throws IOException, ParseException {
         CoordinateSequence pts = readCoordinateSequence(1);
         return factory.createPoint(pts);
     }
 
-    private LineString readLineString() throws IOException {
+    private LineString readLineString() throws IOException, ParseException {
         int size = dis.readInt();
         CoordinateSequence pts = readCoordinateSequenceLineString(size);
         return factory.createLineString(pts);
     }
 
-    private Geometry readCircularString() throws IOException {
+    private Geometry readCircularString() throws IOException, ParseException {
         int size = dis.readInt();
         CoordinateSequence pts = readCoordinateSequenceCircularString(size);
         return factory.createCurvedGeometry(pts);
@@ -288,13 +288,13 @@ public class WKBReader {
         return factory.createCurvedGeometry(geoms);
     }
 
-    private LinearRing readLinearRing() throws IOException {
+    private LinearRing readLinearRing() throws IOException, ParseException {
         int size = dis.readInt();
         CoordinateSequence pts = readCoordinateSequenceRing(size);
         return factory.createLinearRing(pts);
     }
 
-    protected Polygon readPolygon() throws IOException {
+    protected Polygon readPolygon() throws IOException, ParseException {
         int numRings = dis.readInt();
         LinearRing[] holes = null;
         if (numRings > 1) holes = new LinearRing[numRings - 1];
@@ -397,7 +397,7 @@ public class WKBReader {
         return factory.createGeometryCollection(geoms);
     }
 
-    private CoordinateSequence readCoordinateSequence(int size) throws IOException {
+    private CoordinateSequence readCoordinateSequence(int size) throws IOException, ParseException {
         CoordinateSequence seq = JTS.createCS(csFactory, size, inputDimension, inputMeasures);
         int targetDim = seq.getDimension();
         if (targetDim > inputDimension) targetDim = inputDimension;
@@ -414,21 +414,24 @@ public class WKBReader {
         return seq;
     }
 
-    private CoordinateSequence readCoordinateSequenceCircularString(int size) throws IOException {
+    private CoordinateSequence readCoordinateSequenceCircularString(int size)
+            throws IOException, ParseException {
         CoordinateSequence seq = readCoordinateSequence(size);
         if (isStrict) return seq;
         if (seq.size() == 0 || seq.size() >= 3) return seq;
         return CoordinateSequences.extend(csFactory, seq, 3);
     }
 
-    private CoordinateSequence readCoordinateSequenceLineString(int size) throws IOException {
+    private CoordinateSequence readCoordinateSequenceLineString(int size)
+            throws IOException, ParseException {
         CoordinateSequence seq = readCoordinateSequence(size);
         if (isStrict) return seq;
         if (seq.size() == 0 || seq.size() >= 2) return seq;
         return CoordinateSequences.extend(csFactory, seq, 2);
     }
 
-    private CoordinateSequence readCoordinateSequenceRing(int size) throws IOException {
+    private CoordinateSequence readCoordinateSequenceRing(int size)
+            throws IOException, ParseException {
         CoordinateSequence seq = readCoordinateSequence(size);
         if (isStrict) return seq;
         if (CoordinateSequences.isRing(seq)) return seq;
@@ -439,7 +442,7 @@ public class WKBReader {
      * Reads a coordinate value with the specified dimensionality. Makes the X and Y ordinates
      * precise according to the precision model in use.
      */
-    private double readCoordinate(int i) throws IOException {
+    private double readCoordinate(int i) throws IOException, ParseException {
         if (i <= 1) {
             return precisionModel.makePrecise(dis.readDouble());
         } else {

@@ -31,6 +31,7 @@ import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.NameImpl;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.URLs;
 import org.opengis.feature.simple.SimpleFeature;
@@ -46,6 +47,8 @@ public class GeoJSONDataStore extends ContentDataStore implements FileDataStore 
     private CoordinateReferenceSystem crs = DefaultGeographicCRS.WGS84;
     private NameImpl typeName;
     private boolean writeBounds;
+
+    private ReferencedEnvelope bbox;
     private boolean quick = true;
 
     public GeoJSONDataStore(URL url) {
@@ -150,21 +153,18 @@ public class GeoJSONDataStore extends ContentDataStore implements FileDataStore 
     @Override
     public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
             Filter filter, Transaction transaction) throws IOException {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(Transaction transaction)
             throws IOException {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(
             Transaction transaction) throws IOException {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -194,5 +194,13 @@ public class GeoJSONDataStore extends ContentDataStore implements FileDataStore 
     /** @return the quick */
     public boolean isQuick() {
         return quick;
+    }
+
+    public ReferencedEnvelope getBbox() {
+        return bbox;
+    }
+
+    public void setBbox(ReferencedEnvelope bbox) {
+        this.bbox = bbox;
     }
 }

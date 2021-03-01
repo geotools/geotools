@@ -77,6 +77,6 @@ public abstract class BaseJtsModuleTest<T extends Geometry> {
         String json = writer.writeValueAsString(geom);
 
         Geometry regeom = mapper.readerFor(Geometry.class).readValue(json);
-        assertThat(geom.equalsExact(regeom), is(true));
+        assertThat(geom.equalsExact(regeom, 0.0001), is(true));
     }
 }

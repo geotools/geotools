@@ -48,18 +48,18 @@ public class SchemaGeneratorMojo extends AbstractGeneratorMojo {
 
 	/**
 	 * Flag controlling whether complex types from the schema should be included.
-	 * @parameter expression="true"
+	 * @parameter property=true"
 	 */
 	boolean includeComplexTypes;
 	/**
 	 * Flag controlling whether simple types from the schema should be included.
-	 * @parameter expression="true"
+	 * @parameter property=true"
 	 */
 	boolean includeSimpleTypes;
 	/**
 	 * Flag controlling whether complex types should be composed of geotools 
 	 * attribute descriptors which mirror the xml schema particles.
-	 * @parameter expression="true"
+	 * @parameter property=true"
 	 */
 	boolean followComplexTypes;
 	/**
@@ -70,7 +70,7 @@ public class SchemaGeneratorMojo extends AbstractGeneratorMojo {
 	/**
          * Flag controlling whether paths are printed out as the generator recurses 
          * through the schema.
-         * @parameter expression="false"
+         * @parameter property=false"
          */
 	boolean printRecursionPaths;
 	/**
@@ -90,7 +90,7 @@ public class SchemaGeneratorMojo extends AbstractGeneratorMojo {
 	 * generated Schema file will be defined using AbstractLazyAttributeType and
 	 * AbstractLazyComplexType.
 	 * 
-	 * @parameter expression="false"
+	 * @parameter property=false"
 	 */
 	boolean cyclicTypeSupport;
 	

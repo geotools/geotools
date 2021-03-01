@@ -55,14 +55,14 @@ public class BindingGeneratorMojo extends AbstractGeneratorMojo {
      * Flag controlling whether a parser configuration ( {@link Configuration} )
      * the default is true.
      * 
-     * @parameter expression="true"
+     * @parameter property=true"
      */
     boolean generateConfiguration;
     
     /**
      * Flag controlling whether an xsd ({@link XSD} subclass should be generated.
      * 
-     * @parameter expression="true"
+     * @parameter property=true"
      */
     boolean generateXsd;
     
@@ -70,7 +70,7 @@ public class BindingGeneratorMojo extends AbstractGeneratorMojo {
      * Flag controlling whether bindings for attributes should be generated, default is
      * false.
      * 
-     * @parameter expression="false"
+     * @parameter property=false"
      */
     boolean generateAttributeBindings;
     
@@ -78,7 +78,7 @@ public class BindingGeneratorMojo extends AbstractGeneratorMojo {
      * Flag controlling whether bindings for elements should be generated, default is
      * false.
      * 
-     * @parameter expression="false"
+     * @parameter property=false"
      */
     boolean generateElementBindings;
     
@@ -86,7 +86,7 @@ public class BindingGeneratorMojo extends AbstractGeneratorMojo {
      * Flag controlling whether bindings for types should be generated, default is
      * true.
      * 
-     * @parameter expression="true"
+     * @parameter property=true"
      */
     boolean generateTypeBindings;
 	
@@ -94,7 +94,7 @@ public class BindingGeneratorMojo extends AbstractGeneratorMojo {
      * Flag controlling whether test for bindings should be generated, default is
      * false.
      * 
-     * @parameter expression="false"
+     * @parameter property=false"
      */
     boolean generateTests;
     
@@ -114,7 +114,7 @@ public class BindingGeneratorMojo extends AbstractGeneratorMojo {
      * The base class for complex bindings. If unspecified {@link AbstractComplexBinding}
      * is used.
      * 
-     * @parameter expression="org.geotools.xsd.AbstractComplexBinding"
+     * @parameter property=org.geotools.xsd.AbstractComplexBinding"
      * 
      */
     String complexBindingBaseClass;
@@ -123,7 +123,7 @@ public class BindingGeneratorMojo extends AbstractGeneratorMojo {
      * The base class for simple bindings. If unspecified {@link AbstractSimpleBinding}
      * is used.
      * 
-     * @parameter expression="org.geotools.xsd.AbstractSimpleBinding"
+     * @parameter property=org.geotools.xsd.AbstractSimpleBinding"
      */
     String simpleBindingBaseClass;
     

@@ -93,7 +93,7 @@ public class JJTreeJavaCC extends AbstractMojo {
     /**
      * The package to generate the node classes into.
      *
-     * @parameter expression=""
+     * @parameter property="
      * @required
      */
     private String nodePackage;
@@ -102,7 +102,7 @@ public class JJTreeJavaCC extends AbstractMojo {
      * Directory where user-specified <code>Node.java</code> and <code>SimpleNode.java</code> files
      * are located. If no node exist, JJTree will create ones.
      *
-     * @parameter expression="${basedir}/src/main/jjtree"
+     * @parameter property=${basedir}/src/main/jjtree"
      * @required
      */
     private String nodeDirectory;
@@ -110,7 +110,7 @@ public class JJTreeJavaCC extends AbstractMojo {
     /**
      * Directory where the JJT file(s) are located.
      *
-     * @parameter expression="${basedir}/src/main/jjtree"
+     * @parameter property=${basedir}/src/main/jjtree"
      * @required
      */
     private String sourceDirectory;
@@ -118,7 +118,7 @@ public class JJTreeJavaCC extends AbstractMojo {
     /**
      * Directory where the output Java files will be located.
      *
-     * @parameter expression="${project.build.directory}/generated-sources/jjtree-javacc"
+     * @parameter property=${project.build.directory}/generated-sources/jjtree-javacc"
      * @required
      */
     private String outputDirectory;
@@ -131,7 +131,7 @@ public class JJTreeJavaCC extends AbstractMojo {
     /**
      * The directory to store the processed <code>.jjt</code> files.
      *
-     * @parameter expression="${project.build.directory}/timestamp"
+     * @parameter property=${project.build.directory}/timestamp"
      */
     private String timestampDirectory;
 
@@ -139,14 +139,14 @@ public class JJTreeJavaCC extends AbstractMojo {
      * The granularity in milliseconds of the last modification date for testing whether a source
      * needs recompilation
      *
-     * @parameter expression="${lastModGranularityMs}" default-value="0"
+     * @parameter property=${lastModGranularityMs}" default-value="0"
      */
     private int staleMillis;
 
     /**
      * The Maven project running this plugin.
      *
-     * @parameter expression="${project}"
+     * @parameter property=${project}"
      * @required
      */
     private MavenProject project;

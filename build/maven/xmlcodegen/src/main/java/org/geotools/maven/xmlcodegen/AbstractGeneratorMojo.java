@@ -67,7 +67,7 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
 	/**
 	 * Directory containing xml schemas, default is ${basedir}/src/main/xsd.
 	 *
-	 * @parameter expression="${basedir}/src/main/xsd"
+	 * @parameter property=${basedir}/src/main/xsd"
 	 */
 	protected File schemaSourceDirectory;
 	
@@ -91,7 +91,7 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
 	 * <p>
 	 * {@link Deprecated}, use one of {@link #sourceOutputDirectory} or {@link #testOutputDirectory}
 	 * </p>
-	 * @parameter expression="${project.build.sourceDirectory}"
+	 * @parameter property=${project.build.sourceDirectory}"
 	 */
 	protected File outputDirectory;
 	
@@ -99,21 +99,21 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
      * Directory to output generated source files to. Default is 
      * ${project.build.sourceDirectory}
      * 
-     * @parameter expression="${project.build.sourceDirectory}"
+     * @parameter property=${project.build.sourceDirectory}"
      */
 	protected File sourceOutputDirectory;
 	/**
      * Directory to output generated test files to. Default is 
      * ${project.build.testDirectory}
      * 
-     * @parameter expression="${project.build.testSourceDirectory}"
+     * @parameter property=${project.build.testSourceDirectory}"
      */
 	protected File testOutputDirectory;
 	/**
 	 * Flag controlling whether files should override files that already
 	 * exist with the same name. False by default.
 	 * 
-	 * @param expression="false"
+	 * @param property=false"
 	 */
 	protected boolean overwriteExistingFiles;
 	
@@ -134,21 +134,21 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
 	/**
      * The currently executing project
      * 
-     * @parameter expression="${project}"
+     * @parameter property=${project}"
      */
     MavenProject project;
     
     /**
      * The local maven repository
      * 
-     * @parameter expression="${localRepository}" 
+     * @parameter property=${localRepository}" 
      */
     ArtifactRepository localRepository;
     
     /**
      * Remote maven repositories
      *  
-     * @parameter expression="${project.remoteArtifactRepositories}" 
+     * @parameter property=${project.remoteArtifactRepositories}" 
      */
     List remoteRepositories;
     
@@ -170,7 +170,7 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
     /**
      * The classpath elements of the project.
      *
-     * @parameter expression="${project.runtimeClasspathElements}"
+     * @parameter property=${project.runtimeClasspathElements}"
      * @required
      * @readonly
      */
@@ -178,7 +178,7 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
     
     /**
      * Flag to control whether to include GML libraries on classpath when running.
-     * @parameter expression="true"
+     * @parameter property=true"
      */
     boolean includeGML;
     
@@ -189,7 +189,7 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
      * expected relative filesystem location. The main advantage of this approach is that it
      * supports schema files that have cyclic dependencies (e.g. GML 3.2).
      * 
-     * @parameter expression="false"
+     * @parameter property=false"
      */
     boolean relativeSchemaReference;
     

@@ -79,12 +79,10 @@ public class XXEProtectionTest {
         try {
             DataUtilities.first(fs.getFeatures());
         } catch (Exception e) {
-            // custom check as MXParser does not use the EntityResolver, does not offer a way to
-            // configure it
+            // custom check, the XMLInputFactory shall have external entities disabled
             final String msg = e.getMessage();
             assertNotNull(msg);
-            assertTrue(msg.contains("could not resolve entity"));
-            assertTrue(msg.contains("xxe"));
+            assertTrue(msg.contains("The entity \"xxe\" was referenced, but not declared"));
         }
     }
 

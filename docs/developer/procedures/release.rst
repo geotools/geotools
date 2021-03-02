@@ -107,16 +107,26 @@ When creating the first release candidate of a series, there are some extra step
 
 * Update the jobs on build.geoserver.org:
   
-  * Disable the maintenance jobs, and remove them from the geotools view
+  * Disable the previous maintenance jobs, and remove them from the geotools view
+
+  * The previous stable branch is changed to maintenance role by editing to ``DIST=maintenance`` so that javadocs and user manual are uploaded to the correct documentation folder.
   
-  * Create new jobs, duplicate from the existing master jobs, editing:
+  * For the new stable Create new jobs, duplicate from the existing ``master`` jobs, editing:
   
     * the branch specifier 
     * the ``DIST=stable`` configuration
     
-    Remember to also create the new docs and nightly build jobs.
-  
-  * Edit the previous stable branch, changing to ``DIST=maintenance``
+  * Special care is needed when setting up java11 build which uses `A`, `B` and `C` groups.
+    
+    For example if the next group in the rotation is group ``A``:
+    
+    * Carefully set Multi-Project Throttle Category to the next available groups
+      
+      ``Build A``
+      
+    * Adjust custom workspace (used as a shared workspace and local maven repo location) to match the throttle category groups
+      
+      :file:`workspace/java11a`
 
 * Announce on the developer mailing list that the new stable branch has been created.
 

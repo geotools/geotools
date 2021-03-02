@@ -67,21 +67,21 @@ When creating the first release candidate of a series, there are some extra step
     git pull
     git status
 
-* Create the new stable branch and push it to GitHub; for example, if master is ``17-SNAPSHOT`` and the remote for the official GeoTools is called ``geotools``::
+* Create the new stable branch and push it to GitHub; for example, if master is ``27-SNAPSHOT`` and the remote for the official GeoTools is called ``upstream``::
 
-    git checkout -b 17.x
-    git push geotools 17.x
+    git checkout -b 27.x
+    git push upstream 27.x
 
-* Enable `GitHub branch protection <https://github.com/geotools/geotools/settings/branches>`_ for the new stable branch: tick "Protect this branch" (only) and press "Save changes".
+* `GitHub branch protection <https://github.com/geotools/geotools/settings/branches>`_ uses some wild cards to protect the new branch.
 
-* Checkout the master branch and update the version in all ``pom.xml`` files and a few miscellaneous files; for example, if changing master from ``17-SNAPSHOT`` to ``18-SNAPSHOT``::
+* Checkout the master branch and update the version in all ``pom.xml`` files and a few miscellaneous files; for example, if changing master from ``27-SNAPSHOT`` to ``28-SNAPSHOT``::
 
     git checkout master
     ant -f build/release.xml -Drelease=24-SNAPSHOT
     
   This replaces::
 
-    find . -name ``pom.xml`` -exec sed -i 's/17-SNAPSHOT/18-SNAPSHOT/g' {} \;
+    find . -name ``pom.xml`` -exec sed -i 's/27-SNAPSHOT/28-SNAPSHOT/g' {} \;
     sed -i 's/17-SNAPSHOT/18-SNAPSHOT/g' \
         build/rename.xml \
         docs/build.xml \
@@ -94,11 +94,11 @@ When creating the first release candidate of a series, there are some extra step
      
      ::
   
-        find . -name ``pom.xml`` -exec sed -i '' 's/17-SNAPSHOT/18-SNAPSHOT/g' {} \;
+        find . -name ``pom.xml`` -exec sed -i '' 's/17-SNAPSHOT/28-SNAPSHOT/g' {} \;
 
 * Commit the changes and push to the master branch on GitHub::
 
-    git commit -am "Update version to 24-SNAPSHOT"
+    git commit -am "Update version to 27-SNAPSHOT"
     git push geotools master
       
 * Create the new release candidate version in `JIRA <https://osgeo-org.atlassian.net/projects/GEOT>`_ for issues on master; for example, if master is now ``24-SNAPSHOT``, create a Jira version ``24-RC1`` for the first release of the ``24.x`` series
@@ -108,8 +108,15 @@ When creating the first release candidate of a series, there are some extra step
 * Update the jobs on build.geoserver.org:
   
   * Disable the maintenance jobs, and remove them from the geotools view
-  * Create new jobs, create from the existing master jobs, editing the branch and the DIST=stable configuration. Remember to also create the new docs jobs.
-  * Edit the previous stable branch, changing to DIST=maintenance
+  
+  * Create new jobs, duplicate from the existing master jobs, editing:
+  
+    * the branch specifier 
+    * the ``DIST=stable`` configuration
+    
+    Remember to also create the new docs and nightly build jobs.
+  
+  * Edit the previous stable branch, changing to ``DIST=maintenance``
 
 * Announce on the developer mailing list that the new stable branch has been created.
 
@@ -120,7 +127,8 @@ When creating the first release candidate of a series, there are some extra step
   * common.py - update the external links block changing 'latest' to 'stable'
   * README.md - update the user guide links changing 'latest' to 'stable'  
   
-  ::
+    ::
+    
       sed -i 's/docs.geotools.org\/latest/docs.geotools.org\/stable/g' README.md docs/common.py
       sed -i 's/docs.geoserver.org\/latest/docs.geoserver.org\/stable/g' docs/common.py
 
@@ -129,7 +137,8 @@ When creating the first release candidate of a series, there are some extra step
   * common.py - update the external links block changing 'stable' to 'maintenance' (the geoserver link will change to 'maintain').
   * README.md - update the user guide links changing 'stable' to 'maintenance'  
   
-  ::
+    ::
+    
       sed -i 's/docs.geotools.org\/stable/docs.geotools.org\/maintenance/g' README.md docs/common.py
       sed -i 's/docs.geoserver.org\/stable/docs.geoserver.org\/maintain/g' docs/common.py
 

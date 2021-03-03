@@ -40,9 +40,9 @@ public class TemporalConverterFactoryTest {
     }
 
     /**
-     * When converting from Calendar to Date from ArcSDE we run into a problem where the Dates are
-     * out by a very small number. Basically we need to look at the Calendar and see if it
-     * represents an *entire* day.
+     * When converting from Calendar to Date we run into a problem where the Dates are out by a very
+     * small number. Basically we need to look at the Calendar and see if it represents an *entire*
+     * day.
      */
     @Test
     public void testStitchInTime() throws Exception {

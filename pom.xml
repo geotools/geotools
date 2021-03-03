@@ -1493,12 +1493,6 @@
         <version>${mockito.core.version}</version>
         <scope>test</scope>
       </dependency>
-     <!-- ArcSDE -->
-      <dependency>
-        <groupId>com.ibm.icu</groupId>
-        <artifactId>icu4j</artifactId>
-        <version>3.4.4</version>
-      </dependency>
 
      <!-- JAIExt -->
       <dependency>

@@ -66,18 +66,23 @@
 
     <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-property</artifactId>
+      <artifactId>gt-cql</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-cql</artifactId>
+      <artifactId>gt-process-feature</artifactId>
+      <version>${project.version}</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-property</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
-
 
     <dependency>
       <groupId>org.geotools</groupId>

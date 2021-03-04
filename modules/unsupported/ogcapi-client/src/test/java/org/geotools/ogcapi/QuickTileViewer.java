@@ -33,6 +33,8 @@ import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
@@ -55,10 +57,13 @@ import org.geotools.styling.Style;
 import org.geotools.swing.JMapFrame;
 import org.geotools.util.URLs;
 import org.geotools.util.UnsupportedImplementationException;
+import org.geotools.util.logging.Logging;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.SAXException;
 
 public class QuickTileViewer {
+
+    static final Logger LOGGER = Logging.getLogger(QuickTileViewer.class);
 
     public static final String APPLICATION_JSON = "application/json";
 
@@ -101,8 +106,7 @@ public class QuickTileViewer {
 
             setBaseURL(base);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOGGER.log(Level.WARNING, "", e);
         }
     }
 
@@ -282,7 +286,7 @@ public class QuickTileViewer {
                                             } catch (IOException
                                                     | SAXException
                                                     | ParserConfigurationException e1) {
-                                                e1.printStackTrace();
+                                                LOGGER.log(Level.WARNING, "", e);
                                             }
                                         }
                                     });

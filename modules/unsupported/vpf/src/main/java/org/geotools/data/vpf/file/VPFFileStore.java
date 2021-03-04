@@ -158,9 +158,9 @@ public class VPFFileStore extends ContentDataStore {
                 SimpleFeatureType schema = iter.next();
                 file = (VPFFile) schema.getUserData().get(VPFFile.class);
                 file.close();
-            } catch (Exception exc) {
+            } catch (Exception e) {
                 // No idea why this might happen
-                exc.printStackTrace();
+                LOGGER.log(Level.SEVERE, "", e);
             }
         }
         files.clear();

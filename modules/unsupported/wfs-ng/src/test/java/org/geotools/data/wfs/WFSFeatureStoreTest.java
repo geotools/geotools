@@ -284,7 +284,7 @@ public class WFSFeatureStoreTest {
             // So here, in WFS 1.0 case textual information is available only.
             StringWriter writer = new StringWriter();
             PrintWriter printer = new PrintWriter(writer);
-            e.printStackTrace(printer);
+            e.printStackTrace(printer); // NOPMD
             printer.close();
             assertTrue(writer.toString().contains("MyErrorMessage"));
             return;

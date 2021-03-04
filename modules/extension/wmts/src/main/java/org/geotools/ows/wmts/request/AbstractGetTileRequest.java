@@ -336,8 +336,7 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
         try {
             ret = new URL(requestUrl);
         } catch (MalformedURLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "", e);
         }
         return ret;
     }

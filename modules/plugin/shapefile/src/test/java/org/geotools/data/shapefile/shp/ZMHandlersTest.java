@@ -459,8 +459,7 @@ public class ZMHandlersTest {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            fail();
+            fail(e.getMessage());
         }
         store.dispose();
     }

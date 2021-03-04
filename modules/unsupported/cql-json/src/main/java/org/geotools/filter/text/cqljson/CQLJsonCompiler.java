@@ -24,6 +24,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.AbstractList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.geotools.filter.text.commons.ICompiler;
 import org.geotools.filter.text.commons.IToken;
@@ -61,11 +63,14 @@ import org.geotools.filter.text.cqljson.model.Touches;
 import org.geotools.filter.text.cqljson.model.Toverlaps;
 import org.geotools.filter.text.cqljson.model.Within;
 import org.geotools.filter.text.generated.parsers.ParseException;
+import org.geotools.util.logging.Logging;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 
 public class CQLJsonCompiler implements ICompiler {
+
+    static final Logger LOGGER = Logging.getLogger(CQLJsonCompiler.class);
 
     /** cql expression to compile */
     private final String source;
@@ -211,7 +216,7 @@ public class CQLJsonCompiler implements ICompiler {
                                                         try {
                                                             return convertToFilter(a);
                                                         } catch (ParseException e) {
-                                                            e.printStackTrace();
+                                                            LOGGER.log(Level.SEVERE, "", e);
                                                         }
                                                         return (Filter) a;
                                                     })
@@ -228,7 +233,7 @@ public class CQLJsonCompiler implements ICompiler {
                                                         try {
                                                             return convertToFilter(a);
                                                         } catch (ParseException e) {
-                                                            e.printStackTrace();
+                                                            LOGGER.log(Level.SEVERE, "", e);
                                                         }
                                                         return (Filter) a;
                                                     })

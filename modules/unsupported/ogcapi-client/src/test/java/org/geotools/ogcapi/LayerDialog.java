@@ -24,6 +24,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -31,11 +33,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import org.geotools.util.logging.Logging;
 
 public class LayerDialog extends JDialog {
     /** serialVersionUID */
     private static final long serialVersionUID = -7331660512351526439L;
 
+    static final Logger LOGGER = Logging.getLogger(LayerDialog.class);
     static LayerDialog thedialog;
 
     JPanel panel0;
@@ -61,7 +65,7 @@ public class LayerDialog extends JDialog {
                 | InstantiationException
                 | IllegalAccessException
                 | UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "", e);
         }
 
         thedialog = new LayerDialog();

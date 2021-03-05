@@ -336,6 +336,7 @@ public class RasterLayout implements Cloneable {
     }
 
     /** Returns a String containing the values of all valid fields. */
+    @Override
     public String toString() {
         String s = "RasterLayout[";
 
@@ -367,6 +368,7 @@ public class RasterLayout implements Cloneable {
     }
 
     /** Returns a clone of the <code>RasterLayout</code> as an Object. */
+    @Override
     public Object clone() {
         try {
             return super.clone();
@@ -384,6 +386,7 @@ public class RasterLayout implements Cloneable {
      *     otherwise.
      * @since JAI 1.1
      */
+    @Override
     public boolean equals(Object obj) {
 
         if (this == obj) return true;

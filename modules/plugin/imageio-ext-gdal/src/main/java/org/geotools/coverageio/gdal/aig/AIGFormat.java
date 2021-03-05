@@ -53,11 +53,13 @@ public final class AIGFormat extends BaseGDALGridFormat implements Format {
             new InfoWrapper("Arc/Info Binary Grid (AIG) Coverage Format", "AIG");
 
     /** Sets the metadata information. */
+    @Override
     protected void setInfo() {
         setInfo(INFO);
     }
 
     /** @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object, Hints) */
+    @Override
     public AIGReader getReader(Object source, Hints hints) {
         try {
             return new AIGReader(source, hints);

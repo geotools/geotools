@@ -30,6 +30,7 @@ public class SQLServerGeometryTestSetup extends JDBCGeometryTestSetup {
         super(new SQLServerTestSetup());
     }
 
+    @Override
     public void setUp() throws Exception {
         super.setUp();
         runSafe("DROP TABLE GEOMETRY_COLUMNS");

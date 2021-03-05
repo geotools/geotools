@@ -234,6 +234,7 @@ public class IndexedFidReader implements FIDReader, FileReader {
         }
     }
 
+    @Override
     public void close() throws IOException {
         try {
             if (buffer != null) {
@@ -246,6 +247,7 @@ public class IndexedFidReader implements FIDReader, FileReader {
         }
     }
 
+    @Override
     @SuppressWarnings("PMD.CloseResource") // FileChannel managed as a field
     public boolean hasNext() throws IOException {
         if (done) {
@@ -267,6 +269,7 @@ public class IndexedFidReader implements FIDReader, FileReader {
         return buffer.remaining() != 0;
     }
 
+    @Override
     public String next() throws IOException {
         if (!hasNext()) {
             throw new NoSuchElementException(
@@ -306,6 +309,7 @@ public class IndexedFidReader implements FIDReader, FileReader {
         return currentId;
     }
 
+    @Override
     public String id() {
         return getClass().getName();
     }

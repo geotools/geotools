@@ -65,6 +65,7 @@ public class H2Dialect extends SQLDialect {
         super(dataStore);
     }
 
+    @Override
     public String getNameEscape() {
         return "\"";
     }
@@ -323,6 +324,7 @@ public class H2Dialect extends SQLDialect {
                 || MultiPolygon.class.isAssignableFrom(binding);
     }
 
+    @Override
     public Integer getGeometrySRID(
             String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
@@ -371,6 +373,7 @@ public class H2Dialect extends SQLDialect {
         }
     }
 
+    @Override
     public void encodeGeometryEnvelope(String tableName, String geometryColumn, StringBuffer sql) {
         // TODO: change spatialdbbox to use envelope
         sql.append("ST_Envelope(");
@@ -398,6 +401,7 @@ public class H2Dialect extends SQLDialect {
         }
     }
 
+    @Override
     public Geometry decodeGeometryValue(
             GeometryDescriptor descriptor,
             ResultSet rs,
@@ -421,6 +425,7 @@ public class H2Dialect extends SQLDialect {
         // return JTS.geometryFromBytes( bytes );
     }
 
+    @Override
     public void encodePrimaryKey(String column, StringBuffer sql) {
         encodeColumnName(null, column, sql);
         sql.append(" int AUTO_INCREMENT(1) PRIMARY KEY");

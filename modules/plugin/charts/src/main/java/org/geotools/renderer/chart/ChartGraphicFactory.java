@@ -60,6 +60,7 @@ public class ChartGraphicFactory implements ExternalGraphicFactory {
     public static final String FORMAT = "application/chart";
     private static final String HTTP_CHART = "http://chart?";
 
+    @Override
     public Icon getIcon(Feature feature, Expression urlExpression, String format, int size)
             throws Exception {
         // evaluate the expression as a string, get the query params

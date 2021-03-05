@@ -61,6 +61,7 @@ public class DbaseFileTest extends TestCaseSupport {
         assertEquals("Number of attributes found incorect", 252, dbf.getHeader().getNumFields());
     }
 
+    @Override
     @After
     public void tearDown() throws Exception {
         dbf.close();

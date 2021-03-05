@@ -118,6 +118,7 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
         return "Teradata";
     }
 
+    @Override
     public String getDescription() {
         return "Teradata Database";
     }

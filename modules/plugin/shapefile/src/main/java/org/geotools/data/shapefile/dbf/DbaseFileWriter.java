@@ -287,6 +287,7 @@ public class DbaseFileWriter implements Closeable {
      *
      * @throws IOException If errors occur.
      */
+    @Override
     public void close() throws IOException {
         // IANS - GEOT 193, bogus 0x00 written. According to dbf spec, optional
         // eof 0x1a marker is, well, optional. Since the original code wrote a

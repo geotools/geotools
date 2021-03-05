@@ -805,6 +805,7 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader
         return readRaster(null);
     }
 
+    @Override
     public Format getFormat() {
         return new GrassCoverageFormat();
     }

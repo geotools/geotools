@@ -478,14 +478,17 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
         return multiThreadedLoading;
     }
 
+    @Override
     public boolean doInputTransparency() {
         return doInputTransparency;
     }
 
+    @Override
     public double[][] getSourceThreshold() {
         return sourceThreshold;
     }
 
+    @Override
     public boolean hasAlpha() {
         return hasAlpha;
     }

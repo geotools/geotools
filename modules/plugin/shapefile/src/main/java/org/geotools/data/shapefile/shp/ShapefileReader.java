@@ -122,6 +122,7 @@ public class ShapefileReader implements FileReader, Closeable {
         }
 
         /** A summary of the record. */
+        @Override
         public String toString() {
             return "Record "
                     + number
@@ -374,6 +375,7 @@ public class ShapefileReader implements FileReader, Closeable {
      *
      * @throws IOException If errors occur while closing the channel.
      */
+    @Override
     public void close() throws IOException {
         // don't throw NPE on double close
         if (channel == null) return;
@@ -741,6 +743,7 @@ public class ShapefileReader implements FileReader, Closeable {
         this.handler = handler;
     }
 
+    @Override
     public String id() {
         return getClass().getName();
     }

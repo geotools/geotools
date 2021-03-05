@@ -316,6 +316,7 @@ public class RasterLayerResponse {
          * <p>If not {@link MergeBehavior#STACK}ing is required, we collect them all together with
          * an include filter.
          */
+        @Override
         public void visit(GranuleDescriptor granuleDescriptor, SimpleFeature sf) {
             //
             // load raster data

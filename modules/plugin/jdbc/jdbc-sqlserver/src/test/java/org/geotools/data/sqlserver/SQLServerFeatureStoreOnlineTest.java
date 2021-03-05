@@ -37,6 +37,7 @@ public class SQLServerFeatureStoreOnlineTest extends JDBCFeatureStoreOnlineTest 
         // does not work, see GEOT-2832
     }
 
+    @Override
     public void testAddFeaturesUseProvidedFid() throws IOException {
         // cannot work in general since the primary column is an identity:
         // - it is not possible to insert into an indentity column unless the IDENTITY_INSERT

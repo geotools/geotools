@@ -219,10 +219,12 @@ public class DB2SQLDialectPrepared extends PreparedStatementSQLDialect {
         DB2Util.prepareGeometryValue(gClass, srid, binding, sql);
     }
 
+    @Override
     public boolean isLimitOffsetSupported() {
         return delegate.isLimitOffsetSupported();
     }
 
+    @Override
     public void applyLimitOffset(StringBuffer sql, int limit, int offset) {
         delegate.applyLimitOffset(sql, limit, offset);
     }
@@ -257,6 +259,7 @@ public class DB2SQLDialectPrepared extends PreparedStatementSQLDialect {
         delegate.setFunctionEncodingEnabled(functionEncodingEnabled);
     }
 
+    @Override
     public List<ReferencedEnvelope> getOptimizedBounds(
             String schema, SimpleFeatureType featureType, Connection cx)
             throws SQLException, IOException {

@@ -311,6 +311,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
     }
 
     /** @see org.opengis.coverage.grid.GridCoverageReader#getFormat() */
+    @Override
     public Format getFormat() {
         return new ArcGridFormat();
     }
@@ -331,6 +332,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
      * @see
      *     org.opengis.coverage.grid.GridCoverageReader#read(org.opengis.parameter.GeneralParameterValue[])
      */
+    @Override
     @SuppressWarnings("unchecked")
     public GridCoverage2D read(GeneralParameterValue[] params)
             throws IllegalArgumentException, IOException {

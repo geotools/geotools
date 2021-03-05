@@ -41,6 +41,7 @@ public final class ECWFormatFactory extends BaseGridFormatFactorySPI
      *
      * @return {@code true} if the plugin is available, {@code false} otherwise.
      */
+    @Override
     public boolean isAvailable() {
         boolean available = true;
 
@@ -68,6 +69,7 @@ public final class ECWFormatFactory extends BaseGridFormatFactorySPI
      *
      * @return A {@link ECWFormat}
      */
+    @Override
     public ECWFormat createFormat() {
         return new ECWFormat();
     }

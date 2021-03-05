@@ -54,6 +54,7 @@ public final class ECWReader extends BaseGDALGridCoverage2DReader implements Gri
     }
 
     /** @see org.opengis.coverage.grid.GridCoverageReader#getFormat() */
+    @Override
     public Format getFormat() {
         return new ECWFormat();
     }

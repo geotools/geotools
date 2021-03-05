@@ -326,6 +326,7 @@ public class HsqlDialectEpsgMediatorStressTest {
             return mediator.createCoordinateReferenceSystem(code);
         }
 
+        @Override
         public void runTest() throws Throwable {
             for (int i = 0; i < iterations; i++) {
                 // record start time

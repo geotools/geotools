@@ -52,6 +52,7 @@ class SDOOracleDialect extends OracleDialect {
         return readGeometry(rs.getObject(column), factory, cx);
     }
 
+    @Override
     public Geometry readGeometry(Object object, GeometryFactory factory, Connection cx)
             throws SQLException {
         if (object == null) return null;

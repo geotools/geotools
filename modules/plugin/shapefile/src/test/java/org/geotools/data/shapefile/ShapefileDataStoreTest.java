@@ -135,6 +135,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     static final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
     private ShapefileDataStore store;
 
+    @Override
     @After
     public void tearDown() throws Exception {
         if (store != null) {

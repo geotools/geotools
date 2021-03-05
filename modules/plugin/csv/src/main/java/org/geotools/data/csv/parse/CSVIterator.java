@@ -104,6 +104,7 @@ public class CSVIterator implements Iterator<SimpleFeature>, Closeable {
         throw new UnsupportedOperationException("Cannot remove features from csv iteratore");
     }
 
+    @Override
     public void close() {
         try {
             csvReader.close();

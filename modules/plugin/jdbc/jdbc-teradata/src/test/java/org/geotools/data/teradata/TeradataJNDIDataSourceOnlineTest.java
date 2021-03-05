@@ -24,6 +24,7 @@ import org.geotools.jdbc.JDBCJNDITestSetup;
 
 public class TeradataJNDIDataSourceOnlineTest extends JDBCJNDIDataSourceOnlineTest {
 
+    @Override
     protected JDBCJNDITestSetup createTestSetup() {
         return new JDBCJNDITestSetup(new TeradataTestSetup());
     }

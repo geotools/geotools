@@ -21,6 +21,7 @@ import org.geotools.jdbc.JDBCTestSetup;
 
 public class H2FeatureLockingTest extends JDBCFeatureLockingOnlineTest {
 
+    @Override
     protected JDBCTestSetup createTestSetup() {
         return new H2TestSetup();
     }

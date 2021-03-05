@@ -25,6 +25,7 @@ import org.geotools.jdbc.JDBCTestSetup;
  * @author Justin Deoliveira, The Open Planning Project
  */
 public class H2FeatureSourceTest extends JDBCFeatureSourceOnlineTest {
+    @Override
     protected JDBCTestSetup createTestSetup() {
         return new H2TestSetup();
     }

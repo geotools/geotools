@@ -22,14 +22,17 @@ import org.geotools.jdbc.JDBCTransactionOnlineTest;
 
 public class TeradataTransactionOnlineTest extends JDBCTransactionOnlineTest {
 
+    @Override
     protected JDBCTestSetup createTestSetup() {
         return new TeradataTestSetup();
     }
 
+    @Override
     public void testConcurrentTransactions() throws IOException {
         // TODO enable this
     }
 
+    @Override
     public void testSerialTransactions() throws IOException {
         // Teradata will block
         // TODO enable this

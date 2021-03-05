@@ -55,14 +55,17 @@ public class PreGeneralizedFeatureIterator implements SimpleFeatureIterator {
         this.indexMapping = indexMapping;
     }
 
+    @Override
     public void close() {
         backendIterator.close();
     }
 
+    @Override
     public boolean hasNext() {
         return backendIterator.hasNext();
     }
 
+    @Override
     public SimpleFeature next() throws NoSuchElementException {
         SimpleFeature f = backendIterator.next();
         if (f == null) return null;

@@ -24,6 +24,7 @@ import org.geotools.gce.imagemosaic.Utils;
 /** A Default {@link CoverageNameCollectorSPI} implementation */
 public class DefaultCoverageNameCollectorSPI implements CoverageNameCollectorSPI {
 
+    @Override
     public CoverageNameCollector create(Object object, Map<String, String> properties) {
         // Default collector ignores the properties
         if (object instanceof StructuredGridCoverage2DReader) {

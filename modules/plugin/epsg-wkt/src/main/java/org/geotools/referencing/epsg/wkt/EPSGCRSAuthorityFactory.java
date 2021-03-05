@@ -142,6 +142,7 @@ public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAutho
         return DEFAULT;
     }
 
+    @Override
     public synchronized CoordinateReferenceSystem createCoordinateReferenceSystem(String code)
             throws FactoryException {
         if (code == null) {
@@ -187,18 +188,22 @@ public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAutho
         }
     }
 
+    @Override
     public IdentifiedObject createObject(String code) throws FactoryException {
         return createCoordinateReferenceSystem(code);
     }
 
+    @Override
     public ProjectedCRS createProjectedCRS(String code) throws FactoryException {
         return (ProjectedCRS) createCoordinateReferenceSystem(code);
     }
 
+    @Override
     public GeographicCRS createGeographicCRS(String code) throws FactoryException {
         return (GeographicCRS) createCoordinateReferenceSystem(code);
     }
 
+    @Override
     public Citation getAuthority() {
         return Citations.EPSG;
     }
@@ -224,6 +229,7 @@ public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAutho
      *     set.
      * @throws FactoryException if access to the underlying database failed.
      */
+    @Override
     public Set<String> getAuthorityCodes(Class clazz) throws FactoryException {
         // could cashe this info if it is time consuming to filter
         if (clazz.getName().equalsIgnoreCase(CoordinateReferenceSystem.class.getName())) {
@@ -266,10 +272,12 @@ public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAutho
         return crsFactory;
     }
 
+    @Override
     public Citation getVendor() {
         return Citations.GEOTOOLS;
     }
 
+    @Override
     public InternationalString getDescriptionText(String code) throws FactoryException {
         if (code == null) {
             return null;
@@ -288,35 +296,42 @@ public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAutho
         return new org.geotools.util.SimpleInternationalString(wkt.substring(start + 1, end));
     }
 
+    @Override
     public org.opengis.referencing.crs.CompoundCRS createCompoundCRS(String str)
             throws FactoryException {
         throw new FactoryException("Not implemented");
     }
 
+    @Override
     public org.opengis.referencing.crs.DerivedCRS createDerivedCRS(String str)
             throws FactoryException {
         throw new FactoryException("Not implemented");
     }
 
+    @Override
     public org.opengis.referencing.crs.EngineeringCRS createEngineeringCRS(String str)
             throws FactoryException {
         throw new FactoryException("Not implemented");
     }
 
+    @Override
     public org.opengis.referencing.crs.GeocentricCRS createGeocentricCRS(String str)
             throws FactoryException {
         throw new FactoryException("Not implemented");
     }
 
+    @Override
     public org.opengis.referencing.crs.ImageCRS createImageCRS(String str) throws FactoryException {
         throw new FactoryException("Not implemented");
     }
 
+    @Override
     public org.opengis.referencing.crs.TemporalCRS createTemporalCRS(String str)
             throws FactoryException {
         throw new FactoryException("Not implemented");
     }
 
+    @Override
     public org.opengis.referencing.crs.VerticalCRS createVerticalCRS(String str)
             throws FactoryException {
         throw new FactoryException("Not implemented");

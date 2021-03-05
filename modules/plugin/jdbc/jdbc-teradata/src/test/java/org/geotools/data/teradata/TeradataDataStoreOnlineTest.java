@@ -32,6 +32,7 @@ import org.opengis.filter.PropertyIsEqualTo;
 
 public class TeradataDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
 
+    @Override
     protected JDBCTestSetup createTestSetup() {
         return new TeradataTestSetup();
     }

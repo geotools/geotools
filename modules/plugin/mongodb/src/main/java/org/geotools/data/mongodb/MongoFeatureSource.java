@@ -352,6 +352,7 @@ public class MongoFeatureSource extends ContentFeatureSource {
                         }
                     }
 
+                    @Override
                     public Object visit(PropertyIsLike filter, Object notUsed) {
                         if (original == null) original = filter;
 

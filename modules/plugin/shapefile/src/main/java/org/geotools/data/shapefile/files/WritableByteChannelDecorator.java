@@ -47,10 +47,12 @@ public class WritableByteChannelDecorator implements WritableByteChannel {
         closed = false;
     }
 
+    @Override
     public int write(ByteBuffer src) throws IOException {
         return wrapped.write(src);
     }
 
+    @Override
     public void close() throws IOException {
         try {
             wrapped.close();
@@ -62,6 +64,7 @@ public class WritableByteChannelDecorator implements WritableByteChannel {
         }
     }
 
+    @Override
     public boolean isOpen() {
         return wrapped.isOpen();
     }

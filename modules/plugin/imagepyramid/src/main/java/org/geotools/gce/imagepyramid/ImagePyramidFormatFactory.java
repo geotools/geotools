@@ -36,6 +36,7 @@ public final class ImagePyramidFormatFactory implements GridFormatFactorySpi {
      *
      * @return False if this plugin is not available true otherwise.
      */
+    @Override
     public boolean isAvailable() {
         boolean available = true;
 
@@ -54,6 +55,7 @@ public final class ImagePyramidFormatFactory implements GridFormatFactorySpi {
      *
      * @return an OpenGIS {@link Format} subclass for this coverage.
      */
+    @Override
     public ImagePyramidFormat createFormat() {
         return new ImagePyramidFormat();
     }
@@ -63,6 +65,7 @@ public final class ImagePyramidFormatFactory implements GridFormatFactorySpi {
      *
      * @return an empty map.
      */
+    @Override
     public Map<RenderingHints.Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }

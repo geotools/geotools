@@ -87,10 +87,12 @@ public class CachedQuadTree {
             boolean read = true;
             int idx = 0;
 
+            @Override
             public void remove() {
                 throw new UnsupportedOperationException();
             }
 
+            @Override
             public Data next() {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
@@ -100,6 +102,7 @@ public class CachedQuadTree {
                 return data;
             }
 
+            @Override
             public boolean hasNext() {
                 if (!read) {
                     return true;
@@ -122,6 +125,7 @@ public class CachedQuadTree {
                 return true;
             }
 
+            @Override
             public void close() throws IOException {
                 indices.clear();
             }

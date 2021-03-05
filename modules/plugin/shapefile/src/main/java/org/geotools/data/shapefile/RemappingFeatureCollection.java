@@ -107,6 +107,7 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
         this.attributesMapping = attributesMapping;
     }
 
+    @Override
     public SimpleFeatureType getSchema() {
         return remapSchema(delegate.getSchema());
     }
@@ -145,6 +146,7 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
         return builder.buildFeatureType();
     }
 
+    @Override
     public SimpleFeatureIterator features() {
         return new RemappingIterator(delegate.features(), attributesMapping, getSchema());
     }
@@ -189,10 +191,12 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
             this.builder = new SimpleFeatureBuilder(schema);
         }
 
+        @Override
         public boolean hasNext() {
             return delegate.hasNext();
         }
 
+        @Override
         public SimpleFeature next() {
             return RemappingFeatureCollection.remap(delegate.next(), attributesMapping, builder);
         }

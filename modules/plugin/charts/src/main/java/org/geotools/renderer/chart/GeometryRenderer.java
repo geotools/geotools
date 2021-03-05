@@ -136,6 +136,7 @@ public class GeometryRenderer extends AbstractXYItemRenderer {
         return renderCoordinates ? 2 : 1;
     }
 
+    @Override
     public void drawItem(
             Graphics2D g2,
             XYItemRendererState state,
@@ -300,6 +301,7 @@ public class GeometryRenderer extends AbstractXYItemRenderer {
                 this.delegate = delegate;
             }
 
+            @Override
             public int currentSegment(float[] coords) {
                 int i = delegate.currentSegment(coords);
                 coords[0] =
@@ -313,6 +315,7 @@ public class GeometryRenderer extends AbstractXYItemRenderer {
                 return i;
             }
 
+            @Override
             public int currentSegment(double[] coords) {
                 int i = delegate.currentSegment(coords);
                 coords[0] = domainAxis.valueToJava2D(coords[0], dataArea, plot.getDomainAxisEdge());
@@ -320,14 +323,17 @@ public class GeometryRenderer extends AbstractXYItemRenderer {
                 return i;
             }
 
+            @Override
             public int getWindingRule() {
                 return delegate.getWindingRule();
             }
 
+            @Override
             public boolean isDone() {
                 return delegate.isDone();
             }
 
+            @Override
             public void next() {
                 delegate.next();
             }

@@ -42,6 +42,7 @@ public final class EsriHdrFormatFactory implements GridFormatFactorySpi {
      *
      * @return {@code true} if the plugin is available, {@code false} otherwise.
      */
+    @Override
     public boolean isAvailable() {
         boolean available = true;
 
@@ -70,11 +71,13 @@ public final class EsriHdrFormatFactory implements GridFormatFactorySpi {
      *
      * @return A {@link EsriHdrFormat}
      */
+    @Override
     public EsriHdrFormat createFormat() {
         return new EsriHdrFormat();
     }
 
     /** Returns the implementation hints. The default implementation returns en empty map. */
+    @Override
     public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }

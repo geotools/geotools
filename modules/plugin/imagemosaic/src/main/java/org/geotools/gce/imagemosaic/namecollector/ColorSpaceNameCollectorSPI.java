@@ -29,6 +29,7 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
  */
 public class ColorSpaceNameCollectorSPI implements CoverageNameCollectorSPI {
 
+    @Override
     public CoverageNameCollector create(Object object, Map<String, String> properties) {
         return new ColorSpaceBasedNameCollector();
     }

@@ -50,6 +50,7 @@ import org.geotools.xsd.Node;
 public class GridsettypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GPKG.gridsettype;
     }
@@ -61,6 +62,7 @@ public class GridsettypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Object.class;
     }
@@ -72,6 +74,7 @@ public class GridsettypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         String name = (String) node.getChildValue("name");

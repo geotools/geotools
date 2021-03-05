@@ -40,16 +40,19 @@ public final class GPKG extends XSD {
     /** private constructor */
     private GPKG() {}
 
+    @Override
     protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(FES.getInstance());
     }
 
     /** Returns 'http://www.opengis.net/gpkg'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'gpkg.xsd.'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("gpkg.xsd").toString();
     }

@@ -22,6 +22,7 @@ import org.geotools.jdbc.JDBCTestSetup;
 /** @author Stefan Uhrig, SAP SE */
 public class HanaConnectionLifecycleOnlineTest extends JDBCConnectionLifecycleOnlineTest {
 
+    @Override
     protected JDBCTestSetup createTestSetup() {
         return new HanaTestSetup();
     }

@@ -172,6 +172,7 @@ public class ShpFilesLockingTest implements FileWriter {
         shpFiles.dispose();
     }
 
+    @Override
     public String id() {
         return getClass().getName();
     }

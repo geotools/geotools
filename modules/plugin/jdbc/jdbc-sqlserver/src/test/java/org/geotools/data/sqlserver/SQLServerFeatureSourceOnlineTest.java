@@ -30,6 +30,7 @@ public class SQLServerFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTes
         return new SqlServerNativeSerializationTestSetup();
     }
 
+    @Override
     public void testGetFeaturesWithOffset() throws Exception {
         SimpleFeatureSource featureSource = dataStore.getFeatureSource(tname("ft_from"));
         Query q = new Query(featureSource.getSchema().getTypeName());

@@ -41,6 +41,7 @@ public final class JP2ECWFormatFactory extends BaseGridFormatFactorySPI
      *
      * @return {@code true} if the plugin is available, {@code false} otherwise.
      */
+    @Override
     public boolean isAvailable() {
         boolean available = true;
 
@@ -73,6 +74,7 @@ public final class JP2ECWFormatFactory extends BaseGridFormatFactorySPI
      *
      * @return A {@link JP2ECWFormat}.;
      */
+    @Override
     public JP2ECWFormat createFormat() {
         return new JP2ECWFormat();
     }

@@ -57,11 +57,13 @@ public class Identification implements CharSequence, Serializable {
     }
 
     /** Returns the {@linkplain #name} length. */
+    @Override
     public int length() {
         return (name != null) ? name.length() : 0;
     }
 
     /** Returns the {@linkplain #name} character at the specified index. */
+    @Override
     public char charAt(final int index) {
         return name.charAt(index);
     }
@@ -70,6 +72,7 @@ public class Identification implements CharSequence, Serializable {
      * Returns a subsequence of this identification. The new identification will contains a
      * substring of the {@linkplain #name}, but the {@linkplain #type} will be unchanged.
      */
+    @Override
     public CharSequence subSequence(final int start, final int end) {
         if (start == 0 && end == length()) {
             return this;
@@ -78,6 +81,7 @@ public class Identification implements CharSequence, Serializable {
     }
 
     /** Returns a hash value for this identification. */
+    @Override
     public int hashCode() {
         int code = (int) serialVersionUID;
         if (name != null) code ^= name.hashCode();
@@ -85,6 +89,7 @@ public class Identification implements CharSequence, Serializable {
     }
 
     /** Compares the specified object with this identification for equality. */
+    @Override
     public boolean equals(final Object object) {
         if (object != null && object.getClass().equals(getClass())) {
             final Identification that = (Identification) object;
@@ -112,6 +117,7 @@ public class Identification implements CharSequence, Serializable {
         return identifier;
     }
 
+    @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("Name: ").append(name);

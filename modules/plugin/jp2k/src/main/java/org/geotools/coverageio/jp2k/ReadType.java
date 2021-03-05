@@ -44,6 +44,7 @@ import org.geotools.metadata.i18n.Errors;
  */
 enum ReadType {
     DIRECT_READ {
+        @Override
         RenderedImage read(
                 final ImageReadParam readP,
                 final int imageIndex,

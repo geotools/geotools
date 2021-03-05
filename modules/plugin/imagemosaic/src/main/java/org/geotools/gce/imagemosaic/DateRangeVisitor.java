@@ -34,6 +34,7 @@ class DateRangeVisitor extends RangeVisitor {
         super(attributeTypeName1, attributeTypeName2, RangeType.DATE);
     }
 
+    @Override
     public void visit(Feature feature) {
         final Object firstValue = expr1.evaluate(feature);
         final Object secondValue = expr2.evaluate(feature);

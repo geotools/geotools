@@ -26,6 +26,7 @@ import org.geotools.jdbc.JDBCTestSupport;
  * @author Justin Deoliveira, The Open Planning Project
  */
 public class MySQLDataStoreAutoEnhandedSpatialSupportTest extends JDBCTestSupport {
+    @Override
     protected JDBCTestSetup createTestSetup() {
         return new MySQLTestSetup();
     }

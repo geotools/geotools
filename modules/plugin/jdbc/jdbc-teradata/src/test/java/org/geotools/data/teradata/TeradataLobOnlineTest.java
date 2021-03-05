@@ -21,6 +21,7 @@ import org.geotools.jdbc.JDBCLobTestSetup;
 
 public class TeradataLobOnlineTest extends JDBCLobOnlineTest {
 
+    @Override
     protected JDBCLobTestSetup createTestSetup() {
         return new TeradataLobTestSetup(new TeradataTestSetup());
     }

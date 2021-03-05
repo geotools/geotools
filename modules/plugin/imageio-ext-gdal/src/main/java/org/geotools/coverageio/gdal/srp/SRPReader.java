@@ -54,6 +54,7 @@ public final class SRPReader extends BaseGDALGridCoverage2DReader implements Gri
     }
 
     /** @see GridCoverageReader#getFormat() */
+    @Override
     public Format getFormat() {
         return new SRPFormat();
     }

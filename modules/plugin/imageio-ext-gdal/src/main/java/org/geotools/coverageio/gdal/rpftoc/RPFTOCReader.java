@@ -55,6 +55,7 @@ public final class RPFTOCReader extends BaseGDALGridCoverage2DReader implements 
     }
 
     /** @see org.opengis.coverage.grid.GridCoverageReader#getFormat() */
+    @Override
     public Format getFormat() {
         return new RPFTOCFormat();
     }
@@ -65,6 +66,7 @@ public final class RPFTOCReader extends BaseGDALGridCoverage2DReader implements 
      *
      * @return the coverage name
      */
+    @Override
     public String getCoverageName() {
         /*
          * Override coverage name because of the default structure of the folders. Very often XXX/RPF/A.TOC

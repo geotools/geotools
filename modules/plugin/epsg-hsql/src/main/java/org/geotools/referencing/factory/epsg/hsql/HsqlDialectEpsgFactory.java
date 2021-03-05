@@ -51,6 +51,7 @@ final class HsqlDialectEpsgFactory extends AnsiDialectEpsgFactory {
     }
 
     /** If the query contains a "FROM (" expression, remove the parenthesis. */
+    @Override
     public String adaptSQL(String query) {
         query = super.adaptSQL(query);
         final Matcher matcher = OPENING_PATTERN.matcher(query);
@@ -91,6 +92,7 @@ final class HsqlDialectEpsgFactory extends AnsiDialectEpsgFactory {
      * Shutdown the HSQL database engine. This method is invoked automatically at JVM shutdown time
      * just before to close the connection.
      */
+    @Override
     protected void shutdown(final boolean active) throws SQLException {
         if (active) {
             try (Statement statement = getConnection().createStatement()) {

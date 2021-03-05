@@ -74,16 +74,19 @@ public class PreGeneralizedFeatureCollection implements SimpleFeatureCollection 
      * @see org.geotools.feature.FeatureCollection#accepts(org.opengis.feature.FeatureVisitor,
      *      org.opengis.util.ProgressListener) Logic copied from DefaultFeatureCollection class
      */
+    @Override
     public void accepts(FeatureVisitor visitor, ProgressListener progress) throws IOException {
         DataUtilities.visit(this, visitor, progress);
     }
 
+    @Override
     public boolean contains(Object feature) {
         if (feature instanceof PreGeneralizedSimpleFeature)
             return backendCollection.contains(((PreGeneralizedSimpleFeature) feature).feature);
         else return backendCollection.contains(feature);
     }
 
+    @Override
     public boolean containsAll(Collection coll) {
         List<Object> searchColl = new ArrayList<>();
         Iterator it = coll.iterator();
@@ -96,6 +99,7 @@ public class PreGeneralizedFeatureCollection implements SimpleFeatureCollection 
         return backendCollection.containsAll(searchColl);
     }
 
+    @Override
     public SimpleFeatureIterator features() {
         return new PreGeneralizedFeatureIterator(
                 backendCollection.features(),
@@ -106,26 +110,32 @@ public class PreGeneralizedFeatureCollection implements SimpleFeatureCollection 
                 backendGeomPropertyName);
     }
 
+    @Override
     public ReferencedEnvelope getBounds() {
         return backendCollection.getBounds();
     }
 
+    @Override
     public String getID() {
         return "pregeneralizd featurecollection";
     }
 
+    @Override
     public SimpleFeatureType getSchema() {
         return returnedFeatureType;
     }
 
+    @Override
     public boolean isEmpty() {
         return backendCollection.isEmpty();
     }
 
+    @Override
     public int size() {
         return backendCollection.size();
     }
 
+    @Override
     public SimpleFeatureCollection sort(SortBy sortBy) {
         SimpleFeatureCollection fColl = backendCollection.sort(sortBy);
         if (fColl == null) return null;
@@ -138,6 +148,7 @@ public class PreGeneralizedFeatureCollection implements SimpleFeatureCollection 
                 backendGeomPropertyName);
     }
 
+    @Override
     public SimpleFeatureCollection subCollection(Filter filter) {
         SimpleFeatureCollection fColl = backendCollection.subCollection(filter);
         if (fColl == null) return null;
@@ -150,6 +161,7 @@ public class PreGeneralizedFeatureCollection implements SimpleFeatureCollection 
                 backendGeomPropertyName);
     }
 
+    @Override
     public Object[] toArray() {
         Object[] res = backendCollection.toArray();
         for (int i = 0; i < res.length; i++) {
@@ -165,6 +177,7 @@ public class PreGeneralizedFeatureCollection implements SimpleFeatureCollection 
         return res;
     }
 
+    @Override
     public <O> O[] toArray(O[] a) {
         O[] res = backendCollection.toArray(a);
         for (int i = 0; i < res.length; i++) {

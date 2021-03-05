@@ -83,6 +83,7 @@ public class NetCDFDriver extends DefaultFileDriver implements FileDriver, Drive
                 EnumSet.of(DriverCapabilities.CONNECT));
     }
 
+    @Override
     public CoverageAccess connect(
             java.net.URL source,
             Map<String, Serializable> params,
@@ -92,6 +93,7 @@ public class NetCDFDriver extends DefaultFileDriver implements FileDriver, Drive
         return new NetCDFAccess(this, source, params, hints, listener);
     }
 
+    @Override
     public CoverageAccess connect(
             Map<String, Serializable> params, Hints hints, ProgressListener listener)
             throws IOException {
@@ -105,6 +107,7 @@ public class NetCDFDriver extends DefaultFileDriver implements FileDriver, Drive
         return new NetCDFAccess(this, url, params, hints, listener);
     }
 
+    @Override
     public boolean isAvailable() {
         return checkNetCDF();
     }

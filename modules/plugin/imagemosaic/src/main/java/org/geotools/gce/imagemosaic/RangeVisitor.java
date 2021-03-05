@@ -174,6 +174,7 @@ class RangeVisitor implements FeatureCalc {
         visit((Feature) feature);
     }
 
+    @Override
     public void visit(Feature feature) {
         // we ignore null attributes
         final Object firstValue = expr1.evaluate(feature);
@@ -226,6 +227,7 @@ class RangeVisitor implements FeatureCalc {
         }
     }
 
+    @Override
     public CalcResult getResult() {
         if (set.isEmpty()) {
             return CalcResult.NULL_RESULT;
@@ -240,10 +242,12 @@ class RangeVisitor implements FeatureCalc {
             ranges = newSet;
         }
 
+        @Override
         public Object getValue() {
             return new HashSet<>(ranges);
         }
 
+        @Override
         public boolean isCompatible(CalcResult targetResults) {
             // list each calculation result which can merge with this type of result
             if (targetResults instanceof RangeResult || targetResults == CalcResult.NULL_RESULT)
@@ -251,6 +255,7 @@ class RangeVisitor implements FeatureCalc {
             return false;
         }
 
+        @Override
         public CalcResult merge(CalcResult resultsToAdd) {
             if (!isCompatible(resultsToAdd)) {
                 throw new IllegalArgumentException("Parameter is not a compatible type");

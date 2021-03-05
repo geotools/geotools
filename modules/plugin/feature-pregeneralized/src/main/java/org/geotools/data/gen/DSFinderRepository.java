@@ -99,10 +99,12 @@ public class DSFinderRepository implements Repository {
         clear();
     }
 
+    @Override
     public DataAccess<?, ?> access(Name name) {
         return dataStore(name);
     }
 
+    @Override
     public DataStore dataStore(Name name) {
         String localName = name.getLocalPart();
         DataStore ds = map.get(localName);
@@ -124,6 +126,7 @@ public class DSFinderRepository implements Repository {
      *
      * These datastores are for internal use only
      */
+    @Override
     public List<DataStore> getDataStores() {
         return Collections.emptyList();
         //        List<DataStore> available = new ArrayList<DataStore>( this.map.values() );

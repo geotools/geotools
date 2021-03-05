@@ -34,6 +34,7 @@ public class H2TestSetup extends JDBCTestSetup {
         run("CREATE SCHEMA \"geotools\";");
     }
 
+    @Override
     protected void setUpData() throws Exception {
         // drop old data
         runSafe("DROP TABLE \"geotools\".\"ft1\"; COMMIT;");

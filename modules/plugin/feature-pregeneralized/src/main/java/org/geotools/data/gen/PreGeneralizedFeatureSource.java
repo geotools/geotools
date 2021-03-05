@@ -155,14 +155,17 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
         return mapping;
     }
 
+    @Override
     public void addFeatureListener(FeatureListener listener) {
         listenerManager.addFeatureListener(this, listener);
     }
 
+    @Override
     public ReferencedEnvelope getBounds() throws IOException {
         return getBounds(Query.ALL);
     }
 
+    @Override
     public ReferencedEnvelope getBounds(Query query) throws IOException {
 
         // SimpleFeatureSource fs = getFeatureSourceFor(query);
@@ -173,6 +176,7 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
         return getBaseFeatureSource().getBounds(newQuery);
     }
 
+    @Override
     public int getCount(Query query) throws IOException {
 
         // SimpleFeatureSource fs = getFeatureSourceFor(query);
@@ -183,10 +187,12 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
         return getBaseFeatureSource().getCount(newQuery);
     }
 
+    @Override
     public DataAccess<SimpleFeatureType, SimpleFeature> getDataStore() {
         return dataStore;
     }
 
+    @Override
     public SimpleFeatureCollection getFeatures() throws IOException {
         return new PreGeneralizedFeatureCollection(
                 getBaseFeatureSource().getFeatures(),
@@ -197,6 +203,7 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
                 info.getGeomPropertyName());
     }
 
+    @Override
     public SimpleFeatureCollection getFeatures(Filter filter) throws IOException {
         return new PreGeneralizedFeatureCollection(
                 getBaseFeatureSource().getFeatures(filter),
@@ -207,6 +214,7 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
                 info.getGeomPropertyName());
     }
 
+    @Override
     public SimpleFeatureCollection getFeatures(Query query) throws IOException {
 
         SimpleFeatureSource fs = getFeatureSourceFor(query);
@@ -255,6 +263,7 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
         return null;
     }
 
+    @Override
     public ResourceInfo getInfo() {
         if (ri != null) return ri;
         try {
@@ -285,6 +294,7 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
         return ri;
     }
 
+    @Override
     public Name getName() {
         return new NameImpl(
                 dataStore.getNamespace() == null ? null : dataStore.getNamespace().toString(),
@@ -297,6 +307,7 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
      * @see org.geotools.data.FeatureSource#getQueryCapabilities() A query capabilitiy is supported
      *      only if ALL backend feature sources support it
      */
+    @Override
     public QueryCapabilities getQueryCapabilities() {
         if (queryCapabilities != null) return queryCapabilities;
         queryCapabilities =
@@ -360,6 +371,7 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
      *      all generalized geom attributes removed 2) the default gemoetry propery is taken from
      *      the config
      */
+    @Override
     public SimpleFeatureType getSchema() {
         if (featureTyp != null) return featureTyp;
         try {
@@ -411,6 +423,7 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
      * @see org.geotools.data.FeatureSource#getSupportedHints() Calculates the supported hints as
      *      intersection of the the generalized features and adds Hints.GEOMETRY_DISTANCE
      */
+    @Override
     public Set<Key> getSupportedHints() {
         if (supportedHints != null) return supportedHints;
         Set<Key> hints = new HashSet<>();
@@ -433,6 +446,7 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
         return supportedHints;
     }
 
+    @Override
     public void removeFeatureListener(FeatureListener listener) {
         listenerManager.removeFeatureListener(this, listener);
     }

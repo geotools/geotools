@@ -50,6 +50,7 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
     private final Random generator = new Random();
 
     /** */
+    @Override
     public void runMe(final File testFile) throws Exception {
 
         // create a temporary output file

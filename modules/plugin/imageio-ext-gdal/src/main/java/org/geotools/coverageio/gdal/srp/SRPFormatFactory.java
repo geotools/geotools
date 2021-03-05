@@ -39,6 +39,7 @@ public final class SRPFormatFactory extends BaseGridFormatFactorySPI
      *
      * @return <code>true</code> if the plugin is available, <code>false</code> otherwise.
      */
+    @Override
     public boolean isAvailable() {
         boolean available = true;
 
@@ -71,6 +72,7 @@ public final class SRPFormatFactory extends BaseGridFormatFactorySPI
      *
      * @return A {@link SRPFormat}
      */
+    @Override
     public SRPFormat createFormat() {
         return new SRPFormat();
     }

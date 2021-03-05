@@ -88,6 +88,7 @@ class RasterManager {
             this.imageChoice = imageChoice;
         }
 
+        @Override
         public int compareTo(final OverviewLevel other) {
             if (scaleFactor > other.scaleFactor) return 1;
             else if (scaleFactor < other.scaleFactor) return -1;

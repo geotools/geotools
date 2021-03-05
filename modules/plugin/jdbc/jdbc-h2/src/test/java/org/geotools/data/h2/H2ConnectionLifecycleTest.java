@@ -33,6 +33,7 @@ public class H2ConnectionLifecycleTest extends JDBCConnectionLifecycleOnlineTest
 
         double value;
 
+        @Override
         public void onBorrow(JDBCDataStore store, Connection cx) throws SQLException {
             Statement st = null;
             try {
@@ -43,19 +44,23 @@ public class H2ConnectionLifecycleTest extends JDBCConnectionLifecycleOnlineTest
             }
         }
 
+        @Override
         public void onRelease(JDBCDataStore store, Connection cx) throws SQLException {
             // nothing to do
         }
 
+        @Override
         public void onCommit(JDBCDataStore store, Connection cx) throws SQLException {
             // nothing to do
         }
 
+        @Override
         public void onRollback(JDBCDataStore store, Connection cx) throws SQLException {
             // nothing to do
         }
     }
 
+    @Override
     protected JDBCTestSetup createTestSetup() {
         return new H2TestSetup();
     }

@@ -144,6 +144,7 @@ public class AttributeTable {
             return range;
         }
 
+        @Override
         public String toString() {
             if (range == 0f) return String.valueOf(low) + ":" + catText; // $NON-NLS-1$
             else

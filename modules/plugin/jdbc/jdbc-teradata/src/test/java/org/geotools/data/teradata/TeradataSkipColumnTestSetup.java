@@ -30,6 +30,7 @@ public class TeradataSkipColumnTestSetup extends JDBCSkipColumnTestSetup {
         return (TeradataTestSetup) delegate;
     }
 
+    @Override
     protected void createSkipColumnTable() throws Exception {
         // type dollar allready exists on Teradata 13 linux
         try {
@@ -49,6 +50,7 @@ public class TeradataSkipColumnTestSetup extends JDBCSkipColumnTestSetup {
         run("INSERT INTO \"skipcolumn\" VALUES(0, 0, 'POINT(0 0)', null, 'GeoTools')");
     }
 
+    @Override
     protected void dropSkipColumnTable() throws Exception {
         runSafe("DELETE FROM SYSSPATIAL.GEOMETRY_COLUMNS WHERE F_TABLE_NAME = 'skipcolumn'");
         runSafe("DROP TABLE \"skipcolumn\"");

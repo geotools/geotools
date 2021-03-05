@@ -30,6 +30,7 @@ public class TeradataNoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
         return (TeradataTestSetup) delegate;
     }
 
+    @Override
     protected void createLakeTable() throws Exception {
         run("CREATE TABLE \"lake\"(\"id\" int, \"geom\" ST_GEOMETRY, \"name\" varchar(200) )");
         run(
@@ -44,6 +45,7 @@ public class TeradataNoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
                 "INSERT INTO \"lake\" (\"id\",\"geom\",\"name\") VALUES (0,'POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))','muddy')");
     }
 
+    @Override
     protected void dropLakeTable() throws Exception {
         runSafe("DELETE FROM SYSSPATIAL.GEOMETRY_COLUMNS WHERE F_TABLE_NAME = 'lake'");
         runSafe("DROP TRIGGER \"lake_geom_mi\"");

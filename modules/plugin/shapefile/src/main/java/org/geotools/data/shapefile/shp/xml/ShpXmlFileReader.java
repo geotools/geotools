@@ -149,6 +149,7 @@ public class ShpXmlFileReader implements FileReader {
         return new Envelope(minX, maxX, minY, maxY);
     }
 
+    @Override
     public String id() {
         return "Shp Xml Reader";
     }

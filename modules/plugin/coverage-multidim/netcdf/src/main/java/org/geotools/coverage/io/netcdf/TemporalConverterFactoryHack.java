@@ -47,6 +47,7 @@ import org.geotools.util.factory.Hints;
  */
 class TemporalConverterFactoryHack implements ConverterFactory {
 
+    @Override
     public Converter createConverter(Class source, Class target, Hints hints) {
 
         if (Date.class.isAssignableFrom(source)) {
@@ -57,6 +58,7 @@ class TemporalConverterFactoryHack implements ConverterFactory {
                 df.setTimeZone(TimeZone.getTimeZone("UTC")); // we DO work only with UTC times
 
                 return new Converter() {
+                    @Override
                     @SuppressWarnings("unchecked")
                     public <T> T convert(Object source, Class<T> target) throws Exception {
                         if (source instanceof Date) {
@@ -78,6 +80,7 @@ class TemporalConverterFactoryHack implements ConverterFactory {
                 df.setTimeZone(TimeZone.getTimeZone("UTC")); // we DO work only with UTC times
 
                 return new Converter() {
+                    @Override
                     @SuppressWarnings("unchecked")
                     public <T> T convert(Object source, Class<T> target) throws Exception {
                         if (source instanceof Calendar) {
@@ -96,6 +99,7 @@ class TemporalConverterFactoryHack implements ConverterFactory {
                 df.setTimeZone(TimeZone.getTimeZone("UTC")); // we DO work only with UTC times
 
                 return new Converter() {
+                    @Override
                     @SuppressWarnings("unchecked")
                     public <T> T convert(Object source, Class<T> target) throws Exception {
                         if (source instanceof XMLGregorianCalendar) {

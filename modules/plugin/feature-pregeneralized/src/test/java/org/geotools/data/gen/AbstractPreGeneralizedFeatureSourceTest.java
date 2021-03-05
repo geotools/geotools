@@ -560,22 +560,27 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest {
 
             PropertyName propertyName =
                     new PropertyName() {
+                        @Override
                         public String getPropertyName() {
                             return "CAT_ID";
                         }
 
+                        @Override
                         public Object accept(ExpressionVisitor arg0, Object arg1) {
                             return true;
                         }
 
+                        @Override
                         public Object evaluate(Object arg0) {
                             return arg0;
                         }
 
+                        @Override
                         public <T> T evaluate(Object arg0, Class<T> arg1) {
                             return null;
                         }
 
+                        @Override
                         public NamespaceSupport getNamespaceContext() {
                             return null;
                         }

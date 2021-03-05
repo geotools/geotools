@@ -13,6 +13,7 @@ public class GeoPkgDateOnlineTest extends JDBCDateOnlineTest {
 
     // This test fails because it's not able to re-create the table after dropping it
     // while the test is running, but for the life of me I cannot figure out why
+    @Override
     @Ignore
     public void testFiltersByDate() throws Exception {}
 }

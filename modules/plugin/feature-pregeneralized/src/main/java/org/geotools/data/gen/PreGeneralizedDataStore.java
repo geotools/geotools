@@ -81,6 +81,7 @@ public class PreGeneralizedDataStore implements DataStore {
         }
     }
 
+    @Override
     public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
             Query query, Transaction transaction) throws IOException {
         PreGeneralizedFeatureSource fs = featureSources.get(query.getTypeName());
@@ -88,59 +89,71 @@ public class PreGeneralizedDataStore implements DataStore {
         return fs.getFeatureReader(query, transaction);
     }
 
+    @Override
     public SimpleFeatureSource getFeatureSource(String typeName) throws IOException {
         SimpleFeatureSource fs = featureSources.get(typeName);
         if (fs == null) throw new IOException(typeName + " not found");
         return fs;
     }
 
+    @Override
     public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
             String typeName, Transaction transaction) throws IOException {
 
         throw new UnsupportedOperationException("getFeatureWriter");
     }
 
+    @Override
     public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
             String typeName, Filter filter, Transaction transaction) throws IOException {
         throw new UnsupportedOperationException("getFeatureWriter");
     }
 
+    @Override
     public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(
             String typeName, Transaction transaction) throws IOException {
         throw new UnsupportedOperationException("getFeatureWriterAppend");
     }
 
+    @Override
     public LockingManager getLockingManager() {
         throw new UnsupportedOperationException("getLockingManager");
     }
 
+    @Override
     public SimpleFeatureType getSchema(String typeName) throws IOException {
         return getFeatureSource(typeName).getSchema();
     }
 
+    @Override
     public String[] getTypeNames() throws IOException {
         Set<String> keys = featureSources.keySet();
         return keys.toArray(new String[keys.size()]);
     }
 
+    @Override
     public void updateSchema(String typeName, SimpleFeatureType featureType) throws IOException {
         throw new UnsupportedOperationException("updateSchema");
     }
 
+    @Override
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         throw new UnsupportedOperationException("createSchema");
     }
 
+    @Override
     public void dispose() {
         for (PreGeneralizedFeatureSource fs : featureSources.values()) {
             fs.reset();
         }
     }
 
+    @Override
     public SimpleFeatureSource getFeatureSource(Name typeName) throws IOException {
         return getFeatureSource(typeName.getLocalPart());
     }
 
+    @Override
     public ServiceInfo getInfo() {
         // TODO
         DefaultServiceInfo info = new DefaultServiceInfo();
@@ -155,6 +168,7 @@ public class PreGeneralizedDataStore implements DataStore {
         return info;
     }
 
+    @Override
     public List<Name> getNames() throws IOException {
         List<Name> nameList = new ArrayList<>();
         for (PreGeneralizedFeatureSource fs : featureSources.values()) {
@@ -163,10 +177,12 @@ public class PreGeneralizedDataStore implements DataStore {
         return nameList;
     }
 
+    @Override
     public SimpleFeatureType getSchema(Name name) throws IOException {
         return getFeatureSource(name).getSchema();
     }
 
+    @Override
     public void updateSchema(Name typeName, SimpleFeatureType featureType) throws IOException {
         throw new UnsupportedOperationException("updateSchema");
     }

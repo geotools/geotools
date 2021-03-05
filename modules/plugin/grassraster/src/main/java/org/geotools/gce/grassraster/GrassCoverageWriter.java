@@ -141,10 +141,12 @@ public class GrassCoverageWriter extends AbstractGridCoverageWriter implements G
         writer.dispose();
     }
 
+    @Override
     public Format getFormat() {
         return new GrassCoverageFormat();
     }
 
+    @Override
     public void write(GridCoverage coverage, GeneralParameterValue[] parameters)
             throws IllegalArgumentException, IOException {
         if (coverage instanceof GridCoverage2D) {

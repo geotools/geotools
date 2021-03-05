@@ -30,5 +30,6 @@ public class ArcGridTestCaseAdapter extends ArcGridBaseTestCase {
     /* (non-Javadoc)
      * @see org.geotools.gce.arcgrid.ArcGridBaseTestCase#runMe(java.io.File)
      */
+    @Override
     public void runMe(File file) throws Exception {}
 }

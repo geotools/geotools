@@ -41,6 +41,7 @@ public final class NITFFormatFactory extends BaseGridFormatFactorySPI
      *
      * @return <code>true</code> if the plugin is available, <code>false</code> otherwise.
      */
+    @Override
     public boolean isAvailable() {
         boolean available = true;
 
@@ -73,6 +74,7 @@ public final class NITFFormatFactory extends BaseGridFormatFactorySPI
      *
      * @return A {@link NITFFormat}
      */
+    @Override
     public NITFFormat createFormat() {
         return new NITFFormat();
     }

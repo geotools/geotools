@@ -21,6 +21,7 @@ import org.geotools.jdbc.JDBCTestSetup;
 
 public class TeradataFeatureLockingOnlineTest extends JDBCFeatureLockingOnlineTest {
 
+    @Override
     protected JDBCTestSetup createTestSetup() {
         return new TeradataTestSetup();
     }

@@ -51,11 +51,13 @@ public final class DTEDFormat extends BaseGDALGridFormat implements Format {
     private static final InfoWrapper INFO = new InfoWrapper("DTED Coverage Format", "DTED");
 
     /** Sets the metadata information. */
+    @Override
     protected void setInfo() {
         setInfo(INFO);
     }
 
     /** @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object, Hints) */
+    @Override
     public DTEDReader getReader(Object source, Hints hints) {
         try {
             return new DTEDReader(source, hints);

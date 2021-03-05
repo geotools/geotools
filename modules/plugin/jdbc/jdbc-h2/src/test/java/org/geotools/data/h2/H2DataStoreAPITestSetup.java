@@ -24,6 +24,7 @@ public class H2DataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         super(new H2TestSetup());
     }
 
+    @Override
     protected void createRoadTable() throws Exception {
         run(
                 "CREATE TABLE \"road\"(\"fid\" int AUTO_INCREMENT(0) PRIMARY KEY, \"id\" int, "
@@ -44,6 +45,7 @@ public class H2DataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
                         + "'r3')");
     }
 
+    @Override
     protected void createRiverTable() throws Exception {
         run(
                 "CREATE TABLE \"river\"(\"fid\" int AUTO_INCREMENT(0) PRIMARY KEY, \"id\" int, "
@@ -60,6 +62,7 @@ public class H2DataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
                         + "'rv2', 3.0)");
     }
 
+    @Override
     protected void createLakeTable() throws Exception {
         run(
                 "CREATE TABLE \"lake\"(\"fid\" int AUTO_INCREMENT(0) PRIMARY KEY, \"id\" int, "
@@ -72,6 +75,7 @@ public class H2DataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
                         + "'muddy')");
     }
 
+    @Override
     protected void dropRoadTable() throws Exception {
         runSafe("DROP TABLE \"road\"");
         runSafe("CALL DropGeometryColumn(NULL, 'road', 'geom')");
@@ -80,6 +84,7 @@ public class H2DataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         runSafe("DROP TABLE \"road_HATBOX\"");
     }
 
+    @Override
     protected void dropRiverTable() throws Exception {
         runSafe("DROP TABLE \"river\"");
         runSafe("CALL DropGeometryColumn(NULL, 'river', 'geom')");
@@ -87,6 +92,7 @@ public class H2DataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         runSafe("DROP TABLE \"river_HATBOX\"");
     }
 
+    @Override
     protected void dropLakeTable() throws Exception {
         runSafe("DROP TABLE \"lake\"");
         runSafe("CALL DropGeometryColumn(NULL, 'lake', 'geom')");
@@ -94,6 +100,7 @@ public class H2DataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         runSafe("DROP TABLE \"lake_HATBOX\"");
     }
 
+    @Override
     protected void dropBuildingTable() throws Exception {
         runSafe("DROP TABLE \"building\"");
         runSafe("CALL DropGeometryColumn(NULL, 'building', 'geom')");

@@ -352,6 +352,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         }
     }
 
+    @Override
     public void dispose() {
         try {
             if (multiScaleROIProvider != null) {
@@ -567,6 +568,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         return null;
     }
 
+    @Override
     public void createType(String namespace, String typeName, String typeSpec)
             throws IOException, SchemaException {
         Utilities.ensureNonNull("typeName", typeName);
@@ -606,6 +608,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         return null;
     }
 
+    @Override
     public void createType(SimpleFeatureType featureType) throws IOException {
         Utilities.ensureNonNull("featureType", featureType);
         checkMosaicSchema(featureType);
@@ -619,6 +622,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         extractBasicProperties(typeName);
     }
 
+    @Override
     public void removeType(String typeName) throws IOException {
         Utilities.ensureNonNull("featureType", typeName);
         checkStore();
@@ -627,6 +631,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         removeTypeName(typeName);
     }
 
+    @Override
     public void createType(String identification, String typeSpec)
             throws SchemaException, IOException {
         Utilities.ensureNonNull("typeSpec", typeSpec);
@@ -652,6 +657,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         return getTileIndexStore().getSchema(typeName);
     }
 
+    @Override
     public void computeAggregateFunction(Query query, FeatureCalc function) throws IOException {
         query = mergeHints(query);
         checkStore();

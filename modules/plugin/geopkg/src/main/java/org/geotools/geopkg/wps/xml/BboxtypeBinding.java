@@ -47,6 +47,7 @@ import org.locationtech.jts.geom.Envelope;
 public class BboxtypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GPKG.bboxtype;
     }
@@ -58,6 +59,7 @@ public class BboxtypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Envelope.class;
     }
@@ -69,6 +71,7 @@ public class BboxtypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         double minx = ((BigDecimal) node.getChildValue("minx")).doubleValue();

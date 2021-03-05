@@ -243,6 +243,7 @@ public class ShapefileWriter implements Closeable {
     }
 
     /** Close the underlying Channels. */
+    @Override
     public void close() throws IOException {
         try {
             if (shpChannel != null && shpChannel.isOpen()) {

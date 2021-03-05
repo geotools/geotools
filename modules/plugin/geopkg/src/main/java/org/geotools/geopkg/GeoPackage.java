@@ -331,6 +331,7 @@ public class GeoPackage implements Closeable {
                 "ST_MinX",
                 new GeometryDoubleFunction() {
 
+                    @Override
                     public double execute(GeoPkgGeomReader reader) throws IOException {
                         return reader.getEnvelope().getMinX();
                     }
@@ -357,6 +358,7 @@ public class GeoPackage implements Closeable {
                 "ST_MinY",
                 new GeometryDoubleFunction() {
 
+                    @Override
                     public double execute(GeoPkgGeomReader reader)
                             throws IOException, SQLException {
                         return reader.getEnvelope().getMinY();
@@ -370,6 +372,7 @@ public class GeoPackage implements Closeable {
                 "ST_MaxY",
                 new GeometryDoubleFunction() {
 
+                    @Override
                     public double execute(GeoPkgGeomReader reader)
                             throws IOException, SQLException {
                         return reader.getEnvelope().getMaxY();
@@ -398,6 +401,7 @@ public class GeoPackage implements Closeable {
      * <p>The application should always call this method when done with a geopackage to prevent
      * connection leakage.
      */
+    @Override
     public void close() {
         if (dataStore != null) {
             dataStore.dispose();

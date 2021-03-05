@@ -87,6 +87,7 @@ public class DefaultCoverageAccess implements CoverageAccess {
         return false;
     }
 
+    @Override
     public boolean canDelete(Name name, Map<String, Serializable> params, Hints hints)
             throws IOException {
         return false;

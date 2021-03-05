@@ -120,6 +120,7 @@ public class ColorRule {
     }
 
     /** */
+    @Override
     public String toString() {
         if (range == 0)
             return String.valueOf(low)

@@ -298,6 +298,7 @@ public class QuadTree implements Closeable {
         this.root = root;
     }
 
+    @Override
     public void close() throws StoreException {
         try {
             indexfile.close();

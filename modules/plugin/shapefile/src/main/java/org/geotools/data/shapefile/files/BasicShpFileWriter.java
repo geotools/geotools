@@ -23,6 +23,7 @@ public final class BasicShpFileWriter implements FileWriter {
         this.id = id;
     }
 
+    @Override
     public String id() {
         return id;
     }

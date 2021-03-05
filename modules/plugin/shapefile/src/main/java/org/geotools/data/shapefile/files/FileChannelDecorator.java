@@ -59,69 +59,85 @@ public class FileChannelDecorator extends FileChannel implements ReadableByteCha
         reader = null;
     }
 
+    @Override
     public void force(boolean metaData) throws IOException {
         wrapped.force(metaData);
     }
 
+    @Override
     public FileLock lock(long position, long size, boolean shared) throws IOException {
         return wrapped.lock(position, size, shared);
     }
 
+    @Override
     public MappedByteBuffer map(MapMode mode, long position, long size) throws IOException {
         //    	return wrapped.map(mode, position, size)
         return shapefileFiles.map(wrapped, url, mode, position, size);
     }
 
+    @Override
     public long position() throws IOException {
         return wrapped.position();
     }
 
+    @Override
     public FileChannel position(long newPosition) throws IOException {
         return wrapped.position(newPosition);
     }
 
+    @Override
     public int read(ByteBuffer dst, long position) throws IOException {
         return wrapped.read(dst, position);
     }
 
+    @Override
     public int read(ByteBuffer dst) throws IOException {
         return wrapped.read(dst);
     }
 
+    @Override
     public long read(ByteBuffer[] dsts, int offset, int length) throws IOException {
         return wrapped.read(dsts, offset, length);
     }
 
+    @Override
     public long size() throws IOException {
         return wrapped.size();
     }
 
+    @Override
     public long transferFrom(ReadableByteChannel src, long position, long count)
             throws IOException {
         return wrapped.transferFrom(src, position, count);
     }
 
+    @Override
     public long transferTo(long position, long count, WritableByteChannel target)
             throws IOException {
         return wrapped.transferTo(position, count, target);
     }
 
+    @Override
     public FileChannel truncate(long size) throws IOException {
         return wrapped.truncate(size);
     }
 
+    @Override
     public FileLock tryLock(long position, long size, boolean shared) throws IOException {
         return wrapped.tryLock(position, size, shared);
     }
 
+    @Override
     public int write(ByteBuffer src, long position) throws IOException {
         return wrapped.write(src, position);
     }
 
+    @Override
     public int write(ByteBuffer src) throws IOException {
         return wrapped.write(src);
     }
 
+    @Override
     public long write(ByteBuffer[] srcs, int offset, int length) throws IOException {
         return wrapped.write(srcs, offset, length);
     }

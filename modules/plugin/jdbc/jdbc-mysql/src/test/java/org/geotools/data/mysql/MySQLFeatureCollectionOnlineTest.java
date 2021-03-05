@@ -25,6 +25,7 @@ import org.geotools.jdbc.JDBCTestSetup;
  * @author Justin Deoliveira, The Open Planning Project
  */
 public class MySQLFeatureCollectionOnlineTest extends JDBCFeatureCollectionOnlineTest {
+    @Override
     protected JDBCTestSetup createTestSetup() {
         return new MySQLTestSetup();
     }

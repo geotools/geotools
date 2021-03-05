@@ -565,6 +565,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
     }
 
     /** @see org.opengis.coverage.grid.GridCoverageReader#getFormat() */
+    @Override
     public Format getFormat() {
         return new GeoTiffFormat();
     }
@@ -577,6 +578,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
      * @return grid coverage represented by the image
      * @throws IOException on any IO related troubles
      */
+    @Override
     public GridCoverage2D read(GeneralParameterValue[] params) throws IOException {
         GeneralEnvelope requestedEnvelope = null;
         Rectangle dim = null;

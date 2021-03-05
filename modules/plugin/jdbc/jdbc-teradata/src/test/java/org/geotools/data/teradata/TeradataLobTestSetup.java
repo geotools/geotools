@@ -28,6 +28,7 @@ public class TeradataLobTestSetup extends JDBCLobTestSetup {
         super(delegate);
     }
 
+    @Override
     protected void createLobTable() throws Exception {
 
         try (Connection con = getDataSource().getConnection()) {
@@ -48,6 +49,7 @@ public class TeradataLobTestSetup extends JDBCLobTestSetup {
         }
     }
 
+    @Override
     protected void dropLobTable() throws Exception {
         runSafe("DROP TABLE \"testlob\"");
     }

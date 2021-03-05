@@ -27,6 +27,7 @@ import org.geotools.jdbc.JDBCTestSetup;
  * @author Justin Deoliveira, The Open Planning Project
  */
 public class DB2FeatureStoreOnlineTest extends JDBCFeatureStoreOnlineTest {
+    @Override
     protected JDBCTestSetup createTestSetup() {
         return new DB2TestSetup();
     }

@@ -41,6 +41,7 @@ public final class JP2MrSIDFormatFactory extends BaseGridFormatFactorySPI
      *
      * @return {@code true} if the plugin is available, {@code false} otherwise.
      */
+    @Override
     public boolean isAvailable() {
         boolean available = true;
 
@@ -73,6 +74,7 @@ public final class JP2MrSIDFormatFactory extends BaseGridFormatFactorySPI
      *
      * @return A {@link JP2MrSIDFormat}.;
      */
+    @Override
     public JP2MrSIDFormat createFormat() {
         return new JP2MrSIDFormat();
     }

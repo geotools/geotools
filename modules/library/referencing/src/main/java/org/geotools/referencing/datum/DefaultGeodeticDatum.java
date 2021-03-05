@@ -174,11 +174,13 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
     }
 
     /** Returns the ellipsoid. */
+    @Override
     public Ellipsoid getEllipsoid() {
         return ellipsoid;
     }
 
     /** Returns the prime meridian. */
+    @Override
     public PrimeMeridian getPrimeMeridian() {
         return primeMeridian;
     }

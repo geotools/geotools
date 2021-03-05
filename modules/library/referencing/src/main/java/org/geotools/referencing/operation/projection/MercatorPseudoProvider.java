@@ -140,6 +140,7 @@ public class MercatorPseudoProvider extends AbstractProvider {
      * @return The created math transform.
      * @throws ParameterNotFoundException if a required parameter was not found.
      */
+    @Override
     protected MathTransform createMathTransform(final ParameterValueGroup parameters)
             throws ParameterNotFoundException {
         // make sure we assume a spherical reference
@@ -189,6 +190,7 @@ public class MercatorPseudoProvider extends AbstractProvider {
         }
 
         /** {@inheritDoc} */
+        @Override
         public ParameterDescriptorGroup getParameterDescriptors() {
             return MercatorPseudoProvider.PARAMETERS;
         }

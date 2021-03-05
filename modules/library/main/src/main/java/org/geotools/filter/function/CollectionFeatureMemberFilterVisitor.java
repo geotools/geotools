@@ -28,6 +28,7 @@ import org.opengis.filter.expression.PropertyName;
  * @since 8.0
  */
 public final class CollectionFeatureMemberFilterVisitor extends DuplicatingFilterVisitor {
+    @Override
     public Object visit(PropertyName expression, Object data) {
         String xpath = expression.getPropertyName();
         if (xpath.startsWith("featureMembers/*/")) {

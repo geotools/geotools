@@ -107,6 +107,7 @@ public class Matrix3 implements XMatrix, Serializable {
      * Returns the number of rows in this matrix, which is always {@value #SIZE} in this
      * implementation.
      */
+    @Override
     public final int getNumRow() {
         return SIZE;
     }
@@ -115,6 +116,7 @@ public class Matrix3 implements XMatrix, Serializable {
      * Returns the number of colmuns in this matrix, which is always {@value #SIZE} in this
      * implementation.
      */
+    @Override
     public final int getNumCol() {
         return SIZE;
     }
@@ -177,6 +179,7 @@ public class Matrix3 implements XMatrix, Serializable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public final boolean isAffine() {
         return mat.a31 == 0 && mat.a32 == 0 && mat.a33 == 1;
     }
@@ -236,6 +239,7 @@ public class Matrix3 implements XMatrix, Serializable {
         return mat.get(row, column);
     }
 
+    @Override
     public void setColumn(int column, double... values) {
         if (values.length != mat.getNumCols()) {
             throw new IllegalArgumentException(
@@ -253,6 +257,7 @@ public class Matrix3 implements XMatrix, Serializable {
         }
     }
 
+    @Override
     public void setRow(int row, double... values) {
         if (values.length != mat.getNumCols()) {
             throw new IllegalArgumentException(
@@ -290,6 +295,7 @@ public class Matrix3 implements XMatrix, Serializable {
     }
 
     /** Returns {@code true} if this matrix is an identity matrix. */
+    @Override
     public final boolean isIdentity() {
         final int numRow = getNumRow();
         final int numCol = getNumCol();
@@ -311,11 +317,13 @@ public class Matrix3 implements XMatrix, Serializable {
      *
      * @since 2.3.1
      */
+    @Override
     public final boolean isIdentity(double tolerance) {
         return GeneralMatrix.isIdentity(this, tolerance);
     }
 
     /** {@inheritDoc} */
+    @Override
     public final void multiply(final Matrix matrix) {
         mul(matrix);
     }
@@ -359,6 +367,7 @@ public class Matrix3 implements XMatrix, Serializable {
         return equals(other, 0);
     }
 
+    @Override
     public boolean equals(final Matrix matrix, final double tolerance) {
         return GeneralMatrix.epsilonEquals(this, matrix, tolerance);
     }
@@ -394,6 +403,7 @@ public class Matrix3 implements XMatrix, Serializable {
     }
 
     /** Extract col to provided array. */
+    @Override
     public void getColumn(int col, double[] array) {
         for (int j = 0; j < array.length; j++) {
             array[j] = mat.get(j, col);
@@ -413,6 +423,7 @@ public class Matrix3 implements XMatrix, Serializable {
     }
 
     /** Extract row to provided array */
+    @Override
     public void getRow(int row, double[] array) {
         for (int i = 0; i < array.length; i++) {
             array[i] = mat.get(row, i);
@@ -423,6 +434,7 @@ public class Matrix3 implements XMatrix, Serializable {
     // In-place operations
     //
     /** In-place multiply with provided matrix. */
+    @Override
     public final void mul(Matrix matrix) {
         DMatrix3x3 b = internal(matrix);
         DMatrix3x3 ret = new DMatrix3x3();
@@ -431,6 +443,7 @@ public class Matrix3 implements XMatrix, Serializable {
     }
 
     /** In-place update from matrix1 * matrix2. */
+    @Override
     public void mul(Matrix matrix1, Matrix matrix2) {
         DMatrix3x3 a = internal(matrix1);
         DMatrix3x3 b = internal(matrix2);
@@ -467,6 +480,7 @@ public class Matrix3 implements XMatrix, Serializable {
         mat.a32 = scalar - a.a33;
     }
 
+    @Override
     public void sub(Matrix matrix) {
         DMatrix3x3 a = internal(matrix);
         mat.a11 -= a.a11;
@@ -480,6 +494,7 @@ public class Matrix3 implements XMatrix, Serializable {
         mat.a32 -= a.a33;
     }
 
+    @Override
     public void sub(Matrix matrix1, Matrix matrix2) {
         DMatrix3x3 a = internal(matrix1);
         DMatrix3x3 b = internal(matrix2);

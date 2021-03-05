@@ -66,6 +66,7 @@ public class UnformattableObjectException extends UnsupportedOperationException 
      * Returns the detail message. A default message is formatted if none was specified at
      * construction time.
      */
+    @Override
     public String getMessage() {
         String message = super.getMessage();
         if (message == null) {

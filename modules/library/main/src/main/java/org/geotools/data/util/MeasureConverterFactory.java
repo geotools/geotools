@@ -89,6 +89,7 @@ public class MeasureConverterFactory implements ConverterFactory {
                 }
             };
 
+    @Override
     public Converter createConverter(Class source, Class target, Hints hints) {
         if (CharSequence.class.isAssignableFrom(source) && Measure.class.isAssignableFrom(target)) {
             return CONVERTER;

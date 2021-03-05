@@ -74,6 +74,7 @@ public class ForceCoordinateFeatureResultsTest {
 
         visitorCollection =
                 new ListFeatureCollection(ft) {
+                    @Override
                     public void accepts(FeatureVisitor visitor, ProgressListener progress)
                             throws java.io.IOException {
                         lastVisitor = visitor;

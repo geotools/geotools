@@ -73,6 +73,7 @@ public class ConformanceResultImpl extends ResultImpl implements ConformanceResu
     /**
      * Citation of product specification or user requirement against which data is being evaluated.
      */
+    @Override
     public Citation getSpecification() {
         return specification;
     }
@@ -87,6 +88,7 @@ public class ConformanceResultImpl extends ResultImpl implements ConformanceResu
     }
 
     /** Explanation of the meaning of conformance for this result. */
+    @Override
     public InternationalString getExplanation() {
         return explanation;
     }
@@ -98,6 +100,7 @@ public class ConformanceResultImpl extends ResultImpl implements ConformanceResu
     }
 
     /** Indication of the conformance result. */
+    @Override
     public boolean pass() {
         return pass;
     }

@@ -32,6 +32,7 @@ public class AndImpl extends LogicFilterImpl implements And {
         super(children);
     }
 
+    @Override
     public boolean evaluate(Object object) {
         for (Filter filter : children) {
             if (!filter.evaluate(object)) {
@@ -41,6 +42,7 @@ public class AndImpl extends LogicFilterImpl implements And {
         return true;
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

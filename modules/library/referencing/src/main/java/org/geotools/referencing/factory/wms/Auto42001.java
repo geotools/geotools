@@ -63,21 +63,25 @@ final class Auto42001 extends Factlet {
     private Auto42001() {}
 
     /** {@inheritDoc} */
+    @Override
     public int code() {
         return 42001;
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getName() {
         return "WGS 84 / Auto UTM";
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getClassification() {
         return "Transverse_Mercator";
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void setProjectionParameters(final ParameterValueGroup parameters, final Code code) {
         final double zone = Math.min(Math.floor((code.longitude + 180.0) / 6.0) + 1, 60);
         final double centralMeridian = -183.0 + zone * 6.0;

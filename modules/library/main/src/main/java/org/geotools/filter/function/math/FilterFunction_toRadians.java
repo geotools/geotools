@@ -39,6 +39,7 @@ public class FilterFunction_toRadians extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Object arg0 = getExpression(0).evaluate(feature);
 

@@ -178,6 +178,7 @@ public final class SampleDimensionType extends CodeList<SampleDimensionType> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public SampleDimensionType[] family() {
         return values();
     }

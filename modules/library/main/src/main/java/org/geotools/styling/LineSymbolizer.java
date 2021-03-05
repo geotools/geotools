@@ -71,6 +71,7 @@ public interface LineSymbolizer extends org.opengis.style.LineSymbolizer, Symbol
      *
      * @return The Stroke style to use when rendering lines.
      */
+    @Override
     Stroke getStroke();
 
     /**

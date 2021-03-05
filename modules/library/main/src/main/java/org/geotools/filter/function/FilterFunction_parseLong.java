@@ -33,6 +33,7 @@ public class FilterFunction_parseLong extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         String arg0;
 

@@ -95,6 +95,7 @@ public final class GeometricObjectType extends CodeList<GeometricObjectType> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public GeometricObjectType[] family() {
         return values();
     }

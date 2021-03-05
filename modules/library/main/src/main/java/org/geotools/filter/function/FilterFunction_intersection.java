@@ -37,6 +37,7 @@ public class FilterFunction_intersection extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Geometry arg0;
         Geometry arg1;

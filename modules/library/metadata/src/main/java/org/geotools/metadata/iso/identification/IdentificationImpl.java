@@ -115,6 +115,7 @@ public class IdentificationImpl extends MetadataEntity implements Identification
     }
 
     /** Citation data for the resource(s). */
+    @Override
     public Citation getCitation() {
         return citation;
     }
@@ -126,6 +127,7 @@ public class IdentificationImpl extends MetadataEntity implements Identification
     }
 
     /** Brief narrative summary of the content of the resource(s). */
+    @Override
     public InternationalString getAbstract() {
         return abstracts;
     }
@@ -137,6 +139,7 @@ public class IdentificationImpl extends MetadataEntity implements Identification
     }
 
     /** Summary of the intentions with which the resource(s) was developed. */
+    @Override
     public InternationalString getPurpose() {
         return purpose;
     }
@@ -148,6 +151,7 @@ public class IdentificationImpl extends MetadataEntity implements Identification
     }
 
     /** Recognition of those who contributed to the resource(s). */
+    @Override
     public Collection<String> getCredits() {
         return (credits = nonNullCollection(credits, String.class));
     }
@@ -158,6 +162,7 @@ public class IdentificationImpl extends MetadataEntity implements Identification
     }
 
     /** Status of the resource(s). */
+    @Override
     public Collection<Progress> getStatus() {
         return (status = nonNullCollection(status, Progress.class));
     }
@@ -171,6 +176,7 @@ public class IdentificationImpl extends MetadataEntity implements Identification
      * Identification of, and means of communication with, person(s) and organizations(s) associated
      * with the resource(s).
      */
+    @Override
     public Collection<ResponsibleParty> getPointOfContacts() {
         return (pointOfContacts = nonNullCollection(pointOfContacts, ResponsibleParty.class));
     }
@@ -183,6 +189,7 @@ public class IdentificationImpl extends MetadataEntity implements Identification
     /**
      * Provides information about the frequency of resource updates, and the scope of those updates.
      */
+    @Override
     public Collection<MaintenanceInformation> getResourceMaintenance() {
         return (resourceMaintenance =
                 nonNullCollection(resourceMaintenance, MaintenanceInformation.class));
@@ -199,6 +206,7 @@ public class IdentificationImpl extends MetadataEntity implements Identification
      * Provides a graphic that illustrates the resource(s) (should include a legend for the
      * graphic).
      */
+    @Override
     public Collection<BrowseGraphic> getGraphicOverviews() {
         return (graphicOverviews = nonNullCollection(graphicOverviews, BrowseGraphic.class));
     }
@@ -209,6 +217,7 @@ public class IdentificationImpl extends MetadataEntity implements Identification
     }
 
     /** Provides a description of the format of the resource(s). */
+    @Override
     public Collection<Format> getResourceFormat() {
         return (resourceFormat = nonNullCollection(resourceFormat, Format.class));
     }
@@ -219,6 +228,7 @@ public class IdentificationImpl extends MetadataEntity implements Identification
     }
 
     /** Provides category keywords, their type, and reference source. */
+    @Override
     public Collection<Keywords> getDescriptiveKeywords() {
         return (descriptiveKeywords = nonNullCollection(descriptiveKeywords, Keywords.class));
     }
@@ -232,6 +242,7 @@ public class IdentificationImpl extends MetadataEntity implements Identification
      * Provides basic information about specific application(s) for which the resource(s) has/have
      * been or is being used by different users.
      */
+    @Override
     public Collection<Usage> getResourceSpecificUsages() {
         return (resourceSpecificUsages = nonNullCollection(resourceSpecificUsages, Usage.class));
     }
@@ -242,6 +253,7 @@ public class IdentificationImpl extends MetadataEntity implements Identification
     }
 
     /** Provides information about constraints which apply to the resource(s). */
+    @Override
     public Collection<Constraints> getResourceConstraints() {
         return (resourceConstraints = nonNullCollection(resourceConstraints, Constraints.class));
     }
@@ -256,6 +268,7 @@ public class IdentificationImpl extends MetadataEntity implements Identification
      *
      * @since 2.4
      */
+    @Override
     public Collection<AggregateInformation> getAggregationInfo() {
         return aggregationInfo = nonNullCollection(aggregationInfo, AggregateInformation.class);
     }

@@ -28,6 +28,7 @@ import org.locationtech.jts.geom.Envelope;
 public class BoundsVisitor implements FeatureCalc {
     ReferencedEnvelope bounds = new ReferencedEnvelope();
 
+    @Override
     public void visit(org.opengis.feature.Feature feature) {
         bounds.include(feature.getBounds());
     }
@@ -40,6 +41,7 @@ public class BoundsVisitor implements FeatureCalc {
         this.bounds = new ReferencedEnvelope();
     }
 
+    @Override
     public CalcResult getResult() {
         if (bounds == null || bounds.isEmpty()) {
             return CalcResult.NULL_RESULT;
@@ -54,10 +56,12 @@ public class BoundsVisitor implements FeatureCalc {
             this.bbox = bbox;
         }
 
+        @Override
         public ReferencedEnvelope getValue() {
             return new ReferencedEnvelope(bbox);
         }
 
+        @Override
         public boolean isCompatible(CalcResult targetResults) {
             // list each calculation result which can merge with this type of result
             if (targetResults instanceof BoundsResult || targetResults == CalcResult.NULL_RESULT) {
@@ -67,6 +71,7 @@ public class BoundsVisitor implements FeatureCalc {
             return false;
         }
 
+        @Override
         public CalcResult merge(CalcResult resultsToAdd) {
             if (!isCompatible(resultsToAdd)) {
                 throw new IllegalArgumentException("Parameter is not a compatible type");

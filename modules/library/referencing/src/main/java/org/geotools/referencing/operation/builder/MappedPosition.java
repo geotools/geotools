@@ -189,11 +189,13 @@ public class MappedPosition implements Serializable {
     }
 
     /** Returns a hash code value for this mapped position. */
+    @Override
     public int hashCode() {
         return source.hashCode() + 37 * target.hashCode();
     }
 
     /** Compares this mapped position with the specified object for equality. */
+    @Override
     public boolean equals(final Object object) {
         if (object != null && object.getClass().equals(getClass())) {
             final MappedPosition that = (MappedPosition) object;
@@ -210,6 +212,7 @@ public class MappedPosition implements Serializable {
      *
      * @todo Consider using a {@link java.text.NumberFormat} instance.
      */
+    @Override
     @SuppressWarnings("PMD.CloseResource")
     public String toString() {
         final TableWriter table = new TableWriter(null, " ");

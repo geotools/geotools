@@ -56,6 +56,7 @@ public class VectorSpatialRepresentationImpl extends SpatialRepresentationImpl
     }
 
     /** Code which identifies the degree of complexity of the spatial relationships. */
+    @Override
     public TopologyLevel getTopologyLevel() {
         return topologyLevel;
     }
@@ -67,6 +68,7 @@ public class VectorSpatialRepresentationImpl extends SpatialRepresentationImpl
     }
 
     /** Information about the geometric objects used in the dataset. */
+    @Override
     public Collection<GeometricObjects> getGeometricObjects() {
         return (geometricObjects = nonNullCollection(geometricObjects, GeometricObjects.class));
     }

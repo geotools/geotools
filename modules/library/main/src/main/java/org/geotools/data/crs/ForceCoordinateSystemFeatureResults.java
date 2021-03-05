@@ -88,6 +88,7 @@ public class ForceCoordinateSystemFeatureResults extends AbstractFeatureCollecti
         return results.getSchema();
     }
 
+    @Override
     public Iterator<SimpleFeature> openIterator() {
         return new ForceCoordinateSystemIterator(results.features(), getSchema());
     }
@@ -101,6 +102,7 @@ public class ForceCoordinateSystemFeatureResults extends AbstractFeatureCollecti
         }
     }
 
+    @Override
     public int size() {
         return results.size();
     }
@@ -126,6 +128,7 @@ public class ForceCoordinateSystemFeatureResults extends AbstractFeatureCollecti
     }
 
     /** @see org.geotools.data.FeatureResults#getBounds() */
+    @Override
     public ReferencedEnvelope getBounds() {
         ReferencedEnvelope env = results.getBounds();
         if (env == null) {
@@ -159,6 +162,7 @@ public class ForceCoordinateSystemFeatureResults extends AbstractFeatureCollecti
         return results;
     }
 
+    @Override
     public void accepts(
             org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress)
             throws IOException {

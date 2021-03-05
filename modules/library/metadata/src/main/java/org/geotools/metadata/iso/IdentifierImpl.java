@@ -83,6 +83,7 @@ public class IdentifierImpl extends MetadataEntity implements Identifier {
      *
      * @return The code.
      */
+    @Override
     public String getCode() {
         return code;
     }
@@ -117,6 +118,7 @@ public class IdentifierImpl extends MetadataEntity implements Identifier {
      *
      * @return The authority, or {@code null} if not available.
      */
+    @Override
     public Citation getAuthority() {
         return authority;
     }

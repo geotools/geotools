@@ -152,6 +152,7 @@ public class DisjointSet<E> extends AbstractSet<E> implements Serializable {
      * Returns the number of elements in this set. The size of this set may change as a result of
      * adding elements to a mutually exclusive set.
      */
+    @Override
     public int size() {
         synchronized (map) {
             int count = 0;
@@ -283,6 +284,7 @@ public class DisjointSet<E> extends AbstractSet<E> implements Serializable {
     }
 
     /** Returns an iterator over the elements in this collection. */
+    @Override
     public Iterator<E> iterator() {
         synchronized (map) {
             return new Iter();
@@ -389,11 +391,13 @@ public class DisjointSet<E> extends AbstractSet<E> implements Serializable {
         }
 
         /** Returns {@code true} if the iteration has more elements. */
+        @Override
         public boolean hasNext() {
             return prefetch() != null;
         }
 
         /** Returns the next element in the iteration. */
+        @Override
         public E next() {
             toRemove = prefetch();
             prefetch = null;
@@ -405,6 +409,7 @@ public class DisjointSet<E> extends AbstractSet<E> implements Serializable {
         }
 
         /** Removes from the underlying set the last element returned by the iterator. */
+        @Override
         public void remove() {
             if (toRemove != null) {
                 if (trash != null) {

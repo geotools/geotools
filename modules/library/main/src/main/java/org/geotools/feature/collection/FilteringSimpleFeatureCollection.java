@@ -59,6 +59,7 @@ public class FilteringSimpleFeatureCollection extends DecoratingSimpleFeatureCol
         this.filter = filter;
     }
 
+    @Override
     public SimpleFeatureIterator features() {
         return new FilteringSimpleFeatureIterator(delegate.features(), filter);
     }
@@ -67,6 +68,7 @@ public class FilteringSimpleFeatureCollection extends DecoratingSimpleFeatureCol
         close.close();
     }
 
+    @Override
     public SimpleFeatureCollection subCollection(Filter filter) {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         Filter subFilter = ff.and(this.filter, filter);
@@ -86,10 +88,12 @@ public class FilteringSimpleFeatureCollection extends DecoratingSimpleFeatureCol
         }
     }
 
+    @Override
     public SimpleFeatureCollection sort(SortBy order) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public int size() {
         int count = 0;
         try (SimpleFeatureIterator i = features()) {
@@ -102,14 +106,17 @@ public class FilteringSimpleFeatureCollection extends DecoratingSimpleFeatureCol
         }
     }
 
+    @Override
     public boolean isEmpty() {
         return size() == 0;
     }
 
+    @Override
     public Object[] toArray() {
         return toArray(new Object[size()]);
     }
 
+    @Override
     public <T> T[] toArray(T[] a) {
         List<SimpleFeature> list = new ArrayList<>();
         try (SimpleFeatureIterator i = features()) {
@@ -121,10 +128,12 @@ public class FilteringSimpleFeatureCollection extends DecoratingSimpleFeatureCol
         }
     }
 
+    @Override
     public boolean contains(Object o) {
         return delegate.contains(o) && filter.evaluate(o);
     }
 
+    @Override
     public boolean containsAll(Collection<?> c) {
         for (Object o : c) {
             if (!contains(o)) {
@@ -139,6 +148,7 @@ public class FilteringSimpleFeatureCollection extends DecoratingSimpleFeatureCol
         return new DelegateFeatureReader<>(getSchema(), features());
     }
 
+    @Override
     public ReferencedEnvelope getBounds() {
         // calculate manually
         return DataUtilities.bounds(this);

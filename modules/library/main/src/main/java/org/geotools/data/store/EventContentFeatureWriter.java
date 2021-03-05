@@ -77,6 +77,7 @@ public class EventContentFeatureWriter implements FeatureWriter<SimpleFeatureTyp
      *
      * @see org.geotools.data.FeatureWriter#getFeatureType()
      */
+    @Override
     public SimpleFeatureType getFeatureType() {
         return writer.getFeatureType();
     }
@@ -86,6 +87,7 @@ public class EventContentFeatureWriter implements FeatureWriter<SimpleFeatureTyp
      *
      * @see org.geotools.data.FeatureWriter#next()
      */
+    @Override
     public SimpleFeature next() throws IOException {
         if (writer == null) {
             throw new IOException("FeatureWriter has been closed");
@@ -95,6 +97,7 @@ public class EventContentFeatureWriter implements FeatureWriter<SimpleFeatureTyp
     }
 
     /** @see org.geotools.data.FeatureWriter#remove() */
+    @Override
     public void remove() throws IOException {
         if (writer == null) {
             throw new IOException("FeatureWriter has been closed");
@@ -108,6 +111,7 @@ public class EventContentFeatureWriter implements FeatureWriter<SimpleFeatureTyp
      *
      * @see org.geotools.data.FeatureWriter#write()
      */
+    @Override
     public void write() throws IOException {
         if (writer == null) {
             throw new IOException("FeatureWriter has been closed");
@@ -132,6 +136,7 @@ public class EventContentFeatureWriter implements FeatureWriter<SimpleFeatureTyp
      *
      * @see org.geotools.data.FeatureWriter#hasNext()
      */
+    @Override
     public boolean hasNext() throws IOException {
         if (writer == null) {
             return false;
@@ -147,6 +152,7 @@ public class EventContentFeatureWriter implements FeatureWriter<SimpleFeatureTyp
      *
      * @see org.geotools.data.FeatureWriter#close()
      */
+    @Override
     public void close() throws IOException {
         @SuppressWarnings("PMD.CloseResource") // not to be closed here
         Transaction t = state.getTransaction();

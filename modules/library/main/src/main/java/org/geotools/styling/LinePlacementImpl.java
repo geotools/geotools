@@ -93,6 +93,7 @@ public class LinePlacementImpl implements LinePlacement, Cloneable {
      *
      * @return Value of property perpendicularOffset.
      */
+    @Override
     public Expression getPerpendicularOffset() {
         return perpendicularOffset;
     }
@@ -102,34 +103,42 @@ public class LinePlacementImpl implements LinePlacement, Cloneable {
      *
      * @param perpendicularOffset New value of property perpendicularOffset.
      */
+    @Override
     public void setPerpendicularOffset(Expression perpendicularOffset) {
         this.perpendicularOffset = perpendicularOffset;
     }
 
+    @Override
     public Expression getInitialGap() {
         return initialGap;
     }
 
+    @Override
     public Expression getGap() {
         return gap;
     }
 
+    @Override
     public boolean isRepeated() {
         return repeated;
     }
 
+    @Override
     public boolean isAligned() {
         return aligned;
     }
 
+    @Override
     public boolean isGeneralizeLine() {
         return generalized;
     }
 
+    @Override
     public Object accept(StyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
+    @Override
     public void accept(org.geotools.styling.StyleVisitor visitor) {
         visitor.visit(this);
     }
@@ -137,6 +146,7 @@ public class LinePlacementImpl implements LinePlacement, Cloneable {
     /* (non-Javadoc)
      * @see Cloneable#clone()
      */
+    @Override
     public Object clone() {
         try {
             return super.clone();
@@ -148,6 +158,7 @@ public class LinePlacementImpl implements LinePlacement, Cloneable {
     /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -170,6 +181,7 @@ public class LinePlacementImpl implements LinePlacement, Cloneable {
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public int hashCode() {
         final int PRIME = 37;
         int result = 17;
@@ -205,22 +217,27 @@ public class LinePlacementImpl implements LinePlacement, Cloneable {
         return null;
     }
 
+    @Override
     public void setRepeated(boolean repeated) {
         this.repeated = repeated;
     }
 
+    @Override
     public void setGeneralized(boolean generalized) {
         this.generalized = generalized;
     }
 
+    @Override
     public void setAligned(boolean aligned) {
         this.aligned = aligned;
     }
 
+    @Override
     public void setGap(Expression gap) {
         this.gap = gap;
     }
 
+    @Override
     public void setInitialGap(Expression initialGap) {
         this.initialGap = initialGap;
     }

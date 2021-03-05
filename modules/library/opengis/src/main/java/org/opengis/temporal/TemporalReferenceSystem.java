@@ -39,6 +39,7 @@ public interface TemporalReferenceSystem extends ReferenceSystem {
      *
      * @return {@link ReferenceIdentifier} for the temporal reference system
      */
+    @Override
     @UML(identifier = "name", obligation = MANDATORY, specification = ISO_19108)
     ReferenceIdentifier getName();
 
@@ -51,6 +52,7 @@ public interface TemporalReferenceSystem extends ReferenceSystem {
      *
      * <p>Please note this is very similar to ReferenceSystem.getValidArea() from ISO 19115.
      */
+    @Override
     @UML(identifier = "DomainOfValidity", obligation = MANDATORY, specification = ISO_19108)
     Extent getDomainOfValidity();
 }

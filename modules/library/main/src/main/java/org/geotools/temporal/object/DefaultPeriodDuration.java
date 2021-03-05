@@ -137,6 +137,7 @@ public class DefaultPeriodDuration extends DefaultDuration implements PeriodDura
      * A mandatory element which designates that the returned string represents the duration of a
      * period.
      */
+    @Override
     public InternationalString getDesignator() {
         return DESIGNATOR;
     }
@@ -145,6 +146,7 @@ public class DefaultPeriodDuration extends DefaultDuration implements PeriodDura
      * A positive integer, followed by the character "Y", which indicated the number of years in the
      * period.
      */
+    @Override
     public InternationalString getYears() {
         return years;
     }
@@ -153,6 +155,7 @@ public class DefaultPeriodDuration extends DefaultDuration implements PeriodDura
      * A positive integer, followed by the character "M", which indicated the number of months in
      * the period.
      */
+    @Override
     public InternationalString getMonths() {
         return months;
     }
@@ -161,11 +164,13 @@ public class DefaultPeriodDuration extends DefaultDuration implements PeriodDura
      * A positive integer, followed by the character "D", which indicated the number of days in the
      * period.
      */
+    @Override
     public InternationalString getDays() {
         return days;
     }
 
     /** Included whenever the sequence includes values for units less than a day. */
+    @Override
     public InternationalString getTimeIndicator() {
         return TIME_INDICATOR;
     }
@@ -174,6 +179,7 @@ public class DefaultPeriodDuration extends DefaultDuration implements PeriodDura
      * A positive integer, followed by the character "H", which indicated the number of hours in the
      * period.
      */
+    @Override
     public InternationalString getHours() {
         return hours;
     }
@@ -182,6 +188,7 @@ public class DefaultPeriodDuration extends DefaultDuration implements PeriodDura
      * A positive integer, followed by the character "M", which indicated the number of minutes in
      * the period.
      */
+    @Override
     public InternationalString getMinutes() {
         return minutes;
     }
@@ -190,6 +197,7 @@ public class DefaultPeriodDuration extends DefaultDuration implements PeriodDura
      * A positive integer, followed by the character "S", which indicated the number of seconds in
      * the period.
      */
+    @Override
     public InternationalString getSeconds() {
         return seconds;
     }
@@ -229,6 +237,7 @@ public class DefaultPeriodDuration extends DefaultDuration implements PeriodDura
     /**
      * Returns a duration in long. note there is no starting instant to accurate the returned value.
      */
+    @Override
     public long getTimeInMillis() {
         String periodDescription = this.toString();
         long yearMS = 31536000000L;

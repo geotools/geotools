@@ -228,6 +228,7 @@ public abstract class AbstractConsole implements Runnable {
      * until {@link #stop()} is invoked. Non-empty and non-comment lines are given to the {@link
      * #execute} method. Errors are catched and printed to the {@linkplain #err error stream}.
      */
+    @Override
     public void run() {
         try {
             while (!stop) {

@@ -55,6 +55,7 @@ public class FeatureTypeImpl extends ComplexTypeImpl implements FeatureType {
         }
     }
 
+    @Override
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         if (crs == null) {
             if (getGeometryDescriptor() != null
@@ -77,6 +78,7 @@ public class FeatureTypeImpl extends ComplexTypeImpl implements FeatureType {
         return crs;
     }
 
+    @Override
     public GeometryDescriptor getGeometryDescriptor() {
         if (defaultGeometry == null) {
             for (PropertyDescriptor property : getDescriptors()) {
@@ -89,6 +91,7 @@ public class FeatureTypeImpl extends ComplexTypeImpl implements FeatureType {
         return defaultGeometry;
     }
 
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -106,6 +109,7 @@ public class FeatureTypeImpl extends ComplexTypeImpl implements FeatureType {
         return true;
     }
 
+    @Override
     public int hashCode() {
         int hashCode = super.hashCode();
 

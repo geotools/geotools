@@ -43,6 +43,7 @@ import org.geotools.xml.impl.DatatypeConverterImpl;
  */
 public class XmlConverterFactory implements ConverterFactory {
 
+    @Override
     public Converter createConverter(Class source, Class target, Hints hints) {
         // make sure either source or target is String in order not to step over
         // TemporalConverterFactory
@@ -61,6 +62,7 @@ public class XmlConverterFactory implements ConverterFactory {
     }
 
     static class XmlConverter implements Converter {
+        @Override
         @SuppressWarnings("unchecked")
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (String.class.equals(target)) {

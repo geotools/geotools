@@ -55,6 +55,7 @@ public class FeatureIteratorImpl<F extends Feature> implements FeatureIterator<F
      *
      * @return true if more Features exist, false otherwise.
      */
+    @Override
     public boolean hasNext() {
         return iterator.hasNext();
     }
@@ -65,10 +66,12 @@ public class FeatureIteratorImpl<F extends Feature> implements FeatureIterator<F
      * @return The next Feature
      * @throws java.util.NoSuchElementException If no more Features exist.
      */
+    @Override
     public F next() throws java.util.NoSuchElementException {
         return iterator.next();
     }
     /** Required so SimpleFeatureCollection classes can implement close( SimpleFeatureIterator ). */
+    @Override
     public void close() {
         if (iterator != null) {
             DataUtilities.close(iterator);

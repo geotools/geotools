@@ -49,19 +49,23 @@ public class AttributeImpl extends PropertyImpl implements Attribute {
         this(content, new AttributeDescriptorImpl(type, type.getName(), 1, 1, true, null), id);
     }
 
+    @Override
     public Identifier getIdentifier() {
         return id;
     }
 
+    @Override
     public AttributeDescriptor getDescriptor() {
         return (AttributeDescriptor) super.getDescriptor();
     }
 
+    @Override
     public AttributeType getType() {
         return (AttributeType) super.getType();
     }
 
     /** Override of setValue to convert the newValue to specified type if need be. */
+    @Override
     public void setValue(Object newValue) throws IllegalArgumentException, IllegalStateException {
 
         newValue = parse(newValue);
@@ -73,6 +77,7 @@ public class AttributeImpl extends PropertyImpl implements Attribute {
      *
      * @return hashCode for this object.
      */
+    @Override
     public int hashCode() {
         return super.hashCode() + (37 * (id == null ? 0 : id.hashCode()));
     }
@@ -83,6 +88,7 @@ public class AttributeImpl extends PropertyImpl implements Attribute {
      * @param obj the object to be tested for equality.
      * @return whether other is equal to this attribute Type.
      */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -101,10 +107,12 @@ public class AttributeImpl extends PropertyImpl implements Attribute {
         return Utilities.equals(id, att.getIdentifier());
     }
 
+    @Override
     public void validate() {
         Types.validate(this, this.getValue());
     }
 
+    @Override
     public String toString() {
         StringBuffer sb = new StringBuffer(getClass().getSimpleName()).append(":");
         sb.append(getDescriptor().getName().getLocalPart());

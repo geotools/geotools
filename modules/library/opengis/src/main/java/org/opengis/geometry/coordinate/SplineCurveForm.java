@@ -74,6 +74,7 @@ public final class SplineCurveForm extends CodeList<SplineCurveForm> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public SplineCurveForm[] family() {
         return values();
     }

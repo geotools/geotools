@@ -46,6 +46,7 @@ final class ConcatenatedTransform1D extends ConcatenatedTransform implements Mat
     }
 
     /** Transforms the specified value. */
+    @Override
     public double transform(final double value) throws TransformException {
         final double[] values = new double[] {value};
         final double[] buffer = new double[] {transform1.getTargetDimensions()};
@@ -55,6 +56,7 @@ final class ConcatenatedTransform1D extends ConcatenatedTransform implements Mat
     }
 
     /** Gets the derivative of this function at a value. */
+    @Override
     public double derivative(final double value) throws TransformException {
         final DirectPosition1D p = new DirectPosition1D(value);
         final Matrix m = derivative(p);

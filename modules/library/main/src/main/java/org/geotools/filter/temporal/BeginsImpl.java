@@ -37,6 +37,7 @@ public class BeginsImpl extends BinaryTemporalOperatorImpl implements Begins {
         return pos == RelativePosition.BEGINS;
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

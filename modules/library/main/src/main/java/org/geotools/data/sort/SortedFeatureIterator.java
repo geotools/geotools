@@ -59,14 +59,17 @@ public class SortedFeatureIterator implements SimpleFeatureIterator {
         this.delegate = new FeatureReaderFeatureIterator(sorted);
     }
 
+    @Override
     public boolean hasNext() {
         return delegate.hasNext();
     }
 
+    @Override
     public SimpleFeature next() throws NoSuchElementException {
         return delegate.next();
     }
 
+    @Override
     public void close() {
         delegate.close();
     }

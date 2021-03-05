@@ -56,6 +56,7 @@ public class JoiningAttributeWriter implements AttributeWriter {
     /* (non-Javadoc)
      * @see org.geotools.data.AttributeWriter#close()
      */
+    @Override
     public void close() throws IOException {
         IOException dse = null;
         for (AttributeWriter writer : writers) {
@@ -68,6 +69,7 @@ public class JoiningAttributeWriter implements AttributeWriter {
         if (dse != null) throw dse;
     }
 
+    @Override
     public boolean hasNext() throws IOException {
         for (AttributeWriter writer : writers) {
             if (writer.hasNext()) {
@@ -77,6 +79,7 @@ public class JoiningAttributeWriter implements AttributeWriter {
         return false;
     }
 
+    @Override
     public void next() throws IOException {
         for (AttributeWriter writer : writers) {
             // if (writers[i].hasNext()) Dont want to check this, need to be able to insert
@@ -87,6 +90,7 @@ public class JoiningAttributeWriter implements AttributeWriter {
     /* (non-Javadoc)
      * @see org.geotools.data.AttributeWriter#write(int, java.lang.Object)
      */
+    @Override
     public void write(int position, Object attribute) throws IOException {
         AttributeWriter writer = null;
         for (int i = index.length - 1; i >= 0; i--) {
@@ -101,10 +105,12 @@ public class JoiningAttributeWriter implements AttributeWriter {
         writer.write(position, attribute);
     }
 
+    @Override
     public int getAttributeCount() {
         return metaData.length;
     }
 
+    @Override
     public AttributeDescriptor getAttributeType(int i) {
         return metaData[i];
     }

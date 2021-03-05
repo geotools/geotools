@@ -101,16 +101,19 @@ public class AbstractFilterVisitor implements FilterVisitor {
     }
 
     /** Does nothing; will return provided data unmodified. */
+    @Override
     public Object visit(IncludeFilter filter, Object data) {
         return data;
     }
 
     /** Does nothing; will return provided data unmodified. */
+    @Override
     public Object visit(ExcludeFilter filter, Object data) {
         return data;
     }
 
     /** Does nothing. */
+    @Override
     public Object visitNullFilter(Object data) {
         return null;
     }
@@ -119,6 +122,7 @@ public class AbstractFilterVisitor implements FilterVisitor {
      * Visits filter.getLowerBoundary(),filter.getExpression(),filter.getUpperBoundary() if an
      * expression visitor was set.
      */
+    @Override
     public Object visit(PropertyIsBetween filter, Object data) {
         if (filter.getLowerBoundary() != null) {
             filter.getLowerBoundary().accept(expressionVisitor, data);
@@ -150,41 +154,48 @@ public class AbstractFilterVisitor implements FilterVisitor {
     /**
      * Visits filter.getExpression1(), and filter.getExpression2() if an expression visitor was set.
      */
+    @Override
     public Object visit(PropertyIsEqualTo filter, Object data) {
         return visit((BinaryComparisonOperator) filter, data);
     }
     /**
      * Visits filter.getExpression1(), and filter.getExpression2() if an expression visitor was set.
      */
+    @Override
     public Object visit(PropertyIsNotEqualTo filter, Object data) {
         return visit((BinaryComparisonOperator) filter, data);
     }
     /**
      * Visits filter.getExpression1(), and filter.getExpression2() if an expression visitor was set.
      */
+    @Override
     public Object visit(PropertyIsLessThan filter, Object data) {
         return visit((BinaryComparisonOperator) filter, data);
     }
     /**
      * Visits filter.getExpression1(), and filter.getExpression2() if an expression visitor was set.
      */
+    @Override
     public Object visit(PropertyIsLessThanOrEqualTo filter, Object data) {
         return visit((BinaryComparisonOperator) filter, data);
     }
     /**
      * Visits filter.getExpression1(), and filter.getExpression2() if an expression visitor was set.
      */
+    @Override
     public Object visit(PropertyIsGreaterThan filter, Object data) {
         return visit((BinaryComparisonOperator) filter, data);
     }
     /**
      * Visits filter.getExpression1(), and filter.getExpression2() if an expression visitor was set.
      */
+    @Override
     public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object data) {
         return visit((BinaryComparisonOperator) filter, data);
     }
 
     /** does nothing */
+    @Override
     public Object visit(BBOX filter, Object data) {
         return visit((BinarySpatialOperator) filter, data);
     }
@@ -207,65 +218,76 @@ public class AbstractFilterVisitor implements FilterVisitor {
     /**
      * Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set.
      */
+    @Override
     public Object visit(Beyond filter, Object data) {
         return visit((BinarySpatialOperator) filter, data);
     }
     /**
      * Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set.
      */
+    @Override
     public Object visit(Contains filter, Object data) {
         return visit((BinarySpatialOperator) filter, data);
     }
     /**
      * Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set.
      */
+    @Override
     public Object visit(Crosses filter, Object data) {
         return visit((BinarySpatialOperator) filter, data);
     }
     /**
      * Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set.
      */
+    @Override
     public Object visit(Disjoint filter, Object data) {
         return visit((BinarySpatialOperator) filter, data);
     }
     /**
      * Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set.
      */
+    @Override
     public Object visit(DWithin filter, Object data) {
         return visit((BinarySpatialOperator) filter, data);
     }
     /**
      * Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set.
      */
+    @Override
     public Object visit(Equals filter, Object data) {
         return visit((BinarySpatialOperator) filter, data);
     }
     /**
      * Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set.
      */
+    @Override
     public Object visit(Intersects filter, Object data) {
         return visit((BinarySpatialOperator) filter, data);
     }
     /**
      * Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set.
      */
+    @Override
     public Object visit(Overlaps filter, Object data) {
         return visit((BinarySpatialOperator) filter, data);
     }
     /**
      * Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set.
      */
+    @Override
     public Object visit(Touches filter, Object data) {
         return visit((BinarySpatialOperator) filter, data);
     }
     /**
      * Visits filter.getExpression1(),filter.getExpression2() if an expression visitor has been set.
      */
+    @Override
     public Object visit(Within filter, Object data) {
         return visit((BinarySpatialOperator) filter, data);
     }
 
     /** Visits filter.getExpression() if an expression visitor was set. */
+    @Override
     public Object visit(PropertyIsLike filter, Object data) {
         if (expressionVisitor != null) {
             if (filter.getExpression() != null) {
@@ -286,15 +308,18 @@ public class AbstractFilterVisitor implements FilterVisitor {
     }
 
     /** Visits elements of filter.getChildren(). */
+    @Override
     public Object visit(And filter, Object data) {
         return visit((BinaryLogicOperator) filter, data);
     }
     /** Visits elements of filter.getChildren(). */
+    @Override
     public Object visit(Or filter, Object data) {
         return visit((BinaryLogicOperator) filter, data);
     }
 
     /** Visits filter.getFilter(). */
+    @Override
     public Object visit(Not filter, Object data) {
         if (filter.getFilter() != null) {
             filter.getFilter().accept(this, data);
@@ -304,6 +329,7 @@ public class AbstractFilterVisitor implements FilterVisitor {
     }
 
     /** Visits filter.getExpression() if an expression visitor was set. */
+    @Override
     public Object visit(PropertyIsNull filter, Object data) {
         if (expressionVisitor != null) {
             if (filter.getExpression() != null) {
@@ -314,6 +340,7 @@ public class AbstractFilterVisitor implements FilterVisitor {
     }
 
     /** Visits filter.getExpression() if an expression visitor was set. */
+    @Override
     public Object visit(PropertyIsNil filter, Object extraData) {
         if (expressionVisitor != null) {
             if (filter.getExpression() != null) {
@@ -324,63 +351,78 @@ public class AbstractFilterVisitor implements FilterVisitor {
     }
 
     /** Does nothing. */
+    @Override
     public Object visit(Id filter, Object data) {
         // do nothing
         return filter;
     }
 
+    @Override
     public Object visit(After after, Object extraData) {
         return visit((BinaryTemporalOperator) after, extraData);
     }
 
+    @Override
     public Object visit(AnyInteracts anyInteracts, Object extraData) {
         return visit((BinaryTemporalOperator) anyInteracts, extraData);
     }
 
+    @Override
     public Object visit(Before before, Object extraData) {
         return visit((BinaryTemporalOperator) before, extraData);
     }
 
+    @Override
     public Object visit(Begins begins, Object extraData) {
         return visit((BinaryTemporalOperator) begins, extraData);
     }
 
+    @Override
     public Object visit(BegunBy begunBy, Object extraData) {
         return visit((BinaryTemporalOperator) begunBy, extraData);
     }
 
+    @Override
     public Object visit(During during, Object extraData) {
         return visit((BinaryTemporalOperator) during, extraData);
     }
 
+    @Override
     public Object visit(EndedBy endedBy, Object extraData) {
         return visit((BinaryTemporalOperator) endedBy, extraData);
     }
 
+    @Override
     public Object visit(Ends ends, Object extraData) {
         return visit((BinaryTemporalOperator) ends, extraData);
     }
 
+    @Override
     public Object visit(Meets meets, Object extraData) {
         return visit((BinaryTemporalOperator) meets, extraData);
     }
 
+    @Override
     public Object visit(MetBy metBy, Object extraData) {
         return visit((BinaryTemporalOperator) metBy, extraData);
     }
 
+    @Override
     public Object visit(OverlappedBy overlappedBy, Object extraData) {
         return visit((BinaryTemporalOperator) overlappedBy, extraData);
     }
 
+    @Override
     public Object visit(TContains contains, Object extraData) {
         return visit((BinaryTemporalOperator) contains, extraData);
     }
 
+    @Override
     public Object visit(TEquals equals, Object extraData) {
         return visit((BinaryTemporalOperator) equals, extraData);
     }
 
+    @Override
     public Object visit(TOverlaps contains, Object extraData) {
         return visit((BinaryTemporalOperator) contains, extraData);
     }

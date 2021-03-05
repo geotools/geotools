@@ -272,6 +272,7 @@ public class CQLTest {
 
         FilterFactory ff =
                 new FilterFactoryImpl() {
+                    @Override
                     public PropertyName property(String propName) {
                         called[0] = true;
 
@@ -289,6 +290,7 @@ public class CQLTest {
 
         FilterFactory ff =
                 new FilterFactoryImpl() {
+                    @Override
                     public PropertyName property(String propName) {
                         called[0] = true;
 

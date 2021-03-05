@@ -102,6 +102,7 @@ public final class MaintenanceFrequency extends CodeList<MaintenanceFrequency> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public MaintenanceFrequency[] family() {
         return values();
     }

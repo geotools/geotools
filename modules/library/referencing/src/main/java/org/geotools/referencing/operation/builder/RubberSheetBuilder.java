@@ -124,6 +124,7 @@ public class RubberSheetBuilder extends MathTransformBuilder {
      *
      * @return 1
      */
+    @Override
     public int getMinimumPointCount() {
         return 1;
     }
@@ -143,6 +144,7 @@ public class RubberSheetBuilder extends MathTransformBuilder {
      * @return calculated MathTransform
      * @throws FactoryException when the size of source and destination point is not the same.
      */
+    @Override
     protected MathTransform computeMathTransform() throws FactoryException {
         return new RubberSheetTransform(trianglesToKeysMap);
     }

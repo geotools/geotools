@@ -73,32 +73,38 @@ public final class IndexedFeatureResults extends DataFeatureCollection {
 
         return new FeatureReader<SimpleFeatureType, SimpleFeature>() {
             /** @see org.geotools.data.FeatureReader#getFeatureType() */
+            @Override
             public SimpleFeatureType getFeatureType() {
                 return getSchema();
             }
 
             /** @see org.geotools.data.FeatureReader#next() */
+            @Override
             public SimpleFeature next()
                     throws IOException, IllegalAttributeException, NoSuchElementException {
                 return (SimpleFeature) resultsIterator.next();
             }
 
             /** @see org.geotools.data.FeatureReader#hasNext() */
+            @Override
             public boolean hasNext() throws IOException {
                 return resultsIterator.hasNext();
             }
 
             /** @see org.geotools.data.FeatureReader#close() */
+            @Override
             public void close() throws IOException {}
         };
     }
 
     /** @see org.geotools.data.FeatureResults#getBounds() */
+    @Override
     public ReferencedEnvelope getBounds() {
         return ReferencedEnvelope.reference(bounds);
     }
 
     /** @see org.geotools.data.FeatureResults#getCount() */
+    @Override
     public int getCount() throws IOException {
         return count;
     }
@@ -115,6 +121,7 @@ public final class IndexedFeatureResults extends DataFeatureCollection {
     }
 
     /** @see org.geotools.data.FeatureResults#reader() */
+    @Override
     public FeatureReader<SimpleFeatureType, SimpleFeature> reader() throws IOException {
         if (queryBounds != null) return reader(queryBounds);
         else return reader(bounds);

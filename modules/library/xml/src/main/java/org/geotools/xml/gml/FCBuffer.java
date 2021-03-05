@@ -170,6 +170,7 @@ public class FCBuffer extends Thread implements FeatureReader<SimpleFeatureType,
 
     private volatile Date lastUpdate;
     /** @see org.geotools.data.FeatureReader#getFeatureType() */
+    @Override
     public SimpleFeatureType getFeatureType() {
         if (ft != null) return ft;
         Date d = new Date(Calendar.getInstance().getTimeInMillis() + timeout);
@@ -192,6 +193,7 @@ public class FCBuffer extends Thread implements FeatureReader<SimpleFeatureType,
     }
 
     /** @see org.geotools.data.FeatureReader#next() */
+    @Override
     public SimpleFeature next() throws IOException, NoSuchElementException {
         if (exception != null) {
             state = STOP;
@@ -227,6 +229,7 @@ public class FCBuffer extends Thread implements FeatureReader<SimpleFeatureType,
     }
 
     /** @see org.geotools.data.FeatureReader#hasNext() */
+    @Override
     public boolean hasNext() throws IOException {
         if (exception instanceof StopException) {
             return false;
@@ -294,12 +297,14 @@ public class FCBuffer extends Thread implements FeatureReader<SimpleFeatureType,
     }
 
     /** @see org.geotools.data.FeatureReader#close() */
+    @Override
     public void close() {
         state = STOP; // note for the sax parser
         interrupt();
     }
 
     /** @see java.lang.Runnable#run() */
+    @Override
     public void run() {
         XMLHandlerHints hints = new XMLHandlerHints();
         initHints(hints);

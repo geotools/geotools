@@ -190,6 +190,7 @@ public class CalcResultTest {
 
         public MockCalcResult() {}
 
+        @Override
         public Object getValue() {
             return value;
         }

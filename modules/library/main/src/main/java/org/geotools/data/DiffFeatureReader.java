@@ -111,11 +111,13 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature>
     }
 
     /** @see org.geotools.data.FeatureReader#getFeatureType() */
+    @Override
     public T getFeatureType() {
         return reader.getFeatureType();
     }
 
     /** @see org.geotools.data.FeatureReader#next() */
+    @Override
     public F next() throws IOException, IllegalAttributeException, NoSuchElementException {
         if (hasNext()) {
             F live = next;
@@ -128,6 +130,7 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature>
     }
 
     /** @see org.geotools.data.FeatureReader#hasNext() */
+    @Override
     public boolean hasNext() throws IOException {
         if (next != null) {
             // We found it already
@@ -169,6 +172,7 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature>
     }
 
     /** @see org.geotools.data.FeatureReader#close() */
+    @Override
     public void close() throws IOException {
         if (reader != null) {
             reader.close();

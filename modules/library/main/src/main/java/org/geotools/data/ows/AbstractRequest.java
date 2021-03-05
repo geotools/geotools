@@ -132,6 +132,7 @@ public abstract class AbstractRequest implements Request {
     }
 
     /** @see org.geotools.data.wms.request.Request#getFinalURL() */
+    @Override
     public URL getFinalURL() {
         if (isFileUrl(onlineResource)) {
             return onlineResource;
@@ -187,6 +188,7 @@ public abstract class AbstractRequest implements Request {
         return key;
     }
 
+    @Override
     public void setProperty(String name, String value) {
         if (value == null) {
             properties.remove(name);
@@ -196,6 +198,7 @@ public abstract class AbstractRequest implements Request {
     }
 
     /** @return a copy of this request's properties */
+    @Override
     public Properties getProperties() {
         return (Properties) properties.clone();
     }
@@ -215,14 +218,17 @@ public abstract class AbstractRequest implements Request {
     protected abstract void initVersion();
 
     /** Default POST content type is xml */
+    @Override
     public String getPostContentType() {
         return "application/xml";
     }
 
     /** Default to not requiring POST. Implementors can override if they need to. */
+    @Override
     public void performPostOutput(OutputStream outputStream) throws IOException {}
 
     /** Default to not requiring POST. Implementors can override if they need to. */
+    @Override
     public boolean requiresPost() {
         return false;
     }

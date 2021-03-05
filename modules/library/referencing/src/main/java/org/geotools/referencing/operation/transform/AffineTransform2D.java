@@ -95,16 +95,19 @@ public class AffineTransform2D extends XAffineTransform
     }
 
     /** Gets the dimension of input points, which is fixed to 2. */
+    @Override
     public final int getSourceDimensions() {
         return 2;
     }
 
     /** Gets the dimension of output points, which is fixed to 2. */
+    @Override
     public final int getTargetDimensions() {
         return 2;
     }
 
     /** Transforms the specified {@code ptSrc} and stores the result in {@code ptDst}. */
+    @Override
     public DirectPosition transform(final DirectPosition ptSrc, DirectPosition ptDst) {
         if (ptDst == null) {
             ptDst = new GeneralDirectPosition(2);
@@ -134,6 +137,7 @@ public class AffineTransform2D extends XAffineTransform
     }
 
     /** Returns this transform as an affine transform matrix. */
+    @Override
     public Matrix getMatrix() {
         return new Matrix3(this);
     }
@@ -142,6 +146,7 @@ public class AffineTransform2D extends XAffineTransform
      * Gets the derivative of this transform at a point. For an affine transform, the derivative is
      * the same everywhere.
      */
+    @Override
     public Matrix derivative(final Point2D point) {
         return new Matrix2(
                 getScaleX(), getShearX(),
@@ -152,6 +157,7 @@ public class AffineTransform2D extends XAffineTransform
      * Gets the derivative of this transform at a point. For an affine transform, the derivative is
      * the same everywhere.
      */
+    @Override
     public Matrix derivative(final DirectPosition point) {
         return derivative((Point2D) null);
     }
@@ -161,6 +167,7 @@ public class AffineTransform2D extends XAffineTransform
      *
      * @throws NoninvertibleTransformException if this transform can't be inverted.
      */
+    @Override
     public MathTransform2D inverse() throws NoninvertibleTransformException {
         if (inverse == null) {
             if (isIdentity()) {
@@ -198,6 +205,7 @@ public class AffineTransform2D extends XAffineTransform
      * @param formatter The formatter to use.
      * @return The WKT element name.
      */
+    @Override
     public String formatWKT(final Formatter formatter) {
         final ParameterValueGroup parameters = getParameterValues();
         formatter.append(formatter.getName(parameters.getDescriptor()));
@@ -206,6 +214,7 @@ public class AffineTransform2D extends XAffineTransform
     }
 
     /** Returns the WKT for this transform. */
+    @Override
     public String toWKT() {
         int indentation = 2;
         try {

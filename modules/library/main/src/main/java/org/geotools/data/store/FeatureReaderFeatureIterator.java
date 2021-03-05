@@ -43,6 +43,7 @@ final class FeatureReaderFeatureIterator implements SimpleFeatureIterator {
         this.reader = reader;
     }
 
+    @Override
     public boolean hasNext() {
         try {
             if (reader == null) return false;
@@ -60,6 +61,7 @@ final class FeatureReaderFeatureIterator implements SimpleFeatureIterator {
         }
     }
 
+    @Override
     public SimpleFeature next() {
         if (reader == null) {
             throw new NoSuchElementException("Iterator has been closed");
@@ -88,6 +90,7 @@ final class FeatureReaderFeatureIterator implements SimpleFeatureIterator {
      * This method only needs package visability as only AbstractFeatureCollection is trusted enough
      * to call it.
      */
+    @Override
     public void close() {
         if (reader != null) {
             try {

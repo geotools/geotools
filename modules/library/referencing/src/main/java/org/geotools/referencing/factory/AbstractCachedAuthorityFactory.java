@@ -175,6 +175,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
      * @param code The code to trim.
      * @return The code without the authority scope.
      */
+    @Override
     protected String trimAuthority(String code) {
         /*
          * IMPLEMENTATION NOTE: This method is overridden in
@@ -212,8 +213,10 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
     //
     // AuthorityFactory
     //
+    @Override
     public abstract Citation getAuthority();
 
+    @Override
     public Set<String> getAuthorityCodes(Class type) throws FactoryException {
         @SuppressWarnings("unchecked")
         Set<String> codes = (Set) cache.get(type);
@@ -236,8 +239,10 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
 
     protected abstract Set<String> generateAuthorityCodes(Class type) throws FactoryException;
 
+    @Override
     public abstract InternationalString getDescriptionText(String code) throws FactoryException;
 
+    @Override
     public IdentifiedObject createObject(String code) throws FactoryException {
         final String key = toKey(code);
         IdentifiedObject obj = (IdentifiedObject) cache.get(key);
@@ -268,6 +273,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
      * @throws NoSuchAuthorityCodeException if the specified {@code code} was not found.
      * @throws FactoryException if the object creation failed for some other reason.
      */
+    @Override
     public CompoundCRS createCompoundCRS(final String code) throws FactoryException {
         final CoordinateReferenceSystem crs = createCoordinateReferenceSystem(code);
         try {
@@ -277,6 +283,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
         }
     }
 
+    @Override
     public CoordinateReferenceSystem createCoordinateReferenceSystem(String code)
             throws FactoryException {
         final String key = toKey(code);
@@ -299,6 +306,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
     protected abstract CoordinateReferenceSystem generateCoordinateReferenceSystem(String code)
             throws FactoryException;
 
+    @Override
     public DerivedCRS createDerivedCRS(final String code) throws FactoryException {
         final CoordinateReferenceSystem crs = createCoordinateReferenceSystem(code);
         try {
@@ -308,6 +316,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
         }
     }
 
+    @Override
     public EngineeringCRS createEngineeringCRS(final String code) throws FactoryException {
         final CoordinateReferenceSystem crs = createCoordinateReferenceSystem(code);
         try {
@@ -317,6 +326,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
         }
     }
 
+    @Override
     public GeocentricCRS createGeocentricCRS(final String code) throws FactoryException {
         final CoordinateReferenceSystem crs = createCoordinateReferenceSystem(code);
         try {
@@ -326,6 +336,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
         }
     }
 
+    @Override
     public GeographicCRS createGeographicCRS(final String code) throws FactoryException {
         final CoordinateReferenceSystem crs = createCoordinateReferenceSystem(code);
         try {
@@ -335,6 +346,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
         }
     }
 
+    @Override
     public ImageCRS createImageCRS(final String code) throws FactoryException {
         final CoordinateReferenceSystem crs = createCoordinateReferenceSystem(code);
         try {
@@ -344,6 +356,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
         }
     }
 
+    @Override
     public ProjectedCRS createProjectedCRS(final String code) throws FactoryException {
         final CoordinateReferenceSystem crs = createCoordinateReferenceSystem(code);
         try {
@@ -353,6 +366,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
         }
     }
 
+    @Override
     public TemporalCRS createTemporalCRS(final String code) throws FactoryException {
         final CoordinateReferenceSystem crs = createCoordinateReferenceSystem(code);
         try {
@@ -362,6 +376,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
         }
     }
 
+    @Override
     public VerticalCRS createVerticalCRS(final String code) throws FactoryException {
         final CoordinateReferenceSystem crs = createCoordinateReferenceSystem(code);
         try {
@@ -382,6 +397,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
      * @throws NoSuchAuthorityCodeException if the specified {@code code} was not found.
      * @throws FactoryException if the object creation failed for some other reason.
      */
+    @Override
     public CartesianCS createCartesianCS(final String code) throws FactoryException {
         final CoordinateSystem cs = createCoordinateSystem(code);
         try {
@@ -391,6 +407,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
         }
     }
 
+    @Override
     public CoordinateSystem createCoordinateSystem(String code) throws FactoryException {
         final String key = toKey(code);
         CoordinateSystem cs = (CoordinateSystem) cache.get(key);
@@ -413,6 +430,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
             throws FactoryException;
 
     // sample implemenation with get/test
+    @Override
     public CoordinateSystemAxis createCoordinateSystemAxis(String code) throws FactoryException {
         final String key = toKey(code);
         CoordinateSystemAxis axis = (CoordinateSystemAxis) cache.get(key);
@@ -442,6 +460,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
      * @throws NoSuchAuthorityCodeException if the specified {@code code} was not found.
      * @throws FactoryException if the object creation failed for some other reason.
      */
+    @Override
     public CylindricalCS createCylindricalCS(final String code) throws FactoryException {
         final CoordinateSystem cs = createCoordinateSystem(code);
         try {
@@ -451,6 +470,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
         }
     }
 
+    @Override
     public EllipsoidalCS createEllipsoidalCS(final String code) throws FactoryException {
         final CoordinateSystem cs = createCoordinateSystem(code);
         try {
@@ -460,6 +480,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
         }
     }
 
+    @Override
     public PolarCS createPolarCS(final String code) throws FactoryException {
         final CoordinateSystem cs = createCoordinateSystem(code);
         try {
@@ -469,6 +490,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
         }
     }
 
+    @Override
     public SphericalCS createSphericalCS(final String code) throws FactoryException {
         final CoordinateSystem cs = createCoordinateSystem(code);
         try {
@@ -478,6 +500,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
         }
     }
 
+    @Override
     public TimeCS createTimeCS(final String code) throws FactoryException {
         final CoordinateSystem cs = createCoordinateSystem(code);
         try {
@@ -487,6 +510,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
         }
     }
 
+    @Override
     public Unit<?> createUnit(String code) throws FactoryException {
         final String key = toKey(code);
         Unit<?> unit = (Unit) cache.get(key);
@@ -507,6 +531,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
 
     protected abstract Unit<?> generateUnit(String code) throws FactoryException;
 
+    @Override
     public VerticalCS createVerticalCS(final String code) throws FactoryException {
         final CoordinateSystem cs = createCoordinateSystem(code);
         try {
@@ -519,6 +544,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
     //
     // DatumAuthorityFactory
     //
+    @Override
     public Datum createDatum(String code) throws FactoryException {
         final String key = toKey(code);
         Datum datum = (Datum) cache.get(key);
@@ -539,6 +565,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
 
     protected abstract Datum generateDatum(String code) throws FactoryException;
 
+    @Override
     public Ellipsoid createEllipsoid(String code) throws FactoryException {
         final String key = toKey(code);
         Ellipsoid ellipsoid = (Ellipsoid) cache.get(key);
@@ -559,6 +586,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
 
     protected abstract Ellipsoid generateEllipsoid(String code) throws FactoryException;
 
+    @Override
     public EngineeringDatum createEngineeringDatum(final String code) throws FactoryException {
         final Datum datum = createDatum(code);
         try {
@@ -568,6 +596,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
         }
     }
 
+    @Override
     public GeodeticDatum createGeodeticDatum(final String code) throws FactoryException {
         final Datum datum = createDatum(code);
         try {
@@ -577,6 +606,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
         }
     }
 
+    @Override
     public ImageDatum createImageDatum(final String code) throws FactoryException {
         final Datum datum = createDatum(code);
         try {
@@ -586,6 +616,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
         }
     }
 
+    @Override
     public PrimeMeridian createPrimeMeridian(String code) throws FactoryException {
         final String key = toKey(code);
         PrimeMeridian datum = (PrimeMeridian) cache.get(key);
@@ -606,6 +637,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
 
     protected abstract PrimeMeridian generatePrimeMeridian(String code) throws FactoryException;
 
+    @Override
     public TemporalDatum createTemporalDatum(final String code) throws FactoryException {
         final Datum datum = createDatum(code);
         try {
@@ -615,6 +647,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
         }
     }
 
+    @Override
     public VerticalDatum createVerticalDatum(final String code) throws FactoryException {
         final Datum datum = createDatum(code);
         try {
@@ -624,6 +657,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
         }
     }
 
+    @Override
     public CoordinateOperation createCoordinateOperation(String code) throws FactoryException {
         final String key = toKey(code);
         CoordinateOperation operation = (CoordinateOperation) cache.get(key);
@@ -645,6 +679,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
     protected abstract CoordinateOperation generateCoordinateOperation(String code)
             throws FactoryException;
 
+    @Override
     @SuppressWarnings("unchecked")
     public synchronized Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(
             final String sourceCode, final String targetCode) throws FactoryException {
@@ -673,6 +708,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
             String sourceCode, String targetCode) throws FactoryException;
 
     /** We will clear out our cache and factories reference */
+    @Override
     public void dispose() throws FactoryException {
         this.cache = null;
         this.factories = null;

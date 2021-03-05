@@ -81,6 +81,7 @@ public interface SimpleFeature extends Feature {
     String getID();
 
     /** Override and type narrow to SimpleFeatureType. */
+    @Override
     SimpleFeatureType getType();
 
     /**

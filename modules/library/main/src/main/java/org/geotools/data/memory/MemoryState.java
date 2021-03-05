@@ -39,6 +39,7 @@ public class MemoryState extends ContentState {
         return (MemoryEntry) super.getEntry();
     }
 
+    @Override
     public MemoryState copy() {
         return new MemoryState(this);
     }

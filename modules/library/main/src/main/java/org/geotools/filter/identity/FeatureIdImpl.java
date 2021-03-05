@@ -45,6 +45,7 @@ public class FeatureIdImpl implements FeatureId {
         }
     }
 
+    @Override
     public String getID() {
         return fid;
     }
@@ -66,6 +67,7 @@ public class FeatureIdImpl implements FeatureId {
         return equalsExact(feature.getIdentifier());
     }
 
+    @Override
     public boolean matches(Object object) {
         if (object instanceof Feature) {
             return matches((Feature) object);
@@ -73,10 +75,12 @@ public class FeatureIdImpl implements FeatureId {
         return false;
     }
 
+    @Override
     public String toString() {
         return fid;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof FeatureId) {
             return fid.equals(((FeatureId) obj).getID());
@@ -84,6 +88,7 @@ public class FeatureIdImpl implements FeatureId {
         return false;
     }
 
+    @Override
     public int hashCode() {
         return fid.hashCode();
     }

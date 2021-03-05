@@ -54,6 +54,7 @@ public class LambertConformal2SP extends LambertConformal {
     }
 
     /** {@inheritDoc} */
+    @Override
     public ParameterDescriptorGroup getParameterDescriptors() {
         return Provider.PARAMETERS;
     }
@@ -122,6 +123,7 @@ public class LambertConformal2SP extends LambertConformal {
          * @return The created math transform.
          * @throws ParameterNotFoundException if a required parameter was not found.
          */
+        @Override
         protected MathTransform createMathTransform(final ParameterValueGroup parameters)
                 throws ParameterNotFoundException {
             // switch sp1 and sp2 so that we get a consistent ordering, this allows to recognize

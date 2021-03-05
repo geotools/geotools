@@ -32,6 +32,7 @@ public abstract class ExpressionAbstract implements Expression {
      *
      * @return default implementation returns null
      */
+    @Override
     public Object evaluate(Object object) {
         return null;
     }
@@ -41,6 +42,7 @@ public abstract class ExpressionAbstract implements Expression {
      * <p>Subclasses are expected to make use of the {@linkplain Converters} utility class (as the
      * easiest way to provide value morphing in conformance with the Filter specification).
      */
+    @Override
     public <T> T evaluate(Object object, Class<T> context) {
         return Converters.convert(evaluate(object), context);
     }

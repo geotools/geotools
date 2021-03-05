@@ -48,6 +48,7 @@ public class MaxFeaturesSimpleFeatureIterator implements SimpleFeatureIterator {
         return delegate;
     }
 
+    @Override
     public boolean hasNext() {
         if (counter < start) {
             // skip to just before start if needed
@@ -56,6 +57,7 @@ public class MaxFeaturesSimpleFeatureIterator implements SimpleFeatureIterator {
         return delegate.hasNext() && counter < end;
     }
 
+    @Override
     public SimpleFeature next() {
         if (counter < start) {
             // skip to just before start if needed

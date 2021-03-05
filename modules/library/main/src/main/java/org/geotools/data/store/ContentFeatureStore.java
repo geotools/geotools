@@ -236,6 +236,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource
     }
 
     /** Adds a collection of features to the store. */
+    @Override
     public List<FeatureId> addFeatures(
             FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection)
             throws IOException {
@@ -308,6 +309,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource
      * #removeFeatures(Filter)}), and then obtaining an appending feature writer and writing all
      * features from <tt>reader</tt> to it.
      */
+    @Override
     public final void setFeatures(FeatureReader<SimpleFeatureType, SimpleFeature> reader)
             throws IOException {
         // remove features
@@ -353,6 +355,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource
      * <p>The <tt>filter</tt> must not be <code>null</code>, in this case this method will throw an
      * {@link IllegalArgumentException}.
      */
+    @Override
     public void modifyFeatures(Name[] type, Object[] value, Filter filter) throws IOException {
         if (filter == null) {
             String msg = "Must specify a filter, must not be null.";
@@ -375,6 +378,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource
         }
     }
 
+    @Override
     public final void modifyFeatures(String name, Object attributeValue, Filter filter)
             throws IOException {
         modifyFeatures(
@@ -387,6 +391,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource
                 filter);
     }
 
+    @Override
     public final void modifyFeatures(String[] names, Object[] values, Filter filter)
             throws IOException {
         Name attributeNames[] = new Name[names.length];
@@ -404,6 +409,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource
     }
 
     /** Calls through to {@link #modifyFeatures(Name[], Object[], Filter)}. */
+    @Override
     public final void modifyFeatures(Name name, Object value, Filter filter) throws IOException {
 
         modifyFeatures(new Name[] {name}, new Object[] {value}, filter);
@@ -418,6 +424,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource
      * <p>The <tt>filter</tt> must not be <code>null</code>, in this case this method will throw an
      * {@link IllegalArgumentException}.
      */
+    @Override
     public void removeFeatures(Filter filter) throws IOException {
         if (filter == null) {
             String msg = "Must specify a filter, must not be null.";

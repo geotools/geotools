@@ -86,6 +86,7 @@ public final class ContrastMethod extends CodeList<ContrastMethod> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public ContrastMethod[] family() {
         return values();
     }

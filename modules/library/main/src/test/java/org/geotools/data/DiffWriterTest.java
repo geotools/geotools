@@ -54,6 +54,7 @@ public class DiffWriterTest {
                                 type, new Object[] {"original", geom}, "original"));
         writer =
                 new DiffFeatureWriter(reader, diff) {
+                    @Override
                     protected void fireNotification(int eventType, ReferencedEnvelope bounds) {}
                 };
     }

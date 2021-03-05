@@ -29,6 +29,7 @@ public class TContainsImpl extends BinaryTemporalOperatorImpl implements TContai
         return pos == RelativePosition.CONTAINS;
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

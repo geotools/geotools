@@ -29,6 +29,7 @@ public class MeetsImpl extends BinaryTemporalOperatorImpl implements Meets {
         return pos == RelativePosition.MEETS;
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

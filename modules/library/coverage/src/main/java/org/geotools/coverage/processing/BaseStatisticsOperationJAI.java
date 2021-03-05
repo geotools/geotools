@@ -181,6 +181,7 @@ public abstract class BaseStatisticsOperationJAI extends OperationJAI {
      * @see
      *     org.geotools.coverage.processing.OperationJAI#prepareParameters(org.opengis.parameter.ParameterValueGroup)
      */
+    @Override
     protected ParameterBlockJAI prepareParameters(ParameterValueGroup parameters) {
         // /////////////////////////////////////////////////////////////////////
         //

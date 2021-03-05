@@ -51,18 +51,22 @@ public class ExplicitBoundsShape implements Shape {
         this.bounds = bounds;
     }
 
+    @Override
     public boolean contains(double x, double y, double w, double h) {
         return shape.contains(x, y, w, h);
     }
 
+    @Override
     public boolean contains(double x, double y) {
         return shape.contains(x, y);
     }
 
+    @Override
     public boolean contains(Point2D p) {
         return shape.contains(p);
     }
 
+    @Override
     public boolean contains(Rectangle2D r) {
         return shape.contains(r);
     }
@@ -74,6 +78,7 @@ public class ExplicitBoundsShape implements Shape {
      * @return the Rectangle representing the Shape's bounding box.
      * @see Shape
      */
+    @Override
     public Rectangle getBounds() {
         if (bounds != null)
             return new Rectangle(
@@ -91,23 +96,28 @@ public class ExplicitBoundsShape implements Shape {
      * @return the Rectangle2D representing the Shape's bounding box.
      * @see Shape
      */
+    @Override
     public Rectangle2D getBounds2D() {
         if (bounds != null) return bounds;
         return shape.getBounds2D();
     }
 
+    @Override
     public PathIterator getPathIterator(AffineTransform at, double flatness) {
         return shape.getPathIterator(at, flatness);
     }
 
+    @Override
     public PathIterator getPathIterator(AffineTransform at) {
         return shape.getPathIterator(at);
     }
 
+    @Override
     public boolean intersects(double x, double y, double w, double h) {
         return shape.intersects(x, y, w, h);
     }
 
+    @Override
     public boolean intersects(Rectangle2D r) {
         return shape.intersects(r);
     }

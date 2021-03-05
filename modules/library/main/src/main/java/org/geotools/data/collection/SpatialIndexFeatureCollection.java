@@ -111,6 +111,7 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
         }
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public SimpleFeatureIterator features() {
         Envelope everything =
@@ -123,22 +124,27 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
         final List<SimpleFeature> list = (List<SimpleFeature>) index.query(everything);
         final Iterator<SimpleFeature> iterator = list.iterator();
         return new SimpleFeatureIterator() {
+            @Override
             public SimpleFeature next() throws NoSuchElementException {
                 return iterator.next();
             }
 
+            @Override
             public boolean hasNext() {
                 return iterator.hasNext();
             }
 
+            @Override
             public void close() {}
         };
     }
 
+    @Override
     public SimpleFeatureCollection sort(SortBy order) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public SimpleFeatureCollection subCollection(Filter filter) {
         // split out the spatial part of the filter
         SpatialIndexFeatureCollection ret = new SpatialIndexFeatureCollection(schema);
@@ -184,6 +190,7 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
                 new ItemVisitor() {
                     float count = 0f;
 
+                    @Override
                     public void visitItem(Object item) {
                         SimpleFeature feature = null;
                         try {
@@ -251,6 +258,7 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
 
     public void close(Iterator<SimpleFeature> close) {}
 
+    @Override
     @SuppressWarnings("unchecked")
     public boolean contains(Object obj) {
         if (obj instanceof SimpleFeature) {
@@ -265,6 +273,7 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
         return false;
     }
 
+    @Override
     public boolean containsAll(Collection<?> collection) {
         boolean containsAll = true;
         for (Object obj : collection) {
@@ -277,20 +286,24 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
         return containsAll;
     }
 
+    @Override
     public ReferencedEnvelope getBounds() {
         CoordinateReferenceSystem crs = schema.getCoordinateReferenceSystem();
         Envelope bounds = (Envelope) index.getRoot().getBounds();
         return new ReferencedEnvelope(bounds, crs);
     }
 
+    @Override
     public String getID() {
         return null;
     }
 
+    @Override
     public SimpleFeatureType getSchema() {
         return schema;
     }
 
+    @Override
     public boolean isEmpty() {
         return index.itemsTree().isEmpty();
     }
@@ -323,14 +336,17 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
     }
 
     /** Will build the STRtree index if required. */
+    @Override
     public int size() {
         return index.size();
     }
 
+    @Override
     public Object[] toArray() {
         return toArray(new Object[size()]);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <O> O[] toArray(O[] array) {
         int size = size();

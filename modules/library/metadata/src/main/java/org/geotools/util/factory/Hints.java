@@ -1469,6 +1469,7 @@ public class Hints extends RenderingHints {
          * @see Hints.IntegerKey#isCompatibleValue
          * @see Hints.OptionKey#isCompatibleValue
          */
+        @Override
         public boolean isCompatibleValue(final Object value) {
             return getValueClass().isInstance(value);
         }

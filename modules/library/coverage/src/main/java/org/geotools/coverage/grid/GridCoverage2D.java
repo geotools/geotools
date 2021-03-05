@@ -259,6 +259,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
      * Returns information for the grid coverage geometry. Grid geometry includes the valid range of
      * grid coordinates and the georeferencing.
      */
+    @Override
     public GridGeometry2D getGridGeometry() {
         final String error = GridGeometry2D.checkConsistency(image, gridGeometry);
         if (error != null) {
@@ -303,6 +304,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
     }
 
     /** Returns the number of bands in the grid coverage. */
+    @Override
     public int getNumSampleDimensions() {
         return sampleDimensions.length;
     }
@@ -314,6 +316,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
      * values and a color table if one is associated with the dimension. A coverage must have at
      * least one sample dimension.
      */
+    @Override
     public GridSampleDimension getSampleDimension(final int index) {
         return sampleDimensions[index];
     }
@@ -341,6 +344,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
      * Returns the value vector for a given location (world coordinates). A value for each sample
      * dimension is included in the vector.
      */
+    @Override
     public Object evaluate(final DirectPosition point) throws CannotEvaluateException {
         final int dataType = image.getSampleModel().getDataType();
         switch (dataType) {
@@ -628,6 +632,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
      * Returns the optimal size to use for each dimension when accessing grid values. The default
      * implementation returns the image's tiles size.
      */
+    @Override
     public int[] getOptimalDataBlockSizes() {
         final int[] size = new int[getDimension()];
         Arrays.fill(size, 1);
@@ -641,6 +646,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
      *
      * @return The grid data as a rendered image.
      */
+    @Override
     public RenderedImage getRenderedImage() {
         return image;
     }

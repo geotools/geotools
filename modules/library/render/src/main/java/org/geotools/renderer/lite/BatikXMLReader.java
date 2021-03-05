@@ -52,61 +52,75 @@ public class BatikXMLReader implements XMLReader {
         reader = parser.getXMLReader();
     }
 
+    @Override
     public ContentHandler getContentHandler() {
         return reader.getContentHandler();
     }
 
+    @Override
     public DTDHandler getDTDHandler() {
         return reader.getDTDHandler();
     }
 
+    @Override
     public EntityResolver getEntityResolver() {
         return reader.getEntityResolver();
     }
 
+    @Override
     public ErrorHandler getErrorHandler() {
         return reader.getErrorHandler();
     }
 
+    @Override
     public boolean getFeature(String name)
             throws SAXNotRecognizedException, SAXNotSupportedException {
         return reader.getFeature(name);
     }
 
+    @Override
     public Object getProperty(String name)
             throws SAXNotRecognizedException, SAXNotSupportedException {
         return reader.getProperty(name);
     }
 
+    @Override
     public void parse(InputSource input) throws IOException, SAXException {
         reader.parse(input);
     }
 
+    @Override
     public void parse(String systemId) throws IOException, SAXException {
         reader.parse(systemId);
     }
 
+    @Override
     public void setContentHandler(ContentHandler handler) {
         reader.setContentHandler(handler);
     }
 
+    @Override
     public void setDTDHandler(DTDHandler handler) {
         reader.setDTDHandler(handler);
     }
 
+    @Override
     public void setEntityResolver(EntityResolver resolver) {
         reader.setEntityResolver(resolver);
     }
 
+    @Override
     public void setErrorHandler(ErrorHandler handler) {
         reader.setErrorHandler(handler);
     }
 
+    @Override
     public void setFeature(String name, boolean value)
             throws SAXNotRecognizedException, SAXNotSupportedException {
         reader.setFeature(name, value);
     }
 
+    @Override
     public void setProperty(String name, Object value)
             throws SAXNotRecognizedException, SAXNotSupportedException {
         reader.setProperty(name, value);

@@ -54,6 +54,7 @@ public class StandardDeviationVisitor implements FeatureCalc, FeatureAttributeVi
             this.deviation = deviation;
         }
 
+        @Override
         public Object getValue() {
             return deviation;
         }
@@ -108,6 +109,7 @@ public class StandardDeviationVisitor implements FeatureCalc, FeatureAttributeVi
         return Optional.of(Collections.singletonList(Double.class));
     }
 
+    @Override
     public CalcResult getResult() {
         if (result != null) return result;
         if (count == 0) {
@@ -120,6 +122,7 @@ public class StandardDeviationVisitor implements FeatureCalc, FeatureAttributeVi
         visit((org.opengis.feature.Feature) feature);
     }
 
+    @Override
     public void visit(org.opengis.feature.Feature feature) {
         Object value = expr.evaluate(feature);
 

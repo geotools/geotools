@@ -31,6 +31,7 @@ public class LiteCoordinateSequenceFactory implements CoordinateSequenceFactory 
     /* (non-Javadoc)
      * @see org.locationtech.jts.geom.CoordinateSequenceFactory#create(org.locationtech.jts.geom.Coordinate[])
      */
+    @Override
     public CoordinateSequence create(Coordinate[] coordinates) {
         return new LiteCoordinateSequence(coordinates);
     }
@@ -38,6 +39,7 @@ public class LiteCoordinateSequenceFactory implements CoordinateSequenceFactory 
     /* (non-Javadoc)
      * @see org.locationtech.jts.geom.CoordinateSequenceFactory#create(org.locationtech.jts.geom.CoordinateSequence)
      */
+    @Override
     public CoordinateSequence create(CoordinateSequence coordSeq) {
         /**
          * If copying a LiteCoordinateSequence, use the copy constructor to preserve dimensionality
@@ -51,6 +53,7 @@ public class LiteCoordinateSequenceFactory implements CoordinateSequenceFactory 
     /* (non-Javadoc)
      * @see org.locationtech.jts.geom.CoordinateSequenceFactory#create(int, int)
      */
+    @Override
     public CoordinateSequence create(int size, int dimension) {
         return new LiteCoordinateSequence(size, dimension);
     }

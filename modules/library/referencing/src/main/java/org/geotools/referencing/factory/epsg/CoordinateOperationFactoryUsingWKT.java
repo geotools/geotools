@@ -142,6 +142,7 @@ public class CoordinateOperationFactoryUsingWKT extends DeferredAuthorityFactory
         }
     }
 
+    @Override
     public synchronized Citation getAuthority() {
         if (authority == null) {
             authority = Citations.EPSG;
@@ -157,6 +158,7 @@ public class CoordinateOperationFactoryUsingWKT extends DeferredAuthorityFactory
      * @throws FactoryException if the constructor failed to find or read the file. This exception
      *     usually has an {@link IOException} as its cause.
      */
+    @Override
     protected AbstractAuthorityFactory createBackingStore() throws FactoryException {
         try {
             URL url = getDefinitionsURL();
@@ -254,6 +256,7 @@ public class CoordinateOperationFactoryUsingWKT extends DeferredAuthorityFactory
      * @throws NoSuchAuthorityCodeException if a specified code was not found.
      * @throws FactoryException if the object creation failed for some other reason.
      */
+    @Override
     public CoordinateOperation createCoordinateOperation(String code)
             throws NoSuchAuthorityCodeException, FactoryException {
         CoordinateOperation coordop = super.createCoordinateOperation(code);

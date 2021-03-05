@@ -116,6 +116,7 @@ public interface DataStore extends DataAccess<SimpleFeatureType, SimpleFeature> 
      * @see SimpleFeatureSource
      * @see org.geotools.data.simple.SimpleFeatureStore
      */
+    @Override
     SimpleFeatureSource getFeatureSource(Name typeName) throws IOException;
 
     /**

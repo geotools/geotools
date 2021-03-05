@@ -46,9 +46,11 @@ final class CommonsLogger extends LoggerAdapter {
     }
 
     /** Do nothing since Commons-Logging doesn't support programmatic change of logging level. */
+    @Override
     public void setLevel(Level level) {}
 
     /** Returns the level for this logger. */
+    @Override
     public Level getLevel() {
         if (logger.isTraceEnabled()) return Level.FINEST;
         if (logger.isDebugEnabled()) return Level.FINE;
@@ -60,6 +62,7 @@ final class CommonsLogger extends LoggerAdapter {
     }
 
     /** Returns {@code true} if the specified level is loggable. */
+    @Override
     @SuppressWarnings("fallthrough")
     public boolean isLoggable(final Level level) {
         final int n = level.intValue();
@@ -133,30 +136,37 @@ final class CommonsLogger extends LoggerAdapter {
         }
     }
 
+    @Override
     public void severe(String message) {
         logger.error(message);
     }
 
+    @Override
     public void warning(String message) {
         logger.warn(message);
     }
 
+    @Override
     public void info(String message) {
         logger.info(message);
     }
 
+    @Override
     public void config(String message) {
         logger.info(message);
     }
 
+    @Override
     public void fine(String message) {
         logger.debug(message);
     }
 
+    @Override
     public void finer(String message) {
         logger.debug(message);
     }
 
+    @Override
     public void finest(String message) {
         logger.trace(message);
     }

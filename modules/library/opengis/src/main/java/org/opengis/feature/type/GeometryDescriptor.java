@@ -23,6 +23,7 @@ public interface GeometryDescriptor extends AttributeDescriptor {
     /**
      * Override of {@link AttributeDescriptor#getType()} which type narrows to {@link GeometryType}.
      */
+    @Override
     GeometryType getType();
 
     /**

@@ -29,6 +29,7 @@ public class OverlappedByImpl extends BinaryTemporalOperatorImpl implements Over
         return pos == RelativePosition.OVERLAPPED_BY;
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

@@ -194,6 +194,7 @@ public class DataAccessFinderTest {
      * @since 2.5.x
      */
     public static class MockDataAccessFactory implements DataAccessFactory {
+        @Override
         public boolean isAvailable() {
             return true;
         }
@@ -202,28 +203,34 @@ public class DataAccessFinderTest {
          * returns true if the {@link DataAccessFinderTest#MOCK_DS_PARAM_KEY mock param} contains
          * this class as value
          */
+        @Override
         public boolean canProcess(Map<String, ?> params) {
             return MockDataAccessFactory.class.equals(params.get(MOCK_DS_PARAM_KEY));
         }
 
         /** @return {@link DataAccessFinderTest#MOCK_DATAACCESS} */
+        @Override
         public DataAccess<FeatureType, Feature> createDataStore(Map<String, ?> params)
                 throws IOException {
             return MOCK_DATAACCESS;
         }
 
+        @Override
         public String getDescription() {
             return null;
         }
 
+        @Override
         public String getDisplayName() {
             return null;
         }
 
+        @Override
         public org.geotools.data.DataAccessFactory.Param[] getParametersInfo() {
             return null;
         }
 
+        @Override
         public Map<Key, ?> getImplementationHints() {
             return null;
         }
@@ -237,6 +244,7 @@ public class DataAccessFinderTest {
      * @since 2.5.x
      */
     public static class MockDataStoreFactory implements DataStoreFactorySpi {
+        @Override
         public boolean isAvailable() {
             return true;
         }
@@ -245,31 +253,38 @@ public class DataAccessFinderTest {
          * returns true if the {@link DataAccessFinderTest#MOCK_DS_PARAM_KEY mock param} contains
          * this class as value
          */
+        @Override
         public boolean canProcess(Map<String, ?> params) {
             return MockDataStoreFactory.class.equals(params.get(MOCK_DS_PARAM_KEY));
         }
 
         /** @return {@link DataAccessFinderTest#MOCK_DATASTORE} */
+        @Override
         public DataStore createDataStore(Map<String, ?> params) throws IOException {
             return MOCK_DATASTORE;
         }
 
+        @Override
         public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
             return null;
         }
 
+        @Override
         public String getDescription() {
             return null;
         }
 
+        @Override
         public String getDisplayName() {
             return null;
         }
 
+        @Override
         public org.geotools.data.DataAccessFactory.Param[] getParametersInfo() {
             return null;
         }
 
+        @Override
         public Map<Key, ?> getImplementationHints() {
             return null;
         }
@@ -294,30 +309,38 @@ public class DataAccessFinderTest {
     private static final DataAccess<FeatureType, Feature> MOCK_DATAACCESS =
             new DataAccess<FeatureType, Feature>() {
 
+                @Override
                 public void createSchema(FeatureType featureType) throws IOException {}
 
+                @Override
                 public void dispose() {}
 
+                @Override
                 public FeatureSource<FeatureType, Feature> getFeatureSource(Name typeName)
                         throws IOException {
                     return null;
                 }
 
+                @Override
                 public ServiceInfo getInfo() {
                     return null;
                 }
 
+                @Override
                 public List<Name> getNames() throws IOException {
                     return null;
                 }
 
+                @Override
                 public FeatureType getSchema(Name name) throws IOException {
                     return null;
                 }
 
+                @Override
                 public void updateSchema(Name typeName, FeatureType featureType)
                         throws IOException {}
 
+                @Override
                 public void removeSchema(Name typeName) throws IOException {}
             };
 
@@ -325,71 +348,89 @@ public class DataAccessFinderTest {
     private static final DataStore MOCK_DATASTORE =
             new DataStore() {
 
+                @Override
                 public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
                         Query query, Transaction transaction) throws IOException {
                     return null;
                 }
 
+                @Override
                 public SimpleFeatureSource getFeatureSource(String typeName) throws IOException {
                     return null;
                 }
 
+                @Override
                 public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
                         String typeName, Filter filter, Transaction transaction)
                         throws IOException {
                     return null;
                 }
 
+                @Override
                 public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
                         String typeName, Transaction transaction) throws IOException {
                     return null;
                 }
 
+                @Override
                 public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(
                         String typeName, Transaction transaction) throws IOException {
                     return null;
                 }
 
+                @Override
                 public LockingManager getLockingManager() {
                     return null;
                 }
 
+                @Override
                 public SimpleFeatureType getSchema(String typeName) throws IOException {
                     return null;
                 }
 
+                @Override
                 public String[] getTypeNames() throws IOException {
                     return null;
                 }
 
+                @Override
                 public void updateSchema(String typeName, SimpleFeatureType featureType)
                         throws IOException {}
 
+                @Override
                 public void removeSchema(String typeName) throws IOException {}
 
+                @Override
                 public void createSchema(SimpleFeatureType featureType) throws IOException {}
 
+                @Override
                 public void dispose() {}
 
+                @Override
                 public SimpleFeatureSource getFeatureSource(Name typeName) throws IOException {
                     return null;
                 }
 
+                @Override
                 public ServiceInfo getInfo() {
                     return null;
                 }
 
+                @Override
                 public List<Name> getNames() throws IOException {
                     return null;
                 }
 
+                @Override
                 public SimpleFeatureType getSchema(Name name) throws IOException {
                     return null;
                 }
 
+                @Override
                 public void updateSchema(Name typeName, SimpleFeatureType featureType)
                         throws IOException {}
 
+                @Override
                 public void removeSchema(Name typeName) throws IOException {}
             };
 }

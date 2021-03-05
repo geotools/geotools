@@ -26,6 +26,7 @@ import org.opengis.annotation.XmlElement;
 public interface RecordId extends Identifier {
 
     /** The identifier value, which is a string. */
+    @Override
     @XmlElement("id")
     String getID();
 
@@ -35,5 +36,6 @@ public interface RecordId extends Identifier {
      * @param record The recrod construct to be tested.
      * @return <code>true</code> if a match, otherwise <code>false</code>
      */
+    @Override
     boolean matches(Object record);
 }

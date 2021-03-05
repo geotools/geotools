@@ -32,6 +32,7 @@ public interface Boundary extends Complex {
      *
      * @return Always {@code true}.
      */
+    @Override
     @UML(identifier = "isCycle", obligation = MANDATORY, specification = ISO_19107)
     boolean isCycle();
 }

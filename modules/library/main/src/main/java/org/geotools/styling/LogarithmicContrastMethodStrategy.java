@@ -42,6 +42,7 @@ public class LogarithmicContrastMethodStrategy extends AbstractContrastMethodStr
         method = ContrastMethod.LOGARITHMIC;
     }
 
+    @Override
     public void addParameter(String key, Expression value) {
         if (!PARAM_NAMES.contains(key)) {
             LOGGER.log(

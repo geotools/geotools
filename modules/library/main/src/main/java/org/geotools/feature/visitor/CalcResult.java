@@ -39,11 +39,13 @@ public interface CalcResult {
     public static final CalcResult NULL_RESULT =
             new AbstractCalcResult() {
                 /** Always compatible */
+                @Override
                 public boolean isCompatible(CalcResult targetResults) {
                     return true;
                 };
 
                 /** Just returns the other result */
+                @Override
                 public CalcResult merge(CalcResult resultsToAdd) {
                     return resultsToAdd;
                 };
@@ -96,6 +98,7 @@ public interface CalcResult {
      *
      * @return the calculation result as a string (or "" if not applicable)
      */
+    @Override
     public String toString();
 
     /**

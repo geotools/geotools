@@ -77,6 +77,7 @@ public final class Obligation extends CodeList<Obligation> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public Obligation[] family() {
         return values();
     }

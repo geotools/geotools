@@ -77,5 +77,6 @@ public interface Matrix extends Cloneable {
      *
      * @return A clone of this matrix.
      */
+    @Override
     Matrix clone();
 }

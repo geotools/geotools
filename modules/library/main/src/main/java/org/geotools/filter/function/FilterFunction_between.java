@@ -42,6 +42,7 @@ public class FilterFunction_between extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Object value;
         Object low;

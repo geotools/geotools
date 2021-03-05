@@ -23,5 +23,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 public interface DelegatingSimpleFeatureWriter
         extends DelegatingFeatureWriter<SimpleFeatureType, SimpleFeature>, SimpleFeatureWriter {
 
+    @Override
     public SimpleFeatureWriter getDelegate();
 }

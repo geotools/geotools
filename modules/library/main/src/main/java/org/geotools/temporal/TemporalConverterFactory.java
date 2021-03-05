@@ -36,6 +36,7 @@ public class TemporalConverterFactory implements ConverterFactory {
 
     static Converter dateToInstant =
             new Converter() {
+                @Override
                 public <T> T convert(Object source, Class<T> target) throws Exception {
                     return target.cast(new DefaultInstant(new DefaultPosition((Date) source)));
                 }
@@ -44,6 +45,7 @@ public class TemporalConverterFactory implements ConverterFactory {
     static Converter stringToInstant =
             new Converter() {
 
+                @Override
                 public <T> T convert(Object source, Class<T> target) throws Exception {
                     // first go to java.util.Date
                     Date d = Converters.convert(source, Date.class);
@@ -53,6 +55,7 @@ public class TemporalConverterFactory implements ConverterFactory {
                 }
             };
 
+    @Override
     public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {
         if (Instant.class.isAssignableFrom(target)) {
             if (Date.class.isAssignableFrom(source)) {

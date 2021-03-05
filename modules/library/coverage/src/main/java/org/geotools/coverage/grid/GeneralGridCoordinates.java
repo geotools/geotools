@@ -84,6 +84,7 @@ public class GeneralGridCoordinates implements GridCoordinates, Serializable {
      * Returns the number of dimensions. This method is equivalent to <code>
      * {@linkplain #getCoordinateValues()}.length</code>. It is provided for efficienty.
      */
+    @Override
     public int getDimension() {
         return coordinates.length;
     }
@@ -97,6 +98,7 @@ public class GeneralGridCoordinates implements GridCoordinates, Serializable {
      * @return A copy of the coordinates. Changes in the returned array will not be reflected back
      *     in this {@code GeneralGridCoordinates} object.
      */
+    @Override
     public int[] getCoordinateValues() {
         return coordinates.clone();
     }
@@ -109,6 +111,7 @@ public class GeneralGridCoordinates implements GridCoordinates, Serializable {
      * @return The value at the requested dimension.
      * @throws ArrayIndexOutOfBoundsException if the specified dimension is out of bounds.
      */
+    @Override
     public int getCoordinateValue(final int dimension) throws ArrayIndexOutOfBoundsException {
         return coordinates[dimension];
     }
@@ -121,6 +124,7 @@ public class GeneralGridCoordinates implements GridCoordinates, Serializable {
      * @throws ArrayIndexOutOfBoundsException if the specified dimension is out of bounds.
      * @throws UnsupportedOperationException if this grid coordinates is not modifiable.
      */
+    @Override
     public void setCoordinateValue(final int dimension, final int value)
             throws ArrayIndexOutOfBoundsException, UnsupportedOperationException {
         coordinates[dimension] = value;

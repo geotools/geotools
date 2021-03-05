@@ -122,6 +122,7 @@ class ZGroupLayerPainter implements AutoCloseable {
         return complete;
     }
 
+    @Override
     public void close() {
         if (iterator != null) {
             iterator.close();

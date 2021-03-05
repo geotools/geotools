@@ -42,6 +42,7 @@ public class FilterFunction_Convert extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Object evaluate(Object feature) {
         try {

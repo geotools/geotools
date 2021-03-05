@@ -33,6 +33,7 @@ public class FilterFunction_double2bool extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         double arg0;
 

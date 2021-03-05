@@ -981,6 +981,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * <p>Note that an {@link org.geotools.referencing.crs.DefaultEngineeringCRS} often requires
      * specific descriptions of the directions of its coordinate system axes.
      */
+    @Override
     public AxisDirection getDirection() {
         return direction;
     }
@@ -991,6 +992,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      *
      * @return The coordinate system axis abbreviation.
      */
+    @Override
     public String getAbbreviation() {
         return abbreviation;
     }
@@ -1000,6 +1002,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * coordinate tuple shall be recorded using this unit of measure, whenever those coordinates use
      * a coordinate reference system that uses a coordinate system that uses this axis.
      */
+    @Override
     public Unit<?> getUnit() {
         return unit;
     }
@@ -1011,6 +1014,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      *
      * @since 2.3
      */
+    @Override
     public double getMinimumValue() {
         return minimum;
     }
@@ -1022,6 +1026,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      *
      * @since 2.3
      */
+    @Override
     public double getMaximumValue() {
         return maximum;
     }
@@ -1035,6 +1040,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      *
      * @since 2.3
      */
+    @Override
     public RangeMeaning getRangeMeaning() {
         return rangeMeaning;
     }

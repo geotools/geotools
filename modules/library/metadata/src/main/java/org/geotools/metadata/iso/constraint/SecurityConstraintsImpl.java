@@ -68,6 +68,7 @@ public class SecurityConstraintsImpl extends ConstraintsImpl implements Security
     }
 
     /** Returns the name of the handling restrictions on the resource. */
+    @Override
     public Classification getClassification() {
         return classification;
     }
@@ -82,6 +83,7 @@ public class SecurityConstraintsImpl extends ConstraintsImpl implements Security
      * Returns the explanation of the application of the legal constraints or other restrictions and
      * legal prerequisites for obtaining and using the resource.
      */
+    @Override
     public InternationalString getUserNote() {
         return userNote;
     }
@@ -96,6 +98,7 @@ public class SecurityConstraintsImpl extends ConstraintsImpl implements Security
     }
 
     /** Returns the name of the classification system. */
+    @Override
     public InternationalString getClassificationSystem() {
         return classificationSystem;
     }
@@ -107,6 +110,7 @@ public class SecurityConstraintsImpl extends ConstraintsImpl implements Security
     }
 
     /** Returns the additional information about the restrictions on handling the resource. */
+    @Override
     public InternationalString getHandlingDescription() {
         return handlingDescription;
     }

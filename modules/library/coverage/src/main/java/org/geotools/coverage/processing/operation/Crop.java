@@ -278,6 +278,7 @@ public class Crop extends Operation2D {
      *     org.geotools.coverage.processing.AbstractOperation#doOperation(org.opengis.parameter.ParameterValueGroup,
      *     org.geotools.util.factory.Hints)
      */
+    @Override
     @SuppressWarnings("unchecked")
     public Coverage doOperation(ParameterValueGroup parameters, Hints hints) {
 

@@ -278,6 +278,7 @@ public abstract class TransformerBase {
          * Perform the translation. Exceptions are captured and can be obtained through the
          * checkError and getError methods.
          */
+        @Override
         public void run() {
             try {
                 transformer.transform(xmlSource, result);
@@ -299,43 +300,53 @@ public abstract class TransformerBase {
             this.namespaceDecls = nsDecls;
         }
 
+        @Override
         public void characters(char[] ch, int start, int length) throws SAXException {
             original.characters(ch, start, length);
         }
 
+        @Override
         public void endDocument() throws SAXException {
             original.endDocument();
         }
 
+        @Override
         public void endElement(String namespaceURI, String localName, String qName)
                 throws SAXException {
             original.endElement(namespaceURI, localName, qName);
         }
 
+        @Override
         public void endPrefixMapping(String prefix) throws SAXException {
             original.endPrefixMapping(prefix);
         }
 
+        @Override
         public void ignorableWhitespace(char[] ch, int start, int length) throws SAXException {
             original.ignorableWhitespace(ch, start, length);
         }
 
+        @Override
         public void processingInstruction(String target, String data) throws SAXException {
             original.processingInstruction(target, data);
         }
 
+        @Override
         public void setDocumentLocator(org.xml.sax.Locator locator) {
             original.setDocumentLocator(locator);
         }
 
+        @Override
         public void skippedEntity(String name) throws SAXException {
             original.skippedEntity(name);
         }
 
+        @Override
         public void startDocument() throws SAXException {
             original.startDocument();
         }
 
+        @Override
         public void startElement(
                 String namespaceURI, String localName, String qName, Attributes atts)
                 throws SAXException {
@@ -353,46 +364,54 @@ public abstract class TransformerBase {
             original.startElement(namespaceURI, localName, qName, atts);
         }
 
+        @Override
         public void startPrefixMapping(String prefix, String uri) throws SAXException {
             original.startPrefixMapping(prefix, uri);
         }
 
+        @Override
         public void comment(char[] ch, int start, int length) throws SAXException {
             if (original instanceof LexicalHandler) {
                 ((LexicalHandler) original).comment(ch, start, length);
             }
         }
 
+        @Override
         public void startCDATA() throws SAXException {
             if (original instanceof LexicalHandler) {
                 ((LexicalHandler) original).startCDATA();
             }
         }
 
+        @Override
         public void endCDATA() throws SAXException {
             if (original instanceof LexicalHandler) {
                 ((LexicalHandler) original).endCDATA();
             }
         }
 
+        @Override
         public void startDTD(String name, String publicId, String systemId) throws SAXException {
             if (original instanceof LexicalHandler) {
                 ((LexicalHandler) original).startDTD(name, publicId, systemId);
             }
         }
 
+        @Override
         public void endDTD() throws SAXException {
             if (original instanceof LexicalHandler) {
                 ((LexicalHandler) original).endDTD();
             }
         }
 
+        @Override
         public void startEntity(String name) throws SAXException {
             if (original instanceof LexicalHandler) {
                 ((LexicalHandler) original).startEntity(name);
             }
         }
 
+        @Override
         public void endEntity(String name) throws SAXException {
             if (original instanceof LexicalHandler) {
                 ((LexicalHandler) original).endEntity(name);
@@ -432,10 +451,12 @@ public abstract class TransformerBase {
                 this.attributes = new AttributesImpl(attributes);
             }
 
+            @Override
             public void commit() {
                 _start(element, attributes);
             }
 
+            @Override
             public String toString() {
                 return "Start(" + element + ", " + attributes + ")";
             }
@@ -452,10 +473,12 @@ public abstract class TransformerBase {
                 this.text = text;
             }
 
+            @Override
             public void commit() {
                 _chars(text);
             }
 
+            @Override
             public String toString() {
                 return "Chars(" + text + ")";
             }
@@ -472,10 +495,12 @@ public abstract class TransformerBase {
                 this.text = text;
             }
 
+            @Override
             public void commit() {
                 _cdata(text);
             }
 
+            @Override
             public String toString() {
                 return "CData(" + text + ")";
             }
@@ -492,10 +517,12 @@ public abstract class TransformerBase {
                 this.text = text;
             }
 
+            @Override
             public void commit() {
                 _comment(text);
             }
 
+            @Override
             public String toString() {
                 return "Comment(" + text + ")";
             }
@@ -509,10 +536,12 @@ public abstract class TransformerBase {
                 this.element = element;
             }
 
+            @Override
             public void commit() {
                 _end(element);
             }
 
+            @Override
             public String toString() {
                 return "End(" + element + ")";
             }
@@ -536,6 +565,7 @@ public abstract class TransformerBase {
          * time.
          */
         private class BufferedBackend implements Backend {
+            @Override
             public void start(String element, Attributes attributes) {
                 if (element == null) {
                     throw new NullPointerException("Attempted to start XML tag with null element");
@@ -547,6 +577,7 @@ public abstract class TransformerBase {
                 pending.add(new Start(element, attributes));
             }
 
+            @Override
             public void chars(String text) {
                 if (text == null) {
                     throw new NullPointerException("Attempted to start text block with null text");
@@ -554,6 +585,7 @@ public abstract class TransformerBase {
                 pending.add(new Chars(text));
             }
 
+            @Override
             public void cdata(String text) {
                 if (text == null) {
                     throw new NullPointerException("Attempted to start CDATA block with null text");
@@ -561,6 +593,7 @@ public abstract class TransformerBase {
                 pending.add(new CData(text));
             }
 
+            @Override
             public void end(String element) {
                 if (element == null) {
                     throw new NullPointerException("Attempted to close tag with null element");
@@ -568,6 +601,7 @@ public abstract class TransformerBase {
                 pending.add(new End(element));
             }
 
+            @Override
             public void comment(String text) {
                 if (text == null) {
                     throw new NullPointerException("Attempted to add comment with null text");
@@ -578,22 +612,27 @@ public abstract class TransformerBase {
 
         /** The DirectBackend writes immediately to the underlying output stream. */
         private class DirectBackend implements Backend {
+            @Override
             public void start(String element, Attributes attributes) {
                 _start(element, attributes);
             }
 
+            @Override
             public void chars(String text) {
                 _chars(text);
             }
 
+            @Override
             public void cdata(String text) {
                 _cdata(text);
             }
 
+            @Override
             public void end(String element) {
                 _end(element);
             }
 
+            @Override
             public void comment(String text) {
                 _comment(text);
             }
@@ -633,6 +672,7 @@ public abstract class TransformerBase {
             this.schemaLocation = schemaLocation;
         }
 
+        @Override
         public void abort() {
             running = false;
         }
@@ -834,18 +874,22 @@ public abstract class TransformerBase {
             }
         }
 
+        @Override
         public String getDefaultNamespace() {
             return namespace;
         }
 
+        @Override
         public String getDefaultPrefix() {
             return prefix;
         }
 
+        @Override
         public NamespaceSupport getNamespaceSupport() {
             return nsSupport;
         }
 
+        @Override
         public SchemaLocationSupport getSchemaLocationSupport() {
             return schemaLocation;
         }
@@ -908,6 +952,7 @@ public abstract class TransformerBase {
             return translator;
         }
 
+        @Override
         public void parse(InputSource in) throws SAXException {
             ContentHandler handler = getContentHandler();
 

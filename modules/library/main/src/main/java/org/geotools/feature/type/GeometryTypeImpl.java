@@ -43,6 +43,7 @@ public class GeometryTypeImpl extends AttributeTypeImpl implements GeometryType 
         CRS = crs;
     }
 
+    @Override
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return CRS;
     }

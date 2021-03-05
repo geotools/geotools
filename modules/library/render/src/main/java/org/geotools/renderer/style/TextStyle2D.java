@@ -326,6 +326,7 @@ public class TextStyle2D extends Style2D {
     }
 
     /** Returns a string representation of this style. */
+    @Override
     public String toString() {
         return Classes.getShortClassName(this) + "[\"" + label + "\"]";
     }

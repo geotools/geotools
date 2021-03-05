@@ -73,6 +73,7 @@ public interface ContrastEnhancement extends org.opengis.style.ContrastEnhanceme
      *
      * @return Expression, if <code>null</code> a value of 1.0 is assumed indicating no change
      */
+    @Override
     public Expression getGammaValue();
 
     /**

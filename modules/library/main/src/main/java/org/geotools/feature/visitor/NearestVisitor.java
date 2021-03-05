@@ -63,6 +63,7 @@ public class NearestVisitor implements FeatureCalc, FeatureAttributeVisitor {
      *
      * @param feature the feature to be visited
      */
+    @Override
     @SuppressWarnings("unchecked")
     public void visit(org.opengis.feature.Feature feature) {
         // bail out immediately if we have already found an exact match
@@ -227,6 +228,7 @@ public class NearestVisitor implements FeatureCalc, FeatureAttributeVisitor {
             return exact;
         }
 
+        @Override
         public Comparable getNearest() {
             if (maxBelow == null) {
                 return minAbove;

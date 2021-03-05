@@ -37,6 +37,7 @@ public class CountVisitor implements FeatureCalc {
         visit((org.opengis.feature.Feature) feature);
     }
 
+    @Override
     public void visit(org.opengis.feature.Feature feature) {
         if (count == null) {
             count = 0;
@@ -59,6 +60,7 @@ public class CountVisitor implements FeatureCalc {
         this.count = null;
     }
 
+    @Override
     public CalcResult getResult() {
         if (count == null) {
             return CalcResult.NULL_RESULT;
@@ -73,10 +75,12 @@ public class CountVisitor implements FeatureCalc {
             count = newcount;
         }
 
+        @Override
         public Object getValue() {
             return Integer.valueOf(count);
         }
 
+        @Override
         public boolean isCompatible(CalcResult targetResults) {
             if (targetResults == CalcResult.NULL_RESULT) return true;
             if (targetResults instanceof CountResult) return true;
@@ -84,6 +88,7 @@ public class CountVisitor implements FeatureCalc {
             return false;
         }
 
+        @Override
         public CalcResult merge(CalcResult resultsToAdd) {
             if (!isCompatible(resultsToAdd)) {
                 throw new IllegalArgumentException("Parameter is not a compatible type");

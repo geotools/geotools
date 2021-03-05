@@ -82,6 +82,7 @@ public final class ECQLGeoOperationTest extends CQLGeoOperationTest {
         super(Language.ECQL);
     }
 
+    @Override
     @Test
     public void disjoint() throws CQLException {
 
@@ -90,6 +91,7 @@ public final class ECQLGeoOperationTest extends CQLGeoOperationTest {
         assertTrue("Disjoint was expected", resultFilter instanceof Disjoint);
     }
 
+    @Override
     @Test
     public void Intersects() throws CQLException {
 
@@ -109,6 +111,7 @@ public final class ECQLGeoOperationTest extends CQLGeoOperationTest {
         assertTrue("Intersects was expected", resultFilter instanceof Intersects);
     }
 
+    @Override
     @Test
     public void touches() throws CQLException {
         Filter resultFilter = CompilerUtil.parseFilter(language, "TOUCHES(the_geom, POINT(1 2))");
@@ -116,6 +119,7 @@ public final class ECQLGeoOperationTest extends CQLGeoOperationTest {
         assertTrue("Touches was expected", resultFilter instanceof Touches);
     }
 
+    @Override
     @Test
     public void crosses() throws CQLException {
         Filter resultFilter = CompilerUtil.parseFilter(language, "CROSSES(the_geom, POINT(1 2))");
@@ -123,6 +127,7 @@ public final class ECQLGeoOperationTest extends CQLGeoOperationTest {
         assertTrue("Crosses was expected", resultFilter instanceof Crosses);
     }
 
+    @Override
     @Test
     public void contains() throws CQLException {
         Filter resultFilter = CompilerUtil.parseFilter(language, "CONTAINS(the_geom, POINT(1 2))");
@@ -130,6 +135,7 @@ public final class ECQLGeoOperationTest extends CQLGeoOperationTest {
         assertTrue("Contains was expected", resultFilter instanceof Contains);
     }
 
+    @Override
     @Test
     public void overlaps() throws Exception {
 
@@ -138,6 +144,7 @@ public final class ECQLGeoOperationTest extends CQLGeoOperationTest {
         assertTrue("Overlaps was expected", resultFilter instanceof Overlaps);
     }
 
+    @Override
     @Test
     public void equals() throws CQLException {
         // EQUALS

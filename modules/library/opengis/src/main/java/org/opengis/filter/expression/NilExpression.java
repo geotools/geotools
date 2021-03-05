@@ -29,16 +29,19 @@ public final class NilExpression implements Expression, Serializable {
     NilExpression() {}
 
     /** Accepts a visitor. */
+    @Override
     public Object accept(ExpressionVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
 
     /** Returns {@code null}. */
+    @Override
     public Object evaluate(Object object) {
         return null;
     }
 
     /** Returns {@code null}. */
+    @Override
     public <T> T evaluate(Object object, Class<T> context) {
         return null;
     }

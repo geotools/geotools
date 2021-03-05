@@ -91,6 +91,7 @@ public class FeatureLayer extends StyleLayer {
     }
 
     /** Used to connect/disconnect a FeatureListener if any map layer listeners are registered. */
+    @Override
     protected synchronized void connectDataListener(boolean listen) {
         if (sourceListener == null) {
             sourceListener =
@@ -146,6 +147,7 @@ public class FeatureLayer extends StyleLayer {
      * @return Query used to process content prior to display, or Query.ALL to indicate all content
      *     is used
      */
+    @Override
     public Query getQuery() {
         if (query == null) {
             return Query.ALL;

@@ -62,6 +62,7 @@ public class JDBCDelegatingTestSetup extends JDBCTestSetup {
         return delegate.createExampleFixture();
     }
 
+    @Override
     public void setUp() throws Exception {
         // make sure we don't forget to run eventual extra stuff
         delegate.setUp();
@@ -78,10 +79,12 @@ public class JDBCDelegatingTestSetup extends JDBCTestSetup {
         delegate.setUpData();
     }
 
+    @Override
     protected final void initializeDatabase() throws Exception {
         delegate.initializeDatabase();
     }
 
+    @Override
     protected void initializeDataSource(BasicDataSource ds, Properties db) {
         delegate.initializeDataSource(ds, db);
     }

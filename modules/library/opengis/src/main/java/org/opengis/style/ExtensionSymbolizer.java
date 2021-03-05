@@ -43,5 +43,6 @@ public interface ExtensionSymbolizer extends Symbolizer {
      *
      * @param visitor the style visitor
      */
+    @Override
     Object accept(StyleVisitor visitor, Object extraData);
 }

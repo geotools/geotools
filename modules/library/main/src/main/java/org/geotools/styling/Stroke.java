@@ -83,46 +83,57 @@ public interface Stroke extends org.opengis.style.Stroke {
      */
     static final Stroke DEFAULT =
             new ConstantStroke() {
+                @Override
                 public Expression getColor() {
                     return ConstantExpression.BLACK;
                 }
 
+                @Override
                 public Expression getWidth() {
                     return ConstantExpression.ONE;
                 }
 
+                @Override
                 public Expression getOpacity() {
                     return ConstantExpression.ONE;
                 }
 
+                @Override
                 public Expression getLineJoin() {
                     return ConstantExpression.constant("miter");
                 }
 
+                @Override
                 public Expression getLineCap() {
                     return ConstantExpression.constant("butt");
                 }
 
+                @Override
                 public float[] getDashArray() {
                     return null;
                 }
 
+                @Override
                 public List<Expression> dashArray() {
                     return null;
                 }
 
+                @Override
                 public Expression getDashOffset() {
                     return ConstantExpression.ZERO;
                 }
 
+                @Override
                 public Graphic getGraphicFill() {
                     return Graphic.DEFAULT;
                 }
 
+                @Override
                 public Graphic getGraphicStroke() {
                     return Graphic.NULL;
                 }
 
+                @Override
                 public Object clone() {
                     return this; // we are constant
                 }
@@ -136,42 +147,52 @@ public interface Stroke extends org.opengis.style.Stroke {
      */
     static final Stroke NULL =
             new ConstantStroke() {
+                @Override
                 public Expression getColor() {
                     return ConstantExpression.NULL;
                 }
 
+                @Override
                 public Expression getWidth() {
                     return ConstantExpression.NULL;
                 }
 
+                @Override
                 public Expression getOpacity() {
                     return ConstantExpression.NULL;
                 }
 
+                @Override
                 public Expression getLineJoin() {
                     return ConstantExpression.NULL;
                 }
 
+                @Override
                 public Expression getLineCap() {
                     return ConstantExpression.NULL;
                 }
 
+                @Override
                 public float[] getDashArray() {
                     return new float[] {};
                 }
 
+                @Override
                 public List<Expression> dashArray() {
                     return Collections.emptyList();
                 }
 
+                @Override
                 public Expression getDashOffset() {
                     return ConstantExpression.NULL;
                 }
 
+                @Override
                 public Graphic getGraphicFill() {
                     return Graphic.NULL;
                 }
 
+                @Override
                 public Graphic getGraphicStroke() {
                     return Graphic.NULL;
                 }
@@ -204,12 +225,14 @@ public interface Stroke extends org.opengis.style.Stroke {
     void setOpacity(Expression opacity);
 
     /** This parameter controls how line strings should be joined together. */
+    @Override
     Expression getLineJoin();
 
     /** This parameter controls how line strings should be joined together. */
     void setLineJoin(Expression lineJoin);
 
     /** This parameter controls how line strings should be capped. */
+    @Override
     Expression getLineCap();
 
     /** This parameter controls how line strings should be capped. */
@@ -248,6 +271,7 @@ public interface Stroke extends org.opengis.style.Stroke {
      * A dash array need not start from the beginning. This method allows for an offset into the
      * dash array before starting it.
      */
+    @Override
     Expression getDashOffset();
 
     /**
@@ -262,6 +286,7 @@ public interface Stroke extends org.opengis.style.Stroke {
      *
      * @return The graphic to use as a stipple fill. If null, then no Stipple fill should be used.
      */
+    @Override
     Graphic getGraphicFill();
 
     /**
@@ -282,6 +307,7 @@ public interface Stroke extends org.opengis.style.Stroke {
      * @return The graphic to use as a linear graphic. If null, then no graphic stroke should be
      *     used.
      */
+    @Override
     Graphic getGraphicStroke();
 
     /**
@@ -303,50 +329,62 @@ abstract class ConstantStroke implements Stroke {
         throw new UnsupportedOperationException("Constant Stroke may not be modified");
     }
 
+    @Override
     public void setColor(Expression color) {
         cannotModifyConstant();
     }
 
+    @Override
     public void setWidth(Expression width) {
         cannotModifyConstant();
     }
 
+    @Override
     public void setOpacity(Expression opacity) {
         cannotModifyConstant();
     }
 
+    @Override
     public void setLineJoin(Expression lineJoin) {
         cannotModifyConstant();
     }
 
+    @Override
     public void setLineCap(Expression lineCap) {
         cannotModifyConstant();
     }
 
+    @Override
     public void setDashArray(float[] dashArray) {
         cannotModifyConstant();
     }
 
+    @Override
     public void setDashArray(List<Expression> dashArray) {
         cannotModifyConstant();
     }
 
+    @Override
     public void setDashOffset(Expression dashOffset) {
         cannotModifyConstant();
     }
 
+    @Override
     public void setGraphicFill(org.opengis.style.Graphic graphicFill) {
         cannotModifyConstant();
     }
 
+    @Override
     public void setGraphicStroke(org.opengis.style.Graphic graphicStroke) {
         cannotModifyConstant();
     }
 
+    @Override
     public void accept(org.geotools.styling.StyleVisitor visitor) {
         cannotModifyConstant();
     }
 
+    @Override
     public Object accept(org.opengis.style.StyleVisitor visitor, Object data) {
         cannotModifyConstant();
         return null;

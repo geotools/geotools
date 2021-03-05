@@ -84,6 +84,7 @@ public interface Rule extends org.opengis.style.Rule {
      * @return Human readable description for use in user interfaces
      * @since 2.5.x
      */
+    @Override
     Description getDescription();
 
     /**
@@ -118,6 +119,7 @@ public interface Rule extends org.opengis.style.Rule {
      *     content; or use Filter.EXCLUDES to mark this as an "else" Rule accepting all remaining
      *     content
      */
+    @Override
     Filter getFilter();
 
     /**
@@ -131,6 +133,7 @@ public interface Rule extends org.opengis.style.Rule {
     void setElseFilter(boolean isElse);
 
     /** */
+    @Override
     public GraphicLegend getLegend();
 
     /** @param legend */
@@ -157,9 +160,11 @@ public interface Rule extends org.opengis.style.Rule {
      *
      * <p>Please note that this list may be modified direct.
      */
+    @Override
     List<org.geotools.styling.Symbolizer> symbolizers();
 
     /** @return Location where this style is defined; file or server; or null if unknown */
+    @Override
     public OnLineResource getOnlineResource();
 
     /** @param resource Indicates where this style is defined */

@@ -64,30 +64,37 @@ class ExtendedRandomIter implements RandomIter {
         this.op = op;
     }
 
+    @Override
     public int getSample(int x, int y, int b) {
         return delegate.getSample(x, y, b);
     }
 
+    @Override
     public float getSampleFloat(int x, int y, int b) {
         return delegate.getSampleFloat(x, y, b);
     }
 
+    @Override
     public double getSampleDouble(int x, int y, int b) {
         return delegate.getSampleDouble(x, y, b);
     }
 
+    @Override
     public int[] getPixel(int x, int y, int[] iArray) {
         return delegate.getPixel(x, y, iArray);
     }
 
+    @Override
     public float[] getPixel(int x, int y, float[] fArray) {
         return delegate.getPixel(x, y, fArray);
     }
 
+    @Override
     public double[] getPixel(int x, int y, double[] dArray) {
         return delegate.getPixel(x, y, dArray);
     }
 
+    @Override
     public void done() {
         delegate.done();
         op.dispose();

@@ -29,6 +29,7 @@ import org.opengis.geometry.primitive.Surface;
 @UML(identifier = "GM_PolyhedralSurface", specification = ISO_19107)
 public interface PolyhedralSurface extends Surface {
     /** Associates this surface with its individual facet polygons. */
+    @Override
     @UML(identifier = "patch", obligation = MANDATORY, specification = ISO_19107)
     List<? extends Polygon> getPatches();
 }

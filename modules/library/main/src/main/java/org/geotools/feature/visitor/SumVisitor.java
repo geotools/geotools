@@ -114,6 +114,7 @@ public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
         visit((Feature) feature);
     }
 
+    @Override
     public void visit(Feature feature) {
         Object value = expr.evaluate(feature);
 
@@ -143,6 +144,7 @@ public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
         strategy = null;
     }
 
+    @Override
     public CalcResult getResult() {
         if (strategy == null) {
             return CalcResult.NULL_RESULT;
@@ -159,10 +161,12 @@ public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
     static class DoubleSumStrategy implements SumStrategy {
         double number = 0;
 
+        @Override
         public void add(Object value) {
             number += ((Number) value).doubleValue();
         }
 
+        @Override
         public Object getResult() {
             return Double.valueOf(number);
         }
@@ -171,10 +175,12 @@ public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
     static class FloatSumStrategy implements SumStrategy {
         float number = 0;
 
+        @Override
         public void add(Object value) {
             number += ((Number) value).floatValue();
         }
 
+        @Override
         public Object getResult() {
             return Float.valueOf(number);
         }
@@ -183,10 +189,12 @@ public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
     static class LongSumStrategy implements SumStrategy {
         long number = 0;
 
+        @Override
         public void add(Object value) {
             number += ((Number) value).longValue();
         }
 
+        @Override
         public Object getResult() {
             return Long.valueOf(number);
         }
@@ -195,10 +203,12 @@ public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
     static class IntegerSumStrategy implements SumStrategy {
         int number = 0;
 
+        @Override
         public void add(Object value) {
             number += ((Number) value).intValue();
         }
 
+        @Override
         public Object getResult() {
             return Integer.valueOf(number);
         }
@@ -216,10 +226,12 @@ public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
             sum.add(value);
         }
 
+        @Override
         public Object getValue() {
             return sum.getResult();
         }
 
+        @Override
         public boolean isCompatible(CalcResult targetResults) {
             if (targetResults == CalcResult.NULL_RESULT) return true;
             if (targetResults instanceof SumResult) return true;
@@ -227,6 +239,7 @@ public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
             return false;
         }
 
+        @Override
         public CalcResult merge(CalcResult resultsToAdd) {
             if (!isCompatible(resultsToAdd)) {
                 throw new IllegalArgumentException("Parameter is not a compatible type");

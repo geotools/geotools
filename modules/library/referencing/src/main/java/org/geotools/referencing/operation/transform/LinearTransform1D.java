@@ -108,16 +108,19 @@ public class LinearTransform1D extends AbstractMathTransform
     }
 
     /** Gets the dimension of input points, which is 1. */
+    @Override
     public int getSourceDimensions() {
         return 1;
     }
 
     /** Gets the dimension of output points, which is 1. */
+    @Override
     public int getTargetDimensions() {
         return 1;
     }
 
     /** Returns this transform as an affine transform matrix. */
+    @Override
     public Matrix getMatrix() {
         return new Matrix2(scale, offset, 0, 1);
     }
@@ -152,6 +155,7 @@ public class LinearTransform1D extends AbstractMathTransform
      *
      * @since 2.3.1
      */
+    @Override
     public boolean isIdentity(double tolerance) {
         tolerance = Math.abs(tolerance);
         return Math.abs(offset) <= tolerance && Math.abs(scale - 1) <= tolerance;
@@ -168,11 +172,13 @@ public class LinearTransform1D extends AbstractMathTransform
     }
 
     /** Gets the derivative of this function at a value. */
+    @Override
     public double derivative(final double value) {
         return scale;
     }
 
     /** Transforms the specified value. */
+    @Override
     public double transform(double value) {
         return offset + scale * value;
     }
@@ -195,6 +201,7 @@ public class LinearTransform1D extends AbstractMathTransform
     }
 
     /** Transforms a list of coordinate point ordinal values. */
+    @Override
     public void transform(
             final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
         if (srcPts != dstPts || srcOff >= dstOff) {

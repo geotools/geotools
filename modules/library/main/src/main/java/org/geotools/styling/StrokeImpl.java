@@ -70,6 +70,7 @@ public class StrokeImpl implements Stroke, Cloneable {
      *
      * @return The color of the stroke encoded as a hexidecimal RGB value.
      */
+    @Override
     public Expression getColor() {
         return color;
     }
@@ -85,6 +86,7 @@ public class StrokeImpl implements Stroke, Cloneable {
      * @param color The color of the stroke encoded as a hexidecimal RGB value. This must not be
      *     null.
      */
+    @Override
     public void setColor(Expression color) {
         if (this.color == color) {
             return;
@@ -110,6 +112,7 @@ public class StrokeImpl implements Stroke, Cloneable {
      * Shortcut to retrieve dash array in the case where all expressions are literal numbers. Return
      * the default value if one of the expressions is not a literal.
      */
+    @Override
     public float[] getDashArray() {
         if (dashArray == null) {
             return Stroke.DEFAULT.getDashArray();
@@ -129,6 +132,7 @@ public class StrokeImpl implements Stroke, Cloneable {
     }
 
     /** Shortcut to define dash array using literal numbers. */
+    @Override
     public void setDashArray(float[] literalDashArray) {
         if (literalDashArray != null) {
             dashArray = new ArrayList<>(literalDashArray.length);
@@ -149,6 +153,7 @@ public class StrokeImpl implements Stroke, Cloneable {
      * <code>--&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;
      * --&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;--</code>
      */
+    @Override
     public List<Expression> dashArray() {
         if (dashArray == null) {
             return Stroke.DEFAULT.dashArray();
@@ -167,6 +172,7 @@ public class StrokeImpl implements Stroke, Cloneable {
      * <code>--&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;
      * --&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;--</code>
      */
+    @Override
     public void setDashArray(List<Expression> dashArray) {
         this.dashArray = dashArray;
     }
@@ -176,6 +182,7 @@ public class StrokeImpl implements Stroke, Cloneable {
      *
      * @return where the dash should start from.
      */
+    @Override
     public Expression getDashOffset() {
         if (dashOffset == null) {
             return Stroke.DEFAULT.getDashOffset();
@@ -189,6 +196,7 @@ public class StrokeImpl implements Stroke, Cloneable {
      *
      * @param dashOffset The distance into the dash pattern that should act as the start.
      */
+    @Override
     public void setDashOffset(Expression dashOffset) {
         if (dashOffset == null) {
             return;
@@ -203,6 +211,7 @@ public class StrokeImpl implements Stroke, Cloneable {
      *
      * @return The graphic to use as a stipple fill. If null, then no Stipple fill should be used.
      */
+    @Override
     public GraphicImpl getGraphicFill() {
         return fillGraphic;
     }
@@ -214,6 +223,7 @@ public class StrokeImpl implements Stroke, Cloneable {
      * @param fillGraphic The graphic to use as a stipple fill. If null, then no Stipple fill should
      *     be used.
      */
+    @Override
     public void setGraphicFill(org.opengis.style.Graphic fillGraphic) {
         if (this.fillGraphic == fillGraphic) {
             return;
@@ -232,6 +242,7 @@ public class StrokeImpl implements Stroke, Cloneable {
      * @return The graphic to use as a linear graphic. If null, then no graphic stroke should be
      *     used.
      */
+    @Override
     public GraphicImpl getGraphicStroke() {
         return strokeGraphic;
     }
@@ -247,6 +258,7 @@ public class StrokeImpl implements Stroke, Cloneable {
      * @param strokeGraphic The graphic to use as a linear graphic. If null, then no graphic stroke
      *     should be used.
      */
+    @Override
     public void setGraphicStroke(org.opengis.style.Graphic strokeGraphic) {
         if (this.strokeGraphic == strokeGraphic) {
             return;
@@ -260,6 +272,7 @@ public class StrokeImpl implements Stroke, Cloneable {
      * @return The cap style. This will be one of "butt", "round" and "square" There is no defined
      *     default.
      */
+    @Override
     public Expression getLineCap() {
         if (lineCap == null) {
             // ConstantExpression.constant("miter")
@@ -274,6 +287,7 @@ public class StrokeImpl implements Stroke, Cloneable {
      * @param lineCap The cap style. This can be one of "butt", "round" and "square" There is no
      *     defined default.
      */
+    @Override
     public void setLineCap(Expression lineCap) {
         if (lineCap == null) {
             return;
@@ -287,6 +301,7 @@ public class StrokeImpl implements Stroke, Cloneable {
      * @return The join style. This will be one of "mitre", "round" and "bevel". There is no defined
      *     default.
      */
+    @Override
     public Expression getLineJoin() {
         if (lineCap == null) {
             // ConstantExpression.constant("miter")
@@ -301,6 +316,7 @@ public class StrokeImpl implements Stroke, Cloneable {
      * @param lineJoin The join style. This will be one of "mitre", "round" and "bevel". There is no
      *     defined default.
      */
+    @Override
     public void setLineJoin(Expression lineJoin) {
         if (lineJoin == null) {
             return;
@@ -318,6 +334,7 @@ public class StrokeImpl implements Stroke, Cloneable {
      * @return The opacity of the stroke, where 0.0 is completely transparent and 1.0 is completely
      *     opaque.
      */
+    @Override
     public Expression getOpacity() {
         if (lineCap == null) {
             return Stroke.DEFAULT.getOpacity();
@@ -335,6 +352,7 @@ public class StrokeImpl implements Stroke, Cloneable {
      * @param opacity The opacity of the stroke, where 0.0 is completely transparent and 1.0 is
      *     completely opaque.
      */
+    @Override
     public void setOpacity(Expression opacity) {
         if (opacity == null) {
             return;
@@ -348,6 +366,7 @@ public class StrokeImpl implements Stroke, Cloneable {
      *
      * @return The width of the stroke in pixels. This may be fractional but not negative.
      */
+    @Override
     public Expression getWidth() {
         if (width == null) {
             return filterFactory.literal(1.0);
@@ -361,10 +380,12 @@ public class StrokeImpl implements Stroke, Cloneable {
      *
      * @param width The width of the stroke in pixels. This may be fractional but not negative.
      */
+    @Override
     public void setWidth(Expression width) {
         this.width = width;
     }
 
+    @Override
     public String toString() {
         StringBuffer out = new StringBuffer("org.geotools.styling.StrokeImpl:\n");
         out.append("\tColor " + this.color + "\n");
@@ -384,10 +405,12 @@ public class StrokeImpl implements Stroke, Cloneable {
         return java.awt.Color.decode((String) this.getColor().evaluate(feature));
     }
 
+    @Override
     public Object accept(StyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
+    @Override
     public void accept(org.geotools.styling.StyleVisitor visitor) {
         visitor.visit(this);
     }
@@ -400,6 +423,7 @@ public class StrokeImpl implements Stroke, Cloneable {
      *
      * @see org.geotools.styling.Stroke#clone()
      */
+    @Override
     public Object clone() {
         try {
             StrokeImpl clone = (StrokeImpl) super.clone();
@@ -423,6 +447,7 @@ public class StrokeImpl implements Stroke, Cloneable {
         }
     }
 
+    @Override
     public int hashCode() {
         final int PRIME = 1000003;
         int result = 0;
@@ -472,6 +497,7 @@ public class StrokeImpl implements Stroke, Cloneable {
      * @param oth The other StrokeImpl to compare
      * @return True if this and oth are equal.
      */
+    @Override
     public boolean equals(Object oth) {
         if (this == oth) {
             return true;

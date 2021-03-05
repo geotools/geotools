@@ -139,6 +139,7 @@ public class SimilarityTransformProvider extends MathTransformProvider {
      * @return an {@link AffineTransform2D}.
      * @throws ParameterNotFoundException if a required parameter was not found.
      */
+    @Override
     protected MathTransform createMathTransform(ParameterValueGroup values)
             throws ParameterNotFoundException {
 

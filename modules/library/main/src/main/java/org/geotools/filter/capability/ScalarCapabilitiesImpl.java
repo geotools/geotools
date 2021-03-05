@@ -64,6 +64,7 @@ public class ScalarCapabilitiesImpl implements ScalarCapabilities {
         this.arithmeticOperators = arithmeticOperators;
     }
 
+    @Override
     public ArithmeticOperatorsImpl getArithmeticOperators() {
         return arithmeticOperators;
     }
@@ -72,6 +73,7 @@ public class ScalarCapabilitiesImpl implements ScalarCapabilities {
         this.comparisonOperators = comparisonOperators;
     }
 
+    @Override
     public ComparisonOperatorsImpl getComparisonOperators() {
         return comparisonOperators;
     }
@@ -80,6 +82,7 @@ public class ScalarCapabilitiesImpl implements ScalarCapabilities {
         this.logicalOperators = logicalOperators;
     }
 
+    @Override
     public boolean hasLogicalOperators() {
         return logicalOperators;
     }

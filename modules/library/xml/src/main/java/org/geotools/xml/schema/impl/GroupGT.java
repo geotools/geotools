@@ -45,45 +45,54 @@ public class GroupGT implements Group {
     }
 
     /** @see org.geotools.xml.schema.Group#getChild() */
+    @Override
     public ElementGrouping getChild() {
         return child;
     }
 
     /** @see org.geotools.xml.schema.Group#getId() */
+    @Override
     public String getId() {
         return id;
     }
 
     /** @see org.geotools.xml.schema.ElementGrouping#getMaxOccurs() */
+    @Override
     public int getMaxOccurs() {
         return max;
     }
 
     /** @see org.geotools.xml.schema.ElementGrouping#getMinOccurs() */
+    @Override
     public int getMinOccurs() {
         return min;
     }
 
     /** @see org.geotools.xml.schema.Group#getName() */
+    @Override
     public String getName() {
         return name;
     }
 
     /** @see org.geotools.xml.schema.Group#getNamespace() */
+    @Override
     public URI getNamespace() {
         return namespace;
     }
 
     /** @see org.geotools.xml.schema.ElementGrouping#getGrouping() */
+    @Override
     public int getGrouping() {
         return GROUP;
     }
 
     /** @see org.geotools.xml.schema.ElementGrouping#findChildElement(java.lang.String) */
+    @Override
     public Element findChildElement(String name1) {
         return (child == null) ? null : child.findChildElement(name1);
     }
 
+    @Override
     public Element findChildElement(String localName, URI namespaceURI) {
         return (child == null) ? null : child.findChildElement(localName, namespaceURI);
     }

@@ -32,11 +32,13 @@ final class NullSortBy implements SortBy, Serializable {
     }
 
     /** Natural order usually associated with FID, or Key Attribtues. */
+    @Override
     public PropertyName getPropertyName() {
         return null;
     }
 
     /** Returns the sort order. */
+    @Override
     public SortOrder getSortOrder() {
         return order;
     }

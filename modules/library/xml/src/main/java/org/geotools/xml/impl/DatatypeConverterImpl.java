@@ -51,46 +51,57 @@ public class DatatypeConverterImpl implements DatatypeConverterInterface {
         return instance;
     }
 
+    @Override
     public String parseString(String arg0) {
         return arg0;
     }
 
+    @Override
     public BigInteger parseInteger(String arg0) {
         return new BigInteger(arg0);
     }
 
+    @Override
     public int parseInt(String arg0) {
         return Integer.parseInt(arg0);
     }
 
+    @Override
     public long parseLong(String arg0) {
         return Long.parseLong(arg0);
     }
 
+    @Override
     public short parseShort(String arg0) {
         return Short.parseShort(arg0);
     }
 
+    @Override
     public BigDecimal parseDecimal(String arg0) {
         return new BigDecimal(arg0);
     }
 
+    @Override
     public float parseFloat(String arg0) {
         return Float.parseFloat(arg0);
     }
 
+    @Override
     public double parseDouble(String arg0) {
         return Double.parseDouble(arg0);
     }
 
+    @Override
     public boolean parseBoolean(String arg0) {
         return Boolean.valueOf(arg0).booleanValue();
     }
 
+    @Override
     public byte parseByte(String arg0) {
         return Byte.parseByte(arg0);
     }
 
+    @Override
     public QName parseQName(String arg0, NamespaceContext arg1) {
         int offset = arg0.indexOf(':');
         String uri;
@@ -152,10 +163,12 @@ public class DatatypeConverterImpl implements DatatypeConverterInterface {
         return cal;
     }
 
+    @Override
     public Calendar parseDateTime(String arg0) {
         return parseDateTime(arg0, false);
     }
 
+    @Override
     public byte[] parseBase64Binary(String arg0) {
         try {
             return Base64Binary.decode(arg0);
@@ -164,12 +177,14 @@ public class DatatypeConverterImpl implements DatatypeConverterInterface {
         }
     }
 
+    @Override
     public byte[] parseHexBinary(String arg0) {
         return HexBinary.decode(arg0);
     }
 
     private static final long MAX_UNSIGNED_INT = (((long) Integer.MAX_VALUE) * 2) + 1;
 
+    @Override
     public long parseUnsignedInt(String arg0) {
         long l = Long.parseLong(arg0);
         if (l < 0) {
@@ -188,6 +203,7 @@ public class DatatypeConverterImpl implements DatatypeConverterInterface {
 
     private static final int MAX_UNSIGNED_SHORT = Short.MAX_VALUE * 2 + 1;
 
+    @Override
     public int parseUnsignedShort(String arg0) {
         int i = Integer.parseInt(arg0);
         if (i < 0) {
@@ -204,6 +220,7 @@ public class DatatypeConverterImpl implements DatatypeConverterInterface {
         return i;
     }
 
+    @Override
     public Calendar parseTime(String arg0) {
         XsTimeFormat format = new XsTimeFormat();
         ParsePosition pos = new ParsePosition(0);
@@ -215,6 +232,7 @@ public class DatatypeConverterImpl implements DatatypeConverterInterface {
         return cal;
     }
 
+    @Override
     public Calendar parseDate(String arg0) {
         XsDateFormat format = new XsDateFormat();
         ParsePosition pos = new ParsePosition(0);
@@ -226,6 +244,7 @@ public class DatatypeConverterImpl implements DatatypeConverterInterface {
         return cal;
     }
 
+    @Override
     public String parseAnySimpleType(String arg0) {
         return arg0;
     }
@@ -234,46 +253,57 @@ public class DatatypeConverterImpl implements DatatypeConverterInterface {
         return Duration.valueOf(pDuration);
     }
 
+    @Override
     public String printString(String arg0) {
         return arg0;
     }
 
+    @Override
     public String printInteger(BigInteger arg0) {
         return arg0.toString();
     }
 
+    @Override
     public String printInt(int arg0) {
         return Integer.toString(arg0);
     }
 
+    @Override
     public String printLong(long arg0) {
         return Long.toString(arg0);
     }
 
+    @Override
     public String printShort(short arg0) {
         return Short.toString(arg0);
     }
 
+    @Override
     public String printDecimal(BigDecimal arg0) {
         return arg0.toString();
     }
 
+    @Override
     public String printFloat(float arg0) {
         return Float.toString(arg0);
     }
 
+    @Override
     public String printDouble(double arg0) {
         return Double.toString(arg0);
     }
 
+    @Override
     public String printBoolean(boolean arg0) {
         return (arg0 ? Boolean.TRUE : Boolean.FALSE).toString();
     }
 
+    @Override
     public String printByte(byte arg0) {
         return Byte.toString(arg0);
     }
 
+    @Override
     public String printQName(QName arg0, NamespaceContext arg1) {
         String prefix = arg1.getPrefix(arg0.getNamespaceURI());
         if (prefix == null) {
@@ -286,30 +316,37 @@ public class DatatypeConverterImpl implements DatatypeConverterInterface {
         }
     }
 
+    @Override
     public String printDateTime(Calendar arg0) {
         return new XsDateTimeFormat().format(arg0);
     }
 
+    @Override
     public String printBase64Binary(byte[] arg0) {
         return Base64Binary.encode(arg0);
     }
 
+    @Override
     public String printHexBinary(byte[] arg0) {
         return HexBinary.encode(arg0);
     }
 
+    @Override
     public String printUnsignedInt(long arg0) {
         return Long.toString(arg0);
     }
 
+    @Override
     public String printUnsignedShort(int arg0) {
         return Integer.toString(arg0);
     }
 
+    @Override
     public String printTime(Calendar arg0) {
         return new XsTimeFormat().format(arg0);
     }
 
+    @Override
     public String printDate(Calendar arg0) {
         Object hint = Hints.getSystemDefault(Hints.LOCAL_DATE_TIME_HANDLING);
         if (Boolean.TRUE.equals(hint)) {
@@ -318,6 +355,7 @@ public class DatatypeConverterImpl implements DatatypeConverterInterface {
         return new XsDateFormat().format(arg0);
     }
 
+    @Override
     public String printAnySimpleType(String arg0) {
         return arg0;
     }

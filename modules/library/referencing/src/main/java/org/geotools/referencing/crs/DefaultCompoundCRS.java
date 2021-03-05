@@ -154,6 +154,7 @@ public class DefaultCompoundCRS extends AbstractCRS implements CompoundCRS {
      *
      * @return The coordinate reference systems as an unmodifiable list.
      */
+    @Override
     @SuppressWarnings("unchecked") // We are safe if the list is read-only.
     public List<CoordinateReferenceSystem> getCoordinateReferenceSystems() {
         return (List) crs;

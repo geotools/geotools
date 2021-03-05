@@ -37,6 +37,7 @@ public class TOverlapsImpl extends BinaryTemporalOperatorImpl implements TOverla
         return pos == RelativePosition.OVERLAPS;
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

@@ -126,6 +126,7 @@ public class ScopedName extends org.geotools.util.GenericName
      * @since 2.3
      * @todo Not yet implemented.
      */
+    @Override
     public GenericName tail() {
         throw new UnsupportedOperationException("Not yet implemented.");
     }
@@ -138,6 +139,7 @@ public class ScopedName extends org.geotools.util.GenericName
      * @since 2.3
      * @todo Not yet implemented.
      */
+    @Override
     public GenericName path() {
         throw new UnsupportedOperationException("Not yet implemented.");
     }
@@ -165,6 +167,7 @@ public class ScopedName extends org.geotools.util.GenericName
     }
 
     /** Returns the sequence of local name for this {@linkplain GenericName generic name}. */
+    @Override
     public List<LocalName> getParsedNames() {
         if (parsedNames == null) {
             final List<? extends LocalName> parents = scope.getParsedNames();
@@ -184,6 +187,7 @@ public class ScopedName extends org.geotools.util.GenericName
      *
      * @since 2.3
      */
+    @Override
     public GenericName toFullyQualifiedName() {
         return this;
     }
@@ -210,6 +214,7 @@ public class ScopedName extends org.geotools.util.GenericName
      * @since 2.3
      * @todo Not yet implemented.
      */
+    @Override
     public org.opengis.util.ScopedName push(GenericName scope) {
         throw new UnsupportedOperationException("Not yet implemented.");
     }

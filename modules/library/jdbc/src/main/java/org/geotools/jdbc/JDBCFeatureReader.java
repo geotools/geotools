@@ -304,6 +304,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         }
     }
 
+    @Override
     public SimpleFeatureType getFeatureType() {
         return featureType;
     }
@@ -316,6 +317,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         return query;
     }
 
+    @Override
     public boolean hasNext() throws IOException {
         ensureOpen();
 
@@ -476,6 +478,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         }
     }
 
+    @Override
     public SimpleFeature next()
             throws IOException, IllegalArgumentException, NoSuchElementException {
         try {
@@ -528,6 +531,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         return indexes;
     }
 
+    @Override
     public void close() throws IOException {
         if (dataStore != null) {
             // clean up
@@ -676,18 +680,22 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             init(featureType.getTypeName() + "." + dataStore.encodeFID(key, rs, offset));
         }
 
+        @Override
         public SimpleFeatureType getFeatureType() {
             return featureType;
         }
 
+        @Override
         public SimpleFeatureType getType() {
             return featureType;
         }
 
+        @Override
         public FeatureId getIdentifier() {
             return fid;
         }
 
+        @Override
         public String getID() {
             return fid.getID();
         }
@@ -696,14 +704,17 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             ((FeatureIdImpl) fid).setID(id);
         }
 
+        @Override
         public Object getAttribute(String name) {
             return getAttribute(index.get(name));
         }
 
+        @Override
         public Object getAttribute(Name name) {
             return getAttribute(name.getLocalPart());
         }
 
+        @Override
         public Object getAttribute(int index) throws IndexOutOfBoundsException {
             return getAttributeInternal(index, mapToResultSetIndex(index));
         }
@@ -771,6 +782,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             return value;
         }
 
+        @Override
         public void setAttribute(String name, Object value) {
             if (dataStore.getLogger().isLoggable(Level.FINE)) {
                 dataStore.getLogger().fine("Setting " + name + " to " + value);
@@ -780,10 +792,12 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             setAttribute(i, value);
         }
 
+        @Override
         public void setAttribute(Name name, Object value) {
             setAttribute(name.getLocalPart(), value);
         }
 
+        @Override
         public void setAttribute(int index, Object value) throws IndexOutOfBoundsException {
             if (dataStore.getLogger().isLoggable(Level.FINE)) {
                 dataStore.getLogger().fine("Setting " + index + " to " + value);
@@ -794,12 +808,14 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             dirty[index] = true;
         }
 
+        @Override
         public void setAttributes(List<Object> values) {
             for (int i = 0; i < values.size(); i++) {
                 setAttribute(i, values.get(i));
             }
         }
 
+        @Override
         public int getAttributeCount() {
             return values.length;
         }
@@ -819,17 +835,20 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             columnNames = null;
         }
 
+        @Override
         public List<Object> getAttributes() {
             // ensure initialized values GEOT-6264
             for (int k = 0; k < values.length; k++) getAttribute(k);
             return Arrays.asList(values);
         }
 
+        @Override
         public Object getDefaultGeometry() {
             GeometryDescriptor defaultGeometry = featureType.getGeometryDescriptor();
             return defaultGeometry != null ? getAttribute(defaultGeometry.getName()) : null;
         }
 
+        @Override
         public void setAttributes(Object[] object) {
             if (object == null) {
                 throw new NullPointerException("Attributes array is null");
@@ -845,11 +864,13 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             }
         }
 
+        @Override
         public void setDefaultGeometry(Object defaultGeometry) {
             GeometryDescriptor descriptor = featureType.getGeometryDescriptor();
             setAttribute(descriptor.getName(), defaultGeometry);
         }
 
+        @Override
         public BoundingBox getBounds() {
             Object obj = getDefaultGeometry();
             if (obj instanceof Geometry) {
@@ -860,6 +881,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             return ReferencedEnvelope.create(featureType.getCoordinateReferenceSystem());
         }
 
+        @Override
         public GeometryAttribute getDefaultGeometryProperty() {
             GeometryDescriptor geometryDescriptor = featureType.getGeometryDescriptor();
             GeometryAttribute geometryAttribute = null;
@@ -871,35 +893,43 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             return geometryAttribute;
         }
 
+        @Override
         public void setDefaultGeometryProperty(GeometryAttribute defaultGeometry) {
             if (defaultGeometry != null) setDefaultGeometry(defaultGeometry.getValue());
             else setDefaultGeometry(null);
         }
 
+        @Override
         public Collection<Property> getProperties() {
             throw new UnsupportedOperationException("Use getAttributes()");
         }
 
+        @Override
         public Collection<Property> getProperties(Name name) {
             throw new UnsupportedOperationException("Use getAttributes()");
         }
 
+        @Override
         public Collection<Property> getProperties(String name) {
             throw new UnsupportedOperationException("Use getAttributes()");
         }
 
+        @Override
         public Property getProperty(Name name) {
             throw new UnsupportedOperationException("Use getAttribute()");
         }
 
+        @Override
         public Property getProperty(String name) {
             throw new UnsupportedOperationException("Use getAttribute()");
         }
 
+        @Override
         public Collection<? extends Property> getValue() {
             return getProperties();
         }
 
+        @Override
         public void setValue(Collection<Property> value) {
             int i = 0;
             for (Property p : value) {
@@ -907,28 +937,34 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             }
         }
 
+        @Override
         public AttributeDescriptor getDescriptor() {
             return new AttributeDescriptorImpl(
                     featureType, featureType.getName(), 0, Integer.MAX_VALUE, true, null);
         }
 
+        @Override
         public Name getName() {
             return featureType.getName();
         }
 
+        @Override
         public Map<Object, Object> getUserData() {
             return userData;
         }
 
+        @Override
         public boolean isNillable() {
             return true;
         }
 
+        @Override
         @SuppressWarnings("unchecked")
         public void setValue(Object value) {
             setValue((Collection<Property>) value);
         }
 
+        @Override
         public void validate() {
             for (int i = 0; i < values.length; i++) {
                 AttributeDescriptor descriptor = getType().getDescriptor(i);

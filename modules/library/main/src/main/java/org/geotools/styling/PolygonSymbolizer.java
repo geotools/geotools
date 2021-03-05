@@ -78,6 +78,7 @@ public interface PolygonSymbolizer extends org.opengis.style.PolygonSymbolizer, 
      *
      * @return The Fill style to use when rendering the area.
      */
+    @Override
     Fill getFill();
 
     /**
@@ -93,6 +94,7 @@ public interface PolygonSymbolizer extends org.opengis.style.PolygonSymbolizer, 
      *
      * @return The Stroke style to use when rendering lines.
      */
+    @Override
     Stroke getStroke();
 
     /**
@@ -116,6 +118,7 @@ public interface PolygonSymbolizer extends org.opengis.style.PolygonSymbolizer, 
      *
      * @return Displacement above and to the right of the indicated point; default x=0, y=0
      */
+    @Override
     public Displacement getDisplacement();
 
     /** Provide x / y offset in pixels used to crate shadows. */

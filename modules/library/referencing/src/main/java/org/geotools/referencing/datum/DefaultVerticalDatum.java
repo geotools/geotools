@@ -119,6 +119,7 @@ public class DefaultVerticalDatum extends AbstractDatum implements VerticalDatum
      *
      * @return The type of this vertical datum.
      */
+    @Override
     public VerticalDatumType getVerticalDatumType() {
         return type;
     }

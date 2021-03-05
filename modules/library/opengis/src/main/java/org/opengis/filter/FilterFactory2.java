@@ -138,6 +138,7 @@ public interface FilterFactory2 extends FilterFactory {
     PropertyName property(String xpath, NamespaceSupport namespaceContext);
 
     /** Character string comparison operator with pattern matching and specified wildcards. */
+    @Override
     PropertyIsLike like(
             Expression expr,
             String pattern,
@@ -147,6 +148,7 @@ public interface FilterFactory2 extends FilterFactory {
             boolean matchCase);
 
     /** Character string comparison operator with pattern matching and specified wildcards. */
+    @Override
     PropertyIsLike like(
             Expression expr,
             String pattern,

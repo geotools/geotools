@@ -45,6 +45,7 @@ public class FilterFunction_dateFormat extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         String format;
         Date date;

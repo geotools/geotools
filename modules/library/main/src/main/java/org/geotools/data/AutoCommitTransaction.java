@@ -34,6 +34,7 @@ class AutoCommitTransaction implements Transaction {
      * @return Set of authorizations
      * @throws UnsupportedOperationException AUTO_COMMIT does not support this
      */
+    @Override
     public Set<String> getAuthorizations() {
         throw new UnsupportedOperationException(
                 "Authorization IDs are not valid for AutoCommit Transaction");
@@ -48,6 +49,7 @@ class AutoCommitTransaction implements Transaction {
      * @param state State we are not going to externalize
      * @throws UnsupportedOperationException AutoCommit does not support State
      */
+    @Override
     public void putState(Object key, State state) {
         throw new UnsupportedOperationException(
                 "AutoCommit does not support the putState opperations");
@@ -61,6 +63,7 @@ class AutoCommitTransaction implements Transaction {
      * @param key Key that is not used to Store State
      * @throws UnsupportedOperationException AutoCommit does not support State
      */
+    @Override
     public void removeState(Object key) {
         throw new UnsupportedOperationException(
                 "AutoCommit does not support the removeState opperations");
@@ -75,6 +78,7 @@ class AutoCommitTransaction implements Transaction {
      * @return State earlier provided with putState
      * @throws UnsupportedOperationException As Autocommit does not support State
      */
+    @Override
     public State getState(Object key) {
         throw new UnsupportedOperationException(
                 "AutoCommit does not support the getState opperations");
@@ -99,11 +103,13 @@ class AutoCommitTransaction implements Transaction {
      * </code>
      * </pre>
      */
+    @Override
     public void commit() {
         // implement a NOP
     }
 
     /** Implements a NOP since AUTO_COMMIT does not maintain State. */
+    @Override
     public void close() {
         // no state to clean up after
     }
@@ -113,6 +119,7 @@ class AutoCommitTransaction implements Transaction {
      *
      * @throws IOException if Rollback fails
      */
+    @Override
     public void rollback() throws IOException {
         throw new IOException("AutoCommit cannot support the rollback opperation");
     }
@@ -125,6 +132,7 @@ class AutoCommitTransaction implements Transaction {
      * @param authID Authorization ID
      * @throws IOException If set authorization fails
      */
+    @Override
     public void addAuthorization(String authID) throws IOException {
         throw new IOException("Authorization IDs are not valid for AutoCommit Transaction");
     }
@@ -138,6 +146,7 @@ class AutoCommitTransaction implements Transaction {
      * @return Property associated with key, or null
      * @throws UnsupportedOperationException AutoCommit does not support State
      */
+    @Override
     public Object getProperty(Object key) {
         throw new UnsupportedOperationException(
                 "AutoCommit does not support the getProperty opperations");
@@ -148,6 +157,7 @@ class AutoCommitTransaction implements Transaction {
      *
      * @see org.geotools.data.Transaction#addProperty(java.lang.Object, java.lang.Object)
      */
+    @Override
     public void putProperty(Object key, Object value) {
         throw new UnsupportedOperationException(
                 "AutoCommit does not support the addProperty opperations");

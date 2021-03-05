@@ -90,6 +90,7 @@ public class Collection_AverageFunction extends FunctionExpressionImpl {
      *
      * @param params function parameters
      */
+    @Override
     public void setParameters(List<Expression> params) {
         super.setParameters(params);
         if (params.size() != 1) {
@@ -100,6 +101,7 @@ public class Collection_AverageFunction extends FunctionExpressionImpl {
         expr = (Expression) expr.accept(new CollectionFeatureMemberFilterVisitor(), null);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Object evaluate(Object feature) {
         if (feature == null) {
@@ -133,6 +135,7 @@ public class Collection_AverageFunction extends FunctionExpressionImpl {
      *
      * @return String representation of this average function.
      */
+    @Override
     public String toString() {
         return "Collection_Average(" + expr + ")";
     }

@@ -32,10 +32,12 @@ class PremultiplyAccessor implements RgbaAccessor {
         this.delegate = delegate;
     }
 
+    @Override
     public void readRow(int y) {
         delegate.readRow(y);
     }
 
+    @Override
     public void getColor(int x, int[] rgba) {
         delegate.getColor(x, rgba);
 
@@ -50,6 +52,7 @@ class PremultiplyAccessor implements RgbaAccessor {
         }
     }
 
+    @Override
     public void setColor(int x, int r, int g, int b, int a) {
         // undo premultiply if required
         if (a != 255) {

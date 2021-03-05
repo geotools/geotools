@@ -160,6 +160,7 @@ public abstract class Stereographic extends MapProjection {
     }
 
     /** {@inheritDoc} */
+    @Override
     @SuppressFBWarnings("UR_UNINIT_READ_CALLED_FROM_SUPER_CONSTRUCTOR")
     public ParameterDescriptorGroup getParameterDescriptors() {
         return descriptor;
@@ -263,6 +264,7 @@ public abstract class Stereographic extends MapProjection {
          * @return The created math transform.
          * @throws ParameterNotFoundException if a required parameter was not found.
          */
+        @Override
         protected MathTransform createMathTransform(final ParameterValueGroup parameters)
                 throws ParameterNotFoundException {
             // Values here are in radians (the standard units for the map projection package)

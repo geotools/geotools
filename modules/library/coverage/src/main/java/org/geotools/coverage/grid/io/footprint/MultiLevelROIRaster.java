@@ -78,6 +78,7 @@ public class MultiLevelROIRaster implements MultiLevelROI {
         maskOvrProvider = new MaskOverviewProvider(layout, file);
     }
 
+    @Override
     @SuppressWarnings("PMD.CloseResource") // if delayed read we should not close immediately
     public ROI getTransformedROI(
             AffineTransform at,

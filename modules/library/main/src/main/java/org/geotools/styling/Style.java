@@ -59,6 +59,7 @@ public interface Style extends org.opengis.style.Style {
      * @return Human readable description for use in user interfaces
      * @since 2.5.x
      */
+    @Override
     Description getDescription();
 
     /**
@@ -71,6 +72,7 @@ public interface Style extends org.opengis.style.Style {
     void setDefault(boolean isDefault);
 
     /** FeatureTypeStyles rendered in order of appearance in this list. */
+    @Override
     public List<FeatureTypeStyle> featureTypeStyles();
 
     /**
@@ -82,6 +84,7 @@ public interface Style extends org.opengis.style.Style {
      *
      * @return Symbolizer to use if no rules work out.
      */
+    @Override
     public Symbolizer getDefaultSpecification();
 
     /** @param defaultSymbolizer To be used if a feature is not rendered by any of the rules */

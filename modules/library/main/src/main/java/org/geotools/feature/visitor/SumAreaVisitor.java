@@ -80,6 +80,7 @@ public class SumAreaVisitor extends SumVisitor {
     static class SumAreaStrategy implements SumStrategy {
         Double number = null;
 
+        @Override
         public void add(Object value) {
             Number num = (Number) value;
             if (num.doubleValue() >= 0) {
@@ -90,6 +91,7 @@ public class SumAreaVisitor extends SumVisitor {
             }
         }
 
+        @Override
         public Object getResult() {
             return number == null ? null : Double.valueOf(number);
         }

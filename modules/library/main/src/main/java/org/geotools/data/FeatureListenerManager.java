@@ -57,6 +57,7 @@ public class FeatureListenerManager {
             reference = new WeakReference<>(listener);
         }
 
+        @Override
         public void changed(FeatureEvent featureEvent) {
             FeatureListener listener = reference.get();
             if (listener == null) {

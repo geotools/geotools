@@ -165,6 +165,7 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
         return params;
     }
 
+    @Override
     protected void disconnect() throws Exception {
         setup.tearDown();
         dataStore.dispose();
@@ -331,14 +332,17 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
             FeatureAssertion<F> assertion) {
         try (FeatureIterator<F> adapter =
                 new FeatureIterator<F>() {
+                    @Override
                     public boolean hasNext() {
                         return iterator.hasNext();
                     }
 
+                    @Override
                     public F next() {
                         return iterator.next();
                     }
 
+                    @Override
                     public void close() {}
                 }) {
             assertFeatureIterator(startIndex, numberExpected, adapter, assertion);
@@ -354,6 +358,7 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
         try (FeatureIterator<F> iter =
                 new FeatureIterator<F>() {
 
+                    @Override
                     public boolean hasNext() {
                         try {
                             return reader.hasNext();
@@ -362,6 +367,7 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
                         }
                     }
 
+                    @Override
                     public F next() throws NoSuchElementException {
                         try {
                             return reader.next();
@@ -370,6 +376,7 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
                         }
                     }
 
+                    @Override
                     public void close() {
                         try {
                             reader.close();

@@ -44,14 +44,17 @@ public class MemoryFeatureSource extends ContentFeatureSource {
     }
 
     /** Access parent MemoryDataStore. */
+    @Override
     public MemoryDataStore getDataStore() {
         return (MemoryDataStore) super.getDataStore();
     }
 
+    @Override
     public MemoryState getState() {
         return (MemoryState) super.getState();
     }
     /** The entry for the feature source. */
+    @Override
     public MemoryEntry getEntry() {
         return (MemoryEntry) super.getEntry();
     }

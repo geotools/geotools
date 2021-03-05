@@ -38,16 +38,19 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
         this(properties, new AttributeDescriptorImpl(type, type.getName(), 1, 1, true, null), id);
     }
 
+    @Override
     public ComplexType getType() {
         return (ComplexType) super.getType();
     }
 
+    @Override
     public Collection<? extends Property> getValue() {
         @SuppressWarnings("unchecked")
         Collection<? extends Property> cast = (Collection<? extends Property>) super.getValue();
         return FeatureImplUtils.unmodifiable(cast);
     }
 
+    @Override
     public Collection<Property> getProperties() {
         @SuppressWarnings("unchecked")
         Collection<Property> cast = (Collection<Property>) super.getValue();
@@ -62,6 +65,7 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
         return (Collection) super.getValue();
     }
 
+    @Override
     public Collection<Property> getProperties(Name name) {
         List<Property> matches = new ArrayList<>();
         for (Property property : getValue()) {
@@ -73,6 +77,7 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
         return matches;
     }
 
+    @Override
     public Collection<Property> getProperties(String name) {
         List<Property> matches = new ArrayList<>();
         for (Object o : properties()) {
@@ -85,6 +90,7 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
         return matches;
     }
 
+    @Override
     public Property getProperty(Name name) {
         for (Object o : properties()) {
             Property property = (Property) o;
@@ -96,6 +102,7 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
         return null;
     }
 
+    @Override
     public Property getProperty(String name) {
         for (Property property : getValue()) {
             if (property.getName().getLocalPart().equals(name)) {
@@ -106,12 +113,14 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
         return null;
     }
 
+    @Override
     public void setValue(Object newValue) throws IllegalArgumentException, IllegalStateException {
         @SuppressWarnings("unchecked")
         Collection<Property> cast = (Collection<Property>) newValue;
         setValue(cast);
     }
 
+    @Override
     public void setValue(Collection<Property> newValue) {
         super.setValue(cloneProperties(newValue));
     }

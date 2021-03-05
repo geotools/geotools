@@ -28,18 +28,22 @@ public class AssociationImpl extends PropertyImpl implements Association {
         super(value, descriptor);
     }
 
+    @Override
     public AttributeType getRelatedType() {
         return getType().getRelatedType();
     }
 
+    @Override
     public AssociationDescriptor getDescriptor() {
         return (AssociationDescriptor) super.getDescriptor();
     }
 
+    @Override
     public AssociationType getType() {
         return (AssociationType) super.getType();
     }
 
+    @Override
     public Attribute getValue() {
         return (Attribute) super.getValue();
     }

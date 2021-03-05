@@ -442,6 +442,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
      * @see DefiningConversion
      * @since 2.5
      */
+    @Override
     public Conversion createDefiningConversion(
             final Map<String, ?> properties,
             final OperationMethod method,
@@ -460,6 +461,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
      * @return The concatenated operation.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public CoordinateOperation createConcatenatedOperation(
             final Map<String, ?> properties, final CoordinateOperation[] operations)
             throws FactoryException {

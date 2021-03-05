@@ -26,16 +26,19 @@ public class IsNullImpl extends CompareFilterImpl implements PropertyIsNull {
         super(expression, null);
     }
 
+    @Override
     public boolean evaluate(Object feature) {
         Expression expr = getExpression();
         Object value = eval(expr, feature);
         return value == null;
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
 
+    @Override
     public Expression getExpression() {
         return getExpression1();
     }

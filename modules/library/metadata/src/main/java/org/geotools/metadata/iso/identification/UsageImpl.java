@@ -81,6 +81,7 @@ public class UsageImpl extends MetadataEntity implements Usage {
     }
 
     /** Brief description of the resource and/or resource series usage. */
+    @Override
     public InternationalString getSpecificUsage() {
         return specificUsage;
     }
@@ -92,6 +93,7 @@ public class UsageImpl extends MetadataEntity implements Usage {
     }
 
     /** Date and time of the first use or range of uses of the resource and/or resource series. */
+    @Override
     public Date getUsageDate() {
         return (usageDate != Long.MIN_VALUE) ? new Date(usageDate) : null;
     }
@@ -106,6 +108,7 @@ public class UsageImpl extends MetadataEntity implements Usage {
      * Applications, determined by the user for which the resource and/or resource series is not
      * suitable.
      */
+    @Override
     public InternationalString getUserDeterminedLimitations() {
         return userDeterminedLimitations;
     }
@@ -123,6 +126,7 @@ public class UsageImpl extends MetadataEntity implements Usage {
      * Identification of and means of communicating with person(s) and organization(s) using the
      * resource(s).
      */
+    @Override
     public Collection<ResponsibleParty> getUserContactInfo() {
         return userContactInfo = nonNullCollection(userContactInfo, ResponsibleParty.class);
     }

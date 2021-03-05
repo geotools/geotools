@@ -96,6 +96,7 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract {
      *
      * @return String representation of the logic filter.
      */
+    @Override
     public String toString() {
         String returnString = "[";
         String operator = "";
@@ -140,6 +141,7 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract {
      *
      * @return a code to hash this object by.
      */
+    @Override
     public int hashCode() {
         if (cachedHash == 0) {
             int result = 17;
@@ -160,5 +162,6 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract {
      * @param visitor The visitor which requires access to this filter, the method must call
      *     visitor.visit(this);
      */
+    @Override
     public abstract Object accept(FilterVisitor visitor, Object extraData);
 }

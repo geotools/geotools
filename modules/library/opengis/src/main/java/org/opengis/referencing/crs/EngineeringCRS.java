@@ -65,6 +65,7 @@ import org.opengis.referencing.datum.EngineeringDatum;
 @UML(identifier = "SC_EngineeringCRS", specification = ISO_19111)
 public interface EngineeringCRS extends SingleCRS {
     /** Returns the datum, which must be an engineering one. */
+    @Override
     @UML(identifier = "usesDatum", obligation = MANDATORY, specification = ISO_19111)
     EngineeringDatum getDatum();
 }

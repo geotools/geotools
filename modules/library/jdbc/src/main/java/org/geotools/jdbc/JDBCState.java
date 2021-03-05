@@ -78,12 +78,14 @@ public final class JDBCState extends ContentState {
     }
 
     /** Flushes all cached state. */
+    @Override
     public void flush() {
         primaryKey = null;
         super.flush();
     }
 
     /** Copies the state. */
+    @Override
     public ContentState copy() {
         return new JDBCState(this);
     }

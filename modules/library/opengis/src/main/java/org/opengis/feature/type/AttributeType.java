@@ -47,5 +47,6 @@ public interface AttributeType extends PropertyType {
      *
      * @see PropertyType#getSuper()
      */
+    @Override
     AttributeType getSuper();
 }

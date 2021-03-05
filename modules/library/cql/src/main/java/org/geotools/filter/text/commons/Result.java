@@ -41,6 +41,7 @@ public final class Result {
     public Result(
             Object built2, org.geotools.filter.text.generated.parsers.Token token2, int type) {}
 
+    @Override
     public String toString() {
         assert this.token != null;
 

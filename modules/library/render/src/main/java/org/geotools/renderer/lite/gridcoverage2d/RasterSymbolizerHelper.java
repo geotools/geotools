@@ -59,6 +59,7 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
      *
      * @return {@link GridCoverage2D} the result of this operation
      */
+    @Override
     public GridCoverage2D execute() {
         ///////////////////////////////////////////////////////////////////////
         //
@@ -206,6 +207,7 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.StyleVisitorAdapter#visit(org.geotools.styling.RasterSymbolizer)
      */
+    @Override
     public void visit(RasterSymbolizer rs) {
 
         ColorMapUtilities.ensureNonNull("RasterSymbolizer", rs);

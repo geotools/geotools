@@ -16,6 +16,7 @@ public abstract class JDBCEscapingOnlineTest extends JDBCTestSupport {
     protected static final String ID = "i\"d";
     protected static final String NAME = "na\"me";
 
+    @Override
     protected abstract JDBCEscapingTestSetup createTestSetup();
 
     @Override

@@ -80,6 +80,7 @@ public final class Gnomonic extends MapProjection {
     }
 
     /** {@inheritDoc} */
+    @Override
     public ParameterDescriptorGroup getParameterDescriptors() {
         return Provider.PARAMETERS;
     }
@@ -207,6 +208,7 @@ public final class Gnomonic extends MapProjection {
     }
 
     /** Returns a hash value for this map projection. */
+    @Override
     public int hashCode() {
         final long code = Double.doubleToLongBits(latitudeOfCentre);
         return ((int) code ^ (int) (code >>> 32)) + 37 * super.hashCode();
@@ -294,6 +296,7 @@ public final class Gnomonic extends MapProjection {
          * @return The created math transform.
          * @throws ParameterNotFoundException if a required parameter was not found.
          */
+        @Override
         public MathTransform createMathTransform(final ParameterValueGroup parameters)
                 throws ParameterNotFoundException {
             return new Gnomonic(parameters);

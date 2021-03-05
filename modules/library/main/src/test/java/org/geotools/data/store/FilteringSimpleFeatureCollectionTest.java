@@ -44,6 +44,7 @@ public class FilteringSimpleFeatureCollectionTest extends FeatureCollectionWrapp
     FeatureVisitor lastVisitor = null;
     private ListFeatureCollection visitorCollection;
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
@@ -52,6 +53,7 @@ public class FilteringSimpleFeatureCollectionTest extends FeatureCollectionWrapp
                         "BasicPolygons", "the_geom:MultiPolygon:srid=4326,ID:String,value:int");
         visitorCollection =
                 new ListFeatureCollection(schema) {
+                    @Override
                     public void accepts(FeatureVisitor visitor, ProgressListener progress)
                             throws java.io.IOException {
                         lastVisitor = visitor;

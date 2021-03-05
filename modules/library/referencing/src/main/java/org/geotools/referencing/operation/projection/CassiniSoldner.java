@@ -64,6 +64,7 @@ public class CassiniSoldner extends MapProjection {
     }
 
     /** {@inheritDoc} */
+    @Override
     public ParameterDescriptorGroup getParameterDescriptors() {
         return Provider.PARAMETERS;
     }
@@ -71,6 +72,7 @@ public class CassiniSoldner extends MapProjection {
      * Transforms the specified (<var>x</var>,<var>y</var>) coordinate and stores the result in
      * {@code ptDst}.
      */
+    @Override
     protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
             throws ProjectionException {
         double ph1 = inv_mlfn(ml0 + y);
@@ -95,6 +97,7 @@ public class CassiniSoldner extends MapProjection {
      * Transforms the specified (<var>x</var>,<var>y</var>) coordinate (units in radians) and stores
      * the result in {@code ptDst} (linear distance on a unit sphere).
      */
+    @Override
     protected Point2D transformNormalized(double lam, double phi, Point2D ptDst)
             throws ProjectionException {
         double sinphi = Math.sin(phi);
@@ -129,6 +132,7 @@ public class CassiniSoldner extends MapProjection {
         }
 
         /** {@inheritDoc} */
+        @Override
         protected Point2D transformNormalized(double x, double y, Point2D ptDst)
                 throws ProjectionException {
             double x1 = Math.asin(Math.cos(y) * Math.sin(x));
@@ -141,6 +145,7 @@ public class CassiniSoldner extends MapProjection {
         }
 
         /** {@inheritDoc} */
+        @Override
         protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
                 throws ProjectionException {
             double dd = y + latitudeOfOrigin;
@@ -210,6 +215,7 @@ public class CassiniSoldner extends MapProjection {
          * @return The created math transform.
          * @throws ParameterNotFoundException if a required parameter was not found.
          */
+        @Override
         public MathTransform createMathTransform(final ParameterValueGroup parameters)
                 throws ParameterNotFoundException {
             if (isSpherical(parameters)) {

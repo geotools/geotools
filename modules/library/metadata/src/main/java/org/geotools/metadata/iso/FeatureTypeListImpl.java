@@ -58,6 +58,7 @@ public class FeatureTypeListImpl extends MetadataEntity implements FeatureTypeLi
     }
 
     /** Instance of a type defined in the spatial schema. */
+    @Override
     public String getSpatialObject() {
         return spatialObject;
     }
@@ -69,6 +70,7 @@ public class FeatureTypeListImpl extends MetadataEntity implements FeatureTypeLi
     }
 
     /** Name of the spatial schema used. */
+    @Override
     public String getSpatialSchemaName() {
         return spatialSchemaName;
     }

@@ -110,6 +110,7 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
         visit((Feature) feature);
     }
 
+    @Override
     public void visit(Feature feature) {
         // we ignore null attributes
         Object value = expr.evaluate(feature);
@@ -163,6 +164,7 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
         currentItem = 0;
     }
 
+    @Override
     public CalcResult getResult() {
         if (set.isEmpty()) {
             return CalcResult.NULL_RESULT;
@@ -191,10 +193,12 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
             }
         }
 
+        @Override
         public Object getValue() {
             return createNewSet(unique, preserveOrder);
         }
 
+        @Override
         public boolean isCompatible(CalcResult targetResults) {
             // list each calculation result which can merge with this type of result
             if (targetResults instanceof UniqueResult || targetResults == CalcResult.NULL_RESULT)
@@ -202,6 +206,7 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
             return false;
         }
 
+        @Override
         public CalcResult merge(CalcResult resultsToAdd) {
             if (!isCompatible(resultsToAdd)) {
                 throw new IllegalArgumentException("Parameter is not a compatible type");

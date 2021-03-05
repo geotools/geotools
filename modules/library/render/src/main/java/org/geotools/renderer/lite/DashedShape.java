@@ -52,44 +52,54 @@ public class DashedShape implements Shape {
         this.dashPhase = dashPhase;
     }
 
+    @Override
     public boolean contains(double x, double y, double w, double h) {
         return shape.contains(x, y, w, h);
     }
 
+    @Override
     public boolean contains(double x, double y) {
         return shape.contains(x, y);
     }
 
+    @Override
     public boolean contains(Point2D p) {
         return shape.contains(p);
     }
 
+    @Override
     public boolean contains(Rectangle2D r) {
         return shape.contains(r);
     }
 
+    @Override
     public Rectangle getBounds() {
         return shape.getBounds();
     }
 
+    @Override
     public Rectangle2D getBounds2D() {
         return shape.getBounds2D();
     }
 
+    @Override
     public boolean intersects(double x, double y, double w, double h) {
         return shape.intersects(x, y, w, h);
     }
 
+    @Override
     public boolean intersects(Rectangle2D r) {
         return shape.intersects(r);
     }
 
+    @Override
     public PathIterator getPathIterator(AffineTransform at) {
         // we need to work against a flattened iterator, the dashed iterator
         // cannot handle curved segments
         return new DashedIterator(shape.getPathIterator(at, 1), dashArray, dashPhase);
     }
 
+    @Override
     public PathIterator getPathIterator(AffineTransform at, double flatness) {
         // we need to work against a flattened iterator, the dashed iterator
         // cannot handle curved segments
@@ -182,12 +192,14 @@ public class DashedShape implements Shape {
             }
         }
 
+        @Override
         public int currentSegment(float[] coords) {
             coords[0] = dashedSegment[0];
             coords[1] = dashedSegment[1];
             return dashedType;
         }
 
+        @Override
         public int currentSegment(double[] coords) {
             float[] fcoord = new float[2];
             int retval = currentSegment(fcoord);
@@ -196,14 +208,17 @@ public class DashedShape implements Shape {
             return retval;
         }
 
+        @Override
         public int getWindingRule() {
             return delegate.getWindingRule();
         }
 
+        @Override
         public boolean isDone() {
             return done;
         }
 
+        @Override
         public void next() {
             // have we exhausted the previous segment?
             if (segmentLength == 0) {

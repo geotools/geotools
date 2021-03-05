@@ -224,6 +224,7 @@ public interface GridCoverage2DReader extends GridCoverageReader {
      *     for the provided parameters.
      * @throws IOException in case an error happen during read time.
      */
+    @Override
     GridCoverage2D read(GeneralParameterValue[] parameters) throws IOException;
 
     /**
@@ -240,6 +241,7 @@ public interface GridCoverage2DReader extends GridCoverageReader {
      * @throws NullPointerException if the specified coverageName is <code>null</code>
      * @throws IllegalArgumentException if the specified coverageName does not exist
      */
+    @Override
     GridCoverage2D read(String coverageName, GeneralParameterValue[] parameters) throws IOException;
 
     /**

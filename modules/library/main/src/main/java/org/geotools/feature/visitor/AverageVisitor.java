@@ -126,6 +126,7 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
         visit((Feature) feature);
     }
 
+    @Override
     public void visit(org.opengis.feature.Feature feature) {
         Object value = expr.evaluate(feature);
 
@@ -159,6 +160,7 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
     }
 
     /** Returns a CalcResult object (containing the Average) */
+    @Override
     public CalcResult getResult() {
         if (strategy == null) {
             return CalcResult.NULL_RESULT;
@@ -210,23 +212,28 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
         double number = 0;
         int count = 0;
 
+        @Override
         public void add(Object value) {
             number += ((Number) value).doubleValue();
             count++;
         }
 
+        @Override
         public Object getResult() {
             return Double.valueOf(number / count);
         }
 
+        @Override
         public Object getSum() {
             return Double.valueOf(number);
         }
 
+        @Override
         public int getCount() {
             return count;
         }
 
+        @Override
         public void set(int newCount, Object sum) {
             number = ((Number) sum).doubleValue();
             count = newCount;
@@ -238,23 +245,28 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
         float number = 0;
         int count = 0;
 
+        @Override
         public void add(Object value) {
             number += ((Number) value).floatValue();
             count++;
         }
 
+        @Override
         public Object getResult() {
             return Float.valueOf(number / count);
         }
 
+        @Override
         public Object getSum() {
             return Float.valueOf(number);
         }
 
+        @Override
         public int getCount() {
             return count;
         }
 
+        @Override
         public void set(int newCount, Object sum) {
             number = ((Number) sum).floatValue();
             count = newCount;
@@ -266,23 +278,28 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
         long number = 0;
         int count = 0;
 
+        @Override
         public void add(Object value) {
             number += ((Number) value).longValue();
             count++;
         }
 
+        @Override
         public Object getResult() {
             return Double.valueOf((double) number / count);
         }
 
+        @Override
         public Object getSum() {
             return Long.valueOf(number);
         }
 
+        @Override
         public int getCount() {
             return count;
         }
 
+        @Override
         public void set(int newCount, Object sum) {
             number = ((Number) sum).longValue();
             count = newCount;
@@ -294,23 +311,28 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
         int number = 0;
         int count = 0;
 
+        @Override
         public void add(Object value) {
             number += ((Number) value).intValue();
             count++;
         }
 
+        @Override
         public Object getResult() {
             return Double.valueOf((double) number / count);
         }
 
+        @Override
         public Object getSum() {
             return Integer.valueOf(number);
         }
 
+        @Override
         public int getCount() {
             return count;
         }
 
+        @Override
         public void set(int newCount, Object sum) {
             number = ((Number) sum).intValue();
             count = newCount;
@@ -331,22 +353,27 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
             this.result = result;
         }
 
+        @Override
         public void add(Object value) {
             throw new UnsupportedOperationException(NO_MERGE_ERROR);
         }
 
+        @Override
         public Object getResult() {
             return result;
         }
 
+        @Override
         public Object getSum() {
             throw new UnsupportedOperationException(NO_MERGE_ERROR);
         }
 
+        @Override
         public int getCount() {
             throw new UnsupportedOperationException(NO_MERGE_ERROR);
         }
 
+        @Override
         public void set(int newCount, Object sum) {
             throw new UnsupportedOperationException(NO_MERGE_ERROR);
         }
@@ -384,6 +411,7 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
             return averageStrategy.getResult();
         }
 
+        @Override
         public Object getValue() {
             return averageStrategy.getResult();
         }
@@ -416,6 +444,7 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
          * @param targetResults a second CalcResult object (target)
          * @return boolean
          */
+        @Override
         public boolean isCompatible(CalcResult targetResults) {
             if (targetResults instanceof AverageResult || targetResults == CalcResult.NULL_RESULT) {
                 return true;
@@ -432,6 +461,7 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
          * @return a new merged CalcResult object
          * @throws IllegalArgumentException when the resultsToAdd are inappropriate
          */
+        @Override
         public CalcResult merge(CalcResult resultsToAdd) {
             if (!isCompatible(resultsToAdd)) {
                 throw new IllegalArgumentException("Parameter is not a compatible type");

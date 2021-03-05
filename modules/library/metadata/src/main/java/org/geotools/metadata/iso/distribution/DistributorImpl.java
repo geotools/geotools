@@ -72,6 +72,7 @@ public class DistributorImpl extends MetadataEntity implements Distributor {
     }
 
     /** Party from whom the resource may be obtained. This list need not be exhaustive. */
+    @Override
     public ResponsibleParty getDistributorContact() {
         return distributorContact;
     }
@@ -86,6 +87,7 @@ public class DistributorImpl extends MetadataEntity implements Distributor {
      * Provides information about how the resource may be obtained, and related instructions and fee
      * information.
      */
+    @Override
     public Collection<StandardOrderProcess> getDistributionOrderProcesses() {
         return (distributionOrderProcesses =
                 nonNullCollection(distributionOrderProcesses, StandardOrderProcess.class));
@@ -102,6 +104,7 @@ public class DistributorImpl extends MetadataEntity implements Distributor {
     }
 
     /** Provides information about the format used by the distributor. */
+    @Override
     public Collection<Format> getDistributorFormats() {
         return (distributorFormats = nonNullCollection(distributorFormats, Format.class));
     }
@@ -112,6 +115,7 @@ public class DistributorImpl extends MetadataEntity implements Distributor {
     }
 
     /** Provides information about the technical means and media used by the distributor. */
+    @Override
     public Collection<DigitalTransferOptions> getDistributorTransferOptions() {
         return (distributorTransferOptions =
                 nonNullCollection(distributorTransferOptions, DigitalTransferOptions.class));

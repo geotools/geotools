@@ -57,10 +57,12 @@ public class AbstractDecorator<D> implements Wrapper, Serializable {
             throw new IllegalArgumentException("Cannot unwrap to the requested interface " + iface);
     }
 
+    @Override
     public boolean equals(Object obj) {
         return delegate.equals(obj);
     }
 
+    @Override
     public int hashCode() {
         return delegate.hashCode();
     }

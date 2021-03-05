@@ -58,21 +58,25 @@ final class Auto97001 extends Factlet {
     private Auto97001() {}
 
     /** {@inheritDoc} */
+    @Override
     public int code() {
         return 97001;
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getName() {
         return "WGS 84 / Auto Gnomonic";
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getClassification() {
         return "Gnomonic";
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void setProjectionParameters(final ParameterValueGroup parameters, final Code code) {
         final double latitudeOfCenter = code.latitude;
         final double longitudeOfCenter = code.longitude;

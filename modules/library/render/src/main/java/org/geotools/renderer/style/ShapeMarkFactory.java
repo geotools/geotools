@@ -95,6 +95,7 @@ public class ShapeMarkFactory implements MarkFactory {
         shapes.put("ccarrow", ccarrow);
     }
 
+    @Override
     public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature)
             throws Exception {
         // cannot handle a null url

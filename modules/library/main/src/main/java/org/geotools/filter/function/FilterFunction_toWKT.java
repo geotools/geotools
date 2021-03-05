@@ -35,6 +35,7 @@ public class FilterFunction_toWKT extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Geometry arg0;
 

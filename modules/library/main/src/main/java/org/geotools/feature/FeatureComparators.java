@@ -81,6 +81,7 @@ public final class FeatureComparators {
          * @param o2 The second Feature
          * @return A value indicating less than, equal, or greater than.
          */
+        @Override
         public int compare(Object o1, Object o2) {
             SimpleFeature f1 = (SimpleFeature) o1;
             SimpleFeature f2 = (SimpleFeature) o2;
@@ -122,6 +123,7 @@ public final class FeatureComparators {
          * @param o2 The second Feature
          * @return A value indicating less than, equal, or greater than.
          */
+        @Override
         public int compare(Object o1, Object o2) {
             SimpleFeature f1 = (SimpleFeature) o1;
             SimpleFeature f2 = (SimpleFeature) o2;

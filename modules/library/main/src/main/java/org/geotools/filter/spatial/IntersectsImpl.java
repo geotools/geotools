@@ -52,10 +52,12 @@ public class IntersectsImpl extends AbstractPreparedGeometryFilter implements In
         }
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
 
+    @Override
     protected final boolean basicEvaluate(Geometry left, Geometry right) {
         Envelope envLeft = left.getEnvelopeInternal();
         Envelope envRight = right.getEnvelopeInternal();

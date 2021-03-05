@@ -303,6 +303,7 @@ public class ResponsiblePartyImpl extends MetadataEntity implements ResponsibleP
      * delimiter. Only one of {@code individualName}, {@link #getOrganisationName organisationName}
      * and {@link #getPositionName positionName} should be provided.
      */
+    @Override
     public String getIndividualName() {
         return individualName;
     }
@@ -322,6 +323,7 @@ public class ResponsiblePartyImpl extends MetadataEntity implements ResponsibleP
      * individualName}, </code>organisationName</code> and {@link #getPositionName positionName}
      * should be provided.
      */
+    @Override
     public InternationalString getOrganisationName() {
         return organisationName;
     }
@@ -341,6 +343,7 @@ public class ResponsiblePartyImpl extends MetadataEntity implements ResponsibleP
      * individualName}, {@link #getOrganisationName organisationName} and {@code positionName}
      * should be provided.
      */
+    @Override
     public InternationalString getPositionName() {
         return positionName;
     }
@@ -356,6 +359,7 @@ public class ResponsiblePartyImpl extends MetadataEntity implements ResponsibleP
     }
 
     /** Returns the address of the responsible party. */
+    @Override
     public Contact getContactInfo() {
         return contactInfo;
     }
@@ -367,6 +371,7 @@ public class ResponsiblePartyImpl extends MetadataEntity implements ResponsibleP
     }
 
     /** Returns the function performed by the responsible party. */
+    @Override
     public Role getRole() {
         return role;
     }

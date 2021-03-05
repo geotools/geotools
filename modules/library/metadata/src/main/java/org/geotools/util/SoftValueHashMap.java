@@ -352,11 +352,13 @@ public class SoftValueHashMap<K, V> extends AbstractMap<K, V> {
     /** Implementation of the entries set to be returned by {@link #entrySet()}. */
     private final class Entries extends AbstractSet<Map.Entry<K, V>> {
         /** Returns an iterator over the elements contained in this collection. */
+        @Override
         public Iterator<Map.Entry<K, V>> iterator() {
             return new Iter<>(hash);
         }
 
         /** Returns the number of elements in this collection. */
+        @Override
         public int size() {
             return SoftValueHashMap.this.size();
         }
@@ -479,6 +481,7 @@ public class SoftValueHashMap<K, V> extends AbstractMap<K, V> {
         }
 
         /** Returns {@code true} if this iterator can return more value. */
+        @Override
         public boolean hasNext() {
             return entry != null || findNext();
         }
@@ -488,6 +491,7 @@ public class SoftValueHashMap<K, V> extends AbstractMap<K, V> {
          * created, they will not be returned. A {@link ConcurrentModificationException} is not
          * thrown since a ConcurrentHashMap is used.
          */
+        @Override
         public Map.Entry<K, V> next() {
             if (entry == null && !findNext()) {
                 throw new NoSuchElementException();
@@ -498,6 +502,7 @@ public class SoftValueHashMap<K, V> extends AbstractMap<K, V> {
         }
 
         /** Removes the last entry. */
+        @Override
         public void remove() {
             iterator.remove();
         }

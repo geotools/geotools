@@ -65,6 +65,7 @@ public class ContainsImpl extends AbstractPreparedGeometryFilter implements Cont
         return false;
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

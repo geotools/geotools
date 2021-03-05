@@ -127,5 +127,6 @@ public interface FeatureWriter<T extends FeatureType, F extends Feature> extends
      *     if close has been called (up to the implementation).
      * @throws IOException if an I/O error occurs
      */
+    @Override
     void close() throws IOException;
 }

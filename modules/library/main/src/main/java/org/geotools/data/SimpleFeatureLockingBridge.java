@@ -36,30 +36,37 @@ class SimpleFeatureLockingBridge extends SimpleFeatureStoreBridge implements Sim
         return (FeatureLocking<SimpleFeatureType, SimpleFeature>) delegate;
     }
 
+    @Override
     public int lockFeatures(Query query) throws IOException {
         return delegate().lockFeatures(query);
     }
 
+    @Override
     public int lockFeatures(Filter filter) throws IOException {
         return delegate().lockFeatures(filter);
     }
 
+    @Override
     public int lockFeatures() throws IOException {
         return delegate().lockFeatures();
     }
 
+    @Override
     public void setFeatureLock(FeatureLock lock) {
         delegate().setFeatureLock(lock);
     }
 
+    @Override
     public void unLockFeatures() throws IOException {
         delegate().unLockFeatures();
     }
 
+    @Override
     public void unLockFeatures(Filter filter) throws IOException {
         delegate().unLockFeatures(filter);
     }
 
+    @Override
     public void unLockFeatures(Query query) throws IOException {
         delegate().unLockFeatures(query);
     }

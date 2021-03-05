@@ -63,6 +63,7 @@ class Polygon implements Cloneable {
      *
      * @return WKT format.
      */
+    @Override
     public String toString() {
         String wkt = "";
 

@@ -76,6 +76,7 @@ public class CQLCompiler extends CQLParser implements ICompiler {
      * compile source to produce a Filter. The filter result must be retrieved with {@link
      * #getFilter()}.
      */
+    @Override
     public void compileFilter() throws CQLException {
         try {
             super.FilterCompilationUnit();
@@ -90,6 +91,7 @@ public class CQLCompiler extends CQLParser implements ICompiler {
     }
 
     /** compile source to produce a Expression */
+    @Override
     public void compileExpression() throws CQLException {
         try {
             super.ExpressionCompilationUnit();
@@ -103,6 +105,7 @@ public class CQLCompiler extends CQLParser implements ICompiler {
         }
     }
 
+    @Override
     public void compileFilterList() throws CQLException {
         try {
             super.FilterListCompilationUnit();
@@ -117,6 +120,7 @@ public class CQLCompiler extends CQLParser implements ICompiler {
     }
 
     /** @return the cql source */
+    @Override
     public final String getSource() {
         return this.source;
     }
@@ -126,6 +130,7 @@ public class CQLCompiler extends CQLParser implements ICompiler {
      *
      * @return Filter
      */
+    @Override
     public final Filter getFilter() throws CQLException {
         return this.builder.getFilter();
     }
@@ -134,6 +139,7 @@ public class CQLCompiler extends CQLParser implements ICompiler {
      *
      * @return Expression
      */
+    @Override
     public final Expression getExpression() throws CQLException {
 
         return this.builder.getExpression();
@@ -145,17 +151,21 @@ public class CQLCompiler extends CQLParser implements ICompiler {
      * @return List<Filter>
      * @throws CQLException if a ClassCastException occurs while casting a built item to a Filter.
      */
+    @Override
     public final List<Filter> getFilterList() throws CQLException {
 
         return this.builder.getFilterList();
     }
 
+    @Override
     public IToken getTokenInPosition(int index) {
         return TokenAdapter.newAdapterFor(super.getToken(index));
     }
 
+    @Override
     public final void jjtreeOpenNodeScope(Node n) {}
 
+    @Override
     public final void jjtreeCloseNodeScope(Node n) throws ParseException {
 
         try {

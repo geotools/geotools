@@ -34,45 +34,54 @@ public class ColorMapEntryImpl implements ColorMapEntry {
     private String label;
 
     /** @see org.geotools.styling.ColorMapEntry#getLabel */
+    @Override
     public String getLabel() {
         return this.label;
     }
 
     /** @see org.geotools.styling.ColorMapEntry#setLabel */
+    @Override
     public void setLabel(String label) {
         this.label = label;
     }
 
     /** @see org.geotools.styling.ColorMapEntry#setColor */
+    @Override
     public void setColor(Expression color) {
         this.color = color;
     }
 
     /** @see org.geotools.styling.ColorMapEntry#getColor */
+    @Override
     public Expression getColor() {
         return this.color;
     }
 
     /** @see org.geotools.styling.ColorMapEntry#setOpacity */
+    @Override
     public void setOpacity(Expression opacity) {
         this.opacity = opacity;
     }
 
     /** @see org.geotools.styling.ColorMapEntry#getOpacity() */
+    @Override
     public Expression getOpacity() {
         return this.opacity;
     }
 
     /** @see org.geotools.styling.ColorMapEntry#setQuantity */
+    @Override
     public void setQuantity(Expression quantity) {
         this.quantity = quantity;
     }
 
     /** @see org.geotools.styling.ColorMapEntry#getQuantity() */
+    @Override
     public Expression getQuantity() {
         return quantity;
     }
 
+    @Override
     public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }

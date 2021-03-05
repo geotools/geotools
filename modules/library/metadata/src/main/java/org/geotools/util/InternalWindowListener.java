@@ -55,6 +55,7 @@ final class InternalWindowListener implements InternalFrameListener {
     }
 
     /** Invoked when a internal frame has been opened. */
+    @Override
     public void internalFrameOpened(InternalFrameEvent event) {
         listener.windowOpened(null);
     }
@@ -63,31 +64,37 @@ final class InternalWindowListener implements InternalFrameListener {
      * Invoked when an internal frame is in the process of being closed. The close operation can be
      * overridden at this point.
      */
+    @Override
     public void internalFrameClosing(InternalFrameEvent event) {
         listener.windowClosing(null);
     }
 
     /** Invoked when an internal frame has been closed. */
+    @Override
     public void internalFrameClosed(InternalFrameEvent event) {
         listener.windowClosed(null);
     }
 
     /** Invoked when an internal frame is iconified. */
+    @Override
     public void internalFrameIconified(InternalFrameEvent event) {
         listener.windowIconified(null);
     }
 
     /** Invoked when an internal frame is de-iconified. */
+    @Override
     public void internalFrameDeiconified(InternalFrameEvent event) {
         listener.windowDeiconified(null);
     }
 
     /** Invoked when an internal frame is activated. */
+    @Override
     public void internalFrameActivated(InternalFrameEvent event) {
         listener.windowActivated(null);
     }
 
     /** Invoked when an internal frame is de-activated. */
+    @Override
     public void internalFrameDeactivated(InternalFrameEvent event) {
         listener.windowDeactivated(null);
     }

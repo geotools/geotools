@@ -52,6 +52,7 @@ class FilterMemoizer {
 
         boolean memoizable = true;
 
+        @Override
         public Object visit(Function expr, Object extraData) {
             if (expr instanceof VolatileFunction || expr instanceof InternalFunction) {
                 memoizable = false;

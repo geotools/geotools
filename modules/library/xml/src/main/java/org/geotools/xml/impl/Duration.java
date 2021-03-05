@@ -97,6 +97,7 @@ public class Duration implements Serializable, Comparable<Duration> {
     }
 
     /** Returns a string representation of this Duration. */
+    @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append('P');
@@ -331,6 +332,7 @@ public class Duration implements Serializable, Comparable<Duration> {
                 millis == -1 ? 0 : millis);
     }
 
+    @Override
     public boolean equals(Object o) {
         if (o == null || !(o instanceof Duration)) {
             return false;
@@ -339,6 +341,7 @@ public class Duration implements Serializable, Comparable<Duration> {
     }
 
     /** Actual implementation of {@link #compareTo(Object)}. */
+    @Override
     public int compareTo(Duration d) {
         if (isNegative != d.isNegative) {
             return isNegative ? -1 : 1;
@@ -370,6 +373,7 @@ public class Duration implements Serializable, Comparable<Duration> {
         }
     }
 
+    @Override
     public int hashCode() {
         return isNegative
                 ? 1

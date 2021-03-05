@@ -78,11 +78,13 @@ public class CollectionFeatureReader implements FeatureReader<SimpleFeatureType,
     }
 
     /** @see org.geotools.data.FeatureReader#getFeatureType() */
+    @Override
     public SimpleFeatureType getFeatureType() {
         return type;
     }
 
     /** @see org.geotools.data.FeatureReader#next() */
+    @Override
     public SimpleFeature next()
             throws IOException, IllegalAttributeException, NoSuchElementException {
         if (closed) {
@@ -93,11 +95,13 @@ public class CollectionFeatureReader implements FeatureReader<SimpleFeatureType,
     }
 
     /** @see org.geotools.data.FeatureReader#hasNext() */
+    @Override
     public boolean hasNext() throws IOException {
         return features != null && features.hasNext() && !closed;
     }
 
     /** @see org.geotools.data.FeatureReader#close() */
+    @Override
     public void close() throws IOException {
         closed = true;
 

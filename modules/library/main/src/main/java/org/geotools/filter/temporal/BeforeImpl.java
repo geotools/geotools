@@ -37,6 +37,7 @@ public class BeforeImpl extends BinaryTemporalOperatorImpl implements Before {
         return pos == RelativePosition.BEFORE;
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

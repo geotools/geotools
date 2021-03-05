@@ -106,5 +106,6 @@ public interface BoundingBox3D extends BoundingBox {
      *     #getCoordinateReferenceSystem this box CRS} to the specified target CRS, or if the
      *     transformation failed for an other reason.
      */
+    @Override
     BoundingBox toBounds(CoordinateReferenceSystem targetCRS) throws TransformException;
 }

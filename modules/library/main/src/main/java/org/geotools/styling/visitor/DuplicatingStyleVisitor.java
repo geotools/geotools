@@ -145,6 +145,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         return pages.peek();
     }
 
+    @Override
     public void visit(StyledLayerDescriptor sld) {
 
         StyledLayer[] layers = sld.getStyledLayers();
@@ -172,6 +173,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
+    @Override
     public void visit(NamedLayer layer) {
 
         Style[] style = layer.getStyles();
@@ -206,6 +208,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
+    @Override
     public void visit(UserLayer layer) {
 
         Style[] style = layer.getUserStyles();
@@ -240,6 +243,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
+    @Override
     public void visit(Style style) {
 
         List<FeatureTypeStyle> ftsCopy = new ArrayList<>();
@@ -263,6 +267,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
+    @Override
     public void visit(Rule rule) {
 
         Filter filterCopy = null;
@@ -296,6 +301,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
+    @Override
     public void visit(FeatureTypeStyle fts) {
 
         FeatureTypeStyle copy = new FeatureTypeStyleImpl(fts);
@@ -634,6 +640,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         return (AnchorPoint) pages.pop();
     }
 
+    @Override
     public void visit(Fill fill) {
         Fill copy = sf.getDefaultFill();
         copy.setColor(copy(fill.getColor()));
@@ -646,6 +653,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
+    @Override
     public void visit(Stroke stroke) {
         Stroke copy = sf.getDefaultStroke();
         copy.setColor(copy(stroke.getColor()));
@@ -664,6 +672,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
+    @Override
     public void visit(Symbolizer sym) {
         if (sym instanceof RasterSymbolizer) {
             visit((RasterSymbolizer) sym);
@@ -680,6 +689,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         }
     }
 
+    @Override
     public void visit(PointSymbolizer ps) {
         PointSymbolizer copy = sf.getDefaultPointSymbolizer();
 
@@ -697,6 +707,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
+    @Override
     public void visit(LineSymbolizer line) {
         LineSymbolizer copy = sf.getDefaultLineSymbolizer();
 
@@ -714,6 +725,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
+    @Override
     public void visit(PolygonSymbolizer poly) {
         PolygonSymbolizer copy = sf.createPolygonSymbolizer();
         copy.setFill(copy(poly.getFill()));
@@ -731,6 +743,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
+    @Override
     public void visit(TextSymbolizer text) {
         TextSymbolizer copy = sf.createTextSymbolizer();
 
@@ -764,6 +777,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
+    @Override
     public void visit(RasterSymbolizer raster) {
         RasterSymbolizer copy = sf.createRasterSymbolizer();
         copy.setChannelSelection(copy(raster.getChannelSelection()));
@@ -784,6 +798,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
+    @Override
     public void visit(Graphic gr) {
 
         Displacement displacementCopy = copy(gr.getDisplacement());
@@ -823,6 +838,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         return copy;
     }
 
+    @Override
     public void visit(Mark mark) {
 
         Mark copy = sf.createMark();
@@ -837,6 +853,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
+    @Override
     public void visit(ExternalGraphic exgr) {
         URL uri = null;
         try {
@@ -861,6 +878,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
+    @Override
     public void visit(PointPlacement pp) {
         PointPlacement copy = sf.getDefaultPointPlacement();
         copy.setAnchorPoint(copy(pp.getAnchorPoint()));
@@ -874,6 +892,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
+    @Override
     public void visit(AnchorPoint ap) {
         Expression x = copy(ap.getAnchorPointX());
         Expression y = copy(ap.getAnchorPointY());
@@ -885,6 +904,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
+    @Override
     public void visit(Displacement dis) {
         Expression x = copy(dis.getDisplacementX());
         Expression y = copy(dis.getDisplacementY());
@@ -896,6 +916,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
+    @Override
     public void visit(LinePlacement lp) {
         Expression offset = copy(lp.getPerpendicularOffset());
         LinePlacement copy = sf.createLinePlacement(offset);
@@ -911,6 +932,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
+    @Override
     public void visit(Halo halo) {
         Fill fill = copy(halo.getFill());
         Expression radius = copy(halo.getRadius());
@@ -922,6 +944,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
+    @Override
     public void visit(FeatureTypeConstraint ftc) {
         String typeName = ftc.getFeatureTypeName();
         Filter filter = copy(ftc.getFilter());
@@ -964,6 +987,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         return copy;
     }
 
+    @Override
     public void visit(ColorMap colorMap) {
         ColorMap copy = sf.createColorMap();
         copy.setType(colorMap.getType());
@@ -981,6 +1005,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
+    @Override
     public void visit(ColorMapEntry colorMapEntry) {
         ColorMapEntry copy = sf.createColorMapEntry();
         copy.setColor(copy(colorMapEntry.getColor()));
@@ -995,6 +1020,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
+    @Override
     public void visit(ContrastEnhancement contrastEnhancement) {
         final ContrastEnhancement copy = sf.createContrastEnhancement();
         copy.setMethod(contrastEnhancement.getMethod());
@@ -1008,6 +1034,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
+    @Override
     public void visit(ImageOutline outline) {
         // copy the symbolizer
         final Symbolizer symb = outline.getSymbolizer();
@@ -1022,11 +1049,13 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
+    @Override
     public void visit(ChannelSelection cs) {
         ChannelSelection copy = copy(cs);
         pages.push(copy);
     }
 
+    @Override
     public void visit(OverlapBehavior ob) {
         final String behavior = (String) ob.getValue();
         if (behavior.equalsIgnoreCase(OverlapBehavior.AVERAGE_RESCTRICTION)) {
@@ -1043,6 +1072,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         }
     }
 
+    @Override
     public void visit(SelectedChannelType sct) {
         final SelectedChannelType copy =
                 sf.createSelectedChannelType(
@@ -1054,6 +1084,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
+    @Override
     public void visit(ShadedRelief sr) {
         final ShadedRelief copy = sf.createShadedRelief(copy(sr.getReliefFactor()));
         copy.setBrightnessOnly(sr.isBrightnessOnly());

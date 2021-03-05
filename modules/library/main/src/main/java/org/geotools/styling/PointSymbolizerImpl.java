@@ -57,6 +57,7 @@ public class PointSymbolizerImpl extends AbstractSymbolizer implements PointSymb
      *
      * @return The Graphic to be used when drawing a point
      */
+    @Override
     public GraphicImpl getGraphic() {
         return graphic;
     }
@@ -66,6 +67,7 @@ public class PointSymbolizerImpl extends AbstractSymbolizer implements PointSymb
      *
      * @param graphic New value of property graphic.
      */
+    @Override
     public void setGraphic(org.opengis.style.Graphic graphic) {
         if (this.graphic == graphic) {
             return;
@@ -78,10 +80,12 @@ public class PointSymbolizerImpl extends AbstractSymbolizer implements PointSymb
      *
      * @param visitor The StyleVisitor to accept.
      */
+    @Override
     public Object accept(StyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
+    @Override
     public void accept(org.geotools.styling.StyleVisitor visitor) {
         visitor.visit(this);
     }
@@ -91,6 +95,7 @@ public class PointSymbolizerImpl extends AbstractSymbolizer implements PointSymb
      *
      * @return The deep copy clone.
      */
+    @Override
     public Object clone() {
         PointSymbolizerImpl clone;
 

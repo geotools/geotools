@@ -35,6 +35,7 @@ public class MultiplyImpl extends MathExpressionImpl implements Multiply {
         super(expr1, expr2);
     }
 
+    @Override
     public Object evaluate(Object feature) throws IllegalArgumentException {
         ensureOperandsSet();
         Object eval1 = getExpression1().evaluate(feature);
@@ -49,6 +50,7 @@ public class MultiplyImpl extends MathExpressionImpl implements Multiply {
         }
     }
 
+    @Override
     public Object accept(ExpressionVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
@@ -59,6 +61,7 @@ public class MultiplyImpl extends MathExpressionImpl implements Multiply {
      * @param obj - the object to compare this expression against.
      * @return true if specified object is equal to this expression; false otherwise.
      */
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof MultiplyImpl) {
             MultiplyImpl other = (MultiplyImpl) obj;
@@ -74,6 +77,7 @@ public class MultiplyImpl extends MathExpressionImpl implements Multiply {
      *
      * @return a hash code value for this multiply expression.
      */
+    @Override
     public int hashCode() {
         int result = 23;
 
@@ -83,6 +87,7 @@ public class MultiplyImpl extends MathExpressionImpl implements Multiply {
         return result;
     }
 
+    @Override
     public String toString() {
         return "(" + getExpression1().toString() + "*" + getExpression2().toString() + ")";
     }

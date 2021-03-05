@@ -379,10 +379,12 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
                     3,
                     reader,
                     new SimpleFeatureAssertion() {
+                        @Override
                         public int toIndex(SimpleFeature feature) {
                             return ((Number) feature.getAttribute(aname("intProperty"))).intValue();
                         }
 
+                        @Override
                         public void check(int index, SimpleFeature feature) {
                             assertEquals(4, feature.getAttributeCount());
                             Point p = gf.createPoint(new Coordinate(index, index));

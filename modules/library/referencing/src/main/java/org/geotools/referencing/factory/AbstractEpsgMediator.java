@@ -111,15 +111,18 @@ public abstract class AbstractEpsgMediator extends AbstractAuthorityMediator {
         }
     }
 
+    @Override
     public Citation getAuthority() {
         return Citations.EPSG;
     }
 
+    @Override
     public void dispose() throws FactoryException {
         super.dispose();
         datasource = null;
     }
 
+    @Override
     public boolean isConnected() {
         return datasource != null && super.isConnected();
     }
@@ -133,6 +136,7 @@ public abstract class AbstractEpsgMediator extends AbstractAuthorityMediator {
      * @throws NoSuchAuthorityCodeException if the specified {@code code} was not found.
      * @throws FactoryException if the query failed for some other reason.
      */
+    @Override
     public InternationalString getDescriptionText(final String code) throws FactoryException {
         IdentifiedObject identifiedObject = createObject(code);
         final Identifier identifier = identifiedObject.getName();

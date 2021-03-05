@@ -220,6 +220,7 @@ public class BufferedCoordinateOperationFactory extends AbstractCoordinateOperat
      *     {@code targetCRS}.
      * @throws FactoryException if the operation creation failed for some other reason.
      */
+    @Override
     public CoordinateOperation createOperation(
             final CoordinateReferenceSystem sourceCRS, final CoordinateReferenceSystem targetCRS)
             throws OperationNotFoundException, FactoryException {
@@ -260,6 +261,7 @@ public class BufferedCoordinateOperationFactory extends AbstractCoordinateOperat
      * CoordinateOperationFactory coordinate operation factory} specified at construction time with
      * no caching.
      */
+    @Override
     public CoordinateOperation createOperation(
             final CoordinateReferenceSystem sourceCRS,
             final CoordinateReferenceSystem targetCRS,

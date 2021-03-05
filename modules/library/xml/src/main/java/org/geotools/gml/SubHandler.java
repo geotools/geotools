@@ -97,6 +97,7 @@ public abstract class SubHandler {
      *
      * @return String representation of the current handler.
      */
+    @Override
     public String toString() {
         String name = this.getClass().getName();
         int index = name.lastIndexOf('.');

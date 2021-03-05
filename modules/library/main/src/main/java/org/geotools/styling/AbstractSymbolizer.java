@@ -56,38 +56,47 @@ public abstract class AbstractSymbolizer implements Symbolizer {
         setGeometryPropertyName(geometryPropertyName);
     }
 
+    @Override
     public Description getDescription() {
         return description;
     }
 
+    @Override
     public void setDescription(org.opengis.style.Description description) {
         this.description = DescriptionImpl.cast(description);
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
+    @Override
     public void setUnitOfMeasure(Unit<Length> uom) {
         this.unitOfMeasure = uom;
     }
 
+    @Override
     public Unit<Length> getUnitOfMeasure() {
         return unitOfMeasure;
     }
 
+    @Override
     public Expression getGeometry() {
         return geometry;
     }
 
+    @Override
     public void setGeometry(Expression geometry) {
         this.geometry = geometry;
     }
 
+    @Override
     public String getGeometryPropertyName() {
         if (geometry instanceof PropertyName) {
             PropertyName pg = (PropertyName) geometry;
@@ -96,6 +105,7 @@ public abstract class AbstractSymbolizer implements Symbolizer {
         return null;
     }
 
+    @Override
     public void setGeometryPropertyName(String geometryPropertyName) {
         if (geometryPropertyName == null) {
             geometry = null;
@@ -105,10 +115,12 @@ public abstract class AbstractSymbolizer implements Symbolizer {
         }
     }
 
+    @Override
     public boolean hasOption(String key) {
         return options != null && options.containsKey(key);
     }
 
+    @Override
     public Map<String, String> getOptions() {
         if (options == null) {
             options = new LinkedHashMap<>();

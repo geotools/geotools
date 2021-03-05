@@ -84,10 +84,12 @@ public class ReprojectingFeatureIterator implements SimpleFeatureIterator {
         return delegate;
     }
 
+    @Override
     public boolean hasNext() {
         return delegate.hasNext();
     }
 
+    @Override
     public SimpleFeature next() {
         SimpleFeature feature = delegate.next();
         try {

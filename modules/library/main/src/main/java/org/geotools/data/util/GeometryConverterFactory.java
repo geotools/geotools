@@ -45,6 +45,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  */
 public class GeometryConverterFactory implements ConverterFactory {
 
+    @Override
     public Converter createConverter(Class source, Class target, Hints hints) {
 
         if (Geometry.class.isAssignableFrom(target)) {
@@ -52,6 +53,7 @@ public class GeometryConverterFactory implements ConverterFactory {
             // String to Geometry
             if (String.class.equals(source)) {
                 return new Converter() {
+                    @Override
                     public <T> T convert(Object source, Class<T> target) throws Exception {
                         return target.cast(new WKTReader2().read((String) source));
                     }
@@ -61,6 +63,7 @@ public class GeometryConverterFactory implements ConverterFactory {
             // Envelope to Geometry
             if (Envelope.class.isAssignableFrom(source)) {
                 return new Converter() {
+                    @Override
                     public <T> T convert(Object source, Class<T> target) throws Exception {
                         Envelope e = (Envelope) source;
                         GeometryFactory factory = new GeometryFactory();
@@ -84,6 +87,7 @@ public class GeometryConverterFactory implements ConverterFactory {
             // Geometry to envelope
             if (Envelope.class.equals(target)) {
                 return new Converter() {
+                    @Override
                     public <T> T convert(Object source, Class<T> target) throws Exception {
                         Geometry geometry = (Geometry) source;
                         Envelope envelope = geometry.getEnvelopeInternal();
@@ -101,6 +105,7 @@ public class GeometryConverterFactory implements ConverterFactory {
             // Geometry to String
             if (String.class.equals(target)) {
                 return new Converter() {
+                    @Override
                     public <T> T convert(Object source, Class<T> target) throws Exception {
                         Geometry geometry = (Geometry) source;
                         return target.cast(geometry.toText());

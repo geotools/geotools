@@ -40,6 +40,7 @@ public class SubHandlerPoint extends SubHandler {
      *
      * @param coordinate Coordinate.
      */
+    @Override
     public void addCoordinate(Coordinate coordinate) {
         this.coordinate = coordinate;
     }
@@ -50,6 +51,7 @@ public class SubHandlerPoint extends SubHandler {
      * @param message GML element that prompted this query.
      * @return Ready for creation flag.
      */
+    @Override
     public boolean isComplete(String message) {
         if (this.coordinate != null) {
             return true;
@@ -64,6 +66,7 @@ public class SubHandlerPoint extends SubHandler {
      * @param geometryFactory Geometry factory to be used to create the point.
      * @return Created Point.
      */
+    @Override
     public Geometry create(GeometryFactory geometryFactory) {
         Point point = geometryFactory.createPoint(coordinate);
         point.setUserData(getSRS());

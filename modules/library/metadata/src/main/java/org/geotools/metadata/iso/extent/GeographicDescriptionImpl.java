@@ -56,6 +56,7 @@ public class GeographicDescriptionImpl extends GeographicExtentImpl
     }
 
     /** Returns the identifier used to represent a geographic area. */
+    @Override
     public Identifier getGeographicIdentifier() {
         return geographicIdentifier;
     }

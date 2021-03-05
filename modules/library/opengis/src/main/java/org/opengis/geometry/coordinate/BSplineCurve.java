@@ -33,6 +33,7 @@ import org.opengis.annotation.UML;
 @UML(identifier = "GM_BSplineCurve", specification = ISO_19107)
 public interface BSplineCurve extends SplineCurve {
     /** The algebraic degree of the basis functions. */
+    @Override
     @UML(identifier = "degree", obligation = MANDATORY, specification = ISO_19107)
     int getDegree();
 

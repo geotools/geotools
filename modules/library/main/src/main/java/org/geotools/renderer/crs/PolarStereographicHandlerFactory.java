@@ -39,6 +39,7 @@ import org.opengis.referencing.operation.TransformException;
  */
 public class PolarStereographicHandlerFactory implements ProjectionHandlerFactory {
 
+    @Override
     public ProjectionHandler getHandler(
             ReferencedEnvelope renderingEnvelope,
             CoordinateReferenceSystem sourceCrs,

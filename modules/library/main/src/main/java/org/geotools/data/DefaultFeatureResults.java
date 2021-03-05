@@ -162,6 +162,7 @@ public class DefaultFeatureResults extends DataFeatureCollection {
      * <p>If query.getPropertyNames() is used to limit the result of the Query a sub type will be
      * returned based on FeatureSource.getSchema().
      */
+    @Override
     public SimpleFeatureType getSchema() {
         return super.getSchema();
     }
@@ -188,6 +189,7 @@ public class DefaultFeatureResults extends DataFeatureCollection {
      * @return FeatureReader<SimpleFeatureType, SimpleFeature> for this Query
      * @throws IOException If results could not be obtained
      */
+    @Override
     @SuppressWarnings("PMD.CloseResource") // returned, the caller will close
     public FeatureReader<SimpleFeatureType, SimpleFeature> reader() throws IOException {
         FeatureReader<SimpleFeatureType, SimpleFeature> reader =
@@ -239,6 +241,7 @@ public class DefaultFeatureResults extends DataFeatureCollection {
      * @throws DataSourceException See IOException
      * @see org.geotools.data.FeatureResults#getBounds()
      */
+    @Override
     public ReferencedEnvelope getBounds() {
         ReferencedEnvelope bounds;
 
@@ -278,6 +281,7 @@ public class DefaultFeatureResults extends DataFeatureCollection {
      * @throws DataSourceException See IOException
      * @see org.geotools.data.FeatureResults#getCount()
      */
+    @Override
     public int getCount() throws IOException {
         int count = featureSource.getCount(query);
 

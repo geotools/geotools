@@ -72,6 +72,7 @@ public class OffsetCurveBuilderTest {
     public TestWatcher interactiveReporter =
             new TestWatcher() {
 
+                @Override
                 protected void succeeded(org.junit.runner.Description description) {
                     if (curve != null && INTERACTIVE_ON_SUCCESS) {
                         displayCurves(false);

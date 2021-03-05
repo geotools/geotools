@@ -96,16 +96,19 @@ public class IdentityTransform extends AbstractMathTransform
      * Tests whether this transform does not move any points. This implementation always returns
      * {@code true}.
      */
+    @Override
     public boolean isIdentity(double tolerance) {
         return true;
     }
 
     /** Gets the dimension of input points. */
+    @Override
     public int getSourceDimensions() {
         return dimension;
     }
 
     /** Gets the dimension of output points. */
+    @Override
     public int getTargetDimensions() {
         return dimension;
     }
@@ -127,6 +130,7 @@ public class IdentityTransform extends AbstractMathTransform
     }
 
     /** Returns a copy of the identity matrix. */
+    @Override
     public Matrix getMatrix() {
         return MatrixFactory.create(dimension + 1);
     }
@@ -175,6 +179,7 @@ public class IdentityTransform extends AbstractMathTransform
     }
 
     /** Transforms an array of floating point coordinates by this transform. */
+    @Override
     public void transform(
             final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
         System.arraycopy(srcPts, srcOff, dstPts, dstOff, numPts * dimension);

@@ -79,10 +79,12 @@ public class CollectionFeatureSource implements SimpleFeatureSource {
         this.collection = collection;
     }
 
+    @Override
     public SimpleFeatureType getSchema() {
         return collection.getSchema();
     }
 
+    @Override
     public synchronized void addFeatureListener(FeatureListener listener) {
         if (listeners == null) {
             listeners = Collections.synchronizedList(new ArrayList<>());
@@ -90,6 +92,7 @@ public class CollectionFeatureSource implements SimpleFeatureSource {
         listeners.add(listener);
     }
 
+    @Override
     public synchronized void removeFeatureListener(FeatureListener listener) {
         if (listeners == null) {
             return;
@@ -97,42 +100,52 @@ public class CollectionFeatureSource implements SimpleFeatureSource {
         listeners.remove(listener);
     }
 
+    @Override
     public ReferencedEnvelope getBounds() throws IOException {
         return collection.getBounds();
     }
 
+    @Override
     public ReferencedEnvelope getBounds(Query query) throws IOException {
         return getFeatures(query).getBounds();
     }
 
+    @Override
     public int getCount(Query query) throws IOException {
         return getFeatures(query).size();
     }
 
+    @Override
     public DataAccess<SimpleFeatureType, SimpleFeature> getDataStore() {
         throw new UnsupportedOperationException("CollectionFeatureSource is an inmemory wrapper");
     }
 
+    @Override
     public ResourceInfo getInfo() {
         throw new UnsupportedOperationException("CollectionFeatureSource is an inmemory wrapper");
     }
 
+    @Override
     public Name getName() {
         return collection.getSchema().getName();
     }
 
+    @Override
     public synchronized QueryCapabilities getQueryCapabilities() {
         if (capabilities == null) {
             capabilities =
                     new QueryCapabilities() {
+                        @Override
                         public boolean isOffsetSupported() {
                             return true;
                         }
 
+                        @Override
                         public boolean isReliableFIDSupported() {
                             return true;
                         }
 
+                        @Override
                         public boolean supportsSorting(
                                 org.opengis.filter.sort.SortBy[] sortAttributes) {
                             return true;
@@ -142,6 +155,7 @@ public class CollectionFeatureSource implements SimpleFeatureSource {
         return capabilities;
     }
 
+    @Override
     public synchronized Set<Key> getSupportedHints() {
         if (hints == null) {
             Set<Key> supports = new HashSet<>();
@@ -164,15 +178,18 @@ public class CollectionFeatureSource implements SimpleFeatureSource {
     // This forms the heart of the CollectionFeatureSource implementation
     // Use: DataUtilities.mixQueries(this.query, query, "subCollection" ) as needed
     //
+    @Override
     public SimpleFeatureCollection getFeatures() throws IOException {
         return getFeatures(Query.ALL);
     }
 
+    @Override
     public SimpleFeatureCollection getFeatures(Filter filter) {
         Query query = new Query(getSchema().getTypeName(), filter);
         return getFeatures(query);
     }
 
+    @Override
     public SimpleFeatureCollection getFeatures(Query query) {
         query = DataUtilities.resolvePropertyNames(query, getSchema());
         final int offset = query.getStartIndex() != null ? query.getStartIndex() : 0;
@@ -256,6 +273,7 @@ public class CollectionFeatureSource implements SimpleFeatureSource {
             this.query = query;
         }
 
+        @Override
         public SimpleFeatureCollection subCollection(Filter filter) {
             Query q = new Query(getSchema().getTypeName(), filter);
 

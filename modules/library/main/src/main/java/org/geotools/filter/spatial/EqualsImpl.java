@@ -42,6 +42,7 @@ public class EqualsImpl extends GeometryFilterImpl implements Equals {
         else return false;
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

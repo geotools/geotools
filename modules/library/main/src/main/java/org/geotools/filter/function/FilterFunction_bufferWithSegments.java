@@ -40,6 +40,7 @@ public class FilterFunction_bufferWithSegments extends FunctionExpressionImpl {
         functionName = NAME;
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Geometry arg0;
         double arg1;

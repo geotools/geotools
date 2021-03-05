@@ -86,6 +86,7 @@ public class MarkImpl implements Mark, Cloneable {
      *
      * @return the Fill definition to use when rendering the Mark.
      */
+    @Override
     public FillImpl getFill() {
         return fill;
     }
@@ -95,6 +96,7 @@ public class MarkImpl implements Mark, Cloneable {
      *
      * @return The Stroke definition to use when rendering the Mark.
      */
+    @Override
     public StrokeImpl getStroke() {
         return stroke;
     }
@@ -107,6 +109,7 @@ public class MarkImpl implements Mark, Cloneable {
      *
      * @return The well-known name of a shape. The default value is "square".
      */
+    @Override
     public Expression getWellKnownName() {
         return wellKnownName;
     }
@@ -116,6 +119,7 @@ public class MarkImpl implements Mark, Cloneable {
      *
      * @param fill New value of property fill.
      */
+    @Override
     public void setFill(org.opengis.style.Fill fill) {
         this.fill = FillImpl.cast(fill);
     }
@@ -125,6 +129,7 @@ public class MarkImpl implements Mark, Cloneable {
      *
      * @param stroke New value of property stroke.
      */
+    @Override
     public void setStroke(org.opengis.style.Stroke stroke) {
         this.stroke = StrokeImpl.cast(stroke);
     }
@@ -134,6 +139,7 @@ public class MarkImpl implements Mark, Cloneable {
      *
      * @param wellKnownName New value of property wellKnownName.
      */
+    @Override
     public void setWellKnownName(Expression wellKnownName) {
         LOGGER.entering("DefaultMark", "setWellKnownName");
         this.wellKnownName = wellKnownName;
@@ -143,14 +149,17 @@ public class MarkImpl implements Mark, Cloneable {
         setWellKnownName(filterFactory.literal(name));
     }
 
+    @Override
     public String toString() {
         return wellKnownName.toString();
     }
 
+    @Override
     public Object accept(StyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
+    @Override
     public void accept(org.geotools.styling.StyleVisitor visitor) {
         visitor.visit(this);
     }
@@ -162,6 +171,7 @@ public class MarkImpl implements Mark, Cloneable {
      *
      * @see org.geotools.styling.Mark#clone()
      */
+    @Override
     public Object clone() {
         try {
             MarkImpl clone = (MarkImpl) super.clone();
@@ -184,6 +194,7 @@ public class MarkImpl implements Mark, Cloneable {
      *
      * @return the Hashcode.
      */
+    @Override
     public int hashCode() {
         final int PRIME = 1000003;
         int result = 0;
@@ -212,6 +223,7 @@ public class MarkImpl implements Mark, Cloneable {
      * @param oth The Other MarkImpl to compare with.
      * @return True if this and oth are equal.
      */
+    @Override
     public boolean equals(Object oth) {
         if (this == oth) {
             return true;
@@ -261,10 +273,12 @@ public class MarkImpl implements Mark, Cloneable {
         return true;
     }
 
+    @Override
     public ExternalMarkImpl getExternalMark() {
         return external;
     }
 
+    @Override
     public void setExternalMark(org.opengis.style.ExternalMark external) {
         this.external = ExternalMarkImpl.cast(external);
     }

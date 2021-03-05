@@ -84,6 +84,7 @@ public class CheckedHashSet<E> extends LinkedHashSet<E> implements CheckedCollec
      *
      * @since 2.4
      */
+    @Override
     public Class<E> getElementType() {
         return type;
     }

@@ -232,6 +232,7 @@ public final class SoftValueHashMapTest {
             this.latch = latch;
         }
 
+        @Override
         public void run() {
             for (int i = 0; i < THREAD_CYCLES; i++) {
                 final Integer key = Integer.valueOf(random.nextInt(SAMPLE_SIZE));
@@ -259,6 +260,7 @@ public final class SoftValueHashMapTest {
             this.latch = latch;
         }
 
+        @Override
         public void run() {
             for (int i = 0; i < THREAD_CYCLES; i++) {
                 for (Object value : cache.values()) {

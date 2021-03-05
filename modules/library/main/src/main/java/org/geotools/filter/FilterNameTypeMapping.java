@@ -265,15 +265,18 @@ class FilterNameTypeMapping {
     static final FilterCapabilities NO_OP_CAPS = new FilterCapabilities(FilterCapabilities.NO_OP);
     public static final FilterCapabilities ALL_CAPS =
             new FilterCapabilities() {
+                @Override
                 public boolean supports(Class type) {
                     // TODO Auto-generated method stub
                     return super.supports(type);
                 }
 
+                @Override
                 public boolean supports(Filter filter) {
                     return true;
                 }
 
+                @Override
                 public boolean supports(FilterCapabilities type) {
                     return true;
                 }

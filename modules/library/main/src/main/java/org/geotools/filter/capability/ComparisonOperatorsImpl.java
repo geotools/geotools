@@ -53,6 +53,7 @@ public class ComparisonOperatorsImpl implements ComparisonOperators {
         this.operators = new HashSet<>(Arrays.asList(operators));
     }
 
+    @Override
     public Collection<Operator> getOperators() {
         if (operators == null) {
             operators = new HashSet<>();
@@ -64,6 +65,7 @@ public class ComparisonOperatorsImpl implements ComparisonOperators {
         this.operators = new HashSet<>(operators);
     }
     /** @return Operator with the provided name, or null if not supported */
+    @Override
     public Operator getOperator(String name) {
         if (name == null || operators == null) {
             return null;

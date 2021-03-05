@@ -53,10 +53,12 @@ public class MemoryFeatureWriter implements FeatureWriter<SimpleFeatureType, Sim
         iterator = entry.getMemory().values().iterator();
     }
 
+    @Override
     public SimpleFeatureType getFeatureType() {
         return state.getFeatureType();
     }
 
+    @Override
     public SimpleFeature next() throws IOException, NoSuchElementException {
         if (hasNext()) {
             // existing content
@@ -81,6 +83,7 @@ public class MemoryFeatureWriter implements FeatureWriter<SimpleFeatureType, Sim
         return current;
     }
 
+    @Override
     public void remove() throws IOException {
         if (iterator == null) {
             throw new IOException("FeatureWriter has been closed");
@@ -101,6 +104,7 @@ public class MemoryFeatureWriter implements FeatureWriter<SimpleFeatureType, Sim
         }
     }
 
+    @Override
     public void write() throws IOException {
         if (iterator == null) {
             throw new IOException("FeatureWriter has been closed");
@@ -153,6 +157,7 @@ public class MemoryFeatureWriter implements FeatureWriter<SimpleFeatureType, Sim
         }
     }
 
+    @Override
     public boolean hasNext() throws IOException {
         if (iterator == null) {
             throw new IOException("FeatureWriter has been closed");
@@ -160,6 +165,7 @@ public class MemoryFeatureWriter implements FeatureWriter<SimpleFeatureType, Sim
         return (iterator != null) && iterator.hasNext();
     }
 
+    @Override
     public void close() {
         if (iterator != null) {
             iterator = null;

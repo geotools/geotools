@@ -62,6 +62,7 @@ public final class CellGeometry extends CodeList<CellGeometry> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public CellGeometry[] family() {
         return values();
     }

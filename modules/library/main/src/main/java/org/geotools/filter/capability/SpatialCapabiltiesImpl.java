@@ -81,6 +81,7 @@ public class SpatialCapabiltiesImpl implements SpatialCapabilities {
         this.geometryOperands = new HashSet<>(geometryOperands);
     }
 
+    @Override
     public Collection<GeometryOperand> getGeometryOperands() {
         return geometryOperands;
     }
@@ -89,6 +90,7 @@ public class SpatialCapabiltiesImpl implements SpatialCapabilities {
         this.spatialOperators = spatialOperators;
     }
 
+    @Override
     public SpatialOperatorsImpl getSpatialOperators() {
         if (spatialOperators == null) {
             spatialOperators = new SpatialOperatorsImpl();

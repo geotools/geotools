@@ -49,6 +49,7 @@ public class SubHandlerLinearRing extends SubHandler {
      *
      * @param coordinate The coordinate to add to the LinearRing.
      */
+    @Override
     public void addCoordinate(Coordinate coordinate) {
         coordinateList.add(coordinate);
     }
@@ -59,6 +60,7 @@ public class SubHandlerLinearRing extends SubHandler {
      * @param message The current geometry type in the GML stream.
      * @return Ready for creation flag.
      */
+    @Override
     public boolean isComplete(String message) {
         // makes sure that this LinearRing has more than one coordinate and its first and last are
         // identical
@@ -82,6 +84,7 @@ public class SubHandlerLinearRing extends SubHandler {
      * @param geometryFactory The geometry factory used for the build.
      * @return LinearRing geometry created.
      */
+    @Override
     public Geometry create(GeometryFactory geometryFactory) {
         try {
             Coordinate[] coords = coordinateList.toArray(new Coordinate[coordinateList.size()]);

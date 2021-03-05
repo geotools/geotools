@@ -35,6 +35,7 @@ public interface ExternalMark extends org.opengis.style.ExternalMark {
      *
      * @return OnlineResource or <code>null</code>
      */
+    @Override
     OnLineResource getOnlineResource();
 
     /** @param resource Online resource with format defined by getFormat() */
@@ -47,6 +48,7 @@ public interface ExternalMark extends org.opengis.style.ExternalMark {
      *
      * @return InlineContent or <code>null</code>
      */
+    @Override
     Icon getInlineContent();
 
     /**
@@ -72,6 +74,7 @@ public interface ExternalMark extends org.opengis.style.ExternalMark {
      *
      * @return mime type
      */
+    @Override
     String getFormat();
 
     /** @param mimeType Mime type of external (or internal) resource */
@@ -83,6 +86,7 @@ public interface ExternalMark extends org.opengis.style.ExternalMark {
      *
      * @return integer
      */
+    @Override
     int getMarkIndex();
 
     /** Mark index used to specify true type font character; or frame of an animated gif. */

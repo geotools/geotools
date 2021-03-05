@@ -76,16 +76,19 @@ public class WeakValueHashMap<K, V> extends AbstractMap<K, V> {
         }
 
         /** Returns the key corresponding to this entry. */
+        @Override
         public K getKey() {
             return key;
         }
 
         /** Returns the value corresponding to this entry. */
+        @Override
         public V getValue() {
             return get();
         }
 
         /** Replaces the value corresponding to this entry with the specified value. */
+        @Override
         public V setValue(final V value) {
             if (value != null) {
                 throw new UnsupportedOperationException();

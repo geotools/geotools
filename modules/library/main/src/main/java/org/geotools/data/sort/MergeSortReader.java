@@ -52,10 +52,12 @@ class MergeSortReader implements SimpleFeatureReader {
         this.io = io;
     }
 
+    @Override
     public SimpleFeatureType getFeatureType() {
         return schema;
     }
 
+    @Override
     public SimpleFeature next()
             throws IOException, IllegalArgumentException, NoSuchElementException {
         if (readers.isEmpty()) {
@@ -83,10 +85,12 @@ class MergeSortReader implements SimpleFeatureReader {
         return sf;
     }
 
+    @Override
     public boolean hasNext() throws IOException {
         return !readers.isEmpty();
     }
 
+    @Override
     public void close() throws IOException {
         io.close(true);
     }

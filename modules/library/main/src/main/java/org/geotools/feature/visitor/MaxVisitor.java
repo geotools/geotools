@@ -84,6 +84,7 @@ public class MaxVisitor implements FeatureCalc, FeatureAttributeVisitor {
         visit((org.opengis.feature.Feature) feature);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public void visit(org.opengis.feature.Feature feature) {
         Object attribValue = expr.evaluate(feature);
@@ -146,6 +147,7 @@ public class MaxVisitor implements FeatureCalc, FeatureAttributeVisitor {
         return expr;
     }
 
+    @Override
     public CalcResult getResult() {
         if (!visited) {
             return CalcResult.NULL_RESULT;
@@ -172,12 +174,14 @@ public class MaxVisitor implements FeatureCalc, FeatureAttributeVisitor {
             maxValue = newMaxValue;
         }
 
+        @Override
         public Object getValue() {
             Comparable max = maxValue;
 
             return max;
         }
 
+        @Override
         public boolean isCompatible(CalcResult targetResults) {
             // list each calculation result which can merge with this type of result
             if (targetResults instanceof MaxResult || targetResults == CalcResult.NULL_RESULT) {
@@ -187,6 +191,7 @@ public class MaxVisitor implements FeatureCalc, FeatureAttributeVisitor {
             return false;
         }
 
+        @Override
         @SuppressWarnings("unchecked")
         public CalcResult merge(CalcResult resultsToAdd) {
             if (!isCompatible(resultsToAdd)) {

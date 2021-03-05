@@ -42,6 +42,7 @@ final class Adapter extends Formattable {
      * Try to format the wrapped object as WKT. If the adapter fails to find a way to format the
      * object as WKT, then an {@link UnsupportedImplementationException} is thrown.
      */
+    @Override
     protected String formatWKT(final Formatter formatter) {
         if (object instanceof org.geotools.referencing.util.Formattable) {
             return ((org.geotools.referencing.util.Formattable) object).formatWKT(formatter);

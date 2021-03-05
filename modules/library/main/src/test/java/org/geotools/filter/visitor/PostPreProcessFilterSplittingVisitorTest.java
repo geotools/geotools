@@ -46,6 +46,7 @@ public class PostPreProcessFilterSplittingVisitorTest
     private FilterCapabilities simpleLogicalCaps = new FilterCapabilities();
     private PostPreProcessFilterSplittingVisitor visitor;
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
@@ -334,10 +335,12 @@ public class PostPreProcessFilterSplittingVisitorTest
                         null,
                         new ClientTransactionAccessor() {
 
+                            @Override
                             public Filter getDeleteFilter() {
                                 return null;
                             }
 
+                            @Override
                             public Filter getUpdateFilter(String attributePath) {
                                 if (attributePath.equals("eventtype")) {
                                     HashSet<FeatureId> ids = new HashSet<>();

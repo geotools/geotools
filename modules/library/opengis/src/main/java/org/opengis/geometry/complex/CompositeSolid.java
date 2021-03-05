@@ -45,6 +45,7 @@ public interface CompositeSolid extends Composite, Solid {
      * @see Solid#getComposite
      * @issue http://jira.codehaus.org/browse/GEO-63
      */
+    @Override
     @Association("Composition")
     @UML(identifier = "generator", obligation = MANDATORY, specification = ISO_19107)
     Set<Solid> getGenerators();

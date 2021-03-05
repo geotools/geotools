@@ -121,6 +121,7 @@ public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
      * @param atts The element attributes.
      * @throws SAXException Some parsing error occurred while reading coordinates.
      */
+    @Override
     public void startElement(
             String namespaceURI, String localName, String qName, org.xml.sax.Attributes atts)
             throws SAXException {
@@ -181,6 +182,7 @@ public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
      * @param length Length of the character string.
      * @throws SAXException Some parsing error occurred while reading coordinates.
      */
+    @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
         LOGGER.entering(
                 "GMLFilterDocument",
@@ -227,6 +229,7 @@ public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
      * @param qName The full name of the element, including namespace prefix.
      * @throws SAXException Some parsing error occurred while reading coordinates.
      */
+    @Override
     public void endElement(String namespaceURI, String localName, String qName)
             throws SAXException {
         LOGGER.entering(

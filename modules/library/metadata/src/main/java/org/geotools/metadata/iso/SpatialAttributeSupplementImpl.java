@@ -61,6 +61,7 @@ public class SpatialAttributeSupplementImpl extends MetadataEntity
     /**
      * Provides information about the list of feature types with the same spatial representation.
      */
+    @Override
     public Collection<FeatureTypeList> getFeatureTypeList() {
         return featureTypeList = nonNullCollection(featureTypeList, FeatureTypeList.class);
     }

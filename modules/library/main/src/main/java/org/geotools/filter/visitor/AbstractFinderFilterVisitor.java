@@ -94,14 +94,17 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
         found = false;
     }
 
+    @Override
     public Object visit(ExcludeFilter filter, Object data) {
         return found;
     }
 
+    @Override
     public Object visit(IncludeFilter filter, Object data) {
         return found;
     }
 
+    @Override
     public Object visit(And filter, Object data) {
         if (filter.getChildren() != null) {
             for (Filter child : filter.getChildren()) {
@@ -112,10 +115,12 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
         return found;
     }
 
+    @Override
     public Object visit(Id filter, Object data) {
         return found;
     }
 
+    @Override
     public Object visit(Not filter, Object data) {
         if (filter.getFilter() != null) {
             filter.getFilter().accept(this, data);
@@ -123,6 +128,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
         return found;
     }
 
+    @Override
     public Object visit(Or filter, Object data) {
         if (filter.getChildren() != null) {
             for (Filter child : filter.getChildren()) {
@@ -133,6 +139,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
         return found;
     }
 
+    @Override
     public Object visit(PropertyIsBetween filter, Object data) {
         filter.getLowerBoundary().accept(this, data);
         if (found) return found;
@@ -142,6 +149,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
         return found;
     }
 
+    @Override
     public Object visit(PropertyIsEqualTo filter, Object data) {
         filter.getExpression1().accept(this, data);
         if (found) return found;
@@ -150,6 +158,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
         return found;
     }
 
+    @Override
     public Object visit(PropertyIsNotEqualTo filter, Object data) {
         filter.getExpression1().accept(this, data);
         if (found) return found;
@@ -158,6 +167,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
         return found;
     }
 
+    @Override
     public Object visit(PropertyIsGreaterThan filter, Object data) {
         filter.getExpression1().accept(this, data);
         if (found) return found;
@@ -166,6 +176,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
         return found;
     }
 
+    @Override
     public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object data) {
         filter.getExpression1().accept(this, data);
         if (found) return found;
@@ -174,6 +185,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
         return found;
     }
 
+    @Override
     public Object visit(PropertyIsLessThan filter, Object data) {
         filter.getExpression1().accept(this, data);
         if (found) return found;
@@ -182,6 +194,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
         return found;
     }
 
+    @Override
     public Object visit(PropertyIsLessThanOrEqualTo filter, Object data) {
         filter.getExpression1().accept(this, data);
         if (found) return found;
@@ -190,41 +203,50 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
         return found;
     }
 
+    @Override
     public Object visit(PropertyIsLike filter, Object data) {
         filter.getExpression().accept(this, data);
         return found;
     }
 
+    @Override
     public Object visit(PropertyIsNull filter, Object data) {
         filter.getExpression().accept(this, data);
         return found;
     }
 
+    @Override
     public Object visit(PropertyIsNil filter, Object data) {
         filter.getExpression().accept(this, data);
         return found;
     }
 
+    @Override
     public Object visit(final BBOX filter, Object data) {
         // We will just use a simple wrapper until we add a getExpression method
         PropertyName property =
                 new PropertyName() {
+                    @Override
                     public String getPropertyName() {
                         return ((PropertyName) filter.getExpression1()).getPropertyName();
                     }
 
+                    @Override
                     public Object accept(ExpressionVisitor visitor, Object data) {
                         return visitor.visit(this, data);
                     }
 
+                    @Override
                     public Object evaluate(Object object) {
                         return null;
                     }
 
+                    @Override
                     public <T> T evaluate(Object object, Class<T> context) {
                         return null;
                     }
 
+                    @Override
                     public NamespaceSupport getNamespaceContext() {
                         return null;
                     }
@@ -236,6 +258,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
         return found;
     }
 
+    @Override
     public Object visit(Beyond filter, Object data) {
         filter.getExpression1().accept(this, data);
         if (found) return found;
@@ -243,6 +266,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
         return found;
     }
 
+    @Override
     public Object visit(Contains filter, Object data) {
         filter.getExpression1().accept(this, data);
         if (found) return found;
@@ -250,6 +274,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
         return found;
     }
 
+    @Override
     public Object visit(Crosses filter, Object data) {
         filter.getExpression1().accept(this, data);
         if (found) return found;
@@ -257,6 +282,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
         return found;
     }
 
+    @Override
     public Object visit(Disjoint filter, Object data) {
         filter.getExpression1().accept(this, data);
         if (found) return found;
@@ -264,6 +290,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
         return found;
     }
 
+    @Override
     public Object visit(DWithin filter, Object data) {
         filter.getExpression1().accept(this, data);
         if (found) return found;
@@ -271,12 +298,14 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
         return found;
     }
 
+    @Override
     public Object visit(Equals filter, Object data) {
         filter.getExpression1().accept(this, data);
         filter.getExpression2().accept(this, data);
         return found;
     }
 
+    @Override
     public Object visit(Intersects filter, Object data) {
         filter.getExpression1().accept(this, data);
         if (found) return found;
@@ -285,6 +314,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
         return found;
     }
 
+    @Override
     public Object visit(Overlaps filter, Object data) {
         filter.getExpression1().accept(this, data);
         if (found) return found;
@@ -293,6 +323,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
         return found;
     }
 
+    @Override
     public Object visit(Touches filter, Object data) {
         filter.getExpression1().accept(this, data);
         if (found) return found;
@@ -301,6 +332,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
         return found;
     }
 
+    @Override
     public Object visit(Within filter, Object data) {
         filter.getExpression1().accept(this, data);
         if (found) return found;
@@ -309,14 +341,17 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
         return found;
     }
 
+    @Override
     public Object visitNullFilter(Object data) {
         return found;
     }
 
+    @Override
     public Object visit(NilExpression expression, Object data) {
         return found;
     }
 
+    @Override
     public Object visit(Add expression, Object data) {
         expression.getExpression1().accept(this, data);
         if (found) return found;
@@ -324,6 +359,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
         return found;
     }
 
+    @Override
     public Object visit(Divide expression, Object data) {
         expression.getExpression1().accept(this, data);
         if (found) return found;
@@ -331,6 +367,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
         return found;
     }
 
+    @Override
     public Object visit(Function expression, Object data) {
         for (Expression parameter : expression.getParameters()) {
             data = parameter.accept(this, data);
@@ -338,10 +375,12 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
         return found;
     }
 
+    @Override
     public Object visit(Literal expression, Object data) {
         return found;
     }
 
+    @Override
     public Object visit(Multiply expression, Object data) {
         expression.getExpression1().accept(this, data);
         if (found) return found;
@@ -349,10 +388,12 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
         return found;
     }
 
+    @Override
     public Object visit(PropertyName expression, Object data) {
         return found;
     }
 
+    @Override
     public Object visit(Subtract expression, Object data) {
         expression.getExpression1().accept(this, data);
         if (found) return found;
@@ -360,58 +401,72 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
         return found;
     }
 
+    @Override
     public Object visit(After after, Object extraData) {
         return visit((BinaryTemporalOperator) after, extraData);
     }
 
+    @Override
     public Object visit(AnyInteracts anyInteracts, Object extraData) {
         return visit((BinaryTemporalOperator) anyInteracts, extraData);
     }
 
+    @Override
     public Object visit(Before before, Object extraData) {
         return visit((BinaryTemporalOperator) before, extraData);
     }
 
+    @Override
     public Object visit(Begins begins, Object extraData) {
         return visit((BinaryTemporalOperator) begins, extraData);
     }
 
+    @Override
     public Object visit(BegunBy begunBy, Object extraData) {
         return visit((BinaryTemporalOperator) begunBy, extraData);
     }
 
+    @Override
     public Object visit(During during, Object extraData) {
         return visit((BinaryTemporalOperator) during, extraData);
     }
 
+    @Override
     public Object visit(EndedBy endedBy, Object extraData) {
         return visit((BinaryTemporalOperator) endedBy, extraData);
     }
 
+    @Override
     public Object visit(Ends ends, Object extraData) {
         return visit((BinaryTemporalOperator) ends, extraData);
     }
 
+    @Override
     public Object visit(Meets meets, Object extraData) {
         return visit((BinaryTemporalOperator) meets, extraData);
     }
 
+    @Override
     public Object visit(MetBy metBy, Object extraData) {
         return visit((BinaryTemporalOperator) metBy, extraData);
     }
 
+    @Override
     public Object visit(OverlappedBy overlappedBy, Object extraData) {
         return visit((BinaryTemporalOperator) overlappedBy, extraData);
     }
 
+    @Override
     public Object visit(TContains contains, Object extraData) {
         return visit((BinaryTemporalOperator) contains, extraData);
     }
 
+    @Override
     public Object visit(TEquals equals, Object extraData) {
         return visit((BinaryTemporalOperator) equals, extraData);
     }
 
+    @Override
     public Object visit(TOverlaps contains, Object extraData) {
         return visit((BinaryTemporalOperator) contains, extraData);
     }

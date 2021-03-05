@@ -30,6 +30,7 @@ class FeatureReaderFeatureIterator implements SimpleFeatureIterator {
         this.reader = reader;
     }
 
+    @Override
     public boolean hasNext() {
         try {
             return reader.hasNext();
@@ -38,6 +39,7 @@ class FeatureReaderFeatureIterator implements SimpleFeatureIterator {
         }
     }
 
+    @Override
     public SimpleFeature next() {
         if (!hasNext()) {
             throw new NoSuchElementException();
@@ -49,6 +51,7 @@ class FeatureReaderFeatureIterator implements SimpleFeatureIterator {
         }
     }
 
+    @Override
     public void close() {
         try {
             reader.close();

@@ -84,6 +84,7 @@ public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
         visit((org.opengis.feature.Feature) feature);
     }
 
+    @Override
     public void visit(org.opengis.feature.Feature feature) {
         /** Visitor function */
         Object result = expr.evaluate(feature);
@@ -124,6 +125,7 @@ public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
         this.median = null;
     }
 
+    @Override
     public CalcResult getResult() {
         if (median != null) {
             // median was overwritten by an optimization
@@ -168,6 +170,7 @@ public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
             return list;
         }
 
+        @Override
         public Object getValue() {
             if (median != null) {
                 return median;
@@ -176,6 +179,7 @@ public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
             }
         }
 
+        @Override
         public boolean isCompatible(CalcResult targetResults) {
             // list each calculation result which can merge with this type of result
             if (targetResults instanceof MedianResult || targetResults == CalcResult.NULL_RESULT)
@@ -188,6 +192,7 @@ public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
             else return false;
         }
 
+        @Override
         public CalcResult merge(CalcResult resultsToAdd) {
             if (!isCompatible(resultsToAdd)) {
                 throw new IllegalArgumentException("Parameter is not a compatible type");

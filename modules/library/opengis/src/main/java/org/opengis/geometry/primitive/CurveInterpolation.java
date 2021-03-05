@@ -150,6 +150,7 @@ public final class CurveInterpolation extends CodeList<CurveInterpolation> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public CurveInterpolation[] family() {
         return values();
     }

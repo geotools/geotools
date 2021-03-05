@@ -89,23 +89,28 @@ public interface Graphic
     public static final Graphic DEFAULT =
             new ConstantGraphic() {
 
+                @Override
                 public List<GraphicalSymbol> graphicalSymbols() {
                     return Collections.emptyList();
                 }
 
+                @Override
                 public Expression getOpacity() {
                     return ConstantExpression.ONE;
                 }
 
+                @Override
                 public Expression getSize() {
                     // default size is unknown, it depends on the target
                     return Expression.NIL;
                 }
 
+                @Override
                 public Displacement getDisplacement() {
                     return Displacement.DEFAULT;
                 }
 
+                @Override
                 public Expression getRotation() {
                     return ConstantExpression.ZERO;
                 }
@@ -120,22 +125,27 @@ public interface Graphic
     public static final Graphic NULL =
             new ConstantGraphic() {
 
+                @Override
                 public List<GraphicalSymbol> graphicalSymbols() {
                     return Collections.emptyList();
                 }
 
+                @Override
                 public Expression getOpacity() {
                     return ConstantExpression.NULL;
                 }
 
+                @Override
                 public Expression getSize() {
                     return ConstantExpression.NULL;
                 }
 
+                @Override
                 public Displacement getDisplacement() {
                     return Displacement.NULL;
                 }
 
+                @Override
                 public Expression getRotation() {
                     return ConstantExpression.NULL;
                 }
@@ -151,6 +161,7 @@ public interface Graphic
      *
      * @return List of ExternalGraphic or Mark in the order provided.
      */
+    @Override
     List<GraphicalSymbol> graphicalSymbols();
 
     /**
@@ -165,9 +176,11 @@ public interface Graphic
      *
      * @return AnchorPoint , if null should use a default point X=0.5 Y=0.5
      */
+    @Override
     public AnchorPoint getAnchorPoint();
 
     /** Anchor point (expressed as an x/y percentage of the graphic size). */
+    @Override
     public void setAnchorPoint(org.opengis.style.AnchorPoint anchorPoint);
 
     /**
@@ -180,9 +193,11 @@ public interface Graphic
      * @return The opacity of the Graphic, where 0.0 is completely transparent and 1.0 is completely
      *     opaque.
      */
+    @Override
     Expression getOpacity();
 
     /** @param opacity opacity between 0 and 1 */
+    @Override
     void setOpacity(Expression opacity);
 
     /**
@@ -197,15 +212,19 @@ public interface Graphic
      * @return The size of the graphic. The default is context specific. Negative values are not
      *     possible.
      */
+    @Override
     Expression getSize();
 
     /** @param size Size of graphic */
+    @Override
     void setSize(Expression size);
 
     /** @return Offset of graphic */
+    @Override
     Displacement getDisplacement();
 
     /** @param offset Amount to offset graphic */
+    @Override
     void setDisplacement(org.opengis.style.Displacement offset);
 
     /**
@@ -215,6 +234,7 @@ public interface Graphic
      * @return The angle of rotation in decimal degrees. Negative values represent counter-clockwise
      *     rotation. The default is 0.0 (no rotation).
      */
+    @Override
     Expression getRotation();
 
     /**
@@ -223,12 +243,15 @@ public interface Graphic
      *
      * @param rotation in decimal degrees
      */
+    @Override
     void setRotation(Expression rotation);
 
+    @Override
     Expression getGap();
 
     void setGap(Expression gap);
 
+    @Override
     Expression getInitialGap();
 
     void setInitialGap(Expression initialGap);
@@ -247,6 +270,7 @@ abstract class ConstantGraphic implements Graphic {
         throw new UnsupportedOperationException("Constant Graphic may not be modified");
     }
 
+    @Override
     public void setDisplacement(org.opengis.style.Displacement offset) {
         cannotModifyConstant();
     }
@@ -267,10 +291,12 @@ abstract class ConstantGraphic implements Graphic {
         cannotModifyConstant();
     }
 
+    @Override
     public void setGap(Expression gap) {
         cannotModifyConstant();
     }
 
+    @Override
     public void setInitialGap(Expression initialGap) {
         cannotModifyConstant();
     }
@@ -283,14 +309,17 @@ abstract class ConstantGraphic implements Graphic {
         cannotModifyConstant();
     }
 
+    @Override
     public void setOpacity(Expression opacity) {
         cannotModifyConstant();
     }
 
+    @Override
     public void setSize(Expression size) {
         cannotModifyConstant();
     }
 
+    @Override
     public void setRotation(Expression rotation) {
         cannotModifyConstant();
     }
@@ -299,30 +328,37 @@ abstract class ConstantGraphic implements Graphic {
         cannotModifyConstant();
     }
 
+    @Override
     public Object accept(org.opengis.style.StyleVisitor visitor, Object data) {
         return visitor.visit((org.opengis.style.GraphicStroke) this, data);
     }
 
+    @Override
     public void accept(org.geotools.styling.StyleVisitor visitor) {
         visitor.visit(this);
     }
 
+    @Override
     public List<GraphicalSymbol> graphicalSymbols() {
         return Collections.emptyList();
     }
 
+    @Override
     public AnchorPoint getAnchorPoint() {
         return org.geotools.styling.AnchorPoint.DEFAULT;
     }
 
+    @Override
     public void setAnchorPoint(org.opengis.style.AnchorPoint anchorPoint) {
         cannotModifyConstant();
     }
 
+    @Override
     public Expression getGap() {
         return ConstantExpression.constant(0);
     }
 
+    @Override
     public Expression getInitialGap() {
         return ConstantExpression.constant(0);
     }

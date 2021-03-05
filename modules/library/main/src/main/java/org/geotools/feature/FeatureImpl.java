@@ -62,10 +62,12 @@ public class FeatureImpl extends ComplexAttributeImpl implements Feature {
         super(properties, type, id);
     }
 
+    @Override
     public FeatureType getType() {
         return (FeatureType) super.getType();
     }
 
+    @Override
     public FeatureId getIdentifier() {
         return (FeatureId) this.id;
     }
@@ -78,6 +80,7 @@ public class FeatureImpl extends ComplexAttributeImpl implements Feature {
      *     a null envelope, make this part of interface? (IanS - by OGC standards, all Feature must
      *     have geom)
      */
+    @Override
     public BoundingBox getBounds() {
 
         ReferencedEnvelope bounds =
@@ -91,6 +94,7 @@ public class FeatureImpl extends ComplexAttributeImpl implements Feature {
         return bounds;
     }
 
+    @Override
     public GeometryAttribute getDefaultGeometryProperty() {
         if (defaultGeometry != null) {
             return defaultGeometry;
@@ -126,6 +130,7 @@ public class FeatureImpl extends ComplexAttributeImpl implements Feature {
     // 1- getValue() shouldn't contain the passed in attribute, but the schema should contain its
     // descriptor
     // 2- this.defaultGeometry = defaultGeometry means getValue() will  not contain the argument
+    @Override
     public void setDefaultGeometryProperty(GeometryAttribute defaultGeometry) {
         if (!getValue().contains(defaultGeometry)) {
             throw new IllegalArgumentException("specified attribute is not one of: " + getValue());

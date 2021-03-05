@@ -67,6 +67,7 @@ final class WarpAdapter extends Warp {
      * Computes the source pixel positions for a given rectangular destination region, subsampled
      * with an integral period.
      */
+    @Override
     public float[] warpSparseRect(
             final int xmin,
             final int ymin,

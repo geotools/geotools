@@ -79,6 +79,7 @@ public class DirectPosition1D extends AbstractDirectPosition implements Serializ
      *
      * @return The coordinate reference system, or {@code null}.
      */
+    @Override
     public final CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return crs;
     }
@@ -99,6 +100,7 @@ public class DirectPosition1D extends AbstractDirectPosition implements Serializ
      *
      * @return The dimensionality of this position.
      */
+    @Override
     public final int getDimension() {
         return 1;
     }
@@ -122,6 +124,7 @@ public class DirectPosition1D extends AbstractDirectPosition implements Serializ
      * @throws IndexOutOfBoundsException if the specified dimension is out of bounds.
      * @todo Provides a more detailled error message.
      */
+    @Override
     public final double getOrdinate(final int dimension) throws IndexOutOfBoundsException {
         if (dimension == 0) {
             return ordinate;
@@ -138,6 +141,7 @@ public class DirectPosition1D extends AbstractDirectPosition implements Serializ
      * @throws IndexOutOfBoundsException if the specified dimension is out of bounds.
      * @todo Provides a more detailled error message.
      */
+    @Override
     public final void setOrdinate(int dimension, double value) throws IndexOutOfBoundsException {
         if (dimension == 0) {
             ordinate = value;

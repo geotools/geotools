@@ -255,6 +255,7 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
     }
 
     /** Returns the dimension of the coordinate system. This is the number of axis. */
+    @Override
     public int getDimension() {
         return axis.length;
     }
@@ -266,6 +267,7 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
      * @return The axis at the specified dimension.
      * @throws IndexOutOfBoundsException if {@code dimension} is out of bounds.
      */
+    @Override
     public CoordinateSystemAxis getAxis(final int dimension) throws IndexOutOfBoundsException {
         return axis[dimension];
     }

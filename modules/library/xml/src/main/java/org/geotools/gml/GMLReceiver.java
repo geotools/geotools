@@ -39,6 +39,7 @@ public class GMLReceiver extends XMLFilterImpl implements GMLHandlerFeature {
      *
      * @param feature the OGC feature
      */
+    @Override
     public void feature(SimpleFeature feature) {
         featureCollection.add(feature);
     }

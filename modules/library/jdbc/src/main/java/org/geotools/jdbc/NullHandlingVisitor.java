@@ -60,26 +60,32 @@ class NullHandlingVisitor extends DuplicatingFilterVisitor {
 
     public NullHandlingVisitor() {}
 
+    @Override
     public Object visit(PropertyIsEqualTo filter, Object extraData) {
         return guardAgainstNulls((BinaryComparisonOperator) super.visit(filter, extraData));
     }
 
+    @Override
     public Object visit(PropertyIsNotEqualTo filter, Object extraData) {
         return guardAgainstNulls((BinaryComparisonOperator) super.visit(filter, extraData));
     }
 
+    @Override
     public Object visit(PropertyIsGreaterThan filter, Object extraData) {
         return guardAgainstNulls((BinaryComparisonOperator) super.visit(filter, extraData));
     }
 
+    @Override
     public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object extraData) {
         return guardAgainstNulls((BinaryComparisonOperator) super.visit(filter, extraData));
     }
 
+    @Override
     public Object visit(PropertyIsLessThan filter, Object extraData) {
         return guardAgainstNulls((BinaryComparisonOperator) super.visit(filter, extraData));
     }
 
+    @Override
     public Object visit(PropertyIsLessThanOrEqualTo filter, Object extraData) {
         return guardAgainstNulls((BinaryComparisonOperator) super.visit(filter, extraData));
     }
@@ -96,6 +102,7 @@ class NullHandlingVisitor extends DuplicatingFilterVisitor {
         return guardAgainstNulls(filter, clone.getExpression());
     }
 
+    @Override
     public Object visit(PropertyIsBetween filter, Object extraData) {
         PropertyIsBetween clone = (PropertyIsBetween) super.visit(filter, extraData);
         Filter f = guardAgainstNulls(clone, clone.getExpression());

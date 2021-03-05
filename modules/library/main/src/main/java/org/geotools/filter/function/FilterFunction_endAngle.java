@@ -36,6 +36,7 @@ public class FilterFunction_endAngle extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         LineString ls;
 

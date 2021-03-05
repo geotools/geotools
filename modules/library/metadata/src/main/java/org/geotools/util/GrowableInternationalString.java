@@ -253,6 +253,7 @@ public class GrowableInternationalString extends AbstractInternationalString
      * @param locale The locale to look for, or {@code null}.
      * @return The string in the specified locale, or in a default locale.
      */
+    @Override
     public synchronized String toString(Locale locale) {
         String text;
         while (locale != null) {

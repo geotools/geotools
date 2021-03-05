@@ -75,6 +75,7 @@ public class AffineTransformBuilder extends ProjectiveTransformBuilder {
      *
      * @return the minimum number of points required by this builder, which is 3.
      */
+    @Override
     public int getMinimumPointCount() {
         return 3;
     }
@@ -91,6 +92,7 @@ public class AffineTransformBuilder extends ProjectiveTransformBuilder {
      *
      * @return Matrix M.
      */
+    @Override
     protected GeneralMatrix getProjectiveMatrix() {
         GeneralMatrix M = new GeneralMatrix(3, 3);
         double[] param = calculateLSM();
@@ -104,6 +106,7 @@ public class AffineTransformBuilder extends ProjectiveTransformBuilder {
         return M;
     }
 
+    @Override
     protected void fillAMatrix() {
 
         super.A = new GeneralMatrix(2 * getSourcePoints().length, 6);

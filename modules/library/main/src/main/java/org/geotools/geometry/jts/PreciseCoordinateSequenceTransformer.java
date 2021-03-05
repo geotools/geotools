@@ -44,6 +44,7 @@ public class PreciseCoordinateSequenceTransformer implements CoordinateSequenceT
      *     org.geotools.geometry.jts.CoordinateSequenceTransformer#transform(org.locationtech.jts.geom.CoordinateSequence,
      *     org.geotools.ct.MathTransform2D)
      */
+    @Override
     public CoordinateSequence transform(CoordinateSequence cs, MathTransform transform)
             throws TransformException {
         //        Coordinate[] scs = cs.toCoordinateArray();

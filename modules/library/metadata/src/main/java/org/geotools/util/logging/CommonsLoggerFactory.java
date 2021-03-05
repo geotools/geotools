@@ -57,6 +57,7 @@ public class CommonsLoggerFactory extends LoggerFactory<Log> {
      * Returns the implementation to use for the logger of the specified name, or {@code null} if
      * the logger would delegates to Java logging anyway.
      */
+    @Override
     protected Log getImplementation(final String name) {
         final Log log = LogFactory.getLog(name);
         if (log != null
@@ -67,6 +68,7 @@ public class CommonsLoggerFactory extends LoggerFactory<Log> {
     }
 
     /** Wraps the specified {@linkplain #getImplementation implementation} in a Java logger. */
+    @Override
     protected Logger wrap(String name, Log implementation) {
         return new CommonsLogger(name, implementation);
     }
@@ -75,6 +77,7 @@ public class CommonsLoggerFactory extends LoggerFactory<Log> {
      * Returns the {@linkplain #getImplementation implementation} wrapped by the specified logger,
      * or {@code null} if none.
      */
+    @Override
     protected Log unwrap(final Logger logger) {
         if (logger instanceof CommonsLogger) {
             return ((CommonsLogger) logger).logger;

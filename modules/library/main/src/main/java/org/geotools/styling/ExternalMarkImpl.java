@@ -48,38 +48,47 @@ public class ExternalMarkImpl implements org.geotools.styling.ExternalMark {
         this.format = format;
     }
 
+    @Override
     public String getFormat() {
         return format;
     }
 
+    @Override
     public Icon getInlineContent() {
         return inlineContent;
     }
 
+    @Override
     public int getMarkIndex() {
         return index;
     }
 
+    @Override
     public OnLineResource getOnlineResource() {
         return onlineResource;
     }
 
+    @Override
     public Object accept(StyleVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
 
+    @Override
     public void setInlineContent(Icon inline) {
         this.inlineContent = inline;
     }
 
+    @Override
     public void setFormat(String mimeType) {
         this.format = mimeType;
     }
 
+    @Override
     public void setMarkIndex(int markIndex) {
         this.index = markIndex;
     }
 
+    @Override
     public void setOnlineResource(OnLineResource resource) {
         this.onlineResource = resource;
     }

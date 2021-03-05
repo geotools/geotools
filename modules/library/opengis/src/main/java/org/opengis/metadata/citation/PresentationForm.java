@@ -133,6 +133,7 @@ public final class PresentationForm extends CodeList<PresentationForm> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public PresentationForm[] family() {
         return values();
     }

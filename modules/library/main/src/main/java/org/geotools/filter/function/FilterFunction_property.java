@@ -59,6 +59,7 @@ public class FilterFunction_property extends FunctionExpressionImpl implements V
         }
     }
 
+    @Override
     public Object evaluate(Object feature) {
         String name = getExpression(0).evaluate(feature, String.class);
 

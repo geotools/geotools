@@ -168,6 +168,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      * @see #getDefaultParameters
      * @see #createParameterizedTransform
      */
+    @Override
     public Set<OperationMethod> getAvailableMethods(final Class<? extends Operation> type) {
         return new LazySet<>(
                 registry.getFactories(
@@ -210,6 +211,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      * @see #createParameterizedTransform
      * @since 2.5
      */
+    @Override
     public OperationMethod getLastMethodUsed() {
         return lastMethod.get();
     }
@@ -290,6 +292,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      * @see #createParameterizedTransform
      * @see org.geotools.referencing.operation.transform.AbstractMathTransform#getParameterValues
      */
+    @Override
     public ParameterValueGroup getDefaultParameters(final String method)
             throws NoSuchIdentifierException {
         return getProvider(method).getParameters().createValue();
@@ -312,6 +315,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      * @throws FactoryException if the object creation failed. This exception is thrown if some
      *     required parameter has not been supplied, or has illegal value.
      */
+    @Override
     public MathTransform createBaseToDerived(
             final CoordinateReferenceSystem baseCRS,
             final ParameterValueGroup parameters,
@@ -429,6 +433,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      * @see #getAvailableMethods
      * @see #getLastUsedMethod
      */
+    @Override
     public MathTransform createParameterizedTransform(ParameterValueGroup parameters)
             throws NoSuchIdentifierException, FactoryException {
         MathTransform transform;
@@ -473,6 +478,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      * @return The affine transform.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public MathTransform createAffineTransform(final Matrix matrix) throws FactoryException {
         lastMethod.remove(); // To be strict, we should set ProjectiveTransform.Provider
         return pool.unique(ProjectiveTransform.create(matrix));
@@ -491,6 +497,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      * @return The concatenated transform.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public MathTransform createConcatenatedTransform(
             final MathTransform transform1, final MathTransform transform2)
             throws FactoryException {
@@ -524,6 +531,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      *
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public MathTransform createPassThroughTransform(
             final int firstAffectedOrdinate,
             final MathTransform subTransform,
@@ -548,6 +556,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      * @param xml Math transform encoded in XML format.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public MathTransform createFromXML(String xml) throws FactoryException {
         throw new FactoryException("Not yet implemented.");
     }
@@ -562,6 +571,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      * @throws FactoryException if the Well-Known Text can't be parsed, or if the math transform
      *     creation failed from some other reason.
      */
+    @Override
     public synchronized MathTransform createFromWKT(final String text) throws FactoryException {
         // Note: while this factory is thread safe, the WKT parser is not.
         //       Since we share a single instance of this parser, we must

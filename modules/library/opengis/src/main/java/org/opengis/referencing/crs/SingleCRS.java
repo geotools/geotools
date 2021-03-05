@@ -47,6 +47,7 @@ public interface SingleCRS extends CoordinateReferenceSystem {
      *
      * @rename Expanded the "CS" abbreviation into "CoordinateSystem".
      */
+    @Override
     @UML(identifier = "usesCS", obligation = MANDATORY, specification = ISO_19111)
     CoordinateSystem getCoordinateSystem();
 

@@ -49,6 +49,7 @@ import org.opengis.filter.expression.Expression;
 public interface LinePlacement extends org.opengis.style.LinePlacement, LabelPlacement {
 
     /** Correct method name violation from GeoAPI. */
+    @Override
     boolean isAligned();
 
     /**
@@ -57,6 +58,7 @@ public interface LinePlacement extends org.opengis.style.LinePlacement, LabelPla
      *
      * @return compute how far from the line the text will be drawn
      */
+    @Override
     Expression getPerpendicularOffset();
 
     /**

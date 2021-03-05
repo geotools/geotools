@@ -607,6 +607,7 @@ public class Filters {
         if (recurse) {
             DuplicatingFilterVisitor remove =
                     new DuplicatingFilterVisitor() {
+                        @Override
                         public Object visit(Or filter, Object extraData) {
                             List<Filter> newChildren = children(filter, targetFilter, extraData);
                             if (newChildren.isEmpty()) {
@@ -620,6 +621,7 @@ public class Filters {
                             }
                         }
 
+                        @Override
                         public Object visit(And filter, Object extraData) {
                             List<Filter> newChildren = children(filter, targetFilter, extraData);
                             if (newChildren.isEmpty()) {
@@ -782,10 +784,12 @@ public class Filters {
             return false;
         }
         class SearchFilterVisitor extends AbstractSearchFilterVisitor {
+            @Override
             protected boolean found(Object data) {
                 return Boolean.TRUE == data;
             }
 
+            @Override
             public Object visit(PropertyName name, Object data) {
                 if (Utilities.equals(name.getPropertyName(), propertyName)) {
                     return true;
@@ -873,6 +877,7 @@ public class Filters {
         if (all) {
             filter.accept(
                     new DefaultFilterVisitor() {
+                        @Override
                         public Object visit(And filter, Object data) {
                             List<Filter> childList = filter.getChildren();
                             if (childList != null) {
@@ -886,6 +891,7 @@ public class Filters {
                             return data;
                         }
 
+                        @Override
                         public Object visit(Or filter, Object data) {
                             List<Filter> childList = filter.getChildren();
                             if (childList != null) {
@@ -899,6 +905,7 @@ public class Filters {
                             return data;
                         }
 
+                        @Override
                         public Object visit(Not filter, Object data) {
                             Filter child = filter.getFilter();
                             if (child != null) {
@@ -957,10 +964,12 @@ public class Filters {
         if (filter == null) return null;
 
         class SearchFilterVisitor extends AbstractSearchFilterVisitor {
+            @Override
             protected boolean found(Object data) {
                 return data != null;
             }
 
+            @Override
             public Object visit(PropertyName name, Object data) {
                 return name.getPropertyName();
             }

@@ -63,6 +63,7 @@ public class GeographicExtentImpl extends MetadataEntity implements GeographicEx
      *
      * @return {@code true} for inclusion, or {@code false} for exclusion.
      */
+    @Override
     public Boolean getInclusion() {
         return inclusion;
     }

@@ -87,6 +87,7 @@ public final class PrecisionType extends CodeList<PrecisionType> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public PrecisionType[] family() {
         return values();
     }

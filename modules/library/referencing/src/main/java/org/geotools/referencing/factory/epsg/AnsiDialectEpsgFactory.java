@@ -188,6 +188,7 @@ public class AnsiDialectEpsgFactory extends AbstractEpsgFactory {
      * @param statement The statement in MS-Access syntax.
      * @return The SQL statement in ANSI syntax.
      */
+    @Override
     protected String adaptSQL(final String statement) {
         final StringBuilder modified = new StringBuilder(statement);
         for (Map.Entry<String, String> stringStringEntry : map.entrySet()) {

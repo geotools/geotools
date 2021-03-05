@@ -59,5 +59,6 @@ public interface FeatureIterator<F extends Feature> extends Closeable {
     public F next() throws java.util.NoSuchElementException;
 
     /** Closes this iterator and releases any system resources associated with it. */
+    @Override
     public void close(); // default implementation here does not throw IOException
 }

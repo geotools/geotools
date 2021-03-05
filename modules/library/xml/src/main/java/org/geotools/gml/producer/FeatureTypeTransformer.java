@@ -182,6 +182,7 @@ public class FeatureTypeTransformer extends TransformerBase {
      *
      * @param handler the content handler to use
      */
+    @Override
     public Translator createTranslator(ContentHandler handler) {
         FeatureTypeTranslator translator = new FeatureTypeTranslator(handler);
 
@@ -211,6 +212,7 @@ public class FeatureTypeTransformer extends TransformerBase {
          * @throws IllegalArgumentException if supplied object is not an instance of FeatureType
          * @see org.geotools.xml.transform.Translator#encode(java.lang.Object)
          */
+        @Override
         public void encode(Object o) throws IllegalArgumentException {
             if (o instanceof SimpleFeatureType) {
                 encode((SimpleFeatureType) o);

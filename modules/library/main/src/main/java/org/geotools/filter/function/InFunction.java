@@ -90,6 +90,7 @@ public class InFunction extends FunctionExpressionImpl {
         return NAME.getArgumentCount();
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Object candidate = getExpression(0).evaluate(feature);
 

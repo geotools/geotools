@@ -34,5 +34,6 @@ public interface BBOX3D extends BBOX {
     /**
      * Return 3D Bounding Box object representing the bounds of the filter @Return Bounds of Filter
      */
+    @Override
     BoundingBox3D getBounds();
 }

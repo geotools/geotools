@@ -107,6 +107,7 @@ public class MathTransformParser extends AbstractParser {
      * @return The object.
      * @throws ParseException if the element can't be parsed.
      */
+    @Override
     protected Object parse(final Element element) throws ParseException {
         return parseMathTransform(element, true);
     }

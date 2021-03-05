@@ -95,6 +95,7 @@ public class DirectPosition3D implements DirectPosition, Serializable, Cloneable
      * Returns always {@code this}, the direct position for this {@linkplain
      * org.opengis.geometry.coordinate.Position position}.
      */
+    @Override
     public DirectPosition getDirectPosition() {
         return this;
     }
@@ -106,6 +107,7 @@ public class DirectPosition3D implements DirectPosition, Serializable, Cloneable
      *
      * @return The coordinate reference system, or {@code null}.
      */
+    @Override
     public final CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return crs;
     }
@@ -126,6 +128,7 @@ public class DirectPosition3D implements DirectPosition, Serializable, Cloneable
      *
      * @return The dimensionality of this position.
      */
+    @Override
     public final int getDimension() {
         return 3;
     }
@@ -136,6 +139,7 @@ public class DirectPosition3D implements DirectPosition, Serializable, Cloneable
      *
      * @return The coordinates
      */
+    @Override
     public double[] getCoordinate() {
         return new double[] {x, y, z};
     }
@@ -147,6 +151,7 @@ public class DirectPosition3D implements DirectPosition, Serializable, Cloneable
      * @return The coordinate at the specified dimension.
      * @throws IndexOutOfBoundsException if the specified dimension is out of bounds.
      */
+    @Override
     public final double getOrdinate(final int dimension) throws IndexOutOfBoundsException {
         switch (dimension) {
             case 0:
@@ -168,6 +173,7 @@ public class DirectPosition3D implements DirectPosition, Serializable, Cloneable
      * @throws IndexOutOfBoundsException if the specified dimension is out of bounds.
      * @todo Provides a more detailed error message.
      */
+    @Override
     public final void setOrdinate(int dimension, double value) throws IndexOutOfBoundsException {
         switch (dimension) {
             case 0:

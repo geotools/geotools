@@ -99,6 +99,7 @@ public class SimpleHttpClient implements HTTPClient {
     }
 
     /** @see org.geotools.data.ows.HTTPClient#get(java.net.URL) */
+    @Override
     public HTTPResponse get(final URL url) throws IOException {
         return this.get(url, null);
     }
@@ -138,6 +139,7 @@ public class SimpleHttpClient implements HTTPClient {
      * @see org.geotools.data.ows.HTTPClient#post(java.net.URL, java.io.InputStream,
      *     java.lang.String)
      */
+    @Override
     public HTTPResponse post(
             final URL url, final InputStream postContent, final String postContentType)
             throws IOException {
@@ -222,6 +224,7 @@ public class SimpleHttpClient implements HTTPClient {
         }
 
         /** @see org.geotools.data.ows.HTTPResponse#dispose() */
+        @Override
         public void dispose() {
             if (responseStream != null) {
                 try {
@@ -251,6 +254,7 @@ public class SimpleHttpClient implements HTTPClient {
         }
 
         /** @see org.geotools.data.ows.HTTPResponse#getResponseStream() */
+        @Override
         public InputStream getResponseStream() throws IOException {
             return responseStream;
         }

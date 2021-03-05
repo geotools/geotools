@@ -74,18 +74,22 @@ public interface Fill extends org.opengis.style.Fill {
                 final Expression BGCOLOR = ConstantExpression.color(new Color(255, 255, 255, 0));
                 final Expression OPACITY = ConstantExpression.ONE;
 
+                @Override
                 public Expression getColor() {
                     return COLOR;
                 }
 
+                @Override
                 public Expression getOpacity() {
                     return OPACITY;
                 }
 
+                @Override
                 public Graphic getGraphicFill() {
                     return Graphic.NULL;
                 }
 
+                @Override
                 public Object accept(StyleVisitor visitor, Object extraData) {
                     cannotModifyConstant();
                     return null;
@@ -98,18 +102,22 @@ public interface Fill extends org.opengis.style.Fill {
                     throw new UnsupportedOperationException("Constant Stroke may not be modified");
                 }
 
+                @Override
                 public Expression getColor() {
                     return ConstantExpression.NULL;
                 }
 
+                @Override
                 public Expression getOpacity() {
                     return ConstantExpression.NULL;
                 }
 
+                @Override
                 public Graphic getGraphicFill() {
                     return Graphic.NULL;
                 }
 
+                @Override
                 public Object accept(StyleVisitor visitor, Object extraData) {
                     cannotModifyConstant();
                     return null;
@@ -126,6 +134,7 @@ public interface Fill extends org.opengis.style.Fill {
      *
      * @return The color of the Fill encoded as a hexidecimal RGB value.
      */
+    @Override
     Expression getColor();
 
     /**
@@ -149,6 +158,7 @@ public interface Fill extends org.opengis.style.Fill {
      * @return The opacity of the fill, where 0.0 is completely transparent and 1.0 is completely
      *     opaque.
      */
+    @Override
     Expression getOpacity();
 
     /**
@@ -166,6 +176,7 @@ public interface Fill extends org.opengis.style.Fill {
      *
      * @return The graphic to use as a stipple fill. If null then no stipple fill should be used.
      */
+    @Override
     Graphic getGraphicFill();
 
     /**
@@ -182,6 +193,7 @@ abstract class ConstantFill implements Fill {
         throw new UnsupportedOperationException("Constant Fill may not be modified");
     }
 
+    @Override
     public void setColor(Expression color) {
         cannotModifyConstant();
     }
@@ -190,18 +202,22 @@ abstract class ConstantFill implements Fill {
         cannotModifyConstant();
     }
 
+    @Override
     public void setOpacity(Expression opacity) {
         cannotModifyConstant();
     }
 
+    @Override
     public void setGraphicFill(org.opengis.style.Graphic graphicFill) {
         cannotModifyConstant();
     }
 
+    @Override
     public void accept(org.geotools.styling.StyleVisitor visitor) {
         cannotModifyConstant();
     }
 
+    @Override
     public Object accept(org.opengis.style.StyleVisitor visitor, Object data) {
         cannotModifyConstant();
         return null;

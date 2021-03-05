@@ -30,6 +30,7 @@ public class BufferTestFunction extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object object) {
 
         SimpleFeatureCollection fc = (SimpleFeatureCollection) object;

@@ -71,6 +71,7 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
      *
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Style)
      */
+    @Override
     public void visit(Style style) {
         for (FeatureTypeStyle featureTypeStyle : style.featureTypeStyles()) {
             if (hasOpacity) {
@@ -86,6 +87,7 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
      *
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Rule)
      */
+    @Override
     public void visit(Rule rule) {
         for (Symbolizer symbolizer : rule.symbolizers()) {
             if (hasOpacity) {
@@ -101,6 +103,7 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
      *
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.FeatureTypeStyle)
      */
+    @Override
     public void visit(FeatureTypeStyle fts) {
         for (Rule rule : fts.rules()) {
             if (hasOpacity) {
@@ -116,6 +119,7 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
      *
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Fill)
      */
+    @Override
     public void visit(Fill fill) {
         checkOpacity(fill.getOpacity());
     }
@@ -164,6 +168,7 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
      *
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Stroke)
      */
+    @Override
     public void visit(Stroke stroke) {
         checkOpacity(stroke.getOpacity());
     }
@@ -173,6 +178,7 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
      *
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Symbolizer)
      */
+    @Override
     public void visit(Symbolizer sym) {
         if (sym instanceof PointSymbolizer) {
             PointSymbolizer ps = (PointSymbolizer) sym;
@@ -200,6 +206,7 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
      *
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PointSymbolizer)
      */
+    @Override
     public void visit(PointSymbolizer ps) {
         if (isAcceptable(ps)) {
             ps.getGraphic().accept(this);
@@ -221,6 +228,7 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
      *
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.LineSymbolizer)
      */
+    @Override
     public void visit(LineSymbolizer line) {
         if (isAcceptable(line)) {
             if (line.getStroke() != null) line.getStroke().accept(this);
@@ -232,6 +240,7 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
      *
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PolygonSymbolizer)
      */
+    @Override
     public void visit(PolygonSymbolizer poly) {
         if (isAcceptable(poly)) {
             if (poly.getStroke() != null) poly.getStroke().accept(this);
@@ -244,6 +253,7 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
      *
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.TextSymbolizer)
      */
+    @Override
     public void visit(TextSymbolizer text) {}
 
     /*
@@ -251,6 +261,7 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
      *
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.RasterSymbolizer)
      */
+    @Override
     public void visit(RasterSymbolizer raster) {
         if (isAcceptable(raster)) {
             if (raster.getOpacity() != null) {
@@ -267,6 +278,7 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
      *
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Graphic)
      */
+    @Override
     public void visit(Graphic gr) {
         // TODO Auto-generated method stub
     }
@@ -276,6 +288,7 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
      *
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Mark)
      */
+    @Override
     public void visit(Mark mark) {
         // TODO Auto-generated method stub
     }
@@ -285,6 +298,7 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
      *
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.ExternalGraphic)
      */
+    @Override
     public void visit(ExternalGraphic exgr) {
         // TODO Auto-generated method stub
     }
@@ -294,6 +308,7 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
      *
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PointPlacement)
      */
+    @Override
     public void visit(PointPlacement pp) {
         // TODO Auto-generated method stub
     }
@@ -303,6 +318,7 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
      *
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.AnchorPoint)
      */
+    @Override
     public void visit(AnchorPoint ap) {
         // TODO Auto-generated method stub
     }
@@ -312,6 +328,7 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
      *
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Displacement)
      */
+    @Override
     public void visit(Displacement dis) {
         // TODO Auto-generated method stub
     }
@@ -321,6 +338,7 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
      *
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.LinePlacement)
      */
+    @Override
     public void visit(LinePlacement lp) {
         // TODO Auto-generated method stub
     }
@@ -330,6 +348,7 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
      *
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Halo)
      */
+    @Override
     public void visit(Halo halo) {
         // TODO Auto-generated method stub
     }
@@ -339,63 +358,75 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
         // TODO Auto-generated method stub
     }
 
+    @Override
     public void visit(StyledLayerDescriptor sld) {
         // TODO Auto-generated method stub
 
     }
 
+    @Override
     public void visit(NamedLayer layer) {
         // TODO Auto-generated method stub
 
     }
 
+    @Override
     public void visit(UserLayer layer) {
         // TODO Auto-generated method stub
 
     }
 
+    @Override
     public void visit(FeatureTypeConstraint ftc) {
         // TODO Auto-generated method stub
 
     }
 
+    @Override
     public void visit(ColorMap cm) {
         for (ColorMapEntry cme : cm.getColorMapEntries()) {
             cme.accept(this);
         }
     }
 
+    @Override
     public void visit(ColorMapEntry cme) {
         if (cme.getOpacity() != null) {
             checkOpacity(cme.getOpacity());
         }
     }
 
+    @Override
     public void visit(ContrastEnhancement contrastEnhancement) {
         // TODO Auto-generated method stub
 
     }
 
+    @Override
     public void visit(ImageOutline outline) {
         // TODO Auto-generated method stub
 
     }
 
+    @Override
     public void visit(ChannelSelection cs) {
         // TODO Auto-generated method stub
 
     }
 
+    @Override
     public void visit(OverlapBehavior ob) {
         // TODO Auto-generated method stub
 
     }
 
+    @Override
     public void visit(SelectedChannelType sct) {
         // TODO Auto-generated method stub
 
     }
 
+    @Override
     public void visit(ShadedRelief sr) {
         // TODO Auto-generated method stub
 

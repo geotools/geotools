@@ -58,6 +58,7 @@ public class SelectedChannelTypeImpl implements SelectedChannelType {
         return name;
     }
 
+    @Override
     public ContrastEnhancement getContrastEnhancement() {
         return contrastEnhancement;
     }
@@ -73,6 +74,7 @@ public class SelectedChannelTypeImpl implements SelectedChannelType {
         this.name = ff.literal(name);
     }
 
+    @Override
     public void setContrastEnhancement(org.opengis.style.ContrastEnhancement enhancement) {
         this.contrastEnhancement = ContrastEnhancementImpl.cast(enhancement);
     }
@@ -88,6 +90,7 @@ public class SelectedChannelTypeImpl implements SelectedChannelType {
         return enhancement;
     }
 
+    @Override
     public Object accept(StyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }

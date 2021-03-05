@@ -141,6 +141,7 @@ public abstract class Mercator extends MapProjection {
      * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates (units in
      * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
      */
+    @Override
     protected Point2D transformNormalized(double x, double y, final Point2D ptDst)
             throws ProjectionException {
         if (abs(y) > (PI / 2 - EPSILON)) {
@@ -159,6 +160,7 @@ public abstract class Mercator extends MapProjection {
      * Transforms the specified (<var>x</var>,<var>y</var>) coordinates and stores the result in
      * {@code ptDst}.
      */
+    @Override
     protected Point2D inverseTransformNormalized(double x, double y, final Point2D ptDst)
             throws ProjectionException {
         y = exp(-y);

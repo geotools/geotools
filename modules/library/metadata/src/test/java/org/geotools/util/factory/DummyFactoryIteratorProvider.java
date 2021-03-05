@@ -41,6 +41,7 @@ public final class DummyFactoryIteratorProvider implements FactoryIteratorProvid
     }
 
     /** Returns an iterator over all {@link DummyFactory}. */
+    @Override
     @SuppressWarnings("unchecked")
     public <T> Iterator<T> iterator(final Class<T> category) {
         assertEquals(DummyFactory.class, category);

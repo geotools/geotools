@@ -88,6 +88,7 @@ import org.opengis.feature.Property;
  */
 public interface ComplexType extends AttributeType {
     /** Override and type narrow to Collection<Property>.class. */
+    @Override
     Class<Collection<Property>> getBinding();
 
     /**

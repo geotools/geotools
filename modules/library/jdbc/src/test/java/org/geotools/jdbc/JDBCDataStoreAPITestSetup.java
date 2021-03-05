@@ -29,6 +29,7 @@ public abstract class JDBCDataStoreAPITestSetup extends JDBCDelegatingTestSetup 
         super(delegate);
     }
 
+    @Override
     protected void setUpData() throws Exception {
         // kill all the data
         try {

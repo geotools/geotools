@@ -51,6 +51,7 @@ public class ColorConverterFactory implements ConverterFactory {
     /** Uses {@link Color#decode(String)} to convert String to Color. */
     public static Converter CONVERT_STRING =
             new Converter() {
+                @Override
                 public <T> T convert(Object source, Class<T> target) throws Exception {
                     String rgba = (String) source;
                     try {
@@ -77,6 +78,7 @@ public class ColorConverterFactory implements ConverterFactory {
     /** Converts provided integer to color, taking care to allow rgb and rgba support. */
     public static Converter CONVERT_NUMBER_TO_COLOR =
             new Converter() {
+                @Override
                 public <T> T convert(Object source, Class<T> target) throws Exception {
                     Number number = (Number) source;
                     // is it an integral number, and small enough to be an integer?
@@ -109,6 +111,7 @@ public class ColorConverterFactory implements ConverterFactory {
     private static Converter CONVERT_COLOR_TO_CSS =
             new Converter() {
 
+                @Override
                 public <T> T convert(Object source, Class<T> target) throws Exception {
                     Color color = (Color) source;
 
@@ -461,6 +464,7 @@ public class ColorConverterFactory implements ConverterFactory {
     public static Converter CONVERT_COLOR_TO_STRING =
             new Converter() {
 
+                @Override
                 public <T> T convert(Object source, Class<T> target) throws Exception {
                     Color color = (Color) source;
 
@@ -495,6 +499,7 @@ public class ColorConverterFactory implements ConverterFactory {
                 }
             };
 
+    @Override
     public Converter createConverter(Class source, Class target, Hints hints) {
         if (target.equals(Color.class)) {
             // string to color

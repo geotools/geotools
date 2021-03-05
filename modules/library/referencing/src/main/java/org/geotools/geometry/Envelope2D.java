@@ -173,6 +173,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
      *
      * @return The coordinate reference system, or {@code null}.
      */
+    @Override
     public final CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return crs;
     }
@@ -188,6 +189,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
     }
 
     /** Returns the number of dimensions. */
+    @Override
     public final int getDimension() {
         return 2;
     }
@@ -200,6 +202,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
      * @todo Change the return type to {@link DirectPosition2D} when we will be allowed to compile
      *     for J2SE 1.5.
      */
+    @Override
     public DirectPosition getLowerCorner() {
         return new DirectPosition2D(crs, getMinX(), getMinY());
     }
@@ -212,6 +215,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
      * @todo Change the return type to {@link DirectPosition2D} when we will be allowed to compile
      *     for J2SE 1.5.
      */
+    @Override
     public DirectPosition getUpperCorner() {
         return new DirectPosition2D(crs, getMaxX(), getMaxY());
     }
@@ -229,6 +233,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
      * @return The minimal ordinate value along the given dimension.
      * @throws IndexOutOfBoundsException If the given index is out of bounds.
      */
+    @Override
     public final double getMinimum(final int dimension) throws IndexOutOfBoundsException {
         switch (dimension) {
             case 0:
@@ -247,6 +252,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
      * @return The maximal ordinate value along the given dimension.
      * @throws IndexOutOfBoundsException If the given index is out of bounds.
      */
+    @Override
     public final double getMaximum(final int dimension) throws IndexOutOfBoundsException {
         switch (dimension) {
             case 0:
@@ -267,6 +273,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
      * @return The mid ordinate value along the given dimension.
      * @throws IndexOutOfBoundsException If the given index is out of bounds.
      */
+    @Override
     public final double getMedian(final int dimension) throws IndexOutOfBoundsException {
         switch (dimension) {
             case 0:
@@ -287,6 +294,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
      * @return The difference along maximal and minimal ordinates in the given dimension.
      * @throws IndexOutOfBoundsException If the given index is out of bounds.
      */
+    @Override
     public final double getSpan(final int dimension) throws IndexOutOfBoundsException {
         switch (dimension) {
             case 0:
@@ -378,6 +386,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
     }
 
     // BoundingBox
+    @Override
     public void setBounds(BoundingBox bounds) {
         this.crs = bounds.getCoordinateReferenceSystem();
         this.x = bounds.getMinX();
@@ -386,6 +395,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
         this.height = bounds.getHeight();
     }
 
+    @Override
     public void include(BoundingBox bounds) {
         if (crs == null) {
             this.crs = bounds.getCoordinateReferenceSystem();
@@ -415,6 +425,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
         }
     }
 
+    @Override
     public void include(double x, double y) {
         if (isNull()) {
             this.x = x;
@@ -450,6 +461,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
      * @param bounds The bounds to test for intersection.
      * @return {@code true} if the two bounds intersect.
      */
+    @Override
     public boolean intersects(BoundingBox bounds) {
         ensureCompatibleReferenceSystem(bounds);
         if (isNull() || bounds.isEmpty()) {
@@ -462,6 +474,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
                 || bounds.getMaxY() < this.getMinY());
     }
 
+    @Override
     public boolean contains(BoundingBox bounds) {
         ensureCompatibleReferenceSystem(bounds);
         if (isEmpty() || bounds.isEmpty()) {
@@ -473,6 +486,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
                 && bounds.getMaxY() <= this.getMaxY();
     }
 
+    @Override
     public boolean contains(DirectPosition location) {
         ensureCompatibleReferenceSystem(location);
         if (isEmpty()) {
@@ -484,6 +498,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
                 && location.getOrdinate(1) <= getMaxY();
     }
 
+    @Override
     public BoundingBox toBounds(CoordinateReferenceSystem targetCRS) throws TransformException {
         Envelope transformed = new GeneralEnvelope((BoundingBox) this);
         transformed = CRS.transform(transformed, targetCRS);

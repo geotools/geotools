@@ -33,10 +33,12 @@ import org.opengis.referencing.datum.TemporalDatum;
 @UML(identifier = "SC_TemporalCRS", specification = ISO_19111)
 public interface TemporalCRS extends SingleCRS {
     /** Returns the coordinate system, which must be temporal. */
+    @Override
     @UML(identifier = "usesCS", obligation = MANDATORY, specification = ISO_19111)
     TimeCS getCoordinateSystem();
 
     /** Returns the datum, which must be temporal. */
+    @Override
     @UML(identifier = "usesDatum", obligation = MANDATORY, specification = ISO_19111)
     TemporalDatum getDatum();
 }

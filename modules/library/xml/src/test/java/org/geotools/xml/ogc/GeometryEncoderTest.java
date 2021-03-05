@@ -79,44 +79,56 @@ public class GeometryEncoderTest {
         PrintHandler output =
                 new PrintHandler() {
 
+                    @Override
                     public void characters(char[] arg0, int arg1, int arg2) throws IOException {
                         writer.write(arg0, arg1, arg2);
                     }
 
+                    @Override
                     public void characters(String s) throws IOException {
                         writer.write(s);
                     }
 
+                    @Override
                     public void element(URI namespaceURI, String localName, Attributes attributes)
                             throws IOException {}
 
+                    @Override
                     public void endDocument() throws IOException {}
 
+                    @Override
                     public void endElement(URI namespaceURI, String localName) throws IOException {
                         writer.write("</" + localName + ">");
                     }
 
+                    @Override
                     public Element findElement(Object value) {
                         return null;
                     }
 
+                    @Override
                     public Element findElement(String name) {
                         return null;
                     }
 
+                    @Override
                     public Schema getDocumentSchema() {
                         return null;
                     }
 
+                    @Override
                     public Object getHint(Object key) {
                         return null;
                     }
 
+                    @Override
                     public void ignorableWhitespace(char[] arg0, int arg1, int arg2)
                             throws IOException {}
 
+                    @Override
                     public void startDocument() throws IOException {}
 
+                    @Override
                     public void startElement(
                             URI namespaceURI, String localName, Attributes attributes)
                             throws IOException {

@@ -67,6 +67,7 @@ public class ReprojectFeatureResultsTest {
 
         visitorCollection =
                 new ListFeatureCollection(ft) {
+                    @Override
                     public void accepts(FeatureVisitor visitor, ProgressListener progress)
                             throws java.io.IOException {
                         lastVisitor = visitor;

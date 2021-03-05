@@ -62,6 +62,7 @@ class WrappingCoordinateFilter implements GeometryComponentFilter {
         this.ordinateIdx = wrapOnY ? 1 : 0;
     }
 
+    @Override
     public void filter(Geometry geom) {
         // this filter will receive either points, which we don't consider,
         // or lines, that we need to wrap

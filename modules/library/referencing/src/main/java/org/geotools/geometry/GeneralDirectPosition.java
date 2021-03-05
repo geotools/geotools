@@ -149,6 +149,7 @@ public class GeneralDirectPosition extends AbstractDirectPosition
      *
      * @return The coordinate reference system, or {@code null}.
      */
+    @Override
     public final CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return crs;
     }
@@ -173,6 +174,7 @@ public class GeneralDirectPosition extends AbstractDirectPosition
      *
      * @return The dimensionality of this position.
      */
+    @Override
     public final int getDimension() {
         return ordinates.length;
     }
@@ -195,6 +197,7 @@ public class GeneralDirectPosition extends AbstractDirectPosition
      * @return The coordinate at the specified dimension.
      * @throws IndexOutOfBoundsException if the specified dimension is out of bounds.
      */
+    @Override
     public final double getOrdinate(int dimension) throws IndexOutOfBoundsException {
         return ordinates[dimension];
     }
@@ -206,6 +209,7 @@ public class GeneralDirectPosition extends AbstractDirectPosition
      * @param value the ordinate value of interest.
      * @throws IndexOutOfBoundsException if the specified dimension is out of bounds.
      */
+    @Override
     public final void setOrdinate(int dimension, double value) throws IndexOutOfBoundsException {
         ordinates[dimension] = value;
     }

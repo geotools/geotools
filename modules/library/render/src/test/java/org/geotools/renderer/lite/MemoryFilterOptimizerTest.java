@@ -55,6 +55,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
     private PropertyIsEqualTo equalId;
     private And and;
 
+    @Override
     public void init() throws Exception {
         super.init();
 

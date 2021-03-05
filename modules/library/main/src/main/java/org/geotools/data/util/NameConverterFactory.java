@@ -29,10 +29,12 @@ import org.opengis.feature.type.Name;
  */
 public class NameConverterFactory implements ConverterFactory {
 
+    @Override
     public Converter createConverter(Class source, Class target, Hints hints) {
         if (target.equals(String.class) && source.equals(Name.class)) {
             return new Converter() {
 
+                @Override
                 public <T> T convert(Object source, Class<T> target) throws Exception {
                     Name name = (Name) source;
                     return target.cast(name.getURI());

@@ -34,8 +34,10 @@ public interface All extends ElementGrouping {
     public String getId();
 
     /** @see org.geotools.xml.xsi.ElementGrouping#getMaxOccurs() */
+    @Override
     public int getMaxOccurs();
 
     /** @see org.geotools.xml.xsi.ElementGrouping#getMinOccurs() */
+    @Override
     public int getMinOccurs();
 }

@@ -39,6 +39,7 @@ public class FilterFunction_strReplace extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         String arg0;
         String arg1;

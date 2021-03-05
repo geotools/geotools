@@ -49,16 +49,19 @@ public class DocumentHandler extends XMLElementHandler {
     }
 
     /** @see org.geotools.xml.XMLElementHandler#getElement() */
+    @Override
     public Element getElement() {
         return null;
     }
 
     /** @see org.geotools.xml.XMLElementHandler#endElement(java.lang.String, java.lang.String) */
+    @Override
     public void endElement(URI namespaceURI, String localName, Map<String, Object> hints) {
         // do nothing
     }
 
     /** @see org.geotools.xml.XMLElementHandler#getHandler(java.lang.String, java.lang.String) */
+    @Override
     public XMLElementHandler getHandler(
             URI namespaceURI, String localName, Map<String, Object> hints) throws SAXException {
         if (xeh != null) {
@@ -79,16 +82,19 @@ public class DocumentHandler extends XMLElementHandler {
      * @see org.geotools.xml.XMLElementHandler#startElement(java.lang.String, java.lang.String,
      *     org.xml.sax.Attributes)
      */
+    @Override
     public void startElement(URI namespaceURI, String localName, Attributes attr) {
         // do nothing
     }
 
     /** @see org.geotools.xml.XMLElementHandler#getValue() */
+    @Override
     public Object getValue() throws SAXException {
         return (xeh == null) ? null : xeh.getValue();
     }
 
     /** @see org.geotools.xml.XMLElementHandler#getName() */
+    @Override
     public String getName() {
         return "";
     }

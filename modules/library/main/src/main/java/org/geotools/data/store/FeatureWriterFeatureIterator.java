@@ -45,6 +45,7 @@ final class FeatureWriterFeatureIterator implements SimpleFeatureIterator {
         this.writer = writer;
     }
 
+    @Override
     public boolean hasNext() {
         try {
             if (writer == null) {
@@ -65,6 +66,7 @@ final class FeatureWriterFeatureIterator implements SimpleFeatureIterator {
         }
     }
 
+    @Override
     public SimpleFeature next() {
         if (writer == null) {
             throw new NoSuchElementException("Iterator has been closed");
@@ -88,6 +90,7 @@ final class FeatureWriterFeatureIterator implements SimpleFeatureIterator {
         }
     }
 
+    @Override
     public void close() {
         if (writer != null) {
             try {

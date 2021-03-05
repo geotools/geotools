@@ -35,6 +35,7 @@ public class EmptyFeatureWriter implements FeatureWriter<SimpleFeatureType, Simp
     }
 
     /** @see org.geotools.data.FeatureWriter#getFeatureType() */
+    @Override
     public SimpleFeatureType getFeatureType() {
         return featureType;
     }
@@ -45,16 +46,19 @@ public class EmptyFeatureWriter implements FeatureWriter<SimpleFeatureType, Simp
      * @return Does not return
      * @see org.geotools.data.FeatureWriter#next()
      */
+    @Override
     public SimpleFeature next() throws NoSuchElementException {
         throw new NoSuchElementException("FeatureWriter is empty");
     }
 
     /** @see org.geotools.data.FeatureWriter#remove() */
+    @Override
     public void remove() throws IOException {
         throw new IOException("FeatureWriter is empty and does not support remove()");
     }
 
     /** @see org.geotools.data.FeatureWriter#remove() */
+    @Override
     public void write() throws IOException {
         throw new IOException("FeatureWriter is empty and does not support write()");
     }
@@ -65,6 +69,7 @@ public class EmptyFeatureWriter implements FeatureWriter<SimpleFeatureType, Simp
      * @return <code>false</code>
      * @see org.geotools.data.FeatureWriter#hasNext()
      */
+    @Override
     public boolean hasNext() {
         return false;
     }
@@ -74,6 +79,7 @@ public class EmptyFeatureWriter implements FeatureWriter<SimpleFeatureType, Simp
      *
      * @see org.geotools.data.FeatureWriter#close()
      */
+    @Override
     public void close() {
         featureType = null;
     }

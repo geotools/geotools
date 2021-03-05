@@ -69,6 +69,7 @@ public interface Halo extends org.opengis.style.Halo {
      *
      * @return fill (color) of the halo
      */
+    @Override
     Fill getFill();
 
     /** The fill (color) of the halo */

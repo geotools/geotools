@@ -338,6 +338,7 @@ public final class ECQLTest {
 
         FilterFactory ff =
                 new FilterFactoryImpl() {
+                    @Override
                     public PropertyName property(String propName) {
                         called[0] = true;
 
@@ -405,6 +406,7 @@ public final class ECQLTest {
 
         FilterFactory ff =
                 new FilterFactoryImpl() {
+                    @Override
                     public PropertyName property(String propName) {
                         called[0] = true;
 

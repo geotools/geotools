@@ -72,6 +72,7 @@ public interface Symbolizer extends org.opengis.style.Symbolizer {
      */
     void setUnitOfMeasure(Unit<Length> uom);
 
+    @Override
     public Description getDescription();
 
     /**
@@ -96,6 +97,7 @@ public interface Symbolizer extends org.opengis.style.Symbolizer {
      * PropertyName. In case the geometry expression is null, and in the case the geometry
      * expression is not a PropertyName, this method will return null.
      */
+    @Override
     String getGeometryPropertyName();
 
     /**

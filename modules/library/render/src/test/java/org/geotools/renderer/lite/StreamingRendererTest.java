@@ -381,11 +381,13 @@ public class StreamingRendererTest {
         sr.setMapContent(mc);
         sr.addRenderListener(
                 new RenderListener() {
+                    @Override
                     public void featureRenderer(SimpleFeature feature) {
                         assertTrue(commandsCount.get() > 0);
                         features++;
                     }
 
+                    @Override
                     public void errorOccurred(Exception e) {
                         errors++;
                     }
@@ -432,10 +434,12 @@ public class StreamingRendererTest {
         sr.setMapContent(mapContext);
         sr.addRenderListener(
                 new RenderListener() {
+                    @Override
                     public void featureRenderer(SimpleFeature feature) {
                         features++;
                     }
 
+                    @Override
                     public void errorOccurred(Exception e) {
                         errors++;
 
@@ -495,6 +499,7 @@ public class StreamingRendererTest {
                 new StreamingRenderer() {
 
                     // makes it easy to reproduce the deadlock, just two features are sufficient
+                    @Override
                     protected RenderingBlockingQueue getRequestsQueue() {
                         return new RenderingBlockingQueue(1);
                     }
@@ -503,10 +508,12 @@ public class StreamingRendererTest {
         final List<Exception> exceptions = new ArrayList<>();
         sr.addRenderListener(
                 new RenderListener() {
+                    @Override
                     public void featureRenderer(SimpleFeature feature) {
                         features++;
                     }
 
+                    @Override
                     public void errorOccurred(Exception e) {
                         errors++;
                         exceptions.add(e);
@@ -769,8 +776,10 @@ public class StreamingRendererTest {
                         CRS.decode("EPSG:3857"));
         sr.addRenderListener(
                 new RenderListener() {
+                    @Override
                     public void featureRenderer(SimpleFeature feature) {}
 
+                    @Override
                     public void errorOccurred(Exception e) {
                         errors++;
                     }
@@ -920,10 +929,12 @@ public class StreamingRendererTest {
         sr.setRendererHints(hints);
         sr.addRenderListener(
                 new RenderListener() {
+                    @Override
                     public void featureRenderer(SimpleFeature feature) {
                         features++;
                     }
 
+                    @Override
                     public void errorOccurred(Exception e) {
                         errors++;
                     }

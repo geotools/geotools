@@ -1395,6 +1395,7 @@ public class DocumentWriter {
          * @param localName String
          * @param attributes Attributes
          */
+        @Override
         public void startElement(URI namespaceURI, String localName, Attributes attributes)
                 throws IOException {
             String prefix = prefixMappings.get(namespaceURI);
@@ -1452,6 +1453,7 @@ public class DocumentWriter {
          * @param localName String
          * @param attributes Attributes
          */
+        @Override
         public void element(URI namespaceURI, String localName, Attributes attributes)
                 throws IOException {
             String prefix = prefixMappings.get(namespaceURI);
@@ -1508,6 +1510,7 @@ public class DocumentWriter {
          * @param namespaceURI URI
          * @param localName String
          */
+        @Override
         public void endElement(URI namespaceURI, String localName) throws IOException {
             String prefix = prefixMappings.get(namespaceURI);
 
@@ -1544,6 +1547,7 @@ public class DocumentWriter {
          * @see PrintHandler#characters(char[], int, int)
          * @see Writer#write(char[], int, int)
          */
+        @Override
         public void characters(char[] arg0, int arg1, int arg2) throws IOException {
             writer.write(arg0, arg1, arg2);
         }
@@ -1553,6 +1557,7 @@ public class DocumentWriter {
          * @see Writer#write(java.lang.String)
          * @param s String
          */
+        @Override
         public void characters(String s) throws IOException {
             writer.write(s);
         }
@@ -1561,11 +1566,13 @@ public class DocumentWriter {
          * @see org.xml.sax.ContentHandler#ignorableWhitespace(char[], int, int)
          * @see Writer#write(char[], int, int)
          */
+        @Override
         public void ignorableWhitespace(char[] arg0, int arg1, int arg2) throws IOException {
             writer.write(arg0, arg1, arg2);
         }
 
         /** @see PrintHandler#startDocument() */
+        @Override
         public void startDocument() throws IOException {
             writer.write("<?xml version=\"1.0\" encoding=\"" + encoding + "\"?>");
 
@@ -1574,6 +1581,7 @@ public class DocumentWriter {
         }
 
         /** @see PrintHandler#endDocument() */
+        @Override
         public void endDocument() throws IOException {
             // TODO format here
             writer.write("\n");
@@ -1581,16 +1589,19 @@ public class DocumentWriter {
         }
 
         /** @see PrintHandler#getDocumentSchema() */
+        @Override
         public Schema getDocumentSchema() {
             return schema;
         }
 
         /** @see PrintHandler#getHint(Object) */
+        @Override
         public Object getHint(Object key) {
             return hints.get(key);
         }
 
         /** @see PrintHandler#findElement(Object) */
+        @Override
         public Element findElement(Object value) {
             Schema[] searchOrder1;
 
@@ -1618,6 +1629,7 @@ public class DocumentWriter {
         }
 
         /** @see PrintHandler#findElement(String) */
+        @Override
         public Element findElement(String name) {
             Schema[] searchOrder1;
 

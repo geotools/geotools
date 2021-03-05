@@ -63,6 +63,7 @@ public class CylindricalEqualArea extends MapProjection {
     }
 
     /** {@inheritDoc} */
+    @Override
     public ParameterDescriptorGroup getParameterDescriptors() {
         return Provider.PARAMETERS;
     }
@@ -79,6 +80,7 @@ public class CylindricalEqualArea extends MapProjection {
      * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates (units in
      * radians) and stores the result in {@code xy} (linear distance on a unit sphere).
      */
+    @Override
     protected Point2D transformNormalized(double lam, double phi, final Point2D xy)
             throws ProjectionException {
         double x, y;
@@ -101,6 +103,7 @@ public class CylindricalEqualArea extends MapProjection {
      * Transforms the specified (<var>x</var>,<var>y</var>) coordinates and stores the result in
      * {@code lp}.
      */
+    @Override
     protected Point2D inverseTransformNormalized(double x, double y, final Point2D lp)
             throws ProjectionException {
         double lam, phi;
@@ -144,6 +147,7 @@ public class CylindricalEqualArea extends MapProjection {
             super(PARAMETERS);
         }
 
+        @Override
         protected MathTransform createMathTransform(final ParameterValueGroup parameters)
                 throws ParameterNotFoundException, FactoryException {
             return new CylindricalEqualArea(parameters);
@@ -183,6 +187,7 @@ public class CylindricalEqualArea extends MapProjection {
             super(PARAMETERS);
         }
 
+        @Override
         protected MathTransform createMathTransform(final ParameterValueGroup parameters)
                 throws ParameterNotFoundException, FactoryException {
             parameters.parameter("standard_parallel_1").setValue(30);
@@ -205,6 +210,7 @@ public class CylindricalEqualArea extends MapProjection {
             super(PARAMETERS);
         }
 
+        @Override
         protected MathTransform createMathTransform(final ParameterValueGroup parameters)
                 throws ParameterNotFoundException, FactoryException {
             return new CylindricalEqualArea(parameters);

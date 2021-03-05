@@ -97,6 +97,7 @@ public final class TransformedShape extends AffineTransform implements Shape {
     }
 
     /** Tests if the specified coordinates are inside the boundary of the <code>Shape</code>. */
+    @Override
     public boolean contains(double x, double y) {
         point.x = x;
         point.y = y;
@@ -104,6 +105,7 @@ public final class TransformedShape extends AffineTransform implements Shape {
     }
 
     /** Tests if a specified {@link Point2D} is inside the boundary of the <code>Shape</code>. */
+    @Override
     public boolean contains(final Point2D p) {
         try {
             return shape.contains(inverseTransform(p, point));
@@ -117,6 +119,7 @@ public final class TransformedShape extends AffineTransform implements Shape {
      * Tests if the interior of the <code>Shape</code> entirely contains the specified rectangular
      * area.
      */
+    @Override
     public boolean contains(double x, double y, double width, double height) {
         rectangle.x = x;
         rectangle.y = y;
@@ -129,6 +132,7 @@ public final class TransformedShape extends AffineTransform implements Shape {
      * Tests if the interior of the <code>Shape</code> entirely contains the specified <code>
      * Rectangle2D</code>. This method might conservatively return <code>false</code>.
      */
+    @Override
     public boolean contains(final Rectangle2D r) {
         try {
             return shape.contains(XAffineTransform.inverseTransform(this, r, rectangle));
@@ -142,6 +146,7 @@ public final class TransformedShape extends AffineTransform implements Shape {
      * Tests if the interior of the <code>Shape</code> intersects the interior of a specified
      * rectangular area.
      */
+    @Override
     public boolean intersects(double x, double y, double width, double height) {
         rectangle.x = x;
         rectangle.y = y;
@@ -154,6 +159,7 @@ public final class TransformedShape extends AffineTransform implements Shape {
      * Tests if the interior of the <code>Shape</code> intersects the interior of a specified <code>
      * Rectangle2D</code>. This method might conservatively return <code>true</code>.
      */
+    @Override
     public boolean intersects(final Rectangle2D r) {
         try {
             return shape.intersects(XAffineTransform.inverseTransform(this, r, rectangle));
@@ -164,6 +170,7 @@ public final class TransformedShape extends AffineTransform implements Shape {
     }
 
     /** Returns an integer {@link Rectangle} that completely encloses the <code>Shape</code>. */
+    @Override
     public Rectangle getBounds() {
         Rectangle2D rect = getBounds2D();
         int minx = (int) Math.floor(rect.getMinX());
@@ -180,6 +187,7 @@ public final class TransformedShape extends AffineTransform implements Shape {
      * @todo REVISIT: tranform currently results in a new rectangle being created, is this a memory
      *     overhead?
      */
+    @Override
     public Rectangle2D getBounds2D() {
         final Rectangle2D rect = shape.getBounds2D();
         return XAffineTransform.transform(this, rect, null);
@@ -191,6 +199,7 @@ public final class TransformedShape extends AffineTransform implements Shape {
      * Returns an iterator object that iterates along the <code>Shape</code> boundary and provides
      * access to the geometry of the <code>Shape</code> outline.
      */
+    @Override
     public PathIterator getPathIterator(AffineTransform at) {
         if (!isIdentity()) {
             if (at == null || at.isIdentity()) {
@@ -206,6 +215,7 @@ public final class TransformedShape extends AffineTransform implements Shape {
      * Returns an iterator object that iterates along the <code>Shape</code> boundary and provides
      * access to a flattened view of the <code>Shape</code> outline geometry.
      */
+    @Override
     public PathIterator getPathIterator(AffineTransform at, final double flatness) {
         if (!isIdentity()) {
             if (at == null || at.isIdentity()) {

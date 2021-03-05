@@ -25,22 +25,27 @@ public class EmptyIterator extends AbstractLiteIterator {
 
     public static final EmptyIterator INSTANCE = new EmptyIterator();
 
+    @Override
     public int getWindingRule() {
         return WIND_NON_ZERO;
     }
 
+    @Override
     public boolean isDone() {
         return true;
     }
 
+    @Override
     public void next() {
         throw new IllegalStateException();
     }
 
+    @Override
     public int currentSegment(double[] coords) {
         return 0;
     }
 
+    @Override
     public int currentSegment(float[] coords) {
         return 0;
     }

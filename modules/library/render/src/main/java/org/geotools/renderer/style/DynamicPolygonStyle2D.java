@@ -41,6 +41,7 @@ public class DynamicPolygonStyle2D extends org.geotools.renderer.style.PolygonSt
     }
 
     /** Computes and returns the fill based on the feature and the symbolizer */
+    @Override
     public java.awt.Paint getFill() {
         Fill fill = ps.getFill();
 
@@ -62,6 +63,7 @@ public class DynamicPolygonStyle2D extends org.geotools.renderer.style.PolygonSt
     }
 
     /** Computes and returns the fill composite based on the feature and the symbolizer */
+    @Override
     public Composite getFillComposite() {
         Fill fill = ps.getFill();
 

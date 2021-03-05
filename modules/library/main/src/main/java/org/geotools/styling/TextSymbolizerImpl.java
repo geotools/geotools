@@ -72,6 +72,7 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
      *
      * @return The fill to be used.
      */
+    @Override
     public FillImpl getFill() {
         return fill;
     }
@@ -81,6 +82,7 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
      *
      * @param fill New value of property fill.
      */
+    @Override
     public void setFill(org.opengis.style.Fill fill) {
         if (this.fill == fill) {
             return;
@@ -88,14 +90,17 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
         this.fill = FillImpl.cast(fill);
     }
 
+    @Override
     public List<Font> fonts() {
         return fonts;
     }
 
+    @Override
     public Font getFont() {
         return fonts.isEmpty() ? null : fonts.get(0);
     }
 
+    @Override
     public void setFont(org.opengis.style.Font font) {
         if (this.fonts.size() == 1 && this.fonts.get(0) == font) {
             return; // no change
@@ -122,6 +127,7 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
      * A halo fills an extended area outside the glyphs of a rendered text label to make the label
      * easier to read over a background.
      */
+    @Override
     public HaloImpl getHalo() {
         return halo;
     }
@@ -131,6 +137,7 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
      *
      * @param halo New value of property halo.
      */
+    @Override
     public void setHalo(org.opengis.style.Halo halo) {
         if (this.halo == halo) {
             return;
@@ -143,6 +150,7 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
      *
      * @return Label expression.
      */
+    @Override
     public Expression getLabel() {
         return label;
     }
@@ -152,6 +160,7 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
      *
      * @param label New value of property label.
      */
+    @Override
     public void setLabel(Expression label) {
         this.label = label;
     }
@@ -162,6 +171,7 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
      *
      * @return Value of property labelPlacement.
      */
+    @Override
     public LabelPlacement getLabelPlacement() {
         return placement;
     }
@@ -171,6 +181,7 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
      *
      * @param labelPlacement New value of property labelPlacement.
      */
+    @Override
     public void setLabelPlacement(org.opengis.style.LabelPlacement labelPlacement) {
         if (this.placement == labelPlacement) {
             return;
@@ -187,10 +198,12 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
      *
      * @param visitor The StyleVisitor to accept.
      */
+    @Override
     public Object accept(StyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
+    @Override
     public void accept(org.geotools.styling.StyleVisitor visitor) {
         visitor.visit(this);
     }
@@ -200,6 +213,7 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
      *
      * @return The deep copy clone.
      */
+    @Override
     public Object clone() {
         try {
             return super.clone();
@@ -208,6 +222,7 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
         }
     }
 
+    @Override
     public void setPriority(Expression priority) {
         if (this.priority == priority) {
             return;
@@ -215,14 +230,17 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
         this.priority = priority;
     }
 
+    @Override
     public Expression getPriority() {
         return priority;
     }
 
+    @Override
     public Graphic getGraphic() {
         return graphic;
     }
 
+    @Override
     public void setGraphic(Graphic graphic) {
         if (this.graphic == graphic) {
             return;
@@ -230,6 +248,7 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
         this.graphic = graphic;
     }
 
+    @Override
     public String toString() {
         StringBuffer buf = new StringBuffer();
         buf.append("<TextSymbolizerImp property=");
@@ -241,26 +260,32 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
         return buf.toString();
     }
 
+    @Override
     public Expression getSnippet() {
         return abxtract;
     }
 
+    @Override
     public void setSnippet(Expression abxtract) {
         this.abxtract = abxtract;
     }
 
+    @Override
     public Expression getFeatureDescription() {
         return description;
     }
 
+    @Override
     public void setFeatureDescription(Expression description) {
         this.description = description;
     }
 
+    @Override
     public OtherText getOtherText() {
         return otherText;
     }
 
+    @Override
     public void setOtherText(OtherText otherText) {
         this.otherText = otherText;
     }

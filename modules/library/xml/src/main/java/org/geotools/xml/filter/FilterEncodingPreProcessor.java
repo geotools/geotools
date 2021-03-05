@@ -611,6 +611,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
             filter = f;
         }
 
+        @Override
         public String toString() {
             return filter + ":" + fids;
         }
@@ -658,11 +659,13 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
         }
     }
 
+    @Override
     public Object visit(And filter, Object extraData) {
         visitLogicFilter(filter);
         return extraData;
     }
 
+    @Override
     public Object visit(Id filter, Object extraData) {
         Data data = new Data();
         data.fids.addAll(filter.getIDs());
@@ -671,15 +674,18 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
         return extraData;
     }
 
+    @Override
     public Object visitNullFilter(Object extraData) {
         return extraData;
     }
 
+    @Override
     public Object visit(IncludeFilter filter, Object extraData) {
         visit(filter);
         return extraData;
     }
 
+    @Override
     public Object visit(ExcludeFilter filter, Object extraData) {
         visit(filter);
         return extraData;
@@ -687,117 +693,140 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
     //
     // Filter Visitor Methods
     //
+    @Override
     public Object visit(Not filter, Object extraData) {
         visitLogicFilter(filter);
         return extraData;
     }
 
+    @Override
     public Object visit(Or filter, Object extraData) {
         visitLogicFilter(filter);
         return extraData;
     }
 
+    @Override
     public Object visit(PropertyIsBetween filter, Object extraData) {
         current.push(new Data(filter));
         visitCompareFilter(filter);
         return extraData;
     }
 
+    @Override
     public Object visit(PropertyIsEqualTo filter, Object extraData) {
         visitCompareFilter(filter);
         return extraData;
     }
 
+    @Override
     public Object visit(PropertyIsNotEqualTo filter, Object extraData) {
         visitCompareFilter(filter);
         return extraData;
     }
 
+    @Override
     public Object visit(PropertyIsGreaterThan filter, Object extraData) {
         visitCompareFilter(filter);
         return extraData;
     }
 
+    @Override
     public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object extraData) {
         visitCompareFilter(filter);
         return extraData;
     }
 
+    @Override
     public Object visit(PropertyIsLessThan filter, Object extraData) {
         visitCompareFilter(filter);
         return extraData;
     }
 
+    @Override
     public Object visit(PropertyIsLessThanOrEqualTo filter, Object extraData) {
         visitCompareFilter(filter);
         return extraData;
     }
 
+    @Override
     public Object visit(PropertyIsLike filter, Object extraData) {
         visitCompareFilter(filter);
         return extraData;
     }
 
+    @Override
     public Object visit(PropertyIsNull filter, Object extraData) {
         visitCompareFilter(filter);
         return extraData;
     }
 
+    @Override
     public Object visit(PropertyIsNil filter, Object extraData) {
         visitCompareFilter(filter);
         return extraData;
     }
 
+    @Override
     public Object visit(BBOX filter, Object extraData) {
         visitGeometryFilter(filter);
         return extraData;
     }
 
+    @Override
     public Object visit(Beyond filter, Object extraData) {
         visitGeometryFilter(filter);
         return extraData;
     }
 
+    @Override
     public Object visit(Contains filter, Object extraData) {
         visitGeometryFilter(filter);
         return extraData;
     }
 
+    @Override
     public Object visit(Crosses filter, Object extraData) {
         visitGeometryFilter(filter);
         return extraData;
     }
 
+    @Override
     public Object visit(Disjoint filter, Object extraData) {
         visitGeometryFilter(filter);
         return extraData;
     }
 
+    @Override
     public Object visit(DWithin filter, Object extraData) {
         visitGeometryFilter(filter);
         return extraData;
     }
 
+    @Override
     public Object visit(Equals filter, Object extraData) {
         visitGeometryFilter(filter);
         return extraData;
     }
 
+    @Override
     public Object visit(Intersects filter, Object extraData) {
         visitGeometryFilter(filter);
         return extraData;
     }
 
+    @Override
     public Object visit(Overlaps filter, Object extraData) {
         visitGeometryFilter(filter);
         return extraData;
     }
 
+    @Override
     public Object visit(Touches filter, Object extraData) {
         visitGeometryFilter(filter);
         return extraData;
     }
 
+    @Override
     public Object visit(Within filter, Object extraData) {
         visitGeometryFilter(filter);
         return extraData;
@@ -806,58 +835,72 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
     // Temporal Filters (UNSUPPORTED)
     //
 
+    @Override
     public Object visit(After after, Object extraData) {
         return visitTemporalFilter(after);
     }
 
+    @Override
     public Object visit(AnyInteracts anyInteracts, Object extraData) {
         return visitTemporalFilter(anyInteracts);
     }
 
+    @Override
     public Object visit(Before before, Object extraData) {
         return visitTemporalFilter(before);
     }
 
+    @Override
     public Object visit(Begins begins, Object extraData) {
         return visitTemporalFilter(begins);
     }
 
+    @Override
     public Object visit(BegunBy begunBy, Object extraData) {
         return visitTemporalFilter(begunBy);
     }
 
+    @Override
     public Object visit(During during, Object extraData) {
         return visitTemporalFilter(during);
     }
 
+    @Override
     public Object visit(EndedBy endedBy, Object extraData) {
         return visitTemporalFilter(endedBy);
     }
 
+    @Override
     public Object visit(Ends ends, Object extraData) {
         return visitTemporalFilter(ends);
     }
 
+    @Override
     public Object visit(Meets meets, Object extraData) {
         return visitTemporalFilter(meets);
     }
 
+    @Override
     public Object visit(MetBy metBy, Object extraData) {
         return visitTemporalFilter(metBy);
     }
 
+    @Override
     public Object visit(OverlappedBy overlappedBy, Object extraData) {
         return visitTemporalFilter(overlappedBy);
     }
 
+    @Override
     public Object visit(TContains contains, Object extraData) {
         return visitTemporalFilter(contains);
     }
 
+    @Override
     public Object visit(TEquals equals, Object extraData) {
         return visitTemporalFilter(equals);
     }
 
+    @Override
     public Object visit(TOverlaps contains, Object extraData) {
         return visitTemporalFilter(contains);
     }

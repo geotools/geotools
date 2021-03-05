@@ -38,6 +38,7 @@ public class FilterFunction_strSubstring extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         String arg0;
         int arg1;

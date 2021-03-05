@@ -193,6 +193,7 @@ public class LoggedFormat<T> extends Format {
      * @param position Index and error index information.
      * @return An object parsed from the string, or {@code null} in case of error.
      */
+    @Override
     public Object parseObject(final String text, final ParsePosition position) {
         return format.parseObject(text, position);
     }
@@ -206,6 +207,7 @@ public class LoggedFormat<T> extends Format {
      * @param position Identifies a field in the formatted text.
      * @return The string buffer passed in with formatted text appended.
      */
+    @Override
     public StringBuffer format(
             final Object value, final StringBuffer toAppendTo, final FieldPosition position) {
         return format.format(value, toAppendTo, position);

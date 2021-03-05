@@ -54,14 +54,17 @@ class TransformedIcon implements Icon {
         this.height = (int) Math.round(bounds.getHeight());
     }
 
+    @Override
     public int getIconHeight() {
         return height;
     }
 
+    @Override
     public int getIconWidth() {
         return width;
     }
 
+    @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2d = (Graphics2D) g;
         AffineTransform tmp = g2d.getTransform();

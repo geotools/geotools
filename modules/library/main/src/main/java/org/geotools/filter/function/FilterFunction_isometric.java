@@ -52,6 +52,7 @@ public class FilterFunction_isometric extends FunctionExpressionImpl
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Geometry geom = getExpression(0).evaluate(feature, Geometry.class);
         Double extrusion = getExpression(1).evaluate(feature, Double.class);
@@ -94,6 +95,7 @@ public class FilterFunction_isometric extends FunctionExpressionImpl
      * the offsets are feature dependent the user will have to expand the rendering area via the
      * renderer buffer parameter
      */
+    @Override
     public ReferencedEnvelope invert(ReferencedEnvelope renderingEnvelope) {
         Double offsetY = getExpression(1).evaluate(null, Double.class);
 
@@ -110,6 +112,7 @@ public class FilterFunction_isometric extends FunctionExpressionImpl
     static class SegmentExtractorFilter implements GeometryComponentFilter {
         List<Segment> segments = new ArrayList<>();
 
+        @Override
         public void filter(Geometry geom) {
             if (geom instanceof LineString) {
                 extractSegments(((LineString) geom).getCoordinateSequence());
@@ -158,6 +161,7 @@ public class FilterFunction_isometric extends FunctionExpressionImpl
             this.y1 = y1;
         }
 
+        @Override
         public int compareTo(Segment other) {
             double maxY = Math.max(y0, y1);
             double otherMaxY = Math.max(other.y0, other.y1);

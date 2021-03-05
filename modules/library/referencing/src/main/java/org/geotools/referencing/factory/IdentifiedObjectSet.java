@@ -115,6 +115,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      * during the iteration process if the creation of some {@linkplain IdentifiedObject identified
      * objects} failed.
      */
+    @Override
     public int size() {
         return objects.size();
     }
@@ -143,6 +144,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      * specified one, then the old object is replaced by the new one even if the objects are not
      * otherwise identical.
      */
+    @Override
     public boolean add(final Object object) {
         final String code = getAuthorityCode((IdentifiedObject) object);
         return !Utilities.equals(objects.put(code, (IdentifiedObject) object), object);
@@ -172,6 +174,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
     }
 
     /** Returns {@code true} if this collection contains the specified object. */
+    @Override
     public boolean contains(final Object object) {
         final String code = getAuthorityCode((IdentifiedObject) object);
         final IdentifiedObject current = get(code);
@@ -181,6 +184,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
     /**
      * Removes a single instance of the specified element from this collection, if it is present.
      */
+    @Override
     public boolean remove(final Object object) {
         final String code = getAuthorityCode((IdentifiedObject) object);
         final IdentifiedObject current = get(code);
@@ -195,6 +199,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      * Removes from this collection all of its elements that are contained in the specified
      * collection.
      */
+    @Override
     public boolean removeAll(final Collection collection) {
         boolean modified = false;
         for (Object o : collection) {
@@ -210,6 +215,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      * {@link FactoryException} other than {@link NoSuchIdentifierException}, then the exception
      * will be rethrown as an unchecked {@link BackingStoreException}.
      */
+    @Override
     public Iterator iterator() {
         return new Iter(objects.entrySet().iterator());
     }
@@ -396,6 +402,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
         }
 
         /** Returns {@code true} if there is more elements. */
+        @Override
         public boolean hasNext() {
             return element != null;
         }
@@ -405,6 +412,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
          *
          * @throws NoSuchElementException if there is no more operations in the set.
          */
+        @Override
         public Object next() throws NoSuchElementException {
             final IdentifiedObject next = element;
             if (next == null) {
@@ -415,6 +423,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
         }
 
         /** Removes the last element from the underlying set. */
+        @Override
         public void remove() {
             iterator.remove();
         }

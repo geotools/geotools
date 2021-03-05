@@ -75,6 +75,7 @@ public class Collection_NearestFunction extends FunctionImpl {
         return visitor.getNearestMatch();
     }
 
+    @Override
     public Object evaluate(Object collection) {
         if (collection == null) {
             Literal value = getFallbackValue();

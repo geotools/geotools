@@ -103,6 +103,7 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
         return linearize(this.tolerance);
     }
 
+    @Override
     public LineString linearize(double tolerance) {
         // use the cached one if we are asked for the default geometry tolerance
         boolean isDefaultTolerance = CircularArc.equals(tolerance, this.tolerance);
@@ -154,26 +155,31 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
      * Returns the components of this compound curve, which will be a list of straight LineString
      * objects and CircularString/CircularRing
      */
+    @Override
     public List<LineString> getComponents() {
         return components;
     }
 
     /* Optimized overridden methods */
 
+    @Override
     public boolean isClosed() {
         LineString firstComponent = components.get(0);
         LineString lastComponent = components.get(components.size() - 1);
         return firstComponent.getStartPoint().equals(lastComponent.getEndPoint());
     }
 
+    @Override
     public int getDimension() {
         return super.getDimension();
     }
 
+    @Override
     public int getBoundaryDimension() {
         return super.getDimension();
     }
 
+    @Override
     public boolean isEmpty() {
         for (LineString ls : components) {
             if (!ls.isEmpty()) {
@@ -183,15 +189,18 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
         return true;
     }
 
+    @Override
     public String getGeometryType() {
         return "CompoundCurve";
     }
 
+    @Override
     public CompoundCurve reverse() {
         return (CompoundCurve) super.reverse();
     }
 
     // should be protected when fixed in LinearRing
+    @Override
     public CompoundCurve reverseInternal() {
         // reverse the component, and reverse each component internal elements
         List<LineString> reversedComponents = new ArrayList<>(components.size());
@@ -202,14 +211,17 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
         return new CompoundCurve(reversedComponents, getFactory(), tolerance);
     }
 
+    @Override
     public Point getInteriorPoint() {
         return components.get(components.size() / 2).getInteriorPoint();
     }
 
+    @Override
     public Geometry getEnvelope() {
         return super.getEnvelope();
     }
 
+    @Override
     public Envelope getEnvelopeInternal() {
         return super.getEnvelopeInternal();
     }
@@ -223,42 +235,52 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
         return result;
     }
 
+    @Override
     public int getNumGeometries() {
         return components.size();
     }
 
+    @Override
     public Geometry getGeometryN(int n) {
         return components.get(n);
     }
 
+    @Override
     public void setUserData(Object userData) {
         super.setUserData(userData);
     }
 
+    @Override
     public int getSRID() {
         return super.getSRID();
     }
 
+    @Override
     public void setSRID(int SRID) {
         super.setSRID(SRID);
     }
 
+    @Override
     public GeometryFactory getFactory() {
         return super.getFactory();
     }
 
+    @Override
     public Object getUserData() {
         return super.getUserData();
     }
 
+    @Override
     public PrecisionModel getPrecisionModel() {
         return super.getPrecisionModel();
     }
 
+    @Override
     public boolean equalsExact(Geometry other) {
         return equalsExact(other, 0);
     }
 
+    @Override
     public boolean equalsExact(Geometry other, double tolerance) {
         if (other instanceof CompoundCurve) {
             CompoundCurve ccOther = (CompoundCurve) other;
@@ -278,6 +300,7 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
         return linearize(tolerance).equalsExact(other, tolerance);
     }
 
+    @Override
     public boolean equals(Geometry other) {
         if (other instanceof CompoundCurve) {
             CompoundCurve ccOther = (CompoundCurve) other;
@@ -297,6 +320,7 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
         return linearize().equals(other);
     }
 
+    @Override
     public boolean equalsTopo(Geometry other) {
         if (other instanceof CompoundCurve) {
             CompoundCurve ccOther = (CompoundCurve) other;
@@ -316,6 +340,7 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
         return linearize().equalsTopo(other);
     }
 
+    @Override
     public boolean equals(Object o) {
         if (o instanceof Geometry) {
             return equals((Geometry) o);
@@ -324,14 +349,17 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
         }
     }
 
+    @Override
     public int hashCode() {
         return super.hashCode();
     }
 
+    @Override
     public String toString() {
         return toCurvedText();
     }
 
+    @Override
     public String toCurvedText() {
         StringBuilder sb = new StringBuilder("COMPOUNDCURVE ");
 
@@ -364,6 +392,7 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
         return sb.toString();
     }
 
+    @Override
     public boolean equalsNorm(Geometry g) {
         return super.equalsNorm(g);
     }
@@ -372,71 +401,88 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
      * Simple linearized delegate methods
      */
 
+    @Override
     public boolean isRectangle() {
         return linearize().isRectangle();
     }
 
+    @Override
     public Coordinate[] getCoordinates() {
         return linearize().getCoordinates();
     }
 
+    @Override
     public CoordinateSequence getCoordinateSequence() {
         return linearize().getCoordinateSequence();
     }
 
+    @Override
     public Coordinate getCoordinateN(int n) {
         return linearize().getCoordinateN(n);
     }
 
+    @Override
     public Coordinate getCoordinate() {
         return linearize().getCoordinate();
     }
 
+    @Override
     public int getNumPoints() {
         return linearize().getNumPoints();
     }
 
+    @Override
     public Point getPointN(int n) {
         return linearize().getPointN(n);
     }
 
+    @Override
     public Point getStartPoint() {
         return linearize().getStartPoint();
     }
 
+    @Override
     public Point getEndPoint() {
         return linearize().getEndPoint();
     }
 
+    @Override
     public boolean isRing() {
         return linearize().isRing();
     }
 
+    @Override
     public double getLength() {
         // todo: maybe compute the actual circular length?
         return linearize().getLength();
     }
 
+    @Override
     public Geometry getBoundary() {
         return linearize().getBoundary();
     }
 
+    @Override
     public boolean isCoordinate(Coordinate pt) {
         return linearize().isCoordinate(pt);
     }
 
+    @Override
     public void apply(CoordinateFilter filter) {
         linearize().apply(filter);
     }
 
+    @Override
     public void apply(CoordinateSequenceFilter filter) {
         linearize().apply(filter);
     }
 
+    @Override
     public void apply(GeometryFilter filter) {
         linearize().apply(filter);
     }
 
+    @Override
     public void apply(GeometryComponentFilter filter) {
         linearize().apply(filter);
     }
@@ -446,126 +492,157 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
         return new CompoundCurve(components, factory, tolerance);
     }
 
+    @Override
     public void normalize() {
         linearize().normalize();
     }
 
+    @Override
     public boolean isSimple() {
         return linearize().isSimple();
     }
 
+    @Override
     public boolean isValid() {
         return linearize().isValid();
     }
 
+    @Override
     public double distance(Geometry g) {
         return linearize().distance(g);
     }
 
+    @Override
     public boolean isWithinDistance(Geometry geom, double distance) {
         return linearize().isWithinDistance(geom, distance);
     }
 
+    @Override
     public double getArea() {
         return linearize().getArea();
     }
 
+    @Override
     public Point getCentroid() {
         return linearize().getCentroid();
     }
 
+    @Override
     public void geometryChanged() {
         linearize().geometryChanged();
     }
 
+    @Override
     public boolean disjoint(Geometry g) {
         return linearize().disjoint(g);
     }
 
+    @Override
     public boolean touches(Geometry g) {
         return linearize().touches(g);
     }
 
+    @Override
     public boolean intersects(Geometry g) {
         return linearize().intersects(g);
     }
 
+    @Override
     public boolean crosses(Geometry g) {
         return linearize().crosses(g);
     }
 
+    @Override
     public boolean within(Geometry g) {
         return linearize().within(g);
     }
 
+    @Override
     public boolean contains(Geometry g) {
         return linearize().contains(g);
     }
 
+    @Override
     public boolean overlaps(Geometry g) {
         return linearize().overlaps(g);
     }
 
+    @Override
     public boolean covers(Geometry g) {
         return linearize().covers(g);
     }
 
+    @Override
     public boolean coveredBy(Geometry g) {
         return linearize().coveredBy(g);
     }
 
+    @Override
     public boolean relate(Geometry g, String intersectionPattern) {
         return linearize().relate(g, intersectionPattern);
     }
 
+    @Override
     public IntersectionMatrix relate(Geometry g) {
         return linearize().relate(g);
     }
 
+    @Override
     public Geometry buffer(double distance) {
         return linearize().buffer(distance);
     }
 
+    @Override
     public Geometry buffer(double distance, int quadrantSegments) {
         return linearize().buffer(distance, quadrantSegments);
     }
 
+    @Override
     public Geometry buffer(double distance, int quadrantSegments, int endCapStyle) {
         return linearize().buffer(distance, quadrantSegments, endCapStyle);
     }
 
+    @Override
     public Geometry convexHull() {
         return linearize().convexHull();
     }
 
+    @Override
     public Geometry intersection(Geometry other) {
         return linearize().intersection(other);
     }
 
+    @Override
     public Geometry union(Geometry other) {
         return linearize().union(other);
     }
 
+    @Override
     public Geometry difference(Geometry other) {
         return linearize().difference(other);
     }
 
+    @Override
     public Geometry symDifference(Geometry other) {
         return linearize().symDifference(other);
     }
 
+    @Override
     public Geometry union() {
         return linearize().union();
     }
 
+    @Override
     public Geometry norm() {
         return linearize().norm();
     }
 
+    @Override
     public int compareTo(Object o) {
         return linearize().compareTo(o);
     }
 
+    @Override
     public int compareTo(Object o, CoordinateSequenceComparator comp) {
         return linearize().compareTo(o, comp);
     }

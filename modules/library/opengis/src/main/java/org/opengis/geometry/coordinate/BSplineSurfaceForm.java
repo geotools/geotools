@@ -82,6 +82,7 @@ public class BSplineSurfaceForm extends CodeList<BSplineSurfaceForm> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public BSplineSurfaceForm[] family() {
         return values();
     }

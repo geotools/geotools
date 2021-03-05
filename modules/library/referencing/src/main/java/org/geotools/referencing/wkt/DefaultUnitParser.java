@@ -58,6 +58,7 @@ public class DefaultUnitParser extends BaseGT2Format {
         epsgLabelsAndAliases(this);
     }
 
+    @Override
     protected void addUnit(Unit<?> unit) {
         unitWrapperToUnitMap.put(new UnitWrapper(unit), unit);
     }
@@ -111,6 +112,7 @@ public class DefaultUnitParser extends BaseGT2Format {
             return unit.hashCode();
         }
 
+        @Override
         public String toString() {
             return unit.toString();
         }

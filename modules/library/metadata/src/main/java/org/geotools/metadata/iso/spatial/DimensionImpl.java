@@ -65,6 +65,7 @@ public class DimensionImpl extends MetadataEntity implements Dimension {
     }
 
     /** Name of the axis. */
+    @Override
     public DimensionNameType getDimensionName() {
         return dimensionName;
     }
@@ -76,6 +77,7 @@ public class DimensionImpl extends MetadataEntity implements Dimension {
     }
 
     /** Number of elements along the axis. */
+    @Override
     public Integer getDimensionSize() {
         return dimensionSize;
     }
@@ -87,6 +89,7 @@ public class DimensionImpl extends MetadataEntity implements Dimension {
     }
 
     /** Degree of detail in the grid dataset. */
+    @Override
     public Double getResolution() {
         return resolution;
     }

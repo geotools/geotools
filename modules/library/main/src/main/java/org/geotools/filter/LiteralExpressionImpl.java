@@ -111,6 +111,7 @@ public class LiteralExpressionImpl extends DefaultExpression implements Literal 
      *
      * @return the literal held by this expression.
      */
+    @Override
     public Object getValue() {
         return literal;
     }
@@ -125,10 +126,12 @@ public class LiteralExpressionImpl extends DefaultExpression implements Literal 
         this.literal = literal;
     }
 
+    @Override
     public Object evaluate(Object feature) {
         return literal;
     }
 
+    @Override
     public <T> T evaluate(Object feature, Class<T> context) {
         return Converters.convert(literal, context);
     }
@@ -138,6 +141,7 @@ public class LiteralExpressionImpl extends DefaultExpression implements Literal 
      *
      * @return String representation of this geometry filter.
      */
+    @Override
     public String toString() {
         return literal == null ? "NULL" : literal.toString();
     }
@@ -152,6 +156,7 @@ public class LiteralExpressionImpl extends DefaultExpression implements Literal 
      * @task REVISIT: missmatched types now considered not equal. This may be a problem when
      *     comparing Doubles and Integers
      */
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof LiteralExpressionImpl) {
             LiteralExpressionImpl expLit = (LiteralExpressionImpl) obj;
@@ -220,6 +225,7 @@ public class LiteralExpressionImpl extends DefaultExpression implements Literal 
      *
      * @return the hash code for this literal expression
      */
+    @Override
     public int hashCode() {
         int result = 17;
 
@@ -238,6 +244,7 @@ public class LiteralExpressionImpl extends DefaultExpression implements Literal 
      * @param visitor The visitor which requires access to this filter, the method must call
      *     visitor.visit(this);
      */
+    @Override
     public Object accept(ExpressionVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

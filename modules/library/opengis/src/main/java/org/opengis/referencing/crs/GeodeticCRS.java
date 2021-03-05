@@ -34,6 +34,7 @@ import org.opengis.referencing.datum.GeodeticDatum;
 @UML(identifier = "SC_GeodeticCRS", specification = ISO_19111)
 public interface GeodeticCRS extends SingleCRS {
     /** Returns the datum, which must be geodetic. */
+    @Override
     @UML(identifier = "usesDatum", obligation = MANDATORY, specification = ISO_19111)
     GeodeticDatum getDatum();
 }

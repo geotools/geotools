@@ -44,14 +44,17 @@ class RescaledIcon implements Icon {
         this.scale = scale;
     }
 
+    @Override
     public int getIconHeight() {
         return (int) Math.round(icon.getIconHeight() * scale);
     }
 
+    @Override
     public int getIconWidth() {
         return (int) Math.round(icon.getIconWidth() * scale);
     }
 
+    @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2d = (Graphics2D) g;
         AffineTransform tmp = g2d.getTransform();

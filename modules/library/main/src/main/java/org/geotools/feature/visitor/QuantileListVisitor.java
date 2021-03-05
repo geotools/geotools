@@ -53,6 +53,7 @@ public class QuantileListVisitor implements FeatureCalc {
         // do nothing
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public CalcResult getResult() {
         if (bins == 0 || count == 0) {
@@ -85,6 +86,7 @@ public class QuantileListVisitor implements FeatureCalc {
                 binPop--; // decrease the number of items in a bin for the next item
         }
         return new AbstractCalcResult() {
+            @Override
             public Object getValue() {
                 return bin;
             }
@@ -95,6 +97,7 @@ public class QuantileListVisitor implements FeatureCalc {
         visit((org.opengis.feature.Feature) feature);
     }
 
+    @Override
     public void visit(org.opengis.feature.Feature feature) {
         Object value = expr.evaluate(feature);
 

@@ -52,6 +52,7 @@ public class DefaultCalendar extends DefaultTemporalReferenceSystem implements C
     /**
      * Convert a TemporalPosition representing by a CalendarDate and a ClockTime to a Julian date.
      */
+    @Override
     public JulianDate dateTrans(CalendarDate calDate, ClockTime time) {
         JulianDate response;
         if (calDate != null && time != null) {
@@ -228,6 +229,7 @@ public class DefaultCalendar extends DefaultTemporalReferenceSystem implements C
     }
 
     /** Convert a JulianDate to CalendarDate */
+    @Override
     public CalendarDate julTrans(JulianDate jdt) {
         if (jdt == null) return null;
 
@@ -260,10 +262,12 @@ public class DefaultCalendar extends DefaultTemporalReferenceSystem implements C
         return response;
     }
 
+    @Override
     public Collection<CalendarEra> getBasis() {
         return basis;
     }
 
+    @Override
     public Clock getClock() {
         return timeBasis;
     }

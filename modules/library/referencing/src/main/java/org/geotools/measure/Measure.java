@@ -48,18 +48,22 @@ public final class Measure extends Number {
     }
 
     /** Returns the scalar value. */
+    @Override
     public double doubleValue() {
         return value;
     }
     /** Returns the scalar value. */
+    @Override
     public float floatValue() {
         return (float) value;
     }
     /** Returns the scalar value. */
+    @Override
     public long longValue() {
         return (long) value;
     }
     /** Returns the scalar value. */
+    @Override
     public int intValue() {
         return (int) value;
     }

@@ -47,6 +47,7 @@ public class DecoratingFeatureCollection<T extends FeatureType, F extends Featur
         this.delegate = delegate;
     }
 
+    @Override
     public void accepts(
             org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress)
             throws IOException {
@@ -67,58 +68,72 @@ public class DecoratingFeatureCollection<T extends FeatureType, F extends Featur
         return false;
     }
 
+    @Override
     public boolean contains(Object o) {
         return delegate.contains(o);
     }
 
+    @Override
     public boolean containsAll(Collection<?> c) {
         return delegate.containsAll(c);
     }
 
+    @Override
     public boolean equals(Object o) {
         return delegate.equals(o);
     }
 
+    @Override
     public FeatureIterator<F> features() {
         return delegate.features();
     }
 
+    @Override
     public ReferencedEnvelope getBounds() {
         return delegate.getBounds();
     }
 
+    @Override
     public T getSchema() {
         return delegate.getSchema();
     }
 
+    @Override
     public int hashCode() {
         return delegate.hashCode();
     }
 
+    @Override
     public boolean isEmpty() {
         return delegate.isEmpty();
     }
 
+    @Override
     public int size() {
         return delegate.size();
     }
 
+    @Override
     public FeatureCollection<T, F> sort(SortBy order) {
         return delegate.sort(order);
     }
 
+    @Override
     public FeatureCollection<T, F> subCollection(Filter filter) {
         return delegate.subCollection(filter);
     }
 
+    @Override
     public Object[] toArray() {
         return delegate.toArray();
     }
 
+    @Override
     public <O> O[] toArray(O[] a) {
         return delegate.toArray(a);
     }
 
+    @Override
     public String getID() {
         return delegate.getID();
     }

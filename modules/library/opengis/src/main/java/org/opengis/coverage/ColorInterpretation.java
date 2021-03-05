@@ -199,6 +199,7 @@ public final class ColorInterpretation extends CodeList<ColorInterpretation> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public ColorInterpretation[] family() {
         return values();
     }

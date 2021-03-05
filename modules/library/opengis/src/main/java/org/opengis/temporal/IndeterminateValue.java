@@ -59,6 +59,7 @@ public final class IndeterminateValue extends CodeList<IndeterminateValue> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public IndeterminateValue[] family() {
         return values();
     }

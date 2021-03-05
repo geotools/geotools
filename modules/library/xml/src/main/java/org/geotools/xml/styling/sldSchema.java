@@ -46,20 +46,24 @@ public class sldSchema implements Schema {
         }
     }
 
+    @Override
     public int getBlockDefault() {
         return 0;
     }
 
+    @Override
     public int getFinalDefault() {
         return 0;
     }
 
+    @Override
     public String getId() {
         return "null";
     }
 
     private static Schema[] imports = null;
 
+    @Override
     public Schema[] getImports() {
         if (imports == null) {
             imports =
@@ -71,45 +75,55 @@ public class sldSchema implements Schema {
         return imports;
     }
 
+    @Override
     public String getPrefix() {
         return "sld";
     }
 
+    @Override
     public URI getTargetNamespace() {
         return NAMESPACE;
     }
 
+    @Override
     public URI getURI() {
         return NAMESPACE;
     }
 
+    @Override
     public String getVersion() {
         return "null";
     }
 
+    @Override
     public boolean includesURI(URI uri) {
         // // TODO fill me in!
         return false; // // safer
     }
 
+    @Override
     public boolean isAttributeFormDefault() {
         return false;
     }
 
+    @Override
     public boolean isElementFormDefault() {
         return true;
     }
 
+    @Override
     public AttributeGroup[] getAttributeGroups() {
         return null;
     }
 
+    @Override
     public Attribute[] getAttributes() {
         return null;
     }
     /** TODO comment here */
     private static ComplexType[] complexTypes = null;
 
+    @Override
     public ComplexType[] getComplexTypes() {
         if (complexTypes == null) {
             complexTypes =
@@ -124,6 +138,7 @@ public class sldSchema implements Schema {
     /** TODO comment here */
     private static Element[] elements = null;
 
+    @Override
     public Element[] getElements() {
         if (elements == null) {
             elements =
@@ -580,10 +595,12 @@ public class sldSchema implements Schema {
         return elements;
     }
 
+    @Override
     public Group[] getGroups() {
         return null;
     }
 
+    @Override
     public SimpleType[] getSimpleTypes() {
         return null;
     }
@@ -595,6 +612,7 @@ public class sldSchema implements Schema {
     }
 
     /** Returns the implementation hints. The default implementation returns en empty map. */
+    @Override
     public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }

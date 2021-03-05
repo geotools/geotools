@@ -43,6 +43,7 @@ public class CRSConverterFactory implements ConverterFactory {
      *
      * @see ConverterFactory#createConverter(Class, Class, Hints).
      */
+    @Override
     public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {
         if (source == null || target == null) {
             if (LOGGER.isLoggable(Level.FINE)) {
@@ -70,6 +71,7 @@ public class CRSConverterFactory implements ConverterFactory {
     // some additional converters
     /** converts a string to an {@link CoordinateReferenceSystem} Object. */
     static class CRSConverter implements Converter {
+        @Override
         @SuppressWarnings("unchecked")
         public <T> T convert(Object source, Class<T> target) throws Exception {
             // checks

@@ -99,6 +99,7 @@ public class AbstractSingleCRS extends AbstractCRS implements SingleCRS {
      *
      * @return The datum.
      */
+    @Override
     public Datum getDatum() {
         return datum;
     }

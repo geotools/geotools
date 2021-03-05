@@ -91,6 +91,7 @@ public interface DataStoreFactorySpi extends DataAccessFactory {
      * @throws IOException if there were any problems setting up (creating or connecting) the
      *     datasource.
      */
+    @Override
     DataStore createDataStore(Map<String, ?> params) throws IOException;
 
     //    /**

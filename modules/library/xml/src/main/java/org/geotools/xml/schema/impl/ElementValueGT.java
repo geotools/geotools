@@ -35,11 +35,13 @@ public class ElementValueGT implements ElementValue {
     }
 
     /** @see org.geotools.xml.schema.ElementValue#getElement() */
+    @Override
     public Element getElement() {
         return element;
     }
 
     /** @see org.geotools.xml.schema.ElementValue#getValue() */
+    @Override
     public Object getValue() {
         return value;
     }

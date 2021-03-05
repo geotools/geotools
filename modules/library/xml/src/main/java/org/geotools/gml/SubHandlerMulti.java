@@ -75,6 +75,7 @@ public class SubHandlerMulti extends SubHandler {
      * @param message The sub geometry type found.
      * @param type Whether or not it is at a start or end.
      */
+    @Override
     public void subGeometry(String message, int type) {
         LOGGER.fine("subGeometry message = " + message + " type = " + type);
 
@@ -109,6 +110,7 @@ public class SubHandlerMulti extends SubHandler {
      *
      * @param coordinate The coordinate.
      */
+    @Override
     public void addCoordinate(Coordinate coordinate) {
         currentHandler.addCoordinate(coordinate);
     }
@@ -118,6 +120,7 @@ public class SubHandlerMulti extends SubHandler {
      *
      * @param message The geometry element that prompted this check.
      */
+    @Override
     public boolean isComplete(String message) {
         if (message.equals("Multi" + internalType)) {
             return true;
@@ -132,6 +135,7 @@ public class SubHandlerMulti extends SubHandler {
      * @param geometryFactory The factory this method should use to create the multi type.
      * @return Appropriate multi geometry type.
      */
+    @Override
     public Geometry create(GeometryFactory geometryFactory) {
         if (internalType.equals("Point")) {
             Point[] pointArray = geometryFactory.toPointArray(geometries);

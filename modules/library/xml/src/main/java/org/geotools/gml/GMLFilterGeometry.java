@@ -66,6 +66,7 @@ public class GMLFilterGeometry extends org.xml.sax.helpers.XMLFilterImpl
      * @param atts The attributes of the geometry, including SRID, etc.
      * @throws SAXException parser error.
      */
+    @Override
     public void geometryStart(String localName, org.xml.sax.Attributes atts) throws SAXException {
         String srs = null;
         for (int i = 0; i < atts.getLength(); i++) {
@@ -91,6 +92,7 @@ public class GMLFilterGeometry extends org.xml.sax.helpers.XMLFilterImpl
      *     type.
      * @throws SAXException parser error.
      */
+    @Override
     public void geometryEnd(String localName) throws SAXException {
         if (currentHandler.isComplete(localName)) {
             parent.geometry(currentHandler.create(geometryFactory));
@@ -108,6 +110,7 @@ public class GMLFilterGeometry extends org.xml.sax.helpers.XMLFilterImpl
      *     type.
      * @throws SAXException parser error.
      */
+    @Override
     public void geometrySub(String localName) throws SAXException {
         currentHandler.subGeometry(localName, currentHandler.GEOMETRY_SUB);
     }
@@ -119,6 +122,7 @@ public class GMLFilterGeometry extends org.xml.sax.helpers.XMLFilterImpl
      * @param y The Y coordinate of the received coordinate.
      * @throws SAXException parser error.
      */
+    @Override
     public void gmlCoordinates(double x, double y) throws SAXException {
         currentHandler.addCoordinate(new org.locationtech.jts.geom.Coordinate(x, y));
     }
@@ -131,6 +135,7 @@ public class GMLFilterGeometry extends org.xml.sax.helpers.XMLFilterImpl
      * @param z The Z coordinate of the received coordinate.
      * @throws SAXException parser error.
      */
+    @Override
     public void gmlCoordinates(double x, double y, double z) throws SAXException {
         currentHandler.addCoordinate(new org.locationtech.jts.geom.Coordinate(x, y, z));
     }
@@ -146,6 +151,7 @@ public class GMLFilterGeometry extends org.xml.sax.helpers.XMLFilterImpl
      * @param atts The element attributes.
      * @throws SAXException Some parsing error occurred while reading coordinates.
      */
+    @Override
     public void startElement(
             String namespaceURI, String localName, String qName, org.xml.sax.Attributes atts)
             throws SAXException {
@@ -162,6 +168,7 @@ public class GMLFilterGeometry extends org.xml.sax.helpers.XMLFilterImpl
      * @param length Length of the character string.
      * @throws SAXException Some parsing error occurred while reading coordinates.
      */
+    @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
         parent.characters(ch, start, length);
     }
@@ -176,6 +183,7 @@ public class GMLFilterGeometry extends org.xml.sax.helpers.XMLFilterImpl
      * @param qName The full name of the element, including namespace prefix.
      * @throws SAXException Some parsing error occurred while reading coordinates.
      */
+    @Override
     public void endElement(String namespaceURI, String localName, String qName)
             throws SAXException {
         parent.endElement(namespaceURI, localName, qName);

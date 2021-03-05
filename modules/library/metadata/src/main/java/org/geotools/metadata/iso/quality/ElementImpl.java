@@ -95,6 +95,7 @@ public class ElementImpl extends MetadataEntity implements Element {
     }
 
     /** Returns the name of the test applied to the data. */
+    @Override
     public Collection<InternationalString> getNamesOfMeasure() {
         return namesOfMeasure = nonNullCollection(namesOfMeasure, InternationalString.class);
     }
@@ -105,6 +106,7 @@ public class ElementImpl extends MetadataEntity implements Element {
     }
 
     /** Returns the code identifying a registered standard procedure, or {@code null} if none. */
+    @Override
     public Identifier getMeasureIdentification() {
         return measureIdentification;
     }
@@ -116,6 +118,7 @@ public class ElementImpl extends MetadataEntity implements Element {
     }
 
     /** Returns the description of the measure being determined. */
+    @Override
     public InternationalString getMeasureDescription() {
         return measureDescription;
     }
@@ -130,6 +133,7 @@ public class ElementImpl extends MetadataEntity implements Element {
      * Returns the type of method used to evaluate quality of the dataset, or {@code null} if
      * unspecified.
      */
+    @Override
     public EvaluationMethodType getEvaluationMethodType() {
         return evaluationMethodType;
     }
@@ -141,6 +145,7 @@ public class ElementImpl extends MetadataEntity implements Element {
     }
 
     /** Returns the description of the evaluation method. */
+    @Override
     public InternationalString getEvaluationMethodDescription() {
         return evaluationMethodDescription;
     }
@@ -152,6 +157,7 @@ public class ElementImpl extends MetadataEntity implements Element {
     }
 
     /** Returns the reference to the procedure information, or {@code null} if none. */
+    @Override
     public Citation getEvaluationProcedure() {
         return evaluationProcedure;
     }
@@ -169,6 +175,7 @@ public class ElementImpl extends MetadataEntity implements Element {
      *
      * @since 2.4
      */
+    @Override
     public Collection<Date> getDates() {
         if (date1 == Long.MIN_VALUE) {
             return Collections.emptyList();
@@ -208,6 +215,7 @@ public class ElementImpl extends MetadataEntity implements Element {
      *
      * @since 2.4
      */
+    @Override
     public Collection<Result> getResults() {
         return results = nonNullCollection(results, Result.class);
     }

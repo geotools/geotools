@@ -69,6 +69,7 @@ public final class RelativePosition extends CodeList<RelativePosition> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public RelativePosition[] family() {
         return values();
     }

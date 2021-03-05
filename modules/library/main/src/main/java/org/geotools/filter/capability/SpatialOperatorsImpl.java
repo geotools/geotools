@@ -73,10 +73,12 @@ public class SpatialOperatorsImpl implements SpatialOperators {
         }
     }
 
+    @Override
     public Collection<SpatialOperator> getOperators() {
         return operators;
     }
 
+    @Override
     public SpatialOperator getOperator(String name) {
         if (name == null || operators == null) {
             return null;

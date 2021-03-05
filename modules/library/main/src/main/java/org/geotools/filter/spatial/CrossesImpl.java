@@ -44,6 +44,7 @@ public class CrossesImpl extends GeometryFilterImpl implements Crosses {
         return false;
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

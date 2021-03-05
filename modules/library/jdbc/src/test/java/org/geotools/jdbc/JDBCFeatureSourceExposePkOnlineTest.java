@@ -33,6 +33,7 @@ public abstract class JDBCFeatureSourceExposePkOnlineTest extends JDBCFeatureSou
         featureSource.setExposePrimaryKeyColumns(true);
     }
 
+    @Override
     public void testSchema() throws Exception {
         SimpleFeatureType schema = featureSource.getSchema();
         assertEquals(tname("ft1"), schema.getTypeName());

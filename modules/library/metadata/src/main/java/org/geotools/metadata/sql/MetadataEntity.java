@@ -67,6 +67,7 @@ final class MetadataEntity implements InvocationHandler {
      * @param method The method invoked.
      * @param args The argument given to the method.
      */
+    @Override
     public Object invoke(final Object proxy, final Method method, final Object[] args) {
         final Class<?> type = method.getDeclaringClass();
         if (type.getName().startsWith(source.metadataPackage)) {

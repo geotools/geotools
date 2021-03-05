@@ -37,6 +37,7 @@ public class BegunByImpl extends BinaryTemporalOperatorImpl implements BegunBy {
         return pos == RelativePosition.BEGUN_BY;
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

@@ -266,6 +266,7 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
      *
      * @return true if params is in agreement with getParametersInfo and checkDBType
      */
+    @Override
     public boolean canProcess(Map<String, ?> params) {
         if (!DataUtilities.canProcess(params, getParametersInfo())) {
             return false;
@@ -293,6 +294,7 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
         }
     }
 
+    @Override
     public final JDBCDataStore createDataStore(Map<String, ?> params) throws IOException {
         JDBCDataStore dataStore = new JDBCDataStore();
 
@@ -412,10 +414,12 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
         return dataStore;
     }
 
+    @Override
     public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public final Param[] getParametersInfo() {
         Map<String, Object> map = new LinkedHashMap<>();
         setupParameters(map);
@@ -484,6 +488,7 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
      * <p>Subclasses may with to override or extend this method. This implementation checks whether
      * the jdbc driver class (provided by {@link #getDriverClassName()} can be loaded.
      */
+    @Override
     public boolean isAvailable() {
         try {
             Class.forName(getDriverClassName());
@@ -499,6 +504,7 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
      *
      * <p>Subclasses may override, this implementation returns <code>null</code>.
      */
+    @Override
     public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
         return null;
     }

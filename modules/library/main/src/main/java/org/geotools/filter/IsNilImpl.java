@@ -36,6 +36,7 @@ public class IsNilImpl extends CompareFilterImpl implements PropertyIsNil {
         this.delegate = new IsNullImpl(e1);
     }
 
+    @Override
     public boolean evaluate(Object object) {
         return delegate.evaluate(object);
         //        Expression expr = getExpression();
@@ -48,10 +49,12 @@ public class IsNilImpl extends CompareFilterImpl implements PropertyIsNil {
         //        return nilReason.equals(Converters.convert(value, nilReason.getClass()));
     }
 
+    @Override
     public Expression getExpression() {
         return getExpression1();
     }
 
+    @Override
     public Object getNilReason() {
         return nilReason;
     }

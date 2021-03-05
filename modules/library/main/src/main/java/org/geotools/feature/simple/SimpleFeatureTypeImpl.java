@@ -68,6 +68,7 @@ public class SimpleFeatureTypeImpl extends FeatureTypeImpl implements SimpleFeat
     }
 
     /** @see org.opengis.feature.simple.SimpleFeatureType#getAttributeDescriptors() */
+    @Override
     @SuppressWarnings("unchecked")
     public final List<AttributeDescriptor> getAttributeDescriptors() {
         // Here we circumvent the generics type system. Because we provide the schema and know it is
@@ -76,6 +77,7 @@ public class SimpleFeatureTypeImpl extends FeatureTypeImpl implements SimpleFeat
         return (List) getDescriptors();
     }
 
+    @Override
     public List<AttributeType> getTypes() {
         if (types == null) {
             synchronized (this) {
@@ -91,6 +93,7 @@ public class SimpleFeatureTypeImpl extends FeatureTypeImpl implements SimpleFeat
         return types;
     }
 
+    @Override
     public AttributeType getType(Name name) {
         AttributeDescriptor attribute = getDescriptor(name);
         if (attribute != null) {
@@ -99,6 +102,7 @@ public class SimpleFeatureTypeImpl extends FeatureTypeImpl implements SimpleFeat
         return null;
     }
 
+    @Override
     public AttributeType getType(String name) {
         AttributeDescriptor attribute = getDescriptor(name);
         if (attribute != null) {
@@ -107,22 +111,27 @@ public class SimpleFeatureTypeImpl extends FeatureTypeImpl implements SimpleFeat
         return null;
     }
 
+    @Override
     public AttributeType getType(int index) {
         return getTypes().get(index);
     }
 
+    @Override
     public AttributeDescriptor getDescriptor(Name name) {
         return (AttributeDescriptor) super.getDescriptor(name);
     }
 
+    @Override
     public AttributeDescriptor getDescriptor(String name) {
         return descriptors.get(name);
     }
 
+    @Override
     public AttributeDescriptor getDescriptor(int index) {
         return getAttributeDescriptors().get(index);
     }
 
+    @Override
     public int indexOf(Name name) {
         if (name.getNamespaceURI() == null) {
             return indexOf(name.getLocalPart());
@@ -138,6 +147,7 @@ public class SimpleFeatureTypeImpl extends FeatureTypeImpl implements SimpleFeat
         return -1;
     }
 
+    @Override
     public int indexOf(String name) {
         Integer idx = index.get(name);
         if (idx != null) {
@@ -147,10 +157,12 @@ public class SimpleFeatureTypeImpl extends FeatureTypeImpl implements SimpleFeat
         }
     }
 
+    @Override
     public int getAttributeCount() {
         return getAttributeDescriptors().size();
     }
 
+    @Override
     public String getTypeName() {
         return getName().getLocalPart();
     }

@@ -58,27 +58,32 @@ public class SimpleElementHandler extends XMLElementHandler {
     }
 
     /** @see org.geotools.xml.XMLElementHandler#getElement() */
+    @Override
     public Element getElement() {
         return elem;
     }
 
     /** @see org.geotools.xml.XMLElementHandler#getHandler(java.lang.String, java.lang.String) */
+    @Override
     public XMLElementHandler getHandler(
             URI namespaceURI, String localName, Map<String, Object> hints) throws SAXException {
         throw new SAXException("Should not have any children - this is a simpleType");
     }
 
     /** @see org.geotools.xml.XMLElementHandler#getValue() */
+    @Override
     public Object getValue() {
         return value;
     }
 
     /** @see org.geotools.xml.XMLElementHandler#getName() */
+    @Override
     public String getName() {
         return elem.getName();
     }
 
     /** @see org.geotools.xml.XMLElementHandler#characters(java.lang.String) */
+    @Override
     public void characters(String text1) {
         if (this.text != null) {
             this.text = this.text.concat(text1);
@@ -88,6 +93,7 @@ public class SimpleElementHandler extends XMLElementHandler {
     }
 
     /** @see org.geotools.xml.XMLElementHandler#endElement(java.lang.String, java.lang.String) */
+    @Override
     public void endElement(URI namespaceURI, String localName, Map<String, Object> hints)
             throws OperationNotSupportedException, SAXException {
         text = (text == null) ? null : text.trim();
@@ -103,6 +109,7 @@ public class SimpleElementHandler extends XMLElementHandler {
      * @see org.geotools.xml.XMLElementHandler#startElement(java.lang.String, java.lang.String,
      *     org.xml.sax.Attributes)
      */
+    @Override
     public void startElement(URI namespaceURI, String localName, Attributes attr1) {
         this.attr = new AttributesImpl(attr1);
     }
@@ -130,11 +137,13 @@ public class SimpleElementHandler extends XMLElementHandler {
         }
 
         /** @see org.geotools.xml.xsi.ElementValue#getElement() */
+        @Override
         public Element getElement() {
             return t;
         }
 
         /** @see org.geotools.xml.xsi.ElementValue#getValue() */
+        @Override
         public Object getValue() {
             return value;
         }

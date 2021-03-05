@@ -713,6 +713,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * @throws IllegalArgumentException If the table already exists.
      * @throws IOException If the table cannot be created due to an error.
      */
+    @Override
     public void createSchema(final SimpleFeatureType featureType) throws IOException {
         if (entry(featureType.getName()) != null) {
             String msg = "Schema '" + featureType.getName() + "' already exists";
@@ -744,10 +745,12 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         }
     }
 
+    @Override
     public void removeSchema(String typeName) throws IOException {
         removeSchema(name(typeName));
     }
 
+    @Override
     public void removeSchema(Name typeName) throws IOException {
         if (entry(typeName) == null) {
             String msg = "Schema '" + typeName + "' does not exist";
@@ -790,6 +793,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     }
 
     /** */
+    @Override
     public Object getGmlObject(GmlObjectId id, Hints hints) throws IOException {
         // geometry?
         if (isAssociations()) {
@@ -881,6 +885,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      *
      * @see ContentDataStore#createFeatureSource(ContentEntry)
      */
+    @Override
     protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
         // grab the schema, it carries a flag telling us if the feature type is read only
         SimpleFeatureType schema = entry.getState(Transaction.AUTO_COMMIT).getFeatureType();
@@ -911,6 +916,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      *
      * @see ContentDataStore#createContentState(ContentEntry)
      */
+    @Override
     protected ContentState createContentState(ContentEntry entry) {
         JDBCState state = new JDBCState(entry);
         state.setExposePrimaryKeyColumns(exposePrimaryKeyColumns);
@@ -922,6 +928,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      *
      * <p>The list is generated from the underlying database metadata.
      */
+    @Override
     protected List<Name> createTypeNames() throws IOException {
         Connection cx = createConnection();
 
@@ -4761,6 +4768,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         }
     }
 
+    @Override
     @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         if (dataSource != null) {
@@ -4773,6 +4781,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         }
     }
 
+    @Override
     public void dispose() {
         super.dispose();
         if (dataSource != null && dataSource instanceof ManageableDataSource) {

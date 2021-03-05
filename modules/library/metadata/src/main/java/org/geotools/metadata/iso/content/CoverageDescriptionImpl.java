@@ -59,6 +59,7 @@ public class CoverageDescriptionImpl extends ContentInformationImpl implements C
     }
 
     /** Returns the description of the attribute described by the measurement value. */
+    @Override
     public RecordType getAttributeDescription() {
         return attributeDescription;
     }
@@ -70,6 +71,7 @@ public class CoverageDescriptionImpl extends ContentInformationImpl implements C
     }
 
     /** Returns the type of information represented by the cell value. */
+    @Override
     public CoverageContentType getContentType() {
         return contentType;
     }
@@ -85,6 +87,7 @@ public class CoverageDescriptionImpl extends ContentInformationImpl implements C
      *
      * @since 2.4
      */
+    @Override
     public Collection<RangeDimension> getDimensions() {
         return (dimensions = nonNullCollection(dimensions, RangeDimension.class));
     }

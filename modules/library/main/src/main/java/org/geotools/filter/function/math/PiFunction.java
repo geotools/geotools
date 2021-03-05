@@ -34,6 +34,7 @@ public class PiFunction extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public String toString() {
         return "PI()";
     }

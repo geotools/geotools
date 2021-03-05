@@ -33,23 +33,28 @@ public class JDBCClosingFeatureReader
         this.reader = reader;
     }
 
+    @Override
     public FeatureReader<SimpleFeatureType, SimpleFeature> getDelegate() {
         return reader;
     }
 
+    @Override
     public SimpleFeatureType getFeatureType() {
         return reader.getFeatureType();
     }
 
+    @Override
     public boolean hasNext() throws IOException {
         return reader.hasNext();
     }
 
+    @Override
     public SimpleFeature next()
             throws IOException, IllegalArgumentException, NoSuchElementException {
         return reader.next();
     }
 
+    @Override
     @SuppressWarnings({"PMD.CloseResource", "unchecked"}) // we are actually closing
     public void close() throws IOException {
         FeatureReader<SimpleFeatureType, SimpleFeature> r = reader;

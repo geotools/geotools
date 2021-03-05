@@ -426,6 +426,7 @@ public class ThreadedEpsgFactory extends DeferredAuthorityFactory
      * @throws FactoryException if the constructor failed to connect to the EPSG database. This
      *     exception usually has a {@link SQLException} as its cause.
      */
+    @Override
     protected AbstractAuthorityFactory createBackingStore() throws FactoryException {
         final AbstractAuthorityFactory factory;
         String product = '<' + Vocabulary.format(VocabularyKeys.UNKNOWN) + '>';

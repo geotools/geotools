@@ -112,6 +112,7 @@ public class DefaultPassThroughOperation extends DefaultSingleOperation
      *
      * @return The operation.
      */
+    @Override
     public Operation getOperation() {
         return operation;
     }
@@ -124,6 +125,7 @@ public class DefaultPassThroughOperation extends DefaultSingleOperation
      * @return The modified coordinates.
      * @todo Current version work only with Geotools implementation.
      */
+    @Override
     public int[] getModifiedCoordinates() {
         if (!(transform instanceof PassThroughTransform)) {
             throw new UnsupportedImplementationException(transform.getClass());

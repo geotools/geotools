@@ -347,30 +347,37 @@ public class ReprojectingFilterVisitorTest {
             ls.setUserData(CRS.decode("urn:x-ogc:def:crs:EPSG:6.11.2:4326"));
         }
 
+        @Override
         public String getName() {
             return "function";
         }
 
+        @Override
         public List<Expression> getParameters() {
             return Collections.emptyList();
         }
 
+        @Override
         public Object accept(ExpressionVisitor visitor, Object extraData) {
             return visitor.visit(this, extraData);
         }
 
+        @Override
         public Object evaluate(Object object) {
             return ls;
         }
 
+        @Override
         public <T> T evaluate(Object object, Class<T> context) {
             return context.cast(ls);
         }
 
+        @Override
         public Literal getFallbackValue() {
             return null;
         }
 
+        @Override
         public FunctionName getFunctionName() {
             return new FunctionNameImpl("geometryfunction");
         }

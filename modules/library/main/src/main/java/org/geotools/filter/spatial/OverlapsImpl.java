@@ -42,6 +42,7 @@ public class OverlapsImpl extends GeometryFilterImpl implements Overlaps {
         else return false;
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

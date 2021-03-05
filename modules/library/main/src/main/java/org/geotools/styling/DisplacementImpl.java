@@ -76,6 +76,7 @@ public class DisplacementImpl implements Displacement, Cloneable {
      *
      * @param displacementX New value of property displacementX.
      */
+    @Override
     public void setDisplacementX(Expression displacementX) {
         this.displacementX = displacementX;
     }
@@ -92,6 +93,7 @@ public class DisplacementImpl implements Displacement, Cloneable {
      *
      * @param displacementY New value of property displacementY.
      */
+    @Override
     public void setDisplacementY(Expression displacementY) {
         this.displacementY = displacementY;
     }
@@ -109,6 +111,7 @@ public class DisplacementImpl implements Displacement, Cloneable {
      *
      * @return Value of property displacementX.
      */
+    @Override
     public Expression getDisplacementX() {
         return displacementX;
     }
@@ -118,14 +121,17 @@ public class DisplacementImpl implements Displacement, Cloneable {
      *
      * @return Value of property displacementY.
      */
+    @Override
     public Expression getDisplacementY() {
         return displacementY;
     }
 
+    @Override
     public Object accept(StyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
+    @Override
     public void accept(org.geotools.styling.StyleVisitor visitor) {
         visitor.visit(this);
     }
@@ -133,6 +139,7 @@ public class DisplacementImpl implements Displacement, Cloneable {
     /* (non-Javadoc)
      * @see org.opengis.util.Cloneable#clone()
      */
+    @Override
     public Object clone() {
         try {
             return super.clone();
@@ -144,6 +151,7 @@ public class DisplacementImpl implements Displacement, Cloneable {
     /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -162,6 +170,7 @@ public class DisplacementImpl implements Displacement, Cloneable {
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public int hashCode() {
         final int PRIME = 37;
         int result = 17;

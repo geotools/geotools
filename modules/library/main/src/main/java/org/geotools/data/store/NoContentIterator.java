@@ -41,10 +41,12 @@ public class NoContentIterator implements Iterator<SimpleFeature> {
         origionalProblem = t;
     }
 
+    @Override
     public boolean hasNext() {
         return origionalProblem != null;
     }
 
+    @Override
     public SimpleFeature next() {
         if (origionalProblem == null) {
             // you only get the real error on the first offense
@@ -59,6 +61,7 @@ public class NoContentIterator implements Iterator<SimpleFeature> {
         throw cantFind;
     }
 
+    @Override
     public void remove() {
         if (origionalProblem == null) {
             // user did not call next first

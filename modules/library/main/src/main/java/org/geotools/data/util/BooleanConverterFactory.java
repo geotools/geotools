@@ -39,6 +39,7 @@ import org.geotools.util.factory.Hints;
  */
 public class BooleanConverterFactory implements ConverterFactory {
 
+    @Override
     public Converter createConverter(Class source, Class target, Hints hints) {
         if (target.equals(Boolean.class)) {
 
@@ -46,6 +47,7 @@ public class BooleanConverterFactory implements ConverterFactory {
             if (source.equals(String.class)) {
                 return new Converter() {
 
+                    @Override
                     public <T> T convert(Object source, Class<T> target) throws Exception {
                         if ("true".equals(source) || "1".equals(source)) {
                             return target.cast(Boolean.TRUE);
@@ -63,6 +65,7 @@ public class BooleanConverterFactory implements ConverterFactory {
             if (source.equals(Integer.class)) {
                 return new Converter() {
 
+                    @Override
                     public <T> T convert(Object source, Class<T> target) throws Exception {
                         if (Integer.valueOf(1).equals(source)) {
                             return target.cast(Boolean.TRUE);

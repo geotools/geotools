@@ -310,34 +310,42 @@ public class Parameter<T> implements org.opengis.parameter.Parameter<T> {
         this(key, type, null, null, min > 0, min, max, null, null);
     }
 
+    @Override
     public String getName() {
         return key;
     }
 
+    @Override
     public InternationalString getTitle() {
         return title;
     }
 
+    @Override
     public InternationalString getDescription() {
         return description;
     }
 
+    @Override
     public Class<T> getType() {
         return type;
     }
 
+    @Override
     public Boolean isRequired() {
         return required;
     }
 
+    @Override
     public int getMinOccurs() {
         return minOccurs;
     }
 
+    @Override
     public int getMaxOccurs() {
         return maxOccurs;
     }
 
+    @Override
     public T getDefaultValue() {
         return sample;
     }
@@ -383,6 +391,7 @@ public class Parameter<T> implements org.opengis.parameter.Parameter<T> {
         return level;
     }
 
+    @Override
     public String toString() {
         StringBuilder build = new StringBuilder();
         build.append(key);

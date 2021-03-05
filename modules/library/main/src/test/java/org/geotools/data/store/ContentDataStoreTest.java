@@ -35,6 +35,7 @@ public class ContentDataStoreTest extends AbstractContentTest {
         final AtomicInteger creationCounter = new AtomicInteger(0);
         MockContentDataStore store =
                 new MockContentDataStore() {
+                    @Override
                     protected java.util.List<org.opengis.feature.type.Name> createTypeNames()
                             throws java.io.IOException {
                         creationCounter.incrementAndGet();
@@ -56,6 +57,7 @@ public class ContentDataStoreTest extends AbstractContentTest {
         final AtomicInteger creationCounter = new AtomicInteger(0);
         MockContentDataStore store =
                 new MockContentDataStore() {
+                    @Override
                     protected java.util.List<org.opengis.feature.type.Name> createTypeNames()
                             throws java.io.IOException {
                         creationCounter.incrementAndGet();

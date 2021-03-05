@@ -280,6 +280,7 @@ public interface GenericName extends Comparable<GenericName> {
      *
      * @return A local-independant string representation of this name.
      */
+    @Override
     /// @Override
     @Extension
     String toString();

@@ -37,10 +37,12 @@ public class PushBackFeatureIterator<F extends Feature> extends DecoratingFeatur
         super(iterator);
     }
 
+    @Override
     public boolean hasNext() {
         return current != null || delegate.hasNext();
     }
 
+    @Override
     public F next() throws NoSuchElementException {
         if (current != null) {
             last = current;
@@ -66,6 +68,7 @@ public class PushBackFeatureIterator<F extends Feature> extends DecoratingFeatur
         }
     }
 
+    @Override
     public void close() {
         delegate.close();
     }

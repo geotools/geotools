@@ -88,6 +88,7 @@ public class GeoreferenceableImpl extends GridSpatialRepresentationImpl
     }
 
     /** Indication of whether or not control point(s) exists. */
+    @Override
     public boolean isControlPointAvailable() {
         return controlPointAvailable;
     }
@@ -99,6 +100,7 @@ public class GeoreferenceableImpl extends GridSpatialRepresentationImpl
     }
 
     /** Indication of whether or not orientation parameters are available. */
+    @Override
     public boolean isOrientationParameterAvailable() {
         return orientationParameterAvailable;
     }
@@ -110,6 +112,7 @@ public class GeoreferenceableImpl extends GridSpatialRepresentationImpl
     }
 
     /** Description of parameters used to describe sensor orientation. */
+    @Override
     public InternationalString getOrientationParameterDescription() {
         return orientationParameterDescription;
     }
@@ -125,6 +128,7 @@ public class GeoreferenceableImpl extends GridSpatialRepresentationImpl
      *
      * @since 2.4
      */
+    @Override
     public Record getGeoreferencedParameters() {
         return georeferencedParameters;
     }
@@ -140,6 +144,7 @@ public class GeoreferenceableImpl extends GridSpatialRepresentationImpl
     }
 
     /** Reference providing description of the parameters. */
+    @Override
     public Collection<Citation> getParameterCitation() {
         return (parameterCitation = nonNullCollection(parameterCitation, Citation.class));
     }

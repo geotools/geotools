@@ -47,26 +47,31 @@ public class AttributeGroupGT implements AttributeGroup {
     }
 
     /** @see org.geotools.xml.xsi.AttributeGroup#getAnyAttributeNameSpace() */
+    @Override
     public String getAnyAttributeNameSpace() {
         return anyAttributeNamespace;
     }
 
     /** @see org.geotools.xml.xsi.AttributeGroup#getAttributeDescriptors() */
+    @Override
     public Attribute[] getAttributes() {
         return attributes;
     }
 
     /** @see org.geotools.xml.xsi.AttributeGroup#getId() */
+    @Override
     public String getId() {
         return id;
     }
 
     /** @see org.geotools.xml.xsi.AttributeGroup#getLocalName() */
+    @Override
     public String getName() {
         return name;
     }
 
     /** @see org.geotools.xml.xsi.AttributeGroup#getNamespace() */
+    @Override
     public URI getNamespace() {
         return namespace;
     }

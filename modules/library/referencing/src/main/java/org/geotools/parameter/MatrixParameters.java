@@ -95,6 +95,7 @@ public class MatrixParameters extends ParameterGroup implements ParameterDescrip
      * Forward the call to the {@linkplain MatrixParameterDescriptors matrix parameter descriptors}
      * specified at construction time.
      */
+    @Override
     public ReferenceIdentifier getName() {
         return descriptor.getName();
     }
@@ -103,6 +104,7 @@ public class MatrixParameters extends ParameterGroup implements ParameterDescrip
      * Forward the call to the {@linkplain MatrixParameterDescriptors matrix parameter descriptors}
      * specified at construction time.
      */
+    @Override
     public Collection<GenericName> getAlias() {
         return descriptor.getAlias();
     }
@@ -111,6 +113,7 @@ public class MatrixParameters extends ParameterGroup implements ParameterDescrip
      * Forward the call to the {@linkplain MatrixParameterDescriptors matrix parameter descriptors}
      * specified at construction time.
      */
+    @Override
     public Set<ReferenceIdentifier> getIdentifiers() {
         return descriptor.getIdentifiers();
     }
@@ -119,6 +122,7 @@ public class MatrixParameters extends ParameterGroup implements ParameterDescrip
      * Forward the call to the {@linkplain MatrixParameterDescriptors matrix parameter descriptors}
      * specified at construction time.
      */
+    @Override
     public InternationalString getRemarks() {
         return descriptor.getRemarks();
     }
@@ -127,6 +131,7 @@ public class MatrixParameters extends ParameterGroup implements ParameterDescrip
      * Forward the call to the {@linkplain MatrixParameterDescriptors matrix parameter descriptors}
      * specified at construction time.
      */
+    @Override
     public int getMinimumOccurs() {
         return descriptor.getMinimumOccurs();
     }
@@ -135,6 +140,7 @@ public class MatrixParameters extends ParameterGroup implements ParameterDescrip
      * Forward the call to the {@linkplain MatrixParameterDescriptors matrix parameter descriptors}
      * specified at construction time.
      */
+    @Override
     public int getMaximumOccurs() {
         return descriptor.getMaximumOccurs();
     }
@@ -151,6 +157,7 @@ public class MatrixParameters extends ParameterGroup implements ParameterDescrip
      * @return The parameter for the given name.
      * @throws ParameterNotFoundException if there is no parameter for the given name.
      */
+    @Override
     public GeneralParameterDescriptor descriptor(final String name)
             throws ParameterNotFoundException {
         return ((MatrixParameterDescriptors) descriptor)
@@ -263,6 +270,7 @@ public class MatrixParameters extends ParameterGroup implements ParameterDescrip
      * Returns the parameters descriptors in this group. The amount of parameters depends on the
      * value of <code>"num_row"</code> and <code>"num_col"</code> parameters.
      */
+    @Override
     public List<GeneralParameterDescriptor> descriptors() {
         return ((MatrixParameterDescriptors) descriptor)
                 .descriptors(numRow.intValue(), numCol.intValue());
@@ -305,6 +313,7 @@ public class MatrixParameters extends ParameterGroup implements ParameterDescrip
      * Forwards the call to the {@linkplain MatrixParameterDescriptors matrix parameter descriptors}
      * specified at construction time.
      */
+    @Override
     public ParameterValueGroup createValue() {
         return (ParameterValueGroup) descriptor.createValue();
     }

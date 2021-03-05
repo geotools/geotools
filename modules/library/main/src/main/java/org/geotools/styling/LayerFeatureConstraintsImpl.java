@@ -22,14 +22,17 @@ public class LayerFeatureConstraintsImpl implements LayerFeatureConstraints {
 
     private FeatureTypeConstraint[] constraints;
 
+    @Override
     public FeatureTypeConstraint[] getFeatureTypeConstraints() {
         return constraints;
     }
 
+    @Override
     public void setFeatureTypeConstraints(FeatureTypeConstraint[] constraints) {
         this.constraints = constraints;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -43,6 +46,7 @@ public class LayerFeatureConstraintsImpl implements LayerFeatureConstraints {
         return false;
     }
 
+    @Override
     public int hashCode() {
         final int PRIME = 1000003;
         int result = 0;

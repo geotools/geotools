@@ -31,6 +31,7 @@ public interface FeatureType extends ComplexType {
      *
      * @return <code>true</code>
      */
+    @Override
     boolean isIdentified();
 
     /**

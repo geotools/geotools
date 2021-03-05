@@ -36,6 +36,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
 
     JDBCFeatureStore store;
 
+    @Override
     protected void connect() throws Exception {
         super.connect();
 

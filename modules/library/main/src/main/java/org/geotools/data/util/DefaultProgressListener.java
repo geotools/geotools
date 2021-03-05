@@ -113,6 +113,7 @@ public class DefaultProgressListener extends NullProgressListener
     /* (non-Javadoc)
      * @see org.geotools.util.ProgressListener#complete()
      */
+    @Override
     public void complete() {
         this.completed = true;
     }
@@ -120,6 +121,7 @@ public class DefaultProgressListener extends NullProgressListener
     /* (non-Javadoc)
      * @see org.geotools.util.ProgressListener#dispose()
      */
+    @Override
     public void dispose() {
         exceptionQueue.clear();
         warnings.clear();
@@ -128,6 +130,7 @@ public class DefaultProgressListener extends NullProgressListener
     /* (non-Javadoc)
      * @see org.geotools.util.ProgressListener#exceptionOccurred(java.lang.Throwable)
      */
+    @Override
     public void exceptionOccurred(Throwable exception) {
         this.exceptionQueue.add(exception);
     }
@@ -135,6 +138,7 @@ public class DefaultProgressListener extends NullProgressListener
     /* (non-Javadoc)
      * @see org.geotools.util.ProgressListener#progress(float)
      */
+    @Override
     public void progress(float percent) {
         this.progress = percent;
     }
@@ -142,6 +146,7 @@ public class DefaultProgressListener extends NullProgressListener
     /* (non-Javadoc)
      * @see org.geotools.util.ProgressListener#started()
      */
+    @Override
     public void started() {
         this.started = true;
     }
@@ -149,6 +154,7 @@ public class DefaultProgressListener extends NullProgressListener
     /* (non-Javadoc)
      * @see org.geotools.util.ProgressListener#warningOccurred(java.lang.String, java.lang.String, java.lang.String)
      */
+    @Override
     public void warningOccurred(String source, String margin, String warning) {
         final Warning w = new Warning();
         w.setMargin(margin);
@@ -160,6 +166,7 @@ public class DefaultProgressListener extends NullProgressListener
     /* (non-Javadoc)
      * @see org.opengis.util.ProgressListener#getProgress()
      */
+    @Override
     public float getProgress() {
         return progress;
     }
@@ -167,6 +174,7 @@ public class DefaultProgressListener extends NullProgressListener
     /* (non-Javadoc)
      * @see org.opengis.util.ProgressListener#getTask()
      */
+    @Override
     public InternationalString getTask() {
         return task;
     }
@@ -174,6 +182,7 @@ public class DefaultProgressListener extends NullProgressListener
     /* (non-Javadoc)
      * @see org.opengis.util.ProgressListener#setTask(org.opengis.util.InternationalString)
      */
+    @Override
     public void setTask(InternationalString task) {
         this.task = task;
     }

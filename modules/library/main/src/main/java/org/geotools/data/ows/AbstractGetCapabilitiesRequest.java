@@ -42,6 +42,7 @@ public abstract class AbstractGetCapabilitiesRequest extends AbstractRequest
      *
      * <p>Subclass can override if needed.
      */
+    @Override
     protected void initRequest() {
         setProperty(REQUEST, "GetCapabilities"); // $NON-NLS-1$
     }

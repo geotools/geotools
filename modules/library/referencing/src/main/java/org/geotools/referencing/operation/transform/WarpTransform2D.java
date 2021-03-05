@@ -467,11 +467,13 @@ public class WarpTransform2D extends AbstractMathTransform
     }
 
     /** Returns the dimension of input points. */
+    @Override
     public int getSourceDimensions() {
         return 2;
     }
 
     /** Returns the dimension of output points. */
+    @Override
     public int getTargetDimensions() {
         return 2;
     }
@@ -547,6 +549,7 @@ public class WarpTransform2D extends AbstractMathTransform
      * Transforms source coordinates (usually pixel indices) into destination coordinates (usually
      * "real world" coordinates).
      */
+    @Override
     public void transform(
             final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
         final int postIncrement;

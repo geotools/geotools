@@ -35,11 +35,13 @@ public class AttributeValueGT implements AttributeValue {
     }
 
     /** @see org.geotools.xml.schema.AttributeValue#getValue() */
+    @Override
     public String getValue() {
         return value;
     }
 
     /** @see org.geotools.xml.schema.AttributeValue#getAttribute() */
+    @Override
     public Attribute getAttribute() {
         return attribute;
     }

@@ -74,11 +74,13 @@ public class Log extends BaseMathOperationJAI {
         super("Log", getOperationDescriptor(JAIExt.getOperationName("Log")));
     }
 
+    @Override
     public String getName() {
         return "Log";
     }
 
     /** Returns the expected range of values for the resulting image. */
+    @Override
     protected NumberRange<? extends Number> deriveRange(
             final NumberRange<? extends Number>[] ranges, final Parameters parameters) {
         final NumberRange range = ranges[0];
@@ -87,6 +89,7 @@ public class Log extends BaseMathOperationJAI {
         return NumberRange.create(min, max);
     }
 
+    @Override
     protected void handleJAIEXTParams(
             ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
         if (JAIExt.isJAIExtOperation("algebric")) {
@@ -100,6 +103,7 @@ public class Log extends BaseMathOperationJAI {
         }
     }
 
+    @Override
     protected Map<String, ?> getProperties(
             RenderedImage data,
             CoordinateReferenceSystem crs,

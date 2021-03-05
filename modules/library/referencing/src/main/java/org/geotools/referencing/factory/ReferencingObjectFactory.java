@@ -232,6 +232,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param unit Linear units of ellipsoid axes.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public Ellipsoid createEllipsoid(
             Map<String, ?> properties,
             double semiMajorAxis,
@@ -259,6 +260,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param unit Linear units of major axis.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public Ellipsoid createFlattenedSphere(
             Map<String, ?> properties,
             double semiMajorAxis,
@@ -285,6 +287,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param angularUnit Angular units of longitude.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public PrimeMeridian createPrimeMeridian(
             Map<String, ?> properties, double longitude, Unit<Angle> angularUnit)
             throws FactoryException {
@@ -306,6 +309,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param primeMeridian Prime meridian to use in new geodetic datum.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public GeodeticDatum createGeodeticDatum(
             Map<String, ?> properties, Ellipsoid ellipsoid, PrimeMeridian primeMeridian)
             throws FactoryException {
@@ -326,6 +330,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param type The type of this vertical datum (often geoidal).
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public VerticalDatum createVerticalDatum(Map<String, ?> properties, VerticalDatumType type)
             throws FactoryException {
         VerticalDatum datum;
@@ -345,6 +350,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param origin The date and time origin of this temporal datum.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public TemporalDatum createTemporalDatum(Map<String, ?> properties, Date origin)
             throws FactoryException {
         TemporalDatum datum;
@@ -363,6 +369,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param properties Name and other properties to give to the new object.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public EngineeringDatum createEngineeringDatum(Map<String, ?> properties)
             throws FactoryException {
         EngineeringDatum datum;
@@ -383,6 +390,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      *     attributes.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public ImageDatum createImageDatum(Map<String, ?> properties, PixelInCell pixelInCell)
             throws FactoryException {
         ImageDatum datum;
@@ -410,6 +418,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param unit The coordinate axis unit.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public CoordinateSystemAxis createCoordinateSystemAxis(
             Map<String, ?> properties, String abbreviation, AxisDirection direction, Unit<?> unit)
             throws FactoryException {
@@ -431,6 +440,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param axis1 The second axis.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public CartesianCS createCartesianCS(
             Map<String, ?> properties, CoordinateSystemAxis axis0, CoordinateSystemAxis axis1)
             throws FactoryException {
@@ -453,6 +463,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param axis2 The third axis.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public CartesianCS createCartesianCS(
             Map<String, ?> properties,
             CoordinateSystemAxis axis0,
@@ -477,6 +488,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param axis1 The second axis.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public AffineCS createAffineCS(
             Map<String, ?> properties, CoordinateSystemAxis axis0, CoordinateSystemAxis axis1)
             throws FactoryException {
@@ -499,6 +511,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param axis2 The third axis.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public AffineCS createAffineCS(
             Map<String, ?> properties,
             CoordinateSystemAxis axis0,
@@ -523,6 +536,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param axis1 The second axis.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public PolarCS createPolarCS(
             Map<String, ?> properties, CoordinateSystemAxis axis0, CoordinateSystemAxis axis1)
             throws FactoryException {
@@ -545,6 +559,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param axis2 The third axis.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public CylindricalCS createCylindricalCS(
             Map<String, ?> properties,
             CoordinateSystemAxis axis0,
@@ -570,6 +585,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param axis2 The third axis.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public SphericalCS createSphericalCS(
             Map<String, ?> properties,
             CoordinateSystemAxis axis0,
@@ -594,6 +610,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param axis1 The second axis.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public EllipsoidalCS createEllipsoidalCS(
             Map<String, ?> properties, CoordinateSystemAxis axis0, CoordinateSystemAxis axis1)
             throws FactoryException {
@@ -616,6 +633,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param axis2 The third axis.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public EllipsoidalCS createEllipsoidalCS(
             Map<String, ?> properties,
             CoordinateSystemAxis axis0,
@@ -639,6 +657,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param axis The axis.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public VerticalCS createVerticalCS(Map<String, ?> properties, CoordinateSystemAxis axis)
             throws FactoryException {
         VerticalCS cs;
@@ -658,6 +677,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param axis The axis.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public TimeCS createTimeCS(Map<String, ?> properties, CoordinateSystemAxis axis)
             throws FactoryException {
         TimeCS cs;
@@ -677,6 +697,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param axis The axis.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public LinearCS createLinearCS(Map<String, ?> properties, CoordinateSystemAxis axis)
             throws FactoryException {
         LinearCS cs;
@@ -697,6 +718,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param axis1 The second axis.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public UserDefinedCS createUserDefinedCS(
             Map<String, ?> properties, CoordinateSystemAxis axis0, CoordinateSystemAxis axis1)
             throws FactoryException {
@@ -719,6 +741,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param axis2 The third axis.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public UserDefinedCS createUserDefinedCS(
             Map<String, ?> properties,
             CoordinateSystemAxis axis0,
@@ -749,6 +772,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param elements ordered array of {@code CoordinateReferenceSystem} objects.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public CompoundCRS createCompoundCRS(
             Map<String, ?> properties, CoordinateReferenceSystem[] elements)
             throws FactoryException {
@@ -770,6 +794,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param cs The coordinate system for the created CRS.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public EngineeringCRS createEngineeringCRS(
             Map<String, ?> properties, EngineeringDatum datum, CoordinateSystem cs)
             throws FactoryException {
@@ -791,6 +816,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param cs The Cartesian or Oblique Cartesian coordinate system for the created CRS.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public ImageCRS createImageCRS(Map<String, ?> properties, ImageDatum datum, AffineCS cs)
             throws FactoryException {
         ImageCRS crs;
@@ -811,6 +837,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param cs The Temporal coordinate system for the created CRS.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public TemporalCRS createTemporalCRS(Map<String, ?> properties, TemporalDatum datum, TimeCS cs)
             throws FactoryException {
         TemporalCRS crs;
@@ -831,6 +858,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param cs The Vertical coordinate system for the created CRS.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public VerticalCRS createVerticalCRS(
             Map<String, ?> properties, VerticalDatum datum, VerticalCS cs) throws FactoryException {
         VerticalCRS crs;
@@ -852,6 +880,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param cs The cartesian coordinate system for the created CRS.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public GeocentricCRS createGeocentricCRS(
             Map<String, ?> properties, GeodeticDatum datum, CartesianCS cs)
             throws FactoryException {
@@ -874,6 +903,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param cs The spherical coordinate system for the created CRS.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public GeocentricCRS createGeocentricCRS(
             Map<String, ?> properties, GeodeticDatum datum, SphericalCS cs)
             throws FactoryException {
@@ -896,6 +926,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param cs The ellipsoidal coordinate system for the created CRS.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public GeographicCRS createGeographicCRS(
             Map<String, ?> properties, GeodeticDatum datum, EllipsoidalCS cs)
             throws FactoryException {
@@ -922,6 +953,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @throws FactoryException if the object creation failed.
      * @since 2.5
      */
+    @Override
     public DerivedCRS createDerivedCRS(
             Map<String, ?> properties,
             CoordinateReferenceSystem baseCRS,
@@ -990,6 +1022,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @throws FactoryException if the object creation failed.
      * @since 2.5
      */
+    @Override
     public ProjectedCRS createProjectedCRS(
             Map<String, ?> properties,
             GeographicCRS baseCRS,
@@ -1068,6 +1101,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @throws FactoryException if the object creation failed.
      * @todo Not yet implemented.
      */
+    @Override
     public CoordinateReferenceSystem createFromXML(String xml) throws FactoryException {
         throw new FactoryException("Not yet implemented");
     }
@@ -1078,6 +1112,7 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param wkt Coordinate system encoded in Well-Known Text format.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public synchronized CoordinateReferenceSystem createFromWKT(final String wkt)
             throws FactoryException {
         /*

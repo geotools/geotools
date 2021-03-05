@@ -128,6 +128,7 @@ public class ExtendedElementInformationImpl extends MetadataEntity
     }
 
     /** Name of the extended metadata element. */
+    @Override
     public String getName() {
         return name;
     }
@@ -143,6 +144,7 @@ public class ExtendedElementInformationImpl extends MetadataEntity
      * methods may be used. Returns {@code null} if the {@linkplain #getDataType data type} is
      * {@linkplain Datatype#CODE_LIST_ELEMENT code list element}.
      */
+    @Override
     public String getShortName() {
         return shortName;
     }
@@ -158,6 +160,7 @@ public class ExtendedElementInformationImpl extends MetadataEntity
      * {@linkplain #getDataType data type} is {@linkplain Datatype#CODE_LIST_ELEMENT code list
      * element}.
      */
+    @Override
     public Integer getDomainCode() {
         return domainCode;
     }
@@ -169,6 +172,7 @@ public class ExtendedElementInformationImpl extends MetadataEntity
     }
 
     /** Definition of the extended element. */
+    @Override
     public InternationalString getDefinition() {
         return definition;
     }
@@ -180,6 +184,7 @@ public class ExtendedElementInformationImpl extends MetadataEntity
     }
 
     /** Obligation of the extended element. */
+    @Override
     public Obligation getObligation() {
         return obligation;
     }
@@ -194,6 +199,7 @@ public class ExtendedElementInformationImpl extends MetadataEntity
      * Condition under which the extended element is mandatory. Returns a non-null value only if the
      * {@linkplain #getObligation obligation} is {@linkplain Obligation#CONDITIONAL conditional}.
      */
+    @Override
     public InternationalString getCondition() {
         return condition;
     }
@@ -205,6 +211,7 @@ public class ExtendedElementInformationImpl extends MetadataEntity
     }
 
     /** Code which identifies the kind of value provided in the extended element. */
+    @Override
     public Datatype getDataType() {
         return dataType;
     }
@@ -221,6 +228,7 @@ public class ExtendedElementInformationImpl extends MetadataEntity
      * enumeration}, {@linkplain Datatype#CODE_LIST code list} or {@linkplain
      * Datatype#CODE_LIST_ELEMENT code list element}.
      */
+    @Override
     public Integer getMaximumOccurrence() {
         return maximumOccurrence;
     }
@@ -237,6 +245,7 @@ public class ExtendedElementInformationImpl extends MetadataEntity
      * Datatype#ENUMERATION enumeration}, {@linkplain Datatype#CODE_LIST code list} or {@linkplain
      * Datatype#CODE_LIST_ELEMENT code list element}.
      */
+    @Override
     public InternationalString getDomainValue() {
         return domainValue;
     }
@@ -251,6 +260,7 @@ public class ExtendedElementInformationImpl extends MetadataEntity
      * Name of the metadata entity(s) under which this extended metadata element may appear. The
      * name(s) may be standard metadata element(s) or other extended metadata element(s).
      */
+    @Override
     public Collection<String> getParentEntity() {
         return parentEntity = nonNullCollection(parentEntity, String.class);
     }
@@ -263,6 +273,7 @@ public class ExtendedElementInformationImpl extends MetadataEntity
     }
 
     /** Specifies how the extended element relates to other existing elements and entities. */
+    @Override
     public InternationalString getRule() {
         return rule;
     }
@@ -274,6 +285,7 @@ public class ExtendedElementInformationImpl extends MetadataEntity
     }
 
     /** Reason for creating the extended element. */
+    @Override
     public Collection<InternationalString> getRationales() {
         return (rationales = nonNullCollection(rationales, InternationalString.class));
     }
@@ -284,6 +296,7 @@ public class ExtendedElementInformationImpl extends MetadataEntity
     }
 
     /** Name of the person or organization creating the extended element. */
+    @Override
     public Collection<ResponsibleParty> getSources() {
         return sources = nonNullCollection(sources, ResponsibleParty.class);
     }

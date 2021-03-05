@@ -29,6 +29,7 @@ import javax.media.jai.CRIFImpl;
  */
 public class ColorInversionCRIF extends CRIFImpl {
 
+    @Override
     public RenderedImage create(ParameterBlock pb, RenderingHints hints) {
         final RenderedImage image = (RenderedImage) pb.getSource(0);
         final IndexColorModel icm = (IndexColorModel) pb.getObjectParameter(0);

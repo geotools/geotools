@@ -31,6 +31,7 @@ public interface MultiPoint extends MultiPrimitive {
      *
      * @since GeoAPI 2.1
      */
+    @Override
     @UML(identifier = "element", obligation = MANDATORY, specification = ISO_19107)
     Set<Point> getElements();
 

@@ -25,6 +25,7 @@ import org.opengis.filter.expression.Expression;
 
 /** Abstract base class for implementing style factories. */
 public abstract class AbstractStyleFactory implements StyleFactory {
+    @Override
     public abstract TextSymbolizer createTextSymbolizer(
             Fill fill,
             Font[] fonts,
@@ -33,20 +34,27 @@ public abstract class AbstractStyleFactory implements StyleFactory {
             LabelPlacement labelPlacement,
             String geometryPropertyName);
 
+    @Override
     public abstract ExternalGraphic createExternalGraphic(URL url, String format);
 
+    @Override
     public abstract ExternalGraphic createExternalGraphic(String uri, String format);
 
+    @Override
     public abstract ExternalGraphic createExternalGraphic(Icon inlineContent, String format);
 
+    @Override
     public abstract AnchorPoint createAnchorPoint(Expression x, Expression y);
 
+    @Override
     public abstract Displacement createDisplacement(Expression x, Expression y);
 
     //    public abstract LinePlacement createLinePlacement();
+    @Override
     public abstract PointSymbolizer createPointSymbolizer();
 
     //    public abstract PointPlacement createPointPlacement();
+    @Override
     public abstract Mark createMark(
             Expression wellKnownName,
             Stroke stroke,
@@ -59,6 +67,7 @@ public abstract class AbstractStyleFactory implements StyleFactory {
      *
      * @return a Mark that matches the name in this method.
      */
+    @Override
     public abstract Mark getCircleMark();
 
     /**
@@ -66,6 +75,7 @@ public abstract class AbstractStyleFactory implements StyleFactory {
      *
      * @return a Mark that matches the name in this method.
      */
+    @Override
     public abstract Mark getXMark();
 
     /**
@@ -73,6 +83,7 @@ public abstract class AbstractStyleFactory implements StyleFactory {
      *
      * @return a Mark that matches the name in this method.
      */
+    @Override
     public abstract Mark getStarMark();
 
     /**
@@ -80,6 +91,7 @@ public abstract class AbstractStyleFactory implements StyleFactory {
      *
      * @return a Mark that matches the name in this method.
      */
+    @Override
     public abstract Mark getSquareMark();
 
     /**
@@ -87,6 +99,7 @@ public abstract class AbstractStyleFactory implements StyleFactory {
      *
      * @return a Mark that matches the name in this method.
      */
+    @Override
     public abstract Mark getCrossMark();
 
     /**
@@ -94,34 +107,48 @@ public abstract class AbstractStyleFactory implements StyleFactory {
      *
      * @return a Mark that matches the name in this method.
      */
+    @Override
     public abstract Mark getTriangleMark();
 
+    @Override
     public abstract FeatureTypeStyle createFeatureTypeStyle(Rule[] rules);
 
+    @Override
     public abstract LinePlacement createLinePlacement(Expression offset);
 
+    @Override
     public abstract PolygonSymbolizer createPolygonSymbolizer();
 
+    @Override
     public abstract Halo createHalo(Fill fill, Expression radius);
 
+    @Override
     public abstract Fill createFill(
             Expression color, Expression backgroundColor, Expression opacity, Graphic graphicFill);
 
+    @Override
     public abstract LineSymbolizer createLineSymbolizer();
 
+    @Override
     public abstract PointSymbolizer createPointSymbolizer(
             Graphic graphic, String geometryPropertyName);
 
+    @Override
     public abstract Style createStyle();
 
+    @Override
     public abstract NamedStyle createNamedStyle();
 
+    @Override
     public abstract Fill createFill(Expression color, Expression opacity);
 
+    @Override
     public abstract Fill createFill(Expression color);
 
+    @Override
     public abstract TextSymbolizer createTextSymbolizer();
 
+    @Override
     public abstract PointPlacement createPointPlacement(
             AnchorPoint anchorPoint, Displacement displacement, Expression rotation);
 
@@ -133,6 +160,7 @@ public abstract class AbstractStyleFactory implements StyleFactory {
      * @return the stroke object
      * @see org.geotools.stroke
      */
+    @Override
     public abstract Stroke createStroke(Expression color, Expression width);
 
     /**
@@ -144,6 +172,7 @@ public abstract class AbstractStyleFactory implements StyleFactory {
      * @return The stroke
      * @see org.geotools.stroke
      */
+    @Override
     public abstract Stroke createStroke(Expression color, Expression width, Expression opacity);
 
     /**
@@ -161,6 +190,7 @@ public abstract class AbstractStyleFactory implements StyleFactory {
      * @return The completed stroke.
      * @see org.geotools.stroke
      */
+    @Override
     public abstract Stroke createStroke(
             Expression color,
             Expression width,
@@ -172,12 +202,16 @@ public abstract class AbstractStyleFactory implements StyleFactory {
             Graphic graphicFill,
             Graphic graphicStroke);
 
+    @Override
     public abstract Rule createRule();
 
+    @Override
     public abstract LineSymbolizer createLineSymbolizer(Stroke stroke, String geometryPropertyName);
 
+    @Override
     public abstract FeatureTypeStyle createFeatureTypeStyle();
 
+    @Override
     public abstract Graphic createGraphic(
             ExternalGraphic[] externalGraphics,
             Mark[] marks,
@@ -186,17 +220,21 @@ public abstract class AbstractStyleFactory implements StyleFactory {
             Expression size,
             Expression rotation);
 
+    @Override
     public abstract Font createFont(
             Expression fontFamily,
             Expression fontStyle,
             Expression fontWeight,
             Expression fontSize);
 
+    @Override
     public abstract Mark createMark();
 
+    @Override
     public abstract PolygonSymbolizer createPolygonSymbolizer(
             Stroke stroke, Fill fill, String geometryPropertyName);
 
+    @Override
     public abstract RasterSymbolizer createRasterSymbolizer(
             String geometryPropertyName,
             Expression opacity,
@@ -207,30 +245,42 @@ public abstract class AbstractStyleFactory implements StyleFactory {
             ShadedRelief relief,
             Symbolizer outline);
 
+    @Override
     public abstract RasterSymbolizer getDefaultRasterSymbolizer();
 
+    @Override
     public abstract SelectedChannelType createSelectedChannelType(
             Expression name, Expression enhancement);
 
+    @Override
     public abstract SelectedChannelType createSelectedChannelType(
             String name, ContrastEnhancement enhancement);
 
+    @Override
     public abstract ColorMap createColorMap();
 
+    @Override
     public abstract ColorMapEntry createColorMapEntry();
 
+    @Override
     public abstract Style getDefaultStyle();
 
+    @Override
     public abstract Stroke getDefaultStroke();
 
+    @Override
     public abstract Fill getDefaultFill();
 
+    @Override
     public abstract Mark getDefaultMark();
 
+    @Override
     public abstract PointSymbolizer getDefaultPointSymbolizer();
 
+    @Override
     public abstract PolygonSymbolizer getDefaultPolygonSymbolizer();
 
+    @Override
     public abstract LineSymbolizer getDefaultLineSymbolizer();
 
     /**
@@ -240,18 +290,23 @@ public abstract class AbstractStyleFactory implements StyleFactory {
      *
      * @return A default TextSymbolizer
      */
+    @Override
     public abstract TextSymbolizer getDefaultTextSymbolizer();
 
+    @Override
     public abstract Graphic getDefaultGraphic();
 
+    @Override
     public abstract Font getDefaultFont();
 
+    @Override
     public abstract PointPlacement getDefaultPointPlacement();
 
     /**
      * Returns implementation hints for this factory. The default implementation returns an empty
      * map.
      */
+    @Override
     public Map<RenderingHints.Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }

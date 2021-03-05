@@ -110,6 +110,7 @@ public class ImageDescriptionImpl extends CoverageDescriptionImpl implements Ima
      * intersection of the optical line of sight with the Earths surface. For images from a
      * scanning device, refer to the centre pixel of the image.
      */
+    @Override
     public Double getIlluminationElevationAngle() {
         return illuminationElevationAngle;
     }
@@ -129,6 +130,7 @@ public class ImageDescriptionImpl extends CoverageDescriptionImpl implements Ima
      * the image is taken. For images from a scanning device, refer to the centre pixel of the
      * image.
      */
+    @Override
     public Double getIlluminationAzimuthAngle() {
         return illuminationAzimuthAngle;
     }
@@ -143,6 +145,7 @@ public class ImageDescriptionImpl extends CoverageDescriptionImpl implements Ima
     }
 
     /** Returns the conditions affected the image. */
+    @Override
     public ImagingCondition getImagingCondition() {
         return imagingCondition;
     }
@@ -154,6 +157,7 @@ public class ImageDescriptionImpl extends CoverageDescriptionImpl implements Ima
     }
 
     /** Returns the specifies the image quality. */
+    @Override
     public Identifier getImageQualityCode() {
         return imageQualityCode;
     }
@@ -168,6 +172,7 @@ public class ImageDescriptionImpl extends CoverageDescriptionImpl implements Ima
      * Returns the area of the dataset obscured by clouds, expressed as a percentage of the spatial
      * extent.
      */
+    @Override
     public Double getCloudCoverPercentage() {
         return cloudCoverPercentage;
     }
@@ -185,6 +190,7 @@ public class ImageDescriptionImpl extends CoverageDescriptionImpl implements Ima
      * Returns the image distributors code that identifies the level of radiometric and geometric
      * processing that has been applied.
      */
+    @Override
     public Identifier getProcessingLevelCode() {
         return processingLevelCode;
     }
@@ -202,6 +208,7 @@ public class ImageDescriptionImpl extends CoverageDescriptionImpl implements Ima
      * Returns the count of the number the number of lossy compression cycles performed on the
      * image. Returns {@code null} if the information is not provided.
      */
+    @Override
     public Integer getCompressionGenerationQuantity() {
         return compressionGenerationQuantity;
     }
@@ -218,6 +225,7 @@ public class ImageDescriptionImpl extends CoverageDescriptionImpl implements Ima
      * Returns the indication of whether or not triangulation has been performed upon the image.
      * Returns {@code null} if the information is not provided.
      */
+    @Override
     public Boolean getTriangulationIndicator() {
         return triangulationIndicator;
     }
@@ -232,6 +240,7 @@ public class ImageDescriptionImpl extends CoverageDescriptionImpl implements Ima
      * Returns theiIndication of whether or not the radiometric calibration information for
      * generating the radiometrically calibrated standard data product is available.
      */
+    @Override
     public Boolean isRadiometricCalibrationDataAvailable() {
         return radiometricCalibrationDataAvailable;
     }
@@ -249,6 +258,7 @@ public class ImageDescriptionImpl extends CoverageDescriptionImpl implements Ima
      * Returns the indication of whether or not constants are available which allow for camera
      * calibration corrections.
      */
+    @Override
     public Boolean isCameraCalibrationInformationAvailable() {
         return cameraCalibrationInformationAvailable;
     }
@@ -263,6 +273,7 @@ public class ImageDescriptionImpl extends CoverageDescriptionImpl implements Ima
     }
 
     /** Returns the indication of whether or not Calibration Reseau information is available. */
+    @Override
     public Boolean isFilmDistortionInformationAvailable() {
         return filmDistortionInformationAvailable;
     }
@@ -276,6 +287,7 @@ public class ImageDescriptionImpl extends CoverageDescriptionImpl implements Ima
     /**
      * Returns the indication of whether or not lens aberration correction information is available.
      */
+    @Override
     public Boolean isLensDistortionInformationAvailable() {
         return lensDistortionInformationAvailable;
     }

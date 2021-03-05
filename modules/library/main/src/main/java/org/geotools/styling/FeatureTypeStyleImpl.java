@@ -94,38 +94,47 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
         this.transformation = fts.getTransformation();
     }
 
+    @Override
     public List<Rule> rules() {
         return rules;
     }
 
+    @Override
     public Set<SemanticType> semanticTypeIdentifiers() {
         return semantics;
     }
 
+    @Override
     public Set<Name> featureTypeNames() {
         return featureTypeNames;
     }
 
+    @Override
     public Id getFeatureInstanceIDs() {
         return featureInstances;
     }
 
+    @Override
     public Description getDescription() {
         return description;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
+    @Override
     public Object accept(StyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
+    @Override
     public void accept(org.geotools.styling.StyleVisitor visitor) {
         visitor.visit(this);
     }
@@ -135,6 +144,7 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
      *
      * @see org.geotools.styling.FeatureTypeStyle#clone()
      */
+    @Override
     public Object clone() {
         FeatureTypeStyleImpl clone;
 
@@ -166,6 +176,7 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
      *
      * @return The hashcode.
      */
+    @Override
     public int hashCode() {
         final int PRIME = 1000003;
         int result = 0;
@@ -218,6 +229,7 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
      * @param oth The other FeatureTypeStyleImpl to compare with.
      * @return True if this and oth are equal.
      */
+    @Override
     public boolean equals(Object oth) {
 
         if (this == oth) {
@@ -240,6 +252,7 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
         return false;
     }
 
+    @Override
     public String toString() {
         StringBuffer buf = new StringBuffer();
         buf.append("FeatureTypeStyleImpl");
@@ -270,10 +283,12 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
         return buf.toString();
     }
 
+    @Override
     public void setOnlineResource(OnLineResource online) {
         this.online = online;
     }
 
+    @Override
     public OnLineResource getOnlineResource() {
         return online;
     }
@@ -290,18 +305,22 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
         }
     }
 
+    @Override
     public Expression getTransformation() {
         return transformation;
     }
 
+    @Override
     public void setTransformation(Expression transformation) {
         this.transformation = transformation;
     }
 
+    @Override
     public boolean hasOption(String key) {
         return options != null && options.containsKey(key);
     }
 
+    @Override
     public Map<String, String> getOptions() {
         if (options == null) {
             options = new LinkedHashMap<>();

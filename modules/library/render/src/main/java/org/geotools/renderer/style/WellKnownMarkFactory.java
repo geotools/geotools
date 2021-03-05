@@ -153,6 +153,7 @@ public class WellKnownMarkFactory implements MarkFactory {
         square = new Double(-.5, -.5, 1., 1.);
     }
 
+    @Override
     public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature)
             throws Exception {
         // cannot handle a null url

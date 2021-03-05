@@ -29,6 +29,7 @@ public class PercentageConverterFactory implements ConverterFactory {
 
     static final PercentageConverter INSTANCE = new PercentageConverter();
 
+    @Override
     public Converter createConverter(Class source, Class target, Hints hints) {
         // convert to non-primitive class
         target = NumericConverterFactory.primitiveToWrapperClass(target);
@@ -46,6 +47,7 @@ public class PercentageConverterFactory implements ConverterFactory {
 
     static class PercentageConverter implements Converter {
 
+        @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {
             String s = (String) source;
             if (!s.endsWith("%")) {

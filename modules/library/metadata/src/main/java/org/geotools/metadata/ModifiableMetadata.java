@@ -81,6 +81,7 @@ import org.geotools.util.logging.Logging;
 public abstract class ModifiableMetadata extends AbstractMetadata implements Cloneable {
     /** A null implementation for the {@link #FREEZING} constant. */
     private static final class Null extends ModifiableMetadata {
+        @Override
         public MetadataStandard getStandard() {
             return null;
         }

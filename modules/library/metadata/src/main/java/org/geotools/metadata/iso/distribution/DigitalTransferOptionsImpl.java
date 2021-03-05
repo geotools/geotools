@@ -66,6 +66,7 @@ public class DigitalTransferOptionsImpl extends MetadataEntity implements Digita
     }
 
     /** Returne tiles, layers, geographic areas, etc., in which data is available. */
+    @Override
     public InternationalString getUnitsOfDistribution() {
         return unitsOfDistribution;
     }
@@ -80,6 +81,7 @@ public class DigitalTransferOptionsImpl extends MetadataEntity implements Digita
      * Returns an estimated size of a unit in the specified transfer format, expressed in megabytes.
      * The transfer size is &gt; 0.0. Returns {@code null} if the transfer size is unknown.
      */
+    @Override
     public Double getTransferSize() {
         return transferSize;
     }
@@ -94,6 +96,7 @@ public class DigitalTransferOptionsImpl extends MetadataEntity implements Digita
     }
 
     /** Returns information about online sources from which the resource can be obtained. */
+    @Override
     public Collection<OnLineResource> getOnLines() {
         return (onLines = nonNullCollection(onLines, OnLineResource.class));
     }
@@ -104,6 +107,7 @@ public class DigitalTransferOptionsImpl extends MetadataEntity implements Digita
     }
 
     /** Returns information about offline media on which the resource can be obtained. */
+    @Override
     public Medium getOffLine() {
         return offLines;
     }

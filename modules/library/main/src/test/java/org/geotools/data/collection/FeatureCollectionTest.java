@@ -258,6 +258,7 @@ public abstract class FeatureCollectionTest {
     class ListenerProxy implements CollectionListener {
         int changeEvents = 0;
 
+        @Override
         public void collectionChanged(org.geotools.feature.CollectionEvent tce) {
             changeEvents++;
         }

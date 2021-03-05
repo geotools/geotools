@@ -113,6 +113,7 @@ public class GeorectifiedImpl extends GridSpatialRepresentationImpl implements G
      * Indication of whether or not geographic position points are available to test the accuracy of
      * the georeferenced grid data.
      */
+    @Override
     public boolean isCheckPointAvailable() {
         return checkPointAvailable;
     }
@@ -130,6 +131,7 @@ public class GeorectifiedImpl extends GridSpatialRepresentationImpl implements G
      * Description of geographic position points used to test the accuracy of the georeferenced grid
      * data.
      */
+    @Override
     public InternationalString getCheckPointDescription() {
         return checkPointDescription;
     }
@@ -149,6 +151,7 @@ public class GeorectifiedImpl extends GridSpatialRepresentationImpl implements G
      * spatial dimensions. There are four corner points in a georectified grid; at least two corner
      * points along one diagonal are required. @TODO: needs to annotate the geometry module before.
      */
+    @Override
     public List<Point> getCornerPoints() {
         return cornerPoints = nonNullList(cornerPoints, Point.class);
     }
@@ -163,6 +166,7 @@ public class GeorectifiedImpl extends GridSpatialRepresentationImpl implements G
      * coordinate of the cell halfway between opposite ends of the grid in the spatial
      * dimensions. @TODO: needs to annotate the geometry module before.
      */
+    @Override
     public Point getCenterPoint() {
         return centerPoint;
     }
@@ -174,6 +178,7 @@ public class GeorectifiedImpl extends GridSpatialRepresentationImpl implements G
     }
 
     /** Point in a pixel corresponding to the Earth location of the pixel. */
+    @Override
     public PixelOrientation getPointInPixel() {
         return pointInPixel;
     }
@@ -185,6 +190,7 @@ public class GeorectifiedImpl extends GridSpatialRepresentationImpl implements G
     }
 
     /** Description of the information about which grid dimensions are the spatial dimensions. */
+    @Override
     public InternationalString getTransformationDimensionDescription() {
         return transformationDimensionDescription;
     }
@@ -199,6 +205,7 @@ public class GeorectifiedImpl extends GridSpatialRepresentationImpl implements G
     }
 
     /** Information about which grid dimensions are the spatial dimensions. */
+    @Override
     public Collection<InternationalString> getTransformationDimensionMapping() {
         return (transformationDimensionMapping =
                 nonNullCollection(transformationDimensionMapping, InternationalString.class));

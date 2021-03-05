@@ -72,10 +72,12 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
         this.schema = schema;
     }
 
+    @Override
     public String getID() {
         return id;
     }
 
+    @Override
     public T getSchema() {
         return schema;
     }
@@ -89,6 +91,7 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
      * <p>Note that {@link FeatureIterator<F>#close()} is available to clean up after any resource
      * use required during traversal.
      */
+    @Override
     public abstract FeatureIterator<F> features();
 
     /**
@@ -100,6 +103,7 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
      * @param o object to be checked for containment in this collection.
      * @return <tt>true</tt> if this collection contains the specified element.
      */
+    @Override
     public boolean contains(Object o) {
         try (FeatureIterator<F> e = features()) {
             if (o == null) {
@@ -131,6 +135,7 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
      * @throws NullPointerException if the specified collection is null.
      * @see #contains(Object)
      */
+    @Override
     public boolean containsAll(Collection<?> c) {
         try (FeatureIterator<F> e = features()) {
             while (e.hasNext()) {
@@ -144,6 +149,7 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
     }
 
     /** @return <tt>true</tt> if this collection contains no elements. */
+    @Override
     public boolean isEmpty() {
         try (FeatureIterator<F> iterator = features()) {
             return !iterator.hasNext();
@@ -155,6 +161,7 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
      *
      * @return an array containing all of the elements in this collection.
      */
+    @Override
     public Object[] toArray() {
         Object[] result = new Object[size()];
         try (FeatureIterator<F> e = features()) {
@@ -163,6 +170,7 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
         }
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <O> O[] toArray(O[] a) {
         int size = size();
@@ -177,6 +185,7 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
         }
     }
 
+    @Override
     public void accepts(
             org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress)
             throws IOException {
@@ -191,6 +200,7 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
      * FilteringFeatureCollection}. Subclasses might want to override this in case the filter can be
      * cascaded to their data sources.
      */
+    @Override
     public FeatureCollection<T, F> subCollection(Filter filter) {
         if (filter == Filter.INCLUDE) {
             return this;
@@ -206,6 +216,7 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
      * @param order Sort order
      * @return FeatureCollection sorted in the indicated order
      */
+    @Override
     @SuppressWarnings("unchecked")
     public FeatureCollection<T, F> sort(SortBy order) {
         if (getSchema() instanceof SimpleFeatureType) {
@@ -229,6 +240,7 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
      *
      * @return Number of items, or Interger.MAX_VALUE
      */
+    @Override
     public int size() {
         int count = 0;
         try (FeatureIterator<F> it = features()) {
@@ -245,6 +257,7 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
      * Full collection traversal to obtain bounds of FeatureCollection. Subclasees are strong
      * encouraged to override this expensive method (even if just to implement caching).
      */
+    @Override
     public ReferencedEnvelope getBounds() {
         ReferencedEnvelope bounds = null;
         try (FeatureIterator<F> it = features()) {

@@ -503,6 +503,7 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
             this.value = value;
         }
 
+        @Override
         public Object evaluate(Object feature) {
             return value;
         }

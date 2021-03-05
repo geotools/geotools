@@ -42,6 +42,7 @@ public class AttributeRenameFunction extends FunctionExpressionImpl
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object object) {
         String source = getAttribute(object, 0, String.class, true);
         String target = getAttribute(object, 1, String.class, true);

@@ -65,6 +65,7 @@ public class MetadataExtensionInformationImpl extends MetadataEntity
      * Information about on-line sources containing the community profile name and the extended
      * metadata elements. Information for all new metadata elements.
      */
+    @Override
     public OnLineResource getExtensionOnLineResource() {
         return extensionOnLineResource;
     }
@@ -79,6 +80,7 @@ public class MetadataExtensionInformationImpl extends MetadataEntity
      * Provides information about a new metadata element, not found in ISO 19115, which is required
      * to describe geographic data.
      */
+    @Override
     public Collection<ExtendedElementInformation> getExtendedElementInformation() {
         return (extendedElementInformation =
                 nonNullCollection(extendedElementInformation, ExtendedElementInformation.class));

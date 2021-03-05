@@ -60,18 +60,22 @@ public class PolygonSymbolizerImpl extends AbstractSymbolizer
         this.offset = offset;
     }
 
+    @Override
     public Expression getPerpendicularOffset() {
         return offset;
     }
 
+    @Override
     public void setPerpendicularOffset(Expression offset) {
         this.offset = offset;
     }
 
+    @Override
     public Displacement getDisplacement() {
         return disp;
     }
 
+    @Override
     public void setDisplacement(org.opengis.style.Displacement displacement) {
         this.disp = DisplacementImpl.cast(displacement);
     }
@@ -80,6 +84,7 @@ public class PolygonSymbolizerImpl extends AbstractSymbolizer
      *
      * @return The Fill style to use when rendering the area.
      */
+    @Override
     public Fill getFill() {
         return fill;
     }
@@ -89,6 +94,7 @@ public class PolygonSymbolizerImpl extends AbstractSymbolizer
      *
      * @param fill The Fill style to use when rendering the area.
      */
+    @Override
     public void setFill(org.opengis.style.Fill fill) {
         if (this.fill == fill) {
             return;
@@ -101,6 +107,7 @@ public class PolygonSymbolizerImpl extends AbstractSymbolizer
      *
      * @return The Stroke style to use when rendering lines.
      */
+    @Override
     public StrokeImpl getStroke() {
         return stroke;
     }
@@ -110,6 +117,7 @@ public class PolygonSymbolizerImpl extends AbstractSymbolizer
      *
      * @param stroke The Stroke style to use when rendering lines.
      */
+    @Override
     public void setStroke(org.opengis.style.Stroke stroke) {
         if (this.stroke == stroke) {
             return;
@@ -122,10 +130,12 @@ public class PolygonSymbolizerImpl extends AbstractSymbolizer
      *
      * @param visitor The visitor to accept.
      */
+    @Override
     public Object accept(StyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
+    @Override
     public void accept(org.geotools.styling.StyleVisitor visitor) {
         visitor.visit(this);
     }
@@ -135,6 +145,7 @@ public class PolygonSymbolizerImpl extends AbstractSymbolizer
      *
      * @return The deep copy clone.
      */
+    @Override
     public Object clone() {
         PolygonSymbolizerImpl clone;
 

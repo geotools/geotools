@@ -32,9 +32,12 @@ public interface SimpleFeatureStore
     public void modifyFeatures(String[] names, Object[] attributeValues, Filter filter)
             throws IOException;
 
+    @Override
     public SimpleFeatureCollection getFeatures() throws IOException;
 
+    @Override
     public SimpleFeatureCollection getFeatures(Filter filter) throws IOException;
 
+    @Override
     public SimpleFeatureCollection getFeatures(Query query) throws IOException;
 }

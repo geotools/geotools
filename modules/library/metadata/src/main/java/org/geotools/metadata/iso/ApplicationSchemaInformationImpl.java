@@ -78,6 +78,7 @@ public class ApplicationSchemaInformationImpl extends MetadataEntity
     }
 
     /** Name of the application schema used. */
+    @Override
     public Citation getName() {
         return name;
     }
@@ -89,6 +90,7 @@ public class ApplicationSchemaInformationImpl extends MetadataEntity
     }
 
     /** Identification of the schema language used. */
+    @Override
     public String getSchemaLanguage() {
         return schemaLanguage;
     }
@@ -100,6 +102,7 @@ public class ApplicationSchemaInformationImpl extends MetadataEntity
     }
 
     /** Formal language used in Application Schema. */
+    @Override
     public String getConstraintLanguage() {
         return constraintLanguage;
     }
@@ -111,6 +114,7 @@ public class ApplicationSchemaInformationImpl extends MetadataEntity
     }
 
     /** Full application schema given as an ASCII file. */
+    @Override
     public URI getSchemaAscii() {
         return schemaAscii;
     }
@@ -122,6 +126,7 @@ public class ApplicationSchemaInformationImpl extends MetadataEntity
     }
 
     /** Full application schema given as a graphics file. */
+    @Override
     public URI getGraphicsFile() {
         return graphicsFile;
     }
@@ -133,6 +138,7 @@ public class ApplicationSchemaInformationImpl extends MetadataEntity
     }
 
     /** Full application schema given as a software development file. */
+    @Override
     public URI getSoftwareDevelopmentFile() {
         return softwareDevelopmentFile;
     }
@@ -144,6 +150,7 @@ public class ApplicationSchemaInformationImpl extends MetadataEntity
     }
 
     /** Software dependent format used for the application schema software dependent file. */
+    @Override
     public String getSoftwareDevelopmentFileFormat() {
         return softwareDevelopmentFileFormat;
     }

@@ -127,6 +127,7 @@ public class BindingGeneratorMojo extends AbstractGeneratorMojo {
      */
     String simpleBindingBaseClass;
     
+    @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
 		
     	XSDSchema xsdSchema = schema();

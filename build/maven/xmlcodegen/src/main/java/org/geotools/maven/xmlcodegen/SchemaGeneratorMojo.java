@@ -94,7 +94,8 @@ public class SchemaGeneratorMojo extends AbstractGeneratorMojo {
 	 */
 	boolean cyclicTypeSupport;
 	
-	public void execute() throws MojoExecutionException, MojoFailureException {
+	@Override
+    public void execute() throws MojoExecutionException, MojoFailureException {
     	XSDSchema schema = schema();
     	if ( schema == null ) 
     		return;

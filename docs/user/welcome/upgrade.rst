@@ -2323,19 +2323,6 @@ Renamed ``spatialschema`` to ``geometry``.
     import org.opengis.geometry.coordinate;
     import org.opengis.geometry.primitive;
 
-Repackage ArcSDE
-^^^^^^^^^^^^^^^^
-
-Repackage ArcSDE datastore.
-
-* BEFORE::
-
-    import org.geotools.data.arcsde.ArcSDEDataStoreFactory;
-
-* AFTER::
-
-    import org.geotools.arcsde.ArcSDEDataStoreFactory;
-
 World Image
 ^^^^^^^^^^^
 

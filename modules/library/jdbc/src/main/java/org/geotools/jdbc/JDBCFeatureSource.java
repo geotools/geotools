@@ -366,7 +366,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
     }
 
     /** Helper method for splitting a filter. */
-    Filter[] splitFilter(Filter original) {
+    protected Filter[] splitFilter(Filter original) {
         return splitFilter(original, this);
     }
 

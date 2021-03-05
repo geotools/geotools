@@ -1126,7 +1126,8 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         return ps;
     }
 
-    Filter[] splitFilter(Filter original) {
+    @Override
+    protected Filter[] splitFilter(Filter original) {
         Filter[] split = new Filter[2];
         if (original != null) {
             // create a filter splitter

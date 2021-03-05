@@ -37,6 +37,7 @@ public class GetFeatureTypeBindingTest extends WFSTestSupport {
         super(WFS.GetFeatureType, GetFeatureType.class, Binding.OVERRIDE);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     @Test
     public void testEncode() throws Exception {
@@ -52,6 +53,7 @@ public class GetFeatureTypeBindingTest extends WFSTestSupport {
         assertEquals(2, getElementsByQName(dom, WFS.Query).getLength());
     }
 
+    @Override
     @Test
     public void testParse() throws Exception {
         final URL resource = TestData.getResource(this, "GetFeatureTypeBindingTest.xml");

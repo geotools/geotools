@@ -52,6 +52,7 @@ public class ContrastEnhancementBinding extends SLDContrastEnhancementBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.ContrastEnhancement;
     }

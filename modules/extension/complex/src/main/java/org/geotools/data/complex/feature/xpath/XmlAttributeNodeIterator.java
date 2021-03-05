@@ -48,16 +48,19 @@ public class XmlAttributeNodeIterator implements NodeIterator {
     }
 
     /** Always return 1, only a single property. */
+    @Override
     public int getPosition() {
         return position;
     }
 
     /** Return true if position == 1. */
+    @Override
     public boolean setPosition(int position) {
         this.position = position;
         return position < 2;
     }
 
+    @Override
     public NodePointer getNodePointer() {
         return new XmlAttributeNodePointer(pointer, feature, name);
     }

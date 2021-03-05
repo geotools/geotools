@@ -58,6 +58,7 @@ public class SLDLinePlacementBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SLD.LINEPLACEMENT;
     }
@@ -69,6 +70,7 @@ public class SLDLinePlacementBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -80,6 +82,7 @@ public class SLDLinePlacementBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return LinePlacement.class;
     }
@@ -91,6 +94,7 @@ public class SLDLinePlacementBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         Expression offset = null;

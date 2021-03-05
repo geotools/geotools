@@ -34,5 +34,6 @@ public class WFSCapabilitiesConfiguration extends WFSConfiguration {
         addDependency(new org.geotools.ows.v1_1.OWSConfiguration());
     }
 
+    @Override
     protected void configureBindings(org.picocontainer.MutablePicoContainer container) {}
 }

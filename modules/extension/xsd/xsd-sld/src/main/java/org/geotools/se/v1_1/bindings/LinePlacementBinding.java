@@ -53,6 +53,7 @@ public class LinePlacementBinding extends SLDLinePlacementBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.LinePlacement;
     }
@@ -64,6 +65,7 @@ public class LinePlacementBinding extends SLDLinePlacementBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         // &lt;xsd:element minOccurs="0" ref="se:PerpendicularOffset"/&gt;

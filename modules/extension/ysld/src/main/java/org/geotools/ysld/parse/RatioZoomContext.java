@@ -69,6 +69,7 @@ public class RatioZoomContext extends ContinuousZoomContext implements ZoomConte
         return initialScale / Math.pow(ratio, level - initialLevel);
     }
 
+    @Override
     protected double getMedialScale(int level) {
         return getScaleDenominator(level + 0.5d);
     }

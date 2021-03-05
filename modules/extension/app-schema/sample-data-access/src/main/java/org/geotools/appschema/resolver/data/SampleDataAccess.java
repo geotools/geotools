@@ -42,6 +42,7 @@ public class SampleDataAccess implements DataAccess<FeatureType, Feature> {
      *
      * @see org.geotools.data.DataAccess#createSchema(org.opengis.feature.type.FeatureType)
      */
+    @Override
     public void createSchema(FeatureType featureType) throws IOException {
         throw new UnsupportedOperationException();
     }
@@ -51,11 +52,13 @@ public class SampleDataAccess implements DataAccess<FeatureType, Feature> {
      *
      * @see org.geotools.data.DataAccess#dispose()
      */
+    @Override
     public void dispose() {
         // do nothing
     }
 
     /** @see org.geotools.data.DataAccess#getFeatureSource(org.opengis.feature.type.Name) */
+    @Override
     public FeatureSource<FeatureType, Feature> getFeatureSource(Name typeName) throws IOException {
         if (typeName.equals(SampleDataAccessData.MAPPEDFEATURE_TYPE_NAME)) {
             return new SampleDataAccessFeatureSource();
@@ -77,6 +80,7 @@ public class SampleDataAccess implements DataAccess<FeatureType, Feature> {
      *
      * @see org.geotools.data.DataAccess#getInfo()
      */
+    @Override
     public ServiceInfo getInfo() {
         throw new UnsupportedOperationException();
     }
@@ -87,6 +91,7 @@ public class SampleDataAccess implements DataAccess<FeatureType, Feature> {
      *
      * @see org.geotools.data.DataAccess#getNames()
      */
+    @Override
     public List<Name> getNames() throws IOException {
         return new ArrayList<Name>() {
             {
@@ -102,6 +107,7 @@ public class SampleDataAccess implements DataAccess<FeatureType, Feature> {
      *
      * @see org.geotools.data.DataAccess#getSchema(org.opengis.feature.type.Name)
      */
+    @Override
     public FeatureType getSchema(Name name) throws IOException {
         if (name.equals(SampleDataAccessData.MAPPEDFEATURE_TYPE_NAME)) {
             return SampleDataAccessData.MAPPEDFEATURE_TYPE;
@@ -118,6 +124,7 @@ public class SampleDataAccess implements DataAccess<FeatureType, Feature> {
      * @see org.geotools.data.DataAccess#updateSchema(org.opengis.feature.type.Name,
      *     org.opengis.feature.type.FeatureType)
      */
+    @Override
     public void updateSchema(Name typeName, FeatureType featureType) throws IOException {
         throw new UnsupportedOperationException();
     }
@@ -127,6 +134,7 @@ public class SampleDataAccess implements DataAccess<FeatureType, Feature> {
      *
      * @see org.geotools.data.DataAccess#removeSchema(org.opengis.feature.type.Name)
      */
+    @Override
     public void removeSchema(Name typeName) throws IOException {
         throw new UnsupportedOperationException("Schema removal not supported");
     }

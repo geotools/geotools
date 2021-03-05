@@ -53,6 +53,7 @@ public class Function_NameTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.Function_NameType;
     }
@@ -64,10 +65,12 @@ public class Function_NameTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return FunctionName.class;
     }
 
+    @Override
     public int getExecutionMode() {
         return OVERRIDE;
     }
@@ -79,6 +82,7 @@ public class Function_NameTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         String name = (String) value;
 
@@ -88,6 +92,7 @@ public class Function_NameTypeBinding extends AbstractComplexBinding {
         return factory.functionName(name, Integer.parseInt(nargs));
     }
 
+    @Override
     public Element encode(Object object, Document document, Element value) throws Exception {
         FunctionName function = (FunctionName) object;
         value.appendChild(document.createTextNode(function.getName()));

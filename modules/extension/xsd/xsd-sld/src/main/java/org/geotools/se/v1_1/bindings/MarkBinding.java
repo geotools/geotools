@@ -83,6 +83,7 @@ public class MarkBinding extends SLDMarkBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.Mark;
     }
@@ -94,6 +95,7 @@ public class MarkBinding extends SLDMarkBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Mark mark = (Mark) super.parse(instance, node, value);
 

@@ -55,6 +55,7 @@ public abstract class OptGraphable implements Graphable, Serializable {
      *
      * @see Graphable#setID(int)
      */
+    @Override
     public void setID(int id) {}
 
     /**
@@ -62,16 +63,19 @@ public abstract class OptGraphable implements Graphable, Serializable {
      *
      * @see Graphable#getID()
      */
+    @Override
     public int getID() {
         return 0;
     }
 
     /** @see Graphable#setVisited(boolean) */
+    @Override
     public void setVisited(boolean visited) {
         m_visited = visited;
     }
 
     /** @see Graphable#isVisited() */
+    @Override
     public boolean isVisited() {
         return (m_visited);
     }
@@ -82,11 +86,13 @@ public abstract class OptGraphable implements Graphable, Serializable {
      *
      * @see Graphable#setCount(int)
      */
+    @Override
     public void setCount(int count) {
         m_count = (byte) count;
     }
 
     /** @see Graphable#getCount() */
+    @Override
     public int getCount() {
         return (m_count);
     }
@@ -96,6 +102,7 @@ public abstract class OptGraphable implements Graphable, Serializable {
      *
      * @see Graphable#setObject(Object)
      */
+    @Override
     public void setObject(Object obj) {}
 
     /**
@@ -103,6 +110,7 @@ public abstract class OptGraphable implements Graphable, Serializable {
      *
      * @see Graphable#getObject()
      */
+    @Override
     public Object getObject() {
         return null;
     }

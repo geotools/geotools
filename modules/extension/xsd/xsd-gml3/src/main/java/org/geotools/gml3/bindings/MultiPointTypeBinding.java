@@ -65,6 +65,7 @@ public class MultiPointTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.MultiPointType;
     }
@@ -76,10 +77,12 @@ public class MultiPointTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return MultiPoint.class;
     }
 
+    @Override
     public int getExecutionMode() {
         return BEFORE;
     }
@@ -91,6 +94,7 @@ public class MultiPointTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List<Point> points = new ArrayList<>();
 
@@ -107,6 +111,7 @@ public class MultiPointTypeBinding extends AbstractComplexBinding {
         return gFactory.createMultiPoint(points.toArray(new Point[points.size()]));
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         if ("pointMember".equals(name.getLocalPart())) {
             MultiPoint multiPoint = (MultiPoint) object;

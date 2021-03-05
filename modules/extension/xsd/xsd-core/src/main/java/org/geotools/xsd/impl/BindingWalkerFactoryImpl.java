@@ -30,6 +30,7 @@ public class BindingWalkerFactoryImpl implements BindingWalkerFactory {
         this.context = context;
     }
 
+    @Override
     public void walk(XSDFeature component, Visitor visitor) {
         new BindingWalker(bindingLoader).walk(component, visitor, context);
     }

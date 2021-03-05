@@ -60,10 +60,12 @@ public class CurvePropertyTypeBinding extends GeometryPropertyTypeBindingBase {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.CurvePropertyType;
     }
 
+    @Override
     public Class<? extends Geometry> getGeometryType() {
         return LineString.class;
     }

@@ -68,6 +68,7 @@ public class TextPayloadBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WMTS.TextPayload;
     }
@@ -79,6 +80,7 @@ public class TextPayloadBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return TextPayloadType.class;
     }
@@ -90,6 +92,7 @@ public class TextPayloadBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         TextPayloadType payload = factory.createTextPayloadType();
         payload.setFormat((String) node.getChildValue("Format"));

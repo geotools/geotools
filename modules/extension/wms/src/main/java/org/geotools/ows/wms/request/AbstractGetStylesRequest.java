@@ -35,15 +35,18 @@ public abstract class AbstractGetStylesRequest extends AbstractWMSRequest
         super(onlineResource, properties);
     }
 
+    @Override
     protected void initRequest() {
         setProperty(REQUEST, "GetStyles");
     }
 
+    @Override
     protected abstract void initVersion();
 
     /* (non-Javadoc)
      * @see GetStylesRequest#setLayers(java.lang.String)
      */
+    @Override
     public void setLayers(String layers) {
         setProperty(LAYERS, layers);
     }
@@ -51,6 +54,7 @@ public abstract class AbstractGetStylesRequest extends AbstractWMSRequest
     /* (non-Javadoc)
      * @see GetStylesRequest#setSLDver(java.lang.String)
      */
+    @Override
     public void setSLDver(String sldVer) {
         setProperty(SLDVER, sldVer);
     }
@@ -58,6 +62,7 @@ public abstract class AbstractGetStylesRequest extends AbstractWMSRequest
     /* (non-Javadoc)
      * @see GetStylesRequest#getLayers()
      */
+    @Override
     public Layer[] getLayers() {
         return layers;
     }

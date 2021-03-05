@@ -326,6 +326,7 @@ public class CircleMBLayer extends MBLayer {
      *     like resolving sprite and glyph names to full urls.
      * @return FeatureTypeStyle
      */
+    @Override
     public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
         // default linecap because StrokeImpl.getOpacity has a bug. If lineCap == null, it returns a
         // default opacity.

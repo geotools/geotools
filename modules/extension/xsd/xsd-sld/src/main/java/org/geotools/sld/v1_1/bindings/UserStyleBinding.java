@@ -70,6 +70,7 @@ public class UserStyleBinding extends SLDUserStyleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Style style = (Style) super.parse(instance, node, value);
 

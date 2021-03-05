@@ -38,10 +38,12 @@ public class DocumentHandlerImpl extends HandlerImpl implements DocumentHandler 
         this.parser = parser;
     }
 
+    @Override
     public XSDSchemaContent getSchemaContent() {
         return null;
     }
 
+    @Override
     public InstanceComponent getComponent() {
         return null;
     }
@@ -59,10 +61,12 @@ public class DocumentHandlerImpl extends HandlerImpl implements DocumentHandler 
         return null;
     }
 
+    @Override
     public Node getParseNode() {
         return tree;
     }
 
+    @Override
     public Handler createChildHandler(QName qName) {
         return factory.createElementHandler(qName, this, parser);
     }
@@ -77,16 +81,19 @@ public class DocumentHandlerImpl extends HandlerImpl implements DocumentHandler 
     //
     //    	return list;
     //    }
+    @Override
     public void startChildHandler(Handler child) {
         this.tree = child.getParseNode();
 
         // this.handler = (ElementHandler) child;
     }
 
+    @Override
     public void endChildHandler(Handler child) {
         // this.handler = null;
     }
 
+    @Override
     public Handler getParentHandler() {
         // always null, this is the root handler
         return null;
@@ -96,7 +103,9 @@ public class DocumentHandlerImpl extends HandlerImpl implements DocumentHandler 
     //        return handler;
     //    }
 
+    @Override
     public void startDocument() {}
 
+    @Override
     public void endDocument() {}
 }

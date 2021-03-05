@@ -158,6 +158,7 @@ public class RuleBuilder extends AbstractStyleBuilder<Rule> {
         return (ExtensionSymbolizerBuilder) symbolizerBuilder;
     }
 
+    @Override
     public Rule build() {
         if (unset) {
             return null;
@@ -190,10 +191,12 @@ public class RuleBuilder extends AbstractStyleBuilder<Rule> {
         return rule;
     }
 
+    @Override
     public RuleBuilder unset() {
         return (RuleBuilder) super.unset();
     }
 
+    @Override
     public RuleBuilder reset() {
         name = null;
         title = null;
@@ -208,6 +211,7 @@ public class RuleBuilder extends AbstractStyleBuilder<Rule> {
         return this;
     }
 
+    @Override
     public RuleBuilder reset(Rule rule) {
         if (rule == null) {
             return unset();
@@ -235,6 +239,7 @@ public class RuleBuilder extends AbstractStyleBuilder<Rule> {
         return this;
     }
 
+    @Override
     protected void buildStyleInternal(StyleBuilder sb) {
         sb.featureTypeStyle().rule().init(this);
     }

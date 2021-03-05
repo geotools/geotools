@@ -52,6 +52,7 @@ public class SLDNormalizeBinding extends AbstractComplexBinding {
         this.filterFactory = filterFactory;
     }
     /** @generated */
+    @Override
     public QName getTarget() {
         return SLD.NORMALIZE;
     }
@@ -63,6 +64,7 @@ public class SLDNormalizeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -74,6 +76,7 @@ public class SLDNormalizeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return NormalizeContrastMethodStrategy.class;
     }
@@ -85,6 +88,7 @@ public class SLDNormalizeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
@@ -94,6 +98,7 @@ public class SLDNormalizeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         NormalizeContrastMethodStrategy ret = new NormalizeContrastMethodStrategy();

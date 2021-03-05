@@ -50,6 +50,7 @@ public class WFS_CapabilitiesTypeBindingTest extends WFSTestSupport {
         super(WFS.WFS_CapabilitiesType, WFSCapabilitiesType.class, Binding.OVERRIDE);
     }
 
+    @Override
     @Test
     public void testParse() throws Exception {
         String xml =
@@ -64,6 +65,7 @@ public class WFS_CapabilitiesTypeBindingTest extends WFSTestSupport {
         assertNotNull(caps.getFeatureTypeList());
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     @Test
     public void testEncode() throws Exception {

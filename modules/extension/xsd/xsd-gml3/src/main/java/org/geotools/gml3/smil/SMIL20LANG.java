@@ -74,20 +74,24 @@ public final class SMIL20LANG extends XSD {
         return instance;
     }
 
+    @Override
     protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(SMIL20.getInstance());
     }
 
     /** Returns 'http://www.w3.org/2001/SMIL20/'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'smil20-language.xsd'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("smil20-language.xsd").toString();
     }
 
+    @Override
     public SchemaLocator createSchemaLocator() {
         return null;
     }

@@ -47,6 +47,7 @@ public class IdBuilder<P> implements Builder<Id> {
     }
 
     /** Build the expression. */
+    @Override
     public Id build() {
         if (unset) {
             return null;
@@ -75,12 +76,14 @@ public class IdBuilder<P> implements Builder<Id> {
         return parent;
     }
 
+    @Override
     public IdBuilder<P> reset() {
         this.filter = org.opengis.filter.Filter.EXCLUDE;
         this.unset = false;
         return this;
     }
 
+    @Override
     public IdBuilder<P> reset(Id filter) {
         if (filter == null) {
             return unset();
@@ -91,6 +94,7 @@ public class IdBuilder<P> implements Builder<Id> {
         return this;
     }
 
+    @Override
     public IdBuilder<P> unset() {
         this.unset = true;
         this.ids.clear();

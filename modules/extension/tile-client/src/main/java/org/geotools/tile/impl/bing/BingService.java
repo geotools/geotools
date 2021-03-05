@@ -101,6 +101,7 @@ public class BingService extends WebMercatorTileService {
      *
      * @see org.TileService.udig.catalog.internal.wmt.wmtsource.WMTSource#getTileFactory()
      */
+    @Override
     public TileFactory getTileFactory() {
         return tileFactory;
     }

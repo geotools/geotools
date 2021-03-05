@@ -50,16 +50,19 @@ public class FeatureTypeAttributeIterator implements NodeIterator {
         position = 1;
     }
 
+    @Override
     public int getPosition() {
         return position;
     }
 
+    @Override
     public boolean setPosition(int position) {
         this.position = position;
 
         return position <= children.size();
     }
 
+    @Override
     public NodePointer getNodePointer() {
         return new FeatureTypeAttributePointer(
                 pointer, featureType, children.get(position).getName());

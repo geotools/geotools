@@ -145,6 +145,7 @@ public class GetFeatureTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.GetFeatureType;
     }

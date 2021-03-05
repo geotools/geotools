@@ -104,6 +104,7 @@ public class TileMatrixSetBinding extends DescriptionTypeBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WMTS.TileMatrixSet;
     }
@@ -115,6 +116,7 @@ public class TileMatrixSetBinding extends DescriptionTypeBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class<TileMatrixSetType> getType() {
         return TileMatrixSetType.class;
     }
@@ -126,6 +128,7 @@ public class TileMatrixSetBinding extends DescriptionTypeBinding {
      *
      * @generated modifiable
      */
+    @Override
     @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 

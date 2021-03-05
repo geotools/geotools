@@ -111,6 +111,7 @@ public class TextSymbolizerBuilder extends SymbolizerBuilder<TextSymbolizer> {
         return shield;
     }
 
+    @Override
     public TextSymbolizer build() {
         if (unset) {
             return null;
@@ -141,10 +142,12 @@ public class TextSymbolizerBuilder extends SymbolizerBuilder<TextSymbolizer> {
         return ts;
     }
 
+    @Override
     public TextSymbolizerBuilder unset() {
         return (TextSymbolizerBuilder) super.unset();
     }
 
+    @Override
     public TextSymbolizerBuilder reset() {
         fill.reset(); // TODO: default fill for text?
         halo.unset(); // no default halo
@@ -159,6 +162,7 @@ public class TextSymbolizerBuilder extends SymbolizerBuilder<TextSymbolizer> {
         return this;
     }
 
+    @Override
     public TextSymbolizerBuilder reset(TextSymbolizer symbolizer) {
         fill.reset(symbolizer.getFill());
         halo.reset(symbolizer.getHalo());
@@ -201,6 +205,7 @@ public class TextSymbolizerBuilder extends SymbolizerBuilder<TextSymbolizer> {
         return label(literal(text));
     }
 
+    @Override
     protected void buildStyleInternal(StyleBuilder sb) {
         sb.featureTypeStyle().rule().text().init(this);
     }

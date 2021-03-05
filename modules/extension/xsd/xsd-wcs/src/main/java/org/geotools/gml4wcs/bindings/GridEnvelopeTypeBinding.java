@@ -54,6 +54,7 @@ import org.w3c.dom.Element;
 public class GridEnvelopeTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.GridEnvelopeType;
     }
@@ -65,6 +66,7 @@ public class GridEnvelopeTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return GridEnvelope.class;
     }
@@ -76,6 +78,7 @@ public class GridEnvelopeTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         if (node.getChild("low") != null) {
             int[] l = (int[]) node.getChildValue("low");
@@ -88,6 +91,7 @@ public class GridEnvelopeTypeBinding extends AbstractComplexBinding {
         return null;
     }
 
+    @Override
     public Element encode(Object object, Document document, Element value) throws Exception {
         GeneralEnvelope envelope = (GeneralEnvelope) object;
 
@@ -100,6 +104,7 @@ public class GridEnvelopeTypeBinding extends AbstractComplexBinding {
         return null;
     }
 
+    @Override
     public Object getProperty(Object object, QName name) {
         GridEnvelope envelope = (GridEnvelope) object;
 

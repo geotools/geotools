@@ -60,6 +60,7 @@ import org.geotools.xsd.Node;
 public class GridTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.RectifiedGridType;
     }
@@ -71,6 +72,7 @@ public class GridTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return null;
     }
@@ -82,6 +84,7 @@ public class GridTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         RectifiedGridType grid = Gml4wcsFactory.eINSTANCE.createRectifiedGridType();
 

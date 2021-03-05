@@ -30,11 +30,13 @@ public class XMLMOD extends XSD {
     }
 
     /** Returns 'http://www.w3.org/XML/1998/namespace'. */
+    @Override
     public String getNamespaceURI() {
         return "http://www.w3.org/XML/1998/namespace";
     }
 
     /** Returns the location of 'xml-mod.xsd'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("xml-mod.xsd").toString();
     }

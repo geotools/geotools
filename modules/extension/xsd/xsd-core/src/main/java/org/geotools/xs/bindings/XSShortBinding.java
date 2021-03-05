@@ -45,6 +45,7 @@ import org.geotools.xsd.SimpleBinding;
  */
 public class XSShortBinding implements SimpleBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return XS.SHORT;
     }
@@ -56,6 +57,7 @@ public class XSShortBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return OVERRIDE;
     }
@@ -68,6 +70,7 @@ public class XSShortBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Short.class;
     }
@@ -80,6 +83,7 @@ public class XSShortBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         String text = instance.getText();
 
@@ -97,6 +101,7 @@ public class XSShortBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public String encode(Object object, String value) {
         Short s = (Short) object;
 

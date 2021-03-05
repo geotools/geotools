@@ -111,6 +111,7 @@ public class WCSConfiguration extends Configuration {
         bindings.put(qname, new ComplexEMFBinding(factory, qname));
     }
 
+    @Override
     protected void configureContext(MutablePicoContainer container) {
         container.registerComponentInstance(Wcs10Factory.eINSTANCE);
     }

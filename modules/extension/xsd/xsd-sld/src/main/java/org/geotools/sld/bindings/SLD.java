@@ -340,16 +340,19 @@ public final class SLD extends XSD {
         return instance;
     }
 
+    @Override
     protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(OGC.getInstance());
     }
 
     /** Returns 'http://www.opengis.net/sld' */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'StyledLayerDescriptor.xsd'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("StyledLayerDescriptor.xsd").toString();
     }

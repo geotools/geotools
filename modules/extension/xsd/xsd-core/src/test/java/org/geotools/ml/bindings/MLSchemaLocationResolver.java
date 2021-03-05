@@ -20,6 +20,7 @@ import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 
 public class MLSchemaLocationResolver implements XSDSchemaLocationResolver {
+    @Override
     public String resolveSchemaLocation(
             XSDSchema xsdSchema, String namespaceURI, String schemaLocationURI) {
         if (schemaLocationURI == null) {

@@ -52,10 +52,12 @@ public class EnvelopePropertyTypeBinding extends AbstractComplexBinding {
         super();
     }
 
+    @Override
     public QName getTarget() {
         return WFS.EnvelopePropertyType;
     }
 
+    @Override
     public Class<?> getType() {
         return referencedEnvelopeClass;
     }

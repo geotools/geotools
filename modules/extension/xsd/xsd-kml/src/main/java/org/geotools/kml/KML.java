@@ -442,16 +442,19 @@ public final class KML extends XSD {
         return instance;
     }
 
+    @Override
     protected void addDependencies(Set dependencies) {
         // TODO: add dependencies here
     }
 
     /** Returns 'http://earth.google.com/kml/2.1'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'kml21.xsd.'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("kml21.xsd").toString();
     }

@@ -51,6 +51,7 @@ public class PropertyIsBetweenTypeBinding extends OGCPropertyIsBetweenTypeBindin
         super(factory);
     }
 
+    @Override
     public QName getTarget() {
         return FES.PropertyIsBetweenType;
     }

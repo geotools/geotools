@@ -109,6 +109,7 @@ public class OSMTileFactoryTest extends TileFactoryTest {
         return new OSMService("OSM", baseURL);
     }
 
+    @Override
     protected TileFactory createFactory() {
         return new OSMTileFactory();
     }

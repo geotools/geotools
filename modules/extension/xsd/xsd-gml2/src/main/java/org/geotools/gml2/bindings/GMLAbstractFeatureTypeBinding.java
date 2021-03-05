@@ -88,6 +88,7 @@ public class GMLAbstractFeatureTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.AbstractFeatureType;
     }
@@ -99,6 +100,7 @@ public class GMLAbstractFeatureTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return SimpleFeature.class;
     }
@@ -110,6 +112,7 @@ public class GMLAbstractFeatureTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return GML2ParsingUtils.parseFeature(instance, node, value, ftCache, bwFactory);
     }

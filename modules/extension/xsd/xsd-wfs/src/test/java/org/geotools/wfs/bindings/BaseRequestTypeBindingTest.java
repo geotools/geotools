@@ -34,6 +34,7 @@ public class BaseRequestTypeBindingTest extends WFSTestSupport {
         super(WFS.BaseRequestType, BaseRequestType.class, Binding.OVERRIDE);
     }
 
+    @Override
     @Test
     public void testEncode() throws Exception {
         // BaseRequestType is abstract, use a concrete subclass instead
@@ -50,6 +51,7 @@ public class BaseRequestTypeBindingTest extends WFSTestSupport {
         assertEquals("foo", root.getAttribute("handle"));
     }
 
+    @Override
     @Test
     public void testParse() throws Exception {
         final URL resource = TestData.getResource(this, "BaseRequestTypeBindingTest.xml");

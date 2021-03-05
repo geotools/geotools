@@ -71,6 +71,7 @@ public class StyledLayerDescriptorBuilder extends AbstractSLDBuilder<StyledLayer
     }
 
     /** Reset stroke to default values. */
+    @Override
     public StyledLayerDescriptorBuilder reset() {
         unset = false;
         this.name = null;
@@ -81,6 +82,7 @@ public class StyledLayerDescriptorBuilder extends AbstractSLDBuilder<StyledLayer
     }
 
     /** Reset builder to provided original stroke. */
+    @Override
     public StyledLayerDescriptorBuilder reset(StyledLayerDescriptor other) {
         if (other == null) {
             return unset();
@@ -101,6 +103,7 @@ public class StyledLayerDescriptorBuilder extends AbstractSLDBuilder<StyledLayer
         return this;
     }
 
+    @Override
     public StyledLayerDescriptor build() {
         if (unset) {
             return null;

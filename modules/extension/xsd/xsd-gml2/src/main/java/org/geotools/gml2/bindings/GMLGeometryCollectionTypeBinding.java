@@ -61,10 +61,12 @@ public class GMLGeometryCollectionTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.GeometryCollectionType;
     }
 
+    @Override
     public int getExecutionMode() {
         return OVERRIDE;
     }
@@ -76,6 +78,7 @@ public class GMLGeometryCollectionTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return GeometryCollection.class;
     }
@@ -88,6 +91,7 @@ public class GMLGeometryCollectionTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return GML2ParsingUtils.GeometryCollectionType_parse(
                 node, GeometryCollection.class, gFactory);

@@ -78,6 +78,7 @@ public class InlineContentBinding extends AbstractComplexBinding {
     private static final Logger LOGGER = Logging.getLogger(InlineContentBinding.class);
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.InlineContent;
     }
@@ -89,6 +90,7 @@ public class InlineContentBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Icon.class;
     }
@@ -100,6 +102,7 @@ public class InlineContentBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         String encoding = (String) node.getAttributeValue("encoding");
         //        if ("xml".equalsIgnoreCase(encoding)) {

@@ -99,6 +99,7 @@ public class TupleValidator extends StatefulValidator implements Cloneable {
         }
     }
 
+    @Override
     @SuppressFBWarnings("CN_IDIOM_NO_SUPER_CALL")
     public TupleValidator clone() {
         return new TupleValidator(this.subValidators);

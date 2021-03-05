@@ -33,10 +33,12 @@ public class FeatureTypeProxy extends ComplexTypeProxy implements FeatureType {
         super(typeName, registry);
     }
 
+    @Override
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return ((FeatureType) getSubject()).getCoordinateReferenceSystem();
     }
 
+    @Override
     public GeometryDescriptor getGeometryDescriptor() {
         return ((FeatureType) getSubject()).getGeometryDescriptor();
     }

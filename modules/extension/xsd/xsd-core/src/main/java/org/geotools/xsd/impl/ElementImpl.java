@@ -33,22 +33,27 @@ public class ElementImpl extends InstanceComponentImpl implements ElementInstanc
         this.declaration = declaration;
     }
 
+    @Override
     public XSDTypeDefinition getTypeDefinition() {
         return declaration.getTypeDefinition();
     }
 
+    @Override
     public XSDNamedComponent getDeclaration() {
         return getElementDeclaration();
     }
 
+    @Override
     public XSDElementDeclaration getElementDeclaration() {
         return declaration;
     }
 
+    @Override
     public AttributeInstance[] getAttributes() {
         return atts;
     }
 
+    @Override
     public void setAttributes(AttributeInstance[] atts) {
         this.atts = atts;
     }

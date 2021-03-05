@@ -45,6 +45,7 @@ import org.opengis.feature.simple.SimpleFeature;
  */
 public class KmlTypeBinding extends AbstractComplexBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return KML.KmlType;
     }
@@ -56,6 +57,7 @@ public class KmlTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return FeatureCollection.class;
     }
@@ -67,10 +69,12 @@ public class KmlTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return node.getChildValue(SimpleFeature.class);
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         if (KML.Feature.getLocalPart().equals(name.getLocalPart())
                 || org.geotools.kml.v22.KML.AbstractFeatureGroup.getLocalPart()

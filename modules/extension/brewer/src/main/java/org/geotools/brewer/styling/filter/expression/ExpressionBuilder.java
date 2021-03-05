@@ -110,6 +110,7 @@ public class ExpressionBuilder implements Builder<Expression> {
     }
 
     /** Build the expression. */
+    @Override
     public Expression build() {
         if (unset) {
             return null;
@@ -117,12 +118,14 @@ public class ExpressionBuilder implements Builder<Expression> {
         return delegate.build();
     }
 
+    @Override
     public ExpressionBuilder reset() {
         this.delegate = new NilBuilder();
         this.unset = false;
         return this;
     }
 
+    @Override
     public ExpressionBuilder reset(Expression original) {
         if (original == null) {
             return unset();
@@ -148,6 +151,7 @@ public class ExpressionBuilder implements Builder<Expression> {
         return this;
     }
 
+    @Override
     public ExpressionBuilder unset() {
         this.unset = true;
         this.delegate = new NilBuilder();

@@ -47,6 +47,7 @@ public class MimeTypeBinding extends AbstractSimpleBinding {
     public MimeTypeBinding(Ows10Factory factory) {}
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OWS.MimeType;
     }
@@ -58,6 +59,7 @@ public class MimeTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return String.class;
     }
@@ -69,6 +71,7 @@ public class MimeTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         // TODO: implement and remove call to super
         return super.parse(instance, value);

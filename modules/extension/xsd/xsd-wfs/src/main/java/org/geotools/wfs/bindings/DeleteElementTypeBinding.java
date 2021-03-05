@@ -92,6 +92,7 @@ public class DeleteElementTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.DeleteElementType;
     }
@@ -103,6 +104,7 @@ public class DeleteElementTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return DeleteElementType.class;
     }
@@ -114,6 +116,7 @@ public class DeleteElementTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         DeleteElementType deleteElement = wfsfactory.createDeleteElementType();
 

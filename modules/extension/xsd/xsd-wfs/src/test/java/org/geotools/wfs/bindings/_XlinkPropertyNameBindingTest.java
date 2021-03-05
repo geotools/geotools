@@ -33,6 +33,7 @@ public class _XlinkPropertyNameBindingTest extends WFSTestSupport {
         super(WFS._XlinkPropertyName, XlinkPropertyNameType.class, Binding.OVERRIDE);
     }
 
+    @Override
     @Test
     public void testEncode() throws Exception {
         XlinkPropertyNameType xlink = factory.createXlinkPropertyNameType();
@@ -49,6 +50,7 @@ public class _XlinkPropertyNameBindingTest extends WFSTestSupport {
         assertEquals("gt:propertyC/gt:propertyD", root.getFirstChild().getNodeValue());
     }
 
+    @Override
     @Test
     public void testParse() throws Exception {
         final String xml =

@@ -39,6 +39,7 @@ public class GMLCoordinatesTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance coordinates;
     MutablePicoContainer container;
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();

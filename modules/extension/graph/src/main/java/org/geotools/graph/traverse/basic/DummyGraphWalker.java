@@ -35,6 +35,7 @@ public class DummyGraphWalker implements GraphWalker {
      * @see GraphWalker#visit(Graphable, GraphTraversal)
      * @see GraphTraversal#CONTINUE
      */
+    @Override
     public int visit(Graphable element, GraphTraversal traversal) {
         return (GraphTraversal.CONTINUE);
     }
@@ -44,5 +45,6 @@ public class DummyGraphWalker implements GraphWalker {
      *
      * @see GraphWalker#finish()
      */
+    @Override
     public void finish() {}
 }

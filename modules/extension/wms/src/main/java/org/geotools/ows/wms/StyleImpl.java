@@ -103,6 +103,7 @@ public class StyleImpl {
         this.title = title;
     }
 
+    @Override
     public int hashCode() {
         final int PRIME = 31;
         int result = 1;
@@ -116,6 +117,7 @@ public class StyleImpl {
      *
      * <p>So if two Styles have the same name, they are considered equal.
      */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null) return false;

@@ -90,6 +90,7 @@ public class SLDConfiguration extends Configuration {
         addDependency(new OGCConfiguration());
     }
 
+    @Override
     protected void registerBindings(MutablePicoContainer container) {
         // Types
         container.registerComponentImplementation(
@@ -192,6 +193,7 @@ public class SLDConfiguration extends Configuration {
      *   <li>{@link StyleFactoryImpl} under {@link StyleFactory}
      * </ul>
      */
+    @Override
     protected void configureContext(MutablePicoContainer container) {
         super.configureContext(container);
 

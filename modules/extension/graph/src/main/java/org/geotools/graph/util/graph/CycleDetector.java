@@ -77,6 +77,7 @@ public class CycleDetector implements GraphWalker {
      *
      * @see GraphWalker#visit(Graphable, GraphTraversal)
      */
+    @Override
     public int visit(Graphable element, GraphTraversal traversal) {
         m_nvisited++;
         return (GraphTraversal.CONTINUE);
@@ -87,6 +88,7 @@ public class CycleDetector implements GraphWalker {
      *
      * @see GraphWalker#finish()
      */
+    @Override
     public void finish() {}
 
     /**

@@ -58,6 +58,7 @@ public class ComparisonOperatorTypeBinding extends AbstractSimpleBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.ComparisonOperatorType;
     }
@@ -69,10 +70,12 @@ public class ComparisonOperatorTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Operator.class;
     }
 
+    @Override
     public int getExecutionMode() {
         return Binding.OVERRIDE;
     }
@@ -84,10 +87,12 @@ public class ComparisonOperatorTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         return factory.operator((String) value);
     }
 
+    @Override
     public String encode(Object object, String value) throws Exception {
         Operator op = (Operator) object;
 

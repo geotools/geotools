@@ -46,6 +46,7 @@ public class CurveArrayPropertyTypeBinding
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         List<LineString> lineStrings = new ArrayList<>();
@@ -70,6 +71,7 @@ public class CurveArrayPropertyTypeBinding
         return gf.createMultiLineString(GeometryFactory.toLineStringArray(lineStrings));
     }
 
+    @Override
     public int compareTo(Object o) {
         if (o instanceof CurveTypeBinding || o instanceof CurvePropertyTypeBinding) {
             return 1;

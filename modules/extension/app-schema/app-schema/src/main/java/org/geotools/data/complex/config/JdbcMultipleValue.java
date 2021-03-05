@@ -103,6 +103,7 @@ public final class JdbcMultipleValue extends AttributeExpressionImpl implements 
         return featureTypeMapping;
     }
 
+    @Override
     public void setFeatureTypeMapping(FeatureTypeMapping featureTypeMapping) {
         this.featureTypeMapping = featureTypeMapping;
     }
@@ -111,6 +112,7 @@ public final class JdbcMultipleValue extends AttributeExpressionImpl implements 
         return attributeMapping;
     }
 
+    @Override
     public void setAttributeMapping(AttributeMapping attributeMapping) {
         this.attributeMapping = attributeMapping;
     }

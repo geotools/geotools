@@ -52,6 +52,7 @@ public class LineSymbolizerBinding extends SLDLineSymbolizerBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.LineSymbolizer;
     }
@@ -68,6 +69,7 @@ public class LineSymbolizerBinding extends SLDLineSymbolizerBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         LineSymbolizer sym = (LineSymbolizer) super.parse(instance, node, value);
 

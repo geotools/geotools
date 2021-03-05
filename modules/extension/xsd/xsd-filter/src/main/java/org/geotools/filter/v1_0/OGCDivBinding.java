@@ -46,6 +46,7 @@ public class OGCDivBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.Div;
     }
@@ -57,10 +58,12 @@ public class OGCDivBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Divide.class;
     }
 
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -72,6 +75,7 @@ public class OGCDivBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return filterfactory.divide(
                 (Expression) node.getChildValue(0), (Expression) node.getChildValue(1));

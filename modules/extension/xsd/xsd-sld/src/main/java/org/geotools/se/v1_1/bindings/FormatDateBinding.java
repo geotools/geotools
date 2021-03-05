@@ -70,6 +70,7 @@ public class FormatDateBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.FormatDate;
     }
@@ -81,6 +82,7 @@ public class FormatDateBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Function.class;
     }
@@ -92,6 +94,7 @@ public class FormatDateBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         // &lt;xsd:element ref="se:DateValue"/&gt;

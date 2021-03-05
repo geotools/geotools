@@ -73,6 +73,7 @@ public class SLDStrokeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SLD.STROKE;
     }
@@ -84,6 +85,7 @@ public class SLDStrokeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -95,6 +97,7 @@ public class SLDStrokeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Stroke.class;
     }
@@ -106,6 +109,7 @@ public class SLDStrokeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
@@ -115,6 +119,7 @@ public class SLDStrokeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // The following CssParameters may be used:
         // &quot;stroke&quot; (color),

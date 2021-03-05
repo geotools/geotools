@@ -61,10 +61,12 @@ public class PointPropertyTypeBinding extends GeometryPropertyTypeBindingBase {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.PointPropertyType;
     }
 
+    @Override
     public Class<? extends Geometry> getGeometryType() {
         return Point.class;
     }

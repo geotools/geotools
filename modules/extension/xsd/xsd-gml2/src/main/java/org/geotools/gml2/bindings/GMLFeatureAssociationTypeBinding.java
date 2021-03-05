@@ -56,6 +56,7 @@ import org.opengis.feature.simple.SimpleFeature;
  */
 public class GMLFeatureAssociationTypeBinding extends AbstractComplexBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.FeatureAssociationType;
     }
@@ -67,6 +68,7 @@ public class GMLFeatureAssociationTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return SimpleFeature.class;
     }
@@ -78,6 +80,7 @@ public class GMLFeatureAssociationTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return node.getChildValue(SimpleFeature.class);
 

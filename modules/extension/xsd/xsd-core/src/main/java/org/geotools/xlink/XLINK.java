@@ -74,11 +74,13 @@ public final class XLINK extends XSD {
     }
 
     /** Returns 'http://www.w3.org/1999/xlink' */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns location of 'xlinks.xsd'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("xlinks.xsd").toString();
     }

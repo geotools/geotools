@@ -74,6 +74,7 @@ public class FeatureCollectionTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.FeatureCollectionType;
     }
@@ -85,6 +86,7 @@ public class FeatureCollectionTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return WFSParsingUtils.FeatureCollectionType_parse(
                 (EObject) super.parse(instance, node, value), instance, node);

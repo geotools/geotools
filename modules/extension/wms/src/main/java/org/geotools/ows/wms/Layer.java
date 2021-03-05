@@ -504,6 +504,7 @@ public class Layer implements Comparable<Layer> {
      *
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
+    @Override
     public int compareTo(Layer layer) {
         if ((this.getName() != null) && (layer.getName() != null)) {
             return this.getName().compareTo(layer.getName());

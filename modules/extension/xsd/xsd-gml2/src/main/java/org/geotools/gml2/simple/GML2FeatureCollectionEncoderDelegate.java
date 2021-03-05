@@ -116,6 +116,7 @@ public class GML2FeatureCollectionEncoderDelegate extends FeatureCollectionEncod
             return config;
         }
 
+        @Override
         public List getFeatureProperties(
                 SimpleFeature f, XSDElementDeclaration element, Encoder e) {
             return GML2EncodingUtils.AbstractFeatureType_getProperties(
@@ -126,26 +127,33 @@ public class GML2FeatureCollectionEncoderDelegate extends FeatureCollectionEncod
                     e.getConfiguration());
         }
 
+        @Override
         public EnvelopeEncoder createEnvelopeEncoder(Encoder e) {
             return new EnvelopeEncoder(e, gmlPrefix);
         }
 
+        @Override
         public void initFidAttribute(AttributesImpl atts) {
             atts.addAttribute(null, "fid", "fid", null, "");
         }
 
+        @Override
         public void startFeatures(GMLWriter handler) {}
 
+        @Override
         public void startFeature(GMLWriter handler) throws Exception {
             handler.startElement(FEATURE_MEMBER, null);
         }
 
+        @Override
         public void endFeature(GMLWriter handler) throws Exception {
             handler.endElement(FEATURE_MEMBER);
         }
 
+        @Override
         public void endFeatures(GMLWriter handler) {}
 
+        @Override
         public void setSrsNameAttribute(AttributesImpl atts, CoordinateReferenceSystem crs) {
             atts.addAttribute(null, "srsName", "srsName", null, GML2EncodingUtils.toURI(crs, true));
         }

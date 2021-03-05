@@ -3463,6 +3463,7 @@ public final class GML extends XSD {
         return typeSchema.profile(profile);
     }
 
+    @Override
     protected void addDependencies(Set<XSD> dependencies) {
         // add xlink dependency
         dependencies.add(XLINK.getInstance());
@@ -3473,11 +3474,13 @@ public final class GML extends XSD {
     }
 
     /** Returns 'http://www.opengis.net/gml'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns The location of 'gml.xsd'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("gml.xsd").toString();
     }

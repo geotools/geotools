@@ -42,6 +42,7 @@ public class DisjointBinding extends OGCDisjointBinding {
         super(filterFactory, geometryFactory);
     }
 
+    @Override
     public QName getTarget() {
         return FES.Disjoint;
     }

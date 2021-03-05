@@ -60,6 +60,7 @@ public class MultiGeometryTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return KML.MultiGeometryType;
     }
@@ -71,6 +72,7 @@ public class MultiGeometryTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return GeometryCollection.class;
     }
@@ -82,6 +84,7 @@ public class MultiGeometryTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List<Geometry> geometries = node.getChildValues(Geometry.class);
 
@@ -128,6 +131,7 @@ public class MultiGeometryTypeBinding extends AbstractComplexBinding {
                 geometries.toArray(new Geometry[geometries.size()]));
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         GeometryCollection gc = (GeometryCollection) object;
         if (KML.Geometry.getLocalPart().equals(name.getLocalPart())) {

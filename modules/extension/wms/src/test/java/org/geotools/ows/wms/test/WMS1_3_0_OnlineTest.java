@@ -59,17 +59,20 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
                         "http://demo.cubewerx.com/demo/cubeserv/cubeserv.cgi?CONFIG=main&REQUEST=GetCapabilities&VERSION=1.3.0");
     }
 
+    @Override
     @Test
     public void testGetVersion() {
         assertEquals(spec.getVersion(), "1.3.0");
     }
 
+    @Override
     protected void checkProperties(Properties properties) {
         assertEquals(properties.get("VERSION"), "1.3.0");
         assertEquals(properties.get("REQUEST"), "GetCapabilities");
         assertEquals(properties.get("SERVICE"), "WMS");
     }
 
+    @Override
     @Test
     public void testCreateParser() throws Exception {
         try {
@@ -222,6 +225,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
         }
     }
 
+    @Override
     @Test
     public void testCreateGetMapRequest() throws Exception {
         WebMapServer wms = new WebMapServer(server2);
@@ -232,6 +236,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
         assertTrue(request.getFinalURL().toExternalForm().indexOf("image%2Fjpeg") >= 0);
     }
 
+    @Override
     @Test
     public void testCreateGetFeatureInfoRequest() throws Exception {
         try {
@@ -303,6 +308,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
         }
     }
 
+    @Override
     @Test
     public void testCreateDescribeLayerRequest() throws Exception {
         /*try{
@@ -344,6 +350,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
                 }*/
     }
 
+    @Override
     @Test
     public void testCreateGetLegendGraphicRequest() throws Exception {
         /*try{
@@ -425,6 +432,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
         }*/
     }
 
+    @Override
     protected WebMapServer getCustomWMS(URL featureURL)
             throws SAXException, URISyntaxException, IOException {
         return new CustomWMS(featureURL);
@@ -438,6 +446,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
             // TODO Auto-generated constructor stub
         }
 
+        @Override
         protected void setupSpecifications() {
             specs = new Specification[1];
             specs[0] = new WMS1_3_0();

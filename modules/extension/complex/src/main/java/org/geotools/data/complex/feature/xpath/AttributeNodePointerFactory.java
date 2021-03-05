@@ -42,10 +42,12 @@ import org.opengis.feature.type.ComplexType;
  */
 public class AttributeNodePointerFactory implements NodePointerFactory {
 
+    @Override
     public int getOrder() {
         return 0;
     }
 
+    @Override
     public NodePointer createNodePointer(QName name, Object object, Locale locale) {
 
         /*
@@ -63,6 +65,7 @@ public class AttributeNodePointerFactory implements NodePointerFactory {
         return null;
     }
 
+    @Override
     public NodePointer createNodePointer(NodePointer parent, QName name, Object object) {
 
         /*

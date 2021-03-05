@@ -56,6 +56,7 @@ import org.geotools.xsd.Node;
 public class RangeSubsetType_axisSubsetBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WCS.RangeSubsetType_axisSubset;
     }
@@ -67,6 +68,7 @@ public class RangeSubsetType_axisSubsetBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return AxisSubsetType.class;
     }
@@ -78,6 +80,7 @@ public class RangeSubsetType_axisSubsetBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         AxisSubsetType axis = Wcs10Factory.eINSTANCE.createAxisSubsetType();

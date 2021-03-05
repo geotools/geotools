@@ -48,10 +48,12 @@ public class EnumSimpleBinding extends AbstractSimpleBinding {
         }
     }
 
+    @Override
     public QName getTarget() {
         return target;
     }
 
+    @Override
     public Class<?> getType() {
         return enumClass;
     }

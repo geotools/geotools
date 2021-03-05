@@ -44,6 +44,7 @@ import org.opengis.filter.capability.GeometryOperand;
  */
 public class GeometryOperandsTypeBinding extends AbstractComplexBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.GeometryOperandsType;
     }
@@ -55,6 +56,7 @@ public class GeometryOperandsTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return GeometryOperand[].class;
     }
@@ -66,12 +68,14 @@ public class GeometryOperandsTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List<GeometryOperand> gops = node.getChildValues(GeometryOperand.class);
 
         return gops.toArray(new GeometryOperand[gops.size()]);
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         if ("GeometryOperand".equals(name.getLocalPart())) {
             return object;

@@ -185,6 +185,7 @@ public abstract class Tile implements ImageLoader {
      * Implementation of ImageLoader. Has been moved to {@link
      * @see org.geotools.tile.TileService#loadImageTileImage(Tile)}
      */
+    @Override
     public BufferedImage loadImageTileImage(Tile tile) throws IOException {
         if (service == null) {
             throw new IllegalStateException("service cannot be null.");
@@ -393,6 +394,7 @@ public abstract class Tile implements ImageLoader {
         return getUrl().equals(((Tile) other).getUrl());
     }
 
+    @Override
     public String toString() {
         return this.getId(); // this.getUrl().toString();
     }

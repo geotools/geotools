@@ -18,6 +18,7 @@ public abstract class GML32TestSupport extends XMLTestSupport {
         XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(namespaces));
     }
 
+    @Override
     protected Configuration createConfiguration() {
         return new GMLConfiguration(enableArcSurfaceSupport());
     }

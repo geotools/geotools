@@ -65,6 +65,7 @@ public class SLDLineSymbolizerBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SLD.LINESYMBOLIZER;
     }
@@ -76,6 +77,7 @@ public class SLDLineSymbolizerBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -87,6 +89,7 @@ public class SLDLineSymbolizerBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return LineSymbolizer.class;
     }
@@ -98,6 +101,7 @@ public class SLDLineSymbolizerBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
@@ -107,6 +111,7 @@ public class SLDLineSymbolizerBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         LineSymbolizer ls = styleFactory.createLineSymbolizer();
 

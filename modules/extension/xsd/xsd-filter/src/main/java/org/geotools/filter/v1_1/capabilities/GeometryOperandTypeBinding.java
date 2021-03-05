@@ -68,6 +68,7 @@ public class GeometryOperandTypeBinding extends AbstractSimpleBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.GeometryOperandType;
     }
@@ -79,6 +80,7 @@ public class GeometryOperandTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return GeometryOperand.class;
     }
@@ -90,12 +92,14 @@ public class GeometryOperandTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         QName name = (QName) value;
 
         return GeometryOperand.get(name.getNamespaceURI(), name.getLocalPart());
     }
 
+    @Override
     public String encode(Object object, String value) throws Exception {
         GeometryOperand operand = (GeometryOperand) object;
 

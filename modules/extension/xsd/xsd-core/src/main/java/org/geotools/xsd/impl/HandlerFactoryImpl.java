@@ -21,10 +21,12 @@ import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.xsd.SchemaIndex;
 
 public class HandlerFactoryImpl implements HandlerFactory {
+    @Override
     public DocumentHandler createDocumentHandler(ParserHandler parser) {
         return new DocumentHandlerImpl(this, parser);
     }
 
+    @Override
     public ElementHandler createElementHandler(QName qName, Handler parent, ParserHandler parser) {
         SchemaIndex index = parser.getSchemaIndex();
 
@@ -38,6 +40,7 @@ public class HandlerFactoryImpl implements HandlerFactory {
         return null;
     }
 
+    @Override
     public ElementHandler createElementHandler(
             XSDElementDeclaration element, Handler parent, ParserHandler parser) {
         return new ElementHandlerImpl(element, parent, parser);

@@ -27,6 +27,7 @@ public class WMS1_3_0 extends WMS1_1_1 {
     /* (non-Javadoc)
      * @see org.geotools.data.wms.Specification#getVersion()
      */
+    @Override
     public String getVersion() {
         return "1.3.0";
     }
@@ -34,10 +35,12 @@ public class WMS1_3_0 extends WMS1_1_1 {
     /* (non-Javadoc)
      * @see org.geotools.data.wms.Specification#createGetCapabilitiesRequest(java.net.URL)
      */
+    @Override
     public GetCapabilitiesRequest createGetCapabilitiesRequest(URL server) {
         return new GetCapsRequest(server);
     }
 
+    @Override
     public org.geotools.ows.wms.request.GetMapRequest createGetMapRequest(URL get) {
         return new GetMapRequest(get);
     }
@@ -51,6 +54,7 @@ public class WMS1_3_0 extends WMS1_1_1 {
         /* (non-Javadoc)
          * @see org.geotools.data.wms.request.AbstractGetCapabilitiesRequest#initVersion()
          */
+        @Override
         protected void initVersion() {
             setProperty("VERSION", "1.3.0");
         }
@@ -62,6 +66,7 @@ public class WMS1_3_0 extends WMS1_1_1 {
             super(onlineResource);
         }
 
+        @Override
         protected void initVersion() {
             setVersion("1.3.0");
         }
@@ -80,19 +85,23 @@ public class WMS1_3_0 extends WMS1_1_1 {
             super(onlineResource, request);
         }
 
+        @Override
         protected void initVersion() {
             setProperty("VERSION", "1.3.0");
         }
 
+        @Override
         protected String getQueryX() {
             return "I";
         }
 
+        @Override
         protected String getQueryY() {
             return "J";
         }
     }
 
+    @Override
     public org.geotools.ows.wms.request.GetFeatureInfoRequest createGetFeatureInfoRequest(
             URL onlineResource, org.geotools.ows.wms.request.GetMapRequest getMapRequest) {
         return new GetFeatureInfoRequest(onlineResource, getMapRequest);

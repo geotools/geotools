@@ -51,6 +51,7 @@ import org.geotools.xsd.InstanceComponent;
  */
 public class XSNCNameBinding extends AbstractSimpleBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return XS.NCNAME;
     }
@@ -62,6 +63,7 @@ public class XSNCNameBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -73,6 +75,7 @@ public class XSNCNameBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return String.class;
     }
@@ -84,6 +87,7 @@ public class XSNCNameBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         // TODO need to implement a pattern facet. Simply return string value for now
         return value;

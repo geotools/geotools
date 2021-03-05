@@ -44,6 +44,7 @@ public class DirectedGraphSerializerTest extends BasicGraphSerializerTest {
      * <br>
      * Expected: 1. before and after graph should have same structure.
      */
+    @Override
     @Test
     public void test_0() {
         final int nnodes = 100;
@@ -107,6 +108,7 @@ public class DirectedGraphSerializerTest extends BasicGraphSerializerTest {
      * <br>
      * Expected: 1. Same structure before and after.
      */
+    @Override
     @Test
     public void test_1() {
         final int k = 5;
@@ -204,6 +206,7 @@ public class DirectedGraphSerializerTest extends BasicGraphSerializerTest {
      * <br>
      * Exepcted: 1. Same graph structure.
      */
+    @Override
     @Test
     public void test_2() {
         final int nnodes = 100;
@@ -252,10 +255,12 @@ public class DirectedGraphSerializerTest extends BasicGraphSerializerTest {
         }
     }
 
+    @Override
     protected GraphBuilder createBuilder() {
         return (new BasicDirectedGraphBuilder());
     }
 
+    @Override
     protected GraphBuilder createRebuilder() {
         return (new BasicDirectedGraphBuilder());
     }

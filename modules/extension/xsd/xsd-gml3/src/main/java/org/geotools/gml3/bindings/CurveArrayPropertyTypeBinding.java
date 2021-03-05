@@ -57,6 +57,7 @@ public class CurveArrayPropertyTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.CurveArrayPropertyType;
     }
@@ -68,6 +69,7 @@ public class CurveArrayPropertyTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         // return Curve[].class;
         return MultiLineString[].class;
@@ -80,6 +82,7 @@ public class CurveArrayPropertyTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List<MultiLineString> curves = node.getChildValues(MultiLineString.class);
 

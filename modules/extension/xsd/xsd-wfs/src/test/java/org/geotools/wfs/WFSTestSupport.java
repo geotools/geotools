@@ -65,6 +65,7 @@ public abstract class WFSTestSupport extends XMLTestSupport {
         filterFac = CommonFactoryFinder.getFilterFactory2(null);
     }
 
+    @Override
     protected Configuration createConfiguration() {
         return new org.geotools.wfs.v1_1.WFSConfiguration();
     }

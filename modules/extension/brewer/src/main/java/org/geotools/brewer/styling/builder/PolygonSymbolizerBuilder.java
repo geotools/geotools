@@ -66,6 +66,7 @@ public class PolygonSymbolizerBuilder extends SymbolizerBuilder<PolygonSymbolize
         return this;
     }
 
+    @Override
     public PolygonSymbolizer build() {
         if (unset) {
             return null;
@@ -84,6 +85,7 @@ public class PolygonSymbolizerBuilder extends SymbolizerBuilder<PolygonSymbolize
         return ps;
     }
 
+    @Override
     public PolygonSymbolizerBuilder reset() {
         stroke.unset();
         fill.unset();
@@ -108,6 +110,7 @@ public class PolygonSymbolizerBuilder extends SymbolizerBuilder<PolygonSymbolize
         return this;
     }
 
+    @Override
     public PolygonSymbolizerBuilder reset(PolygonSymbolizer symbolizer) {
         if (symbolizer == null) {
             return unset();
@@ -121,6 +124,7 @@ public class PolygonSymbolizerBuilder extends SymbolizerBuilder<PolygonSymbolize
         return this;
     }
 
+    @Override
     public PolygonSymbolizerBuilder unset() {
         return (PolygonSymbolizerBuilder) super.unset();
     }

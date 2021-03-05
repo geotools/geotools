@@ -51,26 +51,32 @@ public class DescriptorXmlAttributeNodePointer extends NodePointer {
         this.descriptor = descriptor;
     }
 
+    @Override
     public boolean isLeaf() {
         return true;
     }
 
+    @Override
     public boolean isCollection() {
         return false;
     }
 
+    @Override
     public boolean isAttribute() {
         return true;
     }
 
+    @Override
     public QName getName() {
         return new QName(name.getURI(), name.getLocalPart());
     }
 
+    @Override
     public Object getBaseValue() {
         return null;
     }
 
+    @Override
     public Object getImmediateNode() {
 
         // first try regular way
@@ -100,6 +106,7 @@ public class DescriptorXmlAttributeNodePointer extends NodePointer {
         return null;
     }
 
+    @Override
     public void setValue(Object value) {
         throw new UnsupportedOperationException("Feature types are immutable");
     }

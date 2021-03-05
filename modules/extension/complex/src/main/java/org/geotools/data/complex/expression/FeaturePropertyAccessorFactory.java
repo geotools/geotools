@@ -77,6 +77,7 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
 
     static final Pattern FID_PATTERN = Pattern.compile("@(\\w+:)?id");
 
+    @Override
     public PropertyAccessor createPropertyAccessor(
             Class type, String xpath, Class target, Hints hints) {
 
@@ -125,11 +126,13 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
      */
     static class FidFeaturePropertyAccessor implements PropertyAccessor {
 
+        @Override
         public boolean canHandle(Object object, String xpath, Class target) {
             // we only work against feature, not feature type
             return object instanceof Attribute && FID_PATTERN.matcher(xpath).matches();
         }
 
+        @Override
         @SuppressWarnings("unchecked")
         public <T> T get(Object object, String xpath, Class<T> target)
                 throws IllegalArgumentException {
@@ -137,6 +140,7 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
             return (T) feature.getIdentifier().toString();
         }
 
+        @Override
         public void set(Object object, String xpath, Object value, Class target) {
             throw new org.opengis.feature.IllegalAttributeException(
                     null, value, "feature id is immutable");
@@ -145,6 +149,7 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
 
     static class DefaultGeometryFeaturePropertyAccessor implements PropertyAccessor {
 
+        @Override
         public boolean canHandle(Object object, String xpath, Class target) {
             if (!"".equals(xpath)) return false;
 
@@ -154,6 +159,7 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
             return (object instanceof Feature || object instanceof FeatureType);
         }
 
+        @Override
         @SuppressWarnings("unchecked")
         public <T> T get(Object object, String xpath, Class<T> target)
                 throws IllegalArgumentException {
@@ -175,6 +181,7 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
             return null;
         }
 
+        @Override
         public void set(Object object, String xpath, Object value, Class target)
                 throws IllegalAttributeException {
 
@@ -240,6 +247,7 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
             this.namespaces = namespaces;
         }
 
+        @Override
         public boolean canHandle(Object object, String xpath, Class target) {
 
             return object instanceof Attribute
@@ -247,6 +255,7 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
                     || object instanceof AttributeDescriptor;
         }
 
+        @Override
         @SuppressWarnings("unchecked")
         public <T> T get(Object object, String xpath, Class<T> target)
                 throws IllegalArgumentException {
@@ -279,6 +288,7 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
             }
         }
 
+        @Override
         public void set(Object object, String xpath, Object value, Class target)
                 throws IllegalAttributeException {
 

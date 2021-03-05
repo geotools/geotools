@@ -81,6 +81,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -90,6 +91,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
@@ -99,6 +101,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -110,6 +113,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
 
@@ -136,18 +140,22 @@ public class WMSComplexTypes {
             return operationType;
         }
 
+        @Override
         public String getName() {
             return "OperationType";
         }
 
+        @Override
         public Class getInstanceType() {
             return org.geotools.data.ows.OperationType.class;
         }
 
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
 
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -189,6 +197,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return attrs;
         }
@@ -198,6 +207,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
@@ -207,6 +217,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -218,6 +229,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
 
@@ -248,6 +260,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "WMT_MS_Capabilities";
         }
@@ -257,6 +270,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return WMSCapabilities.class;
         }
@@ -267,6 +281,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -277,6 +292,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -318,6 +334,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return attrs;
         }
@@ -327,6 +344,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
@@ -336,6 +354,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -347,6 +366,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
 
@@ -377,6 +397,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "WMS_Capabilities";
         }
@@ -386,6 +407,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return WMSCapabilities.class;
         }
@@ -396,6 +418,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -406,6 +429,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -452,6 +476,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -461,6 +486,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
@@ -470,6 +496,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -481,6 +508,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             List<String> strings = new ArrayList<>();
@@ -501,6 +529,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "Format";
         }
@@ -510,6 +539,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return String[].class;
         }
@@ -520,6 +550,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -530,11 +561,13 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
         }
 
+        @Override
         public boolean isMixed() {
             return true;
         }
@@ -589,6 +622,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -598,6 +632,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
@@ -607,6 +642,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -618,6 +654,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
 
@@ -680,6 +717,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "Service";
         }
@@ -689,6 +727,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return Service.class;
         }
@@ -699,6 +738,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -709,6 +749,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -735,6 +776,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -744,6 +786,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
@@ -753,6 +796,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -764,6 +808,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             String[] keywords = new String[value.length];
@@ -780,6 +825,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "KeywordList";
         }
@@ -789,6 +835,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return String[].class;
         }
@@ -799,6 +846,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -809,6 +857,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -831,6 +880,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return attributes;
         }
@@ -840,6 +890,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -849,6 +900,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -860,6 +912,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return value[value.length - 1].getValue();
@@ -870,6 +923,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "Keyword";
         }
@@ -879,6 +933,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return String.class;
         }
@@ -889,6 +944,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -899,11 +955,13 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
         }
 
+        @Override
         public boolean isMixed() {
             return true;
         }
@@ -921,6 +979,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -930,6 +989,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -939,6 +999,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -950,6 +1011,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             Object keywords = value[value.length - 1].getValue();
@@ -964,6 +1026,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "Keywords";
         }
@@ -973,6 +1036,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return String[].class;
         }
@@ -983,6 +1047,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -993,11 +1058,13 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
         }
 
+        @Override
         public boolean isMixed() {
             return true;
         }
@@ -1036,6 +1103,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -1045,6 +1113,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
@@ -1054,6 +1123,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -1065,6 +1135,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
 
@@ -1134,6 +1205,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "ContactInformation";
         }
@@ -1143,6 +1215,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return ResponsiblePartyImpl.class;
         }
@@ -1153,6 +1226,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -1163,6 +1237,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -1190,6 +1265,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -1199,6 +1275,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
@@ -1208,6 +1285,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -1219,6 +1297,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
 
@@ -1245,6 +1324,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "ContactPersonPrimary";
         }
@@ -1254,6 +1334,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return ResponsiblePartyImpl.class;
         }
@@ -1264,10 +1345,12 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
 
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -1299,6 +1382,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -1308,6 +1392,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
@@ -1317,6 +1402,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -1328,6 +1414,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             AddressImpl address = new AddressImpl();
@@ -1374,6 +1461,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "ContactAddress";
         }
@@ -1383,6 +1471,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return AddressImpl.class;
         }
@@ -1393,6 +1482,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -1403,6 +1493,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -1445,6 +1536,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -1454,6 +1546,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
@@ -1463,6 +1556,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -1474,6 +1568,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             WMSCapabilities capabilities = new WMSCapabilities();
@@ -1513,6 +1608,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "Capability";
         }
@@ -1522,6 +1618,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return WMSCapabilities.class;
         }
@@ -1532,6 +1629,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -1542,6 +1640,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -1560,6 +1659,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -1569,6 +1669,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -1578,6 +1679,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -1589,6 +1691,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return null;
@@ -1599,6 +1702,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "VendorSpecificCapabilities";
         }
@@ -1608,6 +1712,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return null;
         }
@@ -1618,6 +1723,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -1628,6 +1734,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -1706,6 +1813,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return attrs;
         }
@@ -1715,6 +1823,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
@@ -1724,6 +1833,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -1735,6 +1845,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return null;
@@ -1745,6 +1856,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "UserDefinedSymbolization";
         }
@@ -1754,6 +1866,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return null;
         }
@@ -1764,6 +1877,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -1774,6 +1888,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -1787,6 +1902,7 @@ public class WMSComplexTypes {
             return instance;
         }
 
+        @Override
         public boolean isAbstract() {
             return true;
         }
@@ -1796,6 +1912,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -1805,6 +1922,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -1814,6 +1932,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -1825,6 +1944,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return null;
@@ -1836,6 +1956,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return null;
         }
@@ -1845,6 +1966,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return null;
         }
@@ -1855,6 +1977,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -1865,6 +1988,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -1918,6 +2042,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -1927,6 +2052,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
@@ -1936,6 +2062,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -1947,6 +2074,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
 
@@ -2002,6 +2130,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "Request";
         }
@@ -2011,6 +2140,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return WMSRequest.class;
         }
@@ -2021,6 +2151,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -2031,6 +2162,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -2054,6 +2186,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -2063,6 +2196,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
@@ -2072,6 +2206,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -2083,6 +2218,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return value[0].getValue();
@@ -2093,6 +2229,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "HTTP";
         }
@@ -2102,6 +2239,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return org.geotools.data.ows.OperationType.class;
         }
@@ -2112,6 +2250,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -2122,6 +2261,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -2148,6 +2288,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -2157,6 +2298,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
@@ -2166,6 +2308,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -2177,6 +2320,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             org.geotools.data.ows.OperationType operationType =
@@ -2200,6 +2344,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "HTTP";
         }
@@ -2209,6 +2354,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return org.geotools.data.ows.OperationType.class;
         }
@@ -2219,6 +2365,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -2229,6 +2376,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -2268,6 +2416,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return attributes;
         }
@@ -2277,6 +2426,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
@@ -2286,6 +2436,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -2297,6 +2448,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
 
@@ -2313,6 +2465,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "Get";
         }
@@ -2322,6 +2475,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return URL.class;
         }
@@ -2332,6 +2486,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -2342,6 +2497,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -2380,6 +2536,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return attributes;
         }
@@ -2389,6 +2546,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
@@ -2398,6 +2556,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -2409,6 +2568,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
 
@@ -2425,6 +2585,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "Post";
         }
@@ -2434,6 +2595,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return URL.class;
         }
@@ -2444,6 +2606,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -2454,6 +2617,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -2480,6 +2644,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -2489,6 +2654,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
@@ -2498,6 +2664,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -2509,6 +2676,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
 
@@ -2529,6 +2697,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "Exception";
         }
@@ -2538,6 +2707,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return String[].class;
         }
@@ -2548,6 +2718,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -2558,6 +2729,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -2689,14 +2861,17 @@ public class WMSComplexTypes {
             return instance;
         }
 
+        @Override
         public Attribute[] getAttributes() {
             return attributes;
         }
 
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
 
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -2708,6 +2883,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
 
@@ -2852,6 +3028,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "Layer";
         }
@@ -2861,6 +3038,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return Layer.class;
         }
@@ -2871,6 +3049,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -2881,6 +3060,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -2910,6 +3090,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -2919,6 +3100,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
@@ -2928,6 +3110,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -2939,6 +3122,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             CRSEnvelope bbox = new CRSEnvelope();
@@ -2966,6 +3150,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "EX_GeographicBoundingBox";
         }
@@ -2975,6 +3160,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return CRSEnvelope.class;
         }
@@ -2985,6 +3171,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -2995,6 +3182,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -3053,6 +3241,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return attrs;
         }
@@ -3062,6 +3251,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -3071,6 +3261,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -3082,6 +3273,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             CRSEnvelope bbox = new CRSEnvelope();
@@ -3099,6 +3291,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "LatLonBoundingBox";
         }
@@ -3108,6 +3301,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return CRSEnvelope.class;
         }
@@ -3118,6 +3312,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -3128,6 +3323,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -3206,6 +3402,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return attrs;
         }
@@ -3215,6 +3412,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -3224,6 +3422,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -3235,6 +3434,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             CRSEnvelope bbox = new CRSEnvelope();
@@ -3262,6 +3462,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "BoundingBox";
         }
@@ -3271,6 +3472,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return CRSEnvelope.class;
         }
@@ -3281,6 +3483,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -3291,6 +3494,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -3352,6 +3556,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return attrs;
         }
@@ -3359,6 +3564,7 @@ public class WMSComplexTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.ComplexType#isMixed()
          */
+        @Override
         public boolean isMixed() {
             return true;
         }
@@ -3367,6 +3573,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -3376,6 +3583,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -3387,6 +3595,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException, OperationNotSupportedException {
@@ -3427,6 +3636,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "Dimension";
         }
@@ -3436,6 +3646,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return Dimension.class;
         }
@@ -3446,6 +3657,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -3456,6 +3668,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -3505,6 +3718,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return attrs;
         }
@@ -3514,6 +3728,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -3523,6 +3738,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -3534,6 +3750,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             String name = attrs.getValue("name");
@@ -3559,6 +3776,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "Extent";
         }
@@ -3568,6 +3786,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return Extent.class;
         }
@@ -3578,6 +3797,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -3588,11 +3808,13 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
         }
 
+        @Override
         public boolean isMixed() {
             return true;
         }
@@ -3620,6 +3842,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -3629,6 +3852,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
@@ -3638,6 +3862,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -3649,6 +3874,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
 
@@ -3683,6 +3909,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "Attribution";
         }
@@ -3692,6 +3919,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return Attribution.class;
         }
@@ -3702,6 +3930,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -3712,6 +3941,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -3722,6 +3952,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#isMixed()
          */
+        @Override
         public boolean isMixed() {
             // TODO Auto-generated method stub
             return true;
@@ -3756,6 +3987,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return attrs;
         }
@@ -3765,6 +3997,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
@@ -3774,6 +4007,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -3785,6 +4019,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
 
@@ -3833,6 +4068,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "LogoURL";
         }
@@ -3842,6 +4078,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return LogoURL.class;
         }
@@ -3852,6 +4089,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -3862,6 +4100,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -3901,6 +4140,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return attrs;
         }
@@ -3910,12 +4150,14 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.ComplexType#isMixed()
          */
+        @Override
         public boolean isMixed() {
             return true;
         }
@@ -3925,6 +4167,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -3936,6 +4179,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             String type = attrs.getValue("type").toString();
@@ -3952,6 +4196,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "MetadataURL";
         }
@@ -3961,6 +4206,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return null;
         }
@@ -3971,6 +4217,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -3981,6 +4228,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -4019,6 +4267,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return attrs;
         }
@@ -4028,6 +4277,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
@@ -4037,6 +4287,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -4048,6 +4299,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return null;
@@ -4059,6 +4311,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "AuthorityURL";
         }
@@ -4068,6 +4321,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return null;
         }
@@ -4078,6 +4332,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -4088,6 +4343,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -4098,6 +4354,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#isMixed()
          */
+        @Override
         public boolean isMixed() {
             // TODO Auto-generated method stub
             return true;
@@ -4129,6 +4386,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return attrs;
         }
@@ -4138,6 +4396,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -4147,6 +4406,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -4158,6 +4418,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return null;
@@ -4169,6 +4430,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "Identifier";
         }
@@ -4178,6 +4440,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return null;
         }
@@ -4188,6 +4451,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -4198,6 +4462,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -4205,6 +4470,7 @@ public class WMSComplexTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.ComplexType#isMixed()
          */
+        @Override
         public boolean isMixed() {
             return true;
         }
@@ -4230,6 +4496,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -4239,6 +4506,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
@@ -4248,6 +4516,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -4259,6 +4528,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return null;
@@ -4270,6 +4540,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "DataURL";
         }
@@ -4279,6 +4550,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return null;
         }
@@ -4289,6 +4561,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -4299,6 +4572,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -4306,6 +4580,7 @@ public class WMSComplexTypes {
         /*
          * @see org.geotools.xml.schema.ComplexType#isMixed()
          */
+        @Override
         public boolean isMixed() {
             return true;
         }
@@ -4331,6 +4606,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -4340,6 +4616,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
@@ -4349,6 +4626,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -4360,6 +4638,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return null;
@@ -4371,6 +4650,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "FeatureListURL";
         }
@@ -4380,6 +4660,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return null;
         }
@@ -4390,6 +4671,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -4400,6 +4682,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -4432,6 +4715,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -4441,6 +4725,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
@@ -4450,6 +4735,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -4461,6 +4747,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             StyleImpl style = new StyleImpl();
@@ -4504,6 +4791,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "Style";
         }
@@ -4513,6 +4801,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return String.class;
         }
@@ -4523,6 +4812,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -4533,6 +4823,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -4567,6 +4858,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return attrs;
         }
@@ -4576,6 +4868,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
@@ -4585,6 +4878,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -4596,6 +4890,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
 
@@ -4609,6 +4904,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "LegendURL";
         }
@@ -4618,6 +4914,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return null;
         }
@@ -4628,6 +4925,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -4638,6 +4936,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -4645,6 +4944,7 @@ public class WMSComplexTypes {
         /*
          * @see org.geotools.xml.schema.ComplexType#isMixed()
          */
+        @Override
         public boolean isMixed() {
             return true;
         }
@@ -4670,6 +4970,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -4679,6 +4980,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
@@ -4688,6 +4990,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -4699,6 +5002,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return null;
@@ -4710,6 +5014,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "StyleSheetURL";
         }
@@ -4719,6 +5024,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return null;
         }
@@ -4729,6 +5035,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -4739,6 +5046,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -4765,6 +5073,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -4774,6 +5083,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
@@ -4783,6 +5093,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -4794,6 +5105,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return null;
@@ -4805,6 +5117,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "StyleURL";
         }
@@ -4814,6 +5127,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return null;
         }
@@ -4824,6 +5138,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -4834,6 +5149,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -4841,6 +5157,7 @@ public class WMSComplexTypes {
         /*
          * @see org.geotools.xml.schema.ComplexType#isMixed()
          */
+        @Override
         public boolean isMixed() {
             return true;
         }
@@ -4872,6 +5189,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return attrs;
         }
@@ -4881,6 +5199,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -4890,6 +5209,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -4901,6 +5221,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             double[] scaleHint = new double[2];
@@ -4914,6 +5235,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "ScaleHint";
         }
@@ -4923,6 +5245,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return double[].class;
         }
@@ -4933,6 +5256,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -4943,6 +5267,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -4961,6 +5286,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return XLinkSchema.SimpleLink.getInstance().getAttributes();
         }
@@ -4970,6 +5296,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -4979,6 +5306,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -4990,6 +5318,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
 
@@ -5015,6 +5344,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "OnlineResource";
         }
@@ -5024,6 +5354,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return URL.class;
         }
@@ -5034,6 +5365,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -5044,11 +5376,13 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
         }
 
+        @Override
         public boolean isMixed() {
             return true;
         }
@@ -5066,6 +5400,7 @@ public class WMSComplexTypes {
                     new WMSSchema.WMSAttribute("version", XSISimpleTypes.String.getInstance())
                 };
 
+        @Override
         public Attribute[] getAttributes() {
             return attrs;
         }
@@ -5073,6 +5408,7 @@ public class WMSComplexTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             // TODO Auto-generated method stub
             return null;
@@ -5081,6 +5417,7 @@ public class WMSComplexTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             // TODO Auto-generated method stub
             return null;
@@ -5089,6 +5426,7 @@ public class WMSComplexTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element, org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return new ServiceException((String) value[value.length - 1].getValue(), null);
@@ -5097,16 +5435,19 @@ public class WMSComplexTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "WMTException";
         }
 
+        @Override
         public boolean isMixed() {
             return true;
         }
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return ServiceException.class;
         }
@@ -5114,6 +5455,7 @@ public class WMSComplexTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element, java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             // TODO Auto-generated method stub
             return false;
@@ -5122,6 +5464,7 @@ public class WMSComplexTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element, java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             // TODO Auto-generated method stub
@@ -5155,24 +5498,28 @@ public class WMSComplexTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return attrs;
         }
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element, org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             /*
@@ -5220,18 +5567,21 @@ public class WMSComplexTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "ServiceExceptionReport";
         }
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return ServiceException.class;
         }
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element, java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             // TODO Auto-generated method stub
             return false;
@@ -5239,6 +5589,7 @@ public class WMSComplexTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element, java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             // TODO Auto-generated method stub
@@ -5262,6 +5613,7 @@ public class WMSComplexTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return attrs;
         }
@@ -5269,6 +5621,7 @@ public class WMSComplexTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             // TODO Auto-generated method stub
             return null;
@@ -5277,6 +5630,7 @@ public class WMSComplexTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             // TODO Auto-generated method stub
             return null;
@@ -5285,6 +5639,7 @@ public class WMSComplexTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element, org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             String body = (String) value[value.length - 1].getValue();
@@ -5296,16 +5651,19 @@ public class WMSComplexTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "ServiceException";
         }
 
+        @Override
         public boolean isMixed() {
             return true;
         }
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return ServiceException.class;
         }
@@ -5313,6 +5671,7 @@ public class WMSComplexTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element, java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             // TODO Auto-generated method stub
             return false;
@@ -5321,6 +5680,7 @@ public class WMSComplexTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element, java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             // TODO Auto-generated method stub
@@ -5340,6 +5700,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -5349,6 +5710,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -5358,6 +5720,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -5369,6 +5732,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return WMS1_0_0.toFormatMIME("GIF");
@@ -5379,6 +5743,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "GIF";
         }
@@ -5388,6 +5753,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return String.class;
         }
@@ -5398,6 +5764,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -5408,6 +5775,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -5426,6 +5794,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -5435,6 +5804,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -5444,6 +5814,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -5455,6 +5826,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return WMS1_0_0.toFormatMIME("JPEG");
@@ -5465,6 +5837,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "JPEG";
         }
@@ -5474,6 +5847,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return String.class;
         }
@@ -5484,6 +5858,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -5494,6 +5869,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -5512,6 +5888,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -5521,6 +5898,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -5530,6 +5908,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -5541,6 +5920,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return WMS1_0_0.toFormatMIME("PNG");
@@ -5551,6 +5931,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "PNG";
         }
@@ -5560,6 +5941,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return String.class;
         }
@@ -5570,6 +5952,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -5580,6 +5963,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -5598,6 +5982,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -5607,6 +5992,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -5616,6 +6002,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -5627,6 +6014,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return WMS1_0_0.toFormatMIME("PPM");
@@ -5637,6 +6025,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "PPM";
         }
@@ -5646,6 +6035,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return String.class;
         }
@@ -5656,6 +6046,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -5666,6 +6057,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -5684,6 +6076,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -5693,6 +6086,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -5702,6 +6096,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -5713,6 +6108,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return WMS1_0_0.toFormatMIME("TIFF");
@@ -5723,6 +6119,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "TIFF";
         }
@@ -5732,6 +6129,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return String.class;
         }
@@ -5742,6 +6140,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -5752,6 +6151,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -5770,6 +6170,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -5779,6 +6180,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -5788,6 +6190,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -5799,6 +6202,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return WMS1_0_0.toFormatMIME("GeoTIFF");
@@ -5809,6 +6213,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "GeoTIFF";
         }
@@ -5818,6 +6223,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return String.class;
         }
@@ -5828,6 +6234,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -5838,6 +6245,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -5856,6 +6264,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -5865,6 +6274,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -5874,6 +6284,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -5885,6 +6296,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return WMS1_0_0.toFormatMIME("WebCGM");
@@ -5895,6 +6307,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "WebCGM";
         }
@@ -5904,6 +6317,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return String.class;
         }
@@ -5914,6 +6328,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -5924,6 +6339,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -5942,6 +6358,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -5951,6 +6368,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -5960,6 +6378,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -5971,6 +6390,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return WMS1_0_0.toFormatMIME("SVG");
@@ -5981,6 +6401,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "SVG";
         }
@@ -5990,6 +6411,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return String.class;
         }
@@ -6000,6 +6422,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -6010,6 +6433,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -6028,6 +6452,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -6037,6 +6462,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -6046,6 +6472,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -6057,6 +6484,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return WMS1_0_0.toFormatMIME("WMS_XML");
@@ -6067,6 +6495,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "WMS_XML";
         }
@@ -6076,6 +6505,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return String.class;
         }
@@ -6086,6 +6516,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -6096,6 +6527,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -6114,6 +6546,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -6123,6 +6556,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -6132,6 +6566,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -6143,6 +6578,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return WMS1_0_0.toFormatMIME("GML.1");
@@ -6153,6 +6589,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "GML.1";
         }
@@ -6162,6 +6599,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return String.class;
         }
@@ -6172,6 +6610,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -6182,6 +6621,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -6200,6 +6640,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -6209,6 +6650,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -6218,6 +6660,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -6229,6 +6672,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return WMS1_0_0.toFormatMIME("GML.2");
@@ -6239,6 +6683,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "GML.2";
         }
@@ -6248,6 +6693,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return String.class;
         }
@@ -6258,6 +6704,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -6268,6 +6715,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -6286,6 +6734,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -6295,6 +6744,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -6304,6 +6754,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -6315,6 +6766,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return WMS1_0_0.toFormatMIME("GML.3");
@@ -6325,6 +6777,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "GML.3";
         }
@@ -6334,6 +6787,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return String.class;
         }
@@ -6344,6 +6798,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -6354,6 +6809,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -6372,6 +6828,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -6381,6 +6838,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -6390,6 +6848,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -6401,6 +6860,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return WMS1_0_0.toFormatMIME("WBMP");
@@ -6411,6 +6871,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "WBMP";
         }
@@ -6420,6 +6881,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return String.class;
         }
@@ -6430,6 +6892,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -6440,6 +6903,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -6458,6 +6922,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -6467,6 +6932,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -6476,6 +6942,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -6487,6 +6954,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return WMS1_0_0.toFormatMIME("BMP");
@@ -6497,6 +6965,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "BMP";
         }
@@ -6506,6 +6975,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return String.class;
         }
@@ -6516,6 +6986,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -6526,6 +6997,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -6544,6 +7016,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -6553,6 +7026,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -6562,6 +7036,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -6573,6 +7048,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return WMS1_0_0.toFormatMIME("MIME");
@@ -6583,6 +7059,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "MIME";
         }
@@ -6592,6 +7069,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return String.class;
         }
@@ -6602,6 +7080,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -6612,6 +7091,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -6630,6 +7110,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -6639,6 +7120,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -6648,6 +7130,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -6659,6 +7142,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return WMS1_0_0.toFormatMIME("INIMAGE");
@@ -6669,6 +7153,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "INIMAGE";
         }
@@ -6678,6 +7163,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return String.class;
         }
@@ -6688,6 +7174,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -6698,6 +7185,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -6716,6 +7204,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -6725,6 +7214,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -6734,6 +7224,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -6745,6 +7236,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return WMS1_0_0.toFormatMIME("BLANK");
@@ -6755,6 +7247,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "BLANK";
         }
@@ -6764,6 +7257,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return String.class;
         }
@@ -6774,6 +7268,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -6784,6 +7279,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -6802,6 +7298,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return null;
         }
@@ -6811,6 +7308,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -6820,6 +7318,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -6831,6 +7330,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return WMS1_0_0.toFormatMIME("CW_WKB");
@@ -6841,6 +7341,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "CW_WKB";
         }
@@ -6850,6 +7351,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return String.class;
         }
@@ -6860,6 +7362,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -6870,6 +7373,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -6888,35 +7392,43 @@ public class WMSComplexTypes {
             return instance;
         }
 
+        @Override
         public int getChildType() {
             return Schema.RESTRICTION;
         }
 
+        @Override
         public SimpleType[] getParents() {
             return null;
         }
 
+        @Override
         public Facet[] getFacets() {
             return facets;
         }
 
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return Double.valueOf((String) value[0].getValue());
         }
 
+        @Override
         public String getName() {
             return "longitudeType";
         }
 
+        @Override
         public Class getInstanceType() {
             return Double.class;
         }
 
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
 
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -6940,6 +7452,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.SimpleType#getChildType()
          */
+        @Override
         public int getChildType() {
             return Schema.RESTRICTION;
         }
@@ -6949,6 +7462,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.SimpleType#getParents()
          */
+        @Override
         public SimpleType[] getParents() {
             return null;
         }
@@ -6958,6 +7472,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.SimpleType#getFacets()
          */
+        @Override
         public Facet[] getFacets() {
             return facets;
         }
@@ -6969,6 +7484,7 @@ public class WMSComplexTypes {
          *      org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes,
          *      java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return Double.valueOf((String) value[0].getValue());
@@ -6979,6 +7495,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "latitudeType";
         }
@@ -6988,6 +7505,7 @@ public class WMSComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return Double.class;
         }
@@ -6998,6 +7516,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *      java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -7008,6 +7527,7 @@ public class WMSComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *      java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();

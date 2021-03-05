@@ -70,14 +70,17 @@ public class GetCapabilitiesRequestTest {
         /* (non-Javadoc)
          * @see org.geotools.data.wms.request.AbstractGetCapabilitiesRequest#initVersion()
          */
+        @Override
         protected void initVersion() {
             setProperty("VERSION", "1.1.1");
         }
 
+        @Override
         protected void initService() {
             setProperty("SERVICE", "WMS");
         }
 
+        @Override
         public Response createResponse(HTTPResponse httpResponse)
                 throws ServiceException, IOException {
             return new WMSGetCapabilitiesResponse(httpResponse, hints);

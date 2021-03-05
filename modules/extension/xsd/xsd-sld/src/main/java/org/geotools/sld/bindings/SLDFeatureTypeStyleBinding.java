@@ -69,6 +69,7 @@ public class SLDFeatureTypeStyleBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SLD.FEATURETYPESTYLE;
     }
@@ -80,6 +81,7 @@ public class SLDFeatureTypeStyleBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -91,6 +93,7 @@ public class SLDFeatureTypeStyleBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return FeatureTypeStyle.class;
     }
@@ -102,6 +105,7 @@ public class SLDFeatureTypeStyleBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
@@ -111,6 +115,7 @@ public class SLDFeatureTypeStyleBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         FeatureTypeStyle featureTypeStyle = styleFactory.createFeatureTypeStyle();
 

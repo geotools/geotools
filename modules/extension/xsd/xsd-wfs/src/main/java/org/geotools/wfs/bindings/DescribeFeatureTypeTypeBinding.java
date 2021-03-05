@@ -104,6 +104,7 @@ public class DescribeFeatureTypeTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.DescribeFeatureTypeType;
     }
@@ -113,6 +114,7 @@ public class DescribeFeatureTypeTypeBinding extends AbstractComplexEMFBinding {
      *     DescribeFeatureTypeType}, or the framework would try to create a {@link
      *     BaseRequestType},which is abstract.
      */
+    @Override
     public int getExecutionMode() {
         return BEFORE;
     }
@@ -121,6 +123,7 @@ public class DescribeFeatureTypeTypeBinding extends AbstractComplexEMFBinding {
      * Simply returns an instance of {@link DescribeFeatureTypeType} and lets the framework to
      * reflectively set the object properties.
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return wfsFactory.createDescribeFeatureTypeType();
     }

@@ -54,6 +54,7 @@ public class GraphicBinding extends SLDGraphicBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.Graphic;
     }

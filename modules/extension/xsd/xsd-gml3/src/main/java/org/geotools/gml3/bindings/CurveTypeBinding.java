@@ -76,6 +76,7 @@ public class CurveTypeBinding extends AbstractComplexBinding implements Comparab
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.CurveType;
     }
@@ -87,10 +88,12 @@ public class CurveTypeBinding extends AbstractComplexBinding implements Comparab
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return CurvedGeometry.class;
     }
 
+    @Override
     public int getExecutionMode() {
         return BEFORE;
     }
@@ -102,6 +105,7 @@ public class CurveTypeBinding extends AbstractComplexBinding implements Comparab
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         LineString[] segments = (LineString[]) node.getChildValue("segments");
 
@@ -125,6 +129,7 @@ public class CurveTypeBinding extends AbstractComplexBinding implements Comparab
         }
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         if ("segments".equals(name.getLocalPart())) {
             if (object instanceof CompoundCurvedGeometry<?>) {
@@ -141,6 +146,7 @@ public class CurveTypeBinding extends AbstractComplexBinding implements Comparab
         return null;
     }
 
+    @Override
     public int compareTo(Object o) {
         if (o instanceof LineStringTypeBinding) {
             return -1;

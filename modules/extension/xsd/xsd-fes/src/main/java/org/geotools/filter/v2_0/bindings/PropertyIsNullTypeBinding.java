@@ -51,6 +51,7 @@ public class PropertyIsNullTypeBinding extends OGCPropertyIsNullTypeBinding {
         super(factory);
     }
 
+    @Override
     public QName getTarget() {
         return FES.PropertyIsNullType;
     }

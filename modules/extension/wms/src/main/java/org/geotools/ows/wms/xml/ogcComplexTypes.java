@@ -392,6 +392,7 @@ public class ogcComplexTypes {
             super(null, child, attrs, elems, null, false, false);
         }
 
+        @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if (element.getType() != null && getName().equals(element.getType().getName())) {
                 for (int i = 0;
@@ -411,6 +412,7 @@ public class ogcComplexTypes {
             return super.canEncode(element, value, hints);
         }
 
+        @Override
         public void encode(
                 Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
@@ -431,10 +433,12 @@ public class ogcComplexTypes {
             }
         }
 
+        @Override
         public Class<?> getInstanceType() {
             return String.class;
         }
 
+        @Override
         public String getName() {
             return "GetCapabilities";
         }

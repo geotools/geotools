@@ -45,6 +45,7 @@ import org.picocontainer.MutablePicoContainer;
  */
 public class SLDLegendGraphicBinding extends AbstractComplexBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return SLD.LEGENDGRAPHIC;
     }
@@ -56,6 +57,7 @@ public class SLDLegendGraphicBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -67,6 +69,7 @@ public class SLDLegendGraphicBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Graphic.class;
     }
@@ -78,6 +81,7 @@ public class SLDLegendGraphicBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
@@ -87,6 +91,7 @@ public class SLDLegendGraphicBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return node.getChildValue(Graphic.class);
     }

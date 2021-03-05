@@ -71,15 +71,18 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
             return instance;
         }
 
+        @Override
         public String getNamespaceURI() {
             return NAMESPACE;
         }
 
         /** Returns the location of 'AnyTypeTest.xsd'. */
+        @Override
         public String getSchemaLocation() {
             return getClass().getResource("AnyTypeTest.xsd").toString();
         }
 
+        @Override
         public SchemaLocator createSchemaLocator() {
             // we explicity return null here because of a circular dependnecy with
             // gml3 schema... returning null breaks the circle when the schemas are
@@ -95,6 +98,7 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
             super(ANYTYPETEST.getInstance());
         }
 
+        @Override
         protected void registerBindings(MutablePicoContainer container) {}
     }
 

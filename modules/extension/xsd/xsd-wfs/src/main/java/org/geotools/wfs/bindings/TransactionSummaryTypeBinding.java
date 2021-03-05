@@ -56,6 +56,7 @@ public class TransactionSummaryTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.TransactionSummaryType;
     }
@@ -67,10 +68,12 @@ public class TransactionSummaryTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return TransactionSummaryType.class;
     }
 
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // TransactionSummaryType ts = factory.createTransactionSummaryType();
         return super.parse(instance, node, value);

@@ -84,6 +84,7 @@ public class BasicIdentificationTypeOws11Binding extends DescriptionTypeOws11Bin
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OWS.BasicIdentificationType;
     }
@@ -95,6 +96,7 @@ public class BasicIdentificationTypeOws11Binding extends DescriptionTypeOws11Bin
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return null;
     }
@@ -106,6 +108,7 @@ public class BasicIdentificationTypeOws11Binding extends DescriptionTypeOws11Bin
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         // TODO: implement and remove call to super

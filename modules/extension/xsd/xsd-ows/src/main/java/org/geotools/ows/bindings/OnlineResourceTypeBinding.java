@@ -49,6 +49,7 @@ public class OnlineResourceTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OWS.OnlineResourceType;
     }
@@ -60,6 +61,7 @@ public class OnlineResourceTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return super.getType();
     }
@@ -71,6 +73,7 @@ public class OnlineResourceTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // TODO: implement and remove call to super
         return super.parse(instance, node, value);

@@ -31,6 +31,7 @@ public class MLConfiguration extends Configuration {
         super(ML.getInstance());
     }
 
+    @Override
     protected final void registerBindings(MutablePicoContainer container) {
         container.registerComponentImplementation(ML.ATTACHMENTTYPE, MLAttachmentTypeBinding.class);
         container.registerComponentImplementation(ML.BODYTYPE, MLBodyTypeBinding.class);

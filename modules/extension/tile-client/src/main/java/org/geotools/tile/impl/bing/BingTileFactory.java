@@ -29,6 +29,7 @@ import org.geotools.tile.impl.ZoomLevel;
  */
 class BingTileFactory extends WebMercatorTileFactory {
 
+    @Override
     public Tile findTileAtCoordinate(
             double lon, double lat, ZoomLevel zoomLevel, TileService service) {
 

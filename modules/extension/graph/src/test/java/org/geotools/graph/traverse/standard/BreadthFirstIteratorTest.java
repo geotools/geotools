@@ -53,6 +53,7 @@ public class BreadthFirstIteratorTest {
 
         CountingWalker walker =
                 new CountingWalker() {
+                    @Override
                     public int visit(Graphable element, GraphTraversal traversal) {
                         element.setCount(getCount());
                         super.visit(element, traversal);
@@ -96,6 +97,7 @@ public class BreadthFirstIteratorTest {
                 new CountingWalker() {
                     private int m_mode = 0;
 
+                    @Override
                     public int visit(Graphable element, GraphTraversal traversal) {
                         super.visit(element, traversal);
                         if (m_mode == 0) {
@@ -164,6 +166,7 @@ public class BreadthFirstIteratorTest {
                 new CountingWalker() {
                     private int m_mode = 0;
 
+                    @Override
                     public int visit(Graphable element, GraphTraversal traversal) {
                         super.visit(element, traversal);
                         if (m_mode == 0) {
@@ -222,6 +225,7 @@ public class BreadthFirstIteratorTest {
 
         CountingWalker walker =
                 new CountingWalker() {
+                    @Override
                     public int visit(Graphable element, GraphTraversal traversal) {
                         element.setCount(getCount());
                         return super.visit(element, traversal);
@@ -279,6 +283,7 @@ public class BreadthFirstIteratorTest {
                 new CountingWalker() {
                     private int m_mode = 0;
 
+                    @Override
                     public int visit(Graphable element, GraphTraversal traversal) {
                         super.visit(element, traversal);
                         if (m_mode == 0) {
@@ -362,6 +367,7 @@ public class BreadthFirstIteratorTest {
                 new CountingWalker() {
                     private int m_mode = 0;
 
+                    @Override
                     public int visit(Graphable element, GraphTraversal traversal) {
                         super.visit(element, traversal); // set count
                         element.setCount(getCount() - 1);

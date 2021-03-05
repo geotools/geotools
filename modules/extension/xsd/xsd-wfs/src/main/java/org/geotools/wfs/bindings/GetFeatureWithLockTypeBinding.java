@@ -119,6 +119,7 @@ public class GetFeatureWithLockTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.GetFeatureWithLockType;
     }
@@ -130,6 +131,7 @@ public class GetFeatureWithLockTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return GetFeatureWithLockType.class;
     }
@@ -141,6 +143,7 @@ public class GetFeatureWithLockTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         GetFeatureWithLockType getFeatureWithLock = wfsfactory.createGetFeatureWithLockType();

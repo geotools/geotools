@@ -132,6 +132,7 @@ public class GMLWriterTest extends GMLTestSupport {
         assertEquals("2.1396814969E7,0,50", xpath.evaluate("//gml:coordinates", doc));
     }
 
+    @Override
     protected Configuration createConfiguration() {
         return new GMLConfiguration();
     }

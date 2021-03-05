@@ -44,6 +44,7 @@ import org.geotools.xsd.InstanceComponent;
  */
 public class XSTokenBinding extends AbstractSimpleBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return XS.TOKEN;
     }
@@ -56,6 +57,7 @@ public class XSTokenBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return String.class;
     }
@@ -68,6 +70,7 @@ public class XSTokenBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         // Simply return string value, Whitespace facet is already handled
         return value;

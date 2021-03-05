@@ -54,6 +54,7 @@ public class AttributeEncodeExecutor implements BindingWalker.Visitor {
         return encoding;
     }
 
+    @Override
     public void visit(Binding binding) {
         // ensure the object type matches the type declared on the bindign
         if (binding.getType() == null) {

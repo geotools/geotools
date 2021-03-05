@@ -55,11 +55,13 @@ public class BasicGraphTraversal implements GraphTraversal {
     }
 
     /** @see GraphTraversal#setGraph(Graph) */
+    @Override
     public void setGraph(Graph graph) {
         m_graph = graph;
     }
 
     /** @see GraphTraversal#getGraph() */
+    @Override
     public Graph getGraph() {
         return (m_graph);
     }
@@ -70,6 +72,7 @@ public class BasicGraphTraversal implements GraphTraversal {
      * @see GraphIterator#init(Graph)
      * @see GraphTraversal#setIterator(GraphIterator)
      */
+    @Override
     public void setIterator(GraphIterator iterator) {
         m_iterator = iterator;
         m_iterator.setTraversal(this);
@@ -77,16 +80,19 @@ public class BasicGraphTraversal implements GraphTraversal {
     }
 
     /** @see GraphTraversal#getIterator() */
+    @Override
     public GraphIterator getIterator() {
         return (m_iterator);
     }
 
     /** @see GraphTraversal#setWalker(GraphWalker) */
+    @Override
     public void setWalker(GraphWalker walker) {
         m_walker = walker;
     }
 
     /** @see GraphTraversal#getWalker() */
+    @Override
     public GraphWalker getWalker() {
         return (m_walker);
     }
@@ -96,6 +102,7 @@ public class BasicGraphTraversal implements GraphTraversal {
      *
      * @see GraphTraversal#init()
      */
+    @Override
     public void init() {
         // initialize the nodes of the graph
         m_graph.visitNodes(
@@ -140,6 +147,7 @@ public class BasicGraphTraversal implements GraphTraversal {
      *
      * @see GraphTraversal#traverse()
      */
+    @Override
     public void traverse() {
         Graphable current;
 
@@ -182,10 +190,12 @@ public class BasicGraphTraversal implements GraphTraversal {
         m_walker.finish();
     }
 
+    @Override
     public void setVisited(Graphable g, boolean visited) {
         g.setVisited(visited);
     }
 
+    @Override
     public boolean isVisited(Graphable g) {
         return (g.isVisited());
     }

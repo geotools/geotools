@@ -57,6 +57,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public class AbstractGeometryTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.AbstractGeometryType;
     }
@@ -68,6 +69,7 @@ public class AbstractGeometryTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Geometry.class;
     }
@@ -79,6 +81,7 @@ public class AbstractGeometryTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // set the crs
         if (value instanceof Geometry) {
@@ -93,6 +96,7 @@ public class AbstractGeometryTypeBinding extends AbstractComplexBinding {
         return value;
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         Geometry geometry = (Geometry) object;
         if ("srsName".equals(name.getLocalPart())) {

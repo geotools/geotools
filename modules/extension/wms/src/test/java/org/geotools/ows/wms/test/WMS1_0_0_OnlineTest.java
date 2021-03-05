@@ -264,6 +264,7 @@ public class WMS1_0_0_OnlineTest {
             // TODO Auto-generated constructor stub
         }
 
+        @Override
         protected void setupSpecifications() {
             specs = new Specification[1];
             specs[0] = new WMS1_0_0();

@@ -109,6 +109,7 @@ public class GraphViewer extends JPanel {
         otherEdges = l;
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         xOffset = (int) Math.round(xScaling - minX * xScaling);
         yOffset = (int) Math.round(yScaling - minY * yScaling);

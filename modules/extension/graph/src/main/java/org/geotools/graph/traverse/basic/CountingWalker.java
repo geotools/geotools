@@ -38,6 +38,7 @@ public class CountingWalker implements GraphWalker {
      * @see Graphable#setCount(int)
      * @see GraphWalker#visit(Graphable, GraphTraversal)
      */
+    @Override
     public int visit(Graphable element, GraphTraversal traversal) {
         element.setCount(m_counter++);
         return GraphTraversal.CONTINUE;
@@ -48,6 +49,7 @@ public class CountingWalker implements GraphWalker {
      *
      * @see GraphWalker#finish()
      */
+    @Override
     public void finish() {}
 
     /**

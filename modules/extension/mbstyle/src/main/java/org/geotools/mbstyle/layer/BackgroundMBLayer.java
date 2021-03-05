@@ -136,6 +136,7 @@ public class BackgroundMBLayer extends MBLayer {
      *     like resolving sprite and glyph names to full urls.
      * @return FeatureTypeStyle
      */
+    @Override
     public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
         throw new UnsupportedOperationException(
                 "This layer is not meant to be transformed, but converted in a Style background fill");

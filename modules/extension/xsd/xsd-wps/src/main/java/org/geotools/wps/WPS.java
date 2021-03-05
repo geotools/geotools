@@ -41,16 +41,19 @@ public final class WPS extends XSD {
     /** private constructor */
     private WPS() {}
 
+    @Override
     protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(OWS.getInstance());
     }
 
     /** Returns 'http://www.opengis.net/wps/1.0.0'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'wpsAll.xsd.'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("wpsAll.xsd").toString();
     }

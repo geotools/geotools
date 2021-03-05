@@ -50,6 +50,7 @@ public class SortOrderTypeBinding extends AbstractSimpleBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.SortOrderType;
     }
@@ -61,10 +62,12 @@ public class SortOrderTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return SortOrder.class;
     }
 
+    @Override
     public int getExecutionMode() {
         return Binding.OVERRIDE;
     }
@@ -76,6 +79,7 @@ public class SortOrderTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         if ("ASC".equals(value)) {
             return SortOrder.ASCENDING;
@@ -88,6 +92,7 @@ public class SortOrderTypeBinding extends AbstractSimpleBinding {
         return null;
     }
 
+    @Override
     public String encode(Object object, String value) throws Exception {
         SortOrder sortOrder = (SortOrder) object;
 

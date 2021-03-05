@@ -105,6 +105,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
                 namespaces);
     }
 
+    @Override
     public List<Feature> getInputFeatures(Object foreignKeyValue, FeatureTypeMapping fMapping) {
         throw new UnsupportedOperationException(
                 "Internal error: Not Allowed to run this method for Joining Nested Attribute Mapping!");

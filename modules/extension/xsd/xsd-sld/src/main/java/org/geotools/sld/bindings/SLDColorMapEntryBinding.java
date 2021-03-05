@@ -57,6 +57,7 @@ public class SLDColorMapEntryBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SLD.COLORMAPENTRY;
     }
@@ -68,6 +69,7 @@ public class SLDColorMapEntryBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -79,6 +81,7 @@ public class SLDColorMapEntryBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return ColorMapEntry.class;
     }
@@ -90,6 +93,7 @@ public class SLDColorMapEntryBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
@@ -99,6 +103,7 @@ public class SLDColorMapEntryBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         ColorMapEntry entry = styleFactory.createColorMapEntry();
 

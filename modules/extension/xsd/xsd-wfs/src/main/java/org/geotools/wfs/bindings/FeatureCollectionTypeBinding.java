@@ -91,6 +91,7 @@ public abstract class FeatureCollectionTypeBinding extends AbstractComplexEMFBin
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.FeatureCollectionType;
     }
@@ -108,6 +109,7 @@ public abstract class FeatureCollectionTypeBinding extends AbstractComplexEMFBin
         return super.getProperty(object, name);
     }
 
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         FeatureCollectionType fct = (FeatureCollectionType) super.parse(instance, node, value);
         return WFSParsingUtils.FeatureCollectionType_parse(fct, instance, node);

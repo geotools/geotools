@@ -135,11 +135,13 @@ public class GML3EncodingOnlineTest {
         final ArrayList<SAXParseException> errors = new ArrayList<>();
         DefaultHandler handler =
                 new DefaultHandler() {
+                    @Override
                     public void error(SAXParseException e) throws SAXException {
                         // System.out.println(e.getMessage());
                         errors.add(e);
                     }
 
+                    @Override
                     public void fatalError(SAXParseException e) throws SAXException {
                         // System.out.println(e.getMessage());
                         errors.add(e);

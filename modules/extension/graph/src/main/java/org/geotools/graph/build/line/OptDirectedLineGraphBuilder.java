@@ -34,6 +34,7 @@ public class OptDirectedLineGraphBuilder extends OptDirectedGraphBuilder {
      * @see OptDirectedXYNode
      * @see org.geotools.graph.build.GraphBuilder#buildNode()
      */
+    @Override
     public Node buildNode() {
         return (new OptDirectedXYNode());
     }

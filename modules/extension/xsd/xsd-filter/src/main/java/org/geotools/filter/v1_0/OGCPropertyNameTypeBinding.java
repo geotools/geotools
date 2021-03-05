@@ -60,6 +60,7 @@ public class OGCPropertyNameTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.PropertyNameType;
     }
@@ -71,6 +72,7 @@ public class OGCPropertyNameTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -82,6 +84,7 @@ public class OGCPropertyNameTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return PropertyName.class;
     }
@@ -93,6 +96,7 @@ public class OGCPropertyNameTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
@@ -102,6 +106,7 @@ public class OGCPropertyNameTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Expression expression = (Expression) value;
         String xpath = Filters.asString(expression);
@@ -114,6 +119,7 @@ public class OGCPropertyNameTypeBinding extends AbstractComplexBinding {
         return factory.property(xpath, GML3EncodingUtils.copyNamespaceSupport(namespaceSupport));
     }
 
+    @Override
     public Element encode(Object object, Document document, Element value) throws Exception {
         PropertyName propertyName = (PropertyName) object;
 

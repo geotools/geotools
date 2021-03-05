@@ -79,6 +79,7 @@ public class ActionTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.ActionType;
     }
@@ -90,6 +91,7 @@ public class ActionTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return ActionType.class;
     }

@@ -60,6 +60,7 @@ public class DescriptionTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OWS.DescriptionType;
     }
@@ -71,6 +72,7 @@ public class DescriptionTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return super.getType();
     }
@@ -82,6 +84,7 @@ public class DescriptionTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         DescriptionType dt;

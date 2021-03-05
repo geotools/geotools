@@ -84,6 +84,7 @@ public class SchemaIndexImpl implements SchemaIndex {
         this.schemas[schemas.length] = schemas[0].getSchemaForSchema();
     }
 
+    @Override
     public void destroy() {
         // remove the adapter from the schemas
         if (schemas == null) {
@@ -97,6 +98,7 @@ public class SchemaIndexImpl implements SchemaIndex {
         schemas = null;
     }
 
+    @Override
     public XSDSchema[] getSchemas() {
         return schemas;
     }
@@ -113,36 +115,42 @@ public class SchemaIndexImpl implements SchemaIndex {
         return includes.toArray(new XSDInclude[includes.size()]);
     }
 
+    @Override
     public XSDElementDeclaration getElementDeclaration(QName qName) {
         return (XSDElementDeclaration) lookup(getElementIndex(), qName);
 
         // return (XSDElementDeclaration) getElementIndex().get(qName);
     }
 
+    @Override
     public XSDAttributeDeclaration getAttributeDeclaration(QName qName) {
         return (XSDAttributeDeclaration) lookup(getAttributeIndex(), qName);
 
         // return (XSDAttributeDeclaration) getAttributeIndex().get(qName);
     }
 
+    @Override
     public XSDAttributeGroupDefinition getAttributeGroupDefinition(QName qName) {
         return (XSDAttributeGroupDefinition) lookup(getAttributeGroupIndex(), qName);
 
         // return (XSDAttributeGroupDefinition) getAttributeGroupIndex().get(qName);
     }
 
+    @Override
     public XSDComplexTypeDefinition getComplexTypeDefinition(QName qName) {
         return (XSDComplexTypeDefinition) lookup(getComplexTypeIndex(), qName);
 
         // return (XSDComplexTypeDefinition) getComplexTypeIndex().get(qName);
     }
 
+    @Override
     public XSDSimpleTypeDefinition getSimpleTypeDefinition(QName qName) {
         return (XSDSimpleTypeDefinition) lookup(getSimpleTypeIndex(), qName);
 
         // return (XSDSimpleTypeDefinition) getSimpleTypeIndex().get(qName);
     }
 
+    @Override
     public XSDTypeDefinition getTypeDefinition(QName qName) {
         XSDTypeDefinition type = getComplexTypeDefinition(qName);
 
@@ -222,6 +230,7 @@ public class SchemaIndexImpl implements SchemaIndex {
         return children;
     }
 
+    @Override
     public XSDElementDeclaration getChildElement(XSDElementDeclaration parent, QName childName) {
         OrderedMap<QName, XSDParticle> children = children(parent);
         XSDParticle particle = children.get(childName);
@@ -264,10 +273,12 @@ public class SchemaIndexImpl implements SchemaIndex {
         return null;
     }
 
+    @Override
     public List<XSDParticle> getChildElementParticles(XSDElementDeclaration parent) {
         return new ArrayList<>(children(parent).values());
     }
 
+    @Override
     public List getAttributes(XSDElementDeclaration element) {
         List<XSDAttributeDeclaration> attributes = element2attributes.get(element);
 
@@ -420,18 +431,22 @@ public class SchemaIndexImpl implements SchemaIndex {
         Notifier target;
         Notification last;
 
+        @Override
         public Notifier getTarget() {
             return target;
         }
 
+        @Override
         public void setTarget(Notifier target) {
             this.target = target;
         }
 
+        @Override
         public boolean isAdapterForType(Object object) {
             return object instanceof XSDSchema;
         }
 
+        @Override
         public void notifyChanged(Notification notification) {
             if (notification.getEventType() == Notification.ADD) {
                 switch (notification.getFeatureID(XSDSchema.class)) {

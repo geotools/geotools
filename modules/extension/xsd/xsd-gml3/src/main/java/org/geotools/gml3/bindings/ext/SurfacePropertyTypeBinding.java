@@ -39,6 +39,7 @@ public class SurfacePropertyTypeBinding
         this.gf = gf;
     }
 
+    @Override
     public Class<? extends Geometry> getGeometryType() {
         return MultiPolygon.class;
     }
@@ -67,6 +68,7 @@ public class SurfacePropertyTypeBinding
         return super.getProperty(object, name);
     }
 
+    @Override
     public int compareTo(Object o) {
         if (o instanceof SurfaceTypeBinding) {
             return 1;

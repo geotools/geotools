@@ -56,11 +56,13 @@ public abstract class AbstractReaderWriter implements GraphReaderWriter {
     }
 
     /** @see GraphReaderWriter#setProperty(String, Object) */
+    @Override
     public void setProperty(String name, Object obj) {
         m_properties.put(name, obj);
     }
 
     /** @see GraphReaderWriter#getProperty(String) */
+    @Override
     public Object getProperty(String name) {
         return (m_properties.get(name));
     }

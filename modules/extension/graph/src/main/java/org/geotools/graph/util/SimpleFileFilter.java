@@ -33,6 +33,7 @@ public class SimpleFileFilter extends FileFilter implements Serializable {
         this.m_desc = desc;
     }
 
+    @Override
     public boolean accept(File f) {
         if (f.isDirectory()) return (true);
         String path = f.getAbsolutePath();
@@ -44,10 +45,12 @@ public class SimpleFileFilter extends FileFilter implements Serializable {
         return (m_ext);
     }
 
+    @Override
     public String getDescription() {
         return (m_desc);
     }
 
+    @Override
     public boolean equals(Object o) {
         if (o == null) return (false);
         if (o instanceof SimpleFileFilter) {

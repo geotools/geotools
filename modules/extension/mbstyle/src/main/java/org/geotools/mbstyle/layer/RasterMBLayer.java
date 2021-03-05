@@ -223,6 +223,7 @@ public class RasterMBLayer extends MBLayer {
      *     like resolving sprite and glyph names to full urls.
      * @return FeatureTypeStyle
      */
+    @Override
     public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
         ContrastEnhancement ce = sf.contrastEnhancement(ff.literal(1.0), ContrastMethod.NONE);
 
@@ -272,6 +273,7 @@ public class RasterMBLayer extends MBLayer {
      *
      * @return {@link #TYPE}
      */
+    @Override
     public String getType() {
         return TYPE;
     }

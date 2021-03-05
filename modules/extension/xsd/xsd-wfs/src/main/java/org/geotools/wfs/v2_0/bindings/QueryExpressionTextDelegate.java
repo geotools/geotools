@@ -88,6 +88,7 @@ public class QueryExpressionTextDelegate extends CopyingHandler implements Parse
         return canHandle(elementName);
     }
 
+    @Override
     public Object getParsedObject() {
         return result;
     }

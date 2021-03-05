@@ -52,70 +52,87 @@ public class PicoMap implements Map, MutablePicoContainer {
         this.delegate = delegate;
     }
 
+    @Override
     public void clear() {
         delegate.clear();
     }
 
+    @Override
     public boolean containsKey(Object key) {
         return delegate.containsKey(key);
     }
 
+    @Override
     public boolean containsValue(Object value) {
         return delegate.containsValue(value);
     }
 
+    @Override
     public Set entrySet() {
         return delegate.entrySet();
     }
 
+    @Override
     public boolean equals(Object o) {
         return delegate.equals(o);
     }
 
+    @Override
     public Object get(Object key) {
         return delegate.get(key);
     }
 
+    @Override
     public int hashCode() {
         return delegate.hashCode();
     }
 
+    @Override
     public boolean isEmpty() {
         return delegate.isEmpty();
     }
 
+    @Override
     public Set keySet() {
         return delegate.keySet();
     }
 
+    @Override
     public Object put(Object key, Object value) {
         return delegate.put(key, value);
     }
 
+    @Override
     public void putAll(Map t) {
         delegate.putAll(t);
     }
 
+    @Override
     public Object remove(Object key) {
         return delegate.remove(key);
     }
 
+    @Override
     public int size() {
         return delegate.size();
     }
 
+    @Override
     public Collection values() {
         return delegate.values();
     }
 
+    @Override
     public boolean addChildContainer(PicoContainer child) {
         return false;
     }
 
+    @Override
     public MutablePicoContainer makeChildContainer() {
         return null;
     }
 
+    @Override
     public ComponentAdapter registerComponent(ComponentAdapter componentAdapter) {
         if (componentAdapter instanceof DecoratingComponentAdapter) {
             componentAdapter = ((DecoratingComponentAdapter) componentAdapter).getDelegate();
@@ -134,43 +151,51 @@ public class PicoMap implements Map, MutablePicoContainer {
         return componentAdapter;
     }
 
+    @Override
     public ComponentAdapter registerComponentImplementation(Class componentImplementation) {
         put(componentImplementation, componentImplementation);
         return null;
     }
 
+    @Override
     public ComponentAdapter registerComponentImplementation(
             Object componentKey, Class componentImplementation) {
         put(componentKey, componentImplementation);
         return null;
     }
 
+    @Override
     public ComponentAdapter registerComponentImplementation(
             Object componentKey, Class componentImplementation, Parameter[] parameters) {
         put(componentKey, componentImplementation);
         return null;
     }
 
+    @Override
     public ComponentAdapter registerComponentInstance(Object componentInstance) {
         put(componentInstance, componentInstance);
         return null;
     }
 
+    @Override
     public ComponentAdapter registerComponentInstance(
             Object componentKey, Object componentInstance) {
         put(componentKey, componentInstance);
         return null;
     }
 
+    @Override
     public boolean removeChildContainer(PicoContainer child) {
         return false;
     }
 
+    @Override
     public ComponentAdapter unregisterComponent(Object componentKey) {
         remove(componentKey);
         return null;
     }
 
+    @Override
     public ComponentAdapter unregisterComponentByInstance(Object componentInstance) {
         if (componentInstance == null) {
             return null;
@@ -191,8 +216,10 @@ public class PicoMap implements Map, MutablePicoContainer {
         return null;
     }
 
+    @Override
     public void accept(PicoVisitor visitor) {}
 
+    @Override
     public ComponentAdapter getComponentAdapter(Object componentKey) {
         if (componentKey == null) {
             return null;
@@ -211,6 +238,7 @@ public class PicoMap implements Map, MutablePicoContainer {
         return new InstanceComponentAdapter(componentKey, o);
     }
 
+    @Override
     public ComponentAdapter getComponentAdapterOfType(Class componentType) {
         List adapters = getComponentAdaptersOfType(componentType);
         if (adapters.isEmpty()) {
@@ -220,6 +248,7 @@ public class PicoMap implements Map, MutablePicoContainer {
         return (ComponentAdapter) adapters.iterator().next();
     }
 
+    @Override
     public Collection getComponentAdapters() {
         List adapters = new ArrayList();
 
@@ -231,6 +260,7 @@ public class PicoMap implements Map, MutablePicoContainer {
         return adapters;
     }
 
+    @Override
     public List getComponentAdaptersOfType(Class componentType) {
         if (componentType == null) {
             return Collections.emptyList();
@@ -256,6 +286,7 @@ public class PicoMap implements Map, MutablePicoContainer {
         return adapters;
     }
 
+    @Override
     public Object getComponentInstance(Object componentKey) {
         if (componentKey == null) {
             return null;
@@ -275,6 +306,7 @@ public class PicoMap implements Map, MutablePicoContainer {
         }
     }
 
+    @Override
     public Object getComponentInstanceOfType(Class componentType) {
         if (componentType == null) {
             return Collections.emptyList();
@@ -307,6 +339,7 @@ public class PicoMap implements Map, MutablePicoContainer {
         return null;
     }
 
+    @Override
     public List getComponentInstances() {
         ArrayList instances = new ArrayList();
 
@@ -318,6 +351,7 @@ public class PicoMap implements Map, MutablePicoContainer {
         return instances;
     }
 
+    @Override
     public List getComponentInstancesOfType(Class componentType) {
         if (componentType == null) {
             return Collections.emptyList();
@@ -342,16 +376,21 @@ public class PicoMap implements Map, MutablePicoContainer {
         return instances;
     }
 
+    @Override
     public PicoContainer getParent() {
         return null;
     }
 
+    @Override
     @SuppressWarnings("deprecation")
     public void verify() throws PicoVerificationException {}
 
+    @Override
     public void start() {}
 
+    @Override
     public void stop() {}
 
+    @Override
     public void dispose() {}
 }

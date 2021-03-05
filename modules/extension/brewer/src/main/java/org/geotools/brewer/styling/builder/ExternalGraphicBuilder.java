@@ -83,6 +83,7 @@ public class ExternalGraphicBuilder extends AbstractStyleBuilder<ExternalGraphic
         return this;
     }
 
+    @Override
     public ExternalGraphic build() {
         if (unset) {
             return null;
@@ -104,15 +105,18 @@ public class ExternalGraphicBuilder extends AbstractStyleBuilder<ExternalGraphic
         return externalGraphic;
     }
 
+    @Override
     public ExternalGraphicBuilder reset() {
         unset = false;
         return this;
     }
 
+    @Override
     public ExternalGraphicBuilder unset() {
         return (ExternalGraphicBuilder) super.unset();
     }
 
+    @Override
     public ExternalGraphicBuilder reset(ExternalGraphic original) {
         this.unset = false;
         this.format = original.getFormat();

@@ -73,6 +73,7 @@ public class CoverageStyleBinding extends FeatureTypeStyleBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.CoverageStyle;
     }
@@ -84,6 +85,7 @@ public class CoverageStyleBinding extends FeatureTypeStyleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         FeatureTypeStyle fts = (FeatureTypeStyle) super.parse(instance, node, value);

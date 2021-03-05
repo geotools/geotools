@@ -92,6 +92,7 @@ public class TileMatrixLimitsBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WMTS.TileMatrixLimits;
     }
@@ -103,6 +104,7 @@ public class TileMatrixLimitsBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return TileMatrixLimitsType.class;
     }
@@ -114,6 +116,7 @@ public class TileMatrixLimitsBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         TileMatrixLimitsType limits = factory.createTileMatrixLimitsType();
 
@@ -131,6 +134,7 @@ public class TileMatrixLimitsBinding extends AbstractComplexEMFBinding {
         return BigInteger.valueOf(((Integer) o).longValue());
     }
 
+    @Override
     public Element encode(Object object, Document document, Element value) throws Exception {
         // This needs its own encode method because otherwise the EMF encoder will mistake
         // the contained wmts:TileMatrix for a TileMatrixType and try to encode it that

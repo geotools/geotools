@@ -54,6 +54,7 @@ public class PolygonSymbolizerBinding extends SLDPolygonSymbolizerBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.PolygonSymbolizer;
     }
@@ -70,6 +71,7 @@ public class PolygonSymbolizerBinding extends SLDPolygonSymbolizerBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         PolygonSymbolizer sym = (PolygonSymbolizer) super.parse(instance, node, value);
 

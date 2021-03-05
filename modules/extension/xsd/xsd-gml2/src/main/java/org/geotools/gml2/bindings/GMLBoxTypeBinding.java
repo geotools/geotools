@@ -58,6 +58,7 @@ import org.locationtech.jts.geom.Envelope;
  */
 public class GMLBoxTypeBinding extends AbstractComplexBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.BoxType;
     }
@@ -69,6 +70,7 @@ public class GMLBoxTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Envelope.class;
     }
@@ -82,6 +84,7 @@ public class GMLBoxTypeBinding extends AbstractComplexBinding {
      *     <!-- end-user-doc -->
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List coordinates = node.getChildren("coord");
 
@@ -111,6 +114,7 @@ public class GMLBoxTypeBinding extends AbstractComplexBinding {
         throw new RuntimeException("Could not find coordinates for envelope");
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         Envelope e = (Envelope) object;
 

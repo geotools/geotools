@@ -53,6 +53,7 @@ public class OGCNotBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.Not;
     }
@@ -64,6 +65,7 @@ public class OGCNotBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Not.class;
     }
@@ -75,6 +77,7 @@ public class OGCNotBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Filter filter = node.getChildValue(Filter.class);
         if (filter == null) {

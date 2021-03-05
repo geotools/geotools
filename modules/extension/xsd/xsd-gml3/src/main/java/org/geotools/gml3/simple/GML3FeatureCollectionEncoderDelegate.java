@@ -186,16 +186,19 @@ public class GML3FeatureCollectionEncoderDelegate
             }
         }
 
+        @Override
         public List getFeatureProperties(
                 SimpleFeature f, XSDElementDeclaration element, Encoder e) {
             return GML3EncodingUtils.INSTANCE.AbstractFeatureTypeGetProperties(
                     f, element, e.getSchemaIndex(), e.getConfiguration());
         }
 
+        @Override
         public EnvelopeEncoder createEnvelopeEncoder(Encoder e) {
             return new EnvelopeEncoder(e, gmlPrefix, gmlUri);
         }
 
+        @Override
         public void setSrsNameAttribute(AttributesImpl atts, CoordinateReferenceSystem crs) {
 
             URI srsName = GML3EncodingUtils.toURI(crs, srsSyntax);
@@ -209,28 +212,33 @@ public class GML3FeatureCollectionEncoderDelegate
                     null, "srsDimension", "srsDimension", null, String.valueOf(dimension));
         }
 
+        @Override
         public void initFidAttribute(AttributesImpl atts) {
             atts.addAttribute(GML.NAMESPACE, "id", "gml:id", null, "");
         }
 
+        @Override
         public void startFeatures(GMLWriter handler) throws Exception {
             if (!encodeSeparateMember) {
                 handler.startElement(featureMembers, null);
             }
         }
 
+        @Override
         public void startFeature(GMLWriter handler) throws Exception {
             if (encodeSeparateMember) {
                 handler.startElement(featureMember, null);
             }
         }
 
+        @Override
         public void endFeature(GMLWriter handler) throws Exception {
             if (encodeSeparateMember) {
                 handler.endElement(featureMember);
             }
         }
 
+        @Override
         public void endFeatures(GMLWriter handler) throws Exception {
             if (!encodeSeparateMember) {
                 handler.endElement(featureMembers);

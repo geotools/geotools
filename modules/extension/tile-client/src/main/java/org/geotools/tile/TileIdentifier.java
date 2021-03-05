@@ -123,6 +123,7 @@ public abstract class TileIdentifier {
         return (a >= 0) ? a % b : a % b + b;
     }
 
+    @Override
     public boolean equals(Object other) {
         if (this == other) {
             return true;
@@ -134,10 +135,12 @@ public abstract class TileIdentifier {
         return this.getId().equals(((TileIdentifier) other).getId());
     }
 
+    @Override
     public int hashCode() {
         return this.getId().hashCode();
     }
 
+    @Override
     public String toString() {
         return this.getId();
     }

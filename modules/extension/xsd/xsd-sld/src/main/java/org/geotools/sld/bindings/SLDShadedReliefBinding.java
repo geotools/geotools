@@ -64,6 +64,7 @@ public class SLDShadedReliefBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SLD.SHADEDRELIEF;
     }
@@ -75,6 +76,7 @@ public class SLDShadedReliefBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -86,6 +88,7 @@ public class SLDShadedReliefBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return ShadedRelief.class;
     }
@@ -97,6 +100,7 @@ public class SLDShadedReliefBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
@@ -106,6 +110,7 @@ public class SLDShadedReliefBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Expression reliefFactor = null;
 

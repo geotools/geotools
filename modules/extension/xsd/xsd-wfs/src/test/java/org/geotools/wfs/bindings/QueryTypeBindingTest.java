@@ -49,6 +49,7 @@ public class QueryTypeBindingTest extends WFSTestSupport {
         super(WFS.QueryType, QueryType.class, Binding.OVERRIDE);
     }
 
+    @Override
     @Test
     public void testParse() throws Exception {
         final URL resource = TestData.getResource(this, "QueryTypeBindingTest.xml");
@@ -100,6 +101,7 @@ public class QueryTypeBindingTest extends WFSTestSupport {
         assertTrue(query.getSortBy().get(0) instanceof SortBy);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     @Test
     public void testEncode() throws Exception {

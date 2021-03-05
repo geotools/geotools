@@ -56,6 +56,7 @@ public abstract class TextfileReaderWriter extends AbstractReaderWriter
      *
      * @see GraphGenerator#read()
      */
+    @Override
     public Graph read() throws Exception {
         // get the underlying generator
         GraphGenerator generator = (GraphGenerator) getProperty(GENERATOR);
@@ -86,6 +87,7 @@ public abstract class TextfileReaderWriter extends AbstractReaderWriter
      *
      * <p>* @see GraphGenerator#write()
      */
+    @Override
     public void write(Graph g) throws Exception {
         // create the file writer
         try (BufferedWriter out =

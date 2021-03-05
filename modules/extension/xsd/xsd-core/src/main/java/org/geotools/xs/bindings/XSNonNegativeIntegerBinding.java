@@ -48,6 +48,7 @@ public class XSNonNegativeIntegerBinding implements SimpleBinding {
     final BigInteger MAX_INTEGER = BigInteger.valueOf(Integer.MAX_VALUE);
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return XS.NONNEGATIVEINTEGER;
     }
@@ -59,6 +60,7 @@ public class XSNonNegativeIntegerBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -71,6 +73,7 @@ public class XSNonNegativeIntegerBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return BigInteger.class;
     }
@@ -89,6 +92,7 @@ public class XSNonNegativeIntegerBinding implements SimpleBinding {
      *     <!-- end-user-doc -->
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         BigInteger number = (BigInteger) value;
 
@@ -115,6 +119,7 @@ public class XSNonNegativeIntegerBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public String encode(Object object, String value) throws Exception {
         Number number = (Number) object;
 

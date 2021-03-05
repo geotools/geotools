@@ -48,6 +48,7 @@ public class OutputFormatListTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.OutputFormatListType;
     }
@@ -59,6 +60,7 @@ public class OutputFormatListTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return OutputFormatListType.class;
     }
@@ -70,6 +72,7 @@ public class OutputFormatListTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // TODO: implement and remove call to super
         return super.parse(instance, node, value);

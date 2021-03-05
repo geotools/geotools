@@ -42,6 +42,7 @@ import org.geotools.xsd.InstanceComponent;
  */
 public class XSIDBinding extends AbstractSimpleBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return XS.ID;
     }
@@ -53,6 +54,7 @@ public class XSIDBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -65,6 +67,7 @@ public class XSIDBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return String.class;
     }
@@ -78,6 +81,7 @@ public class XSIDBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         // Simply return string value.
         return value;

@@ -29,6 +29,7 @@ public class ElementNameStreamingParserHandler extends StreamingParserHandler {
         this.name = name;
     }
 
+    @Override
     protected boolean stream(ElementHandler handler) {
         return name.getNamespaceURI().equals(handler.getComponent().getNamespace())
                 && name.getLocalPart().equals(handler.getComponent().getName());

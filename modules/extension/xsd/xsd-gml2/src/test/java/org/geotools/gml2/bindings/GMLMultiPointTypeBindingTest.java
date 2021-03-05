@@ -36,6 +36,7 @@ public class GMLMultiPointTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance point2;
     GeometryFactory gf;
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();

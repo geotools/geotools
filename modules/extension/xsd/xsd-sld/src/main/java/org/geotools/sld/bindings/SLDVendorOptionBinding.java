@@ -54,10 +54,12 @@ public class SLDVendorOptionBinding extends AbstractComplexBinding {
         this.filterFactory = filterFactory;
     }
 
+    @Override
     public QName getTarget() {
         return SLD.VENDOROPTION;
     }
 
+    @Override
     public Class getType() {
         return CssParameter.class;
     }

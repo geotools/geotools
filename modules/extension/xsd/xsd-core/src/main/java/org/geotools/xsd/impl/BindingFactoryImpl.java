@@ -29,6 +29,7 @@ public class BindingFactoryImpl implements BindingFactory {
         this.loader = loader;
     }
 
+    @Override
     public Binding createBinding(QName name) {
         return loader.loadBinding(name, context);
     }

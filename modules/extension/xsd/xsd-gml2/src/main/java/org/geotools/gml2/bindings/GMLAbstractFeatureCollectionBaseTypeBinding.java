@@ -59,6 +59,7 @@ public class GMLAbstractFeatureCollectionBaseTypeBinding extends AbstractComplex
     public GMLAbstractFeatureCollectionBaseTypeBinding() {}
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.AbstractFeatureCollectionBaseType;
     }
@@ -70,6 +71,7 @@ public class GMLAbstractFeatureCollectionBaseTypeBinding extends AbstractComplex
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return FeatureCollection.class;
     }
@@ -81,6 +83,7 @@ public class GMLAbstractFeatureCollectionBaseTypeBinding extends AbstractComplex
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // TODO: the geotools feature api doesn't allow for use to supply the
         // "correct" subclass without hacking, so for now we just create a

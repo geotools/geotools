@@ -26,6 +26,7 @@ public class TypeNameListTypeBinding extends AbstractSimpleBinding {
     public TypeNameListTypeBinding() {}
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return CSW.TypeNameListType;
     }
@@ -37,6 +38,7 @@ public class TypeNameListTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return List.class;
     }
@@ -48,10 +50,12 @@ public class TypeNameListTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         return value;
     }
 
+    @Override
     public String encode(Object object, String value) throws Exception {
         // just return the value passed in, subclasses should override to provide new value
         return value;

@@ -58,6 +58,7 @@ public class CurveTypeBinding extends org.geotools.gml3.bindings.CurveTypeBindin
         super(gf);
     }
 
+    @Override
     public int compareTo(Object o) {
         if (o instanceof LineStringTypeBinding) {
             return -1;

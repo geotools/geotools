@@ -57,6 +57,7 @@ public class OGCPropertyIsNullTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.PropertyIsNullType;
     }
@@ -68,6 +69,7 @@ public class OGCPropertyIsNullTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return PropertyIsNull.class;
     }
@@ -79,10 +81,12 @@ public class OGCPropertyIsNullTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return factory.isNull(node.getChildValue(Expression.class));
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         PropertyIsNull isNull = (PropertyIsNull) object;
 

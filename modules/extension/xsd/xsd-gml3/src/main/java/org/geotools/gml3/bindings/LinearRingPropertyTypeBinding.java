@@ -46,6 +46,7 @@ import org.locationtech.jts.geom.LinearRing;
  */
 public class LinearRingPropertyTypeBinding extends AbstractComplexBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.LinearRingPropertyType;
     }
@@ -57,6 +58,7 @@ public class LinearRingPropertyTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return LinearRing.class;
     }
@@ -68,10 +70,12 @@ public class LinearRingPropertyTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return node.getChildValue(LinearRing.class);
     }
 
+    @Override
     public Object getProperty(Object object, QName name) {
         if (GML.LinearRing.equals(name)) {
             // return the linear ring, which is the object passed in

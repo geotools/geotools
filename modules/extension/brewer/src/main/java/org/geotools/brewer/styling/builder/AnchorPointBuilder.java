@@ -56,6 +56,7 @@ public class AnchorPointBuilder extends AbstractStyleBuilder<AnchorPoint> {
         reset();
     }
 
+    @Override
     public AnchorPoint build() {
         if (unset) {
             return null;
@@ -95,6 +96,7 @@ public class AnchorPointBuilder extends AbstractStyleBuilder<AnchorPoint> {
         return y(cqlExpression(cqlExpression));
     }
 
+    @Override
     public AnchorPointBuilder reset() {
         x = literal(defaultX);
         y = literal(defaultY);
@@ -102,6 +104,7 @@ public class AnchorPointBuilder extends AbstractStyleBuilder<AnchorPoint> {
         return this;
     }
 
+    @Override
     public AnchorPointBuilder reset(AnchorPoint anchorPoint) {
         if (anchorPoint == null) {
             return reset();
@@ -112,6 +115,7 @@ public class AnchorPointBuilder extends AbstractStyleBuilder<AnchorPoint> {
         return this;
     }
 
+    @Override
     public AnchorPointBuilder unset() {
         return (AnchorPointBuilder) super.unset();
     }

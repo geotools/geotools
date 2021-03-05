@@ -53,6 +53,7 @@ import org.geotools.xsd.InstanceComponent;
  */
 public class ColorBinding extends AbstractSimpleBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return KML.color;
     }
@@ -64,10 +65,12 @@ public class ColorBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Color.class;
     }
 
+    @Override
     public int getExecutionMode() {
         return Binding.OVERRIDE;
     }
@@ -79,6 +82,7 @@ public class ColorBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         if (value == null) {
             return null;

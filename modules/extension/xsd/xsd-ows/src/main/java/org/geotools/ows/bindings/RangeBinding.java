@@ -32,6 +32,7 @@ public class RangeBinding extends ComplexEMFBinding {
         super(factory, target);
     }
 
+    @Override
     protected void setProperty(
             org.eclipse.emf.ecore.EObject eObject, String property, Object value, boolean lax) {
         // trick required because rangeClouser for some unfathomable reason was declared to extend

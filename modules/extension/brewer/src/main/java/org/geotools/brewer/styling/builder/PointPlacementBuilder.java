@@ -35,6 +35,7 @@ public class PointPlacementBuilder extends AbstractStyleBuilder<PointPlacement> 
         reset();
     }
 
+    @Override
     public PointPlacement build() {
         if (unset) {
             return null;
@@ -70,6 +71,7 @@ public class PointPlacementBuilder extends AbstractStyleBuilder<PointPlacement> 
         return rotation(cqlExpression(cqlExpression));
     }
 
+    @Override
     public PointPlacementBuilder reset() {
         rotation = literal(0);
         anchor.reset();
@@ -78,6 +80,7 @@ public class PointPlacementBuilder extends AbstractStyleBuilder<PointPlacement> 
         return this;
     }
 
+    @Override
     public PointPlacementBuilder reset(PointPlacement placement) {
         if (placement == null) {
             return unset();
@@ -89,10 +92,12 @@ public class PointPlacementBuilder extends AbstractStyleBuilder<PointPlacement> 
         return this;
     }
 
+    @Override
     public PointPlacementBuilder unset() {
         return (PointPlacementBuilder) super.unset();
     }
 
+    @Override
     protected void buildStyleInternal(StyleBuilder sb) {
         sb.featureTypeStyle().rule().text().labelText("label").pointPlacement().init(this);
     }

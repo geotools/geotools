@@ -106,6 +106,7 @@ public class SEConfiguration extends Configuration {
      *
      * @generated
      */
+    @Override
     protected final void registerBindings(MutablePicoContainer container) {
         // Types
         container.registerComponentImplementation(SE.directionType, DirectionTypeBinding.class);

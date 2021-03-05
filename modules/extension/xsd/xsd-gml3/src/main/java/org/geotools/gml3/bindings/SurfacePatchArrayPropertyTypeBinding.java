@@ -50,6 +50,7 @@ import org.locationtech.jts.geom.Polygon;
 public class SurfacePatchArrayPropertyTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.SurfacePatchArrayPropertyType;
     }
@@ -61,6 +62,7 @@ public class SurfacePatchArrayPropertyTypeBinding extends AbstractComplexBinding
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Polygon[].class;
     }
@@ -72,6 +74,7 @@ public class SurfacePatchArrayPropertyTypeBinding extends AbstractComplexBinding
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         List<Polygon> l = node.getChildValues(Polygon.class);

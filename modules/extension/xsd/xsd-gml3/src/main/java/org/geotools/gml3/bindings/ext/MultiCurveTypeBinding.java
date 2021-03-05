@@ -32,6 +32,7 @@ public class MultiCurveTypeBinding extends org.geotools.gml3.bindings.MultiCurve
         super(gf);
     }
 
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // &lt;element maxOccurs="unbounded" minOccurs="0" ref="gml:curveMember"/&gt;
         @SuppressWarnings("unchecked")
@@ -61,6 +62,7 @@ public class MultiCurveTypeBinding extends org.geotools.gml3.bindings.MultiCurve
         return gf.createMultiLineString(GeometryFactory.toLineStringArray(lineStrings));
     }
 
+    @Override
     public int compareTo(Object o) {
         if (o instanceof CurveTypeBinding || o instanceof CurvePropertyTypeBinding) {
             return 1;

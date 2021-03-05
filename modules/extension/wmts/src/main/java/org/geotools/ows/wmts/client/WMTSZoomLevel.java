@@ -52,6 +52,7 @@ class WMTSZoomLevel extends ZoomLevel {
         return matrix.getMatrixHeight();
     }
 
+    @Override
     public String toString() {
         return "ZoomLevel [z:"
                 + getZoomLevel()

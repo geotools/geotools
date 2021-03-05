@@ -101,6 +101,7 @@ public class GetTileBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WMTS.GetTile;
     }
@@ -112,6 +113,7 @@ public class GetTileBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return GetTileType.class;
     }
@@ -123,6 +125,7 @@ public class GetTileBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         GetTileType getTile = factory.createGetTileType();
 

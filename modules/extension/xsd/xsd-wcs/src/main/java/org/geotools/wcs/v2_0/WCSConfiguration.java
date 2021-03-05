@@ -46,6 +46,7 @@ public class WCSConfiguration extends Configuration {
         addDependency(new OWSConfiguration());
     }
 
+    @Override
     protected void configureContext(MutablePicoContainer container) {
         container.registerComponentInstance(Ows20Factory.eINSTANCE);
 
@@ -60,6 +61,7 @@ public class WCSConfiguration extends Configuration {
      *
      * @generated
      */
+    @Override
     @SuppressWarnings("unchecked")
     protected final void registerBindings(Map bindings) {
         // manually setup bindings

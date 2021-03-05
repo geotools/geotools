@@ -78,6 +78,7 @@ public class ChildExpressionBuilder<P extends Builder<?>> extends ExpressionBuil
      *
      * @return internal expression
      */
+    @Override
     public Expression build() {
         if (unset) {
             return null;
@@ -105,6 +106,7 @@ public class ChildExpressionBuilder<P extends Builder<?>> extends ExpressionBuil
      *
      * @param obj Object to use as the resulting literal
      */
+    @Override
     public P literal(Object obj) {
         literal().value(obj);
         return end();
@@ -115,6 +117,7 @@ public class ChildExpressionBuilder<P extends Builder<?>> extends ExpressionBuil
      *
      * <p>Example:<code>b.property("x");</code>
      */
+    @Override
     public P property(String xpath) {
         property().property(xpath);
         return end();

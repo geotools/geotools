@@ -116,10 +116,12 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
                         : mapping.getFeatureIdExpression().toString();
     }
 
+    @Override
     protected FeatureIterator<? extends Feature> getSourceFeatureIterator() {
         return null;
     }
 
+    @Override
     protected boolean isSourceFeatureIteratorNull() {
         return xmlResponse == null;
     }
@@ -277,6 +279,7 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
         att.getUserData().put(ComplexFeatureConstants.MAPPED_ATTRIBUTE_INDEX, index);
     }
 
+    @Override
     protected void setClientProperties(
             final Attribute target,
             final Object xpathPrefix,
@@ -505,6 +508,7 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
         }
     }
 
+    @Override
     protected boolean unprocessedFeatureExists() {
         if (indexCounter <= count) {
             return true;
@@ -513,10 +517,12 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
         }
     }
 
+    @Override
     protected boolean sourceFeatureIteratorHasNext() {
         return indexCounter <= count;
     }
 
+    @Override
     protected boolean isNextSourceFeatureNull() {
         return indexCounter > count;
     }
@@ -553,6 +559,7 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
                 mapping.getNamespaces(), expressionValue, xmlResponse.getDoc());
     }
 
+    @Override
     protected void closeSourceFeatures() {
         if (sourceFeatures != null) {
             xmlResponse = null;

@@ -91,6 +91,7 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.EnvelopeType;
     }
@@ -102,6 +103,7 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Envelope.class;
     }
@@ -113,6 +115,7 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         CoordinateReferenceSystem crs = GML3ParsingUtils.crs(node);
 
@@ -192,6 +195,7 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
         return null;
     }
 
+    @Override
     public Element encode(Object object, Document document, Element value) throws Exception {
         Envelope envelope = (Envelope) object;
 
@@ -204,6 +208,7 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
         return null;
     }
 
+    @Override
     public Object getProperty(Object object, QName name) {
         Envelope envelope = (Envelope) object;
 

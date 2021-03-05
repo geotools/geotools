@@ -75,10 +75,12 @@ public class DirectPositionListTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.DirectPositionListType;
     }
 
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -90,6 +92,7 @@ public class DirectPositionListTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return CoordinateSequence.class;
     }
@@ -101,6 +104,7 @@ public class DirectPositionListTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         int crsDimension = GML3ParsingUtils.dimensions(node);
         CoordinateReferenceSystem crs = GML3ParsingUtils.crs(node);
@@ -163,6 +167,7 @@ public class DirectPositionListTypeBinding extends AbstractComplexBinding {
      * @see AbstractComplexBinding#encode(java.lang.Object, org.w3c.dom.Document,
      *     org.w3c.dom.Element)
      */
+    @Override
     public Element encode(Object object, Document document, Element value) throws Exception {
         CoordinateSequence cs = (CoordinateSequence) object;
         StringBuffer sb = new StringBuffer();

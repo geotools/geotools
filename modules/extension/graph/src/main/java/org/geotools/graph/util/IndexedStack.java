@@ -27,17 +27,20 @@ public class IndexedStack<E> extends java.util.Stack<E> {
         m_index = new HashMap<>();
     }
 
+    @Override
     public E push(E item) {
         m_index.put(item, Integer.valueOf(size()));
         return super.push(item);
     }
 
+    @Override
     public E pop() {
         E value = super.pop();
         m_index.remove(value);
         return (value);
     }
 
+    @Override
     public boolean contains(Object elem) {
         return (m_index.get(elem) != null);
     }

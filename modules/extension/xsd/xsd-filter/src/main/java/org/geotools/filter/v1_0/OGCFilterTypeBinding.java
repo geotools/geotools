@@ -58,6 +58,7 @@ public class OGCFilterTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.FilterType;
     }
@@ -69,6 +70,7 @@ public class OGCFilterTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Filter.class;
     }
@@ -80,6 +82,7 @@ public class OGCFilterTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
@@ -90,6 +93,7 @@ public class OGCFilterTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         if (node.hasChild("FeatureId")) {
             // round up into a featureId filter
@@ -104,6 +108,7 @@ public class OGCFilterTypeBinding extends AbstractComplexBinding {
         return node.getChildValue(Filter.class);
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
 
         return FilterParsingUtils.Filter_getProperty(object, name);

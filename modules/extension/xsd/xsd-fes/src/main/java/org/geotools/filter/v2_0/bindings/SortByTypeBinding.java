@@ -46,6 +46,7 @@ public class SortByTypeBinding extends org.geotools.filter.v1_1.SortByTypeBindin
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return FES.SortByType;
     }
@@ -57,10 +58,12 @@ public class SortByTypeBinding extends org.geotools.filter.v1_1.SortByTypeBindin
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return UniqueEList.class;
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         if ("SortProperty".equals(name.getLocalPart())) {
             UniqueEList sortBy = (UniqueEList) object;

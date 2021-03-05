@@ -43,6 +43,7 @@ import org.geotools.xsd.InstanceComponent;
 public class DirectionTypeBinding extends AbstractSimpleBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.directionType;
     }
@@ -54,6 +55,7 @@ public class DirectionTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return String.class;
     }
@@ -65,6 +67,7 @@ public class DirectionTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         String val = (String) value;
         if (!"toUpper".equalsIgnoreCase(val) && !"toLower".equalsIgnoreCase(val)) {

@@ -102,6 +102,7 @@ public class DijkstraIteratorTest {
                 new CountingWalker() {
                     int m_mode = 0;
 
+                    @Override
                     public int visit(Graphable element, GraphTraversal traversal) {
                         super.visit(element, traversal);
                         if (m_mode == 0) {
@@ -169,6 +170,7 @@ public class DijkstraIteratorTest {
                 new CountingWalker() {
                     int m_mode = 0;
 
+                    @Override
                     public int visit(Graphable element, GraphTraversal traversal) {
                         super.visit(element, traversal);
                         if (m_mode == 0) {
@@ -268,6 +270,7 @@ public class DijkstraIteratorTest {
                 new CountingWalker() {
                     private int m_mode = 0;
 
+                    @Override
                     public int visit(Graphable element, GraphTraversal traversal) {
                         super.visit(element, traversal);
                         if (m_mode == 0) {
@@ -330,6 +333,7 @@ public class DijkstraIteratorTest {
                 new CountingWalker() {
                     private int m_mode = 0;
 
+                    @Override
                     public int visit(Graphable element, GraphTraversal traversal) {
                         super.visit(element, traversal);
                         if (m_mode == 0) {

@@ -68,6 +68,7 @@ public class FolderTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return KML.FolderType;
     }
@@ -79,10 +80,12 @@ public class FolderTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return SimpleFeature.class;
     }
 
+    @Override
     public int getExecutionMode() {
         return Binding.AFTER;
     }
@@ -94,6 +97,7 @@ public class FolderTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(FeatureType);
 

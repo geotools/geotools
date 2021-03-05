@@ -355,11 +355,13 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
     }
 
     /** Shall not be called, just throws an UnsupportedOperationException */
+    @Override
     public void remove() {
         throw new UnsupportedOperationException();
     }
 
     /** Closes the underlying FeatureIterator */
+    @Override
     public void close() {
         closeSourceFeatures();
     }
@@ -400,6 +402,7 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
      *
      * @see java.util.Iterator#next()
      */
+    @Override
     public Feature next() {
         boolean hasNext = false;
         try {
@@ -700,5 +703,6 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
 
     protected abstract Feature computeNext() throws IOException;
 
+    @Override
     public abstract boolean hasNext();
 }

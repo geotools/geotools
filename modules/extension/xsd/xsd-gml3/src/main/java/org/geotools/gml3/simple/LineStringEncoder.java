@@ -55,6 +55,7 @@ class LineStringEncoder extends GeometryEncoder<LineString> {
         this.element = element;
     }
 
+    @Override
     public void encode(LineString geometry, AttributesImpl atts, GMLWriter handler, String gmlId)
             throws Exception {
         atts = cloneWithGmlId(atts, gmlId);

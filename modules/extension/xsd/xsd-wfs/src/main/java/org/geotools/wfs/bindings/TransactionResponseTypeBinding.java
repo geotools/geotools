@@ -91,6 +91,7 @@ public class TransactionResponseTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.TransactionResponseType;
     }
@@ -102,6 +103,7 @@ public class TransactionResponseTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return TransactionResponseType.class;
     }

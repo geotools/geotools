@@ -61,6 +61,7 @@ import org.opengis.temporal.Position;
 public class TimePositionUnionBinding extends AbstractSimpleBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.TimePositionUnion;
     }
@@ -72,6 +73,7 @@ public class TimePositionUnionBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Position.class;
     }
@@ -83,6 +85,7 @@ public class TimePositionUnionBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         // JD: for the moment we will just handle the easy ones of date and datetime
         Date date = null;

@@ -61,6 +61,7 @@ public class OGCPropertyIsLikeTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.PropertyIsLikeType;
     }
@@ -72,6 +73,7 @@ public class OGCPropertyIsLikeTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return PropertyIsLike.class;
     }
@@ -83,6 +85,7 @@ public class OGCPropertyIsLikeTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Expression name = null;
@@ -117,6 +120,7 @@ public class OGCPropertyIsLikeTypeBinding extends AbstractComplexBinding {
         return factory.like(name, literal.toString(), wildcard, single, escape, matchCase);
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         PropertyIsLike isLike = (PropertyIsLike) object;
 

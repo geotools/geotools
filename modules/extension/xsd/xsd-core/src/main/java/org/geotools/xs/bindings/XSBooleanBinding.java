@@ -52,6 +52,7 @@ import org.geotools.xsd.SimpleBinding;
  */
 public class XSBooleanBinding implements SimpleBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return XS.BOOLEAN;
     }
@@ -63,6 +64,7 @@ public class XSBooleanBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -75,6 +77,7 @@ public class XSBooleanBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Boolean.class;
     }
@@ -87,6 +90,7 @@ public class XSBooleanBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         if ("1".equals(value) || "true".equals(value)) {
             return Boolean.TRUE;
@@ -104,6 +108,7 @@ public class XSBooleanBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public String encode(Object object, String value) {
         Boolean bool = (Boolean) object;
 

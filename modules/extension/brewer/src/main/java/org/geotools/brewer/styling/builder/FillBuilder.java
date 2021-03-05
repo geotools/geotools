@@ -85,6 +85,7 @@ public class FillBuilder extends AbstractStyleBuilder<org.opengis.style.Fill> {
      *
      * @return Created Fill as defined
      */
+    @Override
     public Fill build() {
         if (unset) {
             return null;
@@ -97,11 +98,13 @@ public class FillBuilder extends AbstractStyleBuilder<org.opengis.style.Fill> {
         return fill;
     }
 
+    @Override
     public FillBuilder unset() {
         return (FillBuilder) super.unset();
     }
 
     /** Reset to produce the default Fill. */
+    @Override
     public FillBuilder reset() {
         unset = false;
         color = Fill.DEFAULT.getColor();
@@ -110,6 +113,7 @@ public class FillBuilder extends AbstractStyleBuilder<org.opengis.style.Fill> {
         return this;
     }
 
+    @Override
     public FillBuilder reset(org.opengis.style.Fill original) {
         if (original == null) {
             return unset();

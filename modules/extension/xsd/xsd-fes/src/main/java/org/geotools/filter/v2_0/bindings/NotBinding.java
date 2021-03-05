@@ -46,6 +46,7 @@ public class NotBinding extends OGCNotBinding {
         super(filterfactory);
     }
 
+    @Override
     public QName getTarget() {
         return FES.Not;
     }

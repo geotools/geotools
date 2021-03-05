@@ -48,6 +48,7 @@ public class SortPropertyTypeBinding extends org.geotools.filter.v1_1.SortProper
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return FES.SortPropertyType;
     }
@@ -59,10 +60,12 @@ public class SortPropertyTypeBinding extends org.geotools.filter.v1_1.SortProper
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return SortPropertyType.class;
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         SortBy sortBy = (SortBy) object;
 

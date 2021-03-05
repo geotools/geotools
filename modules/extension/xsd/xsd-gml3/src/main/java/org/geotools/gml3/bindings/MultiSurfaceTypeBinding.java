@@ -65,6 +65,7 @@ public class MultiSurfaceTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.MultiSurfaceType;
     }
@@ -76,10 +77,12 @@ public class MultiSurfaceTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return MultiPolygon.class;
     }
 
+    @Override
     public int getExecutionMode() {
         return BEFORE;
     }
@@ -91,6 +94,7 @@ public class MultiSurfaceTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         // &lt;element maxOccurs="unbounded" minOccurs="0" ref="gml:surfaceMember"/&gt;
@@ -104,6 +108,7 @@ public class MultiSurfaceTypeBinding extends AbstractComplexBinding {
         return gf.createMultiPolygon(surfaces.toArray(new Polygon[surfaces.size()]));
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         if ("surfaceMember".equals(name.getLocalPart())) {
             MultiPolygon multiSurface = (MultiPolygon) object;

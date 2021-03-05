@@ -32,6 +32,7 @@ public class SurfacePatchArrayPropertyTypeBinding
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Polygon[].class;
     }
@@ -43,6 +44,7 @@ public class SurfacePatchArrayPropertyTypeBinding
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List<Polygon> l = node.getChildValues(Polygon.class);
         return l.toArray(new Polygon[l.size()]);

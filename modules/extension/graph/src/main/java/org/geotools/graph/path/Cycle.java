@@ -41,6 +41,7 @@ public class Cycle extends Walk {
      * 2. The first and last nodes share an edge. 3. The only node repetition is the first and last
      * nodes.
      */
+    @Override
     public boolean isValid() {
         if (super.isValid()) {
 
@@ -53,6 +54,7 @@ public class Cycle extends Walk {
         return (false);
     }
 
+    @Override
     protected List<Edge> buildEdges() {
         List<Edge> edges = super.buildEdges();
 

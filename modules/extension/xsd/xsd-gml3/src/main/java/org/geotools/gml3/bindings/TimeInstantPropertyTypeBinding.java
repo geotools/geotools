@@ -45,6 +45,7 @@ import org.opengis.temporal.Instant;
 public class TimeInstantPropertyTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.TimeInstantPropertyType;
     }
@@ -56,6 +57,7 @@ public class TimeInstantPropertyTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Instant.class;
     }
@@ -67,6 +69,7 @@ public class TimeInstantPropertyTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return node.getChildValue(Instant.class);
     }

@@ -53,6 +53,7 @@ import org.locationtech.jts.geom.Geometry;
  */
 public class GMLGeometryPropertyTypeBinding extends AbstractComplexBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.GeometryPropertyType;
     }
@@ -64,6 +65,7 @@ public class GMLGeometryPropertyTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -75,6 +77,7 @@ public class GMLGeometryPropertyTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Geometry.class;
     }
@@ -86,6 +89,7 @@ public class GMLGeometryPropertyTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return value;
     }

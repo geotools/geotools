@@ -42,6 +42,7 @@ public class Base_TypeNameListTypeBinding extends AbstractSimpleBinding {
     public Base_TypeNameListTypeBinding(WfsFactory factory) {}
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.Base_TypeNameListType;
     }
@@ -53,6 +54,7 @@ public class Base_TypeNameListTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return null;
     }
@@ -64,6 +66,7 @@ public class Base_TypeNameListTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         // TODO: implement and remove call to super
         return super.parse(instance, value);

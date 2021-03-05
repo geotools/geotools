@@ -221,10 +221,12 @@ public final class XS extends XSD {
     }
 
     /** Returns 'http://www.w3.org/2001/XMLSchema'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("XMLSchema.xsd").toString();
     }

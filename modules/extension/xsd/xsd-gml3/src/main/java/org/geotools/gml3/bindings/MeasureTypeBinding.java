@@ -53,6 +53,7 @@ import tech.units.indriya.unit.BaseUnit;
  */
 public class MeasureTypeBinding extends AbstractComplexBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.MeasureType;
     }
@@ -64,6 +65,7 @@ public class MeasureTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class<?> getType() {
         return Measure.class;
     }
@@ -75,6 +77,7 @@ public class MeasureTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         double d = Double.parseDouble(node.getComponent().getText());
         URI uom = (URI) node.getAttributeValue(URI.class);
@@ -86,6 +89,7 @@ public class MeasureTypeBinding extends AbstractComplexBinding {
         return new Measure(d, null);
     }
 
+    @Override
     public Element encode(Object object, Document document, Element value) throws Exception {
         Measure measure = (Measure) object;
         value.appendChild(document.createTextNode("" + measure.doubleValue()));
@@ -93,6 +97,7 @@ public class MeasureTypeBinding extends AbstractComplexBinding {
         return value;
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         if ("uom".equals(name.getLocalPart())) {
             Measure measure = (Measure) object;

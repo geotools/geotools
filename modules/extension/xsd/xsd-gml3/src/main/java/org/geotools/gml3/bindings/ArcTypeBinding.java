@@ -70,6 +70,7 @@ public class ArcTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.ArcType;
     }
@@ -81,6 +82,7 @@ public class ArcTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return SingleCurvedGeometry.class;
     }

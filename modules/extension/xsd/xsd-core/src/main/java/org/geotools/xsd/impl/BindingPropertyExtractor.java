@@ -58,6 +58,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
         this.context = context;
     }
 
+    @Override
     public boolean canHandle(Object object) {
         return true;
     }
@@ -66,6 +67,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
         this.context = context;
     }
 
+    @Override
     public List properties(Object object, XSDElementDeclaration element) {
         final List<Object[]> properties = new ArrayList<>();
 

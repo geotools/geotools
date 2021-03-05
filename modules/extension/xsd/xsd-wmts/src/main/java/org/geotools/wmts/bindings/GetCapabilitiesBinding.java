@@ -62,6 +62,7 @@ public class GetCapabilitiesBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WMTS.GetCapabilities;
     }
@@ -73,6 +74,7 @@ public class GetCapabilitiesBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return GetCapabilitiesType.class;
     }
@@ -84,6 +86,7 @@ public class GetCapabilitiesBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         GetCapabilitiesType capabilities = factory.createGetCapabilitiesType();
         capabilities.setAcceptFormats((AcceptFormatsType) node.getChildValue("AcceptFormats"));

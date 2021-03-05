@@ -46,6 +46,7 @@ import org.opengis.coverage.grid.GridEnvelope;
 public class GridLimitsTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.GridLimitsType;
     }
@@ -57,6 +58,7 @@ public class GridLimitsTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return GridEnvelope.class;
     }
@@ -68,6 +70,7 @@ public class GridLimitsTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         GridEnvelope envelope = (GridEnvelope) node.getChildValue("GridEnvelope");
 

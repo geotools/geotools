@@ -56,6 +56,7 @@ import org.picocontainer.MutablePicoContainer;
 public class OGCBinarySpatialOpTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.BinarySpatialOpType;
     }
@@ -67,6 +68,7 @@ public class OGCBinarySpatialOpTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -78,6 +80,7 @@ public class OGCBinarySpatialOpTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class<?> getType() {
         return BinarySpatialOperator.class;
     }
@@ -90,6 +93,7 @@ public class OGCBinarySpatialOpTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
@@ -99,6 +103,7 @@ public class OGCBinarySpatialOpTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // implemented by element bindings
         return null;
@@ -171,6 +176,7 @@ public class OGCBinarySpatialOpTypeBinding extends AbstractComplexBinding {
         //        }
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         BinarySpatialOperator operator = (BinarySpatialOperator) object;
 

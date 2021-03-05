@@ -70,6 +70,7 @@ public class KMLConfiguration extends Configuration {
     }
 
     /** Places an instance of {@link GeometryFactory}. */
+    @Override
     protected void configureContext(MutablePicoContainer container) {
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
         StyleBuilder styleBuilder = new StyleBuilder(styleFactory);
@@ -88,6 +89,7 @@ public class KMLConfiguration extends Configuration {
      *
      * @generated
      */
+    @Override
     protected final void registerBindings(MutablePicoContainer container) {
         // Types
         // container.registerComponentImplementation(KML.altitudeModeEnum,

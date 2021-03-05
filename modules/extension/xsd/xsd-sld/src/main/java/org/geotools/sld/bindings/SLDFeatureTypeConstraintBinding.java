@@ -61,6 +61,7 @@ public class SLDFeatureTypeConstraintBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SLD.FEATURETYPECONSTRAINT;
     }
@@ -72,6 +73,7 @@ public class SLDFeatureTypeConstraintBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -83,6 +85,7 @@ public class SLDFeatureTypeConstraintBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return FeatureTypeConstraint.class;
     }
@@ -94,6 +97,7 @@ public class SLDFeatureTypeConstraintBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
@@ -103,6 +107,7 @@ public class SLDFeatureTypeConstraintBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         String featureTypeName = (String) node.getChildValue("FeatureTypeName");
         Filter filter = (Filter) node.getChildValue("Filter");

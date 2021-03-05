@@ -50,6 +50,7 @@ public class SLDConfiguration extends Configuration {
      *
      * @generated
      */
+    @Override
     protected final void registerBindings(MutablePicoContainer container) {
         // Elements
         container.registerComponentImplementation(SLD.NamedLayer, NamedLayerBinding.class);

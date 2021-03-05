@@ -32,6 +32,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class GMLAbstractFeatureTypeBindingTest extends GMLTestSupport {
+    @Override
     protected Configuration createConfiguration() {
         return new TestConfiguration();
     }

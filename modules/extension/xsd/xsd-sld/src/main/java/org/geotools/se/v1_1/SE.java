@@ -40,16 +40,19 @@ public final class SE extends XSD {
     /** private constructor */
     private SE() {}
 
+    @Override
     protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(OGC.getInstance());
     }
 
     /** Returns 'http://www.opengis.net/se'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'FeatureStyle.xsd.'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("FeatureStyle.xsd").toString();
     }

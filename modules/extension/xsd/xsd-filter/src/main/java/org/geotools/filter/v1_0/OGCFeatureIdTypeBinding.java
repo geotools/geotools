@@ -48,11 +48,13 @@ public class OGCFeatureIdTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.FeatureIdType;
     }
 
     /** @generated modifiable */
+    @Override
     public Class getType() {
         return FeatureId.class;
     }
@@ -64,10 +66,12 @@ public class OGCFeatureIdTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return factory.featureId(node.getAttributeValue("fid").toString());
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         if ("fid".equals(name.getLocalPart())) {
             FeatureId featureId = (FeatureId) object;

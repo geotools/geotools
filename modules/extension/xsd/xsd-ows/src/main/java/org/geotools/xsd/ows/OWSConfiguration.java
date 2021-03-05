@@ -73,6 +73,7 @@ public class OWSConfiguration extends Configuration {
         addDependency(new OGCConfiguration());
     }
 
+    @Override
     protected void configureContext(MutablePicoContainer container) {
         container.registerComponentInstance(Ows10Factory.eINSTANCE);
     }
@@ -82,6 +83,7 @@ public class OWSConfiguration extends Configuration {
      *
      * @generated
      */
+    @Override
     protected final void registerBindings(MutablePicoContainer container) {
         // Types
         container.registerComponentImplementation(

@@ -38,11 +38,13 @@ public final class XML extends XSD {
     private XML() {}
 
     /** Returns 'http://www.w3.org/XML/1998/namespace'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'xml.xsd.'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("xml.xsd").toString();
     }

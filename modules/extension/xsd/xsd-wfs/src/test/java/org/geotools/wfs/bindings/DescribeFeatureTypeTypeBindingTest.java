@@ -36,6 +36,7 @@ public class DescribeFeatureTypeTypeBindingTest extends WFSTestSupport {
         super(WFS.DescribeFeatureTypeType, DescribeFeatureTypeType.class, Binding.BEFORE);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     @Test
     public void testEncode() throws Exception {
@@ -69,6 +70,7 @@ public class DescribeFeatureTypeTypeBindingTest extends WFSTestSupport {
         assertEquals(name2.getLocalPart(), typeName);
     }
 
+    @Override
     @Test
     public void testParse() throws Exception {
         final URL resource = TestData.getResource(this, "DescribeFeatureTypeTypeBindingTest.xml");

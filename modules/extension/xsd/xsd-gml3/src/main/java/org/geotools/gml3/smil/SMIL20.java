@@ -101,21 +101,25 @@ public final class SMIL20 extends XSD {
         return instance;
     }
 
+    @Override
     protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(XMLMOD.getInstance());
         dependencies.add(SMIL20LANG.getInstance());
     }
 
     /** Returns 'http://www.w3.org/2001/SMIL20/'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'smil20.xsd'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("smil20.xsd").toString();
     }
 
+    @Override
     public SchemaLocator createSchemaLocator() {
         // we explicity return null here because of a circular dependnecy with
         // gml3 schema... returning null breaks the circle when the schemas are

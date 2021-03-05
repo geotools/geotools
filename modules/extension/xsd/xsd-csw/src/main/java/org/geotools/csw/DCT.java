@@ -39,16 +39,19 @@ public final class DCT extends XSD {
     /** private constructor */
     private DCT() {}
 
+    @Override
     protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(DC.getInstance());
     }
 
     /** Returns 'http://purl.org/dc/terms/'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'rec-dcterms.xsd.'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("rec-dcterms.xsd").toString();
     }

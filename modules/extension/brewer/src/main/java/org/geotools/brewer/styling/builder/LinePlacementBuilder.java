@@ -76,6 +76,7 @@ public class LinePlacementBuilder extends AbstractStyleBuilder<LinePlacement> {
         reset();
     }
 
+    @Override
     public LinePlacement build() {
         if (unset) {
             return null;
@@ -88,6 +89,7 @@ public class LinePlacementBuilder extends AbstractStyleBuilder<LinePlacement> {
         return linePlacement;
     }
 
+    @Override
     public LinePlacementBuilder reset() {
         this.aligned = false;
         this.generalizedLine = false;
@@ -100,6 +102,7 @@ public class LinePlacementBuilder extends AbstractStyleBuilder<LinePlacement> {
         return this;
     }
 
+    @Override
     public LinePlacementBuilder reset(LinePlacement placement) {
         if (placement == null) {
             return reset();
@@ -115,10 +118,12 @@ public class LinePlacementBuilder extends AbstractStyleBuilder<LinePlacement> {
         return this;
     }
 
+    @Override
     public LinePlacementBuilder unset() {
         return (LinePlacementBuilder) super.unset();
     }
 
+    @Override
     protected void buildStyleInternal(StyleBuilder sb) {
         sb.featureTypeStyle().rule().text().labelText("label").linePlacement().init(this);
     }

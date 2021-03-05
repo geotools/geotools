@@ -53,6 +53,7 @@ public class StrokeBinding extends SLDStrokeBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.Stroke;
     }

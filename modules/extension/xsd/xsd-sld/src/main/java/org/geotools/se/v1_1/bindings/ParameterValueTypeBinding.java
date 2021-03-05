@@ -53,6 +53,7 @@ public class ParameterValueTypeBinding extends SLDParameterValueTypeBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.ParameterValueType;
     }

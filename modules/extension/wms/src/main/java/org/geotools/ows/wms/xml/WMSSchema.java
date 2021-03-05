@@ -266,48 +266,59 @@ public class WMSSchema implements Schema {
                         SimpleType.NONE),
             };
 
+    @Override
     public AttributeGroup[] getAttributeGroups() {
         return new AttributeGroup[0];
     }
 
+    @Override
     public Attribute[] getAttributes() {
         return new Attribute[0];
     }
 
+    @Override
     public int getBlockDefault() {
         return NONE;
     }
 
+    @Override
     public ComplexType[] getComplexTypes() {
         return complexTypes;
     }
 
+    @Override
     public Element[] getElements() {
         return elements;
     }
 
+    @Override
     public int getFinalDefault() {
         return NONE;
     }
 
+    @Override
     public Group[] getGroups() {
         return new Group[0];
     }
 
+    @Override
     public String getId() {
         return null;
     }
 
     private static Schema[] imports = new Schema[] {XLinkSchema.getInstance()};
 
+    @Override
     public Schema[] getImports() {
         return imports;
     }
 
+    @Override
     public String getPrefix() {
         return "wms";
     }
 
+    @Override
     public SimpleType[] getSimpleTypes() {
         return simpleTypes;
     }
@@ -315,6 +326,7 @@ public class WMSSchema implements Schema {
     /* (non-Javadoc)
      * @see org.geotools.xml.schema.Schema#getTargetNamespace()
      */
+    @Override
     public URI getTargetNamespace() {
         return NAMESPACE;
     }
@@ -322,10 +334,12 @@ public class WMSSchema implements Schema {
     /* (non-Javadoc)
      * @see org.geotools.xml.schema.Schema#getURI()
      */
+    @Override
     public URI getURI() {
         return NAMESPACE;
     }
 
+    @Override
     public String getVersion() {
         return "1.3.0";
     }
@@ -333,16 +347,19 @@ public class WMSSchema implements Schema {
     /* (non-Javadoc)
      * @see org.geotools.xml.schema.Schema#includesURI(java.net.URI)
      */
+    @Override
     public boolean includesURI(URI uri) {
         // We don't need to read the definition at all
         // --this is a specification, it shouldn't change.
         return true;
     }
 
+    @Override
     public boolean isAttributeFormDefault() {
         return true;
     }
 
+    @Override
     public boolean isElementFormDefault() {
         return true;
     }
@@ -352,6 +369,7 @@ public class WMSSchema implements Schema {
     }
 
     /** Returns the implementation hints. The default implementation returns en empty map. */
+    @Override
     public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }
@@ -392,66 +410,80 @@ public class WMSSchema implements Schema {
 
         private WMSElement() {}
 
+        @Override
         public boolean isAbstract() {
             return false;
         }
 
+        @Override
         public int getBlock() {
             return NONE;
         }
 
+        @Override
         public String getDefault() {
             // TODO terminate
             return null;
         }
 
+        @Override
         public int getFinal() {
             return NONE;
         }
 
+        @Override
         public String getFixed() {
             // TODO Terminate
             return null;
         }
 
+        @Override
         public boolean isForm() {
             // TODO Terminate
             return false;
         }
 
+        @Override
         public String getId() {
             return null;
         }
 
+        @Override
         public int getMaxOccurs() {
             // TODO Terminate
             return max;
         }
 
+        @Override
         public int getMinOccurs() {
             // TODO Terminate
             return min;
         }
 
+        @Override
         public String getName() {
             // TODO Terminate
             return name;
         }
 
+        @Override
         public URI getNamespace() {
             return NAMESPACE;
         }
 
+        @Override
         public boolean isNillable() {
             // TODO Terminate
             return false;
         }
 
+        @Override
         public Element getSubstitutionGroup() {
             // TODO Terminate
             return null;
         }
 
+        @Override
         public Type getType() {
             // TODO Terminate
             return type;
@@ -460,6 +492,7 @@ public class WMSSchema implements Schema {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.ElementGrouping#getGrouping()
          */
+        @Override
         public int getGrouping() {
             // TODO Auto-generated method stub
             return ELEMENT;
@@ -468,10 +501,12 @@ public class WMSSchema implements Schema {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.ElementGrouping#findChildElement(java.lang.String)
          */
+        @Override
         public Element findChildElement(String name) {
             return (this.name != null && this.name.equals(name)) ? this : null;
         }
 
+        @Override
         public Element findChildElement(String localName, URI namespaceURI) {
             return (this.name != null
                             && this.name.equals(localName)
@@ -483,46 +518,57 @@ public class WMSSchema implements Schema {
 
     abstract static class WMSComplexType implements ComplexType {
 
+        @Override
         public Type getParent() {
             return null;
         }
 
+        @Override
         public boolean isAbstract() {
             return false;
         }
 
+        @Override
         public String getAnyAttributeNameSpace() {
             return null;
         }
 
+        @Override
         public int getBlock() {
             return NONE;
         }
 
+        @Override
         public int getFinal() {
             return NONE;
         }
 
+        @Override
         public String getId() {
             return null;
         }
 
+        @Override
         public boolean isMixed() {
             return false;
         }
 
+        @Override
         public boolean isDerived() {
             return false;
         }
 
+        @Override
         public boolean cache(Element element, Map hints) {
             return true;
         }
 
+        @Override
         public URI getNamespace() {
             return NAMESPACE;
         }
 
+        @Override
         public Element findChildElement(String name) {
             return (getChild() == null) ? null : getChild().findChildElement(name);
         }
@@ -534,26 +580,32 @@ public class WMSSchema implements Schema {
 
     abstract static class WMSSimpleType implements SimpleType {
 
+        @Override
         public int getFinal() {
             return NONE;
         }
 
+        @Override
         public String getId() {
             return null;
         }
 
+        @Override
         public boolean canCreateAttributes(Attribute attribute, Object value, Map hints) {
             return false;
         }
 
+        @Override
         public URI getNamespace() {
             return NAMESPACE;
         }
 
+        @Override
         public Element findChildElement(String name) {
             return null;
         }
 
+        @Override
         public AttributeValue toAttribute(Attribute attribute, Object value, Map hints)
                 throws OperationNotSupportedException {
             return new AttributeValueGT(attribute, value.toString());
@@ -565,6 +617,7 @@ public class WMSSchema implements Schema {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element, java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             // TODO Auto-generated method stub
             return false;
@@ -572,6 +625,7 @@ public class WMSSchema implements Schema {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element, java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             // TODO Auto-generated method stub
@@ -580,6 +634,7 @@ public class WMSSchema implements Schema {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#findChildElement(java.lang.String)
          */
+        @Override
         public Element findChildElement(String name) {
             // TODO Auto-generated method stub
             return null;
@@ -587,6 +642,7 @@ public class WMSSchema implements Schema {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             // TODO Auto-generated method stub
             return null;
@@ -594,6 +650,7 @@ public class WMSSchema implements Schema {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             // TODO Auto-generated method stub
             return "Ignore";
@@ -601,12 +658,14 @@ public class WMSSchema implements Schema {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#getNamespace()
          */
+        @Override
         public URI getNamespace() {
             return NAMESPACE;
         }
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element, org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             // TODO Auto-generated method stub

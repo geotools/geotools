@@ -25,11 +25,13 @@ import org.junit.Test;
 
 public class BingTileIdentifierTest extends TileIdentifierTest {
 
+    @Override
     @Test
     public void testGetId() {
         Assert.assertEquals("SomeService_03210", this.tileId.getId());
     }
 
+    @Override
     @Test
     public void testGetCode() {
         Assert.assertEquals("03210", this.tileId.getCode());
@@ -51,6 +53,7 @@ public class BingTileIdentifierTest extends TileIdentifierTest {
         Assert.assertEquals(neighbour, this.tileId.getLowerNeighbour());
     }
 
+    @Override
     protected TileIdentifier createTestTileIdentifier(
             ZoomLevel zoomLevel, int x, int y, String name) {
         return new BingTileIdentifier(x, y, zoomLevel, name);

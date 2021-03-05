@@ -33,6 +33,7 @@ public class GeometryTypeProxy extends AttributeTypeProxy implements GeometryTyp
         super(typeName, registry);
     }
 
+    @Override
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return ((GeometryType) getSubject()).getCoordinateReferenceSystem();
     }

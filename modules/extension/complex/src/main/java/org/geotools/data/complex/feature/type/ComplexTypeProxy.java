@@ -34,22 +34,27 @@ public class ComplexTypeProxy extends AttributeTypeProxy implements ComplexType 
         super(typeName, registry);
     }
 
+    @Override
     public PropertyDescriptor getDescriptor(Name name) {
         return ((ComplexType) getSubject()).getDescriptor(name);
     }
 
+    @Override
     public PropertyDescriptor getDescriptor(String name) {
         return ((ComplexType) getSubject()).getDescriptor(name);
     }
 
+    @Override
     public Collection<PropertyDescriptor> getDescriptors() {
         return ((ComplexType) getSubject()).getDescriptors();
     }
 
+    @Override
     public boolean isInline() {
         return ((ComplexType) getSubject()).isInline();
     }
 
+    @Override
     public Class<Collection<Property>> getBinding() {
         // TODO: dodgy, during tests subject is evaluated to a GeometryTypeImpl
         // too, casting to a ComplexType results in tests failures

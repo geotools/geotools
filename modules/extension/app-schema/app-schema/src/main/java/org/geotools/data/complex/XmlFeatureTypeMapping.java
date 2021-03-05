@@ -155,6 +155,7 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
      *
      * @return list of matching attribute mappings
      */
+    @Override
     public List<AttributeMapping> getAttributeMappingsByExpression(
             final Expression sourceExpression) {
         AttributeMapping attMapping;

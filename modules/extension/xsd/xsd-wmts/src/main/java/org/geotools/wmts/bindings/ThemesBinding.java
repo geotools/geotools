@@ -71,6 +71,7 @@ public class ThemesBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WMTS.Themes;
     }
@@ -82,6 +83,7 @@ public class ThemesBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class<?> getType() {
         return ThemesType.class;
     }
@@ -93,6 +95,7 @@ public class ThemesBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         ThemesType themes = factory.createThemesType();
         @SuppressWarnings("unchecked")

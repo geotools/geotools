@@ -30,12 +30,14 @@ import org.w3c.dom.Element;
  */
 public abstract class AbstractComplexBinding implements ComplexBinding {
     /** Does nothing, subclasses should override this method. */
+    @Override
     public void initializeChildContext(
             ElementInstance childInstance, Node node, MutablePicoContainer context) {
         // does nothing, subclasses should override
     }
 
     /** Does nothing, subclasses should override this method. */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {
         // does nothing, subclasses should override
     }
@@ -45,6 +47,7 @@ public abstract class AbstractComplexBinding implements ComplexBinding {
      *
      * <p>Subclasses should override to change this behaviour.
      */
+    @Override
     public int getExecutionMode() {
         return OVERRIDE;
     }
@@ -52,6 +55,7 @@ public abstract class AbstractComplexBinding implements ComplexBinding {
     /**
      * Subclasses should override this method, the default implementation return <code>null</code>.
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return null;
     }
@@ -62,6 +66,7 @@ public abstract class AbstractComplexBinding implements ComplexBinding {
      *
      * @see ComplexBinding#encode(Object, Document, Element).
      */
+    @Override
     public Element encode(Object object, Document document, Element value) throws Exception {
         return value;
     }
@@ -72,6 +77,7 @@ public abstract class AbstractComplexBinding implements ComplexBinding {
      *
      * @see ComplexBinding#getProperty(Object, QName)
      */
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         // do nothing, subclasses should override
         return null;
@@ -84,6 +90,7 @@ public abstract class AbstractComplexBinding implements ComplexBinding {
      * <p>Note that this method only needs to be implemented for schema types which are open-ended
      * in which the contents are not specifically specified by the schema.
      */
+    @Override
     public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
             throws Exception {
         // do nothing, subclasses should override

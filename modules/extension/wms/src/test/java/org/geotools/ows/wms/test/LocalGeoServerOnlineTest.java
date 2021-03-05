@@ -450,6 +450,7 @@ public class LocalGeoServerOnlineTest {
         WebMapServer server =
                 new WebMapServer(url) {
                     // GetStyle is only implemented in WMS 1.1.1
+                    @Override
                     protected void setupSpecifications() {
                         specs = new Specification[1];
                         specs[0] = new WMS1_1_1();

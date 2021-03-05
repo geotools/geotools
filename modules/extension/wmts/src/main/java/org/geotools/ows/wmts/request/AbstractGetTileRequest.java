@@ -123,8 +123,10 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
         this.client = client;
     }
 
+    @Override
     protected abstract void initVersion();
 
+    @Override
     protected void initRequest() {
         setProperty(REQUEST, "GetTile");
     }
@@ -158,26 +160,32 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
         return format;
     }
 
+    @Override
     public void setFormat(String format) {
         this.format = format;
     }
 
+    @Override
     public void setRequestedHeight(int height) {
         this.requestedHeight = height;
     }
 
+    @Override
     public void setRequestedWidth(int width) {
         this.requestedWidth = width;
     }
 
+    @Override
     public void setRequestedBBox(ReferencedEnvelope requestedBBox) {
         this.requestedBBox = requestedBBox;
     }
 
+    @Override
     public void setRequestedTime(String requestedTime) {
         this.requestedTime = requestedTime;
     }
 
+    @Override
     public Map<String, String> getHeaders() {
         return headers;
     }

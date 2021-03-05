@@ -45,6 +45,7 @@ public class AndBuilder<P> implements Builder<And> {
     }
 
     /** Build an And filter */
+    @Override
     public And build() {
         if (list == null) {
             return null;
@@ -83,11 +84,13 @@ public class AndBuilder<P> implements Builder<And> {
         return parent;
     }
 
+    @Override
     public AndBuilder<P> reset() {
         this.list = new ArrayList<>();
         return this;
     }
 
+    @Override
     public AndBuilder<P> reset(And filter) {
         if (filter == null) {
             return unset();
@@ -101,6 +104,7 @@ public class AndBuilder<P> implements Builder<And> {
         return this;
     }
 
+    @Override
     public AndBuilder<P> unset() {
         this.list = null;
         return this;

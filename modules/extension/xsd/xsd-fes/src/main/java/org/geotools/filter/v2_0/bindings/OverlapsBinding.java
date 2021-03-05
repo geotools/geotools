@@ -42,6 +42,7 @@ public class OverlapsBinding extends OGCOverlapsBinding {
         super(filterFactory, geometryFactory);
     }
 
+    @Override
     public QName getTarget() {
         return FES.Overlaps;
     }

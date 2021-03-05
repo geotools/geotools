@@ -78,6 +78,7 @@ public class OptLineGraphGenerator implements LineGraphGenerator {
      * @return null because the actual building of the graph components is delayed until generate()
      *     is called.
      */
+    @Override
     public Graphable add(Object obj) {
         LineSegment line = (LineSegment) obj;
         Integer count;
@@ -109,6 +110,7 @@ public class OptLineGraphGenerator implements LineGraphGenerator {
      * @return Edge that represents the line.
      * @see GraphGenerator#get(Object)
      */
+    @Override
     public Graphable get(Object obj) {
         LineSegment line = (LineSegment) obj;
 
@@ -122,21 +124,25 @@ public class OptLineGraphGenerator implements LineGraphGenerator {
     }
 
     /** Unsupported operation. */
+    @Override
     public Graphable remove(Object obj) {
         throw new UnsupportedOperationException(getClass().getName() + "#remove(Object)");
     }
 
     /** @see GraphGenerator#setGraphBuilder(GraphBuilder) */
+    @Override
     public void setGraphBuilder(GraphBuilder builder) {
         m_builder = builder;
     }
 
     /** @see GraphGenerator#getGraphBuilder() */
+    @Override
     public GraphBuilder getGraphBuilder() {
         return (m_builder);
     }
 
     /** @see GraphGenerator#getGraph() */
+    @Override
     public Graph getGraph() {
         return (m_builder.getGraph());
     }
@@ -199,10 +205,12 @@ public class OptLineGraphGenerator implements LineGraphGenerator {
         return (edge);
     }
 
+    @Override
     public Node getNode(Coordinate c) {
         return ((Node) m_coord2count.get(c));
     }
 
+    @Override
     public Edge getEdge(Coordinate c1, Coordinate c2) {
         Node n1 = (Node) m_coord2count.get(c1);
         Node n2 = (Node) m_coord2count.get(c2);

@@ -63,6 +63,7 @@ import org.w3c.dom.Element;
 public class TimeSequenceTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WCS.TimeSequenceType;
     }
@@ -74,6 +75,7 @@ public class TimeSequenceTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return TimeSequenceType.class;
     }
@@ -85,6 +87,7 @@ public class TimeSequenceTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List<Node> timePositions = node.getChildren("timePosition");
@@ -143,6 +146,7 @@ public class TimeSequenceTypeBinding extends AbstractComplexBinding {
         return null;
     }
 
+    @Override
     public Object getProperty(Object object, QName name) {
         List timeSequence = (List) object;
 

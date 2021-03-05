@@ -48,6 +48,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
      *
      * @see org.geotools.data.FeatureSource#addFeatureListener(org.geotools.data.FeatureListener)
      */
+    @Override
     public void addFeatureListener(FeatureListener listener) {
         throw new UnsupportedOperationException();
     }
@@ -57,6 +58,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
      *
      * @see org.geotools.data.FeatureSource#getBounds()
      */
+    @Override
     public ReferencedEnvelope getBounds() throws IOException {
         // FIXME implement this
         return null;
@@ -67,6 +69,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
      *
      * @see org.geotools.data.FeatureSource#getBounds(org.geotools.data.Query)
      */
+    @Override
     public ReferencedEnvelope getBounds(Query query) throws IOException {
         // FIXME implement this
         return null;
@@ -77,6 +80,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
      *
      * @see org.geotools.data.FeatureSource#getCount(org.geotools.data.Query)
      */
+    @Override
     public int getCount(Query query) throws IOException {
         // FIXME implement this
         return 0;
@@ -87,6 +91,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
      *
      * @see org.geotools.data.FeatureSource#getDataStore()
      */
+    @Override
     public DataAccess<FeatureType, Feature> getDataStore() {
         // FIXME implement this
         return null;
@@ -97,6 +102,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
      *
      * @see org.geotools.data.FeatureSource#getFeatures()
      */
+    @Override
     public FeatureCollection<FeatureType, Feature> getFeatures() throws IOException {
         SampleDataAccessFeatureCollection fc = new SampleDataAccessFeatureCollection();
         fc.addAll(SampleDataAccessData.createMappedFeatures());
@@ -108,6 +114,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
      *
      * @see org.geotools.data.FeatureSource#getFeatures(org.opengis.filter.Filter)
      */
+    @Override
     public FeatureCollection<FeatureType, Feature> getFeatures(Filter filter) throws IOException {
         // FIXME temporary hack
         return getFeatures();
@@ -118,6 +125,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
      *
      * @see org.geotools.data.FeatureSource#getFeatures(org.geotools.data.Query)
      */
+    @Override
     public FeatureCollection<FeatureType, Feature> getFeatures(Query query) throws IOException {
         // FIXME temporary hack
         return getFeatures();
@@ -128,6 +136,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
      *
      * @see org.geotools.data.FeatureSource#getInfo()
      */
+    @Override
     public ResourceInfo getInfo() {
         // FIXME implement this
         return null;
@@ -138,6 +147,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
      *
      * @see org.geotools.data.FeatureSource#getName()
      */
+    @Override
     public Name getName() {
         return SampleDataAccessData.MAPPEDFEATURE_TYPE_NAME;
     }
@@ -147,6 +157,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
      *
      * @see org.geotools.data.FeatureSource#getQueryCapabilities()
      */
+    @Override
     public QueryCapabilities getQueryCapabilities() {
         // FIXME implement this
         return null;
@@ -157,6 +168,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
      *
      * @see org.geotools.data.FeatureSource#getSchema()
      */
+    @Override
     public FeatureType getSchema() {
         return SampleDataAccessData.MAPPEDFEATURE_TYPE;
     }
@@ -166,6 +178,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
      *
      * @see org.geotools.data.FeatureSource#getSupportedHints()
      */
+    @Override
     public Set<Key> getSupportedHints() {
         return new HashSet<>();
     }
@@ -175,6 +188,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
      *
      * @see org.geotools.data.FeatureSource#removeFeatureListener(org.geotools.data.FeatureListener)
      */
+    @Override
     public void removeFeatureListener(FeatureListener listener) {
         throw new UnsupportedOperationException();
     }

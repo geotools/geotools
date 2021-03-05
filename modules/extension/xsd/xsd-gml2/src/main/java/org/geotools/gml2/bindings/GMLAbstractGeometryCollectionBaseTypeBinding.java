@@ -51,6 +51,7 @@ import org.locationtech.jts.geom.GeometryCollection;
  */
 public class GMLAbstractGeometryCollectionBaseTypeBinding extends AbstractComplexBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.AbstractGeometryCollectionBaseType;
     }
@@ -62,6 +63,7 @@ public class GMLAbstractGeometryCollectionBaseTypeBinding extends AbstractComple
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return GeometryCollection.class;
     }
@@ -73,6 +75,7 @@ public class GMLAbstractGeometryCollectionBaseTypeBinding extends AbstractComple
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return null;
     }

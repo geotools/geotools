@@ -34,6 +34,7 @@ public class GMLMultiPolygonTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance poly1;
     ElementInstance poly2;
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();

@@ -27,6 +27,7 @@ public class TextInstance extends InstanceComponentImpl {
         setName("__text__");
     }
 
+    @Override
     public XSDTypeDefinition getTypeDefinition() {
         return null;
     }

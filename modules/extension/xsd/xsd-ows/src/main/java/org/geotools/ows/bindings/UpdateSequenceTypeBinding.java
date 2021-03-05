@@ -45,6 +45,7 @@ public class UpdateSequenceTypeBinding extends AbstractSimpleBinding {
     public UpdateSequenceTypeBinding(Ows10Factory factory) {}
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OWS.UpdateSequenceType;
     }
@@ -56,6 +57,7 @@ public class UpdateSequenceTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return null;
     }
@@ -67,6 +69,7 @@ public class UpdateSequenceTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         // TODO: implement and remove call to super
         return super.parse(instance, value);

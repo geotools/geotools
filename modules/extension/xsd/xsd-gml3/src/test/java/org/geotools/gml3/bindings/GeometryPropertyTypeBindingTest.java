@@ -39,6 +39,7 @@ public class GeometryPropertyTypeBindingTest extends GML3TestSupport {
         return true;
     }
 
+    @Override
     protected Configuration createConfiguration() {
         GMLConfiguration configuration = new GMLConfiguration(enableExtendedArcSurfaceSupport());
         // configure a small number of decimals for testing purposes

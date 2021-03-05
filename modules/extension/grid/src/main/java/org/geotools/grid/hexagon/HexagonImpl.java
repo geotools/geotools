@@ -81,16 +81,19 @@ public class HexagonImpl implements Hexagon {
     }
 
     /** {@inheritDoc} */
+    @Override
     public double getSideLength() {
         return sideLen;
     }
 
     /** {@inheritDoc} */
+    @Override
     public double getArea() {
         return area;
     }
 
     /** {@inheritDoc} */
+    @Override
     public HexagonOrientation getOrientation() {
         return orientation;
     }
@@ -100,6 +103,7 @@ public class HexagonImpl implements Hexagon {
      *
      * @return an array of copies of the vertex {@code Coordinates}
      */
+    @Override
     public Coordinate[] getVertices() {
         Coordinate[] copy = new Coordinate[6];
         for (int i = 0; i < 6; i++) {
@@ -109,6 +113,7 @@ public class HexagonImpl implements Hexagon {
     }
 
     /** {@inheritDoc} */
+    @Override
     public ReferencedEnvelope getBounds() {
         if (orientation == HexagonOrientation.FLAT) {
             return new ReferencedEnvelope(
@@ -121,6 +126,7 @@ public class HexagonImpl implements Hexagon {
     }
 
     /** {@inheritDoc} */
+    @Override
     public Coordinate getCenter() {
         if (orientation == HexagonOrientation.FLAT) {
             return new Coordinate(minX + sideLen, minY + ROOT3 * 0.5 * sideLen);
@@ -130,6 +136,7 @@ public class HexagonImpl implements Hexagon {
     }
 
     /** {@inheritDoc} */
+    @Override
     public Geometry toGeometry() {
         Coordinate[] ring = new Coordinate[7];
         System.arraycopy(vertices, 0, ring, 0, 6);
@@ -143,6 +150,7 @@ public class HexagonImpl implements Hexagon {
      *
      * @throws IllegalArgumentException if {@code maxSpacing} is not a positive value
      */
+    @Override
     public Geometry toDenseGeometry(double maxSpacing) {
         if (maxSpacing <= 0.0) {
             throw new IllegalArgumentException("maxSpacing must be a positive value");

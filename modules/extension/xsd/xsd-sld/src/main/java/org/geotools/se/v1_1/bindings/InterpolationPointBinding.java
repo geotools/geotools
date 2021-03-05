@@ -68,6 +68,7 @@ public class InterpolationPointBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.InterpolationPoint;
     }
@@ -79,6 +80,7 @@ public class InterpolationPointBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return ColorMapEntry.class;
     }
@@ -90,6 +92,7 @@ public class InterpolationPointBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         ColorMapEntry entry = styleFactory.createColorMapEntry();

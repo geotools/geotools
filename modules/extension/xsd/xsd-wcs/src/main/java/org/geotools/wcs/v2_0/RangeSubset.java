@@ -39,16 +39,19 @@ public final class RangeSubset extends XSD {
     /** private constructor */
     private RangeSubset() {}
 
+    @Override
     protected void addDependencies(Set dependencies) {
         //
     }
 
     /** Returns 'http://www.opengis.net/wcs/range-subsetting/1.0'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'rsub.xsd.'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("range_subsetting/v1_0/rsub.xsd").toString();
     }

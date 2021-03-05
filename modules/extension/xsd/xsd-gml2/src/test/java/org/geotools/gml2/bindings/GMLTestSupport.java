@@ -27,6 +27,7 @@ import org.geotools.xsd.test.XMLTestSupport;
  */
 public class GMLTestSupport extends XMLTestSupport {
 
+    @Override
     protected Configuration createConfiguration() {
         return new GMLConfiguration();
     }

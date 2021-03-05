@@ -51,6 +51,7 @@ public class GetPropertyExecutor implements BindingWalker.Visitor {
         return child;
     }
 
+    @Override
     public void visit(Binding binding) {
         // TODO: visit should return a boolean to signify whether to continue
         if (child != null) {

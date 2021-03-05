@@ -43,6 +43,7 @@ public class FeatureTypeType_NoSRSBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.FeatureTypeType_NoSRS;
     }
@@ -54,6 +55,7 @@ public class FeatureTypeType_NoSRSBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return null;
     }
@@ -65,6 +67,7 @@ public class FeatureTypeType_NoSRSBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // TODO: implement and remove call to super
         return super.parse(instance, node, value);

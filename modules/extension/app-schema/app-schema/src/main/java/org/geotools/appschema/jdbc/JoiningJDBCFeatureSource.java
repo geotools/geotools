@@ -120,6 +120,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
          *
          * <p>Mostly useful when aliases are used.
          */
+        @Override
         public String encode(String s) {
             StringBuffer buf = new StringBuffer();
             store.dialect.encodeTableName(tableName, buf);
@@ -1380,6 +1381,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         dialect.encodeColumnName(tableName, columnName, sql);
     }
 
+    @Override
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
         if (query instanceof JoiningQuery) {
@@ -1389,6 +1391,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         }
     }
 
+    @Override
     protected Query resolvePropertyNames(Query query) {
         if (query instanceof JoiningQuery) {
             return query;
@@ -1397,6 +1400,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         }
     }
 
+    @Override
     protected Query joinQuery(Query query) {
         if (this.query == null) {
             return query;

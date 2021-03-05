@@ -52,6 +52,7 @@ public class SortPropertyTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.SortPropertyType;
     }
@@ -63,6 +64,7 @@ public class SortPropertyTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return SortBy.class;
     }
@@ -74,6 +76,7 @@ public class SortPropertyTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         PropertyName name = node.getChildValue(PropertyName.class);
         SortOrder order = node.getChildValue(SortOrder.class);
@@ -85,6 +88,7 @@ public class SortPropertyTypeBinding extends AbstractComplexBinding {
         return filterfactory.sort(name.getPropertyName(), order);
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         SortBy sortBy = (SortBy) object;
 

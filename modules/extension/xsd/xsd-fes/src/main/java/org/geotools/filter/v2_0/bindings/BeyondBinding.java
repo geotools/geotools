@@ -42,6 +42,7 @@ public class BeyondBinding extends OGCBeyondBinding {
         super(filterFactory, geometryFactory);
     }
 
+    @Override
     public QName getTarget() {
         return FES.Beyond;
     }

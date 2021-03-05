@@ -16,6 +16,7 @@
  */
 package org.geotools.data.flatgeobuf;
 
+import com.google.flatbuffers.FlatBufferBuilder;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -29,6 +30,7 @@ import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.NameImpl;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
+import org.wololo.flatgeobuf.geotools.FlatBuffers;
 
 public class FlatgeobufDataStore extends ContentDataStore {
 
@@ -52,9 +54,12 @@ public class FlatgeobufDataStore extends ContentDataStore {
 
     @Override
     public void createSchema(SimpleFeatureType featureType) throws IOException {
+        FlatBufferBuilder builder = FlatBuffers.newBuilder(4096);
         try (FileOutputStream out = new FileOutputStream(file)) {
-            FlatgeobufWriter writer = new FlatgeobufWriter(out);
+            FlatgeobufWriter writer = new FlatgeobufWriter(out, builder);
             writer.writeFeatureType(featureType);
+        } finally {
+            FlatBuffers.release(builder);
         }
     }
 

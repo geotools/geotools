@@ -301,6 +301,7 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
 		//add a schema locator which uses the xsd objects to get at the schemas
 		XSDSchemaLocator locator = new XSDSchemaLocator() {
 
+            @Override
             public XSDSchema locateSchema(XSDSchema schema, String namespaceURI,
                 String rawSchemaLocationURI, String resolvedSchemaLocationURI) {
 
@@ -326,7 +327,8 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
 		//add a location resolver which checks the schema source directory
 		XSDSchemaLocationResolver locationResolver = new XSDSchemaLocationResolver() {
 
-			public String resolveSchemaLocation(
+			@Override
+            public String resolveSchemaLocation(
 				XSDSchema schema, String namespaceURI, String schemaLocation 
 			) {
 			
@@ -376,7 +378,8 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
 			if (relativeSchemaReference) {
 				xsdSchema = Schemas.parse(schemaLocation.getAbsolutePath(), Collections.emptyList(),
 						Collections.singletonList(new XSDSchemaLocationResolver() {
-							public String resolveSchemaLocation(XSDSchema xsdSchema,
+							@Override
+                            public String resolveSchemaLocation(XSDSchema xsdSchema,
 									String namespaceURI, String schemaLocationURI) {
 								try {
 									URI contextUri = new URI(xsdSchema.getSchemaLocation());

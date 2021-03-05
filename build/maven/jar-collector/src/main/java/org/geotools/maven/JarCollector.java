@@ -74,6 +74,7 @@ public class JarCollector extends AbstractMojo {
      *
      * @throws MojoExecutionException if the plugin execution failed.
      */
+    @Override
     public void execute() throws MojoExecutionException {
         /*
          * Gets the parent "target" directory.

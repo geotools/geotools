@@ -1235,7 +1235,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         return highestRes;
     }
 
-    double[] getHighestRes() {
+    protected double[] getHighestRes() {
         return getHighestRes(coverageName);
     }
 

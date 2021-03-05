@@ -253,6 +253,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         return l.iterator();
     }
 
+    @Override
     public int getWidth(int imageIndex) throws IOException {
         final VariableAdapter wrapper = getCoverageDescriptor(imageIndex);
         if (wrapper != null) {
@@ -276,6 +277,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
     }
 
     /** Reset the status of this reader */
+    @Override
     public void reset() {
         super.setInput(null, false, false);
         dispose();

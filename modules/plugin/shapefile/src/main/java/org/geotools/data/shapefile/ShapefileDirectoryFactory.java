@@ -31,14 +31,17 @@ public class ShapefileDirectoryFactory extends ShapefileDataStoreFactory {
     public static final Param URLP =
             new Param("url", URL.class, "Directory containing geospatial files", true);
 
+    @Override
     public String getDisplayName() {
         return "Directory of spatial files (shapefiles)";
     }
 
+    @Override
     public String getDescription() {
         return "Takes a directory of shapefiles and exposes it as a data store";
     }
 
+    @Override
     public boolean canProcess(Map<String, ?> params) {
         // we don't try to steal single shapefiles away from the main factory
         if (super.canProcess(params)) {

@@ -164,6 +164,7 @@ public class ThreadedPostgreSQLEpsgFactory extends ThreadedEpsgFactory {
     }
 
     /** Returns a data source for the PostgreSQL database. */
+    @Override
     protected DataSource createDataSource() throws SQLException {
         DataSource candidate = super.createDataSource();
         if (candidate instanceof BaseDataSource) {
@@ -196,6 +197,7 @@ public class ThreadedPostgreSQLEpsgFactory extends ThreadedEpsgFactory {
      * @return The EPSG factory using PostgreSQL syntax.
      * @throws SQLException if connection to the database failed.
      */
+    @Override
     protected AbstractAuthorityFactory createBackingStore(final Hints hints) throws SQLException {
         final FactoryUsingAnsiSQL factory = new FactoryUsingAnsiSQL(hints, getDataSource());
         factory.setValidationQuery("select now()");

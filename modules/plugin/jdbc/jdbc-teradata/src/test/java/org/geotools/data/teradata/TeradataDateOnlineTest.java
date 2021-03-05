@@ -21,6 +21,7 @@ import org.geotools.jdbc.JDBCDateTestSetup;
 
 public class TeradataDateOnlineTest extends JDBCDateOnlineTest {
 
+    @Override
     protected JDBCDateTestSetup createTestSetup() {
         return new TeradataDateTestSetup(new TeradataTestSetup());
     }

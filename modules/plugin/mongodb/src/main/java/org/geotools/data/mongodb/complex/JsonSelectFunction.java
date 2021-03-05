@@ -47,6 +47,7 @@ public final class JsonSelectFunction extends FunctionExpressionImpl implements 
      * Evaluates this function against the provided object. If a NULL object is provided and
      * attribute expression will be returned.
      */
+    @Override
     public Object evaluate(Object object) {
         // get the JSOn object
         String path = (String) this.params.get(0).evaluate(object);

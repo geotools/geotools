@@ -25,6 +25,7 @@ import org.geotools.jdbc.JDBCJNDITestSetup;
 
 public class DB2JNDIDataSourceOnlineTest extends JDBCJNDIDataSourceOnlineTest {
 
+    @Override
     protected JDBCJNDITestSetup createTestSetup() {
         return new JDBCJNDITestSetup(new DB2TestSetup());
     }

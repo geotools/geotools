@@ -31,6 +31,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 
 public class TeradataPrimaryKeyOnlineTest extends JDBCPrimaryKeyOnlineTest {
 
+    @Override
     protected JDBCPrimaryKeyTestSetup createTestSetup() {
         return new TeradataPrimaryKeyTestSetup(new TeradataTestSetup());
     }
@@ -74,6 +75,7 @@ public class TeradataPrimaryKeyOnlineTest extends JDBCPrimaryKeyOnlineTest {
         assertPrimaryKeyValues(features, 4);
     }
 
+    @Override
     public void testSequencedPrimaryKey() throws Exception {
         JDBCFeatureStore fs = (JDBCFeatureStore) dataStore.getFeatureSource(tname("seq"));
 

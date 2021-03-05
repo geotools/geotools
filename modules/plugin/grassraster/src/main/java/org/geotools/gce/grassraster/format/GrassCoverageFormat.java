@@ -66,10 +66,12 @@ public final class GrassCoverageFormat extends AbstractGridFormat implements For
                                 mInfo, new GeneralParameterDescriptor[] {GEOTOOLS_WRITE_PARAMS}));
     }
 
+    @Override
     public GrassCoverageReader getReader(final Object o) {
         return getReader(o, null);
     }
 
+    @Override
     public GrassCoverageWriter getWriter(final Object destination, Hints hints) {
         try {
             return new GrassCoverageWriter(destination);
@@ -80,10 +82,12 @@ public final class GrassCoverageFormat extends AbstractGridFormat implements For
         }
     }
 
+    @Override
     public GridCoverageWriter getWriter(Object destination) {
         return getWriter(destination, null);
     }
 
+    @Override
     public boolean accepts(final Object o, Hints hints) {
         File fileToUse;
 
@@ -105,6 +109,7 @@ public final class GrassCoverageFormat extends AbstractGridFormat implements For
         return false;
     }
 
+    @Override
     public GrassCoverageReader getReader(final Object o, Hints hints) {
 
         try {
@@ -123,6 +128,7 @@ public final class GrassCoverageFormat extends AbstractGridFormat implements For
      *
      * @return always null.
      */
+    @Override
     public GeoToolsWriteParams getDefaultImageIOWriteParameters() {
         return null;
     }

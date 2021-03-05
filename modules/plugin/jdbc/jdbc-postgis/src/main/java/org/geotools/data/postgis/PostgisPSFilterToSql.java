@@ -72,6 +72,7 @@ public class PostgisPSFilterToSql extends PreparedFilterToSQL {
         return helper.visitBinarySpatialOperator(filter, property, geometry, swapped, extraData);
     }
 
+    @Override
     protected Object visitBinarySpatialOperator(
             BinarySpatialOperator filter, Expression e1, Expression e2, Object extraData) {
         helper.out = out;
@@ -124,6 +125,7 @@ public class PostgisPSFilterToSql extends PreparedFilterToSQL {
      *
      * @param filter the comparison to be turned into SQL.
      */
+    @Override
     protected void visitBinaryComparisonOperator(BinaryComparisonOperator filter, Object extraData)
             throws RuntimeException {
         Expression left = filter.getExpression1();
@@ -149,6 +151,7 @@ public class PostgisPSFilterToSql extends PreparedFilterToSQL {
      * @param filter the Filter to be visited.
      * @throws RuntimeException for io exception with writer
      */
+    @Override
     public Object visit(PropertyIsBetween filter, Object extraData) throws RuntimeException {
         LOGGER.finer("exporting PropertyIsBetween");
 
@@ -163,6 +166,7 @@ public class PostgisPSFilterToSql extends PreparedFilterToSQL {
         }
     }
 
+    @Override
     public Object visit(PropertyIsEqualTo filter, Object extraData) {
         helper.out = out;
         if (helper.isSupportedEqualFunction(filter)) {

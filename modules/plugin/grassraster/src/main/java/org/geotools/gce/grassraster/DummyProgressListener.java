@@ -26,37 +26,48 @@ import org.opengis.util.ProgressListener;
  */
 public class DummyProgressListener implements ProgressListener {
 
+    @Override
     public void complete() {}
 
+    @Override
     public void dispose() {}
 
+    @Override
     public void exceptionOccurred(Throwable exception) {}
 
     public String getDescription() {
         return null;
     }
 
+    @Override
     public float getProgress() {
         return 0;
     }
 
+    @Override
     public InternationalString getTask() {
         return null;
     }
 
+    @Override
     public boolean isCanceled() {
         return false;
     }
 
+    @Override
     public void progress(float percent) {}
 
+    @Override
     public void setCanceled(boolean cancel) {}
 
     public void setDescription(String description) {}
 
+    @Override
     public void setTask(InternationalString task) {}
 
+    @Override
     public void started() {}
 
+    @Override
     public void warningOccurred(String source, String location, String warning) {}
 }

@@ -27,6 +27,7 @@ public class OracleDateOnlineTest extends JDBCDateOnlineTest {
      * Oracle has no concept of just "Time". Sigh...
      * @see org.geotools.jdbc.JDBCDateTest#testMappings()
      */
+    @Override
     public void testMappings() throws Exception {
         SimpleFeatureType ft = dataStore.getSchema(tname("dates"));
 

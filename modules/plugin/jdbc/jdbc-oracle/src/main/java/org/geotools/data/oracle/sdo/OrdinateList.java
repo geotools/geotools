@@ -72,6 +72,7 @@ public class OrdinateList extends AbstractList {
      *
      * @see java.util.List#get(int)
      */
+    @Override
     public Object get(int index) {
         return Double.valueOf(getDouble(index));
     }
@@ -95,6 +96,7 @@ public class OrdinateList extends AbstractList {
      *
      * @see java.util.Collection#size()
      */
+    @Override
     public int size() {
         return SIZE;
     }

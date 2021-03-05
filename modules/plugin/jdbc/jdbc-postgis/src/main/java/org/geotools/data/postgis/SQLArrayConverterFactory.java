@@ -43,6 +43,7 @@ public class SQLArrayConverterFactory implements ConverterFactory {
 
     static class SQLArrayToJavaConverter implements Converter {
 
+        @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {
             Array sqlArray = (Array) source;
             Object array = sqlArray.getArray();

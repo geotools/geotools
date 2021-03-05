@@ -188,6 +188,7 @@ public class ImageMosaicEventHandlers {
         }
 
         /** Run the event launcher */
+        @Override
         public void run() {
             if (event instanceof ExceptionEvent)
                 for (Object o : listeners)

@@ -51,11 +51,13 @@ public final class RPFTOCFormat extends BaseGDALGridFormat implements Format {
     private static InfoWrapper INFO = new InfoWrapper("RPFTOC Coverage Format", "RPFTOC");
 
     /** Sets the metadata information. */
+    @Override
     protected void setInfo() {
         setInfo(INFO);
     }
 
     /** @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object, Hints) */
+    @Override
     public RPFTOCReader getReader(Object source, Hints hints) {
         try {
             return new RPFTOCReader(source, hints);

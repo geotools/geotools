@@ -97,10 +97,12 @@ public class GrassBinaryImageReaderSpi extends ImageReaderSpi {
                 extraImageMetadataFormatClassNames);
     }
 
+    @Override
     public String getDescription(Locale locale) {
         return "GRASS binary raster image reader service provider interface, version " + version;
     }
 
+    @Override
     public boolean canDecodeInput(Object source) throws IOException {
         if (source instanceof File) {
             return true;
@@ -108,6 +110,7 @@ public class GrassBinaryImageReaderSpi extends ImageReaderSpi {
         return false;
     }
 
+    @Override
     public GrassBinaryImageReader createReaderInstance(Object extension) throws IOException {
         return new GrassBinaryImageReader(this);
     }

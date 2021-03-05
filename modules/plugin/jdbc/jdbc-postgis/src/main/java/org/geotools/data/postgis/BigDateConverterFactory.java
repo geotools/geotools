@@ -32,6 +32,7 @@ public class BigDateConverterFactory implements ConverterFactory {
         if (BigDate.class.equals(target) && Long.class.equals(source)) {
             return new Converter() {
 
+                @Override
                 public <T> T convert(Object source, Class<T> target) throws Exception {
                     return target.cast(new BigDate((Long) source));
                 }

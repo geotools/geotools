@@ -52,6 +52,7 @@ public class OracleNGOCIDataStoreFactory extends OracleNGDataStoreFactory {
         return "Oracle NG (OCI)";
     }
 
+    @Override
     public String getDescription() {
         return "Oracle Database (OCI)";
     }

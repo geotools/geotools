@@ -52,11 +52,13 @@ public final class ECWFormat extends BaseGDALGridFormat implements Format {
     private static InfoWrapper INFO = new InfoWrapper("ECW Coverage Format", "ECW");
 
     /** Sets the metadata information. */
+    @Override
     protected void setInfo() {
         setInfo(INFO);
     }
 
     /** @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object, Hints) */
+    @Override
     public ECWReader getReader(Object source, Hints hints) {
         try {
             return new ECWReader(source, hints);

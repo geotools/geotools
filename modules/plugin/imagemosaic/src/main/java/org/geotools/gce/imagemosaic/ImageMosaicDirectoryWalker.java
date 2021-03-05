@@ -173,6 +173,7 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
     private IOFileFilter fileFilter;
 
     /** run the directory walker */
+    @Override
     public void run() {
 
         try {

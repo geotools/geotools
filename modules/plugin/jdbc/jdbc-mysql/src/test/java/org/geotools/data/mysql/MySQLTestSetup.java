@@ -43,6 +43,7 @@ public class MySQLTestSetup extends JDBCTestSetup {
         return new MySQLDataStoreFactory();
     }
 
+    @Override
     protected void setUpData() throws Exception {
         // allow time parsing in str_to_date
         run("SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'NO_ZERO_IN_DATE',''));");

@@ -25,6 +25,7 @@ public class MySQLNoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
         super(new MySQLTestSetup());
     }
 
+    @Override
     protected void createLakeTable() throws Exception {
         run("CREATE TABLE lake(id int, " + "geom POLYGON, name varchar(255) ) ENGINE=InnoDB;");
 
@@ -34,6 +35,7 @@ public class MySQLNoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
                         + "'muddy')");
     }
 
+    @Override
     protected void dropLakeTable() throws Exception {
         run("DROP TABLE lake");
     }

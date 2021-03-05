@@ -97,6 +97,7 @@ public class GeometryRendererTest {
                 JFrame frame = new JFrame(getClass().getName());
                 frame.addWindowListener(
                         new WindowAdapter() {
+                            @Override
                             public void windowClosing(WindowEvent e) {
                                 e.getWindow().dispose();
                             }

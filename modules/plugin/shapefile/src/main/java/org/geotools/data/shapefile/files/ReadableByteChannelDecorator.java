@@ -47,6 +47,7 @@ public class ReadableByteChannelDecorator implements ReadableByteChannel {
         this.closed = false;
     }
 
+    @Override
     public void close() throws IOException {
         try {
             wrapped.close();
@@ -58,10 +59,12 @@ public class ReadableByteChannelDecorator implements ReadableByteChannel {
         }
     }
 
+    @Override
     public boolean isOpen() {
         return wrapped.isOpen();
     }
 
+    @Override
     public int read(ByteBuffer dst) throws IOException {
         return wrapped.read(dst);
     }

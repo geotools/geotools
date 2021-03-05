@@ -25,6 +25,7 @@ import org.geotools.jdbc.JDBCJNDITestSetup;
 
 public class PostgisJNDIDataSourceOnlineTest extends JDBCJNDIDataSourceOnlineTest {
 
+    @Override
     protected JDBCJNDITestSetup createTestSetup() {
         return new JDBCJNDITestSetup(new PostGISTestSetup());
     }
@@ -40,6 +41,7 @@ public class PostgisJNDIDataSourceOnlineTest extends JDBCJNDIDataSourceOnlineTes
     }
 
     /** Make sure the JNDI factory exposes all the extra params that the non JNDI one exposes */
+    @Override
     public void testExtraParams() {
         List<String> baseParams = getBaseParams();
         List<String> standardParams = getParamKeys(getDataStoreFactory());

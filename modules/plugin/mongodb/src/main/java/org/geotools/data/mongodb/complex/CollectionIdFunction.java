@@ -33,6 +33,7 @@ public final class CollectionIdFunction extends FunctionExpressionImpl {
         super(DEFINITION);
     }
 
+    @Override
     public Object evaluate(Object object) {
         return UUID.randomUUID().toString();
     }

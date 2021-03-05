@@ -66,10 +66,12 @@ public class DefaultFieldType implements FieldType {
     // return null;
     // }
 
+    @Override
     public InternationalString getDescription() {
         return description;
     }
 
+    @Override
     public Name getName() {
         return name;
     }
@@ -78,6 +80,7 @@ public class DefaultFieldType implements FieldType {
     // return null; // TODO: need to figure out how to record this association
     // }
 
+    @Override
     public Set<SampleDimension> getSampleDimensions() {
         if (sampleDimensions != null) {
             return Collections.unmodifiableSet(sampleDimensions);

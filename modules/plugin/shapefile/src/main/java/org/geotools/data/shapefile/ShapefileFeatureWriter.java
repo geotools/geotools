@@ -200,6 +200,7 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
     }
 
     /** In case someone doesn't close me. */
+    @Override
     @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         if (featureReader != null) {
@@ -217,6 +218,7 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
     }
 
     /** Release resources and flush the header information. */
+    @Override
     public void close() throws IOException {
         if (featureReader == null) {
             // already closed
@@ -285,10 +287,12 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
         }
     }
 
+    @Override
     public SimpleFeatureType getFeatureType() {
         return featureType;
     }
 
+    @Override
     public boolean hasNext() throws IOException {
         if (featureReader == null) {
             return false; // writer has been closed
@@ -297,6 +301,7 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
         return featureReader.hasNext();
     }
 
+    @Override
     public SimpleFeature next() throws IOException {
         // closed already, error!
         if (featureReader == null) {
@@ -328,6 +333,7 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
         return getFeatureType().getTypeName() + "." + (records + 1);
     }
 
+    @Override
     public void remove() throws IOException {
         if (featureReader == null) {
             throw new IOException("Writer closed");
@@ -342,6 +348,7 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
         currentFeature = null;
     }
 
+    @Override
     public void write() throws IOException {
         if (currentFeature == null) {
             throw new IOException("Current feature is null");

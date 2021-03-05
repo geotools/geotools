@@ -49,6 +49,7 @@ public class DB2SpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest {
         dataStore.setDatabaseSchema("geotools");
     }
 
+    @Override
     public void testGeometryCollection() throws Exception {
         PrecisionModel precisionModel = new PrecisionModel();
 
@@ -86,6 +87,7 @@ public class DB2SpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest {
         assertEquals(1, numFeatures);
     }
 
+    @Override
     public void testBboxFilter() throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         // should  match  "r2" and "r3"
@@ -94,6 +96,7 @@ public class DB2SpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest {
         assertEquals(2, features.size());
     }
 
+    @Override
     public void testBboxFilterDefault() throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         // should  match  "r2" and "r3"

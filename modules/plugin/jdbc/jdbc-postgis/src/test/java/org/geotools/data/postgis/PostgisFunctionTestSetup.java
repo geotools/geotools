@@ -4,6 +4,7 @@ import org.geotools.jdbc.JDBCDataStore;
 
 public class PostgisFunctionTestSetup extends PostGISTestSetup {
 
+    @Override
     protected void setUpDataStore(JDBCDataStore dataStore) {
         super.setUpDataStore(dataStore);
 

@@ -560,10 +560,12 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
     }
 
     /** @see org.opengis.coverage.grid.GridCoverageReader#getFormat() */
+    @Override
     public Format getFormat() {
         return new ImageMosaicFormat();
     }
 
+    @Override
     public GridCoverage2D read(GeneralParameterValue[] params) throws IOException {
         return read(UNSPECIFIED, params);
     }
@@ -572,6 +574,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
      * @see
      *     org.opengis.coverage.grid.GridCoverageReader#read(org.opengis.parameter.GeneralParameterValue[]) @Override
      */
+    @Override
     public GridCoverage2D read(String coverageName, GeneralParameterValue[] params)
             throws IOException {
 
@@ -1327,6 +1330,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
         return multiThreadedLoader;
     }
 
+    @Override
     public DatasetLayout getDatasetLayout() {
         // Default implementation for backwards compatibility
         return getDatasetLayout(checkUnspecifiedCoverage(UNSPECIFIED));

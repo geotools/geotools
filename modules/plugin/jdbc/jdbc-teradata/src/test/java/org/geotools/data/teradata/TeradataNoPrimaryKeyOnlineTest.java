@@ -21,6 +21,7 @@ import org.geotools.jdbc.JDBCNoPrimaryKeyTestSetup;
 
 public class TeradataNoPrimaryKeyOnlineTest extends JDBCNoPrimaryKeyOnlineTest {
 
+    @Override
     protected JDBCNoPrimaryKeyTestSetup createTestSetup() {
         return new TeradataNoPrimaryKeyTestSetup(new TeradataTestSetup());
     }

@@ -78,6 +78,7 @@ import org.geotools.xsd.Node;
 public class GeopkgtypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GPKG.geopkgtype;
     }
@@ -89,6 +90,7 @@ public class GeopkgtypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return GeoPackageProcessRequest.class;
     }
@@ -100,6 +102,7 @@ public class GeopkgtypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         GeoPackageProcessRequest request = new GeoPackageProcessRequest();

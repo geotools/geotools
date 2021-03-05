@@ -161,6 +161,7 @@ class MemoryMapCache {
      */
     public class BufferCleaner implements ValueCleaner<MappingKey, MappedByteBuffer> {
 
+        @Override
         public void clean(MappingKey key, MappedByteBuffer buffer) {
             NIOUtilities.clean(buffer, true);
         }

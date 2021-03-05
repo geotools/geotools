@@ -27,14 +27,17 @@ public class TeradataDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
         dataStore.setDatabaseSchema(fixture.getProperty("user"));
     }
 
+    @Override
     protected JDBCDataStoreAPITestSetup createTestSetup() {
         return new TeradataDataStoreAPITestSetup(new TeradataTestSetup());
     }
 
+    @Override
     public void testGetFeatureWriterConcurrency() throws Exception {
         // Teradata will lock indefinitely, won't throw an exception
     }
 
+    @Override
     public void testTransactionIsolation() throws Exception {
         // TODO implement writing
     }

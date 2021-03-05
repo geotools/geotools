@@ -21,6 +21,7 @@ import org.geotools.jdbc.JDBCVirtualTableOnlineTest;
 
 public class TeradataVirtualTableOnlineTest extends JDBCVirtualTableOnlineTest {
 
+    @Override
     protected JDBCDataStoreAPITestSetup createTestSetup() {
         return new TeradataDataStoreAPITestSetup(new TeradataTestSetup());
     }

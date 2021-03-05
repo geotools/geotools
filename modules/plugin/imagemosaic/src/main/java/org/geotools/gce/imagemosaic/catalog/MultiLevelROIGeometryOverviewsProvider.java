@@ -194,6 +194,7 @@ public class MultiLevelROIGeometryOverviewsProvider implements MultiLevelROIProv
     @Override
     public void dispose() {}
 
+    @Override
     public List<File> getFootprintFiles(SimpleFeature feature) throws IOException {
         // force init of data structures
         getMultiScaleROI(feature);

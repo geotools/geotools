@@ -87,15 +87,18 @@ public class GeometryDataset extends AbstractXYDataset {
         }
     }
 
+    @Override
     public int getItemCount(int series) {
         return 1;
     }
 
+    @Override
     public Number getX(int series, int item) {
         // TODO: return the centroid
         return geometries.get(series).getCoordinate().x;
     }
 
+    @Override
     public Number getY(int series, int item) {
         return geometries.get(series).getCoordinate().x;
     }

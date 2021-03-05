@@ -388,6 +388,7 @@ class ShapeFileIndexer implements FileWriter {
         this.byteOrder = byteOrder;
     }
 
+    @Override
     public String id() {
         return getClass().getName();
     }

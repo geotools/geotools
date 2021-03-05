@@ -79,6 +79,7 @@ public class GeneralizationInfosProviderImpl implements GeneralizationInfosProvi
         VALIDATOR = schema.newValidator();
     }
 
+    @Override
     public GeneralizationInfos getGeneralizationInfos(Object source) throws IOException {
 
         URL inputURL = deriveURLFromSourceObject(source);

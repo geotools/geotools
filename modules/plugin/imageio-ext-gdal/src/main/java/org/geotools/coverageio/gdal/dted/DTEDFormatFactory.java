@@ -41,6 +41,7 @@ public final class DTEDFormatFactory extends BaseGridFormatFactorySPI
      *
      * @return <code>true</code> if the plugin is available, <code>false</code> otherwise.
      */
+    @Override
     public boolean isAvailable() {
         boolean available = true;
 
@@ -73,6 +74,7 @@ public final class DTEDFormatFactory extends BaseGridFormatFactorySPI
      *
      * @return A {@link DTEDFormat}
      */
+    @Override
     public DTEDFormat createFormat() {
         return new DTEDFormat();
     }

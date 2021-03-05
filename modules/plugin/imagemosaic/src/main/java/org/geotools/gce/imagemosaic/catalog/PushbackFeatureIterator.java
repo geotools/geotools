@@ -37,10 +37,12 @@ class PushbackFeatureIterator implements SimpleFeatureIterator {
         this.delegate = delegate;
     }
 
+    @Override
     public boolean hasNext() {
         return current != null || delegate.hasNext();
     }
 
+    @Override
     public SimpleFeature next() throws NoSuchElementException {
         if (current != null) {
             last = current;
@@ -66,6 +68,7 @@ class PushbackFeatureIterator implements SimpleFeatureIterator {
         }
     }
 
+    @Override
     public void close() {
         delegate.close();
     }

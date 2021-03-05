@@ -28,18 +28,22 @@ class CloseableIteratorWrapper<E> implements CloseableIterator<E> {
         this.delegate = delegate;
     }
 
+    @Override
     public boolean hasNext() {
         return delegate.hasNext();
     }
 
+    @Override
     public E next() {
         return delegate.next();
     }
 
+    @Override
     public void remove() {
         delegate.remove();
     }
 
+    @Override
     public void close() throws IOException {
         // Just makes the API happy, the delegate does not really have a close method
     }

@@ -780,6 +780,7 @@ public class DB2SQLDialect extends SQLDialect {
     //        }
     //    }
 
+    @Override
     public void encodeGeometryColumnGeneralized(
             GeometryDescriptor gatt, String prefix, int srid, StringBuffer sql, Double distance) {
 

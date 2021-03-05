@@ -35,6 +35,7 @@ public final class CollectionLinkFunction extends FunctionExpressionImpl {
         super(DEFINITION);
     }
 
+    @Override
     public Object evaluate(Object object) {
         String path = (String) this.params.get(0).evaluate(object);
         return new LinkCollection(path);

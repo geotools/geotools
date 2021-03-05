@@ -222,6 +222,7 @@ public final class GrassBinaryImageMetadata extends IIOMetadata {
         if (categories != null) categoriesString = categories;
     }
 
+    @Override
     public Node getAsTree(String formatName) {
         if (formatName.equals(nativeMetadataFormatName)) {
             return getNativeTree();
@@ -230,17 +231,21 @@ public final class GrassBinaryImageMetadata extends IIOMetadata {
         }
     }
 
+    @Override
     public boolean isReadOnly() {
         return false;
     }
 
+    @Override
     public void mergeTree(String formatName, Node root) throws IIOInvalidTreeException {}
 
+    @Override
     public void reset() {
         xRes = yRes = north = south = east = west = Double.NaN;
         nCols = nRows = -1;
     }
 
+    @Override
     public IIOMetadataFormat getMetadataFormat(String formatName) {
         if (formatName.equals(nativeMetadataFormatName))
             return new GrassBinaryImageMetadataFormat();
@@ -275,6 +280,7 @@ public final class GrassBinaryImageMetadata extends IIOMetadata {
         }
     }
 
+    @Override
     @SuppressWarnings("nls")
     protected IIOMetadataNode getStandardCompressionNode() {
         IIOMetadataNode node = new IIOMetadataNode("Compression");
@@ -338,6 +344,7 @@ public final class GrassBinaryImageMetadata extends IIOMetadata {
         return root;
     }
 
+    @Override
     @SuppressWarnings("nls")
     public String toString() {
         StringBuffer buffer = new StringBuffer();

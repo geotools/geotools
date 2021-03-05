@@ -50,11 +50,13 @@ public final class MrSIDFormat extends BaseGDALGridFormat implements Format {
     private static InfoWrapper INFO = new InfoWrapper("MrSID Coverage Format", "MrSID");
 
     /** Sets the metadata information. */
+    @Override
     protected void setInfo() {
         setInfo(INFO);
     }
 
     /** @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object, Hints) */
+    @Override
     public MrSIDReader getReader(Object source, Hints hints) {
         try {
             return new MrSIDReader(source, hints);

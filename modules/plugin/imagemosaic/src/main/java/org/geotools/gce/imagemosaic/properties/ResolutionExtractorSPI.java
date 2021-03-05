@@ -24,18 +24,22 @@ import java.util.Map;
 /** @author Niels Charlier */
 public class ResolutionExtractorSPI implements PropertiesCollectorSPI {
 
+    @Override
     public String getName() {
         return getClass().getSimpleName();
     }
 
+    @Override
     public boolean isAvailable() {
         return true;
     }
 
+    @Override
     public Map<Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }
 
+    @Override
     public ResolutionExtractor create(final Object o, final List<String> propertyNames) {
         return new ResolutionExtractor(this, propertyNames, ResolutionExtractor.Axis.BOTH);
     }

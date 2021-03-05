@@ -32,6 +32,7 @@ public final class NestedCollectionLinkFunction extends FunctionExpressionImpl {
         super(DEFINITION);
     }
 
+    @Override
     public Object evaluate(Object object) {
         return null;
     }

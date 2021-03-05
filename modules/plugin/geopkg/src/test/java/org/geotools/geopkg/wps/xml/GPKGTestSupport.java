@@ -26,6 +26,7 @@ import org.geotools.xsd.test.XMLTestSupport;
  */
 public abstract class GPKGTestSupport extends XMLTestSupport {
 
+    @Override
     protected Configuration createConfiguration() {
         return new GPKGConfiguration();
     }

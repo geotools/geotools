@@ -262,6 +262,7 @@ public class ShpFilesTestStream implements org.geotools.data.shapefile.files.Fil
         assertEquals(typeName, files.getTypeName());
     }
 
+    @Override
     public String id() {
         return getClass().getName();
     }

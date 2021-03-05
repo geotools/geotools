@@ -69,11 +69,13 @@ public class MultiLineHandler implements ShapeHandler {
     }
 
     /** Get the type of shape stored (ShapeType.ARC,ShapeType.ARCM,ShapeType.ARCZ) */
+    @Override
     public ShapeType getShapeType() {
         return shapeType;
     }
 
     /** */
+    @Override
     public int getLength(Object geometry) {
         MultiLineString multi = (MultiLineString) geometry;
 
@@ -108,6 +110,7 @@ public class MultiLineHandler implements ShapeHandler {
         return geometryFactory.createMultiLineString(null);
     }
 
+    @Override
     public Object read(ByteBuffer buffer, ShapeType type, boolean flatGeometry) {
         if (type == ShapeType.NULL) {
             return createNull();
@@ -260,6 +263,7 @@ public class MultiLineHandler implements ShapeHandler {
         return geometryFactory.createMultiLineString(lineStrings);
     }
 
+    @Override
     public void write(ByteBuffer buffer, Object geometry) {
         MultiLineString multi = (MultiLineString) geometry;
 

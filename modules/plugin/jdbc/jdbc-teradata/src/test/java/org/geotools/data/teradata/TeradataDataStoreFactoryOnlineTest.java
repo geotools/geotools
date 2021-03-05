@@ -34,6 +34,7 @@ import org.geotools.jdbc.JDBCTestSupport;
 
 public class TeradataDataStoreFactoryOnlineTest extends JDBCTestSupport {
 
+    @Override
     protected JDBCTestSetup createTestSetup() {
         return new TeradataTestSetup();
     }

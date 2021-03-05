@@ -91,6 +91,7 @@ public class URN_EPSG_Test {
     private static final class Versioned extends URN_AuthorityFactory {
         static Version lastVersion;
 
+        @Override
         protected AuthorityFactory createVersionedFactory(final Version version)
                 throws FactoryException {
             lastVersion = version;

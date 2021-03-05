@@ -41,6 +41,7 @@ public final class ArcGridFormatFactory implements GridFormatFactorySpi {
      *
      * @return True if the plugin is available, False otherwise.
      */
+    @Override
     public boolean isAvailable() {
         boolean available = true;
 
@@ -66,11 +67,13 @@ public final class ArcGridFormatFactory implements GridFormatFactorySpi {
      *
      * @return An {@link ArcGridFormat}.;
      */
+    @Override
     public ArcGridFormat createFormat() {
         return new ArcGridFormat();
     }
 
     /** Returns the implementation hints. The default implementation returns en empty map. */
+    @Override
     public Map<RenderingHints.Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }

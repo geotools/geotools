@@ -56,10 +56,12 @@ public class PointHandler implements ShapeHandler {
      *
      * @return int Shapefile.POINT
      */
+    @Override
     public ShapeType getShapeType() {
         return shapeType;
     }
 
+    @Override
     public int getLength(Object geometry) {
         int length;
         if (shapeType == ShapeType.POINT) {
@@ -74,6 +76,7 @@ public class PointHandler implements ShapeHandler {
         return length;
     }
 
+    @Override
     public Object read(ByteBuffer buffer, ShapeType type, boolean flatGeometry) {
         if (type == ShapeType.NULL) {
             return createNull();
@@ -107,6 +110,7 @@ public class PointHandler implements ShapeHandler {
         return geometryFactory.createPoint(new Coordinate(Double.NaN, Double.NaN, Double.NaN));
     }
 
+    @Override
     public void write(ByteBuffer buffer, Object geometry) {
         Point point = (Point) geometry;
         Coordinate c = point.getCoordinate();

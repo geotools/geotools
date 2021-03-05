@@ -41,6 +41,7 @@ import org.geotools.util.logging.Logging;
 class TeradataPrimaryKeyFinder extends PrimaryKeyFinder {
     private static final Logger LOGGER = Logging.getLogger(TeradataPrimaryKeyFinder.class);
 
+    @Override
     public PrimaryKey getPrimaryKey(JDBCDataStore store, String schema, String table, Connection cx)
             throws SQLException {
 

@@ -36,31 +36,37 @@ public class GeoPkgEmptyGeometryOnlineTest extends JDBCEmptyGeometryOnlineTest {
         return new GeoPkgEmptyGeometryTestSetup(new GeoPkgTestSetup());
     }
 
+    @Override
     @Test
     public void testEmptyPoint() throws Exception {
         testInsertEmptyGeometry("POINT");
     }
 
+    @Override
     @Test
     public void testEmptyLine() throws Exception {
         testInsertEmptyGeometry("LINESTRING");
     }
 
+    @Override
     @Test
     public void testEmptyPolygon() throws Exception {
         testInsertEmptyGeometry("POLYGON");
     }
 
+    @Override
     @Test
     public void testEmptyMultiPoint() throws Exception {
         testInsertEmptyGeometry("MULTIPOINT");
     }
 
+    @Override
     @Test
     public void testEmptyMultiLine() throws Exception {
         testInsertEmptyGeometry("MULTILINESTRING");
     }
 
+    @Override
     @Test
     public void testEmptyMultiPolygon() throws Exception {
         testInsertEmptyGeometry("MULTIPOLYGON");

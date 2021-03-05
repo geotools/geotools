@@ -44,6 +44,7 @@ public class FileSystemNode extends Node {
         this.subNodesLength = subNodesLength;
     }
 
+    @Override
     public Node copy() throws IOException {
         FileSystemNode copy =
                 new FileSystemNode(getBounds(), buffer, subNodeStartByte, subNodesLength);
@@ -55,6 +56,7 @@ public class FileSystemNode extends Node {
     }
 
     /** @return Returns the numSubNodes. */
+    @Override
     public int getNumSubNodes() {
         return this.numSubNodes;
     }
@@ -75,6 +77,7 @@ public class FileSystemNode extends Node {
     }
 
     /** @see org.geotools.index.quadtree.Node#getSubNode(int) */
+    @Override
     public Node getSubNode(int pos) throws StoreException {
         if (this.subNodes.size() > pos) {
             return super.getSubNode(pos);

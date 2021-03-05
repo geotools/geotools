@@ -59,6 +59,7 @@ public class GrassBinaryImageWriter extends ImageWriter {
     }
 
     /** Sets the output for this {@link GrassBinaryImageWriter}. */
+    @Override
     public void setOutput(Object output) {
 
         if (output instanceof File) {
@@ -82,6 +83,7 @@ public class GrassBinaryImageWriter extends ImageWriter {
         }
     }
 
+    @Override
     public void write(IIOMetadata streamMetadata, IIOImage image, ImageWriteParam param)
             throws IOException {
 
@@ -164,11 +166,13 @@ public class GrassBinaryImageWriter extends ImageWriter {
      * @see javax.imageio.ImageWriter#getDefaultImageMetadata(javax.imageio.ImageTypeSpecifier,
      *     javax.imageio.ImageWriteParam)
      */
+    @Override
     public IIOMetadata getDefaultImageMetadata(ImageTypeSpecifier its, ImageWriteParam param) {
         return null;
     }
 
     /** @see javax.imageio.ImageWriter#getDefaultIStreamMetadata(javax.imageio.ImageWriteParam) */
+    @Override
     public IIOMetadata getDefaultStreamMetadata(ImageWriteParam param) {
         return null;
     }
@@ -177,6 +181,7 @@ public class GrassBinaryImageWriter extends ImageWriter {
      * @see javax.imageio.ImageWriter#convertStreamMetadata(javax.imageio.metadata.IIOMetadata,
      *     javax.imageio.ImageWriteParam)
      */
+    @Override
     public IIOMetadata convertStreamMetadata(IIOMetadata md, ImageWriteParam param) {
         return null;
     }
@@ -185,12 +190,14 @@ public class GrassBinaryImageWriter extends ImageWriter {
      * @see javax.imageio.ImageWriter#convertImageMetadata(javax.imageio.metadata.IIOMetadata,
      *     javax.imageio.ImageTypeSpecifier, javax.imageio.ImageWriteParam)
      */
+    @Override
     public IIOMetadata convertImageMetadata(
             IIOMetadata md, ImageTypeSpecifier its, ImageWriteParam param) {
         return md;
     }
 
     /** Cleans this {@link GrassBinaryImageWriter}. */
+    @Override
     public void dispose() {
         try {
             rasterWriter.close();
@@ -200,14 +207,17 @@ public class GrassBinaryImageWriter extends ImageWriter {
         super.dispose();
     }
 
+    @Override
     public synchronized void abort() {
         if (rasterWriter != null) rasterWriter.abort();
     }
 
+    @Override
     public synchronized boolean abortRequested() {
         return rasterWriter.isAborting();
     }
 
+    @Override
     public void reset() {
         super.reset();
         rasterWriter = null;

@@ -78,6 +78,7 @@ public class DbaseFileReader implements FileReader, Closeable {
             return readObject(offset, column);
         }
 
+        @Override
         public String toString() {
             final StringBuffer ret = new StringBuffer("DBF Row - ");
             for (int i = 0; i < header.getNumFields(); i++) {
@@ -294,6 +295,7 @@ public class DbaseFileReader implements FileReader, Closeable {
      *
      * @throws IOException If an error occurs.
      */
+    @Override
     public void close() throws IOException {
         if (channel != null && channel.isOpen()) {
             channel.close();
@@ -629,6 +631,7 @@ public class DbaseFileReader implements FileReader, Closeable {
         }
     }
 
+    @Override
     public String id() {
         return getClass().getName();
     }

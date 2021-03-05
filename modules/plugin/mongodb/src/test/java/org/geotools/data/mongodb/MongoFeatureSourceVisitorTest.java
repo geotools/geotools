@@ -47,16 +47,19 @@ public class MongoFeatureSourceVisitorTest extends MongoTestSupport {
             super(expr);
         }
 
+        @Override
         public void visit(Feature feature) {
             super.visit(feature);
             visited = true;
         }
 
+        @Override
         public void visit(SimpleFeature feature) {
             super.visit(feature);
             visited = true;
         }
 
+        @Override
         public void setValue(Object result) {
             super.setValue(result);
             valueSet = true;
@@ -95,16 +98,19 @@ public class MongoFeatureSourceVisitorTest extends MongoTestSupport {
             super(expr);
         }
 
+        @Override
         public void visit(Feature feature) {
             super.visit(feature);
             visited = true;
         }
 
+        @Override
         public void visit(SimpleFeature feature) {
             super.visit(feature);
             visited = true;
         }
 
+        @Override
         public void setValue(Object result) {
             super.setValue(result);
             valueSet = true;

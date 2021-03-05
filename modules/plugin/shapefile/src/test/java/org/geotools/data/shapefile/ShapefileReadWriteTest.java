@@ -92,6 +92,7 @@ public class ShapefileReadWriteTest extends TestCaseSupport {
         final File file = getTempFile();
         Runnable reader =
                 new Runnable() {
+                    @Override
                     public void run() {
                         int cutoff = 0;
 

@@ -349,6 +349,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
      *
      * @return a new WorldImageFormat class
      */
+    @Override
     public Format getFormat() {
         return new WorldImageFormat();
     }
@@ -362,6 +363,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
      * @param params WorldImageReader supports no parameters, it just ignores them.
      * @return a new GridCoverage read from the source.
      */
+    @Override
     public GridCoverage2D read(GeneralParameterValue[] params)
             throws IllegalArgumentException, IOException {
 

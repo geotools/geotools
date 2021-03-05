@@ -51,6 +51,7 @@ public class DB2TestSetup extends JDBCTestSetup {
         return fixture;
     }
 
+    @Override
     protected void setUpData() throws Exception {
 
         try (Connection con = getDataSource().getConnection()) {

@@ -92,6 +92,7 @@ public class SVGGraphicFactory implements Factory, ExternalGraphicFactory, Graph
         return implementationHints;
     }
 
+    @Override
     public Icon getIcon(Feature feature, Expression url, String format, int size) throws Exception {
         // check we do support the declared format
         if (format == null || !formats.contains(format.toLowerCase())) return null;
@@ -265,14 +266,17 @@ public class SVGGraphicFactory implements Factory, ExternalGraphicFactory, Graph
             this.height = (int) Math.round(targetHeight);
         }
 
+        @Override
         public int getIconHeight() {
             return height;
         }
 
+        @Override
         public int getIconWidth() {
             return width;
         }
 
+        @Override
         public void paintIcon(Component c, Graphics g, int x, int y) {
             svg.paint((Graphics2D) g, width, height, x, y);
         }

@@ -52,6 +52,7 @@ public class TeradataTestSetup extends JDBCTestSetup {
         }
     }
 
+    @Override
     protected void setUpDataStore(JDBCDataStore dataStore) {
         super.setUpDataStore(dataStore);
 
@@ -64,6 +65,7 @@ public class TeradataTestSetup extends JDBCTestSetup {
         }
     }
 
+    @Override
     protected Properties createExampleFixture() {
         Properties fixture = new Properties();
         fixture.put("driver", "com.teradata.jdbc.TeraDriver");
@@ -80,6 +82,7 @@ public class TeradataTestSetup extends JDBCTestSetup {
         return fixture;
     }
 
+    @Override
     protected void setUpData() throws Exception {
 
         runSafe("DELETE FROM SYSSPATIAL.GEOMETRY_COLUMNS WHERE F_TABLE_NAME = 'ft1'");
@@ -120,6 +123,7 @@ public class TeradataTestSetup extends JDBCTestSetup {
         run("INSERT INTO \"ft1\" VALUES(2, 'POINT(2 2)', 2, 2.2, 'two')");
     }
 
+    @Override
     protected JDBCDataStoreFactory createDataStoreFactory() {
         return new TeradataDataStoreFactory();
     }

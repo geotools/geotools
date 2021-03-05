@@ -113,10 +113,12 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
                  *
                  * @see org.geotools.data.DataStoreFactorySpi.Param#parse(java.lang.String)
                  */
+                @Override
                 public Object parse(String text) throws IOException {
                     return Charset.forName(text);
                 }
 
+                @Override
                 public String text(Object value) {
                     return ((Charset) value).name();
                 }
@@ -147,10 +149,12 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
                     TimeZone.getDefault(),
                     new KVP(Param.LEVEL, "advanced")) {
 
+                @Override
                 public Object parse(String text) throws IOException {
                     return TimeZone.getTimeZone(text);
                 }
 
+                @Override
                 public String text(Object value) {
                     return ((TimeZone) value).getID();
                 }
@@ -166,14 +170,17 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
                     true,
                     new KVP(Param.LEVEL, "advanced"));
 
+    @Override
     public String getDisplayName() {
         return "Shapefile";
     }
 
+    @Override
     public String getDescription() {
         return "ESRI(tm) Shapefiles (*.shp)";
     }
 
+    @Override
     public Param[] getParametersInfo() {
         return new Param[] {
             URLP,
@@ -189,14 +196,17 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
         };
     }
 
+    @Override
     public boolean isAvailable() {
         return true;
     }
 
+    @Override
     public Map<Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }
 
+    @Override
     public DataStore createDataStore(Map<String, ?> params) throws IOException {
         URL url = lookup(URLP, params, URL.class);
         Boolean isMemoryMapped = lookup(MEMORY_MAPPED, params, Boolean.class);
@@ -239,6 +249,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
         }
     }
 
+    @Override
     public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
         return createDataStore(params);
     }
@@ -298,6 +309,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
         }
     }
 
+    @Override
     public boolean canProcess(URL f) {
         return f != null && f.getFile().toUpperCase().endsWith("SHP");
     }
@@ -319,6 +331,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
             this.originalParams = originalParams;
         }
 
+        @Override
         public DataStore getDataStore(File file) throws IOException {
             final URL url = URLs.fileToUrl(file);
             if (shpFactory.canProcess(url)) {

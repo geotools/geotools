@@ -27,10 +27,12 @@ import org.geotools.jdbc.JDBCTestSetup;
  * @author Justin Deoliveira, The Open Planning Project
  */
 public class H2FeatureStoreExposedPkTest extends JDBCFeatureStoreExposePkOnlineTest {
+    @Override
     protected JDBCTestSetup createTestSetup() {
         return new H2TestSetup();
     }
 
+    @Override
     public void testAddInTransaction() throws IOException {
         // does not work, see GEOT-2832
     }

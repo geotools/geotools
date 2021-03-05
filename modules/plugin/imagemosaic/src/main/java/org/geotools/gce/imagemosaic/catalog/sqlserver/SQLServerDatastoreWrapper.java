@@ -112,6 +112,7 @@ public class SQLServerDatastoreWrapper extends DataStoreWrapper {
      * Return a specific {@link FeatureTypeMapper} by parsing mapping properties contained within
      * the specified {@link Properties} object
      */
+    @Override
     protected FeatureTypeMapper getFeatureTypeMapper(final Properties props) throws Exception {
         FeatureTypeMapper mapper = super.getFeatureTypeMapper(props);
         return mapper;

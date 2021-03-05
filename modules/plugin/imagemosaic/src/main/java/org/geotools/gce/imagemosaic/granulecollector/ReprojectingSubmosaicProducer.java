@@ -144,6 +144,7 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
         this.crsResponses = collector.getResponses();
     }
 
+    @Override
     public boolean isReprojecting() {
         return true;
     }

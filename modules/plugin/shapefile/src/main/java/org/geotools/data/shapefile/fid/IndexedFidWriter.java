@@ -268,6 +268,7 @@ public class IndexedFidWriter implements FileWriter {
         return closed;
     }
 
+    @Override
     public String id() {
         return getClass().getName();
     }

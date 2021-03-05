@@ -52,11 +52,13 @@ public final class JP2ECWFormat extends BaseGDALGridFormat implements Format {
     private static InfoWrapper INFO = new InfoWrapper("JP2K (ECW) Coverage Format", "JP2ECW");
 
     /** Sets the metadata information. */
+    @Override
     protected void setInfo() {
         setInfo(INFO);
     }
 
     /** @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object, Hints) */
+    @Override
     public JP2ECWReader getReader(Object source, Hints hints) {
         try {
             return new JP2ECWReader(source, hints);

@@ -284,6 +284,7 @@ public class JGrassRegion {
         return new Rectangle2D.Double(west, south, east - west, north - south);
     }
 
+    @Override
     @SuppressWarnings("nls")
     public String toString() {
         return ("region:\nwest="

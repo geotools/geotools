@@ -58,6 +58,7 @@ import org.locationtech.jts.geom.Envelope;
 public abstract class LayertypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GPKG.layertype;
     }
@@ -69,6 +70,7 @@ public abstract class LayertypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return GeoPackageProcessRequest.Layer.class;
     }
@@ -83,6 +85,7 @@ public abstract class LayertypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         GeoPackageProcessRequest.Layer layer = parseLayer(instance, node, value);

@@ -51,6 +51,7 @@ public class ShapefileDataStoreFactoryTest extends TestCaseSupport {
     private ShapefileDataStore store = null;
     private ShapefileDataStoreFactory factory = new ShapefileDataStoreFactory();
 
+    @Override
     @After
     public void tearDown() throws Exception {
         if (store != null) {

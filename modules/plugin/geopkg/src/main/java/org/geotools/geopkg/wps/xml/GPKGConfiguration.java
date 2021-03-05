@@ -43,6 +43,7 @@ public class GPKGConfiguration extends Configuration {
      *
      * @generated
      */
+    @Override
     protected final void registerBindings(MutablePicoContainer container) {
         // Types
         container.registerComponentImplementation(GPKG.coveragetype, CoveragetypeBinding.class);

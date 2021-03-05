@@ -114,10 +114,12 @@ public class MySQLDialect extends SQLDialect {
         return super.includeTable(schemaName, tableName, cx);
     }
 
+    @Override
     public String getNameEscape() {
         return (usePreciseSpatialOps ? "`" : "");
     }
 
+    @Override
     public String getGeometryTypeName(Integer type) {
         if (POINT.equals(type)) {
             return "POINT";
@@ -150,6 +152,7 @@ public class MySQLDialect extends SQLDialect {
         return super.getGeometryTypeName(type);
     }
 
+    @Override
     public Integer getGeometrySRID(
             String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
@@ -249,6 +252,7 @@ public class MySQLDialect extends SQLDialect {
         sql.append(")");
     }
 
+    @Override
     public void encodeGeometryEnvelope(String tableName, String geometryColumn, StringBuffer sql) {
         if (this.usePreciseSpatialOps) {
             if (this.isMySqlVersion80OrAbove) {
@@ -285,6 +289,7 @@ public class MySQLDialect extends SQLDialect {
         sql.append("))");
     }
 
+    @Override
     public Envelope decodeGeometryEnvelope(ResultSet rs, int column, Connection cx)
             throws SQLException, IOException {
         byte[] wkb = rs.getBytes(column);
@@ -306,6 +311,7 @@ public class MySQLDialect extends SQLDialect {
         }
     }
 
+    @Override
     public Geometry decodeGeometryValue(
             GeometryDescriptor descriptor,
             ResultSet rs,
@@ -326,6 +332,7 @@ public class MySQLDialect extends SQLDialect {
         }
     }
 
+    @Override
     public void registerClassToSqlMappings(Map<Class<?>, Integer> mappings) {
         super.registerClassToSqlMappings(mappings);
 
@@ -338,6 +345,7 @@ public class MySQLDialect extends SQLDialect {
         mappings.put(Geometry.class, GEOMETRY);
     }
 
+    @Override
     public void registerSqlTypeToClassMappings(Map<Integer, Class<?>> mappings) {
         super.registerSqlTypeToClassMappings(mappings);
 
@@ -350,6 +358,7 @@ public class MySQLDialect extends SQLDialect {
         mappings.put(GEOMETRY, Geometry.class);
     }
 
+    @Override
     public void registerSqlTypeNameToClassMappings(Map<String, Class<?>> mappings) {
         super.registerSqlTypeNameToClassMappings(mappings);
 
@@ -368,6 +377,7 @@ public class MySQLDialect extends SQLDialect {
         overrides.put(Types.BOOLEAN, "BOOL");
     }
 
+    @Override
     public void encodePostCreateTable(String tableName, StringBuffer sql) {
         // TODO: make this configurable
         sql.append("ENGINE=" + storageEngine);
@@ -502,6 +512,7 @@ public class MySQLDialect extends SQLDialect {
         }
     }
 
+    @Override
     public void encodePrimaryKey(String column, StringBuffer sql) {
         encodeColumnName(null, column, sql);
         sql.append(" int AUTO_INCREMENT PRIMARY KEY");

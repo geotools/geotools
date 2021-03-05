@@ -51,6 +51,7 @@ public final class IDRISIFormat extends BaseGDALGridFormat implements Format {
     }
 
     /** Sets the metadata information. */
+    @Override
     protected void setInfo() {
         final HashMap<String, String> info = new HashMap<>();
         info.put("name", "RST");
@@ -68,6 +69,7 @@ public final class IDRISIFormat extends BaseGDALGridFormat implements Format {
     }
 
     /** @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object, Hints) */
+    @Override
     public IDRISIReader getReader(Object source, Hints hints) {
         try {
             return new IDRISIReader(source, hints);

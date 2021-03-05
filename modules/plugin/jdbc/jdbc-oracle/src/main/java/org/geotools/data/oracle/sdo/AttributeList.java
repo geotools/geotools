@@ -76,6 +76,7 @@ public class AttributeList extends AbstractList {
      *
      * @see java.util.List#get(int)
      */
+    @Override
     public Object get(int index) {
         rangeCheck(index);
         return Array.get(ARRAY, START + STEP * index + OFFSET);
@@ -123,6 +124,7 @@ public class AttributeList extends AbstractList {
      *
      * @see java.util.Collection#size()
      */
+    @Override
     public int size() {
         return SIZE;
     }

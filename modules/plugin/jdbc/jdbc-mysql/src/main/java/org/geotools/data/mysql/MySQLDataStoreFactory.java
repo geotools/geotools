@@ -66,23 +66,28 @@ public class MySQLDataStoreFactory extends JDBCDataStoreFactory {
 
     protected boolean enhancedSpatialSupport = (boolean) ENHANCED_SPATIAL_SUPPORT.sample;
 
+    @Override
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
         // return new MySQLDialectPrepared(dataStore);
         return new MySQLDialectBasic(dataStore, enhancedSpatialSupport);
     }
 
+    @Override
     public String getDisplayName() {
         return "MySQL";
     }
 
+    @Override
     protected String getDriverClassName() {
         return "com.mysql.cj.jdbc.Driver";
     }
 
+    @Override
     protected String getDatabaseID() {
         return (String) DBTYPE.sample;
     }
 
+    @Override
     public String getDescription() {
         return "MySQL Database";
     }

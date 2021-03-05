@@ -48,6 +48,7 @@ import org.geotools.xsd.Node;
 public class CoveragetypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GPKG.coveragetype;
     }
@@ -59,6 +60,7 @@ public class CoveragetypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return GeoPackageProcessRequest.TilesLayer.TilesCoverage.class;
     }
@@ -70,6 +72,7 @@ public class CoveragetypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         GeoPackageProcessRequest.TilesLayer.TilesCoverage coverage =

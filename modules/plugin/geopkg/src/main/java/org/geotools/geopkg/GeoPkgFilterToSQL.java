@@ -88,6 +88,7 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
      * Override done to ensure we don't complain if there is a BBOX filter, even if we claim not to
      * support it
      */
+    @Override
     public void encode(Filter filter) throws FilterToSQLException {
         if (out == null) throw new FilterToSQLException("Can't encode to a null writer.");
         // hack, we lied about being able to support BBOX, because the implementation is

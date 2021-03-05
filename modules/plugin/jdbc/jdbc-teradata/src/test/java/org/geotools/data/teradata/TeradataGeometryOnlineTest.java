@@ -21,10 +21,12 @@ import org.geotools.jdbc.JDBCGeometryTestSetup;
 
 public class TeradataGeometryOnlineTest extends JDBCGeometryOnlineTest {
 
+    @Override
     protected JDBCGeometryTestSetup createTestSetup() {
         return new TeradataGeometryTestSetup(new TeradataTestSetup());
     }
 
+    @Override
     public void testLinearRing() throws Exception {
         // linear ring type is not a supported type in Teradata
     }

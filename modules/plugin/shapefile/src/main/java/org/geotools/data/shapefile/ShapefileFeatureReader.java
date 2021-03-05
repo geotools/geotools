@@ -53,6 +53,7 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
             new Point(new LiteCoordinateSequence(Double.NaN, Double.NaN), new GeometryFactory()) {
                 private static final long serialVersionUID = 6311215718936799001L;
 
+                @Override
                 public String toString() {
                     return "SKIP";
                 };

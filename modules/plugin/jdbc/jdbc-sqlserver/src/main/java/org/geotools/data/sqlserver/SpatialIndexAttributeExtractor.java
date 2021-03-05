@@ -48,48 +48,59 @@ class SpatialIndexAttributeExtractor extends DefaultFilterVisitor {
         return spatialProperties;
     }
 
+    @Override
     public Object visit(BBOX filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
 
+    @Override
     public Object visit(Beyond filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
 
+    @Override
     public Object visit(Contains filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
 
+    @Override
     public Object visit(Crosses filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
 
+    @Override
     public Object visit(Disjoint filter, Object extraData) {
         // nope, this one cannot be used with spatial indexes
         // return visitBinarySpatialOperator((BinarySpatialOperator) filter, extraData);
         return null;
     }
 
+    @Override
     public Object visit(DWithin filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
 
+    @Override
     public Object visit(Equals filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
 
+    @Override
     public Object visit(Intersects filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
 
+    @Override
     public Object visit(Overlaps filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
 
+    @Override
     public Object visit(Touches filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
 
+    @Override
     public Object visit(Within filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }

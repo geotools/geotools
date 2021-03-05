@@ -20,6 +20,7 @@ import org.geotools.jdbc.JDBCFeatureSourceExposePkOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
 public class H2FeatureSourceExposePkTest extends JDBCFeatureSourceExposePkOnlineTest {
+    @Override
     protected JDBCTestSetup createTestSetup() {
         return new H2TestSetup();
     }

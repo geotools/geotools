@@ -20,6 +20,7 @@ import org.geotools.jdbc.JDBCFeatureSourceOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
 public class MySQLFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
+    @Override
     protected JDBCTestSetup createTestSetup() {
         return new MySQLTestSetup();
     }

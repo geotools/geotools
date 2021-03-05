@@ -185,6 +185,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         return "PostGIS";
     }
 
+    @Override
     public String getDescription() {
         return "PostGIS Database";
     }
@@ -213,6 +214,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         }
     }
 
+    @Override
     protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params)
             throws IOException {
 
@@ -301,6 +303,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         return url;
     }
 
+    @Override
     protected DataSource createDataSource(Map<String, ?> params, SQLDialect dialect)
             throws IOException {
         DataSource ds = super.createDataSource(params, dialect);

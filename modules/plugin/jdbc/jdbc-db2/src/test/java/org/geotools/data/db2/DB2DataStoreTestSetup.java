@@ -31,6 +31,7 @@ public class DB2DataStoreTestSetup extends JDBCDelegatingTestSetup {
         super(delegate);
     }
 
+    @Override
     protected final void setUpData() throws Exception {
         // remove the srs
         try (Connection con = getConnection()) {

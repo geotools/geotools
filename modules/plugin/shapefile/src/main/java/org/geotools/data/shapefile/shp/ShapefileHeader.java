@@ -166,6 +166,7 @@ public class ShapefileHeader {
         return maxY;
     }
 
+    @Override
     public String toString() {
         String res =
                 new String(

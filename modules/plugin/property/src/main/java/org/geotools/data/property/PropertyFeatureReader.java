@@ -121,6 +121,7 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
         }
     }
 
+    @Override
     public SimpleFeatureType getFeatureType() {
         return type;
     }
@@ -131,6 +132,7 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
      * @return feature
      * @throws NoSuchElementException Check hasNext() to avoid reading off the end of the file
      */
+    @Override
     public SimpleFeature next() throws IOException, NoSuchElementException {
         if (hasNext()) {
             line = next;
@@ -233,6 +235,7 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
      *
      * @return <code>true</code> if additional content is available
      */
+    @Override
     public boolean hasNext() throws IOException {
         if (next != null) {
             return true;
@@ -297,6 +300,7 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
      * Be sure to call close when you are finished with this reader; as it must close the file it
      * has open.
      */
+    @Override
     public void close() throws IOException {
         if (reader == null) {
             LOGGER.warning("Stream seems to be already closed.");

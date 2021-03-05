@@ -55,6 +55,7 @@ public final class JP2ECWReader extends BaseGDALGridCoverage2DReader implements 
     }
 
     /** @see org.opengis.coverage.grid.GridCoverageReader#getFormat() */
+    @Override
     public Format getFormat() {
         return new JP2ECWFormat();
     }

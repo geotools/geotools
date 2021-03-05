@@ -47,6 +47,7 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
      */
     public PropertyDataStoreFactory() {}
 
+    @Override
     public DataStore createDataStore(Map<String, ?> params) throws IOException {
         File dir = directoryLookup(params);
         String namespaceURI = (String) NAMESPACE.lookUp(params);
@@ -58,6 +59,7 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
     }
 
     // createNewDataStore start
+    @Override
     public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
         File dir = (File) DIRECTORY.lookUp(params);
 
@@ -66,10 +68,12 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
     }
     // createNewDataStore end
 
+    @Override
     public String getDisplayName() {
         return "Properties";
     }
 
+    @Override
     public String getDescription() {
         return "Allows access to Java Property files containing Feature information";
     }
@@ -78,6 +82,7 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
      * @see #DIRECTORY
      * @see PropertyDataStoreFactory#NAMESPACE
      */
+    @Override
     public Param[] getParametersInfo() {
         return new Param[] {DIRECTORY, NAMESPACE};
     }
@@ -90,6 +95,7 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
      * @return <tt>true</tt> if and only if this factory is available to create DataStores.
      * @task <code>true</code> property datastore is always available
      */
+    @Override
     public boolean isAvailable() {
         return true;
     }
@@ -100,6 +106,7 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
      * @param params Connection parameters
      * @return true for connection parameters indicating a directory or property file
      */
+    @Override
     public boolean canProcess(Map<String, ?> params) {
         try {
             directoryLookup(params);
@@ -111,6 +118,7 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
     }
 
     /** No implementation hints are provided at this time. */
+    @Override
     public Map<Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }

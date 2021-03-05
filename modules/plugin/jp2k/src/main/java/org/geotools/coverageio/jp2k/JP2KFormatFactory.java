@@ -118,6 +118,7 @@ public final class JP2KFormatFactory implements GridFormatFactorySpi {
      *
      * @return <code>true</code> if the plugin is available, <code>false</code> otherwise.
      */
+    @Override
     public boolean isAvailable() {
         boolean available = false;
 
@@ -154,6 +155,7 @@ public final class JP2KFormatFactory implements GridFormatFactorySpi {
      *
      * @return A {@link JP2KFormat}.;
      */
+    @Override
     public JP2KFormat createFormat() {
         return new JP2KFormat();
     }
@@ -163,6 +165,7 @@ public final class JP2KFormatFactory implements GridFormatFactorySpi {
      *
      * @return An empty map.
      */
+    @Override
     public Map<RenderingHints.Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }

@@ -31,6 +31,7 @@ public abstract class DefaultPropertiesCollectorSPI implements PropertiesCollect
 
     private final String name;
 
+    @Override
     public String getName() {
         return name;
     }
@@ -39,16 +40,19 @@ public abstract class DefaultPropertiesCollectorSPI implements PropertiesCollect
         this.name = name;
     }
 
+    @Override
     public boolean isAvailable() {
         return true;
     }
 
+    @Override
     public Map<Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }
 
     public static final String REGEX_PREFIX = "regex=";
 
+    @Override
     public PropertiesCollector create(final Object o, final List<String> propertyNames) {
         URL source = null;
         String property = null;

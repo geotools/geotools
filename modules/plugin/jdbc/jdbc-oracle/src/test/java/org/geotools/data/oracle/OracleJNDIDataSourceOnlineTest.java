@@ -22,14 +22,17 @@ import org.geotools.jdbc.JDBCJNDITestSetup;
 
 public class OracleJNDIDataSourceOnlineTest extends JDBCJNDIDataSourceOnlineTest {
 
+    @Override
     protected JDBCJNDITestSetup createTestSetup() {
         return new JDBCJNDITestSetup(new OracleTestSetup());
     }
 
+    @Override
     protected OracleNGJNDIDataStoreFactory getJNDIStoreFactory() {
         return new OracleNGJNDIDataStoreFactory();
     }
 
+    @Override
     protected OracleNGDataStoreFactory getDataStoreFactory() {
         return new OracleNGDataStoreFactory();
     }

@@ -25,6 +25,7 @@ import org.geotools.jdbc.JDBCTestSetup;
  * @author Christian Mueller
  */
 public class DB2FeatureCollectionOnlineTest extends JDBCFeatureCollectionOnlineTest {
+    @Override
     protected JDBCTestSetup createTestSetup() {
         return new DB2TestSetup();
     }

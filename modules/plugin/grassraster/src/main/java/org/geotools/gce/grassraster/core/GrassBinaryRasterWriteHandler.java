@@ -187,6 +187,7 @@ public class GrassBinaryRasterWriteHandler implements Closeable {
     }
 
     /** Closes the I/O streams. */
+    @Override
     public void close() throws IOException {
         if (imageOS != null) {
             imageOS.close();

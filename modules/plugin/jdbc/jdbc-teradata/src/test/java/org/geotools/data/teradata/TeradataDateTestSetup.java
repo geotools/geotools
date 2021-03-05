@@ -26,6 +26,7 @@ public class TeradataDateTestSetup extends JDBCDateTestSetup {
         super(delegate);
     }
 
+    @Override
     protected void createDateTable() throws Exception {
         run("CREATE TABLE dates (d DATE, dt TIMESTAMP, t TIME)");
 
@@ -39,6 +40,7 @@ public class TeradataDateTestSetup extends JDBCDateTestSetup {
                 "INSERT INTO DATES VALUES ('2009-09-29' (DATE, format 'yyyy-MM-dd'), '2009-09-29 17:54:23' (TIMESTAMP, format 'YYYY-MM-ddBHH:mi:ss'), '17:54:23' (TIME, format 'HH:mi:ss') );");
     }
 
+    @Override
     protected void dropDateTable() throws Exception {
         runSafe("DROP TABLE DATES");
     }

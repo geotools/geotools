@@ -82,10 +82,12 @@ public class PolygonHandler implements ShapeHandler {
         return false;
     }
 
+    @Override
     public ShapeType getShapeType() {
         return shapeType;
     }
 
+    @Override
     public int getLength(Object geometry) {
         MultiPolygon multi;
 
@@ -117,6 +119,7 @@ public class PolygonHandler implements ShapeHandler {
         return length;
     }
 
+    @Override
     public Object read(ByteBuffer buffer, ShapeType type, boolean flatFeature) {
         if (type == ShapeType.NULL) {
             return createNull();
@@ -430,6 +433,7 @@ public class PolygonHandler implements ShapeHandler {
         return geometryFactory.createMultiPolygon(null);
     }
 
+    @Override
     public void write(ByteBuffer buffer, Object geometry) {
         MultiPolygon multi;
 

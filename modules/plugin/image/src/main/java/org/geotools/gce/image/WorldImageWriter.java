@@ -126,6 +126,7 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
      *
      * @see org.opengis.coverage.grid.GridCoverageWriter#getFormat()
      */
+    @Override
     public Format getFormat() {
         return format;
     }
@@ -141,6 +142,7 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
      * @see org.opengis.coverage.grid.GridCoverageWriter#write(org.geotools.gc.GridCoverage,
      *     org.opengis.parameter.GeneralParameterValue[])
      */
+    @Override
     public void write(GridCoverage coverage, GeneralParameterValue[] parameters)
             throws IllegalArgumentException, IOException {
         final GridCoverage2D gc = (GridCoverage2D) coverage;

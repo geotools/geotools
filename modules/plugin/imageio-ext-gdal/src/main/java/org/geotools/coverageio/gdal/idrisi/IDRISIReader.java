@@ -58,6 +58,7 @@ public final class IDRISIReader extends BaseGDALGridCoverage2DReader implements 
     }
 
     /** @see org.opengis.coverage.grid.GridCoverageReader#getFormat() */
+    @Override
     public Format getFormat() {
         return new IDRISIFormat();
     }

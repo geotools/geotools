@@ -32,6 +32,7 @@ public class EnviHdrFormatFactory extends BaseGridFormatFactorySPI implements Gr
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(EnviHdrFormatFactory.class);
 
+    @Override
     public boolean isAvailable() {
         boolean available = true;
 
@@ -60,6 +61,7 @@ public class EnviHdrFormatFactory extends BaseGridFormatFactorySPI implements Gr
      *
      * @return A {@link EnviHdrFormat}
      */
+    @Override
     public EnviHdrFormat createFormat() {
         return new EnviHdrFormat();
     }

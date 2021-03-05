@@ -50,6 +50,7 @@ public class OracleGeometryOnlineTest extends JDBCGeometryOnlineTest {
         return testSetup;
     }
 
+    @Override
     public void testLinearRing() throws Exception {
         assertEquals(LineString.class, checkGeometryType(LinearRing.class));
     }

@@ -51,6 +51,7 @@ public class DB2ClobConverterFactory implements ConverterFactory {
         }
     }
 
+    @Override
     public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {
         // if the jdbc driver is not in the classpath don't bother trying to convert
         if (DB2_CLOB == null) return null;
@@ -67,6 +68,7 @@ public class DB2ClobConverterFactory implements ConverterFactory {
 
     class DB2ClobConverter implements Converter {
 
+        @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {
             int length = ((Long) DB2_LENGTH.invoke(source)).intValue();
             return target.cast(DB2_GET_SUBSTRING.invoke(source, 1l, length));

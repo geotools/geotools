@@ -5,6 +5,7 @@ import org.geotools.jdbc.SQLDialect;
 
 public class DB2FunctionTestSetup extends DB2TestSetup {
 
+    @Override
     protected void setUpDataStore(JDBCDataStore dataStore) {
         super.setUpDataStore(dataStore);
 

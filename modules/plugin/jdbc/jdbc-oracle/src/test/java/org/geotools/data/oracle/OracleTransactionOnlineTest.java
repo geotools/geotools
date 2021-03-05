@@ -11,6 +11,7 @@ public class OracleTransactionOnlineTest extends JDBCTransactionOnlineTest {
         return new OracleTestSetup();
     }
 
+    @Override
     public void testConcurrentTransactions() throws IOException {
         // Oracle won't pass this one
     }

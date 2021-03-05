@@ -61,6 +61,7 @@ class TWKBAttributeIO {
             super(geometryFactory);
         }
 
+        @Override
         protected CoordinateSequence readCoordinateSequence(int numPts, TWKBMetadata metadata)
                 throws IOException {
             if (!(csFactory instanceof LiteCoordinateSequenceFactory)) {

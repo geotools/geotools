@@ -80,6 +80,7 @@ public abstract class BaseGDALGridCoverage2DReader extends BaseGridCoverage2DRea
      * @param reader the {@code ImageReader} from which to retrieve metadata (if available) for
      *     setting properties
      */
+    @Override
     protected void setCoverageProperties(ImageReader reader) throws IOException {
         // //
         //

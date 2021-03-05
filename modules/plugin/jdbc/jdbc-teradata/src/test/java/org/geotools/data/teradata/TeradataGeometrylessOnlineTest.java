@@ -21,6 +21,7 @@ import org.geotools.jdbc.JDBCGeometrylessTestSetup;
 
 public class TeradataGeometrylessOnlineTest extends JDBCGeometrylessOnlineTest {
 
+    @Override
     protected JDBCGeometrylessTestSetup createTestSetup() {
         return new TeradataGeometrylessTestSetup(new TeradataTestSetup());
     }

@@ -91,6 +91,7 @@ public class TeradataFilterToSQL extends PreparedFilterToSQL {
     //        out.write("'");
     //    }
 
+    @Override
     protected Object visitBinarySpatialOperator(
             BinarySpatialOperator filter,
             PropertyName property,

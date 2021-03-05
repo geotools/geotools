@@ -172,6 +172,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return GmlPackage.Literals.DOCUMENT_ROOT;
 	}
@@ -181,6 +182,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public FeatureMap getMixed() {
 		if (mixed == null) {
 			mixed = new BasicFeatureMap(this, GmlPackage.DOCUMENT_ROOT__MIXED);
@@ -193,6 +195,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EMap getXMLNSPrefixMap() {
 		if (xMLNSPrefixMap == null) {
 			xMLNSPrefixMap = new EcoreEMap(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY, EStringToStringMapEntryImpl.class, this, GmlPackage.DOCUMENT_ROOT__XMLNS_PREFIX_MAP);
@@ -205,6 +208,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EMap getXSISchemaLocation() {
 		if (xSISchemaLocation == null) {
 			xSISchemaLocation = new EcoreEMap(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY, EStringToStringMapEntryImpl.class, this, GmlPackage.DOCUMENT_ROOT__XSI_SCHEMA_LOCATION);
@@ -217,6 +221,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public AbstractGeometricPrimitiveType getGeometricPrimitive() {
 		return (AbstractGeometricPrimitiveType)getMixed().get(GmlPackage.Literals.DOCUMENT_ROOT__GEOMETRIC_PRIMITIVE, true);
 	}
@@ -235,6 +240,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public AbstractGeometryType getGeometry() {
 		return (AbstractGeometryType)getMixed().get(GmlPackage.Literals.DOCUMENT_ROOT__GEOMETRY, true);
 	}
@@ -253,6 +259,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public AbstractGMLType getGML() {
 		return (AbstractGMLType)getMixed().get(GmlPackage.Literals.DOCUMENT_ROOT__GML, true);
 	}
@@ -271,6 +278,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EObject getObject() {
 		return (EObject)getMixed().get(GmlPackage.Literals.DOCUMENT_ROOT__OBJECT, true);
 	}
@@ -289,6 +297,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public AbstractMetaDataType getMetaData() {
 		return (AbstractMetaDataType)getMixed().get(GmlPackage.Literals.DOCUMENT_ROOT__META_DATA, true);
 	}
@@ -307,6 +316,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public AbstractRingType getRing() {
 		return (AbstractRingType)getMixed().get(GmlPackage.Literals.DOCUMENT_ROOT__RING, true);
 	}
@@ -325,6 +335,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public AbstractSurfaceType getSurface() {
 		return (AbstractSurfaceType)getMixed().get(GmlPackage.Literals.DOCUMENT_ROOT__SURFACE, true);
 	}
@@ -343,6 +354,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public BoundingShapeType getBoundedBy() {
 		return (BoundingShapeType)getMixed().get(GmlPackage.Literals.DOCUMENT_ROOT__BOUNDED_BY, true);
 	}
@@ -361,6 +373,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setBoundedBy(BoundingShapeType newBoundedBy) {
 		((FeatureMap.Internal)getMixed()).set(GmlPackage.Literals.DOCUMENT_ROOT__BOUNDED_BY, newBoundedBy);
 	}
@@ -370,6 +383,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public StringOrRefType getDescription() {
 		return (StringOrRefType)getMixed().get(GmlPackage.Literals.DOCUMENT_ROOT__DESCRIPTION, true);
 	}
@@ -388,6 +402,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setDescription(StringOrRefType newDescription) {
 		((FeatureMap.Internal)getMixed()).set(GmlPackage.Literals.DOCUMENT_ROOT__DESCRIPTION, newDescription);
 	}
@@ -397,6 +412,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EnvelopeType getEnvelope() {
 		return (EnvelopeType)getMixed().get(GmlPackage.Literals.DOCUMENT_ROOT__ENVELOPE, true);
 	}
@@ -415,6 +431,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setEnvelope(EnvelopeType newEnvelope) {
 		((FeatureMap.Internal)getMixed()).set(GmlPackage.Literals.DOCUMENT_ROOT__ENVELOPE, newEnvelope);
 	}
@@ -424,6 +441,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EnvelopeWithTimePeriodType getEnvelopeWithTimePeriod() {
 		return (EnvelopeWithTimePeriodType)getMixed().get(GmlPackage.Literals.DOCUMENT_ROOT__ENVELOPE_WITH_TIME_PERIOD, true);
 	}
@@ -442,6 +460,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setEnvelopeWithTimePeriod(EnvelopeWithTimePeriodType newEnvelopeWithTimePeriod) {
 		((FeatureMap.Internal)getMixed()).set(GmlPackage.Literals.DOCUMENT_ROOT__ENVELOPE_WITH_TIME_PERIOD, newEnvelopeWithTimePeriod);
 	}
@@ -451,6 +470,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public AbstractRingPropertyType getExterior() {
 		return (AbstractRingPropertyType)getMixed().get(GmlPackage.Literals.DOCUMENT_ROOT__EXTERIOR, true);
 	}
@@ -469,6 +489,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setExterior(AbstractRingPropertyType newExterior) {
 		((FeatureMap.Internal)getMixed()).set(GmlPackage.Literals.DOCUMENT_ROOT__EXTERIOR, newExterior);
 	}
@@ -478,6 +499,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public GridType getGrid() {
 		return (GridType)getMixed().get(GmlPackage.Literals.DOCUMENT_ROOT__GRID, true);
 	}
@@ -496,6 +518,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setGrid(GridType newGrid) {
 		((FeatureMap.Internal)getMixed()).set(GmlPackage.Literals.DOCUMENT_ROOT__GRID, newGrid);
 	}
@@ -505,6 +528,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public AbstractRingPropertyType getInterior() {
 		return (AbstractRingPropertyType)getMixed().get(GmlPackage.Literals.DOCUMENT_ROOT__INTERIOR, true);
 	}
@@ -523,6 +547,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setInterior(AbstractRingPropertyType newInterior) {
 		((FeatureMap.Internal)getMixed()).set(GmlPackage.Literals.DOCUMENT_ROOT__INTERIOR, newInterior);
 	}
@@ -532,6 +557,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public LinearRingType getLinearRing() {
 		return (LinearRingType)getMixed().get(GmlPackage.Literals.DOCUMENT_ROOT__LINEAR_RING, true);
 	}
@@ -550,6 +576,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setLinearRing(LinearRingType newLinearRing) {
 		((FeatureMap.Internal)getMixed()).set(GmlPackage.Literals.DOCUMENT_ROOT__LINEAR_RING, newLinearRing);
 	}
@@ -559,6 +586,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public MetaDataPropertyType getMetaDataProperty() {
 		return (MetaDataPropertyType)getMixed().get(GmlPackage.Literals.DOCUMENT_ROOT__META_DATA_PROPERTY, true);
 	}
@@ -577,6 +605,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setMetaDataProperty(MetaDataPropertyType newMetaDataProperty) {
 		((FeatureMap.Internal)getMixed()).set(GmlPackage.Literals.DOCUMENT_ROOT__META_DATA_PROPERTY, newMetaDataProperty);
 	}
@@ -586,6 +615,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public CodeType getName() {
 		return (CodeType)getMixed().get(GmlPackage.Literals.DOCUMENT_ROOT__NAME, true);
 	}
@@ -604,6 +634,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setName(CodeType newName) {
 		((FeatureMap.Internal)getMixed()).set(GmlPackage.Literals.DOCUMENT_ROOT__NAME, newName);
 	}
@@ -613,6 +644,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public PolygonType getPolygon() {
 		return (PolygonType)getMixed().get(GmlPackage.Literals.DOCUMENT_ROOT__POLYGON, true);
 	}
@@ -631,6 +663,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setPolygon(PolygonType newPolygon) {
 		((FeatureMap.Internal)getMixed()).set(GmlPackage.Literals.DOCUMENT_ROOT__POLYGON, newPolygon);
 	}
@@ -640,6 +673,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public DirectPositionType getPos() {
 		return (DirectPositionType)getMixed().get(GmlPackage.Literals.DOCUMENT_ROOT__POS, true);
 	}
@@ -658,6 +692,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setPos(DirectPositionType newPos) {
 		((FeatureMap.Internal)getMixed()).set(GmlPackage.Literals.DOCUMENT_ROOT__POS, newPos);
 	}
@@ -667,6 +702,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public RectifiedGridType getRectifiedGrid() {
 		return (RectifiedGridType)getMixed().get(GmlPackage.Literals.DOCUMENT_ROOT__RECTIFIED_GRID, true);
 	}
@@ -685,6 +721,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setRectifiedGrid(RectifiedGridType newRectifiedGrid) {
 		((FeatureMap.Internal)getMixed()).set(GmlPackage.Literals.DOCUMENT_ROOT__RECTIFIED_GRID, newRectifiedGrid);
 	}
@@ -694,6 +731,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public TimePositionType getTimePosition() {
 		return (TimePositionType)getMixed().get(GmlPackage.Literals.DOCUMENT_ROOT__TIME_POSITION, true);
 	}
@@ -712,6 +750,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setTimePosition(TimePositionType newTimePosition) {
 		((FeatureMap.Internal)getMixed()).set(GmlPackage.Literals.DOCUMENT_ROOT__TIME_POSITION, newTimePosition);
 	}
@@ -721,6 +760,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getId() {
 		return id;
 	}
@@ -730,6 +770,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setId(String newId) {
 		String oldId = id;
 		id = newId;
@@ -742,6 +783,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getRemoteSchema() {
 		return remoteSchema;
 	}
@@ -751,6 +793,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setRemoteSchema(String newRemoteSchema) {
 		String oldRemoteSchema = remoteSchema;
 		remoteSchema = newRemoteSchema;
@@ -763,6 +806,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case GmlPackage.DOCUMENT_ROOT__MIXED:
@@ -822,6 +866,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case GmlPackage.DOCUMENT_ROOT__MIXED:
@@ -888,6 +933,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case GmlPackage.DOCUMENT_ROOT__MIXED:
@@ -956,6 +1002,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case GmlPackage.DOCUMENT_ROOT__MIXED:
@@ -1024,6 +1071,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case GmlPackage.DOCUMENT_ROOT__MIXED:
@@ -1087,6 +1135,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

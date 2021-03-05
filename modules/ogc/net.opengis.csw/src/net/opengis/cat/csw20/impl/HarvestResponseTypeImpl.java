@@ -79,6 +79,7 @@ public class HarvestResponseTypeImpl extends EObjectImpl implements HarvestRespo
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AcknowledgementType getAcknowledgement() {
         return acknowledgement;
     }
@@ -103,6 +104,7 @@ public class HarvestResponseTypeImpl extends EObjectImpl implements HarvestRespo
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAcknowledgement(AcknowledgementType newAcknowledgement) {
         if (newAcknowledgement != acknowledgement) {
             NotificationChain msgs = null;
@@ -122,6 +124,7 @@ public class HarvestResponseTypeImpl extends EObjectImpl implements HarvestRespo
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TransactionResponseType getTransactionResponse() {
         return transactionResponse;
     }
@@ -146,6 +149,7 @@ public class HarvestResponseTypeImpl extends EObjectImpl implements HarvestRespo
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTransactionResponse(TransactionResponseType newTransactionResponse) {
         if (newTransactionResponse != transactionResponse) {
             NotificationChain msgs = null;

@@ -58,6 +58,7 @@ public class Wcs10AdapterFactory extends AdapterFactoryImpl {
      * @return whether this factory is applicable for the type of the object.
      * @generated
      */
+    @Override
     public boolean isFactoryForType(Object object) {
         if (object == modelPackage) {
             return true;
@@ -76,186 +77,247 @@ public class Wcs10AdapterFactory extends AdapterFactoryImpl {
      */
     protected Wcs10Switch modelSwitch =
         new Wcs10Switch() {
+            @Override
             public Object caseAbstractDescriptionBaseType(AbstractDescriptionBaseType object) {
                 return createAbstractDescriptionBaseTypeAdapter();
             }
+            @Override
             public Object caseAbstractDescriptionType(AbstractDescriptionType object) {
                 return createAbstractDescriptionTypeAdapter();
             }
+            @Override
             public Object caseAddressType(AddressType object) {
                 return createAddressTypeAdapter();
             }
+            @Override
             public Object caseAxisDescriptionType(AxisDescriptionType object) {
                 return createAxisDescriptionTypeAdapter();
             }
+            @Override
             public Object caseAxisDescriptionType1(AxisDescriptionType1 object) {
                 return createAxisDescriptionType1Adapter();
             }
+            @Override
             public Object caseAxisSubsetType(AxisSubsetType object) {
                 return createAxisSubsetTypeAdapter();
             }
+            @Override
             public Object caseContactType(ContactType object) {
                 return createContactTypeAdapter();
             }
+            @Override
             public Object caseContentMetadataType(ContentMetadataType object) {
                 return createContentMetadataTypeAdapter();
             }
+            @Override
             public Object caseCoverageDescriptionType(CoverageDescriptionType object) {
                 return createCoverageDescriptionTypeAdapter();
             }
+            @Override
             public Object caseCoverageOfferingBriefType(CoverageOfferingBriefType object) {
                 return createCoverageOfferingBriefTypeAdapter();
             }
+            @Override
             public Object caseCoverageOfferingType(CoverageOfferingType object) {
                 return createCoverageOfferingTypeAdapter();
             }
+            @Override
             public Object caseDCPTypeType(DCPTypeType object) {
                 return createDCPTypeTypeAdapter();
             }
+            @Override
             public Object caseDescribeCoverageType(DescribeCoverageType object) {
                 return createDescribeCoverageTypeAdapter();
             }
+            @Override
             public Object caseDescribeCoverageType1(DescribeCoverageType1 object) {
                 return createDescribeCoverageType1Adapter();
             }
+            @Override
             public Object caseDocumentRoot(DocumentRoot object) {
                 return createDocumentRootAdapter();
             }
+            @Override
             public Object caseDomainSetType(DomainSetType object) {
                 return createDomainSetTypeAdapter();
             }
+            @Override
             public Object caseDomainSubsetType(DomainSubsetType object) {
                 return createDomainSubsetTypeAdapter();
             }
+            @Override
             public Object caseExceptionType(ExceptionType object) {
                 return createExceptionTypeAdapter();
             }
+            @Override
             public Object caseGetCapabilitiesType(GetCapabilitiesType object) {
                 return createGetCapabilitiesTypeAdapter();
             }
+            @Override
             public Object caseGetCapabilitiesType1(GetCapabilitiesType1 object) {
                 return createGetCapabilitiesType1Adapter();
             }
+            @Override
             public Object caseGetCoverageType(GetCoverageType object) {
                 return createGetCoverageTypeAdapter();
             }
+            @Override
             public Object caseGetCoverageType1(GetCoverageType1 object) {
                 return createGetCoverageType1Adapter();
             }
+            @Override
             public Object caseGetType(GetType object) {
                 return createGetTypeAdapter();
             }
+            @Override
             public Object caseHTTPType(HTTPType object) {
                 return createHTTPTypeAdapter();
             }
+            @Override
             public Object caseIntervalType(IntervalType object) {
                 return createIntervalTypeAdapter();
             }
+            @Override
             public Object caseKeywordsType(KeywordsType object) {
                 return createKeywordsTypeAdapter();
             }
+            @Override
             public Object caseLonLatEnvelopeBaseType(LonLatEnvelopeBaseType object) {
                 return createLonLatEnvelopeBaseTypeAdapter();
             }
+            @Override
             public Object caseLonLatEnvelopeType(LonLatEnvelopeType object) {
                 return createLonLatEnvelopeTypeAdapter();
             }
+            @Override
             public Object caseMetadataAssociationType(MetadataAssociationType object) {
                 return createMetadataAssociationTypeAdapter();
             }
+            @Override
             public Object caseMetadataLinkType(MetadataLinkType object) {
                 return createMetadataLinkTypeAdapter();
             }
+            @Override
             public Object caseOnlineResourceType(OnlineResourceType object) {
                 return createOnlineResourceTypeAdapter();
             }
+            @Override
             public Object caseOutputType(OutputType object) {
                 return createOutputTypeAdapter();
             }
+            @Override
             public Object casePostType(PostType object) {
                 return createPostTypeAdapter();
             }
+            @Override
             public Object caseRangeSetType(RangeSetType object) {
                 return createRangeSetTypeAdapter();
             }
+            @Override
             public Object caseRangeSetType1(RangeSetType1 object) {
                 return createRangeSetType1Adapter();
             }
+            @Override
             public Object caseRangeSubsetType(RangeSubsetType object) {
                 return createRangeSubsetTypeAdapter();
             }
+            @Override
             public Object caseRequestType(RequestType object) {
                 return createRequestTypeAdapter();
             }
+            @Override
             public Object caseResponsiblePartyType(ResponsiblePartyType object) {
                 return createResponsiblePartyTypeAdapter();
             }
+            @Override
             public Object caseServiceType(ServiceType object) {
                 return createServiceTypeAdapter();
             }
+            @Override
             public Object caseSpatialDomainType(SpatialDomainType object) {
                 return createSpatialDomainTypeAdapter();
             }
+            @Override
             public Object caseSpatialSubsetType(SpatialSubsetType object) {
                 return createSpatialSubsetTypeAdapter();
             }
+            @Override
             public Object caseSupportedCRSsType(SupportedCRSsType object) {
                 return createSupportedCRSsTypeAdapter();
             }
+            @Override
             public Object caseSupportedFormatsType(SupportedFormatsType object) {
                 return createSupportedFormatsTypeAdapter();
             }
+            @Override
             public Object caseSupportedInterpolationsType(SupportedInterpolationsType object) {
                 return createSupportedInterpolationsTypeAdapter();
             }
+            @Override
             public Object caseTelephoneType(TelephoneType object) {
                 return createTelephoneTypeAdapter();
             }
+            @Override
             public Object caseTimePeriodType(TimePeriodType object) {
                 return createTimePeriodTypeAdapter();
             }
+            @Override
             public Object caseTimeSequenceType(TimeSequenceType object) {
                 return createTimeSequenceTypeAdapter();
             }
+            @Override
             public Object caseTypedLiteralType(TypedLiteralType object) {
                 return createTypedLiteralTypeAdapter();
             }
+            @Override
             public Object caseValueEnumBaseType(ValueEnumBaseType object) {
                 return createValueEnumBaseTypeAdapter();
             }
+            @Override
             public Object caseValueEnumType(ValueEnumType object) {
                 return createValueEnumTypeAdapter();
             }
+            @Override
             public Object caseValueRangeType(ValueRangeType object) {
                 return createValueRangeTypeAdapter();
             }
+            @Override
             public Object caseValuesType(ValuesType object) {
                 return createValuesTypeAdapter();
             }
+            @Override
             public Object caseVendorSpecificCapabilitiesType(VendorSpecificCapabilitiesType object) {
                 return createVendorSpecificCapabilitiesTypeAdapter();
             }
+            @Override
             public Object caseWCSCapabilitiesType(WCSCapabilitiesType object) {
                 return createWCSCapabilitiesTypeAdapter();
             }
+            @Override
             public Object caseWCSCapabilityType(WCSCapabilityType object) {
                 return createWCSCapabilityTypeAdapter();
             }
+            @Override
             public Object caseAbstractGMLType(AbstractGMLType object) {
                 return createAbstractGMLTypeAdapter();
             }
+            @Override
             public Object caseAbstractGeometryBaseType(AbstractGeometryBaseType object) {
                 return createAbstractGeometryBaseTypeAdapter();
             }
+            @Override
             public Object caseAbstractGeometryType(AbstractGeometryType object) {
                 return createAbstractGeometryTypeAdapter();
             }
+            @Override
             public Object caseEnvelopeType(EnvelopeType object) {
                 return createEnvelopeTypeAdapter();
             }
+            @Override
             public Object caseMetaDataPropertyType(MetaDataPropertyType object) {
                 return createMetaDataPropertyTypeAdapter();
             }
+            @Override
             public Object defaultCase(EObject object) {
                 return createEObjectAdapter();
             }
@@ -269,6 +331,7 @@ public class Wcs10AdapterFactory extends AdapterFactoryImpl {
      * @return the adapter for the <code>target</code>.
      * @generated
      */
+    @Override
     public Adapter createAdapter(Notifier target) {
         return (Adapter)modelSwitch.doSwitch((EObject)target);
     }

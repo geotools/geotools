@@ -128,6 +128,7 @@ public class ProcessDescriptionTypeImpl extends ProcessBriefTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.PROCESS_DESCRIPTION_TYPE;
   }
@@ -137,6 +138,7 @@ public class ProcessDescriptionTypeImpl extends ProcessBriefTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DataInputsType getDataInputs() {
     return dataInputs;
   }
@@ -161,6 +163,7 @@ public class ProcessDescriptionTypeImpl extends ProcessBriefTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setDataInputs(DataInputsType newDataInputs) {
     if (newDataInputs != dataInputs) {
       NotificationChain msgs = null;
@@ -180,6 +183,7 @@ public class ProcessDescriptionTypeImpl extends ProcessBriefTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ProcessOutputsType getProcessOutputs() {
     return processOutputs;
   }
@@ -204,6 +208,7 @@ public class ProcessDescriptionTypeImpl extends ProcessBriefTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setProcessOutputs(ProcessOutputsType newProcessOutputs) {
     if (newProcessOutputs != processOutputs) {
       NotificationChain msgs = null;
@@ -223,6 +228,7 @@ public class ProcessDescriptionTypeImpl extends ProcessBriefTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isStatusSupported() {
     return statusSupported;
   }
@@ -232,6 +238,7 @@ public class ProcessDescriptionTypeImpl extends ProcessBriefTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setStatusSupported(boolean newStatusSupported) {
     boolean oldStatusSupported = statusSupported;
     statusSupported = newStatusSupported;
@@ -246,6 +253,7 @@ public class ProcessDescriptionTypeImpl extends ProcessBriefTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetStatusSupported() {
     boolean oldStatusSupported = statusSupported;
     boolean oldStatusSupportedESet = statusSupportedESet;
@@ -260,6 +268,7 @@ public class ProcessDescriptionTypeImpl extends ProcessBriefTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetStatusSupported() {
     return statusSupportedESet;
   }
@@ -269,6 +278,7 @@ public class ProcessDescriptionTypeImpl extends ProcessBriefTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isStoreSupported() {
     return storeSupported;
   }
@@ -278,6 +288,7 @@ public class ProcessDescriptionTypeImpl extends ProcessBriefTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setStoreSupported(boolean newStoreSupported) {
     boolean oldStoreSupported = storeSupported;
     storeSupported = newStoreSupported;
@@ -292,6 +303,7 @@ public class ProcessDescriptionTypeImpl extends ProcessBriefTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetStoreSupported() {
     boolean oldStoreSupported = storeSupported;
     boolean oldStoreSupportedESet = storeSupportedESet;
@@ -306,6 +318,7 @@ public class ProcessDescriptionTypeImpl extends ProcessBriefTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetStoreSupported() {
     return storeSupportedESet;
   }
@@ -315,6 +328,7 @@ public class ProcessDescriptionTypeImpl extends ProcessBriefTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.PROCESS_DESCRIPTION_TYPE__DATA_INPUTS:
@@ -330,6 +344,7 @@ public class ProcessDescriptionTypeImpl extends ProcessBriefTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.PROCESS_DESCRIPTION_TYPE__DATA_INPUTS:
@@ -349,6 +364,7 @@ public class ProcessDescriptionTypeImpl extends ProcessBriefTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.PROCESS_DESCRIPTION_TYPE__DATA_INPUTS:
@@ -372,6 +388,7 @@ public class ProcessDescriptionTypeImpl extends ProcessBriefTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.PROCESS_DESCRIPTION_TYPE__DATA_INPUTS:
@@ -395,6 +412,7 @@ public class ProcessDescriptionTypeImpl extends ProcessBriefTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.PROCESS_DESCRIPTION_TYPE__DATA_INPUTS:
@@ -414,6 +432,7 @@ public class ProcessDescriptionTypeImpl extends ProcessBriefTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String toString() {
     if (eIsProxy()) return super.toString();
 

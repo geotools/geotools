@@ -267,6 +267,7 @@ public class DictionaryEntryTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getDefinitionGroup() {
         if (definitionGroup == null) {
             definitionGroup = new BasicFeatureMap(this, Gml311Package.DICTIONARY_ENTRY_TYPE__DEFINITION_GROUP);
@@ -279,6 +280,7 @@ public class DictionaryEntryTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DefinitionType getDefinition() {
         return (DefinitionType)getDefinitionGroup().get(Gml311Package.eINSTANCE.getDictionaryEntryType_Definition(), true);
     }
@@ -297,6 +299,7 @@ public class DictionaryEntryTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDefinition(DefinitionType newDefinition) {
         ((FeatureMap.Internal)getDefinitionGroup()).set(Gml311Package.eINSTANCE.getDictionaryEntryType_Definition(), newDefinition);
     }
@@ -306,6 +309,7 @@ public class DictionaryEntryTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ActuateType getActuate() {
         return actuate;
     }
@@ -315,6 +319,7 @@ public class DictionaryEntryTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setActuate(ActuateType newActuate) {
         ActuateType oldActuate = actuate;
         actuate = newActuate == null ? ACTUATE_EDEFAULT : newActuate;
@@ -329,6 +334,7 @@ public class DictionaryEntryTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetActuate() {
         ActuateType oldActuate = actuate;
         boolean oldActuateESet = actuateESet;
@@ -343,6 +349,7 @@ public class DictionaryEntryTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetActuate() {
         return actuateESet;
     }
@@ -352,6 +359,7 @@ public class DictionaryEntryTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getArcrole() {
         return arcrole;
     }
@@ -361,6 +369,7 @@ public class DictionaryEntryTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setArcrole(String newArcrole) {
         String oldArcrole = arcrole;
         arcrole = newArcrole;
@@ -373,6 +382,7 @@ public class DictionaryEntryTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getHref() {
         return href;
     }
@@ -382,6 +392,7 @@ public class DictionaryEntryTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setHref(String newHref) {
         String oldHref = href;
         href = newHref;
@@ -394,6 +405,7 @@ public class DictionaryEntryTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getRemoteSchema() {
         return remoteSchema;
     }
@@ -403,6 +415,7 @@ public class DictionaryEntryTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRemoteSchema(String newRemoteSchema) {
         String oldRemoteSchema = remoteSchema;
         remoteSchema = newRemoteSchema;
@@ -415,6 +428,7 @@ public class DictionaryEntryTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getRole() {
         return role;
     }
@@ -424,6 +438,7 @@ public class DictionaryEntryTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRole(String newRole) {
         String oldRole = role;
         role = newRole;
@@ -436,6 +451,7 @@ public class DictionaryEntryTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ShowType getShow() {
         return show;
     }
@@ -445,6 +461,7 @@ public class DictionaryEntryTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setShow(ShowType newShow) {
         ShowType oldShow = show;
         show = newShow == null ? SHOW_EDEFAULT : newShow;
@@ -459,6 +476,7 @@ public class DictionaryEntryTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetShow() {
         ShowType oldShow = show;
         boolean oldShowESet = showESet;
@@ -473,6 +491,7 @@ public class DictionaryEntryTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetShow() {
         return showESet;
     }
@@ -482,6 +501,7 @@ public class DictionaryEntryTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getTitle() {
         return title;
     }
@@ -491,6 +511,7 @@ public class DictionaryEntryTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTitle(String newTitle) {
         String oldTitle = title;
         title = newTitle;
@@ -503,6 +524,7 @@ public class DictionaryEntryTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TypeType getType() {
         return type;
     }
@@ -512,6 +534,7 @@ public class DictionaryEntryTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setType(TypeType newType) {
         TypeType oldType = type;
         type = newType == null ? TYPE_EDEFAULT : newType;
@@ -526,6 +549,7 @@ public class DictionaryEntryTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetType() {
         TypeType oldType = type;
         boolean oldTypeESet = typeESet;
@@ -540,6 +564,7 @@ public class DictionaryEntryTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetType() {
         return typeESet;
     }

@@ -158,6 +158,7 @@ public abstract class RequestBaseTypeImpl extends EObjectImpl implements Request
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getService() {
         return service;
     }
@@ -167,6 +168,7 @@ public abstract class RequestBaseTypeImpl extends EObjectImpl implements Request
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setService(String newService) {
         String oldService = service;
         service = newService;
@@ -181,6 +183,7 @@ public abstract class RequestBaseTypeImpl extends EObjectImpl implements Request
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetService() {
         String oldService = service;
         boolean oldServiceESet = serviceESet;
@@ -195,6 +198,7 @@ public abstract class RequestBaseTypeImpl extends EObjectImpl implements Request
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetService() {
         return serviceESet;
     }
@@ -204,6 +208,7 @@ public abstract class RequestBaseTypeImpl extends EObjectImpl implements Request
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getVersion() {
         return version;
     }
@@ -213,6 +218,7 @@ public abstract class RequestBaseTypeImpl extends EObjectImpl implements Request
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setVersion(String newVersion) {
         String oldVersion = version;
         version = newVersion;
@@ -227,6 +233,7 @@ public abstract class RequestBaseTypeImpl extends EObjectImpl implements Request
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetVersion() {
         String oldVersion = version;
         boolean oldVersionESet = versionESet;
@@ -241,6 +248,7 @@ public abstract class RequestBaseTypeImpl extends EObjectImpl implements Request
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetVersion() {
         return versionESet;
     }
@@ -250,6 +258,7 @@ public abstract class RequestBaseTypeImpl extends EObjectImpl implements Request
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getBaseUrl() {
         return baseUrl;
     }
@@ -259,6 +268,7 @@ public abstract class RequestBaseTypeImpl extends EObjectImpl implements Request
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBaseUrl(String newBaseUrl) {
         String oldBaseUrl = baseUrl;
         baseUrl = newBaseUrl;
@@ -271,6 +281,7 @@ public abstract class RequestBaseTypeImpl extends EObjectImpl implements Request
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Map getExtendedProperties() {
         return extendedProperties;
     }
@@ -280,6 +291,7 @@ public abstract class RequestBaseTypeImpl extends EObjectImpl implements Request
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setExtendedProperties(Map newExtendedProperties) {
         Map oldExtendedProperties = extendedProperties;
         extendedProperties = newExtendedProperties;

@@ -67,6 +67,7 @@ public class ExtendedCapabilitiesTypeImpl extends EObjectImpl implements Extende
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AdditionalOperatorsType getAdditionalOperators() {
         return additionalOperators;
     }
@@ -91,6 +92,7 @@ public class ExtendedCapabilitiesTypeImpl extends EObjectImpl implements Extende
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAdditionalOperators(AdditionalOperatorsType newAdditionalOperators) {
         if (newAdditionalOperators != additionalOperators) {
             NotificationChain msgs = null;

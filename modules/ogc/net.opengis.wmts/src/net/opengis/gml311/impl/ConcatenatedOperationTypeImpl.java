@@ -66,6 +66,7 @@ public class ConcatenatedOperationTypeImpl extends AbstractCoordinateOperationTy
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<SingleOperationRefType> getUsesSingleOperation() {
         if (usesSingleOperation == null) {
             usesSingleOperation = new EObjectContainmentEList<>(SingleOperationRefType.class, this, Gml311Package.CONCATENATED_OPERATION_TYPE__USES_SINGLE_OPERATION);

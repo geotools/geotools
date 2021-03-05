@@ -84,6 +84,7 @@ public class ValueEnumTypeImpl extends ValueEnumBaseTypeImpl implements ValueEnu
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.VALUE_ENUM_TYPE;
 	}
@@ -93,6 +94,7 @@ public class ValueEnumTypeImpl extends ValueEnumBaseTypeImpl implements ValueEnu
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getSemantic() {
 		return semantic;
 	}
@@ -102,6 +104,7 @@ public class ValueEnumTypeImpl extends ValueEnumBaseTypeImpl implements ValueEnu
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setSemantic(String newSemantic) {
 		String oldSemantic = semantic;
 		semantic = newSemantic;
@@ -114,6 +117,7 @@ public class ValueEnumTypeImpl extends ValueEnumBaseTypeImpl implements ValueEnu
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getType() {
 		return type;
 	}
@@ -123,6 +127,7 @@ public class ValueEnumTypeImpl extends ValueEnumBaseTypeImpl implements ValueEnu
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setType(String newType) {
 		String oldType = type;
 		type = newType;
@@ -135,6 +140,7 @@ public class ValueEnumTypeImpl extends ValueEnumBaseTypeImpl implements ValueEnu
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.VALUE_ENUM_TYPE__SEMANTIC:
@@ -150,6 +156,7 @@ public class ValueEnumTypeImpl extends ValueEnumBaseTypeImpl implements ValueEnu
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.VALUE_ENUM_TYPE__SEMANTIC:
@@ -167,6 +174,7 @@ public class ValueEnumTypeImpl extends ValueEnumBaseTypeImpl implements ValueEnu
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.VALUE_ENUM_TYPE__SEMANTIC:
@@ -184,6 +192,7 @@ public class ValueEnumTypeImpl extends ValueEnumBaseTypeImpl implements ValueEnu
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.VALUE_ENUM_TYPE__SEMANTIC:
@@ -199,6 +208,7 @@ public class ValueEnumTypeImpl extends ValueEnumBaseTypeImpl implements ValueEnu
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

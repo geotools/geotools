@@ -89,6 +89,7 @@ public abstract class AbstractGMLTypeImpl extends EObjectImpl implements Abstrac
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return GmlPackage.Literals.ABSTRACT_GML_TYPE;
 	}
@@ -98,6 +99,7 @@ public abstract class AbstractGMLTypeImpl extends EObjectImpl implements Abstrac
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList getMetaDataProperty() {
 		if (metaDataProperty == null) {
 			metaDataProperty = new EObjectContainmentEList(MetaDataPropertyType.class, this, GmlPackage.ABSTRACT_GML_TYPE__META_DATA_PROPERTY);
@@ -110,6 +112,7 @@ public abstract class AbstractGMLTypeImpl extends EObjectImpl implements Abstrac
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public StringOrRefType getDescription() {
 		return description;
 	}
@@ -134,6 +137,7 @@ public abstract class AbstractGMLTypeImpl extends EObjectImpl implements Abstrac
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setDescription(StringOrRefType newDescription) {
 		if (newDescription != description) {
 			NotificationChain msgs = null;
@@ -153,6 +157,7 @@ public abstract class AbstractGMLTypeImpl extends EObjectImpl implements Abstrac
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList getName() {
 		if (name == null) {
 			name = new EObjectContainmentEList(CodeType.class, this, GmlPackage.ABSTRACT_GML_TYPE__NAME);
@@ -165,6 +170,7 @@ public abstract class AbstractGMLTypeImpl extends EObjectImpl implements Abstrac
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case GmlPackage.ABSTRACT_GML_TYPE__META_DATA_PROPERTY:
@@ -182,6 +188,7 @@ public abstract class AbstractGMLTypeImpl extends EObjectImpl implements Abstrac
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case GmlPackage.ABSTRACT_GML_TYPE__META_DATA_PROPERTY:
@@ -199,6 +206,7 @@ public abstract class AbstractGMLTypeImpl extends EObjectImpl implements Abstrac
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case GmlPackage.ABSTRACT_GML_TYPE__META_DATA_PROPERTY:
@@ -221,6 +229,7 @@ public abstract class AbstractGMLTypeImpl extends EObjectImpl implements Abstrac
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case GmlPackage.ABSTRACT_GML_TYPE__META_DATA_PROPERTY:
@@ -241,6 +250,7 @@ public abstract class AbstractGMLTypeImpl extends EObjectImpl implements Abstrac
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case GmlPackage.ABSTRACT_GML_TYPE__META_DATA_PROPERTY:

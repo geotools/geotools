@@ -85,6 +85,7 @@ public class TimeEdgeTypeImpl extends AbstractTimeTopologyPrimitiveTypeImpl impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeNodePropertyType getStart() {
         return start;
     }
@@ -109,6 +110,7 @@ public class TimeEdgeTypeImpl extends AbstractTimeTopologyPrimitiveTypeImpl impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setStart(TimeNodePropertyType newStart) {
         if (newStart != start) {
             NotificationChain msgs = null;
@@ -128,6 +130,7 @@ public class TimeEdgeTypeImpl extends AbstractTimeTopologyPrimitiveTypeImpl impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeNodePropertyType getEnd() {
         return end;
     }
@@ -152,6 +155,7 @@ public class TimeEdgeTypeImpl extends AbstractTimeTopologyPrimitiveTypeImpl impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEnd(TimeNodePropertyType newEnd) {
         if (newEnd != end) {
             NotificationChain msgs = null;
@@ -171,6 +175,7 @@ public class TimeEdgeTypeImpl extends AbstractTimeTopologyPrimitiveTypeImpl impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimePeriodPropertyType getExtent() {
         return extent;
     }
@@ -195,6 +200,7 @@ public class TimeEdgeTypeImpl extends AbstractTimeTopologyPrimitiveTypeImpl impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setExtent(TimePeriodPropertyType newExtent) {
         if (newExtent != extent) {
             NotificationChain msgs = null;

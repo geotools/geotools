@@ -60,7 +60,8 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.ONLINE_RESOURCE_TYPE;
   }
 
@@ -69,7 +70,8 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getHref() {
+  @Override
+public String getHref() {
     return href;
   }
 
@@ -78,7 +80,8 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setHref(String newHref) {
+  @Override
+public void setHref(String newHref) {
     String oldHref = href;
     href = newHref;
     if (eNotificationRequired())
@@ -90,7 +93,8 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.ONLINE_RESOURCE_TYPE__HREF:
         return getHref();
@@ -103,7 +107,8 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.ONLINE_RESOURCE_TYPE__HREF:
         setHref((String)newValue);
@@ -117,7 +122,8 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.ONLINE_RESOURCE_TYPE__HREF:
         setHref(HREF_EDEFAULT);
@@ -131,7 +137,8 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.ONLINE_RESOURCE_TYPE__HREF:
         return HREF_EDEFAULT == null ? href != null : !HREF_EDEFAULT.equals(href);
@@ -144,7 +151,8 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
    * <!-- end-user-doc -->
    * @generated
    */
-  public String toString() {
+  @Override
+public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

@@ -132,6 +132,7 @@ public class TimeCalendarEraTypeImpl extends DefinitionTypeImpl implements TimeC
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StringOrRefType getReferenceEvent() {
         return referenceEvent;
     }
@@ -156,6 +157,7 @@ public class TimeCalendarEraTypeImpl extends DefinitionTypeImpl implements TimeC
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setReferenceEvent(StringOrRefType newReferenceEvent) {
         if (newReferenceEvent != referenceEvent) {
             NotificationChain msgs = null;
@@ -175,6 +177,7 @@ public class TimeCalendarEraTypeImpl extends DefinitionTypeImpl implements TimeC
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public XMLGregorianCalendar getReferenceDate() {
         return referenceDate;
     }
@@ -184,6 +187,7 @@ public class TimeCalendarEraTypeImpl extends DefinitionTypeImpl implements TimeC
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setReferenceDate(XMLGregorianCalendar newReferenceDate) {
         XMLGregorianCalendar oldReferenceDate = referenceDate;
         referenceDate = newReferenceDate;
@@ -198,6 +202,7 @@ public class TimeCalendarEraTypeImpl extends DefinitionTypeImpl implements TimeC
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetReferenceDate() {
         XMLGregorianCalendar oldReferenceDate = referenceDate;
         boolean oldReferenceDateESet = referenceDateESet;
@@ -212,6 +217,7 @@ public class TimeCalendarEraTypeImpl extends DefinitionTypeImpl implements TimeC
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetReferenceDate() {
         return referenceDateESet;
     }
@@ -221,6 +227,7 @@ public class TimeCalendarEraTypeImpl extends DefinitionTypeImpl implements TimeC
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigDecimal getJulianReference() {
         return julianReference;
     }
@@ -230,6 +237,7 @@ public class TimeCalendarEraTypeImpl extends DefinitionTypeImpl implements TimeC
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setJulianReference(BigDecimal newJulianReference) {
         BigDecimal oldJulianReference = julianReference;
         julianReference = newJulianReference;
@@ -242,6 +250,7 @@ public class TimeCalendarEraTypeImpl extends DefinitionTypeImpl implements TimeC
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimePeriodPropertyType getEpochOfUse() {
         return epochOfUse;
     }
@@ -266,6 +275,7 @@ public class TimeCalendarEraTypeImpl extends DefinitionTypeImpl implements TimeC
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEpochOfUse(TimePeriodPropertyType newEpochOfUse) {
         if (newEpochOfUse != epochOfUse) {
             NotificationChain msgs = null;

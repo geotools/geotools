@@ -171,6 +171,7 @@ public class SummaryRecordTypeImpl extends AbstractRecordTypeImpl implements Sum
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      */
+    @Override
     public EList<SimpleLiteral> getIdentifier() {
         if (identifier == null) {
             identifier = new EObjectContainmentEList<>(SimpleLiteral.class, this, Csw20Package.SUMMARY_RECORD_TYPE__IDENTIFIER);
@@ -182,6 +183,7 @@ public class SummaryRecordTypeImpl extends AbstractRecordTypeImpl implements Sum
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      */
+    @Override
     public EList<SimpleLiteral> getTitle() {
         if (title == null) {
             title = new EObjectResolvingEList<>(SimpleLiteral.class, this, Csw20Package.SUMMARY_RECORD_TYPE__TITLE);
@@ -194,6 +196,7 @@ public class SummaryRecordTypeImpl extends AbstractRecordTypeImpl implements Sum
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SimpleLiteral getType() {
         if (type != null && type.eIsProxy()) {
             InternalEObject oldType = (InternalEObject)type;
@@ -220,6 +223,7 @@ public class SummaryRecordTypeImpl extends AbstractRecordTypeImpl implements Sum
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setType(SimpleLiteral newType) {
         SimpleLiteral oldType = type;
         type = newType;
@@ -232,6 +236,7 @@ public class SummaryRecordTypeImpl extends AbstractRecordTypeImpl implements Sum
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<SimpleLiteral> getSubject() {
         if (subject == null) {
             subject = new EObjectContainmentEList<>(SimpleLiteral.class, this, Csw20Package.SUMMARY_RECORD_TYPE__SUBJECT);
@@ -243,6 +248,7 @@ public class SummaryRecordTypeImpl extends AbstractRecordTypeImpl implements Sum
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      */
+    @Override
     public EList<SimpleLiteral> getFormat() {
         if (format == null) {
             format = new EObjectContainmentEList<>(SimpleLiteral.class, this, Csw20Package.SUMMARY_RECORD_TYPE__FORMAT);
@@ -254,6 +260,7 @@ public class SummaryRecordTypeImpl extends AbstractRecordTypeImpl implements Sum
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      */
+    @Override
     public EList<SimpleLiteral> getRelation() {
         if (relation == null) {
             relation = new EObjectContainmentEList<>(SimpleLiteral.class, this, Csw20Package.SUMMARY_RECORD_TYPE__RELATION);
@@ -266,6 +273,7 @@ public class SummaryRecordTypeImpl extends AbstractRecordTypeImpl implements Sum
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<SimpleLiteral> getModified() {
         if (modified == null) {
             modified = new EObjectContainmentEList<>(SimpleLiteral.class, this, Csw20Package.SUMMARY_RECORD_TYPE__MODIFIED);
@@ -278,6 +286,7 @@ public class SummaryRecordTypeImpl extends AbstractRecordTypeImpl implements Sum
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<SimpleLiteral> getAbstract() {
         if (abstract_ == null) {
             abstract_ = new EObjectContainmentEList<>(SimpleLiteral.class, this, Csw20Package.SUMMARY_RECORD_TYPE__ABSTRACT);
@@ -290,6 +299,7 @@ public class SummaryRecordTypeImpl extends AbstractRecordTypeImpl implements Sum
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<SimpleLiteral> getSpatial() {
         if (spatial == null) {
             spatial = new EObjectContainmentEList<>(SimpleLiteral.class, this, Csw20Package.SUMMARY_RECORD_TYPE__SPATIAL);
@@ -302,6 +312,7 @@ public class SummaryRecordTypeImpl extends AbstractRecordTypeImpl implements Sum
      * <!-- end-user-doc -->
      * @generated NOT
      */
+    @Override
     public EList<BoundingBoxType> getBoundingBox() {
         if (boundingBox == null) {
             boundingBox = new EObjectResolvingEList<>(BoundingBoxType.class, this, Csw20Package.SUMMARY_RECORD_TYPE__BOUNDING_BOX);

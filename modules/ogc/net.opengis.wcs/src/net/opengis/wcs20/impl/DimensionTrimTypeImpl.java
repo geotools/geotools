@@ -90,6 +90,7 @@ public class DimensionTrimTypeImpl extends DimensionSubsetTypeImpl implements Di
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getTrimLow() {
 		return trimLow;
 	}
@@ -99,6 +100,7 @@ public class DimensionTrimTypeImpl extends DimensionSubsetTypeImpl implements Di
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setTrimLow(String newTrimLow) {
 		String oldTrimLow = trimLow;
 		trimLow = newTrimLow;
@@ -111,6 +113,7 @@ public class DimensionTrimTypeImpl extends DimensionSubsetTypeImpl implements Di
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getTrimHigh() {
 		return trimHigh;
 	}
@@ -120,6 +123,7 @@ public class DimensionTrimTypeImpl extends DimensionSubsetTypeImpl implements Di
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setTrimHigh(String newTrimHigh) {
 		String oldTrimHigh = trimHigh;
 		trimHigh = newTrimHigh;

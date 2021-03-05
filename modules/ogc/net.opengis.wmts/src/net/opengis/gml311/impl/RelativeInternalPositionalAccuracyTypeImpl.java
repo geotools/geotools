@@ -62,6 +62,7 @@ public class RelativeInternalPositionalAccuracyTypeImpl extends AbstractPosition
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MeasureType getResult() {
         return result;
     }
@@ -86,6 +87,7 @@ public class RelativeInternalPositionalAccuracyTypeImpl extends AbstractPosition
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setResult(MeasureType newResult) {
         if (newResult != result) {
             NotificationChain msgs = null;

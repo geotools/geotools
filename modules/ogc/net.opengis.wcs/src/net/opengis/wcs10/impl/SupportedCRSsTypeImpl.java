@@ -96,6 +96,7 @@ public class SupportedCRSsTypeImpl extends EObjectImpl implements SupportedCRSsT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.SUPPORTED_CR_SS_TYPE;
 	}
@@ -105,6 +106,7 @@ public class SupportedCRSsTypeImpl extends EObjectImpl implements SupportedCRSsT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList getRequestResponseCRSs() {
 		if (requestResponseCRSs == null) {
 			requestResponseCRSs = new EObjectContainmentEList(CodeListType.class, this, Wcs10Package.SUPPORTED_CR_SS_TYPE__REQUEST_RESPONSE_CR_SS);
@@ -117,6 +119,7 @@ public class SupportedCRSsTypeImpl extends EObjectImpl implements SupportedCRSsT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList getRequestCRSs() {
 		if (requestCRSs == null) {
 			requestCRSs = new EObjectContainmentEList(CodeListType.class, this, Wcs10Package.SUPPORTED_CR_SS_TYPE__REQUEST_CR_SS);
@@ -129,6 +132,7 @@ public class SupportedCRSsTypeImpl extends EObjectImpl implements SupportedCRSsT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList getResponseCRSs() {
 		if (responseCRSs == null) {
 			responseCRSs = new EObjectContainmentEList(CodeListType.class, this, Wcs10Package.SUPPORTED_CR_SS_TYPE__RESPONSE_CR_SS);
@@ -141,6 +145,7 @@ public class SupportedCRSsTypeImpl extends EObjectImpl implements SupportedCRSsT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList getNativeCRSs() {
 		if (nativeCRSs == null) {
 			nativeCRSs = new EObjectContainmentEList(CodeListType.class, this, Wcs10Package.SUPPORTED_CR_SS_TYPE__NATIVE_CR_SS);
@@ -153,6 +158,7 @@ public class SupportedCRSsTypeImpl extends EObjectImpl implements SupportedCRSsT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.SUPPORTED_CR_SS_TYPE__REQUEST_RESPONSE_CR_SS:
@@ -172,6 +178,7 @@ public class SupportedCRSsTypeImpl extends EObjectImpl implements SupportedCRSsT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.SUPPORTED_CR_SS_TYPE__REQUEST_RESPONSE_CR_SS:
@@ -191,6 +198,7 @@ public class SupportedCRSsTypeImpl extends EObjectImpl implements SupportedCRSsT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.SUPPORTED_CR_SS_TYPE__REQUEST_RESPONSE_CR_SS:
@@ -218,6 +226,7 @@ public class SupportedCRSsTypeImpl extends EObjectImpl implements SupportedCRSsT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.SUPPORTED_CR_SS_TYPE__REQUEST_RESPONSE_CR_SS:
@@ -241,6 +250,7 @@ public class SupportedCRSsTypeImpl extends EObjectImpl implements SupportedCRSsT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.SUPPORTED_CR_SS_TYPE__REQUEST_RESPONSE_CR_SS:

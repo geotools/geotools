@@ -58,6 +58,7 @@ public class GridLimitsTypeImpl extends EObjectImpl implements GridLimitsType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return GmlPackage.Literals.GRID_LIMITS_TYPE;
 	}
@@ -67,6 +68,7 @@ public class GridLimitsTypeImpl extends EObjectImpl implements GridLimitsType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public GridEnvelopeType getGridEnvelope() {
 		return gridEnvelope;
 	}
@@ -91,6 +93,7 @@ public class GridLimitsTypeImpl extends EObjectImpl implements GridLimitsType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setGridEnvelope(GridEnvelopeType newGridEnvelope) {
 		if (newGridEnvelope != gridEnvelope) {
 			NotificationChain msgs = null;
@@ -110,6 +113,7 @@ public class GridLimitsTypeImpl extends EObjectImpl implements GridLimitsType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case GmlPackage.GRID_LIMITS_TYPE__GRID_ENVELOPE:
@@ -123,6 +127,7 @@ public class GridLimitsTypeImpl extends EObjectImpl implements GridLimitsType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case GmlPackage.GRID_LIMITS_TYPE__GRID_ENVELOPE:
@@ -136,6 +141,7 @@ public class GridLimitsTypeImpl extends EObjectImpl implements GridLimitsType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case GmlPackage.GRID_LIMITS_TYPE__GRID_ENVELOPE:
@@ -150,6 +156,7 @@ public class GridLimitsTypeImpl extends EObjectImpl implements GridLimitsType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case GmlPackage.GRID_LIMITS_TYPE__GRID_ENVELOPE:
@@ -164,6 +171,7 @@ public class GridLimitsTypeImpl extends EObjectImpl implements GridLimitsType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case GmlPackage.GRID_LIMITS_TYPE__GRID_ENVELOPE:

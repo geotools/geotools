@@ -131,6 +131,7 @@ public class QueryTypeImpl extends AbstractQueryTypeImpl implements QueryType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ElementSetNameType getElementSetName() {
         return elementSetName;
     }
@@ -155,6 +156,7 @@ public class QueryTypeImpl extends AbstractQueryTypeImpl implements QueryType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setElementSetName(ElementSetNameType newElementSetName) {
         if (newElementSetName != elementSetName) {
             NotificationChain msgs = null;
@@ -174,6 +176,7 @@ public class QueryTypeImpl extends AbstractQueryTypeImpl implements QueryType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<QName> getElementName() {
         if (elementName == null) {
             elementName = new EDataTypeUniqueEList<>(QName.class, this, Csw20Package.QUERY_TYPE__ELEMENT_NAME);
@@ -186,6 +189,7 @@ public class QueryTypeImpl extends AbstractQueryTypeImpl implements QueryType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public QueryConstraintType getConstraint() {
         return constraint;
     }
@@ -210,6 +214,7 @@ public class QueryTypeImpl extends AbstractQueryTypeImpl implements QueryType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setConstraint(QueryConstraintType newConstraint) {
         if (newConstraint != constraint) {
             NotificationChain msgs = null;
@@ -229,6 +234,7 @@ public class QueryTypeImpl extends AbstractQueryTypeImpl implements QueryType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SortBy[] getSortBy() {
         return sortBy;
     }
@@ -238,6 +244,7 @@ public class QueryTypeImpl extends AbstractQueryTypeImpl implements QueryType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSortBy(SortBy[] newSortBy) {
         SortBy[] oldSortBy = sortBy;
         sortBy = newSortBy;
@@ -250,6 +257,7 @@ public class QueryTypeImpl extends AbstractQueryTypeImpl implements QueryType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public List<QName> getTypeNames() {
         return typeNames;
     }
@@ -259,6 +267,7 @@ public class QueryTypeImpl extends AbstractQueryTypeImpl implements QueryType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTypeNames(List<QName> newTypeNames) {
         List<QName> oldTypeNames = typeNames;
         typeNames = newTypeNames;

@@ -83,6 +83,7 @@ public class LabelStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements L
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getStyle() {
         return style;
     }
@@ -92,6 +93,7 @@ public class LabelStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements L
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setStyle(String newStyle) {
         String oldStyle = style;
         style = newStyle;
@@ -104,6 +106,7 @@ public class LabelStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements L
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LabelType getLabel() {
         return label;
     }
@@ -128,6 +131,7 @@ public class LabelStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements L
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLabel(LabelType newLabel) {
         if (newLabel != label) {
             NotificationChain msgs = null;

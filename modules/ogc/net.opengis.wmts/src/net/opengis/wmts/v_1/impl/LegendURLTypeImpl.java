@@ -175,6 +175,7 @@ public class LegendURLTypeImpl extends OnlineResourceTypeImpl implements LegendU
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getFormat() {
         return format;
     }
@@ -184,6 +185,7 @@ public class LegendURLTypeImpl extends OnlineResourceTypeImpl implements LegendU
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFormat(String newFormat) {
         String oldFormat = format;
         format = newFormat;
@@ -196,6 +198,7 @@ public class LegendURLTypeImpl extends OnlineResourceTypeImpl implements LegendU
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getHeight() {
         return height;
     }
@@ -205,6 +208,7 @@ public class LegendURLTypeImpl extends OnlineResourceTypeImpl implements LegendU
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setHeight(BigInteger newHeight) {
         BigInteger oldHeight = height;
         height = newHeight;
@@ -217,6 +221,7 @@ public class LegendURLTypeImpl extends OnlineResourceTypeImpl implements LegendU
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public double getMaxScaleDenominator() {
         return maxScaleDenominator;
     }
@@ -226,6 +231,7 @@ public class LegendURLTypeImpl extends OnlineResourceTypeImpl implements LegendU
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMaxScaleDenominator(double newMaxScaleDenominator) {
         double oldMaxScaleDenominator = maxScaleDenominator;
         maxScaleDenominator = newMaxScaleDenominator;
@@ -240,6 +246,7 @@ public class LegendURLTypeImpl extends OnlineResourceTypeImpl implements LegendU
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetMaxScaleDenominator() {
         double oldMaxScaleDenominator = maxScaleDenominator;
         boolean oldMaxScaleDenominatorESet = maxScaleDenominatorESet;
@@ -254,6 +261,7 @@ public class LegendURLTypeImpl extends OnlineResourceTypeImpl implements LegendU
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetMaxScaleDenominator() {
         return maxScaleDenominatorESet;
     }
@@ -263,6 +271,7 @@ public class LegendURLTypeImpl extends OnlineResourceTypeImpl implements LegendU
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public double getMinScaleDenominator() {
         return minScaleDenominator;
     }
@@ -272,6 +281,7 @@ public class LegendURLTypeImpl extends OnlineResourceTypeImpl implements LegendU
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMinScaleDenominator(double newMinScaleDenominator) {
         double oldMinScaleDenominator = minScaleDenominator;
         minScaleDenominator = newMinScaleDenominator;
@@ -286,6 +296,7 @@ public class LegendURLTypeImpl extends OnlineResourceTypeImpl implements LegendU
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetMinScaleDenominator() {
         double oldMinScaleDenominator = minScaleDenominator;
         boolean oldMinScaleDenominatorESet = minScaleDenominatorESet;
@@ -300,6 +311,7 @@ public class LegendURLTypeImpl extends OnlineResourceTypeImpl implements LegendU
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetMinScaleDenominator() {
         return minScaleDenominatorESet;
     }
@@ -309,6 +321,7 @@ public class LegendURLTypeImpl extends OnlineResourceTypeImpl implements LegendU
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getWidth() {
         return width;
     }
@@ -318,6 +331,7 @@ public class LegendURLTypeImpl extends OnlineResourceTypeImpl implements LegendU
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setWidth(BigInteger newWidth) {
         BigInteger oldWidth = width;
         width = newWidth;

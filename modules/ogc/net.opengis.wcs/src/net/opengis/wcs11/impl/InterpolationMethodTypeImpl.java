@@ -63,6 +63,7 @@ public class InterpolationMethodTypeImpl extends InterpolationMethodBaseTypeImpl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EClass eStaticClass() {
         return Wcs111Package.Literals.INTERPOLATION_METHOD_TYPE;
     }
@@ -72,6 +73,7 @@ public class InterpolationMethodTypeImpl extends InterpolationMethodBaseTypeImpl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getNullResistance() {
         return nullResistance;
     }
@@ -81,6 +83,7 @@ public class InterpolationMethodTypeImpl extends InterpolationMethodBaseTypeImpl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setNullResistance(String newNullResistance) {
         String oldNullResistance = nullResistance;
         nullResistance = newNullResistance;
@@ -93,6 +96,7 @@ public class InterpolationMethodTypeImpl extends InterpolationMethodBaseTypeImpl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case Wcs111Package.INTERPOLATION_METHOD_TYPE__NULL_RESISTANCE:
@@ -106,6 +110,7 @@ public class InterpolationMethodTypeImpl extends InterpolationMethodBaseTypeImpl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Wcs111Package.INTERPOLATION_METHOD_TYPE__NULL_RESISTANCE:
@@ -120,6 +125,7 @@ public class InterpolationMethodTypeImpl extends InterpolationMethodBaseTypeImpl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case Wcs111Package.INTERPOLATION_METHOD_TYPE__NULL_RESISTANCE:
@@ -134,6 +140,7 @@ public class InterpolationMethodTypeImpl extends InterpolationMethodBaseTypeImpl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case Wcs111Package.INTERPOLATION_METHOD_TYPE__NULL_RESISTANCE:
@@ -147,6 +154,7 @@ public class InterpolationMethodTypeImpl extends InterpolationMethodBaseTypeImpl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String toString() {
         if (eIsProxy()) return super.toString();
 

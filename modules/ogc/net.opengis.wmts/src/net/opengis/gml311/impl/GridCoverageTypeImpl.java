@@ -62,6 +62,7 @@ public class GridCoverageTypeImpl extends AbstractDiscreteCoverageTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GridDomainType getGridDomain() {
         return gridDomain;
     }
@@ -86,6 +87,7 @@ public class GridCoverageTypeImpl extends AbstractDiscreteCoverageTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGridDomain(GridDomainType newGridDomain) {
         if (newGridDomain != gridDomain) {
             NotificationChain msgs = null;

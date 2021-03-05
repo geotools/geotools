@@ -71,6 +71,7 @@ public class TemporalDatumTypeImpl extends TemporalDatumBaseTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public XMLGregorianCalendar getOrigin() {
         return origin;
     }
@@ -80,6 +81,7 @@ public class TemporalDatumTypeImpl extends TemporalDatumBaseTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOrigin(XMLGregorianCalendar newOrigin) {
         XMLGregorianCalendar oldOrigin = origin;
         origin = newOrigin;

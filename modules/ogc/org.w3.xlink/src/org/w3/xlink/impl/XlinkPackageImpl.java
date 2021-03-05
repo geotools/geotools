@@ -249,7 +249,8 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
         EValidator.Registry.INSTANCE.put
             (theXlinkPackage, 
              new EValidator.Descriptor() {
-                 public EValidator getEValidator() {
+                 @Override
+                public EValidator getEValidator() {
                      return XlinkValidator.INSTANCE;
                  }
              });
@@ -268,6 +269,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getArcType() {
         return arcTypeEClass;
     }
@@ -277,6 +279,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getArcType_TitleGroup() {
         return (EAttribute)arcTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -286,6 +289,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getArcType_Title() {
         return (EReference)arcTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -295,6 +299,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getArcType_Actuate() {
         return (EAttribute)arcTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -304,6 +309,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getArcType_Arcrole() {
         return (EAttribute)arcTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -313,6 +319,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getArcType_From() {
         return (EAttribute)arcTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -322,6 +329,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getArcType_Show() {
         return (EAttribute)arcTypeEClass.getEStructuralFeatures().get(5);
     }
@@ -331,6 +339,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getArcType_Title1() {
         return (EAttribute)arcTypeEClass.getEStructuralFeatures().get(6);
     }
@@ -340,6 +349,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getArcType_To() {
         return (EAttribute)arcTypeEClass.getEStructuralFeatures().get(7);
     }
@@ -349,6 +359,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getArcType_Type() {
         return (EAttribute)arcTypeEClass.getEStructuralFeatures().get(8);
     }
@@ -358,6 +369,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getDocumentRoot() {
         return documentRootEClass;
     }
@@ -367,6 +379,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDocumentRoot_Mixed() {
         return (EAttribute)documentRootEClass.getEStructuralFeatures().get(0);
     }
@@ -376,6 +389,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_XMLNSPrefixMap() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(1);
     }
@@ -385,6 +399,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_XSISchemaLocation() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(2);
     }
@@ -394,6 +409,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Arc() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(3);
     }
@@ -403,6 +419,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Locator() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(4);
     }
@@ -412,6 +429,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Resource() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(5);
     }
@@ -421,6 +439,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDocumentRoot_Actuate() {
         return (EAttribute)documentRootEClass.getEStructuralFeatures().get(7);
     }
@@ -430,6 +449,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDocumentRoot_Arcrole() {
         return (EAttribute)documentRootEClass.getEStructuralFeatures().get(8);
     }
@@ -439,6 +459,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDocumentRoot_From() {
         return (EAttribute)documentRootEClass.getEStructuralFeatures().get(9);
     }
@@ -448,6 +469,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDocumentRoot_Href() {
         return (EAttribute)documentRootEClass.getEStructuralFeatures().get(10);
     }
@@ -457,6 +479,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDocumentRoot_Label() {
         return (EAttribute)documentRootEClass.getEStructuralFeatures().get(11);
     }
@@ -466,6 +489,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDocumentRoot_Role() {
         return (EAttribute)documentRootEClass.getEStructuralFeatures().get(12);
     }
@@ -475,6 +499,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDocumentRoot_Show() {
         return (EAttribute)documentRootEClass.getEStructuralFeatures().get(13);
     }
@@ -484,6 +509,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDocumentRoot_Title1() {
         return (EAttribute)documentRootEClass.getEStructuralFeatures().get(14);
     }
@@ -493,6 +519,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Title() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(6);
     }
@@ -502,6 +529,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDocumentRoot_To() {
         return (EAttribute)documentRootEClass.getEStructuralFeatures().get(15);
     }
@@ -511,6 +539,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDocumentRoot_Type() {
         return (EAttribute)documentRootEClass.getEStructuralFeatures().get(16);
     }
@@ -520,6 +549,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getExtended() {
         return extendedEClass;
     }
@@ -529,6 +559,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getExtended_Title() {
         return (EReference)extendedEClass.getEStructuralFeatures().get(0);
     }
@@ -538,6 +569,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getExtended_Resource() {
         return (EReference)extendedEClass.getEStructuralFeatures().get(1);
     }
@@ -547,6 +579,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getExtended_Locator() {
         return (EReference)extendedEClass.getEStructuralFeatures().get(2);
     }
@@ -556,6 +589,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getExtended_Arc() {
         return (EReference)extendedEClass.getEStructuralFeatures().get(3);
     }
@@ -565,6 +599,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getExtended_Role() {
         return (EAttribute)extendedEClass.getEStructuralFeatures().get(4);
     }
@@ -574,6 +609,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getExtended_Type() {
         return (EAttribute)extendedEClass.getEStructuralFeatures().get(5);
     }
@@ -583,6 +619,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getExtended_TitleAttribute() {
         return (EAttribute)extendedEClass.getEStructuralFeatures().get(6);
     }
@@ -592,6 +629,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getLocatorType() {
         return locatorTypeEClass;
     }
@@ -601,6 +639,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getLocatorType_TitleGroup() {
         return (EAttribute)locatorTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -610,6 +649,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getLocatorType_Title() {
         return (EReference)locatorTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -619,6 +659,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getLocatorType_Href() {
         return (EAttribute)locatorTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -628,6 +669,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getLocatorType_Label() {
         return (EAttribute)locatorTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -637,6 +679,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getLocatorType_Role() {
         return (EAttribute)locatorTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -646,6 +689,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getLocatorType_Title1() {
         return (EAttribute)locatorTypeEClass.getEStructuralFeatures().get(5);
     }
@@ -655,6 +699,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getLocatorType_Type() {
         return (EAttribute)locatorTypeEClass.getEStructuralFeatures().get(6);
     }
@@ -664,6 +709,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getResourceType() {
         return resourceTypeEClass;
     }
@@ -673,6 +719,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getResourceType_Label() {
         return (EAttribute)resourceTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -682,6 +729,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getResourceType_Role() {
         return (EAttribute)resourceTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -691,6 +739,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getResourceType_Title() {
         return (EAttribute)resourceTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -700,6 +749,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getResourceType_Type() {
         return (EAttribute)resourceTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -709,6 +759,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getResourceType_Contents() {
         return (EReference)resourceTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -718,6 +769,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getSimple() {
         return simpleEClass;
     }
@@ -727,6 +779,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSimple_Actuate() {
         return (EAttribute)simpleEClass.getEStructuralFeatures().get(0);
     }
@@ -736,6 +789,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSimple_Arcrole() {
         return (EAttribute)simpleEClass.getEStructuralFeatures().get(1);
     }
@@ -745,6 +799,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSimple_Href() {
         return (EAttribute)simpleEClass.getEStructuralFeatures().get(2);
     }
@@ -754,6 +809,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSimple_Role() {
         return (EAttribute)simpleEClass.getEStructuralFeatures().get(3);
     }
@@ -763,6 +819,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSimple_Show() {
         return (EAttribute)simpleEClass.getEStructuralFeatures().get(4);
     }
@@ -772,6 +829,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSimple_Title() {
         return (EAttribute)simpleEClass.getEStructuralFeatures().get(5);
     }
@@ -781,6 +839,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSimple_Type() {
         return (EAttribute)simpleEClass.getEStructuralFeatures().get(6);
     }
@@ -790,6 +849,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getSimple_Contents() {
         return (EReference)simpleEClass.getEStructuralFeatures().get(7);
     }
@@ -799,6 +859,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getTitleEltType() {
         return titleEltTypeEClass;
     }
@@ -808,6 +869,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTitleEltType_Lang() {
         return (EAttribute)titleEltTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -817,6 +879,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTitleEltType_Type() {
         return (EAttribute)titleEltTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -826,6 +889,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getTitleEltType_Contents() {
         return (EReference)titleEltTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -835,6 +899,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getObject() {
         return objectEClass;
     }
@@ -844,6 +909,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EEnum getActuateType() {
         return actuateTypeEEnum;
     }
@@ -853,6 +919,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EEnum getShowType() {
         return showTypeEEnum;
     }
@@ -862,6 +929,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EEnum getTypeType() {
         return typeTypeEEnum;
     }
@@ -871,6 +939,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getActuateTypeObject() {
         return actuateTypeObjectEDataType;
     }
@@ -880,6 +949,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getArcroleType() {
         return arcroleTypeEDataType;
     }
@@ -889,6 +959,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getFromType() {
         return fromTypeEDataType;
     }
@@ -898,6 +969,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getHrefType() {
         return hrefTypeEDataType;
     }
@@ -907,6 +979,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getLabelType() {
         return labelTypeEDataType;
     }
@@ -916,6 +989,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getRoleType() {
         return roleTypeEDataType;
     }
@@ -925,6 +999,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getShowTypeObject() {
         return showTypeObjectEDataType;
     }
@@ -934,6 +1009,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getTitleAttrType() {
         return titleAttrTypeEDataType;
     }
@@ -943,6 +1019,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getToType() {
         return toTypeEDataType;
     }
@@ -952,6 +1029,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getTypeTypeObject() {
         return typeTypeObjectEDataType;
     }
@@ -961,6 +1039,7 @@ public class XlinkPackageImpl extends EPackageImpl implements XlinkPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public XlinkFactory getXlinkFactory() {
         return (XlinkFactory)getEFactoryInstance();
     }

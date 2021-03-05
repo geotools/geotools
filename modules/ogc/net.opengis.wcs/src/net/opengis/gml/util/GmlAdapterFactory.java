@@ -52,7 +52,8 @@ public class GmlAdapterFactory extends AdapterFactoryImpl {
 	 * @return whether this factory is applicable for the type of the object.
 	 * @generated
 	 */
-	public boolean isFactoryForType(Object object) {
+	@Override
+    public boolean isFactoryForType(Object object) {
 		if (object == modelPackage) {
 			return true;
 		}
@@ -70,88 +71,116 @@ public class GmlAdapterFactory extends AdapterFactoryImpl {
 	 */
 	protected GmlSwitch modelSwitch =
 		new GmlSwitch() {
-			public Object caseAbstractGeometricPrimitiveType(AbstractGeometricPrimitiveType object) {
+			@Override
+            public Object caseAbstractGeometricPrimitiveType(AbstractGeometricPrimitiveType object) {
 				return createAbstractGeometricPrimitiveTypeAdapter();
 			}
-			public Object caseAbstractGeometryBaseType(AbstractGeometryBaseType object) {
+			@Override
+            public Object caseAbstractGeometryBaseType(AbstractGeometryBaseType object) {
 				return createAbstractGeometryBaseTypeAdapter();
 			}
-			public Object caseAbstractGeometryType(AbstractGeometryType object) {
+			@Override
+            public Object caseAbstractGeometryType(AbstractGeometryType object) {
 				return createAbstractGeometryTypeAdapter();
 			}
-			public Object caseAbstractGMLType(AbstractGMLType object) {
+			@Override
+            public Object caseAbstractGMLType(AbstractGMLType object) {
 				return createAbstractGMLTypeAdapter();
 			}
-			public Object caseAbstractMetaDataType(AbstractMetaDataType object) {
+			@Override
+            public Object caseAbstractMetaDataType(AbstractMetaDataType object) {
 				return createAbstractMetaDataTypeAdapter();
 			}
-			public Object caseAbstractRingPropertyType(AbstractRingPropertyType object) {
+			@Override
+            public Object caseAbstractRingPropertyType(AbstractRingPropertyType object) {
 				return createAbstractRingPropertyTypeAdapter();
 			}
-			public Object caseAbstractRingType(AbstractRingType object) {
+			@Override
+            public Object caseAbstractRingType(AbstractRingType object) {
 				return createAbstractRingTypeAdapter();
 			}
-			public Object caseAbstractSurfaceType(AbstractSurfaceType object) {
+			@Override
+            public Object caseAbstractSurfaceType(AbstractSurfaceType object) {
 				return createAbstractSurfaceTypeAdapter();
 			}
-			public Object caseBoundingShapeType(BoundingShapeType object) {
+			@Override
+            public Object caseBoundingShapeType(BoundingShapeType object) {
 				return createBoundingShapeTypeAdapter();
 			}
-			public Object caseCodeListType(CodeListType object) {
+			@Override
+            public Object caseCodeListType(CodeListType object) {
 				return createCodeListTypeAdapter();
 			}
-			public Object caseCodeType(CodeType object) {
+			@Override
+            public Object caseCodeType(CodeType object) {
 				return createCodeTypeAdapter();
 			}
-			public Object caseDirectPositionType(DirectPositionType object) {
+			@Override
+            public Object caseDirectPositionType(DirectPositionType object) {
 				return createDirectPositionTypeAdapter();
 			}
-			public Object caseDocumentRoot(DocumentRoot object) {
+			@Override
+            public Object caseDocumentRoot(DocumentRoot object) {
 				return createDocumentRootAdapter();
 			}
-			public Object caseEnvelopeType(EnvelopeType object) {
+			@Override
+            public Object caseEnvelopeType(EnvelopeType object) {
 				return createEnvelopeTypeAdapter();
 			}
-			public Object caseEnvelopeWithTimePeriodType(EnvelopeWithTimePeriodType object) {
+			@Override
+            public Object caseEnvelopeWithTimePeriodType(EnvelopeWithTimePeriodType object) {
 				return createEnvelopeWithTimePeriodTypeAdapter();
 			}
-			public Object caseGridEnvelopeType(GridEnvelopeType object) {
+			@Override
+            public Object caseGridEnvelopeType(GridEnvelopeType object) {
 				return createGridEnvelopeTypeAdapter();
 			}
-			public Object caseGridLimitsType(GridLimitsType object) {
+			@Override
+            public Object caseGridLimitsType(GridLimitsType object) {
 				return createGridLimitsTypeAdapter();
 			}
-			public Object caseGridType(GridType object) {
+			@Override
+            public Object caseGridType(GridType object) {
 				return createGridTypeAdapter();
 			}
-			public Object caseLinearRingType(LinearRingType object) {
+			@Override
+            public Object caseLinearRingType(LinearRingType object) {
 				return createLinearRingTypeAdapter();
 			}
-			public Object caseMetaDataPropertyType(MetaDataPropertyType object) {
+			@Override
+            public Object caseMetaDataPropertyType(MetaDataPropertyType object) {
 				return createMetaDataPropertyTypeAdapter();
 			}
-			public Object casePointType(PointType object) {
+			@Override
+            public Object casePointType(PointType object) {
 				return createPointTypeAdapter();
 			}
-			public Object casePolygonType(PolygonType object) {
+			@Override
+            public Object casePolygonType(PolygonType object) {
 				return createPolygonTypeAdapter();
 			}
-			public Object caseRectifiedGridType(RectifiedGridType object) {
+			@Override
+            public Object caseRectifiedGridType(RectifiedGridType object) {
 				return createRectifiedGridTypeAdapter();
 			}
-			public Object caseReferenceType(ReferenceType object) {
+			@Override
+            public Object caseReferenceType(ReferenceType object) {
 				return createReferenceTypeAdapter();
 			}
-			public Object caseStringOrRefType(StringOrRefType object) {
+			@Override
+            public Object caseStringOrRefType(StringOrRefType object) {
 				return createStringOrRefTypeAdapter();
 			}
-			public Object caseTimePositionType(TimePositionType object) {
+			@Override
+            public Object caseTimePositionType(TimePositionType object) {
 				return createTimePositionTypeAdapter();
 			}
-			public Object caseVectorType(VectorType object) {
+			@Override
+            public Object caseVectorType(VectorType object) {
 				return createVectorTypeAdapter();
 			}
-			public Object defaultCase(EObject object) {
+			@Override
+            public Object defaultCase(EObject object) {
 				return createEObjectAdapter();
 			}
 		};
@@ -164,7 +193,8 @@ public class GmlAdapterFactory extends AdapterFactoryImpl {
 	 * @return the adapter for the <code>target</code>.
 	 * @generated
 	 */
-	public Adapter createAdapter(Notifier target) {
+	@Override
+    public Adapter createAdapter(Notifier target) {
 		return (Adapter)modelSwitch.doSwitch((EObject)target);
 	}
 

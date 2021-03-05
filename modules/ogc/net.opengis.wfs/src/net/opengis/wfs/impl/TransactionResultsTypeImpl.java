@@ -85,7 +85,8 @@ public class TransactionResultsTypeImpl extends EObjectImpl implements Transacti
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.TRANSACTION_RESULTS_TYPE;
   }
 
@@ -94,7 +95,8 @@ public class TransactionResultsTypeImpl extends EObjectImpl implements Transacti
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getHandle() {
+	@Override
+    public String getHandle() {
     return handle;
   }
 
@@ -103,7 +105,8 @@ public class TransactionResultsTypeImpl extends EObjectImpl implements Transacti
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setHandle(String newHandle) {
+	@Override
+    public void setHandle(String newHandle) {
     String oldHandle = handle;
     handle = newHandle;
     if (eNotificationRequired())
@@ -115,7 +118,8 @@ public class TransactionResultsTypeImpl extends EObjectImpl implements Transacti
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList getAction() {
+	@Override
+    public EList getAction() {
     if (action == null) {
       action = new EObjectContainmentEList(ActionType.class, this, WfsPackage.TRANSACTION_RESULTS_TYPE__ACTION);
     }
@@ -127,7 +131,8 @@ public class TransactionResultsTypeImpl extends EObjectImpl implements Transacti
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+	@Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case WfsPackage.TRANSACTION_RESULTS_TYPE__ACTION:
         return ((InternalEList)getAction()).basicRemove(otherEnd, msgs);
@@ -140,7 +145,8 @@ public class TransactionResultsTypeImpl extends EObjectImpl implements Transacti
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	@Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.TRANSACTION_RESULTS_TYPE__HANDLE:
         return getHandle();
@@ -155,7 +161,8 @@ public class TransactionResultsTypeImpl extends EObjectImpl implements Transacti
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(int featureID, Object newValue) {
+	@Override
+    public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.TRANSACTION_RESULTS_TYPE__HANDLE:
         setHandle((String)newValue);
@@ -173,7 +180,8 @@ public class TransactionResultsTypeImpl extends EObjectImpl implements Transacti
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(int featureID) {
+	@Override
+    public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.TRANSACTION_RESULTS_TYPE__HANDLE:
         setHandle(HANDLE_EDEFAULT);
@@ -190,7 +198,8 @@ public class TransactionResultsTypeImpl extends EObjectImpl implements Transacti
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(int featureID) {
+	@Override
+    public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.TRANSACTION_RESULTS_TYPE__HANDLE:
         return HANDLE_EDEFAULT == null ? handle != null : !HANDLE_EDEFAULT.equals(handle);
@@ -205,7 +214,8 @@ public class TransactionResultsTypeImpl extends EObjectImpl implements Transacti
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String toString() {
+	@Override
+    public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

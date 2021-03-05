@@ -138,6 +138,7 @@ public class RangeSetTypeImpl extends AbstractDescriptionTypeImpl implements Ran
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.RANGE_SET_TYPE;
 	}
@@ -147,6 +148,7 @@ public class RangeSetTypeImpl extends AbstractDescriptionTypeImpl implements Ran
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList getAxisDescription() {
 		if (axisDescription == null) {
 			axisDescription = new EObjectContainmentEList(AxisDescriptionType1.class, this, Wcs10Package.RANGE_SET_TYPE__AXIS_DESCRIPTION);
@@ -159,6 +161,7 @@ public class RangeSetTypeImpl extends AbstractDescriptionTypeImpl implements Ran
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ValueEnumType getNullValues() {
 		return nullValues;
 	}
@@ -183,6 +186,7 @@ public class RangeSetTypeImpl extends AbstractDescriptionTypeImpl implements Ran
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setNullValues(ValueEnumType newNullValues) {
 		if (newNullValues != nullValues) {
 			NotificationChain msgs = null;
@@ -202,6 +206,7 @@ public class RangeSetTypeImpl extends AbstractDescriptionTypeImpl implements Ran
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getRefSys() {
 		return refSys;
 	}
@@ -211,6 +216,7 @@ public class RangeSetTypeImpl extends AbstractDescriptionTypeImpl implements Ran
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setRefSys(String newRefSys) {
 		String oldRefSys = refSys;
 		refSys = newRefSys;
@@ -223,6 +229,7 @@ public class RangeSetTypeImpl extends AbstractDescriptionTypeImpl implements Ran
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getRefSysLabel() {
 		return refSysLabel;
 	}
@@ -232,6 +239,7 @@ public class RangeSetTypeImpl extends AbstractDescriptionTypeImpl implements Ran
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setRefSysLabel(String newRefSysLabel) {
 		String oldRefSysLabel = refSysLabel;
 		refSysLabel = newRefSysLabel;
@@ -244,6 +252,7 @@ public class RangeSetTypeImpl extends AbstractDescriptionTypeImpl implements Ran
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getSemantic() {
 		return semantic;
 	}
@@ -253,6 +262,7 @@ public class RangeSetTypeImpl extends AbstractDescriptionTypeImpl implements Ran
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setSemantic(String newSemantic) {
 		String oldSemantic = semantic;
 		semantic = newSemantic;
@@ -265,6 +275,7 @@ public class RangeSetTypeImpl extends AbstractDescriptionTypeImpl implements Ran
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.RANGE_SET_TYPE__AXIS_DESCRIPTION:
@@ -280,6 +291,7 @@ public class RangeSetTypeImpl extends AbstractDescriptionTypeImpl implements Ran
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.RANGE_SET_TYPE__AXIS_DESCRIPTION:
@@ -301,6 +313,7 @@ public class RangeSetTypeImpl extends AbstractDescriptionTypeImpl implements Ran
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.RANGE_SET_TYPE__AXIS_DESCRIPTION:
@@ -328,6 +341,7 @@ public class RangeSetTypeImpl extends AbstractDescriptionTypeImpl implements Ran
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.RANGE_SET_TYPE__AXIS_DESCRIPTION:
@@ -354,6 +368,7 @@ public class RangeSetTypeImpl extends AbstractDescriptionTypeImpl implements Ran
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.RANGE_SET_TYPE__AXIS_DESCRIPTION:
@@ -375,6 +390,7 @@ public class RangeSetTypeImpl extends AbstractDescriptionTypeImpl implements Ran
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

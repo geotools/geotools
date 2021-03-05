@@ -90,6 +90,7 @@ public class RecordPropertyTypeImpl extends EObjectImpl implements RecordPropert
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -99,6 +100,7 @@ public class RecordPropertyTypeImpl extends EObjectImpl implements RecordPropert
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setName(String newName) {
         String oldName = name;
         name = newName;
@@ -111,6 +113,7 @@ public class RecordPropertyTypeImpl extends EObjectImpl implements RecordPropert
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EObject getValue() {
         return value;
     }
@@ -135,6 +138,7 @@ public class RecordPropertyTypeImpl extends EObjectImpl implements RecordPropert
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValue(EObject newValue) {
         if (newValue != value) {
             NotificationChain msgs = null;

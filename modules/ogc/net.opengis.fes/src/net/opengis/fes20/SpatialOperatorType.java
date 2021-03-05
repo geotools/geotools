@@ -69,6 +69,7 @@ public interface SpatialOperatorType extends EObject, SpatialOperator {
      *        extendedMetaData="kind='attribute' name='name'"
      * @generated
      */
+    @Override
     String getName();
 
     /**

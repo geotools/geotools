@@ -91,6 +91,7 @@ public class InterpolationAxisTypeImpl extends EObjectImpl implements Interpolat
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getAxis() {
 		return axis;
 	}
@@ -100,6 +101,7 @@ public class InterpolationAxisTypeImpl extends EObjectImpl implements Interpolat
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setAxis(String newAxis) {
 		String oldAxis = axis;
 		axis = newAxis;
@@ -112,6 +114,7 @@ public class InterpolationAxisTypeImpl extends EObjectImpl implements Interpolat
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getInterpolationMethod() {
 		return interpolationMethod;
 	}
@@ -121,6 +124,7 @@ public class InterpolationAxisTypeImpl extends EObjectImpl implements Interpolat
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setInterpolationMethod(String newInterpolationMethod) {
 		String oldInterpolationMethod = interpolationMethod;
 		interpolationMethod = newInterpolationMethod;

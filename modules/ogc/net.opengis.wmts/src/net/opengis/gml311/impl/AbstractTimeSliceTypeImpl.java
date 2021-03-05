@@ -74,6 +74,7 @@ public abstract class AbstractTimeSliceTypeImpl extends AbstractGMLTypeImpl impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimePrimitivePropertyType getValidTime() {
         return validTime;
     }
@@ -98,6 +99,7 @@ public abstract class AbstractTimeSliceTypeImpl extends AbstractGMLTypeImpl impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValidTime(TimePrimitivePropertyType newValidTime) {
         if (newValidTime != validTime) {
             NotificationChain msgs = null;
@@ -117,6 +119,7 @@ public abstract class AbstractTimeSliceTypeImpl extends AbstractGMLTypeImpl impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StringOrRefType getDataSource() {
         return dataSource;
     }
@@ -141,6 +144,7 @@ public abstract class AbstractTimeSliceTypeImpl extends AbstractGMLTypeImpl impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDataSource(StringOrRefType newDataSource) {
         if (newDataSource != dataSource) {
             NotificationChain msgs = null;

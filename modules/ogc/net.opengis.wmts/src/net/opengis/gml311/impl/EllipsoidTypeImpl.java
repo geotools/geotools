@@ -105,6 +105,7 @@ public class EllipsoidTypeImpl extends EllipsoidBaseTypeImpl implements Ellipsoi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<IdentifierType> getEllipsoidID() {
         if (ellipsoidID == null) {
             ellipsoidID = new EObjectContainmentEList<>(IdentifierType.class, this, Gml311Package.ELLIPSOID_TYPE__ELLIPSOID_ID);
@@ -117,6 +118,7 @@ public class EllipsoidTypeImpl extends EllipsoidBaseTypeImpl implements Ellipsoi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StringOrRefType getRemarks() {
         return remarks;
     }
@@ -141,6 +143,7 @@ public class EllipsoidTypeImpl extends EllipsoidBaseTypeImpl implements Ellipsoi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRemarks(StringOrRefType newRemarks) {
         if (newRemarks != remarks) {
             NotificationChain msgs = null;
@@ -160,6 +163,7 @@ public class EllipsoidTypeImpl extends EllipsoidBaseTypeImpl implements Ellipsoi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MeasureType getSemiMajorAxis() {
         return semiMajorAxis;
     }
@@ -184,6 +188,7 @@ public class EllipsoidTypeImpl extends EllipsoidBaseTypeImpl implements Ellipsoi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSemiMajorAxis(MeasureType newSemiMajorAxis) {
         if (newSemiMajorAxis != semiMajorAxis) {
             NotificationChain msgs = null;
@@ -203,6 +208,7 @@ public class EllipsoidTypeImpl extends EllipsoidBaseTypeImpl implements Ellipsoi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SecondDefiningParameterType getSecondDefiningParameter() {
         return secondDefiningParameter;
     }
@@ -227,6 +233,7 @@ public class EllipsoidTypeImpl extends EllipsoidBaseTypeImpl implements Ellipsoi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSecondDefiningParameter(SecondDefiningParameterType newSecondDefiningParameter) {
         if (newSecondDefiningParameter != secondDefiningParameter) {
             NotificationChain msgs = null;

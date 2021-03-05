@@ -76,6 +76,7 @@ public class CapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements Ca
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ServiceMetadataType getServiceMetadata() {
 		return serviceMetadata;
 	}
@@ -100,6 +101,7 @@ public class CapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements Ca
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setServiceMetadata(ServiceMetadataType newServiceMetadata) {
 		if (newServiceMetadata != serviceMetadata) {
 			NotificationChain msgs = null;
@@ -119,6 +121,7 @@ public class CapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements Ca
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ContentsType getContents() {
 		return contents;
 	}
@@ -143,6 +146,7 @@ public class CapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements Ca
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setContents(ContentsType newContents) {
 		if (newContents != contents) {
 			NotificationChain msgs = null;

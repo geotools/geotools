@@ -74,6 +74,7 @@ public class ComparisonOperatorTypeImpl extends EObjectImpl implements Compariso
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getName() {
         return name == null ? null : name.toString();
     }
@@ -83,6 +84,7 @@ public class ComparisonOperatorTypeImpl extends EObjectImpl implements Compariso
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setName(String newName) {
         Object oldName = name;
         name = newName;

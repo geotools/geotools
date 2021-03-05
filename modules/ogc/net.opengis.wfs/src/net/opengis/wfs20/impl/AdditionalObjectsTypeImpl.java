@@ -84,6 +84,7 @@ public class AdditionalObjectsTypeImpl extends EObjectImpl implements Additional
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ValueCollectionType getValueCollection() {
     return valueCollection;
   }
@@ -108,6 +109,7 @@ public class AdditionalObjectsTypeImpl extends EObjectImpl implements Additional
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setValueCollection(ValueCollectionType newValueCollection) {
     if (newValueCollection != valueCollection) {
       NotificationChain msgs = null;
@@ -127,6 +129,7 @@ public class AdditionalObjectsTypeImpl extends EObjectImpl implements Additional
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureMap getSimpleFeatureCollectionGroup() {
     if (simpleFeatureCollectionGroup == null) {
       simpleFeatureCollectionGroup = new BasicFeatureMap(this, Wfs20Package.ADDITIONAL_OBJECTS_TYPE__SIMPLE_FEATURE_COLLECTION_GROUP);
@@ -139,6 +142,7 @@ public class AdditionalObjectsTypeImpl extends EObjectImpl implements Additional
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public SimpleFeatureCollectionType getSimpleFeatureCollection() {
     return (SimpleFeatureCollectionType)getSimpleFeatureCollectionGroup().get(Wfs20Package.Literals.ADDITIONAL_OBJECTS_TYPE__SIMPLE_FEATURE_COLLECTION, true);
   }
@@ -157,6 +161,7 @@ public class AdditionalObjectsTypeImpl extends EObjectImpl implements Additional
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setSimpleFeatureCollection(SimpleFeatureCollectionType newSimpleFeatureCollection) {
     ((FeatureMap.Internal)getSimpleFeatureCollectionGroup()).set(Wfs20Package.Literals.ADDITIONAL_OBJECTS_TYPE__SIMPLE_FEATURE_COLLECTION, newSimpleFeatureCollection);
   }

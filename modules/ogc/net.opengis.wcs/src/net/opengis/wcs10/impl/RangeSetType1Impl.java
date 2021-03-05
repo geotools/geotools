@@ -57,6 +57,7 @@ public class RangeSetType1Impl extends EObjectImpl implements RangeSetType1 {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.RANGE_SET_TYPE1;
 	}
@@ -66,6 +67,7 @@ public class RangeSetType1Impl extends EObjectImpl implements RangeSetType1 {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public RangeSetType getRangeSet() {
 		return rangeSet;
 	}
@@ -90,6 +92,7 @@ public class RangeSetType1Impl extends EObjectImpl implements RangeSetType1 {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setRangeSet(RangeSetType newRangeSet) {
 		if (newRangeSet != rangeSet) {
 			NotificationChain msgs = null;
@@ -109,6 +112,7 @@ public class RangeSetType1Impl extends EObjectImpl implements RangeSetType1 {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.RANGE_SET_TYPE1__RANGE_SET:
@@ -122,6 +126,7 @@ public class RangeSetType1Impl extends EObjectImpl implements RangeSetType1 {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.RANGE_SET_TYPE1__RANGE_SET:
@@ -135,6 +140,7 @@ public class RangeSetType1Impl extends EObjectImpl implements RangeSetType1 {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.RANGE_SET_TYPE1__RANGE_SET:
@@ -149,6 +155,7 @@ public class RangeSetType1Impl extends EObjectImpl implements RangeSetType1 {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.RANGE_SET_TYPE1__RANGE_SET:
@@ -163,6 +170,7 @@ public class RangeSetType1Impl extends EObjectImpl implements RangeSetType1 {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.RANGE_SET_TYPE1__RANGE_SET:

@@ -122,6 +122,7 @@ public class URLTemplateTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getFormat() {
         return format;
     }
@@ -131,6 +132,7 @@ public class URLTemplateTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFormat(String newFormat) {
         String oldFormat = format;
         format = newFormat;
@@ -143,6 +145,7 @@ public class URLTemplateTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ResourceTypeType getResourceType() {
         return resourceType;
     }
@@ -152,6 +155,7 @@ public class URLTemplateTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setResourceType(ResourceTypeType newResourceType) {
         ResourceTypeType oldResourceType = resourceType;
         resourceType = newResourceType == null ? RESOURCE_TYPE_EDEFAULT : newResourceType;
@@ -166,6 +170,7 @@ public class URLTemplateTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetResourceType() {
         ResourceTypeType oldResourceType = resourceType;
         boolean oldResourceTypeESet = resourceTypeESet;
@@ -180,6 +185,7 @@ public class URLTemplateTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetResourceType() {
         return resourceTypeESet;
     }
@@ -189,6 +195,7 @@ public class URLTemplateTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getTemplate() {
         return template;
     }
@@ -198,6 +205,7 @@ public class URLTemplateTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTemplate(String newTemplate) {
         String oldTemplate = template;
         template = newTemplate;

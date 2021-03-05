@@ -88,6 +88,7 @@ public class SimpleFeatureCollectionTypeImpl extends EObjectImpl implements Simp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EnvelopePropertyType getBoundedBy() {
     return boundedBy;
   }
@@ -112,6 +113,7 @@ public class SimpleFeatureCollectionTypeImpl extends EObjectImpl implements Simp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setBoundedBy(EnvelopePropertyType newBoundedBy) {
     if (newBoundedBy != boundedBy) {
       NotificationChain msgs = null;
@@ -131,6 +133,7 @@ public class SimpleFeatureCollectionTypeImpl extends EObjectImpl implements Simp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<FeatureCollection> getMember() {
     if (member == null) {
       member = new EDataTypeUniqueEList<>(FeatureCollection.class, this, Wfs20Package.SIMPLE_FEATURE_COLLECTION_TYPE__MEMBER);

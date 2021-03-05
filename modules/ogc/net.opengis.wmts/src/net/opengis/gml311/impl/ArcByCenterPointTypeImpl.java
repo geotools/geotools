@@ -207,6 +207,7 @@ public class ArcByCenterPointTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectPositionType getPos() {
         return pos;
     }
@@ -231,6 +232,7 @@ public class ArcByCenterPointTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPos(DirectPositionType newPos) {
         if (newPos != pos) {
             NotificationChain msgs = null;
@@ -250,6 +252,7 @@ public class ArcByCenterPointTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PointPropertyType getPointProperty() {
         return pointProperty;
     }
@@ -274,6 +277,7 @@ public class ArcByCenterPointTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPointProperty(PointPropertyType newPointProperty) {
         if (newPointProperty != pointProperty) {
             NotificationChain msgs = null;
@@ -293,6 +297,7 @@ public class ArcByCenterPointTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PointPropertyType getPointRep() {
         return pointRep;
     }
@@ -317,6 +322,7 @@ public class ArcByCenterPointTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPointRep(PointPropertyType newPointRep) {
         if (newPointRep != pointRep) {
             NotificationChain msgs = null;
@@ -336,6 +342,7 @@ public class ArcByCenterPointTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectPositionListType getPosList() {
         return posList;
     }
@@ -360,6 +367,7 @@ public class ArcByCenterPointTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPosList(DirectPositionListType newPosList) {
         if (newPosList != posList) {
             NotificationChain msgs = null;
@@ -379,6 +387,7 @@ public class ArcByCenterPointTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinatesType getCoordinates() {
         return coordinates;
     }
@@ -403,6 +412,7 @@ public class ArcByCenterPointTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCoordinates(CoordinatesType newCoordinates) {
         if (newCoordinates != coordinates) {
             NotificationChain msgs = null;
@@ -422,6 +432,7 @@ public class ArcByCenterPointTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LengthType getRadius() {
         return radius;
     }
@@ -446,6 +457,7 @@ public class ArcByCenterPointTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRadius(LengthType newRadius) {
         if (newRadius != radius) {
             NotificationChain msgs = null;
@@ -465,6 +477,7 @@ public class ArcByCenterPointTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AngleType getStartAngle() {
         return startAngle;
     }
@@ -489,6 +502,7 @@ public class ArcByCenterPointTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setStartAngle(AngleType newStartAngle) {
         if (newStartAngle != startAngle) {
             NotificationChain msgs = null;
@@ -508,6 +522,7 @@ public class ArcByCenterPointTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AngleType getEndAngle() {
         return endAngle;
     }
@@ -532,6 +547,7 @@ public class ArcByCenterPointTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEndAngle(AngleType newEndAngle) {
         if (newEndAngle != endAngle) {
             NotificationChain msgs = null;
@@ -551,6 +567,7 @@ public class ArcByCenterPointTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CurveInterpolationType getInterpolation() {
         return interpolation;
     }
@@ -560,6 +577,7 @@ public class ArcByCenterPointTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setInterpolation(CurveInterpolationType newInterpolation) {
         CurveInterpolationType oldInterpolation = interpolation;
         interpolation = newInterpolation == null ? INTERPOLATION_EDEFAULT : newInterpolation;
@@ -574,6 +592,7 @@ public class ArcByCenterPointTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetInterpolation() {
         CurveInterpolationType oldInterpolation = interpolation;
         boolean oldInterpolationESet = interpolationESet;
@@ -588,6 +607,7 @@ public class ArcByCenterPointTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetInterpolation() {
         return interpolationESet;
     }
@@ -597,6 +617,7 @@ public class ArcByCenterPointTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getNumArc() {
         return numArc;
     }
@@ -606,6 +627,7 @@ public class ArcByCenterPointTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setNumArc(BigInteger newNumArc) {
         BigInteger oldNumArc = numArc;
         numArc = newNumArc;
@@ -620,6 +642,7 @@ public class ArcByCenterPointTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetNumArc() {
         BigInteger oldNumArc = numArc;
         boolean oldNumArcESet = numArcESet;
@@ -634,6 +657,7 @@ public class ArcByCenterPointTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetNumArc() {
         return numArcESet;
     }

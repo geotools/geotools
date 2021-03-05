@@ -62,6 +62,7 @@ public class VerticalDatumTypeImpl extends AbstractDatumTypeImpl implements Vert
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public VerticalDatumTypeType getVerticalDatumType() {
         return verticalDatumType;
     }
@@ -86,6 +87,7 @@ public class VerticalDatumTypeImpl extends AbstractDatumTypeImpl implements Vert
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setVerticalDatumType(VerticalDatumTypeType newVerticalDatumType) {
         if (newVerticalDatumType != verticalDatumType) {
             NotificationChain msgs = null;

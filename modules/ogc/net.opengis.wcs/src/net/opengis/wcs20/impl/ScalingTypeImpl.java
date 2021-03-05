@@ -98,6 +98,7 @@ public class ScalingTypeImpl extends EObjectImpl implements ScalingType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ScaleByFactorType getScaleByFactor() {
 		if (scaleByFactor != null && scaleByFactor.eIsProxy()) {
 			InternalEObject oldScaleByFactor = (InternalEObject)scaleByFactor;
@@ -124,6 +125,7 @@ public class ScalingTypeImpl extends EObjectImpl implements ScalingType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setScaleByFactor(ScaleByFactorType newScaleByFactor) {
 		ScaleByFactorType oldScaleByFactor = scaleByFactor;
 		scaleByFactor = newScaleByFactor;
@@ -136,6 +138,7 @@ public class ScalingTypeImpl extends EObjectImpl implements ScalingType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ScaleAxisByFactorType getScaleAxesByFactor() {
 		if (scaleAxesByFactor != null && scaleAxesByFactor.eIsProxy()) {
 			InternalEObject oldScaleAxesByFactor = (InternalEObject)scaleAxesByFactor;
@@ -162,6 +165,7 @@ public class ScalingTypeImpl extends EObjectImpl implements ScalingType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setScaleAxesByFactor(ScaleAxisByFactorType newScaleAxesByFactor) {
 		ScaleAxisByFactorType oldScaleAxesByFactor = scaleAxesByFactor;
 		scaleAxesByFactor = newScaleAxesByFactor;
@@ -174,6 +178,7 @@ public class ScalingTypeImpl extends EObjectImpl implements ScalingType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ScaleToSizeType getScaleToSize() {
 		if (scaleToSize != null && scaleToSize.eIsProxy()) {
 			InternalEObject oldScaleToSize = (InternalEObject)scaleToSize;
@@ -200,6 +205,7 @@ public class ScalingTypeImpl extends EObjectImpl implements ScalingType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setScaleToSize(ScaleToSizeType newScaleToSize) {
 		ScaleToSizeType oldScaleToSize = scaleToSize;
 		scaleToSize = newScaleToSize;
@@ -212,6 +218,7 @@ public class ScalingTypeImpl extends EObjectImpl implements ScalingType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ScaleToExtentType getScaleToExtent() {
 		if (scaleToExtent != null && scaleToExtent.eIsProxy()) {
 			InternalEObject oldScaleToExtent = (InternalEObject)scaleToExtent;
@@ -238,6 +245,7 @@ public class ScalingTypeImpl extends EObjectImpl implements ScalingType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setScaleToExtent(ScaleToExtentType newScaleToExtent) {
 		ScaleToExtentType oldScaleToExtent = scaleToExtent;
 		scaleToExtent = newScaleToExtent;

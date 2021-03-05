@@ -60,7 +60,8 @@ public class OperationsTypeImpl extends EObjectImpl implements OperationsType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.OPERATIONS_TYPE;
   }
 
@@ -69,7 +70,8 @@ public class OperationsTypeImpl extends EObjectImpl implements OperationsType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList getOperation() {
+	@Override
+    public EList getOperation() {
     if (operation == null) {
       operation = new EDataTypeEList(OperationType.class, this, WfsPackage.OPERATIONS_TYPE__OPERATION);
     }
@@ -81,7 +83,8 @@ public class OperationsTypeImpl extends EObjectImpl implements OperationsType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	@Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.OPERATIONS_TYPE__OPERATION:
         return getOperation();
@@ -94,7 +97,8 @@ public class OperationsTypeImpl extends EObjectImpl implements OperationsType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(int featureID, Object newValue) {
+	@Override
+    public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.OPERATIONS_TYPE__OPERATION:
         getOperation().clear();
@@ -109,7 +113,8 @@ public class OperationsTypeImpl extends EObjectImpl implements OperationsType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(int featureID) {
+	@Override
+    public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.OPERATIONS_TYPE__OPERATION:
         getOperation().clear();
@@ -123,7 +128,8 @@ public class OperationsTypeImpl extends EObjectImpl implements OperationsType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(int featureID) {
+	@Override
+    public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.OPERATIONS_TYPE__OPERATION:
         return operation != null && !operation.isEmpty();
@@ -136,7 +142,8 @@ public class OperationsTypeImpl extends EObjectImpl implements OperationsType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String toString() {
+	@Override
+    public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

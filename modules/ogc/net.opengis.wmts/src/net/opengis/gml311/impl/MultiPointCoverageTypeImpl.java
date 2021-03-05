@@ -62,6 +62,7 @@ public class MultiPointCoverageTypeImpl extends AbstractDiscreteCoverageTypeImpl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiPointDomainType getMultiPointDomain() {
         return multiPointDomain;
     }
@@ -86,6 +87,7 @@ public class MultiPointCoverageTypeImpl extends AbstractDiscreteCoverageTypeImpl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiPointDomain(MultiPointDomainType newMultiPointDomain) {
         if (newMultiPointDomain != multiPointDomain) {
             NotificationChain msgs = null;

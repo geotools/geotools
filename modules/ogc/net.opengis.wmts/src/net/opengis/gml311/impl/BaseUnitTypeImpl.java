@@ -62,6 +62,7 @@ public class BaseUnitTypeImpl extends UnitDefinitionTypeImpl implements BaseUnit
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ReferenceType getUnitsSystem() {
         return unitsSystem;
     }
@@ -86,6 +87,7 @@ public class BaseUnitTypeImpl extends UnitDefinitionTypeImpl implements BaseUnit
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUnitsSystem(ReferenceType newUnitsSystem) {
         if (newUnitsSystem != unitsSystem) {
             NotificationChain msgs = null;

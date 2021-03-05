@@ -66,6 +66,7 @@ public class TimeOrdinalReferenceSystemTypeImpl extends AbstractTimeReferenceSys
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<TimeOrdinalEraPropertyType> getComponent() {
         if (component == null) {
             component = new EObjectContainmentEList<>(TimeOrdinalEraPropertyType.class, this, Gml311Package.TIME_ORDINAL_REFERENCE_SYSTEM_TYPE__COMPONENT);

@@ -126,6 +126,7 @@ public class AffinePlacementTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectPositionType getLocation() {
         return location;
     }
@@ -150,6 +151,7 @@ public class AffinePlacementTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLocation(DirectPositionType newLocation) {
         if (newLocation != location) {
             NotificationChain msgs = null;
@@ -169,6 +171,7 @@ public class AffinePlacementTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<VectorType> getRefDirection() {
         if (refDirection == null) {
             refDirection = new EObjectContainmentEList<>(VectorType.class, this, Gml311Package.AFFINE_PLACEMENT_TYPE__REF_DIRECTION);
@@ -181,6 +184,7 @@ public class AffinePlacementTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getInDimension() {
         return inDimension;
     }
@@ -190,6 +194,7 @@ public class AffinePlacementTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setInDimension(BigInteger newInDimension) {
         BigInteger oldInDimension = inDimension;
         inDimension = newInDimension;
@@ -202,6 +207,7 @@ public class AffinePlacementTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getOutDimension() {
         return outDimension;
     }
@@ -211,6 +217,7 @@ public class AffinePlacementTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOutDimension(BigInteger newOutDimension) {
         BigInteger oldOutDimension = outDimension;
         outDimension = newOutDimension;

@@ -69,6 +69,7 @@ public class ResponseFormTypeImpl extends EObjectImpl implements ResponseFormTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.RESPONSE_FORM_TYPE;
   }
@@ -78,6 +79,7 @@ public class ResponseFormTypeImpl extends EObjectImpl implements ResponseFormTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ResponseDocumentType getResponseDocument() {
     return responseDocument;
   }
@@ -102,6 +104,7 @@ public class ResponseFormTypeImpl extends EObjectImpl implements ResponseFormTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setResponseDocument(ResponseDocumentType newResponseDocument) {
     if (newResponseDocument != responseDocument) {
       NotificationChain msgs = null;
@@ -121,6 +124,7 @@ public class ResponseFormTypeImpl extends EObjectImpl implements ResponseFormTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public OutputDefinitionType getRawDataOutput() {
     return rawDataOutput;
   }
@@ -145,6 +149,7 @@ public class ResponseFormTypeImpl extends EObjectImpl implements ResponseFormTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setRawDataOutput(OutputDefinitionType newRawDataOutput) {
     if (newRawDataOutput != rawDataOutput) {
       NotificationChain msgs = null;
@@ -164,6 +169,7 @@ public class ResponseFormTypeImpl extends EObjectImpl implements ResponseFormTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.RESPONSE_FORM_TYPE__RESPONSE_DOCUMENT:
@@ -179,6 +185,7 @@ public class ResponseFormTypeImpl extends EObjectImpl implements ResponseFormTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.RESPONSE_FORM_TYPE__RESPONSE_DOCUMENT:
@@ -194,6 +201,7 @@ public class ResponseFormTypeImpl extends EObjectImpl implements ResponseFormTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.RESPONSE_FORM_TYPE__RESPONSE_DOCUMENT:
@@ -211,6 +219,7 @@ public class ResponseFormTypeImpl extends EObjectImpl implements ResponseFormTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.RESPONSE_FORM_TYPE__RESPONSE_DOCUMENT:
@@ -228,6 +237,7 @@ public class ResponseFormTypeImpl extends EObjectImpl implements ResponseFormTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.RESPONSE_FORM_TYPE__RESPONSE_DOCUMENT:

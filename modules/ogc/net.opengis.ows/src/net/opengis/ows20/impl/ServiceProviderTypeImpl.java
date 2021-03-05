@@ -96,6 +96,7 @@ public class ServiceProviderTypeImpl extends EObjectImpl implements ServiceProvi
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getProviderName() {
     return providerName;
   }
@@ -105,6 +106,7 @@ public class ServiceProviderTypeImpl extends EObjectImpl implements ServiceProvi
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setProviderName(String newProviderName) {
     String oldProviderName = providerName;
     providerName = newProviderName;
@@ -117,6 +119,7 @@ public class ServiceProviderTypeImpl extends EObjectImpl implements ServiceProvi
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public OnlineResourceType getProviderSite() {
     return providerSite;
   }
@@ -141,6 +144,7 @@ public class ServiceProviderTypeImpl extends EObjectImpl implements ServiceProvi
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setProviderSite(OnlineResourceType newProviderSite) {
     if (newProviderSite != providerSite) {
       NotificationChain msgs = null;
@@ -160,6 +164,7 @@ public class ServiceProviderTypeImpl extends EObjectImpl implements ServiceProvi
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ResponsiblePartySubsetType getServiceContact() {
     return serviceContact;
   }
@@ -184,6 +189,7 @@ public class ServiceProviderTypeImpl extends EObjectImpl implements ServiceProvi
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setServiceContact(ResponsiblePartySubsetType newServiceContact) {
     if (newServiceContact != serviceContact) {
       NotificationChain msgs = null;

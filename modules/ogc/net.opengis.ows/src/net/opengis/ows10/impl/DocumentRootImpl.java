@@ -253,7 +253,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public FeatureMap getMixed() {
+	@Override
+    public FeatureMap getMixed() {
     if (mixed == null) {
       mixed = new BasicFeatureMap(this, Ows10Package.DOCUMENT_ROOT__MIXED);
     }
@@ -265,7 +266,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EMap<String, String> getXMLNSPrefixMap() {
+	@Override
+    public EMap<String, String> getXMLNSPrefixMap() {
     if (xMLNSPrefixMap == null) {
       xMLNSPrefixMap = new EcoreEMap<>(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY, EStringToStringMapEntryImpl.class, this, Ows10Package.DOCUMENT_ROOT__XMLNS_PREFIX_MAP);
     }
@@ -277,7 +279,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EMap<String, String> getXSISchemaLocation() {
+	@Override
+    public EMap<String, String> getXSISchemaLocation() {
     if (xSISchemaLocation == null) {
       xSISchemaLocation = new EcoreEMap<>(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY, EStringToStringMapEntryImpl.class, this, Ows10Package.DOCUMENT_ROOT__XSI_SCHEMA_LOCATION);
     }
@@ -289,7 +292,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getAbstract() {
+	@Override
+    public String getAbstract() {
     return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Abstract(), true);
   }
 
@@ -298,7 +302,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setAbstract(String newAbstract) {
+	@Override
+    public void setAbstract(String newAbstract) {
     ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Abstract(), newAbstract);
   }
 
@@ -307,7 +312,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public ContactType getContactInfo() {
+	@Override
+    public ContactType getContactInfo() {
     return (ContactType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_ContactInfo(), true);
   }
 
@@ -325,7 +331,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setContactInfo(ContactType newContactInfo) {
+	@Override
+    public void setContactInfo(ContactType newContactInfo) {
     ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_ContactInfo(), newContactInfo);
   }
 
@@ -334,7 +341,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getIndividualName() {
+	@Override
+    public String getIndividualName() {
     return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_IndividualName(), true);
   }
 
@@ -343,7 +351,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setIndividualName(String newIndividualName) {
+	@Override
+    public void setIndividualName(String newIndividualName) {
     ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_IndividualName(), newIndividualName);
   }
 
@@ -352,7 +361,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public KeywordsType getKeywords() {
+	@Override
+    public KeywordsType getKeywords() {
     return (KeywordsType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Keywords(), true);
   }
 
@@ -370,7 +380,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setKeywords(KeywordsType newKeywords) {
+	@Override
+    public void setKeywords(KeywordsType newKeywords) {
     ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Keywords(), newKeywords);
   }
 
@@ -379,7 +390,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getOrganisationName() {
+	@Override
+    public String getOrganisationName() {
     return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_OrganisationName(), true);
   }
 
@@ -388,7 +400,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setOrganisationName(String newOrganisationName) {
+	@Override
+    public void setOrganisationName(String newOrganisationName) {
     ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_OrganisationName(), newOrganisationName);
   }
 
@@ -397,7 +410,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public ResponsiblePartyType getPointOfContact() {
+	@Override
+    public ResponsiblePartyType getPointOfContact() {
     return (ResponsiblePartyType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_PointOfContact(), true);
   }
 
@@ -415,7 +429,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setPointOfContact(ResponsiblePartyType newPointOfContact) {
+	@Override
+    public void setPointOfContact(ResponsiblePartyType newPointOfContact) {
     ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_PointOfContact(), newPointOfContact);
   }
 
@@ -424,7 +439,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getPositionName() {
+	@Override
+    public String getPositionName() {
     return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_PositionName(), true);
   }
 
@@ -433,7 +449,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setPositionName(String newPositionName) {
+	@Override
+    public void setPositionName(String newPositionName) {
     ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_PositionName(), newPositionName);
   }
 
@@ -442,7 +459,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public CodeType getRole() {
+	@Override
+    public CodeType getRole() {
     return (CodeType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Role(), true);
   }
 
@@ -460,7 +478,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setRole(CodeType newRole) {
+	@Override
+    public void setRole(CodeType newRole) {
     ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Role(), newRole);
   }
 
@@ -469,7 +488,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getTitle() {
+	@Override
+    public String getTitle() {
     return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Title(), true);
   }
 
@@ -478,7 +498,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setTitle(String newTitle) {
+	@Override
+    public void setTitle(String newTitle) {
     ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Title(), newTitle);
   }
 
@@ -487,7 +508,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EObject getAbstractMetaData() {
+	@Override
+    public EObject getAbstractMetaData() {
     return (EObject)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_AbstractMetaData(), true);
   }
 
@@ -505,7 +527,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getAccessConstraints() {
+	@Override
+    public String getAccessConstraints() {
     return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_AccessConstraints(), true);
   }
 
@@ -514,7 +537,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setAccessConstraints(String newAccessConstraints) {
+	@Override
+    public void setAccessConstraints(String newAccessConstraints) {
     ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_AccessConstraints(), newAccessConstraints);
   }
 
@@ -523,7 +547,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getAvailableCRS() {
+	@Override
+    public String getAvailableCRS() {
     return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_AvailableCRS(), true);
   }
 
@@ -532,7 +557,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setAvailableCRS(String newAvailableCRS) {
+	@Override
+    public void setAvailableCRS(String newAvailableCRS) {
     ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_AvailableCRS(), newAvailableCRS);
   }
 
@@ -541,7 +567,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public BoundingBoxType getBoundingBox() {
+	@Override
+    public BoundingBoxType getBoundingBox() {
     return (BoundingBoxType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_BoundingBox(), true);
   }
 
@@ -559,7 +586,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setBoundingBox(BoundingBoxType newBoundingBox) {
+	@Override
+    public void setBoundingBox(BoundingBoxType newBoundingBox) {
     ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_BoundingBox(), newBoundingBox);
   }
 
@@ -568,7 +596,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public DCPType getDcp() {
+	@Override
+    public DCPType getDcp() {
     return (DCPType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Dcp(), true);
   }
 
@@ -586,7 +615,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setDcp(DCPType newDcp) {
+	@Override
+    public void setDcp(DCPType newDcp) {
     ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Dcp(), newDcp);
   }
 
@@ -595,7 +625,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public ExceptionType getException() {
+	@Override
+    public ExceptionType getException() {
     return (ExceptionType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Exception(), true);
   }
 
@@ -613,7 +644,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setException(ExceptionType newException) {
+	@Override
+    public void setException(ExceptionType newException) {
     ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Exception(), newException);
   }
 
@@ -622,7 +654,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public ExceptionReportType getExceptionReport() {
+	@Override
+    public ExceptionReportType getExceptionReport() {
     return (ExceptionReportType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_ExceptionReport(), true);
   }
 
@@ -640,7 +673,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setExceptionReport(ExceptionReportType newExceptionReport) {
+	@Override
+    public void setExceptionReport(ExceptionReportType newExceptionReport) {
     ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_ExceptionReport(), newExceptionReport);
   }
 
@@ -649,7 +683,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EObject getExtendedCapabilities() {
+	@Override
+    public EObject getExtendedCapabilities() {
     return (EObject)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_ExtendedCapabilities(), true);
   }
 
@@ -667,7 +702,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setExtendedCapabilities(EObject newExtendedCapabilities) {
+	@Override
+    public void setExtendedCapabilities(EObject newExtendedCapabilities) {
     ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_ExtendedCapabilities(), newExtendedCapabilities);
   }
 
@@ -676,7 +712,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getFees() {
+	@Override
+    public String getFees() {
     return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Fees(), true);
   }
 
@@ -685,7 +722,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setFees(String newFees) {
+	@Override
+    public void setFees(String newFees) {
     ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Fees(), newFees);
   }
 
@@ -694,7 +732,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public GetCapabilitiesType getGetCapabilities() {
+	@Override
+    public GetCapabilitiesType getGetCapabilities() {
     return (GetCapabilitiesType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_GetCapabilities(), true);
   }
 
@@ -712,7 +751,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setGetCapabilities(GetCapabilitiesType newGetCapabilities) {
+	@Override
+    public void setGetCapabilities(GetCapabilitiesType newGetCapabilities) {
     ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_GetCapabilities(), newGetCapabilities);
   }
 
@@ -721,7 +761,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public HTTPType getHttp() {
+	@Override
+    public HTTPType getHttp() {
     return (HTTPType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Http(), true);
   }
 
@@ -739,7 +780,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setHttp(HTTPType newHttp) {
+	@Override
+    public void setHttp(HTTPType newHttp) {
     ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Http(), newHttp);
   }
 
@@ -748,7 +790,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public CodeType getIdentifier() {
+	@Override
+    public CodeType getIdentifier() {
     return (CodeType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Identifier(), true);
   }
 
@@ -766,7 +809,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setIdentifier(CodeType newIdentifier) {
+	@Override
+    public void setIdentifier(CodeType newIdentifier) {
     ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Identifier(), newIdentifier);
   }
 
@@ -775,7 +819,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getLanguage() {
+	@Override
+    public String getLanguage() {
     return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Language(), true);
   }
 
@@ -784,7 +829,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setLanguage(String newLanguage) {
+	@Override
+    public void setLanguage(String newLanguage) {
     ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Language(), newLanguage);
   }
 
@@ -793,7 +839,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public MetadataType getMetadata() {
+	@Override
+    public MetadataType getMetadata() {
     return (MetadataType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Metadata(), true);
   }
 
@@ -811,7 +858,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setMetadata(MetadataType newMetadata) {
+	@Override
+    public void setMetadata(MetadataType newMetadata) {
     ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Metadata(), newMetadata);
   }
 
@@ -820,7 +868,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public OperationType getOperation() {
+	@Override
+    public OperationType getOperation() {
     return (OperationType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Operation(), true);
   }
 
@@ -838,7 +887,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setOperation(OperationType newOperation) {
+	@Override
+    public void setOperation(OperationType newOperation) {
     ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Operation(), newOperation);
   }
 
@@ -847,7 +897,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public OperationsMetadataType getOperationsMetadata() {
+	@Override
+    public OperationsMetadataType getOperationsMetadata() {
     return (OperationsMetadataType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_OperationsMetadata(), true);
   }
 
@@ -865,7 +916,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setOperationsMetadata(OperationsMetadataType newOperationsMetadata) {
+	@Override
+    public void setOperationsMetadata(OperationsMetadataType newOperationsMetadata) {
     ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_OperationsMetadata(), newOperationsMetadata);
   }
 
@@ -874,7 +926,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getOutputFormat() {
+	@Override
+    public String getOutputFormat() {
     return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_OutputFormat(), true);
   }
 
@@ -883,7 +936,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setOutputFormat(String newOutputFormat) {
+	@Override
+    public void setOutputFormat(String newOutputFormat) {
     ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_OutputFormat(), newOutputFormat);
   }
 
@@ -892,7 +946,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public ServiceIdentificationType getServiceIdentification() {
+	@Override
+    public ServiceIdentificationType getServiceIdentification() {
     return (ServiceIdentificationType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_ServiceIdentification(), true);
   }
 
@@ -910,7 +965,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setServiceIdentification(ServiceIdentificationType newServiceIdentification) {
+	@Override
+    public void setServiceIdentification(ServiceIdentificationType newServiceIdentification) {
     ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_ServiceIdentification(), newServiceIdentification);
   }
 
@@ -919,7 +975,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public ServiceProviderType getServiceProvider() {
+	@Override
+    public ServiceProviderType getServiceProvider() {
     return (ServiceProviderType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_ServiceProvider(), true);
   }
 
@@ -937,7 +994,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setServiceProvider(ServiceProviderType newServiceProvider) {
+	@Override
+    public void setServiceProvider(ServiceProviderType newServiceProvider) {
     ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_ServiceProvider(), newServiceProvider);
   }
 
@@ -946,7 +1004,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getSupportedCRS() {
+	@Override
+    public String getSupportedCRS() {
     return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_SupportedCRS(), true);
   }
 
@@ -955,7 +1014,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setSupportedCRS(String newSupportedCRS) {
+	@Override
+    public void setSupportedCRS(String newSupportedCRS) {
     ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_SupportedCRS(), newSupportedCRS);
   }
 
@@ -964,7 +1024,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public WGS84BoundingBoxType getWgS84BoundingBox() {
+	@Override
+    public WGS84BoundingBoxType getWgS84BoundingBox() {
     return (WGS84BoundingBoxType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_WgS84BoundingBox(), true);
   }
 
@@ -982,7 +1043,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setWgS84BoundingBox(WGS84BoundingBoxType newWgS84BoundingBox) {
+	@Override
+    public void setWgS84BoundingBox(WGS84BoundingBoxType newWgS84BoundingBox) {
     ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_WgS84BoundingBox(), newWgS84BoundingBox);
   }
 

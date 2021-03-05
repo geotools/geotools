@@ -62,6 +62,7 @@ public abstract class AbstractReferenceSystemBaseTypeImpl extends DefinitionType
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getSrsName() {
         return srsName;
     }
@@ -86,6 +87,7 @@ public abstract class AbstractReferenceSystemBaseTypeImpl extends DefinitionType
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSrsName(CodeType newSrsName) {
         if (newSrsName != srsName) {
             NotificationChain msgs = null;

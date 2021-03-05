@@ -141,6 +141,7 @@ public class ResponsiblePartyTypeImpl extends EObjectImpl implements Responsible
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.RESPONSIBLE_PARTY_TYPE;
 	}
@@ -150,6 +151,7 @@ public class ResponsiblePartyTypeImpl extends EObjectImpl implements Responsible
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getIndividualName() {
 		return individualName;
 	}
@@ -159,6 +161,7 @@ public class ResponsiblePartyTypeImpl extends EObjectImpl implements Responsible
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setIndividualName(String newIndividualName) {
 		String oldIndividualName = individualName;
 		individualName = newIndividualName;
@@ -171,6 +174,7 @@ public class ResponsiblePartyTypeImpl extends EObjectImpl implements Responsible
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getOrganisationName() {
 		return organisationName;
 	}
@@ -180,6 +184,7 @@ public class ResponsiblePartyTypeImpl extends EObjectImpl implements Responsible
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setOrganisationName(String newOrganisationName) {
 		String oldOrganisationName = organisationName;
 		organisationName = newOrganisationName;
@@ -192,6 +197,7 @@ public class ResponsiblePartyTypeImpl extends EObjectImpl implements Responsible
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getOrganisationName1() {
 		return organisationName1;
 	}
@@ -201,6 +207,7 @@ public class ResponsiblePartyTypeImpl extends EObjectImpl implements Responsible
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setOrganisationName1(String newOrganisationName1) {
 		String oldOrganisationName1 = organisationName1;
 		organisationName1 = newOrganisationName1;
@@ -213,6 +220,7 @@ public class ResponsiblePartyTypeImpl extends EObjectImpl implements Responsible
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getPositionName() {
 		return positionName;
 	}
@@ -222,6 +230,7 @@ public class ResponsiblePartyTypeImpl extends EObjectImpl implements Responsible
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setPositionName(String newPositionName) {
 		String oldPositionName = positionName;
 		positionName = newPositionName;
@@ -234,6 +243,7 @@ public class ResponsiblePartyTypeImpl extends EObjectImpl implements Responsible
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ContactType getContactInfo() {
 		return contactInfo;
 	}
@@ -258,6 +268,7 @@ public class ResponsiblePartyTypeImpl extends EObjectImpl implements Responsible
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setContactInfo(ContactType newContactInfo) {
 		if (newContactInfo != contactInfo) {
 			NotificationChain msgs = null;
@@ -277,6 +288,7 @@ public class ResponsiblePartyTypeImpl extends EObjectImpl implements Responsible
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.RESPONSIBLE_PARTY_TYPE__CONTACT_INFO:
@@ -290,6 +302,7 @@ public class ResponsiblePartyTypeImpl extends EObjectImpl implements Responsible
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.RESPONSIBLE_PARTY_TYPE__INDIVIDUAL_NAME:
@@ -311,6 +324,7 @@ public class ResponsiblePartyTypeImpl extends EObjectImpl implements Responsible
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.RESPONSIBLE_PARTY_TYPE__INDIVIDUAL_NAME:
@@ -337,6 +351,7 @@ public class ResponsiblePartyTypeImpl extends EObjectImpl implements Responsible
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.RESPONSIBLE_PARTY_TYPE__INDIVIDUAL_NAME:
@@ -363,6 +378,7 @@ public class ResponsiblePartyTypeImpl extends EObjectImpl implements Responsible
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.RESPONSIBLE_PARTY_TYPE__INDIVIDUAL_NAME:
@@ -384,6 +400,7 @@ public class ResponsiblePartyTypeImpl extends EObjectImpl implements Responsible
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

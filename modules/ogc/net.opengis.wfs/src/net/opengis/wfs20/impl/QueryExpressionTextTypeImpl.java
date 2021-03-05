@@ -156,6 +156,7 @@ public class QueryExpressionTextTypeImpl extends EObjectImpl implements QueryExp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isIsPrivate() {
     return isPrivate;
   }
@@ -165,6 +166,7 @@ public class QueryExpressionTextTypeImpl extends EObjectImpl implements QueryExp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setIsPrivate(boolean newIsPrivate) {
     boolean oldIsPrivate = isPrivate;
     isPrivate = newIsPrivate;
@@ -179,6 +181,7 @@ public class QueryExpressionTextTypeImpl extends EObjectImpl implements QueryExp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetIsPrivate() {
     boolean oldIsPrivate = isPrivate;
     boolean oldIsPrivateESet = isPrivateESet;
@@ -193,6 +196,7 @@ public class QueryExpressionTextTypeImpl extends EObjectImpl implements QueryExp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetIsPrivate() {
     return isPrivateESet;
   }
@@ -202,6 +206,7 @@ public class QueryExpressionTextTypeImpl extends EObjectImpl implements QueryExp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getLanguage() {
     return language;
   }
@@ -211,6 +216,7 @@ public class QueryExpressionTextTypeImpl extends EObjectImpl implements QueryExp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setLanguage(String newLanguage) {
     String oldLanguage = language;
     language = newLanguage;
@@ -223,6 +229,7 @@ public class QueryExpressionTextTypeImpl extends EObjectImpl implements QueryExp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public List<QName> getReturnFeatureTypes() {
     return returnFeatureTypes;
   }
@@ -232,6 +239,7 @@ public class QueryExpressionTextTypeImpl extends EObjectImpl implements QueryExp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setReturnFeatureTypes(List<QName> newReturnFeatureTypes) {
     List<QName> oldReturnFeatureTypes = returnFeatureTypes;
     returnFeatureTypes = newReturnFeatureTypes;
@@ -244,6 +252,7 @@ public class QueryExpressionTextTypeImpl extends EObjectImpl implements QueryExp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getValue() {
     return value;
   }
@@ -253,6 +262,7 @@ public class QueryExpressionTextTypeImpl extends EObjectImpl implements QueryExp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setValue(String newValue) {
     String oldValue = value;
     value = newValue;

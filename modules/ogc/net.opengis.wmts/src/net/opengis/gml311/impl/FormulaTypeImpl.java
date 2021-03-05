@@ -169,6 +169,7 @@ public class FormulaTypeImpl extends MinimalEObjectImpl.Container implements For
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public double getA() {
         return a;
     }
@@ -178,6 +179,7 @@ public class FormulaTypeImpl extends MinimalEObjectImpl.Container implements For
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setA(double newA) {
         double oldA = a;
         a = newA;
@@ -192,6 +194,7 @@ public class FormulaTypeImpl extends MinimalEObjectImpl.Container implements For
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetA() {
         double oldA = a;
         boolean oldAESet = aESet;
@@ -206,6 +209,7 @@ public class FormulaTypeImpl extends MinimalEObjectImpl.Container implements For
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetA() {
         return aESet;
     }
@@ -215,6 +219,7 @@ public class FormulaTypeImpl extends MinimalEObjectImpl.Container implements For
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public double getB() {
         return b;
     }
@@ -224,6 +229,7 @@ public class FormulaTypeImpl extends MinimalEObjectImpl.Container implements For
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setB(double newB) {
         double oldB = b;
         b = newB;
@@ -238,6 +244,7 @@ public class FormulaTypeImpl extends MinimalEObjectImpl.Container implements For
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetB() {
         double oldB = b;
         boolean oldBESet = bESet;
@@ -252,6 +259,7 @@ public class FormulaTypeImpl extends MinimalEObjectImpl.Container implements For
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetB() {
         return bESet;
     }
@@ -261,6 +269,7 @@ public class FormulaTypeImpl extends MinimalEObjectImpl.Container implements For
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public double getC() {
         return c;
     }
@@ -270,6 +279,7 @@ public class FormulaTypeImpl extends MinimalEObjectImpl.Container implements For
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setC(double newC) {
         double oldC = c;
         c = newC;
@@ -284,6 +294,7 @@ public class FormulaTypeImpl extends MinimalEObjectImpl.Container implements For
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetC() {
         double oldC = c;
         boolean oldCESet = cESet;
@@ -298,6 +309,7 @@ public class FormulaTypeImpl extends MinimalEObjectImpl.Container implements For
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetC() {
         return cESet;
     }
@@ -307,6 +319,7 @@ public class FormulaTypeImpl extends MinimalEObjectImpl.Container implements For
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public double getD() {
         return d;
     }
@@ -316,6 +329,7 @@ public class FormulaTypeImpl extends MinimalEObjectImpl.Container implements For
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setD(double newD) {
         double oldD = d;
         d = newD;
@@ -330,6 +344,7 @@ public class FormulaTypeImpl extends MinimalEObjectImpl.Container implements For
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetD() {
         double oldD = d;
         boolean oldDESet = dESet;
@@ -344,6 +359,7 @@ public class FormulaTypeImpl extends MinimalEObjectImpl.Container implements For
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetD() {
         return dESet;
     }

@@ -100,6 +100,7 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.DESCRIPTION_TYPE;
   }
@@ -109,6 +110,7 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public CodeType getIdentifier() {
     return identifier;
   }
@@ -133,6 +135,7 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setIdentifier(CodeType newIdentifier) {
     if (newIdentifier != identifier) {
       NotificationChain msgs = null;
@@ -152,6 +155,7 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public LanguageStringType getTitle() {
     return title;
   }
@@ -176,6 +180,7 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setTitle(LanguageStringType newTitle) {
     if (newTitle != title) {
       NotificationChain msgs = null;
@@ -195,6 +200,7 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public LanguageStringType getAbstract() {
     return abstract_;
   }
@@ -219,6 +225,7 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setAbstract(LanguageStringType newAbstract) {
     if (newAbstract != abstract_) {
       NotificationChain msgs = null;
@@ -238,6 +245,7 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList getMetadata() {
     if (metadata == null) {
       metadata = new EObjectContainmentEList(MetadataType.class, this, Wps10Package.DESCRIPTION_TYPE__METADATA);
@@ -250,6 +258,7 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.DESCRIPTION_TYPE__IDENTIFIER:
@@ -269,6 +278,7 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.DESCRIPTION_TYPE__IDENTIFIER:
@@ -288,6 +298,7 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.DESCRIPTION_TYPE__IDENTIFIER:
@@ -312,6 +323,7 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.DESCRIPTION_TYPE__IDENTIFIER:
@@ -335,6 +347,7 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.DESCRIPTION_TYPE__IDENTIFIER:

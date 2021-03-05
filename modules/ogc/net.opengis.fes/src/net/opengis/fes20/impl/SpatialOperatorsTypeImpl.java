@@ -73,6 +73,7 @@ public class SpatialOperatorsTypeImpl extends EObjectImpl implements SpatialOper
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<SpatialOperator> getOperators() {
         if (spatialOperator == null) {
             spatialOperator = new EObjectContainmentEList<>(SpatialOperatorType.class, this, Fes20Package.SPATIAL_OPERATORS_TYPE__SPATIAL_OPERATOR);

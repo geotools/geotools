@@ -69,6 +69,7 @@ public interface ScalarCapabilitiesType extends EObject, ScalarCapabilities {
      *        extendedMetaData="kind='element' name='ComparisonOperators' namespace='##targetNamespace'"
      * @generated
      */
+    @Override
     ComparisonOperatorsType getComparisonOperators();
 
     /**

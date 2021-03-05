@@ -74,6 +74,7 @@ public class InterpolationTypeImpl extends EObjectImpl implements InterpolationT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public InterpolationMethodType getInterpolationMethod() {
 		if (interpolationMethod != null && interpolationMethod.eIsProxy()) {
 			InternalEObject oldInterpolationMethod = (InternalEObject)interpolationMethod;
@@ -100,6 +101,7 @@ public class InterpolationTypeImpl extends EObjectImpl implements InterpolationT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setInterpolationMethod(InterpolationMethodType newInterpolationMethod) {
 		InterpolationMethodType oldInterpolationMethod = interpolationMethod;
 		interpolationMethod = newInterpolationMethod;
@@ -112,6 +114,7 @@ public class InterpolationTypeImpl extends EObjectImpl implements InterpolationT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public InterpolationAxesType getInterpolationAxes() {
 		if (interpolationAxes != null && interpolationAxes.eIsProxy()) {
 			InternalEObject oldInterpolationAxes = (InternalEObject)interpolationAxes;
@@ -138,6 +141,7 @@ public class InterpolationTypeImpl extends EObjectImpl implements InterpolationT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setInterpolationAxes(InterpolationAxesType newInterpolationAxes) {
 		InterpolationAxesType oldInterpolationAxes = interpolationAxes;
 		interpolationAxes = newInterpolationAxes;

@@ -75,6 +75,7 @@ public class ComparisonOperatorsTypeImpl extends EObjectImpl implements Comparis
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getGroup() {
         if (group == null) {
             group = new BasicFeatureMap(this, Fes20Package.COMPARISON_OPERATORS_TYPE__GROUP);
@@ -87,6 +88,7 @@ public class ComparisonOperatorsTypeImpl extends EObjectImpl implements Comparis
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<Operator> getOperators() {
         return getGroup().list(Fes20Package.Literals.COMPARISON_OPERATORS_TYPE__COMPARISON_OPERATOR);
     }

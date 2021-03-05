@@ -263,6 +263,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return GmlPackage.Literals.STRING_OR_REF_TYPE;
 	}
@@ -272,6 +273,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getValue() {
 		return value;
 	}
@@ -281,6 +283,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setValue(String newValue) {
 		String oldValue = value;
 		value = newValue;
@@ -293,6 +296,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ActuateType getActuate() {
 		return actuate;
 	}
@@ -302,6 +306,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setActuate(ActuateType newActuate) {
 		ActuateType oldActuate = actuate;
 		actuate = newActuate == null ? ACTUATE_EDEFAULT : newActuate;
@@ -316,6 +321,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void unsetActuate() {
 		ActuateType oldActuate = actuate;
 		boolean oldActuateESet = actuateESet;
@@ -330,6 +336,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean isSetActuate() {
 		return actuateESet;
 	}
@@ -339,6 +346,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getArcrole() {
 		return arcrole;
 	}
@@ -348,6 +356,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setArcrole(String newArcrole) {
 		String oldArcrole = arcrole;
 		arcrole = newArcrole;
@@ -360,6 +369,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getHref() {
 		return href;
 	}
@@ -369,6 +379,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setHref(String newHref) {
 		String oldHref = href;
 		href = newHref;
@@ -381,6 +392,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getRemoteSchema() {
 		return remoteSchema;
 	}
@@ -390,6 +402,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setRemoteSchema(String newRemoteSchema) {
 		String oldRemoteSchema = remoteSchema;
 		remoteSchema = newRemoteSchema;
@@ -402,6 +415,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getRole() {
 		return role;
 	}
@@ -411,6 +425,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setRole(String newRole) {
 		String oldRole = role;
 		role = newRole;
@@ -423,6 +438,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ShowType getShow() {
 		return show;
 	}
@@ -432,6 +448,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setShow(ShowType newShow) {
 		ShowType oldShow = show;
 		show = newShow == null ? SHOW_EDEFAULT : newShow;
@@ -446,6 +463,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void unsetShow() {
 		ShowType oldShow = show;
 		boolean oldShowESet = showESet;
@@ -460,6 +478,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean isSetShow() {
 		return showESet;
 	}
@@ -469,6 +488,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getTitle() {
 		return title;
 	}
@@ -478,6 +498,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setTitle(String newTitle) {
 		String oldTitle = title;
 		title = newTitle;
@@ -490,6 +511,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getType() {
 		return type;
 	}
@@ -499,6 +521,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setType(String newType) {
 		String oldType = type;
 		type = newType;
@@ -513,6 +536,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void unsetType() {
 		String oldType = type;
 		boolean oldTypeESet = typeESet;
@@ -527,6 +551,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean isSetType() {
 		return typeESet;
 	}
@@ -536,6 +561,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case GmlPackage.STRING_OR_REF_TYPE__VALUE:
@@ -565,6 +591,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case GmlPackage.STRING_OR_REF_TYPE__VALUE:
@@ -603,6 +630,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case GmlPackage.STRING_OR_REF_TYPE__VALUE:
@@ -641,6 +669,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case GmlPackage.STRING_OR_REF_TYPE__VALUE:
@@ -670,6 +699,7 @@ public class StringOrRefTypeImpl extends EObjectImpl implements StringOrRefType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

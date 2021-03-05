@@ -279,6 +279,7 @@ public class GetTileTypeImpl extends MinimalEObjectImpl.Container implements Get
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getLayer() {
         return layer;
     }
@@ -288,6 +289,7 @@ public class GetTileTypeImpl extends MinimalEObjectImpl.Container implements Get
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLayer(String newLayer) {
         String oldLayer = layer;
         layer = newLayer;
@@ -300,6 +302,7 @@ public class GetTileTypeImpl extends MinimalEObjectImpl.Container implements Get
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getStyle() {
         return style;
     }
@@ -309,6 +312,7 @@ public class GetTileTypeImpl extends MinimalEObjectImpl.Container implements Get
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setStyle(String newStyle) {
         String oldStyle = style;
         style = newStyle;
@@ -321,6 +325,7 @@ public class GetTileTypeImpl extends MinimalEObjectImpl.Container implements Get
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getFormat() {
         return format;
     }
@@ -330,6 +335,7 @@ public class GetTileTypeImpl extends MinimalEObjectImpl.Container implements Get
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFormat(String newFormat) {
         String oldFormat = format;
         format = newFormat;
@@ -342,6 +348,7 @@ public class GetTileTypeImpl extends MinimalEObjectImpl.Container implements Get
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<DimensionNameValueType> getDimensionNameValue() {
         if (dimensionNameValue == null) {
             dimensionNameValue = new EObjectContainmentEList<>(DimensionNameValueType.class, this, wmtsv_1Package.GET_TILE_TYPE__DIMENSION_NAME_VALUE);
@@ -354,6 +361,7 @@ public class GetTileTypeImpl extends MinimalEObjectImpl.Container implements Get
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getTileMatrixSet() {
         return tileMatrixSet;
     }
@@ -363,6 +371,7 @@ public class GetTileTypeImpl extends MinimalEObjectImpl.Container implements Get
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTileMatrixSet(String newTileMatrixSet) {
         String oldTileMatrixSet = tileMatrixSet;
         tileMatrixSet = newTileMatrixSet;
@@ -375,6 +384,7 @@ public class GetTileTypeImpl extends MinimalEObjectImpl.Container implements Get
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getTileMatrix() {
         return tileMatrix;
     }
@@ -384,6 +394,7 @@ public class GetTileTypeImpl extends MinimalEObjectImpl.Container implements Get
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTileMatrix(String newTileMatrix) {
         String oldTileMatrix = tileMatrix;
         tileMatrix = newTileMatrix;
@@ -396,6 +407,7 @@ public class GetTileTypeImpl extends MinimalEObjectImpl.Container implements Get
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getTileRow() {
         return tileRow;
     }
@@ -405,6 +417,7 @@ public class GetTileTypeImpl extends MinimalEObjectImpl.Container implements Get
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTileRow(BigInteger newTileRow) {
         BigInteger oldTileRow = tileRow;
         tileRow = newTileRow;
@@ -417,6 +430,7 @@ public class GetTileTypeImpl extends MinimalEObjectImpl.Container implements Get
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getTileCol() {
         return tileCol;
     }
@@ -426,6 +440,7 @@ public class GetTileTypeImpl extends MinimalEObjectImpl.Container implements Get
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTileCol(BigInteger newTileCol) {
         BigInteger oldTileCol = tileCol;
         tileCol = newTileCol;
@@ -438,6 +453,7 @@ public class GetTileTypeImpl extends MinimalEObjectImpl.Container implements Get
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getService() {
         return service;
     }
@@ -447,6 +463,7 @@ public class GetTileTypeImpl extends MinimalEObjectImpl.Container implements Get
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setService(String newService) {
         String oldService = service;
         service = newService;
@@ -461,6 +478,7 @@ public class GetTileTypeImpl extends MinimalEObjectImpl.Container implements Get
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetService() {
         String oldService = service;
         boolean oldServiceESet = serviceESet;
@@ -475,6 +493,7 @@ public class GetTileTypeImpl extends MinimalEObjectImpl.Container implements Get
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetService() {
         return serviceESet;
     }
@@ -484,6 +503,7 @@ public class GetTileTypeImpl extends MinimalEObjectImpl.Container implements Get
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getVersion() {
         return version;
     }
@@ -493,6 +513,7 @@ public class GetTileTypeImpl extends MinimalEObjectImpl.Container implements Get
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setVersion(String newVersion) {
         String oldVersion = version;
         version = newVersion;
@@ -507,6 +528,7 @@ public class GetTileTypeImpl extends MinimalEObjectImpl.Container implements Get
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetVersion() {
         String oldVersion = version;
         boolean oldVersionESet = versionESet;
@@ -521,6 +543,7 @@ public class GetTileTypeImpl extends MinimalEObjectImpl.Container implements Get
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetVersion() {
         return versionESet;
     }

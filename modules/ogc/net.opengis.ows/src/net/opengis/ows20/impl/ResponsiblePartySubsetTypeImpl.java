@@ -117,6 +117,7 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getIndividualName() {
     return individualName;
   }
@@ -126,6 +127,7 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setIndividualName(String newIndividualName) {
     String oldIndividualName = individualName;
     individualName = newIndividualName;
@@ -138,6 +140,7 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getPositionName() {
     return positionName;
   }
@@ -147,6 +150,7 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setPositionName(String newPositionName) {
     String oldPositionName = positionName;
     positionName = newPositionName;
@@ -159,6 +163,7 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ContactType getContactInfo() {
     return contactInfo;
   }
@@ -183,6 +188,7 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setContactInfo(ContactType newContactInfo) {
     if (newContactInfo != contactInfo) {
       NotificationChain msgs = null;
@@ -202,6 +208,7 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public CodeType getRole() {
     return role;
   }
@@ -226,6 +233,7 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setRole(CodeType newRole) {
     if (newRole != role) {
       NotificationChain msgs = null;

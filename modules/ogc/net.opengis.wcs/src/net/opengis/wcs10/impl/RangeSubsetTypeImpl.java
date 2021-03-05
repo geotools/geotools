@@ -62,6 +62,7 @@ public class RangeSubsetTypeImpl extends EObjectImpl implements RangeSubsetType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.RANGE_SUBSET_TYPE;
 	}
@@ -71,6 +72,7 @@ public class RangeSubsetTypeImpl extends EObjectImpl implements RangeSubsetType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList getAxisSubset() {
 		if (axisSubset == null) {
 			axisSubset = new EObjectContainmentEList(AxisSubsetType.class, this, Wcs10Package.RANGE_SUBSET_TYPE__AXIS_SUBSET);
@@ -83,6 +85,7 @@ public class RangeSubsetTypeImpl extends EObjectImpl implements RangeSubsetType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.RANGE_SUBSET_TYPE__AXIS_SUBSET:
@@ -96,6 +99,7 @@ public class RangeSubsetTypeImpl extends EObjectImpl implements RangeSubsetType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.RANGE_SUBSET_TYPE__AXIS_SUBSET:
@@ -109,6 +113,7 @@ public class RangeSubsetTypeImpl extends EObjectImpl implements RangeSubsetType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.RANGE_SUBSET_TYPE__AXIS_SUBSET:
@@ -124,6 +129,7 @@ public class RangeSubsetTypeImpl extends EObjectImpl implements RangeSubsetType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.RANGE_SUBSET_TYPE__AXIS_SUBSET:
@@ -138,6 +144,7 @@ public class RangeSubsetTypeImpl extends EObjectImpl implements RangeSubsetType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.RANGE_SUBSET_TYPE__AXIS_SUBSET:

@@ -142,6 +142,7 @@ public class OutputDefinitionTypeImpl extends EObjectImpl implements OutputDefin
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.OUTPUT_DEFINITION_TYPE;
   }
@@ -151,6 +152,7 @@ public class OutputDefinitionTypeImpl extends EObjectImpl implements OutputDefin
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public CodeType getIdentifier() {
     return identifier;
   }
@@ -175,6 +177,7 @@ public class OutputDefinitionTypeImpl extends EObjectImpl implements OutputDefin
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setIdentifier(CodeType newIdentifier) {
     if (newIdentifier != identifier) {
       NotificationChain msgs = null;
@@ -194,6 +197,7 @@ public class OutputDefinitionTypeImpl extends EObjectImpl implements OutputDefin
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getEncoding() {
     return encoding;
   }
@@ -203,6 +207,7 @@ public class OutputDefinitionTypeImpl extends EObjectImpl implements OutputDefin
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setEncoding(String newEncoding) {
     String oldEncoding = encoding;
     encoding = newEncoding;
@@ -215,6 +220,7 @@ public class OutputDefinitionTypeImpl extends EObjectImpl implements OutputDefin
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getMimeType() {
     return mimeType;
   }
@@ -224,6 +230,7 @@ public class OutputDefinitionTypeImpl extends EObjectImpl implements OutputDefin
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setMimeType(String newMimeType) {
     String oldMimeType = mimeType;
     mimeType = newMimeType;
@@ -236,6 +243,7 @@ public class OutputDefinitionTypeImpl extends EObjectImpl implements OutputDefin
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getSchema() {
     return schema;
   }
@@ -245,6 +253,7 @@ public class OutputDefinitionTypeImpl extends EObjectImpl implements OutputDefin
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setSchema(String newSchema) {
     String oldSchema = schema;
     schema = newSchema;
@@ -257,6 +266,7 @@ public class OutputDefinitionTypeImpl extends EObjectImpl implements OutputDefin
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getUom() {
     return uom;
   }
@@ -266,6 +276,7 @@ public class OutputDefinitionTypeImpl extends EObjectImpl implements OutputDefin
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setUom(String newUom) {
     String oldUom = uom;
     uom = newUom;
@@ -278,6 +289,7 @@ public class OutputDefinitionTypeImpl extends EObjectImpl implements OutputDefin
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.OUTPUT_DEFINITION_TYPE__IDENTIFIER:
@@ -291,6 +303,7 @@ public class OutputDefinitionTypeImpl extends EObjectImpl implements OutputDefin
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.OUTPUT_DEFINITION_TYPE__IDENTIFIER:
@@ -312,6 +325,7 @@ public class OutputDefinitionTypeImpl extends EObjectImpl implements OutputDefin
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.OUTPUT_DEFINITION_TYPE__IDENTIFIER:
@@ -338,6 +352,7 @@ public class OutputDefinitionTypeImpl extends EObjectImpl implements OutputDefin
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.OUTPUT_DEFINITION_TYPE__IDENTIFIER:
@@ -364,6 +379,7 @@ public class OutputDefinitionTypeImpl extends EObjectImpl implements OutputDefin
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.OUTPUT_DEFINITION_TYPE__IDENTIFIER:
@@ -385,6 +401,7 @@ public class OutputDefinitionTypeImpl extends EObjectImpl implements OutputDefin
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String toString() {
     if (eIsProxy()) return super.toString();
 

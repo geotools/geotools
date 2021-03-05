@@ -145,6 +145,7 @@ public class TopoComplexTypeImpl extends AbstractTopologyTypeImpl implements Top
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoComplexMemberType getMaximalComplex() {
         return maximalComplex;
     }
@@ -169,6 +170,7 @@ public class TopoComplexTypeImpl extends AbstractTopologyTypeImpl implements Top
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMaximalComplex(TopoComplexMemberType newMaximalComplex) {
         if (newMaximalComplex != maximalComplex) {
             NotificationChain msgs = null;
@@ -188,6 +190,7 @@ public class TopoComplexTypeImpl extends AbstractTopologyTypeImpl implements Top
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<TopoComplexMemberType> getSuperComplex() {
         if (superComplex == null) {
             superComplex = new EObjectContainmentEList<>(TopoComplexMemberType.class, this, Gml311Package.TOPO_COMPLEX_TYPE__SUPER_COMPLEX);
@@ -200,6 +203,7 @@ public class TopoComplexTypeImpl extends AbstractTopologyTypeImpl implements Top
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<TopoComplexMemberType> getSubComplex() {
         if (subComplex == null) {
             subComplex = new EObjectContainmentEList<>(TopoComplexMemberType.class, this, Gml311Package.TOPO_COMPLEX_TYPE__SUB_COMPLEX);
@@ -212,6 +216,7 @@ public class TopoComplexTypeImpl extends AbstractTopologyTypeImpl implements Top
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<TopoPrimitiveMemberType> getTopoPrimitiveMember() {
         if (topoPrimitiveMember == null) {
             topoPrimitiveMember = new EObjectContainmentEList<>(TopoPrimitiveMemberType.class, this, Gml311Package.TOPO_COMPLEX_TYPE__TOPO_PRIMITIVE_MEMBER);
@@ -224,6 +229,7 @@ public class TopoComplexTypeImpl extends AbstractTopologyTypeImpl implements Top
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoPrimitiveArrayAssociationType getTopoPrimitiveMembers() {
         return topoPrimitiveMembers;
     }
@@ -248,6 +254,7 @@ public class TopoComplexTypeImpl extends AbstractTopologyTypeImpl implements Top
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTopoPrimitiveMembers(TopoPrimitiveArrayAssociationType newTopoPrimitiveMembers) {
         if (newTopoPrimitiveMembers != topoPrimitiveMembers) {
             NotificationChain msgs = null;
@@ -267,6 +274,7 @@ public class TopoComplexTypeImpl extends AbstractTopologyTypeImpl implements Top
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isIsMaximal() {
         return isMaximal;
     }
@@ -276,6 +284,7 @@ public class TopoComplexTypeImpl extends AbstractTopologyTypeImpl implements Top
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIsMaximal(boolean newIsMaximal) {
         boolean oldIsMaximal = isMaximal;
         isMaximal = newIsMaximal;
@@ -290,6 +299,7 @@ public class TopoComplexTypeImpl extends AbstractTopologyTypeImpl implements Top
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetIsMaximal() {
         boolean oldIsMaximal = isMaximal;
         boolean oldIsMaximalESet = isMaximalESet;
@@ -304,6 +314,7 @@ public class TopoComplexTypeImpl extends AbstractTopologyTypeImpl implements Top
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetIsMaximal() {
         return isMaximalESet;
     }

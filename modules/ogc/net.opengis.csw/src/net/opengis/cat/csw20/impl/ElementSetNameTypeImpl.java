@@ -99,6 +99,7 @@ public class ElementSetNameTypeImpl extends EObjectImpl implements ElementSetNam
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ElementSetType getValue() {
         return value;
     }
@@ -108,6 +109,7 @@ public class ElementSetNameTypeImpl extends EObjectImpl implements ElementSetNam
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValue(ElementSetType newValue) {
         ElementSetType oldValue = value;
         value = newValue == null ? VALUE_EDEFAULT : newValue;
@@ -122,6 +124,7 @@ public class ElementSetNameTypeImpl extends EObjectImpl implements ElementSetNam
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetValue() {
         ElementSetType oldValue = value;
         boolean oldValueESet = valueESet;
@@ -136,6 +139,7 @@ public class ElementSetNameTypeImpl extends EObjectImpl implements ElementSetNam
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetValue() {
         return valueESet;
     }
@@ -145,6 +149,7 @@ public class ElementSetNameTypeImpl extends EObjectImpl implements ElementSetNam
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public List<QName> getTypeNames() {
         return typeNames;
     }
@@ -154,6 +159,7 @@ public class ElementSetNameTypeImpl extends EObjectImpl implements ElementSetNam
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTypeNames(List<QName> newTypeNames) {
         List<QName> oldTypeNames = typeNames;
         typeNames = newTypeNames;

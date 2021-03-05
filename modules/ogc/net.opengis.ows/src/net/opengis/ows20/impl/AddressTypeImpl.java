@@ -181,6 +181,7 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getDeliveryPoint() {
     return deliveryPoint;
   }
@@ -190,6 +191,7 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setDeliveryPoint(String newDeliveryPoint) {
     String oldDeliveryPoint = deliveryPoint;
     deliveryPoint = newDeliveryPoint;
@@ -202,6 +204,7 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getCity() {
     return city;
   }
@@ -211,6 +214,7 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setCity(String newCity) {
     String oldCity = city;
     city = newCity;
@@ -223,6 +227,7 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getAdministrativeArea() {
     return administrativeArea;
   }
@@ -232,6 +237,7 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setAdministrativeArea(String newAdministrativeArea) {
     String oldAdministrativeArea = administrativeArea;
     administrativeArea = newAdministrativeArea;
@@ -244,6 +250,7 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getPostalCode() {
     return postalCode;
   }
@@ -253,6 +260,7 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setPostalCode(String newPostalCode) {
     String oldPostalCode = postalCode;
     postalCode = newPostalCode;
@@ -265,6 +273,7 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getCountry() {
     return country;
   }
@@ -274,6 +283,7 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setCountry(String newCountry) {
     String oldCountry = country;
     country = newCountry;
@@ -286,6 +296,7 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getElectronicMailAddress() {
     return electronicMailAddress;
   }
@@ -295,6 +306,7 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setElectronicMailAddress(String newElectronicMailAddress) {
     String oldElectronicMailAddress = electronicMailAddress;
     electronicMailAddress = newElectronicMailAddress;

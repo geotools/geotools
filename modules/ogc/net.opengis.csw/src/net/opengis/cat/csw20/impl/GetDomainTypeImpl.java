@@ -96,6 +96,7 @@ public class GetDomainTypeImpl extends RequestBaseTypeImpl implements GetDomainT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getPropertyName() {
         return propertyName;
     }
@@ -105,6 +106,7 @@ public class GetDomainTypeImpl extends RequestBaseTypeImpl implements GetDomainT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPropertyName(String newPropertyName) {
         String oldPropertyName = propertyName;
         propertyName = newPropertyName;
@@ -117,6 +119,7 @@ public class GetDomainTypeImpl extends RequestBaseTypeImpl implements GetDomainT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getParameterName() {
         return parameterName;
     }
@@ -126,6 +129,7 @@ public class GetDomainTypeImpl extends RequestBaseTypeImpl implements GetDomainT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setParameterName(String newParameterName) {
         String oldParameterName = parameterName;
         parameterName = newParameterName;

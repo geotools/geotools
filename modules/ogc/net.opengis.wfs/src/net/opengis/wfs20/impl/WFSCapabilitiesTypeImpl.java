@@ -93,6 +93,7 @@ public class WFSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public WSDLType getWSDL() {
     return wSDL;
   }
@@ -117,6 +118,7 @@ public class WFSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setWSDL(WSDLType newWSDL) {
     if (newWSDL != wSDL) {
       NotificationChain msgs = null;
@@ -136,6 +138,7 @@ public class WFSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureTypeListType getFeatureTypeList() {
     return featureTypeList;
   }
@@ -160,6 +163,7 @@ public class WFSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setFeatureTypeList(FeatureTypeListType newFeatureTypeList) {
     if (newFeatureTypeList != featureTypeList) {
       NotificationChain msgs = null;
@@ -179,6 +183,7 @@ public class WFSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FilterCapabilitiesType getFilterCapabilities() {
     return filterCapabilities;
   }
@@ -203,6 +208,7 @@ public class WFSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setFilterCapabilities(FilterCapabilitiesType newFilterCapabilities) {
     if (newFilterCapabilities != filterCapabilities) {
       NotificationChain msgs = null;

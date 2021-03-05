@@ -57,6 +57,7 @@ public class AxisDescriptionType1Impl extends EObjectImpl implements AxisDescrip
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.AXIS_DESCRIPTION_TYPE1;
 	}
@@ -66,6 +67,7 @@ public class AxisDescriptionType1Impl extends EObjectImpl implements AxisDescrip
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public AxisDescriptionType getAxisDescription() {
 		return axisDescription;
 	}
@@ -90,6 +92,7 @@ public class AxisDescriptionType1Impl extends EObjectImpl implements AxisDescrip
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setAxisDescription(AxisDescriptionType newAxisDescription) {
 		if (newAxisDescription != axisDescription) {
 			NotificationChain msgs = null;
@@ -109,6 +112,7 @@ public class AxisDescriptionType1Impl extends EObjectImpl implements AxisDescrip
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.AXIS_DESCRIPTION_TYPE1__AXIS_DESCRIPTION:
@@ -122,6 +126,7 @@ public class AxisDescriptionType1Impl extends EObjectImpl implements AxisDescrip
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.AXIS_DESCRIPTION_TYPE1__AXIS_DESCRIPTION:
@@ -135,6 +140,7 @@ public class AxisDescriptionType1Impl extends EObjectImpl implements AxisDescrip
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.AXIS_DESCRIPTION_TYPE1__AXIS_DESCRIPTION:
@@ -149,6 +155,7 @@ public class AxisDescriptionType1Impl extends EObjectImpl implements AxisDescrip
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.AXIS_DESCRIPTION_TYPE1__AXIS_DESCRIPTION:
@@ -163,6 +170,7 @@ public class AxisDescriptionType1Impl extends EObjectImpl implements AxisDescrip
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.AXIS_DESCRIPTION_TYPE1__AXIS_DESCRIPTION:

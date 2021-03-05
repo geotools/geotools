@@ -57,6 +57,7 @@ public class ComplexDataCombinationTypeImpl extends EObjectImpl implements Compl
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.COMPLEX_DATA_COMBINATION_TYPE;
   }
@@ -66,6 +67,7 @@ public class ComplexDataCombinationTypeImpl extends EObjectImpl implements Compl
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ComplexDataDescriptionType getFormat() {
     return format;
   }
@@ -90,6 +92,7 @@ public class ComplexDataCombinationTypeImpl extends EObjectImpl implements Compl
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setFormat(ComplexDataDescriptionType newFormat) {
     if (newFormat != format) {
       NotificationChain msgs = null;
@@ -109,6 +112,7 @@ public class ComplexDataCombinationTypeImpl extends EObjectImpl implements Compl
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.COMPLEX_DATA_COMBINATION_TYPE__FORMAT:
@@ -122,6 +126,7 @@ public class ComplexDataCombinationTypeImpl extends EObjectImpl implements Compl
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.COMPLEX_DATA_COMBINATION_TYPE__FORMAT:
@@ -135,6 +140,7 @@ public class ComplexDataCombinationTypeImpl extends EObjectImpl implements Compl
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.COMPLEX_DATA_COMBINATION_TYPE__FORMAT:
@@ -149,6 +155,7 @@ public class ComplexDataCombinationTypeImpl extends EObjectImpl implements Compl
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.COMPLEX_DATA_COMBINATION_TYPE__FORMAT:
@@ -163,6 +170,7 @@ public class ComplexDataCombinationTypeImpl extends EObjectImpl implements Compl
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.COMPLEX_DATA_COMBINATION_TYPE__FORMAT:

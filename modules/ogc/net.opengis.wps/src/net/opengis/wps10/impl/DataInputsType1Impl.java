@@ -62,6 +62,7 @@ public class DataInputsType1Impl extends EObjectImpl implements DataInputsType1 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.DATA_INPUTS_TYPE1;
   }
@@ -71,6 +72,7 @@ public class DataInputsType1Impl extends EObjectImpl implements DataInputsType1 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList getInput() {
     if (input == null) {
       input = new EObjectContainmentEList(InputType.class, this, Wps10Package.DATA_INPUTS_TYPE1__INPUT);
@@ -83,6 +85,7 @@ public class DataInputsType1Impl extends EObjectImpl implements DataInputsType1 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.DATA_INPUTS_TYPE1__INPUT:
@@ -96,6 +99,7 @@ public class DataInputsType1Impl extends EObjectImpl implements DataInputsType1 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.DATA_INPUTS_TYPE1__INPUT:
@@ -109,6 +113,7 @@ public class DataInputsType1Impl extends EObjectImpl implements DataInputsType1 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.DATA_INPUTS_TYPE1__INPUT:
@@ -124,6 +129,7 @@ public class DataInputsType1Impl extends EObjectImpl implements DataInputsType1 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.DATA_INPUTS_TYPE1__INPUT:
@@ -138,6 +144,7 @@ public class DataInputsType1Impl extends EObjectImpl implements DataInputsType1 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.DATA_INPUTS_TYPE1__INPUT:

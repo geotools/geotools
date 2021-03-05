@@ -243,6 +243,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return WfsPackage.Literals.GET_FEATURE_TYPE;
   }
@@ -251,6 +252,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList getQuery() {
     if (query == null) {
       query = new EObjectContainmentEList(QueryType.class, this, WfsPackage.GET_FEATURE_TYPE__QUERY);
@@ -262,6 +264,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public BigInteger getMaxFeatures() {
     return maxFeatures;
   }
@@ -270,6 +273,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setMaxFeatures(BigInteger newMaxFeatures) {
     BigInteger oldMaxFeatures = maxFeatures;
     maxFeatures = newMaxFeatures;
@@ -281,6 +285,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getOutputFormat() {
     return outputFormat;
   }
@@ -289,6 +294,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setOutputFormat(String newOutputFormat) {
     String oldOutputFormat = outputFormat;
     outputFormat = newOutputFormat;
@@ -302,6 +308,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetOutputFormat() {
     String oldOutputFormat = outputFormat;
     boolean oldOutputFormatESet = outputFormatESet;
@@ -315,6 +322,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetOutputFormat() {
     return outputFormatESet;
   }
@@ -323,6 +331,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ResultTypeType getResultType() {
     return resultType;
   }
@@ -331,6 +340,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setResultType(ResultTypeType newResultType) {
     ResultTypeType oldResultType = resultType;
     resultType = newResultType == null ? RESULT_TYPE_EDEFAULT : newResultType;
@@ -344,6 +354,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetResultType() {
     ResultTypeType oldResultType = resultType;
     boolean oldResultTypeESet = resultTypeESet;
@@ -357,6 +368,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetResultType() {
     return resultTypeESet;
   }
@@ -365,6 +377,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getTraverseXlinkDepth() {
     return traverseXlinkDepth;
   }
@@ -373,6 +386,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setTraverseXlinkDepth(String newTraverseXlinkDepth) {
     String oldTraverseXlinkDepth = traverseXlinkDepth;
     traverseXlinkDepth = newTraverseXlinkDepth;
@@ -384,6 +398,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public BigInteger getTraverseXlinkExpiry() {
     return traverseXlinkExpiry;
   }
@@ -392,6 +407,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setTraverseXlinkExpiry(BigInteger newTraverseXlinkExpiry) {
     BigInteger oldTraverseXlinkExpiry = traverseXlinkExpiry;
     traverseXlinkExpiry = newTraverseXlinkExpiry;
@@ -404,6 +420,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
      * 
      * @generated NOT
      */
+    @Override
     public Map getFormatOptions() {
         if (formatOptions == null) {
             formatOptions = new HashMap();
@@ -415,6 +432,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setFormatOptions(Map newFormatOptions) {
     Map oldFormatOptions = formatOptions;
     formatOptions = newFormatOptions;
@@ -427,6 +445,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
      * 
      * @generated NOT
      */
+    @Override
     public Map getMetadata() {
         if (metadata == null) {
             metadata = new HashMap();
@@ -438,6 +457,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setMetadata(Map newMetadata) {
     Map oldMetadata = metadata;
     metadata = newMetadata;
@@ -449,6 +469,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public BigInteger getStartIndex() {
     return startIndex;
   }
@@ -457,6 +478,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setStartIndex(BigInteger newStartIndex) {
     BigInteger oldStartIndex = startIndex;
     startIndex = newStartIndex;
@@ -468,6 +490,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList getViewParams() {
     if (viewParams == null) {
       viewParams = new EDataTypeEList(Map.class, this, WfsPackage.GET_FEATURE_TYPE__VIEW_PARAMS);
@@ -479,6 +502,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID,
             NotificationChain msgs) {
     switch (featureID) {
@@ -492,6 +516,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.GET_FEATURE_TYPE__QUERY:
@@ -522,6 +547,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.GET_FEATURE_TYPE__QUERY:
@@ -564,6 +590,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.GET_FEATURE_TYPE__QUERY:
@@ -604,6 +631,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.GET_FEATURE_TYPE__QUERY:
@@ -634,6 +662,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String toString() {
     if (eIsProxy()) return super.toString();
 

@@ -105,6 +105,7 @@ public class FeatureInfoResponseTypeImpl extends MinimalEObjectImpl.Container im
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getFeatureCollectionGroup() {
         if (featureCollectionGroup == null) {
             featureCollectionGroup = new BasicFeatureMap(this, wmtsv_1Package.FEATURE_INFO_RESPONSE_TYPE__FEATURE_COLLECTION_GROUP);
@@ -117,6 +118,7 @@ public class FeatureInfoResponseTypeImpl extends MinimalEObjectImpl.Container im
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractFeatureCollectionType getFeatureCollection() {
         return (AbstractFeatureCollectionType)getFeatureCollectionGroup().get(wmtsv_1Package.Literals.FEATURE_INFO_RESPONSE_TYPE__FEATURE_COLLECTION, true);
     }
@@ -135,6 +137,7 @@ public class FeatureInfoResponseTypeImpl extends MinimalEObjectImpl.Container im
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TextPayloadType getTextPayload() {
         return textPayload;
     }
@@ -159,6 +162,7 @@ public class FeatureInfoResponseTypeImpl extends MinimalEObjectImpl.Container im
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTextPayload(TextPayloadType newTextPayload) {
         if (newTextPayload != textPayload) {
             NotificationChain msgs = null;
@@ -178,6 +182,7 @@ public class FeatureInfoResponseTypeImpl extends MinimalEObjectImpl.Container im
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinaryPayloadType getBinaryPayload() {
         return binaryPayload;
     }
@@ -202,6 +207,7 @@ public class FeatureInfoResponseTypeImpl extends MinimalEObjectImpl.Container im
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBinaryPayload(BinaryPayloadType newBinaryPayload) {
         if (newBinaryPayload != binaryPayload) {
             NotificationChain msgs = null;
@@ -221,6 +227,7 @@ public class FeatureInfoResponseTypeImpl extends MinimalEObjectImpl.Container im
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EObject getAnyContent() {
         return anyContent;
     }
@@ -245,6 +252,7 @@ public class FeatureInfoResponseTypeImpl extends MinimalEObjectImpl.Container im
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAnyContent(EObject newAnyContent) {
         if (newAnyContent != anyContent) {
             NotificationChain msgs = null;

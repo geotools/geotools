@@ -57,6 +57,7 @@ public class DCPTypeTypeImpl extends EObjectImpl implements DCPTypeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.DCP_TYPE_TYPE;
 	}
@@ -66,6 +67,7 @@ public class DCPTypeTypeImpl extends EObjectImpl implements DCPTypeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public HTTPType getHTTP() {
 		return hTTP;
 	}
@@ -90,6 +92,7 @@ public class DCPTypeTypeImpl extends EObjectImpl implements DCPTypeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setHTTP(HTTPType newHTTP) {
 		if (newHTTP != hTTP) {
 			NotificationChain msgs = null;
@@ -109,6 +112,7 @@ public class DCPTypeTypeImpl extends EObjectImpl implements DCPTypeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.DCP_TYPE_TYPE__HTTP:
@@ -122,6 +126,7 @@ public class DCPTypeTypeImpl extends EObjectImpl implements DCPTypeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.DCP_TYPE_TYPE__HTTP:
@@ -135,6 +140,7 @@ public class DCPTypeTypeImpl extends EObjectImpl implements DCPTypeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.DCP_TYPE_TYPE__HTTP:
@@ -149,6 +155,7 @@ public class DCPTypeTypeImpl extends EObjectImpl implements DCPTypeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.DCP_TYPE_TYPE__HTTP:
@@ -163,6 +170,7 @@ public class DCPTypeTypeImpl extends EObjectImpl implements DCPTypeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.DCP_TYPE_TYPE__HTTP:

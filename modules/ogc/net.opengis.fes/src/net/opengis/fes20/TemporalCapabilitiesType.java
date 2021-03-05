@@ -69,6 +69,7 @@ public interface TemporalCapabilitiesType extends EObject, TemporalCapabilities 
      *        extendedMetaData="kind='element' name='TemporalOperators' namespace='##targetNamespace'"
      * @generated
      */
+    @Override
     TemporalOperatorsType getTemporalOperators();
 
     /**

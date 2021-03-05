@@ -113,6 +113,7 @@ public class AcknowledgementTypeImpl extends EObjectImpl implements Acknowledgem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EchoedRequestType getEchoedRequest() {
         return echoedRequest;
     }
@@ -137,6 +138,7 @@ public class AcknowledgementTypeImpl extends EObjectImpl implements Acknowledgem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEchoedRequest(EchoedRequestType newEchoedRequest) {
         if (newEchoedRequest != echoedRequest) {
             NotificationChain msgs = null;
@@ -156,6 +158,7 @@ public class AcknowledgementTypeImpl extends EObjectImpl implements Acknowledgem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getRequestId() {
         return requestId;
     }
@@ -165,6 +168,7 @@ public class AcknowledgementTypeImpl extends EObjectImpl implements Acknowledgem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRequestId(String newRequestId) {
         String oldRequestId = requestId;
         requestId = newRequestId;
@@ -177,6 +181,7 @@ public class AcknowledgementTypeImpl extends EObjectImpl implements Acknowledgem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Calendar getTimeStamp() {
         return timeStamp;
     }
@@ -186,6 +191,7 @@ public class AcknowledgementTypeImpl extends EObjectImpl implements Acknowledgem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTimeStamp(Calendar newTimeStamp) {
         Calendar oldTimeStamp = timeStamp;
         timeStamp = newTimeStamp;

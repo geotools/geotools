@@ -87,6 +87,7 @@ public class FeaturesNotLockedTypeImpl extends EObjectImpl implements FeaturesNo
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureMap getGroup() {
     if (group == null) {
       group = new BasicFeatureMap(this, Wfs20Package.FEATURES_NOT_LOCKED_TYPE__GROUP);
@@ -99,6 +100,7 @@ public class FeaturesNotLockedTypeImpl extends EObjectImpl implements FeaturesNo
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<FeatureId> getResourceId() {
     if (resourceId == null) {
       resourceId = new EDataTypeUniqueEList<>(FeatureId.class, this, Wfs20Package.FEATURES_NOT_LOCKED_TYPE__RESOURCE_ID);

@@ -141,6 +141,7 @@ public class TransactionSummaryTypeImpl extends EObjectImpl implements Transacti
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getTotalInserted() {
         return totalInserted;
     }
@@ -150,6 +151,7 @@ public class TransactionSummaryTypeImpl extends EObjectImpl implements Transacti
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTotalInserted(BigInteger newTotalInserted) {
         BigInteger oldTotalInserted = totalInserted;
         totalInserted = newTotalInserted;
@@ -162,6 +164,7 @@ public class TransactionSummaryTypeImpl extends EObjectImpl implements Transacti
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getTotalUpdated() {
         return totalUpdated;
     }
@@ -171,6 +174,7 @@ public class TransactionSummaryTypeImpl extends EObjectImpl implements Transacti
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTotalUpdated(BigInteger newTotalUpdated) {
         BigInteger oldTotalUpdated = totalUpdated;
         totalUpdated = newTotalUpdated;
@@ -183,6 +187,7 @@ public class TransactionSummaryTypeImpl extends EObjectImpl implements Transacti
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getTotalDeleted() {
         return totalDeleted;
     }
@@ -192,6 +197,7 @@ public class TransactionSummaryTypeImpl extends EObjectImpl implements Transacti
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTotalDeleted(BigInteger newTotalDeleted) {
         BigInteger oldTotalDeleted = totalDeleted;
         totalDeleted = newTotalDeleted;
@@ -204,6 +210,7 @@ public class TransactionSummaryTypeImpl extends EObjectImpl implements Transacti
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getRequestId() {
         return requestId;
     }
@@ -213,6 +220,7 @@ public class TransactionSummaryTypeImpl extends EObjectImpl implements Transacti
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRequestId(String newRequestId) {
         String oldRequestId = requestId;
         requestId = newRequestId;

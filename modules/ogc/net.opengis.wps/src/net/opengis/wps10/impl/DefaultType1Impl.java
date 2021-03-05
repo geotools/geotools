@@ -60,6 +60,7 @@ public class DefaultType1Impl extends EObjectImpl implements DefaultType1 {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.DEFAULT_TYPE1;
   }
@@ -69,6 +70,7 @@ public class DefaultType1Impl extends EObjectImpl implements DefaultType1 {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public javax.measure.Unit getUOM() {
     if (uOM != null && ((EObject)uOM).eIsProxy()) {
       InternalEObject oldUOM = (InternalEObject)uOM;
@@ -95,7 +97,8 @@ public class DefaultType1Impl extends EObjectImpl implements DefaultType1 {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setUOM(javax.measure.Unit newUOM) {
+  @Override
+public void setUOM(javax.measure.Unit newUOM) {
     javax.measure.Unit oldUOM = uOM;
     uOM = newUOM;
     if (eNotificationRequired())
@@ -107,6 +110,7 @@ public class DefaultType1Impl extends EObjectImpl implements DefaultType1 {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.DEFAULT_TYPE1__UOM:
@@ -121,6 +125,7 @@ public class DefaultType1Impl extends EObjectImpl implements DefaultType1 {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.DEFAULT_TYPE1__UOM:
@@ -135,6 +140,7 @@ public class DefaultType1Impl extends EObjectImpl implements DefaultType1 {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.DEFAULT_TYPE1__UOM:
@@ -149,6 +155,7 @@ public class DefaultType1Impl extends EObjectImpl implements DefaultType1 {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.DEFAULT_TYPE1__UOM:

@@ -87,6 +87,7 @@ public class ProcessStartedTypeImpl extends EObjectImpl implements ProcessStarte
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.PROCESS_STARTED_TYPE;
   }
@@ -96,6 +97,7 @@ public class ProcessStartedTypeImpl extends EObjectImpl implements ProcessStarte
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getValue() {
     return value;
   }
@@ -105,6 +107,7 @@ public class ProcessStartedTypeImpl extends EObjectImpl implements ProcessStarte
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setValue(String newValue) {
     String oldValue = value;
     value = newValue;
@@ -117,6 +120,7 @@ public class ProcessStartedTypeImpl extends EObjectImpl implements ProcessStarte
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public BigInteger getPercentCompleted() {
     return percentCompleted;
   }
@@ -126,6 +130,7 @@ public class ProcessStartedTypeImpl extends EObjectImpl implements ProcessStarte
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setPercentCompleted(BigInteger newPercentCompleted) {
     BigInteger oldPercentCompleted = percentCompleted;
     percentCompleted = newPercentCompleted;
@@ -138,6 +143,7 @@ public class ProcessStartedTypeImpl extends EObjectImpl implements ProcessStarte
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.PROCESS_STARTED_TYPE__VALUE:
@@ -153,6 +159,7 @@ public class ProcessStartedTypeImpl extends EObjectImpl implements ProcessStarte
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.PROCESS_STARTED_TYPE__VALUE:
@@ -170,6 +177,7 @@ public class ProcessStartedTypeImpl extends EObjectImpl implements ProcessStarte
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.PROCESS_STARTED_TYPE__VALUE:
@@ -187,6 +195,7 @@ public class ProcessStartedTypeImpl extends EObjectImpl implements ProcessStarte
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.PROCESS_STARTED_TYPE__VALUE:
@@ -202,6 +211,7 @@ public class ProcessStartedTypeImpl extends EObjectImpl implements ProcessStarte
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String toString() {
     if (eIsProxy()) return super.toString();
 

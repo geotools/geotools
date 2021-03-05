@@ -108,6 +108,7 @@ public class OutputTypeImpl extends EObjectImpl implements OutputType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EClass eStaticClass() {
         return Wcs111Package.Literals.OUTPUT_TYPE;
     }
@@ -117,6 +118,7 @@ public class OutputTypeImpl extends EObjectImpl implements OutputType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GridCrsType getGridCRS() {
         return gridCRS;
     }
@@ -141,6 +143,7 @@ public class OutputTypeImpl extends EObjectImpl implements OutputType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGridCRS(GridCrsType newGridCRS) {
         if (newGridCRS != gridCRS) {
             NotificationChain msgs = null;
@@ -160,6 +163,7 @@ public class OutputTypeImpl extends EObjectImpl implements OutputType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getFormat() {
         return format;
     }
@@ -169,6 +173,7 @@ public class OutputTypeImpl extends EObjectImpl implements OutputType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFormat(String newFormat) {
         String oldFormat = format;
         format = newFormat;
@@ -181,6 +186,7 @@ public class OutputTypeImpl extends EObjectImpl implements OutputType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isStore() {
         return store;
     }
@@ -190,6 +196,7 @@ public class OutputTypeImpl extends EObjectImpl implements OutputType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setStore(boolean newStore) {
         boolean oldStore = store;
         store = newStore;
@@ -204,6 +211,7 @@ public class OutputTypeImpl extends EObjectImpl implements OutputType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetStore() {
         boolean oldStore = store;
         boolean oldStoreESet = storeESet;
@@ -218,6 +226,7 @@ public class OutputTypeImpl extends EObjectImpl implements OutputType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetStore() {
         return storeESet;
     }
@@ -227,6 +236,7 @@ public class OutputTypeImpl extends EObjectImpl implements OutputType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case Wcs111Package.OUTPUT_TYPE__GRID_CRS:
@@ -240,6 +250,7 @@ public class OutputTypeImpl extends EObjectImpl implements OutputType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case Wcs111Package.OUTPUT_TYPE__GRID_CRS:
@@ -257,6 +268,7 @@ public class OutputTypeImpl extends EObjectImpl implements OutputType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Wcs111Package.OUTPUT_TYPE__GRID_CRS:
@@ -277,6 +289,7 @@ public class OutputTypeImpl extends EObjectImpl implements OutputType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case Wcs111Package.OUTPUT_TYPE__GRID_CRS:
@@ -297,6 +310,7 @@ public class OutputTypeImpl extends EObjectImpl implements OutputType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case Wcs111Package.OUTPUT_TYPE__GRID_CRS:
@@ -314,6 +328,7 @@ public class OutputTypeImpl extends EObjectImpl implements OutputType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String toString() {
         if (eIsProxy()) return super.toString();
 

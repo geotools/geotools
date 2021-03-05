@@ -103,7 +103,8 @@ public class DomainTypeImpl extends EObjectImpl implements DomainType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<String> getValue() {
+  @Override
+public EList<String> getValue() {
     if (value == null) {
       value = new EDataTypeEList<>(String.class, this, Ows10Package.DOMAIN_TYPE__VALUE);
     }
@@ -115,7 +116,8 @@ public class DomainTypeImpl extends EObjectImpl implements DomainType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<MetadataType> getMetadata() {
+  @Override
+public EList<MetadataType> getMetadata() {
     if (metadata == null) {
       metadata = new EObjectContainmentEList<>(MetadataType.class, this, Ows10Package.DOMAIN_TYPE__METADATA);
     }
@@ -127,7 +129,8 @@ public class DomainTypeImpl extends EObjectImpl implements DomainType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getName() {
+  @Override
+public String getName() {
     return name;
   }
 
@@ -136,7 +139,8 @@ public class DomainTypeImpl extends EObjectImpl implements DomainType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setName(String newName) {
+  @Override
+public void setName(String newName) {
     String oldName = name;
     name = newName;
     if (eNotificationRequired())

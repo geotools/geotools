@@ -213,7 +213,8 @@ public class QueryTypeImpl extends EObjectImpl implements QueryType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.QUERY_TYPE;
   }
 
@@ -222,7 +223,8 @@ public class QueryTypeImpl extends EObjectImpl implements QueryType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public FeatureMap getGroup() {
+	@Override
+    public FeatureMap getGroup() {
     if (group == null) {
       group = new BasicFeatureMap(this, WfsPackage.QUERY_TYPE__GROUP);
     }
@@ -234,7 +236,8 @@ public class QueryTypeImpl extends EObjectImpl implements QueryType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList getPropertyName() {
+	@Override
+    public EList getPropertyName() {
     if (propertyName == null) {
       propertyName = new EDataTypeUniqueEList(String.class, this, WfsPackage.QUERY_TYPE__PROPERTY_NAME);
     }
@@ -246,7 +249,8 @@ public class QueryTypeImpl extends EObjectImpl implements QueryType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList getXlinkPropertyName() {
+	@Override
+    public EList getXlinkPropertyName() {
     return getGroup().list(WfsPackage.Literals.QUERY_TYPE__XLINK_PROPERTY_NAME);
   }
 
@@ -255,7 +259,8 @@ public class QueryTypeImpl extends EObjectImpl implements QueryType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList getFunction() {
+	@Override
+    public EList getFunction() {
     if (function == null) {
       function = new EDataTypeUniqueEList(Function.class, this, WfsPackage.QUERY_TYPE__FUNCTION);
     }
@@ -267,7 +272,8 @@ public class QueryTypeImpl extends EObjectImpl implements QueryType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Filter getFilter() {
+	@Override
+    public Filter getFilter() {
     return filter;
   }
 
@@ -276,7 +282,8 @@ public class QueryTypeImpl extends EObjectImpl implements QueryType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setFilter(Filter newFilter) {
+	@Override
+    public void setFilter(Filter newFilter) {
     Filter oldFilter = filter;
     filter = newFilter;
     if (eNotificationRequired())
@@ -288,7 +295,8 @@ public class QueryTypeImpl extends EObjectImpl implements QueryType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList getSortBy() {
+	@Override
+    public EList getSortBy() {
     if (sortBy == null) {
       sortBy = new EDataTypeUniqueEList(SortBy.class, this, WfsPackage.QUERY_TYPE__SORT_BY);
     }
@@ -300,7 +308,8 @@ public class QueryTypeImpl extends EObjectImpl implements QueryType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getFeatureVersion() {
+	@Override
+    public String getFeatureVersion() {
     return featureVersion;
   }
 
@@ -309,7 +318,8 @@ public class QueryTypeImpl extends EObjectImpl implements QueryType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setFeatureVersion(String newFeatureVersion) {
+	@Override
+    public void setFeatureVersion(String newFeatureVersion) {
     String oldFeatureVersion = featureVersion;
     featureVersion = newFeatureVersion;
     if (eNotificationRequired())
@@ -321,7 +331,8 @@ public class QueryTypeImpl extends EObjectImpl implements QueryType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getHandle() {
+	@Override
+    public String getHandle() {
     return handle;
   }
 
@@ -330,7 +341,8 @@ public class QueryTypeImpl extends EObjectImpl implements QueryType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setHandle(String newHandle) {
+	@Override
+    public void setHandle(String newHandle) {
     String oldHandle = handle;
     handle = newHandle;
     if (eNotificationRequired())
@@ -342,7 +354,8 @@ public class QueryTypeImpl extends EObjectImpl implements QueryType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public URI getSrsName() {
+	@Override
+    public URI getSrsName() {
     return srsName;
   }
 
@@ -351,7 +364,8 @@ public class QueryTypeImpl extends EObjectImpl implements QueryType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setSrsName(URI newSrsName) {
+	@Override
+    public void setSrsName(URI newSrsName) {
     URI oldSrsName = srsName;
     srsName = newSrsName;
     if (eNotificationRequired())
@@ -363,7 +377,8 @@ public class QueryTypeImpl extends EObjectImpl implements QueryType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public List getTypeName() {
+	@Override
+    public List getTypeName() {
     return typeName;
   }
 
@@ -372,7 +387,8 @@ public class QueryTypeImpl extends EObjectImpl implements QueryType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setTypeName(List newTypeName) {
+	@Override
+    public void setTypeName(List newTypeName) {
     List oldTypeName = typeName;
     typeName = newTypeName;
     if (eNotificationRequired())
@@ -384,7 +400,8 @@ public class QueryTypeImpl extends EObjectImpl implements QueryType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+	@Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case WfsPackage.QUERY_TYPE__GROUP:
         return ((InternalEList)getGroup()).basicRemove(otherEnd, msgs);
@@ -399,7 +416,8 @@ public class QueryTypeImpl extends EObjectImpl implements QueryType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	@Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.QUERY_TYPE__GROUP:
         if (coreType) return getGroup();
@@ -431,7 +449,8 @@ public class QueryTypeImpl extends EObjectImpl implements QueryType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(int featureID, Object newValue) {
+	@Override
+    public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.QUERY_TYPE__GROUP:
         ((FeatureMap.Internal)getGroup()).set(newValue);
@@ -476,7 +495,8 @@ public class QueryTypeImpl extends EObjectImpl implements QueryType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(int featureID) {
+	@Override
+    public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.QUERY_TYPE__GROUP:
         getGroup().clear();
@@ -517,7 +537,8 @@ public class QueryTypeImpl extends EObjectImpl implements QueryType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(int featureID) {
+	@Override
+    public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.QUERY_TYPE__GROUP:
         return group != null && !group.isEmpty();
@@ -548,7 +569,8 @@ public class QueryTypeImpl extends EObjectImpl implements QueryType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String toString() {
+	@Override
+    public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

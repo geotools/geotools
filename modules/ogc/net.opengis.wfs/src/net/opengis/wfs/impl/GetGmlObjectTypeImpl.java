@@ -138,7 +138,8 @@ public class GetGmlObjectTypeImpl extends BaseRequestTypeImpl implements GetGmlO
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.GET_GML_OBJECT_TYPE;
   }
 
@@ -147,7 +148,8 @@ public class GetGmlObjectTypeImpl extends BaseRequestTypeImpl implements GetGmlO
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object getGmlObjectId() {
+	@Override
+    public Object getGmlObjectId() {
     return gmlObjectId;
   }
 
@@ -156,7 +158,8 @@ public class GetGmlObjectTypeImpl extends BaseRequestTypeImpl implements GetGmlO
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setGmlObjectId(Object newGmlObjectId) {
+  @Override
+public void setGmlObjectId(Object newGmlObjectId) {
     Object oldGmlObjectId = gmlObjectId;
     gmlObjectId = newGmlObjectId;
     if (eNotificationRequired())
@@ -168,7 +171,8 @@ public class GetGmlObjectTypeImpl extends BaseRequestTypeImpl implements GetGmlO
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getOutputFormat() {
+	@Override
+    public String getOutputFormat() {
     return outputFormat;
   }
 
@@ -177,7 +181,8 @@ public class GetGmlObjectTypeImpl extends BaseRequestTypeImpl implements GetGmlO
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setOutputFormat(String newOutputFormat) {
+	@Override
+    public void setOutputFormat(String newOutputFormat) {
     String oldOutputFormat = outputFormat;
     outputFormat = newOutputFormat;
     boolean oldOutputFormatESet = outputFormatESet;
@@ -191,7 +196,8 @@ public class GetGmlObjectTypeImpl extends BaseRequestTypeImpl implements GetGmlO
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void unsetOutputFormat() {
+	@Override
+    public void unsetOutputFormat() {
     String oldOutputFormat = outputFormat;
     boolean oldOutputFormatESet = outputFormatESet;
     outputFormat = OUTPUT_FORMAT_EDEFAULT;
@@ -205,7 +211,8 @@ public class GetGmlObjectTypeImpl extends BaseRequestTypeImpl implements GetGmlO
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean isSetOutputFormat() {
+	@Override
+    public boolean isSetOutputFormat() {
     return outputFormatESet;
   }
 
@@ -214,7 +221,8 @@ public class GetGmlObjectTypeImpl extends BaseRequestTypeImpl implements GetGmlO
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getTraverseXlinkDepth() {
+	@Override
+    public String getTraverseXlinkDepth() {
     return traverseXlinkDepth;
   }
 
@@ -223,7 +231,8 @@ public class GetGmlObjectTypeImpl extends BaseRequestTypeImpl implements GetGmlO
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setTraverseXlinkDepth(String newTraverseXlinkDepth) {
+	@Override
+    public void setTraverseXlinkDepth(String newTraverseXlinkDepth) {
     String oldTraverseXlinkDepth = traverseXlinkDepth;
     traverseXlinkDepth = newTraverseXlinkDepth;
     if (eNotificationRequired())
@@ -235,7 +244,8 @@ public class GetGmlObjectTypeImpl extends BaseRequestTypeImpl implements GetGmlO
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public BigInteger getTraverseXlinkExpiry() {
+	@Override
+    public BigInteger getTraverseXlinkExpiry() {
     return traverseXlinkExpiry;
   }
 
@@ -244,7 +254,8 @@ public class GetGmlObjectTypeImpl extends BaseRequestTypeImpl implements GetGmlO
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setTraverseXlinkExpiry(BigInteger newTraverseXlinkExpiry) {
+	@Override
+    public void setTraverseXlinkExpiry(BigInteger newTraverseXlinkExpiry) {
     BigInteger oldTraverseXlinkExpiry = traverseXlinkExpiry;
     traverseXlinkExpiry = newTraverseXlinkExpiry;
     if (eNotificationRequired())
@@ -256,7 +267,8 @@ public class GetGmlObjectTypeImpl extends BaseRequestTypeImpl implements GetGmlO
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	@Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.GET_GML_OBJECT_TYPE__GML_OBJECT_ID:
         return getGmlObjectId();
@@ -275,7 +287,8 @@ public class GetGmlObjectTypeImpl extends BaseRequestTypeImpl implements GetGmlO
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(int featureID, Object newValue) {
+	@Override
+    public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.GET_GML_OBJECT_TYPE__GML_OBJECT_ID:
         setGmlObjectId(newValue);
@@ -298,7 +311,8 @@ public class GetGmlObjectTypeImpl extends BaseRequestTypeImpl implements GetGmlO
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(int featureID) {
+	@Override
+    public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.GET_GML_OBJECT_TYPE__GML_OBJECT_ID:
         setGmlObjectId(GML_OBJECT_ID_EDEFAULT);
@@ -321,7 +335,8 @@ public class GetGmlObjectTypeImpl extends BaseRequestTypeImpl implements GetGmlO
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(int featureID) {
+	@Override
+    public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.GET_GML_OBJECT_TYPE__GML_OBJECT_ID:
         return GML_OBJECT_ID_EDEFAULT == null ? gmlObjectId != null : !GML_OBJECT_ID_EDEFAULT.equals(gmlObjectId);
@@ -340,7 +355,8 @@ public class GetGmlObjectTypeImpl extends BaseRequestTypeImpl implements GetGmlO
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String toString() {
+	@Override
+    public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

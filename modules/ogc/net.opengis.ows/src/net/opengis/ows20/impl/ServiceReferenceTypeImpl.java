@@ -83,6 +83,7 @@ public class ServiceReferenceTypeImpl extends ReferenceTypeImpl implements Servi
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EObject getRequestMessage() {
     return requestMessage;
   }
@@ -107,6 +108,7 @@ public class ServiceReferenceTypeImpl extends ReferenceTypeImpl implements Servi
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setRequestMessage(EObject newRequestMessage) {
     if (newRequestMessage != requestMessage) {
       NotificationChain msgs = null;
@@ -126,6 +128,7 @@ public class ServiceReferenceTypeImpl extends ReferenceTypeImpl implements Servi
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getRequestMessageReference() {
     return requestMessageReference;
   }
@@ -135,6 +138,7 @@ public class ServiceReferenceTypeImpl extends ReferenceTypeImpl implements Servi
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setRequestMessageReference(String newRequestMessageReference) {
     String oldRequestMessageReference = requestMessageReference;
     requestMessageReference = newRequestMessageReference;

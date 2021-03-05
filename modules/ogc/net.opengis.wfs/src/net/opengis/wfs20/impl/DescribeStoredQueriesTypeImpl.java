@@ -67,6 +67,7 @@ public class DescribeStoredQueriesTypeImpl extends BaseRequestTypeImpl implement
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<URI> getStoredQueryId() {
     if (storedQueryId == null) {
       storedQueryId = new EDataTypeUniqueEList<>(URI.class, this, Wfs20Package.DESCRIBE_STORED_QUERIES_TYPE__STORED_QUERY_ID);

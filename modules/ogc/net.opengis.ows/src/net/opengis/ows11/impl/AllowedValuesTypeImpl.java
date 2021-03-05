@@ -60,7 +60,8 @@ public class AllowedValuesTypeImpl extends EObjectImpl implements AllowedValuesT
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.ALLOWED_VALUES_TYPE;
   }
 
@@ -69,7 +70,8 @@ public class AllowedValuesTypeImpl extends EObjectImpl implements AllowedValuesT
    * <!-- end-user-doc -->
    * @generated
    */
-  public FeatureMap getGroup() {
+  @Override
+public FeatureMap getGroup() {
     if (group == null) {
       group = new BasicFeatureMap(this, Ows11Package.ALLOWED_VALUES_TYPE__GROUP);
     }
@@ -81,7 +83,8 @@ public class AllowedValuesTypeImpl extends EObjectImpl implements AllowedValuesT
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList getValue() {
+  @Override
+public EList getValue() {
     return getGroup().list(Ows11Package.Literals.ALLOWED_VALUES_TYPE__VALUE);
   }
 
@@ -90,7 +93,8 @@ public class AllowedValuesTypeImpl extends EObjectImpl implements AllowedValuesT
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList getRange() {
+  @Override
+public EList getRange() {
     return getGroup().list(Ows11Package.Literals.ALLOWED_VALUES_TYPE__RANGE);
   }
 
@@ -99,7 +103,8 @@ public class AllowedValuesTypeImpl extends EObjectImpl implements AllowedValuesT
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+  @Override
+public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Ows11Package.ALLOWED_VALUES_TYPE__GROUP:
         return ((InternalEList)getGroup()).basicRemove(otherEnd, msgs);
@@ -116,7 +121,8 @@ public class AllowedValuesTypeImpl extends EObjectImpl implements AllowedValuesT
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.ALLOWED_VALUES_TYPE__GROUP:
         if (coreType) return getGroup();
@@ -134,7 +140,8 @@ public class AllowedValuesTypeImpl extends EObjectImpl implements AllowedValuesT
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.ALLOWED_VALUES_TYPE__GROUP:
         ((FeatureMap.Internal)getGroup()).set(newValue);
@@ -156,7 +163,8 @@ public class AllowedValuesTypeImpl extends EObjectImpl implements AllowedValuesT
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.ALLOWED_VALUES_TYPE__GROUP:
         getGroup().clear();
@@ -176,7 +184,8 @@ public class AllowedValuesTypeImpl extends EObjectImpl implements AllowedValuesT
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.ALLOWED_VALUES_TYPE__GROUP:
         return group != null && !group.isEmpty();
@@ -193,7 +202,8 @@ public class AllowedValuesTypeImpl extends EObjectImpl implements AllowedValuesT
    * <!-- end-user-doc -->
    * @generated
    */
-  public String toString() {
+  @Override
+public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

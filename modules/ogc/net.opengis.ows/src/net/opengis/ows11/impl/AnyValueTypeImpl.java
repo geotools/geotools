@@ -31,7 +31,8 @@ public class AnyValueTypeImpl extends EObjectImpl implements AnyValueType {
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.ANY_VALUE_TYPE;
   }
 

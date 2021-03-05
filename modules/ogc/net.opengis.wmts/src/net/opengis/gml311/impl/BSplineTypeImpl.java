@@ -226,6 +226,7 @@ public class BSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements BSp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getGroup() {
         if (group == null) {
             group = new BasicFeatureMap(this, Gml311Package.BSPLINE_TYPE__GROUP);
@@ -238,6 +239,7 @@ public class BSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements BSp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<DirectPositionType> getPos() {
         return getGroup().list(Gml311Package.eINSTANCE.getBSplineType_Pos());
     }
@@ -247,6 +249,7 @@ public class BSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements BSp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<PointPropertyType> getPointProperty() {
         return getGroup().list(Gml311Package.eINSTANCE.getBSplineType_PointProperty());
     }
@@ -256,6 +259,7 @@ public class BSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements BSp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<PointPropertyType> getPointRep() {
         return getGroup().list(Gml311Package.eINSTANCE.getBSplineType_PointRep());
     }
@@ -265,6 +269,7 @@ public class BSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements BSp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectPositionListType getPosList() {
         return posList;
     }
@@ -289,6 +294,7 @@ public class BSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements BSp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPosList(DirectPositionListType newPosList) {
         if (newPosList != posList) {
             NotificationChain msgs = null;
@@ -308,6 +314,7 @@ public class BSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements BSp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinatesType getCoordinates() {
         return coordinates;
     }
@@ -332,6 +339,7 @@ public class BSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements BSp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCoordinates(CoordinatesType newCoordinates) {
         if (newCoordinates != coordinates) {
             NotificationChain msgs = null;
@@ -351,6 +359,7 @@ public class BSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements BSp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getDegree() {
         return degree;
     }
@@ -360,6 +369,7 @@ public class BSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements BSp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDegree(BigInteger newDegree) {
         BigInteger oldDegree = degree;
         degree = newDegree;
@@ -372,6 +382,7 @@ public class BSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements BSp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<KnotPropertyType> getKnot() {
         if (knot == null) {
             knot = new EObjectContainmentEList<>(KnotPropertyType.class, this, Gml311Package.BSPLINE_TYPE__KNOT);
@@ -384,6 +395,7 @@ public class BSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements BSp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CurveInterpolationType getInterpolation() {
         return interpolation;
     }
@@ -393,6 +405,7 @@ public class BSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements BSp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setInterpolation(CurveInterpolationType newInterpolation) {
         CurveInterpolationType oldInterpolation = interpolation;
         interpolation = newInterpolation == null ? INTERPOLATION_EDEFAULT : newInterpolation;
@@ -407,6 +420,7 @@ public class BSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements BSp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetInterpolation() {
         CurveInterpolationType oldInterpolation = interpolation;
         boolean oldInterpolationESet = interpolationESet;
@@ -421,6 +435,7 @@ public class BSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements BSp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetInterpolation() {
         return interpolationESet;
     }
@@ -430,6 +445,7 @@ public class BSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements BSp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isIsPolynomial() {
         return isPolynomial;
     }
@@ -439,6 +455,7 @@ public class BSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements BSp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIsPolynomial(boolean newIsPolynomial) {
         boolean oldIsPolynomial = isPolynomial;
         isPolynomial = newIsPolynomial;
@@ -453,6 +470,7 @@ public class BSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements BSp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetIsPolynomial() {
         boolean oldIsPolynomial = isPolynomial;
         boolean oldIsPolynomialESet = isPolynomialESet;
@@ -467,6 +485,7 @@ public class BSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements BSp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetIsPolynomial() {
         return isPolynomialESet;
     }
@@ -476,6 +495,7 @@ public class BSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements BSp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public KnotTypesType getKnotType() {
         return knotType;
     }
@@ -485,6 +505,7 @@ public class BSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements BSp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setKnotType(KnotTypesType newKnotType) {
         KnotTypesType oldKnotType = knotType;
         knotType = newKnotType == null ? KNOT_TYPE_EDEFAULT : newKnotType;
@@ -499,6 +520,7 @@ public class BSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements BSp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetKnotType() {
         KnotTypesType oldKnotType = knotType;
         boolean oldKnotTypeESet = knotTypeESet;
@@ -513,6 +535,7 @@ public class BSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements BSp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetKnotType() {
         return knotTypeESet;
     }

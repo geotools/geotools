@@ -69,6 +69,7 @@ public class SurfacePatchArrayPropertyTypeImpl extends MinimalEObjectImpl.Contai
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getGroup() {
         if (group == null) {
             group = new BasicFeatureMap(this, Gml311Package.SURFACE_PATCH_ARRAY_PROPERTY_TYPE__GROUP);
@@ -81,6 +82,7 @@ public class SurfacePatchArrayPropertyTypeImpl extends MinimalEObjectImpl.Contai
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getSurfacePatchGroup() {
         return (FeatureMap)getGroup().<FeatureMap.Entry>list(Gml311Package.eINSTANCE.getSurfacePatchArrayPropertyType_SurfacePatchGroup());
     }
@@ -90,6 +92,7 @@ public class SurfacePatchArrayPropertyTypeImpl extends MinimalEObjectImpl.Contai
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<AbstractSurfacePatchType> getSurfacePatch() {
         return getSurfacePatchGroup().list(Gml311Package.eINSTANCE.getSurfacePatchArrayPropertyType_SurfacePatch());
     }

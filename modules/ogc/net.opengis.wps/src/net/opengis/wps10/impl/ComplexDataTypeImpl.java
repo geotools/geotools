@@ -121,6 +121,7 @@ public class ComplexDataTypeImpl extends AnyTypeImpl implements ComplexDataType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.COMPLEX_DATA_TYPE;
   }
@@ -130,6 +131,7 @@ public class ComplexDataTypeImpl extends AnyTypeImpl implements ComplexDataType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getEncoding() {
     return encoding;
   }
@@ -139,6 +141,7 @@ public class ComplexDataTypeImpl extends AnyTypeImpl implements ComplexDataType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setEncoding(String newEncoding) {
     String oldEncoding = encoding;
     encoding = newEncoding;
@@ -151,6 +154,7 @@ public class ComplexDataTypeImpl extends AnyTypeImpl implements ComplexDataType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getMimeType() {
     return mimeType;
   }
@@ -160,6 +164,7 @@ public class ComplexDataTypeImpl extends AnyTypeImpl implements ComplexDataType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setMimeType(String newMimeType) {
     String oldMimeType = mimeType;
     mimeType = newMimeType;
@@ -172,6 +177,7 @@ public class ComplexDataTypeImpl extends AnyTypeImpl implements ComplexDataType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getSchema() {
     return schema;
   }
@@ -181,6 +187,7 @@ public class ComplexDataTypeImpl extends AnyTypeImpl implements ComplexDataType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setSchema(String newSchema) {
     String oldSchema = schema;
     schema = newSchema;
@@ -193,6 +200,7 @@ public class ComplexDataTypeImpl extends AnyTypeImpl implements ComplexDataType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList getData() {
     if (data == null) {
       data = new EDataTypeUniqueEList(Object.class, this, Wps10Package.COMPLEX_DATA_TYPE__DATA);
@@ -205,6 +213,7 @@ public class ComplexDataTypeImpl extends AnyTypeImpl implements ComplexDataType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.COMPLEX_DATA_TYPE__ENCODING:
@@ -224,6 +233,7 @@ public class ComplexDataTypeImpl extends AnyTypeImpl implements ComplexDataType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.COMPLEX_DATA_TYPE__ENCODING:
@@ -248,6 +258,7 @@ public class ComplexDataTypeImpl extends AnyTypeImpl implements ComplexDataType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.COMPLEX_DATA_TYPE__ENCODING:
@@ -271,6 +282,7 @@ public class ComplexDataTypeImpl extends AnyTypeImpl implements ComplexDataType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.COMPLEX_DATA_TYPE__ENCODING:
@@ -290,6 +302,7 @@ public class ComplexDataTypeImpl extends AnyTypeImpl implements ComplexDataType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String toString() {
     if (eIsProxy()) return super.toString();
 

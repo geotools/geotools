@@ -81,6 +81,7 @@ public class ExecuteTypeImpl extends RequestBaseTypeImpl implements ExecuteType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.EXECUTE_TYPE;
   }
@@ -90,6 +91,7 @@ public class ExecuteTypeImpl extends RequestBaseTypeImpl implements ExecuteType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public CodeType getIdentifier() {
     return identifier;
   }
@@ -114,6 +116,7 @@ public class ExecuteTypeImpl extends RequestBaseTypeImpl implements ExecuteType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setIdentifier(CodeType newIdentifier) {
     if (newIdentifier != identifier) {
       NotificationChain msgs = null;
@@ -133,6 +136,7 @@ public class ExecuteTypeImpl extends RequestBaseTypeImpl implements ExecuteType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DataInputsType1 getDataInputs() {
     return dataInputs;
   }
@@ -157,6 +161,7 @@ public class ExecuteTypeImpl extends RequestBaseTypeImpl implements ExecuteType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setDataInputs(DataInputsType1 newDataInputs) {
     if (newDataInputs != dataInputs) {
       NotificationChain msgs = null;
@@ -176,6 +181,7 @@ public class ExecuteTypeImpl extends RequestBaseTypeImpl implements ExecuteType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ResponseFormType getResponseForm() {
     return responseForm;
   }
@@ -200,6 +206,7 @@ public class ExecuteTypeImpl extends RequestBaseTypeImpl implements ExecuteType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setResponseForm(ResponseFormType newResponseForm) {
     if (newResponseForm != responseForm) {
       NotificationChain msgs = null;
@@ -219,6 +226,7 @@ public class ExecuteTypeImpl extends RequestBaseTypeImpl implements ExecuteType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.EXECUTE_TYPE__IDENTIFIER:
@@ -236,6 +244,7 @@ public class ExecuteTypeImpl extends RequestBaseTypeImpl implements ExecuteType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.EXECUTE_TYPE__IDENTIFIER:
@@ -253,6 +262,7 @@ public class ExecuteTypeImpl extends RequestBaseTypeImpl implements ExecuteType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.EXECUTE_TYPE__IDENTIFIER:
@@ -273,6 +283,7 @@ public class ExecuteTypeImpl extends RequestBaseTypeImpl implements ExecuteType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.EXECUTE_TYPE__IDENTIFIER:
@@ -293,6 +304,7 @@ public class ExecuteTypeImpl extends RequestBaseTypeImpl implements ExecuteType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.EXECUTE_TYPE__IDENTIFIER:

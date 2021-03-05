@@ -116,7 +116,8 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getTitle() {
+	@Override
+    public String getTitle() {
     return title;
   }
 
@@ -125,7 +126,8 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setTitle(String newTitle) {
+	@Override
+    public void setTitle(String newTitle) {
     String oldTitle = title;
     title = newTitle;
     if (eNotificationRequired())
@@ -137,7 +139,8 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getAbstract() {
+	@Override
+    public String getAbstract() {
     return abstract_;
   }
 
@@ -146,7 +149,8 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setAbstract(String newAbstract) {
+	@Override
+    public void setAbstract(String newAbstract) {
     String oldAbstract = abstract_;
     abstract_ = newAbstract;
     if (eNotificationRequired())
@@ -158,7 +162,8 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList<KeywordsType> getKeywords() {
+	@Override
+    public EList<KeywordsType> getKeywords() {
     if (keywords == null) {
       keywords = new EObjectContainmentEList<>(KeywordsType.class, this, Ows10Package.DESCRIPTION_TYPE__KEYWORDS);
     }

@@ -79,6 +79,7 @@ public class BBOXTypeImpl extends SpatialOpsTypeImpl implements BBOXType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getExpressionGroup() {
         if (expressionGroup == null) {
             expressionGroup = new BasicFeatureMap(this, Fes20Package.BBOX_TYPE__EXPRESSION_GROUP);
@@ -91,6 +92,7 @@ public class BBOXTypeImpl extends SpatialOpsTypeImpl implements BBOXType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EObject getExpression() {
         return (EObject)getExpressionGroup().get(Fes20Package.Literals.BBOX_TYPE__EXPRESSION, true);
     }
@@ -109,6 +111,7 @@ public class BBOXTypeImpl extends SpatialOpsTypeImpl implements BBOXType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getAny() {
         if (any == null) {
             any = new BasicFeatureMap(this, Fes20Package.BBOX_TYPE__ANY);

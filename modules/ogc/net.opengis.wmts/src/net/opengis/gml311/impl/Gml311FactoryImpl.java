@@ -733,6 +733,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbsoluteExternalPositionalAccuracyType createAbsoluteExternalPositionalAccuracyType() {
         AbsoluteExternalPositionalAccuracyTypeImpl absoluteExternalPositionalAccuracyType = new AbsoluteExternalPositionalAccuracyTypeImpl();
         return absoluteExternalPositionalAccuracyType;
@@ -743,6 +744,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractGeneralOperationParameterRefType createAbstractGeneralOperationParameterRefType() {
         AbstractGeneralOperationParameterRefTypeImpl abstractGeneralOperationParameterRefType = new AbstractGeneralOperationParameterRefTypeImpl();
         return abstractGeneralOperationParameterRefType;
@@ -753,6 +755,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractGriddedSurfaceType createAbstractGriddedSurfaceType() {
         AbstractGriddedSurfaceTypeImpl abstractGriddedSurfaceType = new AbstractGriddedSurfaceTypeImpl();
         return abstractGriddedSurfaceType;
@@ -763,6 +766,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractParametricCurveSurfaceType createAbstractParametricCurveSurfaceType() {
         AbstractParametricCurveSurfaceTypeImpl abstractParametricCurveSurfaceType = new AbstractParametricCurveSurfaceTypeImpl();
         return abstractParametricCurveSurfaceType;
@@ -773,6 +777,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractRingPropertyType createAbstractRingPropertyType() {
         AbstractRingPropertyTypeImpl abstractRingPropertyType = new AbstractRingPropertyTypeImpl();
         return abstractRingPropertyType;
@@ -783,6 +788,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractSolidType createAbstractSolidType() {
         AbstractSolidTypeImpl abstractSolidType = new AbstractSolidTypeImpl();
         return abstractSolidType;
@@ -793,6 +799,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractSurfaceType createAbstractSurfaceType() {
         AbstractSurfaceTypeImpl abstractSurfaceType = new AbstractSurfaceTypeImpl();
         return abstractSurfaceType;
@@ -803,6 +810,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AffinePlacementType createAffinePlacementType() {
         AffinePlacementTypeImpl affinePlacementType = new AffinePlacementTypeImpl();
         return affinePlacementType;
@@ -813,6 +821,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AngleChoiceType createAngleChoiceType() {
         AngleChoiceTypeImpl angleChoiceType = new AngleChoiceTypeImpl();
         return angleChoiceType;
@@ -823,6 +832,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AngleType createAngleType() {
         AngleTypeImpl angleType = new AngleTypeImpl();
         return angleType;
@@ -833,6 +843,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ArcByBulgeType createArcByBulgeType() {
         ArcByBulgeTypeImpl arcByBulgeType = new ArcByBulgeTypeImpl();
         return arcByBulgeType;
@@ -843,6 +854,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ArcByCenterPointType createArcByCenterPointType() {
         ArcByCenterPointTypeImpl arcByCenterPointType = new ArcByCenterPointTypeImpl();
         return arcByCenterPointType;
@@ -853,6 +865,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ArcStringByBulgeType createArcStringByBulgeType() {
         ArcStringByBulgeTypeImpl arcStringByBulgeType = new ArcStringByBulgeTypeImpl();
         return arcStringByBulgeType;
@@ -863,6 +876,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ArcStringType createArcStringType() {
         ArcStringTypeImpl arcStringType = new ArcStringTypeImpl();
         return arcStringType;
@@ -873,6 +887,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ArcType createArcType() {
         ArcTypeImpl arcType = new ArcTypeImpl();
         return arcType;
@@ -883,6 +898,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AreaType createAreaType() {
         AreaTypeImpl areaType = new AreaTypeImpl();
         return areaType;
@@ -893,6 +909,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ArrayAssociationType createArrayAssociationType() {
         ArrayAssociationTypeImpl arrayAssociationType = new ArrayAssociationTypeImpl();
         return arrayAssociationType;
@@ -903,6 +920,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ArrayType createArrayType() {
         ArrayTypeImpl arrayType = new ArrayTypeImpl();
         return arrayType;
@@ -913,6 +931,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AssociationType createAssociationType() {
         AssociationTypeImpl associationType = new AssociationTypeImpl();
         return associationType;
@@ -923,6 +942,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BagType createBagType() {
         BagTypeImpl bagType = new BagTypeImpl();
         return bagType;
@@ -933,6 +953,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BaseStyleDescriptorType createBaseStyleDescriptorType() {
         BaseStyleDescriptorTypeImpl baseStyleDescriptorType = new BaseStyleDescriptorTypeImpl();
         return baseStyleDescriptorType;
@@ -943,6 +964,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BaseUnitType createBaseUnitType() {
         BaseUnitTypeImpl baseUnitType = new BaseUnitTypeImpl();
         return baseUnitType;
@@ -953,6 +975,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BezierType createBezierType() {
         BezierTypeImpl bezierType = new BezierTypeImpl();
         return bezierType;
@@ -963,6 +986,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BooleanPropertyType createBooleanPropertyType() {
         BooleanPropertyTypeImpl booleanPropertyType = new BooleanPropertyTypeImpl();
         return booleanPropertyType;
@@ -973,6 +997,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BoundingShapeType createBoundingShapeType() {
         BoundingShapeTypeImpl boundingShapeType = new BoundingShapeTypeImpl();
         return boundingShapeType;
@@ -983,6 +1008,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BSplineType createBSplineType() {
         BSplineTypeImpl bSplineType = new BSplineTypeImpl();
         return bSplineType;
@@ -993,6 +1019,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CartesianCSRefType createCartesianCSRefType() {
         CartesianCSRefTypeImpl cartesianCSRefType = new CartesianCSRefTypeImpl();
         return cartesianCSRefType;
@@ -1003,6 +1030,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CartesianCSType createCartesianCSType() {
         CartesianCSTypeImpl cartesianCSType = new CartesianCSTypeImpl();
         return cartesianCSType;
@@ -1013,6 +1041,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CategoryExtentType createCategoryExtentType() {
         CategoryExtentTypeImpl categoryExtentType = new CategoryExtentTypeImpl();
         return categoryExtentType;
@@ -1023,6 +1052,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CategoryPropertyType createCategoryPropertyType() {
         CategoryPropertyTypeImpl categoryPropertyType = new CategoryPropertyTypeImpl();
         return categoryPropertyType;
@@ -1033,6 +1063,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CircleByCenterPointType createCircleByCenterPointType() {
         CircleByCenterPointTypeImpl circleByCenterPointType = new CircleByCenterPointTypeImpl();
         return circleByCenterPointType;
@@ -1043,6 +1074,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CircleType createCircleType() {
         CircleTypeImpl circleType = new CircleTypeImpl();
         return circleType;
@@ -1053,6 +1085,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ClothoidType createClothoidType() {
         ClothoidTypeImpl clothoidType = new ClothoidTypeImpl();
         return clothoidType;
@@ -1063,6 +1096,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeListType createCodeListType() {
         CodeListTypeImpl codeListType = new CodeListTypeImpl();
         return codeListType;
@@ -1073,6 +1107,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeOrNullListType createCodeOrNullListType() {
         CodeOrNullListTypeImpl codeOrNullListType = new CodeOrNullListTypeImpl();
         return codeOrNullListType;
@@ -1083,6 +1118,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType createCodeType() {
         CodeTypeImpl codeType = new CodeTypeImpl();
         return codeType;
@@ -1093,6 +1129,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CompositeCurvePropertyType createCompositeCurvePropertyType() {
         CompositeCurvePropertyTypeImpl compositeCurvePropertyType = new CompositeCurvePropertyTypeImpl();
         return compositeCurvePropertyType;
@@ -1103,6 +1140,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CompositeCurveType createCompositeCurveType() {
         CompositeCurveTypeImpl compositeCurveType = new CompositeCurveTypeImpl();
         return compositeCurveType;
@@ -1113,6 +1151,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CompositeSolidPropertyType createCompositeSolidPropertyType() {
         CompositeSolidPropertyTypeImpl compositeSolidPropertyType = new CompositeSolidPropertyTypeImpl();
         return compositeSolidPropertyType;
@@ -1123,6 +1162,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CompositeSolidType createCompositeSolidType() {
         CompositeSolidTypeImpl compositeSolidType = new CompositeSolidTypeImpl();
         return compositeSolidType;
@@ -1133,6 +1173,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CompositeSurfacePropertyType createCompositeSurfacePropertyType() {
         CompositeSurfacePropertyTypeImpl compositeSurfacePropertyType = new CompositeSurfacePropertyTypeImpl();
         return compositeSurfacePropertyType;
@@ -1143,6 +1184,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CompositeSurfaceType createCompositeSurfaceType() {
         CompositeSurfaceTypeImpl compositeSurfaceType = new CompositeSurfaceTypeImpl();
         return compositeSurfaceType;
@@ -1153,6 +1195,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CompositeValueType createCompositeValueType() {
         CompositeValueTypeImpl compositeValueType = new CompositeValueTypeImpl();
         return compositeValueType;
@@ -1163,6 +1206,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CompoundCRSRefType createCompoundCRSRefType() {
         CompoundCRSRefTypeImpl compoundCRSRefType = new CompoundCRSRefTypeImpl();
         return compoundCRSRefType;
@@ -1173,6 +1217,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CompoundCRSType createCompoundCRSType() {
         CompoundCRSTypeImpl compoundCRSType = new CompoundCRSTypeImpl();
         return compoundCRSType;
@@ -1183,6 +1228,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ConcatenatedOperationRefType createConcatenatedOperationRefType() {
         ConcatenatedOperationRefTypeImpl concatenatedOperationRefType = new ConcatenatedOperationRefTypeImpl();
         return concatenatedOperationRefType;
@@ -1193,6 +1239,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ConcatenatedOperationType createConcatenatedOperationType() {
         ConcatenatedOperationTypeImpl concatenatedOperationType = new ConcatenatedOperationTypeImpl();
         return concatenatedOperationType;
@@ -1203,6 +1250,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ConeType createConeType() {
         ConeTypeImpl coneType = new ConeTypeImpl();
         return coneType;
@@ -1213,6 +1261,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ContainerPropertyType createContainerPropertyType() {
         ContainerPropertyTypeImpl containerPropertyType = new ContainerPropertyTypeImpl();
         return containerPropertyType;
@@ -1223,6 +1272,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ControlPointType createControlPointType() {
         ControlPointTypeImpl controlPointType = new ControlPointTypeImpl();
         return controlPointType;
@@ -1233,6 +1283,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ConventionalUnitType createConventionalUnitType() {
         ConventionalUnitTypeImpl conventionalUnitType = new ConventionalUnitTypeImpl();
         return conventionalUnitType;
@@ -1243,6 +1294,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ConversionRefType createConversionRefType() {
         ConversionRefTypeImpl conversionRefType = new ConversionRefTypeImpl();
         return conversionRefType;
@@ -1253,6 +1305,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ConversionToPreferredUnitType createConversionToPreferredUnitType() {
         ConversionToPreferredUnitTypeImpl conversionToPreferredUnitType = new ConversionToPreferredUnitTypeImpl();
         return conversionToPreferredUnitType;
@@ -1263,6 +1316,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ConversionType createConversionType() {
         ConversionTypeImpl conversionType = new ConversionTypeImpl();
         return conversionType;
@@ -1273,6 +1327,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinateOperationRefType createCoordinateOperationRefType() {
         CoordinateOperationRefTypeImpl coordinateOperationRefType = new CoordinateOperationRefTypeImpl();
         return coordinateOperationRefType;
@@ -1283,6 +1338,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinateReferenceSystemRefType createCoordinateReferenceSystemRefType() {
         CoordinateReferenceSystemRefTypeImpl coordinateReferenceSystemRefType = new CoordinateReferenceSystemRefTypeImpl();
         return coordinateReferenceSystemRefType;
@@ -1293,6 +1349,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinatesType createCoordinatesType() {
         CoordinatesTypeImpl coordinatesType = new CoordinatesTypeImpl();
         return coordinatesType;
@@ -1303,6 +1360,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinateSystemAxisRefType createCoordinateSystemAxisRefType() {
         CoordinateSystemAxisRefTypeImpl coordinateSystemAxisRefType = new CoordinateSystemAxisRefTypeImpl();
         return coordinateSystemAxisRefType;
@@ -1313,6 +1371,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinateSystemAxisType createCoordinateSystemAxisType() {
         CoordinateSystemAxisTypeImpl coordinateSystemAxisType = new CoordinateSystemAxisTypeImpl();
         return coordinateSystemAxisType;
@@ -1323,6 +1382,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinateSystemRefType createCoordinateSystemRefType() {
         CoordinateSystemRefTypeImpl coordinateSystemRefType = new CoordinateSystemRefTypeImpl();
         return coordinateSystemRefType;
@@ -1333,6 +1393,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordType createCoordType() {
         CoordTypeImpl coordType = new CoordTypeImpl();
         return coordType;
@@ -1343,6 +1404,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CountPropertyType createCountPropertyType() {
         CountPropertyTypeImpl countPropertyType = new CountPropertyTypeImpl();
         return countPropertyType;
@@ -1353,6 +1415,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CovarianceElementType createCovarianceElementType() {
         CovarianceElementTypeImpl covarianceElementType = new CovarianceElementTypeImpl();
         return covarianceElementType;
@@ -1363,6 +1426,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CovarianceMatrixType createCovarianceMatrixType() {
         CovarianceMatrixTypeImpl covarianceMatrixType = new CovarianceMatrixTypeImpl();
         return covarianceMatrixType;
@@ -1373,6 +1437,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoverageFunctionType createCoverageFunctionType() {
         CoverageFunctionTypeImpl coverageFunctionType = new CoverageFunctionTypeImpl();
         return coverageFunctionType;
@@ -1383,6 +1448,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CRSRefType createCRSRefType() {
         CRSRefTypeImpl crsRefType = new CRSRefTypeImpl();
         return crsRefType;
@@ -1393,6 +1459,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CubicSplineType createCubicSplineType() {
         CubicSplineTypeImpl cubicSplineType = new CubicSplineTypeImpl();
         return cubicSplineType;
@@ -1403,6 +1470,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CurveArrayPropertyType createCurveArrayPropertyType() {
         CurveArrayPropertyTypeImpl curveArrayPropertyType = new CurveArrayPropertyTypeImpl();
         return curveArrayPropertyType;
@@ -1413,6 +1481,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CurvePropertyType createCurvePropertyType() {
         CurvePropertyTypeImpl curvePropertyType = new CurvePropertyTypeImpl();
         return curvePropertyType;
@@ -1423,6 +1492,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CurveSegmentArrayPropertyType createCurveSegmentArrayPropertyType() {
         CurveSegmentArrayPropertyTypeImpl curveSegmentArrayPropertyType = new CurveSegmentArrayPropertyTypeImpl();
         return curveSegmentArrayPropertyType;
@@ -1433,6 +1503,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CurveType createCurveType() {
         CurveTypeImpl curveType = new CurveTypeImpl();
         return curveType;
@@ -1443,6 +1514,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CylinderType createCylinderType() {
         CylinderTypeImpl cylinderType = new CylinderTypeImpl();
         return cylinderType;
@@ -1453,6 +1525,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CylindricalCSRefType createCylindricalCSRefType() {
         CylindricalCSRefTypeImpl cylindricalCSRefType = new CylindricalCSRefTypeImpl();
         return cylindricalCSRefType;
@@ -1463,6 +1536,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CylindricalCSType createCylindricalCSType() {
         CylindricalCSTypeImpl cylindricalCSType = new CylindricalCSTypeImpl();
         return cylindricalCSType;
@@ -1473,6 +1547,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DataBlockType createDataBlockType() {
         DataBlockTypeImpl dataBlockType = new DataBlockTypeImpl();
         return dataBlockType;
@@ -1483,6 +1558,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DatumRefType createDatumRefType() {
         DatumRefTypeImpl datumRefType = new DatumRefTypeImpl();
         return datumRefType;
@@ -1493,6 +1569,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DefaultStylePropertyType createDefaultStylePropertyType() {
         DefaultStylePropertyTypeImpl defaultStylePropertyType = new DefaultStylePropertyTypeImpl();
         return defaultStylePropertyType;
@@ -1503,6 +1580,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DefinitionProxyType createDefinitionProxyType() {
         DefinitionProxyTypeImpl definitionProxyType = new DefinitionProxyTypeImpl();
         return definitionProxyType;
@@ -1513,6 +1591,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DefinitionType createDefinitionType() {
         DefinitionTypeImpl definitionType = new DefinitionTypeImpl();
         return definitionType;
@@ -1523,6 +1602,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DegreesType createDegreesType() {
         DegreesTypeImpl degreesType = new DegreesTypeImpl();
         return degreesType;
@@ -1533,6 +1613,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DerivationUnitTermType createDerivationUnitTermType() {
         DerivationUnitTermTypeImpl derivationUnitTermType = new DerivationUnitTermTypeImpl();
         return derivationUnitTermType;
@@ -1543,6 +1624,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DerivedCRSRefType createDerivedCRSRefType() {
         DerivedCRSRefTypeImpl derivedCRSRefType = new DerivedCRSRefTypeImpl();
         return derivedCRSRefType;
@@ -1553,6 +1635,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DerivedCRSType createDerivedCRSType() {
         DerivedCRSTypeImpl derivedCRSType = new DerivedCRSTypeImpl();
         return derivedCRSType;
@@ -1563,6 +1646,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DerivedCRSTypeType createDerivedCRSTypeType() {
         DerivedCRSTypeTypeImpl derivedCRSTypeType = new DerivedCRSTypeTypeImpl();
         return derivedCRSTypeType;
@@ -1573,6 +1657,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DerivedUnitType createDerivedUnitType() {
         DerivedUnitTypeImpl derivedUnitType = new DerivedUnitTypeImpl();
         return derivedUnitType;
@@ -1583,6 +1668,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DictionaryEntryType createDictionaryEntryType() {
         DictionaryEntryTypeImpl dictionaryEntryType = new DictionaryEntryTypeImpl();
         return dictionaryEntryType;
@@ -1593,6 +1679,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DictionaryType createDictionaryType() {
         DictionaryTypeImpl dictionaryType = new DictionaryTypeImpl();
         return dictionaryType;
@@ -1603,6 +1690,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectedEdgePropertyType createDirectedEdgePropertyType() {
         DirectedEdgePropertyTypeImpl directedEdgePropertyType = new DirectedEdgePropertyTypeImpl();
         return directedEdgePropertyType;
@@ -1613,6 +1701,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectedFacePropertyType createDirectedFacePropertyType() {
         DirectedFacePropertyTypeImpl directedFacePropertyType = new DirectedFacePropertyTypeImpl();
         return directedFacePropertyType;
@@ -1623,6 +1712,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectedNodePropertyType createDirectedNodePropertyType() {
         DirectedNodePropertyTypeImpl directedNodePropertyType = new DirectedNodePropertyTypeImpl();
         return directedNodePropertyType;
@@ -1633,6 +1723,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectedObservationAtDistanceType createDirectedObservationAtDistanceType() {
         DirectedObservationAtDistanceTypeImpl directedObservationAtDistanceType = new DirectedObservationAtDistanceTypeImpl();
         return directedObservationAtDistanceType;
@@ -1643,6 +1734,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectedObservationType createDirectedObservationType() {
         DirectedObservationTypeImpl directedObservationType = new DirectedObservationTypeImpl();
         return directedObservationType;
@@ -1653,6 +1745,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectedTopoSolidPropertyType createDirectedTopoSolidPropertyType() {
         DirectedTopoSolidPropertyTypeImpl directedTopoSolidPropertyType = new DirectedTopoSolidPropertyTypeImpl();
         return directedTopoSolidPropertyType;
@@ -1663,6 +1756,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectionPropertyType createDirectionPropertyType() {
         DirectionPropertyTypeImpl directionPropertyType = new DirectionPropertyTypeImpl();
         return directionPropertyType;
@@ -1673,6 +1767,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectionVectorType createDirectionVectorType() {
         DirectionVectorTypeImpl directionVectorType = new DirectionVectorTypeImpl();
         return directionVectorType;
@@ -1683,6 +1778,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectPositionListType createDirectPositionListType() {
         DirectPositionListTypeImpl directPositionListType = new DirectPositionListTypeImpl();
         return directPositionListType;
@@ -1693,6 +1789,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectPositionType createDirectPositionType() {
         DirectPositionTypeImpl directPositionType = new DirectPositionTypeImpl();
         return directPositionType;
@@ -1703,6 +1800,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DMSAngleType createDMSAngleType() {
         DMSAngleTypeImpl dmsAngleType = new DMSAngleTypeImpl();
         return dmsAngleType;
@@ -1713,6 +1811,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DocumentRoot createDocumentRoot() {
         DocumentRootImpl documentRoot = new DocumentRootImpl();
         return documentRoot;
@@ -1723,6 +1822,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DomainSetType createDomainSetType() {
         DomainSetTypeImpl domainSetType = new DomainSetTypeImpl();
         return domainSetType;
@@ -1733,6 +1833,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DynamicFeatureCollectionType createDynamicFeatureCollectionType() {
         DynamicFeatureCollectionTypeImpl dynamicFeatureCollectionType = new DynamicFeatureCollectionTypeImpl();
         return dynamicFeatureCollectionType;
@@ -1743,6 +1844,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DynamicFeatureType createDynamicFeatureType() {
         DynamicFeatureTypeImpl dynamicFeatureType = new DynamicFeatureTypeImpl();
         return dynamicFeatureType;
@@ -1753,6 +1855,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EdgeType createEdgeType() {
         EdgeTypeImpl edgeType = new EdgeTypeImpl();
         return edgeType;
@@ -1763,6 +1866,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EllipsoidalCSRefType createEllipsoidalCSRefType() {
         EllipsoidalCSRefTypeImpl ellipsoidalCSRefType = new EllipsoidalCSRefTypeImpl();
         return ellipsoidalCSRefType;
@@ -1773,6 +1877,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EllipsoidalCSType createEllipsoidalCSType() {
         EllipsoidalCSTypeImpl ellipsoidalCSType = new EllipsoidalCSTypeImpl();
         return ellipsoidalCSType;
@@ -1783,6 +1888,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EllipsoidRefType createEllipsoidRefType() {
         EllipsoidRefTypeImpl ellipsoidRefType = new EllipsoidRefTypeImpl();
         return ellipsoidRefType;
@@ -1793,6 +1899,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EllipsoidType createEllipsoidType() {
         EllipsoidTypeImpl ellipsoidType = new EllipsoidTypeImpl();
         return ellipsoidType;
@@ -1803,6 +1910,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EngineeringCRSRefType createEngineeringCRSRefType() {
         EngineeringCRSRefTypeImpl engineeringCRSRefType = new EngineeringCRSRefTypeImpl();
         return engineeringCRSRefType;
@@ -1813,6 +1921,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EngineeringCRSType createEngineeringCRSType() {
         EngineeringCRSTypeImpl engineeringCRSType = new EngineeringCRSTypeImpl();
         return engineeringCRSType;
@@ -1823,6 +1932,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EngineeringDatumRefType createEngineeringDatumRefType() {
         EngineeringDatumRefTypeImpl engineeringDatumRefType = new EngineeringDatumRefTypeImpl();
         return engineeringDatumRefType;
@@ -1833,6 +1943,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EngineeringDatumType createEngineeringDatumType() {
         EngineeringDatumTypeImpl engineeringDatumType = new EngineeringDatumTypeImpl();
         return engineeringDatumType;
@@ -1843,6 +1954,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EnvelopeType createEnvelopeType() {
         EnvelopeTypeImpl envelopeType = new EnvelopeTypeImpl();
         return envelopeType;
@@ -1853,6 +1965,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EnvelopeWithTimePeriodType createEnvelopeWithTimePeriodType() {
         EnvelopeWithTimePeriodTypeImpl envelopeWithTimePeriodType = new EnvelopeWithTimePeriodTypeImpl();
         return envelopeWithTimePeriodType;
@@ -1863,6 +1976,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ExtentType createExtentType() {
         ExtentTypeImpl extentType = new ExtentTypeImpl();
         return extentType;
@@ -1873,6 +1987,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FaceType createFaceType() {
         FaceTypeImpl faceType = new FaceTypeImpl();
         return faceType;
@@ -1883,6 +1998,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureArrayPropertyType createFeatureArrayPropertyType() {
         FeatureArrayPropertyTypeImpl featureArrayPropertyType = new FeatureArrayPropertyTypeImpl();
         return featureArrayPropertyType;
@@ -1893,6 +2009,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureCollectionType createFeatureCollectionType() {
         FeatureCollectionTypeImpl featureCollectionType = new FeatureCollectionTypeImpl();
         return featureCollectionType;
@@ -1903,6 +2020,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeaturePropertyType createFeaturePropertyType() {
         FeaturePropertyTypeImpl featurePropertyType = new FeaturePropertyTypeImpl();
         return featurePropertyType;
@@ -1913,6 +2031,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureStylePropertyType createFeatureStylePropertyType() {
         FeatureStylePropertyTypeImpl featureStylePropertyType = new FeatureStylePropertyTypeImpl();
         return featureStylePropertyType;
@@ -1923,6 +2042,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureStyleType createFeatureStyleType() {
         FeatureStyleTypeImpl featureStyleType = new FeatureStyleTypeImpl();
         return featureStyleType;
@@ -1933,6 +2053,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FileType createFileType() {
         FileTypeImpl fileType = new FileTypeImpl();
         return fileType;
@@ -1943,6 +2064,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FormulaType createFormulaType() {
         FormulaTypeImpl formulaType = new FormulaTypeImpl();
         return formulaType;
@@ -1953,6 +2075,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeneralConversionRefType createGeneralConversionRefType() {
         GeneralConversionRefTypeImpl generalConversionRefType = new GeneralConversionRefTypeImpl();
         return generalConversionRefType;
@@ -1963,6 +2086,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeneralTransformationRefType createGeneralTransformationRefType() {
         GeneralTransformationRefTypeImpl generalTransformationRefType = new GeneralTransformationRefTypeImpl();
         return generalTransformationRefType;
@@ -1973,6 +2097,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GenericMetaDataType createGenericMetaDataType() {
         GenericMetaDataTypeImpl genericMetaDataType = new GenericMetaDataTypeImpl();
         return genericMetaDataType;
@@ -1983,6 +2108,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeocentricCRSRefType createGeocentricCRSRefType() {
         GeocentricCRSRefTypeImpl geocentricCRSRefType = new GeocentricCRSRefTypeImpl();
         return geocentricCRSRefType;
@@ -1993,6 +2119,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeocentricCRSType createGeocentricCRSType() {
         GeocentricCRSTypeImpl geocentricCRSType = new GeocentricCRSTypeImpl();
         return geocentricCRSType;
@@ -2003,6 +2130,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeodesicStringType createGeodesicStringType() {
         GeodesicStringTypeImpl geodesicStringType = new GeodesicStringTypeImpl();
         return geodesicStringType;
@@ -2013,6 +2141,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeodesicType createGeodesicType() {
         GeodesicTypeImpl geodesicType = new GeodesicTypeImpl();
         return geodesicType;
@@ -2023,6 +2152,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeodeticDatumRefType createGeodeticDatumRefType() {
         GeodeticDatumRefTypeImpl geodeticDatumRefType = new GeodeticDatumRefTypeImpl();
         return geodeticDatumRefType;
@@ -2033,6 +2163,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeodeticDatumType createGeodeticDatumType() {
         GeodeticDatumTypeImpl geodeticDatumType = new GeodeticDatumTypeImpl();
         return geodeticDatumType;
@@ -2043,6 +2174,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeographicCRSRefType createGeographicCRSRefType() {
         GeographicCRSRefTypeImpl geographicCRSRefType = new GeographicCRSRefTypeImpl();
         return geographicCRSRefType;
@@ -2053,6 +2185,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeographicCRSType createGeographicCRSType() {
         GeographicCRSTypeImpl geographicCRSType = new GeographicCRSTypeImpl();
         return geographicCRSType;
@@ -2063,6 +2196,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeometricComplexPropertyType createGeometricComplexPropertyType() {
         GeometricComplexPropertyTypeImpl geometricComplexPropertyType = new GeometricComplexPropertyTypeImpl();
         return geometricComplexPropertyType;
@@ -2073,6 +2207,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeometricComplexType createGeometricComplexType() {
         GeometricComplexTypeImpl geometricComplexType = new GeometricComplexTypeImpl();
         return geometricComplexType;
@@ -2083,6 +2218,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeometricPrimitivePropertyType createGeometricPrimitivePropertyType() {
         GeometricPrimitivePropertyTypeImpl geometricPrimitivePropertyType = new GeometricPrimitivePropertyTypeImpl();
         return geometricPrimitivePropertyType;
@@ -2093,6 +2229,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeometryArrayPropertyType createGeometryArrayPropertyType() {
         GeometryArrayPropertyTypeImpl geometryArrayPropertyType = new GeometryArrayPropertyTypeImpl();
         return geometryArrayPropertyType;
@@ -2103,6 +2240,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeometryPropertyType createGeometryPropertyType() {
         GeometryPropertyTypeImpl geometryPropertyType = new GeometryPropertyTypeImpl();
         return geometryPropertyType;
@@ -2113,6 +2251,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeometryStylePropertyType createGeometryStylePropertyType() {
         GeometryStylePropertyTypeImpl geometryStylePropertyType = new GeometryStylePropertyTypeImpl();
         return geometryStylePropertyType;
@@ -2123,6 +2262,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeometryStyleType createGeometryStyleType() {
         GeometryStyleTypeImpl geometryStyleType = new GeometryStyleTypeImpl();
         return geometryStyleType;
@@ -2133,6 +2273,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GraphStylePropertyType createGraphStylePropertyType() {
         GraphStylePropertyTypeImpl graphStylePropertyType = new GraphStylePropertyTypeImpl();
         return graphStylePropertyType;
@@ -2143,6 +2284,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GraphStyleType createGraphStyleType() {
         GraphStyleTypeImpl graphStyleType = new GraphStyleTypeImpl();
         return graphStyleType;
@@ -2153,6 +2295,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GridCoverageType createGridCoverageType() {
         GridCoverageTypeImpl gridCoverageType = new GridCoverageTypeImpl();
         return gridCoverageType;
@@ -2163,6 +2306,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GridDomainType createGridDomainType() {
         GridDomainTypeImpl gridDomainType = new GridDomainTypeImpl();
         return gridDomainType;
@@ -2173,6 +2317,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GridEnvelopeType createGridEnvelopeType() {
         GridEnvelopeTypeImpl gridEnvelopeType = new GridEnvelopeTypeImpl();
         return gridEnvelopeType;
@@ -2183,6 +2328,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GridFunctionType createGridFunctionType() {
         GridFunctionTypeImpl gridFunctionType = new GridFunctionTypeImpl();
         return gridFunctionType;
@@ -2193,6 +2339,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GridLengthType createGridLengthType() {
         GridLengthTypeImpl gridLengthType = new GridLengthTypeImpl();
         return gridLengthType;
@@ -2203,6 +2350,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GridLimitsType createGridLimitsType() {
         GridLimitsTypeImpl gridLimitsType = new GridLimitsTypeImpl();
         return gridLimitsType;
@@ -2213,6 +2361,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GridType createGridType() {
         GridTypeImpl gridType = new GridTypeImpl();
         return gridType;
@@ -2223,6 +2372,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public HistoryPropertyType createHistoryPropertyType() {
         HistoryPropertyTypeImpl historyPropertyType = new HistoryPropertyTypeImpl();
         return historyPropertyType;
@@ -2233,6 +2383,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public IdentifierType createIdentifierType() {
         IdentifierTypeImpl identifierType = new IdentifierTypeImpl();
         return identifierType;
@@ -2243,6 +2394,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ImageCRSRefType createImageCRSRefType() {
         ImageCRSRefTypeImpl imageCRSRefType = new ImageCRSRefTypeImpl();
         return imageCRSRefType;
@@ -2253,6 +2405,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ImageCRSType createImageCRSType() {
         ImageCRSTypeImpl imageCRSType = new ImageCRSTypeImpl();
         return imageCRSType;
@@ -2263,6 +2416,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ImageDatumRefType createImageDatumRefType() {
         ImageDatumRefTypeImpl imageDatumRefType = new ImageDatumRefTypeImpl();
         return imageDatumRefType;
@@ -2273,6 +2427,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ImageDatumType createImageDatumType() {
         ImageDatumTypeImpl imageDatumType = new ImageDatumTypeImpl();
         return imageDatumType;
@@ -2283,6 +2438,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public IndexMapType createIndexMapType() {
         IndexMapTypeImpl indexMapType = new IndexMapTypeImpl();
         return indexMapType;
@@ -2293,6 +2449,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public IndirectEntryType createIndirectEntryType() {
         IndirectEntryTypeImpl indirectEntryType = new IndirectEntryTypeImpl();
         return indirectEntryType;
@@ -2303,6 +2460,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public IsolatedPropertyType createIsolatedPropertyType() {
         IsolatedPropertyTypeImpl isolatedPropertyType = new IsolatedPropertyTypeImpl();
         return isolatedPropertyType;
@@ -2313,6 +2471,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public KnotPropertyType createKnotPropertyType() {
         KnotPropertyTypeImpl knotPropertyType = new KnotPropertyTypeImpl();
         return knotPropertyType;
@@ -2323,6 +2482,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public KnotType createKnotType() {
         KnotTypeImpl knotType = new KnotTypeImpl();
         return knotType;
@@ -2333,6 +2493,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LabelStylePropertyType createLabelStylePropertyType() {
         LabelStylePropertyTypeImpl labelStylePropertyType = new LabelStylePropertyTypeImpl();
         return labelStylePropertyType;
@@ -2343,6 +2504,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LabelStyleType createLabelStyleType() {
         LabelStyleTypeImpl labelStyleType = new LabelStyleTypeImpl();
         return labelStyleType;
@@ -2353,6 +2515,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LabelType createLabelType() {
         LabelTypeImpl labelType = new LabelTypeImpl();
         return labelType;
@@ -2363,6 +2526,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LengthType createLengthType() {
         LengthTypeImpl lengthType = new LengthTypeImpl();
         return lengthType;
@@ -2373,6 +2537,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LinearCSRefType createLinearCSRefType() {
         LinearCSRefTypeImpl linearCSRefType = new LinearCSRefTypeImpl();
         return linearCSRefType;
@@ -2383,6 +2548,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LinearCSType createLinearCSType() {
         LinearCSTypeImpl linearCSType = new LinearCSTypeImpl();
         return linearCSType;
@@ -2393,6 +2559,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LinearRingPropertyType createLinearRingPropertyType() {
         LinearRingPropertyTypeImpl linearRingPropertyType = new LinearRingPropertyTypeImpl();
         return linearRingPropertyType;
@@ -2403,6 +2570,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LinearRingType createLinearRingType() {
         LinearRingTypeImpl linearRingType = new LinearRingTypeImpl();
         return linearRingType;
@@ -2413,6 +2581,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LineStringPropertyType createLineStringPropertyType() {
         LineStringPropertyTypeImpl lineStringPropertyType = new LineStringPropertyTypeImpl();
         return lineStringPropertyType;
@@ -2423,6 +2592,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LineStringSegmentArrayPropertyType createLineStringSegmentArrayPropertyType() {
         LineStringSegmentArrayPropertyTypeImpl lineStringSegmentArrayPropertyType = new LineStringSegmentArrayPropertyTypeImpl();
         return lineStringSegmentArrayPropertyType;
@@ -2433,6 +2603,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LineStringSegmentType createLineStringSegmentType() {
         LineStringSegmentTypeImpl lineStringSegmentType = new LineStringSegmentTypeImpl();
         return lineStringSegmentType;
@@ -2443,6 +2614,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LineStringType createLineStringType() {
         LineStringTypeImpl lineStringType = new LineStringTypeImpl();
         return lineStringType;
@@ -2453,6 +2625,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LocationPropertyType createLocationPropertyType() {
         LocationPropertyTypeImpl locationPropertyType = new LocationPropertyTypeImpl();
         return locationPropertyType;
@@ -2463,6 +2636,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MeasureListType createMeasureListType() {
         MeasureListTypeImpl measureListType = new MeasureListTypeImpl();
         return measureListType;
@@ -2473,6 +2647,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MeasureOrNullListType createMeasureOrNullListType() {
         MeasureOrNullListTypeImpl measureOrNullListType = new MeasureOrNullListTypeImpl();
         return measureOrNullListType;
@@ -2483,6 +2658,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MeasureType createMeasureType() {
         MeasureTypeImpl measureType = new MeasureTypeImpl();
         return measureType;
@@ -2493,6 +2669,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MetaDataPropertyType createMetaDataPropertyType() {
         MetaDataPropertyTypeImpl metaDataPropertyType = new MetaDataPropertyTypeImpl();
         return metaDataPropertyType;
@@ -2503,6 +2680,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MovingObjectStatusType createMovingObjectStatusType() {
         MovingObjectStatusTypeImpl movingObjectStatusType = new MovingObjectStatusTypeImpl();
         return movingObjectStatusType;
@@ -2513,6 +2691,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiCurveCoverageType createMultiCurveCoverageType() {
         MultiCurveCoverageTypeImpl multiCurveCoverageType = new MultiCurveCoverageTypeImpl();
         return multiCurveCoverageType;
@@ -2523,6 +2702,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiCurveDomainType createMultiCurveDomainType() {
         MultiCurveDomainTypeImpl multiCurveDomainType = new MultiCurveDomainTypeImpl();
         return multiCurveDomainType;
@@ -2533,6 +2713,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiCurvePropertyType createMultiCurvePropertyType() {
         MultiCurvePropertyTypeImpl multiCurvePropertyType = new MultiCurvePropertyTypeImpl();
         return multiCurvePropertyType;
@@ -2543,6 +2724,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiCurveType createMultiCurveType() {
         MultiCurveTypeImpl multiCurveType = new MultiCurveTypeImpl();
         return multiCurveType;
@@ -2553,6 +2735,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiGeometryPropertyType createMultiGeometryPropertyType() {
         MultiGeometryPropertyTypeImpl multiGeometryPropertyType = new MultiGeometryPropertyTypeImpl();
         return multiGeometryPropertyType;
@@ -2563,6 +2746,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiGeometryType createMultiGeometryType() {
         MultiGeometryTypeImpl multiGeometryType = new MultiGeometryTypeImpl();
         return multiGeometryType;
@@ -2573,6 +2757,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiLineStringPropertyType createMultiLineStringPropertyType() {
         MultiLineStringPropertyTypeImpl multiLineStringPropertyType = new MultiLineStringPropertyTypeImpl();
         return multiLineStringPropertyType;
@@ -2583,6 +2768,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiLineStringType createMultiLineStringType() {
         MultiLineStringTypeImpl multiLineStringType = new MultiLineStringTypeImpl();
         return multiLineStringType;
@@ -2593,6 +2779,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiPointCoverageType createMultiPointCoverageType() {
         MultiPointCoverageTypeImpl multiPointCoverageType = new MultiPointCoverageTypeImpl();
         return multiPointCoverageType;
@@ -2603,6 +2790,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiPointDomainType createMultiPointDomainType() {
         MultiPointDomainTypeImpl multiPointDomainType = new MultiPointDomainTypeImpl();
         return multiPointDomainType;
@@ -2613,6 +2801,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiPointPropertyType createMultiPointPropertyType() {
         MultiPointPropertyTypeImpl multiPointPropertyType = new MultiPointPropertyTypeImpl();
         return multiPointPropertyType;
@@ -2623,6 +2812,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiPointType createMultiPointType() {
         MultiPointTypeImpl multiPointType = new MultiPointTypeImpl();
         return multiPointType;
@@ -2633,6 +2823,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiPolygonPropertyType createMultiPolygonPropertyType() {
         MultiPolygonPropertyTypeImpl multiPolygonPropertyType = new MultiPolygonPropertyTypeImpl();
         return multiPolygonPropertyType;
@@ -2643,6 +2834,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiPolygonType createMultiPolygonType() {
         MultiPolygonTypeImpl multiPolygonType = new MultiPolygonTypeImpl();
         return multiPolygonType;
@@ -2653,6 +2845,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiSolidCoverageType createMultiSolidCoverageType() {
         MultiSolidCoverageTypeImpl multiSolidCoverageType = new MultiSolidCoverageTypeImpl();
         return multiSolidCoverageType;
@@ -2663,6 +2856,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiSolidDomainType createMultiSolidDomainType() {
         MultiSolidDomainTypeImpl multiSolidDomainType = new MultiSolidDomainTypeImpl();
         return multiSolidDomainType;
@@ -2673,6 +2867,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiSolidPropertyType createMultiSolidPropertyType() {
         MultiSolidPropertyTypeImpl multiSolidPropertyType = new MultiSolidPropertyTypeImpl();
         return multiSolidPropertyType;
@@ -2683,6 +2878,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiSolidType createMultiSolidType() {
         MultiSolidTypeImpl multiSolidType = new MultiSolidTypeImpl();
         return multiSolidType;
@@ -2693,6 +2889,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiSurfaceCoverageType createMultiSurfaceCoverageType() {
         MultiSurfaceCoverageTypeImpl multiSurfaceCoverageType = new MultiSurfaceCoverageTypeImpl();
         return multiSurfaceCoverageType;
@@ -2703,6 +2900,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiSurfaceDomainType createMultiSurfaceDomainType() {
         MultiSurfaceDomainTypeImpl multiSurfaceDomainType = new MultiSurfaceDomainTypeImpl();
         return multiSurfaceDomainType;
@@ -2713,6 +2911,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiSurfacePropertyType createMultiSurfacePropertyType() {
         MultiSurfacePropertyTypeImpl multiSurfacePropertyType = new MultiSurfacePropertyTypeImpl();
         return multiSurfacePropertyType;
@@ -2723,6 +2922,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiSurfaceType createMultiSurfaceType() {
         MultiSurfaceTypeImpl multiSurfaceType = new MultiSurfaceTypeImpl();
         return multiSurfaceType;
@@ -2733,6 +2933,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public NodeType createNodeType() {
         NodeTypeImpl nodeType = new NodeTypeImpl();
         return nodeType;
@@ -2743,6 +2944,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ObliqueCartesianCSRefType createObliqueCartesianCSRefType() {
         ObliqueCartesianCSRefTypeImpl obliqueCartesianCSRefType = new ObliqueCartesianCSRefTypeImpl();
         return obliqueCartesianCSRefType;
@@ -2753,6 +2955,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ObliqueCartesianCSType createObliqueCartesianCSType() {
         ObliqueCartesianCSTypeImpl obliqueCartesianCSType = new ObliqueCartesianCSTypeImpl();
         return obliqueCartesianCSType;
@@ -2763,6 +2966,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ObservationType createObservationType() {
         ObservationTypeImpl observationType = new ObservationTypeImpl();
         return observationType;
@@ -2773,6 +2977,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public OffsetCurveType createOffsetCurveType() {
         OffsetCurveTypeImpl offsetCurveType = new OffsetCurveTypeImpl();
         return offsetCurveType;
@@ -2783,6 +2988,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public OperationMethodRefType createOperationMethodRefType() {
         OperationMethodRefTypeImpl operationMethodRefType = new OperationMethodRefTypeImpl();
         return operationMethodRefType;
@@ -2793,6 +2999,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public OperationMethodType createOperationMethodType() {
         OperationMethodTypeImpl operationMethodType = new OperationMethodTypeImpl();
         return operationMethodType;
@@ -2803,6 +3010,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public OperationParameterGroupRefType createOperationParameterGroupRefType() {
         OperationParameterGroupRefTypeImpl operationParameterGroupRefType = new OperationParameterGroupRefTypeImpl();
         return operationParameterGroupRefType;
@@ -2813,6 +3021,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public OperationParameterGroupType createOperationParameterGroupType() {
         OperationParameterGroupTypeImpl operationParameterGroupType = new OperationParameterGroupTypeImpl();
         return operationParameterGroupType;
@@ -2823,6 +3032,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public OperationParameterRefType createOperationParameterRefType() {
         OperationParameterRefTypeImpl operationParameterRefType = new OperationParameterRefTypeImpl();
         return operationParameterRefType;
@@ -2833,6 +3043,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public OperationParameterType createOperationParameterType() {
         OperationParameterTypeImpl operationParameterType = new OperationParameterTypeImpl();
         return operationParameterType;
@@ -2843,6 +3054,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public OperationRefType createOperationRefType() {
         OperationRefTypeImpl operationRefType = new OperationRefTypeImpl();
         return operationRefType;
@@ -2853,6 +3065,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public OrientableCurveType createOrientableCurveType() {
         OrientableCurveTypeImpl orientableCurveType = new OrientableCurveTypeImpl();
         return orientableCurveType;
@@ -2863,6 +3076,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public OrientableSurfaceType createOrientableSurfaceType() {
         OrientableSurfaceTypeImpl orientableSurfaceType = new OrientableSurfaceTypeImpl();
         return orientableSurfaceType;
@@ -2873,6 +3087,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ParameterValueGroupType createParameterValueGroupType() {
         ParameterValueGroupTypeImpl parameterValueGroupType = new ParameterValueGroupTypeImpl();
         return parameterValueGroupType;
@@ -2883,6 +3098,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ParameterValueType createParameterValueType() {
         ParameterValueTypeImpl parameterValueType = new ParameterValueTypeImpl();
         return parameterValueType;
@@ -2893,6 +3109,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PassThroughOperationRefType createPassThroughOperationRefType() {
         PassThroughOperationRefTypeImpl passThroughOperationRefType = new PassThroughOperationRefTypeImpl();
         return passThroughOperationRefType;
@@ -2903,6 +3120,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PassThroughOperationType createPassThroughOperationType() {
         PassThroughOperationTypeImpl passThroughOperationType = new PassThroughOperationTypeImpl();
         return passThroughOperationType;
@@ -2913,6 +3131,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PixelInCellType createPixelInCellType() {
         PixelInCellTypeImpl pixelInCellType = new PixelInCellTypeImpl();
         return pixelInCellType;
@@ -2923,6 +3142,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PointArrayPropertyType createPointArrayPropertyType() {
         PointArrayPropertyTypeImpl pointArrayPropertyType = new PointArrayPropertyTypeImpl();
         return pointArrayPropertyType;
@@ -2933,6 +3153,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PointPropertyType createPointPropertyType() {
         PointPropertyTypeImpl pointPropertyType = new PointPropertyTypeImpl();
         return pointPropertyType;
@@ -2943,6 +3164,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PointType createPointType() {
         PointTypeImpl pointType = new PointTypeImpl();
         return pointType;
@@ -2953,6 +3175,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PolarCSRefType createPolarCSRefType() {
         PolarCSRefTypeImpl polarCSRefType = new PolarCSRefTypeImpl();
         return polarCSRefType;
@@ -2963,6 +3186,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PolarCSType createPolarCSType() {
         PolarCSTypeImpl polarCSType = new PolarCSTypeImpl();
         return polarCSType;
@@ -2973,6 +3197,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PolygonPatchArrayPropertyType createPolygonPatchArrayPropertyType() {
         PolygonPatchArrayPropertyTypeImpl polygonPatchArrayPropertyType = new PolygonPatchArrayPropertyTypeImpl();
         return polygonPatchArrayPropertyType;
@@ -2983,6 +3208,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PolygonPatchType createPolygonPatchType() {
         PolygonPatchTypeImpl polygonPatchType = new PolygonPatchTypeImpl();
         return polygonPatchType;
@@ -2993,6 +3219,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PolygonPropertyType createPolygonPropertyType() {
         PolygonPropertyTypeImpl polygonPropertyType = new PolygonPropertyTypeImpl();
         return polygonPropertyType;
@@ -3003,6 +3230,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PolygonType createPolygonType() {
         PolygonTypeImpl polygonType = new PolygonTypeImpl();
         return polygonType;
@@ -3013,6 +3241,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PolyhedralSurfaceType createPolyhedralSurfaceType() {
         PolyhedralSurfaceTypeImpl polyhedralSurfaceType = new PolyhedralSurfaceTypeImpl();
         return polyhedralSurfaceType;
@@ -3023,6 +3252,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PrimeMeridianRefType createPrimeMeridianRefType() {
         PrimeMeridianRefTypeImpl primeMeridianRefType = new PrimeMeridianRefTypeImpl();
         return primeMeridianRefType;
@@ -3033,6 +3263,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PrimeMeridianType createPrimeMeridianType() {
         PrimeMeridianTypeImpl primeMeridianType = new PrimeMeridianTypeImpl();
         return primeMeridianType;
@@ -3043,6 +3274,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PriorityLocationPropertyType createPriorityLocationPropertyType() {
         PriorityLocationPropertyTypeImpl priorityLocationPropertyType = new PriorityLocationPropertyTypeImpl();
         return priorityLocationPropertyType;
@@ -3053,6 +3285,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ProjectedCRSRefType createProjectedCRSRefType() {
         ProjectedCRSRefTypeImpl projectedCRSRefType = new ProjectedCRSRefTypeImpl();
         return projectedCRSRefType;
@@ -3063,6 +3296,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ProjectedCRSType createProjectedCRSType() {
         ProjectedCRSTypeImpl projectedCRSType = new ProjectedCRSTypeImpl();
         return projectedCRSType;
@@ -3073,6 +3307,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public QuantityExtentType createQuantityExtentType() {
         QuantityExtentTypeImpl quantityExtentType = new QuantityExtentTypeImpl();
         return quantityExtentType;
@@ -3083,6 +3318,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public QuantityPropertyType createQuantityPropertyType() {
         QuantityPropertyTypeImpl quantityPropertyType = new QuantityPropertyTypeImpl();
         return quantityPropertyType;
@@ -3093,6 +3329,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RangeParametersType createRangeParametersType() {
         RangeParametersTypeImpl rangeParametersType = new RangeParametersTypeImpl();
         return rangeParametersType;
@@ -3103,6 +3340,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RangeSetType createRangeSetType() {
         RangeSetTypeImpl rangeSetType = new RangeSetTypeImpl();
         return rangeSetType;
@@ -3113,6 +3351,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RectangleType createRectangleType() {
         RectangleTypeImpl rectangleType = new RectangleTypeImpl();
         return rectangleType;
@@ -3123,6 +3362,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RectifiedGridCoverageType createRectifiedGridCoverageType() {
         RectifiedGridCoverageTypeImpl rectifiedGridCoverageType = new RectifiedGridCoverageTypeImpl();
         return rectifiedGridCoverageType;
@@ -3133,6 +3373,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RectifiedGridDomainType createRectifiedGridDomainType() {
         RectifiedGridDomainTypeImpl rectifiedGridDomainType = new RectifiedGridDomainTypeImpl();
         return rectifiedGridDomainType;
@@ -3143,6 +3384,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RectifiedGridType createRectifiedGridType() {
         RectifiedGridTypeImpl rectifiedGridType = new RectifiedGridTypeImpl();
         return rectifiedGridType;
@@ -3153,6 +3395,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ReferenceSystemRefType createReferenceSystemRefType() {
         ReferenceSystemRefTypeImpl referenceSystemRefType = new ReferenceSystemRefTypeImpl();
         return referenceSystemRefType;
@@ -3163,6 +3406,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ReferenceType createReferenceType() {
         ReferenceTypeImpl referenceType = new ReferenceTypeImpl();
         return referenceType;
@@ -3173,6 +3417,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RefLocationType createRefLocationType() {
         RefLocationTypeImpl refLocationType = new RefLocationTypeImpl();
         return refLocationType;
@@ -3183,6 +3428,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RelatedTimeType createRelatedTimeType() {
         RelatedTimeTypeImpl relatedTimeType = new RelatedTimeTypeImpl();
         return relatedTimeType;
@@ -3193,6 +3439,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RelativeInternalPositionalAccuracyType createRelativeInternalPositionalAccuracyType() {
         RelativeInternalPositionalAccuracyTypeImpl relativeInternalPositionalAccuracyType = new RelativeInternalPositionalAccuracyTypeImpl();
         return relativeInternalPositionalAccuracyType;
@@ -3203,6 +3450,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RingPropertyType createRingPropertyType() {
         RingPropertyTypeImpl ringPropertyType = new RingPropertyTypeImpl();
         return ringPropertyType;
@@ -3213,6 +3461,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RingType createRingType() {
         RingTypeImpl ringType = new RingTypeImpl();
         return ringType;
@@ -3223,6 +3472,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RowType createRowType() {
         RowTypeImpl rowType = new RowTypeImpl();
         return rowType;
@@ -3233,6 +3483,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ScalarValuePropertyType createScalarValuePropertyType() {
         ScalarValuePropertyTypeImpl scalarValuePropertyType = new ScalarValuePropertyTypeImpl();
         return scalarValuePropertyType;
@@ -3243,6 +3494,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ScaleType createScaleType() {
         ScaleTypeImpl scaleType = new ScaleTypeImpl();
         return scaleType;
@@ -3253,6 +3505,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SecondDefiningParameterType createSecondDefiningParameterType() {
         SecondDefiningParameterTypeImpl secondDefiningParameterType = new SecondDefiningParameterTypeImpl();
         return secondDefiningParameterType;
@@ -3263,6 +3516,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SequenceRuleType createSequenceRuleType() {
         SequenceRuleTypeImpl sequenceRuleType = new SequenceRuleTypeImpl();
         return sequenceRuleType;
@@ -3273,6 +3527,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SingleOperationRefType createSingleOperationRefType() {
         SingleOperationRefTypeImpl singleOperationRefType = new SingleOperationRefTypeImpl();
         return singleOperationRefType;
@@ -3283,6 +3538,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SolidArrayPropertyType createSolidArrayPropertyType() {
         SolidArrayPropertyTypeImpl solidArrayPropertyType = new SolidArrayPropertyTypeImpl();
         return solidArrayPropertyType;
@@ -3293,6 +3549,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SolidPropertyType createSolidPropertyType() {
         SolidPropertyTypeImpl solidPropertyType = new SolidPropertyTypeImpl();
         return solidPropertyType;
@@ -3303,6 +3560,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SolidType createSolidType() {
         SolidTypeImpl solidType = new SolidTypeImpl();
         return solidType;
@@ -3313,6 +3571,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SpeedType createSpeedType() {
         SpeedTypeImpl speedType = new SpeedTypeImpl();
         return speedType;
@@ -3323,6 +3582,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SphereType createSphereType() {
         SphereTypeImpl sphereType = new SphereTypeImpl();
         return sphereType;
@@ -3333,6 +3593,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SphericalCSRefType createSphericalCSRefType() {
         SphericalCSRefTypeImpl sphericalCSRefType = new SphericalCSRefTypeImpl();
         return sphericalCSRefType;
@@ -3343,6 +3604,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SphericalCSType createSphericalCSType() {
         SphericalCSTypeImpl sphericalCSType = new SphericalCSTypeImpl();
         return sphericalCSType;
@@ -3353,6 +3615,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StringOrRefType createStringOrRefType() {
         StringOrRefTypeImpl stringOrRefType = new StringOrRefTypeImpl();
         return stringOrRefType;
@@ -3363,6 +3626,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StyleType createStyleType() {
         StyleTypeImpl styleType = new StyleTypeImpl();
         return styleType;
@@ -3373,6 +3637,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StyleVariationType createStyleVariationType() {
         StyleVariationTypeImpl styleVariationType = new StyleVariationTypeImpl();
         return styleVariationType;
@@ -3383,6 +3648,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SurfaceArrayPropertyType createSurfaceArrayPropertyType() {
         SurfaceArrayPropertyTypeImpl surfaceArrayPropertyType = new SurfaceArrayPropertyTypeImpl();
         return surfaceArrayPropertyType;
@@ -3393,6 +3659,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SurfacePatchArrayPropertyType createSurfacePatchArrayPropertyType() {
         SurfacePatchArrayPropertyTypeImpl surfacePatchArrayPropertyType = new SurfacePatchArrayPropertyTypeImpl();
         return surfacePatchArrayPropertyType;
@@ -3403,6 +3670,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SurfacePropertyType createSurfacePropertyType() {
         SurfacePropertyTypeImpl surfacePropertyType = new SurfacePropertyTypeImpl();
         return surfacePropertyType;
@@ -3413,6 +3681,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SurfaceType createSurfaceType() {
         SurfaceTypeImpl surfaceType = new SurfaceTypeImpl();
         return surfaceType;
@@ -3423,6 +3692,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SymbolType createSymbolType() {
         SymbolTypeImpl symbolType = new SymbolTypeImpl();
         return symbolType;
@@ -3433,6 +3703,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TargetPropertyType createTargetPropertyType() {
         TargetPropertyTypeImpl targetPropertyType = new TargetPropertyTypeImpl();
         return targetPropertyType;
@@ -3443,6 +3714,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TemporalCRSRefType createTemporalCRSRefType() {
         TemporalCRSRefTypeImpl temporalCRSRefType = new TemporalCRSRefTypeImpl();
         return temporalCRSRefType;
@@ -3453,6 +3725,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TemporalCRSType createTemporalCRSType() {
         TemporalCRSTypeImpl temporalCRSType = new TemporalCRSTypeImpl();
         return temporalCRSType;
@@ -3463,6 +3736,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TemporalCSRefType createTemporalCSRefType() {
         TemporalCSRefTypeImpl temporalCSRefType = new TemporalCSRefTypeImpl();
         return temporalCSRefType;
@@ -3473,6 +3747,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TemporalCSType createTemporalCSType() {
         TemporalCSTypeImpl temporalCSType = new TemporalCSTypeImpl();
         return temporalCSType;
@@ -3483,6 +3758,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TemporalDatumRefType createTemporalDatumRefType() {
         TemporalDatumRefTypeImpl temporalDatumRefType = new TemporalDatumRefTypeImpl();
         return temporalDatumRefType;
@@ -3493,6 +3769,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TemporalDatumType createTemporalDatumType() {
         TemporalDatumTypeImpl temporalDatumType = new TemporalDatumTypeImpl();
         return temporalDatumType;
@@ -3503,6 +3780,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeCalendarEraPropertyType createTimeCalendarEraPropertyType() {
         TimeCalendarEraPropertyTypeImpl timeCalendarEraPropertyType = new TimeCalendarEraPropertyTypeImpl();
         return timeCalendarEraPropertyType;
@@ -3513,6 +3791,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeCalendarEraType createTimeCalendarEraType() {
         TimeCalendarEraTypeImpl timeCalendarEraType = new TimeCalendarEraTypeImpl();
         return timeCalendarEraType;
@@ -3523,6 +3802,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeCalendarPropertyType createTimeCalendarPropertyType() {
         TimeCalendarPropertyTypeImpl timeCalendarPropertyType = new TimeCalendarPropertyTypeImpl();
         return timeCalendarPropertyType;
@@ -3533,6 +3813,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeCalendarType createTimeCalendarType() {
         TimeCalendarTypeImpl timeCalendarType = new TimeCalendarTypeImpl();
         return timeCalendarType;
@@ -3543,6 +3824,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeClockPropertyType createTimeClockPropertyType() {
         TimeClockPropertyTypeImpl timeClockPropertyType = new TimeClockPropertyTypeImpl();
         return timeClockPropertyType;
@@ -3553,6 +3835,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeClockType createTimeClockType() {
         TimeClockTypeImpl timeClockType = new TimeClockTypeImpl();
         return timeClockType;
@@ -3563,6 +3846,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeCoordinateSystemType createTimeCoordinateSystemType() {
         TimeCoordinateSystemTypeImpl timeCoordinateSystemType = new TimeCoordinateSystemTypeImpl();
         return timeCoordinateSystemType;
@@ -3573,6 +3857,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeEdgePropertyType createTimeEdgePropertyType() {
         TimeEdgePropertyTypeImpl timeEdgePropertyType = new TimeEdgePropertyTypeImpl();
         return timeEdgePropertyType;
@@ -3583,6 +3868,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeEdgeType createTimeEdgeType() {
         TimeEdgeTypeImpl timeEdgeType = new TimeEdgeTypeImpl();
         return timeEdgeType;
@@ -3593,6 +3879,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeGeometricPrimitivePropertyType createTimeGeometricPrimitivePropertyType() {
         TimeGeometricPrimitivePropertyTypeImpl timeGeometricPrimitivePropertyType = new TimeGeometricPrimitivePropertyTypeImpl();
         return timeGeometricPrimitivePropertyType;
@@ -3603,6 +3890,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeInstantPropertyType createTimeInstantPropertyType() {
         TimeInstantPropertyTypeImpl timeInstantPropertyType = new TimeInstantPropertyTypeImpl();
         return timeInstantPropertyType;
@@ -3613,6 +3901,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeInstantType createTimeInstantType() {
         TimeInstantTypeImpl timeInstantType = new TimeInstantTypeImpl();
         return timeInstantType;
@@ -3623,6 +3912,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeIntervalLengthType createTimeIntervalLengthType() {
         TimeIntervalLengthTypeImpl timeIntervalLengthType = new TimeIntervalLengthTypeImpl();
         return timeIntervalLengthType;
@@ -3633,6 +3923,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeNodePropertyType createTimeNodePropertyType() {
         TimeNodePropertyTypeImpl timeNodePropertyType = new TimeNodePropertyTypeImpl();
         return timeNodePropertyType;
@@ -3643,6 +3934,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeNodeType createTimeNodeType() {
         TimeNodeTypeImpl timeNodeType = new TimeNodeTypeImpl();
         return timeNodeType;
@@ -3653,6 +3945,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeOrdinalEraPropertyType createTimeOrdinalEraPropertyType() {
         TimeOrdinalEraPropertyTypeImpl timeOrdinalEraPropertyType = new TimeOrdinalEraPropertyTypeImpl();
         return timeOrdinalEraPropertyType;
@@ -3663,6 +3956,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeOrdinalEraType createTimeOrdinalEraType() {
         TimeOrdinalEraTypeImpl timeOrdinalEraType = new TimeOrdinalEraTypeImpl();
         return timeOrdinalEraType;
@@ -3673,6 +3967,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeOrdinalReferenceSystemType createTimeOrdinalReferenceSystemType() {
         TimeOrdinalReferenceSystemTypeImpl timeOrdinalReferenceSystemType = new TimeOrdinalReferenceSystemTypeImpl();
         return timeOrdinalReferenceSystemType;
@@ -3683,6 +3978,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimePeriodPropertyType createTimePeriodPropertyType() {
         TimePeriodPropertyTypeImpl timePeriodPropertyType = new TimePeriodPropertyTypeImpl();
         return timePeriodPropertyType;
@@ -3693,6 +3989,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimePeriodType createTimePeriodType() {
         TimePeriodTypeImpl timePeriodType = new TimePeriodTypeImpl();
         return timePeriodType;
@@ -3703,6 +4000,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimePositionType createTimePositionType() {
         TimePositionTypeImpl timePositionType = new TimePositionTypeImpl();
         return timePositionType;
@@ -3713,6 +4011,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimePrimitivePropertyType createTimePrimitivePropertyType() {
         TimePrimitivePropertyTypeImpl timePrimitivePropertyType = new TimePrimitivePropertyTypeImpl();
         return timePrimitivePropertyType;
@@ -3723,6 +4022,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeTopologyComplexPropertyType createTimeTopologyComplexPropertyType() {
         TimeTopologyComplexPropertyTypeImpl timeTopologyComplexPropertyType = new TimeTopologyComplexPropertyTypeImpl();
         return timeTopologyComplexPropertyType;
@@ -3733,6 +4033,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeTopologyComplexType createTimeTopologyComplexType() {
         TimeTopologyComplexTypeImpl timeTopologyComplexType = new TimeTopologyComplexTypeImpl();
         return timeTopologyComplexType;
@@ -3743,6 +4044,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeTopologyPrimitivePropertyType createTimeTopologyPrimitivePropertyType() {
         TimeTopologyPrimitivePropertyTypeImpl timeTopologyPrimitivePropertyType = new TimeTopologyPrimitivePropertyTypeImpl();
         return timeTopologyPrimitivePropertyType;
@@ -3753,6 +4055,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeType createTimeType() {
         TimeTypeImpl timeType = new TimeTypeImpl();
         return timeType;
@@ -3763,6 +4066,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TinType createTinType() {
         TinTypeImpl tinType = new TinTypeImpl();
         return tinType;
@@ -3773,6 +4077,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoComplexMemberType createTopoComplexMemberType() {
         TopoComplexMemberTypeImpl topoComplexMemberType = new TopoComplexMemberTypeImpl();
         return topoComplexMemberType;
@@ -3783,6 +4088,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoComplexType createTopoComplexType() {
         TopoComplexTypeImpl topoComplexType = new TopoComplexTypeImpl();
         return topoComplexType;
@@ -3793,6 +4099,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoCurvePropertyType createTopoCurvePropertyType() {
         TopoCurvePropertyTypeImpl topoCurvePropertyType = new TopoCurvePropertyTypeImpl();
         return topoCurvePropertyType;
@@ -3803,6 +4110,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoCurveType createTopoCurveType() {
         TopoCurveTypeImpl topoCurveType = new TopoCurveTypeImpl();
         return topoCurveType;
@@ -3813,6 +4121,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopologyStylePropertyType createTopologyStylePropertyType() {
         TopologyStylePropertyTypeImpl topologyStylePropertyType = new TopologyStylePropertyTypeImpl();
         return topologyStylePropertyType;
@@ -3823,6 +4132,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopologyStyleType createTopologyStyleType() {
         TopologyStyleTypeImpl topologyStyleType = new TopologyStyleTypeImpl();
         return topologyStyleType;
@@ -3833,6 +4143,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoPointPropertyType createTopoPointPropertyType() {
         TopoPointPropertyTypeImpl topoPointPropertyType = new TopoPointPropertyTypeImpl();
         return topoPointPropertyType;
@@ -3843,6 +4154,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoPointType createTopoPointType() {
         TopoPointTypeImpl topoPointType = new TopoPointTypeImpl();
         return topoPointType;
@@ -3853,6 +4165,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoPrimitiveArrayAssociationType createTopoPrimitiveArrayAssociationType() {
         TopoPrimitiveArrayAssociationTypeImpl topoPrimitiveArrayAssociationType = new TopoPrimitiveArrayAssociationTypeImpl();
         return topoPrimitiveArrayAssociationType;
@@ -3863,6 +4176,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoPrimitiveMemberType createTopoPrimitiveMemberType() {
         TopoPrimitiveMemberTypeImpl topoPrimitiveMemberType = new TopoPrimitiveMemberTypeImpl();
         return topoPrimitiveMemberType;
@@ -3873,6 +4187,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoSolidType createTopoSolidType() {
         TopoSolidTypeImpl topoSolidType = new TopoSolidTypeImpl();
         return topoSolidType;
@@ -3883,6 +4198,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoSurfacePropertyType createTopoSurfacePropertyType() {
         TopoSurfacePropertyTypeImpl topoSurfacePropertyType = new TopoSurfacePropertyTypeImpl();
         return topoSurfacePropertyType;
@@ -3893,6 +4209,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoSurfaceType createTopoSurfaceType() {
         TopoSurfaceTypeImpl topoSurfaceType = new TopoSurfaceTypeImpl();
         return topoSurfaceType;
@@ -3903,6 +4220,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoVolumePropertyType createTopoVolumePropertyType() {
         TopoVolumePropertyTypeImpl topoVolumePropertyType = new TopoVolumePropertyTypeImpl();
         return topoVolumePropertyType;
@@ -3913,6 +4231,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoVolumeType createTopoVolumeType() {
         TopoVolumeTypeImpl topoVolumeType = new TopoVolumeTypeImpl();
         return topoVolumeType;
@@ -3923,6 +4242,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TrackType createTrackType() {
         TrackTypeImpl trackType = new TrackTypeImpl();
         return trackType;
@@ -3933,6 +4253,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TransformationRefType createTransformationRefType() {
         TransformationRefTypeImpl transformationRefType = new TransformationRefTypeImpl();
         return transformationRefType;
@@ -3943,6 +4264,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TransformationType createTransformationType() {
         TransformationTypeImpl transformationType = new TransformationTypeImpl();
         return transformationType;
@@ -3953,6 +4275,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TrianglePatchArrayPropertyType createTrianglePatchArrayPropertyType() {
         TrianglePatchArrayPropertyTypeImpl trianglePatchArrayPropertyType = new TrianglePatchArrayPropertyTypeImpl();
         return trianglePatchArrayPropertyType;
@@ -3963,6 +4286,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TriangleType createTriangleType() {
         TriangleTypeImpl triangleType = new TriangleTypeImpl();
         return triangleType;
@@ -3973,6 +4297,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TriangulatedSurfaceType createTriangulatedSurfaceType() {
         TriangulatedSurfaceTypeImpl triangulatedSurfaceType = new TriangulatedSurfaceTypeImpl();
         return triangulatedSurfaceType;
@@ -3983,6 +4308,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public UnitDefinitionType createUnitDefinitionType() {
         UnitDefinitionTypeImpl unitDefinitionType = new UnitDefinitionTypeImpl();
         return unitDefinitionType;
@@ -3993,6 +4319,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public UnitOfMeasureType createUnitOfMeasureType() {
         UnitOfMeasureTypeImpl unitOfMeasureType = new UnitOfMeasureTypeImpl();
         return unitOfMeasureType;
@@ -4003,6 +4330,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public UserDefinedCSRefType createUserDefinedCSRefType() {
         UserDefinedCSRefTypeImpl userDefinedCSRefType = new UserDefinedCSRefTypeImpl();
         return userDefinedCSRefType;
@@ -4013,6 +4341,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public UserDefinedCSType createUserDefinedCSType() {
         UserDefinedCSTypeImpl userDefinedCSType = new UserDefinedCSTypeImpl();
         return userDefinedCSType;
@@ -4023,6 +4352,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ValueArrayPropertyType createValueArrayPropertyType() {
         ValueArrayPropertyTypeImpl valueArrayPropertyType = new ValueArrayPropertyTypeImpl();
         return valueArrayPropertyType;
@@ -4033,6 +4363,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ValueArrayType createValueArrayType() {
         ValueArrayTypeImpl valueArrayType = new ValueArrayTypeImpl();
         return valueArrayType;
@@ -4043,6 +4374,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ValuePropertyType createValuePropertyType() {
         ValuePropertyTypeImpl valuePropertyType = new ValuePropertyTypeImpl();
         return valuePropertyType;
@@ -4053,6 +4385,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public VectorType createVectorType() {
         VectorTypeImpl vectorType = new VectorTypeImpl();
         return vectorType;
@@ -4063,6 +4396,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public VerticalCRSRefType createVerticalCRSRefType() {
         VerticalCRSRefTypeImpl verticalCRSRefType = new VerticalCRSRefTypeImpl();
         return verticalCRSRefType;
@@ -4073,6 +4407,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public VerticalCRSType createVerticalCRSType() {
         VerticalCRSTypeImpl verticalCRSType = new VerticalCRSTypeImpl();
         return verticalCRSType;
@@ -4083,6 +4418,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public VerticalCSRefType createVerticalCSRefType() {
         VerticalCSRefTypeImpl verticalCSRefType = new VerticalCSRefTypeImpl();
         return verticalCSRefType;
@@ -4093,6 +4429,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public VerticalCSType createVerticalCSType() {
         VerticalCSTypeImpl verticalCSType = new VerticalCSTypeImpl();
         return verticalCSType;
@@ -4103,6 +4440,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public VerticalDatumRefType createVerticalDatumRefType() {
         VerticalDatumRefTypeImpl verticalDatumRefType = new VerticalDatumRefTypeImpl();
         return verticalDatumRefType;
@@ -4113,6 +4451,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public VerticalDatumType createVerticalDatumType() {
         VerticalDatumTypeImpl verticalDatumType = new VerticalDatumTypeImpl();
         return verticalDatumType;
@@ -4123,6 +4462,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public VerticalDatumTypeType createVerticalDatumTypeType() {
         VerticalDatumTypeTypeImpl verticalDatumTypeType = new VerticalDatumTypeTypeImpl();
         return verticalDatumTypeType;
@@ -4133,6 +4473,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public VolumeType createVolumeType() {
         VolumeTypeImpl volumeType = new VolumeTypeImpl();
         return volumeType;
@@ -6217,6 +6558,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Gml311Package getGml311Package() {
         return (Gml311Package)getEPackage();
     }

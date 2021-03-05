@@ -95,7 +95,8 @@ public class Ows11Validator extends EObjectValidator {
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EPackage getEPackage() {
+  @Override
+protected EPackage getEPackage() {
     return Ows11Package.eINSTANCE;
   }
 
@@ -105,7 +106,8 @@ public class Ows11Validator extends EObjectValidator {
    * <!-- end-user-doc -->
    * @generated
    */
-  protected boolean validate(int classifierID, Object value, DiagnosticChain diagnostics, Map context) {
+  @Override
+protected boolean validate(int classifierID, Object value, DiagnosticChain diagnostics, Map context) {
     switch (classifierID) {
       case Ows11Package.ABSTRACT_REFERENCE_BASE_TYPE:
         return validateAbstractReferenceBaseType((AbstractReferenceBaseType)value, diagnostics, context);

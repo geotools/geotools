@@ -317,7 +317,8 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
         EValidator.Registry.INSTANCE.put
             (theSmil20Package, 
              new EValidator.Descriptor() {
-                 public EValidator getEValidator() {
+                 @Override
+                public EValidator getEValidator() {
                      return Smil20Validator.INSTANCE;
                  }
              });
@@ -336,6 +337,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getAnimateColorPrototype() {
         return animateColorPrototypeEClass;
     }
@@ -345,6 +347,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorPrototype_Accumulate() {
         return (EAttribute)animateColorPrototypeEClass.getEStructuralFeatures().get(0);
     }
@@ -354,6 +357,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorPrototype_Additive() {
         return (EAttribute)animateColorPrototypeEClass.getEStructuralFeatures().get(1);
     }
@@ -363,6 +367,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorPrototype_AttributeName() {
         return (EAttribute)animateColorPrototypeEClass.getEStructuralFeatures().get(2);
     }
@@ -372,6 +377,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorPrototype_AttributeType() {
         return (EAttribute)animateColorPrototypeEClass.getEStructuralFeatures().get(3);
     }
@@ -381,6 +387,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorPrototype_By() {
         return (EAttribute)animateColorPrototypeEClass.getEStructuralFeatures().get(4);
     }
@@ -390,6 +397,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorPrototype_From() {
         return (EAttribute)animateColorPrototypeEClass.getEStructuralFeatures().get(5);
     }
@@ -399,6 +407,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorPrototype_To() {
         return (EAttribute)animateColorPrototypeEClass.getEStructuralFeatures().get(6);
     }
@@ -408,6 +417,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorPrototype_Values() {
         return (EAttribute)animateColorPrototypeEClass.getEStructuralFeatures().get(7);
     }
@@ -417,6 +427,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getAnimateMotionPrototype() {
         return animateMotionPrototypeEClass;
     }
@@ -426,6 +437,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionPrototype_Accumulate() {
         return (EAttribute)animateMotionPrototypeEClass.getEStructuralFeatures().get(0);
     }
@@ -435,6 +447,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionPrototype_Additive() {
         return (EAttribute)animateMotionPrototypeEClass.getEStructuralFeatures().get(1);
     }
@@ -444,6 +457,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionPrototype_By() {
         return (EAttribute)animateMotionPrototypeEClass.getEStructuralFeatures().get(2);
     }
@@ -453,6 +467,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionPrototype_From() {
         return (EAttribute)animateMotionPrototypeEClass.getEStructuralFeatures().get(3);
     }
@@ -462,6 +477,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionPrototype_Origin() {
         return (EAttribute)animateMotionPrototypeEClass.getEStructuralFeatures().get(4);
     }
@@ -471,6 +487,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionPrototype_To() {
         return (EAttribute)animateMotionPrototypeEClass.getEStructuralFeatures().get(5);
     }
@@ -480,6 +497,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionPrototype_Values() {
         return (EAttribute)animateMotionPrototypeEClass.getEStructuralFeatures().get(6);
     }
@@ -489,6 +507,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getAnimatePrototype() {
         return animatePrototypeEClass;
     }
@@ -498,6 +517,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimatePrototype_Accumulate() {
         return (EAttribute)animatePrototypeEClass.getEStructuralFeatures().get(0);
     }
@@ -507,6 +527,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimatePrototype_Additive() {
         return (EAttribute)animatePrototypeEClass.getEStructuralFeatures().get(1);
     }
@@ -516,6 +537,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimatePrototype_AttributeName() {
         return (EAttribute)animatePrototypeEClass.getEStructuralFeatures().get(2);
     }
@@ -525,6 +547,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimatePrototype_AttributeType() {
         return (EAttribute)animatePrototypeEClass.getEStructuralFeatures().get(3);
     }
@@ -534,6 +557,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimatePrototype_By() {
         return (EAttribute)animatePrototypeEClass.getEStructuralFeatures().get(4);
     }
@@ -543,6 +567,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimatePrototype_From() {
         return (EAttribute)animatePrototypeEClass.getEStructuralFeatures().get(5);
     }
@@ -552,6 +577,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimatePrototype_To() {
         return (EAttribute)animatePrototypeEClass.getEStructuralFeatures().get(6);
     }
@@ -561,6 +587,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimatePrototype_Values() {
         return (EAttribute)animatePrototypeEClass.getEStructuralFeatures().get(7);
     }
@@ -570,6 +597,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getDocumentRoot() {
         return documentRootEClass;
     }
@@ -579,6 +607,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDocumentRoot_Mixed() {
         return (EAttribute)documentRootEClass.getEStructuralFeatures().get(0);
     }
@@ -588,6 +617,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_XMLNSPrefixMap() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(1);
     }
@@ -597,6 +627,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_XSISchemaLocation() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(2);
     }
@@ -606,6 +637,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Animate() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(3);
     }
@@ -615,6 +647,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_AnimateColor() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(4);
     }
@@ -624,6 +657,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_AnimateMotion() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(5);
     }
@@ -633,6 +667,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Set() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(6);
     }
@@ -642,6 +677,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getSetPrototype() {
         return setPrototypeEClass;
     }
@@ -651,6 +687,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSetPrototype_AttributeName() {
         return (EAttribute)setPrototypeEClass.getEStructuralFeatures().get(0);
     }
@@ -660,6 +697,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSetPrototype_AttributeType() {
         return (EAttribute)setPrototypeEClass.getEStructuralFeatures().get(1);
     }
@@ -669,6 +707,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSetPrototype_To() {
         return (EAttribute)setPrototypeEClass.getEStructuralFeatures().get(2);
     }
@@ -678,6 +717,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EEnum getAccumulateType() {
         return accumulateTypeEEnum;
     }
@@ -687,6 +727,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EEnum getAdditiveType() {
         return additiveTypeEEnum;
     }
@@ -696,6 +737,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EEnum getAttributeTypeType() {
         return attributeTypeTypeEEnum;
     }
@@ -705,6 +747,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EEnum getCalcModeType() {
         return calcModeTypeEEnum;
     }
@@ -714,6 +757,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EEnum getFillDefaultType() {
         return fillDefaultTypeEEnum;
     }
@@ -723,6 +767,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EEnum getFillTimingAttrsType() {
         return fillTimingAttrsTypeEEnum;
     }
@@ -732,6 +777,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EEnum getRestartDefaultType() {
         return restartDefaultTypeEEnum;
     }
@@ -741,6 +787,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EEnum getRestartTimingType() {
         return restartTimingTypeEEnum;
     }
@@ -750,6 +797,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EEnum getSyncBehaviorDefaultType() {
         return syncBehaviorDefaultTypeEEnum;
     }
@@ -759,6 +807,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EEnum getSyncBehaviorType() {
         return syncBehaviorTypeEEnum;
     }
@@ -768,6 +817,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getAccumulateTypeObject() {
         return accumulateTypeObjectEDataType;
     }
@@ -777,6 +827,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getAdditiveTypeObject() {
         return additiveTypeObjectEDataType;
     }
@@ -786,6 +837,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getAttributeTypeTypeObject() {
         return attributeTypeTypeObjectEDataType;
     }
@@ -795,6 +847,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getCalcModeTypeObject() {
         return calcModeTypeObjectEDataType;
     }
@@ -804,6 +857,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getFillDefaultTypeObject() {
         return fillDefaultTypeObjectEDataType;
     }
@@ -813,6 +867,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getFillTimingAttrsTypeObject() {
         return fillTimingAttrsTypeObjectEDataType;
     }
@@ -822,6 +877,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getNonNegativeDecimalType() {
         return nonNegativeDecimalTypeEDataType;
     }
@@ -831,6 +887,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getRestartDefaultTypeObject() {
         return restartDefaultTypeObjectEDataType;
     }
@@ -840,6 +897,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getRestartTimingTypeObject() {
         return restartTimingTypeObjectEDataType;
     }
@@ -849,6 +907,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getSyncBehaviorDefaultTypeObject() {
         return syncBehaviorDefaultTypeObjectEDataType;
     }
@@ -858,6 +917,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getSyncBehaviorTypeObject() {
         return syncBehaviorTypeObjectEDataType;
     }
@@ -867,6 +927,7 @@ public class Smil20PackageImpl extends EPackageImpl implements Smil20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Smil20Factory getSmil20Factory() {
         return (Smil20Factory)getEFactoryInstance();
     }

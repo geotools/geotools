@@ -85,6 +85,7 @@ public class SpatialCapabilitiesTypeImpl extends EObjectImpl implements SpatialC
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeometryOperandsType getGeometryOperands2() {
         return geometryOperands;
     }
@@ -109,6 +110,7 @@ public class SpatialCapabilitiesTypeImpl extends EObjectImpl implements SpatialC
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGeometryOperands(GeometryOperandsType newGeometryOperands) {
         if (newGeometryOperands != geometryOperands) {
             NotificationChain msgs = null;
@@ -128,6 +130,7 @@ public class SpatialCapabilitiesTypeImpl extends EObjectImpl implements SpatialC
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SpatialOperatorsType getSpatialOperators() {
         return spatialOperators;
     }
@@ -152,6 +155,7 @@ public class SpatialCapabilitiesTypeImpl extends EObjectImpl implements SpatialC
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSpatialOperators(SpatialOperatorsType newSpatialOperators) {
         if (newSpatialOperators != spatialOperators) {
             NotificationChain msgs = null;

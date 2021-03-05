@@ -541,7 +541,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
     EValidator.Registry.INSTANCE.put
       (theOws11Package,
        new EValidator.Descriptor() {
-         public EValidator getEValidator() {
+         @Override
+        public EValidator getEValidator() {
            return Ows11Validator.INSTANCE;
          }
        });
@@ -559,7 +560,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getAbstractReferenceBaseType() {
+  @Override
+public EClass getAbstractReferenceBaseType() {
     return abstractReferenceBaseTypeEClass;
   }
 
@@ -568,7 +570,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getAbstractReferenceBaseType_Actuate() {
+  @Override
+public EAttribute getAbstractReferenceBaseType_Actuate() {
     return (EAttribute)abstractReferenceBaseTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -577,7 +580,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getAbstractReferenceBaseType_Arcrole() {
+  @Override
+public EAttribute getAbstractReferenceBaseType_Arcrole() {
     return (EAttribute)abstractReferenceBaseTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -586,7 +590,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getAbstractReferenceBaseType_Href() {
+  @Override
+public EAttribute getAbstractReferenceBaseType_Href() {
     return (EAttribute)abstractReferenceBaseTypeEClass.getEStructuralFeatures().get(2);
   }
 
@@ -595,7 +600,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getAbstractReferenceBaseType_Role() {
+  @Override
+public EAttribute getAbstractReferenceBaseType_Role() {
     return (EAttribute)abstractReferenceBaseTypeEClass.getEStructuralFeatures().get(3);
   }
 
@@ -604,7 +610,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getAbstractReferenceBaseType_Show() {
+  @Override
+public EAttribute getAbstractReferenceBaseType_Show() {
     return (EAttribute)abstractReferenceBaseTypeEClass.getEStructuralFeatures().get(4);
   }
 
@@ -613,7 +620,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getAbstractReferenceBaseType_Title() {
+  @Override
+public EAttribute getAbstractReferenceBaseType_Title() {
     return (EAttribute)abstractReferenceBaseTypeEClass.getEStructuralFeatures().get(5);
   }
 
@@ -622,7 +630,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getAbstractReferenceBaseType_Type() {
+  @Override
+public EAttribute getAbstractReferenceBaseType_Type() {
     return (EAttribute)abstractReferenceBaseTypeEClass.getEStructuralFeatures().get(6);
   }
 
@@ -631,7 +640,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getAcceptFormatsType() {
+  @Override
+public EClass getAcceptFormatsType() {
     return acceptFormatsTypeEClass;
   }
 
@@ -640,7 +650,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getAcceptFormatsType_OutputFormat() {
+  @Override
+public EAttribute getAcceptFormatsType_OutputFormat() {
     return (EAttribute)acceptFormatsTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -649,7 +660,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getAcceptVersionsType() {
+  @Override
+public EClass getAcceptVersionsType() {
     return acceptVersionsTypeEClass;
   }
 
@@ -658,7 +670,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getAcceptVersionsType_Version() {
+  @Override
+public EAttribute getAcceptVersionsType_Version() {
     return (EAttribute)acceptVersionsTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -667,7 +680,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getAddressType() {
+  @Override
+public EClass getAddressType() {
     return addressTypeEClass;
   }
 
@@ -676,7 +690,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getAddressType_DeliveryPoint() {
+  @Override
+public EAttribute getAddressType_DeliveryPoint() {
     return (EAttribute)addressTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -685,7 +700,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getAddressType_City() {
+  @Override
+public EAttribute getAddressType_City() {
     return (EAttribute)addressTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -694,7 +710,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getAddressType_AdministrativeArea() {
+  @Override
+public EAttribute getAddressType_AdministrativeArea() {
     return (EAttribute)addressTypeEClass.getEStructuralFeatures().get(2);
   }
 
@@ -703,7 +720,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getAddressType_PostalCode() {
+  @Override
+public EAttribute getAddressType_PostalCode() {
     return (EAttribute)addressTypeEClass.getEStructuralFeatures().get(3);
   }
 
@@ -712,7 +730,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getAddressType_Country() {
+  @Override
+public EAttribute getAddressType_Country() {
     return (EAttribute)addressTypeEClass.getEStructuralFeatures().get(4);
   }
 
@@ -721,7 +740,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getAddressType_ElectronicMailAddress() {
+  @Override
+public EAttribute getAddressType_ElectronicMailAddress() {
     return (EAttribute)addressTypeEClass.getEStructuralFeatures().get(5);
   }
 
@@ -730,7 +750,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getAllowedValuesType() {
+  @Override
+public EClass getAllowedValuesType() {
     return allowedValuesTypeEClass;
   }
 
@@ -739,7 +760,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getAllowedValuesType_Group() {
+  @Override
+public EAttribute getAllowedValuesType_Group() {
     return (EAttribute)allowedValuesTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -748,7 +770,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getAllowedValuesType_Value() {
+  @Override
+public EReference getAllowedValuesType_Value() {
     return (EReference)allowedValuesTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -757,7 +780,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getAllowedValuesType_Range() {
+  @Override
+public EReference getAllowedValuesType_Range() {
     return (EReference)allowedValuesTypeEClass.getEStructuralFeatures().get(2);
   }
 
@@ -766,7 +790,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getAnyValueType() {
+  @Override
+public EClass getAnyValueType() {
     return anyValueTypeEClass;
   }
 
@@ -775,7 +800,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getBasicIdentificationType() {
+  @Override
+public EClass getBasicIdentificationType() {
     return basicIdentificationTypeEClass;
   }
 
@@ -784,7 +810,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getBasicIdentificationType_Identifier() {
+  @Override
+public EReference getBasicIdentificationType_Identifier() {
     return (EReference)basicIdentificationTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -793,7 +820,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getBasicIdentificationType_Metadata() {
+  @Override
+public EReference getBasicIdentificationType_Metadata() {
     return (EReference)basicIdentificationTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -802,7 +830,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getBoundingBoxType() {
+  @Override
+public EClass getBoundingBoxType() {
     return boundingBoxTypeEClass;
   }
 
@@ -811,7 +840,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getBoundingBoxType_LowerCorner() {
+  @Override
+public EAttribute getBoundingBoxType_LowerCorner() {
     return (EAttribute)boundingBoxTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -820,7 +850,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getBoundingBoxType_UpperCorner() {
+  @Override
+public EAttribute getBoundingBoxType_UpperCorner() {
     return (EAttribute)boundingBoxTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -829,7 +860,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getBoundingBoxType_Crs() {
+  @Override
+public EAttribute getBoundingBoxType_Crs() {
     return (EAttribute)boundingBoxTypeEClass.getEStructuralFeatures().get(2);
   }
 
@@ -838,7 +870,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getBoundingBoxType_Dimensions() {
+  @Override
+public EAttribute getBoundingBoxType_Dimensions() {
     return (EAttribute)boundingBoxTypeEClass.getEStructuralFeatures().get(3);
   }
 
@@ -847,7 +880,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getCapabilitiesBaseType() {
+  @Override
+public EClass getCapabilitiesBaseType() {
     return capabilitiesBaseTypeEClass;
   }
 
@@ -856,7 +890,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getCapabilitiesBaseType_ServiceIdentification() {
+  @Override
+public EReference getCapabilitiesBaseType_ServiceIdentification() {
     return (EReference)capabilitiesBaseTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -865,7 +900,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getCapabilitiesBaseType_ServiceProvider() {
+  @Override
+public EReference getCapabilitiesBaseType_ServiceProvider() {
     return (EReference)capabilitiesBaseTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -874,7 +910,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getCapabilitiesBaseType_OperationsMetadata() {
+  @Override
+public EReference getCapabilitiesBaseType_OperationsMetadata() {
     return (EReference)capabilitiesBaseTypeEClass.getEStructuralFeatures().get(2);
   }
 
@@ -883,7 +920,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getCapabilitiesBaseType_UpdateSequence() {
+  @Override
+public EAttribute getCapabilitiesBaseType_UpdateSequence() {
     return (EAttribute)capabilitiesBaseTypeEClass.getEStructuralFeatures().get(3);
   }
 
@@ -892,7 +930,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getCapabilitiesBaseType_Version() {
+  @Override
+public EAttribute getCapabilitiesBaseType_Version() {
     return (EAttribute)capabilitiesBaseTypeEClass.getEStructuralFeatures().get(4);
   }
 
@@ -901,7 +940,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getCodeType() {
+  @Override
+public EClass getCodeType() {
     return codeTypeEClass;
   }
 
@@ -910,7 +950,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getCodeType_Value() {
+  @Override
+public EAttribute getCodeType_Value() {
     return (EAttribute)codeTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -919,7 +960,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getCodeType_CodeSpace() {
+  @Override
+public EAttribute getCodeType_CodeSpace() {
     return (EAttribute)codeTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -928,7 +970,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getContactType() {
+  @Override
+public EClass getContactType() {
     return contactTypeEClass;
   }
 
@@ -937,7 +980,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getContactType_Phone() {
+  @Override
+public EReference getContactType_Phone() {
     return (EReference)contactTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -946,7 +990,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getContactType_Address() {
+  @Override
+public EReference getContactType_Address() {
     return (EReference)contactTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -955,7 +1000,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getContactType_OnlineResource() {
+  @Override
+public EReference getContactType_OnlineResource() {
     return (EReference)contactTypeEClass.getEStructuralFeatures().get(2);
   }
 
@@ -964,7 +1010,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getContactType_HoursOfService() {
+  @Override
+public EAttribute getContactType_HoursOfService() {
     return (EAttribute)contactTypeEClass.getEStructuralFeatures().get(3);
   }
 
@@ -973,7 +1020,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getContactType_ContactInstructions() {
+  @Override
+public EAttribute getContactType_ContactInstructions() {
     return (EAttribute)contactTypeEClass.getEStructuralFeatures().get(4);
   }
 
@@ -982,7 +1030,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getContentsBaseType() {
+  @Override
+public EClass getContentsBaseType() {
     return contentsBaseTypeEClass;
   }
 
@@ -991,7 +1040,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getContentsBaseType_DatasetDescriptionSummary() {
+  @Override
+public EReference getContentsBaseType_DatasetDescriptionSummary() {
     return (EReference)contentsBaseTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -1000,7 +1050,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getContentsBaseType_OtherSource() {
+  @Override
+public EReference getContentsBaseType_OtherSource() {
     return (EReference)contentsBaseTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -1009,7 +1060,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getDatasetDescriptionSummaryBaseType() {
+  @Override
+public EClass getDatasetDescriptionSummaryBaseType() {
     return datasetDescriptionSummaryBaseTypeEClass;
   }
 
@@ -1018,7 +1070,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDatasetDescriptionSummaryBaseType_WGS84BoundingBox() {
+  @Override
+public EReference getDatasetDescriptionSummaryBaseType_WGS84BoundingBox() {
     return (EReference)datasetDescriptionSummaryBaseTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -1027,7 +1080,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDatasetDescriptionSummaryBaseType_Identifier() {
+  @Override
+public EReference getDatasetDescriptionSummaryBaseType_Identifier() {
     return (EReference)datasetDescriptionSummaryBaseTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -1036,7 +1090,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getDatasetDescriptionSummaryBaseType_BoundingBoxGroup() {
+  @Override
+public EAttribute getDatasetDescriptionSummaryBaseType_BoundingBoxGroup() {
     return (EAttribute)datasetDescriptionSummaryBaseTypeEClass.getEStructuralFeatures().get(2);
   }
 
@@ -1045,7 +1100,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDatasetDescriptionSummaryBaseType_BoundingBox() {
+  @Override
+public EReference getDatasetDescriptionSummaryBaseType_BoundingBox() {
     return (EReference)datasetDescriptionSummaryBaseTypeEClass.getEStructuralFeatures().get(3);
   }
 
@@ -1054,7 +1110,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDatasetDescriptionSummaryBaseType_Metadata() {
+  @Override
+public EReference getDatasetDescriptionSummaryBaseType_Metadata() {
     return (EReference)datasetDescriptionSummaryBaseTypeEClass.getEStructuralFeatures().get(4);
   }
 
@@ -1063,7 +1120,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDatasetDescriptionSummaryBaseType_DatasetDescriptionSummary() {
+  @Override
+public EReference getDatasetDescriptionSummaryBaseType_DatasetDescriptionSummary() {
     return (EReference)datasetDescriptionSummaryBaseTypeEClass.getEStructuralFeatures().get(5);
   }
 
@@ -1072,7 +1130,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getDCPType() {
+  @Override
+public EClass getDCPType() {
     return dcpTypeEClass;
   }
 
@@ -1081,7 +1140,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDCPType_HTTP() {
+  @Override
+public EReference getDCPType_HTTP() {
     return (EReference)dcpTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -1090,7 +1150,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getDescriptionType() {
+  @Override
+public EClass getDescriptionType() {
     return descriptionTypeEClass;
   }
 
@@ -1099,7 +1160,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDescriptionType_Title() {
+  @Override
+public EReference getDescriptionType_Title() {
     return (EReference)descriptionTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -1108,7 +1170,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDescriptionType_Abstract() {
+  @Override
+public EReference getDescriptionType_Abstract() {
     return (EReference)descriptionTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -1117,7 +1180,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDescriptionType_Keywords() {
+  @Override
+public EReference getDescriptionType_Keywords() {
     return (EReference)descriptionTypeEClass.getEStructuralFeatures().get(2);
   }
 
@@ -1126,7 +1190,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getDocumentRoot() {
+  @Override
+public EClass getDocumentRoot() {
     return documentRootEClass;
   }
 
@@ -1135,7 +1200,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getDocumentRoot_Mixed() {
+  @Override
+public EAttribute getDocumentRoot_Mixed() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(0);
   }
 
@@ -1144,7 +1210,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_XMLNSPrefixMap() {
+  @Override
+public EReference getDocumentRoot_XMLNSPrefixMap() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(1);
   }
 
@@ -1153,7 +1220,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_XSISchemaLocation() {
+  @Override
+public EReference getDocumentRoot_XSISchemaLocation() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(2);
   }
 
@@ -1162,7 +1230,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_Abstract() {
+  @Override
+public EReference getDocumentRoot_Abstract() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(3);
   }
 
@@ -1171,7 +1240,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_AbstractMetaData() {
+  @Override
+public EReference getDocumentRoot_AbstractMetaData() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(4);
   }
 
@@ -1180,7 +1250,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_AbstractReferenceBase() {
+  @Override
+public EReference getDocumentRoot_AbstractReferenceBase() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(5);
   }
 
@@ -1189,7 +1260,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getDocumentRoot_AccessConstraints() {
+  @Override
+public EAttribute getDocumentRoot_AccessConstraints() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(6);
   }
 
@@ -1198,7 +1270,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_AllowedValues() {
+  @Override
+public EReference getDocumentRoot_AllowedValues() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(7);
   }
 
@@ -1207,7 +1280,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_AnyValue() {
+  @Override
+public EReference getDocumentRoot_AnyValue() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(8);
   }
 
@@ -1216,7 +1290,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getDocumentRoot_AvailableCRS() {
+  @Override
+public EAttribute getDocumentRoot_AvailableCRS() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(9);
   }
 
@@ -1225,7 +1300,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_BoundingBox() {
+  @Override
+public EReference getDocumentRoot_BoundingBox() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(10);
   }
 
@@ -1234,7 +1310,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_ContactInfo() {
+  @Override
+public EReference getDocumentRoot_ContactInfo() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(11);
   }
 
@@ -1243,7 +1320,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_DatasetDescriptionSummary() {
+  @Override
+public EReference getDocumentRoot_DatasetDescriptionSummary() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(12);
   }
 
@@ -1252,7 +1330,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_DataType() {
+  @Override
+public EReference getDocumentRoot_DataType() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(13);
   }
 
@@ -1261,7 +1340,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_DCP() {
+  @Override
+public EReference getDocumentRoot_DCP() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(14);
   }
 
@@ -1270,7 +1350,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_DefaultValue() {
+  @Override
+public EReference getDocumentRoot_DefaultValue() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(15);
   }
 
@@ -1279,7 +1360,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_Exception() {
+  @Override
+public EReference getDocumentRoot_Exception() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(16);
   }
 
@@ -1288,7 +1370,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_ExceptionReport() {
+  @Override
+public EReference getDocumentRoot_ExceptionReport() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(17);
   }
 
@@ -1297,7 +1380,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_ExtendedCapabilities() {
+  @Override
+public EReference getDocumentRoot_ExtendedCapabilities() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(18);
   }
 
@@ -1306,7 +1390,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getDocumentRoot_Fees() {
+  @Override
+public EAttribute getDocumentRoot_Fees() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(19);
   }
 
@@ -1315,7 +1400,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_GetCapabilities() {
+  @Override
+public EReference getDocumentRoot_GetCapabilities() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(20);
   }
 
@@ -1324,7 +1410,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_GetResourceByID() {
+  @Override
+public EReference getDocumentRoot_GetResourceByID() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(21);
   }
 
@@ -1333,7 +1420,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_HTTP() {
+  @Override
+public EReference getDocumentRoot_HTTP() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(22);
   }
 
@@ -1342,7 +1430,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_Identifier() {
+  @Override
+public EReference getDocumentRoot_Identifier() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(23);
   }
 
@@ -1351,7 +1440,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getDocumentRoot_IndividualName() {
+  @Override
+public EAttribute getDocumentRoot_IndividualName() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(24);
   }
 
@@ -1360,7 +1450,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_InputData() {
+  @Override
+public EReference getDocumentRoot_InputData() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(25);
   }
 
@@ -1369,7 +1460,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_Keywords() {
+  @Override
+public EReference getDocumentRoot_Keywords() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(26);
   }
 
@@ -1378,7 +1470,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getDocumentRoot_Language() {
+  @Override
+public EAttribute getDocumentRoot_Language() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(27);
   }
 
@@ -1387,7 +1480,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_Manifest() {
+  @Override
+public EReference getDocumentRoot_Manifest() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(28);
   }
 
@@ -1396,7 +1490,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_MaximumValue() {
+  @Override
+public EReference getDocumentRoot_MaximumValue() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(29);
   }
 
@@ -1405,7 +1500,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_Meaning() {
+  @Override
+public EReference getDocumentRoot_Meaning() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(30);
   }
 
@@ -1414,7 +1510,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_Metadata() {
+  @Override
+public EReference getDocumentRoot_Metadata() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(31);
   }
 
@@ -1423,7 +1520,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_MinimumValue() {
+  @Override
+public EReference getDocumentRoot_MinimumValue() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(32);
   }
 
@@ -1432,7 +1530,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_NoValues() {
+  @Override
+public EReference getDocumentRoot_NoValues() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(33);
   }
 
@@ -1441,7 +1540,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_Operation() {
+  @Override
+public EReference getDocumentRoot_Operation() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(34);
   }
 
@@ -1450,7 +1550,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_OperationResponse() {
+  @Override
+public EReference getDocumentRoot_OperationResponse() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(35);
   }
 
@@ -1459,7 +1560,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_OperationsMetadata() {
+  @Override
+public EReference getDocumentRoot_OperationsMetadata() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(36);
   }
 
@@ -1468,7 +1570,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getDocumentRoot_OrganisationName() {
+  @Override
+public EAttribute getDocumentRoot_OrganisationName() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(37);
   }
 
@@ -1477,7 +1580,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_OtherSource() {
+  @Override
+public EReference getDocumentRoot_OtherSource() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(38);
   }
 
@@ -1486,7 +1590,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getDocumentRoot_OutputFormat() {
+  @Override
+public EAttribute getDocumentRoot_OutputFormat() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(39);
   }
 
@@ -1495,7 +1600,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_PointOfContact() {
+  @Override
+public EReference getDocumentRoot_PointOfContact() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(40);
   }
 
@@ -1504,7 +1610,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getDocumentRoot_PositionName() {
+  @Override
+public EAttribute getDocumentRoot_PositionName() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(41);
   }
 
@@ -1513,7 +1620,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_Range() {
+  @Override
+public EReference getDocumentRoot_Range() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(42);
   }
 
@@ -1522,7 +1630,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_Reference() {
+  @Override
+public EReference getDocumentRoot_Reference() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(43);
   }
 
@@ -1531,7 +1640,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_ReferenceGroup() {
+  @Override
+public EReference getDocumentRoot_ReferenceGroup() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(44);
   }
 
@@ -1540,7 +1650,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_ReferenceSystem() {
+  @Override
+public EReference getDocumentRoot_ReferenceSystem() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(45);
   }
 
@@ -1549,7 +1660,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_Resource() {
+  @Override
+public EReference getDocumentRoot_Resource() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(46);
   }
 
@@ -1558,7 +1670,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_Role() {
+  @Override
+public EReference getDocumentRoot_Role() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(47);
   }
 
@@ -1567,7 +1680,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_ServiceIdentification() {
+  @Override
+public EReference getDocumentRoot_ServiceIdentification() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(48);
   }
 
@@ -1576,7 +1690,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_ServiceProvider() {
+  @Override
+public EReference getDocumentRoot_ServiceProvider() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(49);
   }
 
@@ -1585,7 +1700,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_ServiceReference() {
+  @Override
+public EReference getDocumentRoot_ServiceReference() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(50);
   }
 
@@ -1594,7 +1710,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_Spacing() {
+  @Override
+public EReference getDocumentRoot_Spacing() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(51);
   }
 
@@ -1603,7 +1720,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getDocumentRoot_SupportedCRS() {
+  @Override
+public EAttribute getDocumentRoot_SupportedCRS() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(52);
   }
 
@@ -1612,7 +1730,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_Title() {
+  @Override
+public EReference getDocumentRoot_Title() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(53);
   }
 
@@ -1621,7 +1740,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_UOM() {
+  @Override
+public EReference getDocumentRoot_UOM() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(54);
   }
 
@@ -1630,7 +1750,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_Value() {
+  @Override
+public EReference getDocumentRoot_Value() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(55);
   }
 
@@ -1639,7 +1760,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_ValuesReference() {
+  @Override
+public EReference getDocumentRoot_ValuesReference() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(56);
   }
 
@@ -1648,7 +1770,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDocumentRoot_WGS84BoundingBox() {
+  @Override
+public EReference getDocumentRoot_WGS84BoundingBox() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(57);
   }
 
@@ -1657,7 +1780,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getDocumentRoot_RangeClosure() {
+  @Override
+public EAttribute getDocumentRoot_RangeClosure() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(58);
   }
 
@@ -1666,7 +1790,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getDocumentRoot_Reference1() {
+  @Override
+public EAttribute getDocumentRoot_Reference1() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(59);
   }
 
@@ -1675,7 +1800,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getDomainMetadataType() {
+  @Override
+public EClass getDomainMetadataType() {
     return domainMetadataTypeEClass;
   }
 
@@ -1684,7 +1810,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getDomainMetadataType_Value() {
+  @Override
+public EAttribute getDomainMetadataType_Value() {
     return (EAttribute)domainMetadataTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -1693,7 +1820,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getDomainMetadataType_Reference() {
+  @Override
+public EAttribute getDomainMetadataType_Reference() {
     return (EAttribute)domainMetadataTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -1702,7 +1830,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getDomainType() {
+  @Override
+public EClass getDomainType() {
     return domainTypeEClass;
   }
 
@@ -1711,7 +1840,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getDomainType_Name() {
+  @Override
+public EAttribute getDomainType_Name() {
     return (EAttribute)domainTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -1720,7 +1850,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getExceptionReportType() {
+  @Override
+public EClass getExceptionReportType() {
     return exceptionReportTypeEClass;
   }
 
@@ -1729,7 +1860,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getExceptionReportType_Exception() {
+  @Override
+public EReference getExceptionReportType_Exception() {
     return (EReference)exceptionReportTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -1738,7 +1870,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getExceptionReportType_Lang() {
+  @Override
+public EAttribute getExceptionReportType_Lang() {
     return (EAttribute)exceptionReportTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -1747,7 +1880,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getExceptionReportType_Version() {
+  @Override
+public EAttribute getExceptionReportType_Version() {
     return (EAttribute)exceptionReportTypeEClass.getEStructuralFeatures().get(2);
   }
 
@@ -1756,7 +1890,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getExceptionType() {
+  @Override
+public EClass getExceptionType() {
     return exceptionTypeEClass;
   }
 
@@ -1765,7 +1900,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getExceptionType_ExceptionText() {
+  @Override
+public EAttribute getExceptionType_ExceptionText() {
     return (EAttribute)exceptionTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -1774,7 +1910,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getExceptionType_ExceptionCode() {
+  @Override
+public EAttribute getExceptionType_ExceptionCode() {
     return (EAttribute)exceptionTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -1783,7 +1920,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getExceptionType_Locator() {
+  @Override
+public EAttribute getExceptionType_Locator() {
     return (EAttribute)exceptionTypeEClass.getEStructuralFeatures().get(2);
   }
 
@@ -1792,7 +1930,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getGetCapabilitiesType() {
+  @Override
+public EClass getGetCapabilitiesType() {
     return getCapabilitiesTypeEClass;
   }
 
@@ -1801,7 +1940,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getGetCapabilitiesType_AcceptVersions() {
+  @Override
+public EReference getGetCapabilitiesType_AcceptVersions() {
     return (EReference)getCapabilitiesTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -1810,7 +1950,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getGetCapabilitiesType_Sections() {
+  @Override
+public EReference getGetCapabilitiesType_Sections() {
     return (EReference)getCapabilitiesTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -1819,7 +1960,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getGetCapabilitiesType_AcceptFormats() {
+  @Override
+public EReference getGetCapabilitiesType_AcceptFormats() {
     return (EReference)getCapabilitiesTypeEClass.getEStructuralFeatures().get(2);
   }
 
@@ -1828,7 +1970,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getGetCapabilitiesType_UpdateSequence() {
+  @Override
+public EAttribute getGetCapabilitiesType_UpdateSequence() {
     return (EAttribute)getCapabilitiesTypeEClass.getEStructuralFeatures().get(3);
   }
 
@@ -1837,7 +1980,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getGetCapabilitiesType_BaseUrl() {
+  @Override
+public EAttribute getGetCapabilitiesType_BaseUrl() {
     return (EAttribute)getCapabilitiesTypeEClass.getEStructuralFeatures().get(4);
   }
 
@@ -1846,7 +1990,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getGetCapabilitiesType_Namespace() {
+  @Override
+public EAttribute getGetCapabilitiesType_Namespace() {
     return (EAttribute)getCapabilitiesTypeEClass.getEStructuralFeatures().get(5);
   }
 
@@ -1855,7 +2000,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getGetCapabilitiesType_ExtendedProperties() {
+  @Override
+public EAttribute getGetCapabilitiesType_ExtendedProperties() {
     return (EAttribute)getCapabilitiesTypeEClass.getEStructuralFeatures().get(6);
   }
 
@@ -1864,7 +2010,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getGetResourceByIdType() {
+  @Override
+public EClass getGetResourceByIdType() {
     return getResourceByIdTypeEClass;
   }
 
@@ -1873,7 +2020,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getGetResourceByIdType_ResourceID() {
+  @Override
+public EAttribute getGetResourceByIdType_ResourceID() {
     return (EAttribute)getResourceByIdTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -1882,7 +2030,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getGetResourceByIdType_OutputFormat() {
+  @Override
+public EAttribute getGetResourceByIdType_OutputFormat() {
     return (EAttribute)getResourceByIdTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -1891,7 +2040,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getGetResourceByIdType_Service() {
+  @Override
+public EAttribute getGetResourceByIdType_Service() {
     return (EAttribute)getResourceByIdTypeEClass.getEStructuralFeatures().get(2);
   }
 
@@ -1900,7 +2050,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getGetResourceByIdType_Version() {
+  @Override
+public EAttribute getGetResourceByIdType_Version() {
     return (EAttribute)getResourceByIdTypeEClass.getEStructuralFeatures().get(3);
   }
 
@@ -1909,7 +2060,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getHTTPType() {
+  @Override
+public EClass getHTTPType() {
     return httpTypeEClass;
   }
 
@@ -1918,7 +2070,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getHTTPType_Group() {
+  @Override
+public EAttribute getHTTPType_Group() {
     return (EAttribute)httpTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -1927,7 +2080,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getHTTPType_Get() {
+  @Override
+public EReference getHTTPType_Get() {
     return (EReference)httpTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -1936,7 +2090,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getHTTPType_Post() {
+  @Override
+public EReference getHTTPType_Post() {
     return (EReference)httpTypeEClass.getEStructuralFeatures().get(2);
   }
 
@@ -1945,7 +2100,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getIdentificationType() {
+  @Override
+public EClass getIdentificationType() {
     return identificationTypeEClass;
   }
 
@@ -1954,7 +2110,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getIdentificationType_BoundingBoxGroup() {
+  @Override
+public EAttribute getIdentificationType_BoundingBoxGroup() {
     return (EAttribute)identificationTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -1963,7 +2120,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getIdentificationType_BoundingBox() {
+  @Override
+public EReference getIdentificationType_BoundingBox() {
     return (EReference)identificationTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -1972,7 +2130,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getIdentificationType_OutputFormat() {
+  @Override
+public EAttribute getIdentificationType_OutputFormat() {
     return (EAttribute)identificationTypeEClass.getEStructuralFeatures().get(2);
   }
 
@@ -1981,7 +2140,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getIdentificationType_AvailableCRSGroup() {
+  @Override
+public EAttribute getIdentificationType_AvailableCRSGroup() {
     return (EAttribute)identificationTypeEClass.getEStructuralFeatures().get(3);
   }
 
@@ -1990,7 +2150,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getIdentificationType_AvailableCRS() {
+  @Override
+public EAttribute getIdentificationType_AvailableCRS() {
     return (EAttribute)identificationTypeEClass.getEStructuralFeatures().get(4);
   }
 
@@ -1999,7 +2160,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getKeywordsType() {
+  @Override
+public EClass getKeywordsType() {
     return keywordsTypeEClass;
   }
 
@@ -2008,7 +2170,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getKeywordsType_Keyword() {
+  @Override
+public EReference getKeywordsType_Keyword() {
     return (EReference)keywordsTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -2017,7 +2180,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getKeywordsType_Type() {
+  @Override
+public EReference getKeywordsType_Type() {
     return (EReference)keywordsTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -2026,7 +2190,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getLanguageStringType() {
+  @Override
+public EClass getLanguageStringType() {
     return languageStringTypeEClass;
   }
 
@@ -2035,7 +2200,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getLanguageStringType_Value() {
+  @Override
+public EAttribute getLanguageStringType_Value() {
     return (EAttribute)languageStringTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -2044,7 +2210,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getManifestType() {
+  @Override
+public EClass getManifestType() {
     return manifestTypeEClass;
   }
 
@@ -2053,7 +2220,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getManifestType_ReferenceGroup() {
+  @Override
+public EReference getManifestType_ReferenceGroup() {
     return (EReference)manifestTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -2062,7 +2230,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getMetadataType() {
+  @Override
+public EClass getMetadataType() {
     return metadataTypeEClass;
   }
 
@@ -2071,7 +2240,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getMetadataType_AbstractMetaDataGroup() {
+  @Override
+public EAttribute getMetadataType_AbstractMetaDataGroup() {
     return (EAttribute)metadataTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -2080,7 +2250,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getMetadataType_AbstractMetaData() {
+  @Override
+public EReference getMetadataType_AbstractMetaData() {
     return (EReference)metadataTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -2089,7 +2260,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getMetadataType_About() {
+  @Override
+public EAttribute getMetadataType_About() {
     return (EAttribute)metadataTypeEClass.getEStructuralFeatures().get(2);
   }
 
@@ -2098,7 +2270,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getMetadataType_Title() {
+  @Override
+public EAttribute getMetadataType_Title() {
     return (EAttribute)metadataTypeEClass.getEStructuralFeatures().get(3);
   }
 
@@ -2107,7 +2280,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getNoValuesType() {
+  @Override
+public EClass getNoValuesType() {
     return noValuesTypeEClass;
   }
 
@@ -2116,7 +2290,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getOnlineResourceType() {
+  @Override
+public EClass getOnlineResourceType() {
     return onlineResourceTypeEClass;
   }
 
@@ -2125,7 +2300,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getOnlineResourceType_Href() {
+  @Override
+public EAttribute getOnlineResourceType_Href() {
     return (EAttribute)onlineResourceTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -2134,7 +2310,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getOperationsMetadataType() {
+  @Override
+public EClass getOperationsMetadataType() {
     return operationsMetadataTypeEClass;
   }
 
@@ -2143,7 +2320,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getOperationsMetadataType_Operation() {
+  @Override
+public EReference getOperationsMetadataType_Operation() {
     return (EReference)operationsMetadataTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -2152,7 +2330,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getOperationsMetadataType_Parameter() {
+  @Override
+public EReference getOperationsMetadataType_Parameter() {
     return (EReference)operationsMetadataTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -2161,7 +2340,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getOperationsMetadataType_Constraint() {
+  @Override
+public EReference getOperationsMetadataType_Constraint() {
     return (EReference)operationsMetadataTypeEClass.getEStructuralFeatures().get(2);
   }
 
@@ -2170,7 +2350,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getOperationsMetadataType_ExtendedCapabilities() {
+  @Override
+public EAttribute getOperationsMetadataType_ExtendedCapabilities() {
     return (EAttribute)operationsMetadataTypeEClass.getEStructuralFeatures().get(3);
   }
 
@@ -2179,7 +2360,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getOperationType() {
+  @Override
+public EClass getOperationType() {
     return operationTypeEClass;
   }
 
@@ -2188,7 +2370,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getOperationType_DCP() {
+  @Override
+public EReference getOperationType_DCP() {
     return (EReference)operationTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -2197,7 +2380,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getOperationType_Parameter() {
+  @Override
+public EReference getOperationType_Parameter() {
     return (EReference)operationTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -2206,7 +2390,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getOperationType_Constraint() {
+  @Override
+public EReference getOperationType_Constraint() {
     return (EReference)operationTypeEClass.getEStructuralFeatures().get(2);
   }
 
@@ -2215,7 +2400,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getOperationType_Metadata() {
+  @Override
+public EReference getOperationType_Metadata() {
     return (EReference)operationTypeEClass.getEStructuralFeatures().get(3);
   }
 
@@ -2224,7 +2410,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getOperationType_Name() {
+  @Override
+public EAttribute getOperationType_Name() {
     return (EAttribute)operationTypeEClass.getEStructuralFeatures().get(4);
   }
 
@@ -2233,7 +2420,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getRangeType() {
+  @Override
+public EClass getRangeType() {
     return rangeTypeEClass;
   }
 
@@ -2242,7 +2430,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getRangeType_MinimumValue() {
+  @Override
+public EReference getRangeType_MinimumValue() {
     return (EReference)rangeTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -2251,7 +2440,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getRangeType_MaximumValue() {
+  @Override
+public EReference getRangeType_MaximumValue() {
     return (EReference)rangeTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -2260,7 +2450,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getRangeType_Spacing() {
+  @Override
+public EReference getRangeType_Spacing() {
     return (EReference)rangeTypeEClass.getEStructuralFeatures().get(2);
   }
 
@@ -2269,7 +2460,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getRangeType_RangeClosure() {
+  @Override
+public EAttribute getRangeType_RangeClosure() {
     return (EAttribute)rangeTypeEClass.getEStructuralFeatures().get(3);
   }
 
@@ -2278,7 +2470,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getReferenceGroupType() {
+  @Override
+public EClass getReferenceGroupType() {
     return referenceGroupTypeEClass;
   }
 
@@ -2287,7 +2480,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getReferenceGroupType_AbstractReferenceBaseGroup() {
+  @Override
+public EAttribute getReferenceGroupType_AbstractReferenceBaseGroup() {
     return (EAttribute)referenceGroupTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -2296,7 +2490,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getReferenceGroupType_AbstractReferenceBase() {
+  @Override
+public EReference getReferenceGroupType_AbstractReferenceBase() {
     return (EReference)referenceGroupTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -2305,7 +2500,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getReferenceType() {
+  @Override
+public EClass getReferenceType() {
     return referenceTypeEClass;
   }
 
@@ -2314,7 +2510,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getReferenceType_Identifier() {
+  @Override
+public EReference getReferenceType_Identifier() {
     return (EReference)referenceTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -2323,7 +2520,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getReferenceType_Abstract() {
+  @Override
+public EReference getReferenceType_Abstract() {
     return (EReference)referenceTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -2332,7 +2530,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getReferenceType_Format() {
+  @Override
+public EAttribute getReferenceType_Format() {
     return (EAttribute)referenceTypeEClass.getEStructuralFeatures().get(2);
   }
 
@@ -2341,7 +2540,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getReferenceType_Metadata() {
+  @Override
+public EReference getReferenceType_Metadata() {
     return (EReference)referenceTypeEClass.getEStructuralFeatures().get(3);
   }
 
@@ -2350,7 +2550,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getRequestMethodType() {
+  @Override
+public EClass getRequestMethodType() {
     return requestMethodTypeEClass;
   }
 
@@ -2359,7 +2560,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getRequestMethodType_Constraint() {
+  @Override
+public EReference getRequestMethodType_Constraint() {
     return (EReference)requestMethodTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -2368,7 +2570,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getResponsiblePartySubsetType() {
+  @Override
+public EClass getResponsiblePartySubsetType() {
     return responsiblePartySubsetTypeEClass;
   }
 
@@ -2377,7 +2580,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getResponsiblePartySubsetType_IndividualName() {
+  @Override
+public EAttribute getResponsiblePartySubsetType_IndividualName() {
     return (EAttribute)responsiblePartySubsetTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -2386,7 +2590,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getResponsiblePartySubsetType_PositionName() {
+  @Override
+public EAttribute getResponsiblePartySubsetType_PositionName() {
     return (EAttribute)responsiblePartySubsetTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -2395,7 +2600,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getResponsiblePartySubsetType_ContactInfo() {
+  @Override
+public EReference getResponsiblePartySubsetType_ContactInfo() {
     return (EReference)responsiblePartySubsetTypeEClass.getEStructuralFeatures().get(2);
   }
 
@@ -2404,7 +2610,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getResponsiblePartySubsetType_Role() {
+  @Override
+public EReference getResponsiblePartySubsetType_Role() {
     return (EReference)responsiblePartySubsetTypeEClass.getEStructuralFeatures().get(3);
   }
 
@@ -2413,7 +2620,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getResponsiblePartyType() {
+  @Override
+public EClass getResponsiblePartyType() {
     return responsiblePartyTypeEClass;
   }
 
@@ -2422,7 +2630,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getResponsiblePartyType_IndividualName() {
+  @Override
+public EAttribute getResponsiblePartyType_IndividualName() {
     return (EAttribute)responsiblePartyTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -2431,7 +2640,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getResponsiblePartyType_OrganisationName() {
+  @Override
+public EAttribute getResponsiblePartyType_OrganisationName() {
     return (EAttribute)responsiblePartyTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -2440,7 +2650,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getResponsiblePartyType_PositionName() {
+  @Override
+public EAttribute getResponsiblePartyType_PositionName() {
     return (EAttribute)responsiblePartyTypeEClass.getEStructuralFeatures().get(2);
   }
 
@@ -2449,7 +2660,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getResponsiblePartyType_ContactInfo() {
+  @Override
+public EReference getResponsiblePartyType_ContactInfo() {
     return (EReference)responsiblePartyTypeEClass.getEStructuralFeatures().get(3);
   }
 
@@ -2458,7 +2670,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getResponsiblePartyType_Role() {
+  @Override
+public EReference getResponsiblePartyType_Role() {
     return (EReference)responsiblePartyTypeEClass.getEStructuralFeatures().get(4);
   }
 
@@ -2467,7 +2680,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getSectionsType() {
+  @Override
+public EClass getSectionsType() {
     return sectionsTypeEClass;
   }
 
@@ -2476,7 +2690,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getSectionsType_Section() {
+  @Override
+public EAttribute getSectionsType_Section() {
     return (EAttribute)sectionsTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -2485,7 +2700,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getServiceIdentificationType() {
+  @Override
+public EClass getServiceIdentificationType() {
     return serviceIdentificationTypeEClass;
   }
 
@@ -2494,7 +2710,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getServiceIdentificationType_ServiceType() {
+  @Override
+public EReference getServiceIdentificationType_ServiceType() {
     return (EReference)serviceIdentificationTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -2503,7 +2720,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getServiceIdentificationType_ServiceTypeVersion() {
+  @Override
+public EAttribute getServiceIdentificationType_ServiceTypeVersion() {
     return (EAttribute)serviceIdentificationTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -2512,7 +2730,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getServiceIdentificationType_Profile() {
+  @Override
+public EAttribute getServiceIdentificationType_Profile() {
     return (EAttribute)serviceIdentificationTypeEClass.getEStructuralFeatures().get(2);
   }
 
@@ -2521,7 +2740,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getServiceIdentificationType_Fees() {
+  @Override
+public EAttribute getServiceIdentificationType_Fees() {
     return (EAttribute)serviceIdentificationTypeEClass.getEStructuralFeatures().get(3);
   }
 
@@ -2530,7 +2750,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getServiceIdentificationType_AccessConstraints() {
+  @Override
+public EAttribute getServiceIdentificationType_AccessConstraints() {
     return (EAttribute)serviceIdentificationTypeEClass.getEStructuralFeatures().get(4);
   }
 
@@ -2539,7 +2760,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getServiceProviderType() {
+  @Override
+public EClass getServiceProviderType() {
     return serviceProviderTypeEClass;
   }
 
@@ -2548,7 +2770,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getServiceProviderType_ProviderName() {
+  @Override
+public EAttribute getServiceProviderType_ProviderName() {
     return (EAttribute)serviceProviderTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -2557,7 +2780,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getServiceProviderType_ProviderSite() {
+  @Override
+public EReference getServiceProviderType_ProviderSite() {
     return (EReference)serviceProviderTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -2566,7 +2790,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getServiceProviderType_ServiceContact() {
+  @Override
+public EReference getServiceProviderType_ServiceContact() {
     return (EReference)serviceProviderTypeEClass.getEStructuralFeatures().get(2);
   }
 
@@ -2575,7 +2800,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getServiceReferenceType() {
+  @Override
+public EClass getServiceReferenceType() {
     return serviceReferenceTypeEClass;
   }
 
@@ -2584,7 +2810,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getServiceReferenceType_RequestMessage() {
+  @Override
+public EReference getServiceReferenceType_RequestMessage() {
     return (EReference)serviceReferenceTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -2593,7 +2820,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getServiceReferenceType_RequestMessageReference() {
+  @Override
+public EAttribute getServiceReferenceType_RequestMessageReference() {
     return (EAttribute)serviceReferenceTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -2602,7 +2830,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getTelephoneType() {
+  @Override
+public EClass getTelephoneType() {
     return telephoneTypeEClass;
   }
 
@@ -2611,7 +2840,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTelephoneType_Voice() {
+  @Override
+public EAttribute getTelephoneType_Voice() {
     return (EAttribute)telephoneTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -2620,7 +2850,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTelephoneType_Facsimile() {
+  @Override
+public EAttribute getTelephoneType_Facsimile() {
     return (EAttribute)telephoneTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -2629,7 +2860,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getUnNamedDomainType() {
+  @Override
+public EClass getUnNamedDomainType() {
     return unNamedDomainTypeEClass;
   }
 
@@ -2638,7 +2870,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getUnNamedDomainType_AllowedValues() {
+  @Override
+public EReference getUnNamedDomainType_AllowedValues() {
     return (EReference)unNamedDomainTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -2647,7 +2880,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getUnNamedDomainType_AnyValue() {
+  @Override
+public EReference getUnNamedDomainType_AnyValue() {
     return (EReference)unNamedDomainTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -2656,7 +2890,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getUnNamedDomainType_NoValues() {
+  @Override
+public EReference getUnNamedDomainType_NoValues() {
     return (EReference)unNamedDomainTypeEClass.getEStructuralFeatures().get(2);
   }
 
@@ -2665,7 +2900,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getUnNamedDomainType_ValuesReference() {
+  @Override
+public EReference getUnNamedDomainType_ValuesReference() {
     return (EReference)unNamedDomainTypeEClass.getEStructuralFeatures().get(3);
   }
 
@@ -2674,7 +2910,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getUnNamedDomainType_DefaultValue() {
+  @Override
+public EReference getUnNamedDomainType_DefaultValue() {
     return (EReference)unNamedDomainTypeEClass.getEStructuralFeatures().get(4);
   }
 
@@ -2683,7 +2920,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getUnNamedDomainType_Meaning() {
+  @Override
+public EReference getUnNamedDomainType_Meaning() {
     return (EReference)unNamedDomainTypeEClass.getEStructuralFeatures().get(5);
   }
 
@@ -2692,7 +2930,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getUnNamedDomainType_DataType() {
+  @Override
+public EReference getUnNamedDomainType_DataType() {
     return (EReference)unNamedDomainTypeEClass.getEStructuralFeatures().get(6);
   }
 
@@ -2701,7 +2940,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getUnNamedDomainType_UOM() {
+  @Override
+public EReference getUnNamedDomainType_UOM() {
     return (EReference)unNamedDomainTypeEClass.getEStructuralFeatures().get(7);
   }
 
@@ -2710,7 +2950,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getUnNamedDomainType_ReferenceSystem() {
+  @Override
+public EReference getUnNamedDomainType_ReferenceSystem() {
     return (EReference)unNamedDomainTypeEClass.getEStructuralFeatures().get(8);
   }
 
@@ -2719,7 +2960,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getUnNamedDomainType_Metadata() {
+  @Override
+public EReference getUnNamedDomainType_Metadata() {
     return (EReference)unNamedDomainTypeEClass.getEStructuralFeatures().get(9);
   }
 
@@ -2728,7 +2970,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getValuesReferenceType() {
+  @Override
+public EClass getValuesReferenceType() {
     return valuesReferenceTypeEClass;
   }
 
@@ -2737,7 +2980,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getValuesReferenceType_Value() {
+  @Override
+public EAttribute getValuesReferenceType_Value() {
     return (EAttribute)valuesReferenceTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -2746,7 +2990,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getValuesReferenceType_Reference() {
+  @Override
+public EAttribute getValuesReferenceType_Reference() {
     return (EAttribute)valuesReferenceTypeEClass.getEStructuralFeatures().get(1);
   }
 
@@ -2755,7 +3000,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getValueType() {
+  @Override
+public EClass getValueType() {
     return valueTypeEClass;
   }
 
@@ -2764,7 +3010,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getValueType_Value() {
+  @Override
+public EAttribute getValueType_Value() {
     return (EAttribute)valueTypeEClass.getEStructuralFeatures().get(0);
   }
 
@@ -2773,7 +3020,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getWGS84BoundingBoxType() {
+  @Override
+public EClass getWGS84BoundingBoxType() {
     return wgs84BoundingBoxTypeEClass;
   }
 
@@ -2782,7 +3030,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EEnum getRangeClosureType() {
+  @Override
+public EEnum getRangeClosureType() {
     return rangeClosureTypeEEnum;
   }
 
@@ -2791,7 +3040,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EDataType getMimeType() {
+  @Override
+public EDataType getMimeType() {
     return mimeTypeEDataType;
   }
 
@@ -2800,7 +3050,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EDataType getPositionType() {
+  @Override
+public EDataType getPositionType() {
     return positionTypeEDataType;
   }
 
@@ -2809,7 +3060,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EDataType getPositionType2D() {
+  @Override
+public EDataType getPositionType2D() {
     return positionType2DEDataType;
   }
 
@@ -2818,7 +3070,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EDataType getRangeClosureTypeObject() {
+  @Override
+public EDataType getRangeClosureTypeObject() {
     return rangeClosureTypeObjectEDataType;
   }
 
@@ -2827,7 +3080,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EDataType getServiceType() {
+  @Override
+public EDataType getServiceType() {
     return serviceTypeEDataType;
   }
 
@@ -2836,7 +3090,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EDataType getUpdateSequenceType() {
+  @Override
+public EDataType getUpdateSequenceType() {
     return updateSequenceTypeEDataType;
   }
 
@@ -2845,7 +3100,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EDataType getVersionType() {
+  @Override
+public EDataType getVersionType() {
     return versionTypeEDataType;
   }
 
@@ -2854,7 +3110,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EDataType getVersionType1() {
+  @Override
+public EDataType getVersionType1() {
     return versionType1EDataType;
   }
 
@@ -2863,7 +3120,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EDataType getMap() {
+  @Override
+public EDataType getMap() {
     return mapEDataType;
   }
 
@@ -2872,7 +3130,8 @@ public class Ows11PackageImpl extends EPackageImpl implements Ows11Package {
    * <!-- end-user-doc -->
    * @generated
    */
-  public Ows11Factory getOws11Factory() {
+  @Override
+public Ows11Factory getOws11Factory() {
     return (Ows11Factory)getEFactoryInstance();
   }
 

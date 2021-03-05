@@ -37,6 +37,7 @@ public abstract class AbstractDescriptionBaseTypeImpl extends AbstractGMLTypeImp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.ABSTRACT_DESCRIPTION_BASE_TYPE;
 	}

@@ -101,6 +101,7 @@ public class SupportedInterpolationsTypeImpl extends EObjectImpl implements Supp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.SUPPORTED_INTERPOLATIONS_TYPE;
 	}
@@ -110,6 +111,7 @@ public class SupportedInterpolationsTypeImpl extends EObjectImpl implements Supp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public InterpolationMethodType getInterpolationMethod() {
 		return interpolationMethod;
 	}
@@ -119,7 +121,8 @@ public class SupportedInterpolationsTypeImpl extends EObjectImpl implements Supp
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setInterpolationMethod(InterpolationMethodType newInterpolationMethod) {
+	@Override
+    public void setInterpolationMethod(InterpolationMethodType newInterpolationMethod) {
 		InterpolationMethodType oldInterpolationMethod = interpolationMethod;
 		interpolationMethod = newInterpolationMethod == null ? INTERPOLATION_METHOD_EDEFAULT : newInterpolationMethod;
 		if (eNotificationRequired())
@@ -131,6 +134,7 @@ public class SupportedInterpolationsTypeImpl extends EObjectImpl implements Supp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public InterpolationMethodType getDefault() {
 		return default_;
 	}
@@ -140,6 +144,7 @@ public class SupportedInterpolationsTypeImpl extends EObjectImpl implements Supp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setDefault(InterpolationMethodType newDefault) {
 		InterpolationMethodType oldDefault = default_;
 		default_ = newDefault == null ? DEFAULT_EDEFAULT : newDefault;
@@ -154,6 +159,7 @@ public class SupportedInterpolationsTypeImpl extends EObjectImpl implements Supp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void unsetDefault() {
 		InterpolationMethodType oldDefault = default_;
 		boolean oldDefaultESet = defaultESet;
@@ -168,6 +174,7 @@ public class SupportedInterpolationsTypeImpl extends EObjectImpl implements Supp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean isSetDefault() {
 		return defaultESet;
 	}
@@ -177,6 +184,7 @@ public class SupportedInterpolationsTypeImpl extends EObjectImpl implements Supp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.SUPPORTED_INTERPOLATIONS_TYPE__INTERPOLATION_METHOD:
@@ -192,6 +200,7 @@ public class SupportedInterpolationsTypeImpl extends EObjectImpl implements Supp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.SUPPORTED_INTERPOLATIONS_TYPE__INTERPOLATION_METHOD:
@@ -209,6 +218,7 @@ public class SupportedInterpolationsTypeImpl extends EObjectImpl implements Supp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.SUPPORTED_INTERPOLATIONS_TYPE__INTERPOLATION_METHOD:
@@ -226,6 +236,7 @@ public class SupportedInterpolationsTypeImpl extends EObjectImpl implements Supp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.SUPPORTED_INTERPOLATIONS_TYPE__INTERPOLATION_METHOD:
@@ -241,6 +252,7 @@ public class SupportedInterpolationsTypeImpl extends EObjectImpl implements Supp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

@@ -102,6 +102,7 @@ public class GridTypeImpl extends AbstractGeometryTypeImpl implements GridType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GridLimitsType getLimits() {
         return limits;
     }
@@ -126,6 +127,7 @@ public class GridTypeImpl extends AbstractGeometryTypeImpl implements GridType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLimits(GridLimitsType newLimits) {
         if (newLimits != limits) {
             NotificationChain msgs = null;
@@ -145,6 +147,7 @@ public class GridTypeImpl extends AbstractGeometryTypeImpl implements GridType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<String> getAxisName() {
         if (axisName == null) {
             axisName = new EDataTypeEList<>(String.class, this, Gml311Package.GRID_TYPE__AXIS_NAME);
@@ -157,6 +160,7 @@ public class GridTypeImpl extends AbstractGeometryTypeImpl implements GridType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getDimension() {
         return dimension;
     }
@@ -166,6 +170,7 @@ public class GridTypeImpl extends AbstractGeometryTypeImpl implements GridType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDimension(BigInteger newDimension) {
         BigInteger oldDimension = dimension;
         dimension = newDimension;

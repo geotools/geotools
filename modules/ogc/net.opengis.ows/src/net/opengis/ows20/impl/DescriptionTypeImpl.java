@@ -91,6 +91,7 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<LanguageStringType> getTitle() {
     if (title == null) {
       title = new EObjectContainmentEList<>(LanguageStringType.class, this, Ows20Package.DESCRIPTION_TYPE__TITLE);
@@ -103,6 +104,7 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<LanguageStringType> getAbstract() {
     if (abstract_ == null) {
       abstract_ = new EObjectContainmentEList<>(LanguageStringType.class, this, Ows20Package.DESCRIPTION_TYPE__ABSTRACT);
@@ -115,6 +117,7 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<KeywordsType> getKeywords() {
     if (keywords == null) {
       keywords = new EObjectContainmentEList<>(KeywordsType.class, this, Ows20Package.DESCRIPTION_TYPE__KEYWORDS);

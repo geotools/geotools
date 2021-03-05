@@ -62,6 +62,7 @@ public class MultiCurveDomainTypeImpl extends DomainSetTypeImpl implements Multi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiCurveType getMultiCurve() {
         return multiCurve;
     }
@@ -86,6 +87,7 @@ public class MultiCurveDomainTypeImpl extends DomainSetTypeImpl implements Multi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiCurve(MultiCurveType newMultiCurve) {
         if (newMultiCurve != multiCurve) {
             NotificationChain msgs = null;

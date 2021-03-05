@@ -93,7 +93,8 @@ public class Wcs11Validator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected EPackage getEPackage() {
+	@Override
+    protected EPackage getEPackage() {
 	  return Wcs11Package.eINSTANCE;
 	}
 
@@ -103,7 +104,8 @@ public class Wcs11Validator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected boolean validate(int classifierID, Object value, DiagnosticChain diagnostics, Map context) {
+	@Override
+    protected boolean validate(int classifierID, Object value, DiagnosticChain diagnostics, Map context) {
 		switch (classifierID) {
 			case Wcs11Package.AVAILABLE_KEYS_TYPE:
 				return validateAvailableKeysType((AvailableKeysType)value, diagnostics, context);

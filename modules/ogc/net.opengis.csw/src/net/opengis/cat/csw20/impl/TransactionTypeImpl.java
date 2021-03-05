@@ -132,6 +132,7 @@ public class TransactionTypeImpl extends RequestBaseTypeImpl implements Transact
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getGroup() {
         if (group == null) {
             group = new BasicFeatureMap(this, Csw20Package.TRANSACTION_TYPE__GROUP);
@@ -144,6 +145,7 @@ public class TransactionTypeImpl extends RequestBaseTypeImpl implements Transact
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<InsertType> getInsert() {
         return getGroup().list(Csw20Package.Literals.TRANSACTION_TYPE__INSERT);
     }
@@ -153,6 +155,7 @@ public class TransactionTypeImpl extends RequestBaseTypeImpl implements Transact
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<UpdateType> getUpdate() {
         return getGroup().list(Csw20Package.Literals.TRANSACTION_TYPE__UPDATE);
     }
@@ -162,6 +165,7 @@ public class TransactionTypeImpl extends RequestBaseTypeImpl implements Transact
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<DeleteType> getDelete() {
         return getGroup().list(Csw20Package.Literals.TRANSACTION_TYPE__DELETE);
     }
@@ -171,6 +175,7 @@ public class TransactionTypeImpl extends RequestBaseTypeImpl implements Transact
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getRequestId() {
         return requestId;
     }
@@ -180,6 +185,7 @@ public class TransactionTypeImpl extends RequestBaseTypeImpl implements Transact
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRequestId(String newRequestId) {
         String oldRequestId = requestId;
         requestId = newRequestId;
@@ -192,6 +198,7 @@ public class TransactionTypeImpl extends RequestBaseTypeImpl implements Transact
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isVerboseResponse() {
         return verboseResponse;
     }
@@ -201,6 +208,7 @@ public class TransactionTypeImpl extends RequestBaseTypeImpl implements Transact
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setVerboseResponse(boolean newVerboseResponse) {
         boolean oldVerboseResponse = verboseResponse;
         verboseResponse = newVerboseResponse;
@@ -215,6 +223,7 @@ public class TransactionTypeImpl extends RequestBaseTypeImpl implements Transact
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetVerboseResponse() {
         boolean oldVerboseResponse = verboseResponse;
         boolean oldVerboseResponseESet = verboseResponseESet;
@@ -229,6 +238,7 @@ public class TransactionTypeImpl extends RequestBaseTypeImpl implements Transact
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetVerboseResponse() {
         return verboseResponseESet;
     }

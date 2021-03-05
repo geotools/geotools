@@ -37,6 +37,7 @@ public class InterpolationMethodBaseTypeImpl extends CodeTypeImpl implements Int
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EClass eStaticClass() {
         return Wcs111Package.Literals.INTERPOLATION_METHOD_BASE_TYPE;
     }

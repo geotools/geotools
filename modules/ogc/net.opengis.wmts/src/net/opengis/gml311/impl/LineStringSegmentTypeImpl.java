@@ -129,6 +129,7 @@ public class LineStringSegmentTypeImpl extends AbstractCurveSegmentTypeImpl impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getGroup() {
         if (group == null) {
             group = new BasicFeatureMap(this, Gml311Package.LINE_STRING_SEGMENT_TYPE__GROUP);
@@ -141,6 +142,7 @@ public class LineStringSegmentTypeImpl extends AbstractCurveSegmentTypeImpl impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<DirectPositionType> getPos() {
         return getGroup().list(Gml311Package.eINSTANCE.getLineStringSegmentType_Pos());
     }
@@ -150,6 +152,7 @@ public class LineStringSegmentTypeImpl extends AbstractCurveSegmentTypeImpl impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<PointPropertyType> getPointProperty() {
         return getGroup().list(Gml311Package.eINSTANCE.getLineStringSegmentType_PointProperty());
     }
@@ -159,6 +162,7 @@ public class LineStringSegmentTypeImpl extends AbstractCurveSegmentTypeImpl impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<PointPropertyType> getPointRep() {
         return getGroup().list(Gml311Package.eINSTANCE.getLineStringSegmentType_PointRep());
     }
@@ -168,6 +172,7 @@ public class LineStringSegmentTypeImpl extends AbstractCurveSegmentTypeImpl impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectPositionListType getPosList() {
         return posList;
     }
@@ -192,6 +197,7 @@ public class LineStringSegmentTypeImpl extends AbstractCurveSegmentTypeImpl impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPosList(DirectPositionListType newPosList) {
         if (newPosList != posList) {
             NotificationChain msgs = null;
@@ -211,6 +217,7 @@ public class LineStringSegmentTypeImpl extends AbstractCurveSegmentTypeImpl impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinatesType getCoordinates() {
         return coordinates;
     }
@@ -235,6 +242,7 @@ public class LineStringSegmentTypeImpl extends AbstractCurveSegmentTypeImpl impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCoordinates(CoordinatesType newCoordinates) {
         if (newCoordinates != coordinates) {
             NotificationChain msgs = null;
@@ -254,6 +262,7 @@ public class LineStringSegmentTypeImpl extends AbstractCurveSegmentTypeImpl impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CurveInterpolationType getInterpolation() {
         return interpolation;
     }
@@ -263,6 +272,7 @@ public class LineStringSegmentTypeImpl extends AbstractCurveSegmentTypeImpl impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setInterpolation(CurveInterpolationType newInterpolation) {
         CurveInterpolationType oldInterpolation = interpolation;
         interpolation = newInterpolation == null ? INTERPOLATION_EDEFAULT : newInterpolation;
@@ -277,6 +287,7 @@ public class LineStringSegmentTypeImpl extends AbstractCurveSegmentTypeImpl impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetInterpolation() {
         CurveInterpolationType oldInterpolation = interpolation;
         boolean oldInterpolationESet = interpolationESet;
@@ -291,6 +302,7 @@ public class LineStringSegmentTypeImpl extends AbstractCurveSegmentTypeImpl impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetInterpolation() {
         return interpolationESet;
     }

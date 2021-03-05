@@ -86,7 +86,8 @@ public class ServiceProviderTypeImpl extends EObjectImpl implements ServiceProvi
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.SERVICE_PROVIDER_TYPE;
   }
 
@@ -95,7 +96,8 @@ public class ServiceProviderTypeImpl extends EObjectImpl implements ServiceProvi
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getProviderName() {
+  @Override
+public String getProviderName() {
     return providerName;
   }
 
@@ -104,7 +106,8 @@ public class ServiceProviderTypeImpl extends EObjectImpl implements ServiceProvi
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setProviderName(String newProviderName) {
+  @Override
+public void setProviderName(String newProviderName) {
     String oldProviderName = providerName;
     providerName = newProviderName;
     if (eNotificationRequired())
@@ -116,7 +119,8 @@ public class ServiceProviderTypeImpl extends EObjectImpl implements ServiceProvi
    * <!-- end-user-doc -->
    * @generated
    */
-  public OnlineResourceType getProviderSite() {
+  @Override
+public OnlineResourceType getProviderSite() {
     return providerSite;
   }
 
@@ -140,7 +144,8 @@ public class ServiceProviderTypeImpl extends EObjectImpl implements ServiceProvi
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setProviderSite(OnlineResourceType newProviderSite) {
+  @Override
+public void setProviderSite(OnlineResourceType newProviderSite) {
     if (newProviderSite != providerSite) {
       NotificationChain msgs = null;
       if (providerSite != null)
@@ -159,7 +164,8 @@ public class ServiceProviderTypeImpl extends EObjectImpl implements ServiceProvi
    * <!-- end-user-doc -->
    * @generated
    */
-  public ResponsiblePartySubsetType getServiceContact() {
+  @Override
+public ResponsiblePartySubsetType getServiceContact() {
     return serviceContact;
   }
 
@@ -183,7 +189,8 @@ public class ServiceProviderTypeImpl extends EObjectImpl implements ServiceProvi
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setServiceContact(ResponsiblePartySubsetType newServiceContact) {
+  @Override
+public void setServiceContact(ResponsiblePartySubsetType newServiceContact) {
     if (newServiceContact != serviceContact) {
       NotificationChain msgs = null;
       if (serviceContact != null)
@@ -202,7 +209,8 @@ public class ServiceProviderTypeImpl extends EObjectImpl implements ServiceProvi
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+  @Override
+public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Ows11Package.SERVICE_PROVIDER_TYPE__PROVIDER_SITE:
         return basicSetProviderSite(null, msgs);
@@ -217,7 +225,8 @@ public class ServiceProviderTypeImpl extends EObjectImpl implements ServiceProvi
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.SERVICE_PROVIDER_TYPE__PROVIDER_NAME:
         return getProviderName();
@@ -234,7 +243,8 @@ public class ServiceProviderTypeImpl extends EObjectImpl implements ServiceProvi
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.SERVICE_PROVIDER_TYPE__PROVIDER_NAME:
         setProviderName((String)newValue);
@@ -254,7 +264,8 @@ public class ServiceProviderTypeImpl extends EObjectImpl implements ServiceProvi
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.SERVICE_PROVIDER_TYPE__PROVIDER_NAME:
         setProviderName(PROVIDER_NAME_EDEFAULT);
@@ -274,7 +285,8 @@ public class ServiceProviderTypeImpl extends EObjectImpl implements ServiceProvi
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.SERVICE_PROVIDER_TYPE__PROVIDER_NAME:
         return PROVIDER_NAME_EDEFAULT == null ? providerName != null : !PROVIDER_NAME_EDEFAULT.equals(providerName);
@@ -291,7 +303,8 @@ public class ServiceProviderTypeImpl extends EObjectImpl implements ServiceProvi
    * <!-- end-user-doc -->
    * @generated
    */
-  public String toString() {
+  @Override
+public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

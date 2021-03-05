@@ -81,6 +81,7 @@ public abstract class AbstractFeatureCollectionTypeImpl extends AbstractFeatureT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<FeaturePropertyType> getFeatureMember() {
         if (featureMember == null) {
             featureMember = new EObjectContainmentEList<>(FeaturePropertyType.class, this, Gml311Package.ABSTRACT_FEATURE_COLLECTION_TYPE__FEATURE_MEMBER);
@@ -93,6 +94,7 @@ public abstract class AbstractFeatureCollectionTypeImpl extends AbstractFeatureT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureArrayPropertyType getFeatureMembers() {
         return featureMembers;
     }
@@ -117,6 +119,7 @@ public abstract class AbstractFeatureCollectionTypeImpl extends AbstractFeatureT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFeatureMembers(FeatureArrayPropertyType newFeatureMembers) {
         if (newFeatureMembers != featureMembers) {
             NotificationChain msgs = null;

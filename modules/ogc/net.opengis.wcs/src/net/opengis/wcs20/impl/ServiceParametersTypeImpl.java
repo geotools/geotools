@@ -119,6 +119,7 @@ public class ServiceParametersTypeImpl extends EObjectImpl implements ServicePar
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public QName getCoverageSubtype() {
 		return coverageSubtype;
 	}
@@ -128,6 +129,7 @@ public class ServiceParametersTypeImpl extends EObjectImpl implements ServicePar
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setCoverageSubtype(QName newCoverageSubtype) {
 		QName oldCoverageSubtype = coverageSubtype;
 		coverageSubtype = newCoverageSubtype;
@@ -140,6 +142,7 @@ public class ServiceParametersTypeImpl extends EObjectImpl implements ServicePar
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public CoverageSubtypeParentType getCoverageSubtypeParent() {
 		return coverageSubtypeParent;
 	}
@@ -164,6 +167,7 @@ public class ServiceParametersTypeImpl extends EObjectImpl implements ServicePar
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setCoverageSubtypeParent(CoverageSubtypeParentType newCoverageSubtypeParent) {
 		if (newCoverageSubtypeParent != coverageSubtypeParent) {
 			NotificationChain msgs = null;
@@ -183,6 +187,7 @@ public class ServiceParametersTypeImpl extends EObjectImpl implements ServicePar
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getNativeFormat() {
 		return nativeFormat;
 	}
@@ -192,6 +197,7 @@ public class ServiceParametersTypeImpl extends EObjectImpl implements ServicePar
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setNativeFormat(String newNativeFormat) {
 		String oldNativeFormat = nativeFormat;
 		nativeFormat = newNativeFormat;
@@ -204,6 +210,7 @@ public class ServiceParametersTypeImpl extends EObjectImpl implements ServicePar
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ExtensionType getExtension() {
 		return extension;
 	}
@@ -228,6 +235,7 @@ public class ServiceParametersTypeImpl extends EObjectImpl implements ServicePar
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setExtension(ExtensionType newExtension) {
 		if (newExtension != extension) {
 			NotificationChain msgs = null;

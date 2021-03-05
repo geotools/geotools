@@ -102,6 +102,7 @@ public abstract class AbstractCoverageTypeImpl extends AbstractFeatureTypeImpl i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getDomainSetGroup() {
         if (domainSetGroup == null) {
             domainSetGroup = new BasicFeatureMap(this, Gml311Package.ABSTRACT_COVERAGE_TYPE__DOMAIN_SET_GROUP);
@@ -114,6 +115,7 @@ public abstract class AbstractCoverageTypeImpl extends AbstractFeatureTypeImpl i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DomainSetType getDomainSet() {
         return (DomainSetType)getDomainSetGroup().get(Gml311Package.eINSTANCE.getAbstractCoverageType_DomainSet(), true);
     }
@@ -132,6 +134,7 @@ public abstract class AbstractCoverageTypeImpl extends AbstractFeatureTypeImpl i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDomainSet(DomainSetType newDomainSet) {
         ((FeatureMap.Internal)getDomainSetGroup()).set(Gml311Package.eINSTANCE.getAbstractCoverageType_DomainSet(), newDomainSet);
     }
@@ -141,6 +144,7 @@ public abstract class AbstractCoverageTypeImpl extends AbstractFeatureTypeImpl i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RangeSetType getRangeSet() {
         return rangeSet;
     }
@@ -165,6 +169,7 @@ public abstract class AbstractCoverageTypeImpl extends AbstractFeatureTypeImpl i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRangeSet(RangeSetType newRangeSet) {
         if (newRangeSet != rangeSet) {
             NotificationChain msgs = null;
@@ -184,6 +189,7 @@ public abstract class AbstractCoverageTypeImpl extends AbstractFeatureTypeImpl i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getDimension() {
         return dimension;
     }
@@ -193,6 +199,7 @@ public abstract class AbstractCoverageTypeImpl extends AbstractFeatureTypeImpl i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDimension(BigInteger newDimension) {
         BigInteger oldDimension = dimension;
         dimension = newDimension;

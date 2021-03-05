@@ -379,7 +379,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 		EValidator.Registry.INSTANCE.put
 			(theGmlPackage, 
 			 new EValidator.Descriptor() {
-				 public EValidator getEValidator() {
+				 @Override
+                public EValidator getEValidator() {
 					 return GmlValidator.INSTANCE;
 				 }
 			 });
@@ -398,7 +399,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getAbstractGeometricPrimitiveType() {
+	@Override
+    public EClass getAbstractGeometricPrimitiveType() {
 		return abstractGeometricPrimitiveTypeEClass;
 	}
 
@@ -407,7 +409,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getAbstractGeometryBaseType() {
+	@Override
+    public EClass getAbstractGeometryBaseType() {
 		return abstractGeometryBaseTypeEClass;
 	}
 
@@ -416,7 +419,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getAbstractGeometryType() {
+	@Override
+    public EClass getAbstractGeometryType() {
 		return abstractGeometryTypeEClass;
 	}
 
@@ -425,7 +429,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getAbstractGeometryType_SrsName() {
+	@Override
+    public EAttribute getAbstractGeometryType_SrsName() {
 		return (EAttribute)abstractGeometryTypeEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -434,7 +439,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getAbstractGMLType() {
+	@Override
+    public EClass getAbstractGMLType() {
 		return abstractGMLTypeEClass;
 	}
 
@@ -443,7 +449,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getAbstractGMLType_MetaDataProperty() {
+	@Override
+    public EReference getAbstractGMLType_MetaDataProperty() {
 		return (EReference)abstractGMLTypeEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -452,7 +459,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getAbstractGMLType_Description() {
+	@Override
+    public EReference getAbstractGMLType_Description() {
 		return (EReference)abstractGMLTypeEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -461,7 +469,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getAbstractGMLType_Name() {
+	@Override
+    public EReference getAbstractGMLType_Name() {
 		return (EReference)abstractGMLTypeEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -470,7 +479,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getAbstractMetaDataType() {
+	@Override
+    public EClass getAbstractMetaDataType() {
 		return abstractMetaDataTypeEClass;
 	}
 
@@ -479,7 +489,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getAbstractMetaDataType_Mixed() {
+	@Override
+    public EAttribute getAbstractMetaDataType_Mixed() {
 		return (EAttribute)abstractMetaDataTypeEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -488,7 +499,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getAbstractMetaDataType_Id() {
+	@Override
+    public EAttribute getAbstractMetaDataType_Id() {
 		return (EAttribute)abstractMetaDataTypeEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -497,7 +509,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getAbstractRingPropertyType() {
+	@Override
+    public EClass getAbstractRingPropertyType() {
 		return abstractRingPropertyTypeEClass;
 	}
 
@@ -506,7 +519,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getAbstractRingPropertyType_LinearRing() {
+	@Override
+    public EReference getAbstractRingPropertyType_LinearRing() {
 		return (EReference)abstractRingPropertyTypeEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -515,7 +529,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getAbstractRingType() {
+	@Override
+    public EClass getAbstractRingType() {
 		return abstractRingTypeEClass;
 	}
 
@@ -524,7 +539,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getAbstractSurfaceType() {
+	@Override
+    public EClass getAbstractSurfaceType() {
 		return abstractSurfaceTypeEClass;
 	}
 
@@ -533,7 +549,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getBoundingShapeType() {
+	@Override
+    public EClass getBoundingShapeType() {
 		return boundingShapeTypeEClass;
 	}
 
@@ -542,7 +559,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getBoundingShapeType_EnvelopeGroup() {
+	@Override
+    public EAttribute getBoundingShapeType_EnvelopeGroup() {
 		return (EAttribute)boundingShapeTypeEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -551,7 +569,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getBoundingShapeType_Envelope() {
+	@Override
+    public EReference getBoundingShapeType_Envelope() {
 		return (EReference)boundingShapeTypeEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -560,7 +579,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getCodeListType() {
+	@Override
+    public EClass getCodeListType() {
 		return codeListTypeEClass;
 	}
 
@@ -569,7 +589,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getCodeListType_Value() {
+	@Override
+    public EAttribute getCodeListType_Value() {
 		return (EAttribute)codeListTypeEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -578,7 +599,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getCodeListType_CodeSpace() {
+	@Override
+    public EAttribute getCodeListType_CodeSpace() {
 		return (EAttribute)codeListTypeEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -587,7 +609,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getCodeType() {
+	@Override
+    public EClass getCodeType() {
 		return codeTypeEClass;
 	}
 
@@ -596,7 +619,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getCodeType_Value() {
+	@Override
+    public EAttribute getCodeType_Value() {
 		return (EAttribute)codeTypeEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -605,7 +629,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getCodeType_CodeSpace() {
+	@Override
+    public EAttribute getCodeType_CodeSpace() {
 		return (EAttribute)codeTypeEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -614,7 +639,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getDirectPositionType() {
+	@Override
+    public EClass getDirectPositionType() {
 		return directPositionTypeEClass;
 	}
 
@@ -623,7 +649,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getDirectPositionType_Value() {
+	@Override
+    public EAttribute getDirectPositionType_Value() {
 		return (EAttribute)directPositionTypeEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -632,7 +659,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getDirectPositionType_Dimension() {
+	@Override
+    public EAttribute getDirectPositionType_Dimension() {
 		return (EAttribute)directPositionTypeEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -641,7 +669,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getDocumentRoot() {
+	@Override
+    public EClass getDocumentRoot() {
 		return documentRootEClass;
 	}
 
@@ -650,7 +679,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getDocumentRoot_Mixed() {
+	@Override
+    public EAttribute getDocumentRoot_Mixed() {
 		return (EAttribute)documentRootEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -659,7 +689,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getDocumentRoot_XMLNSPrefixMap() {
+	@Override
+    public EReference getDocumentRoot_XMLNSPrefixMap() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -668,7 +699,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getDocumentRoot_XSISchemaLocation() {
+	@Override
+    public EReference getDocumentRoot_XSISchemaLocation() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -677,7 +709,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getDocumentRoot_GeometricPrimitive() {
+	@Override
+    public EReference getDocumentRoot_GeometricPrimitive() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -686,7 +719,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getDocumentRoot_Geometry() {
+	@Override
+    public EReference getDocumentRoot_Geometry() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(4);
 	}
 
@@ -695,7 +729,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getDocumentRoot_GML() {
+	@Override
+    public EReference getDocumentRoot_GML() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(5);
 	}
 
@@ -704,7 +739,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getDocumentRoot_Object() {
+	@Override
+    public EReference getDocumentRoot_Object() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(6);
 	}
 
@@ -713,7 +749,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getDocumentRoot_MetaData() {
+	@Override
+    public EReference getDocumentRoot_MetaData() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(7);
 	}
 
@@ -722,7 +759,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getDocumentRoot_Ring() {
+	@Override
+    public EReference getDocumentRoot_Ring() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(8);
 	}
 
@@ -731,7 +769,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getDocumentRoot_Surface() {
+	@Override
+    public EReference getDocumentRoot_Surface() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(9);
 	}
 
@@ -740,7 +779,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getDocumentRoot_BoundedBy() {
+	@Override
+    public EReference getDocumentRoot_BoundedBy() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(10);
 	}
 
@@ -749,7 +789,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getDocumentRoot_Description() {
+	@Override
+    public EReference getDocumentRoot_Description() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(11);
 	}
 
@@ -758,7 +799,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getDocumentRoot_Envelope() {
+	@Override
+    public EReference getDocumentRoot_Envelope() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(12);
 	}
 
@@ -767,7 +809,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getDocumentRoot_EnvelopeWithTimePeriod() {
+	@Override
+    public EReference getDocumentRoot_EnvelopeWithTimePeriod() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(13);
 	}
 
@@ -776,7 +819,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getDocumentRoot_Exterior() {
+	@Override
+    public EReference getDocumentRoot_Exterior() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(14);
 	}
 
@@ -785,7 +829,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getDocumentRoot_Grid() {
+	@Override
+    public EReference getDocumentRoot_Grid() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(15);
 	}
 
@@ -794,7 +839,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getDocumentRoot_Interior() {
+	@Override
+    public EReference getDocumentRoot_Interior() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(16);
 	}
 
@@ -803,7 +849,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getDocumentRoot_LinearRing() {
+	@Override
+    public EReference getDocumentRoot_LinearRing() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(17);
 	}
 
@@ -812,7 +859,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getDocumentRoot_MetaDataProperty() {
+	@Override
+    public EReference getDocumentRoot_MetaDataProperty() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(18);
 	}
 
@@ -821,7 +869,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getDocumentRoot_Name() {
+	@Override
+    public EReference getDocumentRoot_Name() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(19);
 	}
 
@@ -830,7 +879,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getDocumentRoot_Polygon() {
+	@Override
+    public EReference getDocumentRoot_Polygon() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(20);
 	}
 
@@ -839,7 +889,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getDocumentRoot_Pos() {
+	@Override
+    public EReference getDocumentRoot_Pos() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(21);
 	}
 
@@ -848,7 +899,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getDocumentRoot_RectifiedGrid() {
+	@Override
+    public EReference getDocumentRoot_RectifiedGrid() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(22);
 	}
 
@@ -857,7 +909,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getDocumentRoot_TimePosition() {
+	@Override
+    public EReference getDocumentRoot_TimePosition() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(23);
 	}
 
@@ -866,7 +919,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getDocumentRoot_Id() {
+	@Override
+    public EAttribute getDocumentRoot_Id() {
 		return (EAttribute)documentRootEClass.getEStructuralFeatures().get(24);
 	}
 
@@ -875,7 +929,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getDocumentRoot_RemoteSchema() {
+	@Override
+    public EAttribute getDocumentRoot_RemoteSchema() {
 		return (EAttribute)documentRootEClass.getEStructuralFeatures().get(25);
 	}
 
@@ -884,7 +939,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getEnvelopeType() {
+	@Override
+    public EClass getEnvelopeType() {
 		return envelopeTypeEClass;
 	}
 
@@ -893,7 +949,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getEnvelopeType_Pos() {
+	@Override
+    public EReference getEnvelopeType_Pos() {
 		return (EReference)envelopeTypeEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -902,7 +959,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getEnvelopeWithTimePeriodType() {
+	@Override
+    public EClass getEnvelopeWithTimePeriodType() {
 		return envelopeWithTimePeriodTypeEClass;
 	}
 
@@ -911,7 +969,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getEnvelopeWithTimePeriodType_TimePosition() {
+	@Override
+    public EReference getEnvelopeWithTimePeriodType_TimePosition() {
 		return (EReference)envelopeWithTimePeriodTypeEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -920,7 +979,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getEnvelopeWithTimePeriodType_Frame() {
+	@Override
+    public EAttribute getEnvelopeWithTimePeriodType_Frame() {
 		return (EAttribute)envelopeWithTimePeriodTypeEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -929,7 +989,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getGridEnvelopeType() {
+	@Override
+    public EClass getGridEnvelopeType() {
 		return gridEnvelopeTypeEClass;
 	}
 
@@ -938,7 +999,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getGridEnvelopeType_Low() {
+	@Override
+    public EAttribute getGridEnvelopeType_Low() {
 		return (EAttribute)gridEnvelopeTypeEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -947,7 +1009,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getGridEnvelopeType_High() {
+	@Override
+    public EAttribute getGridEnvelopeType_High() {
 		return (EAttribute)gridEnvelopeTypeEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -956,7 +1019,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getGridLimitsType() {
+	@Override
+    public EClass getGridLimitsType() {
 		return gridLimitsTypeEClass;
 	}
 
@@ -965,7 +1029,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getGridLimitsType_GridEnvelope() {
+	@Override
+    public EReference getGridLimitsType_GridEnvelope() {
 		return (EReference)gridLimitsTypeEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -974,7 +1039,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getGridType() {
+	@Override
+    public EClass getGridType() {
 		return gridTypeEClass;
 	}
 
@@ -983,7 +1049,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getGridType_Limits() {
+	@Override
+    public EAttribute getGridType_Limits() {
 		return (EAttribute)gridTypeEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -992,7 +1059,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getGridType_AxisName() {
+	@Override
+    public EAttribute getGridType_AxisName() {
 		return (EAttribute)gridTypeEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -1001,7 +1069,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getGridType_Dimension() {
+	@Override
+    public EAttribute getGridType_Dimension() {
 		return (EAttribute)gridTypeEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -1010,7 +1079,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getLinearRingType() {
+	@Override
+    public EClass getLinearRingType() {
 		return linearRingTypeEClass;
 	}
 
@@ -1019,7 +1089,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getLinearRingType_Pos() {
+	@Override
+    public EReference getLinearRingType_Pos() {
 		return (EReference)linearRingTypeEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -1028,7 +1099,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getMetaDataPropertyType() {
+	@Override
+    public EClass getMetaDataPropertyType() {
 		return metaDataPropertyTypeEClass;
 	}
 
@@ -1037,7 +1109,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getMetaDataPropertyType_MetaDataGroup() {
+	@Override
+    public EAttribute getMetaDataPropertyType_MetaDataGroup() {
 		return (EAttribute)metaDataPropertyTypeEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -1046,7 +1119,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getMetaDataPropertyType_MetaData() {
+	@Override
+    public EReference getMetaDataPropertyType_MetaData() {
 		return (EReference)metaDataPropertyTypeEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -1055,7 +1129,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getMetaDataPropertyType_About() {
+	@Override
+    public EAttribute getMetaDataPropertyType_About() {
 		return (EAttribute)metaDataPropertyTypeEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -1064,7 +1139,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getMetaDataPropertyType_Actuate() {
+	@Override
+    public EAttribute getMetaDataPropertyType_Actuate() {
 		return (EAttribute)metaDataPropertyTypeEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -1073,7 +1149,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getMetaDataPropertyType_Arcrole() {
+	@Override
+    public EAttribute getMetaDataPropertyType_Arcrole() {
 		return (EAttribute)metaDataPropertyTypeEClass.getEStructuralFeatures().get(4);
 	}
 
@@ -1082,7 +1159,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getMetaDataPropertyType_Href() {
+	@Override
+    public EAttribute getMetaDataPropertyType_Href() {
 		return (EAttribute)metaDataPropertyTypeEClass.getEStructuralFeatures().get(5);
 	}
 
@@ -1091,7 +1169,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getMetaDataPropertyType_RemoteSchema() {
+	@Override
+    public EAttribute getMetaDataPropertyType_RemoteSchema() {
 		return (EAttribute)metaDataPropertyTypeEClass.getEStructuralFeatures().get(6);
 	}
 
@@ -1100,7 +1179,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getMetaDataPropertyType_Role() {
+	@Override
+    public EAttribute getMetaDataPropertyType_Role() {
 		return (EAttribute)metaDataPropertyTypeEClass.getEStructuralFeatures().get(7);
 	}
 
@@ -1109,7 +1189,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getMetaDataPropertyType_Show() {
+	@Override
+    public EAttribute getMetaDataPropertyType_Show() {
 		return (EAttribute)metaDataPropertyTypeEClass.getEStructuralFeatures().get(8);
 	}
 
@@ -1118,7 +1199,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getMetaDataPropertyType_Title() {
+	@Override
+    public EAttribute getMetaDataPropertyType_Title() {
 		return (EAttribute)metaDataPropertyTypeEClass.getEStructuralFeatures().get(9);
 	}
 
@@ -1127,7 +1209,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getMetaDataPropertyType_Type() {
+	@Override
+    public EAttribute getMetaDataPropertyType_Type() {
 		return (EAttribute)metaDataPropertyTypeEClass.getEStructuralFeatures().get(10);
 	}
 
@@ -1136,7 +1219,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getPointType() {
+	@Override
+    public EClass getPointType() {
 		return pointTypeEClass;
 	}
 
@@ -1145,7 +1229,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getPointType_Pos() {
+	@Override
+    public EReference getPointType_Pos() {
 		return (EReference)pointTypeEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -1154,7 +1239,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getPolygonType() {
+	@Override
+    public EClass getPolygonType() {
 		return polygonTypeEClass;
 	}
 
@@ -1163,7 +1249,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getPolygonType_Exterior() {
+	@Override
+    public EReference getPolygonType_Exterior() {
 		return (EReference)polygonTypeEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -1172,7 +1259,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getPolygonType_Interior() {
+	@Override
+    public EReference getPolygonType_Interior() {
 		return (EReference)polygonTypeEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -1181,7 +1269,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getRectifiedGridType() {
+	@Override
+    public EClass getRectifiedGridType() {
 		return rectifiedGridTypeEClass;
 	}
 
@@ -1190,7 +1279,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getRectifiedGridType_Origin() {
+	@Override
+    public EReference getRectifiedGridType_Origin() {
 		return (EReference)rectifiedGridTypeEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -1199,7 +1289,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getRectifiedGridType_OffsetVector() {
+	@Override
+    public EReference getRectifiedGridType_OffsetVector() {
 		return (EReference)rectifiedGridTypeEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -1208,7 +1299,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getReferenceType() {
+	@Override
+    public EClass getReferenceType() {
 		return referenceTypeEClass;
 	}
 
@@ -1217,7 +1309,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getReferenceType_Actuate() {
+	@Override
+    public EAttribute getReferenceType_Actuate() {
 		return (EAttribute)referenceTypeEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -1226,7 +1319,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getReferenceType_Arcrole() {
+	@Override
+    public EAttribute getReferenceType_Arcrole() {
 		return (EAttribute)referenceTypeEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -1235,7 +1329,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getReferenceType_Href() {
+	@Override
+    public EAttribute getReferenceType_Href() {
 		return (EAttribute)referenceTypeEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -1244,7 +1339,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getReferenceType_RemoteSchema() {
+	@Override
+    public EAttribute getReferenceType_RemoteSchema() {
 		return (EAttribute)referenceTypeEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -1253,7 +1349,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getReferenceType_Role() {
+	@Override
+    public EAttribute getReferenceType_Role() {
 		return (EAttribute)referenceTypeEClass.getEStructuralFeatures().get(4);
 	}
 
@@ -1262,7 +1359,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getReferenceType_Show() {
+	@Override
+    public EAttribute getReferenceType_Show() {
 		return (EAttribute)referenceTypeEClass.getEStructuralFeatures().get(5);
 	}
 
@@ -1271,7 +1369,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getReferenceType_Title() {
+	@Override
+    public EAttribute getReferenceType_Title() {
 		return (EAttribute)referenceTypeEClass.getEStructuralFeatures().get(6);
 	}
 
@@ -1280,7 +1379,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getReferenceType_Type() {
+	@Override
+    public EAttribute getReferenceType_Type() {
 		return (EAttribute)referenceTypeEClass.getEStructuralFeatures().get(7);
 	}
 
@@ -1289,7 +1389,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getStringOrRefType() {
+	@Override
+    public EClass getStringOrRefType() {
 		return stringOrRefTypeEClass;
 	}
 
@@ -1298,7 +1399,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getStringOrRefType_Value() {
+	@Override
+    public EAttribute getStringOrRefType_Value() {
 		return (EAttribute)stringOrRefTypeEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -1307,7 +1409,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getStringOrRefType_Actuate() {
+	@Override
+    public EAttribute getStringOrRefType_Actuate() {
 		return (EAttribute)stringOrRefTypeEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -1316,7 +1419,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getStringOrRefType_Arcrole() {
+	@Override
+    public EAttribute getStringOrRefType_Arcrole() {
 		return (EAttribute)stringOrRefTypeEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -1325,7 +1429,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getStringOrRefType_Href() {
+	@Override
+    public EAttribute getStringOrRefType_Href() {
 		return (EAttribute)stringOrRefTypeEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -1334,7 +1439,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getStringOrRefType_RemoteSchema() {
+	@Override
+    public EAttribute getStringOrRefType_RemoteSchema() {
 		return (EAttribute)stringOrRefTypeEClass.getEStructuralFeatures().get(4);
 	}
 
@@ -1343,7 +1449,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getStringOrRefType_Role() {
+	@Override
+    public EAttribute getStringOrRefType_Role() {
 		return (EAttribute)stringOrRefTypeEClass.getEStructuralFeatures().get(5);
 	}
 
@@ -1352,7 +1459,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getStringOrRefType_Show() {
+	@Override
+    public EAttribute getStringOrRefType_Show() {
 		return (EAttribute)stringOrRefTypeEClass.getEStructuralFeatures().get(6);
 	}
 
@@ -1361,7 +1469,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getStringOrRefType_Title() {
+	@Override
+    public EAttribute getStringOrRefType_Title() {
 		return (EAttribute)stringOrRefTypeEClass.getEStructuralFeatures().get(7);
 	}
 
@@ -1370,7 +1479,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getStringOrRefType_Type() {
+	@Override
+    public EAttribute getStringOrRefType_Type() {
 		return (EAttribute)stringOrRefTypeEClass.getEStructuralFeatures().get(8);
 	}
 
@@ -1379,7 +1489,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getTimePositionType() {
+	@Override
+    public EClass getTimePositionType() {
 		return timePositionTypeEClass;
 	}
 
@@ -1388,7 +1499,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getTimePositionType_Value() {
+	@Override
+    public EAttribute getTimePositionType_Value() {
 		return (EAttribute)timePositionTypeEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -1397,7 +1509,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getTimePositionType_CalendarEraName() {
+	@Override
+    public EAttribute getTimePositionType_CalendarEraName() {
 		return (EAttribute)timePositionTypeEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -1406,7 +1519,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getTimePositionType_Frame() {
+	@Override
+    public EAttribute getTimePositionType_Frame() {
 		return (EAttribute)timePositionTypeEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -1415,7 +1529,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getTimePositionType_IndeterminatePosition() {
+	@Override
+    public EAttribute getTimePositionType_IndeterminatePosition() {
 		return (EAttribute)timePositionTypeEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -1424,7 +1539,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getVectorType() {
+	@Override
+    public EClass getVectorType() {
 		return vectorTypeEClass;
 	}
 
@@ -1433,7 +1549,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EEnum getTimeIndeterminateValueType() {
+	@Override
+    public EEnum getTimeIndeterminateValueType() {
 		return timeIndeterminateValueTypeEEnum;
 	}
 
@@ -1442,7 +1559,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EDataType getDoubleList() {
+	@Override
+    public EDataType getDoubleList() {
 		return doubleListEDataType;
 	}
 
@@ -1451,7 +1569,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EDataType getIntegerList() {
+	@Override
+    public EDataType getIntegerList() {
 		return integerListEDataType;
 	}
 
@@ -1460,7 +1579,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EDataType getNameList() {
+	@Override
+    public EDataType getNameList() {
 		return nameListEDataType;
 	}
 
@@ -1469,7 +1589,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EDataType getTemporalPositionType() {
+	@Override
+    public EDataType getTemporalPositionType() {
 		return temporalPositionTypeEDataType;
 	}
 
@@ -1478,7 +1599,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EDataType getTimeDurationType() {
+	@Override
+    public EDataType getTimeDurationType() {
 		return timeDurationTypeEDataType;
 	}
 
@@ -1487,7 +1609,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EDataType getTimeIndeterminateValueTypeObject() {
+	@Override
+    public EDataType getTimeIndeterminateValueTypeObject() {
 		return timeIndeterminateValueTypeObjectEDataType;
 	}
 
@@ -1496,7 +1619,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EDataType getVectorTypeBase() {
+	@Override
+    public EDataType getVectorTypeBase() {
 		return vectorTypeBaseEDataType;
 	}
 
@@ -1505,7 +1629,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EDataType getGridEnvelope() {
+	@Override
+    public EDataType getGridEnvelope() {
 		return gridEnvelopeEDataType;
 	}
 
@@ -1514,7 +1639,8 @@ public class GmlPackageImpl extends EPackageImpl implements GmlPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public GmlFactory getGmlFactory() {
+	@Override
+    public GmlFactory getGmlFactory() {
 		return (GmlFactory)getEFactoryInstance();
 	}
 

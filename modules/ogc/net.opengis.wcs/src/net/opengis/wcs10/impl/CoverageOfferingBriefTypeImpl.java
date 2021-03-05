@@ -75,6 +75,7 @@ public class CoverageOfferingBriefTypeImpl extends AbstractDescriptionTypeImpl i
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.COVERAGE_OFFERING_BRIEF_TYPE;
 	}
@@ -84,6 +85,7 @@ public class CoverageOfferingBriefTypeImpl extends AbstractDescriptionTypeImpl i
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public LonLatEnvelopeType getLonLatEnvelope() {
 		return lonLatEnvelope;
 	}
@@ -108,6 +110,7 @@ public class CoverageOfferingBriefTypeImpl extends AbstractDescriptionTypeImpl i
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setLonLatEnvelope(LonLatEnvelopeType newLonLatEnvelope) {
 		if (newLonLatEnvelope != lonLatEnvelope) {
 			NotificationChain msgs = null;
@@ -127,6 +130,7 @@ public class CoverageOfferingBriefTypeImpl extends AbstractDescriptionTypeImpl i
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList getKeywords() {
 		if (keywords == null) {
 			keywords = new EObjectContainmentEList(KeywordsType.class, this, Wcs10Package.COVERAGE_OFFERING_BRIEF_TYPE__KEYWORDS);
@@ -139,6 +143,7 @@ public class CoverageOfferingBriefTypeImpl extends AbstractDescriptionTypeImpl i
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.COVERAGE_OFFERING_BRIEF_TYPE__LON_LAT_ENVELOPE:
@@ -154,6 +159,7 @@ public class CoverageOfferingBriefTypeImpl extends AbstractDescriptionTypeImpl i
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.COVERAGE_OFFERING_BRIEF_TYPE__LON_LAT_ENVELOPE:
@@ -169,6 +175,7 @@ public class CoverageOfferingBriefTypeImpl extends AbstractDescriptionTypeImpl i
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.COVERAGE_OFFERING_BRIEF_TYPE__LON_LAT_ENVELOPE:
@@ -187,6 +194,7 @@ public class CoverageOfferingBriefTypeImpl extends AbstractDescriptionTypeImpl i
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.COVERAGE_OFFERING_BRIEF_TYPE__LON_LAT_ENVELOPE:
@@ -204,6 +212,7 @@ public class CoverageOfferingBriefTypeImpl extends AbstractDescriptionTypeImpl i
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.COVERAGE_OFFERING_BRIEF_TYPE__LON_LAT_ENVELOPE:

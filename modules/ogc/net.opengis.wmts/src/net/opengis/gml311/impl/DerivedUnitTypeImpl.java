@@ -66,6 +66,7 @@ public class DerivedUnitTypeImpl extends UnitDefinitionTypeImpl implements Deriv
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<DerivationUnitTermType> getDerivationUnitTerm() {
         if (derivationUnitTerm == null) {
             derivationUnitTerm = new EObjectContainmentEList<>(DerivationUnitTermType.class, this, Gml311Package.DERIVED_UNIT_TYPE__DERIVATION_UNIT_TERM);

@@ -79,6 +79,7 @@ public class GetRecordByIdResponseTypeImpl extends EObjectImpl implements GetRec
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getAbstractRecordGroup() {
         if (abstractRecordGroup == null) {
             abstractRecordGroup = new BasicFeatureMap(this, Csw20Package.GET_RECORD_BY_ID_RESPONSE_TYPE__ABSTRACT_RECORD_GROUP);
@@ -91,6 +92,7 @@ public class GetRecordByIdResponseTypeImpl extends EObjectImpl implements GetRec
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<AbstractRecordType> getAbstractRecord() {
         return getAbstractRecordGroup().list(Csw20Package.Literals.GET_RECORD_BY_ID_RESPONSE_TYPE__ABSTRACT_RECORD);
     }
@@ -100,6 +102,7 @@ public class GetRecordByIdResponseTypeImpl extends EObjectImpl implements GetRec
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getAny() {
         if (any == null) {
             any = new BasicFeatureMap(this, Csw20Package.GET_RECORD_BY_ID_RESPONSE_TYPE__ANY);

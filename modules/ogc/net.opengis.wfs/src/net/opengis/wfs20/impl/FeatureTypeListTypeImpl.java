@@ -72,6 +72,7 @@ public class FeatureTypeListTypeImpl extends EObjectImpl implements FeatureTypeL
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<FeatureTypeType> getFeatureType() {
     if (featureType == null) {
       featureType = new EObjectContainmentEList<>(FeatureTypeType.class, this, Wfs20Package.FEATURE_TYPE_LIST_TYPE__FEATURE_TYPE);

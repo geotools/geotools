@@ -69,6 +69,7 @@ public class CapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements Ca
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FilterCapabilities getFilterCapabilities() {
         return filterCapabilities;
     }
@@ -92,6 +93,7 @@ public class CapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements Ca
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      */
+    @Override
     public void setFilterCapabilities(FilterCapabilities newFilterCapabilities) {
         this.filterCapabilities = newFilterCapabilities;
     }

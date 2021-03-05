@@ -68,6 +68,7 @@ public class ContentsTypeImpl extends ContentsBaseTypeImpl implements ContentsTy
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<TileMatrixSetType> getTileMatrixSet() {
         if (tileMatrixSet == null) {
             tileMatrixSet = new EObjectContainmentEList<>(TileMatrixSetType.class, this, wmtsv_1Package.CONTENTS_TYPE__TILE_MATRIX_SET);

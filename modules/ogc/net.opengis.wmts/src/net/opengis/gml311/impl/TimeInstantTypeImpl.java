@@ -62,6 +62,7 @@ public class TimeInstantTypeImpl extends AbstractTimeGeometricPrimitiveTypeImpl 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimePositionType getTimePosition() {
         return timePosition;
     }
@@ -86,6 +87,7 @@ public class TimeInstantTypeImpl extends AbstractTimeGeometricPrimitiveTypeImpl 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTimePosition(TimePositionType newTimePosition) {
         if (newTimePosition != timePosition) {
             NotificationChain msgs = null;

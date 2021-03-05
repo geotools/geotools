@@ -63,6 +63,7 @@ public class GridLimitsTypeImpl extends MinimalEObjectImpl.Container implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GridEnvelopeType getGridEnvelope() {
         return gridEnvelope;
     }
@@ -87,6 +88,7 @@ public class GridLimitsTypeImpl extends MinimalEObjectImpl.Container implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGridEnvelope(GridEnvelopeType newGridEnvelope) {
         if (newGridEnvelope != gridEnvelope) {
             NotificationChain msgs = null;

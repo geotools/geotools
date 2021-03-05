@@ -82,6 +82,7 @@ public abstract class AbstractMetaDataTypeImpl extends EObjectImpl implements Ab
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return GmlPackage.Literals.ABSTRACT_META_DATA_TYPE;
 	}
@@ -91,6 +92,7 @@ public abstract class AbstractMetaDataTypeImpl extends EObjectImpl implements Ab
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public FeatureMap getMixed() {
 		if (mixed == null) {
 			mixed = new BasicFeatureMap(this, GmlPackage.ABSTRACT_META_DATA_TYPE__MIXED);
@@ -103,6 +105,7 @@ public abstract class AbstractMetaDataTypeImpl extends EObjectImpl implements Ab
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getId() {
 		return id;
 	}
@@ -112,6 +115,7 @@ public abstract class AbstractMetaDataTypeImpl extends EObjectImpl implements Ab
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setId(String newId) {
 		String oldId = id;
 		id = newId;
@@ -124,6 +128,7 @@ public abstract class AbstractMetaDataTypeImpl extends EObjectImpl implements Ab
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case GmlPackage.ABSTRACT_META_DATA_TYPE__MIXED:
@@ -137,6 +142,7 @@ public abstract class AbstractMetaDataTypeImpl extends EObjectImpl implements Ab
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case GmlPackage.ABSTRACT_META_DATA_TYPE__MIXED:
@@ -153,6 +159,7 @@ public abstract class AbstractMetaDataTypeImpl extends EObjectImpl implements Ab
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case GmlPackage.ABSTRACT_META_DATA_TYPE__MIXED:
@@ -170,6 +177,7 @@ public abstract class AbstractMetaDataTypeImpl extends EObjectImpl implements Ab
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case GmlPackage.ABSTRACT_META_DATA_TYPE__MIXED:
@@ -187,6 +195,7 @@ public abstract class AbstractMetaDataTypeImpl extends EObjectImpl implements Ab
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case GmlPackage.ABSTRACT_META_DATA_TYPE__MIXED:
@@ -202,6 +211,7 @@ public abstract class AbstractMetaDataTypeImpl extends EObjectImpl implements Ab
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

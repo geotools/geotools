@@ -65,6 +65,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EObject create(EClass eClass) {
     switch (eClass.getClassifierID()) {
       case Wps10Package.BODY_REFERENCE_TYPE: return createBodyReferenceType();
@@ -131,6 +132,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object createFromString(EDataType eDataType, String initialValue) {
     switch (eDataType.getClassifierID()) {
       case Wps10Package.METHOD_TYPE:
@@ -153,6 +155,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String convertToString(EDataType eDataType, Object instanceValue) {
     switch (eDataType.getClassifierID()) {
       case Wps10Package.METHOD_TYPE:
@@ -175,6 +178,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public BodyReferenceType createBodyReferenceType() {
     BodyReferenceTypeImpl bodyReferenceType = new BodyReferenceTypeImpl();
     return bodyReferenceType;
@@ -185,6 +189,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ComplexDataCombinationsType createComplexDataCombinationsType() {
     ComplexDataCombinationsTypeImpl complexDataCombinationsType = new ComplexDataCombinationsTypeImpl();
     return complexDataCombinationsType;
@@ -195,6 +200,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ComplexDataCombinationType createComplexDataCombinationType() {
     ComplexDataCombinationTypeImpl complexDataCombinationType = new ComplexDataCombinationTypeImpl();
     return complexDataCombinationType;
@@ -205,6 +211,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ComplexDataDescriptionType createComplexDataDescriptionType() {
     ComplexDataDescriptionTypeImpl complexDataDescriptionType = new ComplexDataDescriptionTypeImpl();
     return complexDataDescriptionType;
@@ -215,6 +222,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ComplexDataType createComplexDataType() {
     ComplexDataTypeImpl complexDataType = new ComplexDataTypeImpl();
     return complexDataType;
@@ -225,6 +233,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public CRSsType createCRSsType() {
     CRSsTypeImpl crSsType = new CRSsTypeImpl();
     return crSsType;
@@ -235,6 +244,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DataInputsType createDataInputsType() {
     DataInputsTypeImpl dataInputsType = new DataInputsTypeImpl();
     return dataInputsType;
@@ -245,6 +255,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DataInputsType1 createDataInputsType1() {
     DataInputsType1Impl dataInputsType1 = new DataInputsType1Impl();
     return dataInputsType1;
@@ -255,6 +266,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DataType createDataType() {
     DataTypeImpl dataType = new DataTypeImpl();
     return dataType;
@@ -265,6 +277,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DefaultType createDefaultType() {
     DefaultTypeImpl defaultType = new DefaultTypeImpl();
     return defaultType;
@@ -275,6 +288,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DefaultType1 createDefaultType1() {
     DefaultType1Impl defaultType1 = new DefaultType1Impl();
     return defaultType1;
@@ -285,6 +299,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DefaultType2 createDefaultType2() {
     DefaultType2Impl defaultType2 = new DefaultType2Impl();
     return defaultType2;
@@ -295,6 +310,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DescribeProcessType createDescribeProcessType() {
     DescribeProcessTypeImpl describeProcessType = new DescribeProcessTypeImpl();
     return describeProcessType;
@@ -305,6 +321,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DescriptionType createDescriptionType() {
     DescriptionTypeImpl descriptionType = new DescriptionTypeImpl();
     return descriptionType;
@@ -315,6 +332,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DocumentOutputDefinitionType createDocumentOutputDefinitionType() {
     DocumentOutputDefinitionTypeImpl documentOutputDefinitionType = new DocumentOutputDefinitionTypeImpl();
     return documentOutputDefinitionType;
@@ -325,6 +343,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DocumentRoot createDocumentRoot() {
     DocumentRootImpl documentRoot = new DocumentRootImpl();
     return documentRoot;
@@ -335,6 +354,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ExecuteResponseType createExecuteResponseType() {
     ExecuteResponseTypeImpl executeResponseType = new ExecuteResponseTypeImpl();
     return executeResponseType;
@@ -345,6 +365,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ExecuteType createExecuteType() {
     ExecuteTypeImpl executeType = new ExecuteTypeImpl();
     return executeType;
@@ -355,6 +376,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public GetCapabilitiesType createGetCapabilitiesType() {
     GetCapabilitiesTypeImpl getCapabilitiesType = new GetCapabilitiesTypeImpl();
     return getCapabilitiesType;
@@ -365,6 +387,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public HeaderType createHeaderType() {
     HeaderTypeImpl headerType = new HeaderTypeImpl();
     return headerType;
@@ -375,6 +398,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public InputDescriptionType createInputDescriptionType() {
     InputDescriptionTypeImpl inputDescriptionType = new InputDescriptionTypeImpl();
     return inputDescriptionType;
@@ -385,6 +409,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public InputReferenceType createInputReferenceType() {
     InputReferenceTypeImpl inputReferenceType = new InputReferenceTypeImpl();
     return inputReferenceType;
@@ -395,6 +420,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public InputType createInputType() {
     InputTypeImpl inputType = new InputTypeImpl();
     return inputType;
@@ -405,6 +431,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public LanguagesType createLanguagesType() {
     LanguagesTypeImpl languagesType = new LanguagesTypeImpl();
     return languagesType;
@@ -415,6 +442,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public LanguagesType1 createLanguagesType1() {
     LanguagesType1Impl languagesType1 = new LanguagesType1Impl();
     return languagesType1;
@@ -425,6 +453,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public LiteralDataType createLiteralDataType() {
     LiteralDataTypeImpl literalDataType = new LiteralDataTypeImpl();
     return literalDataType;
@@ -435,6 +464,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public LiteralInputType createLiteralInputType() {
     LiteralInputTypeImpl literalInputType = new LiteralInputTypeImpl();
     return literalInputType;
@@ -445,6 +475,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public LiteralOutputType createLiteralOutputType() {
     LiteralOutputTypeImpl literalOutputType = new LiteralOutputTypeImpl();
     return literalOutputType;
@@ -455,6 +486,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public OutputDataType createOutputDataType() {
     OutputDataTypeImpl outputDataType = new OutputDataTypeImpl();
     return outputDataType;
@@ -465,6 +497,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public OutputDefinitionsType createOutputDefinitionsType() {
     OutputDefinitionsTypeImpl outputDefinitionsType = new OutputDefinitionsTypeImpl();
     return outputDefinitionsType;
@@ -475,6 +508,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public OutputDefinitionType createOutputDefinitionType() {
     OutputDefinitionTypeImpl outputDefinitionType = new OutputDefinitionTypeImpl();
     return outputDefinitionType;
@@ -485,6 +519,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public OutputDescriptionType createOutputDescriptionType() {
     OutputDescriptionTypeImpl outputDescriptionType = new OutputDescriptionTypeImpl();
     return outputDescriptionType;
@@ -495,6 +530,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public OutputReferenceType createOutputReferenceType() {
     OutputReferenceTypeImpl outputReferenceType = new OutputReferenceTypeImpl();
     return outputReferenceType;
@@ -505,6 +541,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ProcessBriefType createProcessBriefType() {
     ProcessBriefTypeImpl processBriefType = new ProcessBriefTypeImpl();
     return processBriefType;
@@ -515,6 +552,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ProcessDescriptionsType createProcessDescriptionsType() {
     ProcessDescriptionsTypeImpl processDescriptionsType = new ProcessDescriptionsTypeImpl();
     return processDescriptionsType;
@@ -525,6 +563,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ProcessDescriptionType createProcessDescriptionType() {
     ProcessDescriptionTypeImpl processDescriptionType = new ProcessDescriptionTypeImpl();
     return processDescriptionType;
@@ -535,6 +574,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ProcessFailedType createProcessFailedType() {
     ProcessFailedTypeImpl processFailedType = new ProcessFailedTypeImpl();
     return processFailedType;
@@ -545,6 +585,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ProcessOfferingsType createProcessOfferingsType() {
     ProcessOfferingsTypeImpl processOfferingsType = new ProcessOfferingsTypeImpl();
     return processOfferingsType;
@@ -555,6 +596,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ProcessOutputsType createProcessOutputsType() {
     ProcessOutputsTypeImpl processOutputsType = new ProcessOutputsTypeImpl();
     return processOutputsType;
@@ -565,6 +607,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ProcessOutputsType1 createProcessOutputsType1() {
     ProcessOutputsType1Impl processOutputsType1 = new ProcessOutputsType1Impl();
     return processOutputsType1;
@@ -575,6 +618,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ProcessStartedType createProcessStartedType() {
     ProcessStartedTypeImpl processStartedType = new ProcessStartedTypeImpl();
     return processStartedType;
@@ -585,6 +629,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public RequestBaseType createRequestBaseType() {
     RequestBaseTypeImpl requestBaseType = new RequestBaseTypeImpl();
     return requestBaseType;
@@ -595,6 +640,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ResponseBaseType createResponseBaseType() {
     ResponseBaseTypeImpl responseBaseType = new ResponseBaseTypeImpl();
     return responseBaseType;
@@ -605,6 +651,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ResponseDocumentType createResponseDocumentType() {
     ResponseDocumentTypeImpl responseDocumentType = new ResponseDocumentTypeImpl();
     return responseDocumentType;
@@ -615,6 +662,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ResponseFormType createResponseFormType() {
     ResponseFormTypeImpl responseFormType = new ResponseFormTypeImpl();
     return responseFormType;
@@ -625,6 +673,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public StatusType createStatusType() {
     StatusTypeImpl statusType = new StatusTypeImpl();
     return statusType;
@@ -635,6 +684,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public SupportedComplexDataInputType createSupportedComplexDataInputType() {
     SupportedComplexDataInputTypeImpl supportedComplexDataInputType = new SupportedComplexDataInputTypeImpl();
     return supportedComplexDataInputType;
@@ -645,6 +695,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public SupportedComplexDataType createSupportedComplexDataType() {
     SupportedComplexDataTypeImpl supportedComplexDataType = new SupportedComplexDataTypeImpl();
     return supportedComplexDataType;
@@ -655,6 +706,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public SupportedCRSsType createSupportedCRSsType() {
     SupportedCRSsTypeImpl supportedCRSsType = new SupportedCRSsTypeImpl();
     return supportedCRSsType;
@@ -665,6 +717,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public SupportedUOMsType createSupportedUOMsType() {
     SupportedUOMsTypeImpl supportedUOMsType = new SupportedUOMsTypeImpl();
     return supportedUOMsType;
@@ -675,6 +728,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public UOMsType createUOMsType() {
     UOMsTypeImpl uoMsType = new UOMsTypeImpl();
     return uoMsType;
@@ -685,6 +739,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ValuesReferenceType createValuesReferenceType() {
     ValuesReferenceTypeImpl valuesReferenceType = new ValuesReferenceTypeImpl();
     return valuesReferenceType;
@@ -695,6 +750,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public WPSCapabilitiesType createWPSCapabilitiesType() {
     WPSCapabilitiesTypeImpl wpsCapabilitiesType = new WPSCapabilitiesTypeImpl();
     return wpsCapabilitiesType;
@@ -705,6 +761,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public WSDLType createWSDLType() {
     WSDLTypeImpl wsdlType = new WSDLTypeImpl();
     return wsdlType;
@@ -807,6 +864,7 @@ public class Wps10FactoryImpl extends EFactoryImpl implements Wps10Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Wps10Package getWps10Package() {
     return (Wps10Package)getEPackage();
   }

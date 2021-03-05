@@ -70,7 +70,8 @@ public class RequestMethodTypeImpl extends OnlineResourceTypeImpl implements Req
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList<DomainType> getConstraint() {
+	@Override
+    public EList<DomainType> getConstraint() {
     if (constraint == null) {
       constraint = new EObjectContainmentEList<>(DomainType.class, this, Ows10Package.REQUEST_METHOD_TYPE__CONSTRAINT);
     }

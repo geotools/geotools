@@ -102,6 +102,7 @@ public class LiteralInputTypeImpl extends LiteralOutputTypeImpl implements Liter
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.LITERAL_INPUT_TYPE;
   }
@@ -111,6 +112,7 @@ public class LiteralInputTypeImpl extends LiteralOutputTypeImpl implements Liter
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AllowedValuesType getAllowedValues() {
     return allowedValues;
   }
@@ -135,6 +137,7 @@ public class LiteralInputTypeImpl extends LiteralOutputTypeImpl implements Liter
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setAllowedValues(AllowedValuesType newAllowedValues) {
     if (newAllowedValues != allowedValues) {
       NotificationChain msgs = null;
@@ -154,6 +157,7 @@ public class LiteralInputTypeImpl extends LiteralOutputTypeImpl implements Liter
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AnyValueType getAnyValue() {
     return anyValue;
   }
@@ -178,6 +182,7 @@ public class LiteralInputTypeImpl extends LiteralOutputTypeImpl implements Liter
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setAnyValue(AnyValueType newAnyValue) {
     if (newAnyValue != anyValue) {
       NotificationChain msgs = null;
@@ -197,6 +202,7 @@ public class LiteralInputTypeImpl extends LiteralOutputTypeImpl implements Liter
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ValuesReferenceType getValuesReference() {
     return valuesReference;
   }
@@ -221,6 +227,7 @@ public class LiteralInputTypeImpl extends LiteralOutputTypeImpl implements Liter
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setValuesReference(ValuesReferenceType newValuesReference) {
     if (newValuesReference != valuesReference) {
       NotificationChain msgs = null;
@@ -240,6 +247,7 @@ public class LiteralInputTypeImpl extends LiteralOutputTypeImpl implements Liter
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getDefaultValue() {
     return defaultValue;
   }
@@ -249,6 +257,7 @@ public class LiteralInputTypeImpl extends LiteralOutputTypeImpl implements Liter
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setDefaultValue(String newDefaultValue) {
     String oldDefaultValue = defaultValue;
     defaultValue = newDefaultValue;
@@ -261,6 +270,7 @@ public class LiteralInputTypeImpl extends LiteralOutputTypeImpl implements Liter
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.LITERAL_INPUT_TYPE__ALLOWED_VALUES:
@@ -278,6 +288,7 @@ public class LiteralInputTypeImpl extends LiteralOutputTypeImpl implements Liter
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.LITERAL_INPUT_TYPE__ALLOWED_VALUES:
@@ -297,6 +308,7 @@ public class LiteralInputTypeImpl extends LiteralOutputTypeImpl implements Liter
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.LITERAL_INPUT_TYPE__ALLOWED_VALUES:
@@ -320,6 +332,7 @@ public class LiteralInputTypeImpl extends LiteralOutputTypeImpl implements Liter
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.LITERAL_INPUT_TYPE__ALLOWED_VALUES:
@@ -343,6 +356,7 @@ public class LiteralInputTypeImpl extends LiteralOutputTypeImpl implements Liter
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.LITERAL_INPUT_TYPE__ALLOWED_VALUES:
@@ -362,6 +376,7 @@ public class LiteralInputTypeImpl extends LiteralOutputTypeImpl implements Liter
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String toString() {
     if (eIsProxy()) return super.toString();
 

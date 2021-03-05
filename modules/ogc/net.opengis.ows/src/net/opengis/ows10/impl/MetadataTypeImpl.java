@@ -93,7 +93,8 @@ public class MetadataTypeImpl extends EObjectImpl implements MetadataType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public FeatureMap getAbstractMetaDataGroup() {
+	@Override
+    public FeatureMap getAbstractMetaDataGroup() {
     if (abstractMetaDataGroup == null) {
       abstractMetaDataGroup = new BasicFeatureMap(this, Ows10Package.METADATA_TYPE__ABSTRACT_META_DATA_GROUP);
     }
@@ -105,7 +106,8 @@ public class MetadataTypeImpl extends EObjectImpl implements MetadataType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EObject getAbstractMetaData() {
+	@Override
+    public EObject getAbstractMetaData() {
     return (EObject)getAbstractMetaDataGroup().get(Ows10Package.eINSTANCE.getMetadataType_AbstractMetaData(), true);
   }
 
@@ -123,7 +125,8 @@ public class MetadataTypeImpl extends EObjectImpl implements MetadataType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getAbout() {
+	@Override
+    public String getAbout() {
     return about;
   }
 
@@ -132,7 +135,8 @@ public class MetadataTypeImpl extends EObjectImpl implements MetadataType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setAbout(String newAbout) {
+	@Override
+    public void setAbout(String newAbout) {
     String oldAbout = about;
     about = newAbout;
     if (eNotificationRequired())

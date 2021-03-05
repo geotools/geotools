@@ -90,7 +90,8 @@ public class LockFeatureResponseTypeImpl extends EObjectImpl implements LockFeat
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.LOCK_FEATURE_RESPONSE_TYPE;
   }
 
@@ -99,7 +100,8 @@ public class LockFeatureResponseTypeImpl extends EObjectImpl implements LockFeat
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getLockId() {
+	@Override
+    public String getLockId() {
     return lockId;
   }
 
@@ -108,7 +110,8 @@ public class LockFeatureResponseTypeImpl extends EObjectImpl implements LockFeat
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setLockId(String newLockId) {
+	@Override
+    public void setLockId(String newLockId) {
     String oldLockId = lockId;
     lockId = newLockId;
     if (eNotificationRequired())
@@ -120,7 +123,8 @@ public class LockFeatureResponseTypeImpl extends EObjectImpl implements LockFeat
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public FeaturesLockedType getFeaturesLocked() {
+	@Override
+    public FeaturesLockedType getFeaturesLocked() {
     return featuresLocked;
   }
 
@@ -144,7 +148,8 @@ public class LockFeatureResponseTypeImpl extends EObjectImpl implements LockFeat
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setFeaturesLocked(FeaturesLockedType newFeaturesLocked) {
+	@Override
+    public void setFeaturesLocked(FeaturesLockedType newFeaturesLocked) {
     if (newFeaturesLocked != featuresLocked) {
       NotificationChain msgs = null;
       if (featuresLocked != null)
@@ -163,7 +168,8 @@ public class LockFeatureResponseTypeImpl extends EObjectImpl implements LockFeat
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public FeaturesNotLockedType getFeaturesNotLocked() {
+	@Override
+    public FeaturesNotLockedType getFeaturesNotLocked() {
     return featuresNotLocked;
   }
 
@@ -187,7 +193,8 @@ public class LockFeatureResponseTypeImpl extends EObjectImpl implements LockFeat
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setFeaturesNotLocked(FeaturesNotLockedType newFeaturesNotLocked) {
+	@Override
+    public void setFeaturesNotLocked(FeaturesNotLockedType newFeaturesNotLocked) {
     if (newFeaturesNotLocked != featuresNotLocked) {
       NotificationChain msgs = null;
       if (featuresNotLocked != null)
@@ -206,7 +213,8 @@ public class LockFeatureResponseTypeImpl extends EObjectImpl implements LockFeat
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+	@Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_LOCKED:
         return basicSetFeaturesLocked(null, msgs);
@@ -221,7 +229,8 @@ public class LockFeatureResponseTypeImpl extends EObjectImpl implements LockFeat
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	@Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__LOCK_ID:
         return getLockId();
@@ -238,7 +247,8 @@ public class LockFeatureResponseTypeImpl extends EObjectImpl implements LockFeat
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(int featureID, Object newValue) {
+	@Override
+    public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__LOCK_ID:
         setLockId((String)newValue);
@@ -258,7 +268,8 @@ public class LockFeatureResponseTypeImpl extends EObjectImpl implements LockFeat
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(int featureID) {
+	@Override
+    public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__LOCK_ID:
         setLockId(LOCK_ID_EDEFAULT);
@@ -278,7 +289,8 @@ public class LockFeatureResponseTypeImpl extends EObjectImpl implements LockFeat
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(int featureID) {
+	@Override
+    public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__LOCK_ID:
         return LOCK_ID_EDEFAULT == null ? lockId != null : !LOCK_ID_EDEFAULT.equals(lockId);
@@ -295,7 +307,8 @@ public class LockFeatureResponseTypeImpl extends EObjectImpl implements LockFeat
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String toString() {
+	@Override
+    public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

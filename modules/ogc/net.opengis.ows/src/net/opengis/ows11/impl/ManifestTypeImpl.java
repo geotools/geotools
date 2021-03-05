@@ -56,7 +56,8 @@ public class ManifestTypeImpl extends BasicIdentificationTypeImpl implements Man
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.MANIFEST_TYPE;
   }
 
@@ -65,7 +66,8 @@ public class ManifestTypeImpl extends BasicIdentificationTypeImpl implements Man
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList getReferenceGroup() {
+  @Override
+public EList getReferenceGroup() {
     if (referenceGroup == null) {
       referenceGroup = new EObjectContainmentEList(ReferenceGroupType.class, this, Ows11Package.MANIFEST_TYPE__REFERENCE_GROUP);
     }
@@ -77,7 +79,8 @@ public class ManifestTypeImpl extends BasicIdentificationTypeImpl implements Man
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+  @Override
+public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Ows11Package.MANIFEST_TYPE__REFERENCE_GROUP:
         return ((InternalEList)getReferenceGroup()).basicRemove(otherEnd, msgs);
@@ -90,7 +93,8 @@ public class ManifestTypeImpl extends BasicIdentificationTypeImpl implements Man
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.MANIFEST_TYPE__REFERENCE_GROUP:
         return getReferenceGroup();
@@ -103,7 +107,8 @@ public class ManifestTypeImpl extends BasicIdentificationTypeImpl implements Man
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.MANIFEST_TYPE__REFERENCE_GROUP:
         getReferenceGroup().clear();
@@ -118,7 +123,8 @@ public class ManifestTypeImpl extends BasicIdentificationTypeImpl implements Man
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.MANIFEST_TYPE__REFERENCE_GROUP:
         getReferenceGroup().clear();
@@ -132,7 +138,8 @@ public class ManifestTypeImpl extends BasicIdentificationTypeImpl implements Man
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.MANIFEST_TYPE__REFERENCE_GROUP:
         return referenceGroup != null && !referenceGroup.isEmpty();

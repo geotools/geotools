@@ -58,6 +58,7 @@ public class CapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements Ca
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EClass eStaticClass() {
         return Wcs111Package.Literals.CAPABILITIES_TYPE;
     }
@@ -67,6 +68,7 @@ public class CapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements Ca
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ContentsType getContents() {
         return contents;
     }
@@ -91,6 +93,7 @@ public class CapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements Ca
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setContents(ContentsType newContents) {
         if (newContents != contents) {
             NotificationChain msgs = null;
@@ -110,6 +113,7 @@ public class CapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements Ca
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case Wcs111Package.CAPABILITIES_TYPE__CONTENTS:
@@ -123,6 +127,7 @@ public class CapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements Ca
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case Wcs111Package.CAPABILITIES_TYPE__CONTENTS:
@@ -136,6 +141,7 @@ public class CapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements Ca
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Wcs111Package.CAPABILITIES_TYPE__CONTENTS:
@@ -150,6 +156,7 @@ public class CapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements Ca
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case Wcs111Package.CAPABILITIES_TYPE__CONTENTS:
@@ -164,6 +171,7 @@ public class CapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements Ca
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case Wcs111Package.CAPABILITIES_TYPE__CONTENTS:

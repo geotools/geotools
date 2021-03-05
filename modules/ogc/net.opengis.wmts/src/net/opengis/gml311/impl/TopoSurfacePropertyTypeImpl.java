@@ -63,6 +63,7 @@ public class TopoSurfacePropertyTypeImpl extends MinimalEObjectImpl.Container im
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoSurfaceType getTopoSurface() {
         return topoSurface;
     }
@@ -87,6 +88,7 @@ public class TopoSurfacePropertyTypeImpl extends MinimalEObjectImpl.Container im
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTopoSurface(TopoSurfaceType newTopoSurface) {
         if (newTopoSurface != topoSurface) {
             NotificationChain msgs = null;

@@ -62,6 +62,7 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EClass eStaticClass() {
         return Wcs111Package.Literals.RANGE_TYPE;
     }
@@ -71,6 +72,7 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getField() {
         if (field == null) {
             field = new EObjectContainmentEList(FieldType.class, this, Wcs111Package.RANGE_TYPE__FIELD);
@@ -83,6 +85,7 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case Wcs111Package.RANGE_TYPE__FIELD:
@@ -96,6 +99,7 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case Wcs111Package.RANGE_TYPE__FIELD:
@@ -109,6 +113,7 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Wcs111Package.RANGE_TYPE__FIELD:
@@ -124,6 +129,7 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case Wcs111Package.RANGE_TYPE__FIELD:
@@ -138,6 +144,7 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case Wcs111Package.RANGE_TYPE__FIELD:

@@ -69,6 +69,7 @@ public class NilValueTypeImpl extends CodeTypeImpl implements NilValueType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getNilReason() {
     return nilReason;
   }
@@ -78,6 +79,7 @@ public class NilValueTypeImpl extends CodeTypeImpl implements NilValueType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setNilReason(String newNilReason) {
     String oldNilReason = nilReason;
     nilReason = newNilReason;

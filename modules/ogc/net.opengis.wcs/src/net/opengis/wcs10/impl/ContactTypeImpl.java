@@ -81,6 +81,7 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.CONTACT_TYPE;
 	}
@@ -90,6 +91,7 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public TelephoneType getPhone() {
 		return phone;
 	}
@@ -114,6 +116,7 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setPhone(TelephoneType newPhone) {
 		if (newPhone != phone) {
 			NotificationChain msgs = null;
@@ -133,6 +136,7 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public AddressType getAddress() {
 		return address;
 	}
@@ -157,6 +161,7 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setAddress(AddressType newAddress) {
 		if (newAddress != address) {
 			NotificationChain msgs = null;
@@ -176,6 +181,7 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public OnlineResourceType getOnlineResource() {
 		return onlineResource;
 	}
@@ -200,6 +206,7 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setOnlineResource(OnlineResourceType newOnlineResource) {
 		if (newOnlineResource != onlineResource) {
 			NotificationChain msgs = null;
@@ -219,6 +226,7 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.CONTACT_TYPE__PHONE:
@@ -236,6 +244,7 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.CONTACT_TYPE__PHONE:
@@ -253,6 +262,7 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.CONTACT_TYPE__PHONE:
@@ -273,6 +283,7 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.CONTACT_TYPE__PHONE:
@@ -293,6 +304,7 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.CONTACT_TYPE__PHONE:

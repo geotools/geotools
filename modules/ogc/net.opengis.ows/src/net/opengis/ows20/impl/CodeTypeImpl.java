@@ -91,6 +91,7 @@ public class CodeTypeImpl extends EObjectImpl implements CodeType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getValue() {
     return value;
   }
@@ -100,6 +101,7 @@ public class CodeTypeImpl extends EObjectImpl implements CodeType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setValue(String newValue) {
     String oldValue = value;
     value = newValue;
@@ -112,6 +114,7 @@ public class CodeTypeImpl extends EObjectImpl implements CodeType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getCodeSpace() {
     return codeSpace;
   }
@@ -121,6 +124,7 @@ public class CodeTypeImpl extends EObjectImpl implements CodeType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setCodeSpace(String newCodeSpace) {
     String oldCodeSpace = codeSpace;
     codeSpace = newCodeSpace;

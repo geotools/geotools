@@ -62,6 +62,7 @@ public abstract class AbstractTimeTopologyPrimitiveTypeImpl extends AbstractTime
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ReferenceType getComplex() {
         return complex;
     }
@@ -86,6 +87,7 @@ public abstract class AbstractTimeTopologyPrimitiveTypeImpl extends AbstractTime
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setComplex(ReferenceType newComplex) {
         if (newComplex != complex) {
             NotificationChain msgs = null;

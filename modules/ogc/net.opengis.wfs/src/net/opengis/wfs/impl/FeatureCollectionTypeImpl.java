@@ -128,7 +128,8 @@ public class FeatureCollectionTypeImpl extends EObjectImpl implements FeatureCol
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.FEATURE_COLLECTION_TYPE;
   }
 
@@ -137,7 +138,8 @@ public class FeatureCollectionTypeImpl extends EObjectImpl implements FeatureCol
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getLockId() {
+	@Override
+    public String getLockId() {
     return lockId;
   }
 
@@ -146,7 +148,8 @@ public class FeatureCollectionTypeImpl extends EObjectImpl implements FeatureCol
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setLockId(String newLockId) {
+	@Override
+    public void setLockId(String newLockId) {
     String oldLockId = lockId;
     lockId = newLockId;
     if (eNotificationRequired())
@@ -158,7 +161,8 @@ public class FeatureCollectionTypeImpl extends EObjectImpl implements FeatureCol
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Calendar getTimeStamp() {
+	@Override
+    public Calendar getTimeStamp() {
     return timeStamp;
   }
 
@@ -167,7 +171,8 @@ public class FeatureCollectionTypeImpl extends EObjectImpl implements FeatureCol
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setTimeStamp(Calendar newTimeStamp) {
+	@Override
+    public void setTimeStamp(Calendar newTimeStamp) {
     Calendar oldTimeStamp = timeStamp;
     timeStamp = newTimeStamp;
     if (eNotificationRequired())
@@ -179,7 +184,8 @@ public class FeatureCollectionTypeImpl extends EObjectImpl implements FeatureCol
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public BigInteger getNumberOfFeatures() {
+	@Override
+    public BigInteger getNumberOfFeatures() {
     return numberOfFeatures;
   }
 
@@ -188,7 +194,8 @@ public class FeatureCollectionTypeImpl extends EObjectImpl implements FeatureCol
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setNumberOfFeatures(BigInteger newNumberOfFeatures) {
+	@Override
+    public void setNumberOfFeatures(BigInteger newNumberOfFeatures) {
     BigInteger oldNumberOfFeatures = numberOfFeatures;
     numberOfFeatures = newNumberOfFeatures;
     if (eNotificationRequired())
@@ -200,7 +207,8 @@ public class FeatureCollectionTypeImpl extends EObjectImpl implements FeatureCol
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList getFeature() {
+	@Override
+    public EList getFeature() {
     if (feature == null) {
       feature = new EDataTypeUniqueEList(FeatureCollection.class, this, WfsPackage.FEATURE_COLLECTION_TYPE__FEATURE);
     }
@@ -212,7 +220,8 @@ public class FeatureCollectionTypeImpl extends EObjectImpl implements FeatureCol
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	@Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.FEATURE_COLLECTION_TYPE__LOCK_ID:
         return getLockId();
@@ -231,7 +240,8 @@ public class FeatureCollectionTypeImpl extends EObjectImpl implements FeatureCol
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(int featureID, Object newValue) {
+	@Override
+    public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.FEATURE_COLLECTION_TYPE__LOCK_ID:
         setLockId((String)newValue);
@@ -255,7 +265,8 @@ public class FeatureCollectionTypeImpl extends EObjectImpl implements FeatureCol
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(int featureID) {
+	@Override
+    public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.FEATURE_COLLECTION_TYPE__LOCK_ID:
         setLockId(LOCK_ID_EDEFAULT);
@@ -278,7 +289,8 @@ public class FeatureCollectionTypeImpl extends EObjectImpl implements FeatureCol
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(int featureID) {
+	@Override
+    public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.FEATURE_COLLECTION_TYPE__LOCK_ID:
         return LOCK_ID_EDEFAULT == null ? lockId != null : !LOCK_ID_EDEFAULT.equals(lockId);
@@ -297,7 +309,8 @@ public class FeatureCollectionTypeImpl extends EObjectImpl implements FeatureCol
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String toString() {
+	@Override
+    public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

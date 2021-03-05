@@ -93,6 +93,7 @@ public class MeasureListTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public List<Double> getValue() {
         return value;
     }
@@ -102,6 +103,7 @@ public class MeasureListTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValue(List<Double> newValue) {
         List<Double> oldValue = value;
         value = newValue;
@@ -114,6 +116,7 @@ public class MeasureListTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getUom() {
         return uom;
     }
@@ -123,6 +126,7 @@ public class MeasureListTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUom(String newUom) {
         String oldUom = uom;
         uom = newUom;

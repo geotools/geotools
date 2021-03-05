@@ -131,6 +131,7 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public TransactionSummaryType getTransactionSummary() {
     return transactionSummary;
   }
@@ -155,6 +156,7 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setTransactionSummary(TransactionSummaryType newTransactionSummary) {
     if (newTransactionSummary != transactionSummary) {
       NotificationChain msgs = null;
@@ -174,6 +176,7 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ActionResultsType getInsertResults() {
     return insertResults;
   }
@@ -198,6 +201,7 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setInsertResults(ActionResultsType newInsertResults) {
     if (newInsertResults != insertResults) {
       NotificationChain msgs = null;
@@ -217,6 +221,7 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ActionResultsType getUpdateResults() {
     return updateResults;
   }
@@ -241,6 +246,7 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setUpdateResults(ActionResultsType newUpdateResults) {
     if (newUpdateResults != updateResults) {
       NotificationChain msgs = null;
@@ -260,6 +266,7 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ActionResultsType getReplaceResults() {
     return replaceResults;
   }
@@ -284,6 +291,7 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setReplaceResults(ActionResultsType newReplaceResults) {
     if (newReplaceResults != replaceResults) {
       NotificationChain msgs = null;
@@ -303,6 +311,7 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getVersion() {
     return version;
   }
@@ -312,6 +321,7 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setVersion(String newVersion) {
     String oldVersion = version;
     version = newVersion;
@@ -326,6 +336,7 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetVersion() {
     String oldVersion = version;
     boolean oldVersionESet = versionESet;
@@ -340,6 +351,7 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetVersion() {
     return versionESet;
   }

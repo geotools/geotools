@@ -73,6 +73,7 @@ public class OutputFormatListTypeImpl extends EObjectImpl implements OutputForma
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureMap getGroup() {
     if (group == null) {
       group = new BasicFeatureMap(this, Wfs20Package.OUTPUT_FORMAT_LIST_TYPE__GROUP);
@@ -85,6 +86,7 @@ public class OutputFormatListTypeImpl extends EObjectImpl implements OutputForma
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<String> getFormat() {
     return getGroup().list(Wfs20Package.Literals.OUTPUT_FORMAT_LIST_TYPE__FORMAT);
   }

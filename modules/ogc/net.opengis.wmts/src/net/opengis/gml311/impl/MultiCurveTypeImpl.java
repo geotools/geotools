@@ -81,6 +81,7 @@ public class MultiCurveTypeImpl extends AbstractGeometricAggregateTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<CurvePropertyType> getCurveMember() {
         if (curveMember == null) {
             curveMember = new EObjectContainmentEList<>(CurvePropertyType.class, this, Gml311Package.MULTI_CURVE_TYPE__CURVE_MEMBER);
@@ -93,6 +94,7 @@ public class MultiCurveTypeImpl extends AbstractGeometricAggregateTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CurveArrayPropertyType getCurveMembers() {
         return curveMembers;
     }
@@ -117,6 +119,7 @@ public class MultiCurveTypeImpl extends AbstractGeometricAggregateTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCurveMembers(CurveArrayPropertyType newCurveMembers) {
         if (newCurveMembers != curveMembers) {
             NotificationChain msgs = null;

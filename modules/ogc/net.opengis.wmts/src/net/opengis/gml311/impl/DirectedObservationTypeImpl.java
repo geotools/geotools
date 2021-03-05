@@ -62,6 +62,7 @@ public class DirectedObservationTypeImpl extends ObservationTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectionPropertyType getDirection() {
         return direction;
     }
@@ -86,6 +87,7 @@ public class DirectedObservationTypeImpl extends ObservationTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDirection(DirectionPropertyType newDirection) {
         if (newDirection != direction) {
             NotificationChain msgs = null;

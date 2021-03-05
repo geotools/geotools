@@ -68,6 +68,7 @@ public class EnvelopePropertyTypeImpl extends EObjectImpl implements EnvelopePro
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureMap getAny() {
     if (any == null) {
       any = new BasicFeatureMap(this, Wfs20Package.ENVELOPE_PROPERTY_TYPE__ANY);

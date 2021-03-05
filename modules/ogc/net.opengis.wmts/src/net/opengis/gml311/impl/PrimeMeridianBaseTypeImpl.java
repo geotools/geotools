@@ -62,6 +62,7 @@ public abstract class PrimeMeridianBaseTypeImpl extends DefinitionTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getMeridianName() {
         return meridianName;
     }
@@ -86,6 +87,7 @@ public abstract class PrimeMeridianBaseTypeImpl extends DefinitionTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMeridianName(CodeType newMeridianName) {
         if (newMeridianName != meridianName) {
             NotificationChain msgs = null;

@@ -95,6 +95,7 @@ public class ThemeTypeImpl extends DescriptionTypeImpl implements ThemeType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getIdentifier() {
         return identifier;
     }
@@ -119,6 +120,7 @@ public class ThemeTypeImpl extends DescriptionTypeImpl implements ThemeType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIdentifier(CodeType newIdentifier) {
         if (newIdentifier != identifier) {
             NotificationChain msgs = null;
@@ -138,6 +140,7 @@ public class ThemeTypeImpl extends DescriptionTypeImpl implements ThemeType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<ThemeType> getTheme() {
         if (theme == null) {
             theme = new EObjectContainmentEList<>(ThemeType.class, this, wmtsv_1Package.THEME_TYPE__THEME);
@@ -150,6 +153,7 @@ public class ThemeTypeImpl extends DescriptionTypeImpl implements ThemeType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<String> getLayerRef() {
         if (layerRef == null) {
             layerRef = new EDataTypeEList<>(String.class, this, wmtsv_1Package.THEME_TYPE__LAYER_REF);

@@ -191,6 +191,7 @@ public class PropertyNameTypeImpl extends EObjectImpl implements PropertyNameTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public QName getValue() {
     return value;
   }
@@ -200,6 +201,7 @@ public class PropertyNameTypeImpl extends EObjectImpl implements PropertyNameTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setValue(QName newValue) {
     QName oldValue = value;
     value = newValue;
@@ -212,6 +214,7 @@ public class PropertyNameTypeImpl extends EObjectImpl implements PropertyNameTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ResolveValueType getResolve() {
     return resolve;
   }
@@ -221,6 +224,7 @@ public class PropertyNameTypeImpl extends EObjectImpl implements PropertyNameTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setResolve(ResolveValueType newResolve) {
     ResolveValueType oldResolve = resolve;
     resolve = newResolve == null ? RESOLVE_EDEFAULT : newResolve;
@@ -235,6 +239,7 @@ public class PropertyNameTypeImpl extends EObjectImpl implements PropertyNameTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetResolve() {
     ResolveValueType oldResolve = resolve;
     boolean oldResolveESet = resolveESet;
@@ -249,6 +254,7 @@ public class PropertyNameTypeImpl extends EObjectImpl implements PropertyNameTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetResolve() {
     return resolveESet;
   }
@@ -258,6 +264,7 @@ public class PropertyNameTypeImpl extends EObjectImpl implements PropertyNameTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object getResolveDepth() {
     return resolveDepth;
   }
@@ -267,6 +274,7 @@ public class PropertyNameTypeImpl extends EObjectImpl implements PropertyNameTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setResolveDepth(Object newResolveDepth) {
     Object oldResolveDepth = resolveDepth;
     resolveDepth = newResolveDepth;
@@ -281,6 +289,7 @@ public class PropertyNameTypeImpl extends EObjectImpl implements PropertyNameTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetResolveDepth() {
     Object oldResolveDepth = resolveDepth;
     boolean oldResolveDepthESet = resolveDepthESet;
@@ -295,6 +304,7 @@ public class PropertyNameTypeImpl extends EObjectImpl implements PropertyNameTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetResolveDepth() {
     return resolveDepthESet;
   }
@@ -304,6 +314,7 @@ public class PropertyNameTypeImpl extends EObjectImpl implements PropertyNameTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getResolvePath() {
     return resolvePath;
   }
@@ -313,6 +324,7 @@ public class PropertyNameTypeImpl extends EObjectImpl implements PropertyNameTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setResolvePath(String newResolvePath) {
     String oldResolvePath = resolvePath;
     resolvePath = newResolvePath;
@@ -325,6 +337,7 @@ public class PropertyNameTypeImpl extends EObjectImpl implements PropertyNameTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public BigInteger getResolveTimeout() {
     return resolveTimeout;
   }
@@ -334,6 +347,7 @@ public class PropertyNameTypeImpl extends EObjectImpl implements PropertyNameTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setResolveTimeout(BigInteger newResolveTimeout) {
     BigInteger oldResolveTimeout = resolveTimeout;
     resolveTimeout = newResolveTimeout;
@@ -348,6 +362,7 @@ public class PropertyNameTypeImpl extends EObjectImpl implements PropertyNameTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetResolveTimeout() {
     BigInteger oldResolveTimeout = resolveTimeout;
     boolean oldResolveTimeoutESet = resolveTimeoutESet;
@@ -362,6 +377,7 @@ public class PropertyNameTypeImpl extends EObjectImpl implements PropertyNameTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetResolveTimeout() {
     return resolveTimeoutESet;
   }

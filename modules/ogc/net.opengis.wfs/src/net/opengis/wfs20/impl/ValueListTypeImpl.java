@@ -74,6 +74,7 @@ public class ValueListTypeImpl extends EObjectImpl implements ValueListType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureMap getGroup() {
     if (group == null) {
       group = new BasicFeatureMap(this, Wfs20Package.VALUE_LIST_TYPE__GROUP);
@@ -86,6 +87,7 @@ public class ValueListTypeImpl extends EObjectImpl implements ValueListType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<EObject> getValue() {
     return getGroup().list(Wfs20Package.Literals.VALUE_LIST_TYPE__VALUE);
   }

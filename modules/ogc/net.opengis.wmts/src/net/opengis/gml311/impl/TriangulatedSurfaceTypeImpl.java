@@ -62,6 +62,7 @@ public class TriangulatedSurfaceTypeImpl extends SurfaceTypeImpl implements Tria
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TrianglePatchArrayPropertyType getTrianglePatches() {
         return trianglePatches;
     }
@@ -86,6 +87,7 @@ public class TriangulatedSurfaceTypeImpl extends SurfaceTypeImpl implements Tria
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTrianglePatches(TrianglePatchArrayPropertyType newTrianglePatches) {
         if (newTrianglePatches != trianglePatches) {
             NotificationChain msgs = null;

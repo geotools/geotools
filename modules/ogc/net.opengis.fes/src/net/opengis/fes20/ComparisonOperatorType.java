@@ -41,6 +41,7 @@ public interface ComparisonOperatorType extends EObject, Operator {
      *        extendedMetaData="kind='attribute' name='name'"
      * @generated
      */
+    @Override
     String getName();
 
     /**

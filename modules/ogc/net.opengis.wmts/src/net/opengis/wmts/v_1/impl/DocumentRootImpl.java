@@ -130,6 +130,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getMixed() {
         if (mixed == null) {
             mixed = new BasicFeatureMap(this, wmtsv_1Package.DOCUMENT_ROOT__MIXED);
@@ -142,6 +143,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EMap<String, String> getXMLNSPrefixMap() {
         if (xMLNSPrefixMap == null) {
             xMLNSPrefixMap = new EcoreEMap<>(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY, EStringToStringMapEntryImpl.class, this, wmtsv_1Package.DOCUMENT_ROOT__XMLNS_PREFIX_MAP);
@@ -154,6 +156,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EMap<String, String> getXSISchemaLocation() {
         if (xSISchemaLocation == null) {
             xSISchemaLocation = new EcoreEMap<>(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY, EStringToStringMapEntryImpl.class, this, wmtsv_1Package.DOCUMENT_ROOT__XSI_SCHEMA_LOCATION);
@@ -166,6 +169,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinaryPayloadType getBinaryPayload() {
         return (BinaryPayloadType)getMixed().get(wmtsv_1Package.Literals.DOCUMENT_ROOT__BINARY_PAYLOAD, true);
     }
@@ -184,6 +188,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBinaryPayload(BinaryPayloadType newBinaryPayload) {
         ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__BINARY_PAYLOAD, newBinaryPayload);
     }
@@ -193,6 +198,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CapabilitiesType getCapabilities() {
         return (CapabilitiesType)getMixed().get(wmtsv_1Package.Literals.DOCUMENT_ROOT__CAPABILITIES, true);
     }
@@ -211,6 +217,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCapabilities(CapabilitiesType newCapabilities) {
         ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__CAPABILITIES, newCapabilities);
     }
@@ -220,6 +227,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DimensionType getDimension() {
         return (DimensionType)getMixed().get(wmtsv_1Package.Literals.DOCUMENT_ROOT__DIMENSION, true);
     }
@@ -238,6 +246,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDimension(DimensionType newDimension) {
         ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__DIMENSION, newDimension);
     }
@@ -247,6 +256,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DimensionNameValueType getDimensionNameValue() {
         return (DimensionNameValueType)getMixed().get(wmtsv_1Package.Literals.DOCUMENT_ROOT__DIMENSION_NAME_VALUE, true);
     }
@@ -265,6 +275,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDimensionNameValue(DimensionNameValueType newDimensionNameValue) {
         ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__DIMENSION_NAME_VALUE, newDimensionNameValue);
     }
@@ -274,6 +285,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureInfoResponseType getFeatureInfoResponse() {
         return (FeatureInfoResponseType)getMixed().get(wmtsv_1Package.Literals.DOCUMENT_ROOT__FEATURE_INFO_RESPONSE, true);
     }
@@ -292,6 +304,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFeatureInfoResponse(FeatureInfoResponseType newFeatureInfoResponse) {
         ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__FEATURE_INFO_RESPONSE, newFeatureInfoResponse);
     }
@@ -301,6 +314,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GetCapabilitiesType getGetCapabilities() {
         return (GetCapabilitiesType)getMixed().get(wmtsv_1Package.Literals.DOCUMENT_ROOT__GET_CAPABILITIES, true);
     }
@@ -319,6 +333,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGetCapabilities(GetCapabilitiesType newGetCapabilities) {
         ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__GET_CAPABILITIES, newGetCapabilities);
     }
@@ -328,6 +343,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GetFeatureInfoType getGetFeatureInfo() {
         return (GetFeatureInfoType)getMixed().get(wmtsv_1Package.Literals.DOCUMENT_ROOT__GET_FEATURE_INFO, true);
     }
@@ -346,6 +362,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGetFeatureInfo(GetFeatureInfoType newGetFeatureInfo) {
         ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__GET_FEATURE_INFO, newGetFeatureInfo);
     }
@@ -355,6 +372,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GetTileType getGetTile() {
         return (GetTileType)getMixed().get(wmtsv_1Package.Literals.DOCUMENT_ROOT__GET_TILE, true);
     }
@@ -373,6 +391,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGetTile(GetTileType newGetTile) {
         ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__GET_TILE, newGetTile);
     }
@@ -382,6 +401,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LayerType getLayer() {
         return (LayerType)getMixed().get(wmtsv_1Package.Literals.DOCUMENT_ROOT__LAYER, true);
     }
@@ -400,6 +420,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLayer(LayerType newLayer) {
         ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__LAYER, newLayer);
     }
@@ -409,6 +430,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LegendURLType getLegendURL() {
         return (LegendURLType)getMixed().get(wmtsv_1Package.Literals.DOCUMENT_ROOT__LEGEND_URL, true);
     }
@@ -427,6 +449,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLegendURL(LegendURLType newLegendURL) {
         ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__LEGEND_URL, newLegendURL);
     }
@@ -436,6 +459,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StyleType getStyle() {
         return (StyleType)getMixed().get(wmtsv_1Package.Literals.DOCUMENT_ROOT__STYLE, true);
     }
@@ -454,6 +478,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setStyle(StyleType newStyle) {
         ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__STYLE, newStyle);
     }
@@ -463,6 +488,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TextPayloadType getTextPayload() {
         return (TextPayloadType)getMixed().get(wmtsv_1Package.Literals.DOCUMENT_ROOT__TEXT_PAYLOAD, true);
     }
@@ -481,6 +507,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTextPayload(TextPayloadType newTextPayload) {
         ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__TEXT_PAYLOAD, newTextPayload);
     }
@@ -490,6 +517,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ThemeType getTheme() {
         return (ThemeType)getMixed().get(wmtsv_1Package.Literals.DOCUMENT_ROOT__THEME, true);
     }
@@ -508,6 +536,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTheme(ThemeType newTheme) {
         ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__THEME, newTheme);
     }
@@ -517,6 +546,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ThemesType getThemes() {
         return (ThemesType)getMixed().get(wmtsv_1Package.Literals.DOCUMENT_ROOT__THEMES, true);
     }
@@ -535,6 +565,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setThemes(ThemesType newThemes) {
         ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__THEMES, newThemes);
     }
@@ -544,6 +575,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TileMatrixType getTileMatrix() {
         return (TileMatrixType)getMixed().get(wmtsv_1Package.Literals.DOCUMENT_ROOT__TILE_MATRIX, true);
     }
@@ -562,6 +594,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTileMatrix(TileMatrixType newTileMatrix) {
         ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__TILE_MATRIX, newTileMatrix);
     }
@@ -571,6 +604,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TileMatrixLimitsType getTileMatrixLimits() {
         return (TileMatrixLimitsType)getMixed().get(wmtsv_1Package.Literals.DOCUMENT_ROOT__TILE_MATRIX_LIMITS, true);
     }
@@ -589,6 +623,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTileMatrixLimits(TileMatrixLimitsType newTileMatrixLimits) {
         ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__TILE_MATRIX_LIMITS, newTileMatrixLimits);
     }
@@ -598,6 +633,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TileMatrixSetType getTileMatrixSet() {
         return (TileMatrixSetType)getMixed().get(wmtsv_1Package.Literals.DOCUMENT_ROOT__TILE_MATRIX_SET, true);
     }
@@ -616,6 +652,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTileMatrixSet(TileMatrixSetType newTileMatrixSet) {
         ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__TILE_MATRIX_SET, newTileMatrixSet);
     }
@@ -625,6 +662,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TileMatrixSetLimitsType getTileMatrixSetLimits() {
         return (TileMatrixSetLimitsType)getMixed().get(wmtsv_1Package.Literals.DOCUMENT_ROOT__TILE_MATRIX_SET_LIMITS, true);
     }
@@ -643,6 +681,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTileMatrixSetLimits(TileMatrixSetLimitsType newTileMatrixSetLimits) {
         ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__TILE_MATRIX_SET_LIMITS, newTileMatrixSetLimits);
     }
@@ -652,6 +691,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TileMatrixSetLinkType getTileMatrixSetLink() {
         return (TileMatrixSetLinkType)getMixed().get(wmtsv_1Package.Literals.DOCUMENT_ROOT__TILE_MATRIX_SET_LINK, true);
     }
@@ -670,6 +710,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTileMatrixSetLink(TileMatrixSetLinkType newTileMatrixSetLink) {
         ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__TILE_MATRIX_SET_LINK, newTileMatrixSetLink);
     }

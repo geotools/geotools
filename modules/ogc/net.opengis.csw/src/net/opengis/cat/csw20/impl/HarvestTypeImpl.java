@@ -170,6 +170,7 @@ public class HarvestTypeImpl extends RequestBaseTypeImpl implements HarvestType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getSource() {
         return source;
     }
@@ -179,6 +180,7 @@ public class HarvestTypeImpl extends RequestBaseTypeImpl implements HarvestType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSource(String newSource) {
         String oldSource = source;
         source = newSource;
@@ -191,6 +193,7 @@ public class HarvestTypeImpl extends RequestBaseTypeImpl implements HarvestType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getResourceType() {
         return resourceType;
     }
@@ -200,6 +203,7 @@ public class HarvestTypeImpl extends RequestBaseTypeImpl implements HarvestType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setResourceType(String newResourceType) {
         String oldResourceType = resourceType;
         resourceType = newResourceType;
@@ -212,6 +216,7 @@ public class HarvestTypeImpl extends RequestBaseTypeImpl implements HarvestType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getResourceFormat() {
         return resourceFormat;
     }
@@ -221,6 +226,7 @@ public class HarvestTypeImpl extends RequestBaseTypeImpl implements HarvestType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setResourceFormat(String newResourceFormat) {
         String oldResourceFormat = resourceFormat;
         resourceFormat = newResourceFormat;
@@ -235,6 +241,7 @@ public class HarvestTypeImpl extends RequestBaseTypeImpl implements HarvestType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetResourceFormat() {
         String oldResourceFormat = resourceFormat;
         boolean oldResourceFormatESet = resourceFormatESet;
@@ -249,6 +256,7 @@ public class HarvestTypeImpl extends RequestBaseTypeImpl implements HarvestType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetResourceFormat() {
         return resourceFormatESet;
     }
@@ -258,6 +266,7 @@ public class HarvestTypeImpl extends RequestBaseTypeImpl implements HarvestType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Duration getHarvestInterval() {
         return harvestInterval;
     }
@@ -267,6 +276,7 @@ public class HarvestTypeImpl extends RequestBaseTypeImpl implements HarvestType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setHarvestInterval(Duration newHarvestInterval) {
         Duration oldHarvestInterval = harvestInterval;
         harvestInterval = newHarvestInterval;
@@ -279,6 +289,7 @@ public class HarvestTypeImpl extends RequestBaseTypeImpl implements HarvestType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getResponseHandler() {
         return responseHandler;
     }
@@ -288,6 +299,7 @@ public class HarvestTypeImpl extends RequestBaseTypeImpl implements HarvestType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setResponseHandler(String newResponseHandler) {
         String oldResponseHandler = responseHandler;
         responseHandler = newResponseHandler;

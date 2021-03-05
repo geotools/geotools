@@ -63,6 +63,7 @@ public class IndirectEntryTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DefinitionProxyType getDefinitionProxy() {
         return definitionProxy;
     }
@@ -87,6 +88,7 @@ public class IndirectEntryTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDefinitionProxy(DefinitionProxyType newDefinitionProxy) {
         if (newDefinitionProxy != definitionProxy) {
             NotificationChain msgs = null;

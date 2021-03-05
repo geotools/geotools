@@ -117,6 +117,7 @@ public class ReferenceTypeImpl extends AbstractReferenceBaseTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public CodeType getIdentifier() {
     return identifier;
   }
@@ -141,6 +142,7 @@ public class ReferenceTypeImpl extends AbstractReferenceBaseTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setIdentifier(CodeType newIdentifier) {
     if (newIdentifier != identifier) {
       NotificationChain msgs = null;
@@ -160,6 +162,7 @@ public class ReferenceTypeImpl extends AbstractReferenceBaseTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<LanguageStringType> getAbstract() {
     if (abstract_ == null) {
       abstract_ = new EObjectContainmentEList<>(LanguageStringType.class, this, Ows20Package.REFERENCE_TYPE__ABSTRACT);
@@ -172,6 +175,7 @@ public class ReferenceTypeImpl extends AbstractReferenceBaseTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getFormat() {
     return format;
   }
@@ -181,6 +185,7 @@ public class ReferenceTypeImpl extends AbstractReferenceBaseTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setFormat(String newFormat) {
     String oldFormat = format;
     format = newFormat;
@@ -193,6 +198,7 @@ public class ReferenceTypeImpl extends AbstractReferenceBaseTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureMap getMetadataGroup() {
     if (metadataGroup == null) {
       metadataGroup = new BasicFeatureMap(this, Ows20Package.REFERENCE_TYPE__METADATA_GROUP);
@@ -205,6 +211,7 @@ public class ReferenceTypeImpl extends AbstractReferenceBaseTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<MetadataType> getMetadata() {
     return getMetadataGroup().list(Ows20Package.Literals.REFERENCE_TYPE__METADATA);
   }

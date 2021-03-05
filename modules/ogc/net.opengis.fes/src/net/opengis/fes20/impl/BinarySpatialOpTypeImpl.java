@@ -103,6 +103,7 @@ public class BinarySpatialOpTypeImpl extends SpatialOpsTypeImpl implements Binar
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getValueReference() {
         return valueReference;
     }
@@ -112,6 +113,7 @@ public class BinarySpatialOpTypeImpl extends SpatialOpsTypeImpl implements Binar
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValueReference(String newValueReference) {
         String oldValueReference = valueReference;
         valueReference = newValueReference;
@@ -124,6 +126,7 @@ public class BinarySpatialOpTypeImpl extends SpatialOpsTypeImpl implements Binar
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getExpressionGroup() {
         if (expressionGroup == null) {
             expressionGroup = new BasicFeatureMap(this, Fes20Package.BINARY_SPATIAL_OP_TYPE__EXPRESSION_GROUP);
@@ -136,6 +139,7 @@ public class BinarySpatialOpTypeImpl extends SpatialOpsTypeImpl implements Binar
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EObject getExpression() {
         return (EObject)getExpressionGroup().get(Fes20Package.Literals.BINARY_SPATIAL_OP_TYPE__EXPRESSION, true);
     }
@@ -154,6 +158,7 @@ public class BinarySpatialOpTypeImpl extends SpatialOpsTypeImpl implements Binar
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getAny() {
         if (any == null) {
             any = new BasicFeatureMap(this, Fes20Package.BINARY_SPATIAL_OP_TYPE__ANY);

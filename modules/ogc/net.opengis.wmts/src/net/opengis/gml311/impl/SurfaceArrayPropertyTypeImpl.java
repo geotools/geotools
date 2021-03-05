@@ -68,6 +68,7 @@ public class SurfaceArrayPropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getSurfaceGroup() {
         if (surfaceGroup == null) {
             surfaceGroup = new BasicFeatureMap(this, Gml311Package.SURFACE_ARRAY_PROPERTY_TYPE__SURFACE_GROUP);
@@ -80,6 +81,7 @@ public class SurfaceArrayPropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<AbstractSurfaceType> getSurface() {
         return getSurfaceGroup().list(Gml311Package.eINSTANCE.getSurfaceArrayPropertyType_Surface());
     }

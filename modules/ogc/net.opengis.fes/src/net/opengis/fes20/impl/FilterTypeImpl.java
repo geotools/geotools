@@ -150,6 +150,7 @@ public class FilterTypeImpl extends AbstractSelectionClauseTypeImpl implements F
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getComparisonOpsGroup() {
         if (comparisonOpsGroup == null) {
             comparisonOpsGroup = new BasicFeatureMap(this, Fes20Package.FILTER_TYPE__COMPARISON_OPS_GROUP);
@@ -162,6 +163,7 @@ public class FilterTypeImpl extends AbstractSelectionClauseTypeImpl implements F
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ComparisonOpsType getComparisonOps() {
         return (ComparisonOpsType)getComparisonOpsGroup().get(Fes20Package.Literals.FILTER_TYPE__COMPARISON_OPS, true);
     }
@@ -180,6 +182,7 @@ public class FilterTypeImpl extends AbstractSelectionClauseTypeImpl implements F
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getSpatialOpsGroup() {
         if (spatialOpsGroup == null) {
             spatialOpsGroup = new BasicFeatureMap(this, Fes20Package.FILTER_TYPE__SPATIAL_OPS_GROUP);
@@ -192,6 +195,7 @@ public class FilterTypeImpl extends AbstractSelectionClauseTypeImpl implements F
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SpatialOpsType getSpatialOps() {
         return (SpatialOpsType)getSpatialOpsGroup().get(Fes20Package.Literals.FILTER_TYPE__SPATIAL_OPS, true);
     }
@@ -210,6 +214,7 @@ public class FilterTypeImpl extends AbstractSelectionClauseTypeImpl implements F
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getTemporalOpsGroup() {
         if (temporalOpsGroup == null) {
             temporalOpsGroup = new BasicFeatureMap(this, Fes20Package.FILTER_TYPE__TEMPORAL_OPS_GROUP);
@@ -222,6 +227,7 @@ public class FilterTypeImpl extends AbstractSelectionClauseTypeImpl implements F
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TemporalOpsType getTemporalOps() {
         return (TemporalOpsType)getTemporalOpsGroup().get(Fes20Package.Literals.FILTER_TYPE__TEMPORAL_OPS, true);
     }
@@ -240,6 +246,7 @@ public class FilterTypeImpl extends AbstractSelectionClauseTypeImpl implements F
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getLogicOpsGroup() {
         if (logicOpsGroup == null) {
             logicOpsGroup = new BasicFeatureMap(this, Fes20Package.FILTER_TYPE__LOGIC_OPS_GROUP);
@@ -252,6 +259,7 @@ public class FilterTypeImpl extends AbstractSelectionClauseTypeImpl implements F
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LogicOpsType getLogicOps() {
         return (LogicOpsType)getLogicOpsGroup().get(Fes20Package.Literals.FILTER_TYPE__LOGIC_OPS, true);
     }
@@ -270,6 +278,7 @@ public class FilterTypeImpl extends AbstractSelectionClauseTypeImpl implements F
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getExtensionOpsGroup() {
         if (extensionOpsGroup == null) {
             extensionOpsGroup = new BasicFeatureMap(this, Fes20Package.FILTER_TYPE__EXTENSION_OPS_GROUP);
@@ -282,6 +291,7 @@ public class FilterTypeImpl extends AbstractSelectionClauseTypeImpl implements F
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ExtensionOpsType getExtensionOps() {
         return (ExtensionOpsType)getExtensionOpsGroup().get(Fes20Package.Literals.FILTER_TYPE__EXTENSION_OPS, true);
     }
@@ -300,6 +310,7 @@ public class FilterTypeImpl extends AbstractSelectionClauseTypeImpl implements F
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FunctionType getFunction() {
         return function;
     }
@@ -324,6 +335,7 @@ public class FilterTypeImpl extends AbstractSelectionClauseTypeImpl implements F
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFunction(FunctionType newFunction) {
         if (newFunction != function) {
             NotificationChain msgs = null;
@@ -343,6 +355,7 @@ public class FilterTypeImpl extends AbstractSelectionClauseTypeImpl implements F
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getIdGroup() {
         if (idGroup == null) {
             idGroup = new BasicFeatureMap(this, Fes20Package.FILTER_TYPE__ID_GROUP);
@@ -355,6 +368,7 @@ public class FilterTypeImpl extends AbstractSelectionClauseTypeImpl implements F
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<AbstractIdType> getId() {
         return getIdGroup().list(Fes20Package.Literals.FILTER_TYPE__ID);
     }

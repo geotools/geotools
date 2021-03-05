@@ -120,6 +120,7 @@ public class DatasetDescriptionSummaryBaseTypeImpl extends DescriptionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<WGS84BoundingBoxType> getWGS84BoundingBox() {
     if (wGS84BoundingBox == null) {
       wGS84BoundingBox = new EObjectContainmentEList<>(WGS84BoundingBoxType.class, this, Ows20Package.DATASET_DESCRIPTION_SUMMARY_BASE_TYPE__WGS84_BOUNDING_BOX);
@@ -132,6 +133,7 @@ public class DatasetDescriptionSummaryBaseTypeImpl extends DescriptionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public CodeType getIdentifier() {
     return identifier;
   }
@@ -156,6 +158,7 @@ public class DatasetDescriptionSummaryBaseTypeImpl extends DescriptionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setIdentifier(CodeType newIdentifier) {
     if (newIdentifier != identifier) {
       NotificationChain msgs = null;
@@ -175,6 +178,7 @@ public class DatasetDescriptionSummaryBaseTypeImpl extends DescriptionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureMap getBoundingBoxGroup() {
     if (boundingBoxGroup == null) {
       boundingBoxGroup = new BasicFeatureMap(this, Ows20Package.DATASET_DESCRIPTION_SUMMARY_BASE_TYPE__BOUNDING_BOX_GROUP);
@@ -187,6 +191,7 @@ public class DatasetDescriptionSummaryBaseTypeImpl extends DescriptionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<BoundingBoxType> getBoundingBox() {
     return getBoundingBoxGroup().list(Ows20Package.Literals.DATASET_DESCRIPTION_SUMMARY_BASE_TYPE__BOUNDING_BOX);
   }
@@ -196,6 +201,7 @@ public class DatasetDescriptionSummaryBaseTypeImpl extends DescriptionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureMap getMetadataGroup() {
     if (metadataGroup == null) {
       metadataGroup = new BasicFeatureMap(this, Ows20Package.DATASET_DESCRIPTION_SUMMARY_BASE_TYPE__METADATA_GROUP);
@@ -208,6 +214,7 @@ public class DatasetDescriptionSummaryBaseTypeImpl extends DescriptionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<MetadataType> getMetadata() {
     return getMetadataGroup().list(Ows20Package.Literals.DATASET_DESCRIPTION_SUMMARY_BASE_TYPE__METADATA);
   }
@@ -217,6 +224,7 @@ public class DatasetDescriptionSummaryBaseTypeImpl extends DescriptionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<DatasetDescriptionSummaryBaseType> getDatasetDescriptionSummary() {
     if (datasetDescriptionSummary == null) {
       datasetDescriptionSummary = new EObjectContainmentEList<>(DatasetDescriptionSummaryBaseType.class, this, Ows20Package.DATASET_DESCRIPTION_SUMMARY_BASE_TYPE__DATASET_DESCRIPTION_SUMMARY);

@@ -111,6 +111,7 @@ public class BriefRecordTypeImpl extends AbstractRecordTypeImpl implements Brief
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<SimpleLiteral> getIdentifier() {
         if (identifier == null) {
             identifier = new EObjectResolvingEList<>(SimpleLiteral.class, this, Csw20Package.BRIEF_RECORD_TYPE__IDENTIFIER);
@@ -123,6 +124,7 @@ public class BriefRecordTypeImpl extends AbstractRecordTypeImpl implements Brief
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<SimpleLiteral> getTitle() {
         if (title == null) {
             title = new EObjectResolvingEList<>(SimpleLiteral.class, this, Csw20Package.BRIEF_RECORD_TYPE__TITLE);
@@ -135,6 +137,7 @@ public class BriefRecordTypeImpl extends AbstractRecordTypeImpl implements Brief
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SimpleLiteral getType() {
         if (type != null && type.eIsProxy()) {
             InternalEObject oldType = (InternalEObject)type;
@@ -161,6 +164,7 @@ public class BriefRecordTypeImpl extends AbstractRecordTypeImpl implements Brief
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setType(SimpleLiteral newType) {
         SimpleLiteral oldType = type;
         type = newType;
@@ -173,6 +177,7 @@ public class BriefRecordTypeImpl extends AbstractRecordTypeImpl implements Brief
      * <!-- end-user-doc -->
      * @generated NOT
      */
+    @Override
     public EList<BoundingBoxType> getBoundingBox() {
         if (boundingBox == null) {
             boundingBox = new EObjectResolvingEList<>(BoundingBoxType.class, this, Csw20Package.SUMMARY_RECORD_TYPE__BOUNDING_BOX);

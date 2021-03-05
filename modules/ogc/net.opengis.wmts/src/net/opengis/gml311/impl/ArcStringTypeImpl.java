@@ -152,6 +152,7 @@ public class ArcStringTypeImpl extends AbstractCurveSegmentTypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getGroup() {
         if (group == null) {
             group = new BasicFeatureMap(this, Gml311Package.ARC_STRING_TYPE__GROUP);
@@ -164,6 +165,7 @@ public class ArcStringTypeImpl extends AbstractCurveSegmentTypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<DirectPositionType> getPos() {
         return getGroup().list(Gml311Package.eINSTANCE.getArcStringType_Pos());
     }
@@ -173,6 +175,7 @@ public class ArcStringTypeImpl extends AbstractCurveSegmentTypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<PointPropertyType> getPointProperty() {
         return getGroup().list(Gml311Package.eINSTANCE.getArcStringType_PointProperty());
     }
@@ -182,6 +185,7 @@ public class ArcStringTypeImpl extends AbstractCurveSegmentTypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<PointPropertyType> getPointRep() {
         return getGroup().list(Gml311Package.eINSTANCE.getArcStringType_PointRep());
     }
@@ -191,6 +195,7 @@ public class ArcStringTypeImpl extends AbstractCurveSegmentTypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectPositionListType getPosList() {
         return posList;
     }
@@ -215,6 +220,7 @@ public class ArcStringTypeImpl extends AbstractCurveSegmentTypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPosList(DirectPositionListType newPosList) {
         if (newPosList != posList) {
             NotificationChain msgs = null;
@@ -234,6 +240,7 @@ public class ArcStringTypeImpl extends AbstractCurveSegmentTypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinatesType getCoordinates() {
         return coordinates;
     }
@@ -258,6 +265,7 @@ public class ArcStringTypeImpl extends AbstractCurveSegmentTypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCoordinates(CoordinatesType newCoordinates) {
         if (newCoordinates != coordinates) {
             NotificationChain msgs = null;
@@ -277,6 +285,7 @@ public class ArcStringTypeImpl extends AbstractCurveSegmentTypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CurveInterpolationType getInterpolation() {
         return interpolation;
     }
@@ -286,6 +295,7 @@ public class ArcStringTypeImpl extends AbstractCurveSegmentTypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setInterpolation(CurveInterpolationType newInterpolation) {
         CurveInterpolationType oldInterpolation = interpolation;
         interpolation = newInterpolation == null ? INTERPOLATION_EDEFAULT : newInterpolation;
@@ -300,6 +310,7 @@ public class ArcStringTypeImpl extends AbstractCurveSegmentTypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetInterpolation() {
         CurveInterpolationType oldInterpolation = interpolation;
         boolean oldInterpolationESet = interpolationESet;
@@ -314,6 +325,7 @@ public class ArcStringTypeImpl extends AbstractCurveSegmentTypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetInterpolation() {
         return interpolationESet;
     }
@@ -323,6 +335,7 @@ public class ArcStringTypeImpl extends AbstractCurveSegmentTypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getNumArc() {
         return numArc;
     }
@@ -332,6 +345,7 @@ public class ArcStringTypeImpl extends AbstractCurveSegmentTypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setNumArc(BigInteger newNumArc) {
         BigInteger oldNumArc = numArc;
         numArc = newNumArc;

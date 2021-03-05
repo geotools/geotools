@@ -103,6 +103,7 @@ public class ObservationTypeImpl extends AbstractFeatureTypeImpl implements Obse
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimePrimitivePropertyType getValidTime() {
         return validTime;
     }
@@ -127,6 +128,7 @@ public class ObservationTypeImpl extends AbstractFeatureTypeImpl implements Obse
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValidTime(TimePrimitivePropertyType newValidTime) {
         if (newValidTime != validTime) {
             NotificationChain msgs = null;
@@ -146,6 +148,7 @@ public class ObservationTypeImpl extends AbstractFeatureTypeImpl implements Obse
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeaturePropertyType getUsing() {
         return using;
     }
@@ -170,6 +173,7 @@ public class ObservationTypeImpl extends AbstractFeatureTypeImpl implements Obse
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsing(FeaturePropertyType newUsing) {
         if (newUsing != using) {
             NotificationChain msgs = null;
@@ -189,6 +193,7 @@ public class ObservationTypeImpl extends AbstractFeatureTypeImpl implements Obse
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getTargetGroup() {
         if (targetGroup == null) {
             targetGroup = new BasicFeatureMap(this, Gml311Package.OBSERVATION_TYPE__TARGET_GROUP);
@@ -201,6 +206,7 @@ public class ObservationTypeImpl extends AbstractFeatureTypeImpl implements Obse
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TargetPropertyType getTarget() {
         return (TargetPropertyType)getTargetGroup().get(Gml311Package.eINSTANCE.getObservationType_Target(), true);
     }
@@ -219,6 +225,7 @@ public class ObservationTypeImpl extends AbstractFeatureTypeImpl implements Obse
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTarget(TargetPropertyType newTarget) {
         ((FeatureMap.Internal)getTargetGroup()).set(Gml311Package.eINSTANCE.getObservationType_Target(), newTarget);
     }
@@ -228,6 +235,7 @@ public class ObservationTypeImpl extends AbstractFeatureTypeImpl implements Obse
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AssociationType getResultOf() {
         return resultOf;
     }
@@ -252,6 +260,7 @@ public class ObservationTypeImpl extends AbstractFeatureTypeImpl implements Obse
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setResultOf(AssociationType newResultOf) {
         if (newResultOf != resultOf) {
             NotificationChain msgs = null;

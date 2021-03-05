@@ -98,6 +98,7 @@ public class FieldSubsetTypeImpl extends EObjectImpl implements FieldSubsetType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EClass eStaticClass() {
         return Wcs111Package.Literals.FIELD_SUBSET_TYPE;
     }
@@ -107,6 +108,7 @@ public class FieldSubsetTypeImpl extends EObjectImpl implements FieldSubsetType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getIdentifier() {
         return identifier;
     }
@@ -131,6 +133,7 @@ public class FieldSubsetTypeImpl extends EObjectImpl implements FieldSubsetType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIdentifier(CodeType newIdentifier) {
         if (newIdentifier != identifier) {
             NotificationChain msgs = null;
@@ -150,6 +153,7 @@ public class FieldSubsetTypeImpl extends EObjectImpl implements FieldSubsetType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getInterpolationType() {
         return interpolationType;
     }
@@ -159,6 +163,7 @@ public class FieldSubsetTypeImpl extends EObjectImpl implements FieldSubsetType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setInterpolationType(String newInterpolationType) {
         String oldInterpolationType = interpolationType;
         interpolationType = newInterpolationType;
@@ -171,6 +176,7 @@ public class FieldSubsetTypeImpl extends EObjectImpl implements FieldSubsetType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getAxisSubset() {
         if (axisSubset == null) {
             axisSubset = new EObjectContainmentEList(AxisSubsetType.class, this, Wcs111Package.FIELD_SUBSET_TYPE__AXIS_SUBSET);
@@ -183,6 +189,7 @@ public class FieldSubsetTypeImpl extends EObjectImpl implements FieldSubsetType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case Wcs111Package.FIELD_SUBSET_TYPE__IDENTIFIER:
@@ -198,6 +205,7 @@ public class FieldSubsetTypeImpl extends EObjectImpl implements FieldSubsetType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case Wcs111Package.FIELD_SUBSET_TYPE__IDENTIFIER:
@@ -215,6 +223,7 @@ public class FieldSubsetTypeImpl extends EObjectImpl implements FieldSubsetType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Wcs111Package.FIELD_SUBSET_TYPE__IDENTIFIER:
@@ -236,6 +245,7 @@ public class FieldSubsetTypeImpl extends EObjectImpl implements FieldSubsetType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case Wcs111Package.FIELD_SUBSET_TYPE__IDENTIFIER:
@@ -256,6 +266,7 @@ public class FieldSubsetTypeImpl extends EObjectImpl implements FieldSubsetType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case Wcs111Package.FIELD_SUBSET_TYPE__IDENTIFIER:
@@ -273,6 +284,7 @@ public class FieldSubsetTypeImpl extends EObjectImpl implements FieldSubsetType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String toString() {
         if (eIsProxy()) return super.toString();
 

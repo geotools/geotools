@@ -182,6 +182,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureMap getMixed() {
     if (mixed == null) {
       mixed = new BasicFeatureMap(this, Wfs20Package.DOCUMENT_ROOT__MIXED);
@@ -194,6 +195,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EMap<String, String> getXMLNSPrefixMap() {
     if (xMLNSPrefixMap == null) {
       xMLNSPrefixMap = new EcoreEMap<>(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY, EStringToStringMapEntryImpl.class, this, Wfs20Package.DOCUMENT_ROOT__XMLNS_PREFIX_MAP);
@@ -206,6 +208,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EMap<String, String> getXSISchemaLocation() {
     if (xSISchemaLocation == null) {
       xSISchemaLocation = new EcoreEMap<>(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY, EStringToStringMapEntryImpl.class, this, Wfs20Package.DOCUMENT_ROOT__XSI_SCHEMA_LOCATION);
@@ -218,6 +221,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AbstractType getAbstract() {
     return (AbstractType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__ABSTRACT, true);
   }
@@ -236,6 +240,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setAbstract(AbstractType newAbstract) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__ABSTRACT, newAbstract);
   }
@@ -245,6 +250,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AbstractTransactionActionType getAbstractTransactionAction() {
     return (AbstractTransactionActionType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__ABSTRACT_TRANSACTION_ACTION, true);
   }
@@ -263,6 +269,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AdditionalObjectsType getAdditionalObjects() {
     return (AdditionalObjectsType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__ADDITIONAL_OBJECTS, true);
   }
@@ -281,6 +288,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setAdditionalObjects(AdditionalObjectsType newAdditionalObjects) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__ADDITIONAL_OBJECTS, newAdditionalObjects);
   }
@@ -290,6 +298,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AdditionalValuesType getAdditionalValues() {
     return (AdditionalValuesType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__ADDITIONAL_VALUES, true);
   }
@@ -308,6 +317,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setAdditionalValues(AdditionalValuesType newAdditionalValues) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__ADDITIONAL_VALUES, newAdditionalValues);
   }
@@ -317,6 +327,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EnvelopePropertyType getBoundedBy() {
     return (EnvelopePropertyType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__BOUNDED_BY, true);
   }
@@ -335,6 +346,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setBoundedBy(EnvelopePropertyType newBoundedBy) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__BOUNDED_BY, newBoundedBy);
   }
@@ -344,6 +356,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public CreateStoredQueryType getCreateStoredQuery() {
     return (CreateStoredQueryType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__CREATE_STORED_QUERY, true);
   }
@@ -362,6 +375,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setCreateStoredQuery(CreateStoredQueryType newCreateStoredQuery) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__CREATE_STORED_QUERY, newCreateStoredQuery);
   }
@@ -371,6 +385,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public CreateStoredQueryResponseType getCreateStoredQueryResponse() {
     return (CreateStoredQueryResponseType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__CREATE_STORED_QUERY_RESPONSE, true);
   }
@@ -389,6 +404,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setCreateStoredQueryResponse(CreateStoredQueryResponseType newCreateStoredQueryResponse) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__CREATE_STORED_QUERY_RESPONSE, newCreateStoredQueryResponse);
   }
@@ -398,6 +414,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DeleteType getDelete() {
     return (DeleteType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__DELETE, true);
   }
@@ -416,6 +433,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setDelete(DeleteType newDelete) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__DELETE, newDelete);
   }
@@ -425,6 +443,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DescribeFeatureTypeType getDescribeFeatureType() {
     return (DescribeFeatureTypeType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__DESCRIBE_FEATURE_TYPE, true);
   }
@@ -443,6 +462,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setDescribeFeatureType(DescribeFeatureTypeType newDescribeFeatureType) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__DESCRIBE_FEATURE_TYPE, newDescribeFeatureType);
   }
@@ -452,6 +472,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DescribeStoredQueriesType getDescribeStoredQueries() {
     return (DescribeStoredQueriesType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__DESCRIBE_STORED_QUERIES, true);
   }
@@ -470,6 +491,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setDescribeStoredQueries(DescribeStoredQueriesType newDescribeStoredQueries) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__DESCRIBE_STORED_QUERIES, newDescribeStoredQueries);
   }
@@ -479,6 +501,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DescribeStoredQueriesResponseType getDescribeStoredQueriesResponse() {
     return (DescribeStoredQueriesResponseType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__DESCRIBE_STORED_QUERIES_RESPONSE, true);
   }
@@ -497,6 +520,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setDescribeStoredQueriesResponse(DescribeStoredQueriesResponseType newDescribeStoredQueriesResponse) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__DESCRIBE_STORED_QUERIES_RESPONSE, newDescribeStoredQueriesResponse);
   }
@@ -506,6 +530,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DropStoredQueryType getDropStoredQuery() {
     return (DropStoredQueryType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__DROP_STORED_QUERY, true);
   }
@@ -524,6 +549,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setDropStoredQuery(DropStoredQueryType newDropStoredQuery) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__DROP_STORED_QUERY, newDropStoredQuery);
   }
@@ -533,6 +559,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ExecutionStatusType getDropStoredQueryResponse() {
     return (ExecutionStatusType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__DROP_STORED_QUERY_RESPONSE, true);
   }
@@ -551,6 +578,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setDropStoredQueryResponse(ExecutionStatusType newDropStoredQueryResponse) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__DROP_STORED_QUERY_RESPONSE, newDropStoredQueryResponse);
   }
@@ -560,6 +588,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ElementType getElement() {
     return (ElementType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__ELEMENT, true);
   }
@@ -578,6 +607,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setElement(ElementType newElement) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__ELEMENT, newElement);
   }
@@ -587,6 +617,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureCollectionType getFeatureCollection() {
     return (FeatureCollectionType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__FEATURE_COLLECTION, true);
   }
@@ -605,6 +636,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setFeatureCollection(FeatureCollectionType newFeatureCollection) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__FEATURE_COLLECTION, newFeatureCollection);
   }
@@ -614,6 +646,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public SimpleFeatureCollectionType getSimpleFeatureCollection() {
     return (SimpleFeatureCollectionType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__SIMPLE_FEATURE_COLLECTION, true);
   }
@@ -632,6 +665,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setSimpleFeatureCollection(SimpleFeatureCollectionType newSimpleFeatureCollection) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__SIMPLE_FEATURE_COLLECTION, newSimpleFeatureCollection);
   }
@@ -641,6 +675,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureTypeListType getFeatureTypeList() {
     return (FeatureTypeListType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__FEATURE_TYPE_LIST, true);
   }
@@ -659,6 +694,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setFeatureTypeList(FeatureTypeListType newFeatureTypeList) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__FEATURE_TYPE_LIST, newFeatureTypeList);
   }
@@ -668,6 +704,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public GetCapabilitiesType getGetCapabilities() {
     return (GetCapabilitiesType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__GET_CAPABILITIES, true);
   }
@@ -686,6 +723,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setGetCapabilities(GetCapabilitiesType newGetCapabilities) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__GET_CAPABILITIES, newGetCapabilities);
   }
@@ -695,6 +733,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public GetFeatureType getGetFeature() {
     return (GetFeatureType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__GET_FEATURE, true);
   }
@@ -713,6 +752,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setGetFeature(GetFeatureType newGetFeature) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__GET_FEATURE, newGetFeature);
   }
@@ -722,6 +762,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public GetFeatureWithLockType getGetFeatureWithLock() {
     return (GetFeatureWithLockType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__GET_FEATURE_WITH_LOCK, true);
   }
@@ -740,6 +781,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setGetFeatureWithLock(GetFeatureWithLockType newGetFeatureWithLock) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__GET_FEATURE_WITH_LOCK, newGetFeatureWithLock);
   }
@@ -749,6 +791,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public GetPropertyValueType getGetPropertyValue() {
     return (GetPropertyValueType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__GET_PROPERTY_VALUE, true);
   }
@@ -767,6 +810,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setGetPropertyValue(GetPropertyValueType newGetPropertyValue) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__GET_PROPERTY_VALUE, newGetPropertyValue);
   }
@@ -776,6 +820,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public InsertType getInsert() {
     return (InsertType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__INSERT, true);
   }
@@ -794,6 +839,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setInsert(InsertType newInsert) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__INSERT, newInsert);
   }
@@ -803,6 +849,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ListStoredQueriesType getListStoredQueries() {
     return (ListStoredQueriesType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__LIST_STORED_QUERIES, true);
   }
@@ -821,6 +868,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setListStoredQueries(ListStoredQueriesType newListStoredQueries) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__LIST_STORED_QUERIES, newListStoredQueries);
   }
@@ -830,6 +878,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ListStoredQueriesResponseType getListStoredQueriesResponse() {
     return (ListStoredQueriesResponseType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__LIST_STORED_QUERIES_RESPONSE, true);
   }
@@ -848,6 +897,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setListStoredQueriesResponse(ListStoredQueriesResponseType newListStoredQueriesResponse) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__LIST_STORED_QUERIES_RESPONSE, newListStoredQueriesResponse);
   }
@@ -857,6 +907,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public LockFeatureType getLockFeature() {
     return (LockFeatureType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__LOCK_FEATURE, true);
   }
@@ -875,6 +926,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setLockFeature(LockFeatureType newLockFeature) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__LOCK_FEATURE, newLockFeature);
   }
@@ -884,6 +936,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public LockFeatureResponseType getLockFeatureResponse() {
     return (LockFeatureResponseType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__LOCK_FEATURE_RESPONSE, true);
   }
@@ -902,6 +955,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setLockFeatureResponse(LockFeatureResponseType newLockFeatureResponse) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__LOCK_FEATURE_RESPONSE, newLockFeatureResponse);
   }
@@ -911,6 +965,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public MemberPropertyType getMember() {
     return (MemberPropertyType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__MEMBER, true);
   }
@@ -929,6 +984,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setMember(MemberPropertyType newMember) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__MEMBER, newMember);
   }
@@ -938,6 +994,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NativeType getNative() {
     return (NativeType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__NATIVE, true);
   }
@@ -956,6 +1013,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setNative(NativeType newNative) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__NATIVE, newNative);
   }
@@ -965,6 +1023,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public PropertyType getProperty() {
     return (PropertyType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__PROPERTY, true);
   }
@@ -983,6 +1042,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setProperty(PropertyType newProperty) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__PROPERTY, newProperty);
   }
@@ -992,6 +1052,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public PropertyNameType getPropertyName() {
     return (PropertyNameType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__PROPERTY_NAME, true);
   }
@@ -1010,6 +1071,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setPropertyName(PropertyNameType newPropertyName) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__PROPERTY_NAME, newPropertyName);
   }
@@ -1019,6 +1081,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public QueryType getQuery() {
     return (QueryType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__QUERY, true);
   }
@@ -1037,6 +1100,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setQuery(QueryType newQuery) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__QUERY, newQuery);
   }
@@ -1046,6 +1110,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ReplaceType getReplace() {
     return (ReplaceType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__REPLACE, true);
   }
@@ -1064,6 +1129,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setReplace(ReplaceType newReplace) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__REPLACE, newReplace);
   }
@@ -1073,6 +1139,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public StoredQueryType getStoredQuery() {
     return (StoredQueryType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__STORED_QUERY, true);
   }
@@ -1091,6 +1158,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setStoredQuery(StoredQueryType newStoredQuery) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__STORED_QUERY, newStoredQuery);
   }
@@ -1100,6 +1168,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public TitleType getTitle() {
     return (TitleType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__TITLE, true);
   }
@@ -1118,6 +1187,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setTitle(TitleType newTitle) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__TITLE, newTitle);
   }
@@ -1127,6 +1197,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public TransactionType getTransaction() {
     return (TransactionType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__TRANSACTION, true);
   }
@@ -1145,6 +1216,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setTransaction(TransactionType newTransaction) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__TRANSACTION, newTransaction);
   }
@@ -1154,6 +1226,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public TransactionResponseType getTransactionResponse() {
     return (TransactionResponseType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__TRANSACTION_RESPONSE, true);
   }
@@ -1172,6 +1245,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setTransactionResponse(TransactionResponseType newTransactionResponse) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__TRANSACTION_RESPONSE, newTransactionResponse);
   }
@@ -1181,6 +1255,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public TruncatedResponseType getTruncatedResponse() {
     return (TruncatedResponseType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__TRUNCATED_RESPONSE, true);
   }
@@ -1199,6 +1274,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setTruncatedResponse(TruncatedResponseType newTruncatedResponse) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__TRUNCATED_RESPONSE, newTruncatedResponse);
   }
@@ -1208,6 +1284,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public TupleType getTuple() {
     return (TupleType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__TUPLE, true);
   }
@@ -1226,6 +1303,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setTuple(TupleType newTuple) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__TUPLE, newTuple);
   }
@@ -1235,6 +1313,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public UpdateType getUpdate() {
     return (UpdateType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__UPDATE, true);
   }
@@ -1253,6 +1332,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setUpdate(UpdateType newUpdate) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__UPDATE, newUpdate);
   }
@@ -1262,6 +1342,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EObject getValue() {
     return (EObject)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__VALUE, true);
   }
@@ -1280,6 +1361,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setValue(EObject newValue) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__VALUE, newValue);
   }
@@ -1289,6 +1371,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ValueCollectionType getValueCollection() {
     return (ValueCollectionType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__VALUE_COLLECTION, true);
   }
@@ -1307,6 +1390,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setValueCollection(ValueCollectionType newValueCollection) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__VALUE_COLLECTION, newValueCollection);
   }
@@ -1316,6 +1400,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ValueListType getValueList() {
     return (ValueListType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__VALUE_LIST, true);
   }
@@ -1334,6 +1419,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setValueList(ValueListType newValueList) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__VALUE_LIST, newValueList);
   }
@@ -1343,6 +1429,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public WFSCapabilitiesType getWFSCapabilities() {
     return (WFSCapabilitiesType)getMixed().get(Wfs20Package.Literals.DOCUMENT_ROOT__WFS_CAPABILITIES, true);
   }
@@ -1361,6 +1448,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setWFSCapabilities(WFSCapabilitiesType newWFSCapabilities) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.DOCUMENT_ROOT__WFS_CAPABILITIES, newWFSCapabilities);
   }

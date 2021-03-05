@@ -81,6 +81,7 @@ public class RectifiedGridTypeImpl extends GridTypeImpl implements RectifiedGrid
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PointPropertyType getOrigin() {
         return origin;
     }
@@ -105,6 +106,7 @@ public class RectifiedGridTypeImpl extends GridTypeImpl implements RectifiedGrid
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOrigin(PointPropertyType newOrigin) {
         if (newOrigin != origin) {
             NotificationChain msgs = null;
@@ -124,6 +126,7 @@ public class RectifiedGridTypeImpl extends GridTypeImpl implements RectifiedGrid
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<VectorType> getOffsetVector() {
         if (offsetVector == null) {
             offsetVector = new EObjectContainmentEList<>(VectorType.class, this, Gml311Package.RECTIFIED_GRID_TYPE__OFFSET_VECTOR);

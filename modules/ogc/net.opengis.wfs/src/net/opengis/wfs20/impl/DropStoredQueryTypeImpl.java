@@ -73,6 +73,7 @@ public class DropStoredQueryTypeImpl extends BaseRequestTypeImpl implements Drop
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getId() {
     return id;
   }
@@ -82,6 +83,7 @@ public class DropStoredQueryTypeImpl extends BaseRequestTypeImpl implements Drop
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setId(String newId) {
     String oldId = id;
     id = newId;

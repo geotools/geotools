@@ -141,6 +141,7 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ServiceIdentificationType getServiceIdentification() {
     return serviceIdentification;
   }
@@ -165,6 +166,7 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setServiceIdentification(ServiceIdentificationType newServiceIdentification) {
     if (newServiceIdentification != serviceIdentification) {
       NotificationChain msgs = null;
@@ -184,6 +186,7 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ServiceProviderType getServiceProvider() {
     return serviceProvider;
   }
@@ -208,6 +211,7 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setServiceProvider(ServiceProviderType newServiceProvider) {
     if (newServiceProvider != serviceProvider) {
       NotificationChain msgs = null;
@@ -227,6 +231,7 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public OperationsMetadataType getOperationsMetadata() {
     return operationsMetadata;
   }
@@ -251,6 +256,7 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setOperationsMetadata(OperationsMetadataType newOperationsMetadata) {
     if (newOperationsMetadata != operationsMetadata) {
       NotificationChain msgs = null;
@@ -270,6 +276,7 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public LanguagesType getLanguages() {
     return languages;
   }
@@ -294,6 +301,7 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setLanguages(LanguagesType newLanguages) {
     if (newLanguages != languages) {
       NotificationChain msgs = null;
@@ -313,6 +321,7 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getUpdateSequence() {
     return updateSequence;
   }
@@ -322,6 +331,7 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setUpdateSequence(String newUpdateSequence) {
     String oldUpdateSequence = updateSequence;
     updateSequence = newUpdateSequence;
@@ -334,6 +344,7 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getVersion() {
     return version;
   }
@@ -343,6 +354,7 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setVersion(String newVersion) {
     String oldVersion = version;
     version = newVersion;

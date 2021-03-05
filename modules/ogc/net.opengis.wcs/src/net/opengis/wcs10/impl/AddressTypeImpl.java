@@ -175,6 +175,7 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.ADDRESS_TYPE;
 	}
@@ -184,6 +185,7 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getDeliveryPoint() {
 		return deliveryPoint;
 	}
@@ -193,7 +195,8 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setDeliveryPoint(String newDeliveryPoint) {
+	@Override
+    public void setDeliveryPoint(String newDeliveryPoint) {
 		String oldDeliveryPoint = deliveryPoint;
 		deliveryPoint = newDeliveryPoint;
 		if (eNotificationRequired())
@@ -205,6 +208,7 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getCity() {
 		return city;
 	}
@@ -214,6 +218,7 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setCity(String newCity) {
 		String oldCity = city;
 		city = newCity;
@@ -226,6 +231,7 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getAdministrativeArea() {
 		return administrativeArea;
 	}
@@ -235,6 +241,7 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setAdministrativeArea(String newAdministrativeArea) {
 		String oldAdministrativeArea = administrativeArea;
 		administrativeArea = newAdministrativeArea;
@@ -247,6 +254,7 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getPostalCode() {
 		return postalCode;
 	}
@@ -256,6 +264,7 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setPostalCode(String newPostalCode) {
 		String oldPostalCode = postalCode;
 		postalCode = newPostalCode;
@@ -268,6 +277,7 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getCountry() {
 		return country;
 	}
@@ -277,6 +287,7 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setCountry(String newCountry) {
 		String oldCountry = country;
 		country = newCountry;
@@ -289,6 +300,7 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getElectronicMailAddress() {
 		return electronicMailAddress;
 	}
@@ -298,7 +310,8 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setElectronicMailAddress(String newElectronicMailAddress) {
+	@Override
+    public void setElectronicMailAddress(String newElectronicMailAddress) {
 		String oldElectronicMailAddress = electronicMailAddress;
 		electronicMailAddress = newElectronicMailAddress;
 		if (eNotificationRequired())
@@ -310,6 +323,7 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.ADDRESS_TYPE__DELIVERY_POINT:
@@ -333,6 +347,7 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.ADDRESS_TYPE__DELIVERY_POINT:
@@ -362,6 +377,7 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.ADDRESS_TYPE__DELIVERY_POINT:
@@ -391,6 +407,7 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.ADDRESS_TYPE__DELIVERY_POINT:
@@ -414,6 +431,7 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

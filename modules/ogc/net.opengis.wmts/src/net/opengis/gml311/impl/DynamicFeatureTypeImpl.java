@@ -91,6 +91,7 @@ public class DynamicFeatureTypeImpl extends AbstractFeatureTypeImpl implements D
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimePrimitivePropertyType getValidTime() {
         return validTime;
     }
@@ -115,6 +116,7 @@ public class DynamicFeatureTypeImpl extends AbstractFeatureTypeImpl implements D
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValidTime(TimePrimitivePropertyType newValidTime) {
         if (newValidTime != validTime) {
             NotificationChain msgs = null;
@@ -134,6 +136,7 @@ public class DynamicFeatureTypeImpl extends AbstractFeatureTypeImpl implements D
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getHistoryGroup() {
         if (historyGroup == null) {
             historyGroup = new BasicFeatureMap(this, Gml311Package.DYNAMIC_FEATURE_TYPE__HISTORY_GROUP);
@@ -146,6 +149,7 @@ public class DynamicFeatureTypeImpl extends AbstractFeatureTypeImpl implements D
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public HistoryPropertyType getHistory() {
         return (HistoryPropertyType)getHistoryGroup().get(Gml311Package.eINSTANCE.getDynamicFeatureType_History(), true);
     }
@@ -164,6 +168,7 @@ public class DynamicFeatureTypeImpl extends AbstractFeatureTypeImpl implements D
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setHistory(HistoryPropertyType newHistory) {
         ((FeatureMap.Internal)getHistoryGroup()).set(Gml311Package.eINSTANCE.getDynamicFeatureType_History(), newHistory);
     }
@@ -173,6 +178,7 @@ public class DynamicFeatureTypeImpl extends AbstractFeatureTypeImpl implements D
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StringOrRefType getDataSource() {
         return dataSource;
     }
@@ -197,6 +203,7 @@ public class DynamicFeatureTypeImpl extends AbstractFeatureTypeImpl implements D
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDataSource(StringOrRefType newDataSource) {
         if (newDataSource != dataSource) {
             NotificationChain msgs = null;

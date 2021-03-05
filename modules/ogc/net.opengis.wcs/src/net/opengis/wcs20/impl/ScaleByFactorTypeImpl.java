@@ -70,6 +70,7 @@ public class ScaleByFactorTypeImpl extends EObjectImpl implements ScaleByFactorT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public double getScaleFactor() {
 		return scaleFactor;
 	}
@@ -79,6 +80,7 @@ public class ScaleByFactorTypeImpl extends EObjectImpl implements ScaleByFactorT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setScaleFactor(double newScaleFactor) {
 		double oldScaleFactor = scaleFactor;
 		scaleFactor = newScaleFactor;

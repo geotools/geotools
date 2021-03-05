@@ -121,6 +121,7 @@ public class NativeTypeImpl extends AbstractTransactionActionTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureMap getMixed() {
     if (mixed == null) {
       mixed = new BasicFeatureMap(this, Wfs20Package.NATIVE_TYPE__MIXED);
@@ -133,6 +134,7 @@ public class NativeTypeImpl extends AbstractTransactionActionTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureMap getAny() {
     return (FeatureMap)getMixed().<FeatureMap.Entry>list(Wfs20Package.Literals.NATIVE_TYPE__ANY);
   }
@@ -142,6 +144,7 @@ public class NativeTypeImpl extends AbstractTransactionActionTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSafeToIgnore() {
     return safeToIgnore;
   }
@@ -151,6 +154,7 @@ public class NativeTypeImpl extends AbstractTransactionActionTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setSafeToIgnore(boolean newSafeToIgnore) {
     boolean oldSafeToIgnore = safeToIgnore;
     safeToIgnore = newSafeToIgnore;
@@ -165,6 +169,7 @@ public class NativeTypeImpl extends AbstractTransactionActionTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetSafeToIgnore() {
     boolean oldSafeToIgnore = safeToIgnore;
     boolean oldSafeToIgnoreESet = safeToIgnoreESet;
@@ -179,6 +184,7 @@ public class NativeTypeImpl extends AbstractTransactionActionTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetSafeToIgnore() {
     return safeToIgnoreESet;
   }
@@ -188,6 +194,7 @@ public class NativeTypeImpl extends AbstractTransactionActionTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getVendorId() {
     return vendorId;
   }
@@ -197,6 +204,7 @@ public class NativeTypeImpl extends AbstractTransactionActionTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setVendorId(String newVendorId) {
     String oldVendorId = vendorId;
     vendorId = newVendorId;

@@ -118,6 +118,7 @@ public class ConceptualSchemeTypeImpl extends EObjectImpl implements ConceptualS
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -127,6 +128,7 @@ public class ConceptualSchemeTypeImpl extends EObjectImpl implements ConceptualS
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setName(String newName) {
         String oldName = name;
         name = newName;
@@ -139,6 +141,7 @@ public class ConceptualSchemeTypeImpl extends EObjectImpl implements ConceptualS
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getDocument() {
         return document;
     }
@@ -148,6 +151,7 @@ public class ConceptualSchemeTypeImpl extends EObjectImpl implements ConceptualS
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDocument(String newDocument) {
         String oldDocument = document;
         document = newDocument;
@@ -160,6 +164,7 @@ public class ConceptualSchemeTypeImpl extends EObjectImpl implements ConceptualS
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getAuthority() {
         return authority;
     }
@@ -169,6 +174,7 @@ public class ConceptualSchemeTypeImpl extends EObjectImpl implements ConceptualS
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAuthority(String newAuthority) {
         String oldAuthority = authority;
         authority = newAuthority;

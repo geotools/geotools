@@ -70,6 +70,7 @@ public class LiteralOutputTypeImpl extends EObjectImpl implements LiteralOutputT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.LITERAL_OUTPUT_TYPE;
   }
@@ -79,6 +80,7 @@ public class LiteralOutputTypeImpl extends EObjectImpl implements LiteralOutputT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DomainMetadataType getDataType() {
     return dataType;
   }
@@ -103,6 +105,7 @@ public class LiteralOutputTypeImpl extends EObjectImpl implements LiteralOutputT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setDataType(DomainMetadataType newDataType) {
     if (newDataType != dataType) {
       NotificationChain msgs = null;
@@ -122,6 +125,7 @@ public class LiteralOutputTypeImpl extends EObjectImpl implements LiteralOutputT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public SupportedUOMsType getUOMs() {
     return uOMs;
   }
@@ -146,6 +150,7 @@ public class LiteralOutputTypeImpl extends EObjectImpl implements LiteralOutputT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setUOMs(SupportedUOMsType newUOMs) {
     if (newUOMs != uOMs) {
       NotificationChain msgs = null;
@@ -165,6 +170,7 @@ public class LiteralOutputTypeImpl extends EObjectImpl implements LiteralOutputT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.LITERAL_OUTPUT_TYPE__DATA_TYPE:
@@ -180,6 +186,7 @@ public class LiteralOutputTypeImpl extends EObjectImpl implements LiteralOutputT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.LITERAL_OUTPUT_TYPE__DATA_TYPE:
@@ -195,6 +202,7 @@ public class LiteralOutputTypeImpl extends EObjectImpl implements LiteralOutputT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.LITERAL_OUTPUT_TYPE__DATA_TYPE:
@@ -212,6 +220,7 @@ public class LiteralOutputTypeImpl extends EObjectImpl implements LiteralOutputT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.LITERAL_OUTPUT_TYPE__DATA_TYPE:
@@ -229,6 +238,7 @@ public class LiteralOutputTypeImpl extends EObjectImpl implements LiteralOutputT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.LITERAL_OUTPUT_TYPE__DATA_TYPE:

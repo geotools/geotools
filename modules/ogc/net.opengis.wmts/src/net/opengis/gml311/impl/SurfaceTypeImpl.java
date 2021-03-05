@@ -64,6 +64,7 @@ public class SurfaceTypeImpl extends AbstractSurfaceTypeImpl implements SurfaceT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getPatchesGroup() {
         if (patchesGroup == null) {
             patchesGroup = new BasicFeatureMap(this, Gml311Package.SURFACE_TYPE__PATCHES_GROUP);
@@ -76,6 +77,7 @@ public class SurfaceTypeImpl extends AbstractSurfaceTypeImpl implements SurfaceT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SurfacePatchArrayPropertyType getPatches() {
         return (SurfacePatchArrayPropertyType)getPatchesGroup().get(Gml311Package.eINSTANCE.getSurfaceType_Patches(), true);
     }
@@ -94,6 +96,7 @@ public class SurfaceTypeImpl extends AbstractSurfaceTypeImpl implements SurfaceT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPatches(SurfacePatchArrayPropertyType newPatches) {
         ((FeatureMap.Internal)getPatchesGroup()).set(Gml311Package.eINSTANCE.getSurfaceType_Patches(), newPatches);
     }

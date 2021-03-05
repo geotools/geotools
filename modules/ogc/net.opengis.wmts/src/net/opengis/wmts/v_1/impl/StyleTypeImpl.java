@@ -114,6 +114,7 @@ public class StyleTypeImpl extends DescriptionTypeImpl implements StyleType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getIdentifier() {
         return identifier;
     }
@@ -138,6 +139,7 @@ public class StyleTypeImpl extends DescriptionTypeImpl implements StyleType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIdentifier(CodeType newIdentifier) {
         if (newIdentifier != identifier) {
             NotificationChain msgs = null;
@@ -157,6 +159,7 @@ public class StyleTypeImpl extends DescriptionTypeImpl implements StyleType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<LegendURLType> getLegendURL() {
         if (legendURL == null) {
             legendURL = new EObjectContainmentEList<>(LegendURLType.class, this, wmtsv_1Package.STYLE_TYPE__LEGEND_URL);
@@ -169,6 +172,7 @@ public class StyleTypeImpl extends DescriptionTypeImpl implements StyleType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isIsDefault() {
         return isDefault;
     }
@@ -178,6 +182,7 @@ public class StyleTypeImpl extends DescriptionTypeImpl implements StyleType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIsDefault(boolean newIsDefault) {
         boolean oldIsDefault = isDefault;
         isDefault = newIsDefault;
@@ -192,6 +197,7 @@ public class StyleTypeImpl extends DescriptionTypeImpl implements StyleType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetIsDefault() {
         boolean oldIsDefault = isDefault;
         boolean oldIsDefaultESet = isDefaultESet;
@@ -206,6 +212,7 @@ public class StyleTypeImpl extends DescriptionTypeImpl implements StyleType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetIsDefault() {
         return isDefaultESet;
     }

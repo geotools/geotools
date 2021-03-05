@@ -66,6 +66,7 @@ public class CompoundCRSTypeImpl extends AbstractReferenceSystemTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<CoordinateReferenceSystemRefType> getIncludesCRS() {
         if (includesCRS == null) {
             includesCRS = new EObjectContainmentEList<>(CoordinateReferenceSystemRefType.class, this, Gml311Package.COMPOUND_CRS_TYPE__INCLUDES_CRS);

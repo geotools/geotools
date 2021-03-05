@@ -106,6 +106,7 @@ public class LiteralDataTypeImpl extends EObjectImpl implements LiteralDataType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.LITERAL_DATA_TYPE;
   }
@@ -115,6 +116,7 @@ public class LiteralDataTypeImpl extends EObjectImpl implements LiteralDataType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getValue() {
     return value;
   }
@@ -124,6 +126,7 @@ public class LiteralDataTypeImpl extends EObjectImpl implements LiteralDataType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setValue(String newValue) {
     String oldValue = value;
     value = newValue;
@@ -136,6 +139,7 @@ public class LiteralDataTypeImpl extends EObjectImpl implements LiteralDataType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getDataType() {
     return dataType;
   }
@@ -145,6 +149,7 @@ public class LiteralDataTypeImpl extends EObjectImpl implements LiteralDataType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setDataType(String newDataType) {
     String oldDataType = dataType;
     dataType = newDataType;
@@ -157,6 +162,7 @@ public class LiteralDataTypeImpl extends EObjectImpl implements LiteralDataType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getUom() {
     return uom;
   }
@@ -166,6 +172,7 @@ public class LiteralDataTypeImpl extends EObjectImpl implements LiteralDataType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setUom(String newUom) {
     String oldUom = uom;
     uom = newUom;
@@ -178,6 +185,7 @@ public class LiteralDataTypeImpl extends EObjectImpl implements LiteralDataType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.LITERAL_DATA_TYPE__VALUE:
@@ -195,6 +203,7 @@ public class LiteralDataTypeImpl extends EObjectImpl implements LiteralDataType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.LITERAL_DATA_TYPE__VALUE:
@@ -215,6 +224,7 @@ public class LiteralDataTypeImpl extends EObjectImpl implements LiteralDataType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.LITERAL_DATA_TYPE__VALUE:
@@ -235,6 +245,7 @@ public class LiteralDataTypeImpl extends EObjectImpl implements LiteralDataType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.LITERAL_DATA_TYPE__VALUE:
@@ -252,6 +263,7 @@ public class LiteralDataTypeImpl extends EObjectImpl implements LiteralDataType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String toString() {
     if (eIsProxy()) return super.toString();
 

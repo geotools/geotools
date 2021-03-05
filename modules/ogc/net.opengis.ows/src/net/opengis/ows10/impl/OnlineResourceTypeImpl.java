@@ -74,7 +74,8 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getHref() {
+	@Override
+    public String getHref() {
     return href;
   }
 
@@ -83,7 +84,8 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setHref(String newHref) {
+	@Override
+    public void setHref(String newHref) {
     String oldHref = href;
     href = newHref;
     if (eNotificationRequired())

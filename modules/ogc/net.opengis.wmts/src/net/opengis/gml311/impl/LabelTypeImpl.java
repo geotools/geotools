@@ -92,6 +92,7 @@ public class LabelTypeImpl extends MinimalEObjectImpl.Container implements Label
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getMixed() {
         if (mixed == null) {
             mixed = new BasicFeatureMap(this, Gml311Package.LABEL_TYPE__MIXED);
@@ -104,6 +105,7 @@ public class LabelTypeImpl extends MinimalEObjectImpl.Container implements Label
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<String> getLabelExpression() {
         return getMixed().list(Gml311Package.eINSTANCE.getLabelType_LabelExpression());
     }
@@ -113,6 +115,7 @@ public class LabelTypeImpl extends MinimalEObjectImpl.Container implements Label
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getTransform() {
         return transform;
     }
@@ -122,6 +125,7 @@ public class LabelTypeImpl extends MinimalEObjectImpl.Container implements Label
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTransform(String newTransform) {
         String oldTransform = transform;
         transform = newTransform;

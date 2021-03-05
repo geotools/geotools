@@ -126,7 +126,8 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.LOCK_FEATURE_TYPE;
   }
 
@@ -135,7 +136,8 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList getLock() {
+	@Override
+    public EList getLock() {
     if (lock == null) {
       lock = new EObjectContainmentEList(LockType.class, this, WfsPackage.LOCK_FEATURE_TYPE__LOCK);
     }
@@ -147,7 +149,8 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public BigInteger getExpiry() {
+	@Override
+    public BigInteger getExpiry() {
     return expiry;
   }
 
@@ -156,7 +159,8 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setExpiry(BigInteger newExpiry) {
+	@Override
+    public void setExpiry(BigInteger newExpiry) {
     BigInteger oldExpiry = expiry;
     expiry = newExpiry;
     boolean oldExpiryESet = expiryESet;
@@ -170,7 +174,8 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void unsetExpiry() {
+	@Override
+    public void unsetExpiry() {
     BigInteger oldExpiry = expiry;
     boolean oldExpiryESet = expiryESet;
     expiry = EXPIRY_EDEFAULT;
@@ -184,7 +189,8 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean isSetExpiry() {
+	@Override
+    public boolean isSetExpiry() {
     return expiryESet;
   }
 
@@ -193,7 +199,8 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public AllSomeType getLockAction() {
+	@Override
+    public AllSomeType getLockAction() {
     return lockAction;
   }
 
@@ -202,7 +209,8 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setLockAction(AllSomeType newLockAction) {
+	@Override
+    public void setLockAction(AllSomeType newLockAction) {
     AllSomeType oldLockAction = lockAction;
     lockAction = newLockAction == null ? LOCK_ACTION_EDEFAULT : newLockAction;
     boolean oldLockActionESet = lockActionESet;
@@ -216,7 +224,8 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void unsetLockAction() {
+	@Override
+    public void unsetLockAction() {
     AllSomeType oldLockAction = lockAction;
     boolean oldLockActionESet = lockActionESet;
     lockAction = LOCK_ACTION_EDEFAULT;
@@ -230,7 +239,8 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean isSetLockAction() {
+	@Override
+    public boolean isSetLockAction() {
     return lockActionESet;
   }
 
@@ -239,7 +249,8 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+	@Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case WfsPackage.LOCK_FEATURE_TYPE__LOCK:
         return ((InternalEList)getLock()).basicRemove(otherEnd, msgs);
@@ -252,7 +263,8 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	@Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.LOCK_FEATURE_TYPE__LOCK:
         return getLock();
@@ -269,7 +281,8 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(int featureID, Object newValue) {
+	@Override
+    public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.LOCK_FEATURE_TYPE__LOCK:
         getLock().clear();
@@ -290,7 +303,8 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(int featureID) {
+	@Override
+    public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.LOCK_FEATURE_TYPE__LOCK:
         getLock().clear();
@@ -310,7 +324,8 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(int featureID) {
+	@Override
+    public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.LOCK_FEATURE_TYPE__LOCK:
         return lock != null && !lock.isEmpty();
@@ -327,7 +342,8 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String toString() {
+	@Override
+    public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

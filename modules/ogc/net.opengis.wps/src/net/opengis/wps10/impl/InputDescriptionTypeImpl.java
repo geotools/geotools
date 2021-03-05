@@ -124,6 +124,7 @@ public class InputDescriptionTypeImpl extends DescriptionTypeImpl implements Inp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.INPUT_DESCRIPTION_TYPE;
   }
@@ -133,6 +134,7 @@ public class InputDescriptionTypeImpl extends DescriptionTypeImpl implements Inp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public SupportedComplexDataInputType getComplexData() {
     return complexData;
   }
@@ -157,6 +159,7 @@ public class InputDescriptionTypeImpl extends DescriptionTypeImpl implements Inp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setComplexData(SupportedComplexDataInputType newComplexData) {
     if (newComplexData != complexData) {
       NotificationChain msgs = null;
@@ -176,6 +179,7 @@ public class InputDescriptionTypeImpl extends DescriptionTypeImpl implements Inp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public LiteralInputType getLiteralData() {
     return literalData;
   }
@@ -200,6 +204,7 @@ public class InputDescriptionTypeImpl extends DescriptionTypeImpl implements Inp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setLiteralData(LiteralInputType newLiteralData) {
     if (newLiteralData != literalData) {
       NotificationChain msgs = null;
@@ -219,6 +224,7 @@ public class InputDescriptionTypeImpl extends DescriptionTypeImpl implements Inp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public SupportedCRSsType getBoundingBoxData() {
     return boundingBoxData;
   }
@@ -243,6 +249,7 @@ public class InputDescriptionTypeImpl extends DescriptionTypeImpl implements Inp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setBoundingBoxData(SupportedCRSsType newBoundingBoxData) {
     if (newBoundingBoxData != boundingBoxData) {
       NotificationChain msgs = null;
@@ -262,6 +269,7 @@ public class InputDescriptionTypeImpl extends DescriptionTypeImpl implements Inp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public BigInteger getMaxOccurs() {
     return maxOccurs;
   }
@@ -271,6 +279,7 @@ public class InputDescriptionTypeImpl extends DescriptionTypeImpl implements Inp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setMaxOccurs(BigInteger newMaxOccurs) {
     BigInteger oldMaxOccurs = maxOccurs;
     maxOccurs = newMaxOccurs;
@@ -283,6 +292,7 @@ public class InputDescriptionTypeImpl extends DescriptionTypeImpl implements Inp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public BigInteger getMinOccurs() {
     return minOccurs;
   }
@@ -292,6 +302,7 @@ public class InputDescriptionTypeImpl extends DescriptionTypeImpl implements Inp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setMinOccurs(BigInteger newMinOccurs) {
     BigInteger oldMinOccurs = minOccurs;
     minOccurs = newMinOccurs;
@@ -304,6 +315,7 @@ public class InputDescriptionTypeImpl extends DescriptionTypeImpl implements Inp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.INPUT_DESCRIPTION_TYPE__COMPLEX_DATA:
@@ -321,6 +333,7 @@ public class InputDescriptionTypeImpl extends DescriptionTypeImpl implements Inp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.INPUT_DESCRIPTION_TYPE__COMPLEX_DATA:
@@ -342,6 +355,7 @@ public class InputDescriptionTypeImpl extends DescriptionTypeImpl implements Inp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.INPUT_DESCRIPTION_TYPE__COMPLEX_DATA:
@@ -368,6 +382,7 @@ public class InputDescriptionTypeImpl extends DescriptionTypeImpl implements Inp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.INPUT_DESCRIPTION_TYPE__COMPLEX_DATA:
@@ -394,6 +409,7 @@ public class InputDescriptionTypeImpl extends DescriptionTypeImpl implements Inp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.INPUT_DESCRIPTION_TYPE__COMPLEX_DATA:
@@ -415,6 +431,7 @@ public class InputDescriptionTypeImpl extends DescriptionTypeImpl implements Inp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String toString() {
     if (eIsProxy()) return super.toString();
 

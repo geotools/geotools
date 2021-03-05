@@ -100,7 +100,8 @@ public class ServiceProviderTypeImpl extends EObjectImpl implements ServiceProvi
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getProviderName() {
+	@Override
+    public String getProviderName() {
     return providerName;
   }
 
@@ -109,7 +110,8 @@ public class ServiceProviderTypeImpl extends EObjectImpl implements ServiceProvi
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setProviderName(String newProviderName) {
+	@Override
+    public void setProviderName(String newProviderName) {
     String oldProviderName = providerName;
     providerName = newProviderName;
     if (eNotificationRequired())
@@ -121,7 +123,8 @@ public class ServiceProviderTypeImpl extends EObjectImpl implements ServiceProvi
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public OnlineResourceType getProviderSite() {
+	@Override
+    public OnlineResourceType getProviderSite() {
     return providerSite;
   }
 
@@ -145,7 +148,8 @@ public class ServiceProviderTypeImpl extends EObjectImpl implements ServiceProvi
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setProviderSite(OnlineResourceType newProviderSite) {
+	@Override
+    public void setProviderSite(OnlineResourceType newProviderSite) {
     if (newProviderSite != providerSite) {
       NotificationChain msgs = null;
       if (providerSite != null)
@@ -164,7 +168,8 @@ public class ServiceProviderTypeImpl extends EObjectImpl implements ServiceProvi
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public ResponsiblePartySubsetType getServiceContact() {
+	@Override
+    public ResponsiblePartySubsetType getServiceContact() {
     return serviceContact;
   }
 
@@ -188,7 +193,8 @@ public class ServiceProviderTypeImpl extends EObjectImpl implements ServiceProvi
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setServiceContact(ResponsiblePartySubsetType newServiceContact) {
+	@Override
+    public void setServiceContact(ResponsiblePartySubsetType newServiceContact) {
     if (newServiceContact != serviceContact) {
       NotificationChain msgs = null;
       if (serviceContact != null)

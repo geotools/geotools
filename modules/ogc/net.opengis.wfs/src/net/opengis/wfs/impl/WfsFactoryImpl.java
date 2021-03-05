@@ -69,6 +69,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EObject create(EClass eClass) {
     switch (eClass.getClassifierID()) {
       case WfsPackage.ACTION_TYPE: return createActionType();
@@ -115,6 +116,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object createFromString(EDataType eDataType, String initialValue) {
     switch (eDataType.getClassifierID()) {
       case WfsPackage.ALL_SOME_TYPE:
@@ -164,6 +166,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String convertToString(EDataType eDataType, Object instanceValue) {
     switch (eDataType.getClassifierID()) {
       case WfsPackage.ALL_SOME_TYPE:
@@ -213,6 +216,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ActionType createActionType() {
     ActionTypeImpl actionType = new ActionTypeImpl();
     return actionType;
@@ -222,6 +226,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DeleteElementType createDeleteElementType() {
     DeleteElementTypeImpl deleteElementType = new DeleteElementTypeImpl();
     return deleteElementType;
@@ -231,6 +236,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DescribeFeatureTypeType createDescribeFeatureTypeType() {
     DescribeFeatureTypeTypeImpl describeFeatureTypeType = new DescribeFeatureTypeTypeImpl();
     return describeFeatureTypeType;
@@ -240,6 +246,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DocumentRoot createDocumentRoot() {
     DocumentRootImpl documentRoot = new DocumentRootImpl();
     return documentRoot;
@@ -249,6 +256,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureCollectionType createFeatureCollectionType() {
     FeatureCollectionTypeImpl featureCollectionType = new FeatureCollectionTypeImpl();
     return featureCollectionType;
@@ -258,6 +266,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureTypeListType createFeatureTypeListType() {
     FeatureTypeListTypeImpl featureTypeListType = new FeatureTypeListTypeImpl();
     return featureTypeListType;
@@ -267,6 +276,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureTypeType createFeatureTypeType() {
     FeatureTypeTypeImpl featureTypeType = new FeatureTypeTypeImpl();
     return featureTypeType;
@@ -276,6 +286,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeaturesLockedType createFeaturesLockedType() {
     FeaturesLockedTypeImpl featuresLockedType = new FeaturesLockedTypeImpl();
     return featuresLockedType;
@@ -285,6 +296,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeaturesNotLockedType createFeaturesNotLockedType() {
     FeaturesNotLockedTypeImpl featuresNotLockedType = new FeaturesNotLockedTypeImpl();
     return featuresNotLockedType;
@@ -294,6 +306,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public GMLObjectTypeListType createGMLObjectTypeListType() {
     GMLObjectTypeListTypeImpl gmlObjectTypeListType = new GMLObjectTypeListTypeImpl();
     return gmlObjectTypeListType;
@@ -303,6 +316,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public GMLObjectTypeType createGMLObjectTypeType() {
     GMLObjectTypeTypeImpl gmlObjectTypeType = new GMLObjectTypeTypeImpl();
     return gmlObjectTypeType;
@@ -312,6 +326,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public GetCapabilitiesType createGetCapabilitiesType() {
     GetCapabilitiesTypeImpl getCapabilitiesType = new GetCapabilitiesTypeImpl();
     return getCapabilitiesType;
@@ -321,6 +336,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public GetFeatureType createGetFeatureType() {
     GetFeatureTypeImpl getFeatureType = new GetFeatureTypeImpl();
     return getFeatureType;
@@ -330,6 +346,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public GetFeatureWithLockType createGetFeatureWithLockType() {
     GetFeatureWithLockTypeImpl getFeatureWithLockType = new GetFeatureWithLockTypeImpl();
     return getFeatureWithLockType;
@@ -339,6 +356,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public GetGmlObjectType createGetGmlObjectType() {
     GetGmlObjectTypeImpl getGmlObjectType = new GetGmlObjectTypeImpl();
     return getGmlObjectType;
@@ -348,6 +366,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public InsertElementType createInsertElementType() {
     InsertElementTypeImpl insertElementType = new InsertElementTypeImpl();
     return insertElementType;
@@ -357,6 +376,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public InsertResultsType createInsertResultsType() {
     InsertResultsTypeImpl insertResultsType = new InsertResultsTypeImpl();
     return insertResultsType;
@@ -366,6 +386,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public InsertedFeatureType createInsertedFeatureType() {
     InsertedFeatureTypeImpl insertedFeatureType = new InsertedFeatureTypeImpl();
     return insertedFeatureType;
@@ -375,6 +396,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public LockFeatureResponseType createLockFeatureResponseType() {
     LockFeatureResponseTypeImpl lockFeatureResponseType = new LockFeatureResponseTypeImpl();
     return lockFeatureResponseType;
@@ -384,6 +406,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public LockFeatureType createLockFeatureType() {
     LockFeatureTypeImpl lockFeatureType = new LockFeatureTypeImpl();
     return lockFeatureType;
@@ -393,6 +416,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public LockType createLockType() {
     LockTypeImpl lockType = new LockTypeImpl();
     return lockType;
@@ -402,6 +426,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public MetadataURLType createMetadataURLType() {
     MetadataURLTypeImpl metadataURLType = new MetadataURLTypeImpl();
     return metadataURLType;
@@ -411,6 +436,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NativeType createNativeType() {
     NativeTypeImpl nativeType = new NativeTypeImpl();
     return nativeType;
@@ -420,6 +446,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NoSRSType createNoSRSType() {
     NoSRSTypeImpl noSRSType = new NoSRSTypeImpl();
     return noSRSType;
@@ -429,6 +456,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public OperationsType createOperationsType() {
     OperationsTypeImpl operationsType = new OperationsTypeImpl();
     return operationsType;
@@ -438,6 +466,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public OutputFormatListType createOutputFormatListType() {
     OutputFormatListTypeImpl outputFormatListType = new OutputFormatListTypeImpl();
     return outputFormatListType;
@@ -447,6 +476,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public PropertyType createPropertyType() {
     PropertyTypeImpl propertyType = new PropertyTypeImpl();
     return propertyType;
@@ -456,6 +486,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public QueryType createQueryType() {
     QueryTypeImpl queryType = new QueryTypeImpl();
     return queryType;
@@ -465,6 +496,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public TransactionResponseType createTransactionResponseType() {
     TransactionResponseTypeImpl transactionResponseType = new TransactionResponseTypeImpl();
     return transactionResponseType;
@@ -474,6 +506,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public TransactionResultsType createTransactionResultsType() {
     TransactionResultsTypeImpl transactionResultsType = new TransactionResultsTypeImpl();
     return transactionResultsType;
@@ -483,6 +516,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public TransactionSummaryType createTransactionSummaryType() {
     TransactionSummaryTypeImpl transactionSummaryType = new TransactionSummaryTypeImpl();
     return transactionSummaryType;
@@ -492,6 +526,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public TransactionType createTransactionType() {
     TransactionTypeImpl transactionType = new TransactionTypeImpl();
     return transactionType;
@@ -501,6 +536,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public UpdateElementType createUpdateElementType() {
     UpdateElementTypeImpl updateElementType = new UpdateElementTypeImpl();
     return updateElementType;
@@ -510,6 +546,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public WFSCapabilitiesType createWFSCapabilitiesType() {
     WFSCapabilitiesTypeImpl wfsCapabilitiesType = new WFSCapabilitiesTypeImpl();
     return wfsCapabilitiesType;
@@ -519,6 +556,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public XlinkPropertyNameType createXlinkPropertyNameType() {
     XlinkPropertyNameTypeImpl xlinkPropertyNameType = new XlinkPropertyNameTypeImpl();
     return xlinkPropertyNameType;
@@ -844,6 +882,7 @@ public class WfsFactoryImpl extends EFactoryImpl implements WfsFactory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public WfsPackage getWfsPackage() {
     return (WfsPackage)getEPackage();
   }

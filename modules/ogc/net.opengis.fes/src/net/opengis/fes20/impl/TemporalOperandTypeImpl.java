@@ -76,6 +76,7 @@ public class TemporalOperandTypeImpl extends EObjectImpl implements TemporalOper
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public QName getName() {
         return name;
     }
@@ -85,6 +86,7 @@ public class TemporalOperandTypeImpl extends EObjectImpl implements TemporalOper
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setName(QName newName) {
         QName oldName = name;
         name = newName;

@@ -76,6 +76,7 @@ public class DistributedSearchTypeImpl extends EObjectImpl implements Distribute
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Integer getHopCount() {
         return hopCount;
     }
@@ -85,6 +86,7 @@ public class DistributedSearchTypeImpl extends EObjectImpl implements Distribute
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setHopCount(Integer newHopCount) {
         Integer oldHopCount = hopCount;
         hopCount = newHopCount;

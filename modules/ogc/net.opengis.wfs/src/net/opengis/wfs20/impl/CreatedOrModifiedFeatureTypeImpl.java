@@ -99,6 +99,7 @@ public class CreatedOrModifiedFeatureTypeImpl extends EObjectImpl implements Cre
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<FeatureId> getResourceId() {
     if (resourceId == null) {
       resourceId = new EDataTypeUniqueEList<>(FeatureId.class, this, Wfs20Package.CREATED_OR_MODIFIED_FEATURE_TYPE__RESOURCE_ID);
@@ -111,6 +112,7 @@ public class CreatedOrModifiedFeatureTypeImpl extends EObjectImpl implements Cre
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getHandle() {
     return handle;
   }
@@ -120,6 +122,7 @@ public class CreatedOrModifiedFeatureTypeImpl extends EObjectImpl implements Cre
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setHandle(String newHandle) {
     String oldHandle = handle;
     handle = newHandle;

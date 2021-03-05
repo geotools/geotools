@@ -62,6 +62,7 @@ public class GridDomainTypeImpl extends DomainSetTypeImpl implements GridDomainT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GridType getGrid() {
         return grid;
     }
@@ -86,6 +87,7 @@ public class GridDomainTypeImpl extends DomainSetTypeImpl implements GridDomainT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGrid(GridType newGrid) {
         if (newGrid != grid) {
             NotificationChain msgs = null;

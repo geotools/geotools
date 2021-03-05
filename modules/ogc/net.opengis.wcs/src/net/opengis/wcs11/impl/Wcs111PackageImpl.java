@@ -357,7 +357,8 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
         EValidator.Registry.INSTANCE.put
             (theWcs111Package, 
              new EValidator.Descriptor() {
-                 public EValidator getEValidator() {
+                 @Override
+                public EValidator getEValidator() {
                      return Wcs111Validator.INSTANCE;
                  }
              });
@@ -373,6 +374,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getAvailableKeysType() {
         return availableKeysTypeEClass;
     }
@@ -382,6 +384,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAvailableKeysType_Key() {
         return (EAttribute)availableKeysTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -391,6 +394,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getAxisSubsetType() {
         return axisSubsetTypeEClass;
     }
@@ -400,6 +404,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAxisSubsetType_Identifier() {
         return (EAttribute)axisSubsetTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -409,6 +414,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAxisSubsetType_Key() {
         return (EAttribute)axisSubsetTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -418,6 +424,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getAxisType() {
         return axisTypeEClass;
     }
@@ -427,6 +434,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getAxisType_AvailableKeys() {
         return (EReference)axisTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -436,6 +444,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getAxisType_Meaning() {
         return (EReference)axisTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -445,6 +454,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getAxisType_DataType() {
         return (EReference)axisTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -454,6 +464,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getAxisType_UOM() {
         return (EReference)axisTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -463,6 +474,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getAxisType_ReferenceSystem() {
         return (EReference)axisTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -472,6 +484,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getAxisType_Metadata() {
         return (EReference)axisTypeEClass.getEStructuralFeatures().get(5);
     }
@@ -481,6 +494,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAxisType_Identifier() {
         return (EAttribute)axisTypeEClass.getEStructuralFeatures().get(6);
     }
@@ -490,6 +504,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getCapabilitiesType() {
         return capabilitiesTypeEClass;
     }
@@ -499,6 +514,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getCapabilitiesType_Contents() {
         return (EReference)capabilitiesTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -508,6 +524,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getContentsType() {
         return contentsTypeEClass;
     }
@@ -517,6 +534,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getContentsType_CoverageSummary() {
         return (EReference)contentsTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -526,6 +544,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getContentsType_SupportedCRS() {
         return (EAttribute)contentsTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -535,6 +554,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getContentsType_SupportedFormat() {
         return (EAttribute)contentsTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -544,6 +564,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getContentsType_OtherSource() {
         return (EReference)contentsTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -553,6 +574,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getCoverageDescriptionsType() {
         return coverageDescriptionsTypeEClass;
     }
@@ -562,6 +584,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getCoverageDescriptionsType_CoverageDescription() {
         return (EReference)coverageDescriptionsTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -571,6 +594,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getCoverageDescriptionType() {
         return coverageDescriptionTypeEClass;
     }
@@ -580,6 +604,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getCoverageDescriptionType_Identifier() {
         return (EAttribute)coverageDescriptionTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -589,6 +614,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getCoverageDescriptionType_Metadata() {
         return (EReference)coverageDescriptionTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -598,6 +624,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getCoverageDescriptionType_Domain() {
         return (EReference)coverageDescriptionTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -607,6 +634,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getCoverageDescriptionType_Range() {
         return (EReference)coverageDescriptionTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -616,6 +644,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getCoverageDescriptionType_SupportedCRS() {
         return (EAttribute)coverageDescriptionTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -625,6 +654,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getCoverageDescriptionType_SupportedFormat() {
         return (EAttribute)coverageDescriptionTypeEClass.getEStructuralFeatures().get(5);
     }
@@ -634,6 +664,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getCoverageDomainType() {
         return coverageDomainTypeEClass;
     }
@@ -643,6 +674,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getCoverageDomainType_SpatialDomain() {
         return (EReference)coverageDomainTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -652,6 +684,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getCoverageDomainType_TemporalDomain() {
         return (EReference)coverageDomainTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -661,6 +694,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getCoveragesType() {
         return coveragesTypeEClass;
     }
@@ -670,6 +704,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getCoveragesType_Coverage() {
         return (EReference)coveragesTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -679,6 +714,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getCoverageSummaryType() {
         return coverageSummaryTypeEClass;
     }
@@ -688,6 +724,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getCoverageSummaryType_Metadata() {
         return (EReference)coverageSummaryTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -697,6 +734,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getCoverageSummaryType_WGS84BoundingBox() {
         return (EReference)coverageSummaryTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -706,6 +744,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getCoverageSummaryType_SupportedCRS() {
         return (EAttribute)coverageSummaryTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -715,6 +754,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getCoverageSummaryType_SupportedFormat() {
         return (EAttribute)coverageSummaryTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -724,6 +764,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getCoverageSummaryType_CoverageSummary() {
         return (EReference)coverageSummaryTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -733,6 +774,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getCoverageSummaryType_Identifier() {
         return (EAttribute)coverageSummaryTypeEClass.getEStructuralFeatures().get(5);
     }
@@ -742,6 +784,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getCoverageSummaryType_Identifier1() {
         return (EAttribute)coverageSummaryTypeEClass.getEStructuralFeatures().get(6);
     }
@@ -751,6 +794,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getDescribeCoverageType() {
         return describeCoverageTypeEClass;
     }
@@ -760,6 +804,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDescribeCoverageType_Identifier() {
         return (EAttribute)describeCoverageTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -769,6 +814,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getDocumentRoot() {
         return documentRootEClass;
     }
@@ -778,6 +824,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDocumentRoot_Mixed() {
         return (EAttribute)documentRootEClass.getEStructuralFeatures().get(0);
     }
@@ -787,6 +834,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_XMLNSPrefixMap() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(1);
     }
@@ -796,6 +844,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_XSISchemaLocation() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(2);
     }
@@ -805,6 +854,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_AvailableKeys() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(3);
     }
@@ -814,6 +864,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_AxisSubset() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(4);
     }
@@ -823,6 +874,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Capabilities() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(5);
     }
@@ -832,6 +884,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Contents() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(6);
     }
@@ -841,6 +894,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Coverage() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(7);
     }
@@ -850,6 +904,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_CoverageDescriptions() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(8);
     }
@@ -859,6 +914,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Coverages() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(9);
     }
@@ -868,6 +924,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_CoverageSummary() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(10);
     }
@@ -877,6 +934,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_DescribeCoverage() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(11);
     }
@@ -886,6 +944,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_GetCapabilities() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(12);
     }
@@ -895,6 +954,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_GetCoverage() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(13);
     }
@@ -904,6 +964,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDocumentRoot_GridBaseCRS() {
         return (EAttribute)documentRootEClass.getEStructuralFeatures().get(14);
     }
@@ -913,6 +974,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_GridCRS() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(15);
     }
@@ -922,6 +984,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDocumentRoot_GridCS() {
         return (EAttribute)documentRootEClass.getEStructuralFeatures().get(16);
     }
@@ -931,6 +994,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDocumentRoot_GridOffsets() {
         return (EAttribute)documentRootEClass.getEStructuralFeatures().get(17);
     }
@@ -940,6 +1004,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDocumentRoot_GridOrigin() {
         return (EAttribute)documentRootEClass.getEStructuralFeatures().get(18);
     }
@@ -949,6 +1014,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDocumentRoot_GridType() {
         return (EAttribute)documentRootEClass.getEStructuralFeatures().get(19);
     }
@@ -958,6 +1024,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDocumentRoot_Identifier() {
         return (EAttribute)documentRootEClass.getEStructuralFeatures().get(20);
     }
@@ -967,6 +1034,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_InterpolationMethods() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(21);
     }
@@ -976,6 +1044,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_TemporalDomain() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(22);
     }
@@ -985,6 +1054,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_TemporalSubset() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(23);
     }
@@ -994,6 +1064,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getDomainSubsetType() {
         return domainSubsetTypeEClass;
     }
@@ -1003,6 +1074,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDomainSubsetType_BoundingBoxGroup() {
         return (EAttribute)domainSubsetTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1012,6 +1084,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDomainSubsetType_BoundingBox() {
         return (EReference)domainSubsetTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1021,6 +1094,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDomainSubsetType_TemporalSubset() {
         return (EReference)domainSubsetTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1030,6 +1104,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getFieldSubsetType() {
         return fieldSubsetTypeEClass;
     }
@@ -1039,6 +1114,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getFieldSubsetType_Identifier() {
         return (EReference)fieldSubsetTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1048,6 +1124,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getFieldSubsetType_InterpolationType() {
         return (EAttribute)fieldSubsetTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1057,6 +1134,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getFieldSubsetType_AxisSubset() {
         return (EReference)fieldSubsetTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1066,6 +1144,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getFieldType() {
         return fieldTypeEClass;
     }
@@ -1075,6 +1154,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getFieldType_Identifier() {
         return (EAttribute)fieldTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1084,6 +1164,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getFieldType_Definition() {
         return (EReference)fieldTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1093,6 +1174,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getFieldType_NullValue() {
         return (EReference)fieldTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1102,6 +1184,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getFieldType_InterpolationMethods() {
         return (EReference)fieldTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -1111,6 +1194,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getFieldType_Axis() {
         return (EReference)fieldTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -1120,6 +1204,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getGetCapabilitiesType() {
         return getCapabilitiesTypeEClass;
     }
@@ -1129,6 +1214,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetCapabilitiesType_Service() {
         return (EAttribute)getCapabilitiesTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1138,6 +1224,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getGetCoverageType() {
         return getCoverageTypeEClass;
     }
@@ -1147,6 +1234,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getGetCoverageType_Identifier() {
         return (EReference)getCoverageTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1156,6 +1244,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getGetCoverageType_DomainSubset() {
         return (EReference)getCoverageTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1165,6 +1254,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getGetCoverageType_RangeSubset() {
         return (EReference)getCoverageTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1174,6 +1264,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getGetCoverageType_Output() {
         return (EReference)getCoverageTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -1183,6 +1274,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getGridCrsType() {
         return gridCrsTypeEClass;
     }
@@ -1192,6 +1284,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGridCrsType_SrsName() {
         return (EAttribute)gridCrsTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1201,6 +1294,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGridCrsType_GridBaseCRS() {
         return (EAttribute)gridCrsTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1210,6 +1304,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGridCrsType_GridType() {
         return (EAttribute)gridCrsTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1219,6 +1314,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGridCrsType_GridOrigin() {
         return (EAttribute)gridCrsTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -1228,6 +1324,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGridCrsType_GridOffsets() {
         return (EAttribute)gridCrsTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -1237,6 +1334,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGridCrsType_GridCS() {
         return (EAttribute)gridCrsTypeEClass.getEStructuralFeatures().get(5);
     }
@@ -1246,6 +1344,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGridCrsType_Id() {
         return (EAttribute)gridCrsTypeEClass.getEStructuralFeatures().get(6);
     }
@@ -1255,6 +1354,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getImageCRSRefType() {
         return imageCRSRefTypeEClass;
     }
@@ -1264,6 +1364,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getImageCRSRefType_ImageCRS() {
         return (EAttribute)imageCRSRefTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1273,6 +1374,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getInterpolationMethodBaseType() {
         return interpolationMethodBaseTypeEClass;
     }
@@ -1282,6 +1384,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getInterpolationMethodsType() {
         return interpolationMethodsTypeEClass;
     }
@@ -1291,6 +1394,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getInterpolationMethodsType_InterpolationMethod() {
         return (EReference)interpolationMethodsTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1300,6 +1404,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getInterpolationMethodsType_Default() {
         return (EAttribute)interpolationMethodsTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1309,6 +1414,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getInterpolationMethodType() {
         return interpolationMethodTypeEClass;
     }
@@ -1318,6 +1424,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getInterpolationMethodType_NullResistance() {
         return (EAttribute)interpolationMethodTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1327,6 +1434,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getOutputType() {
         return outputTypeEClass;
     }
@@ -1336,6 +1444,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getOutputType_GridCRS() {
         return (EReference)outputTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1345,6 +1454,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getOutputType_Format() {
         return (EAttribute)outputTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1354,6 +1464,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getOutputType_Store() {
         return (EAttribute)outputTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1363,6 +1474,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getRangeSubsetType() {
         return rangeSubsetTypeEClass;
     }
@@ -1372,6 +1484,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getRangeSubsetType_FieldSubset() {
         return (EReference)rangeSubsetTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1381,6 +1494,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getRangeType() {
         return rangeTypeEClass;
     }
@@ -1390,6 +1504,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getRangeType_Field() {
         return (EReference)rangeTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1399,6 +1514,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getRequestBaseType() {
         return requestBaseTypeEClass;
     }
@@ -1408,6 +1524,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getRequestBaseType_Service() {
         return (EAttribute)requestBaseTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1417,6 +1534,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getRequestBaseType_Version() {
         return (EAttribute)requestBaseTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1426,6 +1544,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getRequestBaseType_BaseUrl() {
         return (EAttribute)requestBaseTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1435,6 +1554,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getSpatialDomainType() {
         return spatialDomainTypeEClass;
     }
@@ -1444,6 +1564,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSpatialDomainType_BoundingBoxGroup() {
         return (EAttribute)spatialDomainTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1453,6 +1574,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getSpatialDomainType_BoundingBox() {
         return (EReference)spatialDomainTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1462,6 +1584,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getSpatialDomainType_GridCRS() {
         return (EReference)spatialDomainTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1471,6 +1594,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSpatialDomainType_Transformation() {
         return (EAttribute)spatialDomainTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -1480,6 +1604,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getSpatialDomainType_ImageCRS() {
         return (EReference)spatialDomainTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -1489,6 +1614,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSpatialDomainType_Polygon() {
         return (EAttribute)spatialDomainTypeEClass.getEStructuralFeatures().get(5);
     }
@@ -1498,6 +1624,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getTimePeriodType() {
         return timePeriodTypeEClass;
     }
@@ -1507,6 +1634,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTimePeriodType_BeginPosition() {
         return (EAttribute)timePeriodTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1516,6 +1644,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTimePeriodType_EndPosition() {
         return (EAttribute)timePeriodTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1525,6 +1654,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTimePeriodType_TimeResolution() {
         return (EAttribute)timePeriodTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1534,6 +1664,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTimePeriodType_Frame() {
         return (EAttribute)timePeriodTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -1543,6 +1674,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getTimeSequenceType() {
         return timeSequenceTypeEClass;
     }
@@ -1552,6 +1684,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTimeSequenceType_Group() {
         return (EAttribute)timeSequenceTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1561,6 +1694,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTimeSequenceType_TimePosition() {
         return (EAttribute)timeSequenceTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1570,6 +1704,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getTimeSequenceType_TimePeriod() {
         return (EReference)timeSequenceTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1579,6 +1714,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getIdentifierType() {
         return identifierTypeEDataType;
     }
@@ -1588,6 +1724,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getInterpolationMethodBaseTypeBase() {
         return interpolationMethodBaseTypeBaseEDataType;
     }
@@ -1597,6 +1734,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getTimeDurationType() {
         return timeDurationTypeEDataType;
     }
@@ -1606,6 +1744,7 @@ public class Wcs111PackageImpl extends EPackageImpl implements Wcs111Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Wcs111Factory getWcs111Factory() {
         return (Wcs111Factory)getEFactoryInstance();
     }

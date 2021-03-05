@@ -73,6 +73,7 @@ public class ConformanceTypeImpl extends EObjectImpl implements ConformanceType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<DomainType> getConstraint() {
         if (constraint == null) {
             constraint = new EObjectContainmentEList<>(DomainType.class, this, Fes20Package.CONFORMANCE_TYPE__CONSTRAINT);

@@ -72,7 +72,8 @@ public class KeywordsTypeImpl extends EObjectImpl implements KeywordsType {
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.KEYWORDS_TYPE;
   }
 
@@ -81,7 +82,8 @@ public class KeywordsTypeImpl extends EObjectImpl implements KeywordsType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList getKeyword() {
+  @Override
+public EList getKeyword() {
     if (keyword == null) {
       keyword = new EObjectContainmentEList(LanguageStringType.class, this, Ows11Package.KEYWORDS_TYPE__KEYWORD);
     }
@@ -93,7 +95,8 @@ public class KeywordsTypeImpl extends EObjectImpl implements KeywordsType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public CodeType getType() {
+  @Override
+public CodeType getType() {
     return type;
   }
 
@@ -117,7 +120,8 @@ public class KeywordsTypeImpl extends EObjectImpl implements KeywordsType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setType(CodeType newType) {
+  @Override
+public void setType(CodeType newType) {
     if (newType != type) {
       NotificationChain msgs = null;
       if (type != null)
@@ -136,7 +140,8 @@ public class KeywordsTypeImpl extends EObjectImpl implements KeywordsType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+  @Override
+public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Ows11Package.KEYWORDS_TYPE__KEYWORD:
         return ((InternalEList)getKeyword()).basicRemove(otherEnd, msgs);
@@ -151,7 +156,8 @@ public class KeywordsTypeImpl extends EObjectImpl implements KeywordsType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.KEYWORDS_TYPE__KEYWORD:
         return getKeyword();
@@ -166,7 +172,8 @@ public class KeywordsTypeImpl extends EObjectImpl implements KeywordsType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.KEYWORDS_TYPE__KEYWORD:
         getKeyword().clear();
@@ -184,7 +191,8 @@ public class KeywordsTypeImpl extends EObjectImpl implements KeywordsType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.KEYWORDS_TYPE__KEYWORD:
         getKeyword().clear();
@@ -201,7 +209,8 @@ public class KeywordsTypeImpl extends EObjectImpl implements KeywordsType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.KEYWORDS_TYPE__KEYWORD:
         return keyword != null && !keyword.isEmpty();

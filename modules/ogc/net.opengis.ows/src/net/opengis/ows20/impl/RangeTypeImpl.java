@@ -116,6 +116,7 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ValueType getMinimumValue() {
     return minimumValue;
   }
@@ -140,6 +141,7 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setMinimumValue(ValueType newMinimumValue) {
     if (newMinimumValue != minimumValue) {
       NotificationChain msgs = null;
@@ -159,6 +161,7 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ValueType getMaximumValue() {
     return maximumValue;
   }
@@ -183,6 +186,7 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setMaximumValue(ValueType newMaximumValue) {
     if (newMaximumValue != maximumValue) {
       NotificationChain msgs = null;
@@ -202,6 +206,7 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ValueType getSpacing() {
     return spacing;
   }
@@ -226,6 +231,7 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setSpacing(ValueType newSpacing) {
     if (newSpacing != spacing) {
       NotificationChain msgs = null;
@@ -245,6 +251,7 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public RangeClosureType getRangeClosure() {
     return rangeClosure;
   }
@@ -254,6 +261,7 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setRangeClosure(RangeClosureType newRangeClosure) {
     RangeClosureType oldRangeClosure = rangeClosure;
     rangeClosure = newRangeClosure == null ? RANGE_CLOSURE_EDEFAULT : newRangeClosure;
@@ -268,6 +276,7 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetRangeClosure() {
     RangeClosureType oldRangeClosure = rangeClosure;
     boolean oldRangeClosureESet = rangeClosureESet;
@@ -282,6 +291,7 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetRangeClosure() {
     return rangeClosureESet;
   }

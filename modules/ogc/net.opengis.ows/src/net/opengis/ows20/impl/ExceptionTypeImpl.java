@@ -108,6 +108,7 @@ public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<String> getExceptionText() {
     if (exceptionText == null) {
       exceptionText = new EDataTypeEList<>(String.class, this, Ows20Package.EXCEPTION_TYPE__EXCEPTION_TEXT);
@@ -120,6 +121,7 @@ public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getExceptionCode() {
     return exceptionCode;
   }
@@ -129,6 +131,7 @@ public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setExceptionCode(String newExceptionCode) {
     String oldExceptionCode = exceptionCode;
     exceptionCode = newExceptionCode;
@@ -141,6 +144,7 @@ public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getLocator() {
     return locator;
   }
@@ -150,6 +154,7 @@ public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setLocator(String newLocator) {
     String oldLocator = locator;
     locator = newLocator;

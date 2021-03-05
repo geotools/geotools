@@ -44,6 +44,7 @@ public interface SpatialOperatorsType extends EObject, SpatialOperators {
      *        extendedMetaData="kind='element' name='SpatialOperator' namespace='##targetNamespace'"
      * @generated
      */
+    @Override
     EList<SpatialOperator> getOperators();
 
 } // SpatialOperatorsType

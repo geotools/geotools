@@ -107,7 +107,8 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.RESPONSIBLE_PARTY_SUBSET_TYPE;
   }
 
@@ -116,7 +117,8 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getIndividualName() {
+  @Override
+public String getIndividualName() {
     return individualName;
   }
 
@@ -125,7 +127,8 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setIndividualName(String newIndividualName) {
+  @Override
+public void setIndividualName(String newIndividualName) {
     String oldIndividualName = individualName;
     individualName = newIndividualName;
     if (eNotificationRequired())
@@ -137,7 +140,8 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getPositionName() {
+  @Override
+public String getPositionName() {
     return positionName;
   }
 
@@ -146,7 +150,8 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setPositionName(String newPositionName) {
+  @Override
+public void setPositionName(String newPositionName) {
     String oldPositionName = positionName;
     positionName = newPositionName;
     if (eNotificationRequired())
@@ -158,7 +163,8 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
    * <!-- end-user-doc -->
    * @generated
    */
-  public ContactType getContactInfo() {
+  @Override
+public ContactType getContactInfo() {
     return contactInfo;
   }
 
@@ -182,7 +188,8 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setContactInfo(ContactType newContactInfo) {
+  @Override
+public void setContactInfo(ContactType newContactInfo) {
     if (newContactInfo != contactInfo) {
       NotificationChain msgs = null;
       if (contactInfo != null)
@@ -201,7 +208,8 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
    * <!-- end-user-doc -->
    * @generated
    */
-  public CodeType getRole() {
+  @Override
+public CodeType getRole() {
     return role;
   }
 
@@ -225,7 +233,8 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setRole(CodeType newRole) {
+  @Override
+public void setRole(CodeType newRole) {
     if (newRole != role) {
       NotificationChain msgs = null;
       if (role != null)
@@ -244,7 +253,8 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+  @Override
+public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Ows11Package.RESPONSIBLE_PARTY_SUBSET_TYPE__CONTACT_INFO:
         return basicSetContactInfo(null, msgs);
@@ -259,7 +269,8 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.RESPONSIBLE_PARTY_SUBSET_TYPE__INDIVIDUAL_NAME:
         return getIndividualName();
@@ -278,7 +289,8 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.RESPONSIBLE_PARTY_SUBSET_TYPE__INDIVIDUAL_NAME:
         setIndividualName((String)newValue);
@@ -301,7 +313,8 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.RESPONSIBLE_PARTY_SUBSET_TYPE__INDIVIDUAL_NAME:
         setIndividualName(INDIVIDUAL_NAME_EDEFAULT);
@@ -324,7 +337,8 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.RESPONSIBLE_PARTY_SUBSET_TYPE__INDIVIDUAL_NAME:
         return INDIVIDUAL_NAME_EDEFAULT == null ? individualName != null : !INDIVIDUAL_NAME_EDEFAULT.equals(individualName);
@@ -343,7 +357,8 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
    * <!-- end-user-doc -->
    * @generated
    */
-  public String toString() {
+  @Override
+public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

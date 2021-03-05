@@ -158,6 +158,7 @@ public class VectorTypeImpl extends MinimalEObjectImpl.Container implements Vect
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public List<Double> getValue() {
         return value;
     }
@@ -167,6 +168,7 @@ public class VectorTypeImpl extends MinimalEObjectImpl.Container implements Vect
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValue(List<Double> newValue) {
         List<Double> oldValue = value;
         value = newValue;
@@ -179,6 +181,7 @@ public class VectorTypeImpl extends MinimalEObjectImpl.Container implements Vect
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public List<String> getAxisLabels() {
         return axisLabels;
     }
@@ -188,6 +191,7 @@ public class VectorTypeImpl extends MinimalEObjectImpl.Container implements Vect
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAxisLabels(List<String> newAxisLabels) {
         List<String> oldAxisLabels = axisLabels;
         axisLabels = newAxisLabels;
@@ -200,6 +204,7 @@ public class VectorTypeImpl extends MinimalEObjectImpl.Container implements Vect
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getSrsDimension() {
         return srsDimension;
     }
@@ -209,6 +214,7 @@ public class VectorTypeImpl extends MinimalEObjectImpl.Container implements Vect
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSrsDimension(BigInteger newSrsDimension) {
         BigInteger oldSrsDimension = srsDimension;
         srsDimension = newSrsDimension;
@@ -221,6 +227,7 @@ public class VectorTypeImpl extends MinimalEObjectImpl.Container implements Vect
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getSrsName() {
         return srsName;
     }
@@ -230,6 +237,7 @@ public class VectorTypeImpl extends MinimalEObjectImpl.Container implements Vect
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSrsName(String newSrsName) {
         String oldSrsName = srsName;
         srsName = newSrsName;
@@ -242,6 +250,7 @@ public class VectorTypeImpl extends MinimalEObjectImpl.Container implements Vect
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public List<String> getUomLabels() {
         return uomLabels;
     }
@@ -251,6 +260,7 @@ public class VectorTypeImpl extends MinimalEObjectImpl.Container implements Vect
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUomLabels(List<String> newUomLabels) {
         List<String> oldUomLabels = uomLabels;
         uomLabels = newUomLabels;

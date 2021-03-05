@@ -71,6 +71,7 @@ public class LanguageFactoryImpl extends EFactoryImpl implements LanguageFactory
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AnimateColorType createAnimateColorType() {
         AnimateColorTypeImpl animateColorType = new AnimateColorTypeImpl();
         return animateColorType;
@@ -81,6 +82,7 @@ public class LanguageFactoryImpl extends EFactoryImpl implements LanguageFactory
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AnimateMotionType createAnimateMotionType() {
         AnimateMotionTypeImpl animateMotionType = new AnimateMotionTypeImpl();
         return animateMotionType;
@@ -91,6 +93,7 @@ public class LanguageFactoryImpl extends EFactoryImpl implements LanguageFactory
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AnimateType createAnimateType() {
         AnimateTypeImpl animateType = new AnimateTypeImpl();
         return animateType;
@@ -101,6 +104,7 @@ public class LanguageFactoryImpl extends EFactoryImpl implements LanguageFactory
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DocumentRoot createDocumentRoot() {
         DocumentRootImpl documentRoot = new DocumentRootImpl();
         return documentRoot;
@@ -111,6 +115,7 @@ public class LanguageFactoryImpl extends EFactoryImpl implements LanguageFactory
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SetType createSetType() {
         SetTypeImpl setType = new SetTypeImpl();
         return setType;
@@ -121,6 +126,7 @@ public class LanguageFactoryImpl extends EFactoryImpl implements LanguageFactory
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LanguagePackage getLanguagePackage() {
         return (LanguagePackage)getEPackage();
     }

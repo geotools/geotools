@@ -109,6 +109,7 @@ public class ConeTypeImpl extends AbstractGriddedSurfaceTypeImpl implements Cone
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CurveInterpolationType getHorizontalCurveType() {
         return horizontalCurveType;
     }
@@ -118,6 +119,7 @@ public class ConeTypeImpl extends AbstractGriddedSurfaceTypeImpl implements Cone
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setHorizontalCurveType(CurveInterpolationType newHorizontalCurveType) {
         CurveInterpolationType oldHorizontalCurveType = horizontalCurveType;
         horizontalCurveType = newHorizontalCurveType == null ? HORIZONTAL_CURVE_TYPE_EDEFAULT : newHorizontalCurveType;
@@ -132,6 +134,7 @@ public class ConeTypeImpl extends AbstractGriddedSurfaceTypeImpl implements Cone
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetHorizontalCurveType() {
         CurveInterpolationType oldHorizontalCurveType = horizontalCurveType;
         boolean oldHorizontalCurveTypeESet = horizontalCurveTypeESet;
@@ -146,6 +149,7 @@ public class ConeTypeImpl extends AbstractGriddedSurfaceTypeImpl implements Cone
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetHorizontalCurveType() {
         return horizontalCurveTypeESet;
     }
@@ -155,6 +159,7 @@ public class ConeTypeImpl extends AbstractGriddedSurfaceTypeImpl implements Cone
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CurveInterpolationType getVerticalCurveType() {
         return verticalCurveType;
     }
@@ -164,6 +169,7 @@ public class ConeTypeImpl extends AbstractGriddedSurfaceTypeImpl implements Cone
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setVerticalCurveType(CurveInterpolationType newVerticalCurveType) {
         CurveInterpolationType oldVerticalCurveType = verticalCurveType;
         verticalCurveType = newVerticalCurveType == null ? VERTICAL_CURVE_TYPE_EDEFAULT : newVerticalCurveType;
@@ -178,6 +184,7 @@ public class ConeTypeImpl extends AbstractGriddedSurfaceTypeImpl implements Cone
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetVerticalCurveType() {
         CurveInterpolationType oldVerticalCurveType = verticalCurveType;
         boolean oldVerticalCurveTypeESet = verticalCurveTypeESet;
@@ -192,6 +199,7 @@ public class ConeTypeImpl extends AbstractGriddedSurfaceTypeImpl implements Cone
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetVerticalCurveType() {
         return verticalCurveTypeESet;
     }

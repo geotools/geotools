@@ -180,7 +180,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public AcceptFormatsType createAcceptFormatsType() {
+	@Override
+    public AcceptFormatsType createAcceptFormatsType() {
     AcceptFormatsTypeImpl acceptFormatsType = new AcceptFormatsTypeImpl();
     return acceptFormatsType;
   }
@@ -190,7 +191,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public AcceptVersionsType createAcceptVersionsType() {
+	@Override
+    public AcceptVersionsType createAcceptVersionsType() {
     AcceptVersionsTypeImpl acceptVersionsType = new AcceptVersionsTypeImpl();
     return acceptVersionsType;
   }
@@ -200,7 +202,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public AddressType createAddressType() {
+	@Override
+    public AddressType createAddressType() {
     AddressTypeImpl addressType = new AddressTypeImpl();
     return addressType;
   }
@@ -210,7 +213,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public BoundingBoxType createBoundingBoxType() {
+	@Override
+    public BoundingBoxType createBoundingBoxType() {
     BoundingBoxTypeImpl boundingBoxType = new BoundingBoxTypeImpl();
     return boundingBoxType;
   }
@@ -220,7 +224,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public CapabilitiesBaseType createCapabilitiesBaseType() {
+	@Override
+    public CapabilitiesBaseType createCapabilitiesBaseType() {
     CapabilitiesBaseTypeImpl capabilitiesBaseType = new CapabilitiesBaseTypeImpl();
     return capabilitiesBaseType;
   }
@@ -230,7 +235,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public CodeType createCodeType() {
+	@Override
+    public CodeType createCodeType() {
     CodeTypeImpl codeType = new CodeTypeImpl();
     return codeType;
   }
@@ -240,7 +246,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public ContactType createContactType() {
+	@Override
+    public ContactType createContactType() {
     ContactTypeImpl contactType = new ContactTypeImpl();
     return contactType;
   }
@@ -250,7 +257,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public DCPType createDCPType() {
+	@Override
+    public DCPType createDCPType() {
     DCPTypeImpl dcpType = new DCPTypeImpl();
     return dcpType;
   }
@@ -260,7 +268,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public DescriptionType createDescriptionType() {
+	@Override
+    public DescriptionType createDescriptionType() {
     DescriptionTypeImpl descriptionType = new DescriptionTypeImpl();
     return descriptionType;
   }
@@ -270,7 +279,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public DocumentRoot createDocumentRoot() {
+	@Override
+    public DocumentRoot createDocumentRoot() {
     DocumentRootImpl documentRoot = new DocumentRootImpl();
     return documentRoot;
   }
@@ -280,7 +290,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public DomainType createDomainType() {
+	@Override
+    public DomainType createDomainType() {
     DomainTypeImpl domainType = new DomainTypeImpl();
     return domainType;
   }
@@ -290,7 +301,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public ExceptionReportType createExceptionReportType() {
+	@Override
+    public ExceptionReportType createExceptionReportType() {
     ExceptionReportTypeImpl exceptionReportType = new ExceptionReportTypeImpl();
     return exceptionReportType;
   }
@@ -300,7 +312,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public ExceptionType createExceptionType() {
+	@Override
+    public ExceptionType createExceptionType() {
     ExceptionTypeImpl exceptionType = new ExceptionTypeImpl();
     return exceptionType;
   }
@@ -310,7 +323,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public GetCapabilitiesType createGetCapabilitiesType() {
+	@Override
+    public GetCapabilitiesType createGetCapabilitiesType() {
     GetCapabilitiesTypeImpl getCapabilitiesType = new GetCapabilitiesTypeImpl();
     return getCapabilitiesType;
   }
@@ -320,7 +334,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public HTTPType createHTTPType() {
+	@Override
+    public HTTPType createHTTPType() {
     HTTPTypeImpl httpType = new HTTPTypeImpl();
     return httpType;
   }
@@ -330,7 +345,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public IdentificationType createIdentificationType() {
+	@Override
+    public IdentificationType createIdentificationType() {
     IdentificationTypeImpl identificationType = new IdentificationTypeImpl();
     return identificationType;
   }
@@ -340,7 +356,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public KeywordsType createKeywordsType() {
+	@Override
+    public KeywordsType createKeywordsType() {
     KeywordsTypeImpl keywordsType = new KeywordsTypeImpl();
     return keywordsType;
   }
@@ -350,7 +367,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public MetadataType createMetadataType() {
+	@Override
+    public MetadataType createMetadataType() {
     MetadataTypeImpl metadataType = new MetadataTypeImpl();
     return metadataType;
   }
@@ -360,7 +378,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public OnlineResourceType createOnlineResourceType() {
+	@Override
+    public OnlineResourceType createOnlineResourceType() {
     OnlineResourceTypeImpl onlineResourceType = new OnlineResourceTypeImpl();
     return onlineResourceType;
   }
@@ -370,7 +389,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public OperationType createOperationType() {
+	@Override
+    public OperationType createOperationType() {
     OperationTypeImpl operationType = new OperationTypeImpl();
     return operationType;
   }
@@ -380,7 +400,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public OperationsMetadataType createOperationsMetadataType() {
+	@Override
+    public OperationsMetadataType createOperationsMetadataType() {
     OperationsMetadataTypeImpl operationsMetadataType = new OperationsMetadataTypeImpl();
     return operationsMetadataType;
   }
@@ -390,7 +411,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public RequestMethodType createRequestMethodType() {
+	@Override
+    public RequestMethodType createRequestMethodType() {
     RequestMethodTypeImpl requestMethodType = new RequestMethodTypeImpl();
     return requestMethodType;
   }
@@ -400,7 +422,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public ResponsiblePartySubsetType createResponsiblePartySubsetType() {
+	@Override
+    public ResponsiblePartySubsetType createResponsiblePartySubsetType() {
     ResponsiblePartySubsetTypeImpl responsiblePartySubsetType = new ResponsiblePartySubsetTypeImpl();
     return responsiblePartySubsetType;
   }
@@ -410,7 +433,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public ResponsiblePartyType createResponsiblePartyType() {
+	@Override
+    public ResponsiblePartyType createResponsiblePartyType() {
     ResponsiblePartyTypeImpl responsiblePartyType = new ResponsiblePartyTypeImpl();
     return responsiblePartyType;
   }
@@ -420,7 +444,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public SectionsType createSectionsType() {
+	@Override
+    public SectionsType createSectionsType() {
     SectionsTypeImpl sectionsType = new SectionsTypeImpl();
     return sectionsType;
   }
@@ -430,7 +455,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public ServiceIdentificationType createServiceIdentificationType() {
+	@Override
+    public ServiceIdentificationType createServiceIdentificationType() {
     ServiceIdentificationTypeImpl serviceIdentificationType = new ServiceIdentificationTypeImpl();
     return serviceIdentificationType;
   }
@@ -440,7 +466,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public ServiceProviderType createServiceProviderType() {
+	@Override
+    public ServiceProviderType createServiceProviderType() {
     ServiceProviderTypeImpl serviceProviderType = new ServiceProviderTypeImpl();
     return serviceProviderType;
   }
@@ -450,7 +477,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public TelephoneType createTelephoneType() {
+	@Override
+    public TelephoneType createTelephoneType() {
     TelephoneTypeImpl telephoneType = new TelephoneTypeImpl();
     return telephoneType;
   }
@@ -460,7 +488,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public WGS84BoundingBoxType createWGS84BoundingBoxType() {
+	@Override
+    public WGS84BoundingBoxType createWGS84BoundingBoxType() {
     WGS84BoundingBoxTypeImpl wgs84BoundingBoxType = new WGS84BoundingBoxTypeImpl();
     return wgs84BoundingBoxType;
   }
@@ -560,7 +589,8 @@ public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Ows10Package getOws10Package() {
+	@Override
+    public Ows10Package getOws10Package() {
     return (Ows10Package)getEPackage();
   }
 

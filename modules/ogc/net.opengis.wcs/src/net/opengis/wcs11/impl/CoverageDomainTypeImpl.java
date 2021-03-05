@@ -69,6 +69,7 @@ public class CoverageDomainTypeImpl extends EObjectImpl implements CoverageDomai
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EClass eStaticClass() {
         return Wcs111Package.Literals.COVERAGE_DOMAIN_TYPE;
     }
@@ -78,6 +79,7 @@ public class CoverageDomainTypeImpl extends EObjectImpl implements CoverageDomai
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SpatialDomainType getSpatialDomain() {
         return spatialDomain;
     }
@@ -102,6 +104,7 @@ public class CoverageDomainTypeImpl extends EObjectImpl implements CoverageDomai
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSpatialDomain(SpatialDomainType newSpatialDomain) {
         if (newSpatialDomain != spatialDomain) {
             NotificationChain msgs = null;
@@ -121,6 +124,7 @@ public class CoverageDomainTypeImpl extends EObjectImpl implements CoverageDomai
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeSequenceType getTemporalDomain() {
         return temporalDomain;
     }
@@ -145,6 +149,7 @@ public class CoverageDomainTypeImpl extends EObjectImpl implements CoverageDomai
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTemporalDomain(TimeSequenceType newTemporalDomain) {
         if (newTemporalDomain != temporalDomain) {
             NotificationChain msgs = null;
@@ -164,6 +169,7 @@ public class CoverageDomainTypeImpl extends EObjectImpl implements CoverageDomai
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case Wcs111Package.COVERAGE_DOMAIN_TYPE__SPATIAL_DOMAIN:
@@ -179,6 +185,7 @@ public class CoverageDomainTypeImpl extends EObjectImpl implements CoverageDomai
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case Wcs111Package.COVERAGE_DOMAIN_TYPE__SPATIAL_DOMAIN:
@@ -194,6 +201,7 @@ public class CoverageDomainTypeImpl extends EObjectImpl implements CoverageDomai
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Wcs111Package.COVERAGE_DOMAIN_TYPE__SPATIAL_DOMAIN:
@@ -211,6 +219,7 @@ public class CoverageDomainTypeImpl extends EObjectImpl implements CoverageDomai
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case Wcs111Package.COVERAGE_DOMAIN_TYPE__SPATIAL_DOMAIN:
@@ -228,6 +237,7 @@ public class CoverageDomainTypeImpl extends EObjectImpl implements CoverageDomai
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case Wcs111Package.COVERAGE_DOMAIN_TYPE__SPATIAL_DOMAIN:

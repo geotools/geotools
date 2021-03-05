@@ -139,6 +139,7 @@ public class GetResourceByIdTypeImpl extends EObjectImpl implements GetResourceB
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getResourceID() {
     return resourceID;
   }
@@ -148,6 +149,7 @@ public class GetResourceByIdTypeImpl extends EObjectImpl implements GetResourceB
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setResourceID(String newResourceID) {
     String oldResourceID = resourceID;
     resourceID = newResourceID;
@@ -160,6 +162,7 @@ public class GetResourceByIdTypeImpl extends EObjectImpl implements GetResourceB
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getOutputFormat() {
     return outputFormat;
   }
@@ -169,6 +172,7 @@ public class GetResourceByIdTypeImpl extends EObjectImpl implements GetResourceB
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setOutputFormat(String newOutputFormat) {
     String oldOutputFormat = outputFormat;
     outputFormat = newOutputFormat;
@@ -181,6 +185,7 @@ public class GetResourceByIdTypeImpl extends EObjectImpl implements GetResourceB
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getService() {
     return service;
   }
@@ -190,6 +195,7 @@ public class GetResourceByIdTypeImpl extends EObjectImpl implements GetResourceB
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setService(String newService) {
     String oldService = service;
     service = newService;
@@ -202,6 +208,7 @@ public class GetResourceByIdTypeImpl extends EObjectImpl implements GetResourceB
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getVersion() {
     return version;
   }
@@ -211,6 +218,7 @@ public class GetResourceByIdTypeImpl extends EObjectImpl implements GetResourceB
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setVersion(String newVersion) {
     String oldVersion = version;
     version = newVersion;

@@ -71,6 +71,7 @@ public class DerivationUnitTermTypeImpl extends UnitOfMeasureTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getExponent() {
         return exponent;
     }
@@ -80,6 +81,7 @@ public class DerivationUnitTermTypeImpl extends UnitOfMeasureTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setExponent(BigInteger newExponent) {
         BigInteger oldExponent = exponent;
         exponent = newExponent;

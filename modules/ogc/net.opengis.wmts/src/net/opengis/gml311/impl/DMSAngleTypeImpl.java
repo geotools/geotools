@@ -129,6 +129,7 @@ public class DMSAngleTypeImpl extends MinimalEObjectImpl.Container implements DM
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DegreesType getDegrees() {
         return degrees;
     }
@@ -153,6 +154,7 @@ public class DMSAngleTypeImpl extends MinimalEObjectImpl.Container implements DM
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDegrees(DegreesType newDegrees) {
         if (newDegrees != degrees) {
             NotificationChain msgs = null;
@@ -172,6 +174,7 @@ public class DMSAngleTypeImpl extends MinimalEObjectImpl.Container implements DM
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigDecimal getDecimalMinutes() {
         return decimalMinutes;
     }
@@ -181,6 +184,7 @@ public class DMSAngleTypeImpl extends MinimalEObjectImpl.Container implements DM
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDecimalMinutes(BigDecimal newDecimalMinutes) {
         BigDecimal oldDecimalMinutes = decimalMinutes;
         decimalMinutes = newDecimalMinutes;
@@ -193,6 +197,7 @@ public class DMSAngleTypeImpl extends MinimalEObjectImpl.Container implements DM
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getMinutes() {
         return minutes;
     }
@@ -202,6 +207,7 @@ public class DMSAngleTypeImpl extends MinimalEObjectImpl.Container implements DM
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMinutes(BigInteger newMinutes) {
         BigInteger oldMinutes = minutes;
         minutes = newMinutes;
@@ -214,6 +220,7 @@ public class DMSAngleTypeImpl extends MinimalEObjectImpl.Container implements DM
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigDecimal getSeconds() {
         return seconds;
     }
@@ -223,6 +230,7 @@ public class DMSAngleTypeImpl extends MinimalEObjectImpl.Container implements DM
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSeconds(BigDecimal newSeconds) {
         BigDecimal oldSeconds = seconds;
         seconds = newSeconds;

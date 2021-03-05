@@ -152,6 +152,7 @@ public class QueryTypeImpl extends AbstractAdhocQueryExpressionTypeImpl implemen
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getFeatureVersion() {
     return featureVersion;
   }
@@ -161,6 +162,7 @@ public class QueryTypeImpl extends AbstractAdhocQueryExpressionTypeImpl implemen
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setFeatureVersion(String newFeatureVersion) {
     String oldFeatureVersion = featureVersion;
     featureVersion = newFeatureVersion;
@@ -173,6 +175,7 @@ public class QueryTypeImpl extends AbstractAdhocQueryExpressionTypeImpl implemen
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public URI getSrsName() {
     return srsName;
   }
@@ -182,6 +185,7 @@ public class QueryTypeImpl extends AbstractAdhocQueryExpressionTypeImpl implemen
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setSrsName(URI newSrsName) {
     URI oldSrsName = srsName;
     srsName = newSrsName;
@@ -293,6 +297,7 @@ public class QueryTypeImpl extends AbstractAdhocQueryExpressionTypeImpl implemen
     /**
      * @generated NOT
      */
+    @Override
     public void setFilter(Filter filter) {
         setAbstractSelectionClause(filter);
     }
@@ -300,6 +305,7 @@ public class QueryTypeImpl extends AbstractAdhocQueryExpressionTypeImpl implemen
     /**
      * @generated NOT
      */
+    @Override
     public Filter getFilter() {
         return (Filter) getAbstractSelectionClause();
     }
@@ -307,6 +313,7 @@ public class QueryTypeImpl extends AbstractAdhocQueryExpressionTypeImpl implemen
     /**
      * @generated NOT
      */
+    @Override
     public EList<QName> getPropertyNames() {
         return (EList) getAbstractProjectionClause();
     }
@@ -314,6 +321,7 @@ public class QueryTypeImpl extends AbstractAdhocQueryExpressionTypeImpl implemen
     /**
      * @generated NOT
      */
+    @Override
     public EList<SortBy> getSortBy() {
         if (abstractSortingClause == null) {
             abstractSortingClause = new UniqueEList<SortBy>();

@@ -114,6 +114,7 @@ public class RangeSetTypeImpl extends MinimalEObjectImpl.Container implements Ra
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<ValueArrayType> getValueArray() {
         if (valueArray == null) {
             valueArray = new EObjectContainmentEList<>(ValueArrayType.class, this, Gml311Package.RANGE_SET_TYPE__VALUE_ARRAY);
@@ -126,6 +127,7 @@ public class RangeSetTypeImpl extends MinimalEObjectImpl.Container implements Ra
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getScalarValueList() {
         if (scalarValueList == null) {
             scalarValueList = new BasicFeatureMap(this, Gml311Package.RANGE_SET_TYPE__SCALAR_VALUE_LIST);
@@ -138,6 +140,7 @@ public class RangeSetTypeImpl extends MinimalEObjectImpl.Container implements Ra
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     @SuppressWarnings("unchecked")
     public EList<List> getBooleanList() {
         return getScalarValueList().list(Gml311Package.eINSTANCE.getRangeSetType_BooleanList());
@@ -148,6 +151,7 @@ public class RangeSetTypeImpl extends MinimalEObjectImpl.Container implements Ra
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<CodeOrNullListType> getCategoryList() {
         return getScalarValueList().list(Gml311Package.eINSTANCE.getRangeSetType_CategoryList());
     }
@@ -157,6 +161,7 @@ public class RangeSetTypeImpl extends MinimalEObjectImpl.Container implements Ra
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<MeasureOrNullListType> getQuantityList() {
         return getScalarValueList().list(Gml311Package.eINSTANCE.getRangeSetType_QuantityList());
     }
@@ -166,6 +171,7 @@ public class RangeSetTypeImpl extends MinimalEObjectImpl.Container implements Ra
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     @SuppressWarnings("unchecked")
     public EList<List> getCountList() {
         return getScalarValueList().list(Gml311Package.eINSTANCE.getRangeSetType_CountList());
@@ -176,6 +182,7 @@ public class RangeSetTypeImpl extends MinimalEObjectImpl.Container implements Ra
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DataBlockType getDataBlock() {
         return dataBlock;
     }
@@ -200,6 +207,7 @@ public class RangeSetTypeImpl extends MinimalEObjectImpl.Container implements Ra
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDataBlock(DataBlockType newDataBlock) {
         if (newDataBlock != dataBlock) {
             NotificationChain msgs = null;
@@ -219,6 +227,7 @@ public class RangeSetTypeImpl extends MinimalEObjectImpl.Container implements Ra
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FileType getFile() {
         return file;
     }
@@ -243,6 +252,7 @@ public class RangeSetTypeImpl extends MinimalEObjectImpl.Container implements Ra
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFile(FileType newFile) {
         if (newFile != file) {
             NotificationChain msgs = null;

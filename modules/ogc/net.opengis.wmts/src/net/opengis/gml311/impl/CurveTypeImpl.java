@@ -62,6 +62,7 @@ public class CurveTypeImpl extends AbstractCurveTypeImpl implements CurveType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CurveSegmentArrayPropertyType getSegments() {
         return segments;
     }
@@ -86,6 +87,7 @@ public class CurveTypeImpl extends AbstractCurveTypeImpl implements CurveType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSegments(CurveSegmentArrayPropertyType newSegments) {
         if (newSegments != segments) {
             NotificationChain msgs = null;

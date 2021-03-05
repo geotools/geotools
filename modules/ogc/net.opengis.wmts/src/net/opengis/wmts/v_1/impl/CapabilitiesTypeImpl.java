@@ -107,6 +107,7 @@ public class CapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements Ca
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ContentsType getContents() {
         return contents;
     }
@@ -131,6 +132,7 @@ public class CapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements Ca
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setContents(ContentsType newContents) {
         if (newContents != contents) {
             NotificationChain msgs = null;
@@ -150,6 +152,7 @@ public class CapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements Ca
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<ThemesType> getThemes() {
         if (themes == null) {
             themes = new EObjectContainmentEList<>(ThemesType.class, this, wmtsv_1Package.CAPABILITIES_TYPE__THEMES);
@@ -162,6 +165,7 @@ public class CapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements Ca
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<OnlineResourceType> getWSDL() {
         if (wSDL == null) {
             wSDL = new EObjectContainmentEList<>(OnlineResourceType.class, this, wmtsv_1Package.CAPABILITIES_TYPE__WSDL);
@@ -174,6 +178,7 @@ public class CapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements Ca
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<OnlineResourceType> getServiceMetadataURL() {
         if (serviceMetadataURL == null) {
             serviceMetadataURL = new EObjectContainmentEList<>(OnlineResourceType.class, this, wmtsv_1Package.CAPABILITIES_TYPE__SERVICE_METADATA_URL);

@@ -103,7 +103,8 @@ public class WFSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.WFS_CAPABILITIES_TYPE;
   }
 
@@ -112,7 +113,8 @@ public class WFSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public FeatureTypeListType getFeatureTypeList() {
+	@Override
+    public FeatureTypeListType getFeatureTypeList() {
     return featureTypeList;
   }
 
@@ -136,7 +138,8 @@ public class WFSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setFeatureTypeList(FeatureTypeListType newFeatureTypeList) {
+	@Override
+    public void setFeatureTypeList(FeatureTypeListType newFeatureTypeList) {
     if (newFeatureTypeList != featureTypeList) {
       NotificationChain msgs = null;
       if (featureTypeList != null)
@@ -155,7 +158,8 @@ public class WFSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public GMLObjectTypeListType getServesGMLObjectTypeList() {
+	@Override
+    public GMLObjectTypeListType getServesGMLObjectTypeList() {
     return servesGMLObjectTypeList;
   }
 
@@ -179,7 +183,8 @@ public class WFSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setServesGMLObjectTypeList(GMLObjectTypeListType newServesGMLObjectTypeList) {
+	@Override
+    public void setServesGMLObjectTypeList(GMLObjectTypeListType newServesGMLObjectTypeList) {
     if (newServesGMLObjectTypeList != servesGMLObjectTypeList) {
       NotificationChain msgs = null;
       if (servesGMLObjectTypeList != null)
@@ -198,7 +203,8 @@ public class WFSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public GMLObjectTypeListType getSupportsGMLObjectTypeList() {
+	@Override
+    public GMLObjectTypeListType getSupportsGMLObjectTypeList() {
     return supportsGMLObjectTypeList;
   }
 
@@ -222,7 +228,8 @@ public class WFSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setSupportsGMLObjectTypeList(GMLObjectTypeListType newSupportsGMLObjectTypeList) {
+	@Override
+    public void setSupportsGMLObjectTypeList(GMLObjectTypeListType newSupportsGMLObjectTypeList) {
     if (newSupportsGMLObjectTypeList != supportsGMLObjectTypeList) {
       NotificationChain msgs = null;
       if (supportsGMLObjectTypeList != null)
@@ -241,7 +248,8 @@ public class WFSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public FilterCapabilities getFilterCapabilities() {
+	@Override
+    public FilterCapabilities getFilterCapabilities() {
     return filterCapabilities;
   }
 
@@ -250,6 +258,7 @@ public class WFSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setFilterCapabilities(FilterCapabilities newFilterCapabilities) {
     FilterCapabilities oldFilterCapabilities = filterCapabilities;
     filterCapabilities = newFilterCapabilities;
@@ -262,7 +271,8 @@ public class WFSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+	@Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case WfsPackage.WFS_CAPABILITIES_TYPE__FEATURE_TYPE_LIST:
         return basicSetFeatureTypeList(null, msgs);
@@ -279,7 +289,8 @@ public class WFSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	@Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.WFS_CAPABILITIES_TYPE__FEATURE_TYPE_LIST:
         return getFeatureTypeList();
@@ -298,7 +309,8 @@ public class WFSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(int featureID, Object newValue) {
+	@Override
+    public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.WFS_CAPABILITIES_TYPE__FEATURE_TYPE_LIST:
         setFeatureTypeList((FeatureTypeListType)newValue);
@@ -321,7 +333,8 @@ public class WFSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(int featureID) {
+	@Override
+    public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.WFS_CAPABILITIES_TYPE__FEATURE_TYPE_LIST:
         setFeatureTypeList((FeatureTypeListType)null);
@@ -344,7 +357,8 @@ public class WFSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(int featureID) {
+	@Override
+    public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.WFS_CAPABILITIES_TYPE__FEATURE_TYPE_LIST:
         return featureTypeList != null;
@@ -363,7 +377,8 @@ public class WFSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String toString() {
+	@Override
+    public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

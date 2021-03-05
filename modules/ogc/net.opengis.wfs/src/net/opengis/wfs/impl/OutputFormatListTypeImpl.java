@@ -61,7 +61,8 @@ public class OutputFormatListTypeImpl extends EObjectImpl implements OutputForma
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.OUTPUT_FORMAT_LIST_TYPE;
   }
 
@@ -70,7 +71,8 @@ public class OutputFormatListTypeImpl extends EObjectImpl implements OutputForma
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public FeatureMap getGroup() {
+	@Override
+    public FeatureMap getGroup() {
     if (group == null) {
       group = new BasicFeatureMap(this, WfsPackage.OUTPUT_FORMAT_LIST_TYPE__GROUP);
     }
@@ -82,7 +84,8 @@ public class OutputFormatListTypeImpl extends EObjectImpl implements OutputForma
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList getFormat() {
+	@Override
+    public EList getFormat() {
     return getGroup().list(WfsPackage.Literals.OUTPUT_FORMAT_LIST_TYPE__FORMAT);
   }
 
@@ -91,7 +94,8 @@ public class OutputFormatListTypeImpl extends EObjectImpl implements OutputForma
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+	@Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case WfsPackage.OUTPUT_FORMAT_LIST_TYPE__GROUP:
         return ((InternalEList)getGroup()).basicRemove(otherEnd, msgs);
@@ -104,7 +108,8 @@ public class OutputFormatListTypeImpl extends EObjectImpl implements OutputForma
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	@Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.OUTPUT_FORMAT_LIST_TYPE__GROUP:
         if (coreType) return getGroup();
@@ -120,7 +125,8 @@ public class OutputFormatListTypeImpl extends EObjectImpl implements OutputForma
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(int featureID, Object newValue) {
+	@Override
+    public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.OUTPUT_FORMAT_LIST_TYPE__GROUP:
         ((FeatureMap.Internal)getGroup()).set(newValue);
@@ -138,7 +144,8 @@ public class OutputFormatListTypeImpl extends EObjectImpl implements OutputForma
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(int featureID) {
+	@Override
+    public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.OUTPUT_FORMAT_LIST_TYPE__GROUP:
         getGroup().clear();
@@ -155,7 +162,8 @@ public class OutputFormatListTypeImpl extends EObjectImpl implements OutputForma
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(int featureID) {
+	@Override
+    public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.OUTPUT_FORMAT_LIST_TYPE__GROUP:
         return group != null && !group.isEmpty();
@@ -170,7 +178,8 @@ public class OutputFormatListTypeImpl extends EObjectImpl implements OutputForma
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String toString() {
+	@Override
+    public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

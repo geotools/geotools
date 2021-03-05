@@ -114,6 +114,7 @@ public class PolygonPatchTypeImpl extends AbstractSurfacePatchTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getExteriorGroup() {
         if (exteriorGroup == null) {
             exteriorGroup = new BasicFeatureMap(this, Gml311Package.POLYGON_PATCH_TYPE__EXTERIOR_GROUP);
@@ -126,6 +127,7 @@ public class PolygonPatchTypeImpl extends AbstractSurfacePatchTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractRingPropertyType getExterior() {
         return (AbstractRingPropertyType)getExteriorGroup().get(Gml311Package.eINSTANCE.getPolygonPatchType_Exterior(), true);
     }
@@ -144,6 +146,7 @@ public class PolygonPatchTypeImpl extends AbstractSurfacePatchTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setExterior(AbstractRingPropertyType newExterior) {
         ((FeatureMap.Internal)getExteriorGroup()).set(Gml311Package.eINSTANCE.getPolygonPatchType_Exterior(), newExterior);
     }
@@ -153,6 +156,7 @@ public class PolygonPatchTypeImpl extends AbstractSurfacePatchTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getInteriorGroup() {
         if (interiorGroup == null) {
             interiorGroup = new BasicFeatureMap(this, Gml311Package.POLYGON_PATCH_TYPE__INTERIOR_GROUP);
@@ -165,6 +169,7 @@ public class PolygonPatchTypeImpl extends AbstractSurfacePatchTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<AbstractRingPropertyType> getInterior() {
         return getInteriorGroup().list(Gml311Package.eINSTANCE.getPolygonPatchType_Interior());
     }
@@ -174,6 +179,7 @@ public class PolygonPatchTypeImpl extends AbstractSurfacePatchTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SurfaceInterpolationType getInterpolation() {
         return interpolation;
     }
@@ -183,6 +189,7 @@ public class PolygonPatchTypeImpl extends AbstractSurfacePatchTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setInterpolation(SurfaceInterpolationType newInterpolation) {
         SurfaceInterpolationType oldInterpolation = interpolation;
         interpolation = newInterpolation == null ? INTERPOLATION_EDEFAULT : newInterpolation;
@@ -197,6 +204,7 @@ public class PolygonPatchTypeImpl extends AbstractSurfacePatchTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetInterpolation() {
         SurfaceInterpolationType oldInterpolation = interpolation;
         boolean oldInterpolationESet = interpolationESet;
@@ -211,6 +219,7 @@ public class PolygonPatchTypeImpl extends AbstractSurfacePatchTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetInterpolation() {
         return interpolationESet;
     }

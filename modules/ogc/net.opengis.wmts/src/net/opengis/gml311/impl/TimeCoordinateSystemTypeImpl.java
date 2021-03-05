@@ -86,6 +86,7 @@ public class TimeCoordinateSystemTypeImpl extends AbstractTimeReferenceSystemTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimePositionType getOriginPosition() {
         return originPosition;
     }
@@ -110,6 +111,7 @@ public class TimeCoordinateSystemTypeImpl extends AbstractTimeReferenceSystemTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOriginPosition(TimePositionType newOriginPosition) {
         if (newOriginPosition != originPosition) {
             NotificationChain msgs = null;
@@ -129,6 +131,7 @@ public class TimeCoordinateSystemTypeImpl extends AbstractTimeReferenceSystemTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeInstantPropertyType getOrigin() {
         return origin;
     }
@@ -153,6 +156,7 @@ public class TimeCoordinateSystemTypeImpl extends AbstractTimeReferenceSystemTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOrigin(TimeInstantPropertyType newOrigin) {
         if (newOrigin != origin) {
             NotificationChain msgs = null;
@@ -172,6 +176,7 @@ public class TimeCoordinateSystemTypeImpl extends AbstractTimeReferenceSystemTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeIntervalLengthType getInterval() {
         return interval;
     }
@@ -196,6 +201,7 @@ public class TimeCoordinateSystemTypeImpl extends AbstractTimeReferenceSystemTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setInterval(TimeIntervalLengthType newInterval) {
         if (newInterval != interval) {
             NotificationChain msgs = null;

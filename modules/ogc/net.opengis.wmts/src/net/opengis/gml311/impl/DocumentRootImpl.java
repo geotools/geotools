@@ -1300,6 +1300,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getMixed() {
         if (mixed == null) {
             mixed = new BasicFeatureMap(this, Gml311Package.DOCUMENT_ROOT__MIXED);
@@ -1312,6 +1313,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EMap<String, String> getXMLNSPrefixMap() {
         if (xMLNSPrefixMap == null) {
             xMLNSPrefixMap = new EcoreEMap<>(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY, EStringToStringMapEntryImpl.class, this, Gml311Package.DOCUMENT_ROOT__XMLNS_PREFIX_MAP);
@@ -1324,6 +1326,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EMap<String, String> getXSISchemaLocation() {
         if (xSISchemaLocation == null) {
             xSISchemaLocation = new EcoreEMap<>(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY, EStringToStringMapEntryImpl.class, this, Gml311Package.DOCUMENT_ROOT__XSI_SCHEMA_LOCATION);
@@ -1336,6 +1339,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AssociationType getAssociation() {
         return (AssociationType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Association(), true);
     }
@@ -1354,6 +1358,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractContinuousCoverageType getContinuousCoverage() {
         return (AbstractContinuousCoverageType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ContinuousCoverage(), true);
     }
@@ -1372,6 +1377,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractCoverageType getCoverage() {
         return (AbstractCoverageType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Coverage(), true);
     }
@@ -1390,6 +1396,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractFeatureType getFeature() {
         return (AbstractFeatureType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Feature(), true);
     }
@@ -1408,6 +1415,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractGMLType getGML() {
         return (AbstractGMLType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GML(), true);
     }
@@ -1426,6 +1434,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EObject getObject() {
         return (EObject)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Object(), true);
     }
@@ -1444,6 +1453,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractCoordinateOperationType getCoordinateOperation() {
         return (AbstractCoordinateOperationType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateOperation(), true);
     }
@@ -1462,6 +1472,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DefinitionType getDefinition() {
         return (DefinitionType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Definition(), true);
     }
@@ -1480,6 +1491,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDefinition(DefinitionType newDefinition) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Definition(), newDefinition);
     }
@@ -1489,6 +1501,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractReferenceSystemType getCoordinateReferenceSystem() {
         return (AbstractReferenceSystemType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateReferenceSystem(), true);
     }
@@ -1507,6 +1520,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractReferenceSystemType getCRS() {
         return (AbstractReferenceSystemType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CRS(), true);
     }
@@ -1525,6 +1539,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractReferenceSystemType getReferenceSystem() {
         return (AbstractReferenceSystemType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ReferenceSystem(), true);
     }
@@ -1543,6 +1558,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractCoordinateSystemType getCoordinateSystem() {
         return (AbstractCoordinateSystemType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateSystem(), true);
     }
@@ -1561,6 +1577,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractCurveType getCurve() {
         return (AbstractCurveType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Curve(), true);
     }
@@ -1579,6 +1596,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractGeometricPrimitiveType getGeometricPrimitive() {
         return (AbstractGeometricPrimitiveType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GeometricPrimitive(), true);
     }
@@ -1597,6 +1615,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractGeometryType getGeometry() {
         return (AbstractGeometryType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Geometry(), true);
     }
@@ -1615,6 +1634,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractCurveSegmentType getCurveSegment() {
         return (AbstractCurveSegmentType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CurveSegment(), true);
     }
@@ -1633,6 +1653,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractDatumType getDatum() {
         return (AbstractDatumType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Datum(), true);
     }
@@ -1651,6 +1672,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractDiscreteCoverageType getDiscreteCoverage() {
         return (AbstractDiscreteCoverageType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DiscreteCoverage(), true);
     }
@@ -1669,6 +1691,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractFeatureCollectionType getFeatureCollection() {
         return (AbstractFeatureCollectionType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_FeatureCollection(), true);
     }
@@ -1687,6 +1710,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractGeneralConversionType getGeneralConversion() {
         return (AbstractGeneralConversionType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GeneralConversion(), true);
     }
@@ -1705,6 +1729,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractCoordinateOperationType getOperation() {
         return (AbstractCoordinateOperationType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Operation(), true);
     }
@@ -1723,6 +1748,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractCoordinateOperationType getSingleOperation() {
         return (AbstractCoordinateOperationType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_SingleOperation(), true);
     }
@@ -1741,6 +1767,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractGeneralDerivedCRSType getGeneralDerivedCRS() {
         return (AbstractGeneralDerivedCRSType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GeneralDerivedCRS(), true);
     }
@@ -1759,6 +1786,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractGeneralOperationParameterType getGeneralOperationParameter() {
         return (AbstractGeneralOperationParameterType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GeneralOperationParameter(), true);
     }
@@ -1777,6 +1805,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractGeneralParameterValueType getGeneralParameterValue() {
         return (AbstractGeneralParameterValueType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GeneralParameterValue(), true);
     }
@@ -1795,6 +1824,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractGeneralTransformationType getGeneralTransformation() {
         return (AbstractGeneralTransformationType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GeneralTransformation(), true);
     }
@@ -1813,6 +1843,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractGeometricAggregateType getGeometricAggregate() {
         return (AbstractGeometricAggregateType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GeometricAggregate(), true);
     }
@@ -1831,6 +1862,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractGriddedSurfaceType getGriddedSurface() {
         return (AbstractGriddedSurfaceType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GriddedSurface(), true);
     }
@@ -1849,6 +1881,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractParametricCurveSurfaceType getParametricCurveSurface() {
         return (AbstractParametricCurveSurfaceType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ParametricCurveSurface(), true);
     }
@@ -1867,6 +1900,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractSurfacePatchType getSurfacePatch() {
         return (AbstractSurfacePatchType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_SurfacePatch(), true);
     }
@@ -1885,6 +1919,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractGeometryType getImplicitGeometry() {
         return (AbstractGeometryType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ImplicitGeometry(), true);
     }
@@ -1903,6 +1938,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractMetaDataType getMetaData() {
         return (AbstractMetaDataType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MetaData(), true);
     }
@@ -1921,6 +1957,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractPositionalAccuracyType getPositionalAccuracy() {
         return (AbstractPositionalAccuracyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_PositionalAccuracy(), true);
     }
@@ -1939,6 +1976,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ReferenceType getReference() {
         return (ReferenceType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Reference(), true);
     }
@@ -1957,6 +1995,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractRingType getRing() {
         return (AbstractRingType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Ring(), true);
     }
@@ -1975,6 +2014,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractSolidType getSolid() {
         return (AbstractSolidType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Solid(), true);
     }
@@ -1993,6 +2033,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AssociationType getStrictAssociation() {
         return (AssociationType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_StrictAssociation(), true);
     }
@@ -2011,6 +2052,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractStyleType getStyle() {
         return (AbstractStyleType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Style(), true);
     }
@@ -2029,6 +2071,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractSurfaceType getSurface() {
         return (AbstractSurfaceType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Surface(), true);
     }
@@ -2047,6 +2090,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractTimeComplexType getTimeComplex() {
         return (AbstractTimeComplexType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TimeComplex(), true);
     }
@@ -2065,6 +2109,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractTimeObjectType getTimeObject() {
         return (AbstractTimeObjectType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TimeObject(), true);
     }
@@ -2083,6 +2128,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractTimeGeometricPrimitiveType getTimeGeometricPrimitive() {
         return (AbstractTimeGeometricPrimitiveType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TimeGeometricPrimitive(), true);
     }
@@ -2101,6 +2147,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractTimePrimitiveType getTimePrimitive() {
         return (AbstractTimePrimitiveType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TimePrimitive(), true);
     }
@@ -2119,6 +2166,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractTimeReferenceSystemType getTimeReferenceSystem() {
         return (AbstractTimeReferenceSystemType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TimeReferenceSystem(), true);
     }
@@ -2137,6 +2185,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractTimeSliceType getTimeSlice() {
         return (AbstractTimeSliceType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TimeSlice(), true);
     }
@@ -2155,6 +2204,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractTimeTopologyPrimitiveType getTimeTopologyPrimitive() {
         return (AbstractTimeTopologyPrimitiveType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TimeTopologyPrimitive(), true);
     }
@@ -2173,6 +2223,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractTopologyType getTopology() {
         return (AbstractTopologyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Topology(), true);
     }
@@ -2191,6 +2242,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractTopoPrimitiveType getTopoPrimitive() {
         return (AbstractTopoPrimitiveType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TopoPrimitive(), true);
     }
@@ -2209,6 +2261,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbsoluteExternalPositionalAccuracyType getAbsoluteExternalPositionalAccuracy() {
         return (AbsoluteExternalPositionalAccuracyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_AbsoluteExternalPositionalAccuracy(), true);
     }
@@ -2227,6 +2280,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAbsoluteExternalPositionalAccuracy(AbsoluteExternalPositionalAccuracyType newAbsoluteExternalPositionalAccuracy) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_AbsoluteExternalPositionalAccuracy(), newAbsoluteExternalPositionalAccuracy);
     }
@@ -2236,6 +2290,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractGeneralOperationParameterRefType getAbstractGeneralOperationParameterRef() {
         return (AbstractGeneralOperationParameterRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_AbstractGeneralOperationParameterRef(), true);
     }
@@ -2254,6 +2309,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAbstractGeneralOperationParameterRef(AbstractGeneralOperationParameterRefType newAbstractGeneralOperationParameterRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_AbstractGeneralOperationParameterRef(), newAbstractGeneralOperationParameterRef);
     }
@@ -2263,6 +2319,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AffinePlacementType getAffinePlacement() {
         return (AffinePlacementType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_AffinePlacement(), true);
     }
@@ -2281,6 +2338,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAffinePlacement(AffinePlacementType newAffinePlacement) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_AffinePlacement(), newAffinePlacement);
     }
@@ -2290,6 +2348,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getAnchorPoint() {
         return (CodeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_AnchorPoint(), true);
     }
@@ -2308,6 +2367,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAnchorPoint(CodeType newAnchorPoint) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_AnchorPoint(), newAnchorPoint);
     }
@@ -2317,6 +2377,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MeasureType getAngle() {
         return (MeasureType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Angle(), true);
     }
@@ -2335,6 +2396,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAngle(MeasureType newAngle) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Angle(), newAngle);
     }
@@ -2344,6 +2406,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ArcType getArc() {
         return (ArcType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Arc(), true);
     }
@@ -2362,6 +2425,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setArc(ArcType newArc) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Arc(), newArc);
     }
@@ -2371,6 +2435,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ArcStringType getArcString() {
         return (ArcStringType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ArcString(), true);
     }
@@ -2389,6 +2454,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setArcString(ArcStringType newArcString) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ArcString(), newArcString);
     }
@@ -2398,6 +2464,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ArcByBulgeType getArcByBulge() {
         return (ArcByBulgeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ArcByBulge(), true);
     }
@@ -2416,6 +2483,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setArcByBulge(ArcByBulgeType newArcByBulge) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ArcByBulge(), newArcByBulge);
     }
@@ -2425,6 +2493,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ArcStringByBulgeType getArcStringByBulge() {
         return (ArcStringByBulgeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ArcStringByBulge(), true);
     }
@@ -2443,6 +2512,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setArcStringByBulge(ArcStringByBulgeType newArcStringByBulge) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ArcStringByBulge(), newArcStringByBulge);
     }
@@ -2452,6 +2522,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ArcByCenterPointType getArcByCenterPoint() {
         return (ArcByCenterPointType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ArcByCenterPoint(), true);
     }
@@ -2470,6 +2541,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setArcByCenterPoint(ArcByCenterPointType newArcByCenterPoint) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ArcByCenterPoint(), newArcByCenterPoint);
     }
@@ -2479,6 +2551,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ArrayType getArray() {
         return (ArrayType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Array(), true);
     }
@@ -2497,6 +2570,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setArray(ArrayType newArray) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Array(), newArray);
     }
@@ -2506,6 +2580,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getAxisAbbrev() {
         return (CodeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_AxisAbbrev(), true);
     }
@@ -2524,6 +2599,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAxisAbbrev(CodeType newAxisAbbrev) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_AxisAbbrev(), newAxisAbbrev);
     }
@@ -2533,6 +2609,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getAxisDirection() {
         return (CodeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_AxisDirection(), true);
     }
@@ -2551,6 +2628,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAxisDirection(CodeType newAxisDirection) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_AxisDirection(), newAxisDirection);
     }
@@ -2560,6 +2638,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public IdentifierType getAxisID() {
         return (IdentifierType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_AxisID(), true);
     }
@@ -2578,6 +2657,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAxisID(IdentifierType newAxisID) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_AxisID(), newAxisID);
     }
@@ -2587,6 +2667,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BagType getBag() {
         return (BagType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Bag(), true);
     }
@@ -2605,6 +2686,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBag(BagType newBag) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Bag(), newBag);
     }
@@ -2614,6 +2696,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinateReferenceSystemRefType getBaseCRS() {
         return (CoordinateReferenceSystemRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_BaseCRS(), true);
     }
@@ -2632,6 +2715,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBaseCRS(CoordinateReferenceSystemRefType newBaseCRS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_BaseCRS(), newBaseCRS);
     }
@@ -2641,6 +2725,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CurvePropertyType getBaseCurve() {
         return (CurvePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_BaseCurve(), true);
     }
@@ -2659,6 +2744,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBaseCurve(CurvePropertyType newBaseCurve) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_BaseCurve(), newBaseCurve);
     }
@@ -2668,6 +2754,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SurfacePropertyType getBaseSurface() {
         return (SurfacePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_BaseSurface(), true);
     }
@@ -2686,6 +2773,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBaseSurface(SurfacePropertyType newBaseSurface) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_BaseSurface(), newBaseSurface);
     }
@@ -2695,6 +2783,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BaseUnitType getBaseUnit() {
         return (BaseUnitType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_BaseUnit(), true);
     }
@@ -2713,6 +2802,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBaseUnit(BaseUnitType newBaseUnit) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_BaseUnit(), newBaseUnit);
     }
@@ -2722,6 +2812,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public UnitDefinitionType getUnitDefinition() {
         return (UnitDefinitionType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_UnitDefinition(), true);
     }
@@ -2740,6 +2831,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUnitDefinition(UnitDefinitionType newUnitDefinition) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UnitDefinition(), newUnitDefinition);
     }
@@ -2749,6 +2841,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BezierType getBezier() {
         return (BezierType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Bezier(), true);
     }
@@ -2767,6 +2860,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBezier(BezierType newBezier) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Bezier(), newBezier);
     }
@@ -2776,6 +2870,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BSplineType getBSpline() {
         return (BSplineType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_BSpline(), true);
     }
@@ -2794,6 +2889,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBSpline(BSplineType newBSpline) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_BSpline(), newBSpline);
     }
@@ -2803,6 +2899,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isBoolean() {
         return (Boolean)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Boolean(), true);
     }
@@ -2812,6 +2909,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBoolean(boolean newBoolean) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Boolean(), newBoolean);
     }
@@ -2821,6 +2919,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     @SuppressWarnings("unchecked")
     public List<Object> getBooleanList() {
         return (List<Object>)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_BooleanList(), true);
@@ -2831,6 +2930,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBooleanList(List<Object> newBooleanList) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_BooleanList(), newBooleanList);
     }
@@ -2840,6 +2940,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isBooleanValue() {
         return (Boolean)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_BooleanValue(), true);
     }
@@ -2849,6 +2950,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBooleanValue(boolean newBooleanValue) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_BooleanValue(), newBooleanValue);
     }
@@ -2858,6 +2960,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BoundingShapeType getBoundedBy() {
         return (BoundingShapeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_BoundedBy(), true);
     }
@@ -2876,6 +2979,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBoundedBy(BoundingShapeType newBoundedBy) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_BoundedBy(), newBoundedBy);
     }
@@ -2885,6 +2989,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EnvelopeType getBoundingBox() {
         return (EnvelopeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_BoundingBox(), true);
     }
@@ -2903,6 +3008,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBoundingBox(EnvelopeType newBoundingBox) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_BoundingBox(), newBoundingBox);
     }
@@ -2912,6 +3018,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PolygonType getBoundingPolygon() {
         return (PolygonType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_BoundingPolygon(), true);
     }
@@ -2930,6 +3037,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBoundingPolygon(PolygonType newBoundingPolygon) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_BoundingPolygon(), newBoundingPolygon);
     }
@@ -2939,6 +3047,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CartesianCSType getCartesianCS() {
         return (CartesianCSType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CartesianCS(), true);
     }
@@ -2957,6 +3066,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCartesianCS(CartesianCSType newCartesianCS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CartesianCS(), newCartesianCS);
     }
@@ -2966,6 +3076,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CartesianCSRefType getCartesianCSRef() {
         return (CartesianCSRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CartesianCSRef(), true);
     }
@@ -2984,6 +3095,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCartesianCSRef(CartesianCSRefType newCartesianCSRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CartesianCSRef(), newCartesianCSRef);
     }
@@ -2993,6 +3105,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getCatalogSymbol() {
         return (CodeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CatalogSymbol(), true);
     }
@@ -3011,6 +3124,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCatalogSymbol(CodeType newCatalogSymbol) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CatalogSymbol(), newCatalogSymbol);
     }
@@ -3020,6 +3134,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getCategory() {
         return (CodeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Category(), true);
     }
@@ -3038,6 +3153,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCategory(CodeType newCategory) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Category(), newCategory);
     }
@@ -3047,6 +3163,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CategoryExtentType getCategoryExtent() {
         return (CategoryExtentType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CategoryExtent(), true);
     }
@@ -3065,6 +3182,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCategoryExtent(CategoryExtentType newCategoryExtent) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CategoryExtent(), newCategoryExtent);
     }
@@ -3074,6 +3192,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeOrNullListType getCategoryList() {
         return (CodeOrNullListType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CategoryList(), true);
     }
@@ -3092,6 +3211,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCategoryList(CodeOrNullListType newCategoryList) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CategoryList(), newCategoryList);
     }
@@ -3101,6 +3221,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CurvePropertyType getCenterLineOf() {
         return (CurvePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CenterLineOf(), true);
     }
@@ -3119,6 +3240,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCenterLineOf(CurvePropertyType newCenterLineOf) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CenterLineOf(), newCenterLineOf);
     }
@@ -3128,6 +3250,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PointPropertyType getCenterOf() {
         return (PointPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CenterOf(), true);
     }
@@ -3146,6 +3269,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCenterOf(PointPropertyType newCenterOf) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CenterOf(), newCenterOf);
     }
@@ -3155,6 +3279,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CircleType getCircle() {
         return (CircleType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Circle(), true);
     }
@@ -3173,6 +3298,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCircle(CircleType newCircle) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Circle(), newCircle);
     }
@@ -3182,6 +3308,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CircleByCenterPointType getCircleByCenterPoint() {
         return (CircleByCenterPointType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CircleByCenterPoint(), true);
     }
@@ -3200,6 +3327,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCircleByCenterPoint(CircleByCenterPointType newCircleByCenterPoint) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CircleByCenterPoint(), newCircleByCenterPoint);
     }
@@ -3209,6 +3337,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ClothoidType getClothoid() {
         return (ClothoidType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Clothoid(), true);
     }
@@ -3227,6 +3356,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setClothoid(ClothoidType newClothoid) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Clothoid(), newClothoid);
     }
@@ -3236,6 +3366,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getColumnIndex() {
         return (BigInteger)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ColumnIndex(), true);
     }
@@ -3245,6 +3376,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setColumnIndex(BigInteger newColumnIndex) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ColumnIndex(), newColumnIndex);
     }
@@ -3254,6 +3386,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CompassPointEnumeration getCompassPoint() {
         return (CompassPointEnumeration)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CompassPoint(), true);
     }
@@ -3263,6 +3396,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCompassPoint(CompassPointEnumeration newCompassPoint) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CompassPoint(), newCompassPoint);
     }
@@ -3272,6 +3406,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CompositeCurveType getCompositeCurve() {
         return (CompositeCurveType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CompositeCurve(), true);
     }
@@ -3290,6 +3425,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCompositeCurve(CompositeCurveType newCompositeCurve) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CompositeCurve(), newCompositeCurve);
     }
@@ -3299,6 +3435,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CompositeSolidType getCompositeSolid() {
         return (CompositeSolidType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CompositeSolid(), true);
     }
@@ -3317,6 +3454,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCompositeSolid(CompositeSolidType newCompositeSolid) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CompositeSolid(), newCompositeSolid);
     }
@@ -3326,6 +3464,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CompositeSurfaceType getCompositeSurface() {
         return (CompositeSurfaceType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CompositeSurface(), true);
     }
@@ -3344,6 +3483,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCompositeSurface(CompositeSurfaceType newCompositeSurface) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CompositeSurface(), newCompositeSurface);
     }
@@ -3353,6 +3493,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CompositeValueType getCompositeValue() {
         return (CompositeValueType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CompositeValue(), true);
     }
@@ -3371,6 +3512,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCompositeValue(CompositeValueType newCompositeValue) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CompositeValue(), newCompositeValue);
     }
@@ -3380,6 +3522,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CompoundCRSType getCompoundCRS() {
         return (CompoundCRSType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CompoundCRS(), true);
     }
@@ -3398,6 +3541,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCompoundCRS(CompoundCRSType newCompoundCRS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CompoundCRS(), newCompoundCRS);
     }
@@ -3407,6 +3551,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CompoundCRSRefType getCompoundCRSRef() {
         return (CompoundCRSRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CompoundCRSRef(), true);
     }
@@ -3425,6 +3570,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCompoundCRSRef(CompoundCRSRefType newCompoundCRSRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CompoundCRSRef(), newCompoundCRSRef);
     }
@@ -3434,6 +3580,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ConcatenatedOperationType getConcatenatedOperation() {
         return (ConcatenatedOperationType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ConcatenatedOperation(), true);
     }
@@ -3452,6 +3599,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setConcatenatedOperation(ConcatenatedOperationType newConcatenatedOperation) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ConcatenatedOperation(), newConcatenatedOperation);
     }
@@ -3461,6 +3609,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ConcatenatedOperationRefType getConcatenatedOperationRef() {
         return (ConcatenatedOperationRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ConcatenatedOperationRef(), true);
     }
@@ -3479,6 +3628,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setConcatenatedOperationRef(ConcatenatedOperationRefType newConcatenatedOperationRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ConcatenatedOperationRef(), newConcatenatedOperationRef);
     }
@@ -3488,6 +3638,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ConeType getCone() {
         return (ConeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Cone(), true);
     }
@@ -3506,6 +3657,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCone(ConeType newCone) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Cone(), newCone);
     }
@@ -3515,6 +3667,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ContainerPropertyType getContainer() {
         return (ContainerPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Container(), true);
     }
@@ -3533,6 +3686,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setContainer(ContainerPropertyType newContainer) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Container(), newContainer);
     }
@@ -3542,6 +3696,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ConventionalUnitType getConventionalUnit() {
         return (ConventionalUnitType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ConventionalUnit(), true);
     }
@@ -3560,6 +3715,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setConventionalUnit(ConventionalUnitType newConventionalUnit) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ConventionalUnit(), newConventionalUnit);
     }
@@ -3569,6 +3725,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ConversionType getConversion() {
         return (ConversionType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Conversion(), true);
     }
@@ -3587,6 +3744,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setConversion(ConversionType newConversion) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Conversion(), newConversion);
     }
@@ -3596,6 +3754,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ConversionRefType getConversionRef() {
         return (ConversionRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ConversionRef(), true);
     }
@@ -3614,6 +3773,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setConversionRef(ConversionRefType newConversionRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ConversionRef(), newConversionRef);
     }
@@ -3623,6 +3783,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ConversionToPreferredUnitType getConversionToPreferredUnit() {
         return (ConversionToPreferredUnitType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ConversionToPreferredUnit(), true);
     }
@@ -3641,6 +3802,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setConversionToPreferredUnit(ConversionToPreferredUnitType newConversionToPreferredUnit) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ConversionToPreferredUnit(), newConversionToPreferredUnit);
     }
@@ -3650,6 +3812,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordType getCoord() {
         return (CoordType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Coord(), true);
     }
@@ -3668,6 +3831,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCoord(CoordType newCoord) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Coord(), newCoord);
     }
@@ -3677,6 +3841,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public IdentifierType getCoordinateOperationID() {
         return (IdentifierType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateOperationID(), true);
     }
@@ -3695,6 +3860,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCoordinateOperationID(IdentifierType newCoordinateOperationID) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateOperationID(), newCoordinateOperationID);
     }
@@ -3704,6 +3870,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getCoordinateOperationName() {
         return (CodeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateOperationName(), true);
     }
@@ -3722,6 +3889,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCoordinateOperationName(CodeType newCoordinateOperationName) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateOperationName(), newCoordinateOperationName);
     }
@@ -3731,6 +3899,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getName() {
         return (CodeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Name(), true);
     }
@@ -3749,6 +3918,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setName(CodeType newName) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Name(), newName);
     }
@@ -3758,6 +3928,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinateOperationRefType getCoordinateOperationRef() {
         return (CoordinateOperationRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateOperationRef(), true);
     }
@@ -3776,6 +3947,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCoordinateOperationRef(CoordinateOperationRefType newCoordinateOperationRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateOperationRef(), newCoordinateOperationRef);
     }
@@ -3785,6 +3957,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinateReferenceSystemRefType getCoordinateReferenceSystemRef() {
         return (CoordinateReferenceSystemRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateReferenceSystemRef(), true);
     }
@@ -3803,6 +3976,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCoordinateReferenceSystemRef(CoordinateReferenceSystemRefType newCoordinateReferenceSystemRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateReferenceSystemRef(), newCoordinateReferenceSystemRef);
     }
@@ -3812,6 +3986,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinatesType getCoordinates() {
         return (CoordinatesType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Coordinates(), true);
     }
@@ -3830,6 +4005,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCoordinates(CoordinatesType newCoordinates) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Coordinates(), newCoordinates);
     }
@@ -3839,6 +4015,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinateSystemAxisType getCoordinateSystemAxis() {
         return (CoordinateSystemAxisType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateSystemAxis(), true);
     }
@@ -3857,6 +4034,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCoordinateSystemAxis(CoordinateSystemAxisType newCoordinateSystemAxis) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateSystemAxis(), newCoordinateSystemAxis);
     }
@@ -3866,6 +4044,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinateSystemAxisRefType getCoordinateSystemAxisRef() {
         return (CoordinateSystemAxisRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateSystemAxisRef(), true);
     }
@@ -3884,6 +4063,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCoordinateSystemAxisRef(CoordinateSystemAxisRefType newCoordinateSystemAxisRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateSystemAxisRef(), newCoordinateSystemAxisRef);
     }
@@ -3893,6 +4073,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinateSystemRefType getCoordinateSystemRef() {
         return (CoordinateSystemRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateSystemRef(), true);
     }
@@ -3911,6 +4092,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCoordinateSystemRef(CoordinateSystemRefType newCoordinateSystemRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateSystemRef(), newCoordinateSystemRef);
     }
@@ -3920,6 +4102,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getCount() {
         return (BigInteger)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Count(), true);
     }
@@ -3929,6 +4112,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCount(BigInteger newCount) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Count(), newCount);
     }
@@ -3938,6 +4122,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     @SuppressWarnings("unchecked")
     public List<Object> getCountExtent() {
         return (List<Object>)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CountExtent(), true);
@@ -3948,6 +4133,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCountExtent(List<Object> newCountExtent) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CountExtent(), newCountExtent);
     }
@@ -3957,6 +4143,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     @SuppressWarnings("unchecked")
     public List<Object> getCountList() {
         return (List<Object>)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CountList(), true);
@@ -3967,6 +4154,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCountList(List<Object> newCountList) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CountList(), newCountList);
     }
@@ -3976,6 +4164,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public double getCovariance() {
         return (Double)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Covariance(), true);
     }
@@ -3985,6 +4174,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCovariance(double newCovariance) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Covariance(), newCovariance);
     }
@@ -3994,6 +4184,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CovarianceMatrixType getCovarianceMatrix() {
         return (CovarianceMatrixType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CovarianceMatrix(), true);
     }
@@ -4012,6 +4203,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCovarianceMatrix(CovarianceMatrixType newCovarianceMatrix) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CovarianceMatrix(), newCovarianceMatrix);
     }
@@ -4021,6 +4213,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoverageFunctionType getCoverageFunction() {
         return (CoverageFunctionType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CoverageFunction(), true);
     }
@@ -4039,6 +4232,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCoverageFunction(CoverageFunctionType newCoverageFunction) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CoverageFunction(), newCoverageFunction);
     }
@@ -4048,6 +4242,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CRSRefType getCrsRef() {
         return (CRSRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CrsRef(), true);
     }
@@ -4066,6 +4261,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCrsRef(CRSRefType newCrsRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CrsRef(), newCrsRef);
     }
@@ -4075,6 +4271,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public IdentifierType getCsID() {
         return (IdentifierType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CsID(), true);
     }
@@ -4093,6 +4290,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCsID(IdentifierType newCsID) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CsID(), newCsID);
     }
@@ -4102,6 +4300,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getCsName() {
         return (CodeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CsName(), true);
     }
@@ -4120,6 +4319,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCsName(CodeType newCsName) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CsName(), newCsName);
     }
@@ -4129,6 +4329,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CubicSplineType getCubicSpline() {
         return (CubicSplineType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CubicSpline(), true);
     }
@@ -4147,6 +4348,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCubicSpline(CubicSplineType newCubicSpline) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CubicSpline(), newCubicSpline);
     }
@@ -4156,6 +4358,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CurveType getCurve1() {
         return (CurveType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Curve1(), true);
     }
@@ -4174,6 +4377,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCurve1(CurveType newCurve1) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Curve1(), newCurve1);
     }
@@ -4183,6 +4387,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CurveArrayPropertyType getCurveArrayProperty() {
         return (CurveArrayPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CurveArrayProperty(), true);
     }
@@ -4201,6 +4406,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCurveArrayProperty(CurveArrayPropertyType newCurveArrayProperty) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CurveArrayProperty(), newCurveArrayProperty);
     }
@@ -4210,6 +4416,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CurvePropertyType getCurveMember() {
         return (CurvePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CurveMember(), true);
     }
@@ -4228,6 +4435,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCurveMember(CurvePropertyType newCurveMember) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CurveMember(), newCurveMember);
     }
@@ -4237,6 +4445,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CurveArrayPropertyType getCurveMembers() {
         return (CurveArrayPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CurveMembers(), true);
     }
@@ -4255,6 +4464,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCurveMembers(CurveArrayPropertyType newCurveMembers) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CurveMembers(), newCurveMembers);
     }
@@ -4264,6 +4474,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CurvePropertyType getCurveProperty() {
         return (CurvePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CurveProperty(), true);
     }
@@ -4282,6 +4493,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCurveProperty(CurvePropertyType newCurveProperty) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CurveProperty(), newCurveProperty);
     }
@@ -4291,6 +4503,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CylinderType getCylinder() {
         return (CylinderType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Cylinder(), true);
     }
@@ -4309,6 +4522,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCylinder(CylinderType newCylinder) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Cylinder(), newCylinder);
     }
@@ -4318,6 +4532,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CylindricalCSType getCylindricalCS() {
         return (CylindricalCSType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CylindricalCS(), true);
     }
@@ -4336,6 +4551,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCylindricalCS(CylindricalCSType newCylindricalCS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CylindricalCS(), newCylindricalCS);
     }
@@ -4345,6 +4561,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CylindricalCSRefType getCylindricalCSRef() {
         return (CylindricalCSRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_CylindricalCSRef(), true);
     }
@@ -4363,6 +4580,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCylindricalCSRef(CylindricalCSRefType newCylindricalCSRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CylindricalCSRef(), newCylindricalCSRef);
     }
@@ -4372,6 +4590,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DataBlockType getDataBlock() {
         return (DataBlockType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DataBlock(), true);
     }
@@ -4390,6 +4609,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDataBlock(DataBlockType newDataBlock) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DataBlock(), newDataBlock);
     }
@@ -4399,6 +4619,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StringOrRefType getDataSource() {
         return (StringOrRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DataSource(), true);
     }
@@ -4417,6 +4638,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDataSource(StringOrRefType newDataSource) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DataSource(), newDataSource);
     }
@@ -4426,6 +4648,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public IdentifierType getDatumID() {
         return (IdentifierType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DatumID(), true);
     }
@@ -4444,6 +4667,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDatumID(IdentifierType newDatumID) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DatumID(), newDatumID);
     }
@@ -4453,6 +4677,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getDatumName() {
         return (CodeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DatumName(), true);
     }
@@ -4471,6 +4696,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDatumName(CodeType newDatumName) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DatumName(), newDatumName);
     }
@@ -4480,6 +4706,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DatumRefType getDatumRef() {
         return (DatumRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DatumRef(), true);
     }
@@ -4498,6 +4725,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDatumRef(DatumRefType newDatumRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DatumRef(), newDatumRef);
     }
@@ -4507,6 +4735,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigDecimal getDecimalMinutes() {
         return (BigDecimal)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DecimalMinutes(), true);
     }
@@ -4516,6 +4745,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDecimalMinutes(BigDecimal newDecimalMinutes) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DecimalMinutes(), newDecimalMinutes);
     }
@@ -4525,6 +4755,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DefaultStylePropertyType getDefaultStyle() {
         return (DefaultStylePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DefaultStyle(), true);
     }
@@ -4543,6 +4774,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDefaultStyle(DefaultStylePropertyType newDefaultStyle) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DefaultStyle(), newDefaultStyle);
     }
@@ -4552,6 +4784,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeneralConversionRefType getDefinedByConversion() {
         return (GeneralConversionRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DefinedByConversion(), true);
     }
@@ -4570,6 +4803,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDefinedByConversion(GeneralConversionRefType newDefinedByConversion) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DefinedByConversion(), newDefinedByConversion);
     }
@@ -4579,6 +4813,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DictionaryType getDefinitionCollection() {
         return (DictionaryType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DefinitionCollection(), true);
     }
@@ -4597,6 +4832,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDefinitionCollection(DictionaryType newDefinitionCollection) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DefinitionCollection(), newDefinitionCollection);
     }
@@ -4606,6 +4842,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DictionaryEntryType getDefinitionMember() {
         return (DictionaryEntryType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DefinitionMember(), true);
     }
@@ -4624,6 +4861,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDefinitionMember(DictionaryEntryType newDefinitionMember) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DefinitionMember(), newDefinitionMember);
     }
@@ -4633,6 +4871,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DictionaryEntryType getDictionaryEntry() {
         return (DictionaryEntryType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DictionaryEntry(), true);
     }
@@ -4651,6 +4890,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDictionaryEntry(DictionaryEntryType newDictionaryEntry) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DictionaryEntry(), newDictionaryEntry);
     }
@@ -4660,6 +4900,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DefinitionProxyType getDefinitionProxy() {
         return (DefinitionProxyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DefinitionProxy(), true);
     }
@@ -4678,6 +4919,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDefinitionProxy(DefinitionProxyType newDefinitionProxy) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DefinitionProxy(), newDefinitionProxy);
     }
@@ -4687,6 +4929,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ReferenceType getDefinitionRef() {
         return (ReferenceType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DefinitionRef(), true);
     }
@@ -4705,6 +4948,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDefinitionRef(ReferenceType newDefinitionRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DefinitionRef(), newDefinitionRef);
     }
@@ -4714,6 +4958,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DegreesType getDegrees() {
         return (DegreesType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Degrees(), true);
     }
@@ -4732,6 +4977,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDegrees(DegreesType newDegrees) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Degrees(), newDegrees);
     }
@@ -4741,6 +4987,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DerivationUnitTermType getDerivationUnitTerm() {
         return (DerivationUnitTermType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DerivationUnitTerm(), true);
     }
@@ -4759,6 +5006,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDerivationUnitTerm(DerivationUnitTermType newDerivationUnitTerm) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DerivationUnitTerm(), newDerivationUnitTerm);
     }
@@ -4768,6 +5016,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DerivedCRSType getDerivedCRS() {
         return (DerivedCRSType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DerivedCRS(), true);
     }
@@ -4786,6 +5035,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDerivedCRS(DerivedCRSType newDerivedCRS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DerivedCRS(), newDerivedCRS);
     }
@@ -4795,6 +5045,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DerivedCRSRefType getDerivedCRSRef() {
         return (DerivedCRSRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DerivedCRSRef(), true);
     }
@@ -4813,6 +5064,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDerivedCRSRef(DerivedCRSRefType newDerivedCRSRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DerivedCRSRef(), newDerivedCRSRef);
     }
@@ -4822,6 +5074,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DerivedCRSTypeType getDerivedCRSType() {
         return (DerivedCRSTypeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DerivedCRSType(), true);
     }
@@ -4840,6 +5093,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDerivedCRSType(DerivedCRSTypeType newDerivedCRSType) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DerivedCRSType(), newDerivedCRSType);
     }
@@ -4849,6 +5103,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DerivedUnitType getDerivedUnit() {
         return (DerivedUnitType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DerivedUnit(), true);
     }
@@ -4867,6 +5122,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDerivedUnit(DerivedUnitType newDerivedUnit) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DerivedUnit(), newDerivedUnit);
     }
@@ -4876,6 +5132,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StringOrRefType getDescription() {
         return (StringOrRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Description(), true);
     }
@@ -4894,6 +5151,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDescription(StringOrRefType newDescription) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Description(), newDescription);
     }
@@ -4903,6 +5161,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DictionaryType getDictionary() {
         return (DictionaryType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Dictionary(), true);
     }
@@ -4921,6 +5180,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDictionary(DictionaryType newDictionary) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Dictionary(), newDictionary);
     }
@@ -4930,6 +5190,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectedEdgePropertyType getDirectedEdge() {
         return (DirectedEdgePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DirectedEdge(), true);
     }
@@ -4948,6 +5209,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDirectedEdge(DirectedEdgePropertyType newDirectedEdge) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DirectedEdge(), newDirectedEdge);
     }
@@ -4957,6 +5219,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectedFacePropertyType getDirectedFace() {
         return (DirectedFacePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DirectedFace(), true);
     }
@@ -4975,6 +5238,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDirectedFace(DirectedFacePropertyType newDirectedFace) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DirectedFace(), newDirectedFace);
     }
@@ -4984,6 +5248,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectedNodePropertyType getDirectedNode() {
         return (DirectedNodePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DirectedNode(), true);
     }
@@ -5002,6 +5267,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDirectedNode(DirectedNodePropertyType newDirectedNode) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DirectedNode(), newDirectedNode);
     }
@@ -5011,6 +5277,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectedObservationType getDirectedObservation() {
         return (DirectedObservationType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DirectedObservation(), true);
     }
@@ -5029,6 +5296,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDirectedObservation(DirectedObservationType newDirectedObservation) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DirectedObservation(), newDirectedObservation);
     }
@@ -5038,6 +5306,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ObservationType getObservation() {
         return (ObservationType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Observation(), true);
     }
@@ -5056,6 +5325,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setObservation(ObservationType newObservation) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Observation(), newObservation);
     }
@@ -5065,6 +5335,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectedObservationAtDistanceType getDirectedObservationAtDistance() {
         return (DirectedObservationAtDistanceType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DirectedObservationAtDistance(), true);
     }
@@ -5083,6 +5354,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDirectedObservationAtDistance(DirectedObservationAtDistanceType newDirectedObservationAtDistance) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DirectedObservationAtDistance(), newDirectedObservationAtDistance);
     }
@@ -5092,6 +5364,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectedTopoSolidPropertyType getDirectedTopoSolid() {
         return (DirectedTopoSolidPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DirectedTopoSolid(), true);
     }
@@ -5110,6 +5383,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDirectedTopoSolid(DirectedTopoSolidPropertyType newDirectedTopoSolid) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DirectedTopoSolid(), newDirectedTopoSolid);
     }
@@ -5119,6 +5393,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectionPropertyType getDirection() {
         return (DirectionPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Direction(), true);
     }
@@ -5137,6 +5412,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDirection(DirectionPropertyType newDirection) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Direction(), newDirection);
     }
@@ -5146,6 +5422,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectionVectorType getDirectionVector() {
         return (DirectionVectorType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DirectionVector(), true);
     }
@@ -5164,6 +5441,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDirectionVector(DirectionVectorType newDirectionVector) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DirectionVector(), newDirectionVector);
     }
@@ -5173,6 +5451,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DMSAngleType getDmsAngle() {
         return (DMSAngleType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DmsAngle(), true);
     }
@@ -5191,6 +5470,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDmsAngle(DMSAngleType newDmsAngle) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DmsAngle(), newDmsAngle);
     }
@@ -5200,6 +5480,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DMSAngleType getDmsAngleValue() {
         return (DMSAngleType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DmsAngleValue(), true);
     }
@@ -5218,6 +5499,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDmsAngleValue(DMSAngleType newDmsAngleValue) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DmsAngleValue(), newDmsAngleValue);
     }
@@ -5227,6 +5509,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DomainSetType getDomainSet() {
         return (DomainSetType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DomainSet(), true);
     }
@@ -5245,6 +5528,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDomainSet(DomainSetType newDomainSet) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DomainSet(), newDomainSet);
     }
@@ -5254,6 +5538,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     @SuppressWarnings("unchecked")
     public List<Object> getDoubleOrNullTupleList() {
         return (List<Object>)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_DoubleOrNullTupleList(), true);
@@ -5264,6 +5549,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDoubleOrNullTupleList(List<Object> newDoubleOrNullTupleList) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DoubleOrNullTupleList(), newDoubleOrNullTupleList);
     }
@@ -5273,6 +5559,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Duration getDuration() {
         return (Duration) getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Duration(), true);
     }
@@ -5282,6 +5569,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDuration(Duration newDuration) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Duration(), newDuration);
     }
@@ -5291,6 +5579,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EdgeType getEdge() {
         return (EdgeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Edge(), true);
     }
@@ -5309,6 +5598,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEdge(EdgeType newEdge) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Edge(), newEdge);
     }
@@ -5318,6 +5608,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CurvePropertyType getEdgeOf() {
         return (CurvePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_EdgeOf(), true);
     }
@@ -5336,6 +5627,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEdgeOf(CurvePropertyType newEdgeOf) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_EdgeOf(), newEdgeOf);
     }
@@ -5345,6 +5637,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EllipsoidType getEllipsoid() {
         return (EllipsoidType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Ellipsoid(), true);
     }
@@ -5363,6 +5656,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEllipsoid(EllipsoidType newEllipsoid) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Ellipsoid(), newEllipsoid);
     }
@@ -5372,6 +5666,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EllipsoidalCSType getEllipsoidalCS() {
         return (EllipsoidalCSType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_EllipsoidalCS(), true);
     }
@@ -5390,6 +5685,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEllipsoidalCS(EllipsoidalCSType newEllipsoidalCS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_EllipsoidalCS(), newEllipsoidalCS);
     }
@@ -5399,6 +5695,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EllipsoidalCSRefType getEllipsoidalCSRef() {
         return (EllipsoidalCSRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_EllipsoidalCSRef(), true);
     }
@@ -5417,6 +5714,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEllipsoidalCSRef(EllipsoidalCSRefType newEllipsoidalCSRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_EllipsoidalCSRef(), newEllipsoidalCSRef);
     }
@@ -5426,6 +5724,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public IdentifierType getEllipsoidID() {
         return (IdentifierType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_EllipsoidID(), true);
     }
@@ -5444,6 +5743,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEllipsoidID(IdentifierType newEllipsoidID) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_EllipsoidID(), newEllipsoidID);
     }
@@ -5453,6 +5753,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getEllipsoidName() {
         return (CodeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_EllipsoidName(), true);
     }
@@ -5471,6 +5772,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEllipsoidName(CodeType newEllipsoidName) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_EllipsoidName(), newEllipsoidName);
     }
@@ -5480,6 +5782,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EllipsoidRefType getEllipsoidRef() {
         return (EllipsoidRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_EllipsoidRef(), true);
     }
@@ -5498,6 +5801,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEllipsoidRef(EllipsoidRefType newEllipsoidRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_EllipsoidRef(), newEllipsoidRef);
     }
@@ -5507,6 +5811,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EngineeringCRSType getEngineeringCRS() {
         return (EngineeringCRSType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_EngineeringCRS(), true);
     }
@@ -5525,6 +5830,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEngineeringCRS(EngineeringCRSType newEngineeringCRS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_EngineeringCRS(), newEngineeringCRS);
     }
@@ -5534,6 +5840,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EngineeringCRSRefType getEngineeringCRSRef() {
         return (EngineeringCRSRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_EngineeringCRSRef(), true);
     }
@@ -5552,6 +5859,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEngineeringCRSRef(EngineeringCRSRefType newEngineeringCRSRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_EngineeringCRSRef(), newEngineeringCRSRef);
     }
@@ -5561,6 +5869,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EngineeringDatumType getEngineeringDatum() {
         return (EngineeringDatumType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_EngineeringDatum(), true);
     }
@@ -5579,6 +5888,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEngineeringDatum(EngineeringDatumType newEngineeringDatum) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_EngineeringDatum(), newEngineeringDatum);
     }
@@ -5588,6 +5898,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EngineeringDatumRefType getEngineeringDatumRef() {
         return (EngineeringDatumRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_EngineeringDatumRef(), true);
     }
@@ -5606,6 +5917,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEngineeringDatumRef(EngineeringDatumRefType newEngineeringDatumRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_EngineeringDatumRef(), newEngineeringDatumRef);
     }
@@ -5615,6 +5927,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EnvelopeType getEnvelope() {
         return (EnvelopeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Envelope(), true);
     }
@@ -5633,6 +5946,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEnvelope(EnvelopeType newEnvelope) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Envelope(), newEnvelope);
     }
@@ -5642,6 +5956,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EnvelopeWithTimePeriodType getEnvelopeWithTimePeriod() {
         return (EnvelopeWithTimePeriodType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_EnvelopeWithTimePeriod(), true);
     }
@@ -5660,6 +5975,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEnvelopeWithTimePeriod(EnvelopeWithTimePeriodType newEnvelopeWithTimePeriod) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_EnvelopeWithTimePeriod(), newEnvelopeWithTimePeriod);
     }
@@ -5669,6 +5985,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SurfacePropertyType getExtentOf() {
         return (SurfacePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ExtentOf(), true);
     }
@@ -5687,6 +6004,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setExtentOf(SurfacePropertyType newExtentOf) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ExtentOf(), newExtentOf);
     }
@@ -5696,6 +6014,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractRingPropertyType getExterior() {
         return (AbstractRingPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Exterior(), true);
     }
@@ -5714,6 +6033,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setExterior(AbstractRingPropertyType newExterior) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Exterior(), newExterior);
     }
@@ -5723,6 +6043,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FaceType getFace() {
         return (FaceType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Face(), true);
     }
@@ -5741,6 +6062,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFace(FaceType newFace) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Face(), newFace);
     }
@@ -5750,6 +6072,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureCollectionType getFeatureCollection1() {
         return (FeatureCollectionType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_FeatureCollection1(), true);
     }
@@ -5768,6 +6091,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFeatureCollection1(FeatureCollectionType newFeatureCollection1) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_FeatureCollection1(), newFeatureCollection1);
     }
@@ -5777,6 +6101,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeaturePropertyType getFeatureMember() {
         return (FeaturePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_FeatureMember(), true);
     }
@@ -5795,6 +6120,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFeatureMember(FeaturePropertyType newFeatureMember) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_FeatureMember(), newFeatureMember);
     }
@@ -5804,6 +6130,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureArrayPropertyType getFeatureMembers() {
         return (FeatureArrayPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_FeatureMembers(), true);
     }
@@ -5822,6 +6149,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFeatureMembers(FeatureArrayPropertyType newFeatureMembers) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_FeatureMembers(), newFeatureMembers);
     }
@@ -5831,6 +6159,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeaturePropertyType getFeatureProperty() {
         return (FeaturePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_FeatureProperty(), true);
     }
@@ -5849,6 +6178,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFeatureProperty(FeaturePropertyType newFeatureProperty) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_FeatureProperty(), newFeatureProperty);
     }
@@ -5858,6 +6188,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureStylePropertyType getFeatureStyle() {
         return (FeatureStylePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_FeatureStyle(), true);
     }
@@ -5876,6 +6207,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFeatureStyle(FeatureStylePropertyType newFeatureStyle) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_FeatureStyle(), newFeatureStyle);
     }
@@ -5885,6 +6217,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureStyleType getFeatureStyle1() {
         return (FeatureStyleType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_FeatureStyle1(), true);
     }
@@ -5903,6 +6236,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFeatureStyle1(FeatureStyleType newFeatureStyle1) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_FeatureStyle1(), newFeatureStyle1);
     }
@@ -5912,6 +6246,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FileType getFile() {
         return (FileType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_File(), true);
     }
@@ -5930,6 +6265,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFile(FileType newFile) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_File(), newFile);
     }
@@ -5939,6 +6275,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeneralConversionRefType getGeneralConversionRef() {
         return (GeneralConversionRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GeneralConversionRef(), true);
     }
@@ -5957,6 +6294,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGeneralConversionRef(GeneralConversionRefType newGeneralConversionRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GeneralConversionRef(), newGeneralConversionRef);
     }
@@ -5966,6 +6304,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeneralTransformationRefType getGeneralTransformationRef() {
         return (GeneralTransformationRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GeneralTransformationRef(), true);
     }
@@ -5984,6 +6323,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGeneralTransformationRef(GeneralTransformationRefType newGeneralTransformationRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GeneralTransformationRef(), newGeneralTransformationRef);
     }
@@ -5993,6 +6333,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GenericMetaDataType getGenericMetaData() {
         return (GenericMetaDataType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GenericMetaData(), true);
     }
@@ -6011,6 +6352,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGenericMetaData(GenericMetaDataType newGenericMetaData) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GenericMetaData(), newGenericMetaData);
     }
@@ -6020,6 +6362,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeocentricCRSType getGeocentricCRS() {
         return (GeocentricCRSType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GeocentricCRS(), true);
     }
@@ -6038,6 +6381,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGeocentricCRS(GeocentricCRSType newGeocentricCRS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GeocentricCRS(), newGeocentricCRS);
     }
@@ -6047,6 +6391,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeocentricCRSRefType getGeocentricCRSRef() {
         return (GeocentricCRSRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GeocentricCRSRef(), true);
     }
@@ -6065,6 +6410,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGeocentricCRSRef(GeocentricCRSRefType newGeocentricCRSRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GeocentricCRSRef(), newGeocentricCRSRef);
     }
@@ -6074,6 +6420,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeodesicType getGeodesic() {
         return (GeodesicType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Geodesic(), true);
     }
@@ -6092,6 +6439,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGeodesic(GeodesicType newGeodesic) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Geodesic(), newGeodesic);
     }
@@ -6101,6 +6449,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeodesicStringType getGeodesicString() {
         return (GeodesicStringType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GeodesicString(), true);
     }
@@ -6119,6 +6468,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGeodesicString(GeodesicStringType newGeodesicString) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GeodesicString(), newGeodesicString);
     }
@@ -6128,6 +6478,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeodeticDatumType getGeodeticDatum() {
         return (GeodeticDatumType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GeodeticDatum(), true);
     }
@@ -6146,6 +6497,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGeodeticDatum(GeodeticDatumType newGeodeticDatum) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GeodeticDatum(), newGeodeticDatum);
     }
@@ -6155,6 +6507,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeodeticDatumRefType getGeodeticDatumRef() {
         return (GeodeticDatumRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GeodeticDatumRef(), true);
     }
@@ -6173,6 +6526,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGeodeticDatumRef(GeodeticDatumRefType newGeodeticDatumRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GeodeticDatumRef(), newGeodeticDatumRef);
     }
@@ -6182,6 +6536,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeographicCRSType getGeographicCRS() {
         return (GeographicCRSType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GeographicCRS(), true);
     }
@@ -6200,6 +6555,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGeographicCRS(GeographicCRSType newGeographicCRS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GeographicCRS(), newGeographicCRS);
     }
@@ -6209,6 +6565,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeographicCRSRefType getGeographicCRSRef() {
         return (GeographicCRSRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GeographicCRSRef(), true);
     }
@@ -6227,6 +6584,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGeographicCRSRef(GeographicCRSRefType newGeographicCRSRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GeographicCRSRef(), newGeographicCRSRef);
     }
@@ -6236,6 +6594,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeometricComplexType getGeometricComplex() {
         return (GeometricComplexType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GeometricComplex(), true);
     }
@@ -6254,6 +6613,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGeometricComplex(GeometricComplexType newGeometricComplex) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GeometricComplex(), newGeometricComplex);
     }
@@ -6263,6 +6623,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeometryPropertyType getGeometryMember() {
         return (GeometryPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GeometryMember(), true);
     }
@@ -6281,6 +6642,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGeometryMember(GeometryPropertyType newGeometryMember) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GeometryMember(), newGeometryMember);
     }
@@ -6290,6 +6652,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeometryArrayPropertyType getGeometryMembers() {
         return (GeometryArrayPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GeometryMembers(), true);
     }
@@ -6308,6 +6671,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGeometryMembers(GeometryArrayPropertyType newGeometryMembers) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GeometryMembers(), newGeometryMembers);
     }
@@ -6317,6 +6681,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeometryStylePropertyType getGeometryStyle() {
         return (GeometryStylePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GeometryStyle(), true);
     }
@@ -6335,6 +6700,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGeometryStyle(GeometryStylePropertyType newGeometryStyle) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GeometryStyle(), newGeometryStyle);
     }
@@ -6344,6 +6710,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeometryStyleType getGeometryStyle1() {
         return (GeometryStyleType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GeometryStyle1(), true);
     }
@@ -6362,6 +6729,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGeometryStyle1(GeometryStyleType newGeometryStyle1) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GeometryStyle1(), newGeometryStyle1);
     }
@@ -6371,6 +6739,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GraphStylePropertyType getGraphStyle() {
         return (GraphStylePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GraphStyle(), true);
     }
@@ -6389,6 +6758,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGraphStyle(GraphStylePropertyType newGraphStyle) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GraphStyle(), newGraphStyle);
     }
@@ -6398,6 +6768,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GraphStyleType getGraphStyle1() {
         return (GraphStyleType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GraphStyle1(), true);
     }
@@ -6416,6 +6787,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGraphStyle1(GraphStyleType newGraphStyle1) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GraphStyle1(), newGraphStyle1);
     }
@@ -6425,6 +6797,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AngleChoiceType getGreenwichLongitude() {
         return (AngleChoiceType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GreenwichLongitude(), true);
     }
@@ -6443,6 +6816,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGreenwichLongitude(AngleChoiceType newGreenwichLongitude) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GreenwichLongitude(), newGreenwichLongitude);
     }
@@ -6452,6 +6826,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GridType getGrid() {
         return (GridType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Grid(), true);
     }
@@ -6470,6 +6845,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGrid(GridType newGrid) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Grid(), newGrid);
     }
@@ -6479,6 +6855,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GridCoverageType getGridCoverage() {
         return (GridCoverageType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GridCoverage(), true);
     }
@@ -6497,6 +6874,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGridCoverage(GridCoverageType newGridCoverage) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GridCoverage(), newGridCoverage);
     }
@@ -6506,6 +6884,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GridDomainType getGridDomain() {
         return (GridDomainType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GridDomain(), true);
     }
@@ -6524,6 +6903,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGridDomain(GridDomainType newGridDomain) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GridDomain(), newGridDomain);
     }
@@ -6533,6 +6913,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GridFunctionType getGridFunction() {
         return (GridFunctionType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GridFunction(), true);
     }
@@ -6551,6 +6932,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGridFunction(GridFunctionType newGridFunction) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GridFunction(), newGridFunction);
     }
@@ -6560,6 +6942,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public IdentifierType getGroupID() {
         return (IdentifierType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GroupID(), true);
     }
@@ -6578,6 +6961,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGroupID(IdentifierType newGroupID) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GroupID(), newGroupID);
     }
@@ -6587,6 +6971,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getGroupName() {
         return (CodeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_GroupName(), true);
     }
@@ -6605,6 +6990,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGroupName(CodeType newGroupName) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GroupName(), newGroupName);
     }
@@ -6614,6 +7000,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public HistoryPropertyType getHistory() {
         return (HistoryPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_History(), true);
     }
@@ -6632,6 +7019,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setHistory(HistoryPropertyType newHistory) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_History(), newHistory);
     }
@@ -6641,6 +7029,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ImageCRSType getImageCRS() {
         return (ImageCRSType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ImageCRS(), true);
     }
@@ -6659,6 +7048,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setImageCRS(ImageCRSType newImageCRS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ImageCRS(), newImageCRS);
     }
@@ -6668,6 +7058,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ImageCRSRefType getImageCRSRef() {
         return (ImageCRSRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ImageCRSRef(), true);
     }
@@ -6686,6 +7077,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setImageCRSRef(ImageCRSRefType newImageCRSRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ImageCRSRef(), newImageCRSRef);
     }
@@ -6695,6 +7087,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ImageDatumType getImageDatum() {
         return (ImageDatumType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ImageDatum(), true);
     }
@@ -6713,6 +7106,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setImageDatum(ImageDatumType newImageDatum) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ImageDatum(), newImageDatum);
     }
@@ -6722,6 +7116,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ImageDatumRefType getImageDatumRef() {
         return (ImageDatumRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ImageDatumRef(), true);
     }
@@ -6740,6 +7135,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setImageDatumRef(ImageDatumRefType newImageDatumRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ImageDatumRef(), newImageDatumRef);
     }
@@ -6749,6 +7145,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinateReferenceSystemRefType getIncludesCRS() {
         return (CoordinateReferenceSystemRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_IncludesCRS(), true);
     }
@@ -6767,6 +7164,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIncludesCRS(CoordinateReferenceSystemRefType newIncludesCRS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_IncludesCRS(), newIncludesCRS);
     }
@@ -6776,6 +7174,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CovarianceElementType getIncludesElement() {
         return (CovarianceElementType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_IncludesElement(), true);
     }
@@ -6794,6 +7193,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIncludesElement(CovarianceElementType newIncludesElement) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_IncludesElement(), newIncludesElement);
     }
@@ -6803,6 +7203,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractGeneralOperationParameterRefType getIncludesParameter() {
         return (AbstractGeneralOperationParameterRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_IncludesParameter(), true);
     }
@@ -6821,6 +7222,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIncludesParameter(AbstractGeneralOperationParameterRefType newIncludesParameter) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_IncludesParameter(), newIncludesParameter);
     }
@@ -6830,6 +7232,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractGeneralParameterValueType getIncludesValue() {
         return (AbstractGeneralParameterValueType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_IncludesValue(), true);
     }
@@ -6848,6 +7251,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIncludesValue(AbstractGeneralParameterValueType newIncludesValue) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_IncludesValue(), newIncludesValue);
     }
@@ -6857,6 +7261,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public IndexMapType getIndexMap() {
         return (IndexMapType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_IndexMap(), true);
     }
@@ -6875,6 +7280,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIndexMap(IndexMapType newIndexMap) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_IndexMap(), newIndexMap);
     }
@@ -6884,6 +7290,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public IndirectEntryType getIndirectEntry() {
         return (IndirectEntryType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_IndirectEntry(), true);
     }
@@ -6902,6 +7309,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIndirectEntry(IndirectEntryType newIndirectEntry) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_IndirectEntry(), newIndirectEntry);
     }
@@ -6911,6 +7319,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractRingPropertyType getInnerBoundaryIs() {
         return (AbstractRingPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_InnerBoundaryIs(), true);
     }
@@ -6929,6 +7338,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setInnerBoundaryIs(AbstractRingPropertyType newInnerBoundaryIs) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_InnerBoundaryIs(), newInnerBoundaryIs);
     }
@@ -6938,6 +7348,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractRingPropertyType getInterior() {
         return (AbstractRingPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Interior(), true);
     }
@@ -6956,6 +7367,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setInterior(AbstractRingPropertyType newInterior) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Interior(), newInterior);
     }
@@ -6965,6 +7377,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getIntegerValue() {
         return (BigInteger)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_IntegerValue(), true);
     }
@@ -6974,6 +7387,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIntegerValue(BigInteger newIntegerValue) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_IntegerValue(), newIntegerValue);
     }
@@ -6983,6 +7397,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     @SuppressWarnings("unchecked")
     public List<BigInteger> getIntegerValueList() {
         return (List<BigInteger>)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_IntegerValueList(), true);
@@ -6993,6 +7408,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIntegerValueList(List<BigInteger> newIntegerValueList) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_IntegerValueList(), newIntegerValueList);
     }
@@ -7002,6 +7418,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MeasureType getInverseFlattening() {
         return (MeasureType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_InverseFlattening(), true);
     }
@@ -7020,6 +7437,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setInverseFlattening(MeasureType newInverseFlattening) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_InverseFlattening(), newInverseFlattening);
     }
@@ -7029,6 +7447,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public IsolatedPropertyType getIsolated() {
         return (IsolatedPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Isolated(), true);
     }
@@ -7047,6 +7466,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIsolated(IsolatedPropertyType newIsolated) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Isolated(), newIsolated);
     }
@@ -7056,6 +7476,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public IsSphereType getIsSphere() {
         return (IsSphereType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_IsSphere(), true);
     }
@@ -7065,6 +7486,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIsSphere(IsSphereType newIsSphere) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_IsSphere(), newIsSphere);
     }
@@ -7074,6 +7496,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LabelStylePropertyType getLabelStyle() {
         return (LabelStylePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_LabelStyle(), true);
     }
@@ -7092,6 +7515,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLabelStyle(LabelStylePropertyType newLabelStyle) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_LabelStyle(), newLabelStyle);
     }
@@ -7101,6 +7525,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LabelStyleType getLabelStyle1() {
         return (LabelStyleType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_LabelStyle1(), true);
     }
@@ -7119,6 +7544,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLabelStyle1(LabelStyleType newLabelStyle1) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_LabelStyle1(), newLabelStyle1);
     }
@@ -7128,6 +7554,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LinearCSType getLinearCS() {
         return (LinearCSType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_LinearCS(), true);
     }
@@ -7146,6 +7573,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLinearCS(LinearCSType newLinearCS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_LinearCS(), newLinearCS);
     }
@@ -7155,6 +7583,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LinearCSRefType getLinearCSRef() {
         return (LinearCSRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_LinearCSRef(), true);
     }
@@ -7173,6 +7602,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLinearCSRef(LinearCSRefType newLinearCSRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_LinearCSRef(), newLinearCSRef);
     }
@@ -7182,6 +7612,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LinearRingType getLinearRing() {
         return (LinearRingType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_LinearRing(), true);
     }
@@ -7200,6 +7631,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLinearRing(LinearRingType newLinearRing) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_LinearRing(), newLinearRing);
     }
@@ -7209,6 +7641,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LineStringType getLineString() {
         return (LineStringType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_LineString(), true);
     }
@@ -7227,6 +7660,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLineString(LineStringType newLineString) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_LineString(), newLineString);
     }
@@ -7236,6 +7670,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LineStringPropertyType getLineStringMember() {
         return (LineStringPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_LineStringMember(), true);
     }
@@ -7254,6 +7689,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLineStringMember(LineStringPropertyType newLineStringMember) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_LineStringMember(), newLineStringMember);
     }
@@ -7263,6 +7699,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LineStringPropertyType getLineStringProperty() {
         return (LineStringPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_LineStringProperty(), true);
     }
@@ -7281,6 +7718,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLineStringProperty(LineStringPropertyType newLineStringProperty) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_LineStringProperty(), newLineStringProperty);
     }
@@ -7290,6 +7728,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LineStringSegmentType getLineStringSegment() {
         return (LineStringSegmentType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_LineStringSegment(), true);
     }
@@ -7308,6 +7747,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLineStringSegment(LineStringSegmentType newLineStringSegment) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_LineStringSegment(), newLineStringSegment);
     }
@@ -7317,6 +7757,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LocationPropertyType getLocation() {
         return (LocationPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Location(), true);
     }
@@ -7335,6 +7776,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLocation(LocationPropertyType newLocation) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Location(), newLocation);
     }
@@ -7344,6 +7786,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getLocationKeyWord() {
         return (CodeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_LocationKeyWord(), true);
     }
@@ -7362,6 +7805,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLocationKeyWord(CodeType newLocationKeyWord) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_LocationKeyWord(), newLocationKeyWord);
     }
@@ -7371,6 +7815,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StringOrRefType getLocationString() {
         return (StringOrRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_LocationString(), true);
     }
@@ -7389,6 +7834,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLocationString(StringOrRefType newLocationString) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_LocationString(), newLocationString);
     }
@@ -7398,6 +7844,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StringOrRefType getMappingRule() {
         return (StringOrRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MappingRule(), true);
     }
@@ -7416,6 +7863,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMappingRule(StringOrRefType newMappingRule) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MappingRule(), newMappingRule);
     }
@@ -7425,6 +7873,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoComplexMemberType getMaximalComplex() {
         return (TopoComplexMemberType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MaximalComplex(), true);
     }
@@ -7443,6 +7892,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMaximalComplex(TopoComplexMemberType newMaximalComplex) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MaximalComplex(), newMaximalComplex);
     }
@@ -7452,6 +7902,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getMaximumOccurs() {
         return (BigInteger)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MaximumOccurs(), true);
     }
@@ -7461,6 +7912,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMaximumOccurs(BigInteger newMaximumOccurs) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MaximumOccurs(), newMaximumOccurs);
     }
@@ -7470,6 +7922,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MeasureType getMeasure() {
         return (MeasureType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Measure(), true);
     }
@@ -7488,6 +7941,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMeasure(MeasureType newMeasure) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Measure(), newMeasure);
     }
@@ -7497,6 +7951,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getMeasureDescription() {
         return (CodeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MeasureDescription(), true);
     }
@@ -7515,6 +7970,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMeasureDescription(CodeType newMeasureDescription) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MeasureDescription(), newMeasureDescription);
     }
@@ -7524,6 +7980,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AssociationType getMember() {
         return (AssociationType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Member(), true);
     }
@@ -7542,6 +7999,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMember(AssociationType newMember) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Member(), newMember);
     }
@@ -7551,6 +8009,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ArrayAssociationType getMembers() {
         return (ArrayAssociationType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Members(), true);
     }
@@ -7569,6 +8028,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMembers(ArrayAssociationType newMembers) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Members(), newMembers);
     }
@@ -7578,6 +8038,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public IdentifierType getMeridianID() {
         return (IdentifierType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MeridianID(), true);
     }
@@ -7596,6 +8057,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMeridianID(IdentifierType newMeridianID) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MeridianID(), newMeridianID);
     }
@@ -7605,6 +8067,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getMeridianName() {
         return (CodeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MeridianName(), true);
     }
@@ -7623,6 +8086,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMeridianName(CodeType newMeridianName) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MeridianName(), newMeridianName);
     }
@@ -7632,6 +8096,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MetaDataPropertyType getMetaDataProperty() {
         return (MetaDataPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MetaDataProperty(), true);
     }
@@ -7650,6 +8115,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMetaDataProperty(MetaDataPropertyType newMetaDataProperty) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MetaDataProperty(), newMetaDataProperty);
     }
@@ -7659,6 +8125,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getMethodFormula() {
         return (CodeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MethodFormula(), true);
     }
@@ -7677,6 +8144,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMethodFormula(CodeType newMethodFormula) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MethodFormula(), newMethodFormula);
     }
@@ -7686,6 +8154,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public IdentifierType getMethodID() {
         return (IdentifierType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MethodID(), true);
     }
@@ -7704,6 +8173,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMethodID(IdentifierType newMethodID) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MethodID(), newMethodID);
     }
@@ -7713,6 +8183,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getMethodName() {
         return (CodeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MethodName(), true);
     }
@@ -7731,6 +8202,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMethodName(CodeType newMethodName) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MethodName(), newMethodName);
     }
@@ -7740,6 +8212,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getMinimumOccurs() {
         return (BigInteger)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MinimumOccurs(), true);
     }
@@ -7749,6 +8222,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMinimumOccurs(BigInteger newMinimumOccurs) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MinimumOccurs(), newMinimumOccurs);
     }
@@ -7758,6 +8232,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getMinutes() {
         return (BigInteger)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Minutes(), true);
     }
@@ -7767,6 +8242,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMinutes(BigInteger newMinutes) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Minutes(), newMinutes);
     }
@@ -7776,6 +8252,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getModifiedCoordinate() {
         return (BigInteger)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ModifiedCoordinate(), true);
     }
@@ -7785,6 +8262,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setModifiedCoordinate(BigInteger newModifiedCoordinate) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ModifiedCoordinate(), newModifiedCoordinate);
     }
@@ -7794,6 +8272,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MovingObjectStatusType getMovingObjectStatus() {
         return (MovingObjectStatusType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MovingObjectStatus(), true);
     }
@@ -7812,6 +8291,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMovingObjectStatus(MovingObjectStatusType newMovingObjectStatus) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MovingObjectStatus(), newMovingObjectStatus);
     }
@@ -7821,6 +8301,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiCurvePropertyType getMultiCenterLineOf() {
         return (MultiCurvePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MultiCenterLineOf(), true);
     }
@@ -7839,6 +8320,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiCenterLineOf(MultiCurvePropertyType newMultiCenterLineOf) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiCenterLineOf(), newMultiCenterLineOf);
     }
@@ -7848,6 +8330,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiPointPropertyType getMultiCenterOf() {
         return (MultiPointPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MultiCenterOf(), true);
     }
@@ -7866,6 +8349,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiCenterOf(MultiPointPropertyType newMultiCenterOf) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiCenterOf(), newMultiCenterOf);
     }
@@ -7875,6 +8359,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiSurfacePropertyType getMultiCoverage() {
         return (MultiSurfacePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MultiCoverage(), true);
     }
@@ -7893,6 +8378,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiCoverage(MultiSurfacePropertyType newMultiCoverage) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiCoverage(), newMultiCoverage);
     }
@@ -7902,6 +8388,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiCurveType getMultiCurve() {
         return (MultiCurveType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MultiCurve(), true);
     }
@@ -7920,6 +8407,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiCurve(MultiCurveType newMultiCurve) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiCurve(), newMultiCurve);
     }
@@ -7929,6 +8417,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiCurveCoverageType getMultiCurveCoverage() {
         return (MultiCurveCoverageType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MultiCurveCoverage(), true);
     }
@@ -7947,6 +8436,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiCurveCoverage(MultiCurveCoverageType newMultiCurveCoverage) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiCurveCoverage(), newMultiCurveCoverage);
     }
@@ -7956,6 +8446,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiCurveDomainType getMultiCurveDomain() {
         return (MultiCurveDomainType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MultiCurveDomain(), true);
     }
@@ -7974,6 +8465,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiCurveDomain(MultiCurveDomainType newMultiCurveDomain) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiCurveDomain(), newMultiCurveDomain);
     }
@@ -7983,6 +8475,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiCurvePropertyType getMultiCurveProperty() {
         return (MultiCurvePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MultiCurveProperty(), true);
     }
@@ -8001,6 +8494,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiCurveProperty(MultiCurvePropertyType newMultiCurveProperty) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiCurveProperty(), newMultiCurveProperty);
     }
@@ -8010,6 +8504,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiCurvePropertyType getMultiEdgeOf() {
         return (MultiCurvePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MultiEdgeOf(), true);
     }
@@ -8028,6 +8523,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiEdgeOf(MultiCurvePropertyType newMultiEdgeOf) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiEdgeOf(), newMultiEdgeOf);
     }
@@ -8037,6 +8533,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiSurfacePropertyType getMultiExtentOf() {
         return (MultiSurfacePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MultiExtentOf(), true);
     }
@@ -8055,6 +8552,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiExtentOf(MultiSurfacePropertyType newMultiExtentOf) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiExtentOf(), newMultiExtentOf);
     }
@@ -8064,6 +8562,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiGeometryType getMultiGeometry() {
         return (MultiGeometryType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MultiGeometry(), true);
     }
@@ -8082,6 +8581,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiGeometry(MultiGeometryType newMultiGeometry) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiGeometry(), newMultiGeometry);
     }
@@ -8091,6 +8591,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiGeometryPropertyType getMultiGeometryProperty() {
         return (MultiGeometryPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MultiGeometryProperty(), true);
     }
@@ -8109,6 +8610,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiGeometryProperty(MultiGeometryPropertyType newMultiGeometryProperty) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiGeometryProperty(), newMultiGeometryProperty);
     }
@@ -8118,6 +8620,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiLineStringType getMultiLineString() {
         return (MultiLineStringType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MultiLineString(), true);
     }
@@ -8136,6 +8639,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiLineString(MultiLineStringType newMultiLineString) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiLineString(), newMultiLineString);
     }
@@ -8145,6 +8649,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiPointPropertyType getMultiLocation() {
         return (MultiPointPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MultiLocation(), true);
     }
@@ -8163,6 +8668,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiLocation(MultiPointPropertyType newMultiLocation) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiLocation(), newMultiLocation);
     }
@@ -8172,6 +8678,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiPointType getMultiPoint() {
         return (MultiPointType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MultiPoint(), true);
     }
@@ -8190,6 +8697,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiPoint(MultiPointType newMultiPoint) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiPoint(), newMultiPoint);
     }
@@ -8199,6 +8707,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiPointCoverageType getMultiPointCoverage() {
         return (MultiPointCoverageType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MultiPointCoverage(), true);
     }
@@ -8217,6 +8726,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiPointCoverage(MultiPointCoverageType newMultiPointCoverage) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiPointCoverage(), newMultiPointCoverage);
     }
@@ -8226,6 +8736,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiPointDomainType getMultiPointDomain() {
         return (MultiPointDomainType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MultiPointDomain(), true);
     }
@@ -8244,6 +8755,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiPointDomain(MultiPointDomainType newMultiPointDomain) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiPointDomain(), newMultiPointDomain);
     }
@@ -8253,6 +8765,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiPointPropertyType getMultiPointProperty() {
         return (MultiPointPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MultiPointProperty(), true);
     }
@@ -8271,6 +8784,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiPointProperty(MultiPointPropertyType newMultiPointProperty) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiPointProperty(), newMultiPointProperty);
     }
@@ -8280,6 +8794,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiPolygonType getMultiPolygon() {
         return (MultiPolygonType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MultiPolygon(), true);
     }
@@ -8298,6 +8813,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiPolygon(MultiPolygonType newMultiPolygon) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiPolygon(), newMultiPolygon);
     }
@@ -8307,6 +8823,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiPointPropertyType getMultiPosition() {
         return (MultiPointPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MultiPosition(), true);
     }
@@ -8325,6 +8842,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiPosition(MultiPointPropertyType newMultiPosition) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiPosition(), newMultiPosition);
     }
@@ -8334,6 +8852,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiSolidType getMultiSolid() {
         return (MultiSolidType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MultiSolid(), true);
     }
@@ -8352,6 +8871,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiSolid(MultiSolidType newMultiSolid) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiSolid(), newMultiSolid);
     }
@@ -8361,6 +8881,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiSolidCoverageType getMultiSolidCoverage() {
         return (MultiSolidCoverageType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MultiSolidCoverage(), true);
     }
@@ -8379,6 +8900,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiSolidCoverage(MultiSolidCoverageType newMultiSolidCoverage) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiSolidCoverage(), newMultiSolidCoverage);
     }
@@ -8388,6 +8910,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiSolidDomainType getMultiSolidDomain() {
         return (MultiSolidDomainType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MultiSolidDomain(), true);
     }
@@ -8406,6 +8929,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiSolidDomain(MultiSolidDomainType newMultiSolidDomain) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiSolidDomain(), newMultiSolidDomain);
     }
@@ -8415,6 +8939,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiSolidPropertyType getMultiSolidProperty() {
         return (MultiSolidPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MultiSolidProperty(), true);
     }
@@ -8433,6 +8958,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiSolidProperty(MultiSolidPropertyType newMultiSolidProperty) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiSolidProperty(), newMultiSolidProperty);
     }
@@ -8442,6 +8968,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiSurfaceType getMultiSurface() {
         return (MultiSurfaceType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MultiSurface(), true);
     }
@@ -8460,6 +8987,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiSurface(MultiSurfaceType newMultiSurface) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiSurface(), newMultiSurface);
     }
@@ -8469,6 +8997,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiSurfaceCoverageType getMultiSurfaceCoverage() {
         return (MultiSurfaceCoverageType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MultiSurfaceCoverage(), true);
     }
@@ -8487,6 +9016,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiSurfaceCoverage(MultiSurfaceCoverageType newMultiSurfaceCoverage) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiSurfaceCoverage(), newMultiSurfaceCoverage);
     }
@@ -8496,6 +9026,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiSurfaceDomainType getMultiSurfaceDomain() {
         return (MultiSurfaceDomainType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MultiSurfaceDomain(), true);
     }
@@ -8514,6 +9045,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiSurfaceDomain(MultiSurfaceDomainType newMultiSurfaceDomain) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiSurfaceDomain(), newMultiSurfaceDomain);
     }
@@ -8523,6 +9055,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiSurfacePropertyType getMultiSurfaceProperty() {
         return (MultiSurfacePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_MultiSurfaceProperty(), true);
     }
@@ -8541,6 +9074,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiSurfaceProperty(MultiSurfacePropertyType newMultiSurfaceProperty) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiSurfaceProperty(), newMultiSurfaceProperty);
     }
@@ -8550,6 +9084,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public NodeType getNode() {
         return (NodeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Node(), true);
     }
@@ -8568,6 +9103,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setNode(NodeType newNode) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Node(), newNode);
     }
@@ -8577,6 +9113,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object getNull() {
         return getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Null(), true);
     }
@@ -8586,6 +9123,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setNull(Object newNull) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Null(), newNull);
     }
@@ -8595,6 +9133,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ObliqueCartesianCSType getObliqueCartesianCS() {
         return (ObliqueCartesianCSType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ObliqueCartesianCS(), true);
     }
@@ -8613,6 +9152,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setObliqueCartesianCS(ObliqueCartesianCSType newObliqueCartesianCS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ObliqueCartesianCS(), newObliqueCartesianCS);
     }
@@ -8622,6 +9162,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ObliqueCartesianCSRefType getObliqueCartesianCSRef() {
         return (ObliqueCartesianCSRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ObliqueCartesianCSRef(), true);
     }
@@ -8640,6 +9181,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setObliqueCartesianCSRef(ObliqueCartesianCSRefType newObliqueCartesianCSRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ObliqueCartesianCSRef(), newObliqueCartesianCSRef);
     }
@@ -8649,6 +9191,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public OffsetCurveType getOffsetCurve() {
         return (OffsetCurveType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_OffsetCurve(), true);
     }
@@ -8667,6 +9210,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOffsetCurve(OffsetCurveType newOffsetCurve) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_OffsetCurve(), newOffsetCurve);
     }
@@ -8676,6 +9220,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public OperationMethodType getOperationMethod() {
         return (OperationMethodType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_OperationMethod(), true);
     }
@@ -8694,6 +9239,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOperationMethod(OperationMethodType newOperationMethod) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_OperationMethod(), newOperationMethod);
     }
@@ -8703,6 +9249,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public OperationMethodRefType getOperationMethodRef() {
         return (OperationMethodRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_OperationMethodRef(), true);
     }
@@ -8721,6 +9268,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOperationMethodRef(OperationMethodRefType newOperationMethodRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_OperationMethodRef(), newOperationMethodRef);
     }
@@ -8730,6 +9278,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public OperationParameterType getOperationParameter() {
         return (OperationParameterType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_OperationParameter(), true);
     }
@@ -8748,6 +9297,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOperationParameter(OperationParameterType newOperationParameter) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_OperationParameter(), newOperationParameter);
     }
@@ -8757,6 +9307,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public OperationParameterGroupType getOperationParameterGroup() {
         return (OperationParameterGroupType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_OperationParameterGroup(), true);
     }
@@ -8775,6 +9326,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOperationParameterGroup(OperationParameterGroupType newOperationParameterGroup) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_OperationParameterGroup(), newOperationParameterGroup);
     }
@@ -8784,6 +9336,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public OperationParameterRefType getOperationParameterGroupRef() {
         return (OperationParameterRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_OperationParameterGroupRef(), true);
     }
@@ -8802,6 +9355,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOperationParameterGroupRef(OperationParameterRefType newOperationParameterGroupRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_OperationParameterGroupRef(), newOperationParameterGroupRef);
     }
@@ -8811,6 +9365,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public OperationParameterRefType getOperationParameterRef() {
         return (OperationParameterRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_OperationParameterRef(), true);
     }
@@ -8829,6 +9384,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOperationParameterRef(OperationParameterRefType newOperationParameterRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_OperationParameterRef(), newOperationParameterRef);
     }
@@ -8838,6 +9394,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public OperationRefType getOperationRef() {
         return (OperationRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_OperationRef(), true);
     }
@@ -8856,6 +9413,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOperationRef(OperationRefType newOperationRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_OperationRef(), newOperationRef);
     }
@@ -8865,6 +9423,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getOperationVersion() {
         return (String)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_OperationVersion(), true);
     }
@@ -8874,6 +9433,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOperationVersion(String newOperationVersion) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_OperationVersion(), newOperationVersion);
     }
@@ -8883,6 +9443,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public OrientableCurveType getOrientableCurve() {
         return (OrientableCurveType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_OrientableCurve(), true);
     }
@@ -8901,6 +9462,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOrientableCurve(OrientableCurveType newOrientableCurve) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_OrientableCurve(), newOrientableCurve);
     }
@@ -8910,6 +9472,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public OrientableSurfaceType getOrientableSurface() {
         return (OrientableSurfaceType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_OrientableSurface(), true);
     }
@@ -8928,6 +9491,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOrientableSurface(OrientableSurfaceType newOrientableSurface) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_OrientableSurface(), newOrientableSurface);
     }
@@ -8937,6 +9501,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public XMLGregorianCalendar getOrigin() {
         return (XMLGregorianCalendar) getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Origin(), true);
     }
@@ -8946,6 +9511,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOrigin(XMLGregorianCalendar newOrigin) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Origin(), newOrigin);
     }
@@ -8955,6 +9521,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractRingPropertyType getOuterBoundaryIs() {
         return (AbstractRingPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_OuterBoundaryIs(), true);
     }
@@ -8973,6 +9540,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOuterBoundaryIs(AbstractRingPropertyType newOuterBoundaryIs) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_OuterBoundaryIs(), newOuterBoundaryIs);
     }
@@ -8982,6 +9550,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public IdentifierType getParameterID() {
         return (IdentifierType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ParameterID(), true);
     }
@@ -9000,6 +9569,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setParameterID(IdentifierType newParameterID) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ParameterID(), newParameterID);
     }
@@ -9009,6 +9579,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getParameterName() {
         return (CodeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ParameterName(), true);
     }
@@ -9027,6 +9598,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setParameterName(CodeType newParameterName) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ParameterName(), newParameterName);
     }
@@ -9036,6 +9608,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ParameterValueType getParameterValue() {
         return (ParameterValueType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ParameterValue(), true);
     }
@@ -9054,6 +9627,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setParameterValue(ParameterValueType newParameterValue) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ParameterValue(), newParameterValue);
     }
@@ -9063,6 +9637,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ParameterValueGroupType getParameterValueGroup() {
         return (ParameterValueGroupType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ParameterValueGroup(), true);
     }
@@ -9081,6 +9656,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setParameterValueGroup(ParameterValueGroupType newParameterValueGroup) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ParameterValueGroup(), newParameterValueGroup);
     }
@@ -9090,6 +9666,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PassThroughOperationType getPassThroughOperation() {
         return (PassThroughOperationType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_PassThroughOperation(), true);
     }
@@ -9108,6 +9685,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPassThroughOperation(PassThroughOperationType newPassThroughOperation) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PassThroughOperation(), newPassThroughOperation);
     }
@@ -9117,6 +9695,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PassThroughOperationRefType getPassThroughOperationRef() {
         return (PassThroughOperationRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_PassThroughOperationRef(), true);
     }
@@ -9135,6 +9714,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPassThroughOperationRef(PassThroughOperationRefType newPassThroughOperationRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PassThroughOperationRef(), newPassThroughOperationRef);
     }
@@ -9144,6 +9724,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SurfacePatchArrayPropertyType getPatches() {
         return (SurfacePatchArrayPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Patches(), true);
     }
@@ -9162,6 +9743,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPatches(SurfacePatchArrayPropertyType newPatches) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Patches(), newPatches);
     }
@@ -9171,6 +9753,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PixelInCellType getPixelInCell() {
         return (PixelInCellType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_PixelInCell(), true);
     }
@@ -9189,6 +9772,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPixelInCell(PixelInCellType newPixelInCell) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PixelInCell(), newPixelInCell);
     }
@@ -9198,6 +9782,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PointType getPoint() {
         return (PointType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Point(), true);
     }
@@ -9216,6 +9801,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPoint(PointType newPoint) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Point(), newPoint);
     }
@@ -9225,6 +9811,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PointArrayPropertyType getPointArrayProperty() {
         return (PointArrayPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_PointArrayProperty(), true);
     }
@@ -9243,6 +9830,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPointArrayProperty(PointArrayPropertyType newPointArrayProperty) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PointArrayProperty(), newPointArrayProperty);
     }
@@ -9252,6 +9840,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PointPropertyType getPointMember() {
         return (PointPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_PointMember(), true);
     }
@@ -9270,6 +9859,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPointMember(PointPropertyType newPointMember) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PointMember(), newPointMember);
     }
@@ -9279,6 +9869,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PointArrayPropertyType getPointMembers() {
         return (PointArrayPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_PointMembers(), true);
     }
@@ -9297,6 +9888,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPointMembers(PointArrayPropertyType newPointMembers) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PointMembers(), newPointMembers);
     }
@@ -9306,6 +9898,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PointPropertyType getPointProperty() {
         return (PointPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_PointProperty(), true);
     }
@@ -9324,6 +9917,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPointProperty(PointPropertyType newPointProperty) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PointProperty(), newPointProperty);
     }
@@ -9333,6 +9927,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PointPropertyType getPointRep() {
         return (PointPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_PointRep(), true);
     }
@@ -9351,6 +9946,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPointRep(PointPropertyType newPointRep) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PointRep(), newPointRep);
     }
@@ -9360,6 +9956,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PolarCSType getPolarCS() {
         return (PolarCSType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_PolarCS(), true);
     }
@@ -9378,6 +9975,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPolarCS(PolarCSType newPolarCS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PolarCS(), newPolarCS);
     }
@@ -9387,6 +9985,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PolarCSRefType getPolarCSRef() {
         return (PolarCSRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_PolarCSRef(), true);
     }
@@ -9405,6 +10004,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPolarCSRef(PolarCSRefType newPolarCSRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PolarCSRef(), newPolarCSRef);
     }
@@ -9414,6 +10014,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PolygonType getPolygon() {
         return (PolygonType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Polygon(), true);
     }
@@ -9432,6 +10033,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPolygon(PolygonType newPolygon) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Polygon(), newPolygon);
     }
@@ -9441,6 +10043,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PolygonPropertyType getPolygonMember() {
         return (PolygonPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_PolygonMember(), true);
     }
@@ -9459,6 +10062,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPolygonMember(PolygonPropertyType newPolygonMember) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PolygonMember(), newPolygonMember);
     }
@@ -9468,6 +10072,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PolygonPatchType getPolygonPatch() {
         return (PolygonPatchType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_PolygonPatch(), true);
     }
@@ -9486,6 +10091,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPolygonPatch(PolygonPatchType newPolygonPatch) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PolygonPatch(), newPolygonPatch);
     }
@@ -9495,6 +10101,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PolygonPatchArrayPropertyType getPolygonPatches() {
         return (PolygonPatchArrayPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_PolygonPatches(), true);
     }
@@ -9513,6 +10120,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPolygonPatches(PolygonPatchArrayPropertyType newPolygonPatches) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PolygonPatches(), newPolygonPatches);
     }
@@ -9522,6 +10130,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PolygonPropertyType getPolygonProperty() {
         return (PolygonPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_PolygonProperty(), true);
     }
@@ -9540,6 +10149,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPolygonProperty(PolygonPropertyType newPolygonProperty) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PolygonProperty(), newPolygonProperty);
     }
@@ -9549,6 +10159,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PolyhedralSurfaceType getPolyhedralSurface() {
         return (PolyhedralSurfaceType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_PolyhedralSurface(), true);
     }
@@ -9567,6 +10178,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPolyhedralSurface(PolyhedralSurfaceType newPolyhedralSurface) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PolyhedralSurface(), newPolyhedralSurface);
     }
@@ -9576,6 +10188,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SurfaceType getSurface1() {
         return (SurfaceType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Surface1(), true);
     }
@@ -9594,6 +10207,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSurface1(SurfaceType newSurface1) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Surface1(), newSurface1);
     }
@@ -9603,6 +10217,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectPositionType getPos() {
         return (DirectPositionType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Pos(), true);
     }
@@ -9621,6 +10236,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPos(DirectPositionType newPos) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Pos(), newPos);
     }
@@ -9630,6 +10246,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PointPropertyType getPosition() {
         return (PointPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Position(), true);
     }
@@ -9648,6 +10265,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPosition(PointPropertyType newPosition) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Position(), newPosition);
     }
@@ -9657,6 +10275,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectPositionListType getPosList() {
         return (DirectPositionListType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_PosList(), true);
     }
@@ -9675,6 +10294,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPosList(DirectPositionListType newPosList) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PosList(), newPosList);
     }
@@ -9684,6 +10304,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PrimeMeridianType getPrimeMeridian() {
         return (PrimeMeridianType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_PrimeMeridian(), true);
     }
@@ -9702,6 +10323,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPrimeMeridian(PrimeMeridianType newPrimeMeridian) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PrimeMeridian(), newPrimeMeridian);
     }
@@ -9711,6 +10333,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PrimeMeridianRefType getPrimeMeridianRef() {
         return (PrimeMeridianRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_PrimeMeridianRef(), true);
     }
@@ -9729,6 +10352,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPrimeMeridianRef(PrimeMeridianRefType newPrimeMeridianRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PrimeMeridianRef(), newPrimeMeridianRef);
     }
@@ -9738,6 +10362,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PriorityLocationPropertyType getPriorityLocation() {
         return (PriorityLocationPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_PriorityLocation(), true);
     }
@@ -9756,6 +10381,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPriorityLocation(PriorityLocationPropertyType newPriorityLocation) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PriorityLocation(), newPriorityLocation);
     }
@@ -9765,6 +10391,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ProjectedCRSType getProjectedCRS() {
         return (ProjectedCRSType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ProjectedCRS(), true);
     }
@@ -9783,6 +10410,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setProjectedCRS(ProjectedCRSType newProjectedCRS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ProjectedCRS(), newProjectedCRS);
     }
@@ -9792,6 +10420,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ProjectedCRSRefType getProjectedCRSRef() {
         return (ProjectedCRSRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ProjectedCRSRef(), true);
     }
@@ -9810,6 +10439,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setProjectedCRSRef(ProjectedCRSRefType newProjectedCRSRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ProjectedCRSRef(), newProjectedCRSRef);
     }
@@ -9819,6 +10449,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MeasureType getQuantity() {
         return (MeasureType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Quantity(), true);
     }
@@ -9837,6 +10468,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setQuantity(MeasureType newQuantity) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Quantity(), newQuantity);
     }
@@ -9846,6 +10478,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public QuantityExtentType getQuantityExtent() {
         return (QuantityExtentType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_QuantityExtent(), true);
     }
@@ -9864,6 +10497,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setQuantityExtent(QuantityExtentType newQuantityExtent) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_QuantityExtent(), newQuantityExtent);
     }
@@ -9873,6 +10507,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MeasureOrNullListType getQuantityList() {
         return (MeasureOrNullListType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_QuantityList(), true);
     }
@@ -9891,6 +10526,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setQuantityList(MeasureOrNullListType newQuantityList) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_QuantityList(), newQuantityList);
     }
@@ -9900,6 +10536,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StringOrRefType getQuantityType() {
         return (StringOrRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_QuantityType(), true);
     }
@@ -9918,6 +10555,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setQuantityType(StringOrRefType newQuantityType) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_QuantityType(), newQuantityType);
     }
@@ -9927,6 +10565,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RangeParametersType getRangeParameters() {
         return (RangeParametersType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_RangeParameters(), true);
     }
@@ -9945,6 +10584,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRangeParameters(RangeParametersType newRangeParameters) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_RangeParameters(), newRangeParameters);
     }
@@ -9954,6 +10594,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RangeSetType getRangeSet() {
         return (RangeSetType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_RangeSet(), true);
     }
@@ -9972,6 +10613,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRangeSet(RangeSetType newRangeSet) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_RangeSet(), newRangeSet);
     }
@@ -9981,6 +10623,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public XMLGregorianCalendar getRealizationEpoch() {
         return (XMLGregorianCalendar) getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_RealizationEpoch(), true);
     }
@@ -9990,6 +10633,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRealizationEpoch(XMLGregorianCalendar newRealizationEpoch) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_RealizationEpoch(), newRealizationEpoch);
     }
@@ -9999,6 +10643,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RectangleType getRectangle() {
         return (RectangleType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Rectangle(), true);
     }
@@ -10017,6 +10662,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRectangle(RectangleType newRectangle) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Rectangle(), newRectangle);
     }
@@ -10026,6 +10672,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RectifiedGridType getRectifiedGrid() {
         return (RectifiedGridType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_RectifiedGrid(), true);
     }
@@ -10044,6 +10691,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRectifiedGrid(RectifiedGridType newRectifiedGrid) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_RectifiedGrid(), newRectifiedGrid);
     }
@@ -10053,6 +10701,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RectifiedGridCoverageType getRectifiedGridCoverage() {
         return (RectifiedGridCoverageType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_RectifiedGridCoverage(), true);
     }
@@ -10071,6 +10720,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRectifiedGridCoverage(RectifiedGridCoverageType newRectifiedGridCoverage) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_RectifiedGridCoverage(), newRectifiedGridCoverage);
     }
@@ -10080,6 +10730,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RectifiedGridDomainType getRectifiedGridDomain() {
         return (RectifiedGridDomainType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_RectifiedGridDomain(), true);
     }
@@ -10098,6 +10749,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRectifiedGridDomain(RectifiedGridDomainType newRectifiedGridDomain) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_RectifiedGridDomain(), newRectifiedGridDomain);
     }
@@ -10107,6 +10759,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ReferenceSystemRefType getReferenceSystemRef() {
         return (ReferenceSystemRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ReferenceSystemRef(), true);
     }
@@ -10125,6 +10778,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setReferenceSystemRef(ReferenceSystemRefType newReferenceSystemRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ReferenceSystemRef(), newReferenceSystemRef);
     }
@@ -10134,6 +10788,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RelativeInternalPositionalAccuracyType getRelativeInternalPositionalAccuracy() {
         return (RelativeInternalPositionalAccuracyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_RelativeInternalPositionalAccuracy(), true);
     }
@@ -10152,6 +10807,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRelativeInternalPositionalAccuracy(RelativeInternalPositionalAccuracyType newRelativeInternalPositionalAccuracy) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_RelativeInternalPositionalAccuracy(), newRelativeInternalPositionalAccuracy);
     }
@@ -10161,6 +10817,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StringOrRefType getRemarks() {
         return (StringOrRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Remarks(), true);
     }
@@ -10179,6 +10836,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRemarks(StringOrRefType newRemarks) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Remarks(), newRemarks);
     }
@@ -10188,6 +10846,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MeasureType getResult() {
         return (MeasureType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Result(), true);
     }
@@ -10206,6 +10865,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setResult(MeasureType newResult) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Result(), newResult);
     }
@@ -10215,6 +10875,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AssociationType getResultOf() {
         return (AssociationType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ResultOf(), true);
     }
@@ -10233,6 +10894,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setResultOf(AssociationType newResultOf) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ResultOf(), newResultOf);
     }
@@ -10242,6 +10904,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RingType getRing1() {
         return (RingType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Ring1(), true);
     }
@@ -10260,6 +10923,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRing1(RingType newRing1) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Ring1(), newRing1);
     }
@@ -10269,6 +10933,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ConversionToPreferredUnitType getRoughConversionToPreferredUnit() {
         return (ConversionToPreferredUnitType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_RoughConversionToPreferredUnit(), true);
     }
@@ -10287,6 +10952,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRoughConversionToPreferredUnit(ConversionToPreferredUnitType newRoughConversionToPreferredUnit) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_RoughConversionToPreferredUnit(), newRoughConversionToPreferredUnit);
     }
@@ -10296,6 +10962,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getRowIndex() {
         return (BigInteger)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_RowIndex(), true);
     }
@@ -10305,6 +10972,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRowIndex(BigInteger newRowIndex) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_RowIndex(), newRowIndex);
     }
@@ -10314,6 +10982,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getScope() {
         return (String)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Scope(), true);
     }
@@ -10323,6 +10992,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setScope(String newScope) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Scope(), newScope);
     }
@@ -10332,6 +11002,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SecondDefiningParameterType getSecondDefiningParameter() {
         return (SecondDefiningParameterType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_SecondDefiningParameter(), true);
     }
@@ -10350,6 +11021,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSecondDefiningParameter(SecondDefiningParameterType newSecondDefiningParameter) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SecondDefiningParameter(), newSecondDefiningParameter);
     }
@@ -10359,6 +11031,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigDecimal getSeconds() {
         return (BigDecimal)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Seconds(), true);
     }
@@ -10368,6 +11041,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSeconds(BigDecimal newSeconds) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Seconds(), newSeconds);
     }
@@ -10377,6 +11051,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CurveSegmentArrayPropertyType getSegments() {
         return (CurveSegmentArrayPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Segments(), true);
     }
@@ -10395,6 +11070,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSegments(CurveSegmentArrayPropertyType newSegments) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Segments(), newSegments);
     }
@@ -10404,6 +11080,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MeasureType getSemiMajorAxis() {
         return (MeasureType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_SemiMajorAxis(), true);
     }
@@ -10422,6 +11099,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSemiMajorAxis(MeasureType newSemiMajorAxis) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SemiMajorAxis(), newSemiMajorAxis);
     }
@@ -10431,6 +11109,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MeasureType getSemiMinorAxis() {
         return (MeasureType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_SemiMinorAxis(), true);
     }
@@ -10449,6 +11128,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSemiMinorAxis(MeasureType newSemiMinorAxis) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SemiMinorAxis(), newSemiMinorAxis);
     }
@@ -10458,6 +11138,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SingleOperationRefType getSingleOperationRef() {
         return (SingleOperationRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_SingleOperationRef(), true);
     }
@@ -10476,6 +11157,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSingleOperationRef(SingleOperationRefType newSingleOperationRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SingleOperationRef(), newSingleOperationRef);
     }
@@ -10485,6 +11167,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SolidType getSolid1() {
         return (SolidType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Solid1(), true);
     }
@@ -10503,6 +11186,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSolid1(SolidType newSolid1) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Solid1(), newSolid1);
     }
@@ -10512,6 +11196,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SolidArrayPropertyType getSolidArrayProperty() {
         return (SolidArrayPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_SolidArrayProperty(), true);
     }
@@ -10530,6 +11215,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSolidArrayProperty(SolidArrayPropertyType newSolidArrayProperty) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SolidArrayProperty(), newSolidArrayProperty);
     }
@@ -10539,6 +11225,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SolidPropertyType getSolidMember() {
         return (SolidPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_SolidMember(), true);
     }
@@ -10557,6 +11244,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSolidMember(SolidPropertyType newSolidMember) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SolidMember(), newSolidMember);
     }
@@ -10566,6 +11254,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SolidArrayPropertyType getSolidMembers() {
         return (SolidArrayPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_SolidMembers(), true);
     }
@@ -10584,6 +11273,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSolidMembers(SolidArrayPropertyType newSolidMembers) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SolidMembers(), newSolidMembers);
     }
@@ -10593,6 +11283,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SolidPropertyType getSolidProperty() {
         return (SolidPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_SolidProperty(), true);
     }
@@ -10611,6 +11302,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSolidProperty(SolidPropertyType newSolidProperty) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SolidProperty(), newSolidProperty);
     }
@@ -10620,6 +11312,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CRSRefType getSourceCRS() {
         return (CRSRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_SourceCRS(), true);
     }
@@ -10638,6 +11331,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSourceCRS(CRSRefType newSourceCRS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SourceCRS(), newSourceCRS);
     }
@@ -10647,6 +11341,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getSourceDimensions() {
         return (BigInteger)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_SourceDimensions(), true);
     }
@@ -10656,6 +11351,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSourceDimensions(BigInteger newSourceDimensions) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SourceDimensions(), newSourceDimensions);
     }
@@ -10665,6 +11361,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SphereType getSphere() {
         return (SphereType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Sphere(), true);
     }
@@ -10683,6 +11380,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSphere(SphereType newSphere) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Sphere(), newSphere);
     }
@@ -10692,6 +11390,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SphericalCSType getSphericalCS() {
         return (SphericalCSType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_SphericalCS(), true);
     }
@@ -10710,6 +11409,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSphericalCS(SphericalCSType newSphericalCS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SphericalCS(), newSphericalCS);
     }
@@ -10719,6 +11419,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SphericalCSRefType getSphericalCSRef() {
         return (SphericalCSRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_SphericalCSRef(), true);
     }
@@ -10737,6 +11438,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSphericalCSRef(SphericalCSRefType newSphericalCSRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SphericalCSRef(), newSphericalCSRef);
     }
@@ -10746,6 +11448,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public IdentifierType getSrsID() {
         return (IdentifierType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_SrsID(), true);
     }
@@ -10764,6 +11467,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSrsID(IdentifierType newSrsID) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SrsID(), newSrsID);
     }
@@ -10773,6 +11477,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getSrsName() {
         return (CodeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_SrsName(), true);
     }
@@ -10791,6 +11496,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSrsName(CodeType newSrsName) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SrsName(), newSrsName);
     }
@@ -10800,6 +11506,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StringOrRefType getStatus() {
         return (StringOrRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Status(), true);
     }
@@ -10818,6 +11525,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setStatus(StringOrRefType newStatus) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Status(), newStatus);
     }
@@ -10827,6 +11535,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getStringValue() {
         return (String)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_StringValue(), true);
     }
@@ -10836,6 +11545,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setStringValue(String newStringValue) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_StringValue(), newStringValue);
     }
@@ -10845,6 +11555,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StyleType getStyle1() {
         return (StyleType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Style1(), true);
     }
@@ -10863,6 +11574,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setStyle1(StyleType newStyle1) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Style1(), newStyle1);
     }
@@ -10872,6 +11584,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoComplexMemberType getSubComplex() {
         return (TopoComplexMemberType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_SubComplex(), true);
     }
@@ -10890,6 +11603,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSubComplex(TopoComplexMemberType newSubComplex) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SubComplex(), newSubComplex);
     }
@@ -10899,6 +11613,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TargetPropertyType getSubject() {
         return (TargetPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Subject(), true);
     }
@@ -10917,6 +11632,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSubject(TargetPropertyType newSubject) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Subject(), newSubject);
     }
@@ -10926,6 +11642,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TargetPropertyType getTarget() {
         return (TargetPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Target(), true);
     }
@@ -10944,6 +11661,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTarget(TargetPropertyType newTarget) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Target(), newTarget);
     }
@@ -10953,6 +11671,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoComplexMemberType getSuperComplex() {
         return (TopoComplexMemberType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_SuperComplex(), true);
     }
@@ -10971,6 +11690,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSuperComplex(TopoComplexMemberType newSuperComplex) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SuperComplex(), newSuperComplex);
     }
@@ -10980,6 +11700,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SurfaceArrayPropertyType getSurfaceArrayProperty() {
         return (SurfaceArrayPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_SurfaceArrayProperty(), true);
     }
@@ -10998,6 +11719,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSurfaceArrayProperty(SurfaceArrayPropertyType newSurfaceArrayProperty) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SurfaceArrayProperty(), newSurfaceArrayProperty);
     }
@@ -11007,6 +11729,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SurfacePropertyType getSurfaceMember() {
         return (SurfacePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_SurfaceMember(), true);
     }
@@ -11025,6 +11748,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSurfaceMember(SurfacePropertyType newSurfaceMember) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SurfaceMember(), newSurfaceMember);
     }
@@ -11034,6 +11758,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SurfaceArrayPropertyType getSurfaceMembers() {
         return (SurfaceArrayPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_SurfaceMembers(), true);
     }
@@ -11052,6 +11777,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSurfaceMembers(SurfaceArrayPropertyType newSurfaceMembers) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SurfaceMembers(), newSurfaceMembers);
     }
@@ -11061,6 +11787,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SurfacePropertyType getSurfaceProperty() {
         return (SurfacePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_SurfaceProperty(), true);
     }
@@ -11079,6 +11806,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSurfaceProperty(SurfacePropertyType newSurfaceProperty) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SurfaceProperty(), newSurfaceProperty);
     }
@@ -11088,6 +11816,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SymbolType getSymbol() {
         return (SymbolType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Symbol(), true);
     }
@@ -11106,6 +11835,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSymbol(SymbolType newSymbol) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Symbol(), newSymbol);
     }
@@ -11115,6 +11845,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CRSRefType getTargetCRS() {
         return (CRSRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TargetCRS(), true);
     }
@@ -11133,6 +11864,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTargetCRS(CRSRefType newTargetCRS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TargetCRS(), newTargetCRS);
     }
@@ -11142,6 +11874,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getTargetDimensions() {
         return (BigInteger)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TargetDimensions(), true);
     }
@@ -11151,6 +11884,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTargetDimensions(BigInteger newTargetDimensions) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TargetDimensions(), newTargetDimensions);
     }
@@ -11160,6 +11894,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TemporalCRSType getTemporalCRS() {
         return (TemporalCRSType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TemporalCRS(), true);
     }
@@ -11178,6 +11913,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTemporalCRS(TemporalCRSType newTemporalCRS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TemporalCRS(), newTemporalCRS);
     }
@@ -11187,6 +11923,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TemporalCRSRefType getTemporalCRSRef() {
         return (TemporalCRSRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TemporalCRSRef(), true);
     }
@@ -11205,6 +11942,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTemporalCRSRef(TemporalCRSRefType newTemporalCRSRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TemporalCRSRef(), newTemporalCRSRef);
     }
@@ -11214,6 +11952,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TemporalCSType getTemporalCS() {
         return (TemporalCSType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TemporalCS(), true);
     }
@@ -11232,6 +11971,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTemporalCS(TemporalCSType newTemporalCS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TemporalCS(), newTemporalCS);
     }
@@ -11241,6 +11981,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TemporalCSRefType getTemporalCSRef() {
         return (TemporalCSRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TemporalCSRef(), true);
     }
@@ -11259,6 +12000,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTemporalCSRef(TemporalCSRefType newTemporalCSRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TemporalCSRef(), newTemporalCSRef);
     }
@@ -11268,6 +12010,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TemporalDatumType getTemporalDatum() {
         return (TemporalDatumType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TemporalDatum(), true);
     }
@@ -11286,6 +12029,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTemporalDatum(TemporalDatumType newTemporalDatum) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TemporalDatum(), newTemporalDatum);
     }
@@ -11295,6 +12039,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TemporalDatumRefType getTemporalDatumRef() {
         return (TemporalDatumRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TemporalDatumRef(), true);
     }
@@ -11313,6 +12058,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTemporalDatumRef(TemporalDatumRefType newTemporalDatumRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TemporalDatumRef(), newTemporalDatumRef);
     }
@@ -11322,6 +12068,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimePeriodType getTemporalExtent() {
         return (TimePeriodType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TemporalExtent(), true);
     }
@@ -11340,6 +12087,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTemporalExtent(TimePeriodType newTemporalExtent) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TemporalExtent(), newTemporalExtent);
     }
@@ -11349,6 +12097,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeCalendarType getTimeCalendar() {
         return (TimeCalendarType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TimeCalendar(), true);
     }
@@ -11367,6 +12116,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTimeCalendar(TimeCalendarType newTimeCalendar) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TimeCalendar(), newTimeCalendar);
     }
@@ -11376,6 +12126,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeCalendarEraType getTimeCalendarEra() {
         return (TimeCalendarEraType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TimeCalendarEra(), true);
     }
@@ -11394,6 +12145,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTimeCalendarEra(TimeCalendarEraType newTimeCalendarEra) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TimeCalendarEra(), newTimeCalendarEra);
     }
@@ -11403,6 +12155,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeClockType getTimeClock() {
         return (TimeClockType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TimeClock(), true);
     }
@@ -11421,6 +12174,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTimeClock(TimeClockType newTimeClock) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TimeClock(), newTimeClock);
     }
@@ -11430,6 +12184,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeCoordinateSystemType getTimeCoordinateSystem() {
         return (TimeCoordinateSystemType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TimeCoordinateSystem(), true);
     }
@@ -11448,6 +12203,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTimeCoordinateSystem(TimeCoordinateSystemType newTimeCoordinateSystem) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TimeCoordinateSystem(), newTimeCoordinateSystem);
     }
@@ -11457,6 +12213,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeEdgeType getTimeEdge() {
         return (TimeEdgeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TimeEdge(), true);
     }
@@ -11475,6 +12232,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTimeEdge(TimeEdgeType newTimeEdge) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TimeEdge(), newTimeEdge);
     }
@@ -11484,6 +12242,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeInstantType getTimeInstant() {
         return (TimeInstantType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TimeInstant(), true);
     }
@@ -11502,6 +12261,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTimeInstant(TimeInstantType newTimeInstant) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TimeInstant(), newTimeInstant);
     }
@@ -11511,6 +12271,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeIntervalLengthType getTimeInterval() {
         return (TimeIntervalLengthType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TimeInterval(), true);
     }
@@ -11529,6 +12290,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTimeInterval(TimeIntervalLengthType newTimeInterval) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TimeInterval(), newTimeInterval);
     }
@@ -11538,6 +12300,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeNodeType getTimeNode() {
         return (TimeNodeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TimeNode(), true);
     }
@@ -11556,6 +12319,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTimeNode(TimeNodeType newTimeNode) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TimeNode(), newTimeNode);
     }
@@ -11565,6 +12329,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeOrdinalEraType getTimeOrdinalEra() {
         return (TimeOrdinalEraType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TimeOrdinalEra(), true);
     }
@@ -11583,6 +12348,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTimeOrdinalEra(TimeOrdinalEraType newTimeOrdinalEra) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TimeOrdinalEra(), newTimeOrdinalEra);
     }
@@ -11592,6 +12358,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeOrdinalReferenceSystemType getTimeOrdinalReferenceSystem() {
         return (TimeOrdinalReferenceSystemType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TimeOrdinalReferenceSystem(), true);
     }
@@ -11610,6 +12377,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTimeOrdinalReferenceSystem(TimeOrdinalReferenceSystemType newTimeOrdinalReferenceSystem) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TimeOrdinalReferenceSystem(), newTimeOrdinalReferenceSystem);
     }
@@ -11619,6 +12387,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimePeriodType getTimePeriod() {
         return (TimePeriodType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TimePeriod(), true);
     }
@@ -11637,6 +12406,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTimePeriod(TimePeriodType newTimePeriod) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TimePeriod(), newTimePeriod);
     }
@@ -11646,6 +12416,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimePositionType getTimePosition() {
         return (TimePositionType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TimePosition(), true);
     }
@@ -11664,6 +12435,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTimePosition(TimePositionType newTimePosition) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TimePosition(), newTimePosition);
     }
@@ -11673,6 +12445,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeTopologyComplexType getTimeTopologyComplex() {
         return (TimeTopologyComplexType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TimeTopologyComplex(), true);
     }
@@ -11691,6 +12464,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTimeTopologyComplex(TimeTopologyComplexType newTimeTopologyComplex) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TimeTopologyComplex(), newTimeTopologyComplex);
     }
@@ -11700,6 +12474,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TinType getTin() {
         return (TinType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Tin(), true);
     }
@@ -11718,6 +12493,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTin(TinType newTin) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Tin(), newTin);
     }
@@ -11727,6 +12503,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TriangulatedSurfaceType getTriangulatedSurface() {
         return (TriangulatedSurfaceType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TriangulatedSurface(), true);
     }
@@ -11745,6 +12522,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTriangulatedSurface(TriangulatedSurfaceType newTriangulatedSurface) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TriangulatedSurface(), newTriangulatedSurface);
     }
@@ -11754,6 +12532,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoComplexType getTopoComplex() {
         return (TopoComplexType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TopoComplex(), true);
     }
@@ -11772,6 +12551,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTopoComplex(TopoComplexType newTopoComplex) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopoComplex(), newTopoComplex);
     }
@@ -11781,6 +12561,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoComplexMemberType getTopoComplexProperty() {
         return (TopoComplexMemberType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TopoComplexProperty(), true);
     }
@@ -11799,6 +12580,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTopoComplexProperty(TopoComplexMemberType newTopoComplexProperty) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopoComplexProperty(), newTopoComplexProperty);
     }
@@ -11808,6 +12590,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoCurveType getTopoCurve() {
         return (TopoCurveType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TopoCurve(), true);
     }
@@ -11826,6 +12609,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTopoCurve(TopoCurveType newTopoCurve) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopoCurve(), newTopoCurve);
     }
@@ -11835,6 +12619,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoCurvePropertyType getTopoCurveProperty() {
         return (TopoCurvePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TopoCurveProperty(), true);
     }
@@ -11853,6 +12638,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTopoCurveProperty(TopoCurvePropertyType newTopoCurveProperty) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopoCurveProperty(), newTopoCurveProperty);
     }
@@ -11862,6 +12648,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopologyStylePropertyType getTopologyStyle() {
         return (TopologyStylePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TopologyStyle(), true);
     }
@@ -11880,6 +12667,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTopologyStyle(TopologyStylePropertyType newTopologyStyle) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopologyStyle(), newTopologyStyle);
     }
@@ -11889,6 +12677,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopologyStyleType getTopologyStyle1() {
         return (TopologyStyleType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TopologyStyle1(), true);
     }
@@ -11907,6 +12696,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTopologyStyle1(TopologyStyleType newTopologyStyle1) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopologyStyle1(), newTopologyStyle1);
     }
@@ -11916,6 +12706,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoPointType getTopoPoint() {
         return (TopoPointType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TopoPoint(), true);
     }
@@ -11934,6 +12725,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTopoPoint(TopoPointType newTopoPoint) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopoPoint(), newTopoPoint);
     }
@@ -11943,6 +12735,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoPointPropertyType getTopoPointProperty() {
         return (TopoPointPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TopoPointProperty(), true);
     }
@@ -11961,6 +12754,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTopoPointProperty(TopoPointPropertyType newTopoPointProperty) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopoPointProperty(), newTopoPointProperty);
     }
@@ -11970,6 +12764,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoPrimitiveMemberType getTopoPrimitiveMember() {
         return (TopoPrimitiveMemberType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TopoPrimitiveMember(), true);
     }
@@ -11988,6 +12783,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTopoPrimitiveMember(TopoPrimitiveMemberType newTopoPrimitiveMember) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopoPrimitiveMember(), newTopoPrimitiveMember);
     }
@@ -11997,6 +12793,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoPrimitiveArrayAssociationType getTopoPrimitiveMembers() {
         return (TopoPrimitiveArrayAssociationType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TopoPrimitiveMembers(), true);
     }
@@ -12015,6 +12812,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTopoPrimitiveMembers(TopoPrimitiveArrayAssociationType newTopoPrimitiveMembers) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopoPrimitiveMembers(), newTopoPrimitiveMembers);
     }
@@ -12024,6 +12822,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoSolidType getTopoSolid() {
         return (TopoSolidType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TopoSolid(), true);
     }
@@ -12042,6 +12841,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTopoSolid(TopoSolidType newTopoSolid) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopoSolid(), newTopoSolid);
     }
@@ -12051,6 +12851,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoSurfaceType getTopoSurface() {
         return (TopoSurfaceType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TopoSurface(), true);
     }
@@ -12069,6 +12870,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTopoSurface(TopoSurfaceType newTopoSurface) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopoSurface(), newTopoSurface);
     }
@@ -12078,6 +12880,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoSurfacePropertyType getTopoSurfaceProperty() {
         return (TopoSurfacePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TopoSurfaceProperty(), true);
     }
@@ -12096,6 +12899,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTopoSurfaceProperty(TopoSurfacePropertyType newTopoSurfaceProperty) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopoSurfaceProperty(), newTopoSurfaceProperty);
     }
@@ -12105,6 +12909,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoVolumeType getTopoVolume() {
         return (TopoVolumeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TopoVolume(), true);
     }
@@ -12123,6 +12928,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTopoVolume(TopoVolumeType newTopoVolume) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopoVolume(), newTopoVolume);
     }
@@ -12132,6 +12938,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoVolumePropertyType getTopoVolumeProperty() {
         return (TopoVolumePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TopoVolumeProperty(), true);
     }
@@ -12150,6 +12957,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTopoVolumeProperty(TopoVolumePropertyType newTopoVolumeProperty) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopoVolumeProperty(), newTopoVolumeProperty);
     }
@@ -12159,6 +12967,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TrackType getTrack() {
         return (TrackType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Track(), true);
     }
@@ -12177,6 +12986,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTrack(TrackType newTrack) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Track(), newTrack);
     }
@@ -12186,6 +12996,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TransformationType getTransformation() {
         return (TransformationType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Transformation(), true);
     }
@@ -12204,6 +13015,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTransformation(TransformationType newTransformation) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Transformation(), newTransformation);
     }
@@ -12213,6 +13025,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TransformationRefType getTransformationRef() {
         return (TransformationRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TransformationRef(), true);
     }
@@ -12231,6 +13044,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTransformationRef(TransformationRefType newTransformationRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TransformationRef(), newTransformationRef);
     }
@@ -12240,6 +13054,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TriangleType getTriangle() {
         return (TriangleType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Triangle(), true);
     }
@@ -12258,6 +13073,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTriangle(TriangleType newTriangle) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Triangle(), newTriangle);
     }
@@ -12267,6 +13083,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TrianglePatchArrayPropertyType getTrianglePatches() {
         return (TrianglePatchArrayPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TrianglePatches(), true);
     }
@@ -12285,6 +13102,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTrianglePatches(TrianglePatchArrayPropertyType newTrianglePatches) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TrianglePatches(), newTrianglePatches);
     }
@@ -12294,6 +13112,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinatesType getTupleList() {
         return (CoordinatesType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_TupleList(), true);
     }
@@ -12312,6 +13131,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTupleList(CoordinatesType newTupleList) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TupleList(), newTupleList);
     }
@@ -12321,6 +13141,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public UnitOfMeasureType getUnitOfMeasure() {
         return (UnitOfMeasureType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_UnitOfMeasure(), true);
     }
@@ -12339,6 +13160,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUnitOfMeasure(UnitOfMeasureType newUnitOfMeasure) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UnitOfMeasure(), newUnitOfMeasure);
     }
@@ -12348,6 +13170,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public UserDefinedCSType getUserDefinedCS() {
         return (UserDefinedCSType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_UserDefinedCS(), true);
     }
@@ -12366,6 +13189,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUserDefinedCS(UserDefinedCSType newUserDefinedCS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UserDefinedCS(), newUserDefinedCS);
     }
@@ -12375,6 +13199,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public UserDefinedCSRefType getUserDefinedCSRef() {
         return (UserDefinedCSRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_UserDefinedCSRef(), true);
     }
@@ -12393,6 +13218,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUserDefinedCSRef(UserDefinedCSRefType newUserDefinedCSRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UserDefinedCSRef(), newUserDefinedCSRef);
     }
@@ -12402,6 +13228,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinateSystemAxisRefType getUsesAxis() {
         return (CoordinateSystemAxisRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_UsesAxis(), true);
     }
@@ -12420,6 +13247,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesAxis(CoordinateSystemAxisRefType newUsesAxis) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesAxis(), newUsesAxis);
     }
@@ -12429,6 +13257,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CartesianCSRefType getUsesCartesianCS() {
         return (CartesianCSRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_UsesCartesianCS(), true);
     }
@@ -12447,6 +13276,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesCartesianCS(CartesianCSRefType newUsesCartesianCS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesCartesianCS(), newUsesCartesianCS);
     }
@@ -12456,6 +13286,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinateSystemRefType getUsesCS() {
         return (CoordinateSystemRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_UsesCS(), true);
     }
@@ -12474,6 +13305,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesCS(CoordinateSystemRefType newUsesCS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesCS(), newUsesCS);
     }
@@ -12483,6 +13315,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EllipsoidRefType getUsesEllipsoid() {
         return (EllipsoidRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_UsesEllipsoid(), true);
     }
@@ -12501,6 +13334,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesEllipsoid(EllipsoidRefType newUsesEllipsoid) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesEllipsoid(), newUsesEllipsoid);
     }
@@ -12510,6 +13344,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EllipsoidalCSRefType getUsesEllipsoidalCS() {
         return (EllipsoidalCSRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_UsesEllipsoidalCS(), true);
     }
@@ -12528,6 +13363,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesEllipsoidalCS(EllipsoidalCSRefType newUsesEllipsoidalCS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesEllipsoidalCS(), newUsesEllipsoidalCS);
     }
@@ -12537,6 +13373,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EngineeringDatumRefType getUsesEngineeringDatum() {
         return (EngineeringDatumRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_UsesEngineeringDatum(), true);
     }
@@ -12555,6 +13392,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesEngineeringDatum(EngineeringDatumRefType newUsesEngineeringDatum) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesEngineeringDatum(), newUsesEngineeringDatum);
     }
@@ -12564,6 +13402,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeodeticDatumRefType getUsesGeodeticDatum() {
         return (GeodeticDatumRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_UsesGeodeticDatum(), true);
     }
@@ -12582,6 +13421,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesGeodeticDatum(GeodeticDatumRefType newUsesGeodeticDatum) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesGeodeticDatum(), newUsesGeodeticDatum);
     }
@@ -12591,6 +13431,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ImageDatumRefType getUsesImageDatum() {
         return (ImageDatumRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_UsesImageDatum(), true);
     }
@@ -12609,6 +13450,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesImageDatum(ImageDatumRefType newUsesImageDatum) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesImageDatum(), newUsesImageDatum);
     }
@@ -12618,6 +13460,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public OperationMethodRefType getUsesMethod() {
         return (OperationMethodRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_UsesMethod(), true);
     }
@@ -12636,6 +13479,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesMethod(OperationMethodRefType newUsesMethod) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesMethod(), newUsesMethod);
     }
@@ -12645,6 +13489,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ObliqueCartesianCSRefType getUsesObliqueCartesianCS() {
         return (ObliqueCartesianCSRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_UsesObliqueCartesianCS(), true);
     }
@@ -12663,6 +13508,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesObliqueCartesianCS(ObliqueCartesianCSRefType newUsesObliqueCartesianCS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesObliqueCartesianCS(), newUsesObliqueCartesianCS);
     }
@@ -12672,6 +13518,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public OperationRefType getUsesOperation() {
         return (OperationRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_UsesOperation(), true);
     }
@@ -12690,6 +13537,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesOperation(OperationRefType newUsesOperation) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesOperation(), newUsesOperation);
     }
@@ -12699,6 +13547,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractGeneralOperationParameterRefType getUsesParameter() {
         return (AbstractGeneralOperationParameterRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_UsesParameter(), true);
     }
@@ -12717,6 +13566,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesParameter(AbstractGeneralOperationParameterRefType newUsesParameter) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesParameter(), newUsesParameter);
     }
@@ -12726,6 +13576,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PrimeMeridianRefType getUsesPrimeMeridian() {
         return (PrimeMeridianRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_UsesPrimeMeridian(), true);
     }
@@ -12744,6 +13595,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesPrimeMeridian(PrimeMeridianRefType newUsesPrimeMeridian) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesPrimeMeridian(), newUsesPrimeMeridian);
     }
@@ -12753,6 +13605,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SingleOperationRefType getUsesSingleOperation() {
         return (SingleOperationRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_UsesSingleOperation(), true);
     }
@@ -12771,6 +13624,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesSingleOperation(SingleOperationRefType newUsesSingleOperation) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesSingleOperation(), newUsesSingleOperation);
     }
@@ -12780,6 +13634,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SphericalCSRefType getUsesSphericalCS() {
         return (SphericalCSRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_UsesSphericalCS(), true);
     }
@@ -12798,6 +13653,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesSphericalCS(SphericalCSRefType newUsesSphericalCS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesSphericalCS(), newUsesSphericalCS);
     }
@@ -12807,6 +13663,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TemporalCSRefType getUsesTemporalCS() {
         return (TemporalCSRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_UsesTemporalCS(), true);
     }
@@ -12825,6 +13682,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesTemporalCS(TemporalCSRefType newUsesTemporalCS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesTemporalCS(), newUsesTemporalCS);
     }
@@ -12834,6 +13692,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TemporalDatumRefType getUsesTemporalDatum() {
         return (TemporalDatumRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_UsesTemporalDatum(), true);
     }
@@ -12852,6 +13711,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesTemporalDatum(TemporalDatumRefType newUsesTemporalDatum) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesTemporalDatum(), newUsesTemporalDatum);
     }
@@ -12861,6 +13721,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ParameterValueType getUsesValue() {
         return (ParameterValueType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_UsesValue(), true);
     }
@@ -12879,6 +13740,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesValue(ParameterValueType newUsesValue) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesValue(), newUsesValue);
     }
@@ -12888,6 +13750,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public VerticalCSRefType getUsesVerticalCS() {
         return (VerticalCSRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_UsesVerticalCS(), true);
     }
@@ -12906,6 +13769,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesVerticalCS(VerticalCSRefType newUsesVerticalCS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesVerticalCS(), newUsesVerticalCS);
     }
@@ -12915,6 +13779,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public VerticalDatumRefType getUsesVerticalDatum() {
         return (VerticalDatumRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_UsesVerticalDatum(), true);
     }
@@ -12933,6 +13798,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesVerticalDatum(VerticalDatumRefType newUsesVerticalDatum) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesVerticalDatum(), newUsesVerticalDatum);
     }
@@ -12942,6 +13808,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeaturePropertyType getUsing() {
         return (FeaturePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Using(), true);
     }
@@ -12960,6 +13827,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsing(FeaturePropertyType newUsing) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Using(), newUsing);
     }
@@ -12969,6 +13837,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ExtentType getValidArea() {
         return (ExtentType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ValidArea(), true);
     }
@@ -12987,6 +13856,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValidArea(ExtentType newValidArea) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ValidArea(), newValidArea);
     }
@@ -12996,6 +13866,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimePrimitivePropertyType getValidTime() {
         return (TimePrimitivePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ValidTime(), true);
     }
@@ -13014,6 +13885,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValidTime(TimePrimitivePropertyType newValidTime) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ValidTime(), newValidTime);
     }
@@ -13023,6 +13895,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MeasureType getValue() {
         return (MeasureType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Value(), true);
     }
@@ -13041,6 +13914,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValue(MeasureType newValue) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Value(), newValue);
     }
@@ -13050,6 +13924,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ValueArrayType getValueArray() {
         return (ValueArrayType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ValueArray(), true);
     }
@@ -13068,6 +13943,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValueArray(ValueArrayType newValueArray) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ValueArray(), newValueArray);
     }
@@ -13077,6 +13953,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ValuePropertyType getValueComponent() {
         return (ValuePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ValueComponent(), true);
     }
@@ -13095,6 +13972,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValueComponent(ValuePropertyType newValueComponent) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ValueComponent(), newValueComponent);
     }
@@ -13104,6 +13982,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ValueArrayPropertyType getValueComponents() {
         return (ValueArrayPropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ValueComponents(), true);
     }
@@ -13122,6 +14001,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValueComponents(ValueArrayPropertyType newValueComponents) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ValueComponents(), newValueComponents);
     }
@@ -13131,6 +14011,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getValueFile() {
         return (String)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ValueFile(), true);
     }
@@ -13140,6 +14021,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValueFile(String newValueFile) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ValueFile(), newValueFile);
     }
@@ -13149,6 +14031,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MeasureListType getValueList() {
         return (MeasureListType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ValueList(), true);
     }
@@ -13167,6 +14050,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValueList(MeasureListType newValueList) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ValueList(), newValueList);
     }
@@ -13176,6 +14060,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public OperationParameterRefType getValueOfParameter() {
         return (OperationParameterRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ValueOfParameter(), true);
     }
@@ -13194,6 +14079,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValueOfParameter(OperationParameterRefType newValueOfParameter) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ValueOfParameter(), newValueOfParameter);
     }
@@ -13203,6 +14089,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ValuePropertyType getValueProperty() {
         return (ValuePropertyType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ValueProperty(), true);
     }
@@ -13221,6 +14108,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValueProperty(ValuePropertyType newValueProperty) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ValueProperty(), newValueProperty);
     }
@@ -13230,6 +14118,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public OperationParameterGroupRefType getValuesOfGroup() {
         return (OperationParameterGroupRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_ValuesOfGroup(), true);
     }
@@ -13248,6 +14137,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValuesOfGroup(OperationParameterGroupRefType newValuesOfGroup) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ValuesOfGroup(), newValuesOfGroup);
     }
@@ -13257,6 +14147,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public VectorType getVector() {
         return (VectorType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Vector(), true);
     }
@@ -13275,6 +14166,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setVector(VectorType newVector) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Vector(), newVector);
     }
@@ -13284,6 +14176,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getVersion() {
         return (String)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_Version(), true);
     }
@@ -13293,6 +14186,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setVersion(String newVersion) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Version(), newVersion);
     }
@@ -13302,6 +14196,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public VerticalCRSType getVerticalCRS() {
         return (VerticalCRSType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_VerticalCRS(), true);
     }
@@ -13320,6 +14215,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setVerticalCRS(VerticalCRSType newVerticalCRS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_VerticalCRS(), newVerticalCRS);
     }
@@ -13329,6 +14225,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public VerticalCRSRefType getVerticalCRSRef() {
         return (VerticalCRSRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_VerticalCRSRef(), true);
     }
@@ -13347,6 +14244,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setVerticalCRSRef(VerticalCRSRefType newVerticalCRSRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_VerticalCRSRef(), newVerticalCRSRef);
     }
@@ -13356,6 +14254,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public VerticalCSType getVerticalCS() {
         return (VerticalCSType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_VerticalCS(), true);
     }
@@ -13374,6 +14273,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setVerticalCS(VerticalCSType newVerticalCS) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_VerticalCS(), newVerticalCS);
     }
@@ -13383,6 +14283,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public VerticalCSRefType getVerticalCSRef() {
         return (VerticalCSRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_VerticalCSRef(), true);
     }
@@ -13401,6 +14302,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setVerticalCSRef(VerticalCSRefType newVerticalCSRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_VerticalCSRef(), newVerticalCSRef);
     }
@@ -13410,6 +14312,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public VerticalDatumType getVerticalDatum() {
         return (VerticalDatumType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_VerticalDatum(), true);
     }
@@ -13428,6 +14331,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setVerticalDatum(VerticalDatumType newVerticalDatum) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_VerticalDatum(), newVerticalDatum);
     }
@@ -13437,6 +14341,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public VerticalDatumRefType getVerticalDatumRef() {
         return (VerticalDatumRefType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_VerticalDatumRef(), true);
     }
@@ -13455,6 +14360,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setVerticalDatumRef(VerticalDatumRefType newVerticalDatumRef) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_VerticalDatumRef(), newVerticalDatumRef);
     }
@@ -13464,6 +14370,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public VerticalDatumTypeType getVerticalDatumType() {
         return (VerticalDatumTypeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_VerticalDatumType(), true);
     }
@@ -13482,6 +14389,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setVerticalDatumType(VerticalDatumTypeType newVerticalDatumType) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_VerticalDatumType(), newVerticalDatumType);
     }
@@ -13491,6 +14399,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EnvelopeType getVerticalExtent() {
         return (EnvelopeType)getMixed().get(Gml311Package.eINSTANCE.getDocumentRoot_VerticalExtent(), true);
     }
@@ -13509,6 +14418,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setVerticalExtent(EnvelopeType newVerticalExtent) {
         ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_VerticalExtent(), newVerticalExtent);
     }
@@ -13518,6 +14428,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getId() {
         return id;
     }
@@ -13527,6 +14438,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setId(String newId) {
         String oldId = id;
         id = newId;
@@ -13539,6 +14451,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getRemoteSchema() {
         return remoteSchema;
     }
@@ -13548,6 +14461,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRemoteSchema(String newRemoteSchema) {
         String oldRemoteSchema = remoteSchema;
         remoteSchema = newRemoteSchema;
@@ -13560,6 +14474,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getTransform() {
         return transform;
     }
@@ -13569,6 +14484,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTransform(String newTransform) {
         String oldTransform = transform;
         transform = newTransform;
@@ -13581,6 +14497,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getUom() {
         return uom;
     }
@@ -13590,6 +14507,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUom(String newUom) {
         String oldUom = uom;
         uom = newUom;

@@ -100,7 +100,8 @@ public class MetadataTypeImpl extends EObjectImpl implements MetadataType {
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.METADATA_TYPE;
   }
 
@@ -109,7 +110,8 @@ public class MetadataTypeImpl extends EObjectImpl implements MetadataType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public FeatureMap getAbstractMetaDataGroup() {
+  @Override
+public FeatureMap getAbstractMetaDataGroup() {
     if (abstractMetaDataGroup == null) {
       abstractMetaDataGroup = new BasicFeatureMap(this, Ows11Package.METADATA_TYPE__ABSTRACT_META_DATA_GROUP);
     }
@@ -121,7 +123,8 @@ public class MetadataTypeImpl extends EObjectImpl implements MetadataType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EObject getAbstractMetaData() {
+  @Override
+public EObject getAbstractMetaData() {
     return (EObject)getAbstractMetaDataGroup().get(Ows11Package.Literals.METADATA_TYPE__ABSTRACT_META_DATA, true);
   }
 
@@ -139,7 +142,8 @@ public class MetadataTypeImpl extends EObjectImpl implements MetadataType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getAbout() {
+  @Override
+public String getAbout() {
     return about;
   }
 
@@ -148,7 +152,8 @@ public class MetadataTypeImpl extends EObjectImpl implements MetadataType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setAbout(String newAbout) {
+  @Override
+public void setAbout(String newAbout) {
     String oldAbout = about;
     about = newAbout;
     if (eNotificationRequired())
@@ -160,7 +165,8 @@ public class MetadataTypeImpl extends EObjectImpl implements MetadataType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getTitle() {
+  @Override
+public String getTitle() {
     return title;
   }
 
@@ -169,7 +175,8 @@ public class MetadataTypeImpl extends EObjectImpl implements MetadataType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setTitle(String newTitle) {
+  @Override
+public void setTitle(String newTitle) {
     String oldTitle = title;
     title = newTitle;
     if (eNotificationRequired())
@@ -181,7 +188,8 @@ public class MetadataTypeImpl extends EObjectImpl implements MetadataType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+  @Override
+public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Ows11Package.METADATA_TYPE__ABSTRACT_META_DATA_GROUP:
         return ((InternalEList)getAbstractMetaDataGroup()).basicRemove(otherEnd, msgs);
@@ -196,7 +204,8 @@ public class MetadataTypeImpl extends EObjectImpl implements MetadataType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.METADATA_TYPE__ABSTRACT_META_DATA_GROUP:
         if (coreType) return getAbstractMetaDataGroup();
@@ -216,7 +225,8 @@ public class MetadataTypeImpl extends EObjectImpl implements MetadataType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.METADATA_TYPE__ABSTRACT_META_DATA_GROUP:
         ((FeatureMap.Internal)getAbstractMetaDataGroup()).set(newValue);
@@ -236,7 +246,8 @@ public class MetadataTypeImpl extends EObjectImpl implements MetadataType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.METADATA_TYPE__ABSTRACT_META_DATA_GROUP:
         getAbstractMetaDataGroup().clear();
@@ -256,7 +267,8 @@ public class MetadataTypeImpl extends EObjectImpl implements MetadataType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.METADATA_TYPE__ABSTRACT_META_DATA_GROUP:
         return abstractMetaDataGroup != null && !abstractMetaDataGroup.isEmpty();
@@ -275,7 +287,8 @@ public class MetadataTypeImpl extends EObjectImpl implements MetadataType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public String toString() {
+  @Override
+public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

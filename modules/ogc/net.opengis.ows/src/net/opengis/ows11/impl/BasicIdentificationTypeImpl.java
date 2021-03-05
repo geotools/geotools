@@ -71,7 +71,8 @@ public class BasicIdentificationTypeImpl extends DescriptionTypeImpl implements 
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.BASIC_IDENTIFICATION_TYPE;
   }
 
@@ -80,7 +81,8 @@ public class BasicIdentificationTypeImpl extends DescriptionTypeImpl implements 
    * <!-- end-user-doc -->
    * @generated
    */
-  public CodeType getIdentifier() {
+  @Override
+public CodeType getIdentifier() {
     return identifier;
   }
 
@@ -104,7 +106,8 @@ public class BasicIdentificationTypeImpl extends DescriptionTypeImpl implements 
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setIdentifier(CodeType newIdentifier) {
+  @Override
+public void setIdentifier(CodeType newIdentifier) {
     if (newIdentifier != identifier) {
       NotificationChain msgs = null;
       if (identifier != null)
@@ -123,7 +126,8 @@ public class BasicIdentificationTypeImpl extends DescriptionTypeImpl implements 
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList getMetadata() {
+  @Override
+public EList getMetadata() {
     if (metadata == null) {
       metadata = new EObjectContainmentEList(MetadataType.class, this, Ows11Package.BASIC_IDENTIFICATION_TYPE__METADATA);
     }
@@ -135,7 +139,8 @@ public class BasicIdentificationTypeImpl extends DescriptionTypeImpl implements 
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+  @Override
+public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Ows11Package.BASIC_IDENTIFICATION_TYPE__IDENTIFIER:
         return basicSetIdentifier(null, msgs);
@@ -150,7 +155,8 @@ public class BasicIdentificationTypeImpl extends DescriptionTypeImpl implements 
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.BASIC_IDENTIFICATION_TYPE__IDENTIFIER:
         return getIdentifier();
@@ -165,7 +171,8 @@ public class BasicIdentificationTypeImpl extends DescriptionTypeImpl implements 
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.BASIC_IDENTIFICATION_TYPE__IDENTIFIER:
         setIdentifier((CodeType)newValue);
@@ -183,7 +190,8 @@ public class BasicIdentificationTypeImpl extends DescriptionTypeImpl implements 
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.BASIC_IDENTIFICATION_TYPE__IDENTIFIER:
         setIdentifier((CodeType)null);
@@ -200,7 +208,8 @@ public class BasicIdentificationTypeImpl extends DescriptionTypeImpl implements 
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.BASIC_IDENTIFICATION_TYPE__IDENTIFIER:
         return identifier != null;

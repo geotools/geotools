@@ -114,6 +114,7 @@ public class InsertTypeImpl extends EObjectImpl implements InsertType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getAny() {
         if (any == null) {
             any = new BasicFeatureMap(this, Csw20Package.INSERT_TYPE__ANY);
@@ -126,6 +127,7 @@ public class InsertTypeImpl extends EObjectImpl implements InsertType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getHandle() {
         return handle;
     }
@@ -135,6 +137,7 @@ public class InsertTypeImpl extends EObjectImpl implements InsertType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setHandle(String newHandle) {
         String oldHandle = handle;
         handle = newHandle;
@@ -147,6 +150,7 @@ public class InsertTypeImpl extends EObjectImpl implements InsertType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getTypeName() {
         return typeName;
     }
@@ -156,6 +160,7 @@ public class InsertTypeImpl extends EObjectImpl implements InsertType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTypeName(String newTypeName) {
         String oldTypeName = typeName;
         typeName = newTypeName;

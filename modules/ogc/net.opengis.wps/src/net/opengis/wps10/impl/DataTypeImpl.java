@@ -82,6 +82,7 @@ public class DataTypeImpl extends EObjectImpl implements DataType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.DATA_TYPE;
   }
@@ -91,6 +92,7 @@ public class DataTypeImpl extends EObjectImpl implements DataType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ComplexDataType getComplexData() {
     return complexData;
   }
@@ -115,6 +117,7 @@ public class DataTypeImpl extends EObjectImpl implements DataType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setComplexData(ComplexDataType newComplexData) {
     if (newComplexData != complexData) {
       NotificationChain msgs = null;
@@ -134,6 +137,7 @@ public class DataTypeImpl extends EObjectImpl implements DataType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public LiteralDataType getLiteralData() {
     return literalData;
   }
@@ -158,6 +162,7 @@ public class DataTypeImpl extends EObjectImpl implements DataType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setLiteralData(LiteralDataType newLiteralData) {
     if (newLiteralData != literalData) {
       NotificationChain msgs = null;
@@ -177,6 +182,7 @@ public class DataTypeImpl extends EObjectImpl implements DataType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public BoundingBoxType getBoundingBoxData() {
     return boundingBoxData;
   }
@@ -201,6 +207,7 @@ public class DataTypeImpl extends EObjectImpl implements DataType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setBoundingBoxData(BoundingBoxType newBoundingBoxData) {
     if (newBoundingBoxData != boundingBoxData) {
       NotificationChain msgs = null;
@@ -220,6 +227,7 @@ public class DataTypeImpl extends EObjectImpl implements DataType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.DATA_TYPE__COMPLEX_DATA:
@@ -237,6 +245,7 @@ public class DataTypeImpl extends EObjectImpl implements DataType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.DATA_TYPE__COMPLEX_DATA:
@@ -254,6 +263,7 @@ public class DataTypeImpl extends EObjectImpl implements DataType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.DATA_TYPE__COMPLEX_DATA:
@@ -274,6 +284,7 @@ public class DataTypeImpl extends EObjectImpl implements DataType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.DATA_TYPE__COMPLEX_DATA:
@@ -294,6 +305,7 @@ public class DataTypeImpl extends EObjectImpl implements DataType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.DATA_TYPE__COMPLEX_DATA:

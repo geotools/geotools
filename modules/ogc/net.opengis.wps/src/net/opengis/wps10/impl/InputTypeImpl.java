@@ -105,6 +105,7 @@ public class InputTypeImpl extends EObjectImpl implements InputType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.INPUT_TYPE;
   }
@@ -114,6 +115,7 @@ public class InputTypeImpl extends EObjectImpl implements InputType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public CodeType getIdentifier() {
     return identifier;
   }
@@ -138,6 +140,7 @@ public class InputTypeImpl extends EObjectImpl implements InputType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setIdentifier(CodeType newIdentifier) {
     if (newIdentifier != identifier) {
       NotificationChain msgs = null;
@@ -157,6 +160,7 @@ public class InputTypeImpl extends EObjectImpl implements InputType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public LanguageStringType getTitle() {
     return title;
   }
@@ -181,6 +185,7 @@ public class InputTypeImpl extends EObjectImpl implements InputType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setTitle(LanguageStringType newTitle) {
     if (newTitle != title) {
       NotificationChain msgs = null;
@@ -200,6 +205,7 @@ public class InputTypeImpl extends EObjectImpl implements InputType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public LanguageStringType getAbstract() {
     return abstract_;
   }
@@ -224,6 +230,7 @@ public class InputTypeImpl extends EObjectImpl implements InputType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setAbstract(LanguageStringType newAbstract) {
     if (newAbstract != abstract_) {
       NotificationChain msgs = null;
@@ -243,6 +250,7 @@ public class InputTypeImpl extends EObjectImpl implements InputType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public InputReferenceType getReference() {
     return reference;
   }
@@ -267,6 +275,7 @@ public class InputTypeImpl extends EObjectImpl implements InputType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setReference(InputReferenceType newReference) {
     if (newReference != reference) {
       NotificationChain msgs = null;
@@ -286,6 +295,7 @@ public class InputTypeImpl extends EObjectImpl implements InputType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DataType getData() {
     return data;
   }
@@ -310,6 +320,7 @@ public class InputTypeImpl extends EObjectImpl implements InputType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setData(DataType newData) {
     if (newData != data) {
       NotificationChain msgs = null;
@@ -329,6 +340,7 @@ public class InputTypeImpl extends EObjectImpl implements InputType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.INPUT_TYPE__IDENTIFIER:
@@ -350,6 +362,7 @@ public class InputTypeImpl extends EObjectImpl implements InputType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.INPUT_TYPE__IDENTIFIER:
@@ -371,6 +384,7 @@ public class InputTypeImpl extends EObjectImpl implements InputType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.INPUT_TYPE__IDENTIFIER:
@@ -397,6 +411,7 @@ public class InputTypeImpl extends EObjectImpl implements InputType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.INPUT_TYPE__IDENTIFIER:
@@ -423,6 +438,7 @@ public class InputTypeImpl extends EObjectImpl implements InputType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.INPUT_TYPE__IDENTIFIER:

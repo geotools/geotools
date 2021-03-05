@@ -187,6 +187,7 @@ public class Smil20FactoryImpl extends EFactoryImpl implements Smil20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AnimateColorPrototype createAnimateColorPrototype() {
         AnimateColorPrototypeImpl animateColorPrototype = new AnimateColorPrototypeImpl();
         return animateColorPrototype;
@@ -197,6 +198,7 @@ public class Smil20FactoryImpl extends EFactoryImpl implements Smil20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AnimateMotionPrototype createAnimateMotionPrototype() {
         AnimateMotionPrototypeImpl animateMotionPrototype = new AnimateMotionPrototypeImpl();
         return animateMotionPrototype;
@@ -207,6 +209,7 @@ public class Smil20FactoryImpl extends EFactoryImpl implements Smil20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AnimatePrototype createAnimatePrototype() {
         AnimatePrototypeImpl animatePrototype = new AnimatePrototypeImpl();
         return animatePrototype;
@@ -217,6 +220,7 @@ public class Smil20FactoryImpl extends EFactoryImpl implements Smil20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DocumentRoot createDocumentRoot() {
         DocumentRootImpl documentRoot = new DocumentRootImpl();
         return documentRoot;
@@ -227,6 +231,7 @@ public class Smil20FactoryImpl extends EFactoryImpl implements Smil20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SetPrototype createSetPrototype() {
         SetPrototypeImpl setPrototype = new SetPrototypeImpl();
         return setPrototype;
@@ -635,6 +640,7 @@ public class Smil20FactoryImpl extends EFactoryImpl implements Smil20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Smil20Package getSmil20Package() {
         return (Smil20Package)getEPackage();
     }

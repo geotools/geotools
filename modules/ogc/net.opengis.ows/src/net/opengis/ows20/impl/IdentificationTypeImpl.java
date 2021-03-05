@@ -114,6 +114,7 @@ public class IdentificationTypeImpl extends BasicIdentificationTypeImpl implemen
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureMap getBoundingBoxGroup() {
     if (boundingBoxGroup == null) {
       boundingBoxGroup = new BasicFeatureMap(this, Ows20Package.IDENTIFICATION_TYPE__BOUNDING_BOX_GROUP);
@@ -126,6 +127,7 @@ public class IdentificationTypeImpl extends BasicIdentificationTypeImpl implemen
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<BoundingBoxType> getBoundingBox() {
     return getBoundingBoxGroup().list(Ows20Package.Literals.IDENTIFICATION_TYPE__BOUNDING_BOX);
   }
@@ -135,6 +137,7 @@ public class IdentificationTypeImpl extends BasicIdentificationTypeImpl implemen
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getOutputFormat() {
     return outputFormat;
   }
@@ -144,6 +147,7 @@ public class IdentificationTypeImpl extends BasicIdentificationTypeImpl implemen
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setOutputFormat(String newOutputFormat) {
     String oldOutputFormat = outputFormat;
     outputFormat = newOutputFormat;
@@ -156,6 +160,7 @@ public class IdentificationTypeImpl extends BasicIdentificationTypeImpl implemen
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureMap getAvailableCRSGroup() {
     if (availableCRSGroup == null) {
       availableCRSGroup = new BasicFeatureMap(this, Ows20Package.IDENTIFICATION_TYPE__AVAILABLE_CRS_GROUP);
@@ -168,6 +173,7 @@ public class IdentificationTypeImpl extends BasicIdentificationTypeImpl implemen
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getAvailableCRS() {
     return (String)getAvailableCRSGroup().get(Ows20Package.Literals.IDENTIFICATION_TYPE__AVAILABLE_CRS, true);
   }
@@ -177,6 +183,7 @@ public class IdentificationTypeImpl extends BasicIdentificationTypeImpl implemen
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setAvailableCRS(String newAvailableCRS) {
     ((FeatureMap.Internal)getAvailableCRSGroup()).set(Ows20Package.Literals.IDENTIFICATION_TYPE__AVAILABLE_CRS, newAvailableCRS);
   }

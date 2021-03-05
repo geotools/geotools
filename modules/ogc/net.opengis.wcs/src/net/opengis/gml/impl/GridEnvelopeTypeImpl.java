@@ -88,6 +88,7 @@ public class GridEnvelopeTypeImpl extends EObjectImpl implements GridEnvelopeTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return GmlPackage.Literals.GRID_ENVELOPE_TYPE;
 	}
@@ -97,6 +98,7 @@ public class GridEnvelopeTypeImpl extends EObjectImpl implements GridEnvelopeTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public List getLow() {
 		return low;
 	}
@@ -106,6 +108,7 @@ public class GridEnvelopeTypeImpl extends EObjectImpl implements GridEnvelopeTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setLow(List newLow) {
 		List oldLow = low;
 		low = newLow;
@@ -118,6 +121,7 @@ public class GridEnvelopeTypeImpl extends EObjectImpl implements GridEnvelopeTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public List getHigh() {
 		return high;
 	}
@@ -127,6 +131,7 @@ public class GridEnvelopeTypeImpl extends EObjectImpl implements GridEnvelopeTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setHigh(List newHigh) {
 		List oldHigh = high;
 		high = newHigh;
@@ -139,6 +144,7 @@ public class GridEnvelopeTypeImpl extends EObjectImpl implements GridEnvelopeTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case GmlPackage.GRID_ENVELOPE_TYPE__LOW:
@@ -154,6 +160,7 @@ public class GridEnvelopeTypeImpl extends EObjectImpl implements GridEnvelopeTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case GmlPackage.GRID_ENVELOPE_TYPE__LOW:
@@ -171,6 +178,7 @@ public class GridEnvelopeTypeImpl extends EObjectImpl implements GridEnvelopeTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case GmlPackage.GRID_ENVELOPE_TYPE__LOW:
@@ -188,6 +196,7 @@ public class GridEnvelopeTypeImpl extends EObjectImpl implements GridEnvelopeTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case GmlPackage.GRID_ENVELOPE_TYPE__LOW:
@@ -203,6 +212,7 @@ public class GridEnvelopeTypeImpl extends EObjectImpl implements GridEnvelopeTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

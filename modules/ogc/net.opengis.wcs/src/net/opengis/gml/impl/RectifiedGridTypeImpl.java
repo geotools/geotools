@@ -77,6 +77,7 @@ public class RectifiedGridTypeImpl extends GridTypeImpl implements RectifiedGrid
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return GmlPackage.Literals.RECTIFIED_GRID_TYPE;
 	}
@@ -86,6 +87,7 @@ public class RectifiedGridTypeImpl extends GridTypeImpl implements RectifiedGrid
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public PointType getOrigin() {
 		return origin;
 	}
@@ -110,6 +112,7 @@ public class RectifiedGridTypeImpl extends GridTypeImpl implements RectifiedGrid
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setOrigin(PointType newOrigin) {
 		if (newOrigin != origin) {
 			NotificationChain msgs = null;
@@ -129,6 +132,7 @@ public class RectifiedGridTypeImpl extends GridTypeImpl implements RectifiedGrid
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList getOffsetVector() {
 		if (offsetVector == null) {
 			offsetVector = new EObjectResolvingEList(VectorType.class, this, GmlPackage.RECTIFIED_GRID_TYPE__OFFSET_VECTOR);
@@ -141,6 +145,7 @@ public class RectifiedGridTypeImpl extends GridTypeImpl implements RectifiedGrid
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case GmlPackage.RECTIFIED_GRID_TYPE__ORIGIN:
@@ -154,6 +159,7 @@ public class RectifiedGridTypeImpl extends GridTypeImpl implements RectifiedGrid
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case GmlPackage.RECTIFIED_GRID_TYPE__ORIGIN:
@@ -169,6 +175,7 @@ public class RectifiedGridTypeImpl extends GridTypeImpl implements RectifiedGrid
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case GmlPackage.RECTIFIED_GRID_TYPE__ORIGIN:
@@ -187,6 +194,7 @@ public class RectifiedGridTypeImpl extends GridTypeImpl implements RectifiedGrid
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case GmlPackage.RECTIFIED_GRID_TYPE__ORIGIN:
@@ -204,6 +212,7 @@ public class RectifiedGridTypeImpl extends GridTypeImpl implements RectifiedGrid
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case GmlPackage.RECTIFIED_GRID_TYPE__ORIGIN:

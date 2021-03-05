@@ -115,6 +115,7 @@ public class GetFeatureWithLockTypeImpl extends GetFeatureTypeImpl implements Ge
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public BigInteger getExpiry() {
     return expiry;
   }
@@ -124,6 +125,7 @@ public class GetFeatureWithLockTypeImpl extends GetFeatureTypeImpl implements Ge
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setExpiry(BigInteger newExpiry) {
     BigInteger oldExpiry = expiry;
     expiry = newExpiry;
@@ -138,6 +140,7 @@ public class GetFeatureWithLockTypeImpl extends GetFeatureTypeImpl implements Ge
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetExpiry() {
     BigInteger oldExpiry = expiry;
     boolean oldExpiryESet = expiryESet;
@@ -152,6 +155,7 @@ public class GetFeatureWithLockTypeImpl extends GetFeatureTypeImpl implements Ge
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetExpiry() {
     return expiryESet;
   }
@@ -161,6 +165,7 @@ public class GetFeatureWithLockTypeImpl extends GetFeatureTypeImpl implements Ge
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AllSomeType getLockAction() {
     return lockAction;
   }
@@ -170,6 +175,7 @@ public class GetFeatureWithLockTypeImpl extends GetFeatureTypeImpl implements Ge
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setLockAction(AllSomeType newLockAction) {
     AllSomeType oldLockAction = lockAction;
     lockAction = newLockAction == null ? LOCK_ACTION_EDEFAULT : newLockAction;
@@ -184,6 +190,7 @@ public class GetFeatureWithLockTypeImpl extends GetFeatureTypeImpl implements Ge
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetLockAction() {
     AllSomeType oldLockAction = lockAction;
     boolean oldLockActionESet = lockActionESet;
@@ -198,6 +205,7 @@ public class GetFeatureWithLockTypeImpl extends GetFeatureTypeImpl implements Ge
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetLockAction() {
     return lockActionESet;
   }

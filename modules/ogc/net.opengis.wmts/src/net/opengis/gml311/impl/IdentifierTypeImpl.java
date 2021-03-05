@@ -101,6 +101,7 @@ public class IdentifierTypeImpl extends MinimalEObjectImpl.Container implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getNameGroup() {
         if (nameGroup == null) {
             nameGroup = new BasicFeatureMap(this, Gml311Package.IDENTIFIER_TYPE__NAME_GROUP);
@@ -113,6 +114,7 @@ public class IdentifierTypeImpl extends MinimalEObjectImpl.Container implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getName() {
         return (CodeType)getNameGroup().get(Gml311Package.eINSTANCE.getIdentifierType_Name(), true);
     }
@@ -131,6 +133,7 @@ public class IdentifierTypeImpl extends MinimalEObjectImpl.Container implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setName(CodeType newName) {
         ((FeatureMap.Internal)getNameGroup()).set(Gml311Package.eINSTANCE.getIdentifierType_Name(), newName);
     }
@@ -140,6 +143,7 @@ public class IdentifierTypeImpl extends MinimalEObjectImpl.Container implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getVersion() {
         return version;
     }
@@ -149,6 +153,7 @@ public class IdentifierTypeImpl extends MinimalEObjectImpl.Container implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setVersion(String newVersion) {
         String oldVersion = version;
         version = newVersion;
@@ -161,6 +166,7 @@ public class IdentifierTypeImpl extends MinimalEObjectImpl.Container implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StringOrRefType getRemarks() {
         return remarks;
     }
@@ -185,6 +191,7 @@ public class IdentifierTypeImpl extends MinimalEObjectImpl.Container implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRemarks(StringOrRefType newRemarks) {
         if (newRemarks != remarks) {
             NotificationChain msgs = null;

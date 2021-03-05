@@ -88,6 +88,7 @@ public class CodeListTypeImpl extends EObjectImpl implements CodeListType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return GmlPackage.Literals.CODE_LIST_TYPE;
 	}
@@ -97,6 +98,7 @@ public class CodeListTypeImpl extends EObjectImpl implements CodeListType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public List getValue() {
 		return value;
 	}
@@ -106,6 +108,7 @@ public class CodeListTypeImpl extends EObjectImpl implements CodeListType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setValue(List newValue) {
 		List oldValue = value;
 		value = newValue;
@@ -118,6 +121,7 @@ public class CodeListTypeImpl extends EObjectImpl implements CodeListType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getCodeSpace() {
 		return codeSpace;
 	}
@@ -127,6 +131,7 @@ public class CodeListTypeImpl extends EObjectImpl implements CodeListType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setCodeSpace(String newCodeSpace) {
 		String oldCodeSpace = codeSpace;
 		codeSpace = newCodeSpace;
@@ -139,6 +144,7 @@ public class CodeListTypeImpl extends EObjectImpl implements CodeListType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case GmlPackage.CODE_LIST_TYPE__VALUE:
@@ -154,6 +160,7 @@ public class CodeListTypeImpl extends EObjectImpl implements CodeListType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case GmlPackage.CODE_LIST_TYPE__VALUE:
@@ -171,6 +178,7 @@ public class CodeListTypeImpl extends EObjectImpl implements CodeListType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case GmlPackage.CODE_LIST_TYPE__VALUE:
@@ -188,6 +196,7 @@ public class CodeListTypeImpl extends EObjectImpl implements CodeListType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case GmlPackage.CODE_LIST_TYPE__VALUE:
@@ -203,6 +212,7 @@ public class CodeListTypeImpl extends EObjectImpl implements CodeListType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

@@ -72,6 +72,7 @@ public class GetCapabilitiesTypeImpl extends net.opengis.ows11.impl.GetCapabilit
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EClass eStaticClass() {
         return Wcs111Package.Literals.GET_CAPABILITIES_TYPE;
     }
@@ -81,6 +82,7 @@ public class GetCapabilitiesTypeImpl extends net.opengis.ows11.impl.GetCapabilit
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getService() {
         return service;
     }
@@ -90,6 +92,7 @@ public class GetCapabilitiesTypeImpl extends net.opengis.ows11.impl.GetCapabilit
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setService(String newService) {
         String oldService = service;
         service = newService;
@@ -104,6 +107,7 @@ public class GetCapabilitiesTypeImpl extends net.opengis.ows11.impl.GetCapabilit
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetService() {
         String oldService = service;
         boolean oldServiceESet = serviceESet;
@@ -118,6 +122,7 @@ public class GetCapabilitiesTypeImpl extends net.opengis.ows11.impl.GetCapabilit
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetService() {
         return serviceESet;
     }
@@ -127,6 +132,7 @@ public class GetCapabilitiesTypeImpl extends net.opengis.ows11.impl.GetCapabilit
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case Wcs111Package.GET_CAPABILITIES_TYPE__SERVICE:
@@ -140,6 +146,7 @@ public class GetCapabilitiesTypeImpl extends net.opengis.ows11.impl.GetCapabilit
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Wcs111Package.GET_CAPABILITIES_TYPE__SERVICE:
@@ -154,6 +161,7 @@ public class GetCapabilitiesTypeImpl extends net.opengis.ows11.impl.GetCapabilit
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case Wcs111Package.GET_CAPABILITIES_TYPE__SERVICE:
@@ -168,6 +176,7 @@ public class GetCapabilitiesTypeImpl extends net.opengis.ows11.impl.GetCapabilit
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case Wcs111Package.GET_CAPABILITIES_TYPE__SERVICE:
@@ -181,6 +190,7 @@ public class GetCapabilitiesTypeImpl extends net.opengis.ows11.impl.GetCapabilit
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String toString() {
         if (eIsProxy()) return super.toString();
 

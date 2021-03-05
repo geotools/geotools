@@ -115,6 +115,7 @@ public class CoverageDescriptionTypeImpl extends EObjectImpl implements Coverage
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.COVERAGE_DESCRIPTION_TYPE;
 	}
@@ -124,6 +125,7 @@ public class CoverageDescriptionTypeImpl extends EObjectImpl implements Coverage
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList getCoverageOffering() {
 		if (coverageOffering == null) {
 			coverageOffering = new EObjectContainmentEList(CoverageOfferingType.class, this, Wcs10Package.COVERAGE_DESCRIPTION_TYPE__COVERAGE_OFFERING);
@@ -136,6 +138,7 @@ public class CoverageDescriptionTypeImpl extends EObjectImpl implements Coverage
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getUpdateSequence() {
 		return updateSequence;
 	}
@@ -145,6 +148,7 @@ public class CoverageDescriptionTypeImpl extends EObjectImpl implements Coverage
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setUpdateSequence(String newUpdateSequence) {
 		String oldUpdateSequence = updateSequence;
 		updateSequence = newUpdateSequence;
@@ -157,6 +161,7 @@ public class CoverageDescriptionTypeImpl extends EObjectImpl implements Coverage
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getVersion() {
 		return version;
 	}
@@ -166,6 +171,7 @@ public class CoverageDescriptionTypeImpl extends EObjectImpl implements Coverage
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setVersion(String newVersion) {
 		String oldVersion = version;
 		version = newVersion;
@@ -180,6 +186,7 @@ public class CoverageDescriptionTypeImpl extends EObjectImpl implements Coverage
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void unsetVersion() {
 		String oldVersion = version;
 		boolean oldVersionESet = versionESet;
@@ -194,6 +201,7 @@ public class CoverageDescriptionTypeImpl extends EObjectImpl implements Coverage
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean isSetVersion() {
 		return versionESet;
 	}
@@ -203,6 +211,7 @@ public class CoverageDescriptionTypeImpl extends EObjectImpl implements Coverage
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.COVERAGE_DESCRIPTION_TYPE__COVERAGE_OFFERING:
@@ -216,6 +225,7 @@ public class CoverageDescriptionTypeImpl extends EObjectImpl implements Coverage
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.COVERAGE_DESCRIPTION_TYPE__COVERAGE_OFFERING:
@@ -233,6 +243,7 @@ public class CoverageDescriptionTypeImpl extends EObjectImpl implements Coverage
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.COVERAGE_DESCRIPTION_TYPE__COVERAGE_OFFERING:
@@ -254,6 +265,7 @@ public class CoverageDescriptionTypeImpl extends EObjectImpl implements Coverage
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.COVERAGE_DESCRIPTION_TYPE__COVERAGE_OFFERING:
@@ -274,6 +286,7 @@ public class CoverageDescriptionTypeImpl extends EObjectImpl implements Coverage
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.COVERAGE_DESCRIPTION_TYPE__COVERAGE_OFFERING:
@@ -291,6 +304,7 @@ public class CoverageDescriptionTypeImpl extends EObjectImpl implements Coverage
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

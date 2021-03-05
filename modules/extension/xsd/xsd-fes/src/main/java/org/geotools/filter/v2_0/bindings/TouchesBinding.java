@@ -42,6 +42,7 @@ public class TouchesBinding extends OGCTouchesBinding {
         super(filterFactory, geometryFactory);
     }
 
+    @Override
     public QName getTarget() {
         return FES.Touches;
     }

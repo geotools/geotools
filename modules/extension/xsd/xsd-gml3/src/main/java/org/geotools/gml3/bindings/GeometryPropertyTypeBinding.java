@@ -60,6 +60,7 @@ public class GeometryPropertyTypeBinding extends GeometryPropertyTypeBindingBase
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.GeometryPropertyType;
     }

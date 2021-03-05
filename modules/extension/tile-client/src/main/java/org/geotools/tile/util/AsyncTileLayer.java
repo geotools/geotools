@@ -61,6 +61,7 @@ public class AsyncTileLayer extends TileLayer {
         this.countDownLatch = null;
     }
 
+    @Override
     protected void renderTile(final Tile tile, final Graphics2D g2d, final double[] points) {
 
         Runnable r =

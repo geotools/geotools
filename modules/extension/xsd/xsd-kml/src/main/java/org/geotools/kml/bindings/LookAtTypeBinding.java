@@ -59,6 +59,7 @@ public class LookAtTypeBinding extends AbstractComplexBinding {
     private GeometryFactory geometryFactory;
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return KML.LookAtType;
     }
@@ -70,6 +71,7 @@ public class LookAtTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Point.class;
     }
@@ -85,6 +87,7 @@ public class LookAtTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Coordinate c = new Coordinate();
 

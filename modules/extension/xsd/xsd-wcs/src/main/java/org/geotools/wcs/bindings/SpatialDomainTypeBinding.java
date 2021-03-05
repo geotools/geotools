@@ -55,6 +55,7 @@ import org.geotools.xsd.Node;
 public class SpatialDomainTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WCS.SpatialDomainType;
     }
@@ -66,6 +67,7 @@ public class SpatialDomainTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return SpatialDomainType.class;
     }
@@ -77,6 +79,7 @@ public class SpatialDomainTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         return super.parse(instance, node, value);

@@ -107,6 +107,7 @@ public class CRSEnvelope implements Envelope {
      * Returns the coordinate reference system for this envelope (if known). return
      * CoordinateReferenceSystem if known, or {@code null}
      */
+    @Override
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         synchronized (this) {
             if (crs == null) {
@@ -171,10 +172,12 @@ public class CRSEnvelope implements Envelope {
         this.forceXY = forceXY;
     }
 
+    @Override
     public int getDimension() {
         return 2;
     }
 
+    @Override
     public double getMinimum(int dimension) {
         if (dimension == 0) {
             return getMinX();
@@ -183,6 +186,7 @@ public class CRSEnvelope implements Envelope {
         return getMinY();
     }
 
+    @Override
     public double getMaximum(int dimension) {
         if (dimension == 0) {
             return getMaxX();
@@ -195,6 +199,7 @@ public class CRSEnvelope implements Envelope {
         return getMedian(dimension);
     }
 
+    @Override
     public double getMedian(int dimension) {
         double min; // , max;
         if (dimension == 0) {
@@ -211,6 +216,7 @@ public class CRSEnvelope implements Envelope {
         return getSpan(dimension);
     }
 
+    @Override
     public double getSpan(int dimension) {
         double min, max;
         if (dimension == 0) {
@@ -224,10 +230,12 @@ public class CRSEnvelope implements Envelope {
         return max - min;
     }
 
+    @Override
     public DirectPosition getUpperCorner() {
         return new GeneralDirectPosition(getMaxX(), getMaxY());
     }
 
+    @Override
     public DirectPosition getLowerCorner() {
         return new GeneralDirectPosition(getMinX(), getMinY());
     }
@@ -338,6 +346,7 @@ public class CRSEnvelope implements Envelope {
         this.resY = resY;
     }
 
+    @Override
     public String toString() {
         StringBuilder build = new StringBuilder();
         build.append("[");

@@ -53,6 +53,7 @@ public class GetTileValueTypeBinding extends AbstractSimpleBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WMTS.GetTileValueType;
     }
@@ -64,6 +65,7 @@ public class GetTileValueTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return GetTileType.class;
     }
@@ -75,6 +77,7 @@ public class GetTileValueTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
 
         // TODO: implement and remove call to super

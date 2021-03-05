@@ -64,6 +64,7 @@ public class ResultTypeTypeBinding extends AbstractSimpleBinding {
     public ResultTypeTypeBinding(WfsFactory factory) {}
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.ResultTypeType;
     }
@@ -75,6 +76,7 @@ public class ResultTypeTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return ResultTypeType.class;
     }
@@ -86,6 +88,7 @@ public class ResultTypeTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         assert value instanceof String;
         String literal = (String) value;

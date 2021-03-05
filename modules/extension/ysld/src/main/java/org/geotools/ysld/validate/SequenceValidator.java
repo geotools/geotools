@@ -97,6 +97,7 @@ public class SequenceValidator extends StatefulValidator implements Cloneable {
         }
     }
 
+    @Override
     public SequenceValidator clone() {
         return new SequenceValidator(this.subValidator);
     }

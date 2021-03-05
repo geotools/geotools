@@ -22,10 +22,12 @@ import org.xml.sax.SAXException;
 public abstract class HandlerImpl implements Handler {
     MutablePicoContainer context;
 
+    @Override
     public MutablePicoContainer getContext() {
         return context;
     }
 
+    @Override
     public void setContext(MutablePicoContainer context) {
         this.context = context;
     }

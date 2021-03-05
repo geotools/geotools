@@ -238,6 +238,7 @@ public class FillExtrusionMBLayer extends MBLayer {
      * @param styleContext The MBStyle to which this layer belongs, used as a context for things
      *     like resolving sprite and glyph names to full urls.
      */
+    @Override
     public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
         List<FeatureTypeStyle> fillExtrusion = new ArrayList<>();
         MBStyleTransformer transformer = new MBStyleTransformer(parse);

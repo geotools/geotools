@@ -57,6 +57,7 @@ public class FeatureTypeConstraintBuilder extends AbstractSLDBuilder<FeatureType
         return this;
     }
 
+    @Override
     public FeatureTypeConstraint build() {
         if (unset) {
             return null;
@@ -73,6 +74,7 @@ public class FeatureTypeConstraintBuilder extends AbstractSLDBuilder<FeatureType
         return constraint;
     }
 
+    @Override
     public FeatureTypeConstraintBuilder reset() {
         unset = false;
         featureTypeName = null;
@@ -81,6 +83,7 @@ public class FeatureTypeConstraintBuilder extends AbstractSLDBuilder<FeatureType
         return this;
     }
 
+    @Override
     public FeatureTypeConstraintBuilder reset(FeatureTypeConstraint constraint) {
         if (constraint == null) {
             return unset();
@@ -93,6 +96,7 @@ public class FeatureTypeConstraintBuilder extends AbstractSLDBuilder<FeatureType
         return this;
     }
 
+    @Override
     public FeatureTypeConstraintBuilder unset() {
         return (FeatureTypeConstraintBuilder) super.unset();
     }

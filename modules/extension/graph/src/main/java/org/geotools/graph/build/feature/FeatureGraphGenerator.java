@@ -41,10 +41,12 @@ public class FeatureGraphGenerator extends BasicGraphGenerator {
         this.decorated = decorated;
     }
 
+    @Override
     public Graph getGraph() {
         return decorated.getGraph();
     }
 
+    @Override
     public GraphBuilder getGraphBuilder() {
         return decorated.getGraphBuilder();
     }
@@ -53,6 +55,7 @@ public class FeatureGraphGenerator extends BasicGraphGenerator {
         return decorated;
     }
 
+    @Override
     public Graphable add(Object obj) {
         SimpleFeature feature = (SimpleFeature) obj;
         Graphable g = decorated.add(feature.getDefaultGeometry());
@@ -63,11 +66,13 @@ public class FeatureGraphGenerator extends BasicGraphGenerator {
         return g;
     }
 
+    @Override
     public Graphable remove(Object obj) {
         SimpleFeature feature = (SimpleFeature) obj;
         return decorated.remove(feature.getDefaultGeometry());
     }
 
+    @Override
     public Graphable get(Object obj) {
         SimpleFeature feature = (SimpleFeature) obj;
         return decorated.get(feature.getDefaultGeometry());

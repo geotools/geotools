@@ -55,6 +55,7 @@ public class OWSConfiguration extends Configuration {
      *
      * @generated
      */
+    @Override
     @SuppressWarnings("unchecked")
     protected final void registerBindings(Map bindings) {
         // manually setup bindings
@@ -210,6 +211,7 @@ public class OWSConfiguration extends Configuration {
                 new ComplexEMFBinding(Ows20Factory.eINSTANCE, OWS.CapabilitiesBaseType_Languages));
     }
 
+    @Override
     protected void configureContext(MutablePicoContainer container) {
         container.registerComponentInstance(Ows20Factory.eINSTANCE);
     }

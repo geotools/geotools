@@ -41,6 +41,7 @@ public class LiteralBinding extends OGCLiteralTypeBinding {
         super(factory);
     }
 
+    @Override
     public QName getTarget() {
         return FES.Literal;
     }

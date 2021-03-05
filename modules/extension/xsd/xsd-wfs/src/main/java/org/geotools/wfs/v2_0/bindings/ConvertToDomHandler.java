@@ -86,12 +86,14 @@ public class ConvertToDomHandler extends DefaultHandler {
         node = e;
     }
 
+    @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
         String str = new String(ch, start, length);
         Text text = doc.createTextNode(str);
         node.appendChild(text);
     }
 
+    @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         node = node.getParentNode();
         nsContext.popContext();

@@ -37,10 +37,12 @@ public class PolygonGraphGeneratorTest {
         PolygonGraphGenerator.PolygonRelationship rel =
                 new PolygonGraphGenerator.PolygonRelationship() {
 
+                    @Override
                     public boolean related(Polygon p1, Polygon p2) {
                         return p1.intersects(p2);
                     }
 
+                    @Override
                     public boolean equal(Polygon p1, Polygon p2) {
                         return p1.equalsTopo(p2);
                     }

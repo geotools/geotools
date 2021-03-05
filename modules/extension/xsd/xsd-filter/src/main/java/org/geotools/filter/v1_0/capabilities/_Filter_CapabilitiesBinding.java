@@ -52,6 +52,7 @@ public class _Filter_CapabilitiesBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC._Filter_Capabilities;
     }
@@ -63,6 +64,7 @@ public class _Filter_CapabilitiesBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return FilterCapabilities.class;
     }
@@ -74,6 +76,7 @@ public class _Filter_CapabilitiesBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return factory.capabilities(
                 FilterCapabilities.VERSION_100,
@@ -82,6 +85,7 @@ public class _Filter_CapabilitiesBinding extends AbstractComplexBinding {
                 null);
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         FilterCapabilities capabilities = (FilterCapabilities) object;
 

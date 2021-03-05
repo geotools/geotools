@@ -225,6 +225,7 @@ public class GraphFuserTest {
 
     protected GraphFuser.EdgeMerger createEdgeMerger() {
         return (new GraphFuser.EdgeMerger() {
+            @Override
             public Object merge(List<Edge> edges) {
                 List<Edge> ends = new ArrayList<>();
                 for (Edge edge : edges) {
@@ -258,6 +259,7 @@ public class GraphFuserTest {
                 newEdge.setObject(merged);
             }
 
+            @Override
             public void setMergedObject(Edge newEdge, Object merged, List edges) {
                 newEdge.setObject(merged);
             }

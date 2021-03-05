@@ -49,6 +49,7 @@ public class PostFilteringMappingFeatureIterator implements IMappingFeatureItera
         }
     }
 
+    @Override
     public void close() {
         delegate.close();
     }
@@ -69,10 +70,12 @@ public class PostFilteringMappingFeatureIterator implements IMappingFeatureItera
         return null;
     }
 
+    @Override
     public boolean hasNext() {
         return next != null;
     }
 
+    @Override
     public Feature next() {
         if (next == null) {
             throw new NoSuchElementException();
@@ -84,6 +87,7 @@ public class PostFilteringMappingFeatureIterator implements IMappingFeatureItera
         return current;
     }
 
+    @Override
     public void remove() {
         throw new UnsupportedOperationException();
     }

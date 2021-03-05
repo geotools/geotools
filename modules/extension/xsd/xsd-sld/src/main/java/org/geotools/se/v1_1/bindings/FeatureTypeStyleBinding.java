@@ -72,6 +72,7 @@ public class FeatureTypeStyleBinding extends SLDFeatureTypeStyleBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.FeatureTypeStyle;
     }
@@ -83,6 +84,7 @@ public class FeatureTypeStyleBinding extends SLDFeatureTypeStyleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         FeatureTypeStyle fts = (FeatureTypeStyle) super.parse(instance, node, value);

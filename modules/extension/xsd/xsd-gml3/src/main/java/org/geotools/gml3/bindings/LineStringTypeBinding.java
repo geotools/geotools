@@ -93,6 +93,7 @@ public class LineStringTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.LineStringType;
     }
@@ -104,10 +105,12 @@ public class LineStringTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return LineString.class;
     }
 
+    @Override
     public int getExecutionMode() {
         return BEFORE;
     }
@@ -119,10 +122,12 @@ public class LineStringTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return GML3ParsingUtils.lineString(node, gFactory, csFactory);
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         if ("posList".equals(name.getLocalPart())) {
             return GML3EncodingUtils.positions((LineString) object);

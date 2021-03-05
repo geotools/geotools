@@ -81,6 +81,7 @@ public class BrewerPalette extends ColorPalette {
     }
 
     /** Obtains a set of colours from the palette. */
+    @Override
     public Color[] getColors(int length) {
         if (length < 2) {
             length = 2; // if they ask for 1 colour, give them 2 instead of crashing

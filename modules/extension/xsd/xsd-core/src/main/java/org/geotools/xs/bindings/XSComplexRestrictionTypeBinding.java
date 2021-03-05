@@ -56,6 +56,7 @@ import org.picocontainer.MutablePicoContainer;
  */
 public class XSComplexRestrictionTypeBinding extends AbstractComplexBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return XS.COMPLEXRESTRICTIONTYPE;
     }
@@ -67,6 +68,7 @@ public class XSComplexRestrictionTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -78,6 +80,7 @@ public class XSComplexRestrictionTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Object.class;
     }
@@ -89,6 +92,7 @@ public class XSComplexRestrictionTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
@@ -98,6 +102,7 @@ public class XSComplexRestrictionTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // TODO: implement
         return null;

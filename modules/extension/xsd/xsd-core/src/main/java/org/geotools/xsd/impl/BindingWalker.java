@@ -54,6 +54,7 @@ public class BindingWalker implements TypeWalker.Visitor {
         return loader.loadBinding(XS.ANYTYPE, context);
     }
 
+    @Override
     public boolean visit(XSDTypeDefinition type) {
         // look up the associated binding object for this type
         QName bindingName = null;

@@ -36,11 +36,13 @@ public class ParseErrorHandler extends DefaultHandler implements Serializable {
         m_parseErrors = new ArrayList<>();
     }
 
+    @Override
     public void error(SAXParseException e) throws SAXException {
         super.error(e);
         m_parseErrors.add(e);
     }
 
+    @Override
     public void fatalError(SAXParseException e) throws SAXException {
         super.fatalError(e);
         m_parseErrors.add(e);
@@ -60,6 +62,7 @@ public class ParseErrorHandler extends DefaultHandler implements Serializable {
         }
     }
 
+    @Override
     public String toString() {
         StringBuffer out = new StringBuffer();
         for (SAXParseException e : m_parseErrors) {

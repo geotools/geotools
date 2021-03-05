@@ -76,6 +76,7 @@ public class SchemaLocator implements XSDSchemaLocator {
      * @see XSDSchemaLocator#locateSchema(org.eclipse.xsd.XSDSchema, java.lang.String,
      *     java.lang.String, java.lang.String)
      */
+    @Override
     public XSDSchema locateSchema(
             XSDSchema schema,
             String namespaceURI,
@@ -92,6 +93,7 @@ public class SchemaLocator implements XSDSchemaLocator {
         return null;
     }
 
+    @Override
     public String toString() {
         return xsd.toString();
     }

@@ -63,6 +63,7 @@ public class XPathUtil {
             addAll(steps);
         }
 
+        @Override
         public String toString() {
             StringBuffer sb = new StringBuffer();
             for (Iterator<Step> it = iterator(); it.hasNext(); ) {
@@ -101,6 +102,7 @@ public class XPathUtil {
             return true;
         }
 
+        @Override
         public StepList subList(int fromIndex, int toIndex) {
             if (fromIndex < 0) throw new IndexOutOfBoundsException("fromIndex = " + fromIndex);
             if (toIndex > size()) throw new IndexOutOfBoundsException("toIndex = " + toIndex);
@@ -114,6 +116,7 @@ public class XPathUtil {
             return subList;
         }
 
+        @Override
         public StepList clone() {
             StepList copy = new StepList();
             for (Step step : this) {
@@ -283,6 +286,7 @@ public class XPathUtil {
             return attributeName;
         }
 
+        @Override
         @SuppressFBWarnings("ES_COMPARING_STRINGS_WITH_EQ")
         public String toString() {
             StringBuffer sb = new StringBuffer(isXmlAttribute ? "@" : "");
@@ -302,6 +306,7 @@ public class XPathUtil {
             return sb.toString();
         }
 
+        @Override
         public boolean equals(Object o) {
             if (!(o instanceof Step)) {
                 return false;
@@ -313,10 +318,12 @@ public class XPathUtil {
                     && Objects.equals(predicate, s.predicate);
         }
 
+        @Override
         public int hashCode() {
             return 17 * attributeName.hashCode() + 37 * index;
         }
 
+        @Override
         public Step clone() {
             return predicate == null
                     ? new Step(this.attributeName, this.index, this.isXmlAttribute, this.isIndexed)

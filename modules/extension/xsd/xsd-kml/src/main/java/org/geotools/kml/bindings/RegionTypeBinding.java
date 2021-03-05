@@ -54,6 +54,7 @@ public class RegionTypeBinding extends AbstractComplexBinding {
     private final GeometryFactory geometryFactory;
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return KML.RegionType;
     }
@@ -65,6 +66,7 @@ public class RegionTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return LinearRing.class;
     }
@@ -80,6 +82,7 @@ public class RegionTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Object latLonChildElement = node.getChildValue("LatLonAltBox");
         if (latLonChildElement == null) {

@@ -59,6 +59,7 @@ public class PolygonTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return KML.PolygonType;
     }
@@ -70,6 +71,7 @@ public class PolygonTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Polygon.class;
     }
@@ -81,6 +83,7 @@ public class PolygonTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         LinearRing outer = (LinearRing) node.getChildValue("outerBoundaryIs");
         LinearRing[] inner = null;
@@ -94,6 +97,7 @@ public class PolygonTypeBinding extends AbstractComplexBinding {
         return geometryFactory.createPolygon(outer, inner);
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         Polygon p = (Polygon) object;
         if ("outerBoundaryIs".equals(name.getLocalPart())) {

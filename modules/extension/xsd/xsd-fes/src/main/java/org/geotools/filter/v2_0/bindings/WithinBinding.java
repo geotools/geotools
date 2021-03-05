@@ -42,6 +42,7 @@ public class WithinBinding extends OGCWithinBinding {
         super(filterFactory, geometryFactory);
     }
 
+    @Override
     public QName getTarget() {
         return FES.Within;
     }

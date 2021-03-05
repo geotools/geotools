@@ -188,6 +188,7 @@ public class GMLConfiguration extends Configuration {
      *   <li>{@link GeometryFactory}
      * </ul>
      */
+    @Override
     public void configureContext(MutablePicoContainer container) {
         container.registerComponentInstance(Gml4wcsFactory.eINSTANCE);
 

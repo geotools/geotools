@@ -73,6 +73,7 @@ public abstract class DBReaderWriter extends AbstractReaderWriter {
      *
      * @see org.geotools.graph.io.GraphReaderWriter#read()
      */
+    @Override
     public Graph read() throws Exception {
         // get underlying generator
         GraphGenerator generator = (GraphGenerator) getProperty(GENERATOR);
@@ -98,6 +99,7 @@ public abstract class DBReaderWriter extends AbstractReaderWriter {
      *
      * <p>* @see GraphGenerator#write()
      */
+    @Override
     public void write(Graph g) throws Exception {
         // get database connection
         try (Connection conn = getConnection();

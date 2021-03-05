@@ -57,11 +57,13 @@ public class AbstractGetMapRequestTest {
         /* (non-Javadoc)
          * @see AbstractGetMapRequest#initVersion()
          */
+        @Override
         protected void initVersion() {
             // TODO Auto-generated method stub
 
         }
 
+        @Override
         public Response createResponse(HTTPResponse httpResponse)
                 throws ServiceException, IOException {
             // TODO Auto-generated method stub

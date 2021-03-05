@@ -52,6 +52,7 @@ public class ComparisonOperatorsTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.ComparisonOperatorsType;
     }
@@ -63,6 +64,7 @@ public class ComparisonOperatorsTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class<?> getType() {
         return ComparisonOperators.class;
     }
@@ -74,12 +76,14 @@ public class ComparisonOperatorsTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List<Operator> ops = node.getChildValues(Operator.class);
 
         return factory.comparisonOperators(ops.toArray(new Operator[ops.size()]));
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         if ("ComparisonOperator".equals(name.getLocalPart())) {
             ComparisonOperators ops = (ComparisonOperators) object;

@@ -102,6 +102,7 @@ public class BasicLineGraphGenerator implements LineGraphGenerator {
      * @see LineSegment
      * @see GraphGenerator#add(Object)
      */
+    @Override
     public Graphable add(Object obj) {
         LineSegment line = (LineSegment) obj;
 
@@ -152,6 +153,7 @@ public class BasicLineGraphGenerator implements LineGraphGenerator {
      * @return Edge that represents the line.
      * @see GraphGenerator#get(Object)
      */
+    @Override
     public Graphable get(Object obj) {
         LineSegment line = (LineSegment) obj;
 
@@ -174,6 +176,7 @@ public class BasicLineGraphGenerator implements LineGraphGenerator {
      * @return Edge that represents the line.
      * @see GraphGenerator#remove(Object)
      */
+    @Override
     public Graphable remove(Object obj) {
         LineSegment line = (LineSegment) obj;
         Node n1 = retrieveNode(line.p0);
@@ -188,16 +191,19 @@ public class BasicLineGraphGenerator implements LineGraphGenerator {
     }
 
     /** @see GraphGenerator#setGraphBuilder(GraphBuilder) */
+    @Override
     public void setGraphBuilder(GraphBuilder builder) {
         m_builder = builder;
     }
 
     /** @see GraphGenerator#getGraphBuilder() */
+    @Override
     public GraphBuilder getGraphBuilder() {
         return (m_builder);
     }
 
     /** @see GraphGenerator#getGraph() */
+    @Override
     public Graph getGraph() {
         return (getGraphBuilder().getGraph());
     }
@@ -213,10 +219,12 @@ public class BasicLineGraphGenerator implements LineGraphGenerator {
     }
 
     // TODO COMMENT ME!
+    @Override
     public Node getNode(Coordinate c) {
         return retrieveNode(c);
     }
 
+    @Override
     public Edge getEdge(Coordinate c1, Coordinate c2) {
         Node n1 = retrieveNode(c1);
         Node n2 = retrieveNode(c2);

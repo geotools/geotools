@@ -53,6 +53,7 @@ import org.locationtech.jts.geom.Polygon;
  */
 public class GMLPolygonMemberTypeBinding extends AbstractComplexBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.PolygonMemberType;
     }
@@ -64,6 +65,7 @@ public class GMLPolygonMemberTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Polygon.class;
     }
@@ -75,6 +77,7 @@ public class GMLPolygonMemberTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return node.getChildValue(Polygon.class);
     }

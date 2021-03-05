@@ -41,6 +41,7 @@ public class OrBinding extends OGCOrBinding {
         super(filterfactory);
     }
 
+    @Override
     public QName getTarget() {
         return FES.Or;
     }

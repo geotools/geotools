@@ -35,6 +35,7 @@ public class BingTileIdentifier extends TileIdentifier {
         super(x, y, zoomLevel, serviceName);
     }
 
+    @Override
     public BingTileIdentifier getRightNeighbour() {
 
         return new BingTileIdentifier(
@@ -44,6 +45,7 @@ public class BingTileIdentifier extends TileIdentifier {
                 getServiceName());
     }
 
+    @Override
     public BingTileIdentifier getLowerNeighbour() {
 
         return new BingTileIdentifier(
@@ -53,10 +55,12 @@ public class BingTileIdentifier extends TileIdentifier {
                 getServiceName());
     }
 
+    @Override
     public String getId() {
         return getServiceName() + "_" + getCode();
     }
 
+    @Override
     public String getCode() {
         return BingTileUtil.tileXYToQuadKey(this.getX(), this.getY(), this.getZ());
     }

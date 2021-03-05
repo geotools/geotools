@@ -30,6 +30,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.w3c.dom.Element;
 
 public class AbstractFeatureCollectionTypeBindingTest extends GML3TestSupport {
+    @Override
     protected Configuration createConfiguration() {
         return new TestConfiguration();
     }

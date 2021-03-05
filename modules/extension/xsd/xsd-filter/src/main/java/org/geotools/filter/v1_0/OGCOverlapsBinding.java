@@ -49,6 +49,7 @@ public class OGCOverlapsBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.Overlaps;
     }
@@ -60,10 +61,12 @@ public class OGCOverlapsBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Overlaps.class;
     }
 
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -75,6 +78,7 @@ public class OGCOverlapsBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Expression[] operands = OGCUtils.spatial(node, filterFactory, geometryFactory);
 

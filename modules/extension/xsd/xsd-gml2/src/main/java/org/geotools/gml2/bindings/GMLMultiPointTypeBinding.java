@@ -60,10 +60,12 @@ public class GMLMultiPointTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.MultiPointType;
     }
 
+    @Override
     public int getExecutionMode() {
         return OVERRIDE;
     }
@@ -75,6 +77,7 @@ public class GMLMultiPointTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return MultiPoint.class;
     }
@@ -86,10 +89,12 @@ public class GMLMultiPointTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return GML2ParsingUtils.GeometryCollectionType_parse(node, MultiPoint.class, gFactory);
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
 
         if (GML.pointMember.equals(name)) {

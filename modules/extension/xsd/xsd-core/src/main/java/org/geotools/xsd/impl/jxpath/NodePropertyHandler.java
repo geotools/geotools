@@ -21,12 +21,14 @@ import org.apache.commons.jxpath.DynamicPropertyHandler;
 import org.geotools.xsd.Node;
 
 public class NodePropertyHandler implements DynamicPropertyHandler {
+    @Override
     public Object getProperty(Object object, String property) {
         Node node = (Node) object;
 
         return node.getChildren(property);
     }
 
+    @Override
     public String[] getPropertyNames(Object object) {
         Node node = (Node) object;
         List children = node.getChildren();
@@ -45,6 +47,7 @@ public class NodePropertyHandler implements DynamicPropertyHandler {
         return propertyNames;
     }
 
+    @Override
     public void setProperty(Object object, String property, Object value) {
         throw new UnsupportedOperationException();
     }

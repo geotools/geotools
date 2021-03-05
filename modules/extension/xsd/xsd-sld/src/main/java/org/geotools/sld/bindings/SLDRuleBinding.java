@@ -72,6 +72,7 @@ public class SLDRuleBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SLD.RULE;
     }
@@ -83,6 +84,7 @@ public class SLDRuleBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -94,6 +96,7 @@ public class SLDRuleBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Rule.class;
     }
@@ -105,6 +108,7 @@ public class SLDRuleBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
@@ -114,6 +118,7 @@ public class SLDRuleBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Rule rule = styleFactory.createRule();
 

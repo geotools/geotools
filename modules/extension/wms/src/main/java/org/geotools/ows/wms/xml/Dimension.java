@@ -119,6 +119,7 @@ public class Dimension {
         this.extent = extent;
     }
 
+    @Override
     public String toString() {
         return name + ", " + units + "(" + unitSymbol + ")";
     }

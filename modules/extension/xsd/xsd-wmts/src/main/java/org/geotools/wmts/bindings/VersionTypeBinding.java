@@ -52,6 +52,7 @@ public class VersionTypeBinding extends AbstractSimpleBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WMTS.VersionType;
     }
@@ -63,6 +64,7 @@ public class VersionTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return null;
     }
@@ -74,6 +76,7 @@ public class VersionTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
 
         // TODO: implement and remove call to super

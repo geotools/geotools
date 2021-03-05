@@ -28,6 +28,7 @@ public class MismatchedBindingFinder implements BindingWalker.Visitor {
         this.object = object;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public void visit(Binding binding) {
         if (!binding.getType().isAssignableFrom(object.getClass())) {

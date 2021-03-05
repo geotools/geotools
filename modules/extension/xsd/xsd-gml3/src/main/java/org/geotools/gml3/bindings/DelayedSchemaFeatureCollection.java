@@ -65,6 +65,7 @@ class DelayedSchemaFeatureCollection extends ListFeatureCollection {
         return this.list.add(f);
     }
 
+    @Override
     protected ReferencedEnvelope calculateBounds() {
         if (list.isEmpty()) {
             return new ReferencedEnvelope();

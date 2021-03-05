@@ -64,6 +64,7 @@ public final class WFS extends org.geotools.wfs.WFS {
     }
 
     /** Returns the location of 'wfs.xsd.'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("wfs.xsd").toString();
     }

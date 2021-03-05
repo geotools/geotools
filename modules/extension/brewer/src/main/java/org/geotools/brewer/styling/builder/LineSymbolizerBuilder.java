@@ -60,6 +60,7 @@ public class LineSymbolizerBuilder extends SymbolizerBuilder<LineSymbolizer> {
         return this;
     }
 
+    @Override
     public LineSymbolizer build() {
         if (unset) {
             return null; // builder was constructed but never used
@@ -85,6 +86,7 @@ public class LineSymbolizerBuilder extends SymbolizerBuilder<LineSymbolizer> {
         return ls;
     }
 
+    @Override
     public LineSymbolizerBuilder reset() {
         strokeBuilder.reset();
         geometry = null;
@@ -94,6 +96,7 @@ public class LineSymbolizerBuilder extends SymbolizerBuilder<LineSymbolizer> {
         return this;
     }
 
+    @Override
     public LineSymbolizerBuilder reset(LineSymbolizer original) {
         if (original == null) {
             return unset();
@@ -119,10 +122,12 @@ public class LineSymbolizerBuilder extends SymbolizerBuilder<LineSymbolizer> {
         return this;
     }
 
+    @Override
     public LineSymbolizerBuilder unset() {
         return (LineSymbolizerBuilder) super.unset();
     }
 
+    @Override
     protected void buildStyleInternal(StyleBuilder sb) {
         sb.featureTypeStyle().rule().line().init(this);
     }

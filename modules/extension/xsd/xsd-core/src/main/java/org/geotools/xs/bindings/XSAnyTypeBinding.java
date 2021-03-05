@@ -52,6 +52,7 @@ import org.picocontainer.MutablePicoContainer;
  */
 public class XSAnyTypeBinding extends AbstractComplexBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return XS.ANYTYPE;
     }
@@ -63,6 +64,7 @@ public class XSAnyTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return OVERRIDE;
     }
@@ -75,6 +77,7 @@ public class XSAnyTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class<Object> getType() {
         return Object.class;
     }
@@ -86,6 +89,7 @@ public class XSAnyTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
@@ -101,6 +105,7 @@ public class XSAnyTypeBinding extends AbstractComplexBinding {
      *     <!-- end-user-doc -->
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         String text = null;
 

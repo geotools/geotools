@@ -433,6 +433,7 @@ public abstract class TileService implements ImageLoader {
         return envelope;
     }
 
+    @Override
     public String toString() {
         return getName();
     }

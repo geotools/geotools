@@ -67,6 +67,7 @@ import org.w3c.dom.Element;
 public class EnvelopeTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.EnvelopeType;
     }
@@ -78,6 +79,7 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class<GeneralEnvelope> getType() {
         return GeneralEnvelope.class;
     }
@@ -90,6 +92,7 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List positions = node.getChildren("pos");
 
@@ -143,6 +146,7 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
         return null;
     }
 
+    @Override
     public Object getProperty(Object object, QName name) {
         GeneralEnvelope envelope = (GeneralEnvelope) object;
 

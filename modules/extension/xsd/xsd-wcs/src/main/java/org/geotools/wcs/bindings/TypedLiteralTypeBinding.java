@@ -54,6 +54,7 @@ import org.geotools.xsd.Node;
 public class TypedLiteralTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WCS.TypedLiteralType;
     }
@@ -65,6 +66,7 @@ public class TypedLiteralTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return null;
     }
@@ -76,6 +78,7 @@ public class TypedLiteralTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         // TODO: implement and remove call to super

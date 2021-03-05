@@ -22,18 +22,22 @@ import org.opengis.filter.expression.NilExpression;
 
 public class NilBuilder implements Builder<NilExpression> {
 
+    @Override
     public NilExpression build() {
         return (NilExpression) Expression.NIL;
     }
 
+    @Override
     public Builder<NilExpression> reset() {
         return this;
     }
 
+    @Override
     public Builder<NilExpression> reset(NilExpression original) {
         return this;
     }
 
+    @Override
     public Builder<NilExpression> unset() {
         return this;
     }

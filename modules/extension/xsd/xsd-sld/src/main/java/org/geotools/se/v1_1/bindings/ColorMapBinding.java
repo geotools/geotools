@@ -59,6 +59,7 @@ import org.geotools.xsd.Node;
 public class ColorMapBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.ColorMap;
     }
@@ -70,6 +71,7 @@ public class ColorMapBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return ColorMap.class;
     }
@@ -81,6 +83,7 @@ public class ColorMapBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         ColorMap map = (ColorMap) node.getChildValue("Categorize");

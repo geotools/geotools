@@ -66,6 +66,7 @@ public class InsertedFeatureTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.InsertedFeatureType;
     }
@@ -77,6 +78,7 @@ public class InsertedFeatureTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return InsertedFeatureType.class;
     }

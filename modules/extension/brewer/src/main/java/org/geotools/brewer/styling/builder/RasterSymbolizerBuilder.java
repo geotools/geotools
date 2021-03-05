@@ -124,6 +124,7 @@ public class RasterSymbolizerBuilder extends SymbolizerBuilder<RasterSymbolizer>
         return this;
     }
 
+    @Override
     public RasterSymbolizer build() {
         if (unset) {
             return null;
@@ -145,6 +146,7 @@ public class RasterSymbolizerBuilder extends SymbolizerBuilder<RasterSymbolizer>
         return symbolizer;
     }
 
+    @Override
     public RasterSymbolizerBuilder reset() {
         opacity = literal(1.0);
         channelSelection.unset();
@@ -154,6 +156,7 @@ public class RasterSymbolizerBuilder extends SymbolizerBuilder<RasterSymbolizer>
         return this;
     }
 
+    @Override
     public RasterSymbolizerBuilder reset(RasterSymbolizer symbolizer) {
         if (symbolizer == null) {
             return reset();

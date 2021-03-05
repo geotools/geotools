@@ -104,11 +104,13 @@ public class WalkTest {
 
         GraphWalker walker =
                 new GraphWalker() {
+                    @Override
                     public int visit(Graphable element, GraphTraversal traversal) {
                         walk.add((Node) element);
                         return (GraphTraversal.CONTINUE);
                     }
 
+                    @Override
                     public void finish() {}
                 };
 
@@ -138,11 +140,13 @@ public class WalkTest {
 
         GraphWalker walker =
                 new GraphWalker() {
+                    @Override
                     public int visit(Graphable element, GraphTraversal traversal) {
                         walk.add((Node) element);
                         return (GraphTraversal.CONTINUE);
                     }
 
+                    @Override
                     public void finish() {}
                 };
 
@@ -165,11 +169,13 @@ public class WalkTest {
 
         GraphWalker walker =
                 new GraphWalker() {
+                    @Override
                     public int visit(Graphable element, GraphTraversal traversal) {
                         walk.add((Node) element);
                         return (GraphTraversal.CONTINUE);
                     }
 
+                    @Override
                     public void finish() {}
                 };
 
@@ -195,11 +201,13 @@ public class WalkTest {
                 new GraphWalker() {
                     int count = 0;
 
+                    @Override
                     public int visit(Graphable element, GraphTraversal traversal) {
                         walk.add((Node) element);
                         return (GraphTraversal.CONTINUE);
                     }
 
+                    @Override
                     public void finish() {}
                 };
 
@@ -225,11 +233,13 @@ public class WalkTest {
                 new GraphWalker() {
                     int count = 0;
 
+                    @Override
                     public int visit(Graphable element, GraphTraversal traversal) {
                         walk.add((Node) element);
                         return (GraphTraversal.CONTINUE);
                     }
 
+                    @Override
                     public void finish() {}
                 };
 

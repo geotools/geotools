@@ -139,10 +139,12 @@ public class NonFeatureTypeProxy extends ComplexTypeProxy implements FeatureType
         }
     }
 
+    @Override
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return null;
     }
 
+    @Override
     public GeometryDescriptor getGeometryDescriptor() {
         return null;
     }

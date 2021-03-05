@@ -48,10 +48,12 @@ import org.opengis.filter.expression.Expression;
 public class GraphicStrokeBinding extends SLDGraphicStrokeBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.GraphicStroke;
     }
 
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Graphic g = (Graphic) super.parse(instance, node, value);
 

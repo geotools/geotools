@@ -68,6 +68,7 @@ public class OptDirectedLineGraphGenerator extends OptLineGraphGenerator {
      * @return null because the actual building of the graph components is delayed until generate()
      *     is called.
      */
+    @Override
     public Graphable add(Object obj) {
         LineSegment line = (LineSegment) obj;
         Integer count;
@@ -107,6 +108,7 @@ public class OptDirectedLineGraphGenerator extends OptLineGraphGenerator {
         return m_out2count;
     }
 
+    @Override
     protected void generateNodes() {
         // create the nodes, starting with in nodes
         for (Map.Entry<Coordinate, Object> entry : m_in2count.entrySet()) {
@@ -154,6 +156,7 @@ public class OptDirectedLineGraphGenerator extends OptLineGraphGenerator {
         }
     }
 
+    @Override
     protected Edge generateEdge(LineSegment line) {
         OptDirectedNode n1 = (OptDirectedNode) m_in2count.get(line.p0);
         OptDirectedNode n2 = (OptDirectedNode) m_out2count.get(line.p1);
@@ -164,6 +167,7 @@ public class OptDirectedLineGraphGenerator extends OptLineGraphGenerator {
         return (edge);
     }
 
+    @Override
     public Node getNode(Coordinate c) {
         Node n = (Node) m_in2count.get(c);
 
@@ -171,6 +175,7 @@ public class OptDirectedLineGraphGenerator extends OptLineGraphGenerator {
         return ((Node) m_out2count.get(c));
     }
 
+    @Override
     public Edge getEdge(Coordinate c1, Coordinate c2) {
         // TODO: IMPLEMENT
 

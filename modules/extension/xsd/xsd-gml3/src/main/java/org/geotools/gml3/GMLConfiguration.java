@@ -181,6 +181,7 @@ public class GMLConfiguration extends Configuration {
         return extArcSurfaceSupport;
     }
 
+    @Override
     protected void registerBindings(MutablePicoContainer container) {
         // Types
         container.registerComponentImplementation(
@@ -337,6 +338,7 @@ public class GMLConfiguration extends Configuration {
      *   <li>{@link GeometryFactory}
      * </ul>
      */
+    @Override
     public void configureContext(MutablePicoContainer container) {
         super.configureContext(container);
 

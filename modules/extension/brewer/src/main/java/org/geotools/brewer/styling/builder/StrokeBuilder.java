@@ -52,11 +52,13 @@ public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
         reset();
     }
 
+    @Override
     public StrokeBuilder unset() {
         return (StrokeBuilder) super.unset();
     }
 
     /** Reset stroke to default values. */
+    @Override
     public StrokeBuilder reset() {
         color = Stroke.DEFAULT.getColor();
         width = Stroke.DEFAULT.getWidth();
@@ -209,6 +211,7 @@ public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
         return graphicFill;
     }
 
+    @Override
     public Stroke build() {
         if (unset) {
             return null;

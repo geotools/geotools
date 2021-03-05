@@ -68,6 +68,7 @@ public class SLDContrastEnhancementBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SLD.CONTRASTENHANCEMENT;
     }
@@ -79,6 +80,7 @@ public class SLDContrastEnhancementBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -90,6 +92,7 @@ public class SLDContrastEnhancementBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return ContrastEnhancement.class;
     }
@@ -101,6 +104,7 @@ public class SLDContrastEnhancementBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
@@ -110,6 +114,7 @@ public class SLDContrastEnhancementBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         ContrastEnhancement ce = styleFactory.createContrastEnhancement();
 

@@ -55,6 +55,7 @@ import org.picocontainer.MutablePicoContainer;
  */
 public class XSWildcardBinding extends AbstractComplexBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return XS.WILDCARD;
     }
@@ -66,6 +67,7 @@ public class XSWildcardBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -77,6 +79,7 @@ public class XSWildcardBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return null;
     }
@@ -88,6 +91,7 @@ public class XSWildcardBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
@@ -97,6 +101,7 @@ public class XSWildcardBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // TODO: implement
         return null;

@@ -55,6 +55,7 @@ public abstract class Length {
     /** string and anyURI measured length is measured in units of characters */
     public static final Length CHARACTERS =
             new Length() {
+                @Override
                 public void validate(XSDTypeDefinition definition, Object value)
                         throws IllegalArgumentException {
                     String text = (String) value;
@@ -68,6 +69,7 @@ public abstract class Length {
     /** hexBinary and base64Binary length is measured in octets (8bits) on binary data */
     public static final Length OCTETS =
             new Length() {
+                @Override
                 public void validate(XSDTypeDefinition definition, Object value)
                         throws IllegalArgumentException {
                     String text = (String) value;
@@ -86,6 +88,7 @@ public abstract class Length {
      */
     public static final Length LIST =
             new Length() {
+                @Override
                 public int length(XSDTypeDefinition definition) {
                     try {
                         XSDSimpleTypeDefinition simple = definition.getSimpleType();
@@ -101,6 +104,7 @@ public abstract class Length {
                     }
                 }
 
+                @Override
                 public void validate(XSDTypeDefinition definition, Object value)
                         throws IllegalArgumentException {
                     String text = (String) value;

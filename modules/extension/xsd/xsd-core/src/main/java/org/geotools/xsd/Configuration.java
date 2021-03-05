@@ -564,6 +564,7 @@ public abstract class Configuration {
     protected void configureEncoder(Encoder encoder) {}
 
     /** Equals override, equality is based solely on {@link #getNamespaceURI()}. */
+    @Override
     public final boolean equals(Object obj) {
         if (obj instanceof Configuration) {
             Configuration other = (Configuration) obj;
@@ -574,6 +575,7 @@ public abstract class Configuration {
         return false;
     }
 
+    @Override
     public final int hashCode() {
         if (getNamespaceURI() != null) {
             return getNamespaceURI().hashCode();

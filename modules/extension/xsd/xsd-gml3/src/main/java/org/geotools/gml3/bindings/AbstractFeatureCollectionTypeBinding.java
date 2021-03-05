@@ -56,6 +56,7 @@ import org.opengis.feature.simple.SimpleFeature;
  */
 public class AbstractFeatureCollectionTypeBinding extends AbstractComplexBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.AbstractFeatureCollectionType;
     }
@@ -67,6 +68,7 @@ public class AbstractFeatureCollectionTypeBinding extends AbstractComplexBinding
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return FeatureCollection.class;
     }
@@ -78,6 +80,7 @@ public class AbstractFeatureCollectionTypeBinding extends AbstractComplexBinding
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         SimpleFeatureCollection featureCollection =
                 (SimpleFeatureCollection) node.getChildValue(FeatureCollection.class);
@@ -105,6 +108,7 @@ public class AbstractFeatureCollectionTypeBinding extends AbstractComplexBinding
         return featureCollection;
     }
 
+    @Override
     public Object getProperty(Object object, QName name) {
         // just return the features themselves
         if (GML.featureMembers.equals(name)) {

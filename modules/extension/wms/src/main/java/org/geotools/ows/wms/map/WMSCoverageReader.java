@@ -403,6 +403,7 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
         return gridEnvelope;
     }
 
+    @Override
     public Format getFormat() {
         // this reader has not backing format
         return null;

@@ -79,6 +79,7 @@ public class PolygonPatchTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.PolygonPatchType;
     }
@@ -90,6 +91,7 @@ public class PolygonPatchTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Polygon.class;
     }
@@ -101,6 +103,7 @@ public class PolygonPatchTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return new PolygonTypeBinding(gf).parse(instance, node, value);
     }

@@ -50,6 +50,7 @@ import org.geotools.xsd.InstanceComponent;
  */
 public class XSNMTOKENBinding extends AbstractSimpleBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return XS.NMTOKEN;
     }
@@ -61,6 +62,7 @@ public class XSNMTOKENBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return String.class;
     }
@@ -72,6 +74,7 @@ public class XSNMTOKENBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         // just return the value passed in
         return value;

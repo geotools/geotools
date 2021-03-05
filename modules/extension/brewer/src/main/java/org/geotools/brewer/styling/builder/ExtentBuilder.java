@@ -40,6 +40,7 @@ public class ExtentBuilder<P> implements Builder<Extent> {
         reset();
     }
 
+    @Override
     public Extent build() {
         if (unset) {
             return null;
@@ -52,6 +53,7 @@ public class ExtentBuilder<P> implements Builder<Extent> {
         return parent;
     }
 
+    @Override
     public ExtentBuilder<P> reset() {
         this.name = null;
         this.value = null;
@@ -59,6 +61,7 @@ public class ExtentBuilder<P> implements Builder<Extent> {
         return this;
     }
 
+    @Override
     public ExtentBuilder<P> reset(Extent extent) {
         if (extent == null) {
             return reset();
@@ -69,6 +72,7 @@ public class ExtentBuilder<P> implements Builder<Extent> {
         return this;
     }
 
+    @Override
     public ExtentBuilder<P> unset() {
         this.name = null;
         this.value = null;

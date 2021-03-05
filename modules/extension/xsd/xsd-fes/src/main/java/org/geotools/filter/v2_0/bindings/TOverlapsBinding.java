@@ -48,6 +48,7 @@ public class TOverlapsBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return FES.TOverlaps;
     }
@@ -59,6 +60,7 @@ public class TOverlapsBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return TOverlaps.class;
     }
@@ -70,6 +72,7 @@ public class TOverlapsBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Expression[] e = FESParseEncodeUtil.temporal(node, filterFactory);
         return filterFactory.toverlaps(e[0], e[1]);

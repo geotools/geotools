@@ -33,6 +33,7 @@ public class FunctionBuilder implements Builder<Function> {
             this.index = index;
         }
 
+        @Override
         public Expression build() {
             return put(index, super.build());
         }
@@ -42,12 +43,14 @@ public class FunctionBuilder implements Builder<Function> {
             return new ParamBuilder(index + 1);
         }
 
+        @Override
         public FunctionBuilder function() {
             this.delegate = new FunctionBuilder(this);
             unset = false;
             return (FunctionBuilder) delegate;
         }
 
+        @Override
         public FunctionBuilder function(String name) {
             this.delegate = new FunctionBuilder(this).name(name);
             unset = false;
@@ -130,6 +133,7 @@ public class FunctionBuilder implements Builder<Function> {
         return literal;
     }
 
+    @Override
     public Function build() {
         if (name == null) {
             return null; // unset!
@@ -141,6 +145,7 @@ public class FunctionBuilder implements Builder<Function> {
         return ff.function(name, arguments);
     }
 
+    @Override
     public FunctionBuilder reset() {
         name = null;
         args.clear();
@@ -148,6 +153,7 @@ public class FunctionBuilder implements Builder<Function> {
         return this;
     }
 
+    @Override
     public FunctionBuilder reset(Function original) {
         name = original.getName();
         args.clear();
@@ -156,6 +162,7 @@ public class FunctionBuilder implements Builder<Function> {
         return this;
     }
 
+    @Override
     public FunctionBuilder unset() {
         name = null;
         args.clear();

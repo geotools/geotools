@@ -51,10 +51,12 @@ import org.geotools.xsd.Node;
  */
 public class MLEnvelopeTypeBinding extends AbstractComplexBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return ML.ENVELOPETYPE;
     }
 
+    @Override
     public Class getType() {
         return Envelope.class;
     }
@@ -66,6 +68,7 @@ public class MLEnvelopeTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         String from = (String) node.getChildValue("From");
         String to = (String) node.getChildValue("To");

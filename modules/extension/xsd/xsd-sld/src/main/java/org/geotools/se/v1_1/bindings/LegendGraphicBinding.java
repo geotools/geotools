@@ -37,6 +37,7 @@ import org.geotools.sld.bindings.SLDLegendGraphicBinding;
 public class LegendGraphicBinding extends SLDLegendGraphicBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.LegendGraphic;
     }

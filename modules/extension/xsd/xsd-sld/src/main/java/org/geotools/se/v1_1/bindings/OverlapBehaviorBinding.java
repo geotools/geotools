@@ -55,10 +55,12 @@ import org.opengis.style.OverlapBehavior;
 public class OverlapBehaviorBinding extends AbstractSimpleBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.OverlapBehavior;
     }
 
+    @Override
     public Class getType() {
         return OverlapBehavior.class;
     }

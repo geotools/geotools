@@ -129,6 +129,7 @@ public class UpdateElementTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.UpdateElementType;
     }
@@ -140,6 +141,7 @@ public class UpdateElementTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return null;
     }
@@ -151,6 +153,7 @@ public class UpdateElementTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         UpdateElementType updateElement = wfsfactory.createUpdateElementType();
@@ -183,6 +186,7 @@ public class UpdateElementTypeBinding extends AbstractComplexEMFBinding {
         return updateElement;
     }
 
+    @Override
     public Object getProperty(Object arg0, QName arg1) throws Exception {
         Object result = super.getProperty(arg0, arg1);
 

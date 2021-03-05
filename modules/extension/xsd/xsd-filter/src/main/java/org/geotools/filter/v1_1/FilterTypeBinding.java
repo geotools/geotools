@@ -56,6 +56,7 @@ public class FilterTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.FilterType;
     }
@@ -67,6 +68,7 @@ public class FilterTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Filter.class;
     }
@@ -78,6 +80,7 @@ public class FilterTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // &lt;xsd:element ref="ogc:spatialOps"/&gt;
         // &lt;xsd:element ref="ogc:comparisonOps"/&gt;
@@ -101,6 +104,7 @@ public class FilterTypeBinding extends AbstractComplexBinding {
         return null;
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         return FilterParsingUtils.Filter_getProperty(object, name);
     }

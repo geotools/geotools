@@ -60,6 +60,7 @@ public class WMSDescribeLayerTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return attrs;
         }
@@ -67,6 +68,7 @@ public class WMSDescribeLayerTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
@@ -74,6 +76,7 @@ public class WMSDescribeLayerTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -81,6 +84,7 @@ public class WMSDescribeLayerTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element, org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             LayerDescription[] layerDescs = new LayerDescription[value.length];
@@ -95,6 +99,7 @@ public class WMSDescribeLayerTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "WMS_DescribeLayerResponse"; // $NON-NLS-1$
         }
@@ -102,6 +107,7 @@ public class WMSDescribeLayerTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return LayerDescription[].class;
         }
@@ -109,6 +115,7 @@ public class WMSDescribeLayerTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element, java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -116,6 +123,7 @@ public class WMSDescribeLayerTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element, java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -155,6 +163,7 @@ public class WMSDescribeLayerTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return attrs;
         }
@@ -162,6 +171,7 @@ public class WMSDescribeLayerTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
@@ -169,6 +179,7 @@ public class WMSDescribeLayerTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -176,6 +187,7 @@ public class WMSDescribeLayerTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element, org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
 
@@ -212,6 +224,7 @@ public class WMSDescribeLayerTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "LayerDescription";
         }
@@ -219,6 +232,7 @@ public class WMSDescribeLayerTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return LayerDescription.class;
         }
@@ -226,6 +240,7 @@ public class WMSDescribeLayerTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element, java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -233,6 +248,7 @@ public class WMSDescribeLayerTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element, java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();
@@ -261,6 +277,7 @@ public class WMSDescribeLayerTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return attrs;
         }
@@ -268,6 +285,7 @@ public class WMSDescribeLayerTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.ComplexType#getChild()
          */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
@@ -275,6 +293,7 @@ public class WMSDescribeLayerTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.ComplexType#getChildElements()
          */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -282,6 +301,7 @@ public class WMSDescribeLayerTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element, org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
+        @Override
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
             return attrs.getValue("typeName");
@@ -290,6 +310,7 @@ public class WMSDescribeLayerTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "Query";
         }
@@ -297,6 +318,7 @@ public class WMSDescribeLayerTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return String.class;
         }
@@ -304,6 +326,7 @@ public class WMSDescribeLayerTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element, java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map hints) {
             return false;
         }
@@ -311,6 +334,7 @@ public class WMSDescribeLayerTypes {
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element, java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(Element element, Object value, PrintHandler output, Map hints)
                 throws IOException, OperationNotSupportedException {
             throw new OperationNotSupportedException();

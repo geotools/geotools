@@ -52,6 +52,7 @@ public class XSDoubleStrategyTest extends TestSchema {
         assertEquals(Double.valueOf(12345.0), strategy.parse(element, "12345"));
     }
 
+    @Override
     protected QName getQName() {
         return XS.DOUBLE;
     }

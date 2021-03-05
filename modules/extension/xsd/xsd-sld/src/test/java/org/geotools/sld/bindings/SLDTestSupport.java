@@ -25,6 +25,7 @@ import org.geotools.xsd.test.XMLTestSupport;
 public abstract class SLDTestSupport extends XMLTestSupport {
     StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
 
+    @Override
     protected Configuration createConfiguration() {
         return new SLDConfiguration();
     }

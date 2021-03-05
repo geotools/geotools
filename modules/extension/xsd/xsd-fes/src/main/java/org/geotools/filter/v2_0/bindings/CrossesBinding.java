@@ -41,6 +41,7 @@ public class CrossesBinding extends OGCCrossesBinding {
         super(filterFactory, geometryFactory);
     }
 
+    @Override
     public QName getTarget() {
         return FES.Crosses;
     }

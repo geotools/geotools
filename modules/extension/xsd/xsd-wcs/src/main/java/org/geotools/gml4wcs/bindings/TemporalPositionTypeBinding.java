@@ -55,6 +55,7 @@ import org.geotools.xsd.InstanceComponent;
 public class TemporalPositionTypeBinding extends AbstractSimpleBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.TemporalPositionType;
     }
@@ -66,6 +67,7 @@ public class TemporalPositionTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return null;
     }
@@ -77,6 +79,7 @@ public class TemporalPositionTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
 
         // TODO: implement and remove call to super

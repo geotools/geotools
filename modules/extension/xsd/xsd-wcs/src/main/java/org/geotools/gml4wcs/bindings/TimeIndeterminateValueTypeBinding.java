@@ -53,6 +53,7 @@ import org.opengis.temporal.IndeterminateValue;
 public class TimeIndeterminateValueTypeBinding extends AbstractSimpleBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.TimeIndeterminateValueType;
     }
@@ -64,6 +65,7 @@ public class TimeIndeterminateValueTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return IndeterminateValue.class;
     }
@@ -75,6 +77,7 @@ public class TimeIndeterminateValueTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         IndeterminateValue timeValue = IndeterminateValue.valueOf((String) value);
         return timeValue;

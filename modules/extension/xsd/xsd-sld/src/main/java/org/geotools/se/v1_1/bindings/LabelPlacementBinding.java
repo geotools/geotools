@@ -50,6 +50,7 @@ public class LabelPlacementBinding extends SLDLabelPlacementBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.LabelPlacement;
     }

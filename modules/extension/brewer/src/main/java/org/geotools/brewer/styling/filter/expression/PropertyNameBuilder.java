@@ -54,6 +54,7 @@ public class PropertyNameBuilder implements Builder<PropertyName> {
         return this;
     }
 
+    @Override
     public PropertyName build() {
         if (unset) {
             return null;
@@ -65,18 +66,21 @@ public class PropertyNameBuilder implements Builder<PropertyName> {
         }
     }
 
+    @Override
     public PropertyNameBuilder reset() {
         unset = false;
         xpath = null;
         return this;
     }
 
+    @Override
     public PropertyNameBuilder reset(PropertyName original) {
         unset = false;
         xpath = original.getPropertyName();
         return this;
     }
 
+    @Override
     public PropertyNameBuilder unset() {
         unset = true;
         xpath = null;

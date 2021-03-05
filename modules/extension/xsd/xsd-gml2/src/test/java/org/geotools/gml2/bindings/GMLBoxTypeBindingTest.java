@@ -35,6 +35,7 @@ public class GMLBoxTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance coord3;
     ElementInstance coords;
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();

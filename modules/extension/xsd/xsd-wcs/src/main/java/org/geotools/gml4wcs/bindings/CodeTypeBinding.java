@@ -56,6 +56,7 @@ import org.geotools.xsd.Node;
 public class CodeTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.CodeType;
     }
@@ -67,6 +68,7 @@ public class CodeTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return null;
     }
@@ -78,6 +80,7 @@ public class CodeTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         CodeType code = Gml4wcsFactory.eINSTANCE.createCodeType();
 

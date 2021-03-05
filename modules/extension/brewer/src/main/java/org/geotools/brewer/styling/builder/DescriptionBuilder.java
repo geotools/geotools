@@ -35,6 +35,7 @@ public class DescriptionBuilder extends AbstractStyleBuilder<Description> {
         reset();
     }
 
+    @Override
     public Description build() {
         if (unset) {
             return null;
@@ -46,6 +47,7 @@ public class DescriptionBuilder extends AbstractStyleBuilder<Description> {
         return descript;
     }
 
+    @Override
     public DescriptionBuilder reset() {
         unset = false;
         title = null;
@@ -73,6 +75,7 @@ public class DescriptionBuilder extends AbstractStyleBuilder<Description> {
         return description(new SimpleInternationalString(description));
     }
 
+    @Override
     public DescriptionBuilder reset(Description original) {
         unset = false;
         title = original.getTitle();
@@ -80,6 +83,7 @@ public class DescriptionBuilder extends AbstractStyleBuilder<Description> {
         return this;
     }
 
+    @Override
     public DescriptionBuilder unset() {
         unset = true;
         title = null;

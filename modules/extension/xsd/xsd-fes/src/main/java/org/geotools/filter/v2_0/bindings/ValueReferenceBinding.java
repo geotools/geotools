@@ -52,6 +52,7 @@ public class ValueReferenceBinding extends AbstractSimpleBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return FES.ValueReference;
     }
@@ -63,6 +64,7 @@ public class ValueReferenceBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return PropertyName.class;
     }
@@ -74,6 +76,7 @@ public class ValueReferenceBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         return ((FilterFactory2) filterFactory)
                 .property(

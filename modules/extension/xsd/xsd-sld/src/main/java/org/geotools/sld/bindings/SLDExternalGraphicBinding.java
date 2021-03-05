@@ -65,6 +65,7 @@ public class SLDExternalGraphicBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SLD.EXTERNALGRAPHIC;
     }
@@ -76,6 +77,7 @@ public class SLDExternalGraphicBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -87,6 +89,7 @@ public class SLDExternalGraphicBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return ExternalGraphic.class;
     }
@@ -98,6 +101,7 @@ public class SLDExternalGraphicBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
@@ -107,6 +111,7 @@ public class SLDExternalGraphicBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // the Converters wrapper here is a workaround for http://jira.codehaus.org/browse/GEOT-2457
         // for some reason on the IBM JDK returns a string, we should really find out why instead

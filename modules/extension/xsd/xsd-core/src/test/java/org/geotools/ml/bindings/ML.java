@@ -49,11 +49,13 @@ public class ML extends XSD {
     }
 
     /** Returns 'http://mails/refractions/net'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'mails.xsd'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("mails.xsd").toString();
     }

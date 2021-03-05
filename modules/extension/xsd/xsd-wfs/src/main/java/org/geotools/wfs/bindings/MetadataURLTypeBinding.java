@@ -82,6 +82,7 @@ public class MetadataURLTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.MetadataURLType;
     }
@@ -93,6 +94,7 @@ public class MetadataURLTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return MetadataURLType.class;
     }
@@ -104,6 +106,7 @@ public class MetadataURLTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // TODO: implement and remove call to super
         return super.parse(instance, node, value);

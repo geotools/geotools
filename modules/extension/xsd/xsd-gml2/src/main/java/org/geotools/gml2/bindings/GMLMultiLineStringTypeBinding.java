@@ -61,6 +61,7 @@ public class GMLMultiLineStringTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.MultiLineString;
     }
@@ -72,6 +73,7 @@ public class GMLMultiLineStringTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return OVERRIDE;
     }
@@ -83,6 +85,7 @@ public class GMLMultiLineStringTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return MultiLineString.class;
     }
@@ -94,10 +97,12 @@ public class GMLMultiLineStringTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return GML2ParsingUtils.GeometryCollectionType_parse(node, MultiLineString.class, gFactory);
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         if (GML.lineStringMember.equals(name)) {
             return GML2ParsingUtils.asCollection((MultiLineString) object);

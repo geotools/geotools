@@ -59,6 +59,7 @@ import org.w3c.dom.Element;
 public class TimePeriodTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WCS.TimePeriodType;
     }
@@ -70,6 +71,7 @@ public class TimePeriodTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Period.class;
     }
@@ -81,6 +83,7 @@ public class TimePeriodTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         Instant begining = new DefaultInstant((Position) node.getChild("beginPosition").getValue());
@@ -108,6 +111,7 @@ public class TimePeriodTypeBinding extends AbstractComplexBinding {
         return null;
     }
 
+    @Override
     public Object getProperty(Object object, QName name) {
         Period timePeriod = (Period) object;
 

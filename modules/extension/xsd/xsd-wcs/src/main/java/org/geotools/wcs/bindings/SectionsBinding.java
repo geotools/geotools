@@ -40,10 +40,12 @@ public class SectionsBinding extends AbstractComplexEMFBinding {
         super(Wcs20Factory.eINSTANCE);
     }
 
+    @Override
     public QName getTarget() {
         return WCSEO.Sections;
     }
 
+    @Override
     public Class getType() {
         return Sections.class;
     }
@@ -55,6 +57,7 @@ public class SectionsBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         List sections = node.getChildren("Section");

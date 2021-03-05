@@ -134,6 +134,7 @@ public class GraphicBuilder extends AbstractStyleBuilder<org.opengis.style.Graph
         return displacement;
     }
 
+    @Override
     public Graphic build() {
         if (unset) {
             return null;
@@ -159,12 +160,14 @@ public class GraphicBuilder extends AbstractStyleBuilder<org.opengis.style.Graph
         sb.featureTypeStyle().rule().point().graphic().init(this);
     }
 
+    @Override
     public GraphicBuilder unset() {
         displacement.unset();
         anchor.unset();
         return (GraphicBuilder) super.unset();
     }
 
+    @Override
     public GraphicBuilder reset() {
         unset = false;
         symbols.clear();
@@ -176,6 +179,7 @@ public class GraphicBuilder extends AbstractStyleBuilder<org.opengis.style.Graph
         return this;
     }
 
+    @Override
     public GraphicBuilder reset(org.opengis.style.Graphic graphic) {
         if (graphic == null || graphic.graphicalSymbols().size() == 0) {
             return unset();

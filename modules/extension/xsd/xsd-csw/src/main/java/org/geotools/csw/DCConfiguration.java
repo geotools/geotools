@@ -45,6 +45,7 @@ public class DCConfiguration extends Configuration {
     }
 
     /** Registers the bindings for the configuration. */
+    @Override
     protected void registerBindings(Map<QName, Object> bindings) {
         bindings.put(
                 DC.elementContainer,
@@ -72,6 +73,7 @@ public class DCConfiguration extends Configuration {
         bindings.put(DC.type, new SimpleLiteralBinding(DC.type));
     }
 
+    @Override
     protected void configureContext(MutablePicoContainer container) {
         container.registerComponentInstance(Csw20Factory.eINSTANCE);
     }

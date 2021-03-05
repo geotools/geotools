@@ -74,6 +74,7 @@ public class XSNonNegativeIntegerStrategyTest extends TestSchema {
         validateValues("1000", Integer.valueOf("1000"));
     }
 
+    @Override
     protected QName getQName() {
         return XS.NONNEGATIVEINTEGER;
     }

@@ -70,6 +70,7 @@ public abstract class WebMercatorTileService extends TileService {
         super(name, baseURL, client);
     }
 
+    @Override
     public ReferencedEnvelope getBounds() {
         return new ReferencedEnvelope(
                 MIN_LONGITUDE,
@@ -79,6 +80,7 @@ public abstract class WebMercatorTileService extends TileService {
                 DefaultGeographicCRS.WGS84);
     }
 
+    @Override
     public CoordinateReferenceSystem getProjectedTileCrs() {
         return WEB_MERCATOR_CRS;
     }

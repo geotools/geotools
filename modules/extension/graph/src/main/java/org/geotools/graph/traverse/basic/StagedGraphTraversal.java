@@ -31,6 +31,7 @@ public class StagedGraphTraversal extends BasicGraphTraversal {
         m_stage = 0;
     }
 
+    @Override
     public void init() {
         // initialize the nodes of the graph by setting counts to 0
         getGraph()
@@ -41,10 +42,12 @@ public class StagedGraphTraversal extends BasicGraphTraversal {
                         });
     }
 
+    @Override
     public boolean isVisited(Graphable g) {
         return (g.getCount() == m_stage);
     }
 
+    @Override
     public void setVisited(Graphable g, boolean visited) {
         g.setCount(visited ? m_stage : -1);
     }

@@ -34,10 +34,12 @@ public class ZoomLevelTest {
     private ZoomLevel createZoomLevel(int z) {
         return new ZoomLevel(z) {
 
+            @Override
             public int calculateMaxTilePerRowNumber(int zoomLevel) {
                 return 12;
             }
 
+            @Override
             public int calculateMaxTilePerColNumber(int zoomLevel) {
                 return 14;
             }

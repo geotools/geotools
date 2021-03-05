@@ -44,6 +44,7 @@ public class GMLGeometryCollectionTypeBindingTest extends AbstractGMLBindingTest
     ElementInstance poly1;
     GeometryFactory gf;
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();

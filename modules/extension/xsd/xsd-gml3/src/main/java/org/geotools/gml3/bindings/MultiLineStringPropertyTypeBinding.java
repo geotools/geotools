@@ -56,10 +56,12 @@ public class MultiLineStringPropertyTypeBinding extends GeometryPropertyTypeBind
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.MultiLineStringPropertyType;
     }
 
+    @Override
     public Class<? extends Geometry> getGeometryType() {
         return MultiLineString.class;
     }

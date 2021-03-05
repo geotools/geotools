@@ -69,6 +69,7 @@ public class GMLCoordinatesTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.CoordinatesType;
     }
@@ -80,6 +81,7 @@ public class GMLCoordinatesTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return CoordinateSequence.class;
     }
@@ -93,6 +95,7 @@ public class GMLCoordinatesTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // get the coordinate and tuple seperators
         String decimal = ".";
@@ -181,6 +184,7 @@ public class GMLCoordinatesTypeBinding extends AbstractComplexBinding {
         return seq;
     }
 
+    @Override
     public Element encode(Object object, Document document, Element value) throws Exception {
         CoordinateSequence coordinates = (CoordinateSequence) object;
         StringBuffer buf = new StringBuffer();

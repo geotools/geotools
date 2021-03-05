@@ -28,6 +28,7 @@ public class TransactionTypeBinding extends AbstractComplexEMFBinding {
         super(Wfs20Factory.eINSTANCE);
     }
 
+    @Override
     public QName getTarget() {
         return WFS.TransactionType;
     }

@@ -44,6 +44,7 @@ public class CircleTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.CircleType;
     }
@@ -55,6 +56,7 @@ public class CircleTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return LineString.class;
     }

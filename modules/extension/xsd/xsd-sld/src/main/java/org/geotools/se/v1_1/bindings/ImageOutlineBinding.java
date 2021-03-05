@@ -50,6 +50,7 @@ public class ImageOutlineBinding extends SLDImageOutlineBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.ImageOutline;
     }

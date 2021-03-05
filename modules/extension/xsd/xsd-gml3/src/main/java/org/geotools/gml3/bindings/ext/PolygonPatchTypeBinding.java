@@ -33,6 +33,7 @@ public class PolygonPatchTypeBinding extends org.geotools.gml3.bindings.PolygonP
         return new PolygonTypeBinding(gf).getProperty(object, name);
     }
 
+    @Override
     public int compareTo(Object o) {
         if (o instanceof PolygonTypeBinding) {
             return 1;

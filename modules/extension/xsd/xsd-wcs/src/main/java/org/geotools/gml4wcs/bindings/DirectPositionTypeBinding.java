@@ -58,6 +58,7 @@ import org.w3c.dom.Element;
 public class DirectPositionTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.DirectPositionType;
     }
@@ -69,6 +70,7 @@ public class DirectPositionTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return DirectPosition.class;
     }
@@ -80,6 +82,7 @@ public class DirectPositionTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         DirectPosition dp = null;
 
@@ -97,6 +100,7 @@ public class DirectPositionTypeBinding extends AbstractComplexBinding {
         return dp;
     }
 
+    @Override
     public Element encode(Object object, Document document, Element value) throws Exception {
         DirectPosition dp = (DirectPosition) object;
 
@@ -121,6 +125,7 @@ public class DirectPositionTypeBinding extends AbstractComplexBinding {
         return null;
     }
 
+    @Override
     public Object getProperty(Object object, QName name) {
         DirectPosition dp = (DirectPosition) object;
 

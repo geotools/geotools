@@ -31,6 +31,7 @@ public class GetCapabilitiesTypeBindingTest extends WFSTestSupport {
         super(WFS.GetCapabilitiesType, GetCapabilitiesType.class, Binding.OVERRIDE);
     }
 
+    @Override
     @Test
     public void testEncode() throws Exception {
         GetCapabilitiesType getCaps = factory.createGetCapabilitiesType();
@@ -40,6 +41,7 @@ public class GetCapabilitiesTypeBindingTest extends WFSTestSupport {
         assertEquals("WFS", dom.getDocumentElement().getAttribute("service"));
     }
 
+    @Override
     @Test
     public void testParse() throws Exception {
         // throw new UnsupportedOperationException("Not yet implemented");

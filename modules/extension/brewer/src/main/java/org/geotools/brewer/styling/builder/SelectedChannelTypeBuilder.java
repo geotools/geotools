@@ -52,6 +52,7 @@ public class SelectedChannelTypeBuilder extends AbstractStyleBuilder<SelectedCha
         return contrastEnhancement;
     }
 
+    @Override
     public SelectedChannelType build() {
         if (unset) {
             return null;
@@ -61,6 +62,7 @@ public class SelectedChannelTypeBuilder extends AbstractStyleBuilder<SelectedCha
         return selectedChannelType;
     }
 
+    @Override
     public SelectedChannelTypeBuilder reset() {
         contrastEnhancement.reset();
         channelName = null;
@@ -68,6 +70,7 @@ public class SelectedChannelTypeBuilder extends AbstractStyleBuilder<SelectedCha
         return this;
     }
 
+    @Override
     public SelectedChannelTypeBuilder reset(SelectedChannelType selectedChannelType) {
         if (selectedChannelType == null) {
             return reset();
@@ -78,6 +81,7 @@ public class SelectedChannelTypeBuilder extends AbstractStyleBuilder<SelectedCha
         return this;
     }
 
+    @Override
     public SelectedChannelTypeBuilder unset() {
         return (SelectedChannelTypeBuilder) super.unset();
     }

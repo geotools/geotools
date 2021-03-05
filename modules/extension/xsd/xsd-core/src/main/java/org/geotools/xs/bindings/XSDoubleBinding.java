@@ -57,6 +57,7 @@ import org.geotools.xsd.SimpleBinding;
  */
 public class XSDoubleBinding implements SimpleBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return XS.DOUBLE;
     }
@@ -68,6 +69,7 @@ public class XSDoubleBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return OVERRIDE;
     }
@@ -80,6 +82,7 @@ public class XSDoubleBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Double.class;
     }
@@ -93,6 +96,7 @@ public class XSDoubleBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         if ("INF".equals(value)) {
             return Double.valueOf(Double.POSITIVE_INFINITY);
@@ -108,6 +112,7 @@ public class XSDoubleBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public String encode(Object object, String value) {
         Double d = (Double) object;
 

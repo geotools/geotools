@@ -27,6 +27,7 @@ public class RangeClosureBinding extends AbstractSimpleBinding {
     public RangeClosureBinding() {}
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OWS.rangeClosure;
     }
@@ -38,6 +39,7 @@ public class RangeClosureBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return RangeClosureType.class;
     }
@@ -54,6 +56,7 @@ public class RangeClosureBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         Object result = null;
         if (value != null) {

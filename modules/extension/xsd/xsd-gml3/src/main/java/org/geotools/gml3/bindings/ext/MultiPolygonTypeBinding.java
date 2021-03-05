@@ -30,6 +30,7 @@ public class MultiPolygonTypeBinding extends org.geotools.gml3.bindings.MultiPol
      * to the same class, MultiPolygon. Since MultiPolygon is deprecated by gml3 and MultiSurface
      * only has children that are also mapped to MultiPolygons, Surface always wins.
      */
+    @Override
     public int compareTo(Object o) {
         if (o instanceof SurfaceTypeBinding) {
             return 1;

@@ -78,6 +78,7 @@ public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {
      * <p>This implementation is a heuristic and is not guaranteed to work. Subclasses may override
      * to provide the type explicitly.
      */
+    @Override
     public Class<?> getType() {
         if (type != null) {
             return type;
@@ -120,6 +121,7 @@ public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {
      * match the name of a property on the object, subclasses may wish to extend this method and set
      * the property explicitly.
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // does this binding actually map to an eObject?
         if (EObject.class.isAssignableFrom(getType()) && (factory != null)) {
@@ -303,6 +305,7 @@ public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {
      * property on the object, subclasses may wish to extend this method and set the property
      * explicitly.
      */
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         if (object instanceof EObject) {
             EObject eObject = (EObject) object;

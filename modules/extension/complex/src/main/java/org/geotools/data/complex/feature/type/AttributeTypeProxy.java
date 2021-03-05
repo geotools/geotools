@@ -53,6 +53,7 @@ public class AttributeTypeProxy implements AttributeType {
         return subject;
     }
 
+    @Override
     public Class<?> getBinding() {
         return getSubject().getBinding();
     }
@@ -61,39 +62,48 @@ public class AttributeTypeProxy implements AttributeType {
         return null;
     }
 
+    @Override
     public List<Filter> getRestrictions() {
         return getSubject().getRestrictions();
     }
 
+    @Override
     public AttributeType getSuper() {
         return getSubject().getSuper();
     }
 
+    @Override
     public boolean isAbstract() {
         return getSubject().isAbstract();
     }
 
+    @Override
     public boolean isIdentified() {
         return getSubject().isIdentified();
     }
 
+    @Override
     public InternationalString getDescription() {
         return getSubject().getDescription();
     }
 
+    @Override
     public Name getName() {
         return typeName;
     }
 
+    @Override
     public Map<Object, Object> getUserData() {
         return getSubject().getUserData();
     }
 
+    @Override
     public boolean equals(Object o) {
         AttributeType subject = getSubject();
         return subject.equals(o);
     }
 
+    @Override
     public int hashCode() {
         AttributeType subject = getSubject();
         return subject.hashCode();

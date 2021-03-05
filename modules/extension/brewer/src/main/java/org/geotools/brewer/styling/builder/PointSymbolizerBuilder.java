@@ -56,6 +56,7 @@ public class PointSymbolizerBuilder extends SymbolizerBuilder<PointSymbolizer> {
         return this;
     }
 
+    @Override
     public PointSymbolizer build() {
         if (unset) {
             return null;
@@ -73,6 +74,7 @@ public class PointSymbolizerBuilder extends SymbolizerBuilder<PointSymbolizer> {
         return ps;
     }
 
+    @Override
     public PointSymbolizerBuilder reset() {
         this.geometry = null;
         this.graphic.reset(); // TODO: See what the actual default is
@@ -82,6 +84,7 @@ public class PointSymbolizerBuilder extends SymbolizerBuilder<PointSymbolizer> {
         return this;
     }
 
+    @Override
     public Builder<PointSymbolizer> reset(PointSymbolizer original) {
         if (original == null) {
             return unset();
@@ -108,6 +111,7 @@ public class PointSymbolizerBuilder extends SymbolizerBuilder<PointSymbolizer> {
         return this;
     }
 
+    @Override
     public PointSymbolizerBuilder unset() {
         return (PointSymbolizerBuilder) super.unset();
     }

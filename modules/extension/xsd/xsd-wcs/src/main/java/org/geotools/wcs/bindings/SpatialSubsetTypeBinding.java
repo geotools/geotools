@@ -63,6 +63,7 @@ import org.geotools.xsd.Node;
 public class SpatialSubsetTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WCS.SpatialSubsetType;
     }
@@ -74,6 +75,7 @@ public class SpatialSubsetTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return SpatialSubsetType.class;
     }
@@ -85,6 +87,7 @@ public class SpatialSubsetTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         SpatialSubsetType spatialSubset = Wcs10Factory.eINSTANCE.createSpatialSubsetType();

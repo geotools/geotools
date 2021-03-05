@@ -55,6 +55,7 @@ import org.geotools.xsd.Node;
 public class DomainSubsetTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WCS.DomainSubsetType;
     }
@@ -66,6 +67,7 @@ public class DomainSubsetTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return DomainSubsetType.class;
     }
@@ -77,6 +79,7 @@ public class DomainSubsetTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         DomainSubsetType domainSubset = Wcs10Factory.eINSTANCE.createDomainSubsetType();
 

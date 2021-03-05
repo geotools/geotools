@@ -52,6 +52,7 @@ import org.opengis.filter.temporal.BinaryTemporalOperator;
 public class BinaryTemporalOpTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return FES.BinaryTemporalOpType;
     }
@@ -63,6 +64,7 @@ public class BinaryTemporalOpTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return BinaryTemporalOperator.class;
     }
@@ -74,6 +76,7 @@ public class BinaryTemporalOpTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return null;
     }

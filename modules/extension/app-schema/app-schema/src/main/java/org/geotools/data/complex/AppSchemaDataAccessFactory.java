@@ -76,6 +76,7 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
 
     public AppSchemaDataAccessFactory() {}
 
+    @Override
     public DataAccess<FeatureType, Feature> createDataStore(Map<String, ?> params)
             throws IOException {
         final Set<AppSchemaDataAccess> registeredAppSchemaStores = new HashSet<>();
@@ -158,20 +159,24 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public String getDisplayName() {
         return "Application Schema DataAccess";
     }
 
+    @Override
     public String getDescription() {
         return "Application Schema DataStore allows mapping of FeatureTypes to externally defined Output Schemas";
     }
 
+    @Override
     public DataStoreFactorySpi.Param[] getParametersInfo() {
         return new DataStoreFactorySpi.Param[] {
             AppSchemaDataAccessFactory.DBTYPE, AppSchemaDataAccessFactory.URL,
         };
     }
 
+    @Override
     public boolean canProcess(Map<String, ?> params) {
         try {
             Object dbType = AppSchemaDataAccessFactory.DBTYPE.lookUp(params);
@@ -183,10 +188,12 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
         return false;
     }
 
+    @Override
     public boolean isAvailable() {
         return true;
     }
 
+    @Override
     public Map<RenderingHints.Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }

@@ -52,6 +52,7 @@ public class LineStringGraphGenerator extends BasicLineGraphGenerator {
 
     public LineStringGraphGenerator() {}
 
+    @Override
     public Graphable add(Object obj) {
         LineString ls = null;
         if (obj instanceof MultiLineString) {
@@ -88,6 +89,7 @@ public class LineStringGraphGenerator extends BasicLineGraphGenerator {
         return (e);
     }
 
+    @Override
     protected LineSegment alterLine(LineSegment line, Node n1, Node n2) {
         Point c1added = ((Point) n1.getObject());
         Point c2added = ((Point) n2.getObject());
@@ -97,6 +99,7 @@ public class LineStringGraphGenerator extends BasicLineGraphGenerator {
         return line;
     }
 
+    @Override
     public Graphable remove(Object obj) {
         LineString ls = (LineString) obj;
 
@@ -105,6 +108,7 @@ public class LineStringGraphGenerator extends BasicLineGraphGenerator {
                 new LineSegment(ls.getCoordinateN(0), ls.getCoordinateN(ls.getNumPoints() - 1))));
     }
 
+    @Override
     public Graphable get(Object obj) {
         LineString ls = (LineString) obj;
 
@@ -113,6 +117,7 @@ public class LineStringGraphGenerator extends BasicLineGraphGenerator {
                 new LineSegment(ls.getCoordinateN(0), ls.getCoordinateN(ls.getNumPoints() - 1))));
     }
 
+    @Override
     protected void setObject(Node n, Object obj) {
         // set underlying object to be point instead of coordinate
         Coordinate c = (Coordinate) obj;

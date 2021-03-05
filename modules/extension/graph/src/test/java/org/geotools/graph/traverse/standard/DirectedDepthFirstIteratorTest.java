@@ -58,10 +58,12 @@ public class DirectedDepthFirstIteratorTest extends DepthFirstIteratorTest {
         builder().getGraph().visitNodes(visitor);
     }
 
+    @Override
     protected DepthFirstIterator createIterator() {
         return (new DirectedDepthFirstIterator());
     }
 
+    @Override
     protected GraphBuilder createBuilder() {
         return (new BasicDirectedGraphBuilder());
     }

@@ -85,6 +85,7 @@ public final class AppSchemaXSDRegistry implements XSDSchemaLocator {
     }
 
     /** Implements schema locator... creates and registers new schema if necessary */
+    @Override
     public synchronized XSDSchema locateSchema(
             XSDSchema xsdSchema,
             String namespaceURI,

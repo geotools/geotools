@@ -46,6 +46,7 @@ import org.picocontainer.MutablePicoContainer;
  */
 public class XSAttributeGroupBinding extends AbstractComplexBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return XS.ATTRIBUTEGROUP;
     }
@@ -57,6 +58,7 @@ public class XSAttributeGroupBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -68,6 +70,7 @@ public class XSAttributeGroupBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return null;
     }
@@ -79,6 +82,7 @@ public class XSAttributeGroupBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
@@ -88,6 +92,7 @@ public class XSAttributeGroupBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // TODO: implement
         return null;

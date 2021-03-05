@@ -260,6 +260,7 @@ public abstract class WFS extends XSD {
     protected WFS() {}
 
     /** Returns 'http://www.opengis.net/wfs'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }

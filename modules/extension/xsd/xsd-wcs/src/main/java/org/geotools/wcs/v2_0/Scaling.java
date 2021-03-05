@@ -39,16 +39,19 @@ public final class Scaling extends XSD {
     /** private constructor */
     private Scaling() {}
 
+    @Override
     protected void addDependencies(Set dependencies) {
         //
     }
 
     /** Returns 'http://www.opengis.net/WCS_service-extension_scaling/1.0'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'rsub.xsd.'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("scal/v1_0/scal.xsd").toString();
     }

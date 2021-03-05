@@ -54,20 +54,24 @@ public class MockHttpResponse implements org.geotools.data.ows.HTTPResponse {
         }
     }
 
+    @Override
     public void dispose() {
         if (!disposed) {
             Assert.fail("The response input stream got grabbed, but not closed");
         }
     }
 
+    @Override
     public String getContentType() {
         return this.contentType;
     }
 
+    @Override
     public String getResponseHeader(String headerName) {
         return headers.get(headerName);
     }
 
+    @Override
     public InputStream getResponseStream() throws IOException {
         return new ByteArrayInputStream(response) {
             @Override

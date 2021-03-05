@@ -48,6 +48,7 @@ public class OnlineResourceBinding extends SLDOnlineResourceBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.OnlineResource;
     }

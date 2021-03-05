@@ -107,6 +107,7 @@ public class DimensionBinding extends DescriptionTypeBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WMTS.Dimension;
     }
@@ -118,6 +119,7 @@ public class DimensionBinding extends DescriptionTypeBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class<?> getType() {
         return DimensionType.class;
     }
@@ -129,6 +131,7 @@ public class DimensionBinding extends DescriptionTypeBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         if (!(value instanceof DimensionType)) {

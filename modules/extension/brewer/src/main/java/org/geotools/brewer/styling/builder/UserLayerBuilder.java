@@ -73,6 +73,7 @@ public class UserLayerBuilder extends AbstractSLDBuilder<UserLayer> {
     }
 
     /** Reset stroke to default values. */
+    @Override
     public UserLayerBuilder reset() {
         unset = false;
         inlineFeatureDataStore = null;
@@ -84,6 +85,7 @@ public class UserLayerBuilder extends AbstractSLDBuilder<UserLayer> {
     }
 
     /** Reset builder to provided original stroke. */
+    @Override
     public UserLayerBuilder reset(UserLayer other) {
         if (other == null) {
             return unset();
@@ -110,6 +112,7 @@ public class UserLayerBuilder extends AbstractSLDBuilder<UserLayer> {
         return (UserLayerBuilder) super.unset();
     }
 
+    @Override
     public UserLayer build() {
         if (unset) {
             return null;

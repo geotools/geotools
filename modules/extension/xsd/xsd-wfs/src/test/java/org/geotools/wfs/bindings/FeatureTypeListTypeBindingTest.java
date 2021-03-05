@@ -47,6 +47,7 @@ public class FeatureTypeListTypeBindingTest extends WFSTestSupport {
         super(WFS.FeatureTypeListType, FeatureTypeListType.class, Binding.OVERRIDE);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     @Test
     public void testEncode() throws Exception {
@@ -138,6 +139,7 @@ public class FeatureTypeListTypeBindingTest extends WFSTestSupport {
         assertEquals("Query", ops.item(2).getFirstChild().getNodeValue());
     }
 
+    @Override
     @Test
     public void testParse() throws Exception {
         final URL resource = TestData.getResource(this, "FeatureTypeListTypeBindingTest.xml");

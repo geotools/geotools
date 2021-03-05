@@ -125,6 +125,7 @@ public class FeatureTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return KML.FeatureType;
     }
@@ -136,6 +137,7 @@ public class FeatureTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return SimpleFeature.class;
     }
@@ -163,6 +165,7 @@ public class FeatureTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         // start off with the default feature type, and retype as necessary
@@ -271,6 +274,7 @@ public class FeatureTypeBinding extends AbstractComplexBinding {
         return schemaURI.getPath();
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         if (object instanceof FeatureCollection) {
             FeatureCollection features = (FeatureCollection) object;

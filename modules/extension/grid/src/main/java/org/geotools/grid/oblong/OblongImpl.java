@@ -55,16 +55,19 @@ public class OblongImpl implements Oblong {
     }
 
     /** {@inheritDoc} */
+    @Override
     public double getArea() {
         return envelope.getArea();
     }
 
     /** {@inheritDoc} */
+    @Override
     public ReferencedEnvelope getBounds() {
         return new ReferencedEnvelope(envelope);
     }
 
     /** {@inheritDoc} */
+    @Override
     public Coordinate getCenter() {
         return envelope.centre();
     }
@@ -75,6 +78,7 @@ public class OblongImpl implements Oblong {
      * <p>Vertex 0 is at the min X and Y coordinate (lower left) with the subsequent vertices being
      * indexed clockwise.
      */
+    @Override
     public Coordinate[] getVertices() {
         Coordinate[] vertices = new Coordinate[4];
         vertices[0] = new Coordinate(envelope.getMinX(), envelope.getMinY());
@@ -86,11 +90,13 @@ public class OblongImpl implements Oblong {
     }
 
     /** {@inheritDoc} */
+    @Override
     public Geometry toGeometry() {
         return geomFactory.toGeometry(envelope);
     }
 
     /** {@inheritDoc} */
+    @Override
     public Geometry toDenseGeometry(double maxSpacing) {
         return Densifier.densify(this.toGeometry(), maxSpacing);
     }

@@ -90,6 +90,7 @@ public class GetGmlObjectTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.GetGmlObjectType;
     }
@@ -101,6 +102,7 @@ public class GetGmlObjectTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return GetGmlObjectType.class;
     }

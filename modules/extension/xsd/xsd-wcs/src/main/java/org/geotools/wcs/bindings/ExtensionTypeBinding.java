@@ -35,10 +35,12 @@ import org.geotools.xsd.Node;
  */
 public class ExtensionTypeBinding extends AbstractComplexBinding {
 
+    @Override
     public QName getTarget() {
         return WCS.ExtensionType;
     }
 
+    @Override
     public Class getType() {
         return ExtensionType.class;
     }
@@ -50,6 +52,7 @@ public class ExtensionTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         ExtensionType et = Wcs20Factory.eINSTANCE.createExtensionType();

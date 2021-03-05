@@ -60,6 +60,7 @@ import org.opengis.temporal.Position;
 public class TimePeriodTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.TimePeriodType;
     }
@@ -71,6 +72,7 @@ public class TimePeriodTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Period.class;
     }
@@ -82,6 +84,7 @@ public class TimePeriodTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         Instant begin = null, end = null;

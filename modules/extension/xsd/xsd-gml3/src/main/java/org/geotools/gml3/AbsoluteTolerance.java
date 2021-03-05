@@ -24,6 +24,7 @@ public class AbsoluteTolerance implements LinearizationTolerance {
         this.tolerance = tolerance;
     }
 
+    @Override
     public double getTolerance(Circle circle) {
         return tolerance;
     }

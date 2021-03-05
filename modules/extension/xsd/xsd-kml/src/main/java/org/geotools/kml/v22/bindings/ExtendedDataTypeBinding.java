@@ -53,6 +53,7 @@ import org.geotools.xsd.Node;
 public class ExtendedDataTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return KML.ExtendedDataType;
     }
@@ -64,6 +65,7 @@ public class ExtendedDataTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     @SuppressWarnings("rawtypes")
     public Class getType() {
         return Map.class;
@@ -76,6 +78,7 @@ public class ExtendedDataTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
@@ -122,6 +125,7 @@ public class ExtendedDataTypeBinding extends AbstractComplexBinding {
         return extendedData;
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         if ("Data".equals(name.getLocalPart())) {
             return object;

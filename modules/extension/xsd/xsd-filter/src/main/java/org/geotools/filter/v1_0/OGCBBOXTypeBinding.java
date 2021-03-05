@@ -67,6 +67,7 @@ public class OGCBBOXTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.BBOXType;
     }
@@ -88,6 +89,7 @@ public class OGCBBOXTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return BBOX.class;
     }
@@ -99,6 +101,7 @@ public class OGCBBOXTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // TODO: crs
         PropertyName propertyName = node.getChildValue(PropertyName.class);
@@ -133,6 +136,7 @@ public class OGCBBOXTypeBinding extends AbstractComplexBinding {
         }
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         BBOX box = (BBOX) object;
 

@@ -37,6 +37,7 @@ public class GMLPointTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance coord;
     ElementInstance coords;
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();

@@ -46,18 +46,22 @@ public class CompositeFeatureCollection extends DataFeatureCollection {
         this.collections = collections;
     }
 
+    @Override
     protected Iterator<SimpleFeature> openIterator() throws IOException {
         return new CompositeIterator();
     }
 
+    @Override
     public SimpleFeatureType getSchema() {
         return null;
     }
 
+    @Override
     public ReferencedEnvelope getBounds() {
         return DataUtilities.bounds(this);
     }
 
+    @Override
     public int getCount() throws IOException {
         int count = 0;
         Iterator<SimpleFeature> i = iterator();
@@ -82,8 +86,10 @@ public class CompositeFeatureCollection extends DataFeatureCollection {
             index = 0;
         }
 
+        @Override
         public void remove() {}
 
+        @Override
         public boolean hasNext() {
             // is there a current iterator that has another element
             if ((iterator != null) && iterator.hasNext()) {
@@ -113,16 +119,19 @@ public class CompositeFeatureCollection extends DataFeatureCollection {
             return false;
         }
 
+        @Override
         public SimpleFeature next() {
             return (SimpleFeature) iterator.next();
         }
     }
 
+    @Override
     public boolean addAll(Collection arg0) {
         throw new RuntimeException(
                 "Can't add to a composite featurecollection; you need to add to one of the constituent collections direclty.");
     }
 
+    @Override
     public <T> T[] toArray(T[] arg0) {
         List<T> list = new ArrayList<>();
         Iterator it = collections.iterator();

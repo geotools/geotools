@@ -75,6 +75,7 @@ public class TransformFeatureCollectionTest {
             this.datastore = datastore;
         }
 
+        @Override
         public DataAccess<SimpleFeatureType, SimpleFeature> getDataStore() {
             return datastore;
         }

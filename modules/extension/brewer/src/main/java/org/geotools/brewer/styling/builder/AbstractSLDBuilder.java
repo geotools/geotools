@@ -59,6 +59,7 @@ abstract class AbstractSLDBuilder<T> implements Builder<T> {
         reset(other.build());
     }
 
+    @Override
     public AbstractSLDBuilder<T> unset() {
         reset();
         unset = true;

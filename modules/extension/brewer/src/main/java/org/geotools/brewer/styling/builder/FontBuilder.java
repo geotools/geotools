@@ -41,6 +41,7 @@ public class FontBuilder extends AbstractStyleBuilder<Font> {
         reset();
     }
 
+    @Override
     public Font build() {
         if (unset) {
             return null;
@@ -107,6 +108,7 @@ public class FontBuilder extends AbstractStyleBuilder<Font> {
         return size(cqlExpression(cqlExpression));
     }
 
+    @Override
     public FontBuilder reset() {
         Font df = sf.getDefaultFont();
         this.families = new ArrayList<>();
@@ -116,6 +118,7 @@ public class FontBuilder extends AbstractStyleBuilder<Font> {
         return this;
     }
 
+    @Override
     public FontBuilder reset(Font font) {
         if (font == null) {
             return reset();
@@ -128,6 +131,7 @@ public class FontBuilder extends AbstractStyleBuilder<Font> {
         return this;
     }
 
+    @Override
     public FontBuilder unset() {
         return (FontBuilder) super.unset();
     }

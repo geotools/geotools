@@ -95,6 +95,7 @@ public class DelaunayEdge extends BasicEdge {
                 .distance(((XYNode) this.getNodeB()).getCoordinate());
     }
 
+    @Override
     public boolean equals(Object o) {
         return ((o instanceof DelaunayEdge)
                 && ((this.getNodeA().equals(((DelaunayEdge) o).getNodeA())
@@ -108,6 +109,7 @@ public class DelaunayEdge extends BasicEdge {
         return Objects.hash(this.getNodeA(), this.getNodeB());
     }
 
+    @Override
     public String toString() {
         return this.getNodeA().toString() + "--" + this.getNodeB().toString();
     }

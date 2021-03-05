@@ -48,6 +48,7 @@ public class OGCOrBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.Or;
     }
@@ -59,10 +60,12 @@ public class OGCOrBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Or.class;
     }
 
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -74,6 +77,7 @@ public class OGCOrBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List<Filter> operands =
                 FilterParsingUtils.BinaryLogicOperator_getChildFilters(node, filterfactory);

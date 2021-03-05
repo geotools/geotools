@@ -50,6 +50,7 @@ public class OperationTypeBinding extends AbstractSimpleBinding {
     public OperationTypeBinding(WfsFactory factory) {}
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.OperationType;
     }
@@ -61,6 +62,7 @@ public class OperationTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return OperationType.class;
     }
@@ -72,6 +74,7 @@ public class OperationTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         String string = (String) value;
 

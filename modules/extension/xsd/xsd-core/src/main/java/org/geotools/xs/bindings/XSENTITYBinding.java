@@ -42,6 +42,7 @@ import org.geotools.xsd.SimpleBinding;
  */
 public class XSENTITYBinding implements SimpleBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return XS.ENTITY;
     }
@@ -53,6 +54,7 @@ public class XSENTITYBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -64,6 +66,7 @@ public class XSENTITYBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return null;
     }
@@ -75,6 +78,7 @@ public class XSENTITYBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         // TODO: implement me
         return null;
@@ -87,6 +91,7 @@ public class XSENTITYBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public String encode(Object object, String value) {
         // TODO: implement
         return null;

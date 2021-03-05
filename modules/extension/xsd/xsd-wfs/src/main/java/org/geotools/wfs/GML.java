@@ -470,6 +470,7 @@ public class GML {
                             addDependency(gmlConfiguration); // use our GML configuration
                         }
 
+                        @Override
                         protected void registerBindings(java.util.Map bindings) {
                             // we have no special bindings
                         }
@@ -692,6 +693,7 @@ public class GML {
 
             Object next;
 
+            @Override
             public boolean hasNext() {
                 if (next != null) {
                     return true;
@@ -700,6 +702,7 @@ public class GML {
                 return next != null;
             }
 
+            @Override
             public SimpleFeature next() {
                 if (next == null) {
                     next = parser.parse();
@@ -719,6 +722,7 @@ public class GML {
                 }
             }
 
+            @Override
             public void close() {
                 schema = null;
             }

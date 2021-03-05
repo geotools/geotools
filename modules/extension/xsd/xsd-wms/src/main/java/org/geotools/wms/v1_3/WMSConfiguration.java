@@ -42,5 +42,6 @@ public class WMSConfiguration extends Configuration {
      *
      * @generated
      */
+    @Override
     protected final void registerBindings(MutablePicoContainer container) {}
 }

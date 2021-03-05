@@ -63,6 +63,7 @@ public class XSNegativeIntegerStrategyTest extends TestSchema {
         validateValues("-100000", new BigInteger("-100000"));
     }
 
+    @Override
     protected QName getQName() {
         return XS.NEGATIVEINTEGER;
     }

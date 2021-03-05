@@ -34,27 +34,33 @@ public class NamespaceSupportWrapper implements NamespaceContext {
         return namespaceSupport;
     }
 
+    @Override
     public String getNamespaceURI(String prefix) {
         return namespaceSupport.getURI(prefix);
     }
 
+    @Override
     public String getPrefix(String namespaceURI) {
         return namespaceSupport.getPrefix(namespaceURI);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Iterator getPrefixes(String namespaceURI) {
         final Enumeration e = namespaceSupport.getPrefixes(namespaceURI);
 
         return new Iterator() {
+            @Override
             public void remove() {
                 throw new UnsupportedOperationException();
             }
 
+            @Override
             public boolean hasNext() {
                 return e.hasMoreElements();
             }
 
+            @Override
             public Object next() {
                 return e.nextElement();
             }

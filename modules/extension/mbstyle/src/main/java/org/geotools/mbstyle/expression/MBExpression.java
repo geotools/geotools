@@ -64,6 +64,7 @@ public abstract class MBExpression extends FunctionImpl {
         transformer = new MBStyleTransformer(parse);
     }
 
+    @Override
     public String getName() {
         return name;
     }

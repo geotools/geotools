@@ -59,6 +59,7 @@ public class MarkBuilder extends AbstractStyleBuilder<Mark> {
         return fill;
     }
 
+    @Override
     public MarkBuilder reset() {
         // TODO: where is the default mark?
         this.wellKnownName = literal("square");
@@ -71,6 +72,7 @@ public class MarkBuilder extends AbstractStyleBuilder<Mark> {
         return this;
     }
 
+    @Override
     public Mark build() {
         if (unset) {
             return null;
@@ -89,6 +91,7 @@ public class MarkBuilder extends AbstractStyleBuilder<Mark> {
         return mark;
     }
 
+    @Override
     public MarkBuilder reset(Mark mark) {
         return reset((org.opengis.style.Mark) mark);
     }
@@ -106,10 +109,12 @@ public class MarkBuilder extends AbstractStyleBuilder<Mark> {
         return this;
     }
 
+    @Override
     public MarkBuilder unset() {
         return (MarkBuilder) super.unset();
     }
 
+    @Override
     protected void buildStyleInternal(StyleBuilder sb) {
         sb.featureTypeStyle().rule().point().graphic().mark().init(this);
     }

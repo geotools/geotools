@@ -101,6 +101,7 @@ public class LayerTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WMTS.LayerType;
     }
@@ -112,6 +113,7 @@ public class LayerTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class<LayerType> getType() {
         return LayerType.class;
     }
@@ -123,6 +125,7 @@ public class LayerTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         LayerType layer = factory.createLayerType();

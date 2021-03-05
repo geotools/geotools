@@ -53,6 +53,7 @@ public class OperationsTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.OperationsType;
     }
@@ -64,6 +65,7 @@ public class OperationsTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return OperationsType.class;
     }
@@ -75,6 +77,7 @@ public class OperationsTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         OperationsType om = factory.createOperationsType();

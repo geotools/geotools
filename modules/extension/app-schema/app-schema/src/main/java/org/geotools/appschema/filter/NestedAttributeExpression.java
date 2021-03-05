@@ -348,6 +348,7 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
         return exp;
     }
 
+    @Override
     public Object accept(ExpressionVisitor visitor, Object extraData) {
         // Workaround for GEOT-4981: NestedAttributeExpresionImpl is incompatible with
         // DuplicatingFilterVisitor

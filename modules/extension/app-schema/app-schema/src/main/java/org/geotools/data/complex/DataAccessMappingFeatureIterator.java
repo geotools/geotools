@@ -288,10 +288,12 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         return exists;
     }
 
+    @Override
     protected FeatureIterator<? extends Feature> getSourceFeatureIterator() {
         return sourceFeatureIterator;
     }
 
+    @Override
     protected boolean isSourceFeatureIteratorNull() {
         return getSourceFeatureIterator() == null;
     }
@@ -387,6 +389,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         return checkForeignIdValues(foreignIdValues, curSrcFeature);
     }
 
+    @Override
     protected void initialiseSourceFeatures(
             FeatureTypeMapping mapping, Query query, CoordinateReferenceSystem targetCRS)
             throws IOException {
@@ -504,6 +507,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         }
     }
 
+    @Override
     protected boolean unprocessedFeatureExists() {
 
         boolean exists = getSourceFeatureIterator().hasNext();
@@ -525,15 +529,18 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         return mapping.getFeatureIdExpression().evaluate(feature, String.class);
     }
 
+    @Override
     protected String extractIdForAttribute(final Expression idExpression, Object sourceInstance) {
         String value = idExpression.evaluate(sourceInstance, String.class);
         return value;
     }
 
+    @Override
     protected boolean isNextSourceFeatureNull() {
         return curSrcFeature == null;
     }
 
+    @Override
     protected boolean sourceFeatureIteratorHasNext() {
         return getSourceFeatureIterator().hasNext();
     }
@@ -1384,6 +1391,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         }
     }
 
+    @Override
     protected Feature computeNext() throws IOException {
 
         String id = getNextFeatureId();
@@ -1619,10 +1627,12 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                         || Expression.NIL.equals(attMapping.getSourceExpression()));
     }
 
+    @Override
     protected Feature populateFeatureData(String id) throws IOException {
         throw new UnsupportedOperationException("populateFeatureData should not be called!");
     }
 
+    @Override
     protected void closeSourceFeatures() {
         if (sourceFeatures != null && getSourceFeatureIterator() != null) {
             sourceFeatureIterator.close();
@@ -1651,6 +1661,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         }
     }
 
+    @Override
     protected Object getValue(final Expression expression, Object sourceFeature) {
         Object value = expression.evaluate(sourceFeature);
         if (value instanceof Attribute) {

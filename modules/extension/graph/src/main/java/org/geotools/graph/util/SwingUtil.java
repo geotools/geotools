@@ -31,10 +31,12 @@ public class SwingUtil {
 
     public static ListModel toListModel(final List elements) {
         return (new AbstractListModel() {
+            @Override
             public int getSize() {
                 return (elements.size());
             }
 
+            @Override
             public Object getElementAt(int index) {
                 return (elements.get(index));
             }
@@ -70,6 +72,7 @@ public class SwingUtil {
     public static void addDoubleClickEvent(JList list) {
         list.addMouseListener(
                 new MouseAdapter() {
+                    @Override
                     public void mouseClicked(MouseEvent e) {
                         JList source = (JList) e.getSource();
                         if (e.getClickCount() == 2) {

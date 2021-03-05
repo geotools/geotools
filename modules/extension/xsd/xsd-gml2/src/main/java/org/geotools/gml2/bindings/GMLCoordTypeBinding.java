@@ -57,6 +57,7 @@ public class GMLCoordTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.CoordType;
     }
@@ -68,6 +69,7 @@ public class GMLCoordTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Coordinate.class;
     }
@@ -80,6 +82,7 @@ public class GMLCoordTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         double x = ((BigDecimal) node.getChild("X").getValue()).doubleValue();
         double y = Double.NaN;
@@ -96,6 +99,7 @@ public class GMLCoordTypeBinding extends AbstractComplexBinding {
         return new Coordinate(x, y, z);
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         Coordinate c = (Coordinate) object;
 

@@ -71,6 +71,7 @@ public class BinaryPayloadBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WMTS.BinaryPayload;
     }
@@ -82,6 +83,7 @@ public class BinaryPayloadBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return BinaryPayloadType.class;
     }
@@ -93,6 +95,7 @@ public class BinaryPayloadBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         BinaryPayloadType payload = factory.createBinaryPayloadType();
         payload.setFormat((String) node.getChildValue("Format"));

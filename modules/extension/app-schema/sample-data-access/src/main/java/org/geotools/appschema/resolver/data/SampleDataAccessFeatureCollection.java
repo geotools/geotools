@@ -45,6 +45,7 @@ public class SampleDataAccessFeatureCollection extends ArrayList<Feature>
      * @see org.geotools.feature.FeatureCollection#accepts(org.opengis.feature.FeatureVisitor,
      *     org.opengis.util.ProgressListener)
      */
+    @Override
     public void accepts(FeatureVisitor visitor, ProgressListener progress) throws IOException {
         DataUtilities.visit(this, visitor, progress);
     }
@@ -54,6 +55,7 @@ public class SampleDataAccessFeatureCollection extends ArrayList<Feature>
      *
      * @see org.geotools.feature.FeatureCollection#features()
      */
+    @Override
     public FeatureIterator<Feature> features() {
         return new SampleDataAccessFeatureIterator(iterator());
     }
@@ -63,6 +65,7 @@ public class SampleDataAccessFeatureCollection extends ArrayList<Feature>
      *
      * @see org.geotools.feature.FeatureCollection#getBounds()
      */
+    @Override
     public ReferencedEnvelope getBounds() {
         // FIXME implement this
         return null;
@@ -73,6 +76,7 @@ public class SampleDataAccessFeatureCollection extends ArrayList<Feature>
      *
      * @see org.geotools.feature.FeatureCollection#getID()
      */
+    @Override
     public String getID() {
         // FIXME implement this
         return null;
@@ -83,6 +87,7 @@ public class SampleDataAccessFeatureCollection extends ArrayList<Feature>
      *
      * @see org.geotools.feature.FeatureCollection#getSchema()
      */
+    @Override
     public FeatureType getSchema() {
         return SampleDataAccessData.MAPPEDFEATURE_TYPE;
     }
@@ -92,6 +97,7 @@ public class SampleDataAccessFeatureCollection extends ArrayList<Feature>
      *
      * @see org.geotools.feature.FeatureCollection#sort(org.opengis.filter.sort.SortBy)
      */
+    @Override
     public FeatureCollection<FeatureType, Feature> sort(SortBy order) {
         throw new UnsupportedOperationException();
     }
@@ -101,6 +107,7 @@ public class SampleDataAccessFeatureCollection extends ArrayList<Feature>
      *
      * @see org.geotools.feature.FeatureCollection#subCollection(org.opengis.filter.Filter)
      */
+    @Override
     public FeatureCollection<FeatureType, Feature> subCollection(Filter filter) {
         throw new UnsupportedOperationException();
     }

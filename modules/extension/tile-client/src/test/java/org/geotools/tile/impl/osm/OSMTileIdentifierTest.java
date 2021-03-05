@@ -25,12 +25,14 @@ import org.junit.Test;
 
 public class OSMTileIdentifierTest extends TileIdentifierTest {
 
+    @Override
     @Test
     public void testGetId() {
         // System.out.println(this.tileId.getId());
         Assert.assertEquals("SomeService_5_10_12", this.tileId.getId());
     }
 
+    @Override
     @Test
     public void testGetCode() {
         Assert.assertEquals("5/10/12", this.tileId.getCode());
@@ -52,6 +54,7 @@ public class OSMTileIdentifierTest extends TileIdentifierTest {
         Assert.assertEquals(neighbour, this.tileId.getLowerNeighbour());
     }
 
+    @Override
     protected TileIdentifier createTestTileIdentifier(
             ZoomLevel zoomLevel, int x, int y, String name) {
         return new OSMTileIdentifier(x, y, zoomLevel, name);

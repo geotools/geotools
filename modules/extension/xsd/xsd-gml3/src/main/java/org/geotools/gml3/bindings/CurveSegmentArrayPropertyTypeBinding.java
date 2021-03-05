@@ -47,6 +47,7 @@ import org.locationtech.jts.geom.LineString;
  */
 public class CurveSegmentArrayPropertyTypeBinding extends AbstractComplexBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.CurveSegmentArrayPropertyType;
     }
@@ -58,6 +59,7 @@ public class CurveSegmentArrayPropertyTypeBinding extends AbstractComplexBinding
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return LineString[].class;
     }
@@ -69,12 +71,14 @@ public class CurveSegmentArrayPropertyTypeBinding extends AbstractComplexBinding
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List<LineString> lines = node.getChildValues(LineString.class);
 
         return lines.toArray(new LineString[lines.size()]);
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         if ("_CurveSegment".equals(name.getLocalPart())
                 ||

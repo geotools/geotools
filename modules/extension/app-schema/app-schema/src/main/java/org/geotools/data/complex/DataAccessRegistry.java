@@ -97,6 +97,7 @@ public class DataAccessRegistry implements Repository {
         return null;
     }
 
+    @Override
     public synchronized DataAccess<FeatureType, Feature> access(Name name) {
         try {
             return featureSource(name).getDataStore();
@@ -105,11 +106,13 @@ public class DataAccessRegistry implements Repository {
         }
     }
 
+    @Override
     public DataStore dataStore(Name name) {
         throw new UnsupportedOperationException(
                 "Simple feature DataStores not supported by app-schema registry.");
     }
 
+    @Override
     public List<DataStore> getDataStores() {
         throw new UnsupportedOperationException(
                 "Simple feature DataStores not supported by app-schema registry.");

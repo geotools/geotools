@@ -34,10 +34,12 @@ public class InsertTypeBinding extends AbstractComplexEMFBinding {
         super(factory);
     }
 
+    @Override
     public QName getTarget() {
         return WFS.InsertType;
     }
 
+    @Override
     public Class<?> getType() {
         return InsertType.class;
     }

@@ -59,6 +59,7 @@ public class LayerBinding extends AbstractSimpleBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WMTS.Layer;
     }
@@ -71,6 +72,7 @@ public class LayerBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class<LayerType> getType() {
         return LayerType.class;
     }

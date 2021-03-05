@@ -51,6 +51,7 @@ public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {
         spec = new WMS1_1_0();
     }
 
+    @Override
     @Test
     public void testGetVersion() {
         assertEquals(spec.getVersion(), "1.1.0");
@@ -59,12 +60,14 @@ public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {
     /* (non-Javadoc)
      * @see org.geotools.data.wms.test.WMS1_0_0Test#checkProperties(java.util.Properties)
      */
+    @Override
     protected void checkProperties(Properties properties) {
         assertEquals(properties.get("REQUEST"), "GetCapabilities");
         assertEquals(properties.get("VERSION"), "1.1.0");
         assertEquals(properties.get("SERVICE"), "WMS");
     }
 
+    @Override
     @Test
     public void testCreateDescribeLayerRequest() throws Exception {
         /* TODO FIX
@@ -159,6 +162,7 @@ public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {
     //
     //    }
 
+    @Override
     @Test
     public void testCreateParser() throws Exception {
         WMSCapabilities capabilities = createCapabilities("1.1.0Capabilities.xml");
@@ -278,6 +282,7 @@ public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {
         }
     }
 
+    @Override
     @Test
     public void testCreateGetMapRequest() throws Exception {
         try {
@@ -298,6 +303,7 @@ public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {
         }
     }
 
+    @Override
     protected WebMapServer getCustomWMS(URL featureURL)
             throws SAXException, URISyntaxException, IOException {
         return new CustomWMS(featureURL);
@@ -321,6 +327,7 @@ public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {
             // TODO Auto-generated constructor stub
         }
 
+        @Override
         protected void setupSpecifications() {
             specs = new Specification[1];
             specs[0] = new WMS1_1_0();

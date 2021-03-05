@@ -25,6 +25,7 @@ import org.opengis.filter.expression.PropertyName;
 public class FilterFactoryImplReportInvalidProperty extends FilterFactoryImpl {
 
     // @Override
+    @Override
     public PropertyName property(String name) {
         AttributeExpressionImpl att = new AttributeExpressionImpl(name);
         att.setLenient(false);

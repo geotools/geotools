@@ -99,6 +99,7 @@ public class AStarIteratorTest {
                 new CountingWalker() {
                     int m_mode = 0;
 
+                    @Override
                     public int visit(Graphable element, GraphTraversal traversal) {
                         super.visit(element, traversal);
                         if (m_mode == 0) {
@@ -177,10 +178,12 @@ public class AStarIteratorTest {
         class Factory {
             public AStarIterator.AStarFunctions createFunctions(Node target) {
                 return (new AStarIterator.AStarFunctions(target) {
+                    @Override
                     public double cost(AStarNode n1, AStarNode n2) {
                         return 1;
                     }
 
+                    @Override
                     public double h(Node n) {
                         String dest = hashmap.get(this.getDest()).toString();
                         String current = hashmap.get(n).toString();
@@ -321,6 +324,7 @@ public class AStarIteratorTest {
     private class MyVisitor implements GraphVisitor {
         public int count = 0;
 
+        @Override
         public int visit(Graphable component) {
             if (component.isVisited()) {
                 count++;
@@ -350,10 +354,12 @@ public class AStarIteratorTest {
                 source,
                 new AStarIterator.AStarFunctions(target) {
 
+                    @Override
                     public double cost(AStarNode n1, AStarNode n2) {
                         return 1;
                     }
 
+                    @Override
                     public double h(Node n) {
                         return (getDest().getID() - n.getID());
                     }

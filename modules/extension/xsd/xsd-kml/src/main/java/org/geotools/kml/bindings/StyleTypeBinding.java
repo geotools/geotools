@@ -65,6 +65,7 @@ public class StyleTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return KML.StyleType;
     }
@@ -76,6 +77,7 @@ public class StyleTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return FeatureTypeStyle.class;
     }
@@ -87,6 +89,7 @@ public class StyleTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List<Symbolizer> l = node.getChildValues(Symbolizer.class);
         Symbolizer[] syms = l.toArray(new Symbolizer[l.size()]);

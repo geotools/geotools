@@ -138,6 +138,7 @@ public class BingServiceTest extends ServiceTest {
         return tiles;
     }
 
+    @Override
     public List<String> getUrlList(String extentName) {
         return extentNameToUrlList.get(extentName);
     }

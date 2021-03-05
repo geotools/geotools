@@ -48,6 +48,7 @@ public class GetPropertiesExecutor implements BindingWalker.Visitor {
         return properties;
     }
 
+    @Override
     public void visit(Binding binding) {
         if (binding instanceof ComplexBinding) {
             ComplexBinding complex = (ComplexBinding) binding;

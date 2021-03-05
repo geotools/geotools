@@ -71,6 +71,7 @@ public abstract class WFSConfiguration extends Configuration {
     }
 
     /** Registers an instanceof {@link WfsFactory} in the context. */
+    @Override
     protected void configureContext(MutablePicoContainer container) {
         container.registerComponentInstance(WfsFactory.eINSTANCE);
     }
@@ -80,6 +81,7 @@ public abstract class WFSConfiguration extends Configuration {
      *
      * @generated
      */
+    @Override
     protected final void registerBindings(MutablePicoContainer container) {
         // Types
         container.registerComponentImplementation(WFS.ActionType, ActionTypeBinding.class);

@@ -29,6 +29,7 @@ import org.w3c.dom.Document;
 
 public class SurfacePropertyTypeBindingTest extends GML3TestSupport {
 
+    @Override
     protected boolean enableExtendedArcSurfaceSupport() {
         return true;
     }

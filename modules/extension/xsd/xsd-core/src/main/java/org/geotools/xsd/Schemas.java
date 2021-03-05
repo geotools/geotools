@@ -398,6 +398,7 @@ public class Schemas {
         List<XSDSchemaLocator> locators = new ArrayList<>();
         locators.add(
                 new XSDSchemaLocator() {
+                    @Override
                     public XSDSchema locateSchema(
                             XSDSchema xsdSchema,
                             String namespaceURI,
@@ -544,10 +545,12 @@ public class Schemas {
             this.baseLocation = baseLocation;
         }
 
+        @Override
         public void startDocument() throws SAXException {
             next.clear();
         }
 
+        @Override
         public void startElement(String uri, String localName, String qName, Attributes attributes)
                 throws SAXException {
             // process import
@@ -704,6 +707,7 @@ public class Schemas {
         final List<XSDParticle> particles = new ArrayList<>();
         TypeWalker.Visitor visitor =
                 new TypeWalker.Visitor() {
+                    @Override
                     public boolean visit(XSDTypeDefinition type) {
                         // simple types don't have children
                         if (type instanceof XSDSimpleTypeDefinition) {
@@ -714,6 +718,7 @@ public class Schemas {
 
                         ElementVisitor visitor =
                                 new ElementVisitor() {
+                                    @Override
                                     public void visit(XSDParticle particle) {
                                         XSDElementDeclaration element =
                                                 (XSDElementDeclaration) particle.getContent();
@@ -760,6 +765,7 @@ public class Schemas {
         final List<XSDParticle> particles = new ArrayList<>();
         TypeWalker.Visitor visitor =
                 new TypeWalker.Visitor() {
+                    @Override
                     public boolean visit(XSDTypeDefinition type) {
                         // simple types doesn't have children
                         if (type instanceof XSDSimpleTypeDefinition) {
@@ -770,6 +776,7 @@ public class Schemas {
 
                         ElementVisitor visitor =
                                 new ElementVisitor() {
+                                    @Override
                                     public void visit(XSDParticle particle) {
                                         XSDWildcard element = (XSDWildcard) particle.getContent();
 
@@ -908,6 +915,7 @@ public class Schemas {
 
         TypeWalker.Visitor visitor =
                 new TypeWalker.Visitor() {
+                    @Override
                     public boolean visit(XSDTypeDefinition type) {
                         if (nameMatches(type, parentTypeName)) {
                             found.add(type);
@@ -963,6 +971,7 @@ public class Schemas {
 
         ElementVisitor visitor =
                 new ElementVisitor() {
+                    @Override
                     public void visit(XSDParticle particle) {
                         XSDElementDeclaration decl = (XSDElementDeclaration) particle.getContent();
 
@@ -1011,6 +1020,7 @@ public class Schemas {
 
         ElementVisitor visitor =
                 new ElementVisitor() {
+                    @Override
                     public void visit(XSDParticle particle) {
                         XSDElementDeclaration decl = (XSDElementDeclaration) particle.getContent();
 
@@ -1253,6 +1263,7 @@ public class Schemas {
         // walk up the type hierarchy of the element to generate a list of atts
         TypeWalker.Visitor visitor =
                 new TypeWalker.Visitor() {
+                    @Override
                     public boolean visit(XSDTypeDefinition type) {
                         // simple types dont have attributes
                         if (type instanceof XSDSimpleTypeDefinition) {
@@ -1595,18 +1606,22 @@ public class Schemas {
 
         container.accept(
                 new PicoVisitor() {
+                    @Override
                     public Object traverse(Object node) {
                         return null;
                     }
 
+                    @Override
                     public void visitContainer(PicoContainer container) {
                         if (container instanceof MutablePicoContainer) {
                             ((MutablePicoContainer) container).unregisterComponent(key);
                         }
                     }
 
+                    @Override
                     public void visitComponentAdapter(ComponentAdapter adapter) {}
 
+                    @Override
                     public void visitParameter(Parameter parameter) {}
                 });
     }
@@ -1639,10 +1654,12 @@ public class Schemas {
             adapter = new SchemaLocatorAdapter(locators);
         }
 
+        @Override
         public boolean isFactoryForType(Object type) {
             return type == XSDSchemaLocator.class;
         }
 
+        @Override
         public Adapter adaptNew(Notifier notifier, Object type) {
             return adapter;
         }
@@ -1655,10 +1672,12 @@ public class Schemas {
             this.locators = new ArrayList<>(locators);
         }
 
+        @Override
         public boolean isAdapterForType(Object type) {
             return type == XSDSchemaLocator.class;
         }
 
+        @Override
         public XSDSchema locateSchema(
                 XSDSchema xsdSchema,
                 String namespaceURI,
@@ -1692,10 +1711,12 @@ public class Schemas {
             adapter = new SchemaLocationResolverAdapter(resolvers);
         }
 
+        @Override
         public boolean isFactoryForType(Object type) {
             return type == XSDSchemaLocationResolver.class;
         }
 
+        @Override
         public Adapter adaptNew(Notifier notifier, Object type) {
             return adapter;
         }
@@ -1709,10 +1730,12 @@ public class Schemas {
             this.resolvers = new ArrayList<>(resolvers);
         }
 
+        @Override
         public boolean isAdapterForType(Object type) {
             return type == XSDSchemaLocationResolver.class;
         }
 
+        @Override
         public String resolveSchemaLocation(
                 XSDSchema schema, String namespaceURI, String rawSchemaLocationURI) {
             for (XSDSchemaLocationResolver resolver : resolvers) {

@@ -34,6 +34,7 @@ public class BasicLineGraphBuilder extends BasicGraphBuilder {
      * @see BasicXYNode
      * @see org.geotools.graph.build.GraphBuilder#buildNode()
      */
+    @Override
     public Node buildNode() {
         return (new BasicXYNode());
     }

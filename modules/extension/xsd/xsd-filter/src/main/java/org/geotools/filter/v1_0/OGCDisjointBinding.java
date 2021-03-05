@@ -49,6 +49,7 @@ public class OGCDisjointBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.Disjoint;
     }
@@ -60,10 +61,12 @@ public class OGCDisjointBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Disjoint.class;
     }
 
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -75,6 +78,7 @@ public class OGCDisjointBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Expression[] operands = OGCUtils.spatial(node, filterFactory, geometryFactory);
 

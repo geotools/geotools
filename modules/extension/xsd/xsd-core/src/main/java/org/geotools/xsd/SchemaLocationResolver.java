@@ -137,6 +137,7 @@ public class SchemaLocationResolver implements XSDSchemaLocationResolver {
      * <p>Resolution is performed by stripping the filename off of <param>location</param> and
      * looking up a resource located in the same package as the xsd.
      */
+    @Override
     public String resolveSchemaLocation(XSDSchema schema, String uri, String location) {
         if (location == null) {
             return null;
@@ -155,6 +156,7 @@ public class SchemaLocationResolver implements XSDSchemaLocationResolver {
         return null;
     }
 
+    @Override
     public String toString() {
         return xsd.toString();
     }

@@ -60,6 +60,7 @@ public class SLDAnchorPointBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SLD.ANCHORPOINT;
     }
@@ -71,6 +72,7 @@ public class SLDAnchorPointBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -82,6 +84,7 @@ public class SLDAnchorPointBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return AnchorPoint.class;
     }
@@ -93,6 +96,7 @@ public class SLDAnchorPointBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
@@ -102,6 +106,7 @@ public class SLDAnchorPointBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Expression x = (Expression) node.getChildValue("AnchorPointX");
         Expression y = (Expression) node.getChildValue("AnchorPointY");

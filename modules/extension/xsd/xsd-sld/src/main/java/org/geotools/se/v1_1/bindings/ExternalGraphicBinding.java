@@ -71,6 +71,7 @@ public class ExternalGraphicBinding extends SLDExternalGraphicBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.ExternalGraphic;
     }
@@ -82,6 +83,7 @@ public class ExternalGraphicBinding extends SLDExternalGraphicBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         ExternalGraphic g;
         if (node.hasChild("InlineContent")) {

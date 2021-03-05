@@ -61,6 +61,7 @@ public class PlacemarkTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return KML.PlacemarkType;
     }
@@ -72,11 +73,13 @@ public class PlacemarkTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     @SuppressWarnings("rawtypes")
     public Class getType() {
         return SimpleFeature.class;
     }
 
+    @Override
     public int getExecutionMode() {
         return Binding.AFTER;
     }
@@ -88,6 +91,7 @@ public class PlacemarkTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // retype from the abstract feature type, since extended data could have altered the schema
         // placemarks add an additional geometry field
@@ -116,6 +120,7 @@ public class PlacemarkTypeBinding extends AbstractComplexBinding {
         return b.buildFeature(feature.getID());
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         SimpleFeature feature = (SimpleFeature) object;
         if (KML.Geometry.getLocalPart().equals(name.getLocalPart())

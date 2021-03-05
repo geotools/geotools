@@ -63,10 +63,12 @@ public class GMLPolygonTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.PolygonType;
     }
 
+    @Override
     public int getExecutionMode() {
         return BEFORE;
     }
@@ -78,6 +80,7 @@ public class GMLPolygonTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Polygon.class;
     }
@@ -89,6 +92,7 @@ public class GMLPolygonTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         LinearRing shell = (LinearRing) node.getChild("outerBoundaryIs").getValue();
 
@@ -103,6 +107,7 @@ public class GMLPolygonTypeBinding extends AbstractComplexBinding {
         return gFactory.createPolygon(shell, holes);
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         Polygon polygon = (Polygon) object;
 

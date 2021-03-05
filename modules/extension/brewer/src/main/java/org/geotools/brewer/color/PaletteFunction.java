@@ -58,6 +58,7 @@ public class PaletteFunction extends FunctionExpressionImpl {
         ff = factory;
     }
 
+    @Override
     public void setParameters(List<Expression> args) {
         super.setParameters(args);
         classifier = (ClassificationFunction) getExpression(0);
@@ -110,6 +111,7 @@ public class PaletteFunction extends FunctionExpressionImpl {
         return prelim;
     }
 
+    @Override
     public Object evaluate(Object feature) {
         int classNum = classifier.getClasses();
         ColorBrewer brewer = new ColorBrewer();
@@ -126,6 +128,7 @@ public class PaletteFunction extends FunctionExpressionImpl {
         return color;
     }
 
+    @Override
     public String toString() {
         return "Color Brewer palette";
     }

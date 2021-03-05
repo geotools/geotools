@@ -39,5 +39,6 @@ public class XMLConfiguration extends Configuration {
      *
      * @generated
      */
+    @Override
     protected final void registerBindings(MutablePicoContainer container) {}
 }

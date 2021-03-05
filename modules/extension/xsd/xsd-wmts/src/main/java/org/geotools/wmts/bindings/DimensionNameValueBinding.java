@@ -65,6 +65,7 @@ public class DimensionNameValueBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WMTS.DimensionNameValue;
     }
@@ -76,6 +77,7 @@ public class DimensionNameValueBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return DimensionNameValueType.class;
     }
@@ -87,6 +89,7 @@ public class DimensionNameValueBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         DimensionNameValueType name = factory.createDimensionNameValueType();
         name.setName((String) node.getChildValue("name"));

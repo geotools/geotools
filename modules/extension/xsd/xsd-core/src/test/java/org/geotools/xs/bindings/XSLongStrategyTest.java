@@ -40,6 +40,7 @@ public class XSLongStrategyTest extends TestSchema {
         validateValues("+100000", Long.valueOf(100000));
     }
 
+    @Override
     protected QName getQName() {
         return XS.LONG;
     }

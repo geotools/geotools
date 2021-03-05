@@ -42,6 +42,7 @@ import org.w3c.dom.Element;
  */
 public class OGCDistanceTypeBinding extends AbstractComplexBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.DistanceType;
     }
@@ -53,6 +54,7 @@ public class OGCDistanceTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return OVERRIDE;
     }
@@ -64,6 +66,7 @@ public class OGCDistanceTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return DistanceUnits.class;
     }
@@ -75,6 +78,7 @@ public class OGCDistanceTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
@@ -84,12 +88,14 @@ public class OGCDistanceTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Object units = node.getAttributeValue("units");
         return DistanceUnits.of(
                 Double.parseDouble((String) value), units != null ? units.toString() : null);
     }
 
+    @Override
     public Element encode(Object object, Document document, Element value) throws Exception {
         DistanceUnits distance = (DistanceUnits) object;
         value.appendChild(document.createTextNode(Double.toString(distance.getDistance())));

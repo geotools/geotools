@@ -59,6 +59,7 @@ public class MultiGeometryTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.MultiGeometryType;
     }
@@ -70,10 +71,12 @@ public class MultiGeometryTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return GeometryCollection.class;
     }
 
+    @Override
     public int getExecutionMode() {
         return BEFORE;
     }
@@ -85,6 +88,7 @@ public class MultiGeometryTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         List<Geometry> geometries = new ArrayList<>();

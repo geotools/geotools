@@ -38,10 +38,12 @@ public class PropertyTypeBinding extends AbstractComplexEMFBinding {
         super(factory);
     }
 
+    @Override
     public QName getTarget() {
         return WFS.PropertyType;
     }
 
+    @Override
     public Class<?> getType() {
         return PropertyType.class;
     }
@@ -51,6 +53,7 @@ public class PropertyTypeBinding extends AbstractComplexEMFBinding {
         return value;
     }
 
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // TODO: implement and remove call to super
         return super.parse(instance, node, value);

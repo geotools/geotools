@@ -39,16 +39,19 @@ public final class DC extends XSD {
     /** private constructor */
     private DC() {}
 
+    @Override
     protected void addDependencies(Set dependencies) {
         // TODO: add dependencies here
     }
 
     /** Returns 'http://purl.org/dc/elements/1.1/'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'rec-dcmes.xsd.'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("rec-dcmes.xsd").toString();
     }

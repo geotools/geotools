@@ -39,16 +39,19 @@ public final class WCSEO extends XSD {
     /** private constructor */
     private WCSEO() {}
 
+    @Override
     protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(WCS.getInstance());
     }
 
     /** Returns 'http://www.opengis.net/wcs/2.0'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'wcsAll.xsd.'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("wcseo/v1_0/wcsEODescribeEOCoverageSet.xsd").toString();
     }

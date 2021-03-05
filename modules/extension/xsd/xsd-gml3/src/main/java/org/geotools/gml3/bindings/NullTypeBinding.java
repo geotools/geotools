@@ -56,6 +56,7 @@ import org.locationtech.jts.geom.Envelope;
 public class NullTypeBinding extends AbstractSimpleBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.NullType;
     }
@@ -67,6 +68,7 @@ public class NullTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Envelope.class;
     }
@@ -83,6 +85,7 @@ public class NullTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         Envelope e = new Envelope();
         e.setToNull();

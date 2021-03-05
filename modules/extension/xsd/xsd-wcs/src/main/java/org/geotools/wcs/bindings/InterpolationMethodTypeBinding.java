@@ -57,6 +57,7 @@ import org.geotools.xsd.InstanceComponent;
 public class InterpolationMethodTypeBinding extends AbstractSimpleBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WCS.InterpolationMethodType;
     }
@@ -68,6 +69,7 @@ public class InterpolationMethodTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return InterpolationMethodType.class;
     }
@@ -79,6 +81,7 @@ public class InterpolationMethodTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
 
         return InterpolationMethodType.get((String) value);

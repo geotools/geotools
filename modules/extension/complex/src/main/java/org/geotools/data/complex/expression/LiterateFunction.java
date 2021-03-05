@@ -80,6 +80,7 @@ public class LiterateFunction extends FunctionExpressionImpl {
             final int index = i;
             ExpressionVisitor indexVisitor =
                     new DuplicatingFilterVisitor() {
+                        @Override
                         public Object visit(PropertyName name, Object data) {
                             if (name.equals(indexName)) {
                                 return new LiteralExpressionImpl(index);

@@ -163,6 +163,7 @@ public class QueryTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.QueryType;
     }

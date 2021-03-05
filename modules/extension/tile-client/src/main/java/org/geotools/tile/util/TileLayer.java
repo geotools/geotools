@@ -65,6 +65,7 @@ public class TileLayer extends DirectLayer {
         return this.coverage;
     }
 
+    @Override
     public ReferencedEnvelope getBounds() {
         return new ReferencedEnvelope(-180, 180, -85, 85, DefaultGeographicCRS.WGS84);
     }

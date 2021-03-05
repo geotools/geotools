@@ -91,6 +91,7 @@ public class WFS_LockFeatureResponseTypeBinding extends AbstractComplexEMFBindin
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.WFS_LockFeatureResponseType;
     }
@@ -102,6 +103,7 @@ public class WFS_LockFeatureResponseTypeBinding extends AbstractComplexEMFBindin
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return null;
     }
@@ -113,6 +115,7 @@ public class WFS_LockFeatureResponseTypeBinding extends AbstractComplexEMFBindin
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // TODO: implement and remove call to super
         return super.parse(instance, node, value);

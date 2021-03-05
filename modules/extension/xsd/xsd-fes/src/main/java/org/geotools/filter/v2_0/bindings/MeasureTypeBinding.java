@@ -63,6 +63,7 @@ public class MeasureTypeBinding extends AbstractComplexBinding {
         this.filterFactory2 = filterFactory;
     }
 
+    @Override
     public QName getTarget() {
         return FES.MeasureType;
     }
@@ -74,14 +75,17 @@ public class MeasureTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return MeasureType.class;
     }
 
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
 
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Object uom = node.getAttributeValue("uom");
         DistanceUnits distanceUnits =

@@ -31,6 +31,7 @@ public class XSAnySimpleTypeStrategyTest extends TestSchema {
     private XSDSimpleTypeDefinition typeDef;
     private SimpleBinding stratagy;
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
@@ -38,6 +39,7 @@ public class XSAnySimpleTypeStrategyTest extends TestSchema {
         stratagy = (SimpleBinding) stratagy(XS.ANYSIMPLETYPE);
     }
 
+    @Override
     @Test
     public void testSetUp() {
         assertNotNull("XSD typedef", typeDef);
@@ -56,6 +58,7 @@ public class XSAnySimpleTypeStrategyTest extends TestSchema {
         assertEquals("123", stratagy.parse(element("  123", XS.DECIMAL), "123"));
     }
 
+    @Override
     protected QName getQName() {
         // TODO Auto-generated method stub
         return null;

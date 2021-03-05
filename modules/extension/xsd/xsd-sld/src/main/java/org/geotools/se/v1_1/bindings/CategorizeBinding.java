@@ -81,6 +81,7 @@ public class CategorizeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.Categorize;
     }
@@ -92,6 +93,7 @@ public class CategorizeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return ColorMap.class;
     }
@@ -103,6 +105,7 @@ public class CategorizeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         ColorMap map = styleFactory.createColorMap();

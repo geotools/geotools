@@ -50,6 +50,7 @@ public class FillBinding extends SLDFillBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.Fill;
     }

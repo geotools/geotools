@@ -66,6 +66,7 @@ public class MemberPropertyTypeBinding
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.MemberPropertyType;
     }
@@ -77,6 +78,7 @@ public class MemberPropertyTypeBinding
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         // TODO: implement and remove call to super

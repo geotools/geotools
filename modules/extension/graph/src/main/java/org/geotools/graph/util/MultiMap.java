@@ -34,6 +34,7 @@ public class MultiMap implements Map, Serializable {
         m_collectionClass = collectionClass;
     }
 
+    @Override
     public Object put(Object key, Object value) {
         Collection c = null;
 
@@ -55,22 +56,27 @@ public class MultiMap implements Map, Serializable {
         m_map.put(key, items);
     }
 
+    @Override
     public int size() {
         return (m_map.size());
     }
 
+    @Override
     public void clear() {
         m_map.clear();
     }
 
+    @Override
     public boolean isEmpty() {
         return (m_map.isEmpty());
     }
 
+    @Override
     public boolean containsKey(Object key) {
         return (m_map.containsKey(key));
     }
 
+    @Override
     public boolean containsValue(Object value) {
         for (Object o : values()) {
             Collection c = (Collection) o;
@@ -79,10 +85,12 @@ public class MultiMap implements Map, Serializable {
         return (false);
     }
 
+    @Override
     public Collection values() {
         return (m_map.values());
     }
 
+    @Override
     public void putAll(Map t) {
         for (Object o : t.entrySet()) {
             Entry entry = (Entry) o;
@@ -90,14 +98,17 @@ public class MultiMap implements Map, Serializable {
         }
     }
 
+    @Override
     public Set entrySet() {
         return (m_map.entrySet());
     }
 
+    @Override
     public Set keySet() {
         return (m_map.keySet());
     }
 
+    @Override
     public Object get(Object key) {
         Object obj = null;
         if ((obj = m_map.get(key)) == null) {
@@ -115,6 +126,7 @@ public class MultiMap implements Map, Serializable {
         return ((Collection) get(key));
     }
 
+    @Override
     public Object remove(Object key) {
         return (m_map.remove(key));
     }

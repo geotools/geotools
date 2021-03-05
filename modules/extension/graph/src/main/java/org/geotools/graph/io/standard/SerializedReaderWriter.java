@@ -49,6 +49,7 @@ public class SerializedReaderWriter extends AbstractReaderWriter implements File
      *
      * @see GraphReaderWriter#read()
      */
+    @Override
     public Graph read() throws Exception {
         // read builder property
         GraphBuilder builder = (GraphBuilder) getProperty(BUILDER);
@@ -108,6 +109,7 @@ public class SerializedReaderWriter extends AbstractReaderWriter implements File
      *
      * @see GraphReaderWriter#write()
      */
+    @Override
     public void write(Graph graph) throws Exception {
         // create file output stream
         try (ObjectOutputStream objout =

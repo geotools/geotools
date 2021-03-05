@@ -38,10 +38,12 @@ public class DescribeEOCoverageSetBinding extends AbstractComplexEMFBinding {
         super(Wcs20Factory.eINSTANCE);
     }
 
+    @Override
     public QName getTarget() {
         return WCSEO.DescribeEOCoverageSetType;
     }
 
+    @Override
     public Class getType() {
         return DescribeEOCoverageSetType.class;
     }
@@ -53,6 +55,7 @@ public class DescribeEOCoverageSetBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         Node attr = node.getChild("containment");

@@ -278,6 +278,7 @@ public class ParserHandler extends DefaultHandler2 {
         return super.resolveEntity(name, publicId, baseURI, systemId);
     }
 
+    @Override
     public void startPrefixMapping(String prefix, String uri) throws SAXException {
         namespaces.declarePrefix(prefix, uri);
         if (!handlers.isEmpty()) {
@@ -286,6 +287,7 @@ public class ParserHandler extends DefaultHandler2 {
         }
     }
 
+    @Override
     public void startDocument() throws SAXException {
         // perform the configuration
         configure(config);
@@ -332,6 +334,7 @@ public class ParserHandler extends DefaultHandler2 {
         docHandler.startDocument();
     }
 
+    @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes)
             throws SAXException {
         if (logger.isLoggable(Level.FINEST)) {
@@ -758,12 +761,14 @@ public class ParserHandler extends DefaultHandler2 {
         }
     }
 
+    @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
         // pull the handler from the top of stack
         ElementHandler handler = (ElementHandler) handlers.peek();
         handler.characters(ch, start, length);
     }
 
+    @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         // pop the last handler off of the stack
         ElementHandler handler = (ElementHandler) handlers.pop();
@@ -807,6 +812,7 @@ public class ParserHandler extends DefaultHandler2 {
         }
     }
 
+    @Override
     @SuppressFBWarnings("NN_NAKED_NOTIFY")
     public void endDocument() throws SAXException {
         validator.endDocument();
@@ -827,12 +833,14 @@ public class ParserHandler extends DefaultHandler2 {
         }
     }
 
+    @Override
     public void warning(SAXParseException e) throws SAXException {
         if (isValidating()) {
             validator.warning(e);
         }
     }
 
+    @Override
     public void error(SAXParseException e) throws SAXException {
         logger.log(Level.WARNING, e.getMessage());
         if (isValidating()) {

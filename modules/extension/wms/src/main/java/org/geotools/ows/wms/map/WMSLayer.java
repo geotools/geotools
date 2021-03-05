@@ -81,10 +81,12 @@ public class WMSLayer extends GridReaderLayer {
         super(new WMSCoverageReader(wms, layer, style, imageFromat), STYLE);
     }
 
+    @Override
     public WMSCoverageReader getReader() {
         return (WMSCoverageReader) this.reader;
     }
 
+    @Override
     public synchronized ReferencedEnvelope getBounds() {
         WMSCoverageReader wmsReader = getReader();
         if (wmsReader != null) {

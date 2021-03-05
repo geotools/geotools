@@ -39,6 +39,7 @@ import org.geotools.gml3.v3_2.GML;
  * @generated
  */
 public class DoubleListBinding extends org.geotools.gml3.bindings.DoubleListBinding {
+    @Override
     public QName getTarget() {
         return GML.doubleList;
     }

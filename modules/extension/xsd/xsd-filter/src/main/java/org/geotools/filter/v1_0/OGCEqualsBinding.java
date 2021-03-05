@@ -49,10 +49,12 @@ public class OGCEqualsBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.Equals;
     }
 
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -64,6 +66,7 @@ public class OGCEqualsBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Equals.class;
     }
@@ -75,6 +78,7 @@ public class OGCEqualsBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Expression[] operands = OGCUtils.spatial(node, filterFactory, geometryFactory);
 

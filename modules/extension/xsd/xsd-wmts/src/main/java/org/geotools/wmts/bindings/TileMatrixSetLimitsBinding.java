@@ -71,6 +71,7 @@ public class TileMatrixSetLimitsBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WMTS.TileMatrixSetLimits;
     }
@@ -82,6 +83,7 @@ public class TileMatrixSetLimitsBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return TileMatrixSetLimitsType.class;
     }
@@ -93,6 +95,7 @@ public class TileMatrixSetLimitsBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         TileMatrixSetLimitsType limits = factory.createTileMatrixSetLimitsType();

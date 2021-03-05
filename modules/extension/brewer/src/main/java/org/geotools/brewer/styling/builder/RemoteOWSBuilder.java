@@ -44,6 +44,7 @@ public class RemoteOWSBuilder extends AbstractSLDBuilder<RemoteOWS> {
         return this;
     }
 
+    @Override
     public RemoteOWS build() {
         if (unset) {
             return null;
@@ -52,6 +53,7 @@ public class RemoteOWSBuilder extends AbstractSLDBuilder<RemoteOWS> {
         return remote;
     }
 
+    @Override
     public RemoteOWSBuilder reset() {
         unset = true;
         this.onlineResource = null;
@@ -59,6 +61,7 @@ public class RemoteOWSBuilder extends AbstractSLDBuilder<RemoteOWS> {
         return this;
     }
 
+    @Override
     public RemoteOWSBuilder reset(RemoteOWS remote) {
         if (remote == null) {
             return unset();
@@ -69,6 +72,7 @@ public class RemoteOWSBuilder extends AbstractSLDBuilder<RemoteOWS> {
         return this;
     }
 
+    @Override
     public RemoteOWSBuilder unset() {
         return (RemoteOWSBuilder) super.unset();
     }

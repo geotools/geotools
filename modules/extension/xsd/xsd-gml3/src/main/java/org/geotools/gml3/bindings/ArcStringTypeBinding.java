@@ -105,6 +105,7 @@ public class ArcStringTypeBinding extends AbstractComplexBinding implements Comp
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.ArcStringType;
     }
@@ -121,6 +122,7 @@ public class ArcStringTypeBinding extends AbstractComplexBinding implements Comp
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return SingleCurvedGeometry.class;
     }
@@ -132,6 +134,7 @@ public class ArcStringTypeBinding extends AbstractComplexBinding implements Comp
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         LineString arcLineString = GML3ParsingUtils.lineString(node, gFactory, csFactory);
@@ -162,6 +165,7 @@ public class ArcStringTypeBinding extends AbstractComplexBinding implements Comp
         return super.getProperty(object, name);
     }
 
+    @Override
     public int compareTo(Object o) {
         if (o instanceof LineStringTypeBinding
                 || o instanceof LineStringSegmentTypeBinding

@@ -49,6 +49,7 @@ public abstract class Whitespace implements Comparable<Whitespace> {
      */
     public static final Whitespace PRESERVE =
             new Whitespace("preserve", 0) {
+                @Override
                 public String preparse(String text) {
                     return text;
                 }
@@ -62,6 +63,7 @@ public abstract class Whitespace implements Comparable<Whitespace> {
      */
     public static final Whitespace REPLACE =
             new Whitespace("replace", 1) {
+                @Override
                 public String preparse(String text) {
                     StringBuffer replace = new StringBuffer(text);
 
@@ -85,6 +87,7 @@ public abstract class Whitespace implements Comparable<Whitespace> {
      */
     public static final Whitespace COLLAPSE =
             new Whitespace("collapse", 2) {
+                @Override
                 public String preparse(String text) {
                     text = REPLACE.preparse(text);
                     text = text.trim();
@@ -134,20 +137,24 @@ public abstract class Whitespace implements Comparable<Whitespace> {
         return ordinal;
     }
 
+    @Override
     public int hashCode() {
         return ordinal;
     }
 
+    @Override
     protected Object clone() throws CloneNotSupportedException {
         throw new CloneNotSupportedException("Ha Ha");
     }
 
+    @Override
     public boolean equals(Object other) {
         return (other != null)
                 && other instanceof Whitespace
                 && (((Whitespace) other).ordinal == ordinal);
     }
 
+    @Override
     public int compareTo(Whitespace other) {
         int ord = other.ordinal;
 

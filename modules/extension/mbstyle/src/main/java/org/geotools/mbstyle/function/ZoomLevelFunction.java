@@ -78,6 +78,7 @@ public class ZoomLevelFunction extends FunctionExpressionImpl {
         return 2;
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Number arg0;
         String arg1;

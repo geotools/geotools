@@ -69,10 +69,12 @@ public class WMTSMapLayer extends GridReaderLayer {
         super(new WMTSCoverageReader(wmts, layer), createStyle());
     }
 
+    @Override
     public WMTSCoverageReader getReader() {
         return (WMTSCoverageReader) this.reader;
     }
 
+    @Override
     public synchronized ReferencedEnvelope getBounds() {
         WMTSCoverageReader wmtsReader = getReader();
         if (wmtsReader != null) {

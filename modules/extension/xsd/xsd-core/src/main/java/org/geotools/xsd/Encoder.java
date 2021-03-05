@@ -1289,14 +1289,17 @@ public class Encoder {
     }
 
     private static class NullIterator implements Iterator {
+        @Override
         public void remove() {
             // do nothing
         }
 
+        @Override
         public boolean hasNext() {
             return false;
         }
 
+        @Override
         public Object next() {
             // TODO Auto-generated method stub
             return null;
@@ -1312,14 +1315,17 @@ public class Encoder {
             more = true;
         }
 
+        @Override
         public void remove() {
             // unsupported
         }
 
+        @Override
         public boolean hasNext() {
             return more;
         }
 
+        @Override
         public Object next() {
             more = false;
 
@@ -1353,10 +1359,12 @@ public class Encoder {
             this.namespaces = namespaces;
         }
 
+        @Override
         public int getLength() {
             return atts.getLength();
         }
 
+        @Override
         public String getLocalName(int index) {
             String local = atts.item(index).getLocalName();
             if (nullOrEmpty(local)) {
@@ -1373,6 +1381,7 @@ public class Encoder {
             return emptyIfNull(local);
         }
 
+        @Override
         public String getQName(int index) {
             Node n = atts.item(index);
 
@@ -1388,10 +1397,12 @@ public class Encoder {
             return n.getLocalName() != null ? n.getLocalName() : n.getNodeName();
         }
 
+        @Override
         public String getType(int index) {
             return "CDATA"; // TODO: this properly
         }
 
+        @Override
         public String getURI(int index) {
             String ns = atts.item(index).getNamespaceURI();
             if (ns == null) {
@@ -1401,10 +1412,12 @@ public class Encoder {
             return emptyIfNull(ns);
         }
 
+        @Override
         public String getValue(int index) {
             return atts.item(index).getNodeValue();
         }
 
+        @Override
         public int getIndex(String qName) {
             String pre = null;
             String local = null;
@@ -1437,14 +1450,17 @@ public class Encoder {
             return -1;
         }
 
+        @Override
         public String getType(String qName) {
             return getType(getIndex(qName));
         }
 
+        @Override
         public String getValue(String qName) {
             return getValue(getIndex(qName));
         }
 
+        @Override
         public int getIndex(String uri, String localName) {
             if ((uri == null) || uri.equals("")) {
                 return getIndex(localName);
@@ -1453,10 +1469,12 @@ public class Encoder {
             return getIndex(uri + ":" + localName);
         }
 
+        @Override
         public String getType(String uri, String localName) {
             return getType(getIndex(uri, localName));
         }
 
+        @Override
         public String getValue(String uri, String localName) {
             return getValue(getIndex(uri, localName));
         }
@@ -1491,6 +1509,7 @@ public class Encoder {
 
     @SuppressWarnings("unchecked")
     private static class MatchComparator implements Comparator<Object[]> {
+        @Override
         public int compare(Object[] match1, Object[] match2) {
             Binding b1 = (Binding) match1[1];
             Binding b2 = (Binding) match2[1];

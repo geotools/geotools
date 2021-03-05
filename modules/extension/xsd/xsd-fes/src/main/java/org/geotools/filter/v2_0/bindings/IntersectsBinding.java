@@ -42,6 +42,7 @@ public class IntersectsBinding extends OGCIntersectsBinding {
         super(filterFactory, geometryFactory);
     }
 
+    @Override
     public QName getTarget() {
         return FES.Intersects;
     }

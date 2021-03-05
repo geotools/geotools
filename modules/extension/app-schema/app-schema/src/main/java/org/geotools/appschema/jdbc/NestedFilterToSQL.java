@@ -138,6 +138,7 @@ public class NestedFilterToSQL extends FilterToSQL {
         this.ff = new FilterFactoryImplNamespaceAware(rootMapping.getNamespaces());
     }
 
+    @Override
     public void encode(Filter filter) throws FilterToSQLException {
         if (out == null) throw new FilterToSQLException("Can't encode to a null writer.");
         original.setWriter(out);

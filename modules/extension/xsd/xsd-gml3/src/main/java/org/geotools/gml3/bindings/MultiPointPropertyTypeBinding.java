@@ -56,10 +56,12 @@ public class MultiPointPropertyTypeBinding extends GeometryPropertyTypeBindingBa
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.MultiPointPropertyType;
     }
 
+    @Override
     public Class<? extends Geometry> getGeometryType() {
         return MultiPoint.class;
     }

@@ -41,17 +41,20 @@ public final class OWS extends XSD {
     /** private constructor */
     private OWS() {}
 
+    @Override
     protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(XML.getInstance());
         dependencies.add(XLINK.getInstance());
     }
 
     /** Returns 'http://www.opengis.net/ows/2.0'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'owsAll.xsd.'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("owsAll.xsd").toString();
     }

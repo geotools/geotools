@@ -35,6 +35,7 @@ public abstract class JDBCFeatureCollectionOnlineTest extends JDBCTestSupport {
     SimpleFeatureCollection collection;
     JDBCFeatureStore source;
 
+    @Override
     protected void connect() throws Exception {
         super.connect();
 
@@ -51,10 +52,12 @@ public abstract class JDBCFeatureCollectionOnlineTest extends JDBCTestSupport {
                     i,
                     new SimpleFeatureAssertion() {
 
+                        @Override
                         public int toIndex(SimpleFeature feature) {
                             return ((Number) feature.getAttribute(aname("intProperty"))).intValue();
                         }
 
+                        @Override
                         public void check(int index, SimpleFeature feature) {
                             assertNotNull(feature);
 

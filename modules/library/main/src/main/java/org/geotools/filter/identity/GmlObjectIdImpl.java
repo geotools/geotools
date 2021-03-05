@@ -35,10 +35,12 @@ public class GmlObjectIdImpl implements GmlObjectId {
         }
     }
 
+    @Override
     public String getID() {
         return gmlId;
     }
 
+    @Override
     public boolean matches(Object object) {
         if (object instanceof org.opengis.feature.Feature) {
             return new FeatureIdImpl(gmlId).matches((org.opengis.feature.Feature) object);
@@ -48,10 +50,12 @@ public class GmlObjectIdImpl implements GmlObjectId {
         return false;
     }
 
+    @Override
     public String toString() {
         return gmlId;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof GmlObjectIdImpl) {
             GmlObjectIdImpl other = (GmlObjectIdImpl) obj;
@@ -61,6 +65,7 @@ public class GmlObjectIdImpl implements GmlObjectId {
         return false;
     }
 
+    @Override
     public int hashCode() {
         return gmlId.hashCode();
     }

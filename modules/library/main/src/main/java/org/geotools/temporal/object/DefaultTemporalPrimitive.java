@@ -32,6 +32,7 @@ import org.opengis.temporal.TemporalPrimitive;
 public abstract class DefaultTemporalPrimitive extends DefaultTemporalObject
         implements TemporalPrimitive, TemporalOrder, Comparable<TemporalPrimitive> {
 
+    @Override
     public int compareTo(TemporalPrimitive that) {
         if (that == null) throw new IllegalArgumentException("Provided temporal object is null");
         final RelativePosition pos = this.relativePosition(that);
@@ -74,6 +75,7 @@ public abstract class DefaultTemporalPrimitive extends DefaultTemporalObject
      *
      * @param other TemporalPrimitive
      */
+    @Override
     public RelativePosition relativePosition(TemporalPrimitive other) {
         if (this instanceof Instant && other instanceof Instant) {
             Instant timeobject = (Instant) this;

@@ -46,6 +46,7 @@ public class FilterFunction_minimumCircle extends FunctionExpressionImpl {
      * @return The minimum bounding circle Geometry
      * @throws IllegalArgumentException if the feature is not a Geometry
      */
+    @Override
     public Object evaluate(Object feature) {
         Geometry arg0;
 

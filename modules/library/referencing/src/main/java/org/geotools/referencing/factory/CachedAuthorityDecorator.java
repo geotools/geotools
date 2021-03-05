@@ -167,6 +167,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
     //
     // AuthorityFactory
     //
+    @Override
     public IdentifiedObject createObject(String code) throws FactoryException {
         final String key = toKey(code);
         IdentifiedObject obj = (IdentifiedObject) cache.get(key);
@@ -185,15 +186,18 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return obj;
     }
 
+    @Override
     public Citation getAuthority() {
         return authority.getAuthority();
     }
 
+    @Override
     public Set<String> getAuthorityCodes(Class<? extends IdentifiedObject> type)
             throws FactoryException {
         return authority.getAuthorityCodes(type);
     }
 
+    @Override
     public InternationalString getDescriptionText(String code) throws FactoryException {
         return authority.getDescriptionText(code);
     }
@@ -201,6 +205,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
     //
     // CRSAuthority
     //
+    @Override
     public synchronized CompoundCRS createCompoundCRS(final String code) throws FactoryException {
         final String key = toKey(code);
         CompoundCRS crs = (CompoundCRS) cache.get(key);
@@ -219,6 +224,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return crs;
     }
 
+    @Override
     public CoordinateReferenceSystem createCoordinateReferenceSystem(String code)
             throws FactoryException {
         final String key = toKey(code);
@@ -238,6 +244,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return crs;
     }
 
+    @Override
     public DerivedCRS createDerivedCRS(String code) throws FactoryException {
         final String key = toKey(code);
         DerivedCRS crs = (DerivedCRS) cache.get(key);
@@ -256,6 +263,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return crs;
     }
 
+    @Override
     public EngineeringCRS createEngineeringCRS(String code) throws FactoryException {
         final String key = toKey(code);
         EngineeringCRS crs = (EngineeringCRS) cache.get(key);
@@ -274,6 +282,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return crs;
     }
 
+    @Override
     public GeocentricCRS createGeocentricCRS(String code) throws FactoryException {
         final String key = toKey(code);
         GeocentricCRS crs = (GeocentricCRS) cache.get(key);
@@ -292,6 +301,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return crs;
     }
 
+    @Override
     public GeographicCRS createGeographicCRS(String code) throws FactoryException {
         final String key = toKey(code);
         GeographicCRS crs = (GeographicCRS) cache.get(key);
@@ -310,6 +320,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return crs;
     }
 
+    @Override
     public ImageCRS createImageCRS(String code) throws FactoryException {
         final String key = toKey(code);
         ImageCRS crs = (ImageCRS) cache.get(key);
@@ -328,6 +339,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return crs;
     }
 
+    @Override
     public ProjectedCRS createProjectedCRS(String code) throws FactoryException {
         final String key = toKey(code);
         ProjectedCRS crs = (ProjectedCRS) cache.get(key);
@@ -346,6 +358,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return crs;
     }
 
+    @Override
     public TemporalCRS createTemporalCRS(String code) throws FactoryException {
         final String key = toKey(code);
         TemporalCRS crs = (TemporalCRS) cache.get(key);
@@ -364,6 +377,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return crs;
     }
 
+    @Override
     public VerticalCRS createVerticalCRS(String code) throws FactoryException {
         final String key = toKey(code);
         VerticalCRS crs = (VerticalCRS) cache.get(key);
@@ -385,6 +399,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
     //
     // CSAuthority
     //
+    @Override
     public CartesianCS createCartesianCS(String code) throws FactoryException {
         final String key = toKey(code);
         CartesianCS cs = (CartesianCS) cache.get(key);
@@ -403,6 +418,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return cs;
     }
 
+    @Override
     public CoordinateSystem createCoordinateSystem(String code) throws FactoryException {
         final String key = toKey(code);
         CoordinateSystem cs = (CoordinateSystem) cache.get(key);
@@ -422,6 +438,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
     }
 
     // sample implemenation with get/test
+    @Override
     public CoordinateSystemAxis createCoordinateSystemAxis(String code) throws FactoryException {
         final String key = toKey(code);
         CoordinateSystemAxis axis = (CoordinateSystemAxis) cache.get(key);
@@ -440,6 +457,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return axis;
     }
 
+    @Override
     public CylindricalCS createCylindricalCS(String code) throws FactoryException {
         final String key = toKey(code);
         CylindricalCS cs = (CylindricalCS) cache.get(key);
@@ -458,6 +476,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return cs;
     }
 
+    @Override
     public EllipsoidalCS createEllipsoidalCS(String code) throws FactoryException {
         final String key = toKey(code);
         EllipsoidalCS cs = (EllipsoidalCS) cache.get(key);
@@ -476,6 +495,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return cs;
     }
 
+    @Override
     public PolarCS createPolarCS(String code) throws FactoryException {
         final String key = toKey(code);
         PolarCS cs = (PolarCS) cache.get(key);
@@ -494,6 +514,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return cs;
     }
 
+    @Override
     public SphericalCS createSphericalCS(String code) throws FactoryException {
         final String key = toKey(code);
         SphericalCS cs = (SphericalCS) cache.get(key);
@@ -512,6 +533,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return cs;
     }
 
+    @Override
     public TimeCS createTimeCS(String code) throws FactoryException {
         final String key = toKey(code);
         TimeCS cs = (TimeCS) cache.get(key);
@@ -530,6 +552,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return cs;
     }
 
+    @Override
     public Unit<?> createUnit(String code) throws FactoryException {
         final String key = toKey(code);
         Unit<?> unit = (Unit) cache.get(key);
@@ -548,6 +571,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return unit;
     }
 
+    @Override
     public VerticalCS createVerticalCS(String code) throws FactoryException {
         final String key = toKey(code);
         VerticalCS cs = (VerticalCS) cache.get(key);
@@ -569,6 +593,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
     //
     // DatumAuthorityFactory
     //
+    @Override
     public Datum createDatum(String code) throws FactoryException {
         final String key = toKey(code);
         Datum datum = (Datum) cache.get(key);
@@ -587,6 +612,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return datum;
     }
 
+    @Override
     public Ellipsoid createEllipsoid(String code) throws FactoryException {
         final String key = toKey(code);
         Ellipsoid ellipsoid = (Ellipsoid) cache.get(key);
@@ -605,6 +631,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return ellipsoid;
     }
 
+    @Override
     public EngineeringDatum createEngineeringDatum(String code) throws FactoryException {
         final String key = toKey(code);
         EngineeringDatum datum = (EngineeringDatum) cache.get(key);
@@ -623,6 +650,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return datum;
     }
 
+    @Override
     public GeodeticDatum createGeodeticDatum(String code) throws FactoryException {
         final String key = toKey(code);
         GeodeticDatum datum = (GeodeticDatum) cache.get(key);
@@ -641,6 +669,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return datum;
     }
 
+    @Override
     public ImageDatum createImageDatum(String code) throws FactoryException {
         final String key = toKey(code);
         ImageDatum datum = (ImageDatum) cache.get(key);
@@ -659,6 +688,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return datum;
     }
 
+    @Override
     public PrimeMeridian createPrimeMeridian(String code) throws FactoryException {
         final String key = toKey(code);
         PrimeMeridian datum = (PrimeMeridian) cache.get(key);
@@ -677,6 +707,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return datum;
     }
 
+    @Override
     public TemporalDatum createTemporalDatum(String code) throws FactoryException {
         final String key = toKey(code);
         TemporalDatum datum = (TemporalDatum) cache.get(key);
@@ -695,6 +726,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return datum;
     }
 
+    @Override
     public VerticalDatum createVerticalDatum(String code) throws FactoryException {
         final String key = toKey(code);
         VerticalDatum datum = (VerticalDatum) cache.get(key);
@@ -713,6 +745,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return datum;
     }
 
+    @Override
     public CoordinateOperation createCoordinateOperation(String code) throws FactoryException {
         final String key = toKey(code);
         CoordinateOperation operation = (CoordinateOperation) cache.get(key);
@@ -731,6 +764,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         return operation;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public synchronized Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(
             final String sourceCode, final String targetCode) throws FactoryException {
@@ -759,11 +793,13 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
     //
     // AbstractAuthorityFactory
     //
+    @Override
     public IdentifiedObjectFinder getIdentifiedObjectFinder(Class<? extends IdentifiedObject> type)
             throws FactoryException {
         return delegate.getIdentifiedObjectFinder(type);
     }
 
+    @Override
     public void dispose() throws FactoryException {
         delegate.dispose();
         cache.clear();
@@ -771,6 +807,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
         delegate = null;
     }
 
+    @Override
     public String getBackingStoreDescription() throws FactoryException {
         return delegate.getBackingStoreDescription();
     }

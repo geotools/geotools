@@ -151,6 +151,7 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
      * Returns {@code true} if grid data can be edited. The default implementation returns {@code
      * false}.
      */
+    @Override
     public boolean isDataEditable() {
         return false;
     }
@@ -159,6 +160,7 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
      * Returns the number of predetermined overviews for the grid. The default implementation
      * returns 0.
      */
+    @Override
     public int getNumOverviews() {
         return 0;
     }
@@ -169,6 +171,7 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
      *
      * @throws IndexOutOfBoundsException if the specified index is out of bounds.
      */
+    @Override
     public GridGeometry getOverviewGridGeometry(int index) throws IndexOutOfBoundsException {
         throw new IndexOutOfBoundsException(indexOutOfBounds(index));
     }
@@ -180,6 +183,7 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
      *
      * @throws IndexOutOfBoundsException if the specified index is out of bounds.
      */
+    @Override
     public GridCoverage getOverview(int index) throws IndexOutOfBoundsException {
         throw new IndexOutOfBoundsException(indexOutOfBounds(index));
     }

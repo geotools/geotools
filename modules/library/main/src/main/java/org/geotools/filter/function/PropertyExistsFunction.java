@@ -83,6 +83,7 @@ public class PropertyExistsFunction extends FunctionExpressionImpl {
      *     names as the property name passed as this function argument, following the standard Java
      *     Beans naming conventions for getters. {@link Boolean#FALSE} otherwise.
      */
+    @Override
     public Object evaluate(Object bean) {
         if (bean instanceof SimpleFeature) {
             return evaluate((SimpleFeature) bean);

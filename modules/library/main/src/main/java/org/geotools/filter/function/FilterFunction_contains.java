@@ -50,6 +50,7 @@ public class FilterFunction_contains extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Geometry arg0;
         Geometry arg1;

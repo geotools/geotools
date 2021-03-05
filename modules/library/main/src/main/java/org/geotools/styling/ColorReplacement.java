@@ -27,6 +27,7 @@ import org.opengis.filter.expression.Function;
 public interface ColorReplacement extends org.opengis.style.ColorReplacement {
 
     /** Function providing recoding of values. */
+    @Override
     Function getRecoding();
 
     /** @param function Recoding function to use */

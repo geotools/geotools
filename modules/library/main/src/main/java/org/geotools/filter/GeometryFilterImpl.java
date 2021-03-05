@@ -118,6 +118,7 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
      *
      * @return String representation of this geometry filter.
      */
+    @Override
     public String toString() {
         String operator = null;
 
@@ -166,6 +167,7 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
      * @param obj - the object to compare this GeometryFilter against.
      * @return true if specified object is equal to this filter; else false
      */
+    @Override
     public boolean equals(Object obj) {
         if (this.getClass().isInstance(obj)) {
             GeometryFilterImpl geomFilter = (GeometryFilterImpl) obj;
@@ -181,6 +183,7 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
      *
      * @return a hash code value for this geometry filter.
      */
+    @Override
     public int hashCode() {
         org.opengis.filter.expression.Expression leftGeometry = getExpression1();
         org.opengis.filter.expression.Expression rightGeometry = getExpression2();
@@ -193,10 +196,12 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
         return result;
     }
 
+    @Override
     public MatchAction getMatchAction() {
         return matchAction;
     }
 
+    @Override
     public final boolean evaluate(Object feature) {
 
         Object object1 = getGeometries(getExpression1(), feature);

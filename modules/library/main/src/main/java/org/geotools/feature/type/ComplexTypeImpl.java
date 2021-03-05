@@ -77,19 +77,23 @@ public class ComplexTypeImpl extends AttributeTypeImpl implements ComplexType {
         this.propertyMap = Collections.unmodifiableMap(localPropertyMap);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Class<Collection<Property>> getBinding() {
         return (Class<Collection<Property>>) super.getBinding();
     }
 
+    @Override
     public Collection<PropertyDescriptor> getDescriptors() {
         return properties;
     }
 
+    @Override
     public PropertyDescriptor getDescriptor(Name name) {
         return propertyMap.get(name);
     }
 
+    @Override
     public PropertyDescriptor getDescriptor(String name) {
         PropertyDescriptor result = getDescriptor(new NameImpl(name));
         if (result == null) {
@@ -107,12 +111,14 @@ public class ComplexTypeImpl extends AttributeTypeImpl implements ComplexType {
         return result;
     }
 
+    @Override
     public boolean isInline() {
         // JD: at this point "inlining" is unused... we might want to kill it
         // from the interface
         return false;
     }
 
+    @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public boolean equals(Object o) {
         if (this == o) {
@@ -131,6 +137,7 @@ public class ComplexTypeImpl extends AttributeTypeImpl implements ComplexType {
         return true;
     }
 
+    @Override
     public String toString() {
         StringBuffer sb = new StringBuffer(Classes.getShortClassName(this));
         sb.append(" ");

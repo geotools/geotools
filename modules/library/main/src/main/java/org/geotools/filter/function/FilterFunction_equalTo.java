@@ -63,6 +63,7 @@ public class FilterFunction_equalTo extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Expression arg0 = getExpression(0);
         Expression arg1 = getExpression(1);

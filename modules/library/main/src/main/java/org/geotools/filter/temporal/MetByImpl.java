@@ -37,6 +37,7 @@ public class MetByImpl extends BinaryTemporalOperatorImpl implements MetBy {
         return pos == RelativePosition.MET_BY;
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

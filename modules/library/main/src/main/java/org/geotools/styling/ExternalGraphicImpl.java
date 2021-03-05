@@ -68,6 +68,7 @@ public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
         this.online = source;
     }
 
+    @Override
     public void setURI(String uri) {
         this.uri = uri;
     }
@@ -82,6 +83,7 @@ public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
      *
      * @return The format of the external graphic. Reported as its MIME type in a String object.
      */
+    @Override
     public String getFormat() {
         return format;
     }
@@ -92,6 +94,7 @@ public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
      * @return The URL of the ExternalGraphic
      * @throws MalformedURLException If unable to represent external graphic as a URL
      */
+    @Override
     public java.net.URL getLocation() throws MalformedURLException {
         if (uri == null) {
             return null;
@@ -108,6 +111,7 @@ public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
      *
      * @param format New value of property Format.
      */
+    @Override
     public void setFormat(java.lang.String format) {
         this.format = format;
     }
@@ -117,6 +121,7 @@ public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
      *
      * @param location New value of property location.
      */
+    @Override
     public void setLocation(java.net.URL location) {
         if (location == null) {
             throw new IllegalArgumentException("ExternalGraphic location URL cannot be null");
@@ -125,10 +130,12 @@ public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
         this.location = location;
     }
 
+    @Override
     public Object accept(StyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
+    @Override
     public void accept(org.geotools.styling.StyleVisitor visitor) {
         visitor.visit(this);
     }
@@ -138,6 +145,7 @@ public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
      *
      * @see org.geotools.styling.ExternalGraphic#clone()
      */
+    @Override
     public Object clone() {
         try {
             return super.clone();
@@ -152,6 +160,7 @@ public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
      *
      * @return The hash code.
      */
+    @Override
     public int hashCode() {
         final int PRIME = 1000003;
         int result = 0;
@@ -187,6 +196,7 @@ public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
      * @param oth The other External graphic.
      * @return True if this and the other external graphic are equal.
      */
+    @Override
     public boolean equals(Object oth) {
         if (this == oth) {
             return true;
@@ -201,14 +211,17 @@ public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
         return false;
     }
 
+    @Override
     public java.util.Map<String, Object> getCustomProperties() {
         return customProps;
     }
 
+    @Override
     public void setCustomProperties(java.util.Map<String, Object> list) {
         customProps = list;
     }
 
+    @Override
     public OnLineResource getOnlineResource() {
         if (online == null) {
             OnLineResourceImpl impl = new OnLineResourceImpl();
@@ -226,6 +239,7 @@ public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
         this.online = online;
     }
 
+    @Override
     public Icon getInlineContent() {
         return inlineContent;
     }
@@ -234,6 +248,7 @@ public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
         this.inlineContent = inlineContent;
     }
 
+    @Override
     public Collection<ColorReplacement> getColorReplacements() {
         return Collections.unmodifiableCollection(colorReplacements);
     }

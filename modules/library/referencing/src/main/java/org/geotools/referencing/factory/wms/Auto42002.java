@@ -62,21 +62,25 @@ final class Auto42002 extends Factlet {
     private Auto42002() {}
 
     /** {@inheritDoc} */
+    @Override
     public int code() {
         return 42002;
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getName() {
         return "WGS 84 / Auto Tr. Mercator";
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getClassification() {
         return "Transverse_Mercator";
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void setProjectionParameters(final ParameterValueGroup parameters, final Code code) {
         final double centralMeridian = code.longitude;
         final double falseNorthing = code.latitude >= 0.0 ? 0.0 : 10000000.0;

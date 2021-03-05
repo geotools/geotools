@@ -45,31 +45,37 @@ public class SequenceGT implements Sequence {
     }
 
     /** @see org.geotools.xml.schema.Sequence#getChildren() */
+    @Override
     public ElementGrouping[] getChildren() {
         return children;
     }
 
     /** @see org.geotools.xml.schema.Sequence#getId() */
+    @Override
     public String getId() {
         return id;
     }
 
     /** @see org.geotools.xml.schema.ElementGrouping#getMaxOccurs() */
+    @Override
     public int getMaxOccurs() {
         return max;
     }
 
     /** @see org.geotools.xml.schema.ElementGrouping#getMinOccurs() */
+    @Override
     public int getMinOccurs() {
         return min;
     }
 
     /** @see org.geotools.xml.schema.ElementGrouping#getGrouping() */
+    @Override
     public int getGrouping() {
         return SEQUENCE;
     }
 
     /** @see org.geotools.xml.schema.ElementGrouping#findChildElement(java.lang.String) */
+    @Override
     public Element findChildElement(String name) {
         if (children != null) {
             for (ElementGrouping child : children) {
@@ -84,6 +90,7 @@ public class SequenceGT implements Sequence {
         return null;
     }
 
+    @Override
     public Element findChildElement(String localName, URI namespaceURI) {
         if (children != null) {
             for (ElementGrouping child : children) {

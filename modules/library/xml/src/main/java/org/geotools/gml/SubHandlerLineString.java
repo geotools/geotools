@@ -42,6 +42,7 @@ public class SubHandlerLineString extends SubHandler {
      *
      * @param coordinate Coordinate to add to LineString.
      */
+    @Override
     public void addCoordinate(Coordinate coordinate) {
         coordinateList.add(coordinate);
     }
@@ -52,6 +53,7 @@ public class SubHandlerLineString extends SubHandler {
      * @param message The geometry type.
      * @return Ready for creation flag.
      */
+    @Override
     public boolean isComplete(String message) {
         if (coordinateList.size() > 1) {
             return true;
@@ -66,6 +68,7 @@ public class SubHandlerLineString extends SubHandler {
      * @param geometryFactory The geometry factory needed to do the build.
      * @return JTS LineString geometry.
      */
+    @Override
     public Geometry create(GeometryFactory geometryFactory) {
         Coordinate[] coords = coordinateList.toArray(new Coordinate[coordinateList.size()]);
         LineString lineString = geometryFactory.createLineString(coords);

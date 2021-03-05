@@ -42,6 +42,7 @@ public class ConicHandlerFactory implements ProjectionHandlerFactory {
     static final double EPS = 0.1;
     static final double MAX_DISTANCE = 44;
 
+    @Override
     public ProjectionHandler getHandler(
             ReferencedEnvelope renderingEnvelope,
             CoordinateReferenceSystem sourceCrs,

@@ -202,6 +202,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      *
      * <p>Subclasses may wish to extend this method in order to type narrow its return type.
      */
+    @Override
     public ContentDataStore getDataStore() {
         return entry.getDataStore();
     }
@@ -217,6 +218,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      *
      * @return description of features contents
      */
+    @Override
     public ResourceInfo getInfo() {
         return new ResourceInfo() {
             final Set<String> words = new HashSet<>();
@@ -226,6 +228,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
                 words.add(ContentFeatureSource.this.getSchema().getTypeName());
             }
 
+            @Override
             public ReferencedEnvelope getBounds() {
                 try {
                     return ContentFeatureSource.this.getBounds();
@@ -234,22 +237,27 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
                 }
             }
 
+            @Override
             public CoordinateReferenceSystem getCRS() {
                 return ContentFeatureSource.this.getSchema().getCoordinateReferenceSystem();
             }
 
+            @Override
             public String getDescription() {
                 return null;
             }
 
+            @Override
             public Set<String> getKeywords() {
                 return words;
             }
 
+            @Override
             public String getName() {
                 return ContentFeatureSource.this.getSchema().getTypeName();
             }
 
+            @Override
             public URI getSchema() {
                 Name name = ContentFeatureSource.this.getSchema().getName();
                 URI namespace;
@@ -261,6 +269,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
                 }
             }
 
+            @Override
             public String getTitle() {
                 Name name = ContentFeatureSource.this.getSchema().getName();
                 return name.getLocalPart();
@@ -276,6 +285,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * @since 2.5
      * @see FeatureSource#getName()
      */
+    @Override
     public Name getName() {
         return getSchema().getName();
     }
@@ -286,6 +296,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * <p>This method delegates to {@link #buildFeatureType()}, which must be implemented by
      * subclasses. The result is cached in {@link ContentState#getFeatureType()}.
      */
+    @Override
     public final SimpleFeatureType getSchema() {
 
         // check schema override
@@ -345,6 +356,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      *   <code>return getBounds(Query.ALL)</code>.
      * </pre>
      */
+    @Override
     public final ReferencedEnvelope getBounds() throws IOException {
 
         // return all(entry.getState(transaction)).getBounds();
@@ -357,6 +369,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * <p>This method calls through to {@link #getBoundsInternal(Query)} which subclasses must
      * implement. It also contains optimizations which check state for cached values.
      */
+    @Override
     public final ReferencedEnvelope getBounds(Query query) throws IOException {
         query = joinQuery(query);
         query = resolvePropertyNames(query);
@@ -465,6 +478,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * <p>This method calls through to {@link #getCountInternal(Query)} which subclasses must
      * implement. It also contains optimizations which check state for cached values.
      */
+    @Override
     public final int getCount(Query query) throws IOException {
         query = joinQuery(query);
         query = resolvePropertyNames(query);
@@ -550,6 +564,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
     protected abstract int getCountInternal(Query query) throws IOException;
 
     /** Returns the feature collection of all the features of the feature source. */
+    @Override
     public final ContentFeatureCollection getFeatures() throws IOException {
         Query query = joinQuery(Query.ALL);
         return new ContentFeatureCollection(this, query);
@@ -568,6 +583,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * Returns the feature collection if the features of the feature source which meet the specified
      * query criteria.
      */
+    @Override
     public final ContentFeatureCollection getFeatures(Query query) throws IOException {
         query = joinQuery(query);
 
@@ -1018,6 +1034,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      *
      * <p>This method calls through to {@link #getFeatures(Query)}.
      */
+    @Override
     public final ContentFeatureCollection getFeatures(Filter filter) throws IOException {
         return getFeatures(new Query(getSchema().getTypeName(), filter));
     }
@@ -1041,11 +1058,13 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      *
      * <p>Listeners are stored on a per-transaction basis.
      */
+    @Override
     public final void addFeatureListener(FeatureListener listener) {
         entry.getState(transaction).addListener(listener);
     }
 
     /** Removes a listener from the feature source. */
+    @Override
     public final void removeFeatureListener(FeatureListener listener) {
         entry.getState(transaction).removeListener(listener);
     }
@@ -1057,6 +1076,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      *
      * @see FeatureSource#getSupportedHints()
      */
+    @Override
     @SuppressWarnings("unchecked")
     public final Set<RenderingHints.Key> getSupportedHints() {
         return (Set<RenderingHints.Key>) (Set<?>) hints;
@@ -1144,6 +1164,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
 
     // protected abstract SimpleFeatureCollection readonly(ContentState state, Filter filter);
 
+    @Override
     public QueryCapabilities getQueryCapabilities() {
         // lazy initialization, so that the subclass has all its data structures ready
         // when the method is called (it might need to consult them in order to decide
@@ -1155,11 +1176,13 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         // we have to glaze the subclass query capabilities since we always support offset
         // and we support more sorting cases using the sorting wrappers
         return new QueryCapabilities() {
+            @Override
             public boolean isOffsetSupported() {
                 // we always support offset since we support sorting
                 return true;
             }
 
+            @Override
             public boolean supportsSorting(SortBy[] sortAttributes) {
                 if (queryCapabilities.supportsSorting(sortAttributes)) {
                     // natively supported
@@ -1170,10 +1193,12 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
                 }
             }
 
+            @Override
             public boolean isReliableFIDSupported() {
                 return queryCapabilities.isReliableFIDSupported();
             }
 
+            @Override
             public boolean isUseProvidedFIDSupported() {
                 return queryCapabilities.isUseProvidedFIDSupported();
             }

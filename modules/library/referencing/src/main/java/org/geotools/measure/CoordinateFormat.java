@@ -472,6 +472,7 @@ public class CoordinateFormat extends Format {
      * @throws IllegalArgumentException if this {@code CoordinateFormat} cannot format the given
      *     object.
      */
+    @Override
     public StringBuffer format(
             final Object object, final StringBuffer toAppendTo, final FieldPosition position)
             throws IllegalArgumentException {
@@ -488,6 +489,7 @@ public class CoordinateFormat extends Format {
      * @param source The string to parse.
      * @param position The position of the first character to parse.
      */
+    @Override
     public DirectPosition parseObject(final String source, final ParsePosition position) {
         throw new UnsupportedOperationException("DirectPosition parsing not yet implemented.");
     }

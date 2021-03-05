@@ -63,6 +63,7 @@ public class DisjointImpl extends AbstractPreparedGeometryFilter implements Disj
         return true;
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

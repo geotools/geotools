@@ -118,6 +118,7 @@ public class MockHttpResponse implements HTTPResponse {
         this(new ByteArrayInputStream(response), contentType, headers);
     }
 
+    @Override
     public void dispose() {
         try {
             this.stream.close();
@@ -126,14 +127,17 @@ public class MockHttpResponse implements HTTPResponse {
         }
     }
 
+    @Override
     public String getContentType() {
         return this.contentType;
     }
 
+    @Override
     public String getResponseHeader(String headerName) {
         return headers.get(headerName);
     }
 
+    @Override
     public InputStream getResponseStream() throws IOException {
         return stream;
     }

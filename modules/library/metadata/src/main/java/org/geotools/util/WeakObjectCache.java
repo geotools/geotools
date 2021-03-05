@@ -55,6 +55,7 @@ final class WeakObjectCache<K, V> implements ObjectCache<K, V> {
     }
 
     /** Removes all entries from this map. */
+    @Override
     public void clear() {
         synchronized (locks) {
             locks.clear();
@@ -81,6 +82,7 @@ final class WeakObjectCache<K, V> implements ObjectCache<K, V> {
      *
      * @param key The authority code.
      */
+    @Override
     public V get(final K key) {
         WeakReference<V> reference = cache.get(key);
         if (reference == null) return null;
@@ -91,12 +93,14 @@ final class WeakObjectCache<K, V> implements ObjectCache<K, V> {
         return value;
     }
 
+    @Override
     public V peek(final K key) {
         WeakReference<V> reference = cache.get(key);
         if (reference == null) return null;
         return reference.get();
     }
 
+    @Override
     public void writeLock(final K key) {
         ReentrantLock lock;
         synchronized (locks) {
@@ -111,6 +115,7 @@ final class WeakObjectCache<K, V> implements ObjectCache<K, V> {
         lock.lock();
     }
 
+    @Override
     public void writeUnLock(final K key) {
         synchronized (locks) {
             final ReentrantLock lock = locks.get(key);
@@ -141,6 +146,7 @@ final class WeakObjectCache<K, V> implements ObjectCache<K, V> {
     }
 
     /** Stores a value */
+    @Override
     public void put(final K key, final V object) {
         writeLock(key);
         WeakReference<V> reference = new WeakReference<>(object);
@@ -149,11 +155,13 @@ final class WeakObjectCache<K, V> implements ObjectCache<K, V> {
     }
 
     /** @return the keys of the object currently in the set */
+    @Override
     public Set<K> getKeys() {
         return new HashSet<>(cache.keySet());
     }
 
     /** Removes the given key from the cache. */
+    @Override
     public void remove(K key) {
         synchronized (locks) {
             locks.remove(key);

@@ -114,22 +114,27 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
         filterFactory = factory;
     }
 
+    @Override
     public Expression getGammaValue() {
         return gamma;
     }
 
+    @Override
     public void setGammaValue(Expression gamma) {
         this.gamma = gamma;
     }
 
+    @Override
     public ContrastMethod getMethod() {
         return method;
     }
 
+    @Override
     public Object accept(org.opengis.style.StyleVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
 
+    @Override
     public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }

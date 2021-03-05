@@ -27,10 +27,12 @@ import org.opengis.style.GraphicalSymbol;
  */
 public interface GraphicLegend extends org.opengis.style.GraphicLegend {
 
+    @Override
     public AnchorPoint getAnchorPoint();
 
     public void setAnchorPoint(org.opengis.style.AnchorPoint anchor);
 
+    @Override
     public Displacement getDisplacement();
 
     public void setDisplacement(org.opengis.style.Displacement displacement);
@@ -45,6 +47,7 @@ public interface GraphicLegend extends org.opengis.style.GraphicLegend {
      * @return The opacity of the Graphic, where 0.0 is completely transparent and 1.0 is completely
      *     opaque.
      */
+    @Override
     public Expression getOpacity();
 
     /**
@@ -61,6 +64,7 @@ public interface GraphicLegend extends org.opengis.style.GraphicLegend {
      * @return The angle of rotation in decimal degrees. Negative values represent counter-clockwise
      *     rotation. The default is 0.0 (no rotation).
      */
+    @Override
     public Expression getRotation();
 
     /**
@@ -82,6 +86,7 @@ public interface GraphicLegend extends org.opengis.style.GraphicLegend {
      *   <li>16 x 16 will be used for formats like SVG that do not have a size
      * </ul>
      */
+    @Override
     public Expression getSize();
 
     /**
@@ -98,5 +103,6 @@ public interface GraphicLegend extends org.opengis.style.GraphicLegend {
      * (say an SVG file) to least preferred (a simple shape) with the intension that the system will
      * make use of the first entry which it is capabile of displaying.
      */
+    @Override
     public List<GraphicalSymbol> graphicalSymbols();
 }

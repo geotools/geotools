@@ -41,6 +41,7 @@ public class IsGreaterThanImpl extends MultiCompareFilterImpl implements Propert
         return value1 != null && value2 != null && compare(value1, value2) > 0;
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

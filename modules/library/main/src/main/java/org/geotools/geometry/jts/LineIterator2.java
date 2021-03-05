@@ -46,6 +46,7 @@ public final class LineIterator2 implements PathIterator {
     public LineIterator2() {}
 
     /** @see java.awt.geom.PathIterator#currentSegment(float[]) */
+    @Override
     public int currentSegment(float[] coords) {
         if (currentCoord == 0) {
             coords[0] = (float) allCoords[0];
@@ -95,6 +96,7 @@ public final class LineIterator2 implements PathIterator {
      * @see #WIND_EVEN_ODD
      * @see #WIND_NON_ZERO
      */
+    @Override
     public int getWindingRule() {
         return WIND_NON_ZERO;
     }
@@ -104,6 +106,7 @@ public final class LineIterator2 implements PathIterator {
      *
      * @return <code>true</code> if all the segments have been read; <code>false</code> otherwise.
      */
+    @Override
     public boolean isDone() {
         return done;
     }
@@ -112,6 +115,7 @@ public final class LineIterator2 implements PathIterator {
      * Moves the iterator to the next segment of the path forwards along the primary direction of
      * traversal as long as there are more points in that direction.
      */
+    @Override
     public void next() {
         if (currentCoord == (actualCoords - 1)) {
             done = true;
@@ -121,6 +125,7 @@ public final class LineIterator2 implements PathIterator {
     }
 
     /** @see java.awt.geom.PathIterator#currentSegment(double[]) */
+    @Override
     public int currentSegment(double[] coords) {
         float[] fco = new float[6];
         int result = currentSegment(fco);

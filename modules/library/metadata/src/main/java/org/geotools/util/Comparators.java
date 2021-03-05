@@ -51,6 +51,7 @@ public final class Comparators {
         private static final long serialVersionUID = -8926770873102046405L;
 
         /** Compares to collections of comparable objects. */
+        @Override
         public int compare(final Collection<Comparable> c1, final Collection<Comparable> c2) {
             final Iterator<Comparable> i1 = c1.iterator();
             final Iterator<Comparable> i2 = c2.iterator();

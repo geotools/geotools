@@ -37,6 +37,7 @@ class FidComparator implements Comparator<SimpleFeature> {
         this.ascending = ascending;
     }
 
+    @Override
     public int compare(SimpleFeature f1, SimpleFeature f2) {
         int result = compareAscending(f1, f2);
         if (ascending) {

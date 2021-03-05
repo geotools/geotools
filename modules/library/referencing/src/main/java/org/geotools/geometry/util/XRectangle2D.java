@@ -108,6 +108,7 @@ public class XRectangle2D extends Rectangle2D implements Serializable {
      *
      * @return {@code true} if the {@code RectangularShape} is empty; {@code false} otherwise.
      */
+    @Override
     public boolean isEmpty() {
         return !(xmin < xmax && ymin < ymax);
     }
@@ -118,6 +119,7 @@ public class XRectangle2D extends Rectangle2D implements Serializable {
      *
      * @return the x coordinate of the upper left corner of the framing rectangle.
      */
+    @Override
     public double getX() {
         return xmin;
     }
@@ -128,6 +130,7 @@ public class XRectangle2D extends Rectangle2D implements Serializable {
      *
      * @return the y coordinate of the upper left corner of the framing rectangle.
      */
+    @Override
     public double getY() {
         return ymin;
     }
@@ -137,6 +140,7 @@ public class XRectangle2D extends Rectangle2D implements Serializable {
      *
      * @return the width of the framing rectangle.
      */
+    @Override
     public double getWidth() {
         return xmax - xmin;
     }
@@ -146,6 +150,7 @@ public class XRectangle2D extends Rectangle2D implements Serializable {
      *
      * @return the height of the framing rectangle.
      */
+    @Override
     public double getHeight() {
         return ymax - ymin;
     }
@@ -467,6 +472,7 @@ public class XRectangle2D extends Rectangle2D implements Serializable {
      * @see #OUT_RIGHT
      * @see #OUT_BOTTOM
      */
+    @Override
     public int outcode(final double x, final double y) {
         int out = 0;
         if (!(xmax > xmin)) out |= OUT_LEFT | OUT_RIGHT;
@@ -487,6 +493,7 @@ public class XRectangle2D extends Rectangle2D implements Serializable {
      * @return the largest {@code Rectangle2D} contained in both the specified {@code Rectangle2D}
      *     and in this {@code Rectangle2D}.
      */
+    @Override
     public Rectangle2D createIntersection(final Rectangle2D rect) {
         final XRectangle2D r = new XRectangle2D();
         r.xmin = Math.max(xmin, rect.getMinX());
@@ -504,6 +511,7 @@ public class XRectangle2D extends Rectangle2D implements Serializable {
      * @return the smallest {@code Rectangle2D} containing both the specified {@code Rectangle2D}
      *     and this {@code Rectangle2D}.
      */
+    @Override
     public Rectangle2D createUnion(final Rectangle2D rect) {
         final XRectangle2D r = new XRectangle2D();
         r.xmin = Math.min(xmin, rect.getMinX());

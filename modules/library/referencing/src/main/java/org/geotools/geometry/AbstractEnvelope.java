@@ -71,6 +71,7 @@ public abstract class AbstractEnvelope implements Envelope {
      *
      * @return The lower corner.
      */
+    @Override
     public DirectPosition getLowerCorner() {
         return new LowerCorner();
     }
@@ -82,6 +83,7 @@ public abstract class AbstractEnvelope implements Envelope {
      *
      * @return The upper corner.
      */
+    @Override
     public DirectPosition getUpperCorner() {
         return new UpperCorner();
     }
@@ -182,16 +184,19 @@ public abstract class AbstractEnvelope implements Envelope {
      */
     private abstract class Corner extends AbstractDirectPosition {
         /** The coordinate reference system in which the coordinate is given. */
+        @Override
         public CoordinateReferenceSystem getCoordinateReferenceSystem() {
             return AbstractEnvelope.this.getCoordinateReferenceSystem();
         }
 
         /** The length of coordinate sequence (the number of entries). */
+        @Override
         public int getDimension() {
             return AbstractEnvelope.this.getDimension();
         }
 
         /** Sets the ordinate value along the specified dimension. */
+        @Override
         public void setOrdinate(int dimension, double value) {
             throw new UnsupportedOperationException();
         }
@@ -199,6 +204,7 @@ public abstract class AbstractEnvelope implements Envelope {
 
     /** The corner returned by {@link AbstractEnvelope#getLowerCorner}. */
     private final class LowerCorner extends Corner {
+        @Override
         public double getOrdinate(final int dimension) throws IndexOutOfBoundsException {
             return getMinimum(dimension);
         }
@@ -206,6 +212,7 @@ public abstract class AbstractEnvelope implements Envelope {
 
     /** The corner returned by {@link AbstractEnvelope#getUpperCorner}. */
     private final class UpperCorner extends Corner {
+        @Override
         public double getOrdinate(final int dimension) throws IndexOutOfBoundsException {
             return getMaximum(dimension);
         }

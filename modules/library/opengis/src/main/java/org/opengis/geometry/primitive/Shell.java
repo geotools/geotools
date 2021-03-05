@@ -35,6 +35,7 @@ public interface Shell extends CompositeSurface {
      *
      * @return Always {@code true}.
      */
+    @Override
     @UML(identifier = "isSimple", obligation = MANDATORY, specification = ISO_19107)
     boolean isSimple();
 }

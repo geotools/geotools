@@ -45,6 +45,7 @@ public class RestrictionHandler extends XSIElementHandler {
     private AnyAttributeHandler anyAttribute;
 
     /** @see java.lang.Object#hashCode() */
+    @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return LOCALNAME.hashCode()
@@ -53,6 +54,7 @@ public class RestrictionHandler extends XSIElementHandler {
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
+    @Override
     public XSIElementHandler getHandler(String namespaceURI, String localName) throws SAXException {
         if (SchemaHandler.namespaceURI.equalsIgnoreCase(namespaceURI)) {
             // child types
@@ -323,6 +325,7 @@ public class RestrictionHandler extends XSIElementHandler {
      * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String,
      *     org.xml.sax.Attributes)
      */
+    @Override
     public void startElement(String namespaceURI, String localName, Attributes atts) {
         id = atts.getValue("", "id");
 
@@ -338,6 +341,7 @@ public class RestrictionHandler extends XSIElementHandler {
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
+    @Override
     public String getLocalName() {
         return LOCALNAME;
     }
@@ -377,11 +381,13 @@ public class RestrictionHandler extends XSIElementHandler {
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getHandlerType() */
+    @Override
     public int getHandlerType() {
         return RESTRICTION;
     }
 
     /** @see org.geotools.xml.XSIElementHandler#endElement(java.lang.String, java.lang.String) */
+    @Override
     public void endElement(String namespaceURI, String localName) {
         // do nothing
     }
@@ -398,11 +404,13 @@ class EnumerationHandler extends FacetHandler {
     public static final String LOCALNAME = "enumeration";
 
     /** @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding() */
+    @Override
     public int getType() {
         return Facet.ENUMERATION;
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
+    @Override
     public String getLocalName() {
         return LOCALNAME;
     }
@@ -419,11 +427,13 @@ class FractionDigitsHandler extends FacetHandler {
     public static final String LOCALNAME = "fractionDigits";
 
     /** @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding() */
+    @Override
     public int getType() {
         return Facet.FRACTIONDIGITS;
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
+    @Override
     public String getLocalName() {
         return LOCALNAME;
     }
@@ -440,11 +450,13 @@ class LengthHandler extends FacetHandler {
     public static final String LOCALNAME = "length";
 
     /** @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding() */
+    @Override
     public int getType() {
         return Facet.LENGTH;
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
+    @Override
     public String getLocalName() {
         return LOCALNAME;
     }
@@ -461,11 +473,13 @@ class MinInclusiveHandler extends FacetHandler {
     public static final String LOCALNAME = "minInclusive";
 
     /** @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding() */
+    @Override
     public int getType() {
         return Facet.MININCLUSIVE;
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
+    @Override
     public String getLocalName() {
         return LOCALNAME;
     }
@@ -482,11 +496,13 @@ class MaxInclusiveHandler extends FacetHandler {
     public static final String LOCALNAME = "maxInclusive";
 
     /** @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding() */
+    @Override
     public int getType() {
         return Facet.MAXINCLUSIVE;
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
+    @Override
     public String getLocalName() {
         return LOCALNAME;
     }
@@ -503,11 +519,13 @@ class MinExclusiveHandler extends FacetHandler {
     public static final String LOCALNAME = "minExclusive";
 
     /** @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding() */
+    @Override
     public int getType() {
         return Facet.MINEXCLUSIVE;
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
+    @Override
     public String getLocalName() {
         return LOCALNAME;
     }
@@ -524,11 +542,13 @@ class MaxExclusiveHandler extends FacetHandler {
     public static final String LOCALNAME = "maxExclusive";
 
     /** @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding() */
+    @Override
     public int getType() {
         return Facet.MAXEXCLUSIVE;
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
+    @Override
     public String getLocalName() {
         return LOCALNAME;
     }
@@ -545,11 +565,13 @@ class MinLengthHandler extends FacetHandler {
     public static final String LOCALNAME = "minLength";
 
     /** @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding() */
+    @Override
     public int getType() {
         return Facet.MINLENGTH;
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
+    @Override
     public String getLocalName() {
         return LOCALNAME;
     }
@@ -566,11 +588,13 @@ class MaxLengthHandler extends FacetHandler {
     public static final String LOCALNAME = "maxLength";
 
     /** @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding() */
+    @Override
     public int getType() {
         return Facet.MAXLENGTH;
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
+    @Override
     public String getLocalName() {
         return LOCALNAME;
     }
@@ -587,11 +611,13 @@ class PatternHandler extends FacetHandler {
     public static final String LOCALNAME = "pattern";
 
     /** @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding() */
+    @Override
     public int getType() {
         return Facet.PATTERN;
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
+    @Override
     public String getLocalName() {
         return LOCALNAME;
     }
@@ -608,11 +634,13 @@ class TotalDigitsHandler extends FacetHandler {
     public static final String LOCALNAME = "totalDigits";
 
     /** @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding() */
+    @Override
     public int getType() {
         return Facet.TOTALDIGITS;
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
+    @Override
     public String getLocalName() {
         return LOCALNAME;
     }

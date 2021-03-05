@@ -60,21 +60,25 @@ final class Auto42003 extends Factlet {
     private Auto42003() {}
 
     /** {@inheritDoc} */
+    @Override
     public int code() {
         return 42003;
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getName() {
         return "WGS 84 / Auto Orthographic";
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getClassification() {
         return "Orthographic";
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void setProjectionParameters(final ParameterValueGroup parameters, final Code code) {
         final double latitudeOfOrigin = code.latitude;
         final double centralMeridian = code.longitude;

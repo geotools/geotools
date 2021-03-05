@@ -102,6 +102,7 @@ public interface ArcStringByBulge extends CurveSegment {
      *
      * @return Always {@link CurveInterpolation#CIRCULAR_ARC_2_POINTS_WITH_BULGE}.
      */
+    @Override
     @UML(identifier = "interpolation", obligation = MANDATORY, specification = ISO_19107)
     CurveInterpolation getInterpolation();
 

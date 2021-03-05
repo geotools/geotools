@@ -184,6 +184,7 @@ public class PropertyAuthorityFactory extends DirectAuthorityFactory
     /**
      * Returns the organization or party responsible for definition and maintenance of the database.
      */
+    @Override
     public Citation getAuthority() {
         return authority;
     }
@@ -212,6 +213,7 @@ public class PropertyAuthorityFactory extends DirectAuthorityFactory
      *     set.
      * @throws FactoryException if access to the underlying database failed.
      */
+    @Override
     public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type)
             throws FactoryException {
         if (type == null || type.isAssignableFrom(IdentifiedObject.class)) {
@@ -258,6 +260,7 @@ public class PropertyAuthorityFactory extends DirectAuthorityFactory
          * Returns the code if the associated key is of the expected type, or {@code null}
          * otherwise.
          */
+        @Override
         protected String baseToDerived(final String key) {
             final String wkt = definitions.get(key);
             final int length = wkt.length();
@@ -271,6 +274,7 @@ public class PropertyAuthorityFactory extends DirectAuthorityFactory
         }
 
         /** Transforms a value in this set to a value in the base set. */
+        @Override
         protected String derivedToBase(final String element) {
             return element;
         }
@@ -301,6 +305,7 @@ public class PropertyAuthorityFactory extends DirectAuthorityFactory
      * @throws NoSuchAuthorityCodeException if the specified {@code code} was not found.
      * @throws FactoryException if the query failed for some other reason.
      */
+    @Override
     public InternationalString getDescriptionText(final String code)
             throws NoSuchAuthorityCodeException, FactoryException {
         final String wkt = getWKT(code);

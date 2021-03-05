@@ -94,6 +94,7 @@ public interface ComplexAttribute extends Attribute {
      *
      * @see Attribute#getType()
      */
+    @Override
     ComplexType getType();
 
     /**
@@ -107,6 +108,7 @@ public interface ComplexAttribute extends Attribute {
      * Override of {@link Property#getValue()} which returns the collection of {@link Property}
      * which make up the value of the complex attribute.
      */
+    @Override
     Collection<? extends Property> getValue();
 
     /**
@@ -191,5 +193,6 @@ public interface ComplexAttribute extends Attribute {
      *
      * @throws IllegalAttributeException If any attribute fails validation
      */
+    @Override
     void validate() throws IllegalAttributeException;
 }

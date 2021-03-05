@@ -107,6 +107,7 @@ public final class ImagingCondition extends CodeList<ImagingCondition> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public ImagingCondition[] family() {
         return values();
     }

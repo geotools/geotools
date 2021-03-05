@@ -36,6 +36,7 @@ public class FilterFunction_round_2 extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
 
         Object arg0 = getExpression(0).evaluate(feature);

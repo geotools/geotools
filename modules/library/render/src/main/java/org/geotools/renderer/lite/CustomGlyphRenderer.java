@@ -59,10 +59,12 @@ public class CustomGlyphRenderer implements GlyphRenderer {
         list.addProperty("wedge color", Expression.class, factory.literal("#9999FF"));
     }
 
+    @Override
     public boolean canRender(String format) {
         return format.equalsIgnoreCase("image/hack");
     }
 
+    @Override
     public List getFormats() {
         List<String> ret = new ArrayList<>();
         ret.add("image/hack");
@@ -83,6 +85,7 @@ public class CustomGlyphRenderer implements GlyphRenderer {
     }
 
     /** djb -- addd "height" which is ignored as per API change */
+    @Override
     public BufferedImage render(Graphic graphic, ExternalGraphic eg, Object feature, int height) {
         Map props = eg.getCustomProperties();
         Set propNames = props.keySet();

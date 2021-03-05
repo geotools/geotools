@@ -24,6 +24,7 @@ public abstract class JDBCAggregateTestSetup extends JDBCDelegatingTestSetup {
         super(delegate);
     }
 
+    @Override
     protected final void setUpData() throws Exception {
         super.setUpData();
         // kill all the data

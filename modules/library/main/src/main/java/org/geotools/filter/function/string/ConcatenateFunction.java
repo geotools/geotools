@@ -57,6 +57,7 @@ public class ConcatenateFunction extends FunctionImpl {
         return NAME.getArgumentCount();
     }
 
+    @Override
     public Object evaluate(Object feature) {
         StringBuffer text = new StringBuffer();
         for (Expression expression : getParameters()) {

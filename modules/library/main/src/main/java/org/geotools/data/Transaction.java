@@ -243,6 +243,7 @@ public interface Transaction extends Closeable {
      * <p>It is hoped that FeatureStore implementations that have externalized their State with the
      * transaction take the opportunity to revert to Transction.AUTO_COMMIT.
      */
+    @Override
     void close() throws IOException;
 
     /**

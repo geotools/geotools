@@ -64,6 +64,7 @@ public abstract class SubchainStyleVisitorCoverageProcessingAdapter
         super(maxSources, hints, name, description);
     }
 
+    @Override
     public void dispose(boolean force) {
         // dispose the graph of operations we set up
         dispose(sink, force);
@@ -101,6 +102,7 @@ public abstract class SubchainStyleVisitorCoverageProcessingAdapter
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.StyleVisitorCoverageProcessingNodeAdapter#execute()
      */
+    @Override
     public GridCoverage execute() {
         if (sink != null) {
             return sink.getOutput();

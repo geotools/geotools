@@ -60,6 +60,7 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
      *
      * @see org.geotools.filter.function.ClassificationFunction#evaluate(java.lang.Object)
      */
+    @Override
     public Object evaluate(Object feature) {
         if (!(feature instanceof FeatureCollection)) {
             return null;

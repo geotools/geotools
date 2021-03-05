@@ -80,6 +80,7 @@ public class ElementGT implements Element {
      *
      * @see org.geotools.xml.schema.Element#isAbstract()
      */
+    @Override
     public boolean isAbstract() {
         return _abstract;
     }
@@ -89,6 +90,7 @@ public class ElementGT implements Element {
      *
      * @see org.geotools.xml.schema.Element#getBlock()
      */
+    @Override
     public int getBlock() {
         return Schema.NONE;
     }
@@ -98,6 +100,7 @@ public class ElementGT implements Element {
      *
      * @see org.geotools.xml.schema.Element#getDefault()
      */
+    @Override
     public String getDefault() {
         return null;
     }
@@ -107,6 +110,7 @@ public class ElementGT implements Element {
      *
      * @see org.geotools.xml.schema.Element#getFinal()
      */
+    @Override
     public int getFinal() {
         return Schema.NONE;
     }
@@ -116,6 +120,7 @@ public class ElementGT implements Element {
      *
      * @see org.geotools.xml.schema.Element#getFixed()
      */
+    @Override
     public String getFixed() {
         return null;
     }
@@ -125,6 +130,7 @@ public class ElementGT implements Element {
      *
      * @see org.geotools.xml.schema.Element#isForm()
      */
+    @Override
     public boolean isForm() {
         return false;
     }
@@ -134,6 +140,7 @@ public class ElementGT implements Element {
      *
      * @see org.geotools.xml.schema.Element#getId()
      */
+    @Override
     public String getId() {
         return id;
     }
@@ -143,6 +150,7 @@ public class ElementGT implements Element {
      *
      * @see org.geotools.xml.schema.ElementGrouping#getMaxOccurs()
      */
+    @Override
     public int getMaxOccurs() {
         return max;
     }
@@ -152,6 +160,7 @@ public class ElementGT implements Element {
      *
      * @see org.geotools.xml.schema.ElementGrouping#getMinOccurs()
      */
+    @Override
     public int getMinOccurs() {
         return min;
     }
@@ -161,6 +170,7 @@ public class ElementGT implements Element {
      *
      * @see org.geotools.xml.schema.Element#getName()
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -170,6 +180,7 @@ public class ElementGT implements Element {
      *
      * @see org.geotools.xml.schema.Element#getNamespace()
      */
+    @Override
     public URI getNamespace() {
         return ns;
     }
@@ -179,6 +190,7 @@ public class ElementGT implements Element {
      *
      * @see org.geotools.xml.schema.Element#isNillable()
      */
+    @Override
     public boolean isNillable() {
         return nillable;
     }
@@ -188,6 +200,7 @@ public class ElementGT implements Element {
      *
      * @see org.geotools.xml.schema.Element#getSubstitutionGroup()
      */
+    @Override
     public Element getSubstitutionGroup() {
         return sub;
     }
@@ -197,6 +210,7 @@ public class ElementGT implements Element {
      *
      * @see org.geotools.xml.schema.Element#getType()
      */
+    @Override
     public Type getType() {
         return type;
     }
@@ -206,6 +220,7 @@ public class ElementGT implements Element {
      *
      * @see org.geotools.xml.schema.ElementGrouping#getGrouping()
      */
+    @Override
     public int getGrouping() {
         return ElementGrouping.ELEMENT;
     }
@@ -215,10 +230,12 @@ public class ElementGT implements Element {
      *
      * @see org.geotools.xml.schema.ElementGrouping#findChildElement(java.lang.String)
      */
+    @Override
     public Element findChildElement(String name1) {
         return (getName() != null && getName().equals(name1)) ? this : null;
     }
 
+    @Override
     public Element findChildElement(String localName, URI namespaceURI) {
         return (getName() != null
                         && getName().equals(localName)

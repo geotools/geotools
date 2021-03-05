@@ -246,6 +246,7 @@ public final class TopicCategory extends CodeList<TopicCategory> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public TopicCategory[] family() {
         return values();
     }

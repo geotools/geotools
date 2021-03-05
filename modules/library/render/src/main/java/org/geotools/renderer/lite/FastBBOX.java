@@ -54,18 +54,22 @@ class FastBBOX implements BBOX, BinarySpatialOperator, BinaryComparisonOperator 
         return envelope;
     }
 
+    @Override
     public BoundingBox getBounds() {
         return ReferencedEnvelope.reference(envelope);
     }
 
+    @Override
     public Expression getExpression1() {
         return property;
     }
 
+    @Override
     public Expression getExpression2() {
         return factory.literal(envelope);
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object context) {
         Object result = visitor.visit(this, context);
         if (!(result instanceof BBOX)) return result;
@@ -78,6 +82,7 @@ class FastBBOX implements BBOX, BinarySpatialOperator, BinaryComparisonOperator 
         return result;
     }
 
+    @Override
     public boolean evaluate(Object feature) {
         if (feature == null) return false;
 
@@ -90,10 +95,12 @@ class FastBBOX implements BBOX, BinarySpatialOperator, BinaryComparisonOperator 
     // THIS GARGABE IS HERE TO ALLOW OLD DATASTORES NOT USING PROPER OGC FILTERS TO WORK
     // WILL BE REMOVED WHEN THERE IS NOTHING LEFT USING THEM
 
+    @Override
     public boolean isMatchingCase() {
         return false;
     }
 
+    @Override
     public MatchAction getMatchAction() {
         return MatchAction.ANY;
     }

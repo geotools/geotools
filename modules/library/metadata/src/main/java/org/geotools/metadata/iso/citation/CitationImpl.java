@@ -169,6 +169,7 @@ public class CitationImpl extends MetadataEntity implements Citation {
     }
 
     /** Returns the name by which the cited resource is known. */
+    @Override
     public InternationalString getTitle() {
         return title;
     }
@@ -183,6 +184,7 @@ public class CitationImpl extends MetadataEntity implements Citation {
      * Returns the short name or other language name by which the cited information is known.
      * Example: "DCW" as an alternative title for "Digital Chart of the World".
      */
+    @Override
     public Collection<InternationalString> getAlternateTitles() {
         return (alternateTitles = nonNullCollection(alternateTitles, InternationalString.class));
     }
@@ -193,6 +195,7 @@ public class CitationImpl extends MetadataEntity implements Citation {
     }
 
     /** Returns the reference date for the cited resource. */
+    @Override
     public Collection<CitationDate> getDates() {
         return dates = nonNullCollection(dates, CitationDate.class);
     }
@@ -203,6 +206,7 @@ public class CitationImpl extends MetadataEntity implements Citation {
     }
 
     /** Returns the version of the cited resource. */
+    @Override
     public InternationalString getEdition() {
         return edition;
     }
@@ -214,6 +218,7 @@ public class CitationImpl extends MetadataEntity implements Citation {
     }
 
     /** Returns the date of the edition, or {@code null} if none. */
+    @Override
     public Date getEditionDate() {
         return (editionDate != Long.MIN_VALUE) ? new Date(editionDate) : null;
     }
@@ -232,6 +237,7 @@ public class CitationImpl extends MetadataEntity implements Citation {
      * Returns the unique identifier for the resource. Example: Universal Product Code (UPC),
      * National Stock Number (NSN).
      */
+    @Override
     public Collection<Identifier> getIdentifiers() {
         return (identifiers = nonNullCollection(identifiers, Identifier.class));
     }
@@ -248,6 +254,7 @@ public class CitationImpl extends MetadataEntity implements Citation {
      * Returns the name and position information for an individual or organization that is
      * responsible for the resource. Returns an empty string if there is none.
      */
+    @Override
     public Collection<ResponsibleParty> getCitedResponsibleParties() {
         return (citedResponsibleParties =
                 nonNullCollection(citedResponsibleParties, ResponsibleParty.class));
@@ -263,6 +270,7 @@ public class CitationImpl extends MetadataEntity implements Citation {
     }
 
     /** Returns the mode in which the resource is represented, or an empty string if none. */
+    @Override
     public Collection<PresentationForm> getPresentationForm() {
         return (presentationForm = nonNullCollection(presentationForm, PresentationForm.class));
     }
@@ -276,6 +284,7 @@ public class CitationImpl extends MetadataEntity implements Citation {
      * Returns the information about the series, or aggregate dataset, of which the dataset is a
      * part. Returns {@code null} if none.
      */
+    @Override
     public Series getSeries() {
         return series;
     }
@@ -293,6 +302,7 @@ public class CitationImpl extends MetadataEntity implements Citation {
      * Returns other information required to complete the citation that is not recorded elsewhere.
      * Returns {@code null} if none.
      */
+    @Override
     public InternationalString getOtherCitationDetails() {
         return otherCitationDetails;
     }
@@ -311,6 +321,7 @@ public class CitationImpl extends MetadataEntity implements Citation {
      * collectively, combined with information about what volumes are available at the source cited.
      * Returns {@code null} if there is no title.
      */
+    @Override
     public InternationalString getCollectiveTitle() {
         return collectiveTitle;
     }
@@ -326,6 +337,7 @@ public class CitationImpl extends MetadataEntity implements Citation {
     }
 
     /** Returns the International Standard Book Number, or {@code null} if none. */
+    @Override
     public String getISBN() {
         return ISBN;
     }
@@ -337,6 +349,7 @@ public class CitationImpl extends MetadataEntity implements Citation {
     }
 
     /** Returns the International Standard Serial Number, or {@code null} if none. */
+    @Override
     public String getISSN() {
         return ISSN;
     }

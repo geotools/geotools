@@ -29,6 +29,7 @@ public class DirectPropertyAccessorFactory implements PropertyAccessorFactory {
 
     static PropertyAccessor DIRECT = new DirectPropertyAccessor();
 
+    @Override
     public PropertyAccessor createPropertyAccessor(
             Class type, String xpath, Class target, Hints hints) {
         return DIRECT;
@@ -44,6 +45,7 @@ public class DirectPropertyAccessorFactory implements PropertyAccessorFactory {
     static class DirectPropertyAccessor implements PropertyAccessor {
 
         /** We can handle *one* case and one case only */
+        @Override
         public boolean canHandle(Object object, String xpath, Class target) {
             if (object instanceof Property) {
                 Property property = (Property) object;
@@ -59,6 +61,7 @@ public class DirectPropertyAccessorFactory implements PropertyAccessorFactory {
             return false;
         }
 
+        @Override
         public <T> T get(Object object, String xpath, Class<T> target)
                 throws IllegalArgumentException {
             @SuppressWarnings("unchecked")
@@ -66,6 +69,7 @@ public class DirectPropertyAccessorFactory implements PropertyAccessorFactory {
             return cast;
         }
 
+        @Override
         public <T> void set(Object object, String xpath, T value, Class<T> target)
                 throws IllegalArgumentException {
             ((Property) object).setValue(value);

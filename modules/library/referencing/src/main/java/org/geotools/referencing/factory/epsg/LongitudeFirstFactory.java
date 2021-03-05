@@ -125,6 +125,7 @@ public class LongitudeFirstFactory extends DeferredAuthorityFactory
      * version in the {@linkplain Citation#getEdition edition} attribute, together with the
      * {@linkplain Citation#getEditionDate edition date}.
      */
+    @Override
     public Citation getAuthority() {
         final Citation authority = super.getAuthority();
         return (authority != null) ? authority : Citations.EPSG;
@@ -136,6 +137,7 @@ public class LongitudeFirstFactory extends DeferredAuthorityFactory
      *
      * @throws FactoryException If no suitable factory instance was found.
      */
+    @Override
     protected AbstractAuthorityFactory createBackingStore() throws FactoryException {
         /*
          * Set the hints for the backing store to fetch. I'm not sure that we should request a

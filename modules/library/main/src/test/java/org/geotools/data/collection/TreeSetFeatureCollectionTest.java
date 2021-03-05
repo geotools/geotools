@@ -31,6 +31,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 public class TreeSetFeatureCollectionTest
         extends org.geotools.data.collection.FeatureCollectionTest {
 
+    @Override
     protected TreeSetFeatureCollection newCollection(
             SimpleFeatureType schema, List<SimpleFeature> list) {
         TreeSetFeatureCollection treeset = new TreeSetFeatureCollection(null, null);

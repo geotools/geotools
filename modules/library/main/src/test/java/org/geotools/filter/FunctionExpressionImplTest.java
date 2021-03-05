@@ -309,36 +309,44 @@ public class FunctionExpressionImplTest {
     private static class TestExpressionVisitor implements ExpressionVisitor {
         public Object[] functionVisited = {Boolean.FALSE, null};
 
+        @Override
         public Object visit(Function expression, Object extraData) {
             functionVisited[0] = Boolean.TRUE;
             functionVisited[1] = extraData;
             return null;
         }
 
+        @Override
         public Object visit(Add expression, Object extraData) {
             return null;
         }
 
+        @Override
         public Object visit(Divide expression, Object extraData) {
             return null;
         }
 
+        @Override
         public Object visit(Literal expression, Object extraData) {
             return null;
         }
 
+        @Override
         public Object visit(Multiply expression, Object extraData) {
             return null;
         }
 
+        @Override
         public Object visit(PropertyName expression, Object extraData) {
             return null;
         }
 
+        @Override
         public Object visit(Subtract expression, Object extraData) {
             return null;
         }
 
+        @Override
         public Object visit(NilExpression arg0, Object arg1) {
             return null;
         }

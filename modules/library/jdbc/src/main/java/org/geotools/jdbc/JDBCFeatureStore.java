@@ -89,6 +89,7 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
     }
 
     /** We handle events internally */
+    @Override
     protected boolean canEvent() {
         return true;
     }
@@ -241,6 +242,7 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
     //     features.update(type, value);
     // }
 
+    @Override
     @SuppressWarnings("PMD.CloseResource") // the cx is passed to the reader which will close it
     protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(
             Query query, int flags) throws IOException {

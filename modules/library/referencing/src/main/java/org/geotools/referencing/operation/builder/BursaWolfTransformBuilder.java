@@ -106,6 +106,7 @@ public class BursaWolfTransformBuilder extends MathTransformBuilder {
      *
      * @return the minimum number of points required by this builder which is 3.
      */
+    @Override
     public int getMinimumPointCount() {
         return 3;
     }
@@ -513,6 +514,7 @@ public class BursaWolfTransformBuilder extends MathTransformBuilder {
      * @throws FactoryException when the size of source and destination point is not the same or if
      *     the number of points is too small to define such transformation.
      */
+    @Override
     protected MathTransform computeMathTransform() throws FactoryException {
         return new GeocentricTranslation(getBursaWolfParameters(targetDatum));
     }

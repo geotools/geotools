@@ -128,8 +128,10 @@ public class DisplayCoverageTest {
 
         RenderListener listener =
                 new RenderListener() {
+                    @Override
                     public void featureRenderer(SimpleFeature feature) {}
 
+                    @Override
                     public void errorOccurred(Exception e) {
                         java.util.logging.Logger.getGlobal()
                                 .log(java.util.logging.Level.INFO, "", e);

@@ -47,6 +47,7 @@ public class CommonsConverterFactory implements ConverterFactory {
     // some additional converters
     /** converts a string to a uri. */
     static class URIConverter implements Converter {
+        @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (source == null) return null;
             String string = (String) source;
@@ -61,6 +62,7 @@ public class CommonsConverterFactory implements ConverterFactory {
 
     static class NumberConverter implements Converter {
         // target.cast won't work for both the object wrapper and the primitive class
+        @Override
         @SuppressWarnings("unchecked")
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (source == null) return null;
@@ -79,6 +81,7 @@ public class CommonsConverterFactory implements ConverterFactory {
 
     static class ByteConverter implements Converter {
         // target.cast won't work for both the object wrapper and the primitive class
+        @Override
         @SuppressWarnings("unchecked")
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (source == null) return null;
@@ -94,6 +97,7 @@ public class CommonsConverterFactory implements ConverterFactory {
 
     static class ShortConverter implements Converter {
         // target.cast won't work for both the object wrapper and the primitive class
+        @Override
         @SuppressWarnings("unchecked")
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (source == null) return null;
@@ -109,6 +113,7 @@ public class CommonsConverterFactory implements ConverterFactory {
 
     static class IntegerConverter implements Converter {
         // target.cast won't work for both the object wrapper and the primitive class
+        @Override
         @SuppressWarnings("unchecked")
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (source == null) return null;
@@ -124,6 +129,7 @@ public class CommonsConverterFactory implements ConverterFactory {
 
     static class LongConverter implements Converter {
         // target.cast won't work for both the object wrapper and the primitive class
+        @Override
         @SuppressWarnings("unchecked")
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (source == null) return null;
@@ -138,6 +144,7 @@ public class CommonsConverterFactory implements ConverterFactory {
     }
 
     static class BigIntegerConverter implements Converter {
+        @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (source == null) return null;
             String string = (String) source;
@@ -152,6 +159,7 @@ public class CommonsConverterFactory implements ConverterFactory {
 
     static class FloatConverter implements Converter {
         // target.cast won't work for both the object wrapper and the primitive class
+        @Override
         @SuppressWarnings("unchecked")
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (source == null) return null;
@@ -167,6 +175,7 @@ public class CommonsConverterFactory implements ConverterFactory {
 
     static class DoubleConverter implements Converter {
         // target.cast won't work for both the object wrapper and the primitive class
+        @Override
         @SuppressWarnings("unchecked")
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (source == null) return null;
@@ -181,6 +190,7 @@ public class CommonsConverterFactory implements ConverterFactory {
     }
 
     static class BigDecimalConverter implements Converter {
+        @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (source == null) return null;
             String string = (String) source;
@@ -200,6 +210,7 @@ public class CommonsConverterFactory implements ConverterFactory {
         //                Arrays.asList(new String[]{"NO","N","FALSE","OFF","0"}) );
 
         // target.cast won't work for both the object wrapper and the primitive class
+        @Override
         @SuppressWarnings("unchecked")
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (source == null) return null;
@@ -233,6 +244,7 @@ public class CommonsConverterFactory implements ConverterFactory {
     }
 
     static class CharacterConverter implements Converter {
+        @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (source == null) return null;
             String string = (String) source;
@@ -251,6 +263,7 @@ public class CommonsConverterFactory implements ConverterFactory {
                         "yyyy-MM-dd HH:mm:ssa",
                         "yyyy-MM-dd'T'HH:mm:ss.SSSX");
 
+        @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {
 
             if (source == null) {
@@ -270,6 +283,7 @@ public class CommonsConverterFactory implements ConverterFactory {
     }
 
     static class URLConverter implements Converter {
+        @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (source == null) return null;
             String string = (String) source;
@@ -298,6 +312,7 @@ public class CommonsConverterFactory implements ConverterFactory {
     }
 
     static class SQLDateConverter implements Converter {
+        @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (source == null) return null;
             String string = (String) source;
@@ -311,6 +326,7 @@ public class CommonsConverterFactory implements ConverterFactory {
     }
 
     static class SQLTimeConverter implements Converter {
+        @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (source == null) return null;
             String string = (String) source;
@@ -324,6 +340,7 @@ public class CommonsConverterFactory implements ConverterFactory {
     }
 
     static class SQLTimestampConverter implements Converter {
+        @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (source == null) return null;
             String string = (String) source;
@@ -337,6 +354,7 @@ public class CommonsConverterFactory implements ConverterFactory {
     }
 
     static class FileConverter implements Converter {
+        @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (source == null) return null;
             String string = (String) source;
@@ -350,6 +368,7 @@ public class CommonsConverterFactory implements ConverterFactory {
     }
 
     static class TimeZoneConverter implements Converter {
+        @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (source == null) return null;
             String string = (String) source;
@@ -407,6 +426,7 @@ public class CommonsConverterFactory implements ConverterFactory {
      *
      * @see ConverterFactory#createConverter(Class, Class, Hints).
      */
+    @Override
     public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {
 
         if (source == null || !source.equals(String.class)) {

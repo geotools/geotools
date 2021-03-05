@@ -41,6 +41,7 @@ public class IdCapabilitiesImpl implements IdCapabilities {
         this(copy.hasEID(), copy.hasFID());
     }
 
+    @Override
     public boolean hasEID() {
         return eid;
     }
@@ -49,6 +50,7 @@ public class IdCapabilitiesImpl implements IdCapabilities {
         this.eid = eid;
     }
 
+    @Override
     public boolean hasFID() {
         return fid;
     }

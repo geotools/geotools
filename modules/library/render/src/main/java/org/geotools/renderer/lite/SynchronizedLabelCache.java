@@ -43,30 +43,37 @@ public class SynchronizedLabelCache implements LabelCache {
         wrapped = cache;
     }
 
+    @Override
     public synchronized void start() {
         wrapped.start();
     }
 
+    @Override
     public synchronized void clear() {
         wrapped.clear();
     }
 
+    @Override
     public synchronized void clear(String layerId) {
         wrapped.clear(layerId);
     }
 
+    @Override
     public synchronized void enableLayer(String layerId) {
         wrapped.enableLayer(layerId);
     }
 
+    @Override
     public synchronized void end(Graphics2D graphics, Rectangle displayArea) {
         wrapped.end(graphics, displayArea);
     }
 
+    @Override
     public synchronized void endLayer(String layerId, Graphics2D graphics, Rectangle displayArea) {
         wrapped.endLayer(layerId, graphics, displayArea);
     }
 
+    @Override
     public synchronized void put(
             String layerId,
             TextSymbolizer symbolizer,
@@ -76,22 +83,27 @@ public class SynchronizedLabelCache implements LabelCache {
         wrapped.put(layerId, symbolizer, feature, shape, scaleRange);
     }
 
+    @Override
     public synchronized void put(Rectangle2D area) {
         wrapped.put(area);
     }
 
+    @Override
     public synchronized void startLayer(String layerId) {
         wrapped.startLayer(layerId);
     }
 
+    @Override
     public synchronized void stop() {
         wrapped.stop();
     }
 
+    @Override
     public synchronized void disableLayer(String layerId) {
         wrapped.disableLayer(layerId);
     }
 
+    @Override
     public synchronized List orderedLabels() {
         return wrapped.orderedLabels();
     }

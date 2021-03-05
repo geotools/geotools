@@ -29,6 +29,7 @@ public class AfterImpl extends BinaryTemporalOperatorImpl implements After {
         return pos == RelativePosition.AFTER;
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

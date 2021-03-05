@@ -47,6 +47,7 @@ public class FilterFunction_minimumRectangle extends FunctionExpressionImpl {
      * @return The minimum rectangle Geometry
      * @throws IllegalArgumentException if the feature is not a Geometry
      */
+    @Override
     public Object evaluate(Object feature) {
         Geometry arg0;
 

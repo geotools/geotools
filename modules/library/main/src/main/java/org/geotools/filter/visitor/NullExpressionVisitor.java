@@ -33,34 +33,42 @@ import org.opengis.filter.expression.Subtract;
  */
 public class NullExpressionVisitor implements ExpressionVisitor {
 
+    @Override
     public Object visit(NilExpression expression, Object extraData) {
         return null;
     }
 
+    @Override
     public Object visit(Add expression, Object extraData) {
         return null;
     }
 
+    @Override
     public Object visit(Divide expression, Object extraData) {
         return null;
     }
 
+    @Override
     public Object visit(Function expression, Object extraData) {
         return null;
     }
 
+    @Override
     public Object visit(Literal expression, Object extraData) {
         return null;
     }
 
+    @Override
     public Object visit(Multiply expression, Object extraData) {
         return null;
     }
 
+    @Override
     public Object visit(PropertyName expression, Object extraData) {
         return null;
     }
 
+    @Override
     public Object visit(Subtract expression, Object extraData) {
         return null;
     }

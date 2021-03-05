@@ -94,6 +94,7 @@ public class ForceCoordinateSystemFeatureReader
     }
 
     /** @see org.geotools.data.FeatureReader#getFeatureType() */
+    @Override
     public SimpleFeatureType getFeatureType() {
         if (reader == null) {
             throw new IllegalStateException("Reader has already been closed");
@@ -105,6 +106,7 @@ public class ForceCoordinateSystemFeatureReader
     }
 
     /** @see org.geotools.data.FeatureReader#next() */
+    @Override
     public SimpleFeature next()
             throws IOException, IllegalAttributeException, NoSuchElementException {
         if (reader == null) {
@@ -118,6 +120,7 @@ public class ForceCoordinateSystemFeatureReader
     }
 
     /** @see org.geotools.data.FeatureReader#hasNext() */
+    @Override
     public boolean hasNext() throws IOException {
         if (reader == null) {
             throw new IllegalStateException("Reader has already been closed");
@@ -127,6 +130,7 @@ public class ForceCoordinateSystemFeatureReader
     }
 
     /** @see org.geotools.data.FeatureReader#close() */
+    @Override
     public void close() throws IOException {
         if (reader == null) {
             throw new IllegalStateException("Reader has already been closed");

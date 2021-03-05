@@ -59,6 +59,7 @@ public class DefaultFeatureReader implements FeatureReader<SimpleFeatureType, Si
         this(attributeReader, null);
     }
 
+    @Override
     public SimpleFeature next()
             throws IOException, IllegalAttributeException, NoSuchElementException {
         SimpleFeature f = null;
@@ -90,14 +91,17 @@ public class DefaultFeatureReader implements FeatureReader<SimpleFeatureType, Si
         return SimpleFeatureBuilder.build(schema, attributes, null);
     }
 
+    @Override
     public void close() throws IOException {
         attributeReader.close();
     }
 
+    @Override
     public SimpleFeatureType getFeatureType() {
         return schema;
     }
 
+    @Override
     public boolean hasNext() throws IOException {
         return attributeReader.hasNext();
     }

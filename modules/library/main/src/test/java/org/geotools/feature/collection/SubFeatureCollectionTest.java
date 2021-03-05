@@ -30,6 +30,7 @@ import org.opengis.filter.FilterVisitor;
 public class SubFeatureCollectionTest extends DataTestCase {
     DefaultFeatureCollection features = new DefaultFeatureCollection(null, null);
 
+    @Override
     public void init() throws Exception {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("Dummy");
@@ -47,10 +48,12 @@ public class SubFeatureCollectionTest extends DataTestCase {
                 features.subCollection(
                         new Filter() {
 
+                            @Override
                             public Object accept(FilterVisitor arg0, Object arg1) {
                                 return null;
                             }
 
+                            @Override
                             public boolean evaluate(Object arg0) {
                                 return true;
                             }

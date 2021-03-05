@@ -34,6 +34,7 @@ public interface MultiSurface extends MultiPrimitive {
      * compose this {@code MultiSurface}. The set may be modified if this geometry {@linkplain
      * #isMutable is mutable}.
      */
+    @Override
     @UML(identifier = "element", obligation = MANDATORY, specification = ISO_19107)
     Set<OrientableSurface> getElements();
 

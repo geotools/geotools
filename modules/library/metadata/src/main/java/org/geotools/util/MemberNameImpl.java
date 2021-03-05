@@ -67,6 +67,7 @@ public class MemberNameImpl extends LocalName implements MemberName {
      * @todo Check in the specification if this association is really navigable that way. This
      *     association seems redundant with {@link RecordType#locate}.
      */
+    @Override
     public TypeName getAttributeType() {
         return typeName;
     }

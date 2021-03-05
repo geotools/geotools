@@ -44,10 +44,12 @@ public class FilteringFeatureWriter implements FeatureWriter<SimpleFeatureType, 
         this.filter = filter;
     }
 
+    @Override
     public SimpleFeatureType getFeatureType() {
         return writer.getFeatureType();
     }
 
+    @Override
     public SimpleFeature next() throws IOException {
         if (hasNext()) {
             // use hasNext() to and peek ahead
@@ -65,6 +67,7 @@ public class FilteringFeatureWriter implements FeatureWriter<SimpleFeatureType, 
         throw new NoSuchElementException("FeatureWriter does not have additional content");
     }
 
+    @Override
     public void remove() throws IOException {
         if (writer == null) {
             throw new IOException("FeatureWriter has been closed");
@@ -84,6 +87,7 @@ public class FilteringFeatureWriter implements FeatureWriter<SimpleFeatureType, 
         writer.remove();
     }
 
+    @Override
     public void write() throws IOException {
         if (writer == null) {
             throw new IOException("FeatureWriter has been closed");
@@ -109,6 +113,7 @@ public class FilteringFeatureWriter implements FeatureWriter<SimpleFeatureType, 
      * @return true if writer has additional content
      * @throws IOException If writer we are filtering encounters a problem
      */
+    @Override
     public boolean hasNext() throws IOException {
         if (next != null) {
             return true; // we found next already
@@ -139,6 +144,7 @@ public class FilteringFeatureWriter implements FeatureWriter<SimpleFeatureType, 
         return false;
     }
 
+    @Override
     public void close() throws IOException {
         if (writer != null) {
             writer.close();

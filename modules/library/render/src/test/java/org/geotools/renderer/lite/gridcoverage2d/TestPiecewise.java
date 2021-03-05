@@ -256,25 +256,30 @@ public class TestPiecewise {
                         RangeFactory.create(0, false, 255, true),
                         new MathTransformation() {
 
+                            @Override
                             public double derivative(double arg0) throws TransformException {
 
                                 return 1 / arg0;
                             }
 
+                            @Override
                             public double transform(double arg0) {
                                 return Math.log(arg0);
                             }
 
+                            @Override
                             public int getSourceDimensions() {
 
                                 return 01;
                             }
 
+                            @Override
                             public int getTargetDimensions() {
 
                                 return 1;
                             }
 
+                            @Override
                             public boolean isIdentity() {
                                 return false;
                             }
@@ -612,11 +617,13 @@ public class TestPiecewise {
                         RangeFactory.create(minimum[0], maximum[0]),
                         new MathTransformationAdapter() {
 
+                            @Override
                             public double derivative(double arg0) throws TransformException {
 
                                 return 1 / arg0;
                             }
 
+                            @Override
                             public double transform(double arg0) {
 
                                 return minimum[0]
@@ -626,6 +633,7 @@ public class TestPiecewise {
                                                         / (Math.log(maximum[0] / minimum[0])));
                             }
 
+                            @Override
                             public boolean isIdentity() {
                                 return false;
                             }

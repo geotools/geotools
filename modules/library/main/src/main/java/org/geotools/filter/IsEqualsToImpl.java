@@ -145,6 +145,7 @@ public class IsEqualsToImpl extends MultiCompareFilterImpl implements PropertyIs
         }
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

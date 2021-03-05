@@ -54,6 +54,7 @@ public class ImageGraphicFactory implements ExternalGraphicFactory, GraphicCache
     static Set<String> supportedGraphicFormats =
             new HashSet<>(Arrays.asList(ImageIO.getReaderMIMETypes()));
 
+    @Override
     public Icon getIcon(Feature feature, Expression url, String format, int size) {
         // check we do support the format
         if (!supportedGraphicFormats.contains(format.toLowerCase())) return null;

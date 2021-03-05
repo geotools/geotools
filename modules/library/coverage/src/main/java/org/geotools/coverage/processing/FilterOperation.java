@@ -68,6 +68,7 @@ public class FilterOperation extends OperationJAI {
      * Returns the target sample dimensions. Since filter operation do not change the range of
      * values, this method returns the same sample dimension than the first source.
      */
+    @Override
     protected GridSampleDimension[] deriveSampleDimension(
             final GridSampleDimension[][] bandLists, final Parameters parameters) {
         return bandLists[0];

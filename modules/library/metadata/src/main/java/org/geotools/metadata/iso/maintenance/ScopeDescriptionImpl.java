@@ -71,6 +71,7 @@ public class ScopeDescriptionImpl extends MetadataEntity implements ScopeDescrip
     }
 
     /** Returns the attributes to which the information applies. */
+    @Override
     public Set<AttributeType> getAttributes() {
         return attributes = nonNullSet(attributes, AttributeType.class);
     }
@@ -86,6 +87,7 @@ public class ScopeDescriptionImpl extends MetadataEntity implements ScopeDescrip
     }
 
     /** Returns the features to which the information applies. */
+    @Override
     public Set<FeatureType> getFeatures() {
         return features = nonNullSet(features, FeatureType.class);
     }
@@ -100,6 +102,7 @@ public class ScopeDescriptionImpl extends MetadataEntity implements ScopeDescrip
     }
 
     /** Returns the feature instances to which the information applies. */
+    @Override
     public Set<FeatureType> getFeatureInstances() {
         return featureInstances = nonNullSet(featureInstances, FeatureType.class);
     }
@@ -119,6 +122,7 @@ public class ScopeDescriptionImpl extends MetadataEntity implements ScopeDescrip
      *
      * @since 2.4
      */
+    @Override
     public Set<AttributeType> getAttributeInstances() {
         return attributeInstances = nonNullSet(attributeInstances, AttributeType.class);
     }
@@ -139,6 +143,7 @@ public class ScopeDescriptionImpl extends MetadataEntity implements ScopeDescrip
      *
      * @since 2.4
      */
+    @Override
     public String getDataset() {
         return dataset;
     }
@@ -159,6 +164,7 @@ public class ScopeDescriptionImpl extends MetadataEntity implements ScopeDescrip
      *
      * @since 2.4
      */
+    @Override
     public String getOther() {
         return other;
     }

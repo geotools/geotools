@@ -119,6 +119,7 @@ public class QGISMarkFactory implements MarkFactory {
         ((ExplicitBoundsShape) pentagon).setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
     }
 
+    @Override
     public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature)
             throws Exception {
         // cannot handle a null url

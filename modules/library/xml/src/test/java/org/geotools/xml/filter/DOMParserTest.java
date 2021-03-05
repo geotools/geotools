@@ -80,6 +80,7 @@ public class DOMParserTest extends FilterTestSupport {
         }
     }
 
+    @Override
     @Before
     public void setUp() throws SchemaException {
         super.setUp();

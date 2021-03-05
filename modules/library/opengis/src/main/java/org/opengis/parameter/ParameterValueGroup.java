@@ -43,6 +43,7 @@ public interface ParameterValueGroup extends GeneralParameterValue {
      *     consistent with usage in other Java libraries like {@link
      *     javax.media.jai.ParameterList#getParameterListDescriptor ParameterList}.
      */
+    @Override
     @UML(identifier = "valuesOfGroup", obligation = MANDATORY, specification = ISO_19111)
     ParameterDescriptorGroup getDescriptor();
 
@@ -141,5 +142,6 @@ public interface ParameterValueGroup extends GeneralParameterValue {
      *
      * @return A copy of this group of parameter values.
      */
+    @Override
     ParameterValueGroup clone();
 }

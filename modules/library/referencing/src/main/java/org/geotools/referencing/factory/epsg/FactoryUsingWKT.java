@@ -245,6 +245,7 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
      * @throws FactoryException if the constructor failed to find or read the file. This exception
      *     usually has an {@link IOException} as its cause.
      */
+    @Override
     protected AbstractAuthorityFactory createBackingStore() throws FactoryException {
         try {
             URL url = getDefinitionsURL();

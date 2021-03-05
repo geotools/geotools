@@ -35,6 +35,7 @@ public class DBCPDataSource extends AbstractManageableDataSource {
         return wrapped;
     }
 
+    @Override
     public void close() throws SQLException {
         ((BasicDataSource) wrapped).close();
     }

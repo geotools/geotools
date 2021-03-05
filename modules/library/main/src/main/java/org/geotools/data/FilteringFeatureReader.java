@@ -62,10 +62,12 @@ public class FilteringFeatureReader<T extends FeatureType, F extends Feature>
     }
 
     /** @return THe delegate reader. */
+    @Override
     public FeatureReader<T, F> getDelegate() {
         return featureReader;
     }
 
+    @Override
     public F next() throws IOException, IllegalAttributeException, NoSuchElementException {
         F f = null;
 
@@ -80,10 +82,12 @@ public class FilteringFeatureReader<T extends FeatureType, F extends Feature>
         }
     }
 
+    @Override
     public void close() throws IOException {
         featureReader.close();
     }
 
+    @Override
     public T getFeatureType() {
         return featureReader.getFeatureType();
     }
@@ -102,6 +106,7 @@ public class FilteringFeatureReader<T extends FeatureType, F extends Feature>
      * @throws IOException If the reader we are filtering encounters a problem
      * @throws DataSourceException See IOException
      */
+    @Override
     public boolean hasNext() throws IOException {
         if (next != null) {
             return true;

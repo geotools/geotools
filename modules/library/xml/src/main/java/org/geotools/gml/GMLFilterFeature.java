@@ -114,6 +114,7 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
      *
      * @param geometry The geometry from the child.
      */
+    @Override
     public void geometry(Geometry geometry) {
         // insideGeometry = true;
         // _log.debug("adding geometry with name "+attName);
@@ -147,6 +148,7 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
      * @throws SAXException Some parsing error occured while reading coordinates.
      * @task HACK:The method for determining if something is a feature or not is too crude.
      */
+    @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
             throws SAXException {
         characters.setLength(0);
@@ -222,6 +224,7 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
      * @param length Length of the character string.
      * @throws SAXException Some parsing error occurred while reading coordinates.
      */
+    @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
         characters.append(ch, start, length);
     }
@@ -257,6 +260,7 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
      * @param qName Full name of the element, including namespace prefix.
      * @throws SAXException Parsing error occurred while reading coordinates.
      */
+    @Override
     public void endElement(String namespaceURI, String localName, String qName)
             throws SAXException {
         handleCharacters();

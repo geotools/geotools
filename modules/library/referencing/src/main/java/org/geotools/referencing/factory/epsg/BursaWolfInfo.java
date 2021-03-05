@@ -38,6 +38,7 @@ final class BursaWolfInfo {
     }
 
     /** MUST returns the operation code. This is required by {@link DirectEpsgFactory#sort}. */
+    @Override
     public String toString() {
         return operation;
     }

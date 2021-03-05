@@ -34,14 +34,17 @@ class OffsetOrdinateFilter implements CoordinateSequenceFilter {
         this.offset = offset;
     }
 
+    @Override
     public void filter(CoordinateSequence seq, int i) {
         seq.setOrdinate(i, ordinateIndex, seq.getOrdinate(i, ordinateIndex) + offset);
     }
 
+    @Override
     public boolean isDone() {
         return false;
     }
 
+    @Override
     public boolean isGeometryChanged() {
         return true;
     }

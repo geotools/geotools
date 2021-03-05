@@ -60,6 +60,7 @@ public class RangeDimensionImpl extends MetadataEntity implements RangeDimension
      * Returns the number that uniquely identifies instances of bands of wavelengths on which a
      * sensor operates. @TODO: needs to annotate the package org.geotools.util before.
      */
+    @Override
     public MemberName getSequenceIdentifier() {
         return sequenceIdentifier;
     }
@@ -74,6 +75,7 @@ public class RangeDimensionImpl extends MetadataEntity implements RangeDimension
     }
 
     /** Returns the description of the range of a cell measurement value. */
+    @Override
     public InternationalString getDescriptor() {
         return descriptor;
     }

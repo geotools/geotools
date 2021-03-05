@@ -100,26 +100,32 @@ public class RecodeFunction implements Function {
         }
     }
 
+    @Override
     public String getName() {
         return "Recode";
     }
 
+    @Override
     public FunctionName getFunctionName() {
         return NAME;
     }
 
+    @Override
     public List<Expression> getParameters() {
         return Collections.unmodifiableList(parameters);
     }
 
+    @Override
     public Object accept(ExpressionVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
 
+    @Override
     public Object evaluate(Object object) {
         return evaluate(object, Object.class);
     }
 
+    @Override
     public <T> T evaluate(Object object, Class<T> context) {
         final Expression lookupExp = parameters.get(0);
         final List<Expression> pairList = parameters.subList(1, parameters.size());
@@ -173,6 +179,7 @@ public class RecodeFunction implements Function {
         return null;
     }
 
+    @Override
     public Literal getFallbackValue() {
         return fallback;
     }

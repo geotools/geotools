@@ -93,6 +93,7 @@ public class ComplexTypeGT implements ComplexType {
      *
      * @see org.geotools.xml.schema.ComplexType#getParent()
      */
+    @Override
     public Type getParent() {
         return parent;
     }
@@ -102,6 +103,7 @@ public class ComplexTypeGT implements ComplexType {
      *
      * @see org.geotools.xml.schema.ComplexType#isAbstract()
      */
+    @Override
     public boolean isAbstract() {
         return _abstract;
     }
@@ -111,6 +113,7 @@ public class ComplexTypeGT implements ComplexType {
      *
      * @see org.geotools.xml.schema.ComplexType#getAnyAttributeNameSpace()
      */
+    @Override
     public String getAnyAttributeNameSpace() {
         return anyAtrNS;
     }
@@ -120,6 +123,7 @@ public class ComplexTypeGT implements ComplexType {
      *
      * @see org.geotools.xml.schema.ComplexType#getAttributes()
      */
+    @Override
     public Attribute[] getAttributes() {
         return attrs;
     }
@@ -129,6 +133,7 @@ public class ComplexTypeGT implements ComplexType {
      *
      * @see org.geotools.xml.schema.ComplexType#getBlock()
      */
+    @Override
     public int getBlock() {
         return Schema.NONE;
     }
@@ -138,6 +143,7 @@ public class ComplexTypeGT implements ComplexType {
      *
      * @see org.geotools.xml.schema.ComplexType#getChild()
      */
+    @Override
     public ElementGrouping getChild() {
         return child;
     }
@@ -147,6 +153,7 @@ public class ComplexTypeGT implements ComplexType {
      *
      * @see org.geotools.xml.schema.ComplexType#getChildElements()
      */
+    @Override
     public Element[] getChildElements() {
         return elems;
     }
@@ -156,6 +163,7 @@ public class ComplexTypeGT implements ComplexType {
      *
      * @see org.geotools.xml.schema.ComplexType#getFinal()
      */
+    @Override
     public int getFinal() {
         return Schema.NONE;
     }
@@ -165,6 +173,7 @@ public class ComplexTypeGT implements ComplexType {
      *
      * @see org.geotools.xml.schema.ComplexType#getId()
      */
+    @Override
     public String getId() {
         return id;
     }
@@ -174,6 +183,7 @@ public class ComplexTypeGT implements ComplexType {
      *
      * @see org.geotools.xml.schema.ComplexType#isMixed()
      */
+    @Override
     public boolean isMixed() {
         return mixed;
     }
@@ -183,6 +193,7 @@ public class ComplexTypeGT implements ComplexType {
      *
      * @see org.geotools.xml.schema.ComplexType#isDerived()
      */
+    @Override
     public boolean isDerived() {
         return derived;
     }
@@ -193,6 +204,7 @@ public class ComplexTypeGT implements ComplexType {
      * @see org.geotools.xml.schema.ComplexType#cache(org.geotools.xml.schema.Element,
      *     java.util.Map)
      */
+    @Override
     public boolean cache(Element element, Map<String, Object> hints) {
         return true;
     }
@@ -203,6 +215,7 @@ public class ComplexTypeGT implements ComplexType {
      * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
      *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
      */
+    @Override
     public Object getValue(
             Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
             throws OperationNotSupportedException, SAXException {
@@ -214,6 +227,7 @@ public class ComplexTypeGT implements ComplexType {
      *
      * @see org.geotools.xml.schema.Type#getName()
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -223,6 +237,7 @@ public class ComplexTypeGT implements ComplexType {
      *
      * @see org.geotools.xml.schema.Type#getNamespace()
      */
+    @Override
     public URI getNamespace() {
         return ns;
     }
@@ -232,6 +247,7 @@ public class ComplexTypeGT implements ComplexType {
      *
      * @see org.geotools.xml.schema.Type#getInstanceType()
      */
+    @Override
     public Class getInstanceType() {
         return null;
     }
@@ -242,6 +258,7 @@ public class ComplexTypeGT implements ComplexType {
      * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
      *     java.lang.Object, java.util.Map)
      */
+    @Override
     public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
         return false;
     }
@@ -252,6 +269,7 @@ public class ComplexTypeGT implements ComplexType {
      * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element, java.lang.Object,
      *     org.geotools.xml.PrintHandler, java.util.Map)
      */
+    @Override
     public void encode(
             Element element, Object value, PrintHandler output, Map<String, Object> hints)
             throws OperationNotSupportedException {
@@ -263,6 +281,7 @@ public class ComplexTypeGT implements ComplexType {
      *
      * @see org.geotools.xml.schema.Type#findChildElement(java.lang.String)
      */
+    @Override
     public Element findChildElement(String name1) {
         return getChild() != null ? getChild().findChildElement(name1) : null;
     }

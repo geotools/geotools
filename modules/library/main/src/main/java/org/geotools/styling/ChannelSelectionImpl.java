@@ -30,6 +30,7 @@ public class ChannelSelectionImpl implements ChannelSelection {
     private SelectedChannelType blue;
     private SelectedChannelType green;
 
+    @Override
     public SelectedChannelType getGrayChannel() {
         return gray;
     }
@@ -43,6 +44,7 @@ public class ChannelSelectionImpl implements ChannelSelection {
      * @return {@link SelectedChannelType} array that contains the {@link SelectedChannelType}
      *     elements for the RGB channels.
      */
+    @Override
     public SelectedChannelType[] getRGBChannels() {
         if (red == null && green == null && blue == null) {
             return null;
@@ -50,6 +52,7 @@ public class ChannelSelectionImpl implements ChannelSelection {
         return new SelectedChannelType[] {red, green, blue};
     }
 
+    @Override
     public void setGrayChannel(SelectedChannelType gray) {
         this.gray = gray;
     }
@@ -58,6 +61,7 @@ public class ChannelSelectionImpl implements ChannelSelection {
         this.gray = new SelectedChannelTypeImpl(gray);
     }
 
+    @Override
     public void setRGBChannels(SelectedChannelType[] channels) {
         if (channels == null) {
             red = null;
@@ -74,6 +78,7 @@ public class ChannelSelectionImpl implements ChannelSelection {
         }
     }
 
+    @Override
     public void setRGBChannels(
             SelectedChannelType red, SelectedChannelType green, SelectedChannelType blue) {
         this.red = red;
@@ -90,10 +95,12 @@ public class ChannelSelectionImpl implements ChannelSelection {
         this.blue = new SelectedChannelTypeImpl(blue);
     }
 
+    @Override
     public Object accept(StyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
+    @Override
     public void accept(org.geotools.styling.StyleVisitor visitor) {
         visitor.visit(this);
     }

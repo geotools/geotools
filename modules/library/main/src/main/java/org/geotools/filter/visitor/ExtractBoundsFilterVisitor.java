@@ -137,10 +137,12 @@ public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
         throw new ClassCastException("Could not cast data to ReferencedEnvelope");
     }
 
+    @Override
     public Object visit(ExcludeFilter filter, Object data) {
         return new Envelope();
     }
 
+    @Override
     public Object visit(IncludeFilter filter, Object data) {
         return infinity();
     }
@@ -153,6 +155,7 @@ public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
                 Double.POSITIVE_INFINITY);
     }
 
+    @Override
     public Object visit(BBOX filter, Object data) {
         ReferencedEnvelope bbox = bbox(data);
 
@@ -172,6 +175,7 @@ public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
      * @param data Incoming BoundingBox (or Envelope or CRS)
      * @return ReferencedEnvelope updated to reflect literal
      */
+    @Override
     public Object visit(Literal expression, Object data) {
         ReferencedEnvelope bbox = bbox(data);
 
@@ -203,6 +207,7 @@ public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
         return mixed;
     }
 
+    @Override
     public Object visit(Not filter, Object data) {
         // no matter what we have to return an infinite envelope
         // rationale
@@ -224,29 +229,34 @@ public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
         return mixed;
     }
 
+    @Override
     public Object visit(Beyond filter, Object data) {
         // beyond a certain distance from a finite object, no way to limit it
         return infinity();
     }
 
+    @Override
     public Object visit(Contains filter, Object data) {
         data = filter.getExpression1().accept(this, data);
         data = filter.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(Crosses filter, Object data) {
         data = filter.getExpression1().accept(this, data);
         data = filter.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(Disjoint filter, Object data) {
         // disjoint does not define a rectangle, but a hole in the
         // Cartesian plane, no way to limit it
         return infinity();
     }
 
+    @Override
     public Object visit(DWithin filter, Object data) {
         ReferencedEnvelope bbox = bbox(data);
 
@@ -284,12 +294,14 @@ public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
         }
     }
 
+    @Override
     public Object visit(Equals filter, Object data) {
         data = filter.getExpression1().accept(this, data);
         data = filter.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(Intersects filter, Object data) {
         data = filter.getExpression1().accept(this, data);
         data = filter.getExpression2().accept(this, data);
@@ -297,6 +309,7 @@ public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
         return data;
     }
 
+    @Override
     public Object visit(Overlaps filter, Object data) {
         data = filter.getExpression1().accept(this, data);
         data = filter.getExpression2().accept(this, data);
@@ -304,6 +317,7 @@ public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
         return data;
     }
 
+    @Override
     public Object visit(Touches filter, Object data) {
         data = filter.getExpression1().accept(this, data);
         data = filter.getExpression2().accept(this, data);
@@ -311,6 +325,7 @@ public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
         return data;
     }
 
+    @Override
     public Object visit(Within filter, Object data) {
         data = filter.getExpression1().accept(this, data);
         data = filter.getExpression2().accept(this, data);

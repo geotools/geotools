@@ -27,10 +27,12 @@ public class LightenFunction extends AbstractHSLFunction {
         super("lighten");
     }
 
+    @Override
     protected void adjustRelative(float amount, HSLColor hsl) {
         hsl.setLightness(hsl.getLightness() * (1 + amount));
     }
 
+    @Override
     protected void adjustAbsolute(float amount, HSLColor hsl) {
         hsl.setLightness(hsl.getLightness() + amount);
     }

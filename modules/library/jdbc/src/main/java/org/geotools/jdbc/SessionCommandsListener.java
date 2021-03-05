@@ -72,6 +72,7 @@ public class SessionCommandsListener implements ConnectionLifecycleListener {
         this.sqlOnRelease = expandEviromentVariables(sqlOnRelease);
     }
 
+    @Override
     public void onBorrow(JDBCDataStore store, Connection cx) throws SQLException {
         if (sqlOnBorrow != null) {
             String command = sqlOnBorrow.evaluate(null, String.class);
@@ -87,6 +88,7 @@ public class SessionCommandsListener implements ConnectionLifecycleListener {
         }
     }
 
+    @Override
     public void onRelease(JDBCDataStore store, Connection cx) throws SQLException {
         if (sqlOnRelease != null) {
             String command = sqlOnRelease.evaluate(null, String.class);
@@ -100,10 +102,12 @@ public class SessionCommandsListener implements ConnectionLifecycleListener {
         }
     }
 
+    @Override
     public void onCommit(JDBCDataStore store, Connection cx) {
         // nothing to do
     }
 
+    @Override
     public void onRollback(JDBCDataStore store, Connection cx) {
         // nothing to do
     }

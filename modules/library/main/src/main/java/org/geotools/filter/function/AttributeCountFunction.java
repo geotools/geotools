@@ -40,6 +40,7 @@ public class AttributeCountFunction extends FunctionExpressionImpl {
      *
      * @see org.geotools.filter.Expression#getValue(org.geotools.feature.Feature)
      */
+    @Override
     public Object evaluate(Object feature) {
         Expression ae = getParameters().get(0);
         Object value = ae.evaluate(feature);

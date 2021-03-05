@@ -58,6 +58,7 @@ final class SoftObjectCache<K, V> implements ObjectCache<K, V> {
     }
 
     /** Removes all entries from this map. */
+    @Override
     public void clear() {
         synchronized (locks) {
             locks.clear();
@@ -70,6 +71,7 @@ final class SoftObjectCache<K, V> implements ObjectCache<K, V> {
      *
      * @param key The authority code.
      */
+    @Override
     public V get(final K key) {
         SoftReference<V> reference = cache.get(key);
         if (reference == null) return null;
@@ -81,10 +83,12 @@ final class SoftObjectCache<K, V> implements ObjectCache<K, V> {
     }
 
     /** @return a copy of the keys currently in the map */
+    @Override
     public Set<K> getKeys() {
         return new HashSet<>(cache.keySet());
     }
 
+    @Override
     public V peek(final K key) {
         SoftReference<V> reference = cache.get(key);
         if (reference == null) return null;
@@ -92,6 +96,7 @@ final class SoftObjectCache<K, V> implements ObjectCache<K, V> {
     }
 
     /** Stores a value */
+    @Override
     public void put(final K key, final V object) {
         writeLock(key);
         SoftReference<V> reference = new SoftReference<>(object);
@@ -100,6 +105,7 @@ final class SoftObjectCache<K, V> implements ObjectCache<K, V> {
     }
 
     /** Removes the given key from the cache. */
+    @Override
     public void remove(final Object key) {
         synchronized (locks) {
             locks.remove(key);
@@ -107,6 +113,7 @@ final class SoftObjectCache<K, V> implements ObjectCache<K, V> {
         }
     }
 
+    @Override
     public void writeLock(final K key) {
         ReentrantLock lock;
         synchronized (locks) {
@@ -121,6 +128,7 @@ final class SoftObjectCache<K, V> implements ObjectCache<K, V> {
         lock.lock();
     }
 
+    @Override
     public void writeUnLock(final K key) {
         synchronized (locks) {
             final ReentrantLock lock = locks.get(key);

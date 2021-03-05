@@ -75,14 +75,17 @@ public abstract class GenericName implements org.opengis.util.GenericName, Seria
      * @return The name space.
      * @since 2.3
      */
+    @Override
     public NameSpace scope() {
         if (namespace == null) {
             namespace =
                     new NameSpace() {
+                        @Override
                         public boolean isGlobal() {
                             return false;
                         }
 
+                        @Override
                         public org.opengis.util.GenericName name() {
                             return getInternalScope();
                         }
@@ -109,6 +112,7 @@ public abstract class GenericName implements org.opengis.util.GenericName, Seria
      * @return The depth of this name.
      * @since 2.3
      */
+    @Override
     public int depth() {
         return getParsedNames().size();
     }
@@ -120,6 +124,7 @@ public abstract class GenericName implements org.opengis.util.GenericName, Seria
      *
      * @return The sequence of local names.
      */
+    @Override
     public abstract List<LocalName> getParsedNames();
 
     /**
@@ -129,6 +134,7 @@ public abstract class GenericName implements org.opengis.util.GenericName, Seria
      * @return The first element of this name.
      * @since 2.6
      */
+    @Override
     public LocalName head() {
         final List<? extends LocalName> names = getParsedNames();
         return names.get(0);
@@ -141,6 +147,7 @@ public abstract class GenericName implements org.opengis.util.GenericName, Seria
      * @return The last element of this name.
      * @since 2.6
      */
+    @Override
     public LocalName tip() {
         final List<? extends LocalName> names = getParsedNames();
         return names.get(names.size() - 1);
@@ -187,6 +194,7 @@ public abstract class GenericName implements org.opengis.util.GenericName, Seria
      *
      * @return A localizable string representation of this name.
      */
+    @Override
     public InternationalString toInternationalString() {
         return new International(getParsedNames(), getSeparator());
     }
@@ -225,6 +233,7 @@ public abstract class GenericName implements org.opengis.util.GenericName, Seria
         }
 
         /** Returns a string representation for the specified locale. */
+        @Override
         public String toString(final Locale locale) {
             final StringBuilder buffer = new StringBuilder();
             for (final LocalName name : parsedNames) {
@@ -272,6 +281,7 @@ public abstract class GenericName implements org.opengis.util.GenericName, Seria
      * @param that The name to compare with this name.
      * @return -1 if this name precedes the given one, +1 if it follows, 0 if equals.
      */
+    @Override
     public int compareTo(final org.opengis.util.GenericName that) {
         final Iterator<? extends LocalName> thisNames = this.getParsedNames().iterator();
         final Iterator<? extends LocalName> thatNames = that.getParsedNames().iterator();

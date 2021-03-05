@@ -59,6 +59,7 @@ public class DefaultTemporalPosition implements TemporalPosition {
      * When this attribute is used with a subtype of {@code TemporalPosition}, it provides a
      * qualifier to the specific value for temporal position provided by the subtype.
      */
+    @Override
     public IndeterminateValue getIndeterminatePosition() {
         return this.indeterminatePosition;
     }

@@ -30,6 +30,7 @@ public class CoverageCenterFunction extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object gc) {
         GridCoverage2D coverage = (GridCoverage2D) gc;
 

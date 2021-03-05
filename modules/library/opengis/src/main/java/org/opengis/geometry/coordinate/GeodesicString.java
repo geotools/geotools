@@ -47,6 +47,7 @@ public interface GeodesicString extends CurveSegment {
      *
      * @return Always {@link CurveInterpolation#GEODESIC}.
      */
+    @Override
     @UML(identifier = "interpolation", obligation = MANDATORY, specification = ISO_19107)
     CurveInterpolation getInterpolation();
 

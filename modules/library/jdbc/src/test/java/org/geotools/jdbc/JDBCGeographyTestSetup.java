@@ -7,6 +7,7 @@ public abstract class JDBCGeographyTestSetup extends JDBCDelegatingTestSetup {
         super(delegate);
     }
 
+    @Override
     protected final void setUpData() throws Exception {
         // kill all the data
         try {

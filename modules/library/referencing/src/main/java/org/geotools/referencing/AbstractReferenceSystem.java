@@ -120,6 +120,7 @@ public class AbstractReferenceSystem extends AbstractIdentifiedObject implements
      *
      * @since 2.4
      */
+    @Override
     public Extent getDomainOfValidity() {
         return domainOfValidity;
     }
@@ -128,6 +129,7 @@ public class AbstractReferenceSystem extends AbstractIdentifiedObject implements
      * Description of domain of usage, or limitations of usage, for which this (coordinate)
      * reference system object is valid. Returns {@code null} if not available.
      */
+    @Override
     public InternationalString getScope() {
         return scope;
     }

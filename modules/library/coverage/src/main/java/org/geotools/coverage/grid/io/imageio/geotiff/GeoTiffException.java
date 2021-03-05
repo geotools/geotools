@@ -101,6 +101,7 @@ public final class GeoTiffException extends IOException {
                 : null;
     }
 
+    @Override
     public String getMessage() {
         final StringWriter text = new StringWriter(1024);
         final PrintWriter message = new PrintWriter(text);

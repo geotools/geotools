@@ -39,18 +39,22 @@ public class AssociationTypeImpl extends PropertyTypeImpl implements Association
         this.relatedType = referenceType;
     }
 
+    @Override
     public AttributeType getRelatedType() {
         return relatedType;
     }
 
+    @Override
     public AssociationType getSuper() {
         return (AssociationType) super.getSuper();
     }
 
+    @Override
     public int hashCode() {
         return super.hashCode() ^ relatedType.hashCode();
     }
 
+    @Override
     public boolean equals(Object other) {
         if (!(other instanceof AssociationTypeImpl)) {
             return false;
@@ -61,6 +65,7 @@ public class AssociationTypeImpl extends PropertyTypeImpl implements Association
         return super.equals(ass) && Utilities.equals(relatedType, ass.getRelatedType());
     }
 
+    @Override
     public String toString() {
         return new StringBuffer(super.toString())
                 .append("; relatedType=[")

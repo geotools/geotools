@@ -61,6 +61,7 @@ public class SpatialOperatorImpl extends OperatorImpl implements SpatialOperator
         this.geometryOperands = new HashSet<>(geometryOperands);
     }
 
+    @Override
     public Collection<GeometryOperand> getGeometryOperands() {
         return geometryOperands;
     }

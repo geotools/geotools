@@ -61,10 +61,12 @@ public class QueryOptimizeTest {
         renderer.addRenderListener(
                 new RenderListener() {
 
+                    @Override
                     public void featureRenderer(SimpleFeature feature) {
                         count++;
                     }
 
+                    @Override
                     public void errorOccurred(Exception e) {}
                 });
 

@@ -52,36 +52,43 @@ public class DefaultResourceInfo implements ResourceInfo {
         this.bounds = copy.getBounds();
     }
     /** @return the title */
+    @Override
     public String getTitle() {
         return title;
     }
 
     /** @return the schema */
+    @Override
     public URI getSchema() {
         return schema;
     }
 
     /** @return the name */
+    @Override
     public String getName() {
         return name;
     }
 
     /** @return the keywords */
+    @Override
     public Set<String> getKeywords() {
         return keywords;
     }
 
     /** @return the description */
+    @Override
     public String getDescription() {
         return description;
     }
 
     /** @return the bounds */
+    @Override
     public ReferencedEnvelope getBounds() {
         return bounds;
     }
 
     /** @return the crs */
+    @Override
     public CoordinateReferenceSystem getCRS() {
         return crs;
     }

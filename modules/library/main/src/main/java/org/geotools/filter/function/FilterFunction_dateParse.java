@@ -46,6 +46,7 @@ public class FilterFunction_dateParse extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         String format;
         String date;

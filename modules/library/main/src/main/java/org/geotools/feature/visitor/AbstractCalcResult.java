@@ -35,10 +35,12 @@ import org.locationtech.jts.geom.Point;
  * @since 2.2.M2
  */
 public class AbstractCalcResult implements CalcResult {
+    @Override
     public boolean isCompatible(CalcResult targetResults) {
         return targetResults == CalcResult.NULL_RESULT;
     }
 
+    @Override
     public CalcResult merge(CalcResult resultsToAdd) {
         if (resultsToAdd == CalcResult.NULL_RESULT) {
             return this;
@@ -53,10 +55,12 @@ public class AbstractCalcResult implements CalcResult {
         }
     }
 
+    @Override
     public Object getValue() {
         return null;
     }
 
+    @Override
     public int toInt() {
         Object value = getValue();
         if (value instanceof Number) {
@@ -67,6 +71,7 @@ public class AbstractCalcResult implements CalcResult {
         }
     }
 
+    @Override
     public double toDouble() {
         Object value = getValue();
         if (value instanceof Number) {
@@ -77,6 +82,7 @@ public class AbstractCalcResult implements CalcResult {
         }
     }
 
+    @Override
     public long toLong() {
         Object value = getValue();
         if (value instanceof Number) {
@@ -87,6 +93,7 @@ public class AbstractCalcResult implements CalcResult {
         }
     }
 
+    @Override
     public float toFloat() {
         Object value = getValue();
         if (value instanceof Number) {
@@ -97,23 +104,27 @@ public class AbstractCalcResult implements CalcResult {
         }
     }
 
+    @Override
     public Geometry toGeometry() {
         Object value = getValue();
         if (value instanceof Geometry) return (Geometry) getValue();
         else return null;
     }
 
+    @Override
     public Envelope toEnvelope() {
         Object value = getValue();
         if (value instanceof Envelope) return (Envelope) value;
         else return null;
     }
 
+    @Override
     public Point toPoint() {
         Geometry geometry = toGeometry();
         return geometry.getCentroid();
     }
 
+    @Override
     public Set toSet() {
         Object value = getValue();
 
@@ -146,6 +157,7 @@ public class AbstractCalcResult implements CalcResult {
         return null;
     }
 
+    @Override
     public List toList() {
         Object value = getValue();
 
@@ -182,6 +194,7 @@ public class AbstractCalcResult implements CalcResult {
         return null;
     }
 
+    @Override
     public Object[] toArray() {
         List list = toList();
 
@@ -204,10 +217,12 @@ public class AbstractCalcResult implements CalcResult {
         return strings;
     }
 
+    @Override
     public Map toMap() {
         return (Map) getValue();
     }
 
+    @Override
     public String toString() {
         return getValue().toString();
     }

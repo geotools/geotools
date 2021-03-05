@@ -96,9 +96,11 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
     }
 
     /** Gets the dimension of input points. */
+    @Override
     public abstract int getSourceDimensions();
 
     /** Gets the dimension of output points. */
+    @Override
     public abstract int getTargetDimensions();
 
     /**
@@ -132,6 +134,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
      * Tests whether this transform does not move any points. The default implementation always
      * returns {@code false}.
      */
+    @Override
     public boolean isIdentity() {
         return false;
     }
@@ -185,6 +188,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
      * Transforms the specified {@code ptSrc} and stores the result in {@code ptDst}. The default
      * implementation delegates to {@link #transform(double[],int,double[],int,int)}.
      */
+    @Override
     public DirectPosition transform(final DirectPosition ptSrc, DirectPosition ptDst)
             throws TransformException {
         int dimPoint = ptSrc.getDimension();
@@ -242,6 +246,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
      * Transforms a list of coordinate point ordinal values. The default implementation invokes
      * {@link #transform(double[],int,double[],int,int)} using a temporary array of doubles.
      */
+    @Override
     public void transform(
             final float[] srcPts,
             final int srcOff,
@@ -267,6 +272,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
      *
      * @since 2.5
      */
+    @Override
     public void transform(
             final double[] srcPts,
             final int srcOff,
@@ -290,6 +296,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
      *
      * @since 2.5
      */
+    @Override
     public void transform(
             final float[] srcPts,
             final int srcOff,
@@ -537,6 +544,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
      * @throws MismatchedDimensionException if {@code point} doesn't have the expected dimension.
      * @throws TransformException if the derivative can't be evaluated at the specified point.
      */
+    @Override
     public Matrix derivative(final DirectPosition point) throws TransformException {
         final int dimSource = getSourceDimensions();
         if (point == null) {
@@ -567,6 +575,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
      * if this transform is an identity transform, and throws a {@link
      * NoninvertibleTransformException} otherwise. Subclasses should override this method.
      */
+    @Override
     public MathTransform inverse() throws NoninvertibleTransformException {
         if (isIdentity()) {
             return this;
@@ -850,6 +859,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
          * Gets the dimension of input points. The default implementation returns the dimension of
          * output points of the enclosing math transform.
          */
+        @Override
         public int getSourceDimensions() {
             return AbstractMathTransform.this.getTargetDimensions();
         }
@@ -858,6 +868,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
          * Gets the dimension of output points. The default implementation returns the dimension of
          * input points of the enclosing math transform.
          */
+        @Override
         public int getTargetDimensions() {
             return AbstractMathTransform.this.getSourceDimensions();
         }

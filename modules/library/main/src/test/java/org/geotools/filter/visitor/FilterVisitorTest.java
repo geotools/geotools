@@ -53,6 +53,7 @@ public class FilterVisitorTest {
         Filter myFilter = ff.id(Collections.singleton(ff.featureId("fred")));
         FilterVisitor allFids =
                 new DefaultFilterVisitor() {
+                    @Override
                     public Object visit(Id filter, Object data) {
                         Set<Object> set = (Set) data;
                         set.addAll(filter.getIDs());
@@ -69,6 +70,7 @@ public class FilterVisitorTest {
         Filter myFilter = ff.greater(ff.add(ff.property("foo"), ff.property("bar")), ff.literal(1));
 
         class FindNames extends DefaultFilterVisitor {
+            @Override
             public Object visit(PropertyName expression, Object data) {
                 Set<Object> set = (Set) data;
                 set.add(expression.getPropertyName());
@@ -91,6 +93,7 @@ public class FilterVisitorTest {
 
         FilterVisitor allFids =
                 new NullFilterVisitor() {
+                    @Override
                     public Object visit(Id filter, Object data) {
                         if (data == null) return null;
                         Set<Object> set = (Set) data;

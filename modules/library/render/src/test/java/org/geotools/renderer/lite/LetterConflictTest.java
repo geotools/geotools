@@ -312,6 +312,7 @@ public class LetterConflictTest {
                 Frame frame = new Frame(testName);
                 frame.addWindowListener(
                         new WindowAdapter() {
+                            @Override
                             public void windowClosing(WindowEvent e) {
                                 e.getWindow().dispose();
                             }
@@ -327,6 +328,7 @@ public class LetterConflictTest {
                                         new Dimension(image.getWidth(), image.getHeight()));
                             }
 
+                            @Override
                             public void paint(Graphics g) {
                                 g.drawImage(image, 0, 0, this);
                             }

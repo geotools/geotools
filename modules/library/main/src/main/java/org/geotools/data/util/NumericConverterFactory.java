@@ -49,6 +49,7 @@ public class NumericConverterFactory implements ConverterFactory {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(NumericConverterFactory.class);
 
+    @Override
     public Converter createConverter(Class source, Class target, Hints hints) {
         // convert to non-primitive class
         source = primitiveToWrapperClass(source);
@@ -86,6 +87,7 @@ public class NumericConverterFactory implements ConverterFactory {
 
     class SafeNumericConverter implements Converter {
         // target.cast won't work for both the object wrapper and the primitive class
+        @Override
         @SuppressWarnings("unchecked")
         public <T> T convert(Object source, Class<T> target) throws Exception {
             return (T) convertInternal(source, target);
@@ -191,6 +193,7 @@ public class NumericConverterFactory implements ConverterFactory {
     class NumericConverter implements Converter {
 
         // target.cast won't work for both the object wrapper and the primitive class
+        @Override
         @SuppressWarnings("unchecked")
         public <T> T convert(Object source, Class<T> target) throws Exception {
             return (T) convertInternal(source, target);

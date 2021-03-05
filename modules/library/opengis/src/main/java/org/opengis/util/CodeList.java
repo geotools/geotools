@@ -231,6 +231,7 @@ public abstract class CodeList<E extends CodeList<E>> implements Comparable<E>, 
      * @param other The code constant to compare with this code.
      * @return -1 if the given code is less than this code, +1 if greater or 0 if equal.
      */
+    @Override
     public final int compareTo(final E other) {
         final Class<? extends CodeList> ct = this.getClass();
         final Class<? extends CodeList> co = other.getClass();

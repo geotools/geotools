@@ -36,6 +36,7 @@ public class ArrayFunction extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object obj) {
         Object[] array = new Object[getParameters().size()];
         for (int count = 0; count < getParameters().size(); count++) {

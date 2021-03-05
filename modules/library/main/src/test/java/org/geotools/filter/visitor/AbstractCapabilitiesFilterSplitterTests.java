@@ -58,10 +58,12 @@ public class AbstractCapabilitiesFilterSplitterTests {
 
         private String attribute;
 
+        @Override
         public Filter getDeleteFilter() {
             return null;
         }
 
+        @Override
         public Filter getUpdateFilter(String attributePath) {
             if (attributePath.equals(attribute)) return updateFilter;
             else return null;
@@ -168,61 +170,73 @@ public class AbstractCapabilitiesFilterSplitterTests {
     }
 
     class MockGeometryImpl implements Geometry {
+        @Override
         public boolean contains(DirectPosition arg0) {
             // TODO Auto-generated method stub
             return false;
         }
 
+        @Override
         public boolean contains(TransfiniteSet arg0) {
             // TODO Auto-generated method stub
             return false;
         }
 
+        @Override
         public TransfiniteSet difference(TransfiniteSet arg0) {
             // TODO Auto-generated method stub
             return null;
         }
 
+        @Override
         public boolean equals(TransfiniteSet arg0) {
             // TODO Auto-generated method stub
             return false;
         }
 
+        @Override
         public Boundary getBoundary() {
             // TODO Auto-generated method stub
             return null;
         }
 
+        @Override
         public Geometry getBuffer(double arg0) {
             // TODO Auto-generated method stub
             return null;
         }
 
+        @Override
         public DirectPosition getCentroid() {
             // TODO Auto-generated method stub
             return null;
         }
 
+        @Override
         public Complex getClosure() {
             // TODO Auto-generated method stub
             return null;
         }
 
+        @Override
         public Geometry getConvexHull() {
             // TODO Auto-generated method stub
             return null;
         }
 
+        @Override
         public int getCoordinateDimension() {
             // TODO Auto-generated method stub
             return 0;
         }
 
+        @Override
         public CoordinateReferenceSystem getCoordinateReferenceSystem() {
             // TODO Auto-generated method stub
             return null;
         }
 
+        @Override
         public int getDimension(DirectPosition arg0) {
             // TODO Auto-generated method stub
             return 0;
@@ -232,92 +246,110 @@ public class AbstractCapabilitiesFilterSplitterTests {
             return distance(arg0);
         }
 
+        @Override
         public double distance(Geometry arg0) {
             // TODO Auto-generated method stub
             return 0;
         }
 
+        @Override
         public org.opengis.geometry.Envelope getEnvelope() {
             // TODO Auto-generated method stub
             return null;
         }
 
+        @Override
         public Set<? extends Complex> getMaximalComplex() {
             // TODO Auto-generated method stub
             return null;
         }
 
+        @Override
         public Geometry getMbRegion() {
             // TODO Auto-generated method stub
             return null;
         }
 
+        @Override
         public DirectPosition getRepresentativePoint() {
             // TODO Auto-generated method stub
             return null;
         }
 
+        @Override
         public TransfiniteSet intersection(TransfiniteSet arg0) {
             // TODO Auto-generated method stub
             return null;
         }
 
+        @Override
         public boolean intersects(TransfiniteSet arg0) {
             // TODO Auto-generated method stub
             return false;
         }
 
+        @Override
         public boolean isCycle() {
             // TODO Auto-generated method stub
             return false;
         }
 
+        @Override
         public boolean isMutable() {
             // TODO Auto-generated method stub
             return false;
         }
 
+        @Override
         public boolean isSimple() {
             // TODO Auto-generated method stub
             return false;
         }
 
+        @Override
         public TransfiniteSet symmetricDifference(TransfiniteSet arg0) {
             // TODO Auto-generated method stub
             return null;
         }
 
+        @Override
         public Geometry toImmutable() {
             // TODO Auto-generated method stub
             return null;
         }
 
+        @Override
         public Geometry transform(CoordinateReferenceSystem arg0) throws TransformException {
             // TODO Auto-generated method stub
             return null;
         }
 
+        @Override
         public Geometry transform(CoordinateReferenceSystem arg0, MathTransform arg1)
                 throws TransformException {
             // TODO Auto-generated method stub
             return null;
         }
 
+        @Override
         public TransfiniteSet union(TransfiniteSet arg0) {
             // TODO Auto-generated method stub
             return null;
         }
 
+        @Override
         public MockGeometryImpl clone() throws CloneNotSupportedException {
             // TODO Auto-generated method stub
             return (MockGeometryImpl) super.clone();
         }
 
+        @Override
         public Precision getPrecision() {
             // TODO Auto-generated method stub
             return null;
         }
 
+        @Override
         public String toString() {
             return "MOCKGEOM";
         }

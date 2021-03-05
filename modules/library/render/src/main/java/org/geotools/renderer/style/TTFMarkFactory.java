@@ -57,6 +57,7 @@ public class TTFMarkFactory implements MarkFactory {
      */
     public static TTFMarkFactory INSTANCE = new TTFMarkFactory();
 
+    @Override
     public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature)
             throws Exception {
         String markUrl = symbolUrl.evaluate(feature, String.class);

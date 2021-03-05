@@ -59,6 +59,7 @@ public class SimplifyingFilterVisitorTest {
         // visitor assuming simple features
         simpleVisitor =
                 new SimplifyingFilterVisitor() {
+                    @Override
                     protected boolean isSimpleFeature() {
                         return true;
                     };

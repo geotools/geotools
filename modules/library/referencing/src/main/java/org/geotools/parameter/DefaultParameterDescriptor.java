@@ -404,6 +404,7 @@ public class DefaultParameterDescriptor<T> extends AbstractParameterDescriptor
      * @return The maximum occurence.
      * @see #getMinimumOccurs
      */
+    @Override
     public int getMaximumOccurs() {
         return 1;
     }
@@ -416,6 +417,7 @@ public class DefaultParameterDescriptor<T> extends AbstractParameterDescriptor
      *
      * @return A parameter initialized to the default value.
      */
+    @Override
     @SuppressWarnings("unchecked")
     public ParameterValue<T> createValue() {
         if (Double.class.equals(valueClass) && unit == null) {
@@ -429,6 +431,7 @@ public class DefaultParameterDescriptor<T> extends AbstractParameterDescriptor
      *
      * @return The parameter value class.
      */
+    @Override
     public Class<T> getValueClass() {
         return valueClass;
     }
@@ -441,6 +444,7 @@ public class DefaultParameterDescriptor<T> extends AbstractParameterDescriptor
      * @return A finite set of valid values (usually from a {linkplain org.opengis.util.CodeList
      *     code list}), or {@code null} if it doesn't apply.
      */
+    @Override
     public Set<T> getValidValues() {
         return validValues;
     }
@@ -452,6 +456,7 @@ public class DefaultParameterDescriptor<T> extends AbstractParameterDescriptor
      *
      * @return The default value, or {@code null} in none.
      */
+    @Override
     public T getDefaultValue() {
         return defaultValue;
     }
@@ -463,6 +468,7 @@ public class DefaultParameterDescriptor<T> extends AbstractParameterDescriptor
      *
      * @return The minimum parameter value (often an instance of {@link Double}), or {@code null}.
      */
+    @Override
     public Comparable<T> getMinimumValue() {
         return minimum;
     }
@@ -474,6 +480,7 @@ public class DefaultParameterDescriptor<T> extends AbstractParameterDescriptor
      *
      * @return The minimum parameter value (often an instance of {@link Double}), or {@code null}.
      */
+    @Override
     public Comparable<T> getMaximumValue() {
         return maximum;
     }
@@ -485,6 +492,7 @@ public class DefaultParameterDescriptor<T> extends AbstractParameterDescriptor
      *
      * @return The unit for numeric value, or {@code null} if it doesn't apply to the value type.
      */
+    @Override
     public Unit<?> getUnit() {
         return unit;
     }

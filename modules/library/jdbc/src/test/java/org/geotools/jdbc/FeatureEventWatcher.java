@@ -42,6 +42,7 @@ public class FeatureEventWatcher implements FeatureListener {
     /** Filter selecting features modified in the last event */
     public Filter filter;
 
+    @Override
     public void changed(FeatureEvent featureEvent) {
         type = featureEvent.getType();
         if (bounds == null) {

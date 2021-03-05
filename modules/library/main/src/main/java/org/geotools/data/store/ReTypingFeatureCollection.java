@@ -56,6 +56,7 @@ public class ReTypingFeatureCollection extends DecoratingSimpleFeatureCollection
         this.featureType = featureType;
     }
 
+    @Override
     public SimpleFeatureType getSchema() {
         return featureType;
     }
@@ -64,6 +65,7 @@ public class ReTypingFeatureCollection extends DecoratingSimpleFeatureCollection
         return new DelegateFeatureReader<>(getSchema(), features());
     }
 
+    @Override
     public SimpleFeatureIterator features() {
         return new ReTypingFeatureIterator(delegate.features(), delegate.getSchema(), featureType);
     }

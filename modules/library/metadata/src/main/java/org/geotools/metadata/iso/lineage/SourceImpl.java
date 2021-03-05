@@ -77,6 +77,7 @@ public class SourceImpl extends MetadataEntity implements Source {
     }
 
     /** Returns a detailed description of the level of the source data. */
+    @Override
     public InternationalString getDescription() {
         return description;
     }
@@ -88,6 +89,7 @@ public class SourceImpl extends MetadataEntity implements Source {
     }
 
     /** Returns the denominator of the representative fraction on a source map. */
+    @Override
     public RepresentativeFraction getScaleDenominator() {
         return scaleDenominator;
     }
@@ -106,6 +108,7 @@ public class SourceImpl extends MetadataEntity implements Source {
      * Returns the spatial reference system used by the source data. @TODO: needs to annotate the
      * referencing module before.
      */
+    @Override
     public ReferenceSystem getSourceReferenceSystem() {
         return sourceReferenceSystem;
     }
@@ -117,6 +120,7 @@ public class SourceImpl extends MetadataEntity implements Source {
     }
 
     /** Returns the recommended reference to be used for the source data. */
+    @Override
     public Citation getSourceCitation() {
         return sourceCitation;
     }
@@ -128,6 +132,7 @@ public class SourceImpl extends MetadataEntity implements Source {
     }
 
     /** Returns tiInformation about the spatial, vertical and temporal extent of the source data. */
+    @Override
     public Collection<Extent> getSourceExtents() {
         return (sourceExtents = nonNullCollection(sourceExtents, Extent.class));
     }
@@ -138,6 +143,7 @@ public class SourceImpl extends MetadataEntity implements Source {
     }
 
     /** Returns information about an event in the creation process for the source data. */
+    @Override
     public Collection<ProcessStep> getSourceSteps() {
         return (sourceSteps = nonNullCollection(sourceSteps, ProcessStep.class));
     }

@@ -59,6 +59,7 @@ import org.opengis.filter.identity.FeatureId;
 public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
     JDBCFeatureStore featureStore;
 
+    @Override
     protected void connect() throws Exception {
         super.connect();
 

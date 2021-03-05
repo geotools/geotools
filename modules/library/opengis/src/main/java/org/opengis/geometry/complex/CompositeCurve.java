@@ -46,6 +46,7 @@ public interface CompositeCurve extends Composite, OrientableCurve {
      * @see OrientableCurve#getComposite
      * @issue http://jira.codehaus.org/browse/GEO-63
      */
+    @Override
     @Association("Composition")
     @UML(identifier = "generator", obligation = MANDATORY, specification = ISO_19107)
     List<OrientableCurve> getGenerators();

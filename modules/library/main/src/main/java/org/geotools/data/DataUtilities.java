@@ -965,10 +965,12 @@ public class DataUtilities {
 
             int offset = -1;
 
+            @Override
             public SimpleFeatureType getFeatureType() {
                 return features[0].getFeatureType();
             }
 
+            @Override
             public SimpleFeature next() {
                 if (!hasNext()) {
                     throw new NoSuchElementException("No more features");
@@ -977,10 +979,12 @@ public class DataUtilities {
                 return array[++offset];
             }
 
+            @Override
             public boolean hasNext() {
                 return (array != null) && (offset < (array.length - 1));
             }
 
+            @Override
             public void close() {
                 array = null;
                 offset = -1;

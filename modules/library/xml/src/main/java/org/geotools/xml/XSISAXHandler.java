@@ -79,6 +79,7 @@ public class XSISAXHandler extends DefaultHandler {
     }
 
     /** @see org.xml.sax.ContentHandler#startPrefixMapping(java.lang.String, java.lang.String) */
+    @Override
     public void startPrefixMapping(String arg0, String arg1) {
         rootHandler.startPrefixMapping(arg0, arg1);
     }
@@ -88,6 +89,7 @@ public class XSISAXHandler extends DefaultHandler {
      *
      * @see org.xml.sax.ContentHandler#endDocument()
      */
+    @Override
     public void endDocument() {
         handlers.pop();
     }
@@ -97,6 +99,7 @@ public class XSISAXHandler extends DefaultHandler {
      *
      * @see org.xml.sax.ContentHandler#startDocument()
      */
+    @Override
     public void startDocument() {
         try {
             handlers.push(rootHandler);
@@ -111,6 +114,7 @@ public class XSISAXHandler extends DefaultHandler {
      *
      * @see org.xml.sax.ContentHandler#characters(char[], int, int)
      */
+    @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
         characters.append(ch, start, length);
     }
@@ -140,6 +144,7 @@ public class XSISAXHandler extends DefaultHandler {
      * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String,
      *     java.lang.String)
      */
+    @Override
     public void endElement(String namespaceURI, String localName, String qName)
             throws SAXException {
         handleCharacters();
@@ -160,6 +165,7 @@ public class XSISAXHandler extends DefaultHandler {
      * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String,
      *     java.lang.String, org.xml.sax.Attributes)
      */
+    @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
             throws SAXException {
         characters.setLength(0);
@@ -211,6 +217,7 @@ public class XSISAXHandler extends DefaultHandler {
      *
      * @see org.xml.sax.ErrorHandler#error(org.xml.sax.SAXParseException)
      */
+    @Override
     public void error(SAXParseException exception) {
         logger.severe("ERROR " + exception.getMessage());
         logger.severe("col " + locator.getColumnNumber() + ", line " + locator.getLineNumber());
@@ -221,6 +228,7 @@ public class XSISAXHandler extends DefaultHandler {
      *
      * @see org.xml.sax.ErrorHandler#fatalError(org.xml.sax.SAXParseException)
      */
+    @Override
     public void fatalError(SAXParseException exception) throws SAXException {
         logger.severe("FATAL " + exception.getMessage());
         logger.severe("col " + locator.getColumnNumber() + ", line " + locator.getLineNumber());
@@ -232,12 +240,14 @@ public class XSISAXHandler extends DefaultHandler {
      *
      * @see org.xml.sax.ErrorHandler#warning(org.xml.sax.SAXParseException)
      */
+    @Override
     public void warning(SAXParseException exception) {
         logger.warning("WARN " + exception.getMessage());
         logger.severe("col " + locator.getColumnNumber() + ", line " + locator.getLineNumber());
     }
 
     /** @see org.xml.sax.ContentHandler#setDocumentLocator(org.xml.sax.Locator) */
+    @Override
     public void setDocumentLocator(Locator locator) {
         super.setDocumentLocator(locator);
         this.locator = locator;

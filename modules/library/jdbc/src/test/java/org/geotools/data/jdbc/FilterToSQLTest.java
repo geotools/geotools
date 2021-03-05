@@ -253,6 +253,7 @@ public class FilterToSQLTest {
         Object fancyLiteral =
                 new Object() {
 
+                    @Override
                     public String toString() {
                         return "A'A";
                     }

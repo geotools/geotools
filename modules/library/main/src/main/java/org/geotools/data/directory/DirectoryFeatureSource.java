@@ -39,59 +39,73 @@ public class DirectoryFeatureSource implements SimpleFeatureSource {
         this.fsource = delegate;
     }
 
+    @Override
     public void addFeatureListener(FeatureListener listener) {
         fsource.addFeatureListener(listener);
     }
 
+    @Override
     public ReferencedEnvelope getBounds() throws IOException {
         return fsource.getBounds();
     }
 
+    @Override
     public ReferencedEnvelope getBounds(Query query) throws IOException {
         return fsource.getBounds(query);
     }
 
+    @Override
     public int getCount(Query query) throws IOException {
         return fsource.getCount(query);
     }
 
+    @Override
     public DataAccess<SimpleFeatureType, SimpleFeature> getDataStore() {
         // this is done on purpose to avoid crippling the shapefile renderer optimizations
         return fsource.getDataStore();
     }
 
+    @Override
     public SimpleFeatureCollection getFeatures() throws IOException {
         return fsource.getFeatures();
     }
 
+    @Override
     public SimpleFeatureCollection getFeatures(Filter filter) throws IOException {
         return fsource.getFeatures(filter);
     }
 
+    @Override
     public SimpleFeatureCollection getFeatures(Query query) throws IOException {
         return fsource.getFeatures(query);
     }
 
+    @Override
     public ResourceInfo getInfo() {
         return fsource.getInfo();
     }
 
+    @Override
     public Name getName() {
         return fsource.getName();
     }
 
+    @Override
     public QueryCapabilities getQueryCapabilities() {
         return fsource.getQueryCapabilities();
     }
 
+    @Override
     public SimpleFeatureType getSchema() {
         return fsource.getSchema();
     }
 
+    @Override
     public Set<Key> getSupportedHints() {
         return fsource.getSupportedHints();
     }
 
+    @Override
     public void removeFeatureListener(FeatureListener listener) {
         fsource.removeFeatureListener(listener);
     }

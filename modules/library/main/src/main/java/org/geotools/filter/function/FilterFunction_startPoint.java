@@ -38,6 +38,7 @@ public class FilterFunction_startPoint extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Point evaluate(Object feature) {
         Geometry arg0;
 

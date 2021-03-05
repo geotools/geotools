@@ -53,6 +53,7 @@ public abstract class AbstractContrastMethodStrategy implements ContrastMethodSt
      *
      * @param options a map of Expressions keyed by name.
      */
+    @Override
     public void setOptions(Map<String, Expression> options) {
         this.options = options;
     }
@@ -128,11 +129,13 @@ public abstract class AbstractContrastMethodStrategy implements ContrastMethodSt
      *
      * @return options a map containing the algorithm name and any parameters that have been set.
      */
+    @Override
     public Map<String, Expression> getOptions() {
         return options;
     }
 
     /** @return the method that these values relate to. */
+    @Override
     public ContrastMethod getMethod() {
         return method;
     }
@@ -143,6 +146,7 @@ public abstract class AbstractContrastMethodStrategy implements ContrastMethodSt
     }
 
     /** @param method the method to set */
+    @Override
     public void setMethod(ContrastMethod method) {
         this.method = method;
     }

@@ -31,6 +31,7 @@ public interface AttributeDescriptor extends PropertyDescriptor {
      *
      * @see PropertyDescriptor#getType()
      */
+    @Override
     AttributeType getType();
 
     /**

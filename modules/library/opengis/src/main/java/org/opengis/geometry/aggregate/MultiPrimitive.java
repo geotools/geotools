@@ -29,6 +29,7 @@ public interface MultiPrimitive extends Aggregate {
      * Returns the set containing the primitives that compose this aggregate. The set may be
      * modified if this geometry {@linkplain #isMutable is mutable}.
      */
+    @Override
     @UML(identifier = "element", obligation = MANDATORY, specification = ISO_19107)
     Set<? extends Primitive> getElements();
 }

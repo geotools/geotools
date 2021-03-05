@@ -78,6 +78,7 @@ public class AnchorPointImpl implements AnchorPoint, Cloneable {
      *
      * @return Value of property anchorPointX.
      */
+    @Override
     public Expression getAnchorPointX() {
         return anchorPointX;
     }
@@ -87,6 +88,7 @@ public class AnchorPointImpl implements AnchorPoint, Cloneable {
      *
      * @param anchorPointX New value of property anchorPointX.
      */
+    @Override
     public void setAnchorPointX(Expression anchorPointX) {
         this.anchorPointX = anchorPointX;
     }
@@ -104,6 +106,7 @@ public class AnchorPointImpl implements AnchorPoint, Cloneable {
      *
      * @return Value of property anchorPointY.
      */
+    @Override
     public Expression getAnchorPointY() {
         return anchorPointY;
     }
@@ -113,6 +116,7 @@ public class AnchorPointImpl implements AnchorPoint, Cloneable {
      *
      * @param anchorPointY New value of property anchorPointY.
      */
+    @Override
     public void setAnchorPointY(Expression anchorPointY) {
         this.anchorPointY = anchorPointY;
     }
@@ -126,10 +130,12 @@ public class AnchorPointImpl implements AnchorPoint, Cloneable {
         this.anchorPointY = filterFactory.literal(x);
     }
 
+    @Override
     public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
 
+    @Override
     public Object accept(org.opengis.style.StyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
@@ -137,6 +143,7 @@ public class AnchorPointImpl implements AnchorPoint, Cloneable {
     /* (non-Javadoc)
      * @see Cloneable#clone()
      */
+    @Override
     public Object clone() {
         try {
             return super.clone();
@@ -148,6 +155,7 @@ public class AnchorPointImpl implements AnchorPoint, Cloneable {
     /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -166,6 +174,7 @@ public class AnchorPointImpl implements AnchorPoint, Cloneable {
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public int hashCode() {
         final int PRIME = 37;
         int result = 17;

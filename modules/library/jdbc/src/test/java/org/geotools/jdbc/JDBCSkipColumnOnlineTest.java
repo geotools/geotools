@@ -37,6 +37,7 @@ public abstract class JDBCSkipColumnOnlineTest extends JDBCTestSupport {
 
     protected SimpleFeatureType schema;
 
+    @Override
     protected abstract JDBCSkipColumnTestSetup createTestSetup();
 
     @Override

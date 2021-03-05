@@ -68,6 +68,7 @@ public class ScopeImpl extends MetadataEntity implements Scope {
     }
 
     /** Hierarchical level of the data specified by the scope. */
+    @Override
     public ScopeCode getLevel() {
         return level;
     }
@@ -85,6 +86,7 @@ public class ScopeImpl extends MetadataEntity implements Scope {
      *
      * @since 2.4
      */
+    @Override
     public Collection<ScopeDescription> getLevelDescription() {
         return levelDescription = nonNullCollection(levelDescription, ScopeDescription.class);
     }
@@ -102,6 +104,7 @@ public class ScopeImpl extends MetadataEntity implements Scope {
      * Information about the spatial, vertical and temporal extent of the data specified by the
      * scope.
      */
+    @Override
     public Extent getExtent() {
         return extent;
     }

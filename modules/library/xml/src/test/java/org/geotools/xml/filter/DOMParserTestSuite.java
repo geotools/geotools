@@ -144,14 +144,17 @@ public class DOMParserTestSuite extends TestSuite {
             this.document = document;
         }
 
+        @Override
         public String toString() {
             return document;
         }
 
+        @Override
         public int countTestCases() {
             return 1;
         }
 
+        @Override
         public void run(TestResult result) {
             // System.out.println(document);
             result.startTest(this);

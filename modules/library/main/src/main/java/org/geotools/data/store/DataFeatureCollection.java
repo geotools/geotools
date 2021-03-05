@@ -116,6 +116,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
     // To be implemented by subclass
     //
 
+    @Override
     public abstract ReferencedEnvelope getBounds();
 
     public abstract int getCount() throws IOException;;
@@ -163,6 +164,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
      *
      * <p>So when we implement FeatureCollection.iterator() this will work out of the box.
      */
+    @Override
     public SimpleFeatureIterator features() {
         SimpleFeatureIterator iterator = new DelegateSimpleFeatureIterator(iterator());
         open.add(iterator);
@@ -235,6 +237,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
     }
 
     /** Default implementation based on getCount() - this may be expensive */
+    @Override
     public int size() {
         try {
             return getCount();
@@ -274,6 +277,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
      * <p>For once the Collections API does not give us an escape route, we *have* to check the
      * data.
      */
+    @Override
     public boolean isEmpty() {
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = reader()) {
             try {
@@ -286,6 +290,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
         }
     }
 
+    @Override
     public boolean contains(Object o) {
         if (!(o instanceof SimpleFeature)) return false;
         SimpleFeature value = (SimpleFeature) o;
@@ -309,10 +314,12 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
         }
     }
 
+    @Override
     public Object[] toArray() {
         return toArray(new SimpleFeature[size()]);
     }
 
+    @Override
     public <T> T[] toArray(T[] array) {
         List<T> list = new ArrayList<>();
         Iterator<SimpleFeature> i = iterator();
@@ -336,6 +343,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
         return false;
     }
 
+    @Override
     public boolean containsAll(Collection<?> collection) {
         for (Object o : collection) {
             if (contains(o) == false) return false;
@@ -395,6 +403,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
 
     public void clear() {}
 
+    @Override
     public void accepts(
             org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress)
             throws IOException {
@@ -415,6 +424,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
      * @param filter Filter used to determine sub collection.
      * @since GeoTools 2.2, Filter 1.1
      */
+    @Override
     public SimpleFeatureCollection subCollection(Filter filter) {
         if (filter == Filter.INCLUDE) {
             return this;
@@ -432,10 +442,12 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
      * @since GeoTools 2.2, Filter 1.1
      * @return FeatureList sorted according to provided order
      */
+    @Override
     public SimpleFeatureCollection sort(SortBy order) {
         return null; // new OrderedFeatureList( this, order );
     }
 
+    @Override
     public String getID() {
         return id;
     }
@@ -448,6 +460,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
         listeners.remove(listener);
     }
 
+    @Override
     public SimpleFeatureType getSchema() {
         return schema;
     }

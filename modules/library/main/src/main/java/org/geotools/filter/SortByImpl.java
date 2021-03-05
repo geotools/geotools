@@ -31,6 +31,7 @@ public class SortByImpl implements SortBy {
         this.sortOrder = sortOrder;
     }
 
+    @Override
     public PropertyName getPropertyName() {
         return propertyName;
     }
@@ -39,6 +40,7 @@ public class SortByImpl implements SortBy {
         this.propertyName = propertyName;
     }
 
+    @Override
     public SortOrder getSortOrder() {
         return sortOrder;
     }

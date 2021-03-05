@@ -35,6 +35,7 @@ public class SubtractImpl extends MathExpressionImpl implements Subtract {
         super(expr1, expr2);
     }
 
+    @Override
     public Object evaluate(Object feature) throws IllegalArgumentException {
         ensureOperandsSet();
 
@@ -50,6 +51,7 @@ public class SubtractImpl extends MathExpressionImpl implements Subtract {
         }
     }
 
+    @Override
     public Object accept(ExpressionVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
@@ -60,6 +62,7 @@ public class SubtractImpl extends MathExpressionImpl implements Subtract {
      * @param obj - the object to compare this expression against.
      * @return true if specified object is equal to this expression; false otherwise.
      */
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof SubtractImpl) {
             SubtractImpl other = (SubtractImpl) obj;
@@ -75,6 +78,7 @@ public class SubtractImpl extends MathExpressionImpl implements Subtract {
      *
      * @return a hash code value for this subtract expression.
      */
+    @Override
     public int hashCode() {
         int result = 23;
 
@@ -84,6 +88,7 @@ public class SubtractImpl extends MathExpressionImpl implements Subtract {
         return result;
     }
 
+    @Override
     public String toString() {
         return "(" + getExpression1().toString() + "-" + getExpression2().toString() + ")";
     }

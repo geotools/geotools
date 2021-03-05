@@ -137,6 +137,7 @@ public class LongitudeFirstEpsgDecorator extends DeferredAuthorityFactory
      *
      * @throws FactoryException If no suitable factory instance was found.
      */
+    @Override
     protected AbstractAuthorityFactory createBackingStore() throws FactoryException {
         /*
          * Set the hints for the backing store to fetch. I'm not sure that we should request a

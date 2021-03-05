@@ -238,26 +238,31 @@ public abstract class AbstractGridFormat implements Format {
                     RESCALE_DEFAULT);
 
     /** @see org.opengis.coverage.grid.Format#getName() */
+    @Override
     public String getName() {
         return mInfo.get("name");
     }
 
     /** @see org.opengis.coverage.grid.Format#getDescription() */
+    @Override
     public String getDescription() {
         return mInfo.get("description");
     }
 
     /** @see org.opengis.coverage.grid.Format#getVendor() */
+    @Override
     public String getVendor() {
         return mInfo.get("vendor");
     }
 
     /** @see org.opengis.coverage.grid.Format#getDocURL() */
+    @Override
     public String getDocURL() {
         return mInfo.get("docURL");
     }
 
     /** @see org.opengis.coverage.grid.Format#getVersion() */
+    @Override
     public String getVersion() {
         return mInfo.get("version");
     }
@@ -333,6 +338,7 @@ public abstract class AbstractGridFormat implements Format {
      *
      * @see org.opengis.coverage.grid.Format#getReadParameters()
      */
+    @Override
     public ParameterValueGroup getReadParameters() {
         if (this.readParameters == null)
             throw new UnsupportedOperationException(
@@ -345,6 +351,7 @@ public abstract class AbstractGridFormat implements Format {
      *
      * @see org.opengis.coverage.grid.Format#getWriteParameters()
      */
+    @Override
     public ParameterValueGroup getWriteParameters() {
         if (this.writeParameters == null)
             throw new UnsupportedOperationException(

@@ -59,14 +59,17 @@ public class ProfileImpl implements Schema {
         this.profile = Collections.unmodifiableSet(profile);
     }
 
+    @Override
     public Set<Name> keySet() {
         return profile;
     }
 
+    @Override
     public String getURI() {
         return parent.getURI();
     }
 
+    @Override
     public Schema profile(Set<Name> profile) {
         if (!this.profile.containsAll(profile)) {
             Set<Name> set = new TreeSet<>(profile);
@@ -76,22 +79,27 @@ public class ProfileImpl implements Schema {
         return parent.profile(profile);
     }
 
+    @Override
     public int size() {
         return profile.size();
     }
 
+    @Override
     public boolean isEmpty() {
         return profile.isEmpty();
     }
 
+    @Override
     public boolean containsKey(Object key) {
         return profile.contains(key);
     }
 
+    @Override
     public boolean containsValue(Object value) {
         return values().contains(value);
     }
 
+    @Override
     public AttributeType get(Object key) {
         if (profile.contains(key)) {
             return parent.get(key);
@@ -99,32 +107,39 @@ public class ProfileImpl implements Schema {
         return null;
     }
 
+    @Override
     public AttributeType put(Name key, AttributeType value) {
         throw new UnsupportedOperationException("Profile not mutable");
     }
 
+    @Override
     public AttributeType remove(Object key) {
         throw new UnsupportedOperationException("Profile not mutable");
     }
 
+    @Override
     public void putAll(Map<? extends Name, ? extends AttributeType> t) {
         throw new UnsupportedOperationException("Profile not mutable");
     }
 
+    @Override
     public void clear() {
         throw new UnsupportedOperationException("Profile not mutable");
     }
 
+    @Override
     public void add(AttributeType type) {
         throw new UnsupportedOperationException("Profile not mutable");
     }
 
     // public Collection values() {
+    @Override
     public Collection<AttributeType> values() {
         return contents().values();
     }
 
     // public Set<Name> entrySet() {
+    @Override
     public Set<Entry<Name, AttributeType>> entrySet() {
         return contents().entrySet();
     }

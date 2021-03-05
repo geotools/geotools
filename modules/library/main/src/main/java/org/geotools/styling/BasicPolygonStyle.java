@@ -45,6 +45,7 @@ public class BasicPolygonStyle extends StyleImpl implements org.geotools.styling
         return "A simple polygon style";
     }
 
+    @Override
     public String getName() {
         return "default polygon style";
     }

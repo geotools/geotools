@@ -53,6 +53,7 @@ public abstract class AbstractGridCoverageWriter implements GridCoverageWriter {
     public AbstractGridCoverageWriter() {}
 
     /** Releases resources held by this {@link AbstractGridCoverageWriter}. */
+    @Override
     public void dispose() {
         if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("Disposing writer:" + destination);
 
@@ -79,6 +80,7 @@ public abstract class AbstractGridCoverageWriter implements GridCoverageWriter {
      *
      * @see org.opengis.coverage.grid.GridCoverageWriter#getDestination()
      */
+    @Override
     public Object getDestination() {
         return destination;
     }
@@ -90,11 +92,13 @@ public abstract class AbstractGridCoverageWriter implements GridCoverageWriter {
      * @return null
      * @see org.opengis.coverage.grid.GridCoverageWriter#getMetadataNames()
      */
+    @Override
     public String[] getMetadataNames() {
         throw new UnsupportedOperationException("Unsupported method");
     }
 
     /** @see org.opengis.coverage.grid.GridCoverageWriter#setCurrentSubname(java.lang.String) */
+    @Override
     public void setCurrentSubname(String name) throws IOException {
         throw new UnsupportedOperationException("Unsupported method");
     }
@@ -103,6 +107,7 @@ public abstract class AbstractGridCoverageWriter implements GridCoverageWriter {
      * @see org.opengis.coverage.grid.GridCoverageWriter#setMetadataValue(java.lang.String,
      *     java.lang.String)
      */
+    @Override
     public void setMetadataValue(String name, String value) throws IOException {
         throw new UnsupportedOperationException("Unsupported method");
     }

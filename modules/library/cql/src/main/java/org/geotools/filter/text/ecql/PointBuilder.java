@@ -38,6 +38,7 @@ final class PointBuilder extends GeometryBuilder {
     }
 
     /** Builds a Point geometry */
+    @Override
     public Geometry build() throws CQLException {
         Result result = getResultStack().popResult();
         org.geotools.filter.text.commons.IToken token = result.getToken();

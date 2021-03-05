@@ -72,6 +72,7 @@ public class VerticalExtentImpl extends MetadataEntity implements VerticalExtent
     }
 
     /** Returns the lowest vertical extent contained in the dataset. */
+    @Override
     public Double getMinimumValue() {
         return minimumValue;
     }
@@ -83,6 +84,7 @@ public class VerticalExtentImpl extends MetadataEntity implements VerticalExtent
     }
 
     /** Returns the highest vertical extent contained in the dataset. */
+    @Override
     public Double getMaximumValue() {
         return maximumValue;
     }
@@ -100,6 +102,7 @@ public class VerticalExtentImpl extends MetadataEntity implements VerticalExtent
      * @since 2.4
      */
     // Need to annotate the referencing module of geotools before here.
+    @Override
     public VerticalCRS getVerticalCRS() {
         return verticalCRS;
     }

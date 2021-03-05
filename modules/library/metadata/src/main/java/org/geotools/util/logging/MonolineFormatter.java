@@ -273,6 +273,7 @@ public class MonolineFormatter extends Formatter {
      * @param record the log record to be formatted.
      * @return a formatted log record
      */
+    @Override
     @SuppressWarnings("fallthrough")
     public synchronized String format(final LogRecord record) {
         buffer.setLength(PREFIX.length());

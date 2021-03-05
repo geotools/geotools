@@ -66,6 +66,7 @@ final class ScaledColorSpace extends ColorSpace {
     }
 
     /** Retourne une couleur RGB en tons de gris pour le nombre réel spécifié. */
+    @Override
     public float[] toRGB(final float[] values) {
         float value = (values[band] - offset) / scale;
         if (Float.isNaN(value)) value = MIN_VALUE;
@@ -73,6 +74,7 @@ final class ScaledColorSpace extends ColorSpace {
     }
 
     /** Retourne une valeur réelle pour le ton de gris spécifié. */
+    @Override
     public float[] fromRGB(final float[] RGB) {
         final float[] values = new float[getNumComponents()];
         values[band] = (RGB[0] + RGB[1] + RGB[2]) / 3 * scale + offset;
@@ -80,6 +82,7 @@ final class ScaledColorSpace extends ColorSpace {
     }
 
     /** Convertit les valeurs en couleurs dans l'espace CIEXYZ. */
+    @Override
     public float[] toCIEXYZ(final float[] values) {
         float value = (values[band] - offset) / scale;
         if (Float.isNaN(value)) value = MIN_VALUE;
@@ -87,6 +90,7 @@ final class ScaledColorSpace extends ColorSpace {
     }
 
     /** Convertit les couleurs de l'espace CIEXYZ en valeurs. */
+    @Override
     public float[] fromCIEXYZ(final float[] RGB) {
         final float[] values = new float[getNumComponents()];
         values[band] = (RGB[0] / 0.9642f + RGB[1] + RGB[2] / 0.8249f) / 3 * scale + offset;

@@ -31,6 +31,7 @@ import org.opengis.geometry.BoundingBox;
 public interface GeometryAttribute extends Attribute {
 
     /** Override and type narrow to GeometryType. */
+    @Override
     GeometryType getType();
 
     /**
@@ -38,6 +39,7 @@ public interface GeometryAttribute extends Attribute {
      *
      * @return The geometry descriptor, may be null if this is a top-level value
      */
+    @Override
     GeometryDescriptor getDescriptor();
 
     /**

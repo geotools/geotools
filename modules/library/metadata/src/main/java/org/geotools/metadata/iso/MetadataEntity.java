@@ -60,6 +60,7 @@ public class MetadataEntity extends ModifiableMetadata implements Serializable {
      *
      * @since 2.4
      */
+    @Override
     public MetadataStandard getStandard() {
         return MetadataStandard.ISO_19115;
     }

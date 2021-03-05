@@ -50,14 +50,17 @@ public class ReIcon {
             return icon;
         } else {
             return new Icon() {
+                @Override
                 public int getIconHeight() {
                     return size;
                 }
 
+                @Override
                 public int getIconWidth() {
                     return size;
                 }
 
+                @Override
                 public void paintIcon(Component c, Graphics g, int x, int y) {
                     BufferedImage img =
                             new BufferedImage(

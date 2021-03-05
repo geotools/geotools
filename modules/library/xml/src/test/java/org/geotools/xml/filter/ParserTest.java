@@ -59,6 +59,7 @@ public class ParserTest extends FilterTestSupport {
         }
     }
 
+    @Override
     @Before
     public void setUp() throws SchemaException, IllegalAttributeException {
         super.setUp();

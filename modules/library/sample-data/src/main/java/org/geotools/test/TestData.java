@@ -522,6 +522,7 @@ public class TestData implements Runnable {
      * Deletes all temporary files. This method is invoked automatically at shutdown time and should
      * not be invoked directly. It is public only as an implementation side effect.
      */
+    @Override
     @SuppressWarnings("PMD.SystemPrintln")
     public void run() {
         int iteration = 5; // Maximum number of iterations

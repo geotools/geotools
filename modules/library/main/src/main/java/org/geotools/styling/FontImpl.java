@@ -48,30 +48,37 @@ public class FontImpl implements Font, Cloneable {
     /** Creates a new instance of DefaultFont */
     protected FontImpl() {}
 
+    @Override
     public List<Expression> getFamily() {
         return fontFamily;
     }
 
+    @Override
     public Expression getSize() {
         return fontSize;
     }
 
+    @Override
     public void setSize(Expression size) {
         this.fontSize = size;
     }
 
+    @Override
     public Expression getStyle() {
         return fontStyle;
     }
 
+    @Override
     public void setStyle(Expression style) {
         fontStyle = style;
     }
 
+    @Override
     public Expression getWeight() {
         return fontWeight;
     }
 
+    @Override
     public void setWeight(Expression weight) {
         fontWeight = weight;
     }
@@ -81,6 +88,7 @@ public class FontImpl implements Font, Cloneable {
      *
      * @see Cloneable#clone()
      */
+    @Override
     public Object clone() {
         try {
             // all the members are immutable expression
@@ -96,6 +104,7 @@ public class FontImpl implements Font, Cloneable {
      *
      * @return the hash code.
      */
+    @Override
     public int hashCode() {
         final int PRIME = 1000003;
         int result = 0;
@@ -125,6 +134,7 @@ public class FontImpl implements Font, Cloneable {
      *
      * @return True if this and oth are equal.
      */
+    @Override
     public boolean equals(Object oth) {
         if (this == oth) {
             return true;
@@ -160,6 +170,7 @@ public class FontImpl implements Font, Cloneable {
         return font;
     }
 
+    @Override
     public Object accept(StyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }

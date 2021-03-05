@@ -35,10 +35,12 @@ class ImmediateDirectoryWatcher implements DirectoryWatcher {
         this.directory = directory;
     }
 
+    @Override
     public synchronized boolean isStale() {
         return lastUpdated == null || lastUpdated < directory.lastModified();
     }
 
+    @Override
     public synchronized void mark() {
         lastUpdated = directory.lastModified();
     }

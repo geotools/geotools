@@ -325,6 +325,7 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
         return getResultStack().popLiteral();
     }
 
+    @Override
     public BinarySpatialOperator buildSpatialEqualFilter() throws CQLException {
 
         SpatialOperationBuilder builder =
@@ -334,6 +335,7 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
         return filter;
     }
 
+    @Override
     public BinarySpatialOperator buildSpatialDisjointFilter() throws CQLException {
         SpatialOperationBuilder builder =
                 new SpatialOperationBuilder(getResultStack(), getFilterFactory());
@@ -343,6 +345,7 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
         return filter;
     }
 
+    @Override
     public BinarySpatialOperator buildSpatialIntersectsFilter() throws CQLException {
 
         SpatialOperationBuilder builder =
@@ -353,6 +356,7 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
         return filter;
     }
 
+    @Override
     public BinarySpatialOperator buildSpatialTouchesFilter() throws CQLException {
 
         SpatialOperationBuilder builder =
@@ -363,6 +367,7 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
         return filter;
     }
 
+    @Override
     public BinarySpatialOperator buildSpatialCrossesFilter() throws CQLException {
 
         SpatialOperationBuilder builder =
@@ -453,6 +458,7 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
         return patternExpr;
     }
 
+    @Override
     public BinarySpatialOperator buildSpatialWithinFilter() throws CQLException {
 
         SpatialOperationBuilder builder =
@@ -463,6 +469,7 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
         return filter;
     }
 
+    @Override
     public BinarySpatialOperator buildSpatialContainsFilter() throws CQLException {
 
         SpatialOperationBuilder builder =
@@ -473,6 +480,7 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
         return filter;
     }
 
+    @Override
     public BinarySpatialOperator buildSpatialOverlapsFilter() throws CQLException {
 
         SpatialOperationBuilder builder =
@@ -499,6 +507,7 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
         return eq;
     }
 
+    @Override
     public org.opengis.filter.spatial.BBOX buildBBox() throws CQLException {
 
         SpatialOperationBuilder builder =
@@ -509,6 +518,7 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
         return filter;
     }
 
+    @Override
     public org.opengis.filter.spatial.BBOX buildBBoxWithCRS() throws CQLException {
 
         SpatialOperationBuilder builder =

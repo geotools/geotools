@@ -34,11 +34,13 @@ public class FacetGT implements Facet {
     }
 
     /** @see org.geotools.xml.schema.Facet#getFacetType() */
+    @Override
     public int getFacetType() {
         return type;
     }
 
     /** @see org.geotools.xml.schema.Facet#getValue() */
+    @Override
     public String getValue() {
         return value;
     }

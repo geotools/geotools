@@ -402,6 +402,7 @@ public class NamedIdentifier
      *
      * @return The code.
      */
+    @Override
     public String getCode() {
         return code;
     }
@@ -411,6 +412,7 @@ public class NamedIdentifier
      *
      * @return The codespace, or {@code null} if not available.
      */
+    @Override
     public String getCodeSpace() {
         return codespace;
     }
@@ -421,6 +423,7 @@ public class NamedIdentifier
      *
      * @return The authority, or {@code null} if not available.
      */
+    @Override
     public Citation getAuthority() {
         return authority;
     }
@@ -433,6 +436,7 @@ public class NamedIdentifier
      *
      * @return The version, or {@code null} if not available.
      */
+    @Override
     public String getVersion() {
         return version;
     }
@@ -547,6 +551,7 @@ public class NamedIdentifier
      *
      * @since 2.6
      */
+    @Override
     public LocalName head() {
         return getName().head();
     }
@@ -556,6 +561,7 @@ public class NamedIdentifier
      *
      * @since 2.3
      */
+    @Override
     public LocalName tip() {
         return getName().tip();
     }
@@ -565,6 +571,7 @@ public class NamedIdentifier
      *
      * @since 2.3
      */
+    @Override
     public NameSpace scope() {
         return getName().scope();
     }
@@ -574,6 +581,7 @@ public class NamedIdentifier
      *
      * @since 2.3
      */
+    @Override
     public int depth() {
         return getName().depth();
     }
@@ -583,6 +591,7 @@ public class NamedIdentifier
      * element in this list is like a directory name in a file path name. The length of this
      * sequence is the generic name depth.
      */
+    @Override
     @SuppressWarnings("unchecked")
     public List<LocalName> getParsedNames() {
         // TODO: temporary hack to be removed after GeoAPI update.
@@ -595,6 +604,7 @@ public class NamedIdentifier
      *
      * @since 2.3
      */
+    @Override
     public ScopedName push(final GenericName scope) {
         return getName().push(scope);
     }
@@ -604,6 +614,7 @@ public class NamedIdentifier
      *
      * @since 2.3
      */
+    @Override
     public GenericName toFullyQualifiedName() {
         return getName().toFullyQualifiedName();
     }
@@ -615,6 +626,7 @@ public class NamedIdentifier
      * string is available, then this method returns an implementation mapping to {@link #toString}
      * for all locales.
      */
+    @Override
     public InternationalString toInternationalString() {
         return getName().toInternationalString();
     }
@@ -637,6 +649,7 @@ public class NamedIdentifier
      * @param object The object to compare with.
      * @return -1 if this identifier precedes the given object, +1 if it follows it.
      */
+    @Override
     public int compareTo(final GenericName object) {
         return getName().compareTo(object);
     }

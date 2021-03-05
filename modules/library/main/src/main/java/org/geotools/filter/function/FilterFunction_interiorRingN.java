@@ -39,6 +39,7 @@ public class FilterFunction_interiorRingN extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Geometry arg0;
         int arg1;

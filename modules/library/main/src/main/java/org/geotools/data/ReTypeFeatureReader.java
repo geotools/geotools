@@ -99,6 +99,7 @@ public class ReTypeFeatureReader
         builder = new SimpleFeatureBuilder(featureType);
     }
 
+    @Override
     public FeatureReader<SimpleFeatureType, SimpleFeature> getDelegate() {
         return reader;
     }
@@ -153,11 +154,13 @@ public class ReTypeFeatureReader
     }
 
     /** @see org.geotools.data.FeatureReader#getFeatureType() */
+    @Override
     public SimpleFeatureType getFeatureType() {
         return featureType;
     }
 
     /** @see org.geotools.data.FeatureReader#next() */
+    @Override
     public SimpleFeature next()
             throws IOException, IllegalAttributeException, NoSuchElementException {
         if (reader == null) {
@@ -183,11 +186,13 @@ public class ReTypeFeatureReader
     }
 
     /** @see org.geotools.data.FeatureReader#hasNext() */
+    @Override
     public boolean hasNext() throws IOException {
         return reader.hasNext();
     }
 
     /** @see org.geotools.data.FeatureReader#close() */
+    @Override
     public void close() throws IOException {
         if (reader != null) {
             reader.close();

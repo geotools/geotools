@@ -72,10 +72,12 @@ public class GraphicImpl implements Graphic, Cloneable {
         else this.initialGap = initialGap;
     }
 
+    @Override
     public List<GraphicalSymbol> graphicalSymbols() {
         return graphics;
     }
 
+    @Override
     public AnchorPointImpl getAnchorPoint() {
         return anchor;
     }
@@ -84,6 +86,7 @@ public class GraphicImpl implements Graphic, Cloneable {
         this.anchor = AnchorPointImpl.cast(anchor);
     }
 
+    @Override
     public void setAnchorPoint(org.opengis.style.AnchorPoint anchorPoint) {
         this.anchor = AnchorPointImpl.cast(anchorPoint);
     }
@@ -98,6 +101,7 @@ public class GraphicImpl implements Graphic, Cloneable {
      * @return The opacity of the Graphic, where 0.0 is completely transparent and 1.0 is completely
      *     opaque.
      */
+    @Override
     public Expression getOpacity() {
         return opacity;
     }
@@ -109,6 +113,7 @@ public class GraphicImpl implements Graphic, Cloneable {
      * @return The angle of rotation in decimal degrees. Negative values represent counter-clockwise
      *     rotation. The default is 0.0 (no rotation).
      */
+    @Override
     public Expression getRotation() {
         return rotation;
     }
@@ -125,34 +130,42 @@ public class GraphicImpl implements Graphic, Cloneable {
      * @return The size of the graphic, the default is context specific. Negative values are not
      *     possible.
      */
+    @Override
     public Expression getSize() {
         return size;
     }
 
+    @Override
     public DisplacementImpl getDisplacement() {
         return displacement;
     }
 
+    @Override
     public Expression getInitialGap() {
         return initialGap;
     }
 
+    @Override
     public void setInitialGap(Expression initialGap) {
         this.initialGap = initialGap;
     }
 
+    @Override
     public Expression getGap() {
         return gap;
     }
 
+    @Override
     public void setGap(Expression gap) {
         this.gap = gap;
     }
 
+    @Override
     public void setDisplacement(org.opengis.style.Displacement offset) {
         this.displacement = DisplacementImpl.cast(offset);
     }
 
+    @Override
     public void setOpacity(Expression opacity) {
         this.opacity = opacity;
     }
@@ -162,6 +175,7 @@ public class GraphicImpl implements Graphic, Cloneable {
      *
      * @param rotation New value of property rotation.
      */
+    @Override
     public void setRotation(Expression rotation) {
         this.rotation = rotation;
     }
@@ -171,14 +185,17 @@ public class GraphicImpl implements Graphic, Cloneable {
      *
      * @param size New value of property size.
      */
+    @Override
     public void setSize(Expression size) {
         this.size = size;
     }
 
+    @Override
     public Object accept(StyleVisitor visitor, Object data) {
         return visitor.visit((org.opengis.style.GraphicStroke) this, data);
     }
 
+    @Override
     public void accept(org.geotools.styling.StyleVisitor visitor) {
         visitor.visit(this);
     }
@@ -188,6 +205,7 @@ public class GraphicImpl implements Graphic, Cloneable {
      *
      * @return The deep copy clone.
      */
+    @Override
     public Object clone() {
         GraphicImpl clone;
 
@@ -208,6 +226,7 @@ public class GraphicImpl implements Graphic, Cloneable {
      *
      * @return The hashcode.
      */
+    @Override
     public int hashCode() {
         final int PRIME = 1000003;
         int result = 0;
@@ -248,6 +267,7 @@ public class GraphicImpl implements Graphic, Cloneable {
      * @param oth The other GraphicsImpl to compare with.
      * @return True if this is equal to oth according to the above conditions.
      */
+    @Override
     public boolean equals(Object oth) {
         if (this == oth) {
             return true;

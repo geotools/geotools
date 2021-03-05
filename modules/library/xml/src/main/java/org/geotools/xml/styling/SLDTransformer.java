@@ -176,6 +176,7 @@ public class SLDTransformer extends TransformerBase {
         this.exportDefaultValues = exportDefaultValues;
     }
 
+    @Override
     public Translator createTranslator(ContentHandler handler) {
         Translator result = new SLDTranslator(handler);
         // add pre-configured namespace mappings
@@ -378,6 +379,7 @@ public class SLDTransformer extends TransformerBase {
             }
         }
 
+        @Override
         public void visit(PointPlacement pp) {
             start("LabelPlacement");
             start("PointPlacement");
@@ -393,6 +395,7 @@ public class SLDTransformer extends TransformerBase {
             end("LabelPlacement");
         }
 
+        @Override
         public void visit(Stroke stroke) {
             start("Stroke");
 
@@ -449,6 +452,7 @@ public class SLDTransformer extends TransformerBase {
             end("CssParameter");
         }
 
+        @Override
         public void visit(LinePlacement lp) {
             start("LabelPlacement");
             start("LinePlacement");
@@ -457,6 +461,7 @@ public class SLDTransformer extends TransformerBase {
             end("LabelPlacement");
         }
 
+        @Override
         public void visit(AnchorPoint ap) {
             start("AnchorPoint");
             element("AnchorPointX", ap.getAnchorPointX());
@@ -464,6 +469,7 @@ public class SLDTransformer extends TransformerBase {
             end("AnchorPoint");
         }
 
+        @Override
         public void visit(TextSymbolizer text) {
             if (text == null) {
                 return;
@@ -594,6 +600,7 @@ public class SLDTransformer extends TransformerBase {
             }
         }
 
+        @Override
         public void visit(RasterSymbolizer raster) {
             if (raster == null) {
                 return;
@@ -687,6 +694,7 @@ public class SLDTransformer extends TransformerBase {
             end("RasterSymbolizer");
         }
 
+        @Override
         public void visit(ColorMap colorMap) {
             // The type of the ColorMap is stored in an attribute "type" and may store
             // string-values: "ramp", "intervals" or "values".
@@ -711,6 +719,7 @@ public class SLDTransformer extends TransformerBase {
             end("ColorMap");
         }
 
+        @Override
         public void visit(ColorMapEntry colorEntry) {
             if (colorEntry != null) {
                 AttributesImpl atts = new AttributesImpl();
@@ -735,6 +744,7 @@ public class SLDTransformer extends TransformerBase {
             }
         }
 
+        @Override
         public void visit(Symbolizer sym) {
             try {
                 contentHandler.startElement("", "!--", "!--", NULL_ATTS);
@@ -745,6 +755,7 @@ public class SLDTransformer extends TransformerBase {
             }
         }
 
+        @Override
         public void visit(PolygonSymbolizer poly) {
 
             // adds the uom attribute according to the OGC SE specification
@@ -770,6 +781,7 @@ public class SLDTransformer extends TransformerBase {
             end("PolygonSymbolizer");
         }
 
+        @Override
         public void visit(ExternalGraphic exgr) {
             start("ExternalGraphic");
 
@@ -784,6 +796,7 @@ public class SLDTransformer extends TransformerBase {
             end("ExternalGraphic");
         }
 
+        @Override
         public void visit(LineSymbolizer line) {
 
             // adds the uom attribute according to the OGC SE specification
@@ -807,6 +820,7 @@ public class SLDTransformer extends TransformerBase {
             end("LineSymbolizer");
         }
 
+        @Override
         public void visit(Fill fill) {
             start("Fill");
 
@@ -821,6 +835,7 @@ public class SLDTransformer extends TransformerBase {
             end("Fill");
         }
 
+        @Override
         public void visit(Rule rule) {
             start("Rule");
             if (rule.getName() != null) element("Name", rule.getName());
@@ -861,6 +876,7 @@ public class SLDTransformer extends TransformerBase {
             end("Rule");
         }
 
+        @Override
         public void visit(Mark mark) {
             start("Mark");
             if (mark.getWellKnownName() != null
@@ -880,6 +896,7 @@ public class SLDTransformer extends TransformerBase {
             end("Mark");
         }
 
+        @Override
         public void visit(PointSymbolizer ps) {
 
             // adds the uom attribute according to the OGC SE specification
@@ -900,6 +917,7 @@ public class SLDTransformer extends TransformerBase {
             end("PointSymbolizer");
         }
 
+        @Override
         public void visit(Halo halo) {
             start("Halo");
             if (halo.getRadius() != null) {
@@ -911,6 +929,7 @@ public class SLDTransformer extends TransformerBase {
             end("Halo");
         }
 
+        @Override
         public void visit(Graphic gr) {
             start("Graphic");
 
@@ -935,6 +954,7 @@ public class SLDTransformer extends TransformerBase {
             end("Graphic");
         }
 
+        @Override
         public void visit(StyledLayerDescriptor sld) {
             AttributesImpl atts = new AttributesImpl();
             atts.addAttribute("", "version", "version", "", "1.0.0");
@@ -966,6 +986,7 @@ public class SLDTransformer extends TransformerBase {
             end("StyledLayerDescriptor");
         }
 
+        @Override
         public void visit(NamedLayer layer) {
             start("NamedLayer");
             element("Name", layer.getName());
@@ -988,6 +1009,7 @@ public class SLDTransformer extends TransformerBase {
             end("NamedLayer");
         }
 
+        @Override
         public void visit(UserLayer layer) {
             start("UserLayer");
 
@@ -1110,6 +1132,7 @@ public class SLDTransformer extends TransformerBase {
             end("RemoteOWS");
         }
 
+        @Override
         public void visit(FeatureTypeConstraint ftc) {
             start("FeatureTypeConstraint");
 
@@ -1144,6 +1167,7 @@ public class SLDTransformer extends TransformerBase {
             }
         }
 
+        @Override
         public void visit(Style style) {
             if (style instanceof NamedStyle) {
                 start("NamedStyle");
@@ -1181,6 +1205,7 @@ public class SLDTransformer extends TransformerBase {
             }
         }
 
+        @Override
         public void visit(FeatureTypeStyle fts) {
             start("FeatureTypeStyle");
 
@@ -1218,6 +1243,7 @@ public class SLDTransformer extends TransformerBase {
             end("FeatureTypeStyle");
         }
 
+        @Override
         public void visit(Displacement dis) {
             if (dis == null) {
                 return;
@@ -1354,6 +1380,7 @@ public class SLDTransformer extends TransformerBase {
             }
         }
 
+        @Override
         public void encode(Object o) throws IllegalArgumentException {
             if (o instanceof StyledLayerDescriptor) {
                 encode((StyledLayerDescriptor) o);
@@ -1374,6 +1401,7 @@ public class SLDTransformer extends TransformerBase {
             }
         }
 
+        @Override
         public void visit(ContrastEnhancement ce) {
             if (ce == null) return;
 
@@ -1403,6 +1431,7 @@ public class SLDTransformer extends TransformerBase {
             end("ContrastEnhancement");
         }
 
+        @Override
         public void visit(ImageOutline outline) {
             if (outline == null) return;
             start("ImageOutline");
@@ -1410,6 +1439,7 @@ public class SLDTransformer extends TransformerBase {
             end("ImageOutline");
         }
 
+        @Override
         public void visit(ChannelSelection cs) {
             if (cs == null) return;
             start("ChannelSelection");
@@ -1421,6 +1451,7 @@ public class SLDTransformer extends TransformerBase {
             end("ChannelSelection");
         }
 
+        @Override
         public void visit(OverlapBehavior ob) {
             start("OverlapBehavior");
             final String pn = (String) ob.getValue();
@@ -1429,12 +1460,14 @@ public class SLDTransformer extends TransformerBase {
             end("OverlapBehavior");
         }
 
+        @Override
         public void visit(SelectedChannelType sct) {
             element("SourceChannelName", sct.getChannelName());
             final ContrastEnhancement ce = sct.getContrastEnhancement();
             if (ce != null) ce.accept(this);
         }
 
+        @Override
         public void visit(ShadedRelief sr) {
             start("ShadedRelief");
             // brightnessonly

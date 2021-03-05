@@ -50,6 +50,7 @@ public class DefaultServiceInfo implements ServiceInfo, Serializable {
         this.source = copy.getSource();
     }
     /** @return the description */
+    @Override
     public String getDescription() {
         return description;
     }
@@ -58,6 +59,7 @@ public class DefaultServiceInfo implements ServiceInfo, Serializable {
         this.description = description;
     }
     /** @return the keywords */
+    @Override
     public Set<String> getKeywords() {
         return keywords;
     }
@@ -66,6 +68,7 @@ public class DefaultServiceInfo implements ServiceInfo, Serializable {
         this.keywords = keywords;
     }
     /** @return the publisher */
+    @Override
     public URI getPublisher() {
         return publisher;
     }
@@ -74,6 +77,7 @@ public class DefaultServiceInfo implements ServiceInfo, Serializable {
         this.publisher = publisher;
     }
     /** @return the schema */
+    @Override
     public URI getSchema() {
         return schema;
     }
@@ -82,6 +86,7 @@ public class DefaultServiceInfo implements ServiceInfo, Serializable {
         this.schema = schema;
     }
     /** @return the title */
+    @Override
     public String getTitle() {
         return title;
     }
@@ -91,6 +96,7 @@ public class DefaultServiceInfo implements ServiceInfo, Serializable {
     }
 
     /** @return the source */
+    @Override
     public URI getSource() {
         return source;
     }

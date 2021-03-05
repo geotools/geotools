@@ -50,14 +50,17 @@ public class JNDIDataSourceFactory extends AbstractDataSourceFactorySpi {
 
     private static final Param[] PARAMS = new Param[] {DSTYPE, JNDI_REFNAME};
 
+    @Override
     public DataSource createDataSource(Map<String, ?> params) throws IOException {
         return createNewDataSource(params);
     }
 
+    @Override
     public boolean canProcess(Map<String, ?> params) {
         return super.canProcess(params) && "JNDI".equals(params.get("dstype"));
     }
 
+    @Override
     public DataSource createNewDataSource(Map<String, ?> params) throws IOException {
         String refName = (String) JNDI_REFNAME.lookUp(params);
         try {
@@ -68,15 +71,18 @@ public class JNDIDataSourceFactory extends AbstractDataSourceFactorySpi {
         }
     }
 
+    @Override
     public String getDescription() {
         return "A JNDI based DataSource locator. Provide the JDNI location of a DataSource object in order to make it work";
     }
 
+    @Override
     public Param[] getParametersInfo() {
         return PARAMS;
     }
 
     /** Make sure a JNDI context is available */
+    @Override
     public boolean isAvailable() {
         try {
             GeoTools.getInitialContext(GeoTools.getDefaultHints());

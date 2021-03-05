@@ -70,6 +70,7 @@ public class Collection_CountFunction extends FunctionExpressionImpl {
         return countVisitor.getResult();
     }
 
+    @Override
     public Object evaluate(Object feature) {
         if (feature == null) {
             return Integer.valueOf(0); // no features were visited in the making of this answer

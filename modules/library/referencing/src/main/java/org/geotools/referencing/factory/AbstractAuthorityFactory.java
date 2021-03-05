@@ -128,6 +128,7 @@ public abstract class AbstractAuthorityFactory extends ReferencingFactory
     /**
      * Returns the organization or party responsible for definition and maintenance of the database.
      */
+    @Override
     public abstract Citation getAuthority();
 
     /**
@@ -157,6 +158,7 @@ public abstract class AbstractAuthorityFactory extends ReferencingFactory
      * @see #createEllipsoid
      * @see #createUnit
      */
+    @Override
     public IdentifiedObject createObject(final String code)
             throws NoSuchAuthorityCodeException, FactoryException {
         ensureNonNull("code", code);

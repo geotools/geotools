@@ -30,10 +30,12 @@ import org.geotools.util.factory.Hints;
  */
 public class CharsetConverterFactory implements ConverterFactory {
 
+    @Override
     public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {
 
         if (CharSequence.class.isAssignableFrom(source) && Charset.class.isAssignableFrom(target)) {
             return new Converter() {
+                @Override
                 public <T> T convert(Object source, Class<T> target) throws Exception {
                     try {
                         return target.cast(Charset.forName((String) source));
@@ -46,6 +48,7 @@ public class CharsetConverterFactory implements ConverterFactory {
         }
         if (Charset.class.isAssignableFrom(source) && CharSequence.class.isAssignableFrom(target)) {
             return new Converter() {
+                @Override
                 public <T> T convert(Object source, Class<T> target) throws Exception {
                     return target.cast(((Charset) source).toString());
                 }

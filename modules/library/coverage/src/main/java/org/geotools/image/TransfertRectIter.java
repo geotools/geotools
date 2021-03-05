@@ -72,48 +72,56 @@ public final class TransfertRectIter implements WritableRectIter {
     }
 
     /** Sets the iterator to the first line of its bounding rectangle. */
+    @Override
     public void startLines() {
         src.startLines();
         dst.startLines();
     }
 
     /** Sets the iterator to the leftmost pixel of its bounding rectangle. */
+    @Override
     public void startPixels() {
         src.startPixels();
         dst.startPixels();
     }
 
     /** Sets the iterator to the first band of the image. */
+    @Override
     public void startBands() {
         src.startBands();
         dst.startBands();
     }
 
     /** Jumps downward num lines from the current position. */
+    @Override
     public void jumpLines(int num) {
         src.jumpLines(num);
         dst.jumpLines(num);
     }
 
     /** Jumps rightward num pixels from the current position. */
+    @Override
     public void jumpPixels(int num) {
         src.jumpPixels(num);
         dst.jumpPixels(num);
     }
 
     /** Sets the iterator to the next line of the image. */
+    @Override
     public void nextLine() {
         src.nextLine();
         dst.nextLine();
     }
 
     /** Sets the iterator to the next pixel in image (that is, move rightward). */
+    @Override
     public void nextPixel() {
         src.nextPixel();
         dst.nextPixel();
     }
 
     /** Sets the iterator to the next band in the image. */
+    @Override
     public void nextBand() {
         src.nextBand();
         dst.nextBand();
@@ -123,6 +131,7 @@ public final class TransfertRectIter implements WritableRectIter {
      * Sets the iterator to the next line in the image, and returns {@code true} if the bottom row
      * of the bounding rectangle has been passed.
      */
+    @Override
     public boolean nextLineDone() {
         boolean check = src.nextLineDone();
         if (check == dst.nextLineDone()) {
@@ -132,6 +141,7 @@ public final class TransfertRectIter implements WritableRectIter {
     }
 
     /** Sets the iterator to the next pixel in the image (that is, move rightward). */
+    @Override
     public boolean nextPixelDone() {
         boolean check = src.nextPixelDone();
         if (check == dst.nextPixelDone()) {
@@ -144,6 +154,7 @@ public final class TransfertRectIter implements WritableRectIter {
      * Sets the iterator to the next band in the image, and returns {@code true} if the max band has
      * been exceeded.
      */
+    @Override
     public boolean nextBandDone() {
         boolean check = src.nextBandDone();
         if (check == dst.nextBandDone()) {
@@ -153,6 +164,7 @@ public final class TransfertRectIter implements WritableRectIter {
     }
 
     /** Returns {@code true} if the bottom row of the bounding rectangle has been passed. */
+    @Override
     public boolean finishedLines() {
         boolean check = src.finishedLines();
         if (check == dst.finishedLines()) {
@@ -162,6 +174,7 @@ public final class TransfertRectIter implements WritableRectIter {
     }
 
     /** Returns {@code true} if the right edge of the bounding rectangle has been passed. */
+    @Override
     public boolean finishedPixels() {
         boolean check = src.finishedPixels();
         if (check == dst.finishedPixels()) {
@@ -171,6 +184,7 @@ public final class TransfertRectIter implements WritableRectIter {
     }
 
     /** Returns {@code true} if the max band in the image has been exceeded. */
+    @Override
     public boolean finishedBands() {
         boolean check = src.finishedBands();
         if (check == dst.finishedBands()) {
@@ -180,91 +194,109 @@ public final class TransfertRectIter implements WritableRectIter {
     }
 
     /** Returns the samples of the current pixel from the image in an array of int. */
+    @Override
     public int[] getPixel(int[] array) {
         return src.getPixel(array);
     }
 
     /** Returns the samples of the current pixel from the image in an array of float. */
+    @Override
     public float[] getPixel(float[] array) {
         return src.getPixel(array);
     }
 
     /** Returns the samples of the current pixel from the image in an array of double. */
+    @Override
     public double[] getPixel(double[] array) {
         return src.getPixel(array);
     }
 
     /** Returns the current sample as an integer. */
+    @Override
     public int getSample() {
         return src.getSample();
     }
 
     /** Returns the specified sample of the current pixel as an integer. */
+    @Override
     public int getSample(int b) {
         return src.getSample(b);
     }
 
     /** Returns the current sample as a float. */
+    @Override
     public float getSampleFloat() {
         return src.getSampleFloat();
     }
 
     /** Returns the specified sample of the current pixel as a float. */
+    @Override
     public float getSampleFloat(int b) {
         return src.getSampleFloat(b);
     }
 
     /** Returns the current sample as a double. */
+    @Override
     public double getSampleDouble() {
         return src.getSampleDouble();
     }
 
     /** Returns the specified sample of the current pixel as a double. */
+    @Override
     public double getSampleDouble(int b) {
         return src.getSampleDouble(b);
     }
 
     /** Sets all samples of the current pixel to a set of int values. */
+    @Override
     public void setPixel(int[] array) {
         dst.setPixel(array);
     }
 
     /** Sets all samples of the current pixel to a set of float values. */
+    @Override
     public void setPixel(float[] array) {
         dst.setPixel(array);
     }
 
     /** Sets all samples of the current pixel to a set of double values. */
+    @Override
     public void setPixel(double[] array) {
         dst.setPixel(array);
     }
 
     /** Sets the current sample to an integral value. */
+    @Override
     public void setSample(int s) {
         dst.setSample(s);
     }
 
     /** Sets the current sample to a float value. */
+    @Override
     public void setSample(float s) {
         dst.setSample(s);
     }
 
     /** Sets the current sample to a double value. */
+    @Override
     public void setSample(double s) {
         dst.setSample(s);
     }
 
     /** Sets the specified sample of the current pixel to an integral value. */
+    @Override
     public void setSample(int b, int s) {
         dst.setSample(b, s);
     }
 
     /** Sets the specified sample of the current pixel to a float value. */
+    @Override
     public void setSample(int b, float s) {
         dst.setSample(b, s);
     }
 
     /** Sets the specified sample of the current pixel to a double value. */
+    @Override
     public void setSample(int b, double s) {
         dst.setSample(b, s);
     }

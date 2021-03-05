@@ -40,6 +40,7 @@ import org.opengis.referencing.cs.EllipsoidalCS;
 @UML(identifier = "SC_GeographicCRS", specification = ISO_19111)
 public interface GeographicCRS extends GeodeticCRS {
     /** Returns the coordinate system, which must be ellipsoidal. */
+    @Override
     @UML(identifier = "usesCS", obligation = MANDATORY, specification = ISO_19111)
     EllipsoidalCS getCoordinateSystem();
 }

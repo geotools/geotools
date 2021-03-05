@@ -574,6 +574,7 @@ public class BandMerge extends OperationJAI {
         return properties;
     }
 
+    @Override
     protected GridSampleDimension[] deriveSampleDimension(
             GridSampleDimension[][] list, Parameters parameters) {
         // Total number of sample dimensions

@@ -98,6 +98,7 @@ public class Extrema extends BaseStatisticsOperationJAI {
         super(EXTREMA, getOperationDescriptor(JAIExt.getOperationName(EXTREMA)));
     }
 
+    @Override
     public String getName() {
         return EXTREMA;
     }
@@ -113,6 +114,7 @@ public class Extrema extends BaseStatisticsOperationJAI {
      *     InternationalString, MathTransform, GridCoverage2D[],
      *     org.geotools.coverage.processing.OperationJAI.Parameters),
      */
+    @Override
     @SuppressWarnings("unchecked")
     protected Map<String, ?> getProperties(
             RenderedImage data,
@@ -177,6 +179,7 @@ public class Extrema extends BaseStatisticsOperationJAI {
         return super.getProperties(data, crs, name, toCRS, sources, parameters);
     }
 
+    @Override
     protected void handleJAIEXTParams(
             ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
         if (JAIExt.isJAIExtOperation(STATS)) {

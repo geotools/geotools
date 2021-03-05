@@ -38,6 +38,7 @@ public class MemoryFeatureReaderTest extends DataTestCase {
 
     private final Transaction transaction = new DefaultTransaction();
 
+    @Override
     public void init() throws Exception {
         super.init();
         memoryDataStore = new MemoryDataStore(roadFeatures);

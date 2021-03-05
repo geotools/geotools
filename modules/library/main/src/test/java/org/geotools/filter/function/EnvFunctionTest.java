@@ -96,6 +96,7 @@ public class EnvFunctionTest {
                 this.threadIndex = threadIndex;
             }
 
+            @Override
             public void run() {
                 // set the local values for this thread and then wait for
                 // the other thread to do the same before testing
@@ -142,6 +143,7 @@ public class EnvFunctionTest {
                 this.threadIndex = threadIndex;
             }
 
+            @Override
             public void run() {
                 // set the local var then wait for the other thread
                 // to do the same before testing
@@ -190,6 +192,7 @@ public class EnvFunctionTest {
                 this.key = key;
             }
 
+            @Override
             public void run() {
                 // set the global value assigned to this thread then wait for the other
                 // thread to do the same
@@ -229,6 +232,7 @@ public class EnvFunctionTest {
 
         class Task implements Runnable {
 
+            @Override
             public void run() {
                 Object result = ff.function("env", ff.literal(varName)).evaluate(null);
                 assertEquals(varValue, result.toString());

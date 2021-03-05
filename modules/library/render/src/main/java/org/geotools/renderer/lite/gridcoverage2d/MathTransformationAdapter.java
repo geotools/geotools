@@ -61,6 +61,7 @@ public class MathTransformationAdapter implements MathTransformation {
      *
      * @see org.opengis.referencing.operation.MathTransform1D#derivative(double)
      */
+    @Override
     public double derivative(double value) throws TransformException {
 
         throw new UnsupportedOperationException(
@@ -72,6 +73,7 @@ public class MathTransformationAdapter implements MathTransformation {
      *
      * @see org.opengis.referencing.operation.MathTransform1D#transform(double)
      */
+    @Override
     public double transform(double value) {
 
         throw new UnsupportedOperationException(
@@ -83,6 +85,7 @@ public class MathTransformationAdapter implements MathTransformation {
      *
      * @see org.opengis.referencing.operation.MathTransform#getSourceDimensions()
      */
+    @Override
     public int getSourceDimensions() {
 
         return 1;
@@ -93,6 +96,7 @@ public class MathTransformationAdapter implements MathTransformation {
      *
      * @see org.opengis.referencing.operation.MathTransform#getTargetDimensions()
      */
+    @Override
     public int getTargetDimensions() {
 
         return 1;
@@ -103,6 +107,7 @@ public class MathTransformationAdapter implements MathTransformation {
      *
      * @see org.opengis.referencing.operation.MathTransform#inverse()
      */
+    @Override
     public MathTransformation inverseTransform() {
         throw new UnsupportedOperationException(
                 Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "inverse"));
@@ -113,6 +118,7 @@ public class MathTransformationAdapter implements MathTransformation {
      *
      * @see org.opengis.referencing.operation.MathTransform#isIdentity()
      */
+    @Override
     public boolean isIdentity() {
 
         throw new UnsupportedOperationException(

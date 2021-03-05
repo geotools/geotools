@@ -36,6 +36,7 @@ import org.opengis.feature.simple.SimpleFeature;
 public class MemoryFeatureCollectionTest extends DataTestCase {
     private MemoryFeatureCollection roads;
 
+    @Override
     public void init() throws Exception {
         super.init();
         roads = new MemoryFeatureCollection(roadType);

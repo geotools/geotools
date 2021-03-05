@@ -66,6 +66,7 @@ public class BindingFilterVisitor extends DuplicatingFilterVisitor {
         this.expressionTypeVisitor = new ExpressionTypeVisitor(schema);
     }
 
+    @Override
     public Object visit(PropertyIsEqualTo filter, Object extraData) {
         Class targetType = getTargetType(filter.getExpression1(), filter.getExpression2());
         Expression expr1 = optimize(filter.getExpression1(), extraData, targetType);
@@ -150,6 +151,7 @@ public class BindingFilterVisitor extends DuplicatingFilterVisitor {
         return duplicate;
     }
 
+    @Override
     public Object visit(After after, Object extraData) {
         Expression expr1 = optimizeTime(after.getExpression1(), extraData);
         Expression expr2 = optimizeTime(after.getExpression2(), extraData);
@@ -157,6 +159,7 @@ public class BindingFilterVisitor extends DuplicatingFilterVisitor {
         return getFactory(extraData).after(expr1, expr2, after.getMatchAction());
     }
 
+    @Override
     public Object visit(AnyInteracts anyInteracts, Object extraData) {
         Expression expr1 = optimizeTime(anyInteracts.getExpression1(), extraData);
         Expression expr2 = optimizeTime(anyInteracts.getExpression2(), extraData);
@@ -164,6 +167,7 @@ public class BindingFilterVisitor extends DuplicatingFilterVisitor {
         return getFactory(extraData).anyInteracts(expr1, expr2, anyInteracts.getMatchAction());
     };
 
+    @Override
     public Object visit(Before before, Object extraData) {
         Expression expr1 = optimizeTime(before.getExpression1(), extraData);
         Expression expr2 = optimizeTime(before.getExpression2(), extraData);
@@ -171,6 +175,7 @@ public class BindingFilterVisitor extends DuplicatingFilterVisitor {
         return getFactory(extraData).before(expr1, expr2, before.getMatchAction());
     }
 
+    @Override
     public Object visit(Begins begins, Object extraData) {
         Expression expr1 = optimizeTime(begins.getExpression1(), extraData);
         Expression expr2 = optimizeTime(begins.getExpression2(), extraData);
@@ -178,6 +183,7 @@ public class BindingFilterVisitor extends DuplicatingFilterVisitor {
         return getFactory(extraData).begins(expr1, expr2, begins.getMatchAction());
     };
 
+    @Override
     public Object visit(BegunBy begunBy, Object extraData) {
         Expression expr1 = optimizeTime(begunBy.getExpression1(), extraData);
         Expression expr2 = optimizeTime(begunBy.getExpression2(), extraData);
@@ -185,6 +191,7 @@ public class BindingFilterVisitor extends DuplicatingFilterVisitor {
         return getFactory(extraData).begins(expr1, expr2, begunBy.getMatchAction());
     }
 
+    @Override
     public Object visit(During during, Object extraData) {
         Expression expr1 = optimizeTime(during.getExpression1(), extraData);
         Expression expr2 = optimizeTime(during.getExpression2(), extraData);
@@ -192,6 +199,7 @@ public class BindingFilterVisitor extends DuplicatingFilterVisitor {
         return getFactory(extraData).during(expr1, expr2, during.getMatchAction());
     }
 
+    @Override
     public Object visit(EndedBy endedBy, Object extraData) {
         Expression expr1 = optimizeTime(endedBy.getExpression1(), extraData);
         Expression expr2 = optimizeTime(endedBy.getExpression2(), extraData);
@@ -199,6 +207,7 @@ public class BindingFilterVisitor extends DuplicatingFilterVisitor {
         return getFactory(extraData).endedBy(expr1, expr2, endedBy.getMatchAction());
     }
 
+    @Override
     public Object visit(Ends ends, Object extraData) {
         Expression expr1 = optimizeTime(ends.getExpression1(), extraData);
         Expression expr2 = optimizeTime(ends.getExpression2(), extraData);
@@ -206,6 +215,7 @@ public class BindingFilterVisitor extends DuplicatingFilterVisitor {
         return getFactory(extraData).ends(expr1, expr2, ends.getMatchAction());
     }
 
+    @Override
     public Object visit(Meets meets, Object extraData) {
         Expression expr1 = optimizeTime(meets.getExpression1(), extraData);
         Expression expr2 = optimizeTime(meets.getExpression2(), extraData);
@@ -213,6 +223,7 @@ public class BindingFilterVisitor extends DuplicatingFilterVisitor {
         return getFactory(extraData).meets(expr1, expr2, meets.getMatchAction());
     }
 
+    @Override
     public Object visit(MetBy metBy, Object extraData) {
         Expression expr1 = optimizeTime(metBy.getExpression1(), extraData);
         Expression expr2 = optimizeTime(metBy.getExpression2(), extraData);
@@ -220,6 +231,7 @@ public class BindingFilterVisitor extends DuplicatingFilterVisitor {
         return getFactory(extraData).metBy(expr1, expr2, metBy.getMatchAction());
     }
 
+    @Override
     public Object visit(OverlappedBy overlappedBy, Object extraData) {
         Expression expr1 = optimizeTime(overlappedBy.getExpression1(), extraData);
         Expression expr2 = optimizeTime(overlappedBy.getExpression2(), extraData);
@@ -227,6 +239,7 @@ public class BindingFilterVisitor extends DuplicatingFilterVisitor {
         return getFactory(extraData).overlappedBy(expr1, expr2, overlappedBy.getMatchAction());
     }
 
+    @Override
     public Object visit(TContains contains, Object extraData) {
         Expression expr1 = optimizeTime(contains.getExpression1(), extraData);
         Expression expr2 = optimizeTime(contains.getExpression2(), extraData);
@@ -234,6 +247,7 @@ public class BindingFilterVisitor extends DuplicatingFilterVisitor {
         return getFactory(extraData).tcontains(expr1, expr2, contains.getMatchAction());
     }
 
+    @Override
     public Object visit(TEquals equals, Object extraData) {
         Expression expr1 = optimizeTime(equals.getExpression1(), extraData);
         Expression expr2 = optimizeTime(equals.getExpression2(), extraData);
@@ -241,6 +255,7 @@ public class BindingFilterVisitor extends DuplicatingFilterVisitor {
         return getFactory(extraData).tequals(expr1, expr2, equals.getMatchAction());
     }
 
+    @Override
     public Object visit(TOverlaps contains, Object extraData) {
         Expression expr1 = optimizeTime(contains.getExpression1(), extraData);
         Expression expr2 = optimizeTime(contains.getExpression2(), extraData);

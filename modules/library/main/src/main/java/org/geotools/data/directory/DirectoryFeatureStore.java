@@ -38,44 +38,54 @@ public class DirectoryFeatureStore extends DirectoryFeatureSource implements Sim
         this.fstore = store;
     }
 
+    @Override
     public Transaction getTransaction() {
         return fstore.getTransaction();
     }
 
+    @Override
     public void modifyFeatures(Name attributeName, Object attributeValue, Filter filter)
             throws IOException {
         fstore.modifyFeatures(attributeName, attributeValue, filter);
     }
 
+    @Override
     public void modifyFeatures(Name[] name, Object[] value, Filter filter) throws IOException {
         fstore.modifyFeatures(name, value, filter);
     }
 
+    @Override
     public void modifyFeatures(String name, Object value, Filter filter) throws IOException {
         fstore.modifyFeatures(name, value, filter);
     }
 
+    @Override
     public void modifyFeatures(String[] names, Object[] values, Filter filter) throws IOException {
         fstore.modifyFeatures(names, values, filter);
     }
 
+    @Override
     public void removeFeatureListener(FeatureListener listener) {
         fstore.removeFeatureListener(listener);
     }
 
+    @Override
     public void removeFeatures(Filter filter) throws IOException {
         fstore.removeFeatures(filter);
     }
 
+    @Override
     public void setFeatures(FeatureReader<SimpleFeatureType, SimpleFeature> reader)
             throws IOException {
         fstore.setFeatures(reader);
     }
 
+    @Override
     public void setTransaction(Transaction transaction) {
         fstore.setTransaction(transaction);
     }
 
+    @Override
     public List<FeatureId> addFeatures(
             FeatureCollection<SimpleFeatureType, SimpleFeature> collection) throws IOException {
         return fstore.addFeatures(collection);

@@ -30,6 +30,7 @@ public abstract class AbstractDataSourceFactorySpi implements DataSourceFactoryS
      *
      * @return return display name based on class name
      */
+    @Override
     public String getDisplayName() {
         String name = this.getClass().getName();
 
@@ -42,6 +43,7 @@ public abstract class AbstractDataSourceFactorySpi implements DataSourceFactoryS
         return name;
     }
 
+    @Override
     public boolean canProcess(Map<String, ?> params) {
         if (params == null) {
             return false;
@@ -79,6 +81,7 @@ public abstract class AbstractDataSourceFactorySpi implements DataSourceFactoryS
     }
 
     /** Returns the implementation hints. The default implementation returns en empty map. */
+    @Override
     public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }

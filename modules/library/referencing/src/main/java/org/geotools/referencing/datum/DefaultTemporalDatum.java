@@ -139,6 +139,7 @@ public class DefaultTemporalDatum extends AbstractDatum implements TemporalDatum
      *
      * @return The date and time origin of this temporal datum.
      */
+    @Override
     public Date getOrigin() {
         return new Date(origin);
     }

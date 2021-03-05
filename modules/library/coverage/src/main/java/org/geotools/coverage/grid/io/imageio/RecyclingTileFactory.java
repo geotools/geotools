@@ -212,19 +212,23 @@ public class RecyclingTileFactory extends java.util.Observable
     }
 
     /** Returns <code>true</code>. */
+    @Override
     public boolean canReclaimMemory() {
         return true;
     }
 
     /** Returns <code>true</code>. */
+    @Override
     public boolean isMemoryCache() {
         return true;
     }
 
+    @Override
     public long getMemoryUsed() {
         return memoryUsed;
     }
 
+    @Override
     public void flush() {
         synchronized (recycledArrays) {
             recycledArrays.clear();
@@ -232,6 +236,7 @@ public class RecyclingTileFactory extends java.util.Observable
         }
     }
 
+    @Override
     public WritableRaster createTile(SampleModel sampleModel, Point location) {
 
         if (sampleModel == null) {
@@ -357,6 +362,7 @@ public class RecyclingTileFactory extends java.util.Observable
     }
 
     /** Recycle the given tile. */
+    @Override
     public void recycleTile(Raster tile) {
         DataBuffer db = tile.getDataBuffer();
 
@@ -438,6 +444,7 @@ public class RecyclingTileFactory extends java.util.Observable
         return null;
     }
 
+    @Override
     public void update(java.util.Observable o, Object arg) {
         if (o.equals(tileCache)) {
             if (arg instanceof CachedTile) {

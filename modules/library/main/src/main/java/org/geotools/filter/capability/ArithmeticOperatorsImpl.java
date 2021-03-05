@@ -51,10 +51,12 @@ public class ArithmeticOperatorsImpl implements ArithmeticOperators {
         this.simpleArithmetic = simpleArithmetic;
     }
 
+    @Override
     public boolean hasSimpleArithmetic() {
         return simpleArithmetic;
     }
 
+    @Override
     public FunctionsImpl getFunctions() {
         return functions;
     }

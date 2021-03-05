@@ -137,6 +137,7 @@ public class GridReaderLayer extends RasterLayer {
         return params;
     }
 
+    @Override
     public SimpleFeatureCollection toFeatureCollection() {
         SimpleFeatureCollection collection;
         try {

@@ -197,6 +197,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      *     the {@code evaluate(...)} methods.
      * @see org.geotools.coverage.grid.GeneralGridGeometry#getGridToCRS
      */
+    @Override
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return crs;
     }
@@ -221,6 +222,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      *
      * @return The bounding box for the coverage domain in coordinate system coordinates.
      */
+    @Override
     public Envelope getEnvelope() {
         return CRS.getEnvelope(crs);
     }
@@ -235,6 +237,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      *
      * @since 2.3
      */
+    @Override
     public RecordType getRangeType() {
         throw unsupported();
     }
@@ -275,6 +278,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      *
      * @since 2.3
      */
+    @Override
     public Set<Record> evaluate(final DirectPosition p, final Collection<String> list) {
         throw unsupported();
     }
@@ -298,6 +302,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      *     {@code boolean} by an identity or widening conversion. Subclasses may relax this
      *     constraint if appropriate.
      */
+    @Override
     public boolean[] evaluate(final DirectPosition coord, boolean[] dest)
             throws PointOutsideCoverageException, CannotEvaluateException {
         final Object array = evaluate(coord);
@@ -334,6 +339,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      *     {@code byte} by an identity or widening conversion. Subclasses may relax this constraint
      *     if appropriate.
      */
+    @Override
     public byte[] evaluate(final DirectPosition coord, byte[] dest)
             throws PointOutsideCoverageException, CannotEvaluateException {
         final Object array = evaluate(coord);
@@ -370,6 +376,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      *     {@code int} by an identity or widening conversion. Subclasses may relax this constraint
      *     if appropriate.
      */
+    @Override
     public int[] evaluate(final DirectPosition coord, int[] dest)
             throws PointOutsideCoverageException, CannotEvaluateException {
         final Object array = evaluate(coord);
@@ -406,6 +413,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      *     {@code float} by an identity or widening conversion. Subclasses may relax this constraint
      *     if appropriate.
      */
+    @Override
     public float[] evaluate(final DirectPosition coord, float[] dest)
             throws PointOutsideCoverageException, CannotEvaluateException {
         final Object array = evaluate(coord);
@@ -442,6 +450,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      *     {@code double} by an identity or widening conversion. Subclasses may relax this
      *     constraint if appropriate.
      */
+    @Override
     public double[] evaluate(final DirectPosition coord, double[] dest)
             throws PointOutsideCoverageException, CannotEvaluateException {
         final Object array = evaluate(coord);
@@ -467,6 +476,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      * @param yAxis Dimension to use for the <var>y</var> display axis.
      * @return A 2D view of this grid coverage as a renderable image.
      */
+    @Override
     public RenderableImage getRenderableImage(final int xAxis, final int yAxis) {
         return new Renderable(xAxis, yAxis);
     }
@@ -532,6 +542,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
         }
 
         /** Returns {@code null} to indicate that no source information is available. */
+        @Override
         @SuppressWarnings("PMD.ReplaceVectorWithList")
         public Vector<RenderableImage> getSources() {
             return null;
@@ -543,6 +554,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
          *
          * @see org.geotools.coverage.grid.GridCoverage2D#isDataEditable
          */
+        @Override
         public boolean isDynamic() {
             return false;
         }
@@ -552,6 +564,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
          *
          * @return Always {@code false} in default implementation.
          */
+        @Override
         public boolean isComplex() {
             return false;
         }
@@ -562,6 +575,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
          * @see AbstractCoverage#getEnvelope
          * @see AbstractCoverage#getCoordinateReferenceSystem
          */
+        @Override
         public float getWidth() {
             return (float) bounds.getWidth();
         }
@@ -572,6 +586,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
          * @see AbstractCoverage#getEnvelope
          * @see AbstractCoverage#getCoordinateReferenceSystem
          */
+        @Override
         public float getHeight() {
             return (float) bounds.getHeight();
         }
@@ -584,6 +599,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
          * @see AbstractCoverage#getEnvelope
          * @see AbstractCoverage#getCoordinateReferenceSystem
          */
+        @Override
         public float getMinX() {
             return (float) bounds.getX();
         }
@@ -596,6 +612,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
          * @see AbstractCoverage#getEnvelope
          * @see AbstractCoverage#getCoordinateReferenceSystem
          */
+        @Override
         public float getMinY() {
             return (float) bounds.getY();
         }
@@ -605,6 +622,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
          *
          * @return A rendered image containing the rendered data
          */
+        @Override
         public RenderedImage createDefaultRendering() {
             return createScaledRendering(512, 0, null);
         }
@@ -622,6 +640,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
          * @param hints Rendering hints, or {@code null}.
          * @return A rendered image containing the rendered data
          */
+        @Override
         public RenderedImage createScaledRendering(
                 int width, int height, final RenderingHints hints) {
             final double boundsWidth = bounds.getWidth();
@@ -647,6 +666,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
          * @param context The render context to use to produce the rendering.
          * @return A rendered image containing the rendered data
          */
+        @Override
         public RenderedImage createRendering(final RenderContext context) {
             final AffineTransform crsToGrid = context.getTransform();
             final Shape area = context.getAreaOfInterest();
@@ -830,6 +850,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
          *
          * @return The number of sample dimensions.
          */
+        @Override
         public int getNumElements() {
             return getNumSampleDimensions();
         }
@@ -840,6 +861,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
          * rendered image is created using the "{@link ImageFunctionDescriptor ImageFunction}"
          * operator and the image type is not {@code double}.
          */
+        @Override
         public void getElements(
                 final float startX,
                 final float startY,
@@ -873,6 +895,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
          * operator and the image type is {@code double}. The default implementation invokes {@link
          * AbstractCoverage#evaluate(DirectPosition,double[])} recursively.
          */
+        @Override
         public void getElements(
                 final double startX,
                 final double startY,
@@ -946,6 +969,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
          * Display the window in the event queue. Required because 'pack()' is invoked before
          * 'setVisible(true)'.
          */
+        @Override
         public void run() {
             frame.pack();
             frame.setVisible(true);
@@ -978,6 +1002,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
     }
 
     /** Returns the source data for a coverage. The default implementation returns an empty list. */
+    @Override
     public List<? extends Coverage> getSources() {
         return Collections.emptyList();
     }

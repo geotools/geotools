@@ -69,6 +69,7 @@ public class QuantitativeResultImpl extends ResultImpl implements QuantitativeRe
     }
 
     /** Quantitative value or values, content determined by the evaluation procedure used. */
+    @Override
     public List<Record> getValues() {
         return values = nonNullList(values, Record.class);
     }
@@ -107,18 +108,22 @@ public class QuantitativeResultImpl extends ResultImpl implements QuantitativeRe
             map = java.util.Collections.singletonMap(null, value);
         }
 
+        @Override
         public RecordType getRecordType() {
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public java.util.Map<org.opengis.util.MemberName, Object> getAttributes() {
             return map;
         }
 
+        @Override
         public Object locate(org.opengis.util.MemberName name) {
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public void set(org.opengis.util.MemberName name, Object value) {
             throw new UnsupportedOperationException();
         }
@@ -138,6 +143,7 @@ public class QuantitativeResultImpl extends ResultImpl implements QuantitativeRe
     }
 
     /** Value type for reporting a data quality result, or {@code null} if none. */
+    @Override
     public RecordType getValueType() {
         return valueType;
     }
@@ -149,6 +155,7 @@ public class QuantitativeResultImpl extends ResultImpl implements QuantitativeRe
     }
 
     /** Value unit for reporting a data quality result, or {@code null} if none. */
+    @Override
     public Unit getValueUnit() {
         return valueUnit;
     }
@@ -160,6 +167,7 @@ public class QuantitativeResultImpl extends ResultImpl implements QuantitativeRe
     }
 
     /** Statistical method used to determine the value, or {@code null} if none. */
+    @Override
     public InternationalString getErrorStatistic() {
         return errorStatistic;
     }

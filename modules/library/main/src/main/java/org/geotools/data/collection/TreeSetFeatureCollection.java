@@ -130,6 +130,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
      *
      * @return the envelope of the geometries contained by this feature collection.
      */
+    @Override
     public ReferencedEnvelope getBounds() {
         if (bounds == null) {
             bounds = new ReferencedEnvelope();
@@ -260,6 +261,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
      * @param o element whose presence in this collection is to be tested.
      * @return <tt>true</tt> if this collection contains the specified element
      */
+    @Override
     public boolean contains(Object o) {
         // The contract of Set doesn't say we have to cast here, but I think its
         // useful for client sanity to get a ClassCastException and not just a
@@ -277,6 +279,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
      *
      * @return true if collection is completly covered
      */
+    @Override
     public boolean containsAll(Collection collection) {
         Iterator iterator = collection.iterator();
         try {
@@ -297,6 +300,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
      *
      * @return <tt>true</tt> if this collection contains no elements
      */
+    @Override
     public boolean isEmpty() {
         return contents.isEmpty();
     }
@@ -314,15 +318,18 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         return new Iterator<SimpleFeature>() {
             SimpleFeature currFeature = null;
 
+            @Override
             public boolean hasNext() {
                 return iterator.hasNext();
             }
 
+            @Override
             public SimpleFeature next() {
                 currFeature = iterator.next();
                 return currFeature;
             }
 
+            @Override
             public void remove() {
                 iterator.remove();
                 bounds = null; // recalc
@@ -336,6 +343,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
      *
      * @return the SimpleFeatureIterator for this collection.
      */
+    @Override
     public SimpleFeatureIterator features() {
         return new SimpleFeatureIteratorImpl(contents.values());
     }
@@ -425,6 +433,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
      *
      * @return the number of elements in this collection
      */
+    @Override
     public int size() {
         return contents.size();
     }
@@ -442,6 +451,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
      *
      * @return an array containing all of the elements in this collection
      */
+    @Override
     public Object[] toArray() {
         return contents.values().toArray();
     }
@@ -478,6 +488,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
      *     enough; otherwise, a new array of the same runtime type is allocated for this purpose.
      * @return an array containing the elements of this collection
      */
+    @Override
     public <O> O[] toArray(O[] a) {
         @SuppressWarnings("unchecked")
         O[] cast = (O[]) new Object[contents.size()];
@@ -499,19 +510,23 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
     public FeatureReader<SimpleFeatureType, SimpleFeature> reader() throws IOException {
         final SimpleFeatureIterator iterator = features();
         return new FeatureReader<SimpleFeatureType, SimpleFeature>() {
+            @Override
             public SimpleFeatureType getFeatureType() {
                 return getSchema();
             }
 
+            @Override
             public SimpleFeature next()
                     throws IOException, IllegalAttributeException, NoSuchElementException {
                 return iterator.next();
             }
 
+            @Override
             public boolean hasNext() throws IOException {
                 return iterator.hasNext();
             }
 
+            @Override
             public void close() throws IOException {
                 TreeSetFeatureCollection.this.close(iterator);
             }
@@ -551,6 +566,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         return Collections.unmodifiableSet(contents.keySet());
     }
 
+    @Override
     public void accepts(
             org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress)
             throws IOException {
@@ -568,6 +584,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
      * @param filter Filter used to determine sub collection.
      * @since GeoTools 2.2, Filter 1.1
      */
+    @Override
     public SimpleFeatureCollection subCollection(Filter filter) {
         if (filter == Filter.INCLUDE) {
             return this;
@@ -576,6 +593,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         return temp.getFeatures(filter);
     }
 
+    @Override
     public SimpleFeatureCollection sort(SortBy order) {
         Query subQuery = new Query(getSchema().getTypeName());
         subQuery.setSortBy(order);
@@ -588,6 +606,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         // no resources were harmed in the making of this FeatureCollection
     }
 
+    @Override
     public String getID() {
         return id;
     }
@@ -601,6 +620,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
     //        listeners.remove(listener);
     //    }
 
+    @Override
     public SimpleFeatureType getSchema() {
         return schema;
     }

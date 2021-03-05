@@ -347,6 +347,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      *
      * @return The coordinate reference system, or {@code null}.
      */
+    @Override
     public final CoordinateReferenceSystem getCoordinateReferenceSystem() {
         assert crs == null || crs.getCoordinateSystem().getDimension() == getDimension();
         return crs;
@@ -484,6 +485,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
     }
 
     /** Returns the number of dimensions. */
+    @Override
     public final int getDimension() {
         return ordinates.length / 2;
     }
@@ -547,6 +549,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      * @return The minimal ordinate value along the given dimension.
      * @throws IndexOutOfBoundsException If the given index is out of bounds.
      */
+    @Override
     public final double getMinimum(final int dimension) throws IndexOutOfBoundsException {
         if (dimension < ordinates.length / 2) {
             return ordinates[dimension];
@@ -562,6 +565,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      * @return The maximal ordinate value along the given dimension.
      * @throws IndexOutOfBoundsException If the given index is out of bounds.
      */
+    @Override
     public final double getMaximum(final int dimension) throws IndexOutOfBoundsException {
         if (dimension >= 0) {
             return ordinates[dimension + ordinates.length / 2];
@@ -579,6 +583,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      * @return The mid ordinate value along the given dimension.
      * @throws IndexOutOfBoundsException If the given index is out of bounds.
      */
+    @Override
     public final double getMedian(final int dimension) throws IndexOutOfBoundsException {
         return 0.5 * (ordinates[dimension] + ordinates[dimension + ordinates.length / 2]);
     }
@@ -592,6 +597,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      * @return The difference along maximal and minimal ordinates in the given dimension.
      * @throws IndexOutOfBoundsException If the given index is out of bounds.
      */
+    @Override
     public final double getSpan(final int dimension) throws IndexOutOfBoundsException {
         return ordinates[dimension + ordinates.length / 2] - ordinates[dimension];
     }

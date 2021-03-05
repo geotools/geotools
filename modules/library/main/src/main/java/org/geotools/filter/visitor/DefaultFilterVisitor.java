@@ -97,14 +97,17 @@ public abstract class DefaultFilterVisitor implements FilterVisitor, ExpressionV
 
     public DefaultFilterVisitor() {}
 
+    @Override
     public Object visit(ExcludeFilter filter, Object data) {
         return data;
     }
 
+    @Override
     public Object visit(IncludeFilter filter, Object data) {
         return data;
     }
 
+    @Override
     public Object visit(And filter, Object data) {
         List<Filter> childList = filter.getChildren();
         if (childList != null) {
@@ -116,10 +119,12 @@ public abstract class DefaultFilterVisitor implements FilterVisitor, ExpressionV
         return data;
     }
 
+    @Override
     public Object visit(Id filter, Object data) {
         return data;
     }
 
+    @Override
     public Object visit(Not filter, Object data) {
         Filter child = filter.getFilter();
         if (child != null) {
@@ -128,6 +133,7 @@ public abstract class DefaultFilterVisitor implements FilterVisitor, ExpressionV
         return data;
     }
 
+    @Override
     public Object visit(Or filter, Object data) {
         List<Filter> childList = filter.getChildren();
         if (childList != null) {
@@ -139,6 +145,7 @@ public abstract class DefaultFilterVisitor implements FilterVisitor, ExpressionV
         return data;
     }
 
+    @Override
     public Object visit(PropertyIsBetween filter, Object data) {
         data = filter.getLowerBoundary().accept(this, data);
         data = filter.getExpression().accept(this, data);
@@ -146,6 +153,7 @@ public abstract class DefaultFilterVisitor implements FilterVisitor, ExpressionV
         return data;
     }
 
+    @Override
     public Object visit(PropertyIsEqualTo filter, Object data) {
         data = filter.getExpression1().accept(this, data);
         data = filter.getExpression2().accept(this, data);
@@ -153,6 +161,7 @@ public abstract class DefaultFilterVisitor implements FilterVisitor, ExpressionV
         return data;
     }
 
+    @Override
     public Object visit(PropertyIsNotEqualTo filter, Object data) {
         data = filter.getExpression1().accept(this, data);
         data = filter.getExpression2().accept(this, data);
@@ -160,6 +169,7 @@ public abstract class DefaultFilterVisitor implements FilterVisitor, ExpressionV
         return data;
     }
 
+    @Override
     public Object visit(PropertyIsGreaterThan filter, Object data) {
         data = filter.getExpression1().accept(this, data);
         data = filter.getExpression2().accept(this, data);
@@ -167,6 +177,7 @@ public abstract class DefaultFilterVisitor implements FilterVisitor, ExpressionV
         return data;
     }
 
+    @Override
     public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object data) {
         data = filter.getExpression1().accept(this, data);
         data = filter.getExpression2().accept(this, data);
@@ -174,6 +185,7 @@ public abstract class DefaultFilterVisitor implements FilterVisitor, ExpressionV
         return data;
     }
 
+    @Override
     public Object visit(PropertyIsLessThan filter, Object data) {
         data = filter.getExpression1().accept(this, data);
         data = filter.getExpression2().accept(this, data);
@@ -181,6 +193,7 @@ public abstract class DefaultFilterVisitor implements FilterVisitor, ExpressionV
         return data;
     }
 
+    @Override
     public Object visit(PropertyIsLessThanOrEqualTo filter, Object data) {
         data = filter.getExpression1().accept(this, data);
         data = filter.getExpression2().accept(this, data);
@@ -188,64 +201,75 @@ public abstract class DefaultFilterVisitor implements FilterVisitor, ExpressionV
         return data;
     }
 
+    @Override
     public Object visit(PropertyIsLike filter, Object data) {
         data = filter.getExpression().accept(this, data);
 
         return data;
     }
 
+    @Override
     public Object visit(PropertyIsNull filter, Object data) {
         data = filter.getExpression().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(PropertyIsNil filter, Object data) {
         data = filter.getExpression().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(final BBOX filter, Object data) {
         data = filter.getExpression1().accept(this, data);
         data = filter.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(Beyond filter, Object data) {
         data = filter.getExpression1().accept(this, data);
         data = filter.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(Contains filter, Object data) {
         data = filter.getExpression1().accept(this, data);
         data = filter.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(Crosses filter, Object data) {
         data = filter.getExpression1().accept(this, data);
         data = filter.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(Disjoint filter, Object data) {
         data = filter.getExpression1().accept(this, data);
         data = filter.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(DWithin filter, Object data) {
         data = filter.getExpression1().accept(this, data);
         data = filter.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(Equals filter, Object data) {
         data = filter.getExpression1().accept(this, data);
         data = filter.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(Intersects filter, Object data) {
         data = filter.getExpression1().accept(this, data);
         data = filter.getExpression2().accept(this, data);
@@ -253,6 +277,7 @@ public abstract class DefaultFilterVisitor implements FilterVisitor, ExpressionV
         return data;
     }
 
+    @Override
     public Object visit(Overlaps filter, Object data) {
         data = filter.getExpression1().accept(this, data);
         data = filter.getExpression2().accept(this, data);
@@ -260,6 +285,7 @@ public abstract class DefaultFilterVisitor implements FilterVisitor, ExpressionV
         return data;
     }
 
+    @Override
     public Object visit(Touches filter, Object data) {
         data = filter.getExpression1().accept(this, data);
         data = filter.getExpression2().accept(this, data);
@@ -267,6 +293,7 @@ public abstract class DefaultFilterVisitor implements FilterVisitor, ExpressionV
         return data;
     }
 
+    @Override
     public Object visit(Within filter, Object data) {
         data = filter.getExpression1().accept(this, data);
         data = filter.getExpression2().accept(this, data);
@@ -274,26 +301,31 @@ public abstract class DefaultFilterVisitor implements FilterVisitor, ExpressionV
         return data;
     }
 
+    @Override
     public Object visitNullFilter(Object data) {
         return data;
     }
 
+    @Override
     public Object visit(NilExpression expression, Object data) {
         return data;
     }
 
+    @Override
     public Object visit(Add expression, Object data) {
         data = expression.getExpression1().accept(this, data);
         data = expression.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(Divide expression, Object data) {
         data = expression.getExpression1().accept(this, data);
         data = expression.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(Function expression, Object data) {
         if (expression.getParameters() != null) {
             for (Expression parameter : expression.getParameters()) {
@@ -303,104 +335,122 @@ public abstract class DefaultFilterVisitor implements FilterVisitor, ExpressionV
         return data;
     }
 
+    @Override
     public Object visit(Literal expression, Object data) {
         return data;
     }
 
+    @Override
     public Object visit(Multiply expression, Object data) {
         data = expression.getExpression1().accept(this, data);
         data = expression.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(PropertyName expression, Object data) {
         return data;
     }
 
+    @Override
     public Object visit(Subtract expression, Object data) {
         data = expression.getExpression1().accept(this, data);
         data = expression.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(After after, Object data) {
         data = after.getExpression1().accept(this, data);
         data = after.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(AnyInteracts anyInteracts, Object data) {
         data = anyInteracts.getExpression1().accept(this, data);
         data = anyInteracts.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(Before before, Object data) {
         data = before.getExpression1().accept(this, data);
         data = before.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(Begins begins, Object data) {
         data = begins.getExpression1().accept(this, data);
         data = begins.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(BegunBy begunBy, Object data) {
         data = begunBy.getExpression1().accept(this, data);
         data = begunBy.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(During during, Object data) {
         data = during.getExpression1().accept(this, data);
         data = during.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(EndedBy endedBy, Object data) {
         data = endedBy.getExpression1().accept(this, data);
         data = endedBy.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(Ends ends, Object data) {
         data = ends.getExpression1().accept(this, data);
         data = ends.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(Meets meets, Object data) {
         data = meets.getExpression1().accept(this, data);
         data = meets.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(MetBy metBy, Object data) {
         data = metBy.getExpression1().accept(this, data);
         data = metBy.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(OverlappedBy overlappedBy, Object data) {
         data = overlappedBy.getExpression1().accept(this, data);
         data = overlappedBy.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(TContains contains, Object data) {
         data = contains.getExpression1().accept(this, data);
         data = contains.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(TEquals equals, Object data) {
         data = equals.getExpression1().accept(this, data);
         data = equals.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(TOverlaps contains, Object data) {
         data = contains.getExpression1().accept(this, data);
         data = contains.getExpression2().accept(this, data);

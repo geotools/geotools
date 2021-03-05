@@ -51,6 +51,7 @@ public class ShadedReliefImpl implements ShadedRelief {
      *
      * @return an expression which evaluates to a double.
      */
+    @Override
     public Expression getReliefFactor() {
         return reliefFactor;
     }
@@ -60,6 +61,7 @@ public class ShadedReliefImpl implements ShadedRelief {
      *
      * @return boolean brightnessOn.
      */
+    @Override
     public boolean isBrightnessOnly() {
         return brightness;
     }
@@ -69,6 +71,7 @@ public class ShadedReliefImpl implements ShadedRelief {
      *
      * @param flag boolean
      */
+    @Override
     public void setBrightnessOnly(boolean flag) {
         brightness = flag;
     }
@@ -80,14 +83,17 @@ public class ShadedReliefImpl implements ShadedRelief {
      *
      * @param reliefFactor an expression which evaluates to a double.
      */
+    @Override
     public void setReliefFactor(Expression reliefFactor) {
         this.reliefFactor = reliefFactor;
     }
 
+    @Override
     public Object accept(StyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
+    @Override
     public void accept(org.geotools.styling.StyleVisitor visitor) {
         visitor.visit(this);
     }

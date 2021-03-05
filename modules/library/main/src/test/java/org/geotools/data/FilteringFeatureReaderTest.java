@@ -42,12 +42,14 @@ public class FilteringFeatureReaderTest extends DataTestCase {
     /*
      * @see TestCase#setUp()
      */
+    @Override
     public void init() throws Exception {
         super.init();
         roadReader = DataUtilities.reader(roadFeatures);
         riverReader = DataUtilities.reader(riverFeatures);
     }
 
+    @Override
     @After
     public void tearDown() throws Exception {
         super.tearDown();

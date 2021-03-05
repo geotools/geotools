@@ -53,6 +53,7 @@ public class MapGetFunction extends FunctionExpressionImpl implements VolatileFu
         }
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Map map = getExpression(0).evaluate(feature, Map.class);
         String key = getExpression(1).evaluate(feature, String.class);

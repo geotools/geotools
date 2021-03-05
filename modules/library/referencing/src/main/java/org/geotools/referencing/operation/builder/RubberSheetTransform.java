@@ -69,6 +69,7 @@ class RubberSheetTransform extends AbstractMathTransform implements MathTransfor
      *
      * @return dimension of input points
      */
+    @Override
     public final int getSourceDimensions() {
         return 2;
     }
@@ -78,6 +79,7 @@ class RubberSheetTransform extends AbstractMathTransform implements MathTransfor
      *
      * @return dimension of output points
      */
+    @Override
     public final int getTargetDimensions() {
         return 2;
     }
@@ -108,6 +110,7 @@ class RubberSheetTransform extends AbstractMathTransform implements MathTransfor
     /* (non-Javadoc)
      * @see org.opengis.referencing.operation.MathTransform#transform(double[], int, double[], int, int)
      */
+    @Override
     public void transform(double[] srcPts, int srcOff, final double[] dstPt, int dstOff, int numPts)
             throws TransformException {
         for (int i = srcOff; i < numPts; i++) {

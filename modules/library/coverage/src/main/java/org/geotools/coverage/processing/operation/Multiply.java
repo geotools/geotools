@@ -85,11 +85,13 @@ public class Multiply extends BaseMathOperationJAI {
         super("Multiply", getOperationDescriptor(JAIExt.getOperationName("Multiply")));
     }
 
+    @Override
     public String getName() {
         return "Multiply";
     }
 
     /** Returns the expected range of values for the resulting image. */
+    @Override
     protected NumberRange<? extends Number> deriveRange(
             final NumberRange<? extends Number>[] ranges, final Parameters parameters) {
 
@@ -109,6 +111,7 @@ public class Multiply extends BaseMathOperationJAI {
         return null;
     }
 
+    @Override
     protected void handleJAIEXTParams(
             ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
         if (JAIExt.isJAIExtOperation("algebric")) {
@@ -142,6 +145,7 @@ public class Multiply extends BaseMathOperationJAI {
         super.extractSources(parameters, sources, sourceNames);
     }
 
+    @Override
     protected Map<String, ?> getProperties(
             RenderedImage data,
             CoordinateReferenceSystem crs,

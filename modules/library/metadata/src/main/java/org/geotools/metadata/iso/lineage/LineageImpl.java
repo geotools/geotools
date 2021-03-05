@@ -72,6 +72,7 @@ public class LineageImpl extends MetadataEntity implements Lineage {
      * dataset. Should be provided only if {@linkplain ScopeImpl#getLevel scope level} is
      * {@linkplain ScopeCode#DATASET dataset} or {@linkplain ScopeCode#SERIES series}.
      */
+    @Override
     public InternationalString getStatement() {
         return statement;
     }
@@ -88,6 +89,7 @@ public class LineageImpl extends MetadataEntity implements Lineage {
      * Returns the information about an event in the creation process for the data specified by the
      * scope.
      */
+    @Override
     public Collection<ProcessStep> getProcessSteps() {
         return (processSteps = nonNullCollection(processSteps, ProcessStep.class));
     }
@@ -100,6 +102,7 @@ public class LineageImpl extends MetadataEntity implements Lineage {
     }
 
     /** Information about the source data used in creating the data specified by the scope. */
+    @Override
     public Collection<Source> getSources() {
         return (sources = nonNullCollection(sources, Source.class));
     }

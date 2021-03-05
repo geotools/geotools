@@ -58,6 +58,7 @@ public class JDBCUpdateFeatureWriter extends JDBCFeatureReader
         last = new ResultSetFeature(rs, ps.getConnection());
     }
 
+    @Override
     public SimpleFeature next()
             throws IOException, IllegalArgumentException, NoSuchElementException {
 
@@ -79,6 +80,7 @@ public class JDBCUpdateFeatureWriter extends JDBCFeatureReader
         return last;
     }
 
+    @Override
     public void remove() throws IOException {
         try {
             dataStore.delete(featureType, last.getID(), st.getConnection());
@@ -94,6 +96,7 @@ public class JDBCUpdateFeatureWriter extends JDBCFeatureReader
         }
     }
 
+    @Override
     public void write() throws IOException {
         try {
             // figure out what the fid is
@@ -130,6 +133,7 @@ public class JDBCUpdateFeatureWriter extends JDBCFeatureReader
         }
     }
 
+    @Override
     public void close() throws IOException {
         super.close();
         if (last != null) {

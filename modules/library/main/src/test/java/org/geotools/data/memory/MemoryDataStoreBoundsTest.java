@@ -46,6 +46,7 @@ public class MemoryDataStoreBoundsTest extends DataTestCase {
     /*
      * @see TestCase#setUp()
      */
+    @Override
     public void init() throws Exception {
         super.init();
         data = new MemoryDataStore();
@@ -60,6 +61,7 @@ public class MemoryDataStoreBoundsTest extends DataTestCase {
     /*
      * @see TestCase#tearDown()
      */
+    @Override
     @After
     public void tearDown() throws Exception {
         data = null;

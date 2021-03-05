@@ -45,10 +45,12 @@ public class FeatureIdVersionedImpl extends FeatureIdImpl {
         this.previousRid = previousRid;
     }
 
+    @Override
     public String toString() {
         return fid;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof FeatureId) {
             return fid.equals(((FeatureId) obj).getID());
@@ -56,6 +58,7 @@ public class FeatureIdVersionedImpl extends FeatureIdImpl {
         return false;
     }
 
+    @Override
     public int hashCode() {
         return fid.hashCode();
     }

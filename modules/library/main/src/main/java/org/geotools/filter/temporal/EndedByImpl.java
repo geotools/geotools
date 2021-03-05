@@ -29,6 +29,7 @@ public class EndedByImpl extends BinaryTemporalOperatorImpl implements EndedBy {
         return pos == RelativePosition.ENDED_BY;
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

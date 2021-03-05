@@ -68,6 +68,7 @@ public class SeriesImpl extends MetadataEntity implements Series {
     }
 
     /** Returne the name of the series, or aggregate dataset, of which the dataset is a part. */
+    @Override
     public InternationalString getName() {
         return name;
     }
@@ -79,6 +80,7 @@ public class SeriesImpl extends MetadataEntity implements Series {
     }
 
     /** Returns information identifying the issue of the series. */
+    @Override
     public String getIssueIdentification() {
         return issueIdentification;
     }
@@ -90,6 +92,7 @@ public class SeriesImpl extends MetadataEntity implements Series {
     }
 
     /** Returns details on which pages of the publication the article was published. */
+    @Override
     public String getPage() {
         return page;
     }

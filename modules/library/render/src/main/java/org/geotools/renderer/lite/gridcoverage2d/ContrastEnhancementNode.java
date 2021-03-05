@@ -75,6 +75,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
      * (non-Javadoc)
      * @see CoverageProcessingNode#getName()
      */
+    @Override
     public InternationalString getName() {
         return Vocabulary.formatInternational(VocabularyKeys.CONTRAST_ENHANCEMENT);
     }
@@ -114,6 +115,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.StyleVisitorAdapter#visit(org.geotools.styling.ContrastEnhancement)
      */
+    @Override
     public void visit(final ContrastEnhancement ce) {
         // /////////////////////////////////////////////////////////////////////
         //
@@ -214,6 +216,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.StyleVisitorCoverageProcessingNodeAdapter#execute()
      */
+    @Override
     @SuppressWarnings("unchecked")
     protected GridCoverage2D execute() {
         final Hints hints = getHints();

@@ -315,10 +315,13 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
     // Type Narrow org.opengis.StyleFactory
     //
     /** Indicate what part of a Graphic is used to mark the location. */
+    @Override
     AnchorPoint anchorPoint(Expression x, Expression y);
     /** */
+    @Override
     ChannelSelection channelSelection(org.opengis.style.SelectedChannelType gray);
     /** */
+    @Override
     ChannelSelection channelSelection(
             org.opengis.style.SelectedChannelType red,
             org.opengis.style.SelectedChannelType green,
@@ -343,6 +346,7 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      * @param mapping Defined as a series of Expressions
      * @return ColorMap wrapped around the "Cateogize" function
      */
+    @Override
     ColorMap colorMap(Expression propertyName, Expression... mapping);
 
     /**
@@ -352,31 +356,39 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      * @param mapping Defined as a series of Expressions
      * @return ColorReplacement wrapped around a Function
      */
+    @Override
     ColorReplacement colorReplacement(Expression propertyName, Expression... mapping);
     /** */
+    @Override
     ContrastEnhancement contrastEnhancement(
             Expression gamma, org.opengis.style.ContrastMethod method);
 
     /** */
+    @Override
     Description description(InternationalString title, InternationalString description);
 
     /** */
+    @Override
     Displacement displacement(Expression dx, Expression dy);
 
     /** */
+    @Override
     ExternalGraphic externalGraphic(
             OnLineResource resource,
             String format,
             Collection<org.opengis.style.ColorReplacement> replacements);
 
     /** */
+    @Override
     ExternalGraphic externalGraphic(
             Icon inline, Collection<org.opengis.style.ColorReplacement> replacements);
 
     /** */
+    @Override
     ExternalMark externalMark(OnLineResource resource, String format, int markIndex);
 
     /** */
+    @Override
     ExternalMark externalMark(Icon inline);
 
     /**
@@ -391,6 +403,7 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      * @return feature type style
      * @see SimpleFe
      */
+    @Override
     FeatureTypeStyle featureTypeStyle(
             String name,
             org.opengis.style.Description description,
@@ -400,11 +413,14 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
             List<org.opengis.style.Rule> rules);
 
     /** */
+    @Override
     Fill fill(org.opengis.style.GraphicFill fill, Expression color, Expression opacity);
 
     /** */
+    @Override
     Font font(List<Expression> family, Expression style, Expression weight, Expression size);
 
+    @Override
     Graphic graphic(
             List<org.opengis.style.GraphicalSymbol> symbols,
             Expression opacity,
@@ -414,6 +430,7 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
             org.opengis.style.Displacement disp);
 
     /** */
+    @Override
     Graphic graphicFill(
             List<org.opengis.style.GraphicalSymbol> symbols,
             Expression opacity,
@@ -423,6 +440,7 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
             org.opengis.style.Displacement displacement);
 
     /** */
+    @Override
     GraphicLegend graphicLegend(
             List<org.opengis.style.GraphicalSymbol> symbols,
             Expression opacity,
@@ -431,6 +449,7 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
             org.opengis.style.AnchorPoint anchorPoint,
             org.opengis.style.Displacement displacement);
     /** */
+    @Override
     Graphic graphicStroke(
             List<org.opengis.style.GraphicalSymbol> symbols,
             Expression opacity,
@@ -442,9 +461,11 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
             Expression gap);
 
     /** */
+    @Override
     Halo halo(org.opengis.style.Fill fill, Expression radius);
 
     /** */
+    @Override
     LinePlacement linePlacement(
             Expression offset,
             Expression initialGap,
@@ -460,6 +481,7 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      * @param offset Offset used to position line relative to origional
      * @return Newly created Line Symbolizer
      */
+    @Override
     LineSymbolizer lineSymbolizer(
             String name,
             Expression geometry,
@@ -469,14 +491,17 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
             Expression offset);
 
     /** */
+    @Override
     Mark mark(
             Expression wellKnownName, org.opengis.style.Fill fill, org.opengis.style.Stroke stroke);
     /** */
+    @Override
     Mark mark(
             org.opengis.style.ExternalMark externalMark,
             org.opengis.style.Fill fill,
             org.opengis.style.Stroke stroke);
     /** */
+    @Override
     PointPlacement pointPlacement(
             org.opengis.style.AnchorPoint anchor,
             org.opengis.style.Displacement displacement,
@@ -491,6 +516,7 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      * @param graphic Graphic used to represent the geometry when rendering
      * @return Newly created PointSymbolizer
      */
+    @Override
     PointSymbolizer pointSymbolizer(
             String name,
             Expression geometry,
@@ -503,6 +529,7 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      * @param description Human readable description of symboizer
      * @param unit Unit of Measure used to interpret symbolizer distances
      */
+    @Override
     PolygonSymbolizer polygonSymbolizer(
             String name,
             Expression geometry,
@@ -519,6 +546,7 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      * @param unit Unit of Measure used to interpret symbolizer distances
      * @return RasterSymbolizer
      */
+    @Override
     RasterSymbolizer rasterSymbolizer(
             String name,
             Expression geometry,
@@ -546,6 +574,7 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      * @param parameters Named expressions used to configure the vendor specific rendering process
      * @return newly created ExtensionSymbolizer
      */
+    @Override
     ExtensionSymbolizer extensionSymbolizer(
             String name,
             String geometry,
@@ -564,6 +593,7 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      * @param max maximum scale denominator used to control when this rule is applied
      * @return Newly created Rule
      */
+    @Override
     Rule rule(
             String name,
             org.opengis.style.Description description,
@@ -574,16 +604,20 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
             Filter filter);
 
     /** @return SelectedChannelType */
+    @Override
     SelectedChannelType selectedChannelType(
             Expression channelName, org.opengis.style.ContrastEnhancement contrastEnhancement);
 
     /** @return SelectedChannelType */
+    @Override
     SelectedChannelType selectedChannelType(
             String channelName, org.opengis.style.ContrastEnhancement contrastEnhancement);
 
     /** @return ShadedRelief */
+    @Override
     ShadedRelief shadedRelief(Expression reliefFactor, boolean brightnessOnly);
 
+    @Override
     Stroke stroke(
             Expression color,
             Expression opacity,
@@ -593,6 +627,7 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
             float[] dashes,
             Expression offset);
 
+    @Override
     Stroke stroke(
             org.opengis.style.GraphicFill fill,
             Expression color,
@@ -603,6 +638,7 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
             float[] dashes,
             Expression offset);
 
+    @Override
     Stroke stroke(
             org.opengis.style.GraphicStroke stroke,
             Expression color,
@@ -614,6 +650,7 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
             Expression offset);
 
     /** */
+    @Override
     Style style(
             String name,
             org.opengis.style.Description description,
@@ -634,6 +671,7 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      * @param fill definition of fill used
      * @return newly created TextSymbolizer
      */
+    @Override
     TextSymbolizer textSymbolizer(
             String name,
             Expression geometry,

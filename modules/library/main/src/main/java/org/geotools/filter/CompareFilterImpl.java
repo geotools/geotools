@@ -58,10 +58,12 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
         super(e1, e2, matchCase);
     }
 
+    @Override
     public void setExpression1(org.opengis.filter.expression.Expression leftValue) {
         this.expression1 = leftValue;
     }
 
+    @Override
     public void setExpression2(org.opengis.filter.expression.Expression rightValue) {
         this.expression2 = rightValue;
     }
@@ -145,6 +147,7 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
      *
      * @return String representation of the compare filter.
      */
+    @Override
     public String toString() {
         if (this instanceof IsNullImpl) {
             return "[ " + expression1 + " IS NULL ]";
@@ -177,6 +180,7 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
      * @param obj - the object to compare this CompareFilter against.
      * @return true if specified object is equal to this filter; false otherwise.
      */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -204,6 +208,7 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
      *
      * @return a code to hash this object by.
      */
+    @Override
     public int hashCode() {
         int result = 17;
         result = (37 * result) + this.getClass().hashCode();
@@ -222,5 +227,6 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
      * @param visitor The visitor which requires access to this filter, the method must call
      *     visitor.visit(this);
      */
+    @Override
     public abstract Object accept(FilterVisitor visitor, Object extraData);
 }

@@ -26,6 +26,7 @@ public abstract class JDBCTypeNamesTestSetup extends JDBCDelegatingTestSetup {
         super(delegate);
     }
 
+    @Override
     protected final void setUpData() throws Exception {
         delegate.setUpData();
 

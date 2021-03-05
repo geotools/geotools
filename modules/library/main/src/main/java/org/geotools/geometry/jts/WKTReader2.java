@@ -107,6 +107,7 @@ public class WKTReader2 extends WKTReader {
      * @return a <code>Geometry</code> specified by <code>wellKnownText</code>
      * @throws ParseException if a parsing problem occurs
      */
+    @Override
     public Geometry read(String wellKnownText) throws ParseException {
         try (StringReader reader = new StringReader(wellKnownText)) {
             return read(reader);
@@ -121,6 +122,7 @@ public class WKTReader2 extends WKTReader {
      * @return a <code>Geometry</code> read from <code>reader</code>
      * @throws ParseException if a parsing problem occurs
      */
+    @Override
     public Geometry read(Reader reader) throws ParseException {
         tokenizer = new StreamTokenizer(reader);
         // set tokenizer to NOT parse numbers

@@ -48,6 +48,7 @@ public class FilterFunction_strAbbreviate extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         String in;
         String append = "";

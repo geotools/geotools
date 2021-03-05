@@ -525,6 +525,7 @@ public class AuthorityBackedFactory extends DefaultCoordinateOperationFactory
      * Returns {@code true} if this factory and its underlying {@linkplain #getAuthorityFactory
      * authority factory} are available for use.
      */
+    @Override
     public boolean isAvailable() {
         try {
             final CoordinateOperationAuthorityFactory authorityFactory = getAuthorityFactory();

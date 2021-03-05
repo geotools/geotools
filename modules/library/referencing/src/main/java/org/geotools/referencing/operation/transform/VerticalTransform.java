@@ -33,11 +33,13 @@ public abstract class VerticalTransform extends AbstractMathTransform {
     protected VerticalTransform() {}
 
     /** Gets the dimension of input points. */
+    @Override
     public final int getSourceDimensions() {
         return 3;
     }
 
     /** Gets the dimension of output points. */
+    @Override
     public final int getTargetDimensions() {
         return 3;
     }
@@ -79,6 +81,7 @@ public abstract class VerticalTransform extends AbstractMathTransform {
     }
 
     /** Transforms a list of coordinate point ordinal values. */
+    @Override
     public void transform(
             final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts)
             throws TransformException {

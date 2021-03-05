@@ -40,6 +40,7 @@ public class FilteringFeatureIterator<F extends Feature> implements FeatureItera
         this.filter = filter;
     }
 
+    @Override
     public boolean hasNext() {
         if (next != null) {
             return true;
@@ -56,6 +57,7 @@ public class FilteringFeatureIterator<F extends Feature> implements FeatureItera
         return next != null;
     }
 
+    @Override
     public F next() throws NoSuchElementException {
         if (next == null && !this.hasNext()) {
             throw new NoSuchElementException();
@@ -65,6 +67,7 @@ public class FilteringFeatureIterator<F extends Feature> implements FeatureItera
         return f;
     }
 
+    @Override
     public void close() {
         delegate.close();
         delegate = null;

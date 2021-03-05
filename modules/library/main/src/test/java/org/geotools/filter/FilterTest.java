@@ -1205,16 +1205,19 @@ public class FilterTest {
      */
     public static class MockPropertyAccessorFactory implements PropertyAccessorFactory {
 
+        @Override
         public PropertyAccessor createPropertyAccessor(
                 Class type, String xpath, Class target, Hints hints) {
             if (!MockDataObject.class.equals(type)) {
                 return null;
             }
             return new PropertyAccessor() {
+                @Override
                 public boolean canHandle(Object object, String xpath, Class target) {
                     return object instanceof MockDataObject;
                 }
 
+                @Override
                 public <T> T get(Object object, String xpath, Class<T> target)
                         throws IllegalArgumentException {
                     if (object == null) return null;
@@ -1232,6 +1235,7 @@ public class FilterTest {
                     }
                 }
 
+                @Override
                 public void set(Object object, String xpath, Object value, Class target)
                         throws IllegalArgumentException {
                     throw new UnsupportedOperationException();
@@ -1247,30 +1251,37 @@ public class FilterTest {
             ls = geom;
         }
 
+        @Override
         public String getName() {
             return "function";
         }
 
+        @Override
         public FunctionName getFunctionName() {
             return new FunctionNameImpl(getName(), 0);
         }
 
+        @Override
         public List<org.opengis.filter.expression.Expression> getParameters() {
             return Collections.emptyList();
         }
 
+        @Override
         public Object accept(ExpressionVisitor visitor, Object extraData) {
             return visitor.visit(this, extraData);
         }
 
+        @Override
         public Object evaluate(Object object) {
             return ls;
         }
 
+        @Override
         public <T> T evaluate(Object object, Class<T> context) {
             return context.cast(ls);
         }
 
+        @Override
         public Literal getFallbackValue() {
             return null;
         }

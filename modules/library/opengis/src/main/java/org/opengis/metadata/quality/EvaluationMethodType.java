@@ -74,6 +74,7 @@ public final class EvaluationMethodType extends CodeList<EvaluationMethodType> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public EvaluationMethodType[] family() {
         return values();
     }

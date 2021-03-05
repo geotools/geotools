@@ -162,6 +162,7 @@ public class MetaDataImpl extends MetadataEntity implements MetaData {
     }
 
     /** Returns the unique identifier for this metadata file, or {@code null} if none. */
+    @Override
     public String getFileIdentifier() {
         return fileIdentifier;
     }
@@ -173,6 +174,7 @@ public class MetaDataImpl extends MetadataEntity implements MetaData {
     }
 
     /** Returns the language used for documenting metadata. */
+    @Override
     public Locale getLanguage() {
         return language;
     }
@@ -184,6 +186,7 @@ public class MetaDataImpl extends MetadataEntity implements MetaData {
     }
 
     /** Returns the full name of the character coding standard used for the metadata set. */
+    @Override
     public CharacterSet getCharacterSet() {
         return characterSet;
     }
@@ -195,6 +198,7 @@ public class MetaDataImpl extends MetadataEntity implements MetaData {
     }
 
     /** Returns the file identifier of the metadata to which this metadata is a subset (child). */
+    @Override
     public String getParentIdentifier() {
         return parentIdentifier;
     }
@@ -206,6 +210,7 @@ public class MetaDataImpl extends MetadataEntity implements MetaData {
     }
 
     /** Returns the scope to which the metadata applies. */
+    @Override
     public Collection<ScopeCode> getHierarchyLevels() {
         return (hierarchyLevels = nonNullCollection(hierarchyLevels, ScopeCode.class));
     }
@@ -216,6 +221,7 @@ public class MetaDataImpl extends MetadataEntity implements MetaData {
     }
 
     /** Returns the name of the hierarchy levels for which the metadata is provided. */
+    @Override
     public Collection<String> getHierarchyLevelNames() {
         return (hierarchyLevelNames = nonNullCollection(hierarchyLevelNames, String.class));
     }
@@ -226,6 +232,7 @@ public class MetaDataImpl extends MetadataEntity implements MetaData {
     }
 
     /** Returns the parties responsible for the metadata information. */
+    @Override
     public Collection<ResponsibleParty> getContacts() {
         return contacts = nonNullCollection(contacts, ResponsibleParty.class);
     }
@@ -237,6 +244,7 @@ public class MetaDataImpl extends MetadataEntity implements MetaData {
     }
 
     /** Returns the date that the metadata was created. */
+    @Override
     public Date getDateStamp() {
         return (dateStamp != Long.MIN_VALUE) ? new Date(dateStamp) : null;
     }
@@ -248,6 +256,7 @@ public class MetaDataImpl extends MetadataEntity implements MetaData {
     }
 
     /** Returns the name of the metadata standard (including profile name) used. */
+    @Override
     public String getMetadataStandardName() {
         return metadataStandardName;
     }
@@ -259,6 +268,7 @@ public class MetaDataImpl extends MetadataEntity implements MetaData {
     }
 
     /** Returns the version (profile) of the metadata standard used. */
+    @Override
     public String getMetadataStandardVersion() {
         return metadataStandardVersion;
     }
@@ -270,6 +280,7 @@ public class MetaDataImpl extends MetadataEntity implements MetaData {
     }
 
     /** Returns the digital representation of spatial information in the dataset. */
+    @Override
     public Collection<SpatialRepresentation> getSpatialRepresentationInfo() {
         return (spatialRepresentationInfo =
                 nonNullCollection(spatialRepresentationInfo, SpatialRepresentation.class));
@@ -286,6 +297,7 @@ public class MetaDataImpl extends MetadataEntity implements MetaData {
      * Returns the description of the spatial and temporal reference systems used in the
      * dataset. @TODO: annotates the referencing module of Geotools before.
      */
+    @Override
     public Collection<ReferenceSystem> getReferenceSystemInfo() {
         return referenceSystemInfo = nonNullCollection(referenceSystemInfo, ReferenceSystem.class);
     }
@@ -296,6 +308,7 @@ public class MetaDataImpl extends MetadataEntity implements MetaData {
     }
 
     /** Returns information describing metadata extensions. */
+    @Override
     public Collection<MetadataExtensionInformation> getMetadataExtensionInfo() {
         return (metadataExtensionInfo =
                 nonNullCollection(metadataExtensionInfo, MetadataExtensionInformation.class));
@@ -310,6 +323,7 @@ public class MetaDataImpl extends MetadataEntity implements MetaData {
     }
 
     /** Returns basic information about the resource(s) to which the metadata applies. */
+    @Override
     public Collection<Identification> getIdentificationInfo() {
         return identificationInfo = nonNullCollection(identificationInfo, Identification.class);
     }
@@ -323,6 +337,7 @@ public class MetaDataImpl extends MetadataEntity implements MetaData {
      * Provides information about the feature catalogue and describes the coverage and image data
      * characteristics.
      */
+    @Override
     public Collection<ContentInformation> getContentInfo() {
         return (contentInfo = nonNullCollection(contentInfo, ContentInformation.class));
     }
@@ -336,6 +351,7 @@ public class MetaDataImpl extends MetadataEntity implements MetaData {
     }
 
     /** Provides information about the distributor of and options for obtaining the resource(s). */
+    @Override
     public Distribution getDistributionInfo() {
         return distributionInfo;
     }
@@ -347,6 +363,7 @@ public class MetaDataImpl extends MetadataEntity implements MetaData {
     }
 
     /** Provides overall assessment of quality of a resource(s). */
+    @Override
     public Collection<DataQuality> getDataQualityInfo() {
         return (dataQualityInfo = nonNullCollection(dataQualityInfo, DataQuality.class));
     }
@@ -359,6 +376,7 @@ public class MetaDataImpl extends MetadataEntity implements MetaData {
     /**
      * Provides information about the catalogue of rules defined for the portrayal of a resource(s).
      */
+    @Override
     public Collection<PortrayalCatalogueReference> getPortrayalCatalogueInfo() {
         return (portrayalCatalogueInfo =
                 nonNullCollection(portrayalCatalogueInfo, PortrayalCatalogueReference.class));
@@ -373,6 +391,7 @@ public class MetaDataImpl extends MetadataEntity implements MetaData {
     }
 
     /** Provides restrictions on the access and use of data. */
+    @Override
     public Collection<Constraints> getMetadataConstraints() {
         return (metadataConstraints = nonNullCollection(metadataConstraints, Constraints.class));
     }
@@ -383,6 +402,7 @@ public class MetaDataImpl extends MetadataEntity implements MetaData {
     }
 
     /** Provides information about the conceptual schema of a dataset. */
+    @Override
     public Collection<ApplicationSchemaInformation> getApplicationSchemaInfo() {
         return (applicationSchemaInfo =
                 nonNullCollection(applicationSchemaInfo, ApplicationSchemaInformation.class));
@@ -399,6 +419,7 @@ public class MetaDataImpl extends MetadataEntity implements MetaData {
     /**
      * Provides information about the frequency of metadata updates, and the scope of those updates.
      */
+    @Override
     public MaintenanceInformation getMetadataMaintenance() {
         return metadataMaintenance;
     }
@@ -415,6 +436,7 @@ public class MetaDataImpl extends MetadataEntity implements MetaData {
      *
      * @since 2.4
      */
+    @Override
     public Collection<Locale> getLocales() {
         return locales = nonNullCollection(locales, Locale.class);
     }
@@ -434,6 +456,7 @@ public class MetaDataImpl extends MetadataEntity implements MetaData {
      *
      * @since 2.4
      */
+    @Override
     public String getDataSetUri() {
         return dataSetUri;
     }

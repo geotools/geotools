@@ -104,6 +104,7 @@ public final class Restriction extends CodeList<Restriction> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public Restriction[] family() {
         return values();
     }

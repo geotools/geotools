@@ -32,6 +32,7 @@ public class AnyInteractsImpl extends BinaryTemporalOperatorImpl implements AnyI
                 || pos == RelativePosition.AFTER);
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

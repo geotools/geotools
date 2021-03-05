@@ -77,6 +77,7 @@ public class CheckedArrayList<E> extends ArrayList<E> implements CheckedCollecti
      *
      * @since 2.4
      */
+    @Override
     public Class<E> getElementType() {
         return type;
     }

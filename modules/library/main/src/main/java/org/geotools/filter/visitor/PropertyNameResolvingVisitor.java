@@ -43,6 +43,7 @@ public class PropertyNameResolvingVisitor extends DuplicatingFilterVisitor {
         this.featureType = featureType;
     }
 
+    @Override
     public Object visit(PropertyName expression, Object extraData) {
         if ("".equals(expression.getPropertyName())) {
             return super.visit(expression, extraData);

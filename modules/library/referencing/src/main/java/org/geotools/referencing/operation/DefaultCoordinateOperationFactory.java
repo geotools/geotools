@@ -200,6 +200,7 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
      *     {@code targetCRS}.
      * @throws FactoryException if the operation creation failed for some other reason.
      */
+    @Override
     public CoordinateOperation createOperation(
             CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS)
             throws OperationNotFoundException, FactoryException {
@@ -222,6 +223,7 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
      * @return A {@code Set} of coordinate operations from {@code sourceCRS} to {@code targetCRS}.
      * @throws FactoryException if the operation creation failed for some other reason.
      */
+    @Override
     public Set<CoordinateOperation> findOperations(
             final CoordinateReferenceSystem sourceCRS, final CoordinateReferenceSystem targetCRS)
             throws FactoryException {
@@ -471,6 +473,7 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
      *     {@code targetCRS}.
      * @throws FactoryException if the operation creation failed for some other reason.
      */
+    @Override
     public CoordinateOperation createOperation(
             final CoordinateReferenceSystem sourceCRS,
             final CoordinateReferenceSystem targetCRS,

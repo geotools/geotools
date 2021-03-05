@@ -143,6 +143,7 @@ public class UniqueIntervalFunction extends ClassificationFunction {
         }
     }
 
+    @Override
     public Object evaluate(Object feature) {
         if (!(feature instanceof FeatureCollection)) {
             return null;

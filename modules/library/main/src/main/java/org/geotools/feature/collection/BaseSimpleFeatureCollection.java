@@ -38,8 +38,10 @@ public abstract class BaseSimpleFeatureCollection
      * <p>Note that {@link SimpleFeatureIterator#close()} is available to clean up after any
      * resource use required during traversal.
      */
+    @Override
     public abstract SimpleFeatureIterator features();
 
+    @Override
     public SimpleFeatureCollection subCollection(Filter filter) {
         if (filter == Filter.INCLUDE) {
             return this;
@@ -51,6 +53,7 @@ public abstract class BaseSimpleFeatureCollection
         return new FilteringSimpleFeatureCollection(this, filter);
     }
 
+    @Override
     public SimpleFeatureCollection sort(SortBy order) {
         // Formally new SubFeatureList(this, order);
         return new SortedSimpleFeatureCollection(this, new SortBy[] {order});

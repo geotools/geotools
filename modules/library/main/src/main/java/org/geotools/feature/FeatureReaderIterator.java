@@ -47,6 +47,7 @@ public class FeatureReaderIterator<F extends Feature> implements Iterator<F>, Cl
         this.reader = reader;
     }
 
+    @Override
     public boolean hasNext() {
         try {
             if (reader == null) return false;
@@ -64,6 +65,7 @@ public class FeatureReaderIterator<F extends Feature> implements Iterator<F>, Cl
         }
     }
 
+    @Override
     public F next() {
         if (reader == null) {
             throw new NoSuchElementException("Iterator has been closed");
@@ -86,11 +88,13 @@ public class FeatureReaderIterator<F extends Feature> implements Iterator<F>, Cl
     }
 
     /** If this is a problem, a different iterator can be made based on FeatureWriter */
+    @Override
     public void remove() {
         throw new UnsupportedOperationException("Modification of contents is not supported");
     }
 
     /** Close the reader please. */
+    @Override
     public void close() {
         if (reader != null) {
             try {

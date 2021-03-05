@@ -98,6 +98,7 @@ public class DataIdentificationImpl extends IdentificationImpl implements DataId
     }
 
     /** Method used to spatially represent geographic information. */
+    @Override
     public Collection<SpatialRepresentationType> getSpatialRepresentationTypes() {
         return (spatialRepresentationTypes =
                 nonNullCollection(spatialRepresentationTypes, SpatialRepresentationType.class));
@@ -114,6 +115,7 @@ public class DataIdentificationImpl extends IdentificationImpl implements DataId
     /**
      * Factor which provides a general understanding of the density of spatial data in the dataset.
      */
+    @Override
     public Collection<Resolution> getSpatialResolutions() {
         return (spatialResolutions = nonNullCollection(spatialResolutions, Resolution.class));
     }
@@ -127,6 +129,7 @@ public class DataIdentificationImpl extends IdentificationImpl implements DataId
     }
 
     /** Language(s) used within the dataset. */
+    @Override
     public Collection<Locale> getLanguage() {
         return language = nonNullCollection(language, Locale.class);
     }
@@ -137,6 +140,7 @@ public class DataIdentificationImpl extends IdentificationImpl implements DataId
     }
 
     /** Full name of the character coding standard used for the dataset. */
+    @Override
     public Collection<CharacterSet> getCharacterSets() {
         return (characterSets = nonNullCollection(characterSets, CharacterSet.class));
     }
@@ -147,6 +151,7 @@ public class DataIdentificationImpl extends IdentificationImpl implements DataId
     }
 
     /** Main theme(s) of the datset. */
+    @Override
     public Collection<TopicCategory> getTopicCategories() {
         return (topicCategories = nonNullCollection(topicCategories, TopicCategory.class));
     }
@@ -160,6 +165,7 @@ public class DataIdentificationImpl extends IdentificationImpl implements DataId
      * Description of the dataset in the producers processing environment, including items such as
      * the software, the computer operating system, file name, and the dataset size.
      */
+    @Override
     public InternationalString getEnvironmentDescription() {
         return environmentDescription;
     }
@@ -174,6 +180,7 @@ public class DataIdentificationImpl extends IdentificationImpl implements DataId
      * Additional extent information including the bounding polygon, vertical, and temporal extent
      * of the dataset.
      */
+    @Override
     public Collection<Extent> getExtent() {
         return (extent = nonNullCollection(extent, Extent.class));
     }
@@ -184,6 +191,7 @@ public class DataIdentificationImpl extends IdentificationImpl implements DataId
     }
 
     /** Any other descriptive information about the dataset. */
+    @Override
     public InternationalString getSupplementalInformation() {
         return supplementalInformation;
     }

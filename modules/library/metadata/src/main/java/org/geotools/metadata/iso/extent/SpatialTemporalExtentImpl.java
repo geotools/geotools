@@ -66,6 +66,7 @@ public class SpatialTemporalExtentImpl extends TemporalExtentImpl implements Spa
      *
      * @return The list of geographic extents (never {@code null}).
      */
+    @Override
     public Collection<GeographicExtent> getSpatialExtent() {
         return spatialExtent = nonNullCollection(spatialExtent, GeographicExtent.class);
     }

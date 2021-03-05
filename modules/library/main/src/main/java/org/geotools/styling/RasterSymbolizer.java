@@ -152,6 +152,7 @@ public interface RasterSymbolizer extends org.opengis.style.RasterSymbolizer, Sy
      *
      * @return the ChannelSelection object set or null if none is available.
      */
+    @Override
     ChannelSelection getChannelSelection();
 
     /**
@@ -212,6 +213,7 @@ public interface RasterSymbolizer extends org.opengis.style.RasterSymbolizer, Sy
      *
      * @return the ColorMap for the raster
      */
+    @Override
     ColorMap getColorMap();
 
     /**
@@ -246,6 +248,7 @@ public interface RasterSymbolizer extends org.opengis.style.RasterSymbolizer, Sy
      *
      * @return the ContrastEnhancement
      */
+    @Override
     ContrastEnhancement getContrastEnhancement();
 
     /**
@@ -276,6 +279,7 @@ public interface RasterSymbolizer extends org.opengis.style.RasterSymbolizer, Sy
      *
      * @return the shadedrelief object
      */
+    @Override
     ShadedRelief getShadedRelief();
 
     /**
@@ -325,5 +329,6 @@ public interface RasterSymbolizer extends org.opengis.style.RasterSymbolizer, Sy
      *
      * @return The relevent symbolizer
      */
+    @Override
     Symbolizer getImageOutline();
 }

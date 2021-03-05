@@ -178,34 +178,44 @@ public class CoordinateWriterTest {
         StringBuffer buffer;
         String received;
 
+        @Override
         public void characters(char[] ch, int start, int length) throws SAXException {
             buffer.append(new String(ch, start, length));
         }
 
+        @Override
         public void endElement(String uri, String localName, String name) throws SAXException {
             buffer.append("</");
             buffer.append(localName);
             buffer.append(">");
         }
 
+        @Override
         public void endDocument() throws SAXException {
             received = buffer.toString();
         }
 
+        @Override
         public void endPrefixMapping(String prefix) throws SAXException {}
 
+        @Override
         public void ignorableWhitespace(char[] ch, int start, int length) throws SAXException {}
 
+        @Override
         public void processingInstruction(String target, String data) throws SAXException {}
 
+        @Override
         public void setDocumentLocator(Locator locator) {}
 
+        @Override
         public void skippedEntity(String name) throws SAXException {}
 
+        @Override
         public void startDocument() throws SAXException {
             buffer = new StringBuffer();
         }
 
+        @Override
         public void startElement(String uri, String localName, String name, Attributes atts)
                 throws SAXException {
             buffer.append("<");
@@ -213,6 +223,7 @@ public class CoordinateWriterTest {
             buffer.append(">");
         }
 
+        @Override
         public void startPrefixMapping(String prefix, String uri) throws SAXException {}
     };
 

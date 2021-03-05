@@ -107,34 +107,42 @@ public class IllegalAttributeException extends IllegalArgumentException {
      */
     private static class NullAttributeDescriptor implements AttributeDescriptor {
 
+        @Override
         public int getMaxOccurs() {
             return 0;
         }
 
+        @Override
         public int getMinOccurs() {
             return 0;
         }
 
+        @Override
         public Name getName() {
             return null;
         }
 
+        @Override
         public Map<Object, Object> getUserData() {
             return null;
         }
 
+        @Override
         public boolean isNillable() {
             return false;
         }
 
+        @Override
         public Object getDefaultValue() {
             return null;
         }
 
+        @Override
         public String getLocalName() {
             return null;
         }
 
+        @Override
         public AttributeType getType() {
             return null;
         }

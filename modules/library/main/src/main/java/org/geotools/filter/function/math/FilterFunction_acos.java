@@ -40,6 +40,7 @@ public class FilterFunction_acos extends FunctionExpressionImpl {
         functionName = NAME;
     }
 
+    @Override
     public Object evaluate(Object feature) {
 
         Object arg0 = getExpression(0).evaluate(feature);

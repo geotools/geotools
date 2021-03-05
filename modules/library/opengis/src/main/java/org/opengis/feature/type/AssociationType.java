@@ -31,6 +31,7 @@ public interface AssociationType extends PropertyType {
      *
      * @see PropertyType#getSuper()
      */
+    @Override
     AssociationType getSuper();
 
     /**
@@ -45,5 +46,6 @@ public interface AssociationType extends PropertyType {
      * <code>getRelatedType().getBinding()</code>, that is it returns the binding of the related
      * type.
      */
+    @Override
     Class<?> getBinding();
 }

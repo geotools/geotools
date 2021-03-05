@@ -79,6 +79,7 @@ public class ProcessStepImpl extends MetadataEntity implements ProcessStep {
     }
 
     /** Returns the description of the event, including related parameters or tolerances. */
+    @Override
     public InternationalString getDescription() {
         return description;
     }
@@ -90,6 +91,7 @@ public class ProcessStepImpl extends MetadataEntity implements ProcessStep {
     }
 
     /** Returns the requirement or purpose for the process step. */
+    @Override
     public InternationalString getRationale() {
         return rationale;
     }
@@ -104,6 +106,7 @@ public class ProcessStepImpl extends MetadataEntity implements ProcessStep {
      * Returns the date and time or range of date and time on or over which the process step
      * occurred.
      */
+    @Override
     public Date getDate() {
         return (date != Long.MIN_VALUE) ? new Date(date) : null;
     }
@@ -120,6 +123,7 @@ public class ProcessStepImpl extends MetadataEntity implements ProcessStep {
      * Returns the identification of, and means of communication with, person(s) and organization(s)
      * associated with the process step.
      */
+    @Override
     public Collection<ResponsibleParty> getProcessors() {
         return (processors = nonNullCollection(processors, ResponsibleParty.class));
     }
@@ -136,6 +140,7 @@ public class ProcessStepImpl extends MetadataEntity implements ProcessStep {
      * Returns the information about the source data used in creating the data specified by the
      * scope.
      */
+    @Override
     public Collection<Source> getSources() {
         return (sources = nonNullCollection(sources, Source.class));
     }

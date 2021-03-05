@@ -590,11 +590,13 @@ public abstract class MapProjection extends AbstractMathTransform
     }
 
     /** Returns the dimension of input points. */
+    @Override
     public final int getSourceDimensions() {
         return 2;
     }
 
     /** Returns the dimension of output points. */
+    @Override
     public final int getTargetDimensions() {
         return 2;
     }
@@ -916,6 +918,7 @@ public abstract class MapProjection extends AbstractMathTransform
      *     have value {@link Double#NaN}. If more than one point can't be transformed, then this
      *     exception may be about an arbitrary point.
      */
+    @Override
     public final void transform(
             final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts)
             throws ProjectionException {
@@ -1082,6 +1085,7 @@ public abstract class MapProjection extends AbstractMathTransform
          *     points will have value {@link Double#NaN}. If more than one point can't be
          *     transformed, then this exception may be about an arbitrary point.
          */
+        @Override
         public final void transform(
                 final double[] src, int srcOffset, final double[] dest, int dstOffset, int numPts)
                 throws TransformException {

@@ -47,6 +47,7 @@ public class DateDifferenceFunction extends FunctionExpressionImpl {
         return NAME.getArgumentCount();
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Date a = getExpression(0).evaluate(feature, Date.class);
         Date b = getExpression(1).evaluate(feature, Date.class);

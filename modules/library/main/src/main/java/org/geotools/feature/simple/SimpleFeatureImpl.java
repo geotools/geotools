@@ -147,10 +147,12 @@ public class SimpleFeatureImpl implements SimpleFeature {
         }
     }
 
+    @Override
     public FeatureId getIdentifier() {
         return id;
     }
 
+    @Override
     public String getID() {
         return id.getID();
     }
@@ -159,28 +161,34 @@ public class SimpleFeatureImpl implements SimpleFeature {
         return values.length;
     }
 
+    @Override
     public Object getAttribute(int index) throws IndexOutOfBoundsException {
         return values[index];
     }
 
+    @Override
     public Object getAttribute(String name) {
         Integer idx = index.get(name);
         if (idx != null) return getAttribute(idx);
         else return null;
     }
 
+    @Override
     public Object getAttribute(Name name) {
         return getAttribute(name.getLocalPart());
     }
 
+    @Override
     public int getAttributeCount() {
         return values.length;
     }
 
+    @Override
     public List<Object> getAttributes() {
         return new ArrayList<>(Arrays.asList(values));
     }
 
+    @Override
     public Object getDefaultGeometry() {
         // should be specified in the index as the default key (null)
         Integer idx = index.get(null);
@@ -198,14 +206,17 @@ public class SimpleFeatureImpl implements SimpleFeature {
         return defaultGeometry;
     }
 
+    @Override
     public SimpleFeatureType getFeatureType() {
         return featureType;
     }
 
+    @Override
     public SimpleFeatureType getType() {
         return featureType;
     }
 
+    @Override
     public void setAttribute(int index, Object value) throws IndexOutOfBoundsException {
         // first do conversion
         Object converted =
@@ -217,26 +228,31 @@ public class SimpleFeatureImpl implements SimpleFeature {
         values[index] = converted;
     }
 
+    @Override
     public void setAttribute(String name, Object value) {
         final Integer idx = index.get(name);
         if (idx == null) throw new IllegalAttributeException("Unknown attribute " + name);
         setAttribute(idx.intValue(), value);
     }
 
+    @Override
     public void setAttribute(Name name, Object value) {
         setAttribute(name.getLocalPart(), value);
     }
 
+    @Override
     public void setAttributes(List<Object> values) {
         for (int i = 0; i < this.values.length; i++) {
             this.values[i] = values.get(i);
         }
     }
 
+    @Override
     public void setAttributes(Object[] values) {
         setAttributes(Arrays.asList(values));
     }
 
+    @Override
     public void setDefaultGeometry(Object geometry) {
         Integer geometryIndex = index.get(null);
         if (geometryIndex != null) {
@@ -244,6 +260,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
         }
     }
 
+    @Override
     public BoundingBox getBounds() {
         // TODO: cache this value
         CoordinateReferenceSystem crs = featureType.getCoordinateReferenceSystem();
@@ -265,6 +282,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
         return (BoundingBox) bounds;
     }
 
+    @Override
     public GeometryAttribute getDefaultGeometryProperty() {
         GeometryDescriptor geometryDescriptor = featureType.getGeometryDescriptor();
         GeometryAttribute geometryAttribute = null;
@@ -276,19 +294,23 @@ public class SimpleFeatureImpl implements SimpleFeature {
         return geometryAttribute;
     }
 
+    @Override
     public void setDefaultGeometryProperty(GeometryAttribute geometryAttribute) {
         if (geometryAttribute != null) setDefaultGeometry(geometryAttribute.getValue());
         else setDefaultGeometry(null);
     }
 
+    @Override
     public Collection<Property> getProperties() {
         return new AttributeList();
     }
 
+    @Override
     public Collection<Property> getProperties(Name name) {
         return getProperties(name.getLocalPart());
     }
 
+    @Override
     public Collection<Property> getProperties(String name) {
         final Integer idx = index.get(name);
         if (idx != null) {
@@ -300,10 +322,12 @@ public class SimpleFeatureImpl implements SimpleFeature {
         }
     }
 
+    @Override
     public Property getProperty(Name name) {
         return getProperty(name.getLocalPart());
     }
 
+    @Override
     public Property getProperty(String name) {
         final Integer idx = index.get(name);
         if (idx == null) {
@@ -320,10 +344,12 @@ public class SimpleFeatureImpl implements SimpleFeature {
         }
     }
 
+    @Override
     public Collection<? extends Property> getValue() {
         return getProperties();
     }
 
+    @Override
     public void setValue(Collection<Property> values) {
         int i = 0;
         for (Property p : values) {
@@ -331,6 +357,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
         }
     }
 
+    @Override
     public void setValue(Object newValue) {
         @SuppressWarnings("unchecked")
         Collection<Property> converted = (Collection<Property>) newValue;
@@ -338,6 +365,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
     }
 
     /** @see org.opengis.feature.Attribute#getDescriptor() */
+    @Override
     public AttributeDescriptor getDescriptor() {
         return new AttributeDescriptorImpl(
                 featureType, featureType.getName(), 0, Integer.MAX_VALUE, true, null);
@@ -347,14 +375,17 @@ public class SimpleFeatureImpl implements SimpleFeature {
      * @return same name than this feature's {@link SimpleFeatureType}
      * @see org.opengis.feature.Property#getName()
      */
+    @Override
     public Name getName() {
         return featureType.getName();
     }
 
+    @Override
     public boolean isNillable() {
         return true;
     }
 
+    @Override
     public Map<Object, Object> getUserData() {
         if (userData == null) userData = new HashMap<>();
         return userData;
@@ -370,6 +401,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
      *
      * @return A unique int
      */
+    @Override
     public int hashCode() {
         return id.hashCode() * featureType.hashCode();
     }
@@ -380,6 +412,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
      * @param obj the Object to test for equality.
      * @return <code>true</code> if the object is equal, <code>false</code> otherwise.
      */
+    @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -436,6 +469,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
         return true;
     }
 
+    @Override
     public void validate() {
         for (int i = 0; i < values.length; i++) {
             AttributeDescriptor descriptor = getType().getDescriptor(i);
@@ -446,6 +480,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
     /** Live collection backed directly on the value array */
     class AttributeList extends AbstractList<Property> {
 
+        @Override
         public Property get(int index) {
             AttributeDescriptor descriptor = featureType.getDescriptor(index);
             if (descriptor instanceof GeometryDescriptor) {
@@ -454,16 +489,19 @@ public class SimpleFeatureImpl implements SimpleFeature {
             return new Attribute(index);
         }
 
+        @Override
         public Attribute set(int index, Property element) {
             values[index] = element.getValue();
             return null;
         }
 
+        @Override
         public int size() {
             return values.length;
         }
     }
 
+    @Override
     public String toString() {
         StringBuffer sb = new StringBuffer("SimpleFeatureImpl:");
         sb.append(getType().getName().getLocalPart());
@@ -480,22 +518,27 @@ public class SimpleFeatureImpl implements SimpleFeature {
             this.index = index;
         }
 
+        @Override
         public Identifier getIdentifier() {
             return null;
         }
 
+        @Override
         public AttributeDescriptor getDescriptor() {
             return featureType.getDescriptor(index);
         }
 
+        @Override
         public AttributeType getType() {
             return featureType.getType(index);
         }
 
+        @Override
         public Name getName() {
             return getDescriptor().getName();
         }
 
+        @Override
         @SuppressWarnings("unchecked")
         public Map<Object, Object> getUserData() {
             // lazily create the user data holder
@@ -506,14 +549,17 @@ public class SimpleFeatureImpl implements SimpleFeature {
             return attributeUserData[index];
         }
 
+        @Override
         public Object getValue() {
             return values[index];
         }
 
+        @Override
         public boolean isNillable() {
             return getDescriptor().isNillable();
         }
 
+        @Override
         public void setValue(Object newValue) {
             values[index] = newValue;
         }
@@ -522,6 +568,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
          *
          * @return hashCode for this object.
          */
+        @Override
         public int hashCode() {
             return 37 * getDescriptor().hashCode()
                     + (37 * (getValue() == null ? 0 : getValue().hashCode()));
@@ -533,6 +580,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
          * @param obj the object to be tested for equality.
          * @return whether other is equal to this attribute Type.
          */
+        @Override
         public boolean equals(Object obj) {
             if (this == obj) {
                 return true;
@@ -551,10 +599,12 @@ public class SimpleFeatureImpl implements SimpleFeature {
             return Utilities.equals(getIdentifier(), other.getIdentifier());
         }
 
+        @Override
         public void validate() {
             Types.validate(getDescriptor(), values[index]);
         }
 
+        @Override
         public String toString() {
             StringBuffer sb = new StringBuffer("SimpleFeatureImpl.Attribute: ");
             sb.append(getDescriptor().getName().getLocalPart());

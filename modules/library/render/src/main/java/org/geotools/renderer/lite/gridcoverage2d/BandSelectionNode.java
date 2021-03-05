@@ -52,6 +52,7 @@ class BandSelectionNode extends StyleVisitorCoverageProcessingNodeAdapter
      * (non-Javadoc)
      * @see CoverageProcessingNode#getName()
      */
+    @Override
     public InternationalString getName() {
         return Vocabulary.formatInternational(VocabularyKeys.BAND_SELECTION);
     }
@@ -93,6 +94,7 @@ class BandSelectionNode extends StyleVisitorCoverageProcessingNodeAdapter
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.BaseCoverageProcessingNode#execute()
      */
+    @Override
     protected GridCoverage2D execute() {
         // preconditions
         assert this.getSources().size() <= 1;
@@ -192,6 +194,7 @@ class BandSelectionNode extends StyleVisitorCoverageProcessingNodeAdapter
         throw new IllegalStateException("No source was set for this Node.");
     }
 
+    @Override
     public void visit(SelectedChannelType sct) {
         // /////////////////////////////////////////////////////////////////////
         //

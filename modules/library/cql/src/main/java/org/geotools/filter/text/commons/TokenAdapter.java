@@ -50,26 +50,32 @@ public class TokenAdapter implements IToken {
         return new TokenAdapter(token);
     }
 
+    @Override
     public String toString() {
         return this.cqlToken.toString();
     }
 
+    @Override
     public boolean hasNext() {
         return this.cqlToken.next != null;
     }
 
+    @Override
     public IToken next() {
         return newAdapterFor(this.cqlToken.next);
     }
 
+    @Override
     public int beginColumn() {
         return this.cqlToken.beginColumn;
     }
 
+    @Override
     public int endColumn() {
         return this.cqlToken.endColumn;
     }
 
+    @Override
     public Token getAdapted() {
         return this.cqlToken;
     }

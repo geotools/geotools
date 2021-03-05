@@ -34,6 +34,7 @@ public class FilterFunction_getY extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Geometry arg0;
 

@@ -37,11 +37,13 @@ public final class IncludeFilter implements Filter, Serializable {
     IncludeFilter() {}
 
     /** Accepts a visitor. */
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
 
     /** Returns {@code true}, content is included. */
+    @Override
     public boolean evaluate(Object object) {
         return true;
     }

@@ -85,6 +85,7 @@ public class DefaultImageDatum extends AbstractDatum implements ImageDatum {
      *
      * @return The way image grid is associated with image data attributes.
      */
+    @Override
     public PixelInCell getPixelInCell() {
         return pixelInCell;
     }

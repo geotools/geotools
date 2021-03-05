@@ -56,10 +56,12 @@ public abstract class ClassChanger<S extends Comparable<S>, T extends Number> {
     private static ClassChanger<?, ?>[] changers =
             new ClassChanger[] {
                 new ClassChanger<Date, Long>(Date.class, Long.class) {
+                    @Override
                     protected Long convert(final Date object) {
                         return object.getTime();
                     }
 
+                    @Override
                     protected Date inverseConvert(final Long value) {
                         return new Date(value.longValue());
                     }

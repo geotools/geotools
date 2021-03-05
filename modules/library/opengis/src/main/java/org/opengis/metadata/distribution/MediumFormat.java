@@ -78,6 +78,7 @@ public final class MediumFormat extends CodeList<MediumFormat> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public MediumFormat[] family() {
         return values();
     }

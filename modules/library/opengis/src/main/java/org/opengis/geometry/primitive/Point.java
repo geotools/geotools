@@ -43,6 +43,7 @@ public interface Point extends Primitive, Position {
      *
      * @return The direct position.
      */
+    @Override
     @UML(identifier = "position", obligation = MANDATORY, specification = ISO_19107)
     DirectPosition getDirectPosition();
 
@@ -66,6 +67,7 @@ public interface Point extends Primitive, Position {
      *
      * @return Always {@code null}.
      */
+    @Override
     @UML(identifier = "boundary", obligation = MANDATORY, specification = ISO_19107)
     PrimitiveBoundary getBoundary();
 
@@ -90,6 +92,7 @@ public interface Point extends Primitive, Position {
      *
      * @issue http://jira.codehaus.org/browse/GEO-63
      */
+    @Override
     @Association("Oriented")
     @UML(identifier = "proxy", obligation = FORBIDDEN, specification = ISO_19107)
     OrientablePrimitive[] getProxy();

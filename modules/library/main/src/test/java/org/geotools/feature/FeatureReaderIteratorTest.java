@@ -22,18 +22,22 @@ public class FeatureReaderIteratorTest {
 
     class BreakingFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 
+        @Override
         public void close() throws IOException {
             throw new IllegalStateException("The exception we saw in GEOT-2068");
         }
 
+        @Override
         public SimpleFeatureType getFeatureType() {
             return null;
         }
 
+        @Override
         public boolean hasNext() throws IOException {
             throw new IllegalStateException("The exception we saw in GEOT-2068");
         }
 
+        @Override
         public SimpleFeature next()
                 throws IOException, IllegalArgumentException, NoSuchElementException {
             return null;

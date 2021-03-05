@@ -43,6 +43,7 @@ public class FilterFunction_list extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
 
         List<Object> result = new ArrayList<>();

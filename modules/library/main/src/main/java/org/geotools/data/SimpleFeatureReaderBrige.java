@@ -34,19 +34,23 @@ class SimpleFeatureReaderBrige implements SimpleFeatureReader {
         this.reader = reader;
     }
 
+    @Override
     public SimpleFeatureType getFeatureType() {
         return reader.getFeatureType();
     }
 
+    @Override
     public SimpleFeature next()
             throws IOException, IllegalArgumentException, NoSuchElementException {
         return reader.next();
     }
 
+    @Override
     public boolean hasNext() throws IOException {
         return reader.hasNext();
     }
 
+    @Override
     public void close() throws IOException {
         reader.close();
     }

@@ -29,6 +29,7 @@ public class TEqualsImpl extends BinaryTemporalOperatorImpl implements TEquals {
         return pos == RelativePosition.EQUALS;
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

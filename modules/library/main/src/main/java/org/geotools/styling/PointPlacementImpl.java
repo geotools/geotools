@@ -60,6 +60,7 @@ public class PointPlacementImpl implements PointPlacement, Cloneable {
      *
      * @return Label's AnchorPoint.
      */
+    @Override
     public AnchorPointImpl getAnchorPoint() {
         return anchorPoint;
     }
@@ -69,6 +70,7 @@ public class PointPlacementImpl implements PointPlacement, Cloneable {
      *
      * @param anchorPoint New value of property anchorPoint.
      */
+    @Override
     public void setAnchorPoint(org.opengis.style.AnchorPoint anchorPoint) {
         if (this.anchorPoint == anchorPoint) {
             return;
@@ -82,6 +84,7 @@ public class PointPlacementImpl implements PointPlacement, Cloneable {
      *
      * @return The label displacement.
      */
+    @Override
     public Displacement getDisplacement() {
         return displacement;
     }
@@ -91,6 +94,7 @@ public class PointPlacementImpl implements PointPlacement, Cloneable {
      *
      * @param displacement New value of property displacement.
      */
+    @Override
     public void setDisplacement(org.opengis.style.Displacement displacement) {
         if (this.displacement == displacement) {
             return;
@@ -103,6 +107,7 @@ public class PointPlacementImpl implements PointPlacement, Cloneable {
      *
      * @return The rotation of the label.
      */
+    @Override
     public Expression getRotation() {
         return rotation;
     }
@@ -112,14 +117,17 @@ public class PointPlacementImpl implements PointPlacement, Cloneable {
      *
      * @param rotation New value of property rotation.
      */
+    @Override
     public void setRotation(Expression rotation) {
         this.rotation = rotation;
     }
 
+    @Override
     public Object accept(StyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
+    @Override
     public void accept(org.geotools.styling.StyleVisitor visitor) {
         visitor.visit(this);
     }
@@ -127,6 +135,7 @@ public class PointPlacementImpl implements PointPlacement, Cloneable {
     /* (non-Javadoc)
      * @see Cloneable#clone()
      */
+    @Override
     public Object clone() {
         try {
             PointPlacementImpl clone = (PointPlacementImpl) super.clone();
@@ -142,6 +151,7 @@ public class PointPlacementImpl implements PointPlacement, Cloneable {
     /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -161,6 +171,7 @@ public class PointPlacementImpl implements PointPlacement, Cloneable {
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public int hashCode() {
         final int PRIME = 37;
         int result = 17;

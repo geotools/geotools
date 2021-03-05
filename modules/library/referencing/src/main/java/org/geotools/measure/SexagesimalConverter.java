@@ -82,6 +82,7 @@ class SexagesimalConverter extends AbstractConverter {
     }
 
     /** Returns the inverse of this converter. */
+    @Override
     public final SexagesimalConverter inverseWhenNotIdentity() {
         return inverse;
     }
@@ -91,6 +92,7 @@ class SexagesimalConverter extends AbstractConverter {
         return that instanceof Inverse;
     }
 
+    @Override
     public Number convertWhenNotIdentity(Number value) {
         return degreeToSexagesimalDegrees(value.doubleValue());
     }
@@ -146,6 +148,7 @@ class SexagesimalConverter extends AbstractConverter {
     }
 
     /** Returns {@code false} since this converter is non-linear. */
+    @Override
     public final boolean isLinear() {
         return false;
     }

@@ -92,6 +92,7 @@ public class MemoryDataStoreTest extends DataTestCase {
     /*
      * @see TestCase#setUp()
      */
+    @Override
     public void init() throws Exception {
         super.init();
         data = new MemoryDataStore();
@@ -109,6 +110,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         data.addFeatures(riverFeatures);
     }
 
+    @Override
     @After
     public void tearDown() throws Exception {
         defaultTransaction.close();
@@ -1334,6 +1336,7 @@ public class MemoryDataStoreTest extends DataTestCase {
                 this.name = name;
             }
 
+            @Override
             public void changed(FeatureEvent featureEvent) {
                 this.events.add(featureEvent);
             }
@@ -1342,6 +1345,7 @@ public class MemoryDataStoreTest extends DataTestCase {
                 return events.get(i);
             }
 
+            @Override
             public String toString() {
                 return "Feature Listener " + name;
             }

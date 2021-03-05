@@ -626,6 +626,7 @@ public class SLDParserTest {
         parser.setOnLineResourceLocator(
                 new ResourceLocator() {
 
+                    @Override
                     public URL locateResource(String uri) {
                         assertEquals("test-data/blob.gif", uri);
                         return getClass().getResource(uri);

@@ -84,6 +84,7 @@ public class ExtentImpl extends MetadataEntity implements Extent {
     }
 
     /** Returns the spatial and temporal extent for the referring object. */
+    @Override
     public InternationalString getDescription() {
         return description;
     }
@@ -95,6 +96,7 @@ public class ExtentImpl extends MetadataEntity implements Extent {
     }
 
     /** Provides geographic component of the extent of the referring object */
+    @Override
     public Collection<GeographicExtent> getGeographicElements() {
         return (geographicElements = nonNullCollection(geographicElements, GeographicExtent.class));
     }
@@ -105,6 +107,7 @@ public class ExtentImpl extends MetadataEntity implements Extent {
     }
 
     /** Provides temporal component of the extent of the referring object */
+    @Override
     public Collection<TemporalExtent> getTemporalElements() {
         return (temporalElements = nonNullCollection(temporalElements, TemporalExtent.class));
     }
@@ -115,6 +118,7 @@ public class ExtentImpl extends MetadataEntity implements Extent {
     }
 
     /** Provides vertical component of the extent of the referring object */
+    @Override
     public Collection<VerticalExtent> getVerticalElements() {
         return (verticalElements = nonNullCollection(verticalElements, VerticalExtent.class));
     }

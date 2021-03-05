@@ -62,6 +62,7 @@ public abstract class AbstractOperation implements Operation, Serializable {
      *
      * @todo The return type will be changed from {@link String} to {@link Identifier}.
      */
+    @Override
     public String getName() {
         return descriptor.getName().getCode();
     }
@@ -70,6 +71,7 @@ public abstract class AbstractOperation implements Operation, Serializable {
      * Returns the description of the processing operation. If there is no description, returns
      * {@code null}. The default implementation returns the {@linkplain #descriptor} remarks.
      */
+    @Override
     public String getDescription() {
         final InternationalString remarks = descriptor.getRemarks();
         return (remarks != null) ? remarks.toString() : null;
@@ -79,11 +81,13 @@ public abstract class AbstractOperation implements Operation, Serializable {
      * Returns the URL for documentation on the processing operation. If no online documentation is
      * available the string will be null. The default implementation returns {@code null}.
      */
+    @Override
     public String getDocURL() {
         return null;
     }
 
     /** Returns the version number of the implementation. */
+    @Override
     public String getVersion() {
         return descriptor.getName().getVersion();
     }
@@ -92,11 +96,13 @@ public abstract class AbstractOperation implements Operation, Serializable {
      * Returns the vendor name of the processing operation implementation. The default
      * implementation returns "Geotools 2".
      */
+    @Override
     public String getVendor() {
         return "Geotools 2";
     }
 
     /** Returns the number of source coverages required for the operation. */
+    @Override
     public int getNumSources() {
         return getNumSources(descriptor);
     }
@@ -120,6 +126,7 @@ public abstract class AbstractOperation implements Operation, Serializable {
     }
 
     /** Returns an initially empty set of parameters. */
+    @Override
     public ParameterValueGroup getParameters() {
         return descriptor.createValue();
     }

@@ -128,6 +128,7 @@ public abstract class RendererBaseTest {
                 frame.addWindowListener(
                         new WindowAdapter() {
 
+                            @Override
                             public void windowClosing(WindowEvent e) {
                                 e.getWindow().dispose();
                             }
@@ -144,6 +145,7 @@ public abstract class RendererBaseTest {
                                         new Dimension(image.getWidth(), image.getHeight()));
                             }
 
+                            @Override
                             public void paint(Graphics g) {
                                 g.drawImage(image, 0, 0, this);
                             }
@@ -254,6 +256,7 @@ public abstract class RendererBaseTest {
             final java.net.URL surl = TestData.getResource(loader, sldFilename);
             SLDConfiguration configuration =
                     new SLDConfiguration() {
+                        @Override
                         protected void configureContext(
                                 org.picocontainer.MutablePicoContainer container) {
                             DefaultResourceLocator locator = new DefaultResourceLocator();

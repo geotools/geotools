@@ -36,6 +36,7 @@ public class FilterFunction_strToLowerCase extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         String arg0;
 

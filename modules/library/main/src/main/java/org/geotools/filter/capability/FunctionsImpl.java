@@ -58,6 +58,7 @@ public class FunctionsImpl implements Functions {
         }
     }
 
+    @Override
     public Collection<FunctionName> getFunctionNames() {
         return functionNames;
     }
@@ -66,6 +67,7 @@ public class FunctionsImpl implements Functions {
         this.functionNames = new HashSet<>(functionNames);
     }
 
+    @Override
     public FunctionName getFunctionName(String name) {
         if (name == null || functionNames == null) {
             return null;

@@ -61,6 +61,7 @@ public class SimpleInternationalString extends AbstractInternationalString imple
     }
 
     /** Returns the same string for all locales. This is the string given to the constructor. */
+    @Override
     public String toString(final Locale locale) {
         return defaultValue;
     }

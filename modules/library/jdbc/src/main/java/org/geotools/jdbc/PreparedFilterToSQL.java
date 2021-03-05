@@ -76,6 +76,7 @@ public class PreparedFilterToSQL extends FilterToSQL {
         super(out);
     }
 
+    @Override
     public Object visit(Literal expression, Object context) throws RuntimeException {
         if (!prepareEnabled) return super.visit(expression, context);
 
@@ -150,6 +151,7 @@ public class PreparedFilterToSQL extends FilterToSQL {
      * @param filter the
      * @throws RuntimeException If there's a problem writing output
      */
+    @Override
     public Object visit(Id filter, Object extraData) {
 
         if (primaryKey == null) {

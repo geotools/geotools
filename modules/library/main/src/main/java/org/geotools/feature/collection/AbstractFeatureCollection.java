@@ -61,6 +61,7 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
     //
     // SimpleFeatureCollection - Feature Access
     //
+    @Override
     public SimpleFeatureIterator features() {
         Iterator<SimpleFeature> iterator = openIterator();
         if (iterator instanceof SimpleFeatureIterator) {
@@ -88,6 +89,7 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
      *
      * @return Number of items, or Interger.MAX_VALUE
      */
+    @Override
     public abstract int size();
 
     /**
@@ -99,6 +101,7 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
      * @param o object to be checked for containment in this collection.
      * @return <tt>true</tt> if this collection contains the specified element.
      */
+    @Override
     public boolean contains(Object o) {
         Iterator<SimpleFeature> e = iterator();
         try {
@@ -127,6 +130,7 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
      * @throws NullPointerException if the specified collection is null.
      * @see #contains(Object)
      */
+    @Override
     public boolean containsAll(Collection<?> c) {
         Iterator<?> e = c.iterator();
         while (e.hasNext()) {
@@ -157,6 +161,7 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
     }
 
     /** @return <tt>true</tt> if this collection contains no elements. */
+    @Override
     public boolean isEmpty() {
         Iterator<SimpleFeature> iterator = iterator();
         try {
@@ -173,6 +178,7 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
      *
      * @return an array containing all of the elements in this collection.
      */
+    @Override
     public Object[] toArray() {
         Object[] result = new Object[size()];
         Iterator<SimpleFeature> e = null;
@@ -187,6 +193,7 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
         }
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <O> O[] toArray(O[] a) {
         int size = size();
@@ -206,6 +213,7 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
         }
     }
 
+    @Override
     public void accepts(
             org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress)
             throws IOException {
@@ -215,6 +223,7 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
     //
     // Feature Collections API
     //
+    @Override
     public SimpleFeatureCollection subCollection(Filter filter) {
         if (filter == Filter.INCLUDE) {
             return this;
@@ -222,18 +231,22 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
         return new SubFeatureCollection(this, filter);
     }
 
+    @Override
     public SimpleFeatureCollection sort(SortBy order) {
         return new SubFeatureList(this, order);
     }
 
+    @Override
     public String getID() {
         return id;
     }
 
+    @Override
     public SimpleFeatureType getSchema() {
         return schema;
     }
 
     /** Subclasses need to override this. */
+    @Override
     public abstract ReferencedEnvelope getBounds();
 }

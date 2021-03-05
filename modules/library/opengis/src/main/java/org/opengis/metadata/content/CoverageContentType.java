@@ -71,6 +71,7 @@ public final class CoverageContentType extends CodeList<CoverageContentType> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public CoverageContentType[] family() {
         return values();
     }

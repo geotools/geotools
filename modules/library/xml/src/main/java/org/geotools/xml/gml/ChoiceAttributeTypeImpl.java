@@ -58,34 +58,42 @@ class ChoiceAttributeTypeImpl extends AttributeTypeImpl implements ChoiceAttribu
         this.maxOccurs = max;
     }
 
+    @Override
     public Class[] getChoices() {
         return EMPTY;
     }
 
+    @Override
     public Object convert(Object obj) {
         return obj;
     }
 
+    @Override
     public Object getDefaultValue() {
         return defaultValue;
     }
 
+    @Override
     public String getLocalName() {
         return getName().getLocalPart();
     }
 
+    @Override
     public AttributeType getType() {
         return this;
     }
 
+    @Override
     public int getMaxOccurs() {
         return maxOccurs;
     }
 
+    @Override
     public int getMinOccurs() {
         return minOccurs;
     }
 
+    @Override
     public boolean isNillable() {
         return isNillable;
     }

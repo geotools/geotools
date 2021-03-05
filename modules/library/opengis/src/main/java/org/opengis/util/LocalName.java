@@ -31,12 +31,14 @@ import org.opengis.annotation.UML;
 @UML(identifier = "LocalName", specification = ISO_19103)
 public interface LocalName extends GenericName {
     /** Returns the depth, which is always 1 for a local name. */
+    @Override
     int depth();
 
     /**
      * Returns the sequence of local name. Since this object is itself a locale name, this method
      * always returns a {@linkplain Collections#singleton singleton} containing only {@code this}.
      */
+    @Override
     @UML(identifier = "parsedName", obligation = MANDATORY, specification = ISO_19103)
     List<? extends LocalName> getParsedNames();
 
@@ -45,6 +47,7 @@ public interface LocalName extends GenericName {
      *
      * @since GeoAPI 2.2
      */
+    @Override
     /// @Override
     LocalName head();
 
@@ -53,11 +56,13 @@ public interface LocalName extends GenericName {
      *
      * @since GeoAPI 2.1
      */
+    @Override
     /// @Override
     @Extension
     LocalName tip();
 
     /** Returns a locale-independant string representation of this local name. */
+    @Override
     /// @Override
     @UML(identifier = "aName", obligation = MANDATORY, specification = ISO_19103)
     String toString();

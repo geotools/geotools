@@ -149,6 +149,7 @@ public final class PolygonIterator extends AbstractLiteIterator {
      * @see #SEG_CUBICTO
      * @see #SEG_CLOSE
      */
+    @Override
     public int currentSegment(double[] coords) {
         // first make sure we're not at the last element, this prevents us from exceptions
         // in the case where coords.size() == 0
@@ -178,6 +179,7 @@ public final class PolygonIterator extends AbstractLiteIterator {
      *
      * @return <code>WIND_EVEN_ODD</code> by default.
      */
+    @Override
     public int getWindingRule() {
         return WIND_EVEN_ODD;
     }
@@ -187,6 +189,7 @@ public final class PolygonIterator extends AbstractLiteIterator {
      *
      * @return <code>true</code> if all the segments have been read; <code>false</code> otherwise.
      */
+    @Override
     public boolean isDone() {
         return done;
     }
@@ -195,6 +198,7 @@ public final class PolygonIterator extends AbstractLiteIterator {
      * Moves the iterator to the next segment of the path forwards along the primary direction of
      * traversal as long as there are more points in that direction.
      */
+    @Override
     public void next() {
         if (currentCoord == coords.size()) {
             if (currentRing < (rings.length - 1)) {

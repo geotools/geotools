@@ -270,6 +270,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      *
      * @param force force the disposition of this node.
      */
+    @Override
     public void dispose(boolean force) {
 
         // /////////////////////////////////////////////////////////////////////
@@ -323,6 +324,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      *
      * @uml.property name="output"
      */
+    @Override
     public GridCoverage2D getOutput() throws CoverageProcessingException {
         checkExecuted();
         if (error != null) throw new CoverageProcessingException(error);
@@ -334,6 +336,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#addSink(org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode)
      */
+    @Override
     public void addSink(CoverageProcessingNode sink) {
         ensureNotNull(sink, "CoverageProcessingNode");
         sinks.add(sink);
@@ -354,6 +357,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#addSource(org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode)
      */
+    @Override
     public boolean addSource(CoverageProcessingNode source) {
         ensureNotNull(source, "CoverageProcessingNode");
         checkNumSources(1);
@@ -384,6 +388,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getSink(int)
      */
+    @Override
     public CoverageProcessingNode getSink(int index) {
         return sinks.get(index);
     }
@@ -394,6 +399,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getSinks()
      */
     /** @uml.property name="sinks" */
+    @Override
     public List<CoverageProcessingNode> getSinks() {
         return Collections.unmodifiableList(sinks);
     }
@@ -403,6 +409,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getSource(int)
      */
+    @Override
     public CoverageProcessingNode getSource(int index) {
         return sources.get(index);
     }
@@ -413,6 +420,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getSources()
      */
     /** @uml.property name="sources" */
+    @Override
     public List<CoverageProcessingNode> getSources() {
         return Collections.unmodifiableList(sources);
     }
@@ -422,6 +430,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#removeSink(org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode)
      */
+    @Override
     public boolean removeSink(CoverageProcessingNode sink) {
         ensureNotNull(sink, "CoverageProcessingNode");
         // /////////////////////////////////////////////////////////////////////
@@ -437,6 +446,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#removeSink(int)
      */
+    @Override
     public CoverageProcessingNode removeSink(int index) {
         return this.sinks.remove(index);
     }
@@ -446,6 +456,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#removeSource(org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode)
      */
+    @Override
     public boolean removeSource(CoverageProcessingNode source) {
         ensureNotNull(source, "CoverageProcessingNode");
         final boolean success = this.sources.remove(source);
@@ -460,6 +471,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      *     creation.
      * @uml.property name="hints"
      */
+    @Override
     public Hints getHints() {
         return new Hints(hints);
     }
@@ -484,6 +496,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      *     output {@link GridCoverage2D} .
      * @uml.property name="coverageFactory"
      */
+    @Override
     public GridCoverageFactory getCoverageFactory() {
         return coverageFactory;
     }
@@ -493,6 +506,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getNumberOfSinks()
      */
+    @Override
     public int getNumberOfSinks() {
         return this.sinks.size();
     }
@@ -502,6 +516,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getNumberOfSources()
      */
+    @Override
     public int getNumberOfSources() {
         return sources.size();
     }
@@ -512,6 +527,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getDescription()
      */
     /** @uml.property name="description" */
+    @Override
     public InternationalString getDescription() {
         return description;
     }
@@ -522,6 +538,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getName()
      */
     /** @uml.property name="name" */
+    @Override
     public InternationalString getName() {
         return name;
     }
@@ -556,6 +573,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#removeSource(int)
      */
+    @Override
     public CoverageProcessingNode removeSource(int index) throws IndexOutOfBoundsException {
         return sources.remove(index);
     }
@@ -565,6 +583,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      *
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         final StringBuffer buffer = new StringBuffer();
         buffer.append("Node Name:").append(this.getName().toString()).append("\n");

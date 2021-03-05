@@ -27,10 +27,12 @@ public class SaturateFunction extends AbstractHSLFunction {
         super("saturate");
     }
 
+    @Override
     protected void adjustRelative(float amount, HSLColor hsl) {
         hsl.setSaturation(hsl.getSaturation() * (1 + amount));
     }
 
+    @Override
     protected void adjustAbsolute(float amount, HSLColor hsl) {
         hsl.setSaturation(hsl.getSaturation() + amount);
     }

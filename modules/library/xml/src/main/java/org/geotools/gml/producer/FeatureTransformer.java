@@ -277,6 +277,7 @@ public class FeatureTransformer extends TransformerBase {
         this.collectionBounding = collectionBounding;
     }
 
+    @Override
     public org.geotools.xml.transform.Translator createTranslator(ContentHandler handler) {
         FeatureTranslator t =
                 createTranslator(
@@ -346,6 +347,7 @@ public class FeatureTransformer extends TransformerBase {
             return pre;
         }
 
+        @Override
         public String toString() {
             return "FeatureTypeNamespaces[Default: "
                     + defaultPrefix
@@ -539,6 +541,7 @@ public class FeatureTransformer extends TransformerBase {
             return types;
         }
 
+        @Override
         @SuppressWarnings("unchecked")
         public void encode(Object o) throws IllegalArgumentException {
             try {
@@ -692,6 +695,7 @@ public class FeatureTransformer extends TransformerBase {
          *
          * @param collection FeatureCollection being encoded
          */
+        @Override
         public void handleFeatureCollection(FeatureCollection<?, ?> collection) {
             startFeatureCollection();
             if (collectionBounding) writeBounds(collection.getBounds());
@@ -748,6 +752,7 @@ public class FeatureTransformer extends TransformerBase {
          *
          * @param collection Feature collection we have just finished encoding
          */
+        @Override
         public void endFeatureCollection(FeatureCollection<?, ?> collection) {
             endFeatureCollection();
         }
@@ -759,6 +764,7 @@ public class FeatureTransformer extends TransformerBase {
          * @throws RuntimeException if something goes wrong during encode it is wrapped up as a
          *     generic runtime exception
          */
+        @Override
         public void endFeature(Feature f) {
             try {
                 Name typeName = f.getType().getName();
@@ -781,6 +787,7 @@ public class FeatureTransformer extends TransformerBase {
          * @param value Value being encoded for this property
          * @throws RuntimeException Any problems are bundled up in a generic runtime exception
          */
+        @Override
         public void handleAttribute(PropertyDescriptor descriptor, Object value) {
             try {
                 if (value != null) {
@@ -922,6 +929,7 @@ public class FeatureTransformer extends TransformerBase {
          * @param f Feature being encoded
          * @throws RuntimeException Used to report any troubles during encoding
          */
+        @Override
         public void handleFeature(Feature f) {
             try {
                 contentHandler.startElement("", "", memberString, NULL_ATTS);

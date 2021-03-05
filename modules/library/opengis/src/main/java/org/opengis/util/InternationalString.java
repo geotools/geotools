@@ -51,6 +51,7 @@ public interface InternationalString extends CharSequence, Comparable<Internatio
      *
      * @return The string in the default locale.
      */
+    @Override
     /// @Override
     String toString();
 }

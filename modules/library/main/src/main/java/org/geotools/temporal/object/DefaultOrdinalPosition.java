@@ -46,6 +46,7 @@ public class DefaultOrdinalPosition extends DefaultTemporalPosition implements O
      *
      * @todo The method name doesn't match the return type.
      */
+    @Override
     public OrdinalEra getOrdinalPosition() {
         return ordinalPosition;
     }

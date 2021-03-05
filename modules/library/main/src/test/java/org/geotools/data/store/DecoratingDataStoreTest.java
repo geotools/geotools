@@ -54,6 +54,7 @@ public class DecoratingDataStoreTest extends DataTestCase {
     MemoryDataStore data;
     MyDecoratingDataStore decorator;
 
+    @Override
     public void init() throws Exception {
         super.init();
         data = new MemoryDataStore();
@@ -72,6 +73,7 @@ public class DecoratingDataStoreTest extends DataTestCase {
         decorator = new MyDecoratingDataStore(data);
     }
 
+    @Override
     @After
     public void tearDown() throws Exception {
         defaultTransaction.close();

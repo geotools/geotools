@@ -196,6 +196,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
     }
 
     /** Returns the comparator associated with this sorted set. */
+    @Override
     @SuppressWarnings("unchecked") // Because we share the same static COMPARATOR instance.
     public Comparator<Range<T>> comparator() {
         return (Comparator) COMPARATOR;
@@ -209,6 +210,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
     }
 
     /** Returns the number of ranges in this set. */
+    @Override
     public int size() {
         return (array != null) ? Array.getLength(array) / 2 : 0;
     }
@@ -795,6 +797,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
      *
      * @throws NoSuchElementException if the set is empty.
      */
+    @Override
     public Range<T> first() throws NoSuchElementException {
         if (array != null && Array.getLength(array) != 0) {
             return newRange(get(0), get(1));
@@ -807,6 +810,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
      *
      * @throws NoSuchElementException if the set is empty.
      */
+    @Override
     public Range<T> last() throws NoSuchElementException {
         if (array != null) {
             final int length = Array.getLength(array);
@@ -825,6 +829,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
      * @param upper High endpoint (exclusive) of the sub set.
      * @return A view of the specified range within this sorted set.
      */
+    @Override
     public SortedSet<Range<T>> subSet(final Range<T> lower, final Range<T> upper) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
@@ -836,6 +841,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
      * @param upper High endpoint (exclusive) of the headSet.
      * @return A view of the specified initial range of this sorted set.
      */
+    @Override
     public SortedSet<Range<T>> headSet(final Range<T> upper) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
@@ -847,6 +853,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
      * @param lower Low endpoint (inclusive) of the tailSet.
      * @return A view of the specified final range of this sorted set.
      */
+    @Override
     public SortedSet<Range<T>> tailSet(final Range<T> lower) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
@@ -878,11 +885,13 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
         private int position;
 
         /** Returns {@code true} if the iteration has more elements. */
+        @Override
         public boolean hasNext() {
             return position < length;
         }
 
         /** Returns the next element in the iteration. */
+        @Override
         public Range<T> next() {
             if (hasNext()) {
                 final T lower = get(position++);
@@ -898,6 +907,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
         }
 
         /** Removes from the underlying collection the last element returned by the iterator. */
+        @Override
         public void remove() {
             if (position != 0) {
                 if (RangeSet.this.modCount == modCount) {

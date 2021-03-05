@@ -531,6 +531,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      * version in the {@linkplain Citation#getEdition edition} attribute, together with the
      * {@linkplain Citation#getEditionDate edition date}.
      */
+    @Override
     public Citation getAuthority() {
         if (authority == null)
             try {
@@ -659,6 +660,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      *     {@linkplain java.util.Collections.emptySet() empty set}.
      * @throws FactoryException if access to the underlying database failed.
      */
+    @Override
     public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type)
             throws FactoryException {
         return getAuthorityCodes0(type);
@@ -745,6 +747,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      * @throws NoSuchAuthorityCodeException if the specified {@code code} was not found.
      * @throws FactoryException if the query failed for some other reason.
      */
+    @Override
     public InternationalString getDescriptionText(final String code) throws FactoryException {
         final String primaryKey = trimAuthority(code);
         for (TableInfo tableInfo : TABLES_INFO) {

@@ -46,10 +46,12 @@ public class MaxFeatureReader<T extends FeatureType, F extends Feature>
         this.maxFeatures = maxFeatures;
     }
 
+    @Override
     public FeatureReader<T, F> getDelegate() {
         return featureReader;
     }
 
+    @Override
     public F next() throws IOException, IllegalAttributeException, NoSuchElementException {
         if (hasNext()) {
             counter++;
@@ -60,10 +62,12 @@ public class MaxFeatureReader<T extends FeatureType, F extends Feature>
         }
     }
 
+    @Override
     public void close() throws IOException {
         featureReader.close();
     }
 
+    @Override
     public T getFeatureType() {
         return featureReader.getFeatureType();
     }
@@ -73,6 +77,7 @@ public class MaxFeatureReader<T extends FeatureType, F extends Feature>
      *     features.
      * @throws IOException If the reader we are filtering encounters a problem
      */
+    @Override
     public boolean hasNext() throws IOException {
         return (featureReader.hasNext() && (counter < maxFeatures));
     }

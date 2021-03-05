@@ -48,5 +48,6 @@ public interface MathTransform1D extends MathTransform {
      * @throws NoninvertibleTransformException if the transform can't be inversed.
      * @since GeoAPI 2.2
      */
+    @Override
     MathTransform1D inverse() throws NoninvertibleTransformException;
 }

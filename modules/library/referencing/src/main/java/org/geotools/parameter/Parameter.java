@@ -242,6 +242,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      * @see #doubleValueList()
      * @see #getValue
      */
+    @Override
     public Unit<?> getUnit() {
         return unit;
     }
@@ -281,6 +282,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      * @see #setValue(double,Unit)
      * @see #doubleValueList(Unit)
      */
+    @Override
     public double doubleValue(final Unit<?> unit) throws InvalidParameterTypeException {
         if (this.unit == null) {
             throw unitlessParameter(descriptor);
@@ -304,6 +306,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      * @see #setValue(double)
      * @see #doubleValueList()
      */
+    @Override
     public double doubleValue() throws InvalidParameterTypeException {
         if (value instanceof Number) {
             return ((Number) value).doubleValue();
@@ -326,6 +329,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      * @see #setValue(int)
      * @see #intValueList
      */
+    @Override
     public int intValue() throws InvalidParameterTypeException {
         if (value instanceof Number) {
             return ((Number) value).intValue();
@@ -345,6 +349,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      * @throws InvalidParameterTypeException if the value is not a boolean type.
      * @see #setValue(boolean)
      */
+    @Override
     public boolean booleanValue() throws InvalidParameterTypeException {
         if (value instanceof Boolean) {
             return ((Boolean) value).booleanValue();
@@ -365,6 +370,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      * @see #getValue
      * @see #setValue(Object)
      */
+    @Override
     public String stringValue() throws InvalidParameterTypeException {
         if (value instanceof CharSequence) {
             return value.toString();
@@ -389,6 +395,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      * @see #setValue(double[],Unit)
      * @see #doubleValue(Unit)
      */
+    @Override
     public double[] doubleValueList(final Unit<?> unit) throws InvalidParameterTypeException {
         if (this.unit == null) {
             throw unitlessParameter(descriptor);
@@ -416,6 +423,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      * @see #setValue(Object)
      * @see #doubleValue()
      */
+    @Override
     public double[] doubleValueList() throws InvalidParameterTypeException {
         if (value instanceof double[]) {
             return (double[]) value;
@@ -436,6 +444,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      * @see #setValue(Object)
      * @see #intValue
      */
+    @Override
     public int[] intValueList() throws InvalidParameterTypeException {
         if (value instanceof int[]) {
             return (int[]) value;
@@ -458,6 +467,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      * @see #getValue
      * @see #setValue(Object)
      */
+    @Override
     public URI valueFile() throws InvalidParameterTypeException {
         if (value instanceof URI) {
             return (URI) value;
@@ -499,6 +509,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      * @return The parameter value as an object.
      * @see #setValue(Object)
      */
+    @Override
     public T getValue() {
         return value;
     }
@@ -514,6 +525,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      * @see #setValue(double)
      * @see #doubleValue(Unit)
      */
+    @Override
     public void setValue(final double value, Unit<?> unit) throws InvalidParameterValueException {
         ensureNonNull("unit", unit);
         @SuppressWarnings("unchecked") // Checked by constructor.
@@ -545,6 +557,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      * @see #setValue(double,Unit)
      * @see #doubleValue()
      */
+    @Override
     public void setValue(final double value) throws InvalidParameterValueException {
         final Double check = value;
         @SuppressWarnings("unchecked") // Checked by constructor.
@@ -561,6 +574,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      *     range).
      * @see #intValue
      */
+    @Override
     public void setValue(final int value) throws InvalidParameterValueException {
         @SuppressWarnings("unchecked") // Checked by constructor.
         final ParameterDescriptor<T> descriptor = (ParameterDescriptor) this.descriptor;
@@ -581,6 +595,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      *     parameter.
      * @see #booleanValue
      */
+    @Override
     public void setValue(final boolean value) throws InvalidParameterValueException {
         @SuppressWarnings("unchecked") // Checked by constructor.
         final ParameterDescriptor<T> descriptor = (ParameterDescriptor) this.descriptor;
@@ -598,6 +613,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      *     numeric and out of range).
      * @see #getValue
      */
+    @Override
     public void setValue(final Object value) throws InvalidParameterValueException {
         @SuppressWarnings("unchecked") // Checked by constructor.
         final ParameterDescriptor<T> descriptor = (ParameterDescriptor) this.descriptor;
@@ -613,6 +629,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      *     parameter, or if the value is illegal for some other reason (for example a value out of
      *     range).
      */
+    @Override
     public void setValue(double[] values, final Unit<?> unit)
             throws InvalidParameterValueException {
         ensureNonNull("unit", unit);

@@ -118,6 +118,7 @@ public class SoftObjectCacheTest {
             this.cache = cache;
         }
 
+        @Override
         public void run() {
             try {
                 cache.writeLock(key1);

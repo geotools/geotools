@@ -96,6 +96,7 @@ public class XMLSAXHandler extends DefaultHandler {
      * @exception java.io.IOException If there is an error setting up the new input source.
      * @exception org.xml.sax.SAXException Any SAX exception, possibly wrapping another exception.
      */
+    @Override
     public InputSource resolveEntity(String publicId, String systemId)
             throws SAXException, IOException {
         // avoid dtd files
@@ -163,6 +164,7 @@ public class XMLSAXHandler extends DefaultHandler {
      *
      * @see org.xml.sax.ContentHandler#endDocument()
      */
+    @Override
     public void endDocument() {
         document = ((DocumentHandler) handlers.pop());
     }
@@ -172,6 +174,7 @@ public class XMLSAXHandler extends DefaultHandler {
      *
      * @see org.xml.sax.ContentHandler#startDocument()
      */
+    @Override
     public void startDocument() {
         try {
             document = new DocumentHandler(ehf);
@@ -187,6 +190,7 @@ public class XMLSAXHandler extends DefaultHandler {
      *
      * @see org.xml.sax.ContentHandler#characters(char[], int, int)
      */
+    @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
         characters.append(ch, start, length);
     }
@@ -230,6 +234,7 @@ public class XMLSAXHandler extends DefaultHandler {
      * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String,
      *     java.lang.String)
      */
+    @Override
     public void endElement(String namespaceURI, String localName, String qName)
             throws SAXException {
         handleCharacters();
@@ -294,6 +299,7 @@ public class XMLSAXHandler extends DefaultHandler {
      * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String,
      *     java.lang.String, org.xml.sax.Attributes)
      */
+    @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
             throws SAXException {
         characters.setLength(0);
@@ -443,6 +449,7 @@ public class XMLSAXHandler extends DefaultHandler {
      *
      * @see org.xml.sax.ErrorHandler#error(org.xml.sax.SAXParseException)
      */
+    @Override
     public void error(SAXParseException exception) {
         logger.severe("ERROR " + exception.getMessage());
         logger.severe("col " + locator.getColumnNumber() + ", line " + locator.getLineNumber());
@@ -453,6 +460,7 @@ public class XMLSAXHandler extends DefaultHandler {
      *
      * @see org.xml.sax.ErrorHandler#fatalError(org.xml.sax.SAXParseException)
      */
+    @Override
     public void fatalError(SAXParseException exception) throws SAXException {
         logger.severe("FATAL " + exception.getMessage());
         if (locator != null) {
@@ -466,6 +474,7 @@ public class XMLSAXHandler extends DefaultHandler {
      *
      * @see org.xml.sax.ErrorHandler#warning(org.xml.sax.SAXParseException)
      */
+    @Override
     public void warning(SAXParseException exception) {
         logger.warning("WARN " + exception.getMessage());
         logger.severe("col " + locator.getColumnNumber() + ", line " + locator.getLineNumber());
@@ -476,12 +485,14 @@ public class XMLSAXHandler extends DefaultHandler {
      *
      * @see org.xml.sax.ContentHandler#setDocumentLocator(org.xml.sax.Locator)
      */
+    @Override
     public void setDocumentLocator(Locator locator) {
         super.setDocumentLocator(locator);
         this.locator = locator;
     }
 
     /** @see org.xml.sax.ContentHandler#endPrefixMapping(java.lang.String) */
+    @Override
     public void endPrefixMapping(String prefix) {
         // hard coded schemas should not be removed.  For example.  GML and WFS
         if (prefix.equals("gml") || prefix.equals("wfs")) return;
@@ -489,6 +500,7 @@ public class XMLSAXHandler extends DefaultHandler {
     }
 
     /** @see org.xml.sax.ContentHandler#startPrefixMapping(java.lang.String, java.lang.String) */
+    @Override
     public void startPrefixMapping(String prefix, String uri) {
         if ("http://www.w3.org/2001/XMLSchema-instance".equals(uri)) {
             return;

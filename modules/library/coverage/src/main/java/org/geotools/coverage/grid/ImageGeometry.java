@@ -61,11 +61,13 @@ public class ImageGeometry implements GridGeometry, Serializable, Cloneable {
     }
 
     /** Returns the image bounds in pixel coordinates. */
+    @Override
     public GridEnvelope2D getGridRange() {
         return gridRange.clone();
     }
 
     /** Returns the conversion from grid coordinates to real world earth coordinates. */
+    @Override
     public AffineTransform2D getGridToCRS() {
         return gridToCRS; // No need to clone since AffineTransform2D is immutable.
     }

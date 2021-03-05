@@ -87,6 +87,7 @@ public class Collection_MedianFunction extends FunctionExpressionImpl {
      *
      * <p>To refer to all 'X': <code>featureMember/asterisk/X</code>
      */
+    @Override
     public void setParameters(List<Expression> args) {
         // if we see "featureMembers/*/ATTRIBUTE" change to "ATTRIBUTE"
         org.opengis.filter.expression.Expression expr = args.get(0);
@@ -97,6 +98,7 @@ public class Collection_MedianFunction extends FunctionExpressionImpl {
         super.setParameters(args);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         if (feature == null) {
             return Integer.valueOf(0); // no features were visited in the making of this answer

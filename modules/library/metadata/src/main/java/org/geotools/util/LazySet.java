@@ -77,6 +77,7 @@ public final class LazySet<E> extends AbstractSet<E> {
      * Returns an iterator over the elements contained in this set. This is not the same iterator
      * than the one given to the constructor.
      */
+    @Override
     public Iterator<E> iterator() {
         return new Iter();
     }
@@ -85,6 +86,7 @@ public final class LazySet<E> extends AbstractSet<E> {
      * Returns the number of elements in this set. Invoking this method force the set to immediately
      * iterates through all remaining elements.
      */
+    @Override
     public int size() {
         while (iterator.hasNext()) {
             addNext();
@@ -126,16 +128,19 @@ public final class LazySet<E> extends AbstractSet<E> {
         private int cursor;
 
         /** Check if there is more elements. */
+        @Override
         public boolean hasNext() {
             return exists(cursor);
         }
 
         /** Returns the next element. */
+        @Override
         public E next() {
             return get(cursor++);
         }
 
         /** Always throws an exception, since {@link LazySet} are immutable. */
+        @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }

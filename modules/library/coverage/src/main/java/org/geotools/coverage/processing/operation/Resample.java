@@ -223,6 +223,7 @@ public class Resample extends Operation2D {
      * Resamples a grid coverage. This method is invoked by {@link
      * org.geotools.coverage.processing.DefaultProcessor} for the {@code "Resample"} operation.
      */
+    @Override
     @SuppressWarnings("unchecked")
     public Coverage doOperation(final ParameterValueGroup parameters, final Hints hints) {
         final GridCoverage2D source = (GridCoverage2D) parameters.parameter("Source").getValue();

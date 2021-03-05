@@ -47,34 +47,42 @@ public abstract class PropertyImpl implements Property {
         }
     }
 
+    @Override
     public Object getValue() {
         return value;
     }
 
+    @Override
     public void setValue(Object value) {
         this.value = value;
     }
 
+    @Override
     public PropertyDescriptor getDescriptor() {
         return descriptor;
     }
 
+    @Override
     public Name getName() {
         return getDescriptor().getName();
     }
 
+    @Override
     public PropertyType getType() {
         return getDescriptor().getType();
     }
 
+    @Override
     public boolean isNillable() {
         return getDescriptor().isNillable();
     }
 
+    @Override
     public Map<Object, Object> getUserData() {
         return userData;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -93,10 +101,12 @@ public abstract class PropertyImpl implements Property {
         return true;
     }
 
+    @Override
     public int hashCode() {
         return 37 * descriptor.hashCode() + (37 * (value == null ? 0 : value.hashCode()));
     }
 
+    @Override
     public String toString() {
         StringBuffer sb = new StringBuffer(getClass().getSimpleName()).append(":");
         sb.append(getDescriptor().getName().getLocalPart());

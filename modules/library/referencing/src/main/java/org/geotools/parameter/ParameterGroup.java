@@ -227,6 +227,7 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
      * Returns the values in this group. Changes in this list are reflected on this {@code
      * ParameterValueGroup}. The returned list supports the {@link List#add(Object) add} operation.
      */
+    @Override
     public List<GeneralParameterValue> values() {
         if (asList == null) {
             asList = new ParameterValueList((ParameterDescriptorGroup) descriptor, values);
@@ -276,6 +277,7 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
      * @throws ParameterNotFoundException if there is no parameter value for the given identifier
      *     code.
      */
+    @Override
     public ParameterValue parameter(String name) throws ParameterNotFoundException {
         ensureNonNull("name", name);
         name = name.trim();
@@ -316,6 +318,7 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
      * @throws ParameterNotFoundException if no {@linkplain ParameterDescriptorGroup descriptor} was
      *     found for the given name.
      */
+    @Override
     public List<ParameterValueGroup> groups(String name) throws ParameterNotFoundException {
         ensureNonNull("name", name);
         name = name.trim();
@@ -357,6 +360,7 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
      *     {@linkplain ParameterDescriptorGroup#getMaximumOccurs maximum number of occurences} of
      *     subgroups of the given name.
      */
+    @Override
     public ParameterValueGroup addGroup(String name)
             throws ParameterNotFoundException, InvalidParameterCardinalityException {
         final GeneralParameterDescriptor check =

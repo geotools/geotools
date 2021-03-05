@@ -49,6 +49,7 @@ final class FactoryPrinter implements Comparator<Class<?>> {
      * Compares two factories for order. This is used for sorting out the factories before to
      * display them.
      */
+    @Override
     public int compare(final Class<?> factory1, final Class<?> factory2) {
         // Or sort by name
         return Classes.getShortName(factory1).compareToIgnoreCase(Classes.getShortName(factory2));

@@ -25,6 +25,7 @@ public abstract class JDBCCompound3DTestSetup extends JDBCDelegatingTestSetup {
         super(delegate);
     }
 
+    @Override
     protected final void setUpData() throws Exception {
         // kill all the data
         try {

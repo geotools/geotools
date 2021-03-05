@@ -38,6 +38,7 @@ public class FilterFunction_if_then_else extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         boolean select;
         Object arg1;

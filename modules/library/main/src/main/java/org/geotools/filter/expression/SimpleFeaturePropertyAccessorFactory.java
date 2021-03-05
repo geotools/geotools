@@ -79,6 +79,7 @@ public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFac
     static final Pattern propertyPattern =
             Pattern.compile("^(?!@)([" + NAME_START_CHAR + "][" + NAME_CHAR + "]*)(\\[1])?$");
 
+    @Override
     public PropertyAccessor createPropertyAccessor(
             Class type, String xpath, Class target, Hints hints) {
 
@@ -129,11 +130,13 @@ public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFac
      * @author Jody Garnett, Refractions Research Inc.
      */
     static class FidSimpleFeaturePropertyAccessor implements PropertyAccessor {
+        @Override
         public boolean canHandle(Object object, String xpath, Class target) {
             // we only work against feature, not feature type
             return object instanceof SimpleFeature && xpath.matches("@(\\w+:)?id");
         }
 
+        @Override
         @SuppressWarnings("unchecked") // target can be null
         public <T> T get(Object object, String xpath, Class<T> target)
                 throws IllegalArgumentException {
@@ -141,6 +144,7 @@ public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFac
             return (T) feature.getID();
         }
 
+        @Override
         public void set(Object object, String xpath, Object value, Class target)
                 throws IllegalAttributeException {
             throw new IllegalAttributeException("feature id is immutable");
@@ -149,6 +153,7 @@ public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFac
 
     static class DefaultGeometrySimpleFeaturePropertyAccessor implements PropertyAccessor {
 
+        @Override
         public boolean canHandle(Object object, String xpath, Class target) {
             if (!"".equals(xpath)) return false;
 
@@ -162,6 +167,7 @@ public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFac
             return true;
         }
 
+        @Override
         @SuppressWarnings("unchecked") // target can be null, cannot use target.cast
         public <T> T get(Object object, String xpath, Class<T> target)
                 throws IllegalArgumentException {
@@ -201,6 +207,7 @@ public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFac
             return null;
         }
 
+        @Override
         public void set(Object object, String xpath, Object value, Class target)
                 throws IllegalAttributeException {
 
@@ -214,6 +221,7 @@ public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFac
     }
 
     static class SimpleFeaturePropertyAccessor implements PropertyAccessor {
+        @Override
         public boolean canHandle(Object object, String xpath, Class target) {
             String stripped = stripPrefixIndex(xpath);
 
@@ -230,6 +238,7 @@ public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFac
             return false;
         }
 
+        @Override
         @SuppressWarnings("unchecked") // target can be null, cannot use target.cast
         public <T> T get(Object object, String xpath, Class<T> target)
                 throws IllegalArgumentException {
@@ -256,6 +265,7 @@ public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFac
             return null;
         }
 
+        @Override
         public void set(Object object, String xpath, Object value, Class target)
                 throws IllegalAttributeException {
             xpath = stripPrefixIndex(xpath);

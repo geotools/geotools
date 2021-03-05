@@ -101,10 +101,12 @@ public abstract class FunctionExpressionImpl extends org.geotools.filter.Default
      *
      * @return the name of the function.
      */
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public synchronized FunctionName getFunctionName() {
         if (functionName == null) {
             functionName = new FunctionNameImpl(getName(), getParameters().size());
@@ -112,19 +114,23 @@ public abstract class FunctionExpressionImpl extends org.geotools.filter.Default
         return functionName;
     }
 
+    @Override
     public Literal getFallbackValue() {
         return fallback;
     }
 
+    @Override
     public void setFallbackValue(Literal fallback) {
         this.fallback = fallback;
     }
     /** Returns the function parameters. */
+    @Override
     public List<org.opengis.filter.expression.Expression> getParameters() {
         return params;
     }
 
     /** Sets the function parameters. */
+    @Override
     public void setParameters(List<Expression> params) {
         if (params == null) {
             throw new NullPointerException("Function parameters required");
@@ -139,11 +145,13 @@ public abstract class FunctionExpressionImpl extends org.geotools.filter.Default
     }
 
     /** @see org.opengis.filter.expression.Expression#accept(ExpressionVisitor, Object) */
+    @Override
     public Object accept(ExpressionVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
 
     /** Returns the implementation hints. The default implementation returns an empty map. */
+    @Override
     public Map<Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }
@@ -161,6 +169,7 @@ public abstract class FunctionExpressionImpl extends org.geotools.filter.Default
      * Creates a String representation of this Function with the function name and the arguments.
      * The String created should be good for most subclasses
      */
+    @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append(getName());

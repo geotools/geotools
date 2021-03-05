@@ -36,6 +36,7 @@ import org.opengis.referencing.datum.ImageDatum;
 @UML(identifier = "SC_ImageCRS", specification = ISO_19111)
 public interface ImageCRS extends SingleCRS {
     /** Returns the cartesian coordinate system. */
+    @Override
     @UML(
         identifier = "usesObliqueCartesianCS, usesCartesianCS",
         obligation = MANDATORY,
@@ -44,6 +45,7 @@ public interface ImageCRS extends SingleCRS {
     AffineCS getCoordinateSystem();
 
     /** Returns the datum, which must be an image one. */
+    @Override
     @UML(identifier = "usesDatum", obligation = MANDATORY, specification = ISO_19111)
     ImageDatum getDatum();
 }

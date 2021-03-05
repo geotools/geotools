@@ -103,6 +103,7 @@ public interface Conic extends CurveSegment {
      * {@linkplain #getEndConstructiveParam end constructive parameter}, but the parameterization
      * must be strictly monotonic (strictly increasing, or strictly decreasing).
      */
+    @Override
     @UML(identifier = "startConstrParam", obligation = MANDATORY, specification = ISO_19107)
     double getStartConstructiveParam();
 
@@ -118,6 +119,7 @@ public interface Conic extends CurveSegment {
      * {@linkplain #getEndConstructiveParam end constructive parameter}, but the parameterization
      * must be strictly monotonic (strictly increasing, or strictly decreasing).
      */
+    @Override
     @UML(identifier = "endConstrParam", obligation = MANDATORY, specification = ISO_19107)
     double getEndConstructiveParam();
 }

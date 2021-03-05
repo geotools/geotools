@@ -386,6 +386,7 @@ public class MetadataSource implements AutoCloseable {
     }
 
     /** Close all connections used in this object. */
+    @Override
     public synchronized void close() throws SQLException {
         for (final Iterator it = statements.values().iterator(); it.hasNext(); ) {
             ((MetadataResult) it.next()).close();

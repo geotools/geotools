@@ -59,6 +59,7 @@ public class GeometricObjectsImpl extends MetadataEntity implements GeometricObj
     }
 
     /** Total number of the point or vector object type occurring in the dataset. */
+    @Override
     public GeometricObjectType getGeometricObjectType() {
         return geometricObjectType;
     }
@@ -70,6 +71,7 @@ public class GeometricObjectsImpl extends MetadataEntity implements GeometricObj
     }
 
     /** Total number of the point or vector object type occurring in the dataset. */
+    @Override
     public Integer getGeometricObjectCount() {
         return geometricObjectCount;
     }

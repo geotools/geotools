@@ -74,6 +74,7 @@ public final class RangeMeaning extends CodeList<RangeMeaning> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public RangeMeaning[] family() {
         return values();
     }

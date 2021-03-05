@@ -257,6 +257,7 @@ class CategoryList extends AbstractList<Category> implements Comparator<Category
      * Compares {@link Category} objects according their {@link Category#minimum} value. This is
      * used for sorting the {@link #categories} array at construction time.
      */
+    @Override
     public final int compare(final Category o1, final Category o2) {
         return compare(o1.minimum, o2.minimum);
     }
@@ -367,6 +368,7 @@ class CategoryList extends AbstractList<Category> implements Comparator<Category
     /** The name for this category list. Will be created only when first needed. */
     private final class Name extends AbstractInternationalString {
         /** Returns the name in the specified locale. */
+        @Override
         public String toString(final Locale locale) {
             final StringBuffer buffer = new StringBuffer(30);
             if (main != null) {
@@ -617,11 +619,13 @@ class CategoryList extends AbstractList<Category> implements Comparator<Category
     ////////                                                                          ////////
     //////////////////////////////////////////////////////////////////////////////////////////
     /** Returns the number of categories in this list. */
+    @Override
     public final int size() {
         return categories.length;
     }
 
     /** Returns the element at the specified position in this list. */
+    @Override
     public final Category get(final int i) {
         return categories[i];
     }

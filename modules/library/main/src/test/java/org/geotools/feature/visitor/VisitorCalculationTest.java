@@ -75,6 +75,7 @@ public class VisitorCalculationTest extends DataTestCase {
     SimpleFeatureCollection fc6;
     SimpleFeatureType ft6;
 
+    @Override
     public void init() throws Exception {
         super.init();
         empty = new DefaultFeatureCollection();

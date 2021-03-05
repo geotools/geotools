@@ -52,6 +52,7 @@ public abstract class MultiCompareFilterImpl extends CompareFilterImpl {
         this.matchAction = matchAction;
     }
 
+    @Override
     public MatchAction getMatchAction() {
         return matchAction;
     }
@@ -69,6 +70,7 @@ public abstract class MultiCompareFilterImpl extends CompareFilterImpl {
         return cast;
     }
 
+    @Override
     public final boolean evaluate(Object feature) {
         final Object object1 = eval(expression1, feature);
         final Object object2 = eval(expression2, feature);

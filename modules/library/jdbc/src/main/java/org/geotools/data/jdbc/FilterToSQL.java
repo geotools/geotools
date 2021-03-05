@@ -439,6 +439,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      *     <p>Writes the SQL for the IncludeFilter by writing "FALSE".
      * @param filter the filter to be visited
      */
+    @Override
     public Object visit(ExcludeFilter filter, Object extraData) {
         try {
             out.write("0 = 1");
@@ -453,6 +454,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      *     <p>Writes the SQL for the IncludeFilter by writing "TRUE".
      * @param filter the filter to be visited
      */
+    @Override
     public Object visit(IncludeFilter filter, Object extraData) {
         try {
             out.write("1 = 1");
@@ -468,6 +470,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @param filter the Filter to be visited.
      * @throws RuntimeException for io exception with writer
      */
+    @Override
     public Object visit(PropertyIsBetween filter, Object extraData) throws RuntimeException {
         LOGGER.finer("exporting PropertyIsBetween");
 
@@ -505,6 +508,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @task REVISIT: Need to think through the escape char, so it works right when Java uses one,
      *     and escapes correctly with an '_'.
      */
+    @Override
     public Object visit(PropertyIsLike filter, Object extraData) {
         char esc = filter.getEscape().charAt(0);
         char multi = filter.getWildCard().charAt(0);
@@ -552,6 +556,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @param filter the filter to visit
      * @param extraData extra data (unused by this method)
      */
+    @Override
     public Object visit(And filter, Object extraData) {
         return visit((BinaryLogicOperator) filter, "AND");
     }
@@ -562,6 +567,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @param filter the filter to visit
      * @param extraData extra data (unused by this method)
      */
+    @Override
     public Object visit(Not filter, Object extraData) {
         try {
             if (filter.getFilter() instanceof PropertyIsNull) {
@@ -594,6 +600,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @param filter the filter to visit
      * @param extraData extra data (unused by this method)
      */
+    @Override
     public Object visit(Or filter, Object extraData) {
         // Check if we can encode the "or" as an "in", happens if the same property
         // is compared as equality with multiple values. This is important as some databases
@@ -737,6 +744,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @param filter the filter to visit
      * @param extraData extra data (unused by this method)
      */
+    @Override
     public Object visit(PropertyIsEqualTo filter, Object extraData) {
         visitBinaryComparisonOperator(filter, "=");
         return extraData;
@@ -748,6 +756,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @param filter the filter to visit
      * @param extraData extra data (unused by this method)
      */
+    @Override
     public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object extraData) {
         visitBinaryComparisonOperator(filter, ">=");
         return extraData;
@@ -759,6 +768,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @param filter the filter to visit
      * @param extraData extra data (unused by this method)
      */
+    @Override
     public Object visit(PropertyIsGreaterThan filter, Object extraData) {
         visitBinaryComparisonOperator(filter, ">");
         return extraData;
@@ -770,6 +780,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @param filter the filter to visit
      * @param extraData extra data (unused by this method)
      */
+    @Override
     public Object visit(PropertyIsLessThan filter, Object extraData) {
         visitBinaryComparisonOperator(filter, "<");
         return extraData;
@@ -781,6 +792,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @param filter the filter to visit
      * @param extraData extra data (unused by this method)
      */
+    @Override
     public Object visit(PropertyIsLessThanOrEqualTo filter, Object extraData) {
         visitBinaryComparisonOperator(filter, "<=");
         return extraData;
@@ -792,6 +804,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @param filter the filter to visit
      * @param extraData extra data (unused by this method)
      */
+    @Override
     public Object visit(PropertyIsNotEqualTo filter, Object extraData) {
         visitBinaryComparisonOperator(filter, "!=");
         return extraData;
@@ -1094,6 +1107,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @param filter the null filter to be written to SQL.
      * @throws RuntimeException for io exception with writer
      */
+    @Override
     public Object visit(PropertyIsNull filter, Object extraData) throws RuntimeException {
         LOGGER.finer("exporting NullFilter");
 
@@ -1116,6 +1130,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         return extraData;
     }
 
+    @Override
     public Object visit(PropertyIsNil filter, Object extraData) {
         throw new UnsupportedOperationException("isNil not supported");
     }
@@ -1126,6 +1141,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @param filter the
      * @throws RuntimeException If there's a problem writing output
      */
+    @Override
     public Object visit(Id filter, Object extraData) {
         if (primaryKey == null) {
             throw new RuntimeException("Must set primary key before trying to encode FIDFilters");
@@ -1174,46 +1190,57 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         return extraData;
     }
 
+    @Override
     public Object visit(BBOX filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
 
+    @Override
     public Object visit(Beyond filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
 
+    @Override
     public Object visit(Contains filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
 
+    @Override
     public Object visit(Crosses filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
 
+    @Override
     public Object visit(Disjoint filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
 
+    @Override
     public Object visit(DWithin filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
 
+    @Override
     public Object visit(Equals filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
 
+    @Override
     public Object visit(Intersects filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
 
+    @Override
     public Object visit(Overlaps filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
 
+    @Override
     public Object visit(Touches filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
 
+    @Override
     public Object visit(Within filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
@@ -1474,6 +1501,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @param extraData extra data to be used to evaluate the filter
      * @return the untouched extraData parameter
      */
+    @Override
     public Object visitNullFilter(Object extraData) {
         return extraData;
     }
@@ -1488,6 +1516,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @param expression the attribute to turn to SQL.
      * @throws RuntimeException for io exception with writer
      */
+    @Override
     public Object visit(PropertyName expression, Object extraData) throws RuntimeException {
         LOGGER.finer("exporting PropertyName");
 
@@ -1582,6 +1611,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @param expression the Literal to export
      * @throws RuntimeException for io exception with writer
      */
+    @Override
     public Object visit(Literal expression, Object context) throws RuntimeException {
         LOGGER.finer("exporting LiteralExpression");
 
@@ -1731,18 +1761,22 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                         + "method to support encoding timeperiods");
     }
 
+    @Override
     public Object visit(Add expression, Object extraData) {
         return visit(expression, "+", extraData);
     }
 
+    @Override
     public Object visit(Divide expression, Object extraData) {
         return visit(expression, "/", extraData);
     }
 
+    @Override
     public Object visit(Multiply expression, Object extraData) {
         return visit(expression, "*", extraData);
     }
 
+    @Override
     public Object visit(Subtract expression, Object extraData) {
         return visit(expression, "-", extraData);
     }
@@ -1785,6 +1819,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @throws RuntimeException If an IO error occurs.
      * @see #getFunctionName(Function)
      */
+    @Override
     public Object visit(Function function, Object extraData) throws RuntimeException {
         // special case for IN functions
         if (inEncodingEnabled && InFunction.isInFunction(function)) {
@@ -1912,6 +1947,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         return function.getName();
     }
 
+    @Override
     public Object visit(NilExpression expression, Object extraData) {
         try {
             out.write(" ");
@@ -1923,58 +1959,72 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     }
 
     // temporal filters, not supported
+    @Override
     public Object visit(After after, Object extraData) {
         return visitBinaryTemporalOperator(after, extraData);
     }
 
+    @Override
     public Object visit(AnyInteracts anyInteracts, Object extraData) {
         return visitBinaryTemporalOperator(anyInteracts, extraData);
     }
 
+    @Override
     public Object visit(Before before, Object extraData) {
         return visitBinaryTemporalOperator(before, extraData);
     }
 
+    @Override
     public Object visit(Begins begins, Object extraData) {
         return visitBinaryTemporalOperator(begins, extraData);
     }
 
+    @Override
     public Object visit(BegunBy begunBy, Object extraData) {
         return visitBinaryTemporalOperator(begunBy, extraData);
     }
 
+    @Override
     public Object visit(During during, Object extraData) {
         return visitBinaryTemporalOperator(during, extraData);
     }
 
+    @Override
     public Object visit(EndedBy endedBy, Object extraData) {
         return visitBinaryTemporalOperator(endedBy, extraData);
     }
 
+    @Override
     public Object visit(Ends ends, Object extraData) {
         return visitBinaryTemporalOperator(ends, extraData);
     }
 
+    @Override
     public Object visit(Meets meets, Object extraData) {
         return visitBinaryTemporalOperator(meets, extraData);
     }
 
+    @Override
     public Object visit(MetBy metBy, Object extraData) {
         return visitBinaryTemporalOperator(metBy, extraData);
     }
 
+    @Override
     public Object visit(OverlappedBy overlappedBy, Object extraData) {
         return visitBinaryTemporalOperator(overlappedBy, extraData);
     }
 
+    @Override
     public Object visit(TContains contains, Object extraData) {
         return visitBinaryTemporalOperator(contains, extraData);
     }
 
+    @Override
     public Object visit(TEquals equals, Object extraData) {
         return visitBinaryTemporalOperator(equals, extraData);
     }
 
+    @Override
     public Object visit(TOverlaps contains, Object extraData) {
         return visitBinaryTemporalOperator(contains, extraData);
     }
@@ -2045,6 +2095,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
 
         private DefaultFieldEncoder() {};
 
+        @Override
         public String encode(String s) {
             return s;
         }

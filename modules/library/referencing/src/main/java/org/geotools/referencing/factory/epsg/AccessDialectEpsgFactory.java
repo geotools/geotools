@@ -48,6 +48,7 @@ public class AccessDialectEpsgFactory extends AbstractEpsgFactory {
      * @param statement The statement in MS-Access syntax.
      * @return The SQL statement to use. This implementation returns the string unchanged.
      */
+    @Override
     protected String adaptSQL(final String statement) {
         return statement;
     }

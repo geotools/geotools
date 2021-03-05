@@ -70,11 +70,13 @@ public class FidFilterImpl extends AbstractFilter implements Id {
     }
 
     /** @see org.opengis.filter.Id#getIDs() */
+    @Override
     public Set<Object> getIDs() {
         return new HashSet<>(getFidsSet());
     }
 
     /** @see org.opengis.filter.Id#getIdentifiers() */
+    @Override
     public Set<Identifier> getIdentifiers() {
         return fids;
     }
@@ -168,6 +170,7 @@ public class FidFilterImpl extends AbstractFilter implements Id {
      *     otherwise.
      * @see SimpleFeaturePropertyAccessorFactory
      */
+    @Override
     public boolean evaluate(Object feature) {
         if (feature == null) {
             return false;
@@ -189,6 +192,7 @@ public class FidFilterImpl extends AbstractFilter implements Id {
      *
      * @return String representation of the compare filter.
      */
+    @Override
     public String toString() {
         StringBuffer fidFilter = new StringBuffer();
 
@@ -214,6 +218,7 @@ public class FidFilterImpl extends AbstractFilter implements Id {
      * @param visitor The visitor which requires access to this filter, the method must call
      *     visitor.visit(this);
      */
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
@@ -224,6 +229,7 @@ public class FidFilterImpl extends AbstractFilter implements Id {
      * @param filter the filter to test equality on.
      * @return String representation of the compare filter.
      */
+    @Override
     public boolean equals(Object filter) {
         LOGGER.finest("condition: " + filter);
 
@@ -240,6 +246,7 @@ public class FidFilterImpl extends AbstractFilter implements Id {
      *
      * @return a hash code value for this fid filter object.
      */
+    @Override
     public int hashCode() {
         return fids.hashCode();
     }

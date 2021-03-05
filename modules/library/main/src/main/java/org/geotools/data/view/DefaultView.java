@@ -114,6 +114,7 @@ public class DefaultView implements SimpleFeatureSource {
      * @see FeatureSource#getName()
      * @since 2.5
      */
+    @Override
     public Name getName() {
         return getSchema().getName();
     }
@@ -258,6 +259,7 @@ public class DefaultView implements SimpleFeatureSource {
      *
      * @return @see org.geotools.data.FeatureSource#getDataStore()
      */
+    @Override
     public DataStore getDataStore() {
         return (DataStore) source.getDataStore();
     }
@@ -269,6 +271,7 @@ public class DefaultView implements SimpleFeatureSource {
      *
      * @see org.geotools.data.FeatureSource#addFeatureListener(org.geotools.data.FeatureListener)
      */
+    @Override
     public void addFeatureListener(FeatureListener listener) {
         source.addFeatureListener(listener);
     }
@@ -280,6 +283,7 @@ public class DefaultView implements SimpleFeatureSource {
      *
      * @see org.geotools.data.FeatureSource#removeFeatureListener(org.geotools.data.FeatureListener)
      */
+    @Override
     public void removeFeatureListener(FeatureListener listener) {
         source.removeFeatureListener(listener);
     }
@@ -291,6 +295,7 @@ public class DefaultView implements SimpleFeatureSource {
      *
      * @see org.geotools.data.FeatureSource#getFeatures(org.geotools.data.Query)
      */
+    @Override
     public SimpleFeatureCollection getFeatures(Query query) throws IOException {
         Query mergedQuery = makeDefinitionQuery(query);
         SimpleFeatureCollection results = source.getFeatures(mergedQuery);
@@ -361,6 +366,7 @@ public class DefaultView implements SimpleFeatureSource {
      *
      * <p>Description ...
      */
+    @Override
     public SimpleFeatureCollection getFeatures(Filter filter) throws IOException {
         return getFeatures(new Query(schema.getTypeName(), filter));
     }
@@ -372,6 +378,7 @@ public class DefaultView implements SimpleFeatureSource {
      *
      * @see org.geotools.data.FeatureSource#getFeatures()
      */
+    @Override
     public SimpleFeatureCollection getFeatures() throws IOException {
         return getFeatures(Query.ALL);
     }
@@ -383,10 +390,12 @@ public class DefaultView implements SimpleFeatureSource {
      *
      * @return @see org.geotools.data.FeatureSource#getSchema()
      */
+    @Override
     public SimpleFeatureType getSchema() {
         return schema;
     }
 
+    @Override
     public ResourceInfo getInfo() {
         return new ResourceInfo() {
             final Set<String> words = new HashSet<>();
@@ -397,6 +406,7 @@ public class DefaultView implements SimpleFeatureSource {
                 words.add(DefaultView.this.getSchema().getTypeName());
             }
 
+            @Override
             public ReferencedEnvelope getBounds() {
                 try {
                     return DefaultView.this.getBounds();
@@ -405,22 +415,27 @@ public class DefaultView implements SimpleFeatureSource {
                 }
             }
 
+            @Override
             public CoordinateReferenceSystem getCRS() {
                 return DefaultView.this.getSchema().getCoordinateReferenceSystem();
             }
 
+            @Override
             public String getDescription() {
                 return null;
             }
 
+            @Override
             public Set<String> getKeywords() {
                 return words;
             }
 
+            @Override
             public String getName() {
                 return DefaultView.this.getSchema().getTypeName();
             }
 
+            @Override
             public URI getSchema() {
                 Name name = DefaultView.this.getSchema().getName();
                 URI namespace;
@@ -432,6 +447,7 @@ public class DefaultView implements SimpleFeatureSource {
                 }
             }
 
+            @Override
             public String getTitle() {
                 Name name = DefaultView.this.getSchema().getName();
                 return name.getLocalPart();
@@ -447,6 +463,7 @@ public class DefaultView implements SimpleFeatureSource {
      * @return Extent of this FeatureSource, or <code>null</code> if no optimizations exist.
      * @throws IOException If bounds of definitionQuery
      */
+    @Override
     public ReferencedEnvelope getBounds() throws IOException {
         if (constraintQuery.getCoordinateSystemReproject() == null) {
             if (constraintQuery.getFilter() == null
@@ -475,6 +492,7 @@ public class DefaultView implements SimpleFeatureSource {
      * @return Extend of Query or <code>null</code> if no optimization is available
      * @throws IOException If a problem is encountered with source
      */
+    @Override
     public ReferencedEnvelope getBounds(Query query) throws IOException {
         if (constraintQuery.getCoordinateSystemReproject() == null) {
             try {
@@ -503,6 +521,7 @@ public class DefaultView implements SimpleFeatureSource {
      * @param query User's query.
      * @return Number of Features for Query, or -1 if no optimization is available.
      */
+    @Override
     public int getCount(Query query) {
         try {
             query = makeDefinitionQuery(query);
@@ -516,10 +535,12 @@ public class DefaultView implements SimpleFeatureSource {
         }
     }
 
+    @Override
     public Set<RenderingHints.Key> getSupportedHints() {
         return source.getSupportedHints();
     }
 
+    @Override
     public QueryCapabilities getQueryCapabilities() {
         return source.getQueryCapabilities();
     }

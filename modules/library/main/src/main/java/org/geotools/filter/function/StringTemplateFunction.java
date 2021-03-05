@@ -88,26 +88,32 @@ public class StringTemplateFunction implements Function {
         }
     }
 
+    @Override
     public String getName() {
         return NAME.getName();
     }
 
+    @Override
     public FunctionName getFunctionName() {
         return NAME;
     }
 
+    @Override
     public List<Expression> getParameters() {
         return Collections.unmodifiableList(parameters);
     }
 
+    @Override
     public Object accept(ExpressionVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
 
+    @Override
     public Object evaluate(Object object) {
         return evaluate(object, Object.class);
     }
 
+    @Override
     public <T> T evaluate(Object object, Class<T> context) {
 
         // get the default value
@@ -176,6 +182,7 @@ public class StringTemplateFunction implements Function {
         }
     }
 
+    @Override
     public Literal getFallbackValue() {
         return fallback;
     }

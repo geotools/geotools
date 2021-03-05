@@ -285,6 +285,7 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
     }
 
     /** Returns the sequence of operations. */
+    @Override
     public List<SingleOperation> getOperations() {
         return operations;
     }

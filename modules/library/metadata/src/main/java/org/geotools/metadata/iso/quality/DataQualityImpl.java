@@ -73,6 +73,7 @@ public class DataQualityImpl extends MetadataEntity implements DataQuality {
     }
 
     /** The specific data to which the data quality information applies. */
+    @Override
     public Scope getScope() {
         return scope;
     }
@@ -88,6 +89,7 @@ public class DataQualityImpl extends MetadataEntity implements DataQuality {
      * if {@linkplain Scope#getLevel scope level} is {@linkplain
      * org.opengis.metadata.maintenance.ScopeCode#DATASET dataset}.
      */
+    @Override
     public Collection<Element> getReports() {
         return reports = nonNullCollection(reports, Element.class);
     }
@@ -106,6 +108,7 @@ public class DataQualityImpl extends MetadataEntity implements DataQuality {
      * Should be provided only if {@linkplain Scope#getLevel scope level} is {@linkplain
      * org.opengis.metadata.maintenance.ScopeCode#DATASET dataset}.
      */
+    @Override
     public Lineage getLineage() {
         return lineage;
     }

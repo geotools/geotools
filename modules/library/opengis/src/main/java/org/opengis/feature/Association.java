@@ -94,6 +94,7 @@ public interface Association extends Property {
      * @return AssociationDescriptor used to describe the relationship between two attributes;
      *     because two attributes are required the descriptor should not be null.
      */
+    @Override
     AssociationDescriptor getDescriptor();
 
     /**
@@ -103,6 +104,7 @@ public interface Association extends Property {
      *
      * @see Property#getType()
      */
+    @Override
     AssociationType getType();
 
     /**
@@ -110,6 +112,7 @@ public interface Association extends Property {
      *
      * @see Property#getValue()
      */
+    @Override
     Attribute getValue();
 
     /**
@@ -118,6 +121,7 @@ public interface Association extends Property {
      *
      * @throws IllegalArgumentException If <tt>newValue</tt> is not an attribute.
      */
+    @Override
     void setValue(Object newValue) throws IllegalArgumentException;
 
     /**

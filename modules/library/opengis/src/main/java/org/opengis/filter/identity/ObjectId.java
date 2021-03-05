@@ -27,6 +27,7 @@ import org.opengis.annotation.XmlElement;
 public interface ObjectId extends Identifier {
 
     /** The identifier value, which is a Long. */
+    @Override
     @XmlElement("id")
     Long getID();
 
@@ -36,5 +37,6 @@ public interface ObjectId extends Identifier {
      * @param obj Object to be tested.
      * @return <code>true</code> if a match, otherwise <code>false</code>
      */
+    @Override
     boolean matches(Object obj);
 }

@@ -263,6 +263,7 @@ class FIDSQuery extends Query {
      * @return {@link GeoTools#getDefaultHints()}
      * @see Query#getHints()
      */
+    @Override
     public Hints getHints() {
         return GeoTools.getDefaultHints();
     }

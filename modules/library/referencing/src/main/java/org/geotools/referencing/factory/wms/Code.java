@@ -131,6 +131,7 @@ final class Code {
     }
 
     /** Returns a string representation of this code. */
+    @Override
     public String toString() {
         return authority + ':' + code + ',' + longitude + ',' + latitude;
     }

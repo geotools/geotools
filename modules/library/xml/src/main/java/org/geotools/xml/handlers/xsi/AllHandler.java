@@ -46,6 +46,7 @@ public class AllHandler extends ElementGroupingHandler {
     private DefaultAll cache = null;
 
     /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
+    @Override
     public XSIElementHandler getHandler(String namespaceURI, String localName) {
         if (SchemaHandler.namespaceURI.equalsIgnoreCase(namespaceURI)) {
             // child types
@@ -71,6 +72,7 @@ public class AllHandler extends ElementGroupingHandler {
      * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String,
      *     org.xml.sax.Attributes)
      */
+    @Override
     public void startElement(String namespaceURI, String localName, Attributes atts) {
         id = atts.getValue("", "id");
 
@@ -103,6 +105,7 @@ public class AllHandler extends ElementGroupingHandler {
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
+    @Override
     public String getLocalName() {
         return LOCALNAME;
     }
@@ -111,6 +114,7 @@ public class AllHandler extends ElementGroupingHandler {
      * @see
      *     org.geotools.xml.XSIHandlers.ElementGroupingHandler#compress(org.geotools.xml.XSIHandlers.SchemaHandler)
      */
+    @Override
     protected ElementGrouping compress(SchemaHandler parent) throws SAXException {
 
         synchronized (this) {
@@ -137,6 +141,7 @@ public class AllHandler extends ElementGroupingHandler {
     }
 
     /** @see java.lang.Object#hashCode() */
+    @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return (LOCALNAME.hashCode() * ((id == null) ? 1 : id.hashCode()))
@@ -144,11 +149,13 @@ public class AllHandler extends ElementGroupingHandler {
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getHandlerType() */
+    @Override
     public int getHandlerType() {
         return DEFAULT;
     }
 
     /** @see org.geotools.xml.XSIElementHandler#endElement(java.lang.String, java.lang.String) */
+    @Override
     public void endElement(String namespaceURI, String localName) {
         // do nothing
     }
@@ -167,6 +174,7 @@ public class AllHandler extends ElementGroupingHandler {
         int minOccurs;
 
         /** @see org.geotools.xml.xsi.ElementGrouping#findChildElement(java.lang.String) */
+        @Override
         public Element findChildElement(String name) {
             if (elements == null) {
                 return null;
@@ -185,30 +193,36 @@ public class AllHandler extends ElementGroupingHandler {
         }
 
         /** @see org.geotools.xml.xsi.All#getElements() */
+        @Override
         public Element[] getElements() {
             return elements;
         }
 
         /** @see org.geotools.xml.xsi.All#getId() */
+        @Override
         public String getId() {
             return id;
         }
 
         /** @see org.geotools.xml.xsi.ElementGrouping#getMaxOccurs() */
+        @Override
         public int getMaxOccurs() {
             return maxOccurs;
         }
 
         /** @see org.geotools.xml.xsi.ElementGrouping#getMinOccurs() */
+        @Override
         public int getMinOccurs() {
             return minOccurs;
         }
 
         /** @see org.geotools.xml.xsi.ElementGrouping#getGrouping() */
+        @Override
         public int getGrouping() {
             return ALL;
         }
 
+        @Override
         public Element findChildElement(String localName, URI namespaceURI) {
             if (elements == null) {
                 return null;

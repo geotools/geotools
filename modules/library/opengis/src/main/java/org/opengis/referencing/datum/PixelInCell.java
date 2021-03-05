@@ -75,6 +75,7 @@ public final class PixelInCell extends CodeList<PixelInCell> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public PixelInCell[] family() {
         return values();
     }

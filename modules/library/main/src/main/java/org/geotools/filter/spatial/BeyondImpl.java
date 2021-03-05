@@ -40,6 +40,7 @@ public class BeyondImpl extends CartesianDistanceFilter implements Beyond {
         return !left.isWithinDistance(right, getDistance());
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

@@ -154,6 +154,7 @@ public class DirectPosition2D extends Point2D.Double
      *
      * @since 2.5
      */
+    @Override
     public DirectPosition getDirectPosition() {
         return this;
     }
@@ -165,6 +166,7 @@ public class DirectPosition2D extends Point2D.Double
      *
      * @return The coordinate reference system, or {@code null}.
      */
+    @Override
     public final CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return crs;
     }
@@ -185,6 +187,7 @@ public class DirectPosition2D extends Point2D.Double
      *
      * @return The dimensionality of this position.
      */
+    @Override
     public final int getDimension() {
         return 2;
     }
@@ -195,6 +198,7 @@ public class DirectPosition2D extends Point2D.Double
      *
      * @return The coordinates
      */
+    @Override
     public double[] getCoordinate() {
         return new double[] {x, y};
     }
@@ -207,6 +211,7 @@ public class DirectPosition2D extends Point2D.Double
      * @throws IndexOutOfBoundsException if the specified dimension is out of bounds.
      * @todo Provides a more detailled error message.
      */
+    @Override
     public final double getOrdinate(final int dimension) throws IndexOutOfBoundsException {
         switch (dimension) {
             case 0:
@@ -226,6 +231,7 @@ public class DirectPosition2D extends Point2D.Double
      * @throws IndexOutOfBoundsException if the specified dimension is out of bounds.
      * @todo Provides a more detailled error message.
      */
+    @Override
     public final void setOrdinate(int dimension, double value) throws IndexOutOfBoundsException {
         switch (dimension) {
             case 0:

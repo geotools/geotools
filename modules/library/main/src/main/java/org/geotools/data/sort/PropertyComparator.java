@@ -38,6 +38,7 @@ class PropertyComparator extends AbstractPropertyComparator {
         this.propertyName = propertyName;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     protected int compareAscending(SimpleFeature f1, SimpleFeature f2) {
         Comparable o1 = (Comparable) f1.getAttribute(propertyName);

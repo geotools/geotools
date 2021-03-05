@@ -46,6 +46,7 @@ public abstract class AbstractDirectPosition implements DirectPosition {
      *
      * @since 2.5
      */
+    @Override
     public DirectPosition getDirectPosition() {
         return this;
     }
@@ -77,6 +78,7 @@ public abstract class AbstractDirectPosition implements DirectPosition {
      *
      * @return The coordinates.
      */
+    @Override
     public double[] getCoordinate() {
         final double[] ordinates = new double[getDimension()];
         for (int i = 0; i < ordinates.length; i++) {

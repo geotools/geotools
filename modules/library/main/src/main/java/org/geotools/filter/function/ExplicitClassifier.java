@@ -46,6 +46,7 @@ public final class ExplicitClassifier extends Classifier {
         }
     }
 
+    @Override
     public int getSize() {
         return values.length;
     }
@@ -59,6 +60,7 @@ public final class ExplicitClassifier extends Classifier {
         return values[index];
     }
 
+    @Override
     public int classify(Object value) {
         for (int i = 0; i < values.length; i++) {
             if (values[i].contains(value)) {

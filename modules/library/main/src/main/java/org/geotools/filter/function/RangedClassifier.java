@@ -81,6 +81,7 @@ public final class RangedClassifier extends Classifier {
         return str;
     }
 
+    @Override
     public int getSize() {
         return Math.min(min.length, max.length);
     }
@@ -93,6 +94,7 @@ public final class RangedClassifier extends Classifier {
         return max[slot];
     }
 
+    @Override
     public int classify(Object value) {
         return classify((Comparable) value);
     }

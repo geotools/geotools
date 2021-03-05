@@ -69,10 +69,12 @@ public class ModuloFunction implements Function {
         this.fallback = fallback;
     }
 
+    @Override
     public Object evaluate(Object object) {
         return evaluate(object, functionName.getReturn().getType());
     }
 
+    @Override
     public <T> T evaluate(Object object, Class<T> context) {
         Expression dividendExpression = parameters.get(0);
         int dividend = dividendExpression.evaluate(object, Integer.class);
@@ -89,22 +91,27 @@ public class ModuloFunction implements Function {
         return Converters.convert(modulo, context);
     }
 
+    @Override
     public Object accept(ExpressionVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
 
+    @Override
     public String getName() {
         return functionName.getName();
     }
 
+    @Override
     public FunctionName getFunctionName() {
         return functionName;
     }
 
+    @Override
     public List<Expression> getParameters() {
         return Collections.unmodifiableList(parameters);
     }
 
+    @Override
     public Literal getFallbackValue() {
         return fallback;
     }

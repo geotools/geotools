@@ -168,6 +168,7 @@ public class GridCoverageTestBase extends CoverageTestBase {
                 private final GridCoverage2D[] cached = new GridCoverage2D[6];
 
                 /** Returns the number of available coverages which may be used as example. */
+                @Override
                 public int size() {
                     return cached.length;
                 }
@@ -178,6 +179,7 @@ public class GridCoverageTestBase extends CoverageTestBase {
                  * @param number The example number, from 0 inclusive to {@link #size()} exclusive.
                  * @return The "real world" grid coverage.
                  */
+                @Override
                 public synchronized GridCoverage2D get(final int number) {
                     GridCoverage2D coverage = cached[number];
                     if (coverage == null) {

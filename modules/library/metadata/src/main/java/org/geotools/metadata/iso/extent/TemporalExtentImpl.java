@@ -98,6 +98,7 @@ public class TemporalExtentImpl extends MetadataEntity implements TemporalExtent
      * @since 2.4
      */
     // No implementing class for {@linkplain org.opengis.temporal.TemporalPrimitive}
+    @Override
     public TemporalPrimitive getExtent() {
         return extent;
     }

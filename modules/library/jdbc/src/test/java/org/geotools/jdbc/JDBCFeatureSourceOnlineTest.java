@@ -60,6 +60,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     protected JDBCFeatureStore featureSource;
 
+    @Override
     protected void connect() throws Exception {
         super.connect();
 
@@ -521,6 +522,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         class TotalVisitor implements FeatureVisitor {
             int total = 0;
 
+            @Override
             public void visit(Feature feature) {
                 total++;
             }

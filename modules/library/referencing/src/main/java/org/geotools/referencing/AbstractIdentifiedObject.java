@@ -123,6 +123,7 @@ public class AbstractIdentifiedObject extends Formattable
         private static final long serialVersionUID = -6605097017814062198L;
 
         /** Compares the given identified objects for order. */
+        @Override
         public int compare(final IdentifiedObject o1, final IdentifiedObject o2) {
             return doCompare(o1.getName().getCode(), o2.getName().getCode());
         }
@@ -147,6 +148,7 @@ public class AbstractIdentifiedObject extends Formattable
         private static final long serialVersionUID = -7315726806679993522L;
 
         /** Compares the given identified objects for order. */
+        @Override
         @SuppressFBWarnings("NS_DANGEROUS_NON_SHORT_CIRCUIT")
         public int compare(final IdentifiedObject o1, final IdentifiedObject o2) {
             Collection<ReferenceIdentifier> a1 = o1.getIdentifiers();
@@ -186,6 +188,7 @@ public class AbstractIdentifiedObject extends Formattable
         private static final long serialVersionUID = -6675419613224162715L;
 
         /** Compares the given identified objects for order. */
+        @Override
         public int compare(final IdentifiedObject o1, final IdentifiedObject o2) {
             return doCompare(o1.getRemarks(), o2.getRemarks());
         }
@@ -558,6 +561,7 @@ public class AbstractIdentifiedObject extends Formattable
      *
      * @see #getName(Citation)
      */
+    @Override
     public ReferenceIdentifier getName() {
         return name;
     }
@@ -568,6 +572,7 @@ public class AbstractIdentifiedObject extends Formattable
      * @return The aliases, or an empty array if there is none.
      * @see #getName(Citation)
      */
+    @Override
     public Collection<GenericName> getAlias() {
         if (alias == null) {
             return Collections.emptySet();
@@ -582,6 +587,7 @@ public class AbstractIdentifiedObject extends Formattable
      * @return This object identifiers, or an empty array if there is none.
      * @see #getIdentifier(Citation)
      */
+    @Override
     public Set<ReferenceIdentifier> getIdentifiers() {
         if (identifiers == null) {
             return Collections.emptySet();
@@ -590,6 +596,7 @@ public class AbstractIdentifiedObject extends Formattable
     }
 
     /** Comments on or information about this object, including data source information. */
+    @Override
     public InternationalString getRemarks() {
         return remarks;
     }

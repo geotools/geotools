@@ -77,10 +77,12 @@ public class SubFeatureCollection extends BaseSimpleFeatureCollection {
         }
     }
 
+    @Override
     public SimpleFeatureIterator features() {
         return new FilteringSimpleFeatureIterator(collection.features(), filter());
     }
 
+    @Override
     public int size() {
         int count = 0;
         try (SimpleFeatureIterator i = features()) {
@@ -108,6 +110,7 @@ public class SubFeatureCollection extends BaseSimpleFeatureCollection {
         return Filter.INCLUDE;
     }
 
+    @Override
     public SimpleFeatureCollection subCollection(Filter filter) {
         if (filter.equals(Filter.INCLUDE)) {
             return this;
@@ -118,10 +121,12 @@ public class SubFeatureCollection extends BaseSimpleFeatureCollection {
         return new SubFeatureCollection(this, filter);
     }
 
+    @Override
     public SimpleFeatureCollection sort(SortBy order) {
         return new SubFeatureList(collection, filter, order);
     }
 
+    @Override
     public String getID() {
         return collection.getID();
     }

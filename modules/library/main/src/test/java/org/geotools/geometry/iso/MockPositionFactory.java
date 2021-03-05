@@ -38,6 +38,7 @@ public class MockPositionFactory implements PositionFactory {
         this.crs = crs;
     }
 
+    @Override
     public DirectPosition createDirectPosition() {
         return new MockDirectPosition();
     }
@@ -52,6 +53,7 @@ public class MockPositionFactory implements PositionFactory {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public DirectPosition createDirectPosition(double[] coordinates) {
         return new MockDirectPosition(coordinates);
     }
@@ -92,32 +94,39 @@ public class MockPositionFactory implements PositionFactory {
             coordinates = position.getCoordinate();
         }
 
+        @Override
         public CoordinateReferenceSystem getCoordinateReferenceSystem() {
             return crs;
         }
 
+        @Override
         public double[] getCoordinate() {
             double copy[] = new double[crs.getCoordinateSystem().getDimension()];
             System.arraycopy(coordinates, 0, copy, 0, getDimension());
             return copy;
         }
 
+        @Override
         public int getDimension() {
             return crs.getCoordinateSystem().getDimension();
         }
 
+        @Override
         public double getOrdinate(int dimension) throws IndexOutOfBoundsException {
             return coordinates[dimension];
         }
 
+        @Override
         public void setOrdinate(int dimension, double value) throws IndexOutOfBoundsException {
             coordinates[dimension] = value;
         }
 
+        @Override
         public DirectPosition getDirectPosition() {
             return this;
         }
 
+        @Override
         public MockDirectPosition clone() {
             return new MockDirectPosition(this);
         }

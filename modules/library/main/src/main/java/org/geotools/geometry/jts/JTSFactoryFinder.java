@@ -222,6 +222,7 @@ public class JTSFactoryFinder extends FactoryFinder {
          * @param hints The user requirements.
          * @return {@code true} if the {@code provider} meets the user requirements.
          */
+        @Override
         protected <T> boolean isAcceptable(
                 final T provider, final Class<T> category, final Hints hints) {
             if (GeometryFactory.class.isAssignableFrom(category)) {

@@ -64,10 +64,12 @@ public class DefaultDateAndTime extends DefaultTemporalPosition implements DateA
      * the unit used at the next lower level, and so on. All but the last number in the sequence
      * shall be integers; the last number may be integer or real.
      */
+    @Override
     public Number[] getClockTime() {
         return clockTime;
     }
 
+    @Override
     public InternationalString getCalendarEraName() {
         return calendarEraName;
     }
@@ -79,6 +81,7 @@ public class DefaultDateAndTime extends DefaultTemporalPosition implements DateA
      * format defined in ISO 8601 for dates in the Gregorian calendar may be used for any date that
      * is composed of values for year, month and day.
      */
+    @Override
     public int[] getCalendarDate() {
         return calendarDate;
     }

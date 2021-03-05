@@ -31,6 +31,7 @@ public interface Precision extends Comparable<Precision> {
      * @return a negative integer, zero, or a positive integer as this object is less than, equal
      *     to, or greater than the other.
      */
+    @Override
     int compareTo(Precision other);
 
     /**

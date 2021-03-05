@@ -51,6 +51,7 @@ public class RescaleToPixelsFunction extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
 
         String value = getExpression(0).evaluate(feature, String.class);

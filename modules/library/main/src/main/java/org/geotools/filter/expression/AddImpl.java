@@ -35,6 +35,7 @@ public class AddImpl extends MathExpressionImpl implements Add {
         super(expr1, expr2);
     }
 
+    @Override
     public Object evaluate(Object feature) throws IllegalArgumentException {
         ensureOperandsSet();
         Object eval1 = getExpression1().evaluate(feature);
@@ -49,6 +50,7 @@ public class AddImpl extends MathExpressionImpl implements Add {
         }
     }
 
+    @Override
     public Object accept(ExpressionVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
@@ -59,6 +61,7 @@ public class AddImpl extends MathExpressionImpl implements Add {
      * @param obj - the object to compare this expression against.
      * @return true if specified object is equal to this expression; false otherwise.
      */
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof AddImpl) {
             AddImpl other = (AddImpl) obj;
@@ -74,6 +77,7 @@ public class AddImpl extends MathExpressionImpl implements Add {
      *
      * @return a hash code value for this add expression.
      */
+    @Override
     public int hashCode() {
         int result = 23;
 
@@ -83,6 +87,7 @@ public class AddImpl extends MathExpressionImpl implements Add {
         return result;
     }
 
+    @Override
     public String toString() {
         return "(" + getExpression1().toString() + "+" + getExpression2().toString() + ")";
     }

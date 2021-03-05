@@ -44,10 +44,12 @@ public class MemoryFeatureReader implements FeatureReader<SimpleFeatureType, Sim
         iterator = internalCollection.iterator();
     }
 
+    @Override
     public SimpleFeatureType getFeatureType() {
         return featureType;
     }
 
+    @Override
     public SimpleFeature next()
             throws IOException, IllegalAttributeException, NoSuchElementException {
         if (iterator == null) {
@@ -61,10 +63,12 @@ public class MemoryFeatureReader implements FeatureReader<SimpleFeatureType, Sim
         }
     }
 
+    @Override
     public boolean hasNext() {
         return (iterator != null) && iterator.hasNext();
     }
 
+    @Override
     public void close() {
         if (iterator != null) {
             iterator = null;

@@ -497,6 +497,7 @@ public class ObliqueMercator extends MapProjection {
     }
 
     /** {@inheritDoc} */
+    @Override
     public ParameterDescriptorGroup getParameterDescriptors() {
         return (twoPoint) ? Provider_TwoPoint.PARAMETERS : Provider.PARAMETERS;
     }
@@ -526,6 +527,7 @@ public class ObliqueMercator extends MapProjection {
      * @param x The longitude of the coordinate, in <strong>radians</strong>.
      * @param y The latitude of the coordinate, in <strong>radians</strong>.
      */
+    @Override
     protected Point2D transformNormalized(double x, double y, Point2D ptDst)
             throws ProjectionException {
         double u, v;
@@ -561,6 +563,7 @@ public class ObliqueMercator extends MapProjection {
     }
 
     /** {@inheritDoc} */
+    @Override
     protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
             throws ProjectionException {
         double v = x * cosrot - y * sinrot;
@@ -793,6 +796,7 @@ public class ObliqueMercator extends MapProjection {
          * @return The created math transform.
          * @throws ParameterNotFoundException if a required parameter was not found.
          */
+        @Override
         protected MathTransform createMathTransform(final ParameterValueGroup parameters)
                 throws ParameterNotFoundException {
             final Collection<GeneralParameterDescriptor> descriptors = PARAMETERS.descriptors();

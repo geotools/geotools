@@ -43,6 +43,7 @@ public class ExponentialContrastMethodStrategy extends AbstractContrastMethodStr
         method = ContrastMethod.EXPONENTIAL;
     }
 
+    @Override
     public void addParameter(String key, Expression value) {
         if (!PARAM_NAMES.contains(key)) {
             LOGGER.log(

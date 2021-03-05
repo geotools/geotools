@@ -51,6 +51,7 @@ public class TemporalCapabilitiesImpl implements TemporalCapabilities {
         return new TemporalOperatorsImpl(operators.getOperators());
     }
 
+    @Override
     public TemporalOperators getTemporalOperators() {
         return temporalOperators;
     }

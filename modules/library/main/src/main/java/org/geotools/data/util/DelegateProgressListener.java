@@ -27,47 +27,58 @@ public class DelegateProgressListener implements org.opengis.util.ProgressListen
         this.delegate = progress;
     }
 
+    @Override
     public void started() {
         delegate.started();
     }
 
+    @Override
     public void complete() {
         delegate.complete();
     }
 
+    @Override
     public void dispose() {
         delegate.dispose();
         delegate = null;
     }
 
+    @Override
     public void exceptionOccurred(Throwable exception) {
         delegate.exceptionOccurred(exception);
     }
 
+    @Override
     public InternationalString getTask() {
         return delegate.getTask();
     }
 
+    @Override
     public boolean isCanceled() {
         return delegate.isCanceled();
     }
 
+    @Override
     public void progress(float progress) {
         delegate.progress(progress);
     }
 
+    @Override
     public float getProgress() {
         return delegate.getProgress();
     }
 
+    @Override
     public void setCanceled(boolean cancel) {
         delegate.setCanceled(cancel);
     }
 
+    @Override
     public void setTask(InternationalString task) {
         delegate.setTask(task);
     }
 
+    @Override
     public void warningOccurred(String source, String location, String warning) {
         delegate.warningOccurred(source, location, warning);
     }

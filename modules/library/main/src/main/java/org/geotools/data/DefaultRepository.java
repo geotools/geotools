@@ -57,6 +57,7 @@ public class DefaultRepository implements Repository {
         return access(new NameImpl(name));
     }
 
+    @Override
     public DataAccess<?, ?> access(Name name) {
         return repository.get(name);
     }
@@ -65,6 +66,7 @@ public class DefaultRepository implements Repository {
         return (DataStore) access(name);
     }
 
+    @Override
     public DataStore dataStore(Name name) {
         return (DataStore) access(name);
     }
@@ -248,6 +250,7 @@ public class DefaultRepository implements Repository {
         return new HashSet<>(repository.keySet());
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public List<DataStore> getDataStores() {
         List list = new ArrayList(repository.values());

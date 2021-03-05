@@ -466,6 +466,7 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
      * @param properties Name and other properties to give to the new object.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public synchronized EngineeringDatum createEngineeringDatum(final Map<String, ?> properties)
             throws FactoryException {
         return getDatumFactory().createEngineeringDatum(addAliases(properties));
@@ -479,6 +480,7 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
      * @param primeMeridian Prime meridian to use in new geodetic datum.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public synchronized GeodeticDatum createGeodeticDatum(
             final Map<String, ?> properties,
             final Ellipsoid ellipsoid,
@@ -496,6 +498,7 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
      *     attributes.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public synchronized ImageDatum createImageDatum(
             final Map<String, ?> properties, final PixelInCell pixelInCell)
             throws FactoryException {
@@ -509,6 +512,7 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
      * @param origin The date and time origin of this temporal datum.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public synchronized TemporalDatum createTemporalDatum(
             final Map<String, ?> properties, final Date origin) throws FactoryException {
         return getDatumFactory().createTemporalDatum(addAliases(properties), origin);
@@ -521,6 +525,7 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
      * @param type The type of this vertical datum (often geoidal).
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public synchronized VerticalDatum createVerticalDatum(
             final Map<String, ?> properties, final VerticalDatumType type) throws FactoryException {
         return getDatumFactory().createVerticalDatum(addAliases(properties), type);
@@ -535,6 +540,7 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
      * @param unit Linear units of ellipsoid axes.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public synchronized Ellipsoid createEllipsoid(
             final Map<String, ?> properties,
             final double semiMajorAxis,
@@ -554,6 +560,7 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
      * @param unit Linear units of major axis.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public synchronized Ellipsoid createFlattenedSphere(
             final Map<String, ?> properties,
             final double semiMajorAxis,
@@ -573,6 +580,7 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
      * @param angularUnit Angular units of longitude.
      * @throws FactoryException if the object creation failed.
      */
+    @Override
     public synchronized PrimeMeridian createPrimeMeridian(
             final Map<String, ?> properties, final double longitude, final Unit<Angle> angularUnit)
             throws FactoryException {

@@ -276,6 +276,7 @@ public class Ranks {
         }
 
         /** Compares this element with the specified one for order. */
+        @Override
         public int compareTo(final Any<T> other) {
             return value.compareTo(other.value);
         }
@@ -293,6 +294,7 @@ public class Ranks {
         }
 
         /** Compares this element with the specified one for order. */
+        @Override
         public int compareTo(final Double other) {
             return java.lang.Double.compare(value, other.value);
         }
@@ -310,6 +312,7 @@ public class Ranks {
         }
 
         /** Compares this element with the specified one for order. */
+        @Override
         public int compareTo(final Float other) {
             return java.lang.Float.compare(value, other.value);
         }
@@ -327,6 +330,7 @@ public class Ranks {
         }
 
         /** Compares this element with the specified one for order. */
+        @Override
         public int compareTo(final Long other) {
             return (value < other.value) ? -1 : ((value == other.value) ? 0 : 1);
         }
@@ -344,6 +348,7 @@ public class Ranks {
         }
 
         /** Compares this element with the specified one for order. */
+        @Override
         public int compareTo(final Integer other) {
             return (value < other.value) ? -1 : ((value == other.value) ? 0 : 1);
         }
@@ -361,6 +366,7 @@ public class Ranks {
         }
 
         /** Compares this element with the specified one for order. */
+        @Override
         public int compareTo(final Short other) {
             return (int) value - (int) other.value;
         }
@@ -378,6 +384,7 @@ public class Ranks {
         }
 
         /** Compares this element with the specified one for order. */
+        @Override
         public int compareTo(final Byte other) {
             return (int) value - (int) other.value;
         }

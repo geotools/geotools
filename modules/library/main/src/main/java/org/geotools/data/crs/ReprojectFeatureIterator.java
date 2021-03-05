@@ -97,6 +97,7 @@ public class ReprojectFeatureIterator implements Iterator<SimpleFeature>, Simple
      *
      * @see org.geotools.data.FeatureReader#next()
      */
+    @Override
     public SimpleFeature next() throws NoSuchElementException {
         if (reader == null) {
             throw new IllegalStateException("Reader has already been closed");
@@ -123,6 +124,7 @@ public class ReprojectFeatureIterator implements Iterator<SimpleFeature>, Simple
         return SimpleFeatureBuilder.build(schema, attributes, next.getID());
     }
 
+    @Override
     public void remove() {
         throw new UnsupportedOperationException("On the fly reprojection disables remove");
     }
@@ -133,6 +135,7 @@ public class ReprojectFeatureIterator implements Iterator<SimpleFeature>, Simple
      *
      * @see org.geotools.data.FeatureReader#hasNext()
      */
+    @Override
     public boolean hasNext() {
         if (reader == null) {
             throw new IllegalStateException("Reader has already been closed");
@@ -148,6 +151,7 @@ public class ReprojectFeatureIterator implements Iterator<SimpleFeature>, Simple
      *
      * @see org.geotools.data.FeatureReader#close()
      */
+    @Override
     public void close() {
         if (reader == null) {
             return;

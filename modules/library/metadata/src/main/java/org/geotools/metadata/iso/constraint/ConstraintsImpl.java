@@ -58,6 +58,7 @@ public class ConstraintsImpl extends MetadataEntity implements Constraints {
      * Returns the limitation affecting the fitness for use of the resource. Example, "not to be
      * used for navigation".
      */
+    @Override
     public Collection<InternationalString> getUseLimitation() {
         return (useLimitation = nonNullCollection(useLimitation, InternationalString.class));
     }

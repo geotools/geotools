@@ -71,6 +71,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     protected TestData td;
     protected boolean forceLongitudeFirst = false;
 
+    @Override
     protected void connect() throws Exception {
         super.connect();
 
@@ -97,6 +98,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Override
     protected abstract JDBCDataStoreAPITestSetup createTestSetup();
 
     public void testGetFeatureTypes() {

@@ -85,11 +85,13 @@ public class Invert extends BaseMathOperationJAI {
         super(INVERT, getOperationDescriptor(JAIExt.getOperationName(INVERT)));
     }
 
+    @Override
     public String getName() {
         return INVERT;
     }
 
     /** Returns the expected range of values for the resulting image. */
+    @Override
     protected NumberRange<? extends Number> deriveRange(
             final NumberRange<? extends Number>[] ranges, final Parameters parameters) {
         final NumberRange range = ranges[0];
@@ -98,6 +100,7 @@ public class Invert extends BaseMathOperationJAI {
         return NumberRange.create(min, max);
     }
 
+    @Override
     protected void handleJAIEXTParams(
             ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
         if (JAIExt.isJAIExtOperation(ALGEBRIC)) {
@@ -111,6 +114,7 @@ public class Invert extends BaseMathOperationJAI {
         }
     }
 
+    @Override
     protected Map<String, ?> getProperties(
             RenderedImage data,
             CoordinateReferenceSystem crs,

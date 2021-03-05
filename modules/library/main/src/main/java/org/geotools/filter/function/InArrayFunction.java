@@ -39,6 +39,7 @@ public class InArrayFunction extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Object candidate = getExpression(0).evaluate(feature);
         Object[] array = getExpression(1).evaluate(feature, Object[].class);

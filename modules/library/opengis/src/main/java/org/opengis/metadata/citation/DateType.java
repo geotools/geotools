@@ -66,6 +66,7 @@ public final class DateType extends CodeList<DateType> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public DateType[] family() {
         return values();
     }

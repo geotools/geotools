@@ -98,6 +98,7 @@ public class ReferencingFactory extends AbstractFactory implements Factory {
      *
      * @return The vendor for this factory implementation.
      */
+    @Override
     public Citation getVendor() {
         return Citations.GEOTOOLS;
     }

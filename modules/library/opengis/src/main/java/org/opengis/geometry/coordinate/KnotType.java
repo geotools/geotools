@@ -71,6 +71,7 @@ public class KnotType extends CodeList<KnotType> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public KnotType[] family() {
         return values();
     }

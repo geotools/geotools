@@ -26,6 +26,7 @@ import org.opengis.annotation.UML;
 @UML(identifier = "GM_TriangulatedSurface", specification = ISO_19107)
 public interface TriangulatedSurface extends PolyhedralSurface {
     /** Associates this surface with its individual triangles. */
+    @Override
     @UML(identifier = "patch", obligation = MANDATORY, specification = ISO_19107)
     List<Triangle> getPatches();
 }

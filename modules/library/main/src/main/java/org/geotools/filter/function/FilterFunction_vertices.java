@@ -43,6 +43,7 @@ public class FilterFunction_vertices extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public <T> T evaluate(Object feature, Class<T> context) {
         Geometry g = getExpression(0).evaluate(feature, Geometry.class);
         if (g == null) return null;
@@ -55,6 +56,7 @@ public class FilterFunction_vertices extends FunctionExpressionImpl {
     static class MultiPointExtractor implements CoordinateFilter {
         List<Coordinate> coordinates = new ArrayList<>();
 
+        @Override
         public void filter(Coordinate c) {
             coordinates.add(c);
         }

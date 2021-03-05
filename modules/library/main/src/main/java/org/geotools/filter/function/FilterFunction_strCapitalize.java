@@ -36,6 +36,7 @@ public class FilterFunction_strCapitalize extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         String arg0;
 

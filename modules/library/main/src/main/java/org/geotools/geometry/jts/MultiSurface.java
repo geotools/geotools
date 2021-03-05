@@ -44,10 +44,12 @@ public class MultiSurface extends MultiPolygon implements MultiCurvedGeometry<Mu
         this.tolerance = tolerance;
     }
 
+    @Override
     public MultiPolygon linearize() {
         return linearize(tolerance);
     }
 
+    @Override
     public MultiPolygon linearize(double tolerance) {
         int numGeometries = getNumGeometries();
         Polygon[] linearized = new Polygon[numGeometries];
@@ -64,6 +66,7 @@ public class MultiSurface extends MultiPolygon implements MultiCurvedGeometry<Mu
         return getFactory().createMultiPolygon(linearized);
     }
 
+    @Override
     public String toCurvedText() {
         StringBuilder sb = new StringBuilder("MULTISURFACE ");
         int numGeometries = getNumGeometries();

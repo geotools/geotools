@@ -37,30 +37,37 @@ public abstract class AbstractManageableDataSource implements ManageableDataSour
         this.wrapped = wrapped;
     }
 
+    @Override
     public Connection getConnection() throws SQLException {
         return wrapped.getConnection();
     }
 
+    @Override
     public Connection getConnection(String username, String password) throws SQLException {
         return wrapped.getConnection(username, password);
     }
 
+    @Override
     public int getLoginTimeout() throws SQLException {
         return wrapped.getLoginTimeout();
     }
 
+    @Override
     public PrintWriter getLogWriter() throws SQLException {
         return wrapped.getLogWriter();
     }
 
+    @Override
     public void setLoginTimeout(int seconds) throws SQLException {
         wrapped.setLoginTimeout(seconds);
     }
 
+    @Override
     public void setLogWriter(PrintWriter out) throws SQLException {
         wrapped.setLogWriter(out);
     }
 
+    @Override
     public boolean isWrapperFor(Class c) throws SQLException {
         return false;
     }
@@ -70,6 +77,7 @@ public abstract class AbstractManageableDataSource implements ManageableDataSour
         throw new SQLException("This implementation cannot unwrap anything");
     }
 
+    @Override
     public Logger getParentLogger() throws SQLFeatureNotSupportedException {
         throw new SQLFeatureNotSupportedException();
     }

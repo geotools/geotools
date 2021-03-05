@@ -48,6 +48,7 @@ public interface OrientableSurface extends OrientablePrimitive {
      *
      * @return The sets of positions on the boundary.
      */
+    @Override
     @UML(identifier = "boundary", obligation = MANDATORY, specification = ISO_19107)
     SurfaceBoundary getBoundary();
 
@@ -59,6 +60,7 @@ public interface OrientableSurface extends OrientablePrimitive {
      * @see Surface#getProxy
      * @issue http://jira.codehaus.org/browse/GEO-63
      */
+    @Override
     @Association("Oriented")
     @UML(identifier = "primitive", obligation = OPTIONAL, specification = ISO_19107)
     Surface getPrimitive();
@@ -73,6 +75,7 @@ public interface OrientableSurface extends OrientablePrimitive {
      * @see CompositeSurface#getGenerators
      * @issue http://jira.codehaus.org/browse/GEO-63
      */
+    @Override
     @Association("Composition")
     @UML(identifier = "composite", obligation = OPTIONAL, specification = ISO_19107)
     CompositeSurface getComposite();

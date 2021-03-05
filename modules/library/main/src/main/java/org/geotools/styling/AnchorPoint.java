@@ -33,6 +33,7 @@ public interface AnchorPoint extends org.opengis.style.AnchorPoint {
      *
      * @return the expression which represents the X coordinate
      */
+    @Override
     Expression getAnchorPointX();
 
     static final AnchorPoint DEFAULT =
@@ -41,27 +42,33 @@ public interface AnchorPoint extends org.opengis.style.AnchorPoint {
                     throw new UnsupportedOperationException("Constant Stroke may not be modified");
                 }
 
+                @Override
                 public void setAnchorPointX(Expression x) {
                     cannotModifyConstant();
                 }
 
+                @Override
                 public void setAnchorPointY(Expression y) {
                     cannotModifyConstant();
                 }
 
+                @Override
                 public void accept(org.geotools.styling.StyleVisitor visitor) {
                     cannotModifyConstant();
                 }
 
+                @Override
                 public Object accept(org.opengis.style.StyleVisitor visitor, Object data) {
                     cannotModifyConstant();
                     return null;
                 }
 
+                @Override
                 public Expression getAnchorPointX() {
                     return ConstantExpression.constant(0.5);
                 }
 
+                @Override
                 public Expression getAnchorPointY() {
                     return ConstantExpression.constant(0.5);
                 }

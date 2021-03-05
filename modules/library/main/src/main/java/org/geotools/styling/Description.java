@@ -27,6 +27,7 @@ public interface Description extends org.opengis.style.Description {
      *
      * @return the human readable title.
      */
+    @Override
     InternationalString getTitle();
 
     void setTitle(InternationalString title);
@@ -35,6 +36,7 @@ public interface Description extends org.opengis.style.Description {
     void setTitle(String title);
 
     /** Human readable description. */
+    @Override
     InternationalString getAbstract();
 
     void setAbstract(InternationalString description);

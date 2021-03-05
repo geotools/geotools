@@ -45,6 +45,7 @@ public class AttributeTypeImpl extends PropertyTypeImpl implements AttributeType
         this.identified = identified;
     }
 
+    @Override
     public boolean isIdentified() {
         return identified;
     }
@@ -69,11 +70,13 @@ public class AttributeTypeImpl extends PropertyTypeImpl implements AttributeType
         return null;
     }
 
+    @Override
     public AttributeType getSuper() {
         return (AttributeType) super.getSuper();
     }
 
     /** Override of hashcode. */
+    @Override
     public int hashCode() {
         return super.hashCode() ^ Boolean.valueOf(identified).hashCode();
     }
@@ -84,6 +87,7 @@ public class AttributeTypeImpl extends PropertyTypeImpl implements AttributeType
      * @param other the object to be tested for equality.
      * @return whether other is equal to this attribute Type.
      */
+    @Override
     public boolean equals(Object other) {
         if (this == other) return true;
 
@@ -102,6 +106,7 @@ public class AttributeTypeImpl extends PropertyTypeImpl implements AttributeType
         return true;
     }
 
+    @Override
     public String toString() {
         StringBuffer sb = new StringBuffer(Classes.getShortClassName(this));
         sb.append(" ");

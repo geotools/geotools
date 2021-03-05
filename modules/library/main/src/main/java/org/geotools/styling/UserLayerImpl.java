@@ -74,64 +74,79 @@ public class UserLayerImpl extends StyledLayerImpl implements UserLayer {
     List<Style> styles = new ArrayList<>();
     List<FeatureTypeConstraint> constraints = new ArrayList<>();
 
+    @Override
     public RemoteOWS getRemoteOWS() {
         return remoteOWS;
     }
 
+    @Override
     public DataStore getInlineFeatureDatastore() {
         return inlineFeatureDatastore;
     }
 
+    @Override
     public SimpleFeatureType getInlineFeatureType() {
         return inlineFeatureType;
     }
 
+    @Override
     public void setInlineFeatureDatastore(DataStore store) {
         inlineFeatureDatastore = store;
     }
 
+    @Override
     public void setInlineFeatureType(SimpleFeatureType ft) {
         inlineFeatureType = ft;
     }
 
+    @Override
     public void setRemoteOWS(RemoteOWS service) {
         this.remoteOWS = service;
     }
 
+    @Override
     public List<FeatureTypeConstraint> layerFeatureConstraints() {
         return constraints;
     }
 
+    @Override
     public FeatureTypeConstraint[] getLayerFeatureConstraints() {
         return constraints.toArray(new FeatureTypeConstraint[0]);
     }
 
+    @Override
     public void setLayerFeatureConstraints(FeatureTypeConstraint[] array) {
         this.constraints.clear();
         this.constraints.addAll(Arrays.asList(array));
     }
 
+    @Override
     public List<Style> userStyles() {
         return styles;
     }
 
+    @Override
     public Style[] getUserStyles() {
         return styles.toArray(new Style[0]);
     }
 
+    @Override
     public void setUserStyles(Style[] styles) {
         this.styles.clear();
         this.styles.addAll(Arrays.asList(styles));
     }
 
+    @Override
     public void addUserStyle(Style style) {
         styles.add(style);
     }
 
+    @Override
     public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
 
+    @Override
     public boolean equals(Object oth) {
         if (this == oth) {
             return true;

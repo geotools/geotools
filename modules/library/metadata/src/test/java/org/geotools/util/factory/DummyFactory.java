@@ -52,6 +52,7 @@ public interface DummyFactory extends InternalFactory {
             return "#1";
         }
 
+        @Override
         public Map<RenderingHints.Key, ?> getImplementationHints() {
             return Collections.singletonMap(
                     Hints.KEY_INTERPOLATION, Hints.VALUE_INTERPOLATION_BILINEAR);
@@ -65,6 +66,7 @@ public interface DummyFactory extends InternalFactory {
             return "#2";
         }
 
+        @Override
         public Map<RenderingHints.Key, ?> getImplementationHints() {
             final RenderingHints.Key key = INTERNAL_FACTORY;
             return Collections.singletonMap(key, new Example1());
@@ -80,6 +82,7 @@ public interface DummyFactory extends InternalFactory {
             return "#3";
         }
 
+        @Override
         public Map<RenderingHints.Key, ?> getImplementationHints() {
             final RenderingHints.Key key = INTERNAL_FACTORY;
             return Collections.singletonMap(key, new Example2());
@@ -96,6 +99,7 @@ public interface DummyFactory extends InternalFactory {
             return "#4";
         }
 
+        @Override
         public Map<RenderingHints.Key, ?> getImplementationHints() {
             return Collections.singletonMap(
                     Hints.KEY_INTERPOLATION, Hints.VALUE_INTERPOLATION_BICUBIC);
@@ -124,6 +128,7 @@ public interface DummyFactory extends InternalFactory {
             return "#5";
         }
 
+        @Override
         public Map<RenderingHints.Key, ?> getImplementationHints() {
             return Collections.singletonMap(Hints.KEY_INTERPOLATION, value);
         }

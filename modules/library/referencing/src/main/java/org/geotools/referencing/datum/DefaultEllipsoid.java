@@ -314,6 +314,7 @@ public class DefaultEllipsoid extends AbstractIdentifiedObject implements Ellips
      *
      * @return The axis linear unit.
      */
+    @Override
     public Unit<Length> getAxisUnit() {
         return unit;
     }
@@ -324,6 +325,7 @@ public class DefaultEllipsoid extends AbstractIdentifiedObject implements Ellips
      *
      * @return Length of semi-major axis.
      */
+    @Override
     public double getSemiMajorAxis() {
         return semiMajorAxis;
     }
@@ -334,6 +336,7 @@ public class DefaultEllipsoid extends AbstractIdentifiedObject implements Ellips
      *
      * @return Length of semi-minor axis.
      */
+    @Override
     public double getSemiMinorAxis() {
         return semiMinorAxis;
     }
@@ -362,6 +365,7 @@ public class DefaultEllipsoid extends AbstractIdentifiedObject implements Ellips
      *
      * @return The inverse flattening value.
      */
+    @Override
     public double getInverseFlattening() {
         return inverseFlattening;
     }
@@ -376,6 +380,7 @@ public class DefaultEllipsoid extends AbstractIdentifiedObject implements Ellips
      *     definitive, or {@code false} if the {@linkplain #getSemiMinorAxis polar radius} is
      *     definitive.
      */
+    @Override
     public boolean isIvfDefinitive() {
         return ivfDefinitive;
     }
@@ -387,6 +392,7 @@ public class DefaultEllipsoid extends AbstractIdentifiedObject implements Ellips
      *
      * @return {@code true} if the ellipsoid is degenerate and is actually a sphere.
      */
+    @Override
     public boolean isSphere() {
         return semiMajorAxis == semiMinorAxis;
     }

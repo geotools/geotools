@@ -23,5 +23,6 @@ public interface AssociationDescriptor extends PropertyDescriptor {
      *
      * @see PropertyDescriptor#getType()
      */
+    @Override
     AssociationType getType();
 }

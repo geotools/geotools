@@ -67,16 +67,19 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         filterFactory = factory;
     }
 
+    @Override
     public AnchorPoint anchorPoint(Expression x, Expression y) {
         return new AnchorPointImpl(filterFactory, x, y);
     }
 
+    @Override
     public ChannelSelection channelSelection(org.opengis.style.SelectedChannelType gray) {
         ChannelSelectionImpl channelSelection = new ChannelSelectionImpl();
         channelSelection.setGrayChannel(gray);
         return channelSelection;
     }
 
+    @Override
     public ChannelSelectionImpl channelSelection(
             org.opengis.style.SelectedChannelType red,
             org.opengis.style.SelectedChannelType green,
@@ -86,6 +89,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return channelSelection;
     }
 
+    @Override
     public ColorMapImpl colorMap(Expression propertyName, Expression... mapping) {
         Expression[] arguments = new Expression[mapping.length + 2];
         arguments[0] = propertyName;
@@ -98,6 +102,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return colorMap;
     }
 
+    @Override
     public ColorReplacementImpl colorReplacement(Expression propertyName, Expression... mapping) {
         Expression[] arguments = new Expression[mapping.length + 2];
         arguments[0] = propertyName;
@@ -110,6 +115,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return colorMap;
     }
 
+    @Override
     public ContrastEnhancementImpl contrastEnhancement(Expression gamma, String method) {
         ContrastMethod meth = ContrastMethod.NONE;
         if (ContrastMethod.NORMALIZE.matches(method)) {
@@ -124,23 +130,28 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return new ContrastEnhancementImpl(filterFactory, gamma, meth);
     }
 
+    @Override
     public ContrastEnhancementImpl contrastEnhancement(Expression gamma, ContrastMethod method) {
         return new ContrastEnhancementImpl(filterFactory, gamma, method);
     }
 
+    @Override
     public DescriptionImpl description(InternationalString title, InternationalString description) {
         return new DescriptionImpl(title, description);
     }
 
+    @Override
     public DisplacementImpl displacement(Expression dx, Expression dy) {
         return new DisplacementImpl(dx, dy);
     }
 
+    @Override
     public ExternalGraphic externalGraphic(Icon inline, Collection<ColorReplacement> replacements) {
         ExternalGraphic externalGraphic = new ExternalGraphicImpl(inline, replacements, null);
         return externalGraphic;
     }
 
+    @Override
     public ExternalGraphic externalGraphic(
             OnLineResource resource, String format, Collection<ColorReplacement> replacements) {
         ExternalGraphic externalGraphic = new ExternalGraphicImpl(null, replacements, resource);
@@ -148,14 +159,17 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return externalGraphic;
     }
 
+    @Override
     public ExternalMarkImpl externalMark(Icon inline) {
         return new ExternalMarkImpl(inline);
     }
 
+    @Override
     public ExternalMarkImpl externalMark(OnLineResource resource, String format, int markIndex) {
         return new ExternalMarkImpl(resource, format, markIndex);
     }
 
+    @Override
     public FeatureTypeStyleImpl featureTypeStyle(
             String name,
             Description description,
@@ -186,6 +200,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return featureTypeStyle;
     }
 
+    @Override
     public FillImpl fill(GraphicFill graphicFill, Expression color, Expression opacity) {
         FillImpl fill = new FillImpl(filterFactory);
         fill.setGraphicFill(graphicFill);
@@ -194,6 +209,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return fill;
     }
 
+    @Override
     public FontImpl font(
             List<Expression> family, Expression style, Expression weight, Expression size) {
         FontImpl font = new FontImpl();
@@ -205,6 +221,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return font;
     }
 
+    @Override
     public GraphicImpl graphic(
             List<GraphicalSymbol> symbols,
             Expression opacity,
@@ -231,6 +248,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return graphic;
     }
 
+    @Override
     public GraphicImpl graphicFill(
             List<GraphicalSymbol> symbols,
             Expression opacity,
@@ -258,6 +276,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return graphicFill;
     }
 
+    @Override
     public GraphicImpl graphicLegend(
             List<GraphicalSymbol> symbols,
             Expression opacity,
@@ -284,6 +303,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return graphicLegend;
     }
 
+    @Override
     public GraphicImpl graphicStroke(
             List<GraphicalSymbol> symbols,
             Expression opacity,
@@ -314,6 +334,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return graphicStroke;
     }
 
+    @Override
     public HaloImpl halo(org.opengis.style.Fill fill, Expression radius) {
         HaloImpl halo = new HaloImpl();
         halo.setFill(fill);
@@ -322,6 +343,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return halo;
     }
 
+    @Override
     public LinePlacementImpl linePlacement(
             Expression offset,
             Expression initialGap,
@@ -340,6 +362,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return placement;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public LineSymbolizerImpl lineSymbolizer(
             String name,
@@ -358,6 +381,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return copy;
     }
 
+    @Override
     public MarkImpl mark(
             Expression wellKnownName,
             org.opengis.style.Fill fill,
@@ -371,6 +395,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return mark;
     }
 
+    @Override
     public MarkImpl mark(
             ExternalMark externalMark,
             org.opengis.style.Fill fill,
@@ -383,6 +408,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return mark;
     }
 
+    @Override
     public PointPlacementImpl pointPlacement(
             org.opengis.style.AnchorPoint anchor,
             org.opengis.style.Displacement displacement,
@@ -394,6 +420,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return pointPlacment;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public PointSymbolizerImpl pointSymbolizer(
             String name,
@@ -410,6 +437,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return copy;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public PolygonSymbolizerImpl polygonSymbolizer(
             String name,
@@ -432,6 +460,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return polygonSymbolizer;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public RasterSymbolizerImpl rasterSymbolizer(
             String name,
@@ -464,6 +493,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return rasterSymbolizer;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public ExtensionSymbolizer extensionSymbolizer(
             String name,
@@ -501,6 +531,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return null; // must be some new extension?
     }
 
+    @Override
     public RuleImpl rule(
             String name,
             Description description,
@@ -529,6 +560,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return rule;
     }
 
+    @Override
     public SelectedChannelTypeImpl selectedChannelType(
             Expression channelName, org.opengis.style.ContrastEnhancement contrastEnhancement) {
         SelectedChannelTypeImpl selectedChannelType = new SelectedChannelTypeImpl(filterFactory);
@@ -537,6 +569,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return selectedChannelType;
     }
 
+    @Override
     public SelectedChannelTypeImpl selectedChannelType(
             String channelName, org.opengis.style.ContrastEnhancement contrastEnhancement) {
         SelectedChannelTypeImpl selectedChannelType = new SelectedChannelTypeImpl(filterFactory);
@@ -545,6 +578,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return selectedChannelType;
     }
 
+    @Override
     public ShadedReliefImpl shadedRelief(Expression reliefFactor, boolean brightnessOnly) {
         ShadedReliefImpl shadedRelief = new ShadedReliefImpl(filterFactory);
         shadedRelief.setReliefFactor(reliefFactor);
@@ -552,6 +586,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return shadedRelief;
     }
 
+    @Override
     public StrokeImpl stroke(
             Expression color,
             Expression opacity,
@@ -571,6 +606,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return stroke;
     }
 
+    @Override
     public StrokeImpl stroke(
             GraphicFill fill,
             Expression color,
@@ -592,6 +628,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return stroke;
     }
 
+    @Override
     public StrokeImpl stroke(
             GraphicStroke stroke,
             Expression color,
@@ -614,6 +651,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return s;
     }
 
+    @Override
     public StyleImpl style(
             String name,
             Description description,
@@ -633,6 +671,7 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         return style;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public TextSymbolizerImpl textSymbolizer(
             String name,

@@ -53,6 +53,7 @@ public class FunctionFactoryTest {
         ffIteratorProvider =
                 new FactoryIteratorProvider() {
 
+                    @Override
                     public <T> Iterator<T> iterator(Class<T> category) {
 
                         if (FunctionFactory.class == category) {
@@ -60,6 +61,7 @@ public class FunctionFactoryTest {
                             l.add(
                                     new FunctionFactory() {
 
+                                        @Override
                                         @SuppressWarnings("unchecked")
                                         public List<FunctionName> getFunctionNames() {
                                             return Arrays.asList(
@@ -67,6 +69,7 @@ public class FunctionFactoryTest {
                                                             "foo", new String[] {"bar", "baz"}));
                                         }
 
+                                        @Override
                                         public Function function(
                                                 String name,
                                                 List<Expression> args,
@@ -74,6 +77,7 @@ public class FunctionFactoryTest {
                                             return function(new NameImpl(name), args, fallback);
                                         }
 
+                                        @Override
                                         public Function function(
                                                 Name name,
                                                 List<Expression> args,

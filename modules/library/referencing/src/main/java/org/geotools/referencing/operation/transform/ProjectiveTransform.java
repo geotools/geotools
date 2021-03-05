@@ -338,6 +338,7 @@ public class ProjectiveTransform extends AbstractMathTransform
      *     destination array. The source and destination array sections can be overlaps.
      * @param numPts The number of points to be transformed
      */
+    @Override
     public void transform(
             double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
         final int inputDimension = numCol - 1; // The last ordinate will be assumed equals to 1.
@@ -399,6 +400,7 @@ public class ProjectiveTransform extends AbstractMathTransform
     }
 
     /** Returns a copy of the matrix. */
+    @Override
     public Matrix getMatrix() {
         return getGeneralMatrix();
     }
@@ -409,11 +411,13 @@ public class ProjectiveTransform extends AbstractMathTransform
     }
 
     /** Gets the dimension of input points. */
+    @Override
     public int getSourceDimensions() {
         return numCol - 1;
     }
 
     /** Gets the dimension of output points. */
+    @Override
     public int getTargetDimensions() {
         return numRow - 1;
     }
@@ -443,6 +447,7 @@ public class ProjectiveTransform extends AbstractMathTransform
      *
      * @since 2.4
      */
+    @Override
     public boolean isIdentity(double tolerance) {
         tolerance = Math.abs(tolerance);
         if (numRow != numCol) {
@@ -594,6 +599,7 @@ public class ProjectiveTransform extends AbstractMathTransform
          * @return The created math transform.
          * @throws ParameterNotFoundException if a required parameter was not found.
          */
+        @Override
         protected MathTransform createMathTransform(final ParameterValueGroup values)
                 throws ParameterNotFoundException {
             final MathTransform transform =
@@ -676,6 +682,7 @@ public class ProjectiveTransform extends AbstractMathTransform
          * @return The created math transform.
          * @throws ParameterNotFoundException if a required parameter was not found.
          */
+        @Override
         protected MathTransform createMathTransform(final ParameterValueGroup values)
                 throws ParameterNotFoundException {
             final double offset = doubleValue(OFFSET, values);

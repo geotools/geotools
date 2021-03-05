@@ -352,6 +352,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      * version in the {@linkplain Citation#getEdition edition} attribute, together with the
      * {@linkplain Citation#getEditionDate edition date}.
      */
+    @Override
     public synchronized Citation getAuthority() {
         if (authority == null)
             try {
@@ -461,6 +462,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      *     set.
      * @throws FactoryException if access to the underlying database failed.
      */
+    @Override
     protected synchronized Set<String> generateAuthorityCodes(final Class type)
             throws FactoryException {
         Set<String> result = new HashSet<>();
@@ -482,6 +484,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      * @throws NoSuchAuthorityCodeException if the specified {@code code} was not found.
      * @throws FactoryException if the query failed for some other reason.
      */
+    @Override
     public InternationalString getDescriptionText(final String code) throws FactoryException {
         IdentifiedObject identifiedObject = createObject(code);
         final Identifier identifier = identifiedObject.getName();
@@ -798,6 +801,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      * @throws FactoryException if some other kind of failure occured in the backing store. This
      *     exception usually have {@link SQLException} as its cause.
      */
+    @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public synchronized IdentifiedObject generateObject(final String code) throws FactoryException {
         ensureNonNull("code", code);
@@ -924,6 +928,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      * @throws FactoryException if some other kind of failure occured in the backing store. This
      *     exception usually have {@link SQLException} as its cause.
      */
+    @Override
     public synchronized Unit<?> generateUnit(final String code) throws FactoryException {
         ensureNonNull("code", code);
         Unit<?> returnValue = null;
@@ -982,6 +987,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      * @throws FactoryException if some other kind of failure occured in the backing store. This
      *     exception usually have {@link SQLException} as its cause.
      */
+    @Override
     public synchronized Ellipsoid generateEllipsoid(final String code) throws FactoryException {
         ensureNonNull("code", code);
         Ellipsoid returnValue = null;
@@ -1080,6 +1086,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      * @throws FactoryException if some other kind of failure occured in the backing store. This
      *     exception usually have {@link SQLException} as its cause.
      */
+    @Override
     public synchronized PrimeMeridian generatePrimeMeridian(final String code)
             throws FactoryException {
         ensureNonNull("code", code);
@@ -1337,6 +1344,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      * @todo Current implementation maps all "vertical" datum to {@link VerticalDatumType#GEOIDAL}.
      *     We don't know yet how to maps the exact vertical datum type from the EPSG database.
      */
+    @Override
     public synchronized Datum generateDatum(final String code) throws FactoryException {
         ensureNonNull("code", code);
         Datum returnValue = null;
@@ -1484,6 +1492,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      * @throws NoSuchAuthorityCodeException if the specified {@code code} was not found.
      * @throws FactoryException if the object creation failed for some other reason.
      */
+    @Override
     public synchronized CoordinateSystemAxis generateCoordinateSystemAxis(final String code)
             throws FactoryException {
         ensureNonNull("code", code);
@@ -1595,6 +1604,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      * @throws FactoryException if some other kind of failure occured in the backing store. This
      *     exception usually have {@link SQLException} as its cause.
      */
+    @Override
     public synchronized CoordinateSystem generateCoordinateSystem(final String code)
             throws FactoryException {
         ensureNonNull("code", code);
@@ -1741,6 +1751,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      * @throws FactoryException if some other kind of failure occured in the backing store. This
      *     exception usually have {@link SQLException} as its cause.
      */
+    @Override
     public synchronized CoordinateReferenceSystem generateCoordinateReferenceSystem(
             final String code) throws FactoryException {
         ensureNonNull("code", code);
@@ -2333,6 +2344,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      * @throws FactoryException if some other kind of failure occured in the backing store. This
      *     exception usually have {@link SQLException} as its cause.
      */
+    @Override
     public synchronized CoordinateOperation generateCoordinateOperation(final String code)
             throws FactoryException {
         ensureNonNull("code", code);
@@ -2652,6 +2664,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      *     yet how to instruct Access to put null values last using standard SQL ("IIF" is not
      *     standard, and Access doesn't seem to understand "CASE ... THEN" clauses).
      */
+    @Override
     public synchronized Set generateFromCoordinateReferenceSystemCodes(
             final String sourceCode, final String targetCode) throws FactoryException {
         ensureNonNull("sourceCode", sourceCode);
@@ -3380,6 +3393,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
         }
 
         /** Count the number of elements in the underlying result set. */
+        @Override
         public synchronized int size() {
             if (size >= 0) {
                 return size;
@@ -3424,6 +3438,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
          * Returns an iterator over the codes. The iterator is backed by a living {@link ResultSet},
          * which will be closed as soon as the iterator reach the last element.
          */
+        @Override
         public synchronized java.util.Iterator<String> iterator() {
             try {
                 final Iterator iterator = new Iterator(getAll());
@@ -3521,11 +3536,13 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
             }
 
             /** Returns {@code true} if there is more elements. */
+            @Override
             public boolean hasNext() {
                 return results != null;
             }
 
             /** Returns the next element. */
+            @Override
             public String next() {
                 if (results == null) {
                     throw new NoSuchElementException();
@@ -3541,6 +3558,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
             }
 
             /** Always throws an exception, since this iterator is read-only. */
+            @Override
             public void remove() {
                 throw new UnsupportedOperationException();
             }
@@ -3638,6 +3656,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
              *
              * @todo Not yet implemented.
              */
+            @Override
             public Set<Map.Entry<String, String>> entrySet() {
                 throw new UnsupportedOperationException();
             }

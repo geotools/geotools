@@ -87,22 +87,27 @@ public class NameImpl implements org.opengis.feature.type.Name, Serializable, Co
         this(qName.getNamespaceURI(), qName.getLocalPart());
     }
 
+    @Override
     public boolean isGlobal() {
         return getNamespaceURI() == null;
     }
 
+    @Override
     public String getSeparator() {
         return separator;
     }
 
+    @Override
     public String getNamespaceURI() {
         return namespace;
     }
 
+    @Override
     public String getLocalPart() {
         return local;
     }
 
+    @Override
     public String getURI() {
         if ((namespace == null) && (local == null)) {
             return null;
@@ -124,6 +129,7 @@ public class NameImpl implements org.opengis.feature.type.Name, Serializable, Co
     }
 
     /** value object with equality based on name and namespace. */
+    @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;
 
@@ -141,10 +147,12 @@ public class NameImpl implements org.opengis.feature.type.Name, Serializable, Co
     }
 
     /** name or namespace:name */
+    @Override
     public String toString() {
         return getURI();
     }
 
+    @Override
     public int compareTo(NameImpl other) {
         if (other == null) {
             return 1; // we are greater than null!

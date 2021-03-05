@@ -315,6 +315,7 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
      *
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
+    @Override
     public int compareTo(LabelCacheItem other) {
         return Double.compare(this.getPriority(), other.getPriority());
     }

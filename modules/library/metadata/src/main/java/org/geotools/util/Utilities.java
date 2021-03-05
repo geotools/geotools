@@ -114,27 +114,32 @@ public final class Utilities {
         }
 
         /** Returns the size, which is always 0. */
+        @Override
         public int size() {
             return 0;
         }
 
         /** Returns an empty iterator. */
+        @Override
         public Iterator<E> iterator() {
             final Set<E> empty = Collections.emptySet();
             return empty.iterator();
         }
 
         /** Always returns {@code false} since this queue doesn't accept any element. */
+        @Override
         public boolean offer(E e) {
             return false;
         }
 
         /** Always returns {@code null} since this queue is always empty. */
+        @Override
         public E poll() {
             return null;
         }
 
         /** Always returns {@code null} since this queue is always empty. */
+        @Override
         public E peek() {
             return null;
         }

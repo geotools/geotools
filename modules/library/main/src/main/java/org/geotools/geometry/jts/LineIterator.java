@@ -249,6 +249,7 @@ public final class LineIterator extends AbstractLiteIterator {
      * @see #WIND_EVEN_ODD
      * @see #WIND_NON_ZERO
      */
+    @Override
     public int getWindingRule() {
         return WIND_NON_ZERO;
     }
@@ -258,6 +259,7 @@ public final class LineIterator extends AbstractLiteIterator {
      *
      * @return <code>true</code> if all the segments have been read; <code>false</code> otherwise.
      */
+    @Override
     public boolean isDone() {
         return done;
     }
@@ -266,6 +268,7 @@ public final class LineIterator extends AbstractLiteIterator {
      * Moves the iterator to the next segment of the path forwards along the primary direction of
      * traversal as long as there are more points in that direction.
      */
+    @Override
     public void next() {
         if (((currentCoord == (coordinateCount - 1)) && !isClosed)
                 || ((currentCoord == coordinateCount) && isClosed)) {
@@ -306,6 +309,7 @@ public final class LineIterator extends AbstractLiteIterator {
     }
 
     /** @see java.awt.geom.PathIterator#currentSegment(double[]) */
+    @Override
     public int currentSegment(double[] coords) {
         if (currentCoord == 0) {
             coords[0] = coordinates.getX(0);

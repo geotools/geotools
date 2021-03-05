@@ -88,6 +88,7 @@ public interface LinePlacement extends LabelPlacement {
      *
      * @param visitor the style visitor
      */
+    @Override
     @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

@@ -34,14 +34,17 @@ public interface Displacement extends org.opengis.style.Displacement {
                     throw new UnsupportedOperationException("Constant Stroke may not be modified");
                 }
 
+                @Override
                 public Expression getDisplacementX() {
                     return ConstantExpression.ZERO;
                 }
 
+                @Override
                 public Expression getDisplacementY() {
                     return ConstantExpression.ZERO;
                 }
 
+                @Override
                 public Object accept(StyleVisitor visitor, Object extraData) {
                     cannotModifyConstant();
                     return null;
@@ -55,14 +58,17 @@ public interface Displacement extends org.opengis.style.Displacement {
                     throw new UnsupportedOperationException("Constant Stroke may not be modified");
                 }
 
+                @Override
                 public Expression getDisplacementX() {
                     return ConstantExpression.NULL;
                 }
 
+                @Override
                 public Expression getDisplacementY() {
                     return ConstantExpression.NULL;
                 }
 
+                @Override
                 public Object accept(StyleVisitor visitor, Object extraData) {
                     cannotModifyConstant();
                     return null;
@@ -76,6 +82,7 @@ public interface Displacement extends org.opengis.style.Displacement {
      *
      * @return Horizontal offeset
      */
+    @Override
     Expression getDisplacementX();
 
     /** Sets the expression that computes a pixel offset from the geometry point. */
@@ -92,14 +99,17 @@ abstract class ConstantDisplacement implements Displacement {
         throw new UnsupportedOperationException("Constant Displacement may not be modified");
     }
 
+    @Override
     public void setDisplacementX(Expression x) {
         cannotModifyConstant();
     }
 
+    @Override
     public void setDisplacementY(Expression y) {
         cannotModifyConstant();
     }
 
+    @Override
     public void accept(org.geotools.styling.StyleVisitor visitor) {
         cannotModifyConstant();
     }

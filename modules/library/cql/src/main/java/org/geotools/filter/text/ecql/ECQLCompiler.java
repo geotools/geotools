@@ -72,6 +72,7 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
      * compile source to produce a Filter. The filter result must be retrieved with {@link
      * #getFilter()}.
      */
+    @Override
     public void compileFilter() throws CQLException {
         try {
             super.FilterCompilationUnit();
@@ -87,6 +88,7 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
     }
 
     /** compiles source to produce a Expression */
+    @Override
     public void compileExpression() throws CQLException {
         try {
             super.ExpressionCompilationUnit();
@@ -101,6 +103,7 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
     }
 
     /** Compiles a list of filters */
+    @Override
     public void compileFilterList() throws CQLException {
         try {
             super.FilterListCompilationUnit();
@@ -115,6 +118,7 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
     }
 
     /** @return the ECQLsource */
+    @Override
     public final String getSource() {
         return this.source;
     }
@@ -124,6 +128,7 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
      *
      * @return Filter
      */
+    @Override
     public final Filter getFilter() throws CQLException {
         return this.builder.getFilter();
     }
@@ -132,11 +137,13 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
      *
      * @return Expression
      */
+    @Override
     public final Expression getExpression() throws CQLException {
 
         return this.builder.getExpression();
     }
 
+    @Override
     public IToken getTokenInPosition(int index) {
         return TokenAdapter.newAdapterFor(super.getToken(index));
     }
@@ -148,13 +155,16 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
      * @return List<Filter>
      * @throws CQLException if a ClassCastException occurs while casting a built item to a Filter.
      */
+    @Override
     public List<Filter> getFilterList() throws CQLException {
         return this.builder.getFilterList();
     }
 
+    @Override
     public final void jjtreeOpenNodeScope(Node n) {}
 
     /** called by parser when the node is closed. */
+    @Override
     public final void jjtreeCloseNodeScope(Node n) throws ParseException {
 
         try {

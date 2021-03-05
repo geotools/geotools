@@ -79,6 +79,7 @@ public class GridSpatialRepresentationImpl extends SpatialRepresentationImpl
     }
 
     /** Number of independent spatial-temporal axes. */
+    @Override
     public Integer getNumberOfDimensions() {
         return numberOfDimensions;
     }
@@ -90,6 +91,7 @@ public class GridSpatialRepresentationImpl extends SpatialRepresentationImpl
     }
 
     /** Information about spatial-temporal axis properties. */
+    @Override
     public List<Dimension> getAxisDimensionsProperties() {
         return axisDimensionsProperties = nonNullList(axisDimensionsProperties, Dimension.class);
     }
@@ -103,6 +105,7 @@ public class GridSpatialRepresentationImpl extends SpatialRepresentationImpl
     }
 
     /** Identification of grid data as point or cell. */
+    @Override
     public CellGeometry getCellGeometry() {
         return cellGeometry;
     }
@@ -114,6 +117,7 @@ public class GridSpatialRepresentationImpl extends SpatialRepresentationImpl
     }
 
     /** Indication of whether or not parameters for transformation exists. */
+    @Override
     public boolean isTransformationParameterAvailable() {
         return transformationParameterAvailable;
     }

@@ -35,12 +35,14 @@ public class DefaultCSBuilder implements CSBuilder {
     private CoordinateSequenceFactory factory = CoordinateArraySequenceFactory.instance();
 
     /** @see org.geotools.geometry.coordinatesequence.CSBuilder#start(int, int) */
+    @Override
     public void start(int size, int dimensions) {
         coordinateArray = new Coordinate[size];
         for (int i = 0; i < size; i++) coordinateArray[i] = new Coordinate();
     }
 
     /** @see org.geotools.geometry.coordinatesequence.CSBuilder#getCoordinateSequence() */
+    @Override
     public CoordinateSequence end() {
         CoordinateSequence cs = factory.create(coordinateArray);
         coordinateArray = null;
@@ -48,6 +50,7 @@ public class DefaultCSBuilder implements CSBuilder {
     }
 
     /** @see org.geotools.geometry.coordinatesequence.CSBuilder#setOrdinate(double, int, int) */
+    @Override
     public void setOrdinate(double value, int ordinateIndex, int coordinateIndex) {
         Coordinate c = coordinateArray[coordinateIndex];
         switch (ordinateIndex) {
@@ -64,6 +67,7 @@ public class DefaultCSBuilder implements CSBuilder {
     }
 
     /** @see org.geotools.geometry.coordinatesequence.CSBuilder#getOrdinate(int, int) */
+    @Override
     public double getOrdinate(int ordinateIndex, int coordinateIndex) {
         Coordinate c = coordinateArray[coordinateIndex];
         switch (ordinateIndex) {
@@ -79,6 +83,7 @@ public class DefaultCSBuilder implements CSBuilder {
     }
 
     /** @see org.geotools.geometry.coordinatesequence.CSBuilder#getSize() */
+    @Override
     public int getSize() {
         if (coordinateArray != null) {
             return coordinateArray.length;
@@ -88,6 +93,7 @@ public class DefaultCSBuilder implements CSBuilder {
     }
 
     /** @see org.geotools.geometry.coordinatesequence.CSBuilder#getDimension() */
+    @Override
     public int getDimension() {
         if (coordinateArray != null) {
             return 2;
@@ -101,6 +107,7 @@ public class DefaultCSBuilder implements CSBuilder {
      *     org.geotools.geometry.coordinatesequence.CSBuilder#setOrdinate(org.locationtech.jts.geom.CoordinateSequence,
      *     double, int, int)
      */
+    @Override
     public void setOrdinate(
             CoordinateSequence sequence, double value, int ordinateIndex, int coordinateIndex) {
         Coordinate c = sequence.getCoordinate(coordinateIndex);

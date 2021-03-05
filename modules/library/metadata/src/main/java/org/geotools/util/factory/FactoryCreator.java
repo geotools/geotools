@@ -126,6 +126,7 @@ public class FactoryCreator extends FactoryRegistry {
      *     provide suffisient information for creating a new factory.
      * @throws FactoryRegistryException if the factory can't be created for some other reason.
      */
+    @Override
     public <T> T getFactory(
             final Class<T> category,
             final Predicate<? super T> filter,

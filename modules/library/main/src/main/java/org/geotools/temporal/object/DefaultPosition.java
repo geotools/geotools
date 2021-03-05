@@ -73,6 +73,7 @@ public class DefaultPosition implements Position {
      *
      * @return TemporalPosition
      */
+    @Override
     public TemporalPosition anyOther() {
         return (this.position instanceof TemporalPosition) ? (TemporalPosition) position : null;
     }
@@ -84,6 +85,7 @@ public class DefaultPosition implements Position {
      * @return {@linkplain InternationalString} @TODO all subtypes of TemporalPosition must be
      *     implemented.
      */
+    @Override
     public Date getDate() {
         if (this.position instanceof Date) {
             return (Date) position;
@@ -114,6 +116,7 @@ public class DefaultPosition implements Position {
      *
      * @return {@linkplain InternationalString}
      */
+    @Override
     public Time getTime() {
         return (this.position instanceof Time) ? (Time) position : null;
     }
@@ -124,6 +127,7 @@ public class DefaultPosition implements Position {
      *
      * @return {@linkplain InternationalString}
      */
+    @Override
     public InternationalString getDateTime() {
         if (this.position instanceof Date) {
             String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";

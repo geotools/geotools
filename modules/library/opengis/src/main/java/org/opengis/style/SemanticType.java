@@ -92,6 +92,7 @@ public final class SemanticType extends CodeList<SemanticType> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public SemanticType[] family() {
         return values();
     }

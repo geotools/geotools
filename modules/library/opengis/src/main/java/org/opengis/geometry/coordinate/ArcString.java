@@ -67,6 +67,7 @@ public interface ArcString extends CurveSegment {
      *
      * @return Always {@link CurveInterpolation#CIRCULAR_ARC_3_POINTS}.
      */
+    @Override
     @UML(identifier = "interpolation", obligation = MANDATORY, specification = ISO_19107)
     CurveInterpolation getInterpolation();
 

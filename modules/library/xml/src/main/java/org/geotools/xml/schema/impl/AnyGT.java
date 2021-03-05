@@ -42,35 +42,42 @@ public class AnyGT implements Any {
     }
 
     /** @see org.geotools.xml.schema.Any#getId() */
+    @Override
     public String getId() {
         return null;
     }
 
     /** @see org.geotools.xml.schema.ElementGrouping#getMaxOccurs() */
+    @Override
     public int getMaxOccurs() {
         return max;
     }
 
     /** @see org.geotools.xml.schema.ElementGrouping#getMinOccurs() */
+    @Override
     public int getMinOccurs() {
         return min;
     }
 
     /** @see org.geotools.xml.schema.Any#getNamespace() */
+    @Override
     public URI getNamespace() {
         return ns;
     }
 
     /** @see org.geotools.xml.schema.ElementGrouping#getGrouping() */
+    @Override
     public int getGrouping() {
         return ElementGrouping.ANY;
     }
 
     /** @see org.geotools.xml.schema.ElementGrouping#findChildElement(java.lang.String) */
+    @Override
     public Element findChildElement(String name) {
         return null;
     }
 
+    @Override
     public Element findChildElement(String localName, URI namespaceURI) {
         return null;
     }

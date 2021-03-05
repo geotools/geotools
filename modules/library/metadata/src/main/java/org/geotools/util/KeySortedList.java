@@ -66,6 +66,7 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
     }
 
     /** Returns the number of elements in this list. */
+    @Override
     public int size() {
         int count = 0;
         for (final List<V> list : map.values()) {
@@ -175,6 +176,7 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
      * @return A list iterator of the elements in this list (in proper sequence).
      * @throws IndexOutOfBoundsException if the index is out of range.
      */
+    @Override
     public ListIterator<V> listIterator(final int index) {
         return new Iter(index);
     }
@@ -242,11 +244,13 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
          * Returns {@code true} if this list iterator has more elements when traversing the list in
          * the forward direction.
          */
+        @Override
         public boolean hasNext() {
             return valuesIter.hasNext() || entriesIter.hasNext();
         }
 
         /** Returns the next element in the list. */
+        @Override
         public V next() {
             while (!valuesIter.hasNext()) {
                 if (entriesIter.hasNext()) {
@@ -269,11 +273,13 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
          * Returns {@code true} if this list iterator has more elements when traversing the list in
          * the reverse direction.
          */
+        @Override
         public boolean hasPrevious() {
             return valuesIter.hasPrevious() || base != 0;
         }
 
         /** Returns the previous element in the list. */
+        @Override
         public V previous() {
             while (!valuesIter.hasPrevious() && base != 0) {
                 /*
@@ -303,6 +309,7 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
          * Returns the index of the element that would be returned by a subsequent call to {@link
          * #next}.
          */
+        @Override
         public int nextIndex() {
             return base + valuesIter.nextIndex();
         }
@@ -311,6 +318,7 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
          * Returns the index of the element that would be returned by a subsequent call to {@link
          * #previous}.
          */
+        @Override
         public int previousIndex() {
             return base + valuesIter.previousIndex();
         }
@@ -319,6 +327,7 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
          * Removes from the list the last element that was returned by {@link #next} or {@link
          * #previous}
          */
+        @Override
         public void remove() {
             valuesIter.remove();
         }
@@ -327,6 +336,7 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
          * Replaces the last element returned by {@link #next} or {@link #previous} with the
          * specified element.
          */
+        @Override
         public void set(final V o) {
             valuesIter.set(o);
         }
@@ -335,6 +345,7 @@ public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentia
          * Inserts the specified element into the list. The element will have the same key than the
          * one from the previous call to {@link #next} or {@link #previous}.
          */
+        @Override
         public void add(final V o) {
             valuesIter.add(o);
         }

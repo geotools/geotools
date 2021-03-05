@@ -216,5 +216,6 @@ public interface CoverageProcessingNode {
      *
      * @return a descriptive description for this {@link CoverageProcessingNode}
      */
+    @Override
     public String toString();
 }

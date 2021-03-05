@@ -41,16 +41,19 @@ public class FeatureIteratorIterator<F extends Feature> implements Iterator<F> {
     }
 
     /** Calls through to {@link FeatureIterator#hasNext()} */
+    @Override
     public boolean hasNext() {
         return delegate.hasNext();
     }
 
     /** Calls through to {@link FeatureIterator#next()} */
+    @Override
     public F next() {
         return delegate.next();
     }
 
     /** @throws UnsupportedOperationException */
+    @Override
     public void remove() {
         throw new UnsupportedOperationException("remove is not supported");
     }

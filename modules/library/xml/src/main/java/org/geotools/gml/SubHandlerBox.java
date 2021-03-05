@@ -47,6 +47,7 @@ public class SubHandlerBox extends SubHandler {
      *
      * @param c the coordinate of the corner.
      */
+    @Override
     public void addCoordinate(Coordinate c) {
         LOGGER.entering("SubHandlerBox", "addCoordinate", c);
         e.expandToInclude(c);
@@ -59,6 +60,7 @@ public class SubHandlerBox extends SubHandler {
      * @param message The geometry to inspect.
      * @return Flag for a complete geometry.
      */
+    @Override
     public boolean isComplete(String message) {
         LOGGER.entering("SubHandlerBox", "isComplete", message);
         LOGGER.exiting("SubHandlerBox", "isComplete", Boolean.TRUE);
@@ -72,6 +74,7 @@ public class SubHandlerBox extends SubHandler {
      * @param geometryFactory the geometryFactory to be used to build the polygon.
      * @return the polygon.
      */
+    @Override
     public org.locationtech.jts.geom.Geometry create(
             org.locationtech.jts.geom.GeometryFactory geometryFactory) {
         LOGGER.entering("SubHandlerBox", "create", geometryFactory);

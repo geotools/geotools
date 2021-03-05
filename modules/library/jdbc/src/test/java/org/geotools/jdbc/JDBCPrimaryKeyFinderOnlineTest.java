@@ -105,10 +105,12 @@ public abstract class JDBCPrimaryKeyFinderOnlineTest extends JDBCTestSupport {
                 count,
                 features.features(),
                 new SimpleFeatureAssertion() {
+                    @Override
                     public int toIndex(SimpleFeature feature) {
                         return Integer.parseInt(feature.getIdentifier().getID().split("\\.", 2)[1]);
                     }
 
+                    @Override
                     public void check(int index, SimpleFeature feature) {
                         assertEquals(
                                 tname(features.getSchema().getName().getLocalPart()) + "." + index,

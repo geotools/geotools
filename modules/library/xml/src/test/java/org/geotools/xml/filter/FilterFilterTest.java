@@ -362,6 +362,7 @@ public class FilterFilterTest {
 
         public List<org.opengis.filter.Filter> filters = new ArrayList<>();
 
+        @Override
         public void filter(org.opengis.filter.Filter filter) {
             filters.add(filter);
         }

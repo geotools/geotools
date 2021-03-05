@@ -80,6 +80,7 @@ public class FIDFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         this(attributeReader, fidReader, null);
     }
 
+    @Override
     public SimpleFeature next()
             throws IOException, IllegalAttributeException, NoSuchElementException {
         if (hasNext()) {
@@ -118,15 +119,18 @@ public class FIDFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         return builder.buildFeature(fid);
     }
 
+    @Override
     public void close() throws IOException {
         fidReader.close();
         attributeReader.close();
     }
 
+    @Override
     public SimpleFeatureType getFeatureType() {
         return schema;
     }
 
+    @Override
     public boolean hasNext() throws IOException {
         if (hasNextFlag == null) {
             hasNextFlag = Boolean.valueOf(attributeReader.hasNext());

@@ -335,6 +335,7 @@ public final class AxisDirection extends CodeList<AxisDirection> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public AxisDirection[] family() {
         return values();
     }

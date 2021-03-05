@@ -69,6 +69,7 @@ public class TelephoneImpl extends MetadataEntity implements Telephone {
      *
      * @since 2.4
      */
+    @Override
     public Collection<String> getVoices() {
         return (voices = nonNullCollection(voices, String.class));
     }
@@ -89,6 +90,7 @@ public class TelephoneImpl extends MetadataEntity implements Telephone {
      *
      * @since 2.4
      */
+    @Override
     public Collection<String> getFacsimiles() {
         return (facsimiles = nonNullCollection(facsimiles, String.class));
     }

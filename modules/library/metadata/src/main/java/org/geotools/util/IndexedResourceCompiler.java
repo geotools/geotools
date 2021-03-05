@@ -491,6 +491,7 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
      * objects representing resource keys (for example, "{@code MISMATCHED_DIMENSION}"), but may
      * also be {@link java.util.Map.Entry}.
      */
+    @Override
     public int compare(Object o1, Object o2) {
         if (o1 instanceof Map.Entry) o1 = ((Map.Entry) o1).getValue();
         if (o2 instanceof Map.Entry) o2 = ((Map.Entry) o2).getValue();

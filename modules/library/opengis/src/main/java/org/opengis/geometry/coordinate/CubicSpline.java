@@ -49,6 +49,7 @@ public interface CubicSpline extends PolynomialSpline {
      * The interpolation mechanism for a {@code CubicSpline} is {@link
      * CurveInterpolation#CUBIC_SPLINE CUBIC_SPLINE}.
      */
+    @Override
     @UML(identifier = "interpolation", obligation = MANDATORY, specification = ISO_19107)
     CurveInterpolation getInterpolation();
 
@@ -57,6 +58,7 @@ public interface CubicSpline extends PolynomialSpline {
      * {@code vectorAtEnd} reduce these sequences to a single tangent vector each. Consequently, the
      * {@linkplain List#size size} of the returned list is 1.
      */
+    @Override
     @UML(identifier = "vectorAtStart", obligation = MANDATORY, specification = ISO_19107)
     List /*double[]*/ getVectorAtStart();
 
@@ -65,6 +67,7 @@ public interface CubicSpline extends PolynomialSpline {
      * vectorAtEnd} reduce these sequences to a single tangent vector each. Consequently, the
      * {@linkplain List#size size} of the returned list is 1.
      */
+    @Override
     @UML(identifier = "vectorAtEnd", obligation = MANDATORY, specification = ISO_19107)
     List /*double[]*/ getVectorAtEnd();
 }

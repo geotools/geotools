@@ -220,6 +220,7 @@ public abstract class DeferredAuthorityFactory extends BufferedAuthorityFactory
 
     /** The task for closing the backing store after the timeout. */
     private final class Disposer extends TimerTask {
+        @Override
         public void run() {
             synchronized (DeferredAuthorityFactory.this) {
                 if (used || !canDisposeBackingStore(backingStore)) {

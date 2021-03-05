@@ -68,6 +68,7 @@ import org.opengis.temporal.Instant;
  */
 public class TemporalConverterFactory implements ConverterFactory {
 
+    @Override
     public Converter createConverter(Class source, Class target, Hints hints) {
         boolean isSafeOnly = false;
 
@@ -88,6 +89,7 @@ public class TemporalConverterFactory implements ConverterFactory {
                 }
 
                 return new Converter() {
+                    @Override
                     public <T> T convert(Object source, Class<T> target) throws Exception {
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTime((Date) source);
@@ -109,6 +111,7 @@ public class TemporalConverterFactory implements ConverterFactory {
 
                 return new Converter() {
 
+                    @Override
                     public <T> T convert(Object source, Class<T> target) throws Exception {
                         Date date = (Date) source;
                         return target.cast(timeMillisToDate(date.getTime(), target));
@@ -118,6 +121,7 @@ public class TemporalConverterFactory implements ConverterFactory {
 
             if (XMLGregorianCalendar.class.isAssignableFrom(target)) {
                 return new Converter() {
+                    @Override
                     public <T> T convert(Object source, Class<T> target) throws Exception {
                         Date date = (Date) source;
                         Calendar calendar =
@@ -133,6 +137,7 @@ public class TemporalConverterFactory implements ConverterFactory {
 
             if (Long.class.equals(target)) {
                 return new Converter() {
+                    @Override
                     public <T> T convert(Object source, Class<T> target) throws Exception {
                         return target.cast(Long.valueOf(((Date) source).getTime()));
                     }
@@ -149,6 +154,7 @@ public class TemporalConverterFactory implements ConverterFactory {
                     return null;
                 }
                 return new Converter() {
+                    @Override
                     public <T> T convert(Object source, Class<T> target) throws Exception {
                         Calendar calendar = (Calendar) source;
 
@@ -162,6 +168,7 @@ public class TemporalConverterFactory implements ConverterFactory {
             }
             if (XMLGregorianCalendar.class.isAssignableFrom(target)) {
                 return new Converter() {
+                    @Override
                     public <T> T convert(Object source, Class<T> target) throws Exception {
                         if (source instanceof GregorianCalendar) {
                             return target.cast(
@@ -178,6 +185,7 @@ public class TemporalConverterFactory implements ConverterFactory {
         if (XMLGregorianCalendar.class.isAssignableFrom(source)) {
             if (Calendar.class.isAssignableFrom(target)) {
                 return new Converter() {
+                    @Override
                     public <T> T convert(Object source, Class<T> target) throws Exception {
                         XMLGregorianCalendar calendar = (XMLGregorianCalendar) source;
                         return target.cast(calendar.toGregorianCalendar());
@@ -186,6 +194,7 @@ public class TemporalConverterFactory implements ConverterFactory {
             }
             if (Date.class.isAssignableFrom(target)) {
                 return new Converter() {
+                    @Override
                     public <T> T convert(Object source, Class<T> target) throws Exception {
                         Calendar calendar =
                                 createConverter(XMLGregorianCalendar.class, Calendar.class, null)
@@ -204,6 +213,7 @@ public class TemporalConverterFactory implements ConverterFactory {
         if (TimeZone.class.isAssignableFrom(source)) {
             if (String.class == target) {
                 return new Converter() {
+                    @Override
                     public <T> T convert(Object source, Class<T> target) throws Exception {
                         if (source == null) {
                             return null;

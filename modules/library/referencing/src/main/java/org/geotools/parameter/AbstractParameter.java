@@ -61,6 +61,7 @@ public abstract class AbstractParameter extends Formattable
     }
 
     /** Returns the abstract definition of this parameter or group of parameters. */
+    @Override
     public GeneralParameterDescriptor getDescriptor() {
         return descriptor;
     }

@@ -90,39 +90,49 @@ public class SpatialIndexFeatureSource implements SimpleFeatureSource {
         this.contents = original;
     }
 
+    @Override
     public void addFeatureListener(FeatureListener listener) {}
 
+    @Override
     public void removeFeatureListener(FeatureListener listener) {}
 
+    @Override
     public DataStore getDataStore() {
         return null; // not applicable
     }
 
+    @Override
     public ReferencedEnvelope getBounds() throws IOException {
         return contents.getBounds();
     }
 
+    @Override
     public ReferencedEnvelope getBounds(Query query) throws IOException {
         return getFeatures(query).getBounds();
     }
 
+    @Override
     public int getCount(Query query) throws IOException {
         return getFeatures(query).size();
     }
 
+    @Override
     public SimpleFeatureType getSchema() {
         return contents.getSchema();
     }
 
+    @Override
     public SimpleFeatureCollection getFeatures() throws IOException {
         return contents;
     }
 
+    @Override
     public SimpleFeatureCollection getFeatures(Filter filter) throws IOException {
         Query query = new Query(getSchema().getName().getLocalPart(), filter);
         return getFeatures(query);
     }
 
+    @Override
     public SimpleFeatureCollection getFeatures(Query query) throws IOException {
         Envelope bounds = getEnvelope(query.getFilter());
         return getFeatureCollection(query, bounds);
@@ -230,14 +240,17 @@ public class SpatialIndexFeatureSource implements SimpleFeatureSource {
         return result;
     }
 
+    @Override
     public ResourceInfo getInfo() {
         return null;
     }
 
+    @Override
     public Name getName() {
         return contents.getSchema().getName();
     }
 
+    @Override
     public QueryCapabilities getQueryCapabilities() {
         return new QueryCapabilities() {
             @Override
@@ -247,6 +260,7 @@ public class SpatialIndexFeatureSource implements SimpleFeatureSource {
         };
     }
 
+    @Override
     public Set<RenderingHints.Key> getSupportedHints() {
         return new HashSet<>();
     }

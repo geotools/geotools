@@ -62,6 +62,7 @@ public class MultiSurfaceDomainTypeImpl extends DomainSetTypeImpl implements Mul
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiSurfaceType getMultiSurface() {
         return multiSurface;
     }
@@ -86,6 +87,7 @@ public class MultiSurfaceDomainTypeImpl extends DomainSetTypeImpl implements Mul
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiSurface(MultiSurfaceType newMultiSurface) {
         if (newMultiSurface != multiSurface) {
             NotificationChain msgs = null;

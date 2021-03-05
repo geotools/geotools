@@ -119,7 +119,8 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.CAPABILITIES_BASE_TYPE;
   }
 
@@ -128,7 +129,8 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
    * <!-- end-user-doc -->
    * @generated
    */
-  public ServiceIdentificationType getServiceIdentification() {
+  @Override
+public ServiceIdentificationType getServiceIdentification() {
     return serviceIdentification;
   }
 
@@ -152,7 +154,8 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setServiceIdentification(ServiceIdentificationType newServiceIdentification) {
+  @Override
+public void setServiceIdentification(ServiceIdentificationType newServiceIdentification) {
     if (newServiceIdentification != serviceIdentification) {
       NotificationChain msgs = null;
       if (serviceIdentification != null)
@@ -171,7 +174,8 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
    * <!-- end-user-doc -->
    * @generated
    */
-  public ServiceProviderType getServiceProvider() {
+  @Override
+public ServiceProviderType getServiceProvider() {
     return serviceProvider;
   }
 
@@ -195,7 +199,8 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setServiceProvider(ServiceProviderType newServiceProvider) {
+  @Override
+public void setServiceProvider(ServiceProviderType newServiceProvider) {
     if (newServiceProvider != serviceProvider) {
       NotificationChain msgs = null;
       if (serviceProvider != null)
@@ -214,7 +219,8 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
    * <!-- end-user-doc -->
    * @generated
    */
-  public OperationsMetadataType getOperationsMetadata() {
+  @Override
+public OperationsMetadataType getOperationsMetadata() {
     return operationsMetadata;
   }
 
@@ -238,7 +244,8 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setOperationsMetadata(OperationsMetadataType newOperationsMetadata) {
+  @Override
+public void setOperationsMetadata(OperationsMetadataType newOperationsMetadata) {
     if (newOperationsMetadata != operationsMetadata) {
       NotificationChain msgs = null;
       if (operationsMetadata != null)
@@ -257,7 +264,8 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getUpdateSequence() {
+  @Override
+public String getUpdateSequence() {
     return updateSequence;
   }
 
@@ -266,7 +274,8 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setUpdateSequence(String newUpdateSequence) {
+  @Override
+public void setUpdateSequence(String newUpdateSequence) {
     String oldUpdateSequence = updateSequence;
     updateSequence = newUpdateSequence;
     if (eNotificationRequired())
@@ -278,7 +287,8 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getVersion() {
+  @Override
+public String getVersion() {
     return version;
   }
 
@@ -287,7 +297,8 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setVersion(String newVersion) {
+  @Override
+public void setVersion(String newVersion) {
     String oldVersion = version;
     version = newVersion;
     if (eNotificationRequired())
@@ -299,7 +310,8 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+  @Override
+public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Ows11Package.CAPABILITIES_BASE_TYPE__SERVICE_IDENTIFICATION:
         return basicSetServiceIdentification(null, msgs);
@@ -316,7 +328,8 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.CAPABILITIES_BASE_TYPE__SERVICE_IDENTIFICATION:
         return getServiceIdentification();
@@ -337,7 +350,8 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.CAPABILITIES_BASE_TYPE__SERVICE_IDENTIFICATION:
         setServiceIdentification((ServiceIdentificationType)newValue);
@@ -363,7 +377,8 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.CAPABILITIES_BASE_TYPE__SERVICE_IDENTIFICATION:
         setServiceIdentification((ServiceIdentificationType)null);
@@ -389,7 +404,8 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.CAPABILITIES_BASE_TYPE__SERVICE_IDENTIFICATION:
         return serviceIdentification != null;
@@ -410,7 +426,8 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
    * <!-- end-user-doc -->
    * @generated
    */
-  public String toString() {
+  @Override
+public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

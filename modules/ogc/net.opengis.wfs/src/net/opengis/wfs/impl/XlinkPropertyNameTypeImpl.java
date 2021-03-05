@@ -108,7 +108,8 @@ public class XlinkPropertyNameTypeImpl extends EObjectImpl implements XlinkPrope
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.XLINK_PROPERTY_NAME_TYPE;
   }
 
@@ -117,7 +118,8 @@ public class XlinkPropertyNameTypeImpl extends EObjectImpl implements XlinkPrope
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getValue() {
+	@Override
+    public String getValue() {
     return value;
   }
 
@@ -126,7 +128,8 @@ public class XlinkPropertyNameTypeImpl extends EObjectImpl implements XlinkPrope
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setValue(String newValue) {
+	@Override
+    public void setValue(String newValue) {
     String oldValue = value;
     value = newValue;
     if (eNotificationRequired())
@@ -138,7 +141,8 @@ public class XlinkPropertyNameTypeImpl extends EObjectImpl implements XlinkPrope
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getTraverseXlinkDepth() {
+	@Override
+    public String getTraverseXlinkDepth() {
     return traverseXlinkDepth;
   }
 
@@ -147,7 +151,8 @@ public class XlinkPropertyNameTypeImpl extends EObjectImpl implements XlinkPrope
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setTraverseXlinkDepth(String newTraverseXlinkDepth) {
+	@Override
+    public void setTraverseXlinkDepth(String newTraverseXlinkDepth) {
     String oldTraverseXlinkDepth = traverseXlinkDepth;
     traverseXlinkDepth = newTraverseXlinkDepth;
     if (eNotificationRequired())
@@ -159,7 +164,8 @@ public class XlinkPropertyNameTypeImpl extends EObjectImpl implements XlinkPrope
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public BigInteger getTraverseXlinkExpiry() {
+	@Override
+    public BigInteger getTraverseXlinkExpiry() {
     return traverseXlinkExpiry;
   }
 
@@ -168,7 +174,8 @@ public class XlinkPropertyNameTypeImpl extends EObjectImpl implements XlinkPrope
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setTraverseXlinkExpiry(BigInteger newTraverseXlinkExpiry) {
+	@Override
+    public void setTraverseXlinkExpiry(BigInteger newTraverseXlinkExpiry) {
     BigInteger oldTraverseXlinkExpiry = traverseXlinkExpiry;
     traverseXlinkExpiry = newTraverseXlinkExpiry;
     if (eNotificationRequired())
@@ -180,7 +187,8 @@ public class XlinkPropertyNameTypeImpl extends EObjectImpl implements XlinkPrope
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	@Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.XLINK_PROPERTY_NAME_TYPE__VALUE:
         return getValue();
@@ -197,7 +205,8 @@ public class XlinkPropertyNameTypeImpl extends EObjectImpl implements XlinkPrope
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(int featureID, Object newValue) {
+	@Override
+    public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.XLINK_PROPERTY_NAME_TYPE__VALUE:
         setValue((String)newValue);
@@ -217,7 +226,8 @@ public class XlinkPropertyNameTypeImpl extends EObjectImpl implements XlinkPrope
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(int featureID) {
+	@Override
+    public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.XLINK_PROPERTY_NAME_TYPE__VALUE:
         setValue(VALUE_EDEFAULT);
@@ -237,7 +247,8 @@ public class XlinkPropertyNameTypeImpl extends EObjectImpl implements XlinkPrope
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(int featureID) {
+	@Override
+    public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.XLINK_PROPERTY_NAME_TYPE__VALUE:
         return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
@@ -254,7 +265,8 @@ public class XlinkPropertyNameTypeImpl extends EObjectImpl implements XlinkPrope
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String toString() {
+	@Override
+    public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

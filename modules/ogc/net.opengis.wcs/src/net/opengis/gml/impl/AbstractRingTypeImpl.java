@@ -36,6 +36,7 @@ public abstract class AbstractRingTypeImpl extends AbstractGeometryTypeImpl impl
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return GmlPackage.Literals.ABSTRACT_RING_TYPE;
 	}

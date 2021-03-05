@@ -97,6 +97,7 @@ public class InsertResultTypeImpl extends EObjectImpl implements InsertResultTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<BriefRecordType> getBriefRecord() {
         if (briefRecord == null) {
             briefRecord = new EObjectContainmentEList<>(BriefRecordType.class, this, Csw20Package.INSERT_RESULT_TYPE__BRIEF_RECORD);
@@ -109,6 +110,7 @@ public class InsertResultTypeImpl extends EObjectImpl implements InsertResultTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getHandleRef() {
         return handleRef;
     }
@@ -118,6 +120,7 @@ public class InsertResultTypeImpl extends EObjectImpl implements InsertResultTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setHandleRef(String newHandleRef) {
         String oldHandleRef = handleRef;
         handleRef = newHandleRef;

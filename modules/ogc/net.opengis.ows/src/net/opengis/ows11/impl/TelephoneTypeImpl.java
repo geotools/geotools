@@ -81,7 +81,8 @@ public class TelephoneTypeImpl extends EObjectImpl implements TelephoneType {
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.TELEPHONE_TYPE;
   }
 
@@ -90,7 +91,8 @@ public class TelephoneTypeImpl extends EObjectImpl implements TelephoneType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getVoice() {
+  @Override
+public String getVoice() {
     return voice;
   }
 
@@ -99,7 +101,8 @@ public class TelephoneTypeImpl extends EObjectImpl implements TelephoneType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setVoice(String newVoice) {
+  @Override
+public void setVoice(String newVoice) {
     String oldVoice = voice;
     voice = newVoice;
     if (eNotificationRequired())
@@ -111,7 +114,8 @@ public class TelephoneTypeImpl extends EObjectImpl implements TelephoneType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getFacsimile() {
+  @Override
+public String getFacsimile() {
     return facsimile;
   }
 
@@ -120,7 +124,8 @@ public class TelephoneTypeImpl extends EObjectImpl implements TelephoneType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setFacsimile(String newFacsimile) {
+  @Override
+public void setFacsimile(String newFacsimile) {
     String oldFacsimile = facsimile;
     facsimile = newFacsimile;
     if (eNotificationRequired())
@@ -132,7 +137,8 @@ public class TelephoneTypeImpl extends EObjectImpl implements TelephoneType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.TELEPHONE_TYPE__VOICE:
         return getVoice();
@@ -147,7 +153,8 @@ public class TelephoneTypeImpl extends EObjectImpl implements TelephoneType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.TELEPHONE_TYPE__VOICE:
         setVoice((String)newValue);
@@ -164,7 +171,8 @@ public class TelephoneTypeImpl extends EObjectImpl implements TelephoneType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.TELEPHONE_TYPE__VOICE:
         setVoice(VOICE_EDEFAULT);
@@ -181,7 +189,8 @@ public class TelephoneTypeImpl extends EObjectImpl implements TelephoneType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.TELEPHONE_TYPE__VOICE:
         return VOICE_EDEFAULT == null ? voice != null : !VOICE_EDEFAULT.equals(voice);
@@ -196,7 +205,8 @@ public class TelephoneTypeImpl extends EObjectImpl implements TelephoneType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public String toString() {
+  @Override
+public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

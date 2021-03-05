@@ -62,6 +62,7 @@ public class AdditionalParametersBaseTypeImpl extends MetadataTypeImpl implement
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AdditionalParameterType getAdditionalParameter() {
     return additionalParameter;
   }
@@ -86,6 +87,7 @@ public class AdditionalParametersBaseTypeImpl extends MetadataTypeImpl implement
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setAdditionalParameter(AdditionalParameterType newAdditionalParameter) {
     if (newAdditionalParameter != additionalParameter) {
       NotificationChain msgs = null;

@@ -57,6 +57,7 @@ public class AvailableKeysTypeImpl extends EObjectImpl implements AvailableKeysT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EClass eStaticClass() {
         return Wcs111Package.Literals.AVAILABLE_KEYS_TYPE;
     }
@@ -66,6 +67,7 @@ public class AvailableKeysTypeImpl extends EObjectImpl implements AvailableKeysT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getKey() {
         if (key == null) {
             key = new EDataTypeEList(String.class, this, Wcs111Package.AVAILABLE_KEYS_TYPE__KEY);
@@ -78,6 +80,7 @@ public class AvailableKeysTypeImpl extends EObjectImpl implements AvailableKeysT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case Wcs111Package.AVAILABLE_KEYS_TYPE__KEY:
@@ -91,6 +94,7 @@ public class AvailableKeysTypeImpl extends EObjectImpl implements AvailableKeysT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Wcs111Package.AVAILABLE_KEYS_TYPE__KEY:
@@ -106,6 +110,7 @@ public class AvailableKeysTypeImpl extends EObjectImpl implements AvailableKeysT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case Wcs111Package.AVAILABLE_KEYS_TYPE__KEY:
@@ -120,6 +125,7 @@ public class AvailableKeysTypeImpl extends EObjectImpl implements AvailableKeysT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case Wcs111Package.AVAILABLE_KEYS_TYPE__KEY:
@@ -133,6 +139,7 @@ public class AvailableKeysTypeImpl extends EObjectImpl implements AvailableKeysT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String toString() {
         if (eIsProxy()) return super.toString();
 

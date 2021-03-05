@@ -75,6 +75,7 @@ public class PolygonTypeImpl extends AbstractSurfaceTypeImpl implements PolygonT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return GmlPackage.Literals.POLYGON_TYPE;
 	}
@@ -84,6 +85,7 @@ public class PolygonTypeImpl extends AbstractSurfaceTypeImpl implements PolygonT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public AbstractRingPropertyType getExterior() {
 		return exterior;
 	}
@@ -108,6 +110,7 @@ public class PolygonTypeImpl extends AbstractSurfaceTypeImpl implements PolygonT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setExterior(AbstractRingPropertyType newExterior) {
 		if (newExterior != exterior) {
 			NotificationChain msgs = null;
@@ -127,6 +130,7 @@ public class PolygonTypeImpl extends AbstractSurfaceTypeImpl implements PolygonT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList getInterior() {
 		if (interior == null) {
 			interior = new EObjectContainmentEList(AbstractRingPropertyType.class, this, GmlPackage.POLYGON_TYPE__INTERIOR);
@@ -139,6 +143,7 @@ public class PolygonTypeImpl extends AbstractSurfaceTypeImpl implements PolygonT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case GmlPackage.POLYGON_TYPE__EXTERIOR:
@@ -154,6 +159,7 @@ public class PolygonTypeImpl extends AbstractSurfaceTypeImpl implements PolygonT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case GmlPackage.POLYGON_TYPE__EXTERIOR:
@@ -169,6 +175,7 @@ public class PolygonTypeImpl extends AbstractSurfaceTypeImpl implements PolygonT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case GmlPackage.POLYGON_TYPE__EXTERIOR:
@@ -187,6 +194,7 @@ public class PolygonTypeImpl extends AbstractSurfaceTypeImpl implements PolygonT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case GmlPackage.POLYGON_TYPE__EXTERIOR:
@@ -204,6 +212,7 @@ public class PolygonTypeImpl extends AbstractSurfaceTypeImpl implements PolygonT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case GmlPackage.POLYGON_TYPE__EXTERIOR:

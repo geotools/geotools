@@ -98,6 +98,7 @@ public class ProcessBriefTypeImpl extends DescriptionTypeImpl implements Process
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.PROCESS_BRIEF_TYPE;
   }
@@ -107,6 +108,7 @@ public class ProcessBriefTypeImpl extends DescriptionTypeImpl implements Process
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getProfile() {
     return profile;
   }
@@ -116,6 +118,7 @@ public class ProcessBriefTypeImpl extends DescriptionTypeImpl implements Process
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setProfile(String newProfile) {
     String oldProfile = profile;
     profile = newProfile;
@@ -128,6 +131,7 @@ public class ProcessBriefTypeImpl extends DescriptionTypeImpl implements Process
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public WSDLType getWSDL() {
     return wSDL;
   }
@@ -152,6 +156,7 @@ public class ProcessBriefTypeImpl extends DescriptionTypeImpl implements Process
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setWSDL(WSDLType newWSDL) {
     if (newWSDL != wSDL) {
       NotificationChain msgs = null;
@@ -171,6 +176,7 @@ public class ProcessBriefTypeImpl extends DescriptionTypeImpl implements Process
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getProcessVersion() {
     return processVersion;
   }
@@ -180,6 +186,7 @@ public class ProcessBriefTypeImpl extends DescriptionTypeImpl implements Process
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setProcessVersion(String newProcessVersion) {
     String oldProcessVersion = processVersion;
     processVersion = newProcessVersion;
@@ -192,6 +199,7 @@ public class ProcessBriefTypeImpl extends DescriptionTypeImpl implements Process
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.PROCESS_BRIEF_TYPE__WSDL:
@@ -205,6 +213,7 @@ public class ProcessBriefTypeImpl extends DescriptionTypeImpl implements Process
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.PROCESS_BRIEF_TYPE__PROFILE:
@@ -222,6 +231,7 @@ public class ProcessBriefTypeImpl extends DescriptionTypeImpl implements Process
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.PROCESS_BRIEF_TYPE__PROFILE:
@@ -242,6 +252,7 @@ public class ProcessBriefTypeImpl extends DescriptionTypeImpl implements Process
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.PROCESS_BRIEF_TYPE__PROFILE:
@@ -262,6 +273,7 @@ public class ProcessBriefTypeImpl extends DescriptionTypeImpl implements Process
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.PROCESS_BRIEF_TYPE__PROFILE:
@@ -279,6 +291,7 @@ public class ProcessBriefTypeImpl extends DescriptionTypeImpl implements Process
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String toString() {
     if (eIsProxy()) return super.toString();
 

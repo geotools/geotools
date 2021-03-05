@@ -88,6 +88,7 @@ public class GridFunctionTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SequenceRuleType getSequenceRule() {
         return sequenceRule;
     }
@@ -112,6 +113,7 @@ public class GridFunctionTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSequenceRule(SequenceRuleType newSequenceRule) {
         if (newSequenceRule != sequenceRule) {
             NotificationChain msgs = null;
@@ -131,6 +133,7 @@ public class GridFunctionTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public List<BigInteger> getStartPoint() {
         return startPoint;
     }
@@ -140,6 +143,7 @@ public class GridFunctionTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setStartPoint(List<BigInteger> newStartPoint) {
         List<BigInteger> oldStartPoint = startPoint;
         startPoint = newStartPoint;

@@ -120,6 +120,7 @@ public class TimePeriodTypeImpl extends EObjectImpl implements TimePeriodType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.TIME_PERIOD_TYPE;
 	}
@@ -129,6 +130,7 @@ public class TimePeriodTypeImpl extends EObjectImpl implements TimePeriodType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public TimePositionType getBeginPosition() {
 		return beginPosition;
 	}
@@ -153,6 +155,7 @@ public class TimePeriodTypeImpl extends EObjectImpl implements TimePeriodType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setBeginPosition(TimePositionType newBeginPosition) {
 		if (newBeginPosition != beginPosition) {
 			NotificationChain msgs = null;
@@ -172,6 +175,7 @@ public class TimePeriodTypeImpl extends EObjectImpl implements TimePeriodType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public TimePositionType getEndPosition() {
 		return endPosition;
 	}
@@ -196,6 +200,7 @@ public class TimePeriodTypeImpl extends EObjectImpl implements TimePeriodType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setEndPosition(TimePositionType newEndPosition) {
 		if (newEndPosition != endPosition) {
 			NotificationChain msgs = null;
@@ -215,6 +220,7 @@ public class TimePeriodTypeImpl extends EObjectImpl implements TimePeriodType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object getTimeResolution() {
 		return timeResolution;
 	}
@@ -224,6 +230,7 @@ public class TimePeriodTypeImpl extends EObjectImpl implements TimePeriodType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setTimeResolution(Object newTimeResolution) {
 		Object oldTimeResolution = timeResolution;
 		timeResolution = newTimeResolution;
@@ -236,6 +243,7 @@ public class TimePeriodTypeImpl extends EObjectImpl implements TimePeriodType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getFrame() {
 		return frame;
 	}
@@ -245,6 +253,7 @@ public class TimePeriodTypeImpl extends EObjectImpl implements TimePeriodType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setFrame(String newFrame) {
 		String oldFrame = frame;
 		frame = newFrame;
@@ -259,6 +268,7 @@ public class TimePeriodTypeImpl extends EObjectImpl implements TimePeriodType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void unsetFrame() {
 		String oldFrame = frame;
 		boolean oldFrameESet = frameESet;
@@ -273,6 +283,7 @@ public class TimePeriodTypeImpl extends EObjectImpl implements TimePeriodType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean isSetFrame() {
 		return frameESet;
 	}
@@ -282,6 +293,7 @@ public class TimePeriodTypeImpl extends EObjectImpl implements TimePeriodType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.TIME_PERIOD_TYPE__BEGIN_POSITION:
@@ -297,6 +309,7 @@ public class TimePeriodTypeImpl extends EObjectImpl implements TimePeriodType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.TIME_PERIOD_TYPE__BEGIN_POSITION:
@@ -316,6 +329,7 @@ public class TimePeriodTypeImpl extends EObjectImpl implements TimePeriodType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.TIME_PERIOD_TYPE__BEGIN_POSITION:
@@ -339,6 +353,7 @@ public class TimePeriodTypeImpl extends EObjectImpl implements TimePeriodType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.TIME_PERIOD_TYPE__BEGIN_POSITION:
@@ -362,6 +377,7 @@ public class TimePeriodTypeImpl extends EObjectImpl implements TimePeriodType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.TIME_PERIOD_TYPE__BEGIN_POSITION:
@@ -381,6 +397,7 @@ public class TimePeriodTypeImpl extends EObjectImpl implements TimePeriodType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

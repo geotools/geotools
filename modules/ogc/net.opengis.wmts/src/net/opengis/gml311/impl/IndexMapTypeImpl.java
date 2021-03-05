@@ -73,6 +73,7 @@ public class IndexMapTypeImpl extends GridFunctionTypeImpl implements IndexMapTy
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public List<BigInteger> getLookUpTable() {
         return lookUpTable;
     }
@@ -82,6 +83,7 @@ public class IndexMapTypeImpl extends GridFunctionTypeImpl implements IndexMapTy
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLookUpTable(List<BigInteger> newLookUpTable) {
         List<BigInteger> oldLookUpTable = lookUpTable;
         lookUpTable = newLookUpTable;

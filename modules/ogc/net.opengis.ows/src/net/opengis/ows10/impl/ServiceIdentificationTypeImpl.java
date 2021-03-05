@@ -134,7 +134,8 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public CodeType getServiceType() {
+	@Override
+    public CodeType getServiceType() {
     return serviceType;
   }
 
@@ -158,7 +159,8 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setServiceType(CodeType newServiceType) {
+  @Override
+public void setServiceType(CodeType newServiceType) {
     if (newServiceType != serviceType) {
       NotificationChain msgs = null;
       if (serviceType != null)
@@ -177,7 +179,8 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getServiceTypeVersion() {
+	@Override
+    public String getServiceTypeVersion() {
     return serviceTypeVersion;
   }
 
@@ -186,7 +189,8 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setServiceTypeVersion(String newServiceTypeVersion) {
+  @Override
+public void setServiceTypeVersion(String newServiceTypeVersion) {
     String oldServiceTypeVersion = serviceTypeVersion;
     serviceTypeVersion = newServiceTypeVersion;
     if (eNotificationRequired())
@@ -198,7 +202,8 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getFees() {
+	@Override
+    public String getFees() {
     return fees;
   }
 
@@ -207,7 +212,8 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setFees(String newFees) {
+	@Override
+    public void setFees(String newFees) {
     String oldFees = fees;
     fees = newFees;
     if (eNotificationRequired())
@@ -219,7 +225,8 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getAccessConstraints() {
+	@Override
+    public String getAccessConstraints() {
     return accessConstraints;
   }
 
@@ -228,7 +235,8 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setAccessConstraints(String newAccessConstraints) {
+	@Override
+    public void setAccessConstraints(String newAccessConstraints) {
     String oldAccessConstraints = accessConstraints;
     accessConstraints = newAccessConstraints;
     if (eNotificationRequired())

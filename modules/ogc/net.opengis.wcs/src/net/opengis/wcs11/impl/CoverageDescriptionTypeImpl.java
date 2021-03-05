@@ -134,6 +134,7 @@ public class CoverageDescriptionTypeImpl extends DescriptionTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EClass eStaticClass() {
         return Wcs111Package.Literals.COVERAGE_DESCRIPTION_TYPE;
     }
@@ -143,6 +144,7 @@ public class CoverageDescriptionTypeImpl extends DescriptionTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getIdentifier() {
         return identifier;
     }
@@ -152,6 +154,7 @@ public class CoverageDescriptionTypeImpl extends DescriptionTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIdentifier(String newIdentifier) {
         String oldIdentifier = identifier;
         identifier = newIdentifier;
@@ -164,6 +167,7 @@ public class CoverageDescriptionTypeImpl extends DescriptionTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getMetadata() {
         if (metadata == null) {
             metadata = new EObjectContainmentEList(MetadataType.class, this, Wcs111Package.COVERAGE_DESCRIPTION_TYPE__METADATA);
@@ -176,6 +180,7 @@ public class CoverageDescriptionTypeImpl extends DescriptionTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoverageDomainType getDomain() {
         return domain;
     }
@@ -200,6 +205,7 @@ public class CoverageDescriptionTypeImpl extends DescriptionTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDomain(CoverageDomainType newDomain) {
         if (newDomain != domain) {
             NotificationChain msgs = null;
@@ -219,6 +225,7 @@ public class CoverageDescriptionTypeImpl extends DescriptionTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RangeType getRange() {
         return range;
     }
@@ -243,6 +250,7 @@ public class CoverageDescriptionTypeImpl extends DescriptionTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRange(RangeType newRange) {
         if (newRange != range) {
             NotificationChain msgs = null;
@@ -262,6 +270,7 @@ public class CoverageDescriptionTypeImpl extends DescriptionTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getSupportedCRS() {
         if (supportedCRS == null) {
             supportedCRS = new EDataTypeEList(String.class, this, Wcs111Package.COVERAGE_DESCRIPTION_TYPE__SUPPORTED_CRS);
@@ -274,6 +283,7 @@ public class CoverageDescriptionTypeImpl extends DescriptionTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getSupportedFormat() {
         if (supportedFormat == null) {
             supportedFormat = new EDataTypeEList(String.class, this, Wcs111Package.COVERAGE_DESCRIPTION_TYPE__SUPPORTED_FORMAT);
@@ -286,6 +296,7 @@ public class CoverageDescriptionTypeImpl extends DescriptionTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case Wcs111Package.COVERAGE_DESCRIPTION_TYPE__METADATA:
@@ -303,6 +314,7 @@ public class CoverageDescriptionTypeImpl extends DescriptionTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case Wcs111Package.COVERAGE_DESCRIPTION_TYPE__IDENTIFIER:
@@ -326,6 +338,7 @@ public class CoverageDescriptionTypeImpl extends DescriptionTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Wcs111Package.COVERAGE_DESCRIPTION_TYPE__IDENTIFIER:
@@ -358,6 +371,7 @@ public class CoverageDescriptionTypeImpl extends DescriptionTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case Wcs111Package.COVERAGE_DESCRIPTION_TYPE__IDENTIFIER:
@@ -387,6 +401,7 @@ public class CoverageDescriptionTypeImpl extends DescriptionTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case Wcs111Package.COVERAGE_DESCRIPTION_TYPE__IDENTIFIER:
@@ -410,6 +425,7 @@ public class CoverageDescriptionTypeImpl extends DescriptionTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String toString() {
         if (eIsProxy()) return super.toString();
 

@@ -65,6 +65,7 @@ public class AcceptLanguagesTypeImpl extends EObjectImpl implements AcceptLangua
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<String> getLanguage() {
     if (language == null) {
       language = new EDataTypeEList<>(String.class, this, Ows20Package.ACCEPT_LANGUAGES_TYPE__LANGUAGE);

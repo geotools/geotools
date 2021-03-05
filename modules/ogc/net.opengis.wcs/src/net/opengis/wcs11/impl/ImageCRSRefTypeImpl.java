@@ -64,6 +64,7 @@ public class ImageCRSRefTypeImpl extends EObjectImpl implements ImageCRSRefType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EClass eStaticClass() {
         return Wcs111Package.Literals.IMAGE_CRS_REF_TYPE;
     }
@@ -73,6 +74,7 @@ public class ImageCRSRefTypeImpl extends EObjectImpl implements ImageCRSRefType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object getImageCRS() {
         return imageCRS;
     }
@@ -82,6 +84,7 @@ public class ImageCRSRefTypeImpl extends EObjectImpl implements ImageCRSRefType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setImageCRS(Object newImageCRS) {
         Object oldImageCRS = imageCRS;
         imageCRS = newImageCRS;
@@ -94,6 +97,7 @@ public class ImageCRSRefTypeImpl extends EObjectImpl implements ImageCRSRefType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case Wcs111Package.IMAGE_CRS_REF_TYPE__IMAGE_CRS:
@@ -107,6 +111,7 @@ public class ImageCRSRefTypeImpl extends EObjectImpl implements ImageCRSRefType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Wcs111Package.IMAGE_CRS_REF_TYPE__IMAGE_CRS:
@@ -121,6 +126,7 @@ public class ImageCRSRefTypeImpl extends EObjectImpl implements ImageCRSRefType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case Wcs111Package.IMAGE_CRS_REF_TYPE__IMAGE_CRS:
@@ -135,6 +141,7 @@ public class ImageCRSRefTypeImpl extends EObjectImpl implements ImageCRSRefType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case Wcs111Package.IMAGE_CRS_REF_TYPE__IMAGE_CRS:
@@ -148,6 +155,7 @@ public class ImageCRSRefTypeImpl extends EObjectImpl implements ImageCRSRefType 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String toString() {
         if (eIsProxy()) return super.toString();
 

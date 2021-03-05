@@ -91,6 +91,7 @@ public abstract class DimensionSubsetTypeImpl extends EObjectImpl implements Dim
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getDimension() {
 		return dimension;
 	}
@@ -100,6 +101,7 @@ public abstract class DimensionSubsetTypeImpl extends EObjectImpl implements Dim
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setDimension(String newDimension) {
 		String oldDimension = dimension;
 		dimension = newDimension;
@@ -112,6 +114,7 @@ public abstract class DimensionSubsetTypeImpl extends EObjectImpl implements Dim
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getCRS() {
 		return cRS;
 	}
@@ -121,6 +124,7 @@ public abstract class DimensionSubsetTypeImpl extends EObjectImpl implements Dim
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setCRS(String newCRS) {
 		String oldCRS = cRS;
 		cRS = newCRS;

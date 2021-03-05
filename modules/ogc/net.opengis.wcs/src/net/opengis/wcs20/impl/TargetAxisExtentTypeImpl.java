@@ -112,6 +112,7 @@ public class TargetAxisExtentTypeImpl extends EObjectImpl implements TargetAxisE
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getAxis() {
 		return axis;
 	}
@@ -121,6 +122,7 @@ public class TargetAxisExtentTypeImpl extends EObjectImpl implements TargetAxisE
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setAxis(String newAxis) {
 		String oldAxis = axis;
 		axis = newAxis;
@@ -133,6 +135,7 @@ public class TargetAxisExtentTypeImpl extends EObjectImpl implements TargetAxisE
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public double getLow() {
 		return low;
 	}
@@ -142,6 +145,7 @@ public class TargetAxisExtentTypeImpl extends EObjectImpl implements TargetAxisE
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setLow(double newLow) {
 		double oldLow = low;
 		low = newLow;
@@ -154,6 +158,7 @@ public class TargetAxisExtentTypeImpl extends EObjectImpl implements TargetAxisE
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public double getHigh() {
 		return high;
 	}
@@ -163,6 +168,7 @@ public class TargetAxisExtentTypeImpl extends EObjectImpl implements TargetAxisE
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setHigh(double newHigh) {
 		double oldHigh = high;
 		high = newHigh;

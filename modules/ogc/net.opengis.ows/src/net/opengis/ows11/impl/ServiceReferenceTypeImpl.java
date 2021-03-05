@@ -73,7 +73,8 @@ public class ServiceReferenceTypeImpl extends ReferenceTypeImpl implements Servi
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.SERVICE_REFERENCE_TYPE;
   }
 
@@ -82,7 +83,8 @@ public class ServiceReferenceTypeImpl extends ReferenceTypeImpl implements Servi
    * <!-- end-user-doc -->
    * @generated
    */
-  public EObject getRequestMessage() {
+  @Override
+public EObject getRequestMessage() {
     return requestMessage;
   }
 
@@ -106,7 +108,8 @@ public class ServiceReferenceTypeImpl extends ReferenceTypeImpl implements Servi
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setRequestMessage(EObject newRequestMessage) {
+  @Override
+public void setRequestMessage(EObject newRequestMessage) {
     if (newRequestMessage != requestMessage) {
       NotificationChain msgs = null;
       if (requestMessage != null)
@@ -125,7 +128,8 @@ public class ServiceReferenceTypeImpl extends ReferenceTypeImpl implements Servi
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getRequestMessageReference() {
+  @Override
+public String getRequestMessageReference() {
     return requestMessageReference;
   }
 
@@ -134,7 +138,8 @@ public class ServiceReferenceTypeImpl extends ReferenceTypeImpl implements Servi
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setRequestMessageReference(String newRequestMessageReference) {
+  @Override
+public void setRequestMessageReference(String newRequestMessageReference) {
     String oldRequestMessageReference = requestMessageReference;
     requestMessageReference = newRequestMessageReference;
     if (eNotificationRequired())
@@ -146,7 +151,8 @@ public class ServiceReferenceTypeImpl extends ReferenceTypeImpl implements Servi
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+  @Override
+public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Ows11Package.SERVICE_REFERENCE_TYPE__REQUEST_MESSAGE:
         return basicSetRequestMessage(null, msgs);
@@ -159,7 +165,8 @@ public class ServiceReferenceTypeImpl extends ReferenceTypeImpl implements Servi
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.SERVICE_REFERENCE_TYPE__REQUEST_MESSAGE:
         return getRequestMessage();
@@ -174,7 +181,8 @@ public class ServiceReferenceTypeImpl extends ReferenceTypeImpl implements Servi
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.SERVICE_REFERENCE_TYPE__REQUEST_MESSAGE:
         setRequestMessage((EObject)newValue);
@@ -191,7 +199,8 @@ public class ServiceReferenceTypeImpl extends ReferenceTypeImpl implements Servi
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.SERVICE_REFERENCE_TYPE__REQUEST_MESSAGE:
         setRequestMessage((EObject)null);
@@ -208,7 +217,8 @@ public class ServiceReferenceTypeImpl extends ReferenceTypeImpl implements Servi
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.SERVICE_REFERENCE_TYPE__REQUEST_MESSAGE:
         return requestMessage != null;
@@ -223,7 +233,8 @@ public class ServiceReferenceTypeImpl extends ReferenceTypeImpl implements Servi
    * <!-- end-user-doc -->
    * @generated
    */
-  public String toString() {
+  @Override
+public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

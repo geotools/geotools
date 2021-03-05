@@ -62,6 +62,7 @@ public class PolyhedralSurfaceTypeImpl extends SurfaceTypeImpl implements Polyhe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PolygonPatchArrayPropertyType getPolygonPatches() {
         return polygonPatches;
     }
@@ -86,6 +87,7 @@ public class PolyhedralSurfaceTypeImpl extends SurfaceTypeImpl implements Polyhe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPolygonPatches(PolygonPatchArrayPropertyType newPolygonPatches) {
         if (newPolygonPatches != polygonPatches) {
             NotificationChain msgs = null;

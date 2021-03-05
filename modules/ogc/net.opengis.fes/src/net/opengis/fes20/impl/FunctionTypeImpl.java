@@ -95,6 +95,7 @@ public class FunctionTypeImpl extends EObjectImpl implements FunctionType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getExpressionGroup() {
         if (expressionGroup == null) {
             expressionGroup = new BasicFeatureMap(this, Fes20Package.FUNCTION_TYPE__EXPRESSION_GROUP);
@@ -107,6 +108,7 @@ public class FunctionTypeImpl extends EObjectImpl implements FunctionType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<EObject> getExpression() {
         return getExpressionGroup().list(Fes20Package.Literals.FUNCTION_TYPE__EXPRESSION);
     }
@@ -116,6 +118,7 @@ public class FunctionTypeImpl extends EObjectImpl implements FunctionType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -125,6 +128,7 @@ public class FunctionTypeImpl extends EObjectImpl implements FunctionType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setName(String newName) {
         String oldName = name;
         name = newName;

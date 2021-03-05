@@ -154,6 +154,7 @@ public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements Cove
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EClass eStaticClass() {
         return Wcs111Package.Literals.COVERAGE_SUMMARY_TYPE;
     }
@@ -163,6 +164,7 @@ public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements Cove
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getMetadata() {
         if (metadata == null) {
             metadata = new EObjectContainmentEList(MetadataType.class, this, Wcs111Package.COVERAGE_SUMMARY_TYPE__METADATA);
@@ -175,6 +177,7 @@ public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements Cove
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getWGS84BoundingBox() {
         if (wGS84BoundingBox == null) {
             wGS84BoundingBox = new EObjectContainmentEList(WGS84BoundingBoxType.class, this, Wcs111Package.COVERAGE_SUMMARY_TYPE__WGS84_BOUNDING_BOX);
@@ -187,6 +190,7 @@ public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements Cove
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getSupportedCRS() {
         if (supportedCRS == null) {
             supportedCRS = new EDataTypeEList(String.class, this, Wcs111Package.COVERAGE_SUMMARY_TYPE__SUPPORTED_CRS);
@@ -199,6 +203,7 @@ public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements Cove
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getSupportedFormat() {
         if (supportedFormat == null) {
             supportedFormat = new EDataTypeEList(String.class, this, Wcs111Package.COVERAGE_SUMMARY_TYPE__SUPPORTED_FORMAT);
@@ -211,6 +216,7 @@ public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements Cove
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getCoverageSummary() {
         if (coverageSummary == null) {
             coverageSummary = new EObjectContainmentEList(CoverageSummaryType.class, this, Wcs111Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUMMARY);
@@ -223,6 +229,7 @@ public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements Cove
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getIdentifier() {
         return identifier;
     }
@@ -232,6 +239,7 @@ public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements Cove
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIdentifier(String newIdentifier) {
         String oldIdentifier = identifier;
         identifier = newIdentifier;
@@ -244,6 +252,7 @@ public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements Cove
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getIdentifier1() {
         return identifier1;
     }
@@ -253,6 +262,7 @@ public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements Cove
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIdentifier1(String newIdentifier1) {
         String oldIdentifier1 = identifier1;
         identifier1 = newIdentifier1;
@@ -265,6 +275,7 @@ public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements Cove
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case Wcs111Package.COVERAGE_SUMMARY_TYPE__METADATA:
@@ -282,6 +293,7 @@ public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements Cove
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case Wcs111Package.COVERAGE_SUMMARY_TYPE__METADATA:
@@ -307,6 +319,7 @@ public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements Cove
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Wcs111Package.COVERAGE_SUMMARY_TYPE__METADATA:
@@ -344,6 +357,7 @@ public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements Cove
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case Wcs111Package.COVERAGE_SUMMARY_TYPE__METADATA:
@@ -376,6 +390,7 @@ public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements Cove
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case Wcs111Package.COVERAGE_SUMMARY_TYPE__METADATA:
@@ -401,6 +416,7 @@ public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements Cove
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String toString() {
         if (eIsProxy()) return super.toString();
 

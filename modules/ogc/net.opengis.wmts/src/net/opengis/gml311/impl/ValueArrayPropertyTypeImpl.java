@@ -95,6 +95,7 @@ public class ValueArrayPropertyTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getValue() {
         if (value == null) {
             value = new BasicFeatureMap(this, Gml311Package.VALUE_ARRAY_PROPERTY_TYPE__VALUE);
@@ -107,6 +108,7 @@ public class ValueArrayPropertyTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<Boolean> getBoolean() {
         return getValue().list(Gml311Package.eINSTANCE.getValueArrayPropertyType_Boolean());
     }
@@ -116,6 +118,7 @@ public class ValueArrayPropertyTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<CodeType> getCategory() {
         return getValue().list(Gml311Package.eINSTANCE.getValueArrayPropertyType_Category());
     }
@@ -125,6 +128,7 @@ public class ValueArrayPropertyTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<MeasureType> getQuantity() {
         return getValue().list(Gml311Package.eINSTANCE.getValueArrayPropertyType_Quantity());
     }
@@ -134,6 +138,7 @@ public class ValueArrayPropertyTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<BigInteger> getCount() {
         return getValue().list(Gml311Package.eINSTANCE.getValueArrayPropertyType_Count());
     }
@@ -143,6 +148,7 @@ public class ValueArrayPropertyTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     @SuppressWarnings("unchecked")
     public EList<List> getBooleanList() {
         return getValue().list(Gml311Package.eINSTANCE.getValueArrayPropertyType_BooleanList());
@@ -153,6 +159,7 @@ public class ValueArrayPropertyTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<CodeOrNullListType> getCategoryList() {
         return getValue().list(Gml311Package.eINSTANCE.getValueArrayPropertyType_CategoryList());
     }
@@ -162,6 +169,7 @@ public class ValueArrayPropertyTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<MeasureOrNullListType> getQuantityList() {
         return getValue().list(Gml311Package.eINSTANCE.getValueArrayPropertyType_QuantityList());
     }
@@ -171,6 +179,7 @@ public class ValueArrayPropertyTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     @SuppressWarnings("unchecked")
     public EList<List> getCountList() {
         return getValue().list(Gml311Package.eINSTANCE.getValueArrayPropertyType_CountList());
@@ -181,6 +190,7 @@ public class ValueArrayPropertyTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<CategoryExtentType> getCategoryExtent() {
         return getValue().list(Gml311Package.eINSTANCE.getValueArrayPropertyType_CategoryExtent());
     }
@@ -190,6 +200,7 @@ public class ValueArrayPropertyTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<QuantityExtentType> getQuantityExtent() {
         return getValue().list(Gml311Package.eINSTANCE.getValueArrayPropertyType_QuantityExtent());
     }
@@ -199,6 +210,7 @@ public class ValueArrayPropertyTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     @SuppressWarnings("unchecked")
     public EList<List> getCountExtent() {
         return getValue().list(Gml311Package.eINSTANCE.getValueArrayPropertyType_CountExtent());
@@ -209,6 +221,7 @@ public class ValueArrayPropertyTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getCompositeValueGroup() {
         return (FeatureMap)getValue().<FeatureMap.Entry>list(Gml311Package.eINSTANCE.getValueArrayPropertyType_CompositeValueGroup());
     }
@@ -218,6 +231,7 @@ public class ValueArrayPropertyTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<CompositeValueType> getCompositeValue() {
         return getCompositeValueGroup().list(Gml311Package.eINSTANCE.getValueArrayPropertyType_CompositeValue());
     }
@@ -227,6 +241,7 @@ public class ValueArrayPropertyTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getObjectGroup() {
         return (FeatureMap)getValue().<FeatureMap.Entry>list(Gml311Package.eINSTANCE.getValueArrayPropertyType_ObjectGroup());
     }
@@ -236,6 +251,7 @@ public class ValueArrayPropertyTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<EObject> getObject() {
         return getObjectGroup().list(Gml311Package.eINSTANCE.getValueArrayPropertyType_Object());
     }
@@ -245,6 +261,7 @@ public class ValueArrayPropertyTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<Object> getNull() {
         return getValue().list(Gml311Package.eINSTANCE.getValueArrayPropertyType_Null());
     }

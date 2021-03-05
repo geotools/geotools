@@ -126,6 +126,7 @@ public abstract class AbstractDescriptionTypeImpl extends AbstractDescriptionBas
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.ABSTRACT_DESCRIPTION_TYPE;
 	}
@@ -135,6 +136,7 @@ public abstract class AbstractDescriptionTypeImpl extends AbstractDescriptionBas
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList getMetadataLink() {
 		if (metadataLink == null) {
 			metadataLink = new EObjectContainmentEList(MetadataLinkType.class, this, Wcs10Package.ABSTRACT_DESCRIPTION_TYPE__METADATA_LINK);
@@ -147,6 +149,7 @@ public abstract class AbstractDescriptionTypeImpl extends AbstractDescriptionBas
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getDescription1() {
 		return description1;
 	}
@@ -156,6 +159,7 @@ public abstract class AbstractDescriptionTypeImpl extends AbstractDescriptionBas
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setDescription1(String newDescription1) {
 		String oldDescription1 = description1;
 		description1 = newDescription1;
@@ -168,6 +172,7 @@ public abstract class AbstractDescriptionTypeImpl extends AbstractDescriptionBas
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getName1() {
 		return name1;
 	}
@@ -177,6 +182,7 @@ public abstract class AbstractDescriptionTypeImpl extends AbstractDescriptionBas
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setName1(String newName1) {
 		String oldName1 = name1;
 		name1 = newName1;
@@ -189,6 +195,7 @@ public abstract class AbstractDescriptionTypeImpl extends AbstractDescriptionBas
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getLabel() {
 		return label;
 	}
@@ -198,6 +205,7 @@ public abstract class AbstractDescriptionTypeImpl extends AbstractDescriptionBas
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setLabel(String newLabel) {
 		String oldLabel = label;
 		label = newLabel;
@@ -210,6 +218,7 @@ public abstract class AbstractDescriptionTypeImpl extends AbstractDescriptionBas
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.ABSTRACT_DESCRIPTION_TYPE__METADATA_LINK:
@@ -223,6 +232,7 @@ public abstract class AbstractDescriptionTypeImpl extends AbstractDescriptionBas
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.ABSTRACT_DESCRIPTION_TYPE__METADATA_LINK:
@@ -242,6 +252,7 @@ public abstract class AbstractDescriptionTypeImpl extends AbstractDescriptionBas
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.ABSTRACT_DESCRIPTION_TYPE__METADATA_LINK:
@@ -266,6 +277,7 @@ public abstract class AbstractDescriptionTypeImpl extends AbstractDescriptionBas
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.ABSTRACT_DESCRIPTION_TYPE__METADATA_LINK:
@@ -289,6 +301,7 @@ public abstract class AbstractDescriptionTypeImpl extends AbstractDescriptionBas
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.ABSTRACT_DESCRIPTION_TYPE__METADATA_LINK:
@@ -308,6 +321,7 @@ public abstract class AbstractDescriptionTypeImpl extends AbstractDescriptionBas
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

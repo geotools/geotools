@@ -86,6 +86,7 @@ public class DirectionVectorTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public VectorType getVector() {
         return vector;
     }
@@ -110,6 +111,7 @@ public class DirectionVectorTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setVector(VectorType newVector) {
         if (newVector != vector) {
             NotificationChain msgs = null;
@@ -129,6 +131,7 @@ public class DirectionVectorTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AngleType getHorizontalAngle() {
         return horizontalAngle;
     }
@@ -153,6 +156,7 @@ public class DirectionVectorTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setHorizontalAngle(AngleType newHorizontalAngle) {
         if (newHorizontalAngle != horizontalAngle) {
             NotificationChain msgs = null;
@@ -172,6 +176,7 @@ public class DirectionVectorTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AngleType getVerticalAngle() {
         return verticalAngle;
     }
@@ -196,6 +201,7 @@ public class DirectionVectorTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setVerticalAngle(AngleType newVerticalAngle) {
         if (newVerticalAngle != verticalAngle) {
             NotificationChain msgs = null;

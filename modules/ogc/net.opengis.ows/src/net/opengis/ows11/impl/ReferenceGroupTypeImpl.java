@@ -55,7 +55,8 @@ public class ReferenceGroupTypeImpl extends BasicIdentificationTypeImpl implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.REFERENCE_GROUP_TYPE;
   }
 
@@ -64,7 +65,8 @@ public class ReferenceGroupTypeImpl extends BasicIdentificationTypeImpl implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public FeatureMap getAbstractReferenceBaseGroup() {
+  @Override
+public FeatureMap getAbstractReferenceBaseGroup() {
     if (abstractReferenceBaseGroup == null) {
       abstractReferenceBaseGroup = new BasicFeatureMap(this, Ows11Package.REFERENCE_GROUP_TYPE__ABSTRACT_REFERENCE_BASE_GROUP);
     }
@@ -76,7 +78,8 @@ public class ReferenceGroupTypeImpl extends BasicIdentificationTypeImpl implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList getAbstractReferenceBase() {
+  @Override
+public EList getAbstractReferenceBase() {
     return getAbstractReferenceBaseGroup().list(Ows11Package.Literals.REFERENCE_GROUP_TYPE__ABSTRACT_REFERENCE_BASE);
   }
 
@@ -85,7 +88,8 @@ public class ReferenceGroupTypeImpl extends BasicIdentificationTypeImpl implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+  @Override
+public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Ows11Package.REFERENCE_GROUP_TYPE__ABSTRACT_REFERENCE_BASE_GROUP:
         return ((InternalEList)getAbstractReferenceBaseGroup()).basicRemove(otherEnd, msgs);
@@ -100,7 +104,8 @@ public class ReferenceGroupTypeImpl extends BasicIdentificationTypeImpl implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.REFERENCE_GROUP_TYPE__ABSTRACT_REFERENCE_BASE_GROUP:
         if (coreType) return getAbstractReferenceBaseGroup();
@@ -116,7 +121,8 @@ public class ReferenceGroupTypeImpl extends BasicIdentificationTypeImpl implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.REFERENCE_GROUP_TYPE__ABSTRACT_REFERENCE_BASE_GROUP:
         ((FeatureMap.Internal)getAbstractReferenceBaseGroup()).set(newValue);
@@ -130,7 +136,8 @@ public class ReferenceGroupTypeImpl extends BasicIdentificationTypeImpl implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.REFERENCE_GROUP_TYPE__ABSTRACT_REFERENCE_BASE_GROUP:
         getAbstractReferenceBaseGroup().clear();
@@ -144,7 +151,8 @@ public class ReferenceGroupTypeImpl extends BasicIdentificationTypeImpl implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.REFERENCE_GROUP_TYPE__ABSTRACT_REFERENCE_BASE_GROUP:
         return abstractReferenceBaseGroup != null && !abstractReferenceBaseGroup.isEmpty();
@@ -159,7 +167,8 @@ public class ReferenceGroupTypeImpl extends BasicIdentificationTypeImpl implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public String toString() {
+  @Override
+public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

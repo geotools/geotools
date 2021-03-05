@@ -85,6 +85,7 @@ public class ValuesReferenceTypeImpl extends EObjectImpl implements ValuesRefere
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.VALUES_REFERENCE_TYPE;
   }
@@ -94,6 +95,7 @@ public class ValuesReferenceTypeImpl extends EObjectImpl implements ValuesRefere
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getReference() {
     return reference;
   }
@@ -103,6 +105,7 @@ public class ValuesReferenceTypeImpl extends EObjectImpl implements ValuesRefere
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setReference(String newReference) {
     String oldReference = reference;
     reference = newReference;
@@ -115,6 +118,7 @@ public class ValuesReferenceTypeImpl extends EObjectImpl implements ValuesRefere
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getValuesForm() {
     return valuesForm;
   }
@@ -124,6 +128,7 @@ public class ValuesReferenceTypeImpl extends EObjectImpl implements ValuesRefere
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setValuesForm(String newValuesForm) {
     String oldValuesForm = valuesForm;
     valuesForm = newValuesForm;
@@ -136,6 +141,7 @@ public class ValuesReferenceTypeImpl extends EObjectImpl implements ValuesRefere
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.VALUES_REFERENCE_TYPE__REFERENCE:
@@ -151,6 +157,7 @@ public class ValuesReferenceTypeImpl extends EObjectImpl implements ValuesRefere
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.VALUES_REFERENCE_TYPE__REFERENCE:
@@ -168,6 +175,7 @@ public class ValuesReferenceTypeImpl extends EObjectImpl implements ValuesRefere
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.VALUES_REFERENCE_TYPE__REFERENCE:
@@ -185,6 +193,7 @@ public class ValuesReferenceTypeImpl extends EObjectImpl implements ValuesRefere
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.VALUES_REFERENCE_TYPE__REFERENCE:
@@ -200,6 +209,7 @@ public class ValuesReferenceTypeImpl extends EObjectImpl implements ValuesRefere
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String toString() {
     if (eIsProxy()) return super.toString();
 

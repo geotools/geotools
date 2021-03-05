@@ -62,6 +62,7 @@ public class CoverageDescriptionsTypeImpl extends EObjectImpl implements Coverag
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EClass eStaticClass() {
         return Wcs111Package.Literals.COVERAGE_DESCRIPTIONS_TYPE;
     }
@@ -71,6 +72,7 @@ public class CoverageDescriptionsTypeImpl extends EObjectImpl implements Coverag
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getCoverageDescription() {
         if (coverageDescription == null) {
             coverageDescription = new EObjectContainmentEList(CoverageDescriptionType.class, this, Wcs111Package.COVERAGE_DESCRIPTIONS_TYPE__COVERAGE_DESCRIPTION);
@@ -83,6 +85,7 @@ public class CoverageDescriptionsTypeImpl extends EObjectImpl implements Coverag
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case Wcs111Package.COVERAGE_DESCRIPTIONS_TYPE__COVERAGE_DESCRIPTION:
@@ -96,6 +99,7 @@ public class CoverageDescriptionsTypeImpl extends EObjectImpl implements Coverag
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case Wcs111Package.COVERAGE_DESCRIPTIONS_TYPE__COVERAGE_DESCRIPTION:
@@ -109,6 +113,7 @@ public class CoverageDescriptionsTypeImpl extends EObjectImpl implements Coverag
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Wcs111Package.COVERAGE_DESCRIPTIONS_TYPE__COVERAGE_DESCRIPTION:
@@ -124,6 +129,7 @@ public class CoverageDescriptionsTypeImpl extends EObjectImpl implements Coverag
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case Wcs111Package.COVERAGE_DESCRIPTIONS_TYPE__COVERAGE_DESCRIPTION:
@@ -138,6 +144,7 @@ public class CoverageDescriptionsTypeImpl extends EObjectImpl implements Coverag
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case Wcs111Package.COVERAGE_DESCRIPTIONS_TYPE__COVERAGE_DESCRIPTION:

@@ -92,6 +92,7 @@ public class PropertyIsNilTypeImpl extends ComparisonOpsTypeImpl implements Prop
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getExpressionGroup() {
         if (expressionGroup == null) {
             expressionGroup = new BasicFeatureMap(this, Fes20Package.PROPERTY_IS_NIL_TYPE__EXPRESSION_GROUP);
@@ -104,6 +105,7 @@ public class PropertyIsNilTypeImpl extends ComparisonOpsTypeImpl implements Prop
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EObject getExpression() {
         return (EObject)getExpressionGroup().get(Fes20Package.Literals.PROPERTY_IS_NIL_TYPE__EXPRESSION, true);
     }
@@ -122,6 +124,7 @@ public class PropertyIsNilTypeImpl extends ComparisonOpsTypeImpl implements Prop
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getNilReason() {
         return nilReason;
     }
@@ -131,6 +134,7 @@ public class PropertyIsNilTypeImpl extends ComparisonOpsTypeImpl implements Prop
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setNilReason(String newNilReason) {
         String oldNilReason = nilReason;
         nilReason = newNilReason;

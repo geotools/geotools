@@ -95,7 +95,8 @@ public class GmlValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected EPackage getEPackage() {
+	@Override
+    protected EPackage getEPackage() {
 	  return GmlPackage.eINSTANCE;
 	}
 
@@ -105,7 +106,8 @@ public class GmlValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected boolean validate(int classifierID, Object value, DiagnosticChain diagnostics, Map context) {
+	@Override
+    protected boolean validate(int classifierID, Object value, DiagnosticChain diagnostics, Map context) {
 		switch (classifierID) {
 			case GmlPackage.ABSTRACT_GEOMETRIC_PRIMITIVE_TYPE:
 				return validateAbstractGeometricPrimitiveType((AbstractGeometricPrimitiveType)value, diagnostics, context);

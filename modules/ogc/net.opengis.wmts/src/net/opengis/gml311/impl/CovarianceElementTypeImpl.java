@@ -123,6 +123,7 @@ public class CovarianceElementTypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getRowIndex() {
         return rowIndex;
     }
@@ -132,6 +133,7 @@ public class CovarianceElementTypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRowIndex(BigInteger newRowIndex) {
         BigInteger oldRowIndex = rowIndex;
         rowIndex = newRowIndex;
@@ -144,6 +146,7 @@ public class CovarianceElementTypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getColumnIndex() {
         return columnIndex;
     }
@@ -153,6 +156,7 @@ public class CovarianceElementTypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setColumnIndex(BigInteger newColumnIndex) {
         BigInteger oldColumnIndex = columnIndex;
         columnIndex = newColumnIndex;
@@ -165,6 +169,7 @@ public class CovarianceElementTypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public double getCovariance() {
         return covariance;
     }
@@ -174,6 +179,7 @@ public class CovarianceElementTypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCovariance(double newCovariance) {
         double oldCovariance = covariance;
         covariance = newCovariance;
@@ -188,6 +194,7 @@ public class CovarianceElementTypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetCovariance() {
         double oldCovariance = covariance;
         boolean oldCovarianceESet = covarianceESet;
@@ -202,6 +209,7 @@ public class CovarianceElementTypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetCovariance() {
         return covarianceESet;
     }

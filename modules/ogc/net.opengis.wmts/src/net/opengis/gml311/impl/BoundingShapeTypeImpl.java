@@ -89,6 +89,7 @@ public class BoundingShapeTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getEnvelopeGroup() {
         if (envelopeGroup == null) {
             envelopeGroup = new BasicFeatureMap(this, Gml311Package.BOUNDING_SHAPE_TYPE__ENVELOPE_GROUP);
@@ -101,6 +102,7 @@ public class BoundingShapeTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EnvelopeType getEnvelope() {
         return (EnvelopeType)getEnvelopeGroup().get(Gml311Package.eINSTANCE.getBoundingShapeType_Envelope(), true);
     }
@@ -119,6 +121,7 @@ public class BoundingShapeTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEnvelope(EnvelopeType newEnvelope) {
         ((FeatureMap.Internal)getEnvelopeGroup()).set(Gml311Package.eINSTANCE.getBoundingShapeType_Envelope(), newEnvelope);
     }
@@ -128,6 +131,7 @@ public class BoundingShapeTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object getNull() {
         return null_;
     }
@@ -137,6 +141,7 @@ public class BoundingShapeTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setNull(Object newNull) {
         Object oldNull = null_;
         null_ = newNull;

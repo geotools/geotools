@@ -92,6 +92,7 @@ public class ConversionToPreferredUnitTypeImpl extends UnitOfMeasureTypeImpl imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public double getFactor() {
         return factor;
     }
@@ -101,6 +102,7 @@ public class ConversionToPreferredUnitTypeImpl extends UnitOfMeasureTypeImpl imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFactor(double newFactor) {
         double oldFactor = factor;
         factor = newFactor;
@@ -115,6 +117,7 @@ public class ConversionToPreferredUnitTypeImpl extends UnitOfMeasureTypeImpl imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetFactor() {
         double oldFactor = factor;
         boolean oldFactorESet = factorESet;
@@ -129,6 +132,7 @@ public class ConversionToPreferredUnitTypeImpl extends UnitOfMeasureTypeImpl imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetFactor() {
         return factorESet;
     }
@@ -138,6 +142,7 @@ public class ConversionToPreferredUnitTypeImpl extends UnitOfMeasureTypeImpl imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FormulaType getFormula() {
         return formula;
     }
@@ -162,6 +167,7 @@ public class ConversionToPreferredUnitTypeImpl extends UnitOfMeasureTypeImpl imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFormula(FormulaType newFormula) {
         if (newFormula != formula) {
             NotificationChain msgs = null;

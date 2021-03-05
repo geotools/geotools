@@ -68,6 +68,7 @@ public class CurveSegmentArrayPropertyTypeImpl extends MinimalEObjectImpl.Contai
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getCurveSegmentGroup() {
         if (curveSegmentGroup == null) {
             curveSegmentGroup = new BasicFeatureMap(this, Gml311Package.CURVE_SEGMENT_ARRAY_PROPERTY_TYPE__CURVE_SEGMENT_GROUP);
@@ -80,6 +81,7 @@ public class CurveSegmentArrayPropertyTypeImpl extends MinimalEObjectImpl.Contai
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<AbstractCurveSegmentType> getCurveSegment() {
         return getCurveSegmentGroup().list(Gml311Package.eINSTANCE.getCurveSegmentArrayPropertyType_CurveSegment());
     }

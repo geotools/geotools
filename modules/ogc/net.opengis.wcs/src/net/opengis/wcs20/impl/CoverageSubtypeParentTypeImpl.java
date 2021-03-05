@@ -85,6 +85,7 @@ public class CoverageSubtypeParentTypeImpl extends EObjectImpl implements Covera
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public QName getCoverageSubtype() {
 		return coverageSubtype;
 	}
@@ -94,6 +95,7 @@ public class CoverageSubtypeParentTypeImpl extends EObjectImpl implements Covera
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setCoverageSubtype(QName newCoverageSubtype) {
 		QName oldCoverageSubtype = coverageSubtype;
 		coverageSubtype = newCoverageSubtype;
@@ -106,6 +108,7 @@ public class CoverageSubtypeParentTypeImpl extends EObjectImpl implements Covera
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public CoverageSubtypeParentType getCoverageSubtypeParent() {
 		return coverageSubtypeParent;
 	}
@@ -130,6 +133,7 @@ public class CoverageSubtypeParentTypeImpl extends EObjectImpl implements Covera
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setCoverageSubtypeParent(CoverageSubtypeParentType newCoverageSubtypeParent) {
 		if (newCoverageSubtypeParent != coverageSubtypeParent) {
 			NotificationChain msgs = null;

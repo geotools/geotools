@@ -77,6 +77,7 @@ public class RequestStatusTypeImpl extends EObjectImpl implements RequestStatusT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Calendar getTimestamp() {
         return timestamp;
     }
@@ -86,6 +87,7 @@ public class RequestStatusTypeImpl extends EObjectImpl implements RequestStatusT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTimestamp(Calendar newTimestamp) {
         Calendar oldTimestamp = timestamp;
         timestamp = newTimestamp;

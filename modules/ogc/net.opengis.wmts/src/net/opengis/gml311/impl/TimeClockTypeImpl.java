@@ -125,6 +125,7 @@ public class TimeClockTypeImpl extends AbstractTimeReferenceSystemTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StringOrRefType getReferenceEvent() {
         return referenceEvent;
     }
@@ -149,6 +150,7 @@ public class TimeClockTypeImpl extends AbstractTimeReferenceSystemTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setReferenceEvent(StringOrRefType newReferenceEvent) {
         if (newReferenceEvent != referenceEvent) {
             NotificationChain msgs = null;
@@ -168,6 +170,7 @@ public class TimeClockTypeImpl extends AbstractTimeReferenceSystemTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public XMLGregorianCalendar getReferenceTime() {
         return referenceTime;
     }
@@ -177,6 +180,7 @@ public class TimeClockTypeImpl extends AbstractTimeReferenceSystemTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setReferenceTime(XMLGregorianCalendar newReferenceTime) {
         XMLGregorianCalendar oldReferenceTime = referenceTime;
         referenceTime = newReferenceTime;
@@ -189,6 +193,7 @@ public class TimeClockTypeImpl extends AbstractTimeReferenceSystemTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public XMLGregorianCalendar getUtcReference() {
         return utcReference;
     }
@@ -198,6 +203,7 @@ public class TimeClockTypeImpl extends AbstractTimeReferenceSystemTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUtcReference(XMLGregorianCalendar newUtcReference) {
         XMLGregorianCalendar oldUtcReference = utcReference;
         utcReference = newUtcReference;
@@ -210,6 +216,7 @@ public class TimeClockTypeImpl extends AbstractTimeReferenceSystemTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<TimeCalendarPropertyType> getDateBasis() {
         if (dateBasis == null) {
             dateBasis = new EObjectContainmentEList<>(TimeCalendarPropertyType.class, this, Gml311Package.TIME_CLOCK_TYPE__DATE_BASIS);

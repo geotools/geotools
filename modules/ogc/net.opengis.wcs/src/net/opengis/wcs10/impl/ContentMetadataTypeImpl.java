@@ -313,6 +313,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.CONTENT_METADATA_TYPE;
 	}
@@ -322,6 +323,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList getCoverageOfferingBrief() {
 		if (coverageOfferingBrief == null) {
 			coverageOfferingBrief = new EObjectContainmentEList(CoverageOfferingBriefType.class, this, Wcs10Package.CONTENT_METADATA_TYPE__COVERAGE_OFFERING_BRIEF);
@@ -334,6 +336,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ActuateType getActuate() {
 		return actuate;
 	}
@@ -343,6 +346,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setActuate(ActuateType newActuate) {
 		ActuateType oldActuate = actuate;
 		actuate = newActuate == null ? ACTUATE_EDEFAULT : newActuate;
@@ -357,6 +361,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void unsetActuate() {
 		ActuateType oldActuate = actuate;
 		boolean oldActuateESet = actuateESet;
@@ -371,6 +376,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean isSetActuate() {
 		return actuateESet;
 	}
@@ -380,6 +386,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getArcrole() {
 		return arcrole;
 	}
@@ -389,6 +396,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setArcrole(String newArcrole) {
 		String oldArcrole = arcrole;
 		arcrole = newArcrole;
@@ -401,6 +409,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getHref() {
 		return href;
 	}
@@ -410,6 +419,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setHref(String newHref) {
 		String oldHref = href;
 		href = newHref;
@@ -422,6 +432,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getRemoteSchema() {
 		return remoteSchema;
 	}
@@ -431,6 +442,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setRemoteSchema(String newRemoteSchema) {
 		String oldRemoteSchema = remoteSchema;
 		remoteSchema = newRemoteSchema;
@@ -443,6 +455,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getRole() {
 		return role;
 	}
@@ -452,6 +465,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setRole(String newRole) {
 		String oldRole = role;
 		role = newRole;
@@ -464,6 +478,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ShowType getShow() {
 		return show;
 	}
@@ -473,6 +488,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setShow(ShowType newShow) {
 		ShowType oldShow = show;
 		show = newShow == null ? SHOW_EDEFAULT : newShow;
@@ -487,6 +503,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void unsetShow() {
 		ShowType oldShow = show;
 		boolean oldShowESet = showESet;
@@ -501,6 +518,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean isSetShow() {
 		return showESet;
 	}
@@ -510,6 +528,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getTitle() {
 		return title;
 	}
@@ -519,6 +538,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setTitle(String newTitle) {
 		String oldTitle = title;
 		title = newTitle;
@@ -531,6 +551,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getType() {
 		return type;
 	}
@@ -540,6 +561,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setType(String newType) {
 		String oldType = type;
 		type = newType;
@@ -554,6 +576,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void unsetType() {
 		String oldType = type;
 		boolean oldTypeESet = typeESet;
@@ -568,6 +591,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean isSetType() {
 		return typeESet;
 	}
@@ -577,6 +601,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getUpdateSequence() {
 		return updateSequence;
 	}
@@ -586,6 +611,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setUpdateSequence(String newUpdateSequence) {
 		String oldUpdateSequence = updateSequence;
 		updateSequence = newUpdateSequence;
@@ -598,6 +624,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getVersion() {
 		return version;
 	}
@@ -607,6 +634,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setVersion(String newVersion) {
 		String oldVersion = version;
 		version = newVersion;
@@ -621,6 +649,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void unsetVersion() {
 		String oldVersion = version;
 		boolean oldVersionESet = versionESet;
@@ -635,6 +664,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean isSetVersion() {
 		return versionESet;
 	}
@@ -644,6 +674,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.CONTENT_METADATA_TYPE__COVERAGE_OFFERING_BRIEF:
@@ -657,6 +688,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.CONTENT_METADATA_TYPE__COVERAGE_OFFERING_BRIEF:
@@ -690,6 +722,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.CONTENT_METADATA_TYPE__COVERAGE_OFFERING_BRIEF:
@@ -735,6 +768,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.CONTENT_METADATA_TYPE__COVERAGE_OFFERING_BRIEF:
@@ -779,6 +813,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.CONTENT_METADATA_TYPE__COVERAGE_OFFERING_BRIEF:
@@ -812,6 +847,7 @@ public class ContentMetadataTypeImpl extends EObjectImpl implements ContentMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

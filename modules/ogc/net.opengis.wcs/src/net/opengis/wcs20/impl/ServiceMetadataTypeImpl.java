@@ -84,6 +84,7 @@ public class ServiceMetadataTypeImpl extends EObjectImpl implements ServiceMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getFormatSupported() {
 		return formatSupported;
 	}
@@ -93,6 +94,7 @@ public class ServiceMetadataTypeImpl extends EObjectImpl implements ServiceMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setFormatSupported(String newFormatSupported) {
 		String oldFormatSupported = formatSupported;
 		formatSupported = newFormatSupported;
@@ -105,6 +107,7 @@ public class ServiceMetadataTypeImpl extends EObjectImpl implements ServiceMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ExtensionType getExtension() {
 		return extension;
 	}
@@ -129,6 +132,7 @@ public class ServiceMetadataTypeImpl extends EObjectImpl implements ServiceMetad
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setExtension(ExtensionType newExtension) {
 		if (newExtension != extension) {
 			NotificationChain msgs = null;

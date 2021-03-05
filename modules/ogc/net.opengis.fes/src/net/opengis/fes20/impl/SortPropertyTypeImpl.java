@@ -105,6 +105,7 @@ public class SortPropertyTypeImpl extends EObjectImpl implements SortPropertyTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getValueReference() {
         return valueReference;
     }
@@ -114,6 +115,7 @@ public class SortPropertyTypeImpl extends EObjectImpl implements SortPropertyTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValueReference(String newValueReference) {
         String oldValueReference = valueReference;
         valueReference = newValueReference;
@@ -126,6 +128,7 @@ public class SortPropertyTypeImpl extends EObjectImpl implements SortPropertyTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SortOrderType getSortOrder() {
         return sortOrder;
     }
@@ -135,6 +138,7 @@ public class SortPropertyTypeImpl extends EObjectImpl implements SortPropertyTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSortOrder(SortOrderType newSortOrder) {
         SortOrderType oldSortOrder = sortOrder;
         sortOrder = newSortOrder == null ? SORT_ORDER_EDEFAULT : newSortOrder;
@@ -149,6 +153,7 @@ public class SortPropertyTypeImpl extends EObjectImpl implements SortPropertyTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetSortOrder() {
         SortOrderType oldSortOrder = sortOrder;
         boolean oldSortOrderESet = sortOrderESet;
@@ -163,6 +168,7 @@ public class SortPropertyTypeImpl extends EObjectImpl implements SortPropertyTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetSortOrder() {
         return sortOrderESet;
     }

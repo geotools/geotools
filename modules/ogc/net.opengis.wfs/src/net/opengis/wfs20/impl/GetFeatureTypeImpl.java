@@ -308,6 +308,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public BigInteger getCount() {
     return count;
   }
@@ -316,6 +317,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setCount(BigInteger newCount) {
     BigInteger oldCount = count;
     count = newCount;
@@ -327,6 +329,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getOutputFormat() {
     return outputFormat;
   }
@@ -335,6 +338,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setOutputFormat(String newOutputFormat) {
     String oldOutputFormat = outputFormat;
     outputFormat = newOutputFormat;
@@ -348,6 +352,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetOutputFormat() {
     String oldOutputFormat = outputFormat;
     boolean oldOutputFormatESet = outputFormatESet;
@@ -361,6 +366,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetOutputFormat() {
     return outputFormatESet;
   }
@@ -369,6 +375,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ResolveValueType getResolve() {
     return resolve;
   }
@@ -377,6 +384,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setResolve(ResolveValueType newResolve) {
     ResolveValueType oldResolve = resolve;
     resolve = newResolve == null ? RESOLVE_EDEFAULT : newResolve;
@@ -390,6 +398,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetResolve() {
     ResolveValueType oldResolve = resolve;
     boolean oldResolveESet = resolveESet;
@@ -403,6 +412,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetResolve() {
     return resolveESet;
   }
@@ -411,6 +421,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object getResolveDepth() {
     return resolveDepth;
   }
@@ -419,6 +430,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setResolveDepth(Object newResolveDepth) {
     Object oldResolveDepth = resolveDepth;
     resolveDepth = newResolveDepth;
@@ -432,6 +444,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetResolveDepth() {
     Object oldResolveDepth = resolveDepth;
     boolean oldResolveDepthESet = resolveDepthESet;
@@ -445,6 +458,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetResolveDepth() {
     return resolveDepthESet;
   }
@@ -453,6 +467,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public BigInteger getResolveTimeout() {
     return resolveTimeout;
   }
@@ -461,6 +476,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setResolveTimeout(BigInteger newResolveTimeout) {
     BigInteger oldResolveTimeout = resolveTimeout;
     resolveTimeout = newResolveTimeout;
@@ -474,6 +490,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetResolveTimeout() {
     BigInteger oldResolveTimeout = resolveTimeout;
     boolean oldResolveTimeoutESet = resolveTimeoutESet;
@@ -487,6 +504,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetResolveTimeout() {
     return resolveTimeoutESet;
   }
@@ -495,6 +513,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ResultTypeType getResultType() {
     return resultType;
   }
@@ -503,6 +522,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setResultType(ResultTypeType newResultType) {
     ResultTypeType oldResultType = resultType;
     resultType = newResultType == null ? RESULT_TYPE_EDEFAULT : newResultType;
@@ -516,6 +536,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetResultType() {
     ResultTypeType oldResultType = resultType;
     boolean oldResultTypeESet = resultTypeESet;
@@ -529,6 +550,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetResultType() {
     return resultTypeESet;
   }
@@ -537,6 +559,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public BigInteger getStartIndex() {
     return startIndex;
   }
@@ -545,6 +568,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setStartIndex(BigInteger newStartIndex) {
     BigInteger oldStartIndex = startIndex;
     startIndex = newStartIndex;
@@ -558,6 +582,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetStartIndex() {
     BigInteger oldStartIndex = startIndex;
     boolean oldStartIndexESet = startIndexESet;
@@ -571,6 +596,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetStartIndex() {
     return startIndexESet;
   }
@@ -580,6 +606,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
      * 
      * @generated NOT
      */
+    @Override
     public Map getMetadata() {
         if (metadata == null) {
             metadata = new HashMap();
@@ -591,6 +618,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setMetadata(Map newMetadata) {
     Map oldMetadata = metadata;
     metadata = newMetadata;
@@ -603,6 +631,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
      * 
      * @generated NOT
      */
+    @Override
     public Map getFormatOptions() {
         if (formatOptions == null) {
             formatOptions = new HashMap();
@@ -614,6 +643,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setFormatOptions(Map newFormatOptions) {
     Map oldFormatOptions = formatOptions;
     formatOptions = newFormatOptions;
@@ -625,6 +655,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<Map> getViewParams() {
     if (viewParams == null) {
       viewParams = new EDataTypeEList<>(Map.class, this, Wfs20Package.GET_FEATURE_TYPE__VIEW_PARAMS);
@@ -636,6 +667,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureMap getAbstractQueryExpressionGroup() {
     if (abstractQueryExpressionGroup == null) {
       abstractQueryExpressionGroup = new BasicFeatureMap(this, Wfs20Package.GET_FEATURE_TYPE__ABSTRACT_QUERY_EXPRESSION_GROUP);
@@ -647,6 +679,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<AbstractQueryExpressionType> getAbstractQueryExpression() {
     return getAbstractQueryExpressionGroup().list(Wfs20Package.Literals.GET_FEATURE_TYPE__ABSTRACT_QUERY_EXPRESSION);
   }

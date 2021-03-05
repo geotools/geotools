@@ -165,7 +165,8 @@ public class InsertElementTypeImpl extends EObjectImpl implements InsertElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.INSERT_ELEMENT_TYPE;
   }
 
@@ -174,7 +175,8 @@ public class InsertElementTypeImpl extends EObjectImpl implements InsertElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList getFeature() {
+	@Override
+    public EList getFeature() {
     if (feature == null) {
       feature = new EDataTypeUniqueEList(Object.class, this, WfsPackage.INSERT_ELEMENT_TYPE__FEATURE);
     }
@@ -186,7 +188,8 @@ public class InsertElementTypeImpl extends EObjectImpl implements InsertElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getHandle() {
+	@Override
+    public String getHandle() {
     return handle;
   }
 
@@ -195,7 +198,8 @@ public class InsertElementTypeImpl extends EObjectImpl implements InsertElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setHandle(String newHandle) {
+	@Override
+    public void setHandle(String newHandle) {
     String oldHandle = handle;
     handle = newHandle;
     if (eNotificationRequired())
@@ -207,7 +211,8 @@ public class InsertElementTypeImpl extends EObjectImpl implements InsertElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public IdentifierGenerationOptionType getIdgen() {
+	@Override
+    public IdentifierGenerationOptionType getIdgen() {
     return idgen;
   }
 
@@ -216,7 +221,8 @@ public class InsertElementTypeImpl extends EObjectImpl implements InsertElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setIdgen(IdentifierGenerationOptionType newIdgen) {
+	@Override
+    public void setIdgen(IdentifierGenerationOptionType newIdgen) {
     IdentifierGenerationOptionType oldIdgen = idgen;
     idgen = newIdgen == null ? IDGEN_EDEFAULT : newIdgen;
     boolean oldIdgenESet = idgenESet;
@@ -230,7 +236,8 @@ public class InsertElementTypeImpl extends EObjectImpl implements InsertElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void unsetIdgen() {
+	@Override
+    public void unsetIdgen() {
     IdentifierGenerationOptionType oldIdgen = idgen;
     boolean oldIdgenESet = idgenESet;
     idgen = IDGEN_EDEFAULT;
@@ -244,7 +251,8 @@ public class InsertElementTypeImpl extends EObjectImpl implements InsertElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean isSetIdgen() {
+	@Override
+    public boolean isSetIdgen() {
     return idgenESet;
   }
 
@@ -253,7 +261,8 @@ public class InsertElementTypeImpl extends EObjectImpl implements InsertElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getInputFormat() {
+	@Override
+    public String getInputFormat() {
     return inputFormat;
   }
 
@@ -262,7 +271,8 @@ public class InsertElementTypeImpl extends EObjectImpl implements InsertElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setInputFormat(String newInputFormat) {
+	@Override
+    public void setInputFormat(String newInputFormat) {
     String oldInputFormat = inputFormat;
     inputFormat = newInputFormat;
     boolean oldInputFormatESet = inputFormatESet;
@@ -276,7 +286,8 @@ public class InsertElementTypeImpl extends EObjectImpl implements InsertElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void unsetInputFormat() {
+	@Override
+    public void unsetInputFormat() {
     String oldInputFormat = inputFormat;
     boolean oldInputFormatESet = inputFormatESet;
     inputFormat = INPUT_FORMAT_EDEFAULT;
@@ -290,7 +301,8 @@ public class InsertElementTypeImpl extends EObjectImpl implements InsertElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean isSetInputFormat() {
+	@Override
+    public boolean isSetInputFormat() {
     return inputFormatESet;
   }
 
@@ -299,7 +311,8 @@ public class InsertElementTypeImpl extends EObjectImpl implements InsertElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public URI getSrsName() {
+	@Override
+    public URI getSrsName() {
     return srsName;
   }
 
@@ -308,7 +321,8 @@ public class InsertElementTypeImpl extends EObjectImpl implements InsertElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setSrsName(URI newSrsName) {
+	@Override
+    public void setSrsName(URI newSrsName) {
     URI oldSrsName = srsName;
     srsName = newSrsName;
     if (eNotificationRequired())
@@ -320,7 +334,8 @@ public class InsertElementTypeImpl extends EObjectImpl implements InsertElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	@Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.INSERT_ELEMENT_TYPE__FEATURE:
         return getFeature();
@@ -341,7 +356,8 @@ public class InsertElementTypeImpl extends EObjectImpl implements InsertElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(int featureID, Object newValue) {
+	@Override
+    public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.INSERT_ELEMENT_TYPE__FEATURE:
         getFeature().clear();
@@ -368,7 +384,8 @@ public class InsertElementTypeImpl extends EObjectImpl implements InsertElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(int featureID) {
+	@Override
+    public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.INSERT_ELEMENT_TYPE__FEATURE:
         getFeature().clear();
@@ -394,7 +411,8 @@ public class InsertElementTypeImpl extends EObjectImpl implements InsertElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(int featureID) {
+	@Override
+    public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.INSERT_ELEMENT_TYPE__FEATURE:
         return feature != null && !feature.isEmpty();
@@ -415,7 +433,8 @@ public class InsertElementTypeImpl extends EObjectImpl implements InsertElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String toString() {
+	@Override
+    public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

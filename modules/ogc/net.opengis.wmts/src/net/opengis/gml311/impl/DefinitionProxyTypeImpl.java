@@ -62,6 +62,7 @@ public class DefinitionProxyTypeImpl extends DefinitionTypeImpl implements Defin
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ReferenceType getDefinitionRef() {
         return definitionRef;
     }
@@ -86,6 +87,7 @@ public class DefinitionProxyTypeImpl extends DefinitionTypeImpl implements Defin
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDefinitionRef(ReferenceType newDefinitionRef) {
         if (newDefinitionRef != definitionRef) {
             NotificationChain msgs = null;

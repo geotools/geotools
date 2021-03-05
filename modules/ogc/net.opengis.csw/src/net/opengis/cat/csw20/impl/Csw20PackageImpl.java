@@ -579,6 +579,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getAbstractQueryType() {
         return abstractQueryTypeEClass;
     }
@@ -588,6 +589,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getAbstractRecordType() {
         return abstractRecordTypeEClass;
     }
@@ -597,6 +599,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getAcknowledgementType() {
         return acknowledgementTypeEClass;
     }
@@ -606,6 +609,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getAcknowledgementType_EchoedRequest() {
         return (EReference)acknowledgementTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -615,6 +619,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAcknowledgementType_RequestId() {
         return (EAttribute)acknowledgementTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -624,6 +629,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAcknowledgementType_TimeStamp() {
         return (EAttribute)acknowledgementTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -633,6 +639,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getBriefRecordType() {
         return briefRecordTypeEClass;
     }
@@ -642,6 +649,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getBriefRecordType_Identifier() {
         return (EReference)briefRecordTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -651,6 +659,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getBriefRecordType_Title() {
         return (EReference)briefRecordTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -660,6 +669,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getBriefRecordType_Type() {
         return (EReference)briefRecordTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -669,6 +679,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getBriefRecordType_BoundingBox() {
         return (EReference)briefRecordTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -678,6 +689,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getCapabilitiesType() {
         return capabilitiesTypeEClass;
     }
@@ -687,6 +699,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getCapabilitiesType_FilterCapabilities() {
         return (EReference)capabilitiesTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -696,6 +709,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getConceptualSchemeType() {
         return conceptualSchemeTypeEClass;
     }
@@ -705,6 +719,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getConceptualSchemeType_Name() {
         return (EAttribute)conceptualSchemeTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -714,6 +729,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getConceptualSchemeType_Document() {
         return (EAttribute)conceptualSchemeTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -723,6 +739,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getConceptualSchemeType_Authority() {
         return (EAttribute)conceptualSchemeTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -732,6 +749,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getDeleteType() {
         return deleteTypeEClass;
     }
@@ -741,6 +759,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDeleteType_Constraint() {
         return (EReference)deleteTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -750,6 +769,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDeleteType_Handle() {
         return (EAttribute)deleteTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -759,6 +779,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDeleteType_TypeName() {
         return (EAttribute)deleteTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -768,6 +789,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getDescribeRecordResponseType() {
         return describeRecordResponseTypeEClass;
     }
@@ -777,6 +799,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDescribeRecordResponseType_SchemaComponent() {
         return (EReference)describeRecordResponseTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -786,6 +809,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getDescribeRecordType() {
         return describeRecordTypeEClass;
     }
@@ -795,6 +819,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDescribeRecordType_TypeName() {
         return (EAttribute)describeRecordTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -804,6 +829,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDescribeRecordType_OutputFormat() {
         return (EAttribute)describeRecordTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -813,6 +839,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDescribeRecordType_SchemaLanguage() {
         return (EAttribute)describeRecordTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -822,6 +849,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getDistributedSearchType() {
         return distributedSearchTypeEClass;
     }
@@ -831,6 +859,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDistributedSearchType_HopCount() {
         return (EAttribute)distributedSearchTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -840,6 +869,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getDomainValuesType() {
         return domainValuesTypeEClass;
     }
@@ -849,6 +879,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDomainValuesType_PropertyName() {
         return (EAttribute)domainValuesTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -858,6 +889,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDomainValuesType_ParameterName() {
         return (EAttribute)domainValuesTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -867,6 +899,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDomainValuesType_ListOfValues() {
         return (EReference)domainValuesTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -876,6 +909,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDomainValuesType_ConceptualScheme() {
         return (EReference)domainValuesTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -885,6 +919,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDomainValuesType_RangeOfValues() {
         return (EReference)domainValuesTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -894,6 +929,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDomainValuesType_Type() {
         return (EAttribute)domainValuesTypeEClass.getEStructuralFeatures().get(5);
     }
@@ -903,6 +939,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDomainValuesType_Uom() {
         return (EAttribute)domainValuesTypeEClass.getEStructuralFeatures().get(6);
     }
@@ -912,6 +949,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getEchoedRequestType() {
         return echoedRequestTypeEClass;
     }
@@ -921,6 +959,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getEchoedRequestType_Any() {
         return (EAttribute)echoedRequestTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -930,6 +969,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getElementSetNameType() {
         return elementSetNameTypeEClass;
     }
@@ -939,6 +979,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getElementSetNameType_Value() {
         return (EAttribute)elementSetNameTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -948,6 +989,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getElementSetNameType_TypeNames() {
         return (EAttribute)elementSetNameTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -957,6 +999,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getEmptyType() {
         return emptyTypeEClass;
     }
@@ -966,6 +1009,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getGetCapabilitiesType() {
         return getCapabilitiesTypeEClass;
     }
@@ -975,6 +1019,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetCapabilitiesType_Service() {
         return (EAttribute)getCapabilitiesTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -984,6 +1029,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getGetDomainResponseType() {
         return getDomainResponseTypeEClass;
     }
@@ -993,6 +1039,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getGetDomainResponseType_DomainValues() {
         return (EReference)getDomainResponseTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1002,6 +1049,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getGetDomainType() {
         return getDomainTypeEClass;
     }
@@ -1011,6 +1059,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetDomainType_PropertyName() {
         return (EAttribute)getDomainTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1020,6 +1069,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetDomainType_ParameterName() {
         return (EAttribute)getDomainTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1029,6 +1079,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getGetRecordByIdType() {
         return getRecordByIdTypeEClass;
     }
@@ -1038,6 +1089,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetRecordByIdType_Id() {
         return (EAttribute)getRecordByIdTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1047,6 +1099,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getGetRecordByIdType_ElementSetName() {
         return (EReference)getRecordByIdTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1056,6 +1109,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetRecordByIdType_OutputFormat() {
         return (EAttribute)getRecordByIdTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1065,6 +1119,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetRecordByIdType_OutputSchema() {
         return (EAttribute)getRecordByIdTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -1074,6 +1129,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getGetRecordsResponseType() {
         return getRecordsResponseTypeEClass;
     }
@@ -1083,6 +1139,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetRecordsResponseType_RequestId() {
         return (EAttribute)getRecordsResponseTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1092,6 +1149,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getGetRecordsResponseType_SearchStatus() {
         return (EReference)getRecordsResponseTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1101,6 +1159,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getGetRecordsResponseType_SearchResults() {
         return (EReference)getRecordsResponseTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1110,6 +1169,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetRecordsResponseType_Version() {
         return (EAttribute)getRecordsResponseTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -1119,6 +1179,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getGetRecordsType() {
         return getRecordsTypeEClass;
     }
@@ -1128,6 +1189,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getGetRecordsType_DistributedSearch() {
         return (EReference)getRecordsTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1137,6 +1199,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetRecordsType_ResponseHandler() {
         return (EAttribute)getRecordsTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1146,6 +1209,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetRecordsType_Any() {
         return (EAttribute)getRecordsTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1155,6 +1219,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetRecordsType_MaxRecords() {
         return (EAttribute)getRecordsTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -1164,6 +1229,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetRecordsType_OutputFormat() {
         return (EAttribute)getRecordsTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -1173,6 +1239,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetRecordsType_OutputSchema() {
         return (EAttribute)getRecordsTypeEClass.getEStructuralFeatures().get(5);
     }
@@ -1182,6 +1249,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetRecordsType_RequestId() {
         return (EAttribute)getRecordsTypeEClass.getEStructuralFeatures().get(6);
     }
@@ -1191,6 +1259,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetRecordsType_ResultType() {
         return (EAttribute)getRecordsTypeEClass.getEStructuralFeatures().get(7);
     }
@@ -1200,6 +1269,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetRecordsType_StartPosition() {
         return (EAttribute)getRecordsTypeEClass.getEStructuralFeatures().get(8);
     }
@@ -1209,6 +1279,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetRecordsType_Query() {
         return (EAttribute)getRecordsTypeEClass.getEStructuralFeatures().get(9);
     }
@@ -1218,6 +1289,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getHarvestResponseType() {
         return harvestResponseTypeEClass;
     }
@@ -1227,6 +1299,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getHarvestResponseType_Acknowledgement() {
         return (EReference)harvestResponseTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1236,6 +1309,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getHarvestResponseType_TransactionResponse() {
         return (EReference)harvestResponseTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1245,6 +1319,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getHarvestType() {
         return harvestTypeEClass;
     }
@@ -1254,6 +1329,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getHarvestType_Source() {
         return (EAttribute)harvestTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1263,6 +1339,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getHarvestType_ResourceType() {
         return (EAttribute)harvestTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1272,6 +1349,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getHarvestType_ResourceFormat() {
         return (EAttribute)harvestTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1281,6 +1359,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getHarvestType_HarvestInterval() {
         return (EAttribute)harvestTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -1290,6 +1369,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getHarvestType_ResponseHandler() {
         return (EAttribute)harvestTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -1299,6 +1379,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getInsertResultType() {
         return insertResultTypeEClass;
     }
@@ -1308,6 +1389,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getInsertResultType_BriefRecord() {
         return (EReference)insertResultTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1317,6 +1399,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getInsertResultType_HandleRef() {
         return (EAttribute)insertResultTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1326,6 +1409,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getInsertType() {
         return insertTypeEClass;
     }
@@ -1335,6 +1419,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getInsertType_Any() {
         return (EAttribute)insertTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1344,6 +1429,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getInsertType_Handle() {
         return (EAttribute)insertTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1353,6 +1439,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getInsertType_TypeName() {
         return (EAttribute)insertTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1362,6 +1449,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getListOfValuesType() {
         return listOfValuesTypeEClass;
     }
@@ -1371,6 +1459,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getListOfValuesType_Value() {
         return (EReference)listOfValuesTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1380,6 +1469,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getQueryConstraintType() {
         return queryConstraintTypeEClass;
     }
@@ -1389,6 +1479,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getQueryConstraintType_Filter() {
         return (EReference)queryConstraintTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1398,6 +1489,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getQueryConstraintType_CqlText() {
         return (EAttribute)queryConstraintTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1407,6 +1499,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getQueryConstraintType_Version() {
         return (EAttribute)queryConstraintTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1416,6 +1509,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getQueryType() {
         return queryTypeEClass;
     }
@@ -1425,6 +1519,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getQueryType_ElementSetName() {
         return (EReference)queryTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1434,6 +1529,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getQueryType_ElementName() {
         return (EAttribute)queryTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1443,6 +1539,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getQueryType_Constraint() {
         return (EReference)queryTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1452,6 +1549,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getQueryType_SortBy() {
         return (EAttribute)queryTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -1461,6 +1559,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getQueryType_TypeNames() {
         return (EAttribute)queryTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -1470,6 +1569,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getRangeOfValuesType() {
         return rangeOfValuesTypeEClass;
     }
@@ -1479,6 +1579,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getRangeOfValuesType_MinValue() {
         return (EReference)rangeOfValuesTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1488,6 +1589,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getRangeOfValuesType_MaxValue() {
         return (EReference)rangeOfValuesTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1497,6 +1599,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getRecordPropertyType() {
         return recordPropertyTypeEClass;
     }
@@ -1506,6 +1609,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getRecordPropertyType_Name() {
         return (EAttribute)recordPropertyTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1515,6 +1619,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getRecordPropertyType_Value() {
         return (EReference)recordPropertyTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1524,6 +1629,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getRequestBaseType() {
         return requestBaseTypeEClass;
     }
@@ -1533,6 +1639,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getRequestBaseType_Service() {
         return (EAttribute)requestBaseTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1542,6 +1649,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getRequestBaseType_Version() {
         return (EAttribute)requestBaseTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1551,6 +1659,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getRequestBaseType_BaseUrl() {
         return (EAttribute)requestBaseTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1560,6 +1669,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getRequestBaseType_ExtendedProperties() {
         return (EAttribute)requestBaseTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -1569,6 +1679,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getRequestStatusType() {
         return requestStatusTypeEClass;
     }
@@ -1578,6 +1689,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getRequestStatusType_Timestamp() {
         return (EAttribute)requestStatusTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1587,6 +1699,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getSchemaComponentType() {
         return schemaComponentTypeEClass;
     }
@@ -1596,6 +1709,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSchemaComponentType_Mixed() {
         return (EAttribute)schemaComponentTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1605,6 +1719,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSchemaComponentType_Any() {
         return (EAttribute)schemaComponentTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1614,6 +1729,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSchemaComponentType_ParentSchema() {
         return (EAttribute)schemaComponentTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1623,6 +1739,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSchemaComponentType_SchemaLanguage() {
         return (EAttribute)schemaComponentTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -1632,6 +1749,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSchemaComponentType_TargetNamespace() {
         return (EAttribute)schemaComponentTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -1641,6 +1759,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getSearchResultsType() {
         return searchResultsTypeEClass;
     }
@@ -1650,6 +1769,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSearchResultsType_AbstractRecordGroup() {
         return (EAttribute)searchResultsTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1659,6 +1779,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getSearchResultsType_AbstractRecord() {
         return (EReference)searchResultsTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1668,6 +1789,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSearchResultsType_Any() {
         return (EAttribute)searchResultsTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1677,6 +1799,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSearchResultsType_ElementSet() {
         return (EAttribute)searchResultsTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -1686,6 +1809,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSearchResultsType_Expires() {
         return (EAttribute)searchResultsTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -1695,6 +1819,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSearchResultsType_NextRecord() {
         return (EAttribute)searchResultsTypeEClass.getEStructuralFeatures().get(5);
     }
@@ -1704,6 +1829,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSearchResultsType_NumberOfRecordsMatched() {
         return (EAttribute)searchResultsTypeEClass.getEStructuralFeatures().get(6);
     }
@@ -1713,6 +1839,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSearchResultsType_NumberOfRecordsReturned() {
         return (EAttribute)searchResultsTypeEClass.getEStructuralFeatures().get(7);
     }
@@ -1722,6 +1849,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSearchResultsType_RecordSchema() {
         return (EAttribute)searchResultsTypeEClass.getEStructuralFeatures().get(8);
     }
@@ -1731,6 +1859,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSearchResultsType_ResultSetId() {
         return (EAttribute)searchResultsTypeEClass.getEStructuralFeatures().get(9);
     }
@@ -1740,6 +1869,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getTransactionResponseType() {
         return transactionResponseTypeEClass;
     }
@@ -1749,6 +1879,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getTransactionResponseType_TransactionSummary() {
         return (EReference)transactionResponseTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1758,6 +1889,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getTransactionResponseType_InsertResult() {
         return (EReference)transactionResponseTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1767,6 +1899,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTransactionResponseType_Version() {
         return (EAttribute)transactionResponseTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1776,6 +1909,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getTransactionSummaryType() {
         return transactionSummaryTypeEClass;
     }
@@ -1785,6 +1919,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTransactionSummaryType_TotalInserted() {
         return (EAttribute)transactionSummaryTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1794,6 +1929,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTransactionSummaryType_TotalUpdated() {
         return (EAttribute)transactionSummaryTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1803,6 +1939,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTransactionSummaryType_TotalDeleted() {
         return (EAttribute)transactionSummaryTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1812,6 +1949,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTransactionSummaryType_RequestId() {
         return (EAttribute)transactionSummaryTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -1821,6 +1959,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getTransactionType() {
         return transactionTypeEClass;
     }
@@ -1830,6 +1969,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTransactionType_Group() {
         return (EAttribute)transactionTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1839,6 +1979,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getTransactionType_Insert() {
         return (EReference)transactionTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1848,6 +1989,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getTransactionType_Update() {
         return (EReference)transactionTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1857,6 +1999,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getTransactionType_Delete() {
         return (EReference)transactionTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -1866,6 +2009,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTransactionType_RequestId() {
         return (EAttribute)transactionTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -1875,6 +2019,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTransactionType_VerboseResponse() {
         return (EAttribute)transactionTypeEClass.getEStructuralFeatures().get(5);
     }
@@ -1884,6 +2029,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getUpdateType() {
         return updateTypeEClass;
     }
@@ -1893,6 +2039,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getUpdateType_Any() {
         return (EAttribute)updateTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1902,6 +2049,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getUpdateType_RecordProperty() {
         return (EReference)updateTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1911,6 +2059,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getUpdateType_Constraint() {
         return (EReference)updateTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1920,6 +2069,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getUpdateType_Handle() {
         return (EAttribute)updateTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -1929,6 +2079,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getString() {
         return stringEClass;
     }
@@ -1938,6 +2089,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getFilterCapabilities() {
         return filterCapabilitiesEClass;
     }
@@ -1947,6 +2099,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getFilter() {
         return filterEClass;
     }
@@ -1956,6 +2109,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getSortBy() {
         return sortByEClass;
     }
@@ -1965,6 +2119,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getDCMIRecordType() {
         return dcmiRecordTypeEClass;
     }
@@ -1974,6 +2129,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDCMIRecordType_DCElement() {
         return (EReference)dcmiRecordTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1983,6 +2139,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getRecordType() {
         return recordTypeEClass;
     }
@@ -1992,6 +2149,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getRecordType_AnyText() {
         return (EReference)recordTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2001,6 +2159,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getRecordType_BoundingBox() {
         return (EReference)recordTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -2010,6 +2169,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getSimpleLiteral() {
         return simpleLiteralEClass;
     }
@@ -2019,6 +2179,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSimpleLiteral_Value() {
         return (EAttribute)simpleLiteralEClass.getEStructuralFeatures().get(0);
     }
@@ -2028,6 +2189,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSimpleLiteral_Scheme() {
         return (EAttribute)simpleLiteralEClass.getEStructuralFeatures().get(1);
     }
@@ -2037,6 +2199,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getSimpleLiteral_Name() {
         return (EReference)simpleLiteralEClass.getEStructuralFeatures().get(2);
     }
@@ -2046,6 +2209,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getSummaryRecordType() {
         return summaryRecordTypeEClass;
     }
@@ -2055,6 +2219,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getSummaryRecordType_Identifier() {
         return (EReference)summaryRecordTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2064,6 +2229,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getSummaryRecordType_Title() {
         return (EReference)summaryRecordTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -2073,6 +2239,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getSummaryRecordType_Type() {
         return (EReference)summaryRecordTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -2082,6 +2249,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getSummaryRecordType_Subject() {
         return (EReference)summaryRecordTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -2091,6 +2259,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getSummaryRecordType_Format() {
         return (EReference)summaryRecordTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -2100,6 +2269,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getSummaryRecordType_Relation() {
         return (EReference)summaryRecordTypeEClass.getEStructuralFeatures().get(5);
     }
@@ -2109,6 +2279,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getSummaryRecordType_Modified() {
         return (EReference)summaryRecordTypeEClass.getEStructuralFeatures().get(6);
     }
@@ -2118,6 +2289,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getSummaryRecordType_Abstract() {
         return (EReference)summaryRecordTypeEClass.getEStructuralFeatures().get(7);
     }
@@ -2127,6 +2299,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getSummaryRecordType_Spatial() {
         return (EReference)summaryRecordTypeEClass.getEStructuralFeatures().get(8);
     }
@@ -2136,6 +2309,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getSummaryRecordType_BoundingBox() {
         return (EReference)summaryRecordTypeEClass.getEStructuralFeatures().get(9);
     }
@@ -2145,6 +2319,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getGetRecordByIdResponseType() {
         return getRecordByIdResponseTypeEClass;
     }
@@ -2154,6 +2329,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetRecordByIdResponseType_AbstractRecordGroup() {
         return (EAttribute)getRecordByIdResponseTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2163,6 +2339,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getGetRecordByIdResponseType_AbstractRecord() {
         return (EReference)getRecordByIdResponseTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -2172,6 +2349,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetRecordByIdResponseType_Any() {
         return (EAttribute)getRecordByIdResponseTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -2181,6 +2359,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EEnum getElementSetType() {
         return elementSetTypeEEnum;
     }
@@ -2190,6 +2369,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EEnum getResultType() {
         return resultTypeEEnum;
     }
@@ -2199,6 +2379,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getTypeNameListType() {
         return typeNameListTypeEDataType;
     }
@@ -2208,6 +2389,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getServiceType() {
         return serviceTypeEDataType;
     }
@@ -2217,6 +2399,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getTypeNameListType_1() {
         return typeNameListType_1EDataType;
     }
@@ -2226,6 +2409,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getServiceType_1() {
         return serviceType_1EDataType;
     }
@@ -2235,6 +2419,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getVersionType() {
         return versionTypeEDataType;
     }
@@ -2244,6 +2429,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getCalendar() {
         return calendarEDataType;
     }
@@ -2253,6 +2439,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getSet() {
         return setEDataType;
     }
@@ -2262,6 +2449,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getURI() {
         return uriEDataType;
     }
@@ -2271,6 +2459,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getQName() {
         return qNameEDataType;
     }
@@ -2280,6 +2469,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getDuration() {
         return durationEDataType;
     }
@@ -2289,6 +2479,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getMap() {
         return mapEDataType;
     }
@@ -2298,6 +2489,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getSortByArray() {
         return sortByArrayEDataType;
     }
@@ -2307,6 +2499,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Csw20Factory getCsw20Factory() {
         return (Csw20Factory)getEFactoryInstance();
     }

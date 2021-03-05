@@ -57,6 +57,7 @@ public class PointTypeImpl extends AbstractGeometryTypeImpl implements PointType
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return GmlPackage.Literals.POINT_TYPE;
 	}
@@ -66,6 +67,7 @@ public class PointTypeImpl extends AbstractGeometryTypeImpl implements PointType
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public DirectPositionType getPos() {
 		return pos;
 	}
@@ -90,6 +92,7 @@ public class PointTypeImpl extends AbstractGeometryTypeImpl implements PointType
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setPos(DirectPositionType newPos) {
 		if (newPos != pos) {
 			NotificationChain msgs = null;
@@ -109,6 +112,7 @@ public class PointTypeImpl extends AbstractGeometryTypeImpl implements PointType
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case GmlPackage.POINT_TYPE__POS:
@@ -122,6 +126,7 @@ public class PointTypeImpl extends AbstractGeometryTypeImpl implements PointType
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case GmlPackage.POINT_TYPE__POS:
@@ -135,6 +140,7 @@ public class PointTypeImpl extends AbstractGeometryTypeImpl implements PointType
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case GmlPackage.POINT_TYPE__POS:
@@ -149,6 +155,7 @@ public class PointTypeImpl extends AbstractGeometryTypeImpl implements PointType
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case GmlPackage.POINT_TYPE__POS:
@@ -163,6 +170,7 @@ public class PointTypeImpl extends AbstractGeometryTypeImpl implements PointType
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case GmlPackage.POINT_TYPE__POS:

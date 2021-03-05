@@ -62,6 +62,7 @@ public class ProjectedCRSTypeImpl extends AbstractGeneralDerivedCRSTypeImpl impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CartesianCSRefType getUsesCartesianCS() {
         return usesCartesianCS;
     }
@@ -86,6 +87,7 @@ public class ProjectedCRSTypeImpl extends AbstractGeneralDerivedCRSTypeImpl impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesCartesianCS(CartesianCSRefType newUsesCartesianCS) {
         if (newUsesCartesianCS != usesCartesianCS) {
             NotificationChain msgs = null;

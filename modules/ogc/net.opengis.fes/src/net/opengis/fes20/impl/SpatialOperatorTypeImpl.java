@@ -94,6 +94,7 @@ public class SpatialOperatorTypeImpl extends EObjectImpl implements SpatialOpera
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeometryOperandsType getGeometryOperands2() {
         return geometryOperands;
     }
@@ -118,6 +119,7 @@ public class SpatialOperatorTypeImpl extends EObjectImpl implements SpatialOpera
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGeometryOperands(GeometryOperandsType newGeometryOperands) {
         if (newGeometryOperands != geometryOperands) {
             NotificationChain msgs = null;
@@ -137,6 +139,7 @@ public class SpatialOperatorTypeImpl extends EObjectImpl implements SpatialOpera
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getName() {
         return name == null ? null : name.toString();
     }
@@ -146,6 +149,7 @@ public class SpatialOperatorTypeImpl extends EObjectImpl implements SpatialOpera
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setName(String newName) {
         Object oldName = name;
         name = newName;

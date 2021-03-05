@@ -74,6 +74,7 @@ public class GeographicCRSTypeImpl extends AbstractReferenceSystemTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EllipsoidalCSRefType getUsesEllipsoidalCS() {
         return usesEllipsoidalCS;
     }
@@ -98,6 +99,7 @@ public class GeographicCRSTypeImpl extends AbstractReferenceSystemTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesEllipsoidalCS(EllipsoidalCSRefType newUsesEllipsoidalCS) {
         if (newUsesEllipsoidalCS != usesEllipsoidalCS) {
             NotificationChain msgs = null;
@@ -117,6 +119,7 @@ public class GeographicCRSTypeImpl extends AbstractReferenceSystemTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeodeticDatumRefType getUsesGeodeticDatum() {
         return usesGeodeticDatum;
     }
@@ -141,6 +144,7 @@ public class GeographicCRSTypeImpl extends AbstractReferenceSystemTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesGeodeticDatum(GeodeticDatumRefType newUsesGeodeticDatum) {
         if (newUsesGeodeticDatum != usesGeodeticDatum) {
             NotificationChain msgs = null;

@@ -95,6 +95,7 @@ public class DegreesTypeImpl extends MinimalEObjectImpl.Container implements Deg
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getValue() {
         return value;
     }
@@ -104,6 +105,7 @@ public class DegreesTypeImpl extends MinimalEObjectImpl.Container implements Deg
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValue(BigInteger newValue) {
         BigInteger oldValue = value;
         value = newValue;
@@ -116,6 +118,7 @@ public class DegreesTypeImpl extends MinimalEObjectImpl.Container implements Deg
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Enumerator getDirection() {
         return direction;
     }
@@ -125,6 +128,7 @@ public class DegreesTypeImpl extends MinimalEObjectImpl.Container implements Deg
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDirection(Enumerator newDirection) {
         Enumerator oldDirection = direction;
         direction = newDirection;

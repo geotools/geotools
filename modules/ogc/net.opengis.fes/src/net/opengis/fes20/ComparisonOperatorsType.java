@@ -64,6 +64,7 @@ public interface ComparisonOperatorsType extends EObject, ComparisonOperators {
      *        extendedMetaData="kind='element' name='ComparisonOperator' namespace='##targetNamespace' group='#group:0'"
      * @generated
      */
+    @Override
     EList<Operator> getOperators();
 
 } // ComparisonOperatorsType

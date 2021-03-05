@@ -124,6 +124,7 @@ public class ElementTypeImpl extends EObjectImpl implements ElementType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public MetadataType getMetadata() {
     return metadata;
   }
@@ -148,6 +149,7 @@ public class ElementTypeImpl extends EObjectImpl implements ElementType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setMetadata(MetadataType newMetadata) {
     if (newMetadata != metadata) {
       NotificationChain msgs = null;
@@ -167,6 +169,7 @@ public class ElementTypeImpl extends EObjectImpl implements ElementType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ValueListType getValueList() {
     return valueList;
   }
@@ -191,6 +194,7 @@ public class ElementTypeImpl extends EObjectImpl implements ElementType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setValueList(ValueListType newValueList) {
     if (newValueList != valueList) {
       NotificationChain msgs = null;
@@ -210,6 +214,7 @@ public class ElementTypeImpl extends EObjectImpl implements ElementType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getName() {
     return name;
   }
@@ -219,6 +224,7 @@ public class ElementTypeImpl extends EObjectImpl implements ElementType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setName(String newName) {
     String oldName = name;
     name = newName;
@@ -231,6 +237,7 @@ public class ElementTypeImpl extends EObjectImpl implements ElementType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public QName getType() {
     return type;
   }
@@ -240,6 +247,7 @@ public class ElementTypeImpl extends EObjectImpl implements ElementType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setType(QName newType) {
     QName oldType = type;
     type = newType;

@@ -204,6 +204,7 @@ public class TileMatrixTypeImpl extends DescriptionTypeImpl implements TileMatri
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getIdentifier() {
         return identifier;
     }
@@ -228,6 +229,7 @@ public class TileMatrixTypeImpl extends DescriptionTypeImpl implements TileMatri
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIdentifier(CodeType newIdentifier) {
         if (newIdentifier != identifier) {
             NotificationChain msgs = null;
@@ -247,6 +249,7 @@ public class TileMatrixTypeImpl extends DescriptionTypeImpl implements TileMatri
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public double getScaleDenominator() {
         return scaleDenominator;
     }
@@ -256,6 +259,7 @@ public class TileMatrixTypeImpl extends DescriptionTypeImpl implements TileMatri
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setScaleDenominator(double newScaleDenominator) {
         double oldScaleDenominator = scaleDenominator;
         scaleDenominator = newScaleDenominator;
@@ -270,6 +274,7 @@ public class TileMatrixTypeImpl extends DescriptionTypeImpl implements TileMatri
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetScaleDenominator() {
         double oldScaleDenominator = scaleDenominator;
         boolean oldScaleDenominatorESet = scaleDenominatorESet;
@@ -284,6 +289,7 @@ public class TileMatrixTypeImpl extends DescriptionTypeImpl implements TileMatri
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetScaleDenominator() {
         return scaleDenominatorESet;
     }
@@ -293,6 +299,7 @@ public class TileMatrixTypeImpl extends DescriptionTypeImpl implements TileMatri
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public List<Double> getTopLeftCorner() {
         return topLeftCorner;
     }
@@ -302,6 +309,7 @@ public class TileMatrixTypeImpl extends DescriptionTypeImpl implements TileMatri
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTopLeftCorner(List<Double> newTopLeftCorner) {
         List<Double> oldTopLeftCorner = topLeftCorner;
         topLeftCorner = newTopLeftCorner;
@@ -314,6 +322,7 @@ public class TileMatrixTypeImpl extends DescriptionTypeImpl implements TileMatri
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getTileWidth() {
         return tileWidth;
     }
@@ -323,6 +332,7 @@ public class TileMatrixTypeImpl extends DescriptionTypeImpl implements TileMatri
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTileWidth(BigInteger newTileWidth) {
         BigInteger oldTileWidth = tileWidth;
         tileWidth = newTileWidth;
@@ -335,6 +345,7 @@ public class TileMatrixTypeImpl extends DescriptionTypeImpl implements TileMatri
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getTileHeight() {
         return tileHeight;
     }
@@ -344,6 +355,7 @@ public class TileMatrixTypeImpl extends DescriptionTypeImpl implements TileMatri
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTileHeight(BigInteger newTileHeight) {
         BigInteger oldTileHeight = tileHeight;
         tileHeight = newTileHeight;
@@ -356,6 +368,7 @@ public class TileMatrixTypeImpl extends DescriptionTypeImpl implements TileMatri
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getMatrixWidth() {
         return matrixWidth;
     }
@@ -365,6 +378,7 @@ public class TileMatrixTypeImpl extends DescriptionTypeImpl implements TileMatri
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMatrixWidth(BigInteger newMatrixWidth) {
         BigInteger oldMatrixWidth = matrixWidth;
         matrixWidth = newMatrixWidth;
@@ -377,6 +391,7 @@ public class TileMatrixTypeImpl extends DescriptionTypeImpl implements TileMatri
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getMatrixHeight() {
         return matrixHeight;
     }
@@ -386,6 +401,7 @@ public class TileMatrixTypeImpl extends DescriptionTypeImpl implements TileMatri
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMatrixHeight(BigInteger newMatrixHeight) {
         BigInteger oldMatrixHeight = matrixHeight;
         matrixHeight = newMatrixHeight;

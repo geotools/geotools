@@ -174,6 +174,7 @@ public class LocatorTypeImpl extends EObjectImpl implements LocatorType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EClass eStaticClass() {
         return XlinkPackage.Literals.LOCATOR_TYPE;
     }
@@ -183,6 +184,7 @@ public class LocatorTypeImpl extends EObjectImpl implements LocatorType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getTitleGroup() {
         if (titleGroup == null) {
             titleGroup = new BasicFeatureMap(this, XlinkPackage.LOCATOR_TYPE__TITLE_GROUP);
@@ -195,6 +197,7 @@ public class LocatorTypeImpl extends EObjectImpl implements LocatorType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getTitle() {
         return getTitleGroup().list(XlinkPackage.Literals.LOCATOR_TYPE__TITLE);
     }
@@ -204,6 +207,7 @@ public class LocatorTypeImpl extends EObjectImpl implements LocatorType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getHref() {
         return href;
     }
@@ -213,6 +217,7 @@ public class LocatorTypeImpl extends EObjectImpl implements LocatorType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setHref(String newHref) {
         String oldHref = href;
         href = newHref;
@@ -225,6 +230,7 @@ public class LocatorTypeImpl extends EObjectImpl implements LocatorType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getLabel() {
         return label;
     }
@@ -234,6 +240,7 @@ public class LocatorTypeImpl extends EObjectImpl implements LocatorType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLabel(String newLabel) {
         String oldLabel = label;
         label = newLabel;
@@ -246,6 +253,7 @@ public class LocatorTypeImpl extends EObjectImpl implements LocatorType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getRole() {
         return role;
     }
@@ -255,6 +263,7 @@ public class LocatorTypeImpl extends EObjectImpl implements LocatorType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRole(String newRole) {
         String oldRole = role;
         role = newRole;
@@ -267,6 +276,7 @@ public class LocatorTypeImpl extends EObjectImpl implements LocatorType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getTitle1() {
         return title1;
     }
@@ -276,6 +286,7 @@ public class LocatorTypeImpl extends EObjectImpl implements LocatorType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTitle1(String newTitle1) {
         String oldTitle1 = title1;
         title1 = newTitle1;
@@ -288,6 +299,7 @@ public class LocatorTypeImpl extends EObjectImpl implements LocatorType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TypeType getType() {
         return type;
     }
@@ -297,6 +309,7 @@ public class LocatorTypeImpl extends EObjectImpl implements LocatorType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setType(TypeType newType) {
         TypeType oldType = type;
         type = newType == null ? TYPE_EDEFAULT : newType;
@@ -311,6 +324,7 @@ public class LocatorTypeImpl extends EObjectImpl implements LocatorType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetType() {
         TypeType oldType = type;
         boolean oldTypeESet = typeESet;
@@ -325,6 +339,7 @@ public class LocatorTypeImpl extends EObjectImpl implements LocatorType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetType() {
         return typeESet;
     }
@@ -334,6 +349,7 @@ public class LocatorTypeImpl extends EObjectImpl implements LocatorType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case XlinkPackage.LOCATOR_TYPE__TITLE_GROUP:
@@ -349,6 +365,7 @@ public class LocatorTypeImpl extends EObjectImpl implements LocatorType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case XlinkPackage.LOCATOR_TYPE__TITLE_GROUP:
@@ -375,6 +392,7 @@ public class LocatorTypeImpl extends EObjectImpl implements LocatorType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case XlinkPackage.LOCATOR_TYPE__TITLE_GROUP:
@@ -404,6 +422,7 @@ public class LocatorTypeImpl extends EObjectImpl implements LocatorType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case XlinkPackage.LOCATOR_TYPE__TITLE_GROUP:
@@ -433,6 +452,7 @@ public class LocatorTypeImpl extends EObjectImpl implements LocatorType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case XlinkPackage.LOCATOR_TYPE__TITLE_GROUP:
@@ -458,6 +478,7 @@ public class LocatorTypeImpl extends EObjectImpl implements LocatorType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String toString() {
         if (eIsProxy()) return super.toString();
 

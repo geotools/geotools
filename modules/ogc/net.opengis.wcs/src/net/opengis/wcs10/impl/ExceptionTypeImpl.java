@@ -68,6 +68,7 @@ public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.EXCEPTION_TYPE;
 	}
@@ -77,6 +78,7 @@ public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getFormat() {
 		return format;
 	}
@@ -86,7 +88,8 @@ public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setFormat(String newFormat) {
+	@Override
+    public void setFormat(String newFormat) {
 		String oldFormat = format;
 		format = newFormat;
 		if (eNotificationRequired())
@@ -98,6 +101,7 @@ public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.EXCEPTION_TYPE__FORMAT:
@@ -111,6 +115,7 @@ public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.EXCEPTION_TYPE__FORMAT:
@@ -125,6 +130,7 @@ public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.EXCEPTION_TYPE__FORMAT:
@@ -139,6 +145,7 @@ public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.EXCEPTION_TYPE__FORMAT:
@@ -152,6 +159,7 @@ public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

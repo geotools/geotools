@@ -69,6 +69,7 @@ public class DimensionSliceTypeImpl extends DimensionSubsetTypeImpl implements D
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getSlicePoint() {
 		return slicePoint;
 	}
@@ -78,6 +79,7 @@ public class DimensionSliceTypeImpl extends DimensionSubsetTypeImpl implements D
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setSlicePoint(String newSlicePoint) {
 		String oldSlicePoint = slicePoint;
 		slicePoint = newSlicePoint;

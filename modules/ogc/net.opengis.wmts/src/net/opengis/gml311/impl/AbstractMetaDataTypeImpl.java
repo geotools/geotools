@@ -87,6 +87,7 @@ public abstract class AbstractMetaDataTypeImpl extends MinimalEObjectImpl.Contai
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getMixed() {
         if (mixed == null) {
             mixed = new BasicFeatureMap(this, Gml311Package.ABSTRACT_META_DATA_TYPE__MIXED);
@@ -99,6 +100,7 @@ public abstract class AbstractMetaDataTypeImpl extends MinimalEObjectImpl.Contai
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getId() {
         return id;
     }
@@ -108,6 +110,7 @@ public abstract class AbstractMetaDataTypeImpl extends MinimalEObjectImpl.Contai
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setId(String newId) {
         String oldId = id;
         id = newId;

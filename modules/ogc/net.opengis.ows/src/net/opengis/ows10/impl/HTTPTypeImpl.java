@@ -75,7 +75,8 @@ public class HTTPTypeImpl extends EObjectImpl implements HTTPType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public FeatureMap getGroup() {
+	@Override
+    public FeatureMap getGroup() {
     if (group == null) {
       group = new BasicFeatureMap(this, Ows10Package.HTTP_TYPE__GROUP);
     }
@@ -87,7 +88,8 @@ public class HTTPTypeImpl extends EObjectImpl implements HTTPType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList<RequestMethodType> getGet() {
+	@Override
+    public EList<RequestMethodType> getGet() {
     return getGroup().list(Ows10Package.eINSTANCE.getHTTPType_Get());
   }
 
@@ -96,7 +98,8 @@ public class HTTPTypeImpl extends EObjectImpl implements HTTPType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList<RequestMethodType> getPost() {
+	@Override
+    public EList<RequestMethodType> getPost() {
     return getGroup().list(Ows10Package.eINSTANCE.getHTTPType_Post());
   }
 

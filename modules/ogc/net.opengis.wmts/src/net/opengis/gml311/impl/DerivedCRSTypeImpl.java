@@ -74,6 +74,7 @@ public class DerivedCRSTypeImpl extends AbstractGeneralDerivedCRSTypeImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DerivedCRSTypeType getDerivedCRSType() {
         return derivedCRSType;
     }
@@ -98,6 +99,7 @@ public class DerivedCRSTypeImpl extends AbstractGeneralDerivedCRSTypeImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDerivedCRSType(DerivedCRSTypeType newDerivedCRSType) {
         if (newDerivedCRSType != derivedCRSType) {
             NotificationChain msgs = null;
@@ -117,6 +119,7 @@ public class DerivedCRSTypeImpl extends AbstractGeneralDerivedCRSTypeImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinateSystemRefType getUsesCS() {
         return usesCS;
     }
@@ -141,6 +144,7 @@ public class DerivedCRSTypeImpl extends AbstractGeneralDerivedCRSTypeImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesCS(CoordinateSystemRefType newUsesCS) {
         if (newUsesCS != usesCS) {
             NotificationChain msgs = null;

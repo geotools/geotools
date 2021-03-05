@@ -64,6 +64,7 @@ public class ScaleAxisByFactorTypeImpl extends EObjectImpl implements ScaleAxisB
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList<ScaleAxisType> getScaleAxis() {
 		if (scaleAxis == null) {
 			scaleAxis = new EObjectResolvingEList<>(ScaleAxisType.class, this, Wcs20Package.SCALE_AXIS_BY_FACTOR_TYPE__SCALE_AXIS);

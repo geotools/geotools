@@ -111,6 +111,7 @@ public class GridTypeImpl extends AbstractGeometryTypeImpl implements GridType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return GmlPackage.Literals.GRID_TYPE;
 	}
@@ -120,6 +121,7 @@ public class GridTypeImpl extends AbstractGeometryTypeImpl implements GridType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public GridEnvelope getLimits() {
 		return limits;
 	}
@@ -129,7 +131,8 @@ public class GridTypeImpl extends AbstractGeometryTypeImpl implements GridType {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setLimits(GridEnvelope newLimits) {
+	@Override
+    public void setLimits(GridEnvelope newLimits) {
 		GridEnvelope oldLimits = limits;
 		limits = newLimits;
 		if (eNotificationRequired())
@@ -141,6 +144,7 @@ public class GridTypeImpl extends AbstractGeometryTypeImpl implements GridType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList getAxisName() {
 		if (axisName == null) {
 			axisName = new EDataTypeUniqueEList(String.class, this, GmlPackage.GRID_TYPE__AXIS_NAME);
@@ -153,6 +157,7 @@ public class GridTypeImpl extends AbstractGeometryTypeImpl implements GridType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public BigInteger getDimension() {
 		return dimension;
 	}
@@ -162,6 +167,7 @@ public class GridTypeImpl extends AbstractGeometryTypeImpl implements GridType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setDimension(BigInteger newDimension) {
 		BigInteger oldDimension = dimension;
 		dimension = newDimension;
@@ -174,6 +180,7 @@ public class GridTypeImpl extends AbstractGeometryTypeImpl implements GridType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case GmlPackage.GRID_TYPE__LIMITS:
@@ -191,6 +198,7 @@ public class GridTypeImpl extends AbstractGeometryTypeImpl implements GridType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case GmlPackage.GRID_TYPE__LIMITS:
@@ -212,6 +220,7 @@ public class GridTypeImpl extends AbstractGeometryTypeImpl implements GridType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case GmlPackage.GRID_TYPE__LIMITS:
@@ -232,6 +241,7 @@ public class GridTypeImpl extends AbstractGeometryTypeImpl implements GridType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case GmlPackage.GRID_TYPE__LIMITS:
@@ -249,6 +259,7 @@ public class GridTypeImpl extends AbstractGeometryTypeImpl implements GridType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

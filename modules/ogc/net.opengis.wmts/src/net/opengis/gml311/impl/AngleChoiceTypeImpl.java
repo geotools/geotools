@@ -75,6 +75,7 @@ public class AngleChoiceTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MeasureType getAngle() {
         return angle;
     }
@@ -99,6 +100,7 @@ public class AngleChoiceTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAngle(MeasureType newAngle) {
         if (newAngle != angle) {
             NotificationChain msgs = null;
@@ -118,6 +120,7 @@ public class AngleChoiceTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DMSAngleType getDmsAngle() {
         return dmsAngle;
     }
@@ -142,6 +145,7 @@ public class AngleChoiceTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDmsAngle(DMSAngleType newDmsAngle) {
         if (newDmsAngle != dmsAngle) {
             NotificationChain msgs = null;

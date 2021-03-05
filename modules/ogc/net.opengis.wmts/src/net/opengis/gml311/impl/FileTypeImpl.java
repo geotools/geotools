@@ -157,6 +157,7 @@ public class FileTypeImpl extends MinimalEObjectImpl.Container implements FileTy
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RangeParametersType getRangeParameters() {
         return rangeParameters;
     }
@@ -181,6 +182,7 @@ public class FileTypeImpl extends MinimalEObjectImpl.Container implements FileTy
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRangeParameters(RangeParametersType newRangeParameters) {
         if (newRangeParameters != rangeParameters) {
             NotificationChain msgs = null;
@@ -200,6 +202,7 @@ public class FileTypeImpl extends MinimalEObjectImpl.Container implements FileTy
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getFileName() {
         return fileName;
     }
@@ -209,6 +212,7 @@ public class FileTypeImpl extends MinimalEObjectImpl.Container implements FileTy
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFileName(String newFileName) {
         String oldFileName = fileName;
         fileName = newFileName;
@@ -221,6 +225,7 @@ public class FileTypeImpl extends MinimalEObjectImpl.Container implements FileTy
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FileValueModelType getFileStructure() {
         return fileStructure;
     }
@@ -230,6 +235,7 @@ public class FileTypeImpl extends MinimalEObjectImpl.Container implements FileTy
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFileStructure(FileValueModelType newFileStructure) {
         FileValueModelType oldFileStructure = fileStructure;
         fileStructure = newFileStructure == null ? FILE_STRUCTURE_EDEFAULT : newFileStructure;
@@ -244,6 +250,7 @@ public class FileTypeImpl extends MinimalEObjectImpl.Container implements FileTy
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetFileStructure() {
         FileValueModelType oldFileStructure = fileStructure;
         boolean oldFileStructureESet = fileStructureESet;
@@ -258,6 +265,7 @@ public class FileTypeImpl extends MinimalEObjectImpl.Container implements FileTy
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetFileStructure() {
         return fileStructureESet;
     }
@@ -267,6 +275,7 @@ public class FileTypeImpl extends MinimalEObjectImpl.Container implements FileTy
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getMimeType() {
         return mimeType;
     }
@@ -276,6 +285,7 @@ public class FileTypeImpl extends MinimalEObjectImpl.Container implements FileTy
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMimeType(String newMimeType) {
         String oldMimeType = mimeType;
         mimeType = newMimeType;
@@ -288,6 +298,7 @@ public class FileTypeImpl extends MinimalEObjectImpl.Container implements FileTy
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getCompression() {
         return compression;
     }
@@ -297,6 +308,7 @@ public class FileTypeImpl extends MinimalEObjectImpl.Container implements FileTy
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCompression(String newCompression) {
         String oldCompression = compression;
         compression = newCompression;

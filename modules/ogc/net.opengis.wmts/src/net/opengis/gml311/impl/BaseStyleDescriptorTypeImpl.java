@@ -130,6 +130,7 @@ public class BaseStyleDescriptorTypeImpl extends AbstractGMLTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ScaleType getSpatialResolution() {
         return spatialResolution;
     }
@@ -154,6 +155,7 @@ public class BaseStyleDescriptorTypeImpl extends AbstractGMLTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSpatialResolution(ScaleType newSpatialResolution) {
         if (newSpatialResolution != spatialResolution) {
             NotificationChain msgs = null;
@@ -173,6 +175,7 @@ public class BaseStyleDescriptorTypeImpl extends AbstractGMLTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<StyleVariationType> getStyleVariation() {
         if (styleVariation == null) {
             styleVariation = new EObjectContainmentEList<>(StyleVariationType.class, this, Gml311Package.BASE_STYLE_DESCRIPTOR_TYPE__STYLE_VARIATION);
@@ -185,6 +188,7 @@ public class BaseStyleDescriptorTypeImpl extends AbstractGMLTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<AnimateType> getAnimate() {
         if (animate == null) {
             animate = new EObjectContainmentEList<>(AnimateType.class, this, Gml311Package.BASE_STYLE_DESCRIPTOR_TYPE__ANIMATE);
@@ -197,6 +201,7 @@ public class BaseStyleDescriptorTypeImpl extends AbstractGMLTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<AnimateMotionType> getAnimateMotion() {
         if (animateMotion == null) {
             animateMotion = new EObjectContainmentEList<>(AnimateMotionType.class, this, Gml311Package.BASE_STYLE_DESCRIPTOR_TYPE__ANIMATE_MOTION);
@@ -209,6 +214,7 @@ public class BaseStyleDescriptorTypeImpl extends AbstractGMLTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<AnimateColorType> getAnimateColor() {
         if (animateColor == null) {
             animateColor = new EObjectContainmentEList<>(AnimateColorType.class, this, Gml311Package.BASE_STYLE_DESCRIPTOR_TYPE__ANIMATE_COLOR);
@@ -221,6 +227,7 @@ public class BaseStyleDescriptorTypeImpl extends AbstractGMLTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<SetType> getSet() {
         if (set == null) {
             set = new EObjectContainmentEList<>(SetType.class, this, Gml311Package.BASE_STYLE_DESCRIPTOR_TYPE__SET);

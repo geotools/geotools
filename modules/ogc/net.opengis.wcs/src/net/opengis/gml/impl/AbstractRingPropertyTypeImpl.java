@@ -58,6 +58,7 @@ public class AbstractRingPropertyTypeImpl extends EObjectImpl implements Abstrac
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return GmlPackage.Literals.ABSTRACT_RING_PROPERTY_TYPE;
 	}
@@ -67,6 +68,7 @@ public class AbstractRingPropertyTypeImpl extends EObjectImpl implements Abstrac
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public LinearRingType getLinearRing() {
 		return linearRing;
 	}
@@ -91,6 +93,7 @@ public class AbstractRingPropertyTypeImpl extends EObjectImpl implements Abstrac
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setLinearRing(LinearRingType newLinearRing) {
 		if (newLinearRing != linearRing) {
 			NotificationChain msgs = null;
@@ -110,6 +113,7 @@ public class AbstractRingPropertyTypeImpl extends EObjectImpl implements Abstrac
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case GmlPackage.ABSTRACT_RING_PROPERTY_TYPE__LINEAR_RING:
@@ -123,6 +127,7 @@ public class AbstractRingPropertyTypeImpl extends EObjectImpl implements Abstrac
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case GmlPackage.ABSTRACT_RING_PROPERTY_TYPE__LINEAR_RING:
@@ -136,6 +141,7 @@ public class AbstractRingPropertyTypeImpl extends EObjectImpl implements Abstrac
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case GmlPackage.ABSTRACT_RING_PROPERTY_TYPE__LINEAR_RING:
@@ -150,6 +156,7 @@ public class AbstractRingPropertyTypeImpl extends EObjectImpl implements Abstrac
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case GmlPackage.ABSTRACT_RING_PROPERTY_TYPE__LINEAR_RING:
@@ -164,6 +171,7 @@ public class AbstractRingPropertyTypeImpl extends EObjectImpl implements Abstrac
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case GmlPackage.ABSTRACT_RING_PROPERTY_TYPE__LINEAR_RING:

@@ -62,6 +62,7 @@ public abstract class OperationMethodBaseTypeImpl extends DefinitionTypeImpl imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getMethodName() {
         return methodName;
     }
@@ -86,6 +87,7 @@ public abstract class OperationMethodBaseTypeImpl extends DefinitionTypeImpl imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMethodName(CodeType newMethodName) {
         if (newMethodName != methodName) {
             NotificationChain msgs = null;

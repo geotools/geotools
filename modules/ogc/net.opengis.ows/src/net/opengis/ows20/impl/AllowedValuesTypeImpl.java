@@ -72,6 +72,7 @@ public class AllowedValuesTypeImpl extends EObjectImpl implements AllowedValuesT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureMap getGroup() {
     if (group == null) {
       group = new BasicFeatureMap(this, Ows20Package.ALLOWED_VALUES_TYPE__GROUP);
@@ -84,6 +85,7 @@ public class AllowedValuesTypeImpl extends EObjectImpl implements AllowedValuesT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<ValueType> getValue() {
     return getGroup().list(Ows20Package.Literals.ALLOWED_VALUES_TYPE__VALUE);
   }
@@ -93,6 +95,7 @@ public class AllowedValuesTypeImpl extends EObjectImpl implements AllowedValuesT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<RangeType> getRange() {
     return getGroup().list(Ows20Package.Literals.ALLOWED_VALUES_TYPE__RANGE);
   }

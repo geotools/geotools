@@ -64,6 +64,7 @@ public abstract class AbstractGeometryTypeImpl extends AbstractGeometryBaseTypeI
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return GmlPackage.Literals.ABSTRACT_GEOMETRY_TYPE;
 	}
@@ -73,6 +74,7 @@ public abstract class AbstractGeometryTypeImpl extends AbstractGeometryBaseTypeI
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getSrsName() {
 		return srsName;
 	}
@@ -82,6 +84,7 @@ public abstract class AbstractGeometryTypeImpl extends AbstractGeometryBaseTypeI
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setSrsName(String newSrsName) {
 		String oldSrsName = srsName;
 		srsName = newSrsName;
@@ -94,6 +97,7 @@ public abstract class AbstractGeometryTypeImpl extends AbstractGeometryBaseTypeI
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case GmlPackage.ABSTRACT_GEOMETRY_TYPE__SRS_NAME:
@@ -107,6 +111,7 @@ public abstract class AbstractGeometryTypeImpl extends AbstractGeometryBaseTypeI
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case GmlPackage.ABSTRACT_GEOMETRY_TYPE__SRS_NAME:
@@ -121,6 +126,7 @@ public abstract class AbstractGeometryTypeImpl extends AbstractGeometryBaseTypeI
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case GmlPackage.ABSTRACT_GEOMETRY_TYPE__SRS_NAME:
@@ -135,6 +141,7 @@ public abstract class AbstractGeometryTypeImpl extends AbstractGeometryBaseTypeI
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case GmlPackage.ABSTRACT_GEOMETRY_TYPE__SRS_NAME:
@@ -148,6 +155,7 @@ public abstract class AbstractGeometryTypeImpl extends AbstractGeometryBaseTypeI
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

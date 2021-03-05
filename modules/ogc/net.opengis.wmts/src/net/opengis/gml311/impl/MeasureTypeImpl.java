@@ -100,6 +100,7 @@ public class MeasureTypeImpl extends MinimalEObjectImpl.Container implements Mea
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public double getValue() {
         return value;
     }
@@ -109,6 +110,7 @@ public class MeasureTypeImpl extends MinimalEObjectImpl.Container implements Mea
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValue(double newValue) {
         double oldValue = value;
         value = newValue;
@@ -123,6 +125,7 @@ public class MeasureTypeImpl extends MinimalEObjectImpl.Container implements Mea
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetValue() {
         double oldValue = value;
         boolean oldValueESet = valueESet;
@@ -137,6 +140,7 @@ public class MeasureTypeImpl extends MinimalEObjectImpl.Container implements Mea
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetValue() {
         return valueESet;
     }
@@ -146,6 +150,7 @@ public class MeasureTypeImpl extends MinimalEObjectImpl.Container implements Mea
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getUom() {
         return uom;
     }
@@ -155,6 +160,7 @@ public class MeasureTypeImpl extends MinimalEObjectImpl.Container implements Mea
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUom(String newUom) {
         String oldUom = uom;
         uom = newUom;

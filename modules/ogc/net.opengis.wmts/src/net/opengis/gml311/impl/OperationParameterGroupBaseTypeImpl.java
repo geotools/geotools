@@ -62,6 +62,7 @@ public abstract class OperationParameterGroupBaseTypeImpl extends AbstractGenera
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getGroupName() {
         return groupName;
     }
@@ -86,6 +87,7 @@ public abstract class OperationParameterGroupBaseTypeImpl extends AbstractGenera
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGroupName(CodeType newGroupName) {
         if (newGroupName != groupName) {
             NotificationChain msgs = null;

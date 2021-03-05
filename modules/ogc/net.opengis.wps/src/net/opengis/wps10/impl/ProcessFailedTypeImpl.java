@@ -58,6 +58,7 @@ public class ProcessFailedTypeImpl extends EObjectImpl implements ProcessFailedT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.PROCESS_FAILED_TYPE;
   }
@@ -67,6 +68,7 @@ public class ProcessFailedTypeImpl extends EObjectImpl implements ProcessFailedT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ExceptionReportType getExceptionReport() {
     return exceptionReport;
   }
@@ -91,6 +93,7 @@ public class ProcessFailedTypeImpl extends EObjectImpl implements ProcessFailedT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setExceptionReport(ExceptionReportType newExceptionReport) {
     if (newExceptionReport != exceptionReport) {
       NotificationChain msgs = null;
@@ -110,6 +113,7 @@ public class ProcessFailedTypeImpl extends EObjectImpl implements ProcessFailedT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.PROCESS_FAILED_TYPE__EXCEPTION_REPORT:
@@ -123,6 +127,7 @@ public class ProcessFailedTypeImpl extends EObjectImpl implements ProcessFailedT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.PROCESS_FAILED_TYPE__EXCEPTION_REPORT:
@@ -136,6 +141,7 @@ public class ProcessFailedTypeImpl extends EObjectImpl implements ProcessFailedT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.PROCESS_FAILED_TYPE__EXCEPTION_REPORT:
@@ -150,6 +156,7 @@ public class ProcessFailedTypeImpl extends EObjectImpl implements ProcessFailedT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.PROCESS_FAILED_TYPE__EXCEPTION_REPORT:
@@ -164,6 +171,7 @@ public class ProcessFailedTypeImpl extends EObjectImpl implements ProcessFailedT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.PROCESS_FAILED_TYPE__EXCEPTION_REPORT:

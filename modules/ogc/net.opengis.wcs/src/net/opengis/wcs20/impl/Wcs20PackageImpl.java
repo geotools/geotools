@@ -447,7 +447,8 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
 		EValidator.Registry.INSTANCE.put
 			(theWcs20Package, 
 			 new EValidator.Descriptor() {
-				 public EValidator getEValidator() {
+				 @Override
+                public EValidator getEValidator() {
 					 return Wcs20Validator.INSTANCE;
 				 }
 			 });
@@ -466,6 +467,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getCapabilitiesType() {
 		return capabilitiesTypeEClass;
 	}
@@ -475,6 +477,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getCapabilitiesType_ServiceMetadata() {
 		return (EReference)capabilitiesTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -484,6 +487,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getCapabilitiesType_Contents() {
 		return (EReference)capabilitiesTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -493,6 +497,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getContentsType() {
 		return contentsTypeEClass;
 	}
@@ -502,6 +507,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getContentsType_CoverageSummary() {
 		return (EReference)contentsTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -511,6 +517,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getContentsType_Extension() {
 		return (EReference)contentsTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -520,6 +527,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getCoverageDescriptionsType() {
 		return coverageDescriptionsTypeEClass;
 	}
@@ -529,6 +537,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getCoverageDescriptionsType_CoverageDescription() {
 		return (EReference)coverageDescriptionsTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -538,6 +547,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getCoverageDescriptionType() {
 		return coverageDescriptionTypeEClass;
 	}
@@ -547,6 +557,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getCoverageDescriptionType_CoverageId() {
 		return (EAttribute)coverageDescriptionTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -556,6 +567,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getCoverageDescriptionType_CoverageFunction() {
 		return (EReference)coverageDescriptionTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -565,6 +577,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getCoverageDescriptionType_Metadata() {
 		return (EReference)coverageDescriptionTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -574,6 +587,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getCoverageDescriptionType_DomainSet() {
 		return (EReference)coverageDescriptionTypeEClass.getEStructuralFeatures().get(3);
 	}
@@ -583,6 +597,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getCoverageDescriptionType_RangeType() {
 		return (EReference)coverageDescriptionTypeEClass.getEStructuralFeatures().get(4);
 	}
@@ -592,6 +607,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getCoverageDescriptionType_ServiceParameters() {
 		return (EReference)coverageDescriptionTypeEClass.getEStructuralFeatures().get(5);
 	}
@@ -601,6 +617,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getCoverageOfferingsType() {
 		return coverageOfferingsTypeEClass;
 	}
@@ -610,6 +627,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getCoverageOfferingsType_ServiceMetadata() {
 		return (EReference)coverageOfferingsTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -619,6 +637,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getCoverageOfferingsType_OfferedCoverage() {
 		return (EReference)coverageOfferingsTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -628,6 +647,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getCoverageSubtypeParentType() {
 		return coverageSubtypeParentTypeEClass;
 	}
@@ -637,6 +657,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getCoverageSubtypeParentType_CoverageSubtype() {
 		return (EAttribute)coverageSubtypeParentTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -646,6 +667,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getCoverageSubtypeParentType_CoverageSubtypeParent() {
 		return (EReference)coverageSubtypeParentTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -655,6 +677,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getCoverageSummaryType() {
 		return coverageSummaryTypeEClass;
 	}
@@ -664,6 +687,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getCoverageSummaryType_WGS84BoundingBox() {
 		return (EReference)coverageSummaryTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -673,6 +697,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getCoverageSummaryType_CoverageId() {
 		return (EAttribute)coverageSummaryTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -682,6 +707,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getCoverageSummaryType_CoverageSubtype() {
 		return (EAttribute)coverageSummaryTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -691,6 +717,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getCoverageSummaryType_CoverageSubtypeParent() {
 		return (EReference)coverageSummaryTypeEClass.getEStructuralFeatures().get(3);
 	}
@@ -700,6 +727,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getCoverageSummaryType_BoundingBoxGroup() {
 		return (EAttribute)coverageSummaryTypeEClass.getEStructuralFeatures().get(4);
 	}
@@ -709,6 +737,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getCoverageSummaryType_BoundingBox() {
 		return (EReference)coverageSummaryTypeEClass.getEStructuralFeatures().get(5);
 	}
@@ -718,6 +747,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getCoverageSummaryType_MetadataGroup() {
 		return (EAttribute)coverageSummaryTypeEClass.getEStructuralFeatures().get(6);
 	}
@@ -727,6 +757,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getCoverageSummaryType_Metadata() {
 		return (EReference)coverageSummaryTypeEClass.getEStructuralFeatures().get(7);
 	}
@@ -736,6 +767,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getDescribeCoverageType() {
 		return describeCoverageTypeEClass;
 	}
@@ -745,6 +777,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getDescribeCoverageType_CoverageId() {
 		return (EAttribute)describeCoverageTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -754,6 +787,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getDimensionSliceType() {
 		return dimensionSliceTypeEClass;
 	}
@@ -763,6 +797,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getDimensionSliceType_SlicePoint() {
 		return (EAttribute)dimensionSliceTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -772,6 +807,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getDimensionSubsetType() {
 		return dimensionSubsetTypeEClass;
 	}
@@ -781,6 +817,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getDimensionSubsetType_Dimension() {
 		return (EAttribute)dimensionSubsetTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -790,6 +827,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getDimensionSubsetType_CRS() {
 		return (EAttribute)dimensionSubsetTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -799,6 +837,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getDimensionTrimType() {
 		return dimensionTrimTypeEClass;
 	}
@@ -808,6 +847,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getDimensionTrimType_TrimLow() {
 		return (EAttribute)dimensionTrimTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -817,6 +857,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getDimensionTrimType_TrimHigh() {
 		return (EAttribute)dimensionTrimTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -826,6 +867,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getDocumentRoot() {
 		return documentRootEClass;
 	}
@@ -835,6 +877,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_XMLNSPrefixMap() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(0);
 	}
@@ -844,6 +887,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_XSISchemaLocation() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(1);
 	}
@@ -853,6 +897,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_Capabilities() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(2);
 	}
@@ -862,6 +907,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_Contents() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(3);
 	}
@@ -871,6 +917,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_CoverageDescription() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(4);
 	}
@@ -880,6 +927,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_CoverageDescriptions() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(5);
 	}
@@ -889,6 +937,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getDocumentRoot_CoverageId() {
 		return (EAttribute)documentRootEClass.getEStructuralFeatures().get(6);
 	}
@@ -898,6 +947,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_CoverageOfferings() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(7);
 	}
@@ -907,6 +957,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getDocumentRoot_CoverageSubtype() {
 		return (EAttribute)documentRootEClass.getEStructuralFeatures().get(8);
 	}
@@ -916,6 +967,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_CoverageSubtypeParent() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(9);
 	}
@@ -925,6 +977,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_CoverageSummary() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(10);
 	}
@@ -934,6 +987,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_DescribeCoverage() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(11);
 	}
@@ -943,6 +997,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_DimensionSlice() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(12);
 	}
@@ -952,6 +1007,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_DimensionSubset() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(13);
 	}
@@ -961,6 +1017,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_DimensionTrim() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(14);
 	}
@@ -970,6 +1027,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_Extension() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(15);
 	}
@@ -979,6 +1037,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_GetCapabilities() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(16);
 	}
@@ -988,6 +1047,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_GetCoverage() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(17);
 	}
@@ -997,6 +1057,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_OfferedCoverage() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(18);
 	}
@@ -1006,6 +1067,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_ServiceMetadata() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(19);
 	}
@@ -1015,6 +1077,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_ServiceParameters() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(20);
 	}
@@ -1024,6 +1087,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getExtensionType() {
 		return extensionTypeEClass;
 	}
@@ -1033,6 +1097,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getExtensionType_Contents() {
 		return (EReference)extensionTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1042,6 +1107,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getGetCapabilitiesType() {
 		return getCapabilitiesTypeEClass;
 	}
@@ -1051,6 +1117,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getGetCapabilitiesType_Service() {
 		return (EAttribute)getCapabilitiesTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1060,6 +1127,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getGetCoverageType() {
 		return getCoverageTypeEClass;
 	}
@@ -1069,6 +1137,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getGetCoverageType_CoverageId() {
 		return (EAttribute)getCoverageTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1078,6 +1147,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getGetCoverageType_DimensionSubsetGroup() {
 		return (EAttribute)getCoverageTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -1087,6 +1157,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getGetCoverageType_DimensionSubset() {
 		return (EReference)getCoverageTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -1096,6 +1167,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getGetCoverageType_Format() {
 		return (EAttribute)getCoverageTypeEClass.getEStructuralFeatures().get(3);
 	}
@@ -1105,6 +1177,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getGetCoverageType_MediaType() {
 		return (EAttribute)getCoverageTypeEClass.getEStructuralFeatures().get(4);
 	}
@@ -1114,6 +1187,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getGetCoverageType_Filter() {
 		return (EAttribute)getCoverageTypeEClass.getEStructuralFeatures().get(5);
 	}
@@ -1123,7 +1197,8 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getGetCoverageType_SortBy() {
+	@Override
+    public EAttribute getGetCoverageType_SortBy() {
 		return (EAttribute)getCoverageTypeEClass.getEStructuralFeatures().get(6);
 	}
 
@@ -1132,6 +1207,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getOfferedCoverageType() {
 		return offeredCoverageTypeEClass;
 	}
@@ -1141,6 +1217,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getOfferedCoverageType_AbstractCoverage() {
 		return (EReference)offeredCoverageTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1150,6 +1227,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getOfferedCoverageType_ServiceParameters() {
 		return (EReference)offeredCoverageTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -1159,6 +1237,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getRequestBaseType() {
 		return requestBaseTypeEClass;
 	}
@@ -1168,6 +1247,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getRequestBaseType_Extension() {
 		return (EReference)requestBaseTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1177,6 +1257,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getRequestBaseType_Service() {
 		return (EAttribute)requestBaseTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -1186,6 +1267,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getRequestBaseType_Version() {
 		return (EAttribute)requestBaseTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -1195,6 +1277,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getRequestBaseType_BaseUrl() {
 		return (EAttribute)requestBaseTypeEClass.getEStructuralFeatures().get(3);
 	}
@@ -1204,6 +1287,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getServiceMetadataType() {
 		return serviceMetadataTypeEClass;
 	}
@@ -1213,6 +1297,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getServiceMetadataType_FormatSupported() {
 		return (EAttribute)serviceMetadataTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1222,6 +1307,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getServiceMetadataType_Extension() {
 		return (EReference)serviceMetadataTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -1231,6 +1317,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getServiceParametersType() {
 		return serviceParametersTypeEClass;
 	}
@@ -1240,6 +1327,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getServiceParametersType_CoverageSubtype() {
 		return (EAttribute)serviceParametersTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1249,6 +1337,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getServiceParametersType_CoverageSubtypeParent() {
 		return (EReference)serviceParametersTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -1258,6 +1347,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getServiceParametersType_NativeFormat() {
 		return (EAttribute)serviceParametersTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -1267,6 +1357,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getServiceParametersType_Extension() {
 		return (EReference)serviceParametersTypeEClass.getEStructuralFeatures().get(3);
 	}
@@ -1276,6 +1367,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getObject() {
 		return objectEClass;
 	}
@@ -1285,6 +1377,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getExtensionItemType() {
 		return extensionItemTypeEClass;
 	}
@@ -1294,6 +1387,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getExtensionItemType_Name() {
 		return (EAttribute)extensionItemTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1303,6 +1397,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getExtensionItemType_Namespace() {
 		return (EAttribute)extensionItemTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -1312,6 +1407,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getExtensionItemType_SimpleContent() {
 		return (EAttribute)extensionItemTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -1321,6 +1417,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getExtensionItemType_ObjectContent() {
 		return (EReference)extensionItemTypeEClass.getEStructuralFeatures().get(3);
 	}
@@ -1330,6 +1427,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getRangeIntervalType() {
 		return rangeIntervalTypeEClass;
 	}
@@ -1339,6 +1437,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getRangeIntervalType_StartComponent() {
 		return (EAttribute)rangeIntervalTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1348,6 +1447,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getRangeIntervalType_EndComponent() {
 		return (EAttribute)rangeIntervalTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -1357,6 +1457,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getRangeItemType() {
 		return rangeItemTypeEClass;
 	}
@@ -1366,6 +1467,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getRangeItemType_RangeComponent() {
 		return (EAttribute)rangeItemTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1375,6 +1477,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getRangeItemType_RangeInterval() {
 		return (EReference)rangeItemTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -1384,6 +1487,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getRangeSubsetType() {
 		return rangeSubsetTypeEClass;
 	}
@@ -1393,6 +1497,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getRangeSubsetType_RangeItems() {
 		return (EReference)rangeSubsetTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1402,6 +1507,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getScaleAxisByFactorType() {
 		return scaleAxisByFactorTypeEClass;
 	}
@@ -1411,6 +1517,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getScaleAxisByFactorType_ScaleAxis() {
 		return (EReference)scaleAxisByFactorTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1420,6 +1527,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getScaleAxisType() {
 		return scaleAxisTypeEClass;
 	}
@@ -1429,6 +1537,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getScaleAxisType_Axis() {
 		return (EAttribute)scaleAxisTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1438,6 +1547,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getScaleAxisType_ScaleFactor() {
 		return (EAttribute)scaleAxisTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -1447,6 +1557,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getScaleByFactorType() {
 		return scaleByFactorTypeEClass;
 	}
@@ -1456,6 +1567,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getScaleByFactorType_ScaleFactor() {
 		return (EAttribute)scaleByFactorTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1465,6 +1577,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getScaleToExtentType() {
 		return scaleToExtentTypeEClass;
 	}
@@ -1474,6 +1587,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getScaleToExtentType_TargetAxisExtent() {
 		return (EReference)scaleToExtentTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1483,6 +1597,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getScaleToSizeType() {
 		return scaleToSizeTypeEClass;
 	}
@@ -1492,6 +1607,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getScaleToSizeType_TargetAxisSize() {
 		return (EReference)scaleToSizeTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1501,6 +1617,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getScalingType() {
 		return scalingTypeEClass;
 	}
@@ -1510,6 +1627,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getScalingType_ScaleByFactor() {
 		return (EReference)scalingTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1519,6 +1637,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getScalingType_ScaleAxesByFactor() {
 		return (EReference)scalingTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -1528,6 +1647,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getScalingType_ScaleToSize() {
 		return (EReference)scalingTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -1537,6 +1657,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getScalingType_ScaleToExtent() {
 		return (EReference)scalingTypeEClass.getEStructuralFeatures().get(3);
 	}
@@ -1546,6 +1667,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getTargetAxisExtentType() {
 		return targetAxisExtentTypeEClass;
 	}
@@ -1555,6 +1677,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getTargetAxisExtentType_Axis() {
 		return (EAttribute)targetAxisExtentTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1564,6 +1687,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getTargetAxisExtentType_Low() {
 		return (EAttribute)targetAxisExtentTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -1573,6 +1697,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getTargetAxisExtentType_High() {
 		return (EAttribute)targetAxisExtentTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -1582,6 +1707,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getTargetAxisSizeType() {
 		return targetAxisSizeTypeEClass;
 	}
@@ -1591,6 +1717,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getTargetAxisSizeType_Axis() {
 		return (EAttribute)targetAxisSizeTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1600,6 +1727,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getTargetAxisSizeType_TargetSize() {
 		return (EAttribute)targetAxisSizeTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -1609,6 +1737,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getInterpolationAxesType() {
 		return interpolationAxesTypeEClass;
 	}
@@ -1618,6 +1747,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getInterpolationAxesType_InterpolationAxis() {
 		return (EReference)interpolationAxesTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1627,6 +1757,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getInterpolationAxisType() {
 		return interpolationAxisTypeEClass;
 	}
@@ -1636,6 +1767,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getInterpolationAxisType_Axis() {
 		return (EAttribute)interpolationAxisTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1645,6 +1777,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getInterpolationAxisType_InterpolationMethod() {
 		return (EAttribute)interpolationAxisTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -1654,6 +1787,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getInterpolationMethodType() {
 		return interpolationMethodTypeEClass;
 	}
@@ -1663,6 +1797,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getInterpolationMethodType_InterpolationMethod() {
 		return (EAttribute)interpolationMethodTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1672,6 +1807,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getInterpolationType() {
 		return interpolationTypeEClass;
 	}
@@ -1681,6 +1817,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getInterpolationType_InterpolationMethod() {
 		return (EReference)interpolationTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1690,6 +1827,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getInterpolationType_InterpolationAxes() {
 		return (EReference)interpolationTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -1699,6 +1837,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getDescribeEOCoverageSetType() {
 		return describeEOCoverageSetTypeEClass;
 	}
@@ -1708,6 +1847,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getDescribeEOCoverageSetType_EoId() {
 		return (EAttribute)describeEOCoverageSetTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1717,6 +1857,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getDescribeEOCoverageSetType_ContainmentType() {
 		return (EAttribute)describeEOCoverageSetTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -1726,6 +1867,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDescribeEOCoverageSetType_Sections() {
 		return (EReference)describeEOCoverageSetTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -1735,6 +1877,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDescribeEOCoverageSetType_DimensionTrim() {
 		return (EReference)describeEOCoverageSetTypeEClass.getEStructuralFeatures().get(3);
 	}
@@ -1744,6 +1887,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getDescribeEOCoverageSetType_Count() {
 		return (EAttribute)describeEOCoverageSetTypeEClass.getEStructuralFeatures().get(4);
 	}
@@ -1753,6 +1897,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getSections() {
 		return sectionsEClass;
 	}
@@ -1762,6 +1907,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getSections_Section() {
 		return (EAttribute)sectionsEClass.getEStructuralFeatures().get(0);
 	}
@@ -1771,7 +1917,8 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EDataType getSortBy() {
+	@Override
+    public EDataType getSortBy() {
 		return sortByEDataType;
 	}
 
@@ -1780,6 +1927,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EEnum getContainmentType() {
 		return containmentTypeEEnum;
 	}
@@ -1789,6 +1937,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EEnum getSection() {
 		return sectionEEnum;
 	}
@@ -1798,6 +1947,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EDataType getVersionStringType() {
 		return versionStringTypeEDataType;
 	}
@@ -1807,6 +1957,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EDataType getVersionStringType_1() {
 		return versionStringType_1EDataType;
 	}
@@ -1816,6 +1967,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EDataType getQName() {
 		return qNameEDataType;
 	}
@@ -1825,6 +1977,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EDataType getFilter() {
 		return filterEDataType;
 	}
@@ -1834,6 +1987,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Wcs20Factory getWcs20Factory() {
 		return (Wcs20Factory)getEFactoryInstance();
 	}

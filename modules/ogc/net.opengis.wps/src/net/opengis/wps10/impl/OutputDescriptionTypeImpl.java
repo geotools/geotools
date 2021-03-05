@@ -80,6 +80,7 @@ public class OutputDescriptionTypeImpl extends DescriptionTypeImpl implements Ou
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.OUTPUT_DESCRIPTION_TYPE;
   }
@@ -89,6 +90,7 @@ public class OutputDescriptionTypeImpl extends DescriptionTypeImpl implements Ou
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public SupportedComplexDataType getComplexOutput() {
     return complexOutput;
   }
@@ -113,6 +115,7 @@ public class OutputDescriptionTypeImpl extends DescriptionTypeImpl implements Ou
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setComplexOutput(SupportedComplexDataType newComplexOutput) {
     if (newComplexOutput != complexOutput) {
       NotificationChain msgs = null;
@@ -132,6 +135,7 @@ public class OutputDescriptionTypeImpl extends DescriptionTypeImpl implements Ou
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public LiteralOutputType getLiteralOutput() {
     return literalOutput;
   }
@@ -156,6 +160,7 @@ public class OutputDescriptionTypeImpl extends DescriptionTypeImpl implements Ou
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setLiteralOutput(LiteralOutputType newLiteralOutput) {
     if (newLiteralOutput != literalOutput) {
       NotificationChain msgs = null;
@@ -175,6 +180,7 @@ public class OutputDescriptionTypeImpl extends DescriptionTypeImpl implements Ou
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public SupportedCRSsType getBoundingBoxOutput() {
     return boundingBoxOutput;
   }
@@ -199,6 +205,7 @@ public class OutputDescriptionTypeImpl extends DescriptionTypeImpl implements Ou
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setBoundingBoxOutput(SupportedCRSsType newBoundingBoxOutput) {
     if (newBoundingBoxOutput != boundingBoxOutput) {
       NotificationChain msgs = null;
@@ -218,6 +225,7 @@ public class OutputDescriptionTypeImpl extends DescriptionTypeImpl implements Ou
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.OUTPUT_DESCRIPTION_TYPE__COMPLEX_OUTPUT:
@@ -235,6 +243,7 @@ public class OutputDescriptionTypeImpl extends DescriptionTypeImpl implements Ou
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.OUTPUT_DESCRIPTION_TYPE__COMPLEX_OUTPUT:
@@ -252,6 +261,7 @@ public class OutputDescriptionTypeImpl extends DescriptionTypeImpl implements Ou
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.OUTPUT_DESCRIPTION_TYPE__COMPLEX_OUTPUT:
@@ -272,6 +282,7 @@ public class OutputDescriptionTypeImpl extends DescriptionTypeImpl implements Ou
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.OUTPUT_DESCRIPTION_TYPE__COMPLEX_OUTPUT:
@@ -292,6 +303,7 @@ public class OutputDescriptionTypeImpl extends DescriptionTypeImpl implements Ou
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.OUTPUT_DESCRIPTION_TYPE__COMPLEX_OUTPUT:

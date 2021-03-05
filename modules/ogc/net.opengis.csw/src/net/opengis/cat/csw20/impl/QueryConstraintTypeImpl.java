@@ -111,6 +111,7 @@ public class QueryConstraintTypeImpl extends EObjectImpl implements QueryConstra
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      */
+    @Override
     public Filter getFilter() {
         return filter;
     }
@@ -134,6 +135,7 @@ public class QueryConstraintTypeImpl extends EObjectImpl implements QueryConstra
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      */
+    @Override
     public void setFilter(Filter newFilter) {
         this.filter = newFilter;
     }
@@ -143,6 +145,7 @@ public class QueryConstraintTypeImpl extends EObjectImpl implements QueryConstra
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getCqlText() {
         return cqlText;
     }
@@ -152,6 +155,7 @@ public class QueryConstraintTypeImpl extends EObjectImpl implements QueryConstra
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCqlText(String newCqlText) {
         String oldCqlText = cqlText;
         cqlText = newCqlText;
@@ -164,6 +168,7 @@ public class QueryConstraintTypeImpl extends EObjectImpl implements QueryConstra
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getVersion() {
         return version;
     }
@@ -173,6 +178,7 @@ public class QueryConstraintTypeImpl extends EObjectImpl implements QueryConstra
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setVersion(String newVersion) {
         String oldVersion = version;
         version = newVersion;

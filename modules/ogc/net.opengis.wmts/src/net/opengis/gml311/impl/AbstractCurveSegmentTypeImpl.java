@@ -141,6 +141,7 @@ public abstract class AbstractCurveSegmentTypeImpl extends MinimalEObjectImpl.Co
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getNumDerivativeInterior() {
         return numDerivativeInterior;
     }
@@ -150,6 +151,7 @@ public abstract class AbstractCurveSegmentTypeImpl extends MinimalEObjectImpl.Co
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setNumDerivativeInterior(BigInteger newNumDerivativeInterior) {
         BigInteger oldNumDerivativeInterior = numDerivativeInterior;
         numDerivativeInterior = newNumDerivativeInterior;
@@ -164,6 +166,7 @@ public abstract class AbstractCurveSegmentTypeImpl extends MinimalEObjectImpl.Co
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetNumDerivativeInterior() {
         BigInteger oldNumDerivativeInterior = numDerivativeInterior;
         boolean oldNumDerivativeInteriorESet = numDerivativeInteriorESet;
@@ -178,6 +181,7 @@ public abstract class AbstractCurveSegmentTypeImpl extends MinimalEObjectImpl.Co
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetNumDerivativeInterior() {
         return numDerivativeInteriorESet;
     }
@@ -187,6 +191,7 @@ public abstract class AbstractCurveSegmentTypeImpl extends MinimalEObjectImpl.Co
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getNumDerivativesAtEnd() {
         return numDerivativesAtEnd;
     }
@@ -196,6 +201,7 @@ public abstract class AbstractCurveSegmentTypeImpl extends MinimalEObjectImpl.Co
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setNumDerivativesAtEnd(BigInteger newNumDerivativesAtEnd) {
         BigInteger oldNumDerivativesAtEnd = numDerivativesAtEnd;
         numDerivativesAtEnd = newNumDerivativesAtEnd;
@@ -210,6 +216,7 @@ public abstract class AbstractCurveSegmentTypeImpl extends MinimalEObjectImpl.Co
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetNumDerivativesAtEnd() {
         BigInteger oldNumDerivativesAtEnd = numDerivativesAtEnd;
         boolean oldNumDerivativesAtEndESet = numDerivativesAtEndESet;
@@ -224,6 +231,7 @@ public abstract class AbstractCurveSegmentTypeImpl extends MinimalEObjectImpl.Co
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetNumDerivativesAtEnd() {
         return numDerivativesAtEndESet;
     }
@@ -233,6 +241,7 @@ public abstract class AbstractCurveSegmentTypeImpl extends MinimalEObjectImpl.Co
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getNumDerivativesAtStart() {
         return numDerivativesAtStart;
     }
@@ -242,6 +251,7 @@ public abstract class AbstractCurveSegmentTypeImpl extends MinimalEObjectImpl.Co
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setNumDerivativesAtStart(BigInteger newNumDerivativesAtStart) {
         BigInteger oldNumDerivativesAtStart = numDerivativesAtStart;
         numDerivativesAtStart = newNumDerivativesAtStart;
@@ -256,6 +266,7 @@ public abstract class AbstractCurveSegmentTypeImpl extends MinimalEObjectImpl.Co
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetNumDerivativesAtStart() {
         BigInteger oldNumDerivativesAtStart = numDerivativesAtStart;
         boolean oldNumDerivativesAtStartESet = numDerivativesAtStartESet;
@@ -270,6 +281,7 @@ public abstract class AbstractCurveSegmentTypeImpl extends MinimalEObjectImpl.Co
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetNumDerivativesAtStart() {
         return numDerivativesAtStartESet;
     }

@@ -91,6 +91,7 @@ public class RangeIntervalTypeImpl extends EObjectImpl implements RangeIntervalT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getStartComponent() {
 		return startComponent;
 	}
@@ -100,6 +101,7 @@ public class RangeIntervalTypeImpl extends EObjectImpl implements RangeIntervalT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setStartComponent(String newStartComponent) {
 		String oldStartComponent = startComponent;
 		startComponent = newStartComponent;
@@ -112,6 +114,7 @@ public class RangeIntervalTypeImpl extends EObjectImpl implements RangeIntervalT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getEndComponent() {
 		return endComponent;
 	}
@@ -121,6 +124,7 @@ public class RangeIntervalTypeImpl extends EObjectImpl implements RangeIntervalT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setEndComponent(String newEndComponent) {
 		String oldEndComponent = endComponent;
 		endComponent = newEndComponent;

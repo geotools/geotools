@@ -69,6 +69,7 @@ public abstract class AbstractTimeReferenceSystemTypeImpl extends DefinitionType
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getDomainOfValidity() {
         return domainOfValidity;
     }
@@ -78,6 +79,7 @@ public abstract class AbstractTimeReferenceSystemTypeImpl extends DefinitionType
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDomainOfValidity(String newDomainOfValidity) {
         String oldDomainOfValidity = domainOfValidity;
         domainOfValidity = newDomainOfValidity;

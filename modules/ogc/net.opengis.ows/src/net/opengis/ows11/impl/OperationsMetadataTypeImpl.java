@@ -104,7 +104,8 @@ public class OperationsMetadataTypeImpl extends EObjectImpl implements Operation
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.OPERATIONS_METADATA_TYPE;
   }
 
@@ -113,7 +114,8 @@ public class OperationsMetadataTypeImpl extends EObjectImpl implements Operation
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList getOperation() {
+  @Override
+public EList getOperation() {
     if (operation == null) {
       operation = new EObjectContainmentEList(OperationType.class, this, Ows11Package.OPERATIONS_METADATA_TYPE__OPERATION);
     }
@@ -125,7 +127,8 @@ public class OperationsMetadataTypeImpl extends EObjectImpl implements Operation
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList getParameter() {
+  @Override
+public EList getParameter() {
     if (parameter == null) {
       parameter = new EObjectContainmentEList(DomainType.class, this, Ows11Package.OPERATIONS_METADATA_TYPE__PARAMETER);
     }
@@ -137,7 +140,8 @@ public class OperationsMetadataTypeImpl extends EObjectImpl implements Operation
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList getConstraint() {
+  @Override
+public EList getConstraint() {
     if (constraint == null) {
       constraint = new EObjectContainmentEList(DomainType.class, this, Ows11Package.OPERATIONS_METADATA_TYPE__CONSTRAINT);
     }
@@ -149,7 +153,8 @@ public class OperationsMetadataTypeImpl extends EObjectImpl implements Operation
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object getExtendedCapabilities() {
+  @Override
+public Object getExtendedCapabilities() {
     return extendedCapabilities;
   }
 
@@ -158,7 +163,8 @@ public class OperationsMetadataTypeImpl extends EObjectImpl implements Operation
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setExtendedCapabilities(Object newExtendedCapabilities) {
+  @Override
+public void setExtendedCapabilities(Object newExtendedCapabilities) {
     Object oldExtendedCapabilities = extendedCapabilities;
     extendedCapabilities = newExtendedCapabilities;
     if (eNotificationRequired())
@@ -170,7 +176,8 @@ public class OperationsMetadataTypeImpl extends EObjectImpl implements Operation
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+  @Override
+public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Ows11Package.OPERATIONS_METADATA_TYPE__OPERATION:
         return ((InternalEList)getOperation()).basicRemove(otherEnd, msgs);
@@ -187,7 +194,8 @@ public class OperationsMetadataTypeImpl extends EObjectImpl implements Operation
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.OPERATIONS_METADATA_TYPE__OPERATION:
         return getOperation();
@@ -206,7 +214,8 @@ public class OperationsMetadataTypeImpl extends EObjectImpl implements Operation
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.OPERATIONS_METADATA_TYPE__OPERATION:
         getOperation().clear();
@@ -232,7 +241,8 @@ public class OperationsMetadataTypeImpl extends EObjectImpl implements Operation
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.OPERATIONS_METADATA_TYPE__OPERATION:
         getOperation().clear();
@@ -255,7 +265,8 @@ public class OperationsMetadataTypeImpl extends EObjectImpl implements Operation
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.OPERATIONS_METADATA_TYPE__OPERATION:
         return operation != null && !operation.isEmpty();
@@ -274,7 +285,8 @@ public class OperationsMetadataTypeImpl extends EObjectImpl implements Operation
    * <!-- end-user-doc -->
    * @generated
    */
-  public String toString() {
+  @Override
+public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

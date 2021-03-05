@@ -91,6 +91,7 @@ public class TargetAxisSizeTypeImpl extends EObjectImpl implements TargetAxisSiz
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getAxis() {
 		return axis;
 	}
@@ -100,6 +101,7 @@ public class TargetAxisSizeTypeImpl extends EObjectImpl implements TargetAxisSiz
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setAxis(String newAxis) {
 		String oldAxis = axis;
 		axis = newAxis;
@@ -112,6 +114,7 @@ public class TargetAxisSizeTypeImpl extends EObjectImpl implements TargetAxisSiz
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public double getTargetSize() {
 		return targetSize;
 	}
@@ -121,6 +124,7 @@ public class TargetAxisSizeTypeImpl extends EObjectImpl implements TargetAxisSiz
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setTargetSize(double newTargetSize) {
 		double oldTargetSize = targetSize;
 		targetSize = newTargetSize;

@@ -110,7 +110,8 @@ public class OperationsMetadataTypeImpl extends EObjectImpl implements Operation
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList<OperationType> getOperation() {
+	@Override
+    public EList<OperationType> getOperation() {
     if (operation == null) {
       operation = new EObjectContainmentEList<>(OperationType.class, this, Ows10Package.OPERATIONS_METADATA_TYPE__OPERATION);
     }
@@ -122,7 +123,8 @@ public class OperationsMetadataTypeImpl extends EObjectImpl implements Operation
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList<DomainType> getParameter() {
+	@Override
+    public EList<DomainType> getParameter() {
     if (parameter == null) {
       parameter = new EObjectContainmentEList<>(DomainType.class, this, Ows10Package.OPERATIONS_METADATA_TYPE__PARAMETER);
     }
@@ -134,7 +136,8 @@ public class OperationsMetadataTypeImpl extends EObjectImpl implements Operation
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList<DomainType> getConstraint() {
+	@Override
+    public EList<DomainType> getConstraint() {
     if (constraint == null) {
       constraint = new EObjectContainmentEList<>(DomainType.class, this, Ows10Package.OPERATIONS_METADATA_TYPE__CONSTRAINT);
     }
@@ -146,7 +149,8 @@ public class OperationsMetadataTypeImpl extends EObjectImpl implements Operation
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object getExtendedCapabilities() {
+	@Override
+    public Object getExtendedCapabilities() {
     return extendedCapabilities;
   }
 
@@ -155,6 +159,7 @@ public class OperationsMetadataTypeImpl extends EObjectImpl implements Operation
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setExtendedCapabilities(Object newExtendedCapabilities) {
     Object oldExtendedCapabilities = extendedCapabilities;
     extendedCapabilities = newExtendedCapabilities;

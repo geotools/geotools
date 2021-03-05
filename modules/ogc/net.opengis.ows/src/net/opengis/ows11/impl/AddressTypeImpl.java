@@ -165,7 +165,8 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.ADDRESS_TYPE;
   }
 
@@ -174,7 +175,8 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getDeliveryPoint() {
+  @Override
+public String getDeliveryPoint() {
     return deliveryPoint;
   }
 
@@ -183,7 +185,8 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setDeliveryPoint(String newDeliveryPoint) {
+  @Override
+public void setDeliveryPoint(String newDeliveryPoint) {
     String oldDeliveryPoint = deliveryPoint;
     deliveryPoint = newDeliveryPoint;
     if (eNotificationRequired())
@@ -195,7 +198,8 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getCity() {
+  @Override
+public String getCity() {
     return city;
   }
 
@@ -204,7 +208,8 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setCity(String newCity) {
+  @Override
+public void setCity(String newCity) {
     String oldCity = city;
     city = newCity;
     if (eNotificationRequired())
@@ -216,7 +221,8 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getAdministrativeArea() {
+  @Override
+public String getAdministrativeArea() {
     return administrativeArea;
   }
 
@@ -225,7 +231,8 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setAdministrativeArea(String newAdministrativeArea) {
+  @Override
+public void setAdministrativeArea(String newAdministrativeArea) {
     String oldAdministrativeArea = administrativeArea;
     administrativeArea = newAdministrativeArea;
     if (eNotificationRequired())
@@ -237,7 +244,8 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getPostalCode() {
+  @Override
+public String getPostalCode() {
     return postalCode;
   }
 
@@ -246,7 +254,8 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setPostalCode(String newPostalCode) {
+  @Override
+public void setPostalCode(String newPostalCode) {
     String oldPostalCode = postalCode;
     postalCode = newPostalCode;
     if (eNotificationRequired())
@@ -258,7 +267,8 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getCountry() {
+  @Override
+public String getCountry() {
     return country;
   }
 
@@ -267,7 +277,8 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setCountry(String newCountry) {
+  @Override
+public void setCountry(String newCountry) {
     String oldCountry = country;
     country = newCountry;
     if (eNotificationRequired())
@@ -279,7 +290,8 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getElectronicMailAddress() {
+  @Override
+public String getElectronicMailAddress() {
     return electronicMailAddress;
   }
 
@@ -288,7 +300,8 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setElectronicMailAddress(String newElectronicMailAddress) {
+  @Override
+public void setElectronicMailAddress(String newElectronicMailAddress) {
     String oldElectronicMailAddress = electronicMailAddress;
     electronicMailAddress = newElectronicMailAddress;
     if (eNotificationRequired())
@@ -300,7 +313,8 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.ADDRESS_TYPE__DELIVERY_POINT:
         return getDeliveryPoint();
@@ -323,7 +337,8 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.ADDRESS_TYPE__DELIVERY_POINT:
         setDeliveryPoint((String)newValue);
@@ -352,7 +367,8 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.ADDRESS_TYPE__DELIVERY_POINT:
         setDeliveryPoint(DELIVERY_POINT_EDEFAULT);
@@ -381,7 +397,8 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.ADDRESS_TYPE__DELIVERY_POINT:
         return DELIVERY_POINT_EDEFAULT == null ? deliveryPoint != null : !DELIVERY_POINT_EDEFAULT.equals(deliveryPoint);
@@ -404,7 +421,8 @@ public class AddressTypeImpl extends EObjectImpl implements AddressType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public String toString() {
+  @Override
+public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

@@ -66,6 +66,7 @@ public class ManifestTypeImpl extends BasicIdentificationTypeImpl implements Man
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<ReferenceGroupType> getReferenceGroup() {
     if (referenceGroup == null) {
       referenceGroup = new EObjectContainmentEList<>(ReferenceGroupType.class, this, Ows20Package.MANIFEST_TYPE__REFERENCE_GROUP);

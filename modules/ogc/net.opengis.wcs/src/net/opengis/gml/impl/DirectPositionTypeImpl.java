@@ -90,6 +90,7 @@ public class DirectPositionTypeImpl extends EObjectImpl implements DirectPositio
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return GmlPackage.Literals.DIRECT_POSITION_TYPE;
 	}
@@ -99,6 +100,7 @@ public class DirectPositionTypeImpl extends EObjectImpl implements DirectPositio
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public List getValue() {
 		return value;
 	}
@@ -108,6 +110,7 @@ public class DirectPositionTypeImpl extends EObjectImpl implements DirectPositio
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setValue(List newValue) {
 		List oldValue = value;
 		value = newValue;
@@ -120,6 +123,7 @@ public class DirectPositionTypeImpl extends EObjectImpl implements DirectPositio
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public BigInteger getDimension() {
 		return dimension;
 	}
@@ -129,6 +133,7 @@ public class DirectPositionTypeImpl extends EObjectImpl implements DirectPositio
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setDimension(BigInteger newDimension) {
 		BigInteger oldDimension = dimension;
 		dimension = newDimension;
@@ -141,6 +146,7 @@ public class DirectPositionTypeImpl extends EObjectImpl implements DirectPositio
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case GmlPackage.DIRECT_POSITION_TYPE__VALUE:
@@ -156,6 +162,7 @@ public class DirectPositionTypeImpl extends EObjectImpl implements DirectPositio
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case GmlPackage.DIRECT_POSITION_TYPE__VALUE:
@@ -173,6 +180,7 @@ public class DirectPositionTypeImpl extends EObjectImpl implements DirectPositio
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case GmlPackage.DIRECT_POSITION_TYPE__VALUE:
@@ -190,6 +198,7 @@ public class DirectPositionTypeImpl extends EObjectImpl implements DirectPositio
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case GmlPackage.DIRECT_POSITION_TYPE__VALUE:
@@ -205,6 +214,7 @@ public class DirectPositionTypeImpl extends EObjectImpl implements DirectPositio
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

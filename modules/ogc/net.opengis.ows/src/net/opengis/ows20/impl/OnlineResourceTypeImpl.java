@@ -228,6 +228,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ActuateType getActuate() {
     return actuate;
   }
@@ -237,6 +238,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setActuate(ActuateType newActuate) {
     ActuateType oldActuate = actuate;
     actuate = newActuate;
@@ -251,6 +253,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetActuate() {
     ActuateType oldActuate = actuate;
     boolean oldActuateESet = actuateESet;
@@ -265,6 +268,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetActuate() {
     return actuateESet;
   }
@@ -274,6 +278,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getArcrole() {
     return arcrole;
   }
@@ -283,6 +288,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setArcrole(String newArcrole) {
     String oldArcrole = arcrole;
     arcrole = newArcrole;
@@ -295,6 +301,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getHref() {
     return href;
   }
@@ -304,6 +311,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setHref(String newHref) {
     String oldHref = href;
     href = newHref;
@@ -316,6 +324,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getRole() {
     return role;
   }
@@ -325,6 +334,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setRole(String newRole) {
     String oldRole = role;
     role = newRole;
@@ -337,6 +347,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ShowType getShow() {
     return show;
   }
@@ -346,6 +357,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setShow(ShowType newShow) {
     ShowType oldShow = show;
     show = newShow;
@@ -360,6 +372,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetShow() {
     ShowType oldShow = show;
     boolean oldShowESet = showESet;
@@ -374,6 +387,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetShow() {
     return showESet;
   }
@@ -383,6 +397,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getTitle() {
     return title;
   }
@@ -392,6 +407,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setTitle(String newTitle) {
     String oldTitle = title;
     title = newTitle;
@@ -404,6 +420,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public TypeType getType() {
     return type;
   }
@@ -413,6 +430,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setType(TypeType newType) {
     TypeType oldType = type;
     type = newType;
@@ -427,6 +445,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetType() {
     TypeType oldType = type;
     boolean oldTypeESet = typeESet;
@@ -441,6 +460,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetType() {
     return typeESet;
   }

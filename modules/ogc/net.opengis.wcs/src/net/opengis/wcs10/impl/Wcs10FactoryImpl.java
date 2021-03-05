@@ -59,6 +59,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
 			case Wcs10Package.ADDRESS_TYPE: return createAddressType();
@@ -124,6 +125,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object createFromString(EDataType eDataType, String initialValue) {
 		switch (eDataType.getClassifierID()) {
 			case Wcs10Package.CAPABILITIES_SECTION_TYPE:
@@ -154,6 +156,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String convertToString(EDataType eDataType, Object instanceValue) {
 		switch (eDataType.getClassifierID()) {
 			case Wcs10Package.CAPABILITIES_SECTION_TYPE:
@@ -184,6 +187,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public AddressType createAddressType() {
 		AddressTypeImpl addressType = new AddressTypeImpl();
 		return addressType;
@@ -194,6 +198,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public AxisDescriptionType createAxisDescriptionType() {
 		AxisDescriptionTypeImpl axisDescriptionType = new AxisDescriptionTypeImpl();
 		return axisDescriptionType;
@@ -204,6 +209,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public AxisDescriptionType1 createAxisDescriptionType1() {
 		AxisDescriptionType1Impl axisDescriptionType1 = new AxisDescriptionType1Impl();
 		return axisDescriptionType1;
@@ -214,6 +220,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public AxisSubsetType createAxisSubsetType() {
 		AxisSubsetTypeImpl axisSubsetType = new AxisSubsetTypeImpl();
 		return axisSubsetType;
@@ -224,6 +231,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ContactType createContactType() {
 		ContactTypeImpl contactType = new ContactTypeImpl();
 		return contactType;
@@ -234,6 +242,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ContentMetadataType createContentMetadataType() {
 		ContentMetadataTypeImpl contentMetadataType = new ContentMetadataTypeImpl();
 		return contentMetadataType;
@@ -244,6 +253,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public CoverageDescriptionType createCoverageDescriptionType() {
 		CoverageDescriptionTypeImpl coverageDescriptionType = new CoverageDescriptionTypeImpl();
 		return coverageDescriptionType;
@@ -254,6 +264,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public CoverageOfferingBriefType createCoverageOfferingBriefType() {
 		CoverageOfferingBriefTypeImpl coverageOfferingBriefType = new CoverageOfferingBriefTypeImpl();
 		return coverageOfferingBriefType;
@@ -264,6 +275,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public CoverageOfferingType createCoverageOfferingType() {
 		CoverageOfferingTypeImpl coverageOfferingType = new CoverageOfferingTypeImpl();
 		return coverageOfferingType;
@@ -274,6 +286,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public DCPTypeType createDCPTypeType() {
 		DCPTypeTypeImpl dcpTypeType = new DCPTypeTypeImpl();
 		return dcpTypeType;
@@ -284,6 +297,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public DescribeCoverageType createDescribeCoverageType() {
 		DescribeCoverageTypeImpl describeCoverageType = new DescribeCoverageTypeImpl();
 		return describeCoverageType;
@@ -294,6 +308,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public DescribeCoverageType1 createDescribeCoverageType1() {
 		DescribeCoverageType1Impl describeCoverageType1 = new DescribeCoverageType1Impl();
 		return describeCoverageType1;
@@ -304,6 +319,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public DocumentRoot createDocumentRoot() {
 		DocumentRootImpl documentRoot = new DocumentRootImpl();
 		return documentRoot;
@@ -314,6 +330,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public DomainSetType createDomainSetType() {
 		DomainSetTypeImpl domainSetType = new DomainSetTypeImpl();
 		return domainSetType;
@@ -324,6 +341,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public DomainSubsetType createDomainSubsetType() {
 		DomainSubsetTypeImpl domainSubsetType = new DomainSubsetTypeImpl();
 		return domainSubsetType;
@@ -334,6 +352,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ExceptionType createExceptionType() {
 		ExceptionTypeImpl exceptionType = new ExceptionTypeImpl();
 		return exceptionType;
@@ -344,6 +363,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public GetCapabilitiesType createGetCapabilitiesType() {
 		GetCapabilitiesTypeImpl getCapabilitiesType = new GetCapabilitiesTypeImpl();
 		return getCapabilitiesType;
@@ -354,6 +374,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public GetCapabilitiesType1 createGetCapabilitiesType1() {
 		GetCapabilitiesType1Impl getCapabilitiesType1 = new GetCapabilitiesType1Impl();
 		return getCapabilitiesType1;
@@ -364,6 +385,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public GetCoverageType createGetCoverageType() {
 		GetCoverageTypeImpl getCoverageType = new GetCoverageTypeImpl();
 		return getCoverageType;
@@ -374,6 +396,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public GetCoverageType1 createGetCoverageType1() {
 		GetCoverageType1Impl getCoverageType1 = new GetCoverageType1Impl();
 		return getCoverageType1;
@@ -384,6 +407,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public GetType createGetType() {
 		GetTypeImpl getType = new GetTypeImpl();
 		return getType;
@@ -394,6 +418,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public HTTPType createHTTPType() {
 		HTTPTypeImpl httpType = new HTTPTypeImpl();
 		return httpType;
@@ -404,6 +429,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public IntervalType createIntervalType() {
 		IntervalTypeImpl intervalType = new IntervalTypeImpl();
 		return intervalType;
@@ -414,6 +440,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public KeywordsType createKeywordsType() {
 		KeywordsTypeImpl keywordsType = new KeywordsTypeImpl();
 		return keywordsType;
@@ -424,6 +451,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public LonLatEnvelopeBaseType createLonLatEnvelopeBaseType() {
 		LonLatEnvelopeBaseTypeImpl lonLatEnvelopeBaseType = new LonLatEnvelopeBaseTypeImpl();
 		return lonLatEnvelopeBaseType;
@@ -434,6 +462,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public LonLatEnvelopeType createLonLatEnvelopeType() {
 		LonLatEnvelopeTypeImpl lonLatEnvelopeType = new LonLatEnvelopeTypeImpl();
 		return lonLatEnvelopeType;
@@ -444,6 +473,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public MetadataAssociationType createMetadataAssociationType() {
 		MetadataAssociationTypeImpl metadataAssociationType = new MetadataAssociationTypeImpl();
 		return metadataAssociationType;
@@ -454,6 +484,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public MetadataLinkType createMetadataLinkType() {
 		MetadataLinkTypeImpl metadataLinkType = new MetadataLinkTypeImpl();
 		return metadataLinkType;
@@ -464,6 +495,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public OnlineResourceType createOnlineResourceType() {
 		OnlineResourceTypeImpl onlineResourceType = new OnlineResourceTypeImpl();
 		return onlineResourceType;
@@ -474,6 +506,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public OutputType createOutputType() {
 		OutputTypeImpl outputType = new OutputTypeImpl();
 		return outputType;
@@ -484,6 +517,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public PostType createPostType() {
 		PostTypeImpl postType = new PostTypeImpl();
 		return postType;
@@ -494,6 +528,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public RangeSetType createRangeSetType() {
 		RangeSetTypeImpl rangeSetType = new RangeSetTypeImpl();
 		return rangeSetType;
@@ -504,6 +539,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public RangeSetType1 createRangeSetType1() {
 		RangeSetType1Impl rangeSetType1 = new RangeSetType1Impl();
 		return rangeSetType1;
@@ -514,6 +550,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public RangeSubsetType createRangeSubsetType() {
 		RangeSubsetTypeImpl rangeSubsetType = new RangeSubsetTypeImpl();
 		return rangeSubsetType;
@@ -524,6 +561,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public RequestType createRequestType() {
 		RequestTypeImpl requestType = new RequestTypeImpl();
 		return requestType;
@@ -534,6 +572,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ResponsiblePartyType createResponsiblePartyType() {
 		ResponsiblePartyTypeImpl responsiblePartyType = new ResponsiblePartyTypeImpl();
 		return responsiblePartyType;
@@ -544,6 +583,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ServiceType createServiceType() {
 		ServiceTypeImpl serviceType = new ServiceTypeImpl();
 		return serviceType;
@@ -554,6 +594,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public SpatialDomainType createSpatialDomainType() {
 		SpatialDomainTypeImpl spatialDomainType = new SpatialDomainTypeImpl();
 		return spatialDomainType;
@@ -564,6 +605,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public SpatialSubsetType createSpatialSubsetType() {
 		SpatialSubsetTypeImpl spatialSubsetType = new SpatialSubsetTypeImpl();
 		return spatialSubsetType;
@@ -574,6 +616,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public SupportedCRSsType createSupportedCRSsType() {
 		SupportedCRSsTypeImpl supportedCRSsType = new SupportedCRSsTypeImpl();
 		return supportedCRSsType;
@@ -584,6 +627,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public SupportedFormatsType createSupportedFormatsType() {
 		SupportedFormatsTypeImpl supportedFormatsType = new SupportedFormatsTypeImpl();
 		return supportedFormatsType;
@@ -594,6 +638,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public SupportedInterpolationsType createSupportedInterpolationsType() {
 		SupportedInterpolationsTypeImpl supportedInterpolationsType = new SupportedInterpolationsTypeImpl();
 		return supportedInterpolationsType;
@@ -604,6 +649,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public TelephoneType createTelephoneType() {
 		TelephoneTypeImpl telephoneType = new TelephoneTypeImpl();
 		return telephoneType;
@@ -614,6 +660,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public TimePeriodType createTimePeriodType() {
 		TimePeriodTypeImpl timePeriodType = new TimePeriodTypeImpl();
 		return timePeriodType;
@@ -624,6 +671,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public TimeSequenceType createTimeSequenceType() {
 		TimeSequenceTypeImpl timeSequenceType = new TimeSequenceTypeImpl();
 		return timeSequenceType;
@@ -634,6 +682,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public TypedLiteralType createTypedLiteralType() {
 		TypedLiteralTypeImpl typedLiteralType = new TypedLiteralTypeImpl();
 		return typedLiteralType;
@@ -644,6 +693,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ValueEnumBaseType createValueEnumBaseType() {
 		ValueEnumBaseTypeImpl valueEnumBaseType = new ValueEnumBaseTypeImpl();
 		return valueEnumBaseType;
@@ -654,6 +704,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ValueEnumType createValueEnumType() {
 		ValueEnumTypeImpl valueEnumType = new ValueEnumTypeImpl();
 		return valueEnumType;
@@ -664,6 +715,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ValueRangeType createValueRangeType() {
 		ValueRangeTypeImpl valueRangeType = new ValueRangeTypeImpl();
 		return valueRangeType;
@@ -674,6 +726,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ValuesType createValuesType() {
 		ValuesTypeImpl valuesType = new ValuesTypeImpl();
 		return valuesType;
@@ -684,6 +737,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public VendorSpecificCapabilitiesType createVendorSpecificCapabilitiesType() {
 		VendorSpecificCapabilitiesTypeImpl vendorSpecificCapabilitiesType = new VendorSpecificCapabilitiesTypeImpl();
 		return vendorSpecificCapabilitiesType;
@@ -694,6 +748,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public WCSCapabilitiesType createWCSCapabilitiesType() {
 		WCSCapabilitiesTypeImpl wcsCapabilitiesType = new WCSCapabilitiesTypeImpl();
 		return wcsCapabilitiesType;
@@ -704,6 +759,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public WCSCapabilityType createWCSCapabilityType() {
 		WCSCapabilityTypeImpl wcsCapabilityType = new WCSCapabilityTypeImpl();
 		return wcsCapabilityType;
@@ -884,6 +940,7 @@ public class Wcs10FactoryImpl extends EFactoryImpl implements Wcs10Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Wcs10Package getWcs10Package() {
 		return (Wcs10Package)getEPackage();
 	}

@@ -274,6 +274,7 @@ public class IsolatedPropertyTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public NodeType getNode() {
         return node;
     }
@@ -298,6 +299,7 @@ public class IsolatedPropertyTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setNode(NodeType newNode) {
         if (newNode != node) {
             NotificationChain msgs = null;
@@ -317,6 +319,7 @@ public class IsolatedPropertyTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EdgeType getEdge() {
         return edge;
     }
@@ -341,6 +344,7 @@ public class IsolatedPropertyTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEdge(EdgeType newEdge) {
         if (newEdge != edge) {
             NotificationChain msgs = null;
@@ -360,6 +364,7 @@ public class IsolatedPropertyTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ActuateType getActuate() {
         return actuate;
     }
@@ -369,6 +374,7 @@ public class IsolatedPropertyTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setActuate(ActuateType newActuate) {
         ActuateType oldActuate = actuate;
         actuate = newActuate == null ? ACTUATE_EDEFAULT : newActuate;
@@ -383,6 +389,7 @@ public class IsolatedPropertyTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetActuate() {
         ActuateType oldActuate = actuate;
         boolean oldActuateESet = actuateESet;
@@ -397,6 +404,7 @@ public class IsolatedPropertyTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetActuate() {
         return actuateESet;
     }
@@ -406,6 +414,7 @@ public class IsolatedPropertyTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getArcrole() {
         return arcrole;
     }
@@ -415,6 +424,7 @@ public class IsolatedPropertyTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setArcrole(String newArcrole) {
         String oldArcrole = arcrole;
         arcrole = newArcrole;
@@ -427,6 +437,7 @@ public class IsolatedPropertyTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getHref() {
         return href;
     }
@@ -436,6 +447,7 @@ public class IsolatedPropertyTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setHref(String newHref) {
         String oldHref = href;
         href = newHref;
@@ -448,6 +460,7 @@ public class IsolatedPropertyTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getRemoteSchema() {
         return remoteSchema;
     }
@@ -457,6 +470,7 @@ public class IsolatedPropertyTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRemoteSchema(String newRemoteSchema) {
         String oldRemoteSchema = remoteSchema;
         remoteSchema = newRemoteSchema;
@@ -469,6 +483,7 @@ public class IsolatedPropertyTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getRole() {
         return role;
     }
@@ -478,6 +493,7 @@ public class IsolatedPropertyTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRole(String newRole) {
         String oldRole = role;
         role = newRole;
@@ -490,6 +506,7 @@ public class IsolatedPropertyTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ShowType getShow() {
         return show;
     }
@@ -499,6 +516,7 @@ public class IsolatedPropertyTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setShow(ShowType newShow) {
         ShowType oldShow = show;
         show = newShow == null ? SHOW_EDEFAULT : newShow;
@@ -513,6 +531,7 @@ public class IsolatedPropertyTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetShow() {
         ShowType oldShow = show;
         boolean oldShowESet = showESet;
@@ -527,6 +546,7 @@ public class IsolatedPropertyTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetShow() {
         return showESet;
     }
@@ -536,6 +556,7 @@ public class IsolatedPropertyTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getTitle() {
         return title;
     }
@@ -545,6 +566,7 @@ public class IsolatedPropertyTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTitle(String newTitle) {
         String oldTitle = title;
         title = newTitle;
@@ -557,6 +579,7 @@ public class IsolatedPropertyTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TypeType getType() {
         return type;
     }
@@ -566,6 +589,7 @@ public class IsolatedPropertyTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setType(TypeType newType) {
         TypeType oldType = type;
         type = newType == null ? TYPE_EDEFAULT : newType;
@@ -580,6 +604,7 @@ public class IsolatedPropertyTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetType() {
         TypeType oldType = type;
         boolean oldTypeESet = typeESet;
@@ -594,6 +619,7 @@ public class IsolatedPropertyTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetType() {
         return typeESet;
     }

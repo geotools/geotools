@@ -66,6 +66,7 @@ public class MultiPolygonTypeImpl extends AbstractGeometricAggregateTypeImpl imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<PolygonPropertyType> getPolygonMember() {
         if (polygonMember == null) {
             polygonMember = new EObjectContainmentEList<>(PolygonPropertyType.class, this, Gml311Package.MULTI_POLYGON_TYPE__POLYGON_MEMBER);

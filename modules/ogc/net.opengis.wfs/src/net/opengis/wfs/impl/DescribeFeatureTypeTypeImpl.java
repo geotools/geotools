@@ -91,7 +91,8 @@ public class DescribeFeatureTypeTypeImpl extends BaseRequestTypeImpl implements 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.DESCRIBE_FEATURE_TYPE_TYPE;
   }
 
@@ -100,7 +101,8 @@ public class DescribeFeatureTypeTypeImpl extends BaseRequestTypeImpl implements 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList getTypeName() {
+	@Override
+    public EList getTypeName() {
     if (typeName == null) {
       typeName = new EDataTypeUniqueEList(QName.class, this, WfsPackage.DESCRIBE_FEATURE_TYPE_TYPE__TYPE_NAME);
     }
@@ -112,7 +114,8 @@ public class DescribeFeatureTypeTypeImpl extends BaseRequestTypeImpl implements 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getOutputFormat() {
+	@Override
+    public String getOutputFormat() {
     return outputFormat;
   }
 
@@ -121,7 +124,8 @@ public class DescribeFeatureTypeTypeImpl extends BaseRequestTypeImpl implements 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setOutputFormat(String newOutputFormat) {
+	@Override
+    public void setOutputFormat(String newOutputFormat) {
     String oldOutputFormat = outputFormat;
     outputFormat = newOutputFormat;
     boolean oldOutputFormatESet = outputFormatESet;
@@ -135,7 +139,8 @@ public class DescribeFeatureTypeTypeImpl extends BaseRequestTypeImpl implements 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void unsetOutputFormat() {
+	@Override
+    public void unsetOutputFormat() {
     String oldOutputFormat = outputFormat;
     boolean oldOutputFormatESet = outputFormatESet;
     outputFormat = OUTPUT_FORMAT_EDEFAULT;
@@ -149,7 +154,8 @@ public class DescribeFeatureTypeTypeImpl extends BaseRequestTypeImpl implements 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean isSetOutputFormat() {
+	@Override
+    public boolean isSetOutputFormat() {
     return outputFormatESet;
   }
 
@@ -158,7 +164,8 @@ public class DescribeFeatureTypeTypeImpl extends BaseRequestTypeImpl implements 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	@Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.DESCRIBE_FEATURE_TYPE_TYPE__TYPE_NAME:
         return getTypeName();
@@ -173,7 +180,8 @@ public class DescribeFeatureTypeTypeImpl extends BaseRequestTypeImpl implements 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(int featureID, Object newValue) {
+	@Override
+    public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.DESCRIBE_FEATURE_TYPE_TYPE__TYPE_NAME:
         getTypeName().clear();
@@ -191,7 +199,8 @@ public class DescribeFeatureTypeTypeImpl extends BaseRequestTypeImpl implements 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(int featureID) {
+	@Override
+    public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.DESCRIBE_FEATURE_TYPE_TYPE__TYPE_NAME:
         getTypeName().clear();
@@ -208,7 +217,8 @@ public class DescribeFeatureTypeTypeImpl extends BaseRequestTypeImpl implements 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(int featureID) {
+	@Override
+    public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.DESCRIBE_FEATURE_TYPE_TYPE__TYPE_NAME:
         return typeName != null && !typeName.isEmpty();
@@ -223,7 +233,8 @@ public class DescribeFeatureTypeTypeImpl extends BaseRequestTypeImpl implements 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String toString() {
+	@Override
+    public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

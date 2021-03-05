@@ -178,6 +178,7 @@ public class wmtsv_1FactoryImpl extends EFactoryImpl implements wmtsv_1Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinaryPayloadType createBinaryPayloadType() {
         BinaryPayloadTypeImpl binaryPayloadType = new BinaryPayloadTypeImpl();
         return binaryPayloadType;
@@ -188,6 +189,7 @@ public class wmtsv_1FactoryImpl extends EFactoryImpl implements wmtsv_1Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CapabilitiesType createCapabilitiesType() {
         CapabilitiesTypeImpl capabilitiesType = new CapabilitiesTypeImpl();
         return capabilitiesType;
@@ -198,6 +200,7 @@ public class wmtsv_1FactoryImpl extends EFactoryImpl implements wmtsv_1Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ContentsType createContentsType() {
         ContentsTypeImpl contentsType = new ContentsTypeImpl();
         return contentsType;
@@ -208,6 +211,7 @@ public class wmtsv_1FactoryImpl extends EFactoryImpl implements wmtsv_1Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DimensionNameValueType createDimensionNameValueType() {
         DimensionNameValueTypeImpl dimensionNameValueType = new DimensionNameValueTypeImpl();
         return dimensionNameValueType;
@@ -218,6 +222,7 @@ public class wmtsv_1FactoryImpl extends EFactoryImpl implements wmtsv_1Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DimensionType createDimensionType() {
         DimensionTypeImpl dimensionType = new DimensionTypeImpl();
         return dimensionType;
@@ -228,6 +233,7 @@ public class wmtsv_1FactoryImpl extends EFactoryImpl implements wmtsv_1Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DocumentRoot createDocumentRoot() {
         DocumentRootImpl documentRoot = new DocumentRootImpl();
         return documentRoot;
@@ -238,6 +244,7 @@ public class wmtsv_1FactoryImpl extends EFactoryImpl implements wmtsv_1Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureInfoResponseType createFeatureInfoResponseType() {
         FeatureInfoResponseTypeImpl featureInfoResponseType = new FeatureInfoResponseTypeImpl();
         return featureInfoResponseType;
@@ -248,6 +255,7 @@ public class wmtsv_1FactoryImpl extends EFactoryImpl implements wmtsv_1Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GetCapabilitiesType createGetCapabilitiesType() {
         GetCapabilitiesTypeImpl getCapabilitiesType = new GetCapabilitiesTypeImpl();
         return getCapabilitiesType;
@@ -258,6 +266,7 @@ public class wmtsv_1FactoryImpl extends EFactoryImpl implements wmtsv_1Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GetFeatureInfoType createGetFeatureInfoType() {
         GetFeatureInfoTypeImpl getFeatureInfoType = new GetFeatureInfoTypeImpl();
         return getFeatureInfoType;
@@ -268,6 +277,7 @@ public class wmtsv_1FactoryImpl extends EFactoryImpl implements wmtsv_1Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GetTileType createGetTileType() {
         GetTileTypeImpl getTileType = new GetTileTypeImpl();
         return getTileType;
@@ -278,6 +288,7 @@ public class wmtsv_1FactoryImpl extends EFactoryImpl implements wmtsv_1Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LayerType createLayerType() {
         LayerTypeImpl layerType = new LayerTypeImpl();
         return layerType;
@@ -288,6 +299,7 @@ public class wmtsv_1FactoryImpl extends EFactoryImpl implements wmtsv_1Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LegendURLType createLegendURLType() {
         LegendURLTypeImpl legendURLType = new LegendURLTypeImpl();
         return legendURLType;
@@ -298,6 +310,7 @@ public class wmtsv_1FactoryImpl extends EFactoryImpl implements wmtsv_1Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StyleType createStyleType() {
         StyleTypeImpl styleType = new StyleTypeImpl();
         return styleType;
@@ -308,6 +321,7 @@ public class wmtsv_1FactoryImpl extends EFactoryImpl implements wmtsv_1Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TextPayloadType createTextPayloadType() {
         TextPayloadTypeImpl textPayloadType = new TextPayloadTypeImpl();
         return textPayloadType;
@@ -318,6 +332,7 @@ public class wmtsv_1FactoryImpl extends EFactoryImpl implements wmtsv_1Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ThemesType createThemesType() {
         ThemesTypeImpl themesType = new ThemesTypeImpl();
         return themesType;
@@ -328,6 +343,7 @@ public class wmtsv_1FactoryImpl extends EFactoryImpl implements wmtsv_1Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ThemeType createThemeType() {
         ThemeTypeImpl themeType = new ThemeTypeImpl();
         return themeType;
@@ -338,6 +354,7 @@ public class wmtsv_1FactoryImpl extends EFactoryImpl implements wmtsv_1Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TileMatrixLimitsType createTileMatrixLimitsType() {
         TileMatrixLimitsTypeImpl tileMatrixLimitsType = new TileMatrixLimitsTypeImpl();
         return tileMatrixLimitsType;
@@ -348,6 +365,7 @@ public class wmtsv_1FactoryImpl extends EFactoryImpl implements wmtsv_1Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TileMatrixSetLimitsType createTileMatrixSetLimitsType() {
         TileMatrixSetLimitsTypeImpl tileMatrixSetLimitsType = new TileMatrixSetLimitsTypeImpl();
         return tileMatrixSetLimitsType;
@@ -358,6 +376,7 @@ public class wmtsv_1FactoryImpl extends EFactoryImpl implements wmtsv_1Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TileMatrixSetLinkType createTileMatrixSetLinkType() {
         TileMatrixSetLinkTypeImpl tileMatrixSetLinkType = new TileMatrixSetLinkTypeImpl();
         return tileMatrixSetLinkType;
@@ -368,6 +387,7 @@ public class wmtsv_1FactoryImpl extends EFactoryImpl implements wmtsv_1Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TileMatrixSetType createTileMatrixSetType() {
         TileMatrixSetTypeImpl tileMatrixSetType = new TileMatrixSetTypeImpl();
         return tileMatrixSetType;
@@ -378,6 +398,7 @@ public class wmtsv_1FactoryImpl extends EFactoryImpl implements wmtsv_1Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TileMatrixType createTileMatrixType() {
         TileMatrixTypeImpl tileMatrixType = new TileMatrixTypeImpl();
         return tileMatrixType;
@@ -388,6 +409,7 @@ public class wmtsv_1FactoryImpl extends EFactoryImpl implements wmtsv_1Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public URLTemplateType createURLTemplateType() {
         URLTemplateTypeImpl urlTemplateType = new URLTemplateTypeImpl();
         return urlTemplateType;
@@ -680,6 +702,7 @@ public class wmtsv_1FactoryImpl extends EFactoryImpl implements wmtsv_1Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public wmtsv_1Package getwmtsv_1Package() {
         return (wmtsv_1Package)getEPackage();
     }

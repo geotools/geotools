@@ -124,6 +124,7 @@ public class AvailableFunctionTypeImpl extends EObjectImpl implements AvailableF
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MetadataType getMetadata() {
         return metadata;
     }
@@ -148,6 +149,7 @@ public class AvailableFunctionTypeImpl extends EObjectImpl implements AvailableF
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMetadata(MetadataType newMetadata) {
         if (newMetadata != metadata) {
             NotificationChain msgs = null;
@@ -167,6 +169,7 @@ public class AvailableFunctionTypeImpl extends EObjectImpl implements AvailableF
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public QName getReturns() {
         return returns;
     }
@@ -176,6 +179,7 @@ public class AvailableFunctionTypeImpl extends EObjectImpl implements AvailableF
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setReturns(QName newReturns) {
         QName oldReturns = returns;
         returns = newReturns;
@@ -188,6 +192,7 @@ public class AvailableFunctionTypeImpl extends EObjectImpl implements AvailableF
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ArgumentsType getArguments() {
         return arguments;
     }
@@ -212,6 +217,7 @@ public class AvailableFunctionTypeImpl extends EObjectImpl implements AvailableF
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setArguments(ArgumentsType newArguments) {
         if (newArguments != arguments) {
             NotificationChain msgs = null;
@@ -231,6 +237,7 @@ public class AvailableFunctionTypeImpl extends EObjectImpl implements AvailableF
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -240,6 +247,7 @@ public class AvailableFunctionTypeImpl extends EObjectImpl implements AvailableF
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setName(String newName) {
         String oldName = name;
         name = newName;

@@ -112,6 +112,7 @@ public class StyleVariationTypeImpl extends MinimalEObjectImpl.Container impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getValue() {
         return value;
     }
@@ -121,6 +122,7 @@ public class StyleVariationTypeImpl extends MinimalEObjectImpl.Container impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValue(String newValue) {
         String oldValue = value;
         value = newValue;
@@ -133,6 +135,7 @@ public class StyleVariationTypeImpl extends MinimalEObjectImpl.Container impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getFeaturePropertyRange() {
         return featurePropertyRange;
     }
@@ -142,6 +145,7 @@ public class StyleVariationTypeImpl extends MinimalEObjectImpl.Container impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFeaturePropertyRange(String newFeaturePropertyRange) {
         String oldFeaturePropertyRange = featurePropertyRange;
         featurePropertyRange = newFeaturePropertyRange;
@@ -154,6 +158,7 @@ public class StyleVariationTypeImpl extends MinimalEObjectImpl.Container impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getStyleProperty() {
         return styleProperty;
     }
@@ -163,6 +168,7 @@ public class StyleVariationTypeImpl extends MinimalEObjectImpl.Container impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setStyleProperty(String newStyleProperty) {
         String oldStyleProperty = styleProperty;
         styleProperty = newStyleProperty;

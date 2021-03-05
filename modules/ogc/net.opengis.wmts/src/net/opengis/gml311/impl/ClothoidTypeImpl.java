@@ -145,6 +145,7 @@ public class ClothoidTypeImpl extends AbstractCurveSegmentTypeImpl implements Cl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RefLocationType getRefLocation() {
         return refLocation;
     }
@@ -169,6 +170,7 @@ public class ClothoidTypeImpl extends AbstractCurveSegmentTypeImpl implements Cl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRefLocation(RefLocationType newRefLocation) {
         if (newRefLocation != refLocation) {
             NotificationChain msgs = null;
@@ -188,6 +190,7 @@ public class ClothoidTypeImpl extends AbstractCurveSegmentTypeImpl implements Cl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigDecimal getScaleFactor() {
         return scaleFactor;
     }
@@ -197,6 +200,7 @@ public class ClothoidTypeImpl extends AbstractCurveSegmentTypeImpl implements Cl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setScaleFactor(BigDecimal newScaleFactor) {
         BigDecimal oldScaleFactor = scaleFactor;
         scaleFactor = newScaleFactor;
@@ -209,6 +213,7 @@ public class ClothoidTypeImpl extends AbstractCurveSegmentTypeImpl implements Cl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public double getStartParameter() {
         return startParameter;
     }
@@ -218,6 +223,7 @@ public class ClothoidTypeImpl extends AbstractCurveSegmentTypeImpl implements Cl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setStartParameter(double newStartParameter) {
         double oldStartParameter = startParameter;
         startParameter = newStartParameter;
@@ -232,6 +238,7 @@ public class ClothoidTypeImpl extends AbstractCurveSegmentTypeImpl implements Cl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetStartParameter() {
         double oldStartParameter = startParameter;
         boolean oldStartParameterESet = startParameterESet;
@@ -246,6 +253,7 @@ public class ClothoidTypeImpl extends AbstractCurveSegmentTypeImpl implements Cl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetStartParameter() {
         return startParameterESet;
     }
@@ -255,6 +263,7 @@ public class ClothoidTypeImpl extends AbstractCurveSegmentTypeImpl implements Cl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public double getEndParameter() {
         return endParameter;
     }
@@ -264,6 +273,7 @@ public class ClothoidTypeImpl extends AbstractCurveSegmentTypeImpl implements Cl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEndParameter(double newEndParameter) {
         double oldEndParameter = endParameter;
         endParameter = newEndParameter;
@@ -278,6 +288,7 @@ public class ClothoidTypeImpl extends AbstractCurveSegmentTypeImpl implements Cl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetEndParameter() {
         double oldEndParameter = endParameter;
         boolean oldEndParameterESet = endParameterESet;
@@ -292,6 +303,7 @@ public class ClothoidTypeImpl extends AbstractCurveSegmentTypeImpl implements Cl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetEndParameter() {
         return endParameterESet;
     }

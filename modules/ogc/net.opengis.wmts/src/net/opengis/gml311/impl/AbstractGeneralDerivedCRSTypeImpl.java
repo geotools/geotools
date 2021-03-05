@@ -74,6 +74,7 @@ public abstract class AbstractGeneralDerivedCRSTypeImpl extends AbstractReferenc
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinateReferenceSystemRefType getBaseCRS() {
         return baseCRS;
     }
@@ -98,6 +99,7 @@ public abstract class AbstractGeneralDerivedCRSTypeImpl extends AbstractReferenc
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBaseCRS(CoordinateReferenceSystemRefType newBaseCRS) {
         if (newBaseCRS != baseCRS) {
             NotificationChain msgs = null;
@@ -117,6 +119,7 @@ public abstract class AbstractGeneralDerivedCRSTypeImpl extends AbstractReferenc
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeneralConversionRefType getDefinedByConversion() {
         return definedByConversion;
     }
@@ -141,6 +144,7 @@ public abstract class AbstractGeneralDerivedCRSTypeImpl extends AbstractReferenc
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDefinedByConversion(GeneralConversionRefType newDefinedByConversion) {
         if (newDefinedByConversion != definedByConversion) {
             NotificationChain msgs = null;

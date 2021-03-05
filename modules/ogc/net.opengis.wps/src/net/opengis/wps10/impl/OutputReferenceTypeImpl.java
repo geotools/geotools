@@ -127,6 +127,7 @@ public class OutputReferenceTypeImpl extends EObjectImpl implements OutputRefere
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.OUTPUT_REFERENCE_TYPE;
   }
@@ -136,6 +137,7 @@ public class OutputReferenceTypeImpl extends EObjectImpl implements OutputRefere
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getEncoding() {
     return encoding;
   }
@@ -145,6 +147,7 @@ public class OutputReferenceTypeImpl extends EObjectImpl implements OutputRefere
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setEncoding(String newEncoding) {
     String oldEncoding = encoding;
     encoding = newEncoding;
@@ -157,6 +160,7 @@ public class OutputReferenceTypeImpl extends EObjectImpl implements OutputRefere
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getHref() {
     return href;
   }
@@ -166,6 +170,7 @@ public class OutputReferenceTypeImpl extends EObjectImpl implements OutputRefere
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setHref(String newHref) {
     String oldHref = href;
     href = newHref;
@@ -178,6 +183,7 @@ public class OutputReferenceTypeImpl extends EObjectImpl implements OutputRefere
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getMimeType() {
     return mimeType;
   }
@@ -187,6 +193,7 @@ public class OutputReferenceTypeImpl extends EObjectImpl implements OutputRefere
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setMimeType(String newMimeType) {
     String oldMimeType = mimeType;
     mimeType = newMimeType;
@@ -199,6 +206,7 @@ public class OutputReferenceTypeImpl extends EObjectImpl implements OutputRefere
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getSchema() {
     return schema;
   }
@@ -208,6 +216,7 @@ public class OutputReferenceTypeImpl extends EObjectImpl implements OutputRefere
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setSchema(String newSchema) {
     String oldSchema = schema;
     schema = newSchema;
@@ -220,6 +229,7 @@ public class OutputReferenceTypeImpl extends EObjectImpl implements OutputRefere
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.OUTPUT_REFERENCE_TYPE__ENCODING:
@@ -239,6 +249,7 @@ public class OutputReferenceTypeImpl extends EObjectImpl implements OutputRefere
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.OUTPUT_REFERENCE_TYPE__ENCODING:
@@ -262,6 +273,7 @@ public class OutputReferenceTypeImpl extends EObjectImpl implements OutputRefere
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.OUTPUT_REFERENCE_TYPE__ENCODING:
@@ -285,6 +297,7 @@ public class OutputReferenceTypeImpl extends EObjectImpl implements OutputRefere
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.OUTPUT_REFERENCE_TYPE__ENCODING:
@@ -304,6 +317,7 @@ public class OutputReferenceTypeImpl extends EObjectImpl implements OutputRefere
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String toString() {
     if (eIsProxy()) return super.toString();
 

@@ -66,6 +66,7 @@ public class CompositeSurfaceTypeImpl extends AbstractSurfaceTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<SurfacePropertyType> getSurfaceMember() {
         if (surfaceMember == null) {
             surfaceMember = new EObjectContainmentEList<>(SurfacePropertyType.class, this, Gml311Package.COMPOSITE_SURFACE_TYPE__SURFACE_MEMBER);

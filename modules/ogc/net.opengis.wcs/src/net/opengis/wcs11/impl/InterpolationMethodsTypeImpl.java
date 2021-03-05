@@ -85,6 +85,7 @@ public class InterpolationMethodsTypeImpl extends EObjectImpl implements Interpo
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EClass eStaticClass() {
         return Wcs111Package.Literals.INTERPOLATION_METHODS_TYPE;
     }
@@ -94,6 +95,7 @@ public class InterpolationMethodsTypeImpl extends EObjectImpl implements Interpo
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getInterpolationMethod() {
         if (interpolationMethod == null) {
             interpolationMethod = new EObjectContainmentEList(InterpolationMethodType.class, this, Wcs111Package.INTERPOLATION_METHODS_TYPE__INTERPOLATION_METHOD);
@@ -106,6 +108,7 @@ public class InterpolationMethodsTypeImpl extends EObjectImpl implements Interpo
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getDefault() {
         return default_;
     }
@@ -115,6 +118,7 @@ public class InterpolationMethodsTypeImpl extends EObjectImpl implements Interpo
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDefault(String newDefault) {
         String oldDefault = default_;
         default_ = newDefault;
@@ -127,6 +131,7 @@ public class InterpolationMethodsTypeImpl extends EObjectImpl implements Interpo
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case Wcs111Package.INTERPOLATION_METHODS_TYPE__INTERPOLATION_METHOD:
@@ -140,6 +145,7 @@ public class InterpolationMethodsTypeImpl extends EObjectImpl implements Interpo
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case Wcs111Package.INTERPOLATION_METHODS_TYPE__INTERPOLATION_METHOD:
@@ -155,6 +161,7 @@ public class InterpolationMethodsTypeImpl extends EObjectImpl implements Interpo
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Wcs111Package.INTERPOLATION_METHODS_TYPE__INTERPOLATION_METHOD:
@@ -173,6 +180,7 @@ public class InterpolationMethodsTypeImpl extends EObjectImpl implements Interpo
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case Wcs111Package.INTERPOLATION_METHODS_TYPE__INTERPOLATION_METHOD:
@@ -190,6 +198,7 @@ public class InterpolationMethodsTypeImpl extends EObjectImpl implements Interpo
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case Wcs111Package.INTERPOLATION_METHODS_TYPE__INTERPOLATION_METHOD:
@@ -205,6 +214,7 @@ public class InterpolationMethodsTypeImpl extends EObjectImpl implements Interpo
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String toString() {
         if (eIsProxy()) return super.toString();
 

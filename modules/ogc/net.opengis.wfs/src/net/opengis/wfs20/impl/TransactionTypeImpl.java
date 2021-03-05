@@ -148,6 +148,7 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureMap getGroup() {
     if (group == null) {
       group = new BasicFeatureMap(this, Wfs20Package.TRANSACTION_TYPE__GROUP);
@@ -160,6 +161,7 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureMap getAbstractTransactionActionGroup() {
     return (FeatureMap)getGroup().<FeatureMap.Entry>list(Wfs20Package.Literals.TRANSACTION_TYPE__ABSTRACT_TRANSACTION_ACTION_GROUP);
   }
@@ -169,6 +171,7 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<AbstractTransactionActionType> getAbstractTransactionAction() {
     return getAbstractTransactionActionGroup().list(Wfs20Package.Literals.TRANSACTION_TYPE__ABSTRACT_TRANSACTION_ACTION);
   }
@@ -178,6 +181,7 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getLockId() {
     return lockId;
   }
@@ -187,6 +191,7 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setLockId(String newLockId) {
     String oldLockId = lockId;
     lockId = newLockId;
@@ -199,6 +204,7 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AllSomeType getReleaseAction() {
     return releaseAction;
   }
@@ -208,6 +214,7 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setReleaseAction(AllSomeType newReleaseAction) {
     AllSomeType oldReleaseAction = releaseAction;
     releaseAction = newReleaseAction == null ? RELEASE_ACTION_EDEFAULT : newReleaseAction;
@@ -222,6 +229,7 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetReleaseAction() {
     AllSomeType oldReleaseAction = releaseAction;
     boolean oldReleaseActionESet = releaseActionESet;
@@ -236,6 +244,7 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetReleaseAction() {
     return releaseActionESet;
   }
@@ -245,6 +254,7 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getSrsName() {
     return srsName;
   }
@@ -254,6 +264,7 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setSrsName(String newSrsName) {
     String oldSrsName = srsName;
     srsName = newSrsName;

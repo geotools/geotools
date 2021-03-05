@@ -66,6 +66,7 @@ public class PolygonPatchArrayPropertyTypeImpl extends SurfacePatchArrayProperty
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<PolygonPatchType> getPolygonPatch() {
         if (polygonPatch == null) {
             polygonPatch = new EObjectContainmentEList<>(PolygonPatchType.class, this, Gml311Package.POLYGON_PATCH_ARRAY_PROPERTY_TYPE__POLYGON_PATCH);

@@ -166,6 +166,7 @@ public class DimensionTypeImpl extends DescriptionTypeImpl implements DimensionT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getIdentifier() {
         return identifier;
     }
@@ -190,6 +191,7 @@ public class DimensionTypeImpl extends DescriptionTypeImpl implements DimensionT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIdentifier(CodeType newIdentifier) {
         if (newIdentifier != identifier) {
             NotificationChain msgs = null;
@@ -209,6 +211,7 @@ public class DimensionTypeImpl extends DescriptionTypeImpl implements DimensionT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DomainMetadataType getUOM() {
         return uOM;
     }
@@ -233,6 +236,7 @@ public class DimensionTypeImpl extends DescriptionTypeImpl implements DimensionT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUOM(DomainMetadataType newUOM) {
         if (newUOM != uOM) {
             NotificationChain msgs = null;
@@ -252,6 +256,7 @@ public class DimensionTypeImpl extends DescriptionTypeImpl implements DimensionT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getUnitSymbol() {
         return unitSymbol;
     }
@@ -261,6 +266,7 @@ public class DimensionTypeImpl extends DescriptionTypeImpl implements DimensionT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUnitSymbol(String newUnitSymbol) {
         String oldUnitSymbol = unitSymbol;
         unitSymbol = newUnitSymbol;
@@ -273,6 +279,7 @@ public class DimensionTypeImpl extends DescriptionTypeImpl implements DimensionT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getDefault() {
         return default_;
     }
@@ -282,6 +289,7 @@ public class DimensionTypeImpl extends DescriptionTypeImpl implements DimensionT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDefault(String newDefault) {
         String oldDefault = default_;
         default_ = newDefault;
@@ -294,6 +302,7 @@ public class DimensionTypeImpl extends DescriptionTypeImpl implements DimensionT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isCurrent() {
         return current;
     }
@@ -303,6 +312,7 @@ public class DimensionTypeImpl extends DescriptionTypeImpl implements DimensionT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCurrent(boolean newCurrent) {
         boolean oldCurrent = current;
         current = newCurrent;
@@ -317,6 +327,7 @@ public class DimensionTypeImpl extends DescriptionTypeImpl implements DimensionT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetCurrent() {
         boolean oldCurrent = current;
         boolean oldCurrentESet = currentESet;
@@ -331,6 +342,7 @@ public class DimensionTypeImpl extends DescriptionTypeImpl implements DimensionT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetCurrent() {
         return currentESet;
     }
@@ -340,6 +352,7 @@ public class DimensionTypeImpl extends DescriptionTypeImpl implements DimensionT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<String> getValue() {
         if (value == null) {
             value = new EDataTypeEList<>(String.class, this, wmtsv_1Package.DIMENSION_TYPE__VALUE);

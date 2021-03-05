@@ -63,6 +63,7 @@ public class LinearRingPropertyTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LinearRingType getLinearRing() {
         return linearRing;
     }
@@ -87,6 +88,7 @@ public class LinearRingPropertyTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLinearRing(LinearRingType newLinearRing) {
         if (newLinearRing != linearRing) {
             NotificationChain msgs = null;

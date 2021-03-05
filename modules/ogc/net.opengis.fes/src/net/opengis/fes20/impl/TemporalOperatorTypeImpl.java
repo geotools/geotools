@@ -88,6 +88,7 @@ public class TemporalOperatorTypeImpl extends EObjectImpl implements TemporalOpe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TemporalOperandsType getTemporalOperands() {
         return temporalOperands;
     }
@@ -112,6 +113,7 @@ public class TemporalOperatorTypeImpl extends EObjectImpl implements TemporalOpe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTemporalOperands(TemporalOperandsType newTemporalOperands) {
         if (newTemporalOperands != temporalOperands) {
             NotificationChain msgs = null;
@@ -131,6 +133,7 @@ public class TemporalOperatorTypeImpl extends EObjectImpl implements TemporalOpe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object getName() {
         return name;
     }
@@ -140,6 +143,7 @@ public class TemporalOperatorTypeImpl extends EObjectImpl implements TemporalOpe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setName(Object newName) {
         Object oldName = name;
         name = newName;

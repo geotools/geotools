@@ -195,7 +195,8 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.ABSTRACT_REFERENCE_BASE_TYPE;
   }
 
@@ -204,7 +205,8 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object getActuate() {
+  @Override
+public Object getActuate() {
     return actuate;
   }
 
@@ -213,7 +215,8 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setActuate(Object newActuate) {
+  @Override
+public void setActuate(Object newActuate) {
     Object oldActuate = actuate;
     actuate = newActuate;
     if (eNotificationRequired())
@@ -225,7 +228,8 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object getArcrole() {
+  @Override
+public Object getArcrole() {
     return arcrole;
   }
 
@@ -234,7 +238,8 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setArcrole(Object newArcrole) {
+  @Override
+public void setArcrole(Object newArcrole) {
     Object oldArcrole = arcrole;
     arcrole = newArcrole;
     if (eNotificationRequired())
@@ -246,7 +251,8 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object getHref() {
+  @Override
+public Object getHref() {
     return href;
   }
 
@@ -255,7 +261,8 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setHref(Object newHref) {
+  @Override
+public void setHref(Object newHref) {
     Object oldHref = href;
     href = newHref;
     if (eNotificationRequired())
@@ -267,7 +274,8 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object getRole() {
+  @Override
+public Object getRole() {
     return role;
   }
 
@@ -276,7 +284,8 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setRole(Object newRole) {
+  @Override
+public void setRole(Object newRole) {
     Object oldRole = role;
     role = newRole;
     if (eNotificationRequired())
@@ -288,7 +297,8 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object getShow() {
+  @Override
+public Object getShow() {
     return show;
   }
 
@@ -297,7 +307,8 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setShow(Object newShow) {
+  @Override
+public void setShow(Object newShow) {
     Object oldShow = show;
     show = newShow;
     if (eNotificationRequired())
@@ -309,7 +320,8 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object getTitle() {
+  @Override
+public Object getTitle() {
     return title;
   }
 
@@ -318,7 +330,8 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setTitle(Object newTitle) {
+  @Override
+public void setTitle(Object newTitle) {
     Object oldTitle = title;
     title = newTitle;
     if (eNotificationRequired())
@@ -330,7 +343,8 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getType() {
+  @Override
+public String getType() {
     return type;
   }
 
@@ -339,7 +353,8 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setType(String newType) {
+  @Override
+public void setType(String newType) {
     String oldType = type;
     type = newType;
     boolean oldTypeESet = typeESet;
@@ -353,7 +368,8 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
    * <!-- end-user-doc -->
    * @generated
    */
-  public void unsetType() {
+  @Override
+public void unsetType() {
     String oldType = type;
     boolean oldTypeESet = typeESet;
     type = TYPE_EDEFAULT;
@@ -367,7 +383,8 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean isSetType() {
+  @Override
+public boolean isSetType() {
     return typeESet;
   }
 
@@ -376,7 +393,8 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.ABSTRACT_REFERENCE_BASE_TYPE__ACTUATE:
         return getActuate();
@@ -401,7 +419,8 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.ABSTRACT_REFERENCE_BASE_TYPE__ACTUATE:
         setActuate(newValue);
@@ -433,7 +452,8 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.ABSTRACT_REFERENCE_BASE_TYPE__ACTUATE:
         setActuate(ACTUATE_EDEFAULT);
@@ -465,7 +485,8 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.ABSTRACT_REFERENCE_BASE_TYPE__ACTUATE:
         return ACTUATE_EDEFAULT == null ? actuate != null : !ACTUATE_EDEFAULT.equals(actuate);
@@ -490,7 +511,8 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
    * <!-- end-user-doc -->
    * @generated
    */
-  public String toString() {
+  @Override
+public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

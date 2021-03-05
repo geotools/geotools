@@ -115,7 +115,8 @@ public class NativeTypeImpl extends EObjectImpl implements NativeType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.NATIVE_TYPE;
   }
 
@@ -124,7 +125,8 @@ public class NativeTypeImpl extends EObjectImpl implements NativeType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean isSafeToIgnore() {
+	@Override
+    public boolean isSafeToIgnore() {
     return safeToIgnore;
   }
 
@@ -133,7 +135,8 @@ public class NativeTypeImpl extends EObjectImpl implements NativeType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setSafeToIgnore(boolean newSafeToIgnore) {
+	@Override
+    public void setSafeToIgnore(boolean newSafeToIgnore) {
     boolean oldSafeToIgnore = safeToIgnore;
     safeToIgnore = newSafeToIgnore;
     boolean oldSafeToIgnoreESet = safeToIgnoreESet;
@@ -147,7 +150,8 @@ public class NativeTypeImpl extends EObjectImpl implements NativeType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void unsetSafeToIgnore() {
+	@Override
+    public void unsetSafeToIgnore() {
     boolean oldSafeToIgnore = safeToIgnore;
     boolean oldSafeToIgnoreESet = safeToIgnoreESet;
     safeToIgnore = SAFE_TO_IGNORE_EDEFAULT;
@@ -161,7 +165,8 @@ public class NativeTypeImpl extends EObjectImpl implements NativeType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean isSetSafeToIgnore() {
+	@Override
+    public boolean isSetSafeToIgnore() {
     return safeToIgnoreESet;
   }
 
@@ -170,7 +175,8 @@ public class NativeTypeImpl extends EObjectImpl implements NativeType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getVendorId() {
+	@Override
+    public String getVendorId() {
     return vendorId;
   }
 
@@ -179,7 +185,8 @@ public class NativeTypeImpl extends EObjectImpl implements NativeType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setVendorId(String newVendorId) {
+	@Override
+    public void setVendorId(String newVendorId) {
     String oldVendorId = vendorId;
     vendorId = newVendorId;
     if (eNotificationRequired())
@@ -191,6 +198,7 @@ public class NativeTypeImpl extends EObjectImpl implements NativeType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getValue() {
     return value;
   }
@@ -200,6 +208,7 @@ public class NativeTypeImpl extends EObjectImpl implements NativeType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setValue(String newValue) {
     String oldValue = value;
     value = newValue;
@@ -212,7 +221,8 @@ public class NativeTypeImpl extends EObjectImpl implements NativeType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	@Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.NATIVE_TYPE__SAFE_TO_IGNORE:
         return isSafeToIgnore() ? Boolean.TRUE : Boolean.FALSE;
@@ -229,7 +239,8 @@ public class NativeTypeImpl extends EObjectImpl implements NativeType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(int featureID, Object newValue) {
+	@Override
+    public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.NATIVE_TYPE__SAFE_TO_IGNORE:
         setSafeToIgnore(((Boolean)newValue).booleanValue());
@@ -249,7 +260,8 @@ public class NativeTypeImpl extends EObjectImpl implements NativeType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(int featureID) {
+	@Override
+    public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.NATIVE_TYPE__SAFE_TO_IGNORE:
         unsetSafeToIgnore();
@@ -269,7 +281,8 @@ public class NativeTypeImpl extends EObjectImpl implements NativeType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(int featureID) {
+	@Override
+    public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.NATIVE_TYPE__SAFE_TO_IGNORE:
         return isSetSafeToIgnore();
@@ -286,7 +299,8 @@ public class NativeTypeImpl extends EObjectImpl implements NativeType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String toString() {
+	@Override
+    public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

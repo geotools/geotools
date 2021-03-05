@@ -133,6 +133,7 @@ public class GetRecordByIdTypeImpl extends RequestBaseTypeImpl implements GetRec
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<URI> getId() {
         if (id == null) {
             id = new EDataTypeUniqueEList<>(URI.class, this, Csw20Package.GET_RECORD_BY_ID_TYPE__ID);
@@ -145,6 +146,7 @@ public class GetRecordByIdTypeImpl extends RequestBaseTypeImpl implements GetRec
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ElementSetNameType getElementSetName() {
         return elementSetName;
     }
@@ -169,6 +171,7 @@ public class GetRecordByIdTypeImpl extends RequestBaseTypeImpl implements GetRec
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setElementSetName(ElementSetNameType newElementSetName) {
         if (newElementSetName != elementSetName) {
             NotificationChain msgs = null;
@@ -188,6 +191,7 @@ public class GetRecordByIdTypeImpl extends RequestBaseTypeImpl implements GetRec
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getOutputFormat() {
         return outputFormat;
     }
@@ -197,6 +201,7 @@ public class GetRecordByIdTypeImpl extends RequestBaseTypeImpl implements GetRec
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOutputFormat(String newOutputFormat) {
         String oldOutputFormat = outputFormat;
         outputFormat = newOutputFormat;
@@ -211,6 +216,7 @@ public class GetRecordByIdTypeImpl extends RequestBaseTypeImpl implements GetRec
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetOutputFormat() {
         String oldOutputFormat = outputFormat;
         boolean oldOutputFormatESet = outputFormatESet;
@@ -225,6 +231,7 @@ public class GetRecordByIdTypeImpl extends RequestBaseTypeImpl implements GetRec
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetOutputFormat() {
         return outputFormatESet;
     }
@@ -234,6 +241,7 @@ public class GetRecordByIdTypeImpl extends RequestBaseTypeImpl implements GetRec
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getOutputSchema() {
         return outputSchema;
     }
@@ -243,6 +251,7 @@ public class GetRecordByIdTypeImpl extends RequestBaseTypeImpl implements GetRec
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOutputSchema(String newOutputSchema) {
         String oldOutputSchema = outputSchema;
         outputSchema = newOutputSchema;

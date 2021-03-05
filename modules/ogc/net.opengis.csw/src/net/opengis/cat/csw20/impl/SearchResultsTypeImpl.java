@@ -244,6 +244,7 @@ public class SearchResultsTypeImpl extends EObjectImpl implements SearchResultsT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getAbstractRecordGroup() {
         if (abstractRecordGroup == null) {
             abstractRecordGroup = new BasicFeatureMap(this, Csw20Package.SEARCH_RESULTS_TYPE__ABSTRACT_RECORD_GROUP);
@@ -256,6 +257,7 @@ public class SearchResultsTypeImpl extends EObjectImpl implements SearchResultsT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<AbstractRecordType> getAbstractRecord() {
         return getAbstractRecordGroup().list(Csw20Package.Literals.SEARCH_RESULTS_TYPE__ABSTRACT_RECORD);
     }
@@ -265,6 +267,7 @@ public class SearchResultsTypeImpl extends EObjectImpl implements SearchResultsT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getAny() {
         if (any == null) {
             any = new BasicFeatureMap(this, Csw20Package.SEARCH_RESULTS_TYPE__ANY);
@@ -277,6 +280,7 @@ public class SearchResultsTypeImpl extends EObjectImpl implements SearchResultsT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ElementSetType getElementSet() {
         return elementSet;
     }
@@ -286,6 +290,7 @@ public class SearchResultsTypeImpl extends EObjectImpl implements SearchResultsT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setElementSet(ElementSetType newElementSet) {
         ElementSetType oldElementSet = elementSet;
         elementSet = newElementSet == null ? ELEMENT_SET_EDEFAULT : newElementSet;
@@ -300,6 +305,7 @@ public class SearchResultsTypeImpl extends EObjectImpl implements SearchResultsT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetElementSet() {
         ElementSetType oldElementSet = elementSet;
         boolean oldElementSetESet = elementSetESet;
@@ -314,6 +320,7 @@ public class SearchResultsTypeImpl extends EObjectImpl implements SearchResultsT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetElementSet() {
         return elementSetESet;
     }
@@ -323,6 +330,7 @@ public class SearchResultsTypeImpl extends EObjectImpl implements SearchResultsT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Calendar getExpires() {
         return expires;
     }
@@ -332,6 +340,7 @@ public class SearchResultsTypeImpl extends EObjectImpl implements SearchResultsT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setExpires(Calendar newExpires) {
         Calendar oldExpires = expires;
         expires = newExpires;
@@ -344,6 +353,7 @@ public class SearchResultsTypeImpl extends EObjectImpl implements SearchResultsT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getNextRecord() {
         return nextRecord;
     }
@@ -353,6 +363,7 @@ public class SearchResultsTypeImpl extends EObjectImpl implements SearchResultsT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setNextRecord(BigInteger newNextRecord) {
         BigInteger oldNextRecord = nextRecord;
         nextRecord = newNextRecord;
@@ -365,6 +376,7 @@ public class SearchResultsTypeImpl extends EObjectImpl implements SearchResultsT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getNumberOfRecordsMatched() {
         return numberOfRecordsMatched;
     }
@@ -374,6 +386,7 @@ public class SearchResultsTypeImpl extends EObjectImpl implements SearchResultsT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setNumberOfRecordsMatched(BigInteger newNumberOfRecordsMatched) {
         BigInteger oldNumberOfRecordsMatched = numberOfRecordsMatched;
         numberOfRecordsMatched = newNumberOfRecordsMatched;
@@ -386,6 +399,7 @@ public class SearchResultsTypeImpl extends EObjectImpl implements SearchResultsT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getNumberOfRecordsReturned() {
         return numberOfRecordsReturned;
     }
@@ -395,6 +409,7 @@ public class SearchResultsTypeImpl extends EObjectImpl implements SearchResultsT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setNumberOfRecordsReturned(BigInteger newNumberOfRecordsReturned) {
         BigInteger oldNumberOfRecordsReturned = numberOfRecordsReturned;
         numberOfRecordsReturned = newNumberOfRecordsReturned;
@@ -407,6 +422,7 @@ public class SearchResultsTypeImpl extends EObjectImpl implements SearchResultsT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getRecordSchema() {
         return recordSchema;
     }
@@ -416,6 +432,7 @@ public class SearchResultsTypeImpl extends EObjectImpl implements SearchResultsT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRecordSchema(String newRecordSchema) {
         String oldRecordSchema = recordSchema;
         recordSchema = newRecordSchema;
@@ -428,6 +445,7 @@ public class SearchResultsTypeImpl extends EObjectImpl implements SearchResultsT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getResultSetId() {
         return resultSetId;
     }
@@ -437,6 +455,7 @@ public class SearchResultsTypeImpl extends EObjectImpl implements SearchResultsT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setResultSetId(String newResultSetId) {
         String oldResultSetId = resultSetId;
         resultSetId = newResultSetId;

@@ -62,7 +62,8 @@ public class InsertResultsTypeImpl extends EObjectImpl implements InsertResultsT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.INSERT_RESULTS_TYPE;
   }
 
@@ -71,7 +72,8 @@ public class InsertResultsTypeImpl extends EObjectImpl implements InsertResultsT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList getFeature() {
+	@Override
+    public EList getFeature() {
     if (feature == null) {
       feature = new EObjectContainmentEList(InsertedFeatureType.class, this, WfsPackage.INSERT_RESULTS_TYPE__FEATURE);
     }
@@ -83,7 +85,8 @@ public class InsertResultsTypeImpl extends EObjectImpl implements InsertResultsT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+	@Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case WfsPackage.INSERT_RESULTS_TYPE__FEATURE:
         return ((InternalEList)getFeature()).basicRemove(otherEnd, msgs);
@@ -96,7 +99,8 @@ public class InsertResultsTypeImpl extends EObjectImpl implements InsertResultsT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	@Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.INSERT_RESULTS_TYPE__FEATURE:
         return getFeature();
@@ -109,7 +113,8 @@ public class InsertResultsTypeImpl extends EObjectImpl implements InsertResultsT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(int featureID, Object newValue) {
+	@Override
+    public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.INSERT_RESULTS_TYPE__FEATURE:
         getFeature().clear();
@@ -124,7 +129,8 @@ public class InsertResultsTypeImpl extends EObjectImpl implements InsertResultsT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(int featureID) {
+	@Override
+    public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.INSERT_RESULTS_TYPE__FEATURE:
         getFeature().clear();
@@ -138,7 +144,8 @@ public class InsertResultsTypeImpl extends EObjectImpl implements InsertResultsT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(int featureID) {
+	@Override
+    public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.INSERT_RESULTS_TYPE__FEATURE:
         return feature != null && !feature.isEmpty();

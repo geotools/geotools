@@ -104,6 +104,7 @@ public class TitleTypeImpl extends EObjectImpl implements TitleType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getValue() {
     return value;
   }
@@ -113,6 +114,7 @@ public class TitleTypeImpl extends EObjectImpl implements TitleType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setValue(String newValue) {
     String oldValue = value;
     value = newValue;
@@ -125,6 +127,7 @@ public class TitleTypeImpl extends EObjectImpl implements TitleType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getLang() {
     return lang;
   }
@@ -134,6 +137,7 @@ public class TitleTypeImpl extends EObjectImpl implements TitleType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setLang(String newLang) {
     String oldLang = lang;
     lang = newLang;
@@ -148,6 +152,7 @@ public class TitleTypeImpl extends EObjectImpl implements TitleType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetLang() {
     String oldLang = lang;
     boolean oldLangESet = langESet;
@@ -162,6 +167,7 @@ public class TitleTypeImpl extends EObjectImpl implements TitleType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetLang() {
     return langESet;
   }

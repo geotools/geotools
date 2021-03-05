@@ -122,6 +122,7 @@ public class SpatialDomainTypeImpl extends EObjectImpl implements SpatialDomainT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EClass eStaticClass() {
         return Wcs111Package.Literals.SPATIAL_DOMAIN_TYPE;
     }
@@ -131,6 +132,7 @@ public class SpatialDomainTypeImpl extends EObjectImpl implements SpatialDomainT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getBoundingBoxGroup() {
         if (boundingBoxGroup == null) {
             boundingBoxGroup = new BasicFeatureMap(this, Wcs111Package.SPATIAL_DOMAIN_TYPE__BOUNDING_BOX_GROUP);
@@ -143,6 +145,7 @@ public class SpatialDomainTypeImpl extends EObjectImpl implements SpatialDomainT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getBoundingBox() {
         return getBoundingBoxGroup().list(Wcs111Package.Literals.SPATIAL_DOMAIN_TYPE__BOUNDING_BOX);
     }
@@ -152,6 +155,7 @@ public class SpatialDomainTypeImpl extends EObjectImpl implements SpatialDomainT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GridCrsType getGridCRS() {
         return gridCRS;
     }
@@ -176,6 +180,7 @@ public class SpatialDomainTypeImpl extends EObjectImpl implements SpatialDomainT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGridCRS(GridCrsType newGridCRS) {
         if (newGridCRS != gridCRS) {
             NotificationChain msgs = null;
@@ -195,6 +200,7 @@ public class SpatialDomainTypeImpl extends EObjectImpl implements SpatialDomainT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object getTransformation() {
         return transformation;
     }
@@ -204,6 +210,7 @@ public class SpatialDomainTypeImpl extends EObjectImpl implements SpatialDomainT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTransformation(Object newTransformation) {
         Object oldTransformation = transformation;
         transformation = newTransformation;
@@ -216,6 +223,7 @@ public class SpatialDomainTypeImpl extends EObjectImpl implements SpatialDomainT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ImageCRSRefType getImageCRS() {
         return imageCRS;
     }
@@ -240,6 +248,7 @@ public class SpatialDomainTypeImpl extends EObjectImpl implements SpatialDomainT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setImageCRS(ImageCRSRefType newImageCRS) {
         if (newImageCRS != imageCRS) {
             NotificationChain msgs = null;
@@ -259,6 +268,7 @@ public class SpatialDomainTypeImpl extends EObjectImpl implements SpatialDomainT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getPolygon() {
         if (polygon == null) {
             polygon = new EDataTypeEList(Object.class, this, Wcs111Package.SPATIAL_DOMAIN_TYPE__POLYGON);
@@ -271,6 +281,7 @@ public class SpatialDomainTypeImpl extends EObjectImpl implements SpatialDomainT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case Wcs111Package.SPATIAL_DOMAIN_TYPE__BOUNDING_BOX_GROUP:
@@ -290,6 +301,7 @@ public class SpatialDomainTypeImpl extends EObjectImpl implements SpatialDomainT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case Wcs111Package.SPATIAL_DOMAIN_TYPE__BOUNDING_BOX_GROUP:
@@ -314,6 +326,7 @@ public class SpatialDomainTypeImpl extends EObjectImpl implements SpatialDomainT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Wcs111Package.SPATIAL_DOMAIN_TYPE__BOUNDING_BOX_GROUP:
@@ -345,6 +358,7 @@ public class SpatialDomainTypeImpl extends EObjectImpl implements SpatialDomainT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case Wcs111Package.SPATIAL_DOMAIN_TYPE__BOUNDING_BOX_GROUP:
@@ -374,6 +388,7 @@ public class SpatialDomainTypeImpl extends EObjectImpl implements SpatialDomainT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case Wcs111Package.SPATIAL_DOMAIN_TYPE__BOUNDING_BOX_GROUP:
@@ -397,6 +412,7 @@ public class SpatialDomainTypeImpl extends EObjectImpl implements SpatialDomainT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String toString() {
         if (eIsProxy()) return super.toString();
 

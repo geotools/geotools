@@ -98,6 +98,7 @@ public class DataBlockTypeImpl extends MinimalEObjectImpl.Container implements D
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RangeParametersType getRangeParameters() {
         return rangeParameters;
     }
@@ -122,6 +123,7 @@ public class DataBlockTypeImpl extends MinimalEObjectImpl.Container implements D
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRangeParameters(RangeParametersType newRangeParameters) {
         if (newRangeParameters != rangeParameters) {
             NotificationChain msgs = null;
@@ -141,6 +143,7 @@ public class DataBlockTypeImpl extends MinimalEObjectImpl.Container implements D
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinatesType getTupleList() {
         return tupleList;
     }
@@ -165,6 +168,7 @@ public class DataBlockTypeImpl extends MinimalEObjectImpl.Container implements D
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTupleList(CoordinatesType newTupleList) {
         if (newTupleList != tupleList) {
             NotificationChain msgs = null;
@@ -184,6 +188,7 @@ public class DataBlockTypeImpl extends MinimalEObjectImpl.Container implements D
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public List<Object> getDoubleOrNullTupleList() {
         return doubleOrNullTupleList;
     }
@@ -193,6 +198,7 @@ public class DataBlockTypeImpl extends MinimalEObjectImpl.Container implements D
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDoubleOrNullTupleList(List<Object> newDoubleOrNullTupleList) {
         List<Object> oldDoubleOrNullTupleList = doubleOrNullTupleList;
         doubleOrNullTupleList = newDoubleOrNullTupleList;

@@ -272,6 +272,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DistributedSearchType getDistributedSearch() {
         return distributedSearch;
     }
@@ -296,6 +297,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDistributedSearch(DistributedSearchType newDistributedSearch) {
         if (newDistributedSearch != distributedSearch) {
             NotificationChain msgs = null;
@@ -315,6 +317,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getResponseHandler() {
         return responseHandler;
     }
@@ -324,6 +327,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setResponseHandler(String newResponseHandler) {
         String oldResponseHandler = responseHandler;
         responseHandler = newResponseHandler;
@@ -336,6 +340,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getAny() {
         if (any == null) {
             any = new BasicFeatureMap(this, Csw20Package.GET_RECORDS_TYPE__ANY);
@@ -348,6 +353,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Integer getMaxRecords() {
         return maxRecords;
     }
@@ -357,6 +363,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMaxRecords(Integer newMaxRecords) {
         Integer oldMaxRecords = maxRecords;
         maxRecords = newMaxRecords;
@@ -369,6 +376,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getOutputFormat() {
         return outputFormat;
     }
@@ -378,6 +386,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOutputFormat(String newOutputFormat) {
         String oldOutputFormat = outputFormat;
         outputFormat = newOutputFormat;
@@ -392,6 +401,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetOutputFormat() {
         String oldOutputFormat = outputFormat;
         boolean oldOutputFormatESet = outputFormatESet;
@@ -406,6 +416,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetOutputFormat() {
         return outputFormatESet;
     }
@@ -415,6 +426,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getOutputSchema() {
         return outputSchema;
     }
@@ -424,6 +436,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOutputSchema(String newOutputSchema) {
         String oldOutputSchema = outputSchema;
         outputSchema = newOutputSchema;
@@ -436,6 +449,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getRequestId() {
         return requestId;
     }
@@ -445,6 +459,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRequestId(String newRequestId) {
         String oldRequestId = requestId;
         requestId = newRequestId;
@@ -457,6 +472,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ResultType getResultType() {
         return resultType;
     }
@@ -466,6 +482,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setResultType(ResultType newResultType) {
         ResultType oldResultType = resultType;
         resultType = newResultType == null ? RESULT_TYPE_EDEFAULT : newResultType;
@@ -480,6 +497,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetResultType() {
         ResultType oldResultType = resultType;
         boolean oldResultTypeESet = resultTypeESet;
@@ -494,6 +512,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetResultType() {
         return resultTypeESet;
     }
@@ -503,6 +522,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Integer getStartPosition() {
         return startPosition;
     }
@@ -512,6 +532,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setStartPosition(Integer newStartPosition) {
         Integer oldStartPosition = startPosition;
         startPosition = newStartPosition;
@@ -524,6 +545,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object getQuery() {
         return query;
     }
@@ -533,6 +555,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setQuery(Object newQuery) {
         Object oldQuery = query;
         query = newQuery;

@@ -63,6 +63,7 @@ public class RefLocationTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AffinePlacementType getAffinePlacement() {
         return affinePlacement;
     }
@@ -87,6 +88,7 @@ public class RefLocationTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAffinePlacement(AffinePlacementType newAffinePlacement) {
         if (newAffinePlacement != affinePlacement) {
             NotificationChain msgs = null;

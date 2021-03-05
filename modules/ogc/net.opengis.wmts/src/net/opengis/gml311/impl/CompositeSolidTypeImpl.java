@@ -66,6 +66,7 @@ public class CompositeSolidTypeImpl extends AbstractSolidTypeImpl implements Com
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<SolidPropertyType> getSolidMember() {
         if (solidMember == null) {
             solidMember = new EObjectContainmentEList<>(SolidPropertyType.class, this, Gml311Package.COMPOSITE_SOLID_TYPE__SOLID_MEMBER);

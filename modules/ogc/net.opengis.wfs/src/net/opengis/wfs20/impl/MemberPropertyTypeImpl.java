@@ -274,6 +274,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureMap getMixed() {
     if (mixed == null) {
       mixed = new BasicFeatureMap(this, Wfs20Package.MEMBER_PROPERTY_TYPE__MIXED);
@@ -286,6 +287,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureMap getAny() {
     return (FeatureMap)getMixed().<FeatureMap.Entry>list(Wfs20Package.Literals.MEMBER_PROPERTY_TYPE__ANY);
   }
@@ -295,6 +297,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public TupleType getTuple() {
     return (TupleType)getMixed().get(Wfs20Package.Literals.MEMBER_PROPERTY_TYPE__TUPLE, true);
   }
@@ -313,6 +316,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setTuple(TupleType newTuple) {
     ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.MEMBER_PROPERTY_TYPE__TUPLE, newTuple);
   }
@@ -322,6 +326,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureMap getSimpleFeatureCollectionGroup() {
     return (FeatureMap)getMixed().<FeatureMap.Entry>list(Wfs20Package.Literals.MEMBER_PROPERTY_TYPE__SIMPLE_FEATURE_COLLECTION_GROUP);
   }
@@ -331,6 +336,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public SimpleFeatureCollectionType getSimpleFeatureCollection() {
     return (SimpleFeatureCollectionType)getSimpleFeatureCollectionGroup().get(Wfs20Package.Literals.MEMBER_PROPERTY_TYPE__SIMPLE_FEATURE_COLLECTION, true);
   }
@@ -349,6 +355,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setSimpleFeatureCollection(SimpleFeatureCollectionType newSimpleFeatureCollection) {
     ((FeatureMap.Internal)getSimpleFeatureCollectionGroup()).set(Wfs20Package.Literals.MEMBER_PROPERTY_TYPE__SIMPLE_FEATURE_COLLECTION, newSimpleFeatureCollection);
   }
@@ -358,6 +365,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ActuateType getActuate() {
     return actuate;
   }
@@ -367,6 +375,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setActuate(ActuateType newActuate) {
     ActuateType oldActuate = actuate;
     actuate = newActuate == null ? ACTUATE_EDEFAULT : newActuate;
@@ -381,6 +390,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetActuate() {
     ActuateType oldActuate = actuate;
     boolean oldActuateESet = actuateESet;
@@ -395,6 +405,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetActuate() {
     return actuateESet;
   }
@@ -404,6 +415,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getArcrole() {
     return arcrole;
   }
@@ -413,6 +425,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setArcrole(String newArcrole) {
     String oldArcrole = arcrole;
     arcrole = newArcrole;
@@ -425,6 +438,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getHref() {
     return href;
   }
@@ -434,6 +448,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setHref(String newHref) {
     String oldHref = href;
     href = newHref;
@@ -446,6 +461,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getRole() {
     return role;
   }
@@ -455,6 +471,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setRole(String newRole) {
     String oldRole = role;
     role = newRole;
@@ -467,6 +484,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ShowType getShow() {
     return show;
   }
@@ -476,6 +494,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setShow(ShowType newShow) {
     ShowType oldShow = show;
     show = newShow == null ? SHOW_EDEFAULT : newShow;
@@ -490,6 +509,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetShow() {
     ShowType oldShow = show;
     boolean oldShowESet = showESet;
@@ -504,6 +524,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetShow() {
     return showESet;
   }
@@ -513,6 +534,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object getState() {
     return state;
   }
@@ -522,6 +544,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setState(Object newState) {
     Object oldState = state;
     state = newState;
@@ -534,6 +557,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getTitle() {
     return title;
   }
@@ -543,6 +567,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setTitle(String newTitle) {
     String oldTitle = title;
     title = newTitle;
@@ -555,6 +580,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getType() {
     return type;
   }
@@ -564,6 +590,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setType(String newType) {
     String oldType = type;
     type = newType;
@@ -578,6 +605,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetType() {
     String oldType = type;
     boolean oldTypeESet = typeESet;
@@ -592,6 +620,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetType() {
     return typeESet;
   }

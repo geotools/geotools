@@ -35,7 +35,8 @@ public class NoSRSTypeImpl extends EObjectImpl implements NoSRSType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.NO_SRS_TYPE;
   }
 

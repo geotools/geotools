@@ -72,6 +72,7 @@ public class SortByTypeImpl extends EObjectImpl implements SortByType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<SortPropertyType> getSortProperty() {
         if (sortProperty == null) {
             sortProperty = new EObjectContainmentEList<>(SortPropertyType.class, this, Fes20Package.SORT_BY_TYPE__SORT_PROPERTY);

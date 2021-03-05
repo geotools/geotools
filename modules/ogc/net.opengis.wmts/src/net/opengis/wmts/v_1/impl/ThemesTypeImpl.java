@@ -68,6 +68,7 @@ public class ThemesTypeImpl extends MinimalEObjectImpl.Container implements Them
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<ThemeType> getTheme() {
         if (theme == null) {
             theme = new EObjectContainmentEList<>(ThemeType.class, this, wmtsv_1Package.THEMES_TYPE__THEME);

@@ -125,6 +125,7 @@ public class CoordinateSystemAxisTypeImpl extends CoordinateSystemAxisBaseTypeIm
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<IdentifierType> getAxisID() {
         if (axisID == null) {
             axisID = new EObjectContainmentEList<>(IdentifierType.class, this, Gml311Package.COORDINATE_SYSTEM_AXIS_TYPE__AXIS_ID);
@@ -137,6 +138,7 @@ public class CoordinateSystemAxisTypeImpl extends CoordinateSystemAxisBaseTypeIm
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StringOrRefType getRemarks() {
         return remarks;
     }
@@ -161,6 +163,7 @@ public class CoordinateSystemAxisTypeImpl extends CoordinateSystemAxisBaseTypeIm
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRemarks(StringOrRefType newRemarks) {
         if (newRemarks != remarks) {
             NotificationChain msgs = null;
@@ -180,6 +183,7 @@ public class CoordinateSystemAxisTypeImpl extends CoordinateSystemAxisBaseTypeIm
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getAxisAbbrev() {
         return axisAbbrev;
     }
@@ -204,6 +208,7 @@ public class CoordinateSystemAxisTypeImpl extends CoordinateSystemAxisBaseTypeIm
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAxisAbbrev(CodeType newAxisAbbrev) {
         if (newAxisAbbrev != axisAbbrev) {
             NotificationChain msgs = null;
@@ -223,6 +228,7 @@ public class CoordinateSystemAxisTypeImpl extends CoordinateSystemAxisBaseTypeIm
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getAxisDirection() {
         return axisDirection;
     }
@@ -247,6 +253,7 @@ public class CoordinateSystemAxisTypeImpl extends CoordinateSystemAxisBaseTypeIm
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAxisDirection(CodeType newAxisDirection) {
         if (newAxisDirection != axisDirection) {
             NotificationChain msgs = null;
@@ -266,6 +273,7 @@ public class CoordinateSystemAxisTypeImpl extends CoordinateSystemAxisBaseTypeIm
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getUom() {
         return uom;
     }
@@ -275,6 +283,7 @@ public class CoordinateSystemAxisTypeImpl extends CoordinateSystemAxisBaseTypeIm
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUom(String newUom) {
         String oldUom = uom;
         uom = newUom;

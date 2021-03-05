@@ -154,6 +154,7 @@ public class ResponseDocumentTypeImpl extends EObjectImpl implements ResponseDoc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.RESPONSE_DOCUMENT_TYPE;
   }
@@ -163,6 +164,7 @@ public class ResponseDocumentTypeImpl extends EObjectImpl implements ResponseDoc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList getOutput() {
     if (output == null) {
       output = new EObjectContainmentEList(DocumentOutputDefinitionType.class, this, Wps10Package.RESPONSE_DOCUMENT_TYPE__OUTPUT);
@@ -175,6 +177,7 @@ public class ResponseDocumentTypeImpl extends EObjectImpl implements ResponseDoc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isLineage() {
     return lineage;
   }
@@ -184,6 +187,7 @@ public class ResponseDocumentTypeImpl extends EObjectImpl implements ResponseDoc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setLineage(boolean newLineage) {
     boolean oldLineage = lineage;
     lineage = newLineage;
@@ -198,6 +202,7 @@ public class ResponseDocumentTypeImpl extends EObjectImpl implements ResponseDoc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetLineage() {
     boolean oldLineage = lineage;
     boolean oldLineageESet = lineageESet;
@@ -212,6 +217,7 @@ public class ResponseDocumentTypeImpl extends EObjectImpl implements ResponseDoc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetLineage() {
     return lineageESet;
   }
@@ -221,6 +227,7 @@ public class ResponseDocumentTypeImpl extends EObjectImpl implements ResponseDoc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isStatus() {
     return status;
   }
@@ -230,6 +237,7 @@ public class ResponseDocumentTypeImpl extends EObjectImpl implements ResponseDoc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setStatus(boolean newStatus) {
     boolean oldStatus = status;
     status = newStatus;
@@ -244,6 +252,7 @@ public class ResponseDocumentTypeImpl extends EObjectImpl implements ResponseDoc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetStatus() {
     boolean oldStatus = status;
     boolean oldStatusESet = statusESet;
@@ -258,6 +267,7 @@ public class ResponseDocumentTypeImpl extends EObjectImpl implements ResponseDoc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetStatus() {
     return statusESet;
   }
@@ -267,6 +277,7 @@ public class ResponseDocumentTypeImpl extends EObjectImpl implements ResponseDoc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isStoreExecuteResponse() {
     return storeExecuteResponse;
   }
@@ -276,6 +287,7 @@ public class ResponseDocumentTypeImpl extends EObjectImpl implements ResponseDoc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setStoreExecuteResponse(boolean newStoreExecuteResponse) {
     boolean oldStoreExecuteResponse = storeExecuteResponse;
     storeExecuteResponse = newStoreExecuteResponse;
@@ -290,6 +302,7 @@ public class ResponseDocumentTypeImpl extends EObjectImpl implements ResponseDoc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetStoreExecuteResponse() {
     boolean oldStoreExecuteResponse = storeExecuteResponse;
     boolean oldStoreExecuteResponseESet = storeExecuteResponseESet;
@@ -304,6 +317,7 @@ public class ResponseDocumentTypeImpl extends EObjectImpl implements ResponseDoc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetStoreExecuteResponse() {
     return storeExecuteResponseESet;
   }
@@ -313,6 +327,7 @@ public class ResponseDocumentTypeImpl extends EObjectImpl implements ResponseDoc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.RESPONSE_DOCUMENT_TYPE__OUTPUT:
@@ -326,6 +341,7 @@ public class ResponseDocumentTypeImpl extends EObjectImpl implements ResponseDoc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.RESPONSE_DOCUMENT_TYPE__OUTPUT:
@@ -345,6 +361,7 @@ public class ResponseDocumentTypeImpl extends EObjectImpl implements ResponseDoc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.RESPONSE_DOCUMENT_TYPE__OUTPUT:
@@ -369,6 +386,7 @@ public class ResponseDocumentTypeImpl extends EObjectImpl implements ResponseDoc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.RESPONSE_DOCUMENT_TYPE__OUTPUT:
@@ -392,6 +410,7 @@ public class ResponseDocumentTypeImpl extends EObjectImpl implements ResponseDoc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.RESPONSE_DOCUMENT_TYPE__OUTPUT:
@@ -411,6 +430,7 @@ public class ResponseDocumentTypeImpl extends EObjectImpl implements ResponseDoc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String toString() {
     if (eIsProxy()) return super.toString();
 

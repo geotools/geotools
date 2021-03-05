@@ -136,6 +136,7 @@ public class PropertyIsLikeTypeImpl extends ComparisonOpsTypeImpl implements Pro
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getExpressionGroup() {
         if (expressionGroup == null) {
             expressionGroup = new BasicFeatureMap(this, Fes20Package.PROPERTY_IS_LIKE_TYPE__EXPRESSION_GROUP);
@@ -148,6 +149,7 @@ public class PropertyIsLikeTypeImpl extends ComparisonOpsTypeImpl implements Pro
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<EObject> getExpression() {
         return getExpressionGroup().list(Fes20Package.Literals.PROPERTY_IS_LIKE_TYPE__EXPRESSION);
     }
@@ -157,6 +159,7 @@ public class PropertyIsLikeTypeImpl extends ComparisonOpsTypeImpl implements Pro
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getEscapeChar() {
         return escapeChar;
     }
@@ -166,6 +169,7 @@ public class PropertyIsLikeTypeImpl extends ComparisonOpsTypeImpl implements Pro
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEscapeChar(String newEscapeChar) {
         String oldEscapeChar = escapeChar;
         escapeChar = newEscapeChar;
@@ -178,6 +182,7 @@ public class PropertyIsLikeTypeImpl extends ComparisonOpsTypeImpl implements Pro
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getSingleChar() {
         return singleChar;
     }
@@ -187,6 +192,7 @@ public class PropertyIsLikeTypeImpl extends ComparisonOpsTypeImpl implements Pro
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSingleChar(String newSingleChar) {
         String oldSingleChar = singleChar;
         singleChar = newSingleChar;
@@ -199,6 +205,7 @@ public class PropertyIsLikeTypeImpl extends ComparisonOpsTypeImpl implements Pro
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getWildCard() {
         return wildCard;
     }
@@ -208,6 +215,7 @@ public class PropertyIsLikeTypeImpl extends ComparisonOpsTypeImpl implements Pro
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setWildCard(String newWildCard) {
         String oldWildCard = wildCard;
         wildCard = newWildCard;

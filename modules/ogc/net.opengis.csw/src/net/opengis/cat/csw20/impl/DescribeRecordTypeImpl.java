@@ -130,6 +130,7 @@ public class DescribeRecordTypeImpl extends RequestBaseTypeImpl implements Descr
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<QName> getTypeName() {
         if (typeName == null) {
             typeName = new EDataTypeUniqueEList<>(QName.class, this, Csw20Package.DESCRIBE_RECORD_TYPE__TYPE_NAME);
@@ -142,6 +143,7 @@ public class DescribeRecordTypeImpl extends RequestBaseTypeImpl implements Descr
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getOutputFormat() {
         return outputFormat;
     }
@@ -151,6 +153,7 @@ public class DescribeRecordTypeImpl extends RequestBaseTypeImpl implements Descr
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOutputFormat(String newOutputFormat) {
         String oldOutputFormat = outputFormat;
         outputFormat = newOutputFormat;
@@ -165,6 +168,7 @@ public class DescribeRecordTypeImpl extends RequestBaseTypeImpl implements Descr
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetOutputFormat() {
         String oldOutputFormat = outputFormat;
         boolean oldOutputFormatESet = outputFormatESet;
@@ -179,6 +183,7 @@ public class DescribeRecordTypeImpl extends RequestBaseTypeImpl implements Descr
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetOutputFormat() {
         return outputFormatESet;
     }
@@ -188,6 +193,7 @@ public class DescribeRecordTypeImpl extends RequestBaseTypeImpl implements Descr
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getSchemaLanguage() {
         return schemaLanguage;
     }
@@ -197,6 +203,7 @@ public class DescribeRecordTypeImpl extends RequestBaseTypeImpl implements Descr
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSchemaLanguage(String newSchemaLanguage) {
         String oldSchemaLanguage = schemaLanguage;
         schemaLanguage = newSchemaLanguage;
@@ -211,6 +218,7 @@ public class DescribeRecordTypeImpl extends RequestBaseTypeImpl implements Descr
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetSchemaLanguage() {
         String oldSchemaLanguage = schemaLanguage;
         boolean oldSchemaLanguageESet = schemaLanguageESet;
@@ -225,6 +233,7 @@ public class DescribeRecordTypeImpl extends RequestBaseTypeImpl implements Descr
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetSchemaLanguage() {
         return schemaLanguageESet;
     }

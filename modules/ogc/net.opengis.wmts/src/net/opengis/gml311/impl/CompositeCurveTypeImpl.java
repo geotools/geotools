@@ -66,6 +66,7 @@ public class CompositeCurveTypeImpl extends AbstractCurveTypeImpl implements Com
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<CurvePropertyType> getCurveMember() {
         if (curveMember == null) {
             curveMember = new EObjectContainmentEList<>(CurvePropertyType.class, this, Gml311Package.COMPOSITE_CURVE_TYPE__CURVE_MEMBER);

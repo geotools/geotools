@@ -62,6 +62,7 @@ public abstract class AbstractCoordinateOperationBaseTypeImpl extends Definition
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getCoordinateOperationName() {
         return coordinateOperationName;
     }
@@ -86,6 +87,7 @@ public abstract class AbstractCoordinateOperationBaseTypeImpl extends Definition
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCoordinateOperationName(CodeType newCoordinateOperationName) {
         if (newCoordinateOperationName != coordinateOperationName) {
             NotificationChain msgs = null;

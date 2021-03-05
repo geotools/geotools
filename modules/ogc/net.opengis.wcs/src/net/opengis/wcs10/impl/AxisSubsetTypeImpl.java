@@ -63,6 +63,7 @@ public class AxisSubsetTypeImpl extends ValueEnumBaseTypeImpl implements AxisSub
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.AXIS_SUBSET_TYPE;
 	}
@@ -72,6 +73,7 @@ public class AxisSubsetTypeImpl extends ValueEnumBaseTypeImpl implements AxisSub
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getName() {
 		return name;
 	}
@@ -81,6 +83,7 @@ public class AxisSubsetTypeImpl extends ValueEnumBaseTypeImpl implements AxisSub
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setName(String newName) {
 		String oldName = name;
 		name = newName;
@@ -93,6 +96,7 @@ public class AxisSubsetTypeImpl extends ValueEnumBaseTypeImpl implements AxisSub
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.AXIS_SUBSET_TYPE__NAME:
@@ -106,6 +110,7 @@ public class AxisSubsetTypeImpl extends ValueEnumBaseTypeImpl implements AxisSub
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.AXIS_SUBSET_TYPE__NAME:
@@ -120,6 +125,7 @@ public class AxisSubsetTypeImpl extends ValueEnumBaseTypeImpl implements AxisSub
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.AXIS_SUBSET_TYPE__NAME:
@@ -134,6 +140,7 @@ public class AxisSubsetTypeImpl extends ValueEnumBaseTypeImpl implements AxisSub
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.AXIS_SUBSET_TYPE__NAME:
@@ -147,6 +154,7 @@ public class AxisSubsetTypeImpl extends ValueEnumBaseTypeImpl implements AxisSub
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

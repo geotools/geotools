@@ -127,6 +127,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.DOCUMENT_ROOT;
   }
@@ -136,6 +137,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureMap getMixed() {
     if (mixed == null) {
       mixed = new BasicFeatureMap(this, Wps10Package.DOCUMENT_ROOT__MIXED);
@@ -148,6 +150,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EMap getXMLNSPrefixMap() {
     if (xMLNSPrefixMap == null) {
       xMLNSPrefixMap = new EcoreEMap(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY, EStringToStringMapEntryImpl.class, this, Wps10Package.DOCUMENT_ROOT__XMLNS_PREFIX_MAP);
@@ -160,6 +163,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EMap getXSISchemaLocation() {
     if (xSISchemaLocation == null) {
       xSISchemaLocation = new EcoreEMap(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY, EStringToStringMapEntryImpl.class, this, Wps10Package.DOCUMENT_ROOT__XSI_SCHEMA_LOCATION);
@@ -172,6 +176,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public WPSCapabilitiesType getCapabilities() {
     return (WPSCapabilitiesType)getMixed().get(Wps10Package.Literals.DOCUMENT_ROOT__CAPABILITIES, true);
   }
@@ -190,6 +195,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setCapabilities(WPSCapabilitiesType newCapabilities) {
     ((FeatureMap.Internal)getMixed()).set(Wps10Package.Literals.DOCUMENT_ROOT__CAPABILITIES, newCapabilities);
   }
@@ -199,6 +205,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DescribeProcessType getDescribeProcess() {
     return (DescribeProcessType)getMixed().get(Wps10Package.Literals.DOCUMENT_ROOT__DESCRIBE_PROCESS, true);
   }
@@ -217,6 +224,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setDescribeProcess(DescribeProcessType newDescribeProcess) {
     ((FeatureMap.Internal)getMixed()).set(Wps10Package.Literals.DOCUMENT_ROOT__DESCRIBE_PROCESS, newDescribeProcess);
   }
@@ -226,6 +234,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ExecuteType getExecute() {
     return (ExecuteType)getMixed().get(Wps10Package.Literals.DOCUMENT_ROOT__EXECUTE, true);
   }
@@ -244,6 +253,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setExecute(ExecuteType newExecute) {
     ((FeatureMap.Internal)getMixed()).set(Wps10Package.Literals.DOCUMENT_ROOT__EXECUTE, newExecute);
   }
@@ -253,6 +263,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ExecuteResponseType getExecuteResponse() {
     return (ExecuteResponseType)getMixed().get(Wps10Package.Literals.DOCUMENT_ROOT__EXECUTE_RESPONSE, true);
   }
@@ -271,6 +282,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setExecuteResponse(ExecuteResponseType newExecuteResponse) {
     ((FeatureMap.Internal)getMixed()).set(Wps10Package.Literals.DOCUMENT_ROOT__EXECUTE_RESPONSE, newExecuteResponse);
   }
@@ -280,6 +292,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public GetCapabilitiesType getGetCapabilities() {
     return (GetCapabilitiesType)getMixed().get(Wps10Package.Literals.DOCUMENT_ROOT__GET_CAPABILITIES, true);
   }
@@ -298,6 +311,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setGetCapabilities(GetCapabilitiesType newGetCapabilities) {
     ((FeatureMap.Internal)getMixed()).set(Wps10Package.Literals.DOCUMENT_ROOT__GET_CAPABILITIES, newGetCapabilities);
   }
@@ -307,6 +321,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public LanguagesType1 getLanguages() {
     return (LanguagesType1)getMixed().get(Wps10Package.Literals.DOCUMENT_ROOT__LANGUAGES, true);
   }
@@ -325,6 +340,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setLanguages(LanguagesType1 newLanguages) {
     ((FeatureMap.Internal)getMixed()).set(Wps10Package.Literals.DOCUMENT_ROOT__LANGUAGES, newLanguages);
   }
@@ -334,6 +350,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ProcessDescriptionsType getProcessDescriptions() {
     return (ProcessDescriptionsType)getMixed().get(Wps10Package.Literals.DOCUMENT_ROOT__PROCESS_DESCRIPTIONS, true);
   }
@@ -352,6 +369,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setProcessDescriptions(ProcessDescriptionsType newProcessDescriptions) {
     ((FeatureMap.Internal)getMixed()).set(Wps10Package.Literals.DOCUMENT_ROOT__PROCESS_DESCRIPTIONS, newProcessDescriptions);
   }
@@ -361,6 +379,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ProcessOfferingsType getProcessOfferings() {
     return (ProcessOfferingsType)getMixed().get(Wps10Package.Literals.DOCUMENT_ROOT__PROCESS_OFFERINGS, true);
   }
@@ -379,6 +398,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setProcessOfferings(ProcessOfferingsType newProcessOfferings) {
     ((FeatureMap.Internal)getMixed()).set(Wps10Package.Literals.DOCUMENT_ROOT__PROCESS_OFFERINGS, newProcessOfferings);
   }
@@ -388,6 +408,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public WSDLType getWSDL() {
     return (WSDLType)getMixed().get(Wps10Package.Literals.DOCUMENT_ROOT__WSDL, true);
   }
@@ -406,6 +427,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setWSDL(WSDLType newWSDL) {
     ((FeatureMap.Internal)getMixed()).set(Wps10Package.Literals.DOCUMENT_ROOT__WSDL, newWSDL);
   }
@@ -415,6 +437,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getProcessVersion() {
     return processVersion;
   }
@@ -424,6 +447,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setProcessVersion(String newProcessVersion) {
     String oldProcessVersion = processVersion;
     processVersion = newProcessVersion;
@@ -436,6 +460,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.DOCUMENT_ROOT__MIXED:
@@ -471,6 +496,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.DOCUMENT_ROOT__MIXED:
@@ -511,6 +537,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.DOCUMENT_ROOT__MIXED:
@@ -561,6 +588,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.DOCUMENT_ROOT__MIXED:
@@ -611,6 +639,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.DOCUMENT_ROOT__MIXED:
@@ -648,6 +677,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String toString() {
     if (eIsProxy()) return super.toString();
 

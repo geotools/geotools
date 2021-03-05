@@ -66,6 +66,7 @@ public class OfferedCoverageTypeImpl extends EObjectImpl implements OfferedCover
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object getAbstractCoverage() {
 		// TODO: implement this method to return the 'Abstract Coverage' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -91,6 +92,7 @@ public class OfferedCoverageTypeImpl extends EObjectImpl implements OfferedCover
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ServiceParametersType getServiceParameters() {
 		return serviceParameters;
 	}
@@ -115,6 +117,7 @@ public class OfferedCoverageTypeImpl extends EObjectImpl implements OfferedCover
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setServiceParameters(ServiceParametersType newServiceParameters) {
 		if (newServiceParameters != serviceParameters) {
 			NotificationChain msgs = null;

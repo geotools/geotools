@@ -62,6 +62,7 @@ public class RectifiedGridCoverageTypeImpl extends AbstractDiscreteCoverageTypeI
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RectifiedGridDomainType getRectifiedGridDomain() {
         return rectifiedGridDomain;
     }
@@ -86,6 +87,7 @@ public class RectifiedGridCoverageTypeImpl extends AbstractDiscreteCoverageTypeI
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRectifiedGridDomain(RectifiedGridDomainType newRectifiedGridDomain) {
         if (newRectifiedGridDomain != rectifiedGridDomain) {
             NotificationChain msgs = null;

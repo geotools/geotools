@@ -76,7 +76,8 @@ public class FeaturesLockedTypeImpl extends EObjectImpl implements FeaturesLocke
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.FEATURES_LOCKED_TYPE;
   }
 
@@ -85,7 +86,8 @@ public class FeaturesLockedTypeImpl extends EObjectImpl implements FeaturesLocke
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public FeatureMap getGroup() {
+	@Override
+    public FeatureMap getGroup() {
     if (group == null) {
       group = new BasicFeatureMap(this, WfsPackage.FEATURES_LOCKED_TYPE__GROUP);
     }
@@ -97,7 +99,8 @@ public class FeaturesLockedTypeImpl extends EObjectImpl implements FeaturesLocke
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList getFeatureId() {
+	@Override
+    public EList getFeatureId() {
     if (featureId == null) {
       featureId = new EDataTypeUniqueEList(FeatureId.class, this, WfsPackage.FEATURES_LOCKED_TYPE__FEATURE_ID);
     }
@@ -109,7 +112,8 @@ public class FeaturesLockedTypeImpl extends EObjectImpl implements FeaturesLocke
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+	@Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case WfsPackage.FEATURES_LOCKED_TYPE__GROUP:
         return ((InternalEList)getGroup()).basicRemove(otherEnd, msgs);
@@ -122,7 +126,8 @@ public class FeaturesLockedTypeImpl extends EObjectImpl implements FeaturesLocke
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	@Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.FEATURES_LOCKED_TYPE__GROUP:
         if (coreType) return getGroup();
@@ -138,7 +143,8 @@ public class FeaturesLockedTypeImpl extends EObjectImpl implements FeaturesLocke
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(int featureID, Object newValue) {
+	@Override
+    public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.FEATURES_LOCKED_TYPE__GROUP:
         ((FeatureMap.Internal)getGroup()).set(newValue);
@@ -156,7 +162,8 @@ public class FeaturesLockedTypeImpl extends EObjectImpl implements FeaturesLocke
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(int featureID) {
+	@Override
+    public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.FEATURES_LOCKED_TYPE__GROUP:
         getGroup().clear();
@@ -173,7 +180,8 @@ public class FeaturesLockedTypeImpl extends EObjectImpl implements FeaturesLocke
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(int featureID) {
+	@Override
+    public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.FEATURES_LOCKED_TYPE__GROUP:
         return group != null && !group.isEmpty();
@@ -188,7 +196,8 @@ public class FeaturesLockedTypeImpl extends EObjectImpl implements FeaturesLocke
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String toString() {
+	@Override
+    public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

@@ -62,6 +62,7 @@ public class MultiCurveCoverageTypeImpl extends AbstractDiscreteCoverageTypeImpl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiCurveDomainType getMultiCurveDomain() {
         return multiCurveDomain;
     }
@@ -86,6 +87,7 @@ public class MultiCurveCoverageTypeImpl extends AbstractDiscreteCoverageTypeImpl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiCurveDomain(MultiCurveDomainType newMultiCurveDomain) {
         if (newMultiCurveDomain != multiCurveDomain) {
             NotificationChain msgs = null;

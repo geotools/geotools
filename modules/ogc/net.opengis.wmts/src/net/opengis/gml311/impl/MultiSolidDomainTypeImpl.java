@@ -62,6 +62,7 @@ public class MultiSolidDomainTypeImpl extends DomainSetTypeImpl implements Multi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiSolidType getMultiSolid() {
         return multiSolid;
     }
@@ -86,6 +87,7 @@ public class MultiSolidDomainTypeImpl extends DomainSetTypeImpl implements Multi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiSolid(MultiSolidType newMultiSolid) {
         if (newMultiSolid != multiSolid) {
             NotificationChain msgs = null;

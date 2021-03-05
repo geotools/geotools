@@ -106,6 +106,7 @@ public class ValueReferenceTypeImpl extends EObjectImpl implements ValueReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public QName getValue() {
     return value;
   }
@@ -115,6 +116,7 @@ public class ValueReferenceTypeImpl extends EObjectImpl implements ValueReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setValue(QName newValue) {
     QName oldValue = value;
     value = newValue;
@@ -127,6 +129,7 @@ public class ValueReferenceTypeImpl extends EObjectImpl implements ValueReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public UpdateActionType getAction() {
     return action;
   }
@@ -136,6 +139,7 @@ public class ValueReferenceTypeImpl extends EObjectImpl implements ValueReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setAction(UpdateActionType newAction) {
     UpdateActionType oldAction = action;
     action = newAction == null ? ACTION_EDEFAULT : newAction;
@@ -150,6 +154,7 @@ public class ValueReferenceTypeImpl extends EObjectImpl implements ValueReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetAction() {
     UpdateActionType oldAction = action;
     boolean oldActionESet = actionESet;
@@ -164,6 +169,7 @@ public class ValueReferenceTypeImpl extends EObjectImpl implements ValueReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetAction() {
     return actionESet;
   }

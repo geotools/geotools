@@ -69,6 +69,7 @@ public class HistoryPropertyTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getGroup() {
         if (group == null) {
             group = new BasicFeatureMap(this, Gml311Package.HISTORY_PROPERTY_TYPE__GROUP);
@@ -81,6 +82,7 @@ public class HistoryPropertyTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getTimeSliceGroup() {
         return (FeatureMap)getGroup().<FeatureMap.Entry>list(Gml311Package.eINSTANCE.getHistoryPropertyType_TimeSliceGroup());
     }
@@ -90,6 +92,7 @@ public class HistoryPropertyTypeImpl extends MinimalEObjectImpl.Container implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<AbstractTimeSliceType> getTimeSlice() {
         return getTimeSliceGroup().list(Gml311Package.eINSTANCE.getHistoryPropertyType_TimeSlice());
     }

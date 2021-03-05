@@ -125,6 +125,7 @@ public class MovingObjectStatusTypeImpl extends AbstractTimeSliceTypeImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getLocationGroup() {
         if (locationGroup == null) {
             locationGroup = new BasicFeatureMap(this, Gml311Package.MOVING_OBJECT_STATUS_TYPE__LOCATION_GROUP);
@@ -137,6 +138,7 @@ public class MovingObjectStatusTypeImpl extends AbstractTimeSliceTypeImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LocationPropertyType getLocation() {
         return (LocationPropertyType)getLocationGroup().get(Gml311Package.eINSTANCE.getMovingObjectStatusType_Location(), true);
     }
@@ -155,6 +157,7 @@ public class MovingObjectStatusTypeImpl extends AbstractTimeSliceTypeImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLocation(LocationPropertyType newLocation) {
         ((FeatureMap.Internal)getLocationGroup()).set(Gml311Package.eINSTANCE.getMovingObjectStatusType_Location(), newLocation);
     }
@@ -164,6 +167,7 @@ public class MovingObjectStatusTypeImpl extends AbstractTimeSliceTypeImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MeasureType getSpeed() {
         return speed;
     }
@@ -188,6 +192,7 @@ public class MovingObjectStatusTypeImpl extends AbstractTimeSliceTypeImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSpeed(MeasureType newSpeed) {
         if (newSpeed != speed) {
             NotificationChain msgs = null;
@@ -207,6 +212,7 @@ public class MovingObjectStatusTypeImpl extends AbstractTimeSliceTypeImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectionPropertyType getBearing() {
         return bearing;
     }
@@ -231,6 +237,7 @@ public class MovingObjectStatusTypeImpl extends AbstractTimeSliceTypeImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBearing(DirectionPropertyType newBearing) {
         if (newBearing != bearing) {
             NotificationChain msgs = null;
@@ -250,6 +257,7 @@ public class MovingObjectStatusTypeImpl extends AbstractTimeSliceTypeImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MeasureType getAcceleration() {
         return acceleration;
     }
@@ -274,6 +282,7 @@ public class MovingObjectStatusTypeImpl extends AbstractTimeSliceTypeImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAcceleration(MeasureType newAcceleration) {
         if (newAcceleration != acceleration) {
             NotificationChain msgs = null;
@@ -293,6 +302,7 @@ public class MovingObjectStatusTypeImpl extends AbstractTimeSliceTypeImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MeasureType getElevation() {
         return elevation;
     }
@@ -317,6 +327,7 @@ public class MovingObjectStatusTypeImpl extends AbstractTimeSliceTypeImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setElevation(MeasureType newElevation) {
         if (newElevation != elevation) {
             NotificationChain msgs = null;
@@ -336,6 +347,7 @@ public class MovingObjectStatusTypeImpl extends AbstractTimeSliceTypeImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StringOrRefType getStatus() {
         return status;
     }
@@ -360,6 +372,7 @@ public class MovingObjectStatusTypeImpl extends AbstractTimeSliceTypeImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setStatus(StringOrRefType newStatus) {
         if (newStatus != status) {
             NotificationChain msgs = null;

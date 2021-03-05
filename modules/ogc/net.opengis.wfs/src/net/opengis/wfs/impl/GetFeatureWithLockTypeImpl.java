@@ -74,7 +74,8 @@ public class GetFeatureWithLockTypeImpl extends GetFeatureTypeImpl implements Ge
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.GET_FEATURE_WITH_LOCK_TYPE;
   }
 
@@ -83,7 +84,8 @@ public class GetFeatureWithLockTypeImpl extends GetFeatureTypeImpl implements Ge
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public BigInteger getExpiry() {
+	@Override
+    public BigInteger getExpiry() {
     return expiry;
   }
 
@@ -92,7 +94,8 @@ public class GetFeatureWithLockTypeImpl extends GetFeatureTypeImpl implements Ge
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setExpiry(BigInteger newExpiry) {
+	@Override
+    public void setExpiry(BigInteger newExpiry) {
     BigInteger oldExpiry = expiry;
     expiry = newExpiry;
     boolean oldExpiryESet = expiryESet;
@@ -106,7 +109,8 @@ public class GetFeatureWithLockTypeImpl extends GetFeatureTypeImpl implements Ge
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void unsetExpiry() {
+	@Override
+    public void unsetExpiry() {
     BigInteger oldExpiry = expiry;
     boolean oldExpiryESet = expiryESet;
     expiry = EXPIRY_EDEFAULT;
@@ -120,7 +124,8 @@ public class GetFeatureWithLockTypeImpl extends GetFeatureTypeImpl implements Ge
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean isSetExpiry() {
+	@Override
+    public boolean isSetExpiry() {
     return expiryESet;
   }
 
@@ -129,7 +134,8 @@ public class GetFeatureWithLockTypeImpl extends GetFeatureTypeImpl implements Ge
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	@Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.GET_FEATURE_WITH_LOCK_TYPE__EXPIRY:
         return getExpiry();
@@ -142,7 +148,8 @@ public class GetFeatureWithLockTypeImpl extends GetFeatureTypeImpl implements Ge
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(int featureID, Object newValue) {
+	@Override
+    public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.GET_FEATURE_WITH_LOCK_TYPE__EXPIRY:
         setExpiry((BigInteger)newValue);
@@ -156,7 +163,8 @@ public class GetFeatureWithLockTypeImpl extends GetFeatureTypeImpl implements Ge
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(int featureID) {
+	@Override
+    public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.GET_FEATURE_WITH_LOCK_TYPE__EXPIRY:
         unsetExpiry();
@@ -170,7 +178,8 @@ public class GetFeatureWithLockTypeImpl extends GetFeatureTypeImpl implements Ge
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(int featureID) {
+	@Override
+    public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.GET_FEATURE_WITH_LOCK_TYPE__EXPIRY:
         return isSetExpiry();
@@ -183,7 +192,8 @@ public class GetFeatureWithLockTypeImpl extends GetFeatureTypeImpl implements Ge
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String toString() {
+	@Override
+    public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

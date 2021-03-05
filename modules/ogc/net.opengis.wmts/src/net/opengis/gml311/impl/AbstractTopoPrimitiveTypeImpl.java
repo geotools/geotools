@@ -81,6 +81,7 @@ public abstract class AbstractTopoPrimitiveTypeImpl extends AbstractTopologyType
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<IsolatedPropertyType> getIsolated() {
         if (isolated == null) {
             isolated = new EObjectContainmentEList<>(IsolatedPropertyType.class, this, Gml311Package.ABSTRACT_TOPO_PRIMITIVE_TYPE__ISOLATED);
@@ -93,6 +94,7 @@ public abstract class AbstractTopoPrimitiveTypeImpl extends AbstractTopologyType
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ContainerPropertyType getContainer() {
         return container;
     }
@@ -117,6 +119,7 @@ public abstract class AbstractTopoPrimitiveTypeImpl extends AbstractTopologyType
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setContainer(ContainerPropertyType newContainer) {
         if (newContainer != container) {
             NotificationChain msgs = null;

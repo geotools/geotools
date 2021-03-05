@@ -53,7 +53,8 @@ public class AcceptFormatsTypeImpl extends EObjectImpl implements AcceptFormatsT
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.ACCEPT_FORMATS_TYPE;
   }
 
@@ -62,7 +63,8 @@ public class AcceptFormatsTypeImpl extends EObjectImpl implements AcceptFormatsT
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList getOutputFormat() {
+  @Override
+public EList getOutputFormat() {
     if (outputFormat == null) {
       outputFormat = new EDataTypeEList(String.class, this, Ows11Package.ACCEPT_FORMATS_TYPE__OUTPUT_FORMAT);
     }
@@ -74,7 +76,8 @@ public class AcceptFormatsTypeImpl extends EObjectImpl implements AcceptFormatsT
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.ACCEPT_FORMATS_TYPE__OUTPUT_FORMAT:
         return getOutputFormat();
@@ -87,7 +90,8 @@ public class AcceptFormatsTypeImpl extends EObjectImpl implements AcceptFormatsT
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.ACCEPT_FORMATS_TYPE__OUTPUT_FORMAT:
         getOutputFormat().clear();
@@ -102,7 +106,8 @@ public class AcceptFormatsTypeImpl extends EObjectImpl implements AcceptFormatsT
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.ACCEPT_FORMATS_TYPE__OUTPUT_FORMAT:
         getOutputFormat().clear();
@@ -116,7 +121,8 @@ public class AcceptFormatsTypeImpl extends EObjectImpl implements AcceptFormatsT
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.ACCEPT_FORMATS_TYPE__OUTPUT_FORMAT:
         return outputFormat != null && !outputFormat.isEmpty();
@@ -129,7 +135,8 @@ public class AcceptFormatsTypeImpl extends EObjectImpl implements AcceptFormatsT
    * <!-- end-user-doc -->
    * @generated
    */
-  public String toString() {
+  @Override
+public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

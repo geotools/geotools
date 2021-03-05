@@ -69,6 +69,7 @@ public class OutputTypeImpl extends EObjectImpl implements OutputType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.OUTPUT_TYPE;
 	}
@@ -78,6 +79,7 @@ public class OutputTypeImpl extends EObjectImpl implements OutputType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public CodeType getCrs() {
 		return crs;
 	}
@@ -102,6 +104,7 @@ public class OutputTypeImpl extends EObjectImpl implements OutputType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setCrs(CodeType newCrs) {
 		if (newCrs != crs) {
 			NotificationChain msgs = null;
@@ -121,6 +124,7 @@ public class OutputTypeImpl extends EObjectImpl implements OutputType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public CodeType getFormat() {
 		return format;
 	}
@@ -145,6 +149,7 @@ public class OutputTypeImpl extends EObjectImpl implements OutputType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setFormat(CodeType newFormat) {
 		if (newFormat != format) {
 			NotificationChain msgs = null;
@@ -164,6 +169,7 @@ public class OutputTypeImpl extends EObjectImpl implements OutputType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.OUTPUT_TYPE__CRS:
@@ -179,6 +185,7 @@ public class OutputTypeImpl extends EObjectImpl implements OutputType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.OUTPUT_TYPE__CRS:
@@ -194,6 +201,7 @@ public class OutputTypeImpl extends EObjectImpl implements OutputType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.OUTPUT_TYPE__CRS:
@@ -211,6 +219,7 @@ public class OutputTypeImpl extends EObjectImpl implements OutputType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.OUTPUT_TYPE__CRS:
@@ -228,6 +237,7 @@ public class OutputTypeImpl extends EObjectImpl implements OutputType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.OUTPUT_TYPE__CRS:

@@ -223,7 +223,8 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.FEATURE_TYPE_TYPE;
   }
 
@@ -232,7 +233,8 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public QName getName() {
+	@Override
+    public QName getName() {
     return name;
   }
 
@@ -241,7 +243,8 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setName(QName newName) {
+	@Override
+    public void setName(QName newName) {
     QName oldName = name;
     name = newName;
     if (eNotificationRequired())
@@ -253,7 +256,8 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getTitle() {
+	@Override
+    public String getTitle() {
     return title;
   }
 
@@ -262,7 +266,8 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setTitle(String newTitle) {
+	@Override
+    public void setTitle(String newTitle) {
     String oldTitle = title;
     title = newTitle;
     if (eNotificationRequired())
@@ -274,7 +279,8 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getAbstract() {
+	@Override
+    public String getAbstract() {
     return abstract_;
   }
 
@@ -283,7 +289,8 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setAbstract(String newAbstract) {
+	@Override
+    public void setAbstract(String newAbstract) {
     String oldAbstract = abstract_;
     abstract_ = newAbstract;
     if (eNotificationRequired())
@@ -295,7 +302,8 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList getKeywords() {
+	@Override
+    public EList getKeywords() {
     if (keywords == null) {
       keywords = new EObjectContainmentEList(KeywordsType.class, this, WfsPackage.FEATURE_TYPE_TYPE__KEYWORDS);
     }
@@ -307,7 +315,8 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getDefaultSRS() {
+	@Override
+    public String getDefaultSRS() {
     return defaultSRS;
   }
 
@@ -316,7 +325,8 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setDefaultSRS(String newDefaultSRS) {
+	@Override
+    public void setDefaultSRS(String newDefaultSRS) {
     String oldDefaultSRS = defaultSRS;
     defaultSRS = newDefaultSRS;
     if (eNotificationRequired())
@@ -328,7 +338,8 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList getOtherSRS() {
+	@Override
+    public EList getOtherSRS() {
     if (otherSRS == null) {
       otherSRS = new EDataTypeEList(String.class, this, WfsPackage.FEATURE_TYPE_TYPE__OTHER_SRS);
     }
@@ -340,7 +351,8 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public NoSRSType getNoSRS() {
+	@Override
+    public NoSRSType getNoSRS() {
     return noSRS;
   }
 
@@ -364,7 +376,8 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setNoSRS(NoSRSType newNoSRS) {
+	@Override
+    public void setNoSRS(NoSRSType newNoSRS) {
     if (newNoSRS != noSRS) {
       NotificationChain msgs = null;
       if (noSRS != null)
@@ -383,7 +396,8 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public OperationsType getOperations() {
+	@Override
+    public OperationsType getOperations() {
     return operations;
   }
 
@@ -407,7 +421,8 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setOperations(OperationsType newOperations) {
+	@Override
+    public void setOperations(OperationsType newOperations) {
     if (newOperations != operations) {
       NotificationChain msgs = null;
       if (operations != null)
@@ -426,7 +441,8 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public OutputFormatListType getOutputFormats() {
+	@Override
+    public OutputFormatListType getOutputFormats() {
     return outputFormats;
   }
 
@@ -450,7 +466,8 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setOutputFormats(OutputFormatListType newOutputFormats) {
+	@Override
+    public void setOutputFormats(OutputFormatListType newOutputFormats) {
     if (newOutputFormats != outputFormats) {
       NotificationChain msgs = null;
       if (outputFormats != null)
@@ -469,7 +486,8 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList getWGS84BoundingBox() {
+	@Override
+    public EList getWGS84BoundingBox() {
     if (wGS84BoundingBox == null) {
       wGS84BoundingBox = new EObjectContainmentEList(WGS84BoundingBoxType.class, this, WfsPackage.FEATURE_TYPE_TYPE__WGS84_BOUNDING_BOX);
     }
@@ -481,7 +499,8 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList getMetadataURL() {
+	@Override
+    public EList getMetadataURL() {
     if (metadataURL == null) {
       metadataURL = new EObjectContainmentEList(MetadataURLType.class, this, WfsPackage.FEATURE_TYPE_TYPE__METADATA_URL);
     }
@@ -493,7 +512,8 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+	@Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case WfsPackage.FEATURE_TYPE_TYPE__KEYWORDS:
         return ((InternalEList)getKeywords()).basicRemove(otherEnd, msgs);
@@ -516,7 +536,8 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	@Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.FEATURE_TYPE_TYPE__NAME:
         return getName();
@@ -549,7 +570,8 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(int featureID, Object newValue) {
+	@Override
+    public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.FEATURE_TYPE_TYPE__NAME:
         setName((QName)newValue);
@@ -597,7 +619,8 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(int featureID) {
+	@Override
+    public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.FEATURE_TYPE_TYPE__NAME:
         setName(NAME_EDEFAULT);
@@ -641,7 +664,8 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(int featureID) {
+	@Override
+    public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.FEATURE_TYPE_TYPE__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
@@ -674,7 +698,8 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String toString() {
+	@Override
+    public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

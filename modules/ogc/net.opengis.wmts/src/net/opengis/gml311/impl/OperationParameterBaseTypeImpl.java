@@ -62,6 +62,7 @@ public abstract class OperationParameterBaseTypeImpl extends AbstractGeneralOper
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getParameterName() {
         return parameterName;
     }
@@ -86,6 +87,7 @@ public abstract class OperationParameterBaseTypeImpl extends AbstractGeneralOper
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setParameterName(CodeType newParameterName) {
         if (newParameterName != parameterName) {
             NotificationChain msgs = null;

@@ -62,6 +62,7 @@ public class MultiPointDomainTypeImpl extends DomainSetTypeImpl implements Multi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiPointType getMultiPoint() {
         return multiPoint;
     }
@@ -86,6 +87,7 @@ public class MultiPointDomainTypeImpl extends DomainSetTypeImpl implements Multi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiPoint(MultiPointType newMultiPoint) {
         if (newMultiPoint != multiPoint) {
             NotificationChain msgs = null;

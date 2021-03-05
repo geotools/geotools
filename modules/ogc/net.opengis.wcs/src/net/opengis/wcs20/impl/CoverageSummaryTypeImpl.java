@@ -156,6 +156,7 @@ public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements Cove
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList<WGS84BoundingBoxType> getWGS84BoundingBox() {
 		if (wGS84BoundingBox == null) {
 			wGS84BoundingBox = new EObjectContainmentEList<>(WGS84BoundingBoxType.class, this, Wcs20Package.COVERAGE_SUMMARY_TYPE__WGS84_BOUNDING_BOX);
@@ -168,6 +169,7 @@ public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements Cove
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getCoverageId() {
 		return coverageId;
 	}
@@ -177,6 +179,7 @@ public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements Cove
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setCoverageId(String newCoverageId) {
 		String oldCoverageId = coverageId;
 		coverageId = newCoverageId;
@@ -189,6 +192,7 @@ public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements Cove
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public QName getCoverageSubtype() {
 		return coverageSubtype;
 	}
@@ -198,6 +202,7 @@ public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements Cove
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setCoverageSubtype(QName newCoverageSubtype) {
 		QName oldCoverageSubtype = coverageSubtype;
 		coverageSubtype = newCoverageSubtype;
@@ -210,6 +215,7 @@ public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements Cove
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public CoverageSubtypeParentType getCoverageSubtypeParent() {
 		return coverageSubtypeParent;
 	}
@@ -234,6 +240,7 @@ public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements Cove
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setCoverageSubtypeParent(CoverageSubtypeParentType newCoverageSubtypeParent) {
 		if (newCoverageSubtypeParent != coverageSubtypeParent) {
 			NotificationChain msgs = null;
@@ -253,6 +260,7 @@ public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements Cove
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public FeatureMap getBoundingBoxGroup() {
 		if (boundingBoxGroup == null) {
 			boundingBoxGroup = new BasicFeatureMap(this, Wcs20Package.COVERAGE_SUMMARY_TYPE__BOUNDING_BOX_GROUP);
@@ -265,6 +273,7 @@ public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements Cove
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList<BoundingBoxType> getBoundingBox() {
 		return getBoundingBoxGroup().list(Wcs20Package.Literals.COVERAGE_SUMMARY_TYPE__BOUNDING_BOX);
 	}
@@ -274,6 +283,7 @@ public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements Cove
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public FeatureMap getMetadataGroup() {
 		if (metadataGroup == null) {
 			metadataGroup = new BasicFeatureMap(this, Wcs20Package.COVERAGE_SUMMARY_TYPE__METADATA_GROUP);
@@ -286,6 +296,7 @@ public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements Cove
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList<MetadataType> getMetadata() {
 		return getMetadataGroup().list(Wcs20Package.Literals.COVERAGE_SUMMARY_TYPE__METADATA);
 	}

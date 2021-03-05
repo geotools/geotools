@@ -93,6 +93,7 @@ public class PrimeMeridianTypeImpl extends PrimeMeridianBaseTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<IdentifierType> getMeridianID() {
         if (meridianID == null) {
             meridianID = new EObjectContainmentEList<>(IdentifierType.class, this, Gml311Package.PRIME_MERIDIAN_TYPE__MERIDIAN_ID);
@@ -105,6 +106,7 @@ public class PrimeMeridianTypeImpl extends PrimeMeridianBaseTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StringOrRefType getRemarks() {
         return remarks;
     }
@@ -129,6 +131,7 @@ public class PrimeMeridianTypeImpl extends PrimeMeridianBaseTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRemarks(StringOrRefType newRemarks) {
         if (newRemarks != remarks) {
             NotificationChain msgs = null;
@@ -148,6 +151,7 @@ public class PrimeMeridianTypeImpl extends PrimeMeridianBaseTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AngleChoiceType getGreenwichLongitude() {
         return greenwichLongitude;
     }
@@ -172,6 +176,7 @@ public class PrimeMeridianTypeImpl extends PrimeMeridianBaseTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGreenwichLongitude(AngleChoiceType newGreenwichLongitude) {
         if (newGreenwichLongitude != greenwichLongitude) {
             NotificationChain msgs = null;

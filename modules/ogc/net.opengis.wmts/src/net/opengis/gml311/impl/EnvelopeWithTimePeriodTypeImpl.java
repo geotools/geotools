@@ -99,6 +99,7 @@ public class EnvelopeWithTimePeriodTypeImpl extends EnvelopeTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<TimePositionType> getTimePosition() {
         if (timePosition == null) {
             timePosition = new EObjectContainmentEList<>(TimePositionType.class, this, Gml311Package.ENVELOPE_WITH_TIME_PERIOD_TYPE__TIME_POSITION);
@@ -111,6 +112,7 @@ public class EnvelopeWithTimePeriodTypeImpl extends EnvelopeTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getFrame() {
         return frame;
     }
@@ -120,6 +122,7 @@ public class EnvelopeWithTimePeriodTypeImpl extends EnvelopeTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFrame(String newFrame) {
         String oldFrame = frame;
         frame = newFrame;
@@ -134,6 +137,7 @@ public class EnvelopeWithTimePeriodTypeImpl extends EnvelopeTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetFrame() {
         String oldFrame = frame;
         boolean oldFrameESet = frameESet;
@@ -148,6 +152,7 @@ public class EnvelopeWithTimePeriodTypeImpl extends EnvelopeTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetFrame() {
         return frameESet;
     }

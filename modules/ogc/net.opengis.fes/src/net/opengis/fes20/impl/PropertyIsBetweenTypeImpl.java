@@ -95,6 +95,7 @@ public class PropertyIsBetweenTypeImpl extends ComparisonOpsTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getExpressionGroup() {
         if (expressionGroup == null) {
             expressionGroup = new BasicFeatureMap(this, Fes20Package.PROPERTY_IS_BETWEEN_TYPE__EXPRESSION_GROUP);
@@ -107,6 +108,7 @@ public class PropertyIsBetweenTypeImpl extends ComparisonOpsTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EObject getExpression() {
         return (EObject)getExpressionGroup().get(Fes20Package.Literals.PROPERTY_IS_BETWEEN_TYPE__EXPRESSION, true);
     }
@@ -125,6 +127,7 @@ public class PropertyIsBetweenTypeImpl extends ComparisonOpsTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LowerBoundaryType getLowerBoundary() {
         return lowerBoundary;
     }
@@ -149,6 +152,7 @@ public class PropertyIsBetweenTypeImpl extends ComparisonOpsTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLowerBoundary(LowerBoundaryType newLowerBoundary) {
         if (newLowerBoundary != lowerBoundary) {
             NotificationChain msgs = null;
@@ -168,6 +172,7 @@ public class PropertyIsBetweenTypeImpl extends ComparisonOpsTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public UpperBoundaryType getUpperBoundary() {
         return upperBoundary;
     }
@@ -192,6 +197,7 @@ public class PropertyIsBetweenTypeImpl extends ComparisonOpsTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUpperBoundary(UpperBoundaryType newUpperBoundary) {
         if (newUpperBoundary != upperBoundary) {
             NotificationChain msgs = null;

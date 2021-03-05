@@ -65,6 +65,7 @@ public class SectionsImpl extends EObjectImpl implements Sections {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList<Section> getSection() {
 		if (section == null) {
 			section = new EDataTypeEList<>(Section.class, this, Wcs20Package.SECTIONS__SECTION);

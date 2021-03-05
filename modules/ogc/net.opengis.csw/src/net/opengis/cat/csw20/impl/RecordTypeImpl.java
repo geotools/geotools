@@ -85,6 +85,7 @@ public class RecordTypeImpl extends DCMIRecordTypeImpl implements RecordType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<String> getAnyText() {
         if (anyText == null) {
             anyText = new EObjectContainmentEList<>(String.class, this, Csw20Package.RECORD_TYPE__ANY_TEXT);
@@ -97,6 +98,7 @@ public class RecordTypeImpl extends DCMIRecordTypeImpl implements RecordType {
      * <!-- end-user-doc -->
      * @generated NOT
      */
+    @Override
     public EList<BoundingBoxType> getBoundingBox() {
         if (boundingBox == null) {
             boundingBox = new EObjectResolvingEList<>(BoundingBoxType.class, this, Csw20Package.SUMMARY_RECORD_TYPE__BOUNDING_BOX);

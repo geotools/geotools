@@ -254,6 +254,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.DOCUMENT_ROOT;
 	}
@@ -263,6 +264,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public FeatureMap getMixed() {
 		if (mixed == null) {
 			mixed = new BasicFeatureMap(this, Wcs10Package.DOCUMENT_ROOT__MIXED);
@@ -275,6 +277,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EMap getXMLNSPrefixMap() {
 		if (xMLNSPrefixMap == null) {
 			xMLNSPrefixMap = new EcoreEMap(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY, EStringToStringMapEntryImpl.class, this, Wcs10Package.DOCUMENT_ROOT__XMLNS_PREFIX_MAP);
@@ -287,6 +290,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EMap getXSISchemaLocation() {
 		if (xSISchemaLocation == null) {
 			xSISchemaLocation = new EcoreEMap(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY, EStringToStringMapEntryImpl.class, this, Wcs10Package.DOCUMENT_ROOT__XSI_SCHEMA_LOCATION);
@@ -299,6 +303,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public AxisDescriptionType1 getAxisDescription() {
 		return (AxisDescriptionType1)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__AXIS_DESCRIPTION, true);
 	}
@@ -317,6 +322,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setAxisDescription(AxisDescriptionType1 newAxisDescription) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__AXIS_DESCRIPTION, newAxisDescription);
 	}
@@ -326,6 +332,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public AxisDescriptionType getAxisDescription1() {
 		return (AxisDescriptionType)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__AXIS_DESCRIPTION1, true);
 	}
@@ -344,6 +351,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setAxisDescription1(AxisDescriptionType newAxisDescription1) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__AXIS_DESCRIPTION1, newAxisDescription1);
 	}
@@ -353,6 +361,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public WCSCapabilityType getCapability() {
 		return (WCSCapabilityType)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__CAPABILITY, true);
 	}
@@ -371,6 +380,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setCapability(WCSCapabilityType newCapability) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__CAPABILITY, newCapability);
 	}
@@ -380,6 +390,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ContentMetadataType getContentMetadata() {
 		return (ContentMetadataType)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__CONTENT_METADATA, true);
 	}
@@ -398,6 +409,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setContentMetadata(ContentMetadataType newContentMetadata) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__CONTENT_METADATA, newContentMetadata);
 	}
@@ -407,6 +419,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public CoverageDescriptionType getCoverageDescription() {
 		return (CoverageDescriptionType)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__COVERAGE_DESCRIPTION, true);
 	}
@@ -425,6 +438,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setCoverageDescription(CoverageDescriptionType newCoverageDescription) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__COVERAGE_DESCRIPTION, newCoverageDescription);
 	}
@@ -434,6 +448,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public CoverageOfferingType getCoverageOffering() {
 		return (CoverageOfferingType)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__COVERAGE_OFFERING, true);
 	}
@@ -452,6 +467,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setCoverageOffering(CoverageOfferingType newCoverageOffering) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__COVERAGE_OFFERING, newCoverageOffering);
 	}
@@ -461,6 +477,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public CoverageOfferingBriefType getCoverageOfferingBrief() {
 		return (CoverageOfferingBriefType)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__COVERAGE_OFFERING_BRIEF, true);
 	}
@@ -479,6 +496,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setCoverageOfferingBrief(CoverageOfferingBriefType newCoverageOfferingBrief) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__COVERAGE_OFFERING_BRIEF, newCoverageOfferingBrief);
 	}
@@ -488,6 +506,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public DescribeCoverageType getDescribeCoverage() {
 		return (DescribeCoverageType)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__DESCRIBE_COVERAGE, true);
 	}
@@ -506,6 +525,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setDescribeCoverage(DescribeCoverageType newDescribeCoverage) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__DESCRIBE_COVERAGE, newDescribeCoverage);
 	}
@@ -515,6 +535,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getDescription() {
 		return (String)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__DESCRIPTION, true);
 	}
@@ -524,6 +545,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setDescription(String newDescription) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__DESCRIPTION, newDescription);
 	}
@@ -533,6 +555,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public DomainSetType getDomainSet() {
 		return (DomainSetType)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__DOMAIN_SET, true);
 	}
@@ -551,6 +574,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setDomainSet(DomainSetType newDomainSet) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__DOMAIN_SET, newDomainSet);
 	}
@@ -560,6 +584,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public CodeListType getFormats() {
 		return (CodeListType)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__FORMATS, true);
 	}
@@ -578,6 +603,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setFormats(CodeListType newFormats) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__FORMATS, newFormats);
 	}
@@ -587,6 +613,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public GetCapabilitiesType getGetCapabilities() {
 		return (GetCapabilitiesType)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__GET_CAPABILITIES, true);
 	}
@@ -605,6 +632,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setGetCapabilities(GetCapabilitiesType newGetCapabilities) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__GET_CAPABILITIES, newGetCapabilities);
 	}
@@ -614,6 +642,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public GetCoverageType getGetCoverage() {
 		return (GetCoverageType)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__GET_COVERAGE, true);
 	}
@@ -632,6 +661,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setGetCoverage(GetCoverageType newGetCoverage) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__GET_COVERAGE, newGetCoverage);
 	}
@@ -641,6 +671,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public InterpolationMethodType getInterpolationMethod() {
 		return (InterpolationMethodType)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__INTERPOLATION_METHOD, true);
 	}
@@ -650,6 +681,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setInterpolationMethod(InterpolationMethodType newInterpolationMethod) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__INTERPOLATION_METHOD, newInterpolationMethod);
 	}
@@ -659,6 +691,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public IntervalType getInterval() {
 		return (IntervalType)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__INTERVAL, true);
 	}
@@ -677,6 +710,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setInterval(IntervalType newInterval) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__INTERVAL, newInterval);
 	}
@@ -686,6 +720,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public KeywordsType getKeywords() {
 		return (KeywordsType)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__KEYWORDS, true);
 	}
@@ -704,6 +739,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setKeywords(KeywordsType newKeywords) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__KEYWORDS, newKeywords);
 	}
@@ -713,6 +749,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public LonLatEnvelopeType getLonLatEnvelope() {
 		return (LonLatEnvelopeType)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__LON_LAT_ENVELOPE, true);
 	}
@@ -731,6 +768,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setLonLatEnvelope(LonLatEnvelopeType newLonLatEnvelope) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__LON_LAT_ENVELOPE, newLonLatEnvelope);
 	}
@@ -740,6 +778,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public MetadataLinkType getMetadataLink() {
 		return (MetadataLinkType)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__METADATA_LINK, true);
 	}
@@ -758,6 +797,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setMetadataLink(MetadataLinkType newMetadataLink) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__METADATA_LINK, newMetadataLink);
 	}
@@ -767,6 +807,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getName() {
 		return (String)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__NAME, true);
 	}
@@ -776,6 +817,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setName(String newName) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__NAME, newName);
 	}
@@ -785,6 +827,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public RangeSetType1 getRangeSet() {
 		return (RangeSetType1)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__RANGE_SET, true);
 	}
@@ -803,6 +846,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setRangeSet(RangeSetType1 newRangeSet) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__RANGE_SET, newRangeSet);
 	}
@@ -812,6 +856,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public RangeSetType getRangeSet1() {
 		return (RangeSetType)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__RANGE_SET1, true);
 	}
@@ -830,6 +875,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setRangeSet1(RangeSetType newRangeSet1) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__RANGE_SET1, newRangeSet1);
 	}
@@ -839,6 +885,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ServiceType getService() {
 		return (ServiceType)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__SERVICE, true);
 	}
@@ -857,6 +904,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setService(ServiceType newService) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__SERVICE, newService);
 	}
@@ -866,6 +914,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public TypedLiteralType getSingleValue() {
 		return (TypedLiteralType)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__SINGLE_VALUE, true);
 	}
@@ -884,6 +933,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setSingleValue(TypedLiteralType newSingleValue) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__SINGLE_VALUE, newSingleValue);
 	}
@@ -893,6 +943,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public SpatialDomainType getSpatialDomain() {
 		return (SpatialDomainType)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__SPATIAL_DOMAIN, true);
 	}
@@ -911,6 +962,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setSpatialDomain(SpatialDomainType newSpatialDomain) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__SPATIAL_DOMAIN, newSpatialDomain);
 	}
@@ -920,6 +972,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public SpatialSubsetType getSpatialSubset() {
 		return (SpatialSubsetType)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__SPATIAL_SUBSET, true);
 	}
@@ -938,6 +991,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setSpatialSubset(SpatialSubsetType newSpatialSubset) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__SPATIAL_SUBSET, newSpatialSubset);
 	}
@@ -947,6 +1001,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public SupportedCRSsType getSupportedCRSs() {
 		return (SupportedCRSsType)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__SUPPORTED_CR_SS, true);
 	}
@@ -965,6 +1020,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setSupportedCRSs(SupportedCRSsType newSupportedCRSs) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__SUPPORTED_CR_SS, newSupportedCRSs);
 	}
@@ -974,6 +1030,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public SupportedFormatsType getSupportedFormats() {
 		return (SupportedFormatsType)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__SUPPORTED_FORMATS, true);
 	}
@@ -992,6 +1049,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setSupportedFormats(SupportedFormatsType newSupportedFormats) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__SUPPORTED_FORMATS, newSupportedFormats);
 	}
@@ -1001,6 +1059,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public SupportedInterpolationsType getSupportedInterpolations() {
 		return (SupportedInterpolationsType)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__SUPPORTED_INTERPOLATIONS, true);
 	}
@@ -1019,6 +1078,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setSupportedInterpolations(SupportedInterpolationsType newSupportedInterpolations) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__SUPPORTED_INTERPOLATIONS, newSupportedInterpolations);
 	}
@@ -1028,6 +1088,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public TimeSequenceType getTemporalDomain() {
 		return (TimeSequenceType)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__TEMPORAL_DOMAIN, true);
 	}
@@ -1046,6 +1107,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setTemporalDomain(TimeSequenceType newTemporalDomain) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__TEMPORAL_DOMAIN, newTemporalDomain);
 	}
@@ -1055,6 +1117,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public TimeSequenceType getTemporalSubset() {
 		return (TimeSequenceType)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__TEMPORAL_SUBSET, true);
 	}
@@ -1073,6 +1136,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setTemporalSubset(TimeSequenceType newTemporalSubset) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__TEMPORAL_SUBSET, newTemporalSubset);
 	}
@@ -1082,6 +1146,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public TimePeriodType getTimePeriod() {
 		return (TimePeriodType)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__TIME_PERIOD, true);
 	}
@@ -1100,6 +1165,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setTimePeriod(TimePeriodType newTimePeriod) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__TIME_PERIOD, newTimePeriod);
 	}
@@ -1109,6 +1175,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public TimeSequenceType getTimeSequence() {
 		return (TimeSequenceType)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__TIME_SEQUENCE, true);
 	}
@@ -1127,6 +1194,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setTimeSequence(TimeSequenceType newTimeSequence) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__TIME_SEQUENCE, newTimeSequence);
 	}
@@ -1136,6 +1204,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public WCSCapabilitiesType getWCSCapabilities() {
 		return (WCSCapabilitiesType)getMixed().get(Wcs10Package.Literals.DOCUMENT_ROOT__WCS_CAPABILITIES, true);
 	}
@@ -1154,6 +1223,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setWCSCapabilities(WCSCapabilitiesType newWCSCapabilities) {
 		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__WCS_CAPABILITIES, newWCSCapabilities);
 	}
@@ -1163,6 +1233,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ClosureType getClosure() {
 		return closure;
 	}
@@ -1172,6 +1243,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setClosure(ClosureType newClosure) {
 		ClosureType oldClosure = closure;
 		closure = newClosure == null ? CLOSURE_EDEFAULT : newClosure;
@@ -1186,6 +1258,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void unsetClosure() {
 		ClosureType oldClosure = closure;
 		boolean oldClosureESet = closureESet;
@@ -1200,6 +1273,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean isSetClosure() {
 		return closureESet;
 	}
@@ -1209,6 +1283,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getSemantic() {
 		return semantic;
 	}
@@ -1218,6 +1293,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setSemantic(String newSemantic) {
 		String oldSemantic = semantic;
 		semantic = newSemantic;
@@ -1230,6 +1306,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getType() {
 		return type;
 	}
@@ -1239,6 +1316,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setType(String newType) {
 		String oldType = type;
 		type = newType;
@@ -1251,6 +1329,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.DOCUMENT_ROOT__MIXED:
@@ -1328,6 +1407,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.DOCUMENT_ROOT__MIXED:
@@ -1420,6 +1500,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.DOCUMENT_ROOT__MIXED:
@@ -1548,6 +1629,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.DOCUMENT_ROOT__MIXED:
@@ -1676,6 +1758,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.DOCUMENT_ROOT__MIXED:
@@ -1765,6 +1848,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

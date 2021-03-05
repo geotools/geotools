@@ -110,7 +110,8 @@ public class DeleteElementTypeImpl extends EObjectImpl implements DeleteElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.DELETE_ELEMENT_TYPE;
   }
 
@@ -119,7 +120,8 @@ public class DeleteElementTypeImpl extends EObjectImpl implements DeleteElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Filter getFilter() {
+	@Override
+    public Filter getFilter() {
     return filter;
   }
 
@@ -128,7 +130,8 @@ public class DeleteElementTypeImpl extends EObjectImpl implements DeleteElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setFilter(Filter newFilter) {
+	@Override
+    public void setFilter(Filter newFilter) {
     Filter oldFilter = filter;
     filter = newFilter;
     if (eNotificationRequired())
@@ -140,7 +143,8 @@ public class DeleteElementTypeImpl extends EObjectImpl implements DeleteElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getHandle() {
+	@Override
+    public String getHandle() {
     return handle;
   }
 
@@ -149,7 +153,8 @@ public class DeleteElementTypeImpl extends EObjectImpl implements DeleteElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setHandle(String newHandle) {
+	@Override
+    public void setHandle(String newHandle) {
     String oldHandle = handle;
     handle = newHandle;
     if (eNotificationRequired())
@@ -161,7 +166,8 @@ public class DeleteElementTypeImpl extends EObjectImpl implements DeleteElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public QName getTypeName() {
+	@Override
+    public QName getTypeName() {
     return typeName;
   }
 
@@ -170,7 +176,8 @@ public class DeleteElementTypeImpl extends EObjectImpl implements DeleteElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setTypeName(QName newTypeName) {
+	@Override
+    public void setTypeName(QName newTypeName) {
     QName oldTypeName = typeName;
     typeName = newTypeName;
     if (eNotificationRequired())
@@ -182,7 +189,8 @@ public class DeleteElementTypeImpl extends EObjectImpl implements DeleteElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	@Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.DELETE_ELEMENT_TYPE__FILTER:
         return getFilter();
@@ -199,7 +207,8 @@ public class DeleteElementTypeImpl extends EObjectImpl implements DeleteElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(int featureID, Object newValue) {
+	@Override
+    public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.DELETE_ELEMENT_TYPE__FILTER:
         setFilter((Filter)newValue);
@@ -219,7 +228,8 @@ public class DeleteElementTypeImpl extends EObjectImpl implements DeleteElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(int featureID) {
+	@Override
+    public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.DELETE_ELEMENT_TYPE__FILTER:
         setFilter(FILTER_EDEFAULT);
@@ -239,7 +249,8 @@ public class DeleteElementTypeImpl extends EObjectImpl implements DeleteElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(int featureID) {
+	@Override
+    public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.DELETE_ELEMENT_TYPE__FILTER:
         return FILTER_EDEFAULT == null ? filter != null : !FILTER_EDEFAULT.equals(filter);
@@ -256,7 +267,8 @@ public class DeleteElementTypeImpl extends EObjectImpl implements DeleteElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String toString() {
+	@Override
+    public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

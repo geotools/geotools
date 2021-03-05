@@ -133,6 +133,7 @@ public class WPSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.WPS_CAPABILITIES_TYPE;
   }
@@ -142,6 +143,7 @@ public class WPSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ProcessOfferingsType getProcessOfferings() {
     return processOfferings;
   }
@@ -166,6 +168,7 @@ public class WPSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setProcessOfferings(ProcessOfferingsType newProcessOfferings) {
     if (newProcessOfferings != processOfferings) {
       NotificationChain msgs = null;
@@ -185,6 +188,7 @@ public class WPSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public LanguagesType1 getLanguages() {
     return languages;
   }
@@ -209,6 +213,7 @@ public class WPSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setLanguages(LanguagesType1 newLanguages) {
     if (newLanguages != languages) {
       NotificationChain msgs = null;
@@ -228,6 +233,7 @@ public class WPSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public WSDLType getWSDL() {
     return wSDL;
   }
@@ -252,6 +258,7 @@ public class WPSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setWSDL(WSDLType newWSDL) {
     if (newWSDL != wSDL) {
       NotificationChain msgs = null;
@@ -271,6 +278,7 @@ public class WPSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getLang() {
     return lang;
   }
@@ -280,6 +288,7 @@ public class WPSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setLang(String newLang) {
     String oldLang = lang;
     lang = newLang;
@@ -292,6 +301,7 @@ public class WPSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getService() {
     return service;
   }
@@ -301,6 +311,7 @@ public class WPSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setService(String newService) {
     String oldService = service;
     service = newService;
@@ -315,6 +326,7 @@ public class WPSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetService() {
     String oldService = service;
     boolean oldServiceESet = serviceESet;
@@ -329,6 +341,7 @@ public class WPSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetService() {
     return serviceESet;
   }
@@ -338,6 +351,7 @@ public class WPSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.WPS_CAPABILITIES_TYPE__PROCESS_OFFERINGS:
@@ -355,6 +369,7 @@ public class WPSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.WPS_CAPABILITIES_TYPE__PROCESS_OFFERINGS:
@@ -376,6 +391,7 @@ public class WPSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.WPS_CAPABILITIES_TYPE__PROCESS_OFFERINGS:
@@ -402,6 +418,7 @@ public class WPSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.WPS_CAPABILITIES_TYPE__PROCESS_OFFERINGS:
@@ -428,6 +445,7 @@ public class WPSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.WPS_CAPABILITIES_TYPE__PROCESS_OFFERINGS:
@@ -449,6 +467,7 @@ public class WPSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String toString() {
     if (eIsProxy()) return super.toString();
 

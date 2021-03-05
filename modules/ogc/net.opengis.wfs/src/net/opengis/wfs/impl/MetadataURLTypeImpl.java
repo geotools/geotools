@@ -106,7 +106,8 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.METADATA_URL_TYPE;
   }
 
@@ -115,7 +116,8 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getValue() {
+	@Override
+    public String getValue() {
     return value;
   }
 
@@ -124,7 +126,8 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setValue(String newValue) {
+	@Override
+    public void setValue(String newValue) {
     String oldValue = value;
     value = newValue;
     if (eNotificationRequired())
@@ -136,7 +139,8 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getFormat() {
+	@Override
+    public String getFormat() {
     return format;
   }
 
@@ -145,7 +149,8 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setFormat(String newFormat) {
+	@Override
+    public void setFormat(String newFormat) {
     String oldFormat = format;
     format = newFormat;
     if (eNotificationRequired())
@@ -157,7 +162,8 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getType() {
+	@Override
+    public String getType() {
     return type;
   }
 
@@ -166,7 +172,8 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setType(String newType) {
+	@Override
+    public void setType(String newType) {
     String oldType = type;
     type = newType;
     if (eNotificationRequired())
@@ -178,7 +185,8 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	@Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.METADATA_URL_TYPE__VALUE:
         return getValue();
@@ -195,7 +203,8 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(int featureID, Object newValue) {
+	@Override
+    public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.METADATA_URL_TYPE__VALUE:
         setValue((String)newValue);
@@ -215,7 +224,8 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(int featureID) {
+	@Override
+    public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.METADATA_URL_TYPE__VALUE:
         setValue(VALUE_EDEFAULT);
@@ -235,7 +245,8 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(int featureID) {
+	@Override
+    public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.METADATA_URL_TYPE__VALUE:
         return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
@@ -252,7 +263,8 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String toString() {
+	@Override
+    public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

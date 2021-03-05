@@ -72,6 +72,7 @@ public class IdCapabilitiesTypeImpl extends EObjectImpl implements IdCapabilitie
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<ResourceIdentifierType> getResourceIdentifier() {
         if (resourceIdentifier == null) {
             resourceIdentifier = new EObjectContainmentEList<>(ResourceIdentifierType.class, this, Fes20Package.ID_CAPABILITIES_TYPE__RESOURCE_IDENTIFIER);

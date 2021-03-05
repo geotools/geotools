@@ -94,6 +94,7 @@ public class LiteralTypeImpl extends EObjectImpl implements LiteralType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getMixed() {
         if (mixed == null) {
             mixed = new BasicFeatureMap(this, Fes20Package.LITERAL_TYPE__MIXED);
@@ -106,6 +107,7 @@ public class LiteralTypeImpl extends EObjectImpl implements LiteralType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getAny() {
         return (FeatureMap)getMixed().<FeatureMap.Entry>list(Fes20Package.Literals.LITERAL_TYPE__ANY);
     }
@@ -115,6 +117,7 @@ public class LiteralTypeImpl extends EObjectImpl implements LiteralType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public QName getType() {
         return type;
     }
@@ -124,6 +127,7 @@ public class LiteralTypeImpl extends EObjectImpl implements LiteralType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setType(QName newType) {
         QName oldType = type;
         type = newType;

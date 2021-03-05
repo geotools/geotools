@@ -75,6 +75,7 @@ public class DomainSubsetTypeImpl extends EObjectImpl implements DomainSubsetTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EClass eStaticClass() {
         return Wcs111Package.Literals.DOMAIN_SUBSET_TYPE;
     }
@@ -84,6 +85,7 @@ public class DomainSubsetTypeImpl extends EObjectImpl implements DomainSubsetTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getBoundingBoxGroup() {
         if (boundingBoxGroup == null) {
             boundingBoxGroup = new BasicFeatureMap(this, Wcs111Package.DOMAIN_SUBSET_TYPE__BOUNDING_BOX_GROUP);
@@ -96,6 +98,7 @@ public class DomainSubsetTypeImpl extends EObjectImpl implements DomainSubsetTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BoundingBoxType getBoundingBox() {
         return (BoundingBoxType)getBoundingBoxGroup().get(Wcs111Package.Literals.DOMAIN_SUBSET_TYPE__BOUNDING_BOX, true);
     }
@@ -114,6 +117,7 @@ public class DomainSubsetTypeImpl extends EObjectImpl implements DomainSubsetTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBoundingBox(BoundingBoxType newBoundingBox) {
         ((FeatureMap.Internal)getBoundingBoxGroup()).set(Wcs111Package.Literals.DOMAIN_SUBSET_TYPE__BOUNDING_BOX, newBoundingBox);
     }
@@ -123,6 +127,7 @@ public class DomainSubsetTypeImpl extends EObjectImpl implements DomainSubsetTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeSequenceType getTemporalSubset() {
         return temporalSubset;
     }
@@ -147,6 +152,7 @@ public class DomainSubsetTypeImpl extends EObjectImpl implements DomainSubsetTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTemporalSubset(TimeSequenceType newTemporalSubset) {
         if (newTemporalSubset != temporalSubset) {
             NotificationChain msgs = null;
@@ -166,6 +172,7 @@ public class DomainSubsetTypeImpl extends EObjectImpl implements DomainSubsetTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case Wcs111Package.DOMAIN_SUBSET_TYPE__BOUNDING_BOX_GROUP:
@@ -183,6 +190,7 @@ public class DomainSubsetTypeImpl extends EObjectImpl implements DomainSubsetTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case Wcs111Package.DOMAIN_SUBSET_TYPE__BOUNDING_BOX_GROUP:
@@ -201,6 +209,7 @@ public class DomainSubsetTypeImpl extends EObjectImpl implements DomainSubsetTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Wcs111Package.DOMAIN_SUBSET_TYPE__BOUNDING_BOX_GROUP:
@@ -221,6 +230,7 @@ public class DomainSubsetTypeImpl extends EObjectImpl implements DomainSubsetTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case Wcs111Package.DOMAIN_SUBSET_TYPE__BOUNDING_BOX_GROUP:
@@ -241,6 +251,7 @@ public class DomainSubsetTypeImpl extends EObjectImpl implements DomainSubsetTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case Wcs111Package.DOMAIN_SUBSET_TYPE__BOUNDING_BOX_GROUP:
@@ -258,6 +269,7 @@ public class DomainSubsetTypeImpl extends EObjectImpl implements DomainSubsetTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String toString() {
         if (eIsProxy()) return super.toString();
 

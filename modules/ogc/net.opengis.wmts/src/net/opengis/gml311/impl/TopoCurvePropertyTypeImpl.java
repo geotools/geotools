@@ -63,6 +63,7 @@ public class TopoCurvePropertyTypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoCurveType getTopoCurve() {
         return topoCurve;
     }
@@ -87,6 +88,7 @@ public class TopoCurvePropertyTypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTopoCurve(TopoCurveType newTopoCurve) {
         if (newTopoCurve != topoCurve) {
             NotificationChain msgs = null;

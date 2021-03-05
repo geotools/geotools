@@ -86,6 +86,7 @@ public class RowTypeImpl extends MinimalEObjectImpl.Container implements RowType
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectPositionListType getPosList() {
         return posList;
     }
@@ -110,6 +111,7 @@ public class RowTypeImpl extends MinimalEObjectImpl.Container implements RowType
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPosList(DirectPositionListType newPosList) {
         if (newPosList != posList) {
             NotificationChain msgs = null;
@@ -129,6 +131,7 @@ public class RowTypeImpl extends MinimalEObjectImpl.Container implements RowType
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getGeometricPositionGroup() {
         if (geometricPositionGroup == null) {
             geometricPositionGroup = new BasicFeatureMap(this, Gml311Package.ROW_TYPE__GEOMETRIC_POSITION_GROUP);
@@ -141,6 +144,7 @@ public class RowTypeImpl extends MinimalEObjectImpl.Container implements RowType
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<DirectPositionType> getPos() {
         return getGeometricPositionGroup().list(Gml311Package.eINSTANCE.getRowType_Pos());
     }
@@ -150,6 +154,7 @@ public class RowTypeImpl extends MinimalEObjectImpl.Container implements RowType
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<PointPropertyType> getPointProperty() {
         return getGeometricPositionGroup().list(Gml311Package.eINSTANCE.getRowType_PointProperty());
     }

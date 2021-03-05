@@ -111,6 +111,7 @@ public class DeleteTypeImpl extends EObjectImpl implements DeleteType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public QueryConstraintType getConstraint() {
         return constraint;
     }
@@ -135,6 +136,7 @@ public class DeleteTypeImpl extends EObjectImpl implements DeleteType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setConstraint(QueryConstraintType newConstraint) {
         if (newConstraint != constraint) {
             NotificationChain msgs = null;
@@ -154,6 +156,7 @@ public class DeleteTypeImpl extends EObjectImpl implements DeleteType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getHandle() {
         return handle;
     }
@@ -163,6 +166,7 @@ public class DeleteTypeImpl extends EObjectImpl implements DeleteType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setHandle(String newHandle) {
         String oldHandle = handle;
         handle = newHandle;
@@ -175,6 +179,7 @@ public class DeleteTypeImpl extends EObjectImpl implements DeleteType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getTypeName() {
         return typeName;
     }
@@ -184,6 +189,7 @@ public class DeleteTypeImpl extends EObjectImpl implements DeleteType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTypeName(String newTypeName) {
         String oldTypeName = typeName;
         typeName = newTypeName;

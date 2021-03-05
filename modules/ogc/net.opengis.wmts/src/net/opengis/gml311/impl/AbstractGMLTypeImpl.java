@@ -118,6 +118,7 @@ public abstract class AbstractGMLTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<MetaDataPropertyType> getMetaDataProperty() {
         if (metaDataProperty == null) {
             metaDataProperty = new EObjectContainmentEList<>(MetaDataPropertyType.class, this, Gml311Package.ABSTRACT_GML_TYPE__META_DATA_PROPERTY);
@@ -130,6 +131,7 @@ public abstract class AbstractGMLTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StringOrRefType getDescription() {
         return description;
     }
@@ -154,6 +156,7 @@ public abstract class AbstractGMLTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDescription(StringOrRefType newDescription) {
         if (newDescription != description) {
             NotificationChain msgs = null;
@@ -173,6 +176,7 @@ public abstract class AbstractGMLTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getNameGroup() {
         if (nameGroup == null) {
             nameGroup = new BasicFeatureMap(this, Gml311Package.ABSTRACT_GML_TYPE__NAME_GROUP);
@@ -185,6 +189,7 @@ public abstract class AbstractGMLTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<CodeType> getName() {
         return getNameGroup().list(Gml311Package.eINSTANCE.getAbstractGMLType_Name());
     }
@@ -194,6 +199,7 @@ public abstract class AbstractGMLTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getId() {
         return id;
     }
@@ -203,6 +209,7 @@ public abstract class AbstractGMLTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setId(String newId) {
         String oldId = id;
         id = newId;

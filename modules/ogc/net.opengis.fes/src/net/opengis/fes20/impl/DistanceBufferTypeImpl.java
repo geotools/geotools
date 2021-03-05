@@ -94,6 +94,7 @@ public class DistanceBufferTypeImpl extends SpatialOpsTypeImpl implements Distan
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getExpressionGroup() {
         if (expressionGroup == null) {
             expressionGroup = new BasicFeatureMap(this, Fes20Package.DISTANCE_BUFFER_TYPE__EXPRESSION_GROUP);
@@ -106,6 +107,7 @@ public class DistanceBufferTypeImpl extends SpatialOpsTypeImpl implements Distan
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EObject getExpression() {
         return (EObject)getExpressionGroup().get(Fes20Package.Literals.DISTANCE_BUFFER_TYPE__EXPRESSION, true);
     }
@@ -124,6 +126,7 @@ public class DistanceBufferTypeImpl extends SpatialOpsTypeImpl implements Distan
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getAny() {
         if (any == null) {
             any = new BasicFeatureMap(this, Fes20Package.DISTANCE_BUFFER_TYPE__ANY);
@@ -136,6 +139,7 @@ public class DistanceBufferTypeImpl extends SpatialOpsTypeImpl implements Distan
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MeasureType getDistance() {
         return distance;
     }
@@ -160,6 +164,7 @@ public class DistanceBufferTypeImpl extends SpatialOpsTypeImpl implements Distan
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDistance(MeasureType newDistance) {
         if (newDistance != distance) {
             NotificationChain msgs = null;

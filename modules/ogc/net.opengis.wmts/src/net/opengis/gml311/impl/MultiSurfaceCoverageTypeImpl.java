@@ -62,6 +62,7 @@ public class MultiSurfaceCoverageTypeImpl extends AbstractDiscreteCoverageTypeIm
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiSurfaceDomainType getMultiSurfaceDomain() {
         return multiSurfaceDomain;
     }
@@ -86,6 +87,7 @@ public class MultiSurfaceCoverageTypeImpl extends AbstractDiscreteCoverageTypeIm
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiSurfaceDomain(MultiSurfaceDomainType newMultiSurfaceDomain) {
         if (newMultiSurfaceDomain != multiSurfaceDomain) {
             NotificationChain msgs = null;

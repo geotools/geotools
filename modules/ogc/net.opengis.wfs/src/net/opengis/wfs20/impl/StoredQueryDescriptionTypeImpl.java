@@ -144,6 +144,7 @@ public class StoredQueryDescriptionTypeImpl extends EObjectImpl implements Store
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<TitleType> getTitle() {
     if (title == null) {
       title = new EObjectContainmentEList<>(TitleType.class, this, Wfs20Package.STORED_QUERY_DESCRIPTION_TYPE__TITLE);
@@ -156,6 +157,7 @@ public class StoredQueryDescriptionTypeImpl extends EObjectImpl implements Store
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<AbstractType> getAbstract() {
     if (abstract_ == null) {
       abstract_ = new EObjectContainmentEList<>(AbstractType.class, this, Wfs20Package.STORED_QUERY_DESCRIPTION_TYPE__ABSTRACT);
@@ -168,6 +170,7 @@ public class StoredQueryDescriptionTypeImpl extends EObjectImpl implements Store
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<MetadataType> getMetadata() {
     if (metadata == null) {
       metadata = new EObjectContainmentEList<>(MetadataType.class, this, Wfs20Package.STORED_QUERY_DESCRIPTION_TYPE__METADATA);
@@ -180,6 +183,7 @@ public class StoredQueryDescriptionTypeImpl extends EObjectImpl implements Store
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<ParameterExpressionType> getParameter() {
     if (parameter == null) {
       parameter = new EObjectContainmentEList<>(ParameterExpressionType.class, this, Wfs20Package.STORED_QUERY_DESCRIPTION_TYPE__PARAMETER);
@@ -192,6 +196,7 @@ public class StoredQueryDescriptionTypeImpl extends EObjectImpl implements Store
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<QueryExpressionTextType> getQueryExpressionText() {
     if (queryExpressionText == null) {
       queryExpressionText = new EObjectContainmentEList<>(QueryExpressionTextType.class, this, Wfs20Package.STORED_QUERY_DESCRIPTION_TYPE__QUERY_EXPRESSION_TEXT);
@@ -204,6 +209,7 @@ public class StoredQueryDescriptionTypeImpl extends EObjectImpl implements Store
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getId() {
     return id;
   }
@@ -213,6 +219,7 @@ public class StoredQueryDescriptionTypeImpl extends EObjectImpl implements Store
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setId(String newId) {
     String oldId = id;
     id = newId;

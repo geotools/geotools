@@ -81,6 +81,7 @@ public class ConversionTypeImpl extends AbstractGeneralConversionTypeImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public OperationMethodRefType getUsesMethod() {
         return usesMethod;
     }
@@ -105,6 +106,7 @@ public class ConversionTypeImpl extends AbstractGeneralConversionTypeImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesMethod(OperationMethodRefType newUsesMethod) {
         if (newUsesMethod != usesMethod) {
             NotificationChain msgs = null;
@@ -124,6 +126,7 @@ public class ConversionTypeImpl extends AbstractGeneralConversionTypeImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<ParameterValueType> getUsesValue() {
         if (usesValue == null) {
             usesValue = new EObjectContainmentEList<>(ParameterValueType.class, this, Gml311Package.CONVERSION_TYPE__USES_VALUE);

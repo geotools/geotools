@@ -48,7 +48,8 @@ public class Ows11AdapterFactory extends AdapterFactoryImpl {
    * @return whether this factory is applicable for the type of the object.
    * @generated
    */
-  public boolean isFactoryForType(Object object) {
+  @Override
+public boolean isFactoryForType(Object object) {
     if (object == modelPackage) {
       return true;
     }
@@ -66,148 +67,196 @@ public class Ows11AdapterFactory extends AdapterFactoryImpl {
    */
   protected Ows11Switch modelSwitch =
     new Ows11Switch() {
-      public Object caseAbstractReferenceBaseType(AbstractReferenceBaseType object) {
+      @Override
+    public Object caseAbstractReferenceBaseType(AbstractReferenceBaseType object) {
         return createAbstractReferenceBaseTypeAdapter();
       }
-      public Object caseAcceptFormatsType(AcceptFormatsType object) {
+      @Override
+    public Object caseAcceptFormatsType(AcceptFormatsType object) {
         return createAcceptFormatsTypeAdapter();
       }
-      public Object caseAcceptVersionsType(AcceptVersionsType object) {
+      @Override
+    public Object caseAcceptVersionsType(AcceptVersionsType object) {
         return createAcceptVersionsTypeAdapter();
       }
-      public Object caseAddressType(AddressType object) {
+      @Override
+    public Object caseAddressType(AddressType object) {
         return createAddressTypeAdapter();
       }
-      public Object caseAllowedValuesType(AllowedValuesType object) {
+      @Override
+    public Object caseAllowedValuesType(AllowedValuesType object) {
         return createAllowedValuesTypeAdapter();
       }
-      public Object caseAnyValueType(AnyValueType object) {
+      @Override
+    public Object caseAnyValueType(AnyValueType object) {
         return createAnyValueTypeAdapter();
       }
-      public Object caseBasicIdentificationType(BasicIdentificationType object) {
+      @Override
+    public Object caseBasicIdentificationType(BasicIdentificationType object) {
         return createBasicIdentificationTypeAdapter();
       }
-      public Object caseBoundingBoxType(BoundingBoxType object) {
+      @Override
+    public Object caseBoundingBoxType(BoundingBoxType object) {
         return createBoundingBoxTypeAdapter();
       }
-      public Object caseCapabilitiesBaseType(CapabilitiesBaseType object) {
+      @Override
+    public Object caseCapabilitiesBaseType(CapabilitiesBaseType object) {
         return createCapabilitiesBaseTypeAdapter();
       }
-      public Object caseCodeType(CodeType object) {
+      @Override
+    public Object caseCodeType(CodeType object) {
         return createCodeTypeAdapter();
       }
-      public Object caseContactType(ContactType object) {
+      @Override
+    public Object caseContactType(ContactType object) {
         return createContactTypeAdapter();
       }
-      public Object caseContentsBaseType(ContentsBaseType object) {
+      @Override
+    public Object caseContentsBaseType(ContentsBaseType object) {
         return createContentsBaseTypeAdapter();
       }
-      public Object caseDatasetDescriptionSummaryBaseType(DatasetDescriptionSummaryBaseType object) {
+      @Override
+    public Object caseDatasetDescriptionSummaryBaseType(DatasetDescriptionSummaryBaseType object) {
         return createDatasetDescriptionSummaryBaseTypeAdapter();
       }
-      public Object caseDCPType(DCPType object) {
+      @Override
+    public Object caseDCPType(DCPType object) {
         return createDCPTypeAdapter();
       }
-      public Object caseDescriptionType(DescriptionType object) {
+      @Override
+    public Object caseDescriptionType(DescriptionType object) {
         return createDescriptionTypeAdapter();
       }
-      public Object caseDocumentRoot(DocumentRoot object) {
+      @Override
+    public Object caseDocumentRoot(DocumentRoot object) {
         return createDocumentRootAdapter();
       }
-      public Object caseDomainMetadataType(DomainMetadataType object) {
+      @Override
+    public Object caseDomainMetadataType(DomainMetadataType object) {
         return createDomainMetadataTypeAdapter();
       }
-      public Object caseDomainType(DomainType object) {
+      @Override
+    public Object caseDomainType(DomainType object) {
         return createDomainTypeAdapter();
       }
-      public Object caseExceptionReportType(ExceptionReportType object) {
+      @Override
+    public Object caseExceptionReportType(ExceptionReportType object) {
         return createExceptionReportTypeAdapter();
       }
-      public Object caseExceptionType(ExceptionType object) {
+      @Override
+    public Object caseExceptionType(ExceptionType object) {
         return createExceptionTypeAdapter();
       }
-      public Object caseGetCapabilitiesType(GetCapabilitiesType object) {
+      @Override
+    public Object caseGetCapabilitiesType(GetCapabilitiesType object) {
         return createGetCapabilitiesTypeAdapter();
       }
-      public Object caseGetResourceByIdType(GetResourceByIdType object) {
+      @Override
+    public Object caseGetResourceByIdType(GetResourceByIdType object) {
         return createGetResourceByIdTypeAdapter();
       }
-      public Object caseHTTPType(HTTPType object) {
+      @Override
+    public Object caseHTTPType(HTTPType object) {
         return createHTTPTypeAdapter();
       }
-      public Object caseIdentificationType(IdentificationType object) {
+      @Override
+    public Object caseIdentificationType(IdentificationType object) {
         return createIdentificationTypeAdapter();
       }
-      public Object caseKeywordsType(KeywordsType object) {
+      @Override
+    public Object caseKeywordsType(KeywordsType object) {
         return createKeywordsTypeAdapter();
       }
-      public Object caseLanguageStringType(LanguageStringType object) {
+      @Override
+    public Object caseLanguageStringType(LanguageStringType object) {
         return createLanguageStringTypeAdapter();
       }
-      public Object caseManifestType(ManifestType object) {
+      @Override
+    public Object caseManifestType(ManifestType object) {
         return createManifestTypeAdapter();
       }
-      public Object caseMetadataType(MetadataType object) {
+      @Override
+    public Object caseMetadataType(MetadataType object) {
         return createMetadataTypeAdapter();
       }
-      public Object caseNoValuesType(NoValuesType object) {
+      @Override
+    public Object caseNoValuesType(NoValuesType object) {
         return createNoValuesTypeAdapter();
       }
-      public Object caseOnlineResourceType(OnlineResourceType object) {
+      @Override
+    public Object caseOnlineResourceType(OnlineResourceType object) {
         return createOnlineResourceTypeAdapter();
       }
-      public Object caseOperationsMetadataType(OperationsMetadataType object) {
+      @Override
+    public Object caseOperationsMetadataType(OperationsMetadataType object) {
         return createOperationsMetadataTypeAdapter();
       }
-      public Object caseOperationType(OperationType object) {
+      @Override
+    public Object caseOperationType(OperationType object) {
         return createOperationTypeAdapter();
       }
-      public Object caseRangeType(RangeType object) {
+      @Override
+    public Object caseRangeType(RangeType object) {
         return createRangeTypeAdapter();
       }
-      public Object caseReferenceGroupType(ReferenceGroupType object) {
+      @Override
+    public Object caseReferenceGroupType(ReferenceGroupType object) {
         return createReferenceGroupTypeAdapter();
       }
-      public Object caseReferenceType(ReferenceType object) {
+      @Override
+    public Object caseReferenceType(ReferenceType object) {
         return createReferenceTypeAdapter();
       }
-      public Object caseRequestMethodType(RequestMethodType object) {
+      @Override
+    public Object caseRequestMethodType(RequestMethodType object) {
         return createRequestMethodTypeAdapter();
       }
-      public Object caseResponsiblePartySubsetType(ResponsiblePartySubsetType object) {
+      @Override
+    public Object caseResponsiblePartySubsetType(ResponsiblePartySubsetType object) {
         return createResponsiblePartySubsetTypeAdapter();
       }
-      public Object caseResponsiblePartyType(ResponsiblePartyType object) {
+      @Override
+    public Object caseResponsiblePartyType(ResponsiblePartyType object) {
         return createResponsiblePartyTypeAdapter();
       }
-      public Object caseSectionsType(SectionsType object) {
+      @Override
+    public Object caseSectionsType(SectionsType object) {
         return createSectionsTypeAdapter();
       }
-      public Object caseServiceIdentificationType(ServiceIdentificationType object) {
+      @Override
+    public Object caseServiceIdentificationType(ServiceIdentificationType object) {
         return createServiceIdentificationTypeAdapter();
       }
-      public Object caseServiceProviderType(ServiceProviderType object) {
+      @Override
+    public Object caseServiceProviderType(ServiceProviderType object) {
         return createServiceProviderTypeAdapter();
       }
-      public Object caseServiceReferenceType(ServiceReferenceType object) {
+      @Override
+    public Object caseServiceReferenceType(ServiceReferenceType object) {
         return createServiceReferenceTypeAdapter();
       }
-      public Object caseTelephoneType(TelephoneType object) {
+      @Override
+    public Object caseTelephoneType(TelephoneType object) {
         return createTelephoneTypeAdapter();
       }
-      public Object caseUnNamedDomainType(UnNamedDomainType object) {
+      @Override
+    public Object caseUnNamedDomainType(UnNamedDomainType object) {
         return createUnNamedDomainTypeAdapter();
       }
-      public Object caseValuesReferenceType(ValuesReferenceType object) {
+      @Override
+    public Object caseValuesReferenceType(ValuesReferenceType object) {
         return createValuesReferenceTypeAdapter();
       }
-      public Object caseValueType(ValueType object) {
+      @Override
+    public Object caseValueType(ValueType object) {
         return createValueTypeAdapter();
       }
-      public Object caseWGS84BoundingBoxType(WGS84BoundingBoxType object) {
+      @Override
+    public Object caseWGS84BoundingBoxType(WGS84BoundingBoxType object) {
         return createWGS84BoundingBoxTypeAdapter();
       }
-      public Object defaultCase(EObject object) {
+      @Override
+    public Object defaultCase(EObject object) {
         return createEObjectAdapter();
       }
     };
@@ -220,7 +269,8 @@ public class Ows11AdapterFactory extends AdapterFactoryImpl {
    * @return the adapter for the <code>target</code>.
    * @generated
    */
-  public Adapter createAdapter(Notifier target) {
+  @Override
+public Adapter createAdapter(Notifier target) {
     return (Adapter)modelSwitch.doSwitch((EObject)target);
   }
 

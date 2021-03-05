@@ -165,7 +165,8 @@ public class UnNamedDomainTypeImpl extends EObjectImpl implements UnNamedDomainT
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.UN_NAMED_DOMAIN_TYPE;
   }
 
@@ -174,7 +175,8 @@ public class UnNamedDomainTypeImpl extends EObjectImpl implements UnNamedDomainT
    * <!-- end-user-doc -->
    * @generated
    */
-  public AllowedValuesType getAllowedValues() {
+  @Override
+public AllowedValuesType getAllowedValues() {
     return allowedValues;
   }
 
@@ -198,7 +200,8 @@ public class UnNamedDomainTypeImpl extends EObjectImpl implements UnNamedDomainT
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setAllowedValues(AllowedValuesType newAllowedValues) {
+  @Override
+public void setAllowedValues(AllowedValuesType newAllowedValues) {
     if (newAllowedValues != allowedValues) {
       NotificationChain msgs = null;
       if (allowedValues != null)
@@ -217,7 +220,8 @@ public class UnNamedDomainTypeImpl extends EObjectImpl implements UnNamedDomainT
    * <!-- end-user-doc -->
    * @generated
    */
-  public AnyValueType getAnyValue() {
+  @Override
+public AnyValueType getAnyValue() {
     return anyValue;
   }
 
@@ -241,7 +245,8 @@ public class UnNamedDomainTypeImpl extends EObjectImpl implements UnNamedDomainT
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setAnyValue(AnyValueType newAnyValue) {
+  @Override
+public void setAnyValue(AnyValueType newAnyValue) {
     if (newAnyValue != anyValue) {
       NotificationChain msgs = null;
       if (anyValue != null)
@@ -260,7 +265,8 @@ public class UnNamedDomainTypeImpl extends EObjectImpl implements UnNamedDomainT
    * <!-- end-user-doc -->
    * @generated
    */
-  public NoValuesType getNoValues() {
+  @Override
+public NoValuesType getNoValues() {
     return noValues;
   }
 
@@ -284,7 +290,8 @@ public class UnNamedDomainTypeImpl extends EObjectImpl implements UnNamedDomainT
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setNoValues(NoValuesType newNoValues) {
+  @Override
+public void setNoValues(NoValuesType newNoValues) {
     if (newNoValues != noValues) {
       NotificationChain msgs = null;
       if (noValues != null)
@@ -303,7 +310,8 @@ public class UnNamedDomainTypeImpl extends EObjectImpl implements UnNamedDomainT
    * <!-- end-user-doc -->
    * @generated
    */
-  public ValuesReferenceType getValuesReference() {
+  @Override
+public ValuesReferenceType getValuesReference() {
     return valuesReference;
   }
 
@@ -327,7 +335,8 @@ public class UnNamedDomainTypeImpl extends EObjectImpl implements UnNamedDomainT
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setValuesReference(ValuesReferenceType newValuesReference) {
+  @Override
+public void setValuesReference(ValuesReferenceType newValuesReference) {
     if (newValuesReference != valuesReference) {
       NotificationChain msgs = null;
       if (valuesReference != null)
@@ -346,7 +355,8 @@ public class UnNamedDomainTypeImpl extends EObjectImpl implements UnNamedDomainT
    * <!-- end-user-doc -->
    * @generated
    */
-  public ValueType getDefaultValue() {
+  @Override
+public ValueType getDefaultValue() {
     return defaultValue;
   }
 
@@ -370,7 +380,8 @@ public class UnNamedDomainTypeImpl extends EObjectImpl implements UnNamedDomainT
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setDefaultValue(ValueType newDefaultValue) {
+  @Override
+public void setDefaultValue(ValueType newDefaultValue) {
     if (newDefaultValue != defaultValue) {
       NotificationChain msgs = null;
       if (defaultValue != null)
@@ -389,7 +400,8 @@ public class UnNamedDomainTypeImpl extends EObjectImpl implements UnNamedDomainT
    * <!-- end-user-doc -->
    * @generated
    */
-  public DomainMetadataType getMeaning() {
+  @Override
+public DomainMetadataType getMeaning() {
     return meaning;
   }
 
@@ -413,7 +425,8 @@ public class UnNamedDomainTypeImpl extends EObjectImpl implements UnNamedDomainT
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setMeaning(DomainMetadataType newMeaning) {
+  @Override
+public void setMeaning(DomainMetadataType newMeaning) {
     if (newMeaning != meaning) {
       NotificationChain msgs = null;
       if (meaning != null)
@@ -432,7 +445,8 @@ public class UnNamedDomainTypeImpl extends EObjectImpl implements UnNamedDomainT
    * <!-- end-user-doc -->
    * @generated
    */
-  public DomainMetadataType getDataType() {
+  @Override
+public DomainMetadataType getDataType() {
     return dataType;
   }
 
@@ -456,7 +470,8 @@ public class UnNamedDomainTypeImpl extends EObjectImpl implements UnNamedDomainT
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setDataType(DomainMetadataType newDataType) {
+  @Override
+public void setDataType(DomainMetadataType newDataType) {
     if (newDataType != dataType) {
       NotificationChain msgs = null;
       if (dataType != null)
@@ -475,7 +490,8 @@ public class UnNamedDomainTypeImpl extends EObjectImpl implements UnNamedDomainT
    * <!-- end-user-doc -->
    * @generated
    */
-  public DomainMetadataType getUOM() {
+  @Override
+public DomainMetadataType getUOM() {
     return uOM;
   }
 
@@ -499,7 +515,8 @@ public class UnNamedDomainTypeImpl extends EObjectImpl implements UnNamedDomainT
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setUOM(DomainMetadataType newUOM) {
+  @Override
+public void setUOM(DomainMetadataType newUOM) {
     if (newUOM != uOM) {
       NotificationChain msgs = null;
       if (uOM != null)
@@ -518,7 +535,8 @@ public class UnNamedDomainTypeImpl extends EObjectImpl implements UnNamedDomainT
    * <!-- end-user-doc -->
    * @generated
    */
-  public DomainMetadataType getReferenceSystem() {
+  @Override
+public DomainMetadataType getReferenceSystem() {
     return referenceSystem;
   }
 
@@ -542,7 +560,8 @@ public class UnNamedDomainTypeImpl extends EObjectImpl implements UnNamedDomainT
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setReferenceSystem(DomainMetadataType newReferenceSystem) {
+  @Override
+public void setReferenceSystem(DomainMetadataType newReferenceSystem) {
     if (newReferenceSystem != referenceSystem) {
       NotificationChain msgs = null;
       if (referenceSystem != null)
@@ -561,7 +580,8 @@ public class UnNamedDomainTypeImpl extends EObjectImpl implements UnNamedDomainT
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList getMetadata() {
+  @Override
+public EList getMetadata() {
     if (metadata == null) {
       metadata = new EObjectContainmentEList(MetadataType.class, this, Ows11Package.UN_NAMED_DOMAIN_TYPE__METADATA);
     }
@@ -573,7 +593,8 @@ public class UnNamedDomainTypeImpl extends EObjectImpl implements UnNamedDomainT
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+  @Override
+public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Ows11Package.UN_NAMED_DOMAIN_TYPE__ALLOWED_VALUES:
         return basicSetAllowedValues(null, msgs);
@@ -604,7 +625,8 @@ public class UnNamedDomainTypeImpl extends EObjectImpl implements UnNamedDomainT
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.UN_NAMED_DOMAIN_TYPE__ALLOWED_VALUES:
         return getAllowedValues();
@@ -635,7 +657,8 @@ public class UnNamedDomainTypeImpl extends EObjectImpl implements UnNamedDomainT
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.UN_NAMED_DOMAIN_TYPE__ALLOWED_VALUES:
         setAllowedValues((AllowedValuesType)newValue);
@@ -677,7 +700,8 @@ public class UnNamedDomainTypeImpl extends EObjectImpl implements UnNamedDomainT
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.UN_NAMED_DOMAIN_TYPE__ALLOWED_VALUES:
         setAllowedValues((AllowedValuesType)null);
@@ -718,7 +742,8 @@ public class UnNamedDomainTypeImpl extends EObjectImpl implements UnNamedDomainT
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.UN_NAMED_DOMAIN_TYPE__ALLOWED_VALUES:
         return allowedValues != null;

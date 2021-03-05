@@ -63,6 +63,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EObject create(EClass eClass) {
         switch (eClass.getClassifierID()) {
             case Wcs111Package.AVAILABLE_KEYS_TYPE: return createAvailableKeysType();
@@ -104,6 +105,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object createFromString(EDataType eDataType, String initialValue) {
         switch (eDataType.getClassifierID()) {
             case Wcs111Package.IDENTIFIER_TYPE:
@@ -122,6 +124,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String convertToString(EDataType eDataType, Object instanceValue) {
         switch (eDataType.getClassifierID()) {
             case Wcs111Package.IDENTIFIER_TYPE:
@@ -140,6 +143,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AvailableKeysType createAvailableKeysType() {
         AvailableKeysTypeImpl availableKeysType = new AvailableKeysTypeImpl();
         return availableKeysType;
@@ -150,6 +154,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AxisSubsetType createAxisSubsetType() {
         AxisSubsetTypeImpl axisSubsetType = new AxisSubsetTypeImpl();
         return axisSubsetType;
@@ -160,6 +165,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AxisType createAxisType() {
         AxisTypeImpl axisType = new AxisTypeImpl();
         return axisType;
@@ -170,6 +176,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CapabilitiesType createCapabilitiesType() {
         CapabilitiesTypeImpl capabilitiesType = new CapabilitiesTypeImpl();
         return capabilitiesType;
@@ -180,6 +187,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ContentsType createContentsType() {
         ContentsTypeImpl contentsType = new ContentsTypeImpl();
         return contentsType;
@@ -190,6 +198,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoverageDescriptionsType createCoverageDescriptionsType() {
         CoverageDescriptionsTypeImpl coverageDescriptionsType = new CoverageDescriptionsTypeImpl();
         return coverageDescriptionsType;
@@ -200,6 +209,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoverageDescriptionType createCoverageDescriptionType() {
         CoverageDescriptionTypeImpl coverageDescriptionType = new CoverageDescriptionTypeImpl();
         return coverageDescriptionType;
@@ -210,6 +220,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoverageDomainType createCoverageDomainType() {
         CoverageDomainTypeImpl coverageDomainType = new CoverageDomainTypeImpl();
         return coverageDomainType;
@@ -220,6 +231,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoveragesType createCoveragesType() {
         CoveragesTypeImpl coveragesType = new CoveragesTypeImpl();
         return coveragesType;
@@ -230,6 +242,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoverageSummaryType createCoverageSummaryType() {
         CoverageSummaryTypeImpl coverageSummaryType = new CoverageSummaryTypeImpl();
         return coverageSummaryType;
@@ -240,6 +253,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DescribeCoverageType createDescribeCoverageType() {
         DescribeCoverageTypeImpl describeCoverageType = new DescribeCoverageTypeImpl();
         return describeCoverageType;
@@ -250,6 +264,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DocumentRoot createDocumentRoot() {
         DocumentRootImpl documentRoot = new DocumentRootImpl();
         return documentRoot;
@@ -260,6 +275,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DomainSubsetType createDomainSubsetType() {
         DomainSubsetTypeImpl domainSubsetType = new DomainSubsetTypeImpl();
         return domainSubsetType;
@@ -270,6 +286,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FieldSubsetType createFieldSubsetType() {
         FieldSubsetTypeImpl fieldSubsetType = new FieldSubsetTypeImpl();
         return fieldSubsetType;
@@ -280,6 +297,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FieldType createFieldType() {
         FieldTypeImpl fieldType = new FieldTypeImpl();
         return fieldType;
@@ -290,6 +308,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GetCapabilitiesType createGetCapabilitiesType() {
         GetCapabilitiesTypeImpl getCapabilitiesType = new GetCapabilitiesTypeImpl();
         return getCapabilitiesType;
@@ -300,6 +319,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GetCoverageType createGetCoverageType() {
         GetCoverageTypeImpl getCoverageType = new GetCoverageTypeImpl();
         return getCoverageType;
@@ -310,6 +330,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GridCrsType createGridCrsType() {
         GridCrsTypeImpl gridCrsType = new GridCrsTypeImpl();
         return gridCrsType;
@@ -320,6 +341,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ImageCRSRefType createImageCRSRefType() {
         ImageCRSRefTypeImpl imageCRSRefType = new ImageCRSRefTypeImpl();
         return imageCRSRefType;
@@ -330,6 +352,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public InterpolationMethodBaseType createInterpolationMethodBaseType() {
         InterpolationMethodBaseTypeImpl interpolationMethodBaseType = new InterpolationMethodBaseTypeImpl();
         return interpolationMethodBaseType;
@@ -340,6 +363,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public InterpolationMethodsType createInterpolationMethodsType() {
         InterpolationMethodsTypeImpl interpolationMethodsType = new InterpolationMethodsTypeImpl();
         return interpolationMethodsType;
@@ -350,6 +374,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public InterpolationMethodType createInterpolationMethodType() {
         InterpolationMethodTypeImpl interpolationMethodType = new InterpolationMethodTypeImpl();
         return interpolationMethodType;
@@ -360,6 +385,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public OutputType createOutputType() {
         OutputTypeImpl outputType = new OutputTypeImpl();
         return outputType;
@@ -370,6 +396,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RangeSubsetType createRangeSubsetType() {
         RangeSubsetTypeImpl rangeSubsetType = new RangeSubsetTypeImpl();
         return rangeSubsetType;
@@ -380,6 +407,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RangeType createRangeType() {
         RangeTypeImpl rangeType = new RangeTypeImpl();
         return rangeType;
@@ -390,6 +418,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RequestBaseType createRequestBaseType() {
         RequestBaseTypeImpl requestBaseType = new RequestBaseTypeImpl();
         return requestBaseType;
@@ -400,6 +429,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SpatialDomainType createSpatialDomainType() {
         SpatialDomainTypeImpl spatialDomainType = new SpatialDomainTypeImpl();
         return spatialDomainType;
@@ -410,6 +440,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimePeriodType createTimePeriodType() {
         TimePeriodTypeImpl timePeriodType = new TimePeriodTypeImpl();
         return timePeriodType;
@@ -420,6 +451,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeSequenceType createTimeSequenceType() {
         TimeSequenceTypeImpl timeSequenceType = new TimeSequenceTypeImpl();
         return timeSequenceType;
@@ -526,6 +558,7 @@ public class Wcs111FactoryImpl extends EFactoryImpl implements Wcs111Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Wcs111Package getWcs111Package() {
         return (Wcs111Package)getEPackage();
     }

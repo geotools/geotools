@@ -127,6 +127,7 @@ public class ExtensionItemTypeImpl extends EObjectImpl implements ExtensionItemT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getName() {
 		return name;
 	}
@@ -136,6 +137,7 @@ public class ExtensionItemTypeImpl extends EObjectImpl implements ExtensionItemT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setName(String newName) {
 		String oldName = name;
 		name = newName;
@@ -148,6 +150,7 @@ public class ExtensionItemTypeImpl extends EObjectImpl implements ExtensionItemT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getNamespace() {
 		return namespace;
 	}
@@ -157,6 +160,7 @@ public class ExtensionItemTypeImpl extends EObjectImpl implements ExtensionItemT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setNamespace(String newNamespace) {
 		String oldNamespace = namespace;
 		namespace = newNamespace;
@@ -169,6 +173,7 @@ public class ExtensionItemTypeImpl extends EObjectImpl implements ExtensionItemT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getSimpleContent() {
 		return simpleContent;
 	}
@@ -178,6 +183,7 @@ public class ExtensionItemTypeImpl extends EObjectImpl implements ExtensionItemT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setSimpleContent(String newSimpleContent) {
 		String oldSimpleContent = simpleContent;
 		simpleContent = newSimpleContent;
@@ -190,6 +196,7 @@ public class ExtensionItemTypeImpl extends EObjectImpl implements ExtensionItemT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object getObjectContent() {
 		if (objectContent != null && ((EObject)objectContent).eIsProxy()) {
 			InternalEObject oldObjectContent = (InternalEObject)objectContent;
@@ -216,6 +223,7 @@ public class ExtensionItemTypeImpl extends EObjectImpl implements ExtensionItemT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setObjectContent(Object newObjectContent) {
 		Object oldObjectContent = objectContent;
 		objectContent = newObjectContent;

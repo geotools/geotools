@@ -93,6 +93,7 @@ public class XlinkValidator extends EObjectValidator {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EPackage getEPackage() {
       return XlinkPackage.eINSTANCE;
     }
@@ -103,6 +104,7 @@ public class XlinkValidator extends EObjectValidator {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected boolean validate(int classifierID, Object value, DiagnosticChain diagnostics, Map context) {
         switch (classifierID) {
             case XlinkPackage.ARC_TYPE:

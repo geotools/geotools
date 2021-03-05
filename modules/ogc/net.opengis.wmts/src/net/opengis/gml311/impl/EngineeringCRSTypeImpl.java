@@ -74,6 +74,7 @@ public class EngineeringCRSTypeImpl extends AbstractReferenceSystemTypeImpl impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinateSystemRefType getUsesCS() {
         return usesCS;
     }
@@ -98,6 +99,7 @@ public class EngineeringCRSTypeImpl extends AbstractReferenceSystemTypeImpl impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesCS(CoordinateSystemRefType newUsesCS) {
         if (newUsesCS != usesCS) {
             NotificationChain msgs = null;
@@ -117,6 +119,7 @@ public class EngineeringCRSTypeImpl extends AbstractReferenceSystemTypeImpl impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EngineeringDatumRefType getUsesEngineeringDatum() {
         return usesEngineeringDatum;
     }
@@ -141,6 +144,7 @@ public class EngineeringCRSTypeImpl extends AbstractReferenceSystemTypeImpl impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesEngineeringDatum(EngineeringDatumRefType newUsesEngineeringDatum) {
         if (newUsesEngineeringDatum != usesEngineeringDatum) {
             NotificationChain msgs = null;

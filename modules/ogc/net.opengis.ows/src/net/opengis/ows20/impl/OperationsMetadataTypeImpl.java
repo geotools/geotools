@@ -105,6 +105,7 @@ public class OperationsMetadataTypeImpl extends EObjectImpl implements Operation
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<OperationType> getOperation() {
     if (operation == null) {
       operation = new EObjectContainmentEList<>(OperationType.class, this, Ows20Package.OPERATIONS_METADATA_TYPE__OPERATION);
@@ -117,6 +118,7 @@ public class OperationsMetadataTypeImpl extends EObjectImpl implements Operation
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<DomainType> getParameter() {
     if (parameter == null) {
       parameter = new EObjectContainmentEList<>(DomainType.class, this, Ows20Package.OPERATIONS_METADATA_TYPE__PARAMETER);
@@ -129,6 +131,7 @@ public class OperationsMetadataTypeImpl extends EObjectImpl implements Operation
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<DomainType> getConstraint() {
     if (constraint == null) {
       constraint = new EObjectContainmentEList<>(DomainType.class, this, Ows20Package.OPERATIONS_METADATA_TYPE__CONSTRAINT);
@@ -141,6 +144,7 @@ public class OperationsMetadataTypeImpl extends EObjectImpl implements Operation
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EObject getExtendedCapabilities() {
     return extendedCapabilities;
   }
@@ -165,6 +169,7 @@ public class OperationsMetadataTypeImpl extends EObjectImpl implements Operation
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setExtendedCapabilities(EObject newExtendedCapabilities) {
     if (newExtendedCapabilities != extendedCapabilities) {
       NotificationChain msgs = null;

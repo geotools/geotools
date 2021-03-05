@@ -147,6 +147,7 @@ public class TimePositionTypeImpl extends EObjectImpl implements TimePositionTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return GmlPackage.Literals.TIME_POSITION_TYPE;
 	}
@@ -156,6 +157,7 @@ public class TimePositionTypeImpl extends EObjectImpl implements TimePositionTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object getValue() {
 		return value;
 	}
@@ -165,6 +167,7 @@ public class TimePositionTypeImpl extends EObjectImpl implements TimePositionTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setValue(Object newValue) {
 		Object oldValue = value;
 		value = newValue;
@@ -177,6 +180,7 @@ public class TimePositionTypeImpl extends EObjectImpl implements TimePositionTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getCalendarEraName() {
 		return calendarEraName;
 	}
@@ -186,6 +190,7 @@ public class TimePositionTypeImpl extends EObjectImpl implements TimePositionTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setCalendarEraName(String newCalendarEraName) {
 		String oldCalendarEraName = calendarEraName;
 		calendarEraName = newCalendarEraName;
@@ -198,6 +203,7 @@ public class TimePositionTypeImpl extends EObjectImpl implements TimePositionTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getFrame() {
 		return frame;
 	}
@@ -207,6 +213,7 @@ public class TimePositionTypeImpl extends EObjectImpl implements TimePositionTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setFrame(String newFrame) {
 		String oldFrame = frame;
 		frame = newFrame;
@@ -221,6 +228,7 @@ public class TimePositionTypeImpl extends EObjectImpl implements TimePositionTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void unsetFrame() {
 		String oldFrame = frame;
 		boolean oldFrameESet = frameESet;
@@ -235,6 +243,7 @@ public class TimePositionTypeImpl extends EObjectImpl implements TimePositionTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean isSetFrame() {
 		return frameESet;
 	}
@@ -244,6 +253,7 @@ public class TimePositionTypeImpl extends EObjectImpl implements TimePositionTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public TimeIndeterminateValueType getIndeterminatePosition() {
 		return indeterminatePosition;
 	}
@@ -253,6 +263,7 @@ public class TimePositionTypeImpl extends EObjectImpl implements TimePositionTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setIndeterminatePosition(TimeIndeterminateValueType newIndeterminatePosition) {
 		TimeIndeterminateValueType oldIndeterminatePosition = indeterminatePosition;
 		indeterminatePosition = newIndeterminatePosition == null ? INDETERMINATE_POSITION_EDEFAULT : newIndeterminatePosition;
@@ -267,6 +278,7 @@ public class TimePositionTypeImpl extends EObjectImpl implements TimePositionTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void unsetIndeterminatePosition() {
 		TimeIndeterminateValueType oldIndeterminatePosition = indeterminatePosition;
 		boolean oldIndeterminatePositionESet = indeterminatePositionESet;
@@ -281,6 +293,7 @@ public class TimePositionTypeImpl extends EObjectImpl implements TimePositionTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean isSetIndeterminatePosition() {
 		return indeterminatePositionESet;
 	}
@@ -290,6 +303,7 @@ public class TimePositionTypeImpl extends EObjectImpl implements TimePositionTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case GmlPackage.TIME_POSITION_TYPE__VALUE:
@@ -309,6 +323,7 @@ public class TimePositionTypeImpl extends EObjectImpl implements TimePositionTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case GmlPackage.TIME_POSITION_TYPE__VALUE:
@@ -332,6 +347,7 @@ public class TimePositionTypeImpl extends EObjectImpl implements TimePositionTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case GmlPackage.TIME_POSITION_TYPE__VALUE:
@@ -355,6 +371,7 @@ public class TimePositionTypeImpl extends EObjectImpl implements TimePositionTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case GmlPackage.TIME_POSITION_TYPE__VALUE:
@@ -374,6 +391,7 @@ public class TimePositionTypeImpl extends EObjectImpl implements TimePositionTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

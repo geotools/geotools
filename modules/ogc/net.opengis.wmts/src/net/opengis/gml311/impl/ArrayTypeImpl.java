@@ -62,6 +62,7 @@ public class ArrayTypeImpl extends AbstractGMLTypeImpl implements ArrayType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ArrayAssociationType getMembers() {
         return members;
     }
@@ -86,6 +87,7 @@ public class ArrayTypeImpl extends AbstractGMLTypeImpl implements ArrayType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMembers(ArrayAssociationType newMembers) {
         if (newMembers != members) {
             NotificationChain msgs = null;

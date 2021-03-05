@@ -209,6 +209,7 @@ public class FeatureCollectionTypeImpl extends SimpleFeatureCollectionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AdditionalObjectsType getAdditionalObjects() {
     return additionalObjects;
   }
@@ -233,6 +234,7 @@ public class FeatureCollectionTypeImpl extends SimpleFeatureCollectionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setAdditionalObjects(AdditionalObjectsType newAdditionalObjects) {
     if (newAdditionalObjects != additionalObjects) {
       NotificationChain msgs = null;
@@ -252,6 +254,7 @@ public class FeatureCollectionTypeImpl extends SimpleFeatureCollectionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public TruncatedResponseType getTruncatedResponse() {
     return truncatedResponse;
   }
@@ -276,6 +279,7 @@ public class FeatureCollectionTypeImpl extends SimpleFeatureCollectionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setTruncatedResponse(TruncatedResponseType newTruncatedResponse) {
     if (newTruncatedResponse != truncatedResponse) {
       NotificationChain msgs = null;
@@ -295,6 +299,7 @@ public class FeatureCollectionTypeImpl extends SimpleFeatureCollectionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getLockId() {
     return lockId;
   }
@@ -304,6 +309,7 @@ public class FeatureCollectionTypeImpl extends SimpleFeatureCollectionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setLockId(String newLockId) {
     String oldLockId = lockId;
     lockId = newLockId;
@@ -316,6 +322,7 @@ public class FeatureCollectionTypeImpl extends SimpleFeatureCollectionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getNext() {
     return next;
   }
@@ -325,6 +332,7 @@ public class FeatureCollectionTypeImpl extends SimpleFeatureCollectionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setNext(String newNext) {
     String oldNext = next;
     next = newNext;
@@ -337,6 +345,7 @@ public class FeatureCollectionTypeImpl extends SimpleFeatureCollectionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object getNumberMatched() {
     return numberMatched;
   }
@@ -346,6 +355,7 @@ public class FeatureCollectionTypeImpl extends SimpleFeatureCollectionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setNumberMatched(Object newNumberMatched) {
     Object oldNumberMatched = numberMatched;
     numberMatched = newNumberMatched;
@@ -358,6 +368,7 @@ public class FeatureCollectionTypeImpl extends SimpleFeatureCollectionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public BigInteger getNumberReturned() {
     return numberReturned;
   }
@@ -367,6 +378,7 @@ public class FeatureCollectionTypeImpl extends SimpleFeatureCollectionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setNumberReturned(BigInteger newNumberReturned) {
     BigInteger oldNumberReturned = numberReturned;
     numberReturned = newNumberReturned;
@@ -379,6 +391,7 @@ public class FeatureCollectionTypeImpl extends SimpleFeatureCollectionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getPrevious() {
     return previous;
   }
@@ -388,6 +401,7 @@ public class FeatureCollectionTypeImpl extends SimpleFeatureCollectionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setPrevious(String newPrevious) {
     String oldPrevious = previous;
     previous = newPrevious;
@@ -400,6 +414,7 @@ public class FeatureCollectionTypeImpl extends SimpleFeatureCollectionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Calendar getTimeStamp() {
     return timeStamp;
   }
@@ -409,6 +424,7 @@ public class FeatureCollectionTypeImpl extends SimpleFeatureCollectionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setTimeStamp(Calendar newTimeStamp) {
     Calendar oldTimeStamp = timeStamp;
     timeStamp = newTimeStamp;

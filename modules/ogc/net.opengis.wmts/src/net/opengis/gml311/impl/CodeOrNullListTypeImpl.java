@@ -93,6 +93,7 @@ public class CodeOrNullListTypeImpl extends MinimalEObjectImpl.Container impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public List<Object> getValue() {
         return value;
     }
@@ -102,6 +103,7 @@ public class CodeOrNullListTypeImpl extends MinimalEObjectImpl.Container impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValue(List<Object> newValue) {
         List<Object> oldValue = value;
         value = newValue;
@@ -114,6 +116,7 @@ public class CodeOrNullListTypeImpl extends MinimalEObjectImpl.Container impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getCodeSpace() {
         return codeSpace;
     }
@@ -123,6 +126,7 @@ public class CodeOrNullListTypeImpl extends MinimalEObjectImpl.Container impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCodeSpace(String newCodeSpace) {
         String oldCodeSpace = codeSpace;
         codeSpace = newCodeSpace;

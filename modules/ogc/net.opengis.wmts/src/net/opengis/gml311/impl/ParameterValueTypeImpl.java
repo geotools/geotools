@@ -216,6 +216,7 @@ public class ParameterValueTypeImpl extends AbstractGeneralParameterValueTypeImp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MeasureType getValue() {
         return value;
     }
@@ -240,6 +241,7 @@ public class ParameterValueTypeImpl extends AbstractGeneralParameterValueTypeImp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValue(MeasureType newValue) {
         if (newValue != value) {
             NotificationChain msgs = null;
@@ -259,6 +261,7 @@ public class ParameterValueTypeImpl extends AbstractGeneralParameterValueTypeImp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DMSAngleType getDmsAngleValue() {
         return dmsAngleValue;
     }
@@ -283,6 +286,7 @@ public class ParameterValueTypeImpl extends AbstractGeneralParameterValueTypeImp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDmsAngleValue(DMSAngleType newDmsAngleValue) {
         if (newDmsAngleValue != dmsAngleValue) {
             NotificationChain msgs = null;
@@ -302,6 +306,7 @@ public class ParameterValueTypeImpl extends AbstractGeneralParameterValueTypeImp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getStringValue() {
         return stringValue;
     }
@@ -311,6 +316,7 @@ public class ParameterValueTypeImpl extends AbstractGeneralParameterValueTypeImp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setStringValue(String newStringValue) {
         String oldStringValue = stringValue;
         stringValue = newStringValue;
@@ -323,6 +329,7 @@ public class ParameterValueTypeImpl extends AbstractGeneralParameterValueTypeImp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getIntegerValue() {
         return integerValue;
     }
@@ -332,6 +339,7 @@ public class ParameterValueTypeImpl extends AbstractGeneralParameterValueTypeImp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIntegerValue(BigInteger newIntegerValue) {
         BigInteger oldIntegerValue = integerValue;
         integerValue = newIntegerValue;
@@ -344,6 +352,7 @@ public class ParameterValueTypeImpl extends AbstractGeneralParameterValueTypeImp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isBooleanValue() {
         return booleanValue;
     }
@@ -353,6 +362,7 @@ public class ParameterValueTypeImpl extends AbstractGeneralParameterValueTypeImp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBooleanValue(boolean newBooleanValue) {
         boolean oldBooleanValue = booleanValue;
         booleanValue = newBooleanValue;
@@ -367,6 +377,7 @@ public class ParameterValueTypeImpl extends AbstractGeneralParameterValueTypeImp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetBooleanValue() {
         boolean oldBooleanValue = booleanValue;
         boolean oldBooleanValueESet = booleanValueESet;
@@ -381,6 +392,7 @@ public class ParameterValueTypeImpl extends AbstractGeneralParameterValueTypeImp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetBooleanValue() {
         return booleanValueESet;
     }
@@ -390,6 +402,7 @@ public class ParameterValueTypeImpl extends AbstractGeneralParameterValueTypeImp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MeasureListType getValueList() {
         return valueList;
     }
@@ -414,6 +427,7 @@ public class ParameterValueTypeImpl extends AbstractGeneralParameterValueTypeImp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValueList(MeasureListType newValueList) {
         if (newValueList != valueList) {
             NotificationChain msgs = null;
@@ -433,6 +447,7 @@ public class ParameterValueTypeImpl extends AbstractGeneralParameterValueTypeImp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public List<BigInteger> getIntegerValueList() {
         return integerValueList;
     }
@@ -442,6 +457,7 @@ public class ParameterValueTypeImpl extends AbstractGeneralParameterValueTypeImp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIntegerValueList(List<BigInteger> newIntegerValueList) {
         List<BigInteger> oldIntegerValueList = integerValueList;
         integerValueList = newIntegerValueList;
@@ -454,6 +470,7 @@ public class ParameterValueTypeImpl extends AbstractGeneralParameterValueTypeImp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getValueFile() {
         return valueFile;
     }
@@ -463,6 +480,7 @@ public class ParameterValueTypeImpl extends AbstractGeneralParameterValueTypeImp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValueFile(String newValueFile) {
         String oldValueFile = valueFile;
         valueFile = newValueFile;
@@ -475,6 +493,7 @@ public class ParameterValueTypeImpl extends AbstractGeneralParameterValueTypeImp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public OperationParameterRefType getValueOfParameter() {
         return valueOfParameter;
     }
@@ -499,6 +518,7 @@ public class ParameterValueTypeImpl extends AbstractGeneralParameterValueTypeImp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValueOfParameter(OperationParameterRefType newValueOfParameter) {
         if (newValueOfParameter != valueOfParameter) {
             NotificationChain msgs = null;

@@ -68,6 +68,7 @@ public class PropertyIsNullTypeImpl extends ComparisonOpsTypeImpl implements Pro
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getExpressionGroup() {
         if (expressionGroup == null) {
             expressionGroup = new BasicFeatureMap(this, Fes20Package.PROPERTY_IS_NULL_TYPE__EXPRESSION_GROUP);
@@ -80,6 +81,7 @@ public class PropertyIsNullTypeImpl extends ComparisonOpsTypeImpl implements Pro
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EObject getExpression() {
         return (EObject)getExpressionGroup().get(Fes20Package.Literals.PROPERTY_IS_NULL_TYPE__EXPRESSION, true);
     }

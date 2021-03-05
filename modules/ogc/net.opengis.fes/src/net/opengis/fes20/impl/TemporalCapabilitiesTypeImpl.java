@@ -79,6 +79,7 @@ public class TemporalCapabilitiesTypeImpl extends EObjectImpl implements Tempora
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TemporalOperandsType getTemporalOperands() {
         return temporalOperands;
     }
@@ -103,6 +104,7 @@ public class TemporalCapabilitiesTypeImpl extends EObjectImpl implements Tempora
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTemporalOperands(TemporalOperandsType newTemporalOperands) {
         if (newTemporalOperands != temporalOperands) {
             NotificationChain msgs = null;
@@ -122,6 +124,7 @@ public class TemporalCapabilitiesTypeImpl extends EObjectImpl implements Tempora
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TemporalOperatorsType getTemporalOperators() {
         return temporalOperators;
     }
@@ -146,6 +149,7 @@ public class TemporalCapabilitiesTypeImpl extends EObjectImpl implements Tempora
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTemporalOperators(TemporalOperatorsType newTemporalOperators) {
         if (newTemporalOperators != temporalOperators) {
             NotificationChain msgs = null;

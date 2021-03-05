@@ -72,6 +72,7 @@ public class XlinkFactoryImpl extends EFactoryImpl implements XlinkFactory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EObject create(EClass eClass) {
         switch (eClass.getClassifierID()) {
             case XlinkPackage.ARC_TYPE: return createArcType();
@@ -91,6 +92,7 @@ public class XlinkFactoryImpl extends EFactoryImpl implements XlinkFactory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object createFromString(EDataType eDataType, String initialValue) {
         switch (eDataType.getClassifierID()) {
             case XlinkPackage.ACTUATE_TYPE:
@@ -129,6 +131,7 @@ public class XlinkFactoryImpl extends EFactoryImpl implements XlinkFactory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String convertToString(EDataType eDataType, Object instanceValue) {
         switch (eDataType.getClassifierID()) {
             case XlinkPackage.ACTUATE_TYPE:
@@ -167,6 +170,7 @@ public class XlinkFactoryImpl extends EFactoryImpl implements XlinkFactory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ArcType createArcType() {
         ArcTypeImpl arcType = new ArcTypeImpl();
         return arcType;
@@ -177,6 +181,7 @@ public class XlinkFactoryImpl extends EFactoryImpl implements XlinkFactory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DocumentRoot createDocumentRoot() {
         DocumentRootImpl documentRoot = new DocumentRootImpl();
         return documentRoot;
@@ -187,6 +192,7 @@ public class XlinkFactoryImpl extends EFactoryImpl implements XlinkFactory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Extended createExtended() {
         ExtendedImpl extended = new ExtendedImpl();
         return extended;
@@ -197,6 +203,7 @@ public class XlinkFactoryImpl extends EFactoryImpl implements XlinkFactory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LocatorType createLocatorType() {
         LocatorTypeImpl locatorType = new LocatorTypeImpl();
         return locatorType;
@@ -207,6 +214,7 @@ public class XlinkFactoryImpl extends EFactoryImpl implements XlinkFactory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ResourceType createResourceType() {
         ResourceTypeImpl resourceType = new ResourceTypeImpl();
         return resourceType;
@@ -217,6 +225,7 @@ public class XlinkFactoryImpl extends EFactoryImpl implements XlinkFactory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Simple createSimple() {
         SimpleImpl simple = new SimpleImpl();
         return simple;
@@ -227,6 +236,7 @@ public class XlinkFactoryImpl extends EFactoryImpl implements XlinkFactory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TitleEltType createTitleEltType() {
         TitleEltTypeImpl titleEltType = new TitleEltTypeImpl();
         return titleEltType;
@@ -477,6 +487,7 @@ public class XlinkFactoryImpl extends EFactoryImpl implements XlinkFactory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public XlinkPackage getXlinkPackage() {
         return (XlinkPackage)getEPackage();
     }

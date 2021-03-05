@@ -132,6 +132,7 @@ public class KnotTypeImpl extends MinimalEObjectImpl.Container implements KnotTy
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public double getValue() {
         return value;
     }
@@ -141,6 +142,7 @@ public class KnotTypeImpl extends MinimalEObjectImpl.Container implements KnotTy
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValue(double newValue) {
         double oldValue = value;
         value = newValue;
@@ -155,6 +157,7 @@ public class KnotTypeImpl extends MinimalEObjectImpl.Container implements KnotTy
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetValue() {
         double oldValue = value;
         boolean oldValueESet = valueESet;
@@ -169,6 +172,7 @@ public class KnotTypeImpl extends MinimalEObjectImpl.Container implements KnotTy
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetValue() {
         return valueESet;
     }
@@ -178,6 +182,7 @@ public class KnotTypeImpl extends MinimalEObjectImpl.Container implements KnotTy
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getMultiplicity() {
         return multiplicity;
     }
@@ -187,6 +192,7 @@ public class KnotTypeImpl extends MinimalEObjectImpl.Container implements KnotTy
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiplicity(BigInteger newMultiplicity) {
         BigInteger oldMultiplicity = multiplicity;
         multiplicity = newMultiplicity;
@@ -199,6 +205,7 @@ public class KnotTypeImpl extends MinimalEObjectImpl.Container implements KnotTy
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public double getWeight() {
         return weight;
     }
@@ -208,6 +215,7 @@ public class KnotTypeImpl extends MinimalEObjectImpl.Container implements KnotTy
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setWeight(double newWeight) {
         double oldWeight = weight;
         weight = newWeight;
@@ -222,6 +230,7 @@ public class KnotTypeImpl extends MinimalEObjectImpl.Container implements KnotTy
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetWeight() {
         double oldWeight = weight;
         boolean oldWeightESet = weightESet;
@@ -236,6 +245,7 @@ public class KnotTypeImpl extends MinimalEObjectImpl.Container implements KnotTy
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetWeight() {
         return weightESet;
     }

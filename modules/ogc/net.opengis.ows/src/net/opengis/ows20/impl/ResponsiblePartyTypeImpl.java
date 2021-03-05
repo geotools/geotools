@@ -138,6 +138,7 @@ public class ResponsiblePartyTypeImpl extends EObjectImpl implements Responsible
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getIndividualName() {
     return individualName;
   }
@@ -147,6 +148,7 @@ public class ResponsiblePartyTypeImpl extends EObjectImpl implements Responsible
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setIndividualName(String newIndividualName) {
     String oldIndividualName = individualName;
     individualName = newIndividualName;
@@ -159,6 +161,7 @@ public class ResponsiblePartyTypeImpl extends EObjectImpl implements Responsible
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getOrganisationName() {
     return organisationName;
   }
@@ -168,6 +171,7 @@ public class ResponsiblePartyTypeImpl extends EObjectImpl implements Responsible
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setOrganisationName(String newOrganisationName) {
     String oldOrganisationName = organisationName;
     organisationName = newOrganisationName;
@@ -180,6 +184,7 @@ public class ResponsiblePartyTypeImpl extends EObjectImpl implements Responsible
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getPositionName() {
     return positionName;
   }
@@ -189,6 +194,7 @@ public class ResponsiblePartyTypeImpl extends EObjectImpl implements Responsible
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setPositionName(String newPositionName) {
     String oldPositionName = positionName;
     positionName = newPositionName;
@@ -201,6 +207,7 @@ public class ResponsiblePartyTypeImpl extends EObjectImpl implements Responsible
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ContactType getContactInfo() {
     return contactInfo;
   }
@@ -225,6 +232,7 @@ public class ResponsiblePartyTypeImpl extends EObjectImpl implements Responsible
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setContactInfo(ContactType newContactInfo) {
     if (newContactInfo != contactInfo) {
       NotificationChain msgs = null;
@@ -244,6 +252,7 @@ public class ResponsiblePartyTypeImpl extends EObjectImpl implements Responsible
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public CodeType getRole() {
     return role;
   }
@@ -268,6 +277,7 @@ public class ResponsiblePartyTypeImpl extends EObjectImpl implements Responsible
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setRole(CodeType newRole) {
     if (newRole != role) {
       NotificationChain msgs = null;

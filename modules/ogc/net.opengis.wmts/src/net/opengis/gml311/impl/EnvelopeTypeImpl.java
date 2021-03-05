@@ -203,6 +203,7 @@ public class EnvelopeTypeImpl extends MinimalEObjectImpl.Container implements En
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectPositionType getLowerCorner() {
         return lowerCorner;
     }
@@ -227,6 +228,7 @@ public class EnvelopeTypeImpl extends MinimalEObjectImpl.Container implements En
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLowerCorner(DirectPositionType newLowerCorner) {
         if (newLowerCorner != lowerCorner) {
             NotificationChain msgs = null;
@@ -246,6 +248,7 @@ public class EnvelopeTypeImpl extends MinimalEObjectImpl.Container implements En
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectPositionType getUpperCorner() {
         return upperCorner;
     }
@@ -270,6 +273,7 @@ public class EnvelopeTypeImpl extends MinimalEObjectImpl.Container implements En
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUpperCorner(DirectPositionType newUpperCorner) {
         if (newUpperCorner != upperCorner) {
             NotificationChain msgs = null;
@@ -289,6 +293,7 @@ public class EnvelopeTypeImpl extends MinimalEObjectImpl.Container implements En
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<CoordType> getCoord() {
         if (coord == null) {
             coord = new EObjectContainmentEList<>(CoordType.class, this, Gml311Package.ENVELOPE_TYPE__COORD);
@@ -301,6 +306,7 @@ public class EnvelopeTypeImpl extends MinimalEObjectImpl.Container implements En
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<DirectPositionType> getPos() {
         if (pos == null) {
             pos = new EObjectContainmentEList<>(DirectPositionType.class, this, Gml311Package.ENVELOPE_TYPE__POS);
@@ -313,6 +319,7 @@ public class EnvelopeTypeImpl extends MinimalEObjectImpl.Container implements En
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinatesType getCoordinates() {
         return coordinates;
     }
@@ -337,6 +344,7 @@ public class EnvelopeTypeImpl extends MinimalEObjectImpl.Container implements En
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCoordinates(CoordinatesType newCoordinates) {
         if (newCoordinates != coordinates) {
             NotificationChain msgs = null;
@@ -356,6 +364,7 @@ public class EnvelopeTypeImpl extends MinimalEObjectImpl.Container implements En
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public List<String> getAxisLabels() {
         return axisLabels;
     }
@@ -365,6 +374,7 @@ public class EnvelopeTypeImpl extends MinimalEObjectImpl.Container implements En
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAxisLabels(List<String> newAxisLabels) {
         List<String> oldAxisLabels = axisLabels;
         axisLabels = newAxisLabels;
@@ -377,6 +387,7 @@ public class EnvelopeTypeImpl extends MinimalEObjectImpl.Container implements En
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getSrsDimension() {
         return srsDimension;
     }
@@ -386,6 +397,7 @@ public class EnvelopeTypeImpl extends MinimalEObjectImpl.Container implements En
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSrsDimension(BigInteger newSrsDimension) {
         BigInteger oldSrsDimension = srsDimension;
         srsDimension = newSrsDimension;
@@ -398,6 +410,7 @@ public class EnvelopeTypeImpl extends MinimalEObjectImpl.Container implements En
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getSrsName() {
         return srsName;
     }
@@ -407,6 +420,7 @@ public class EnvelopeTypeImpl extends MinimalEObjectImpl.Container implements En
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSrsName(String newSrsName) {
         String oldSrsName = srsName;
         srsName = newSrsName;
@@ -419,6 +433,7 @@ public class EnvelopeTypeImpl extends MinimalEObjectImpl.Container implements En
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public List<String> getUomLabels() {
         return uomLabels;
     }
@@ -428,6 +443,7 @@ public class EnvelopeTypeImpl extends MinimalEObjectImpl.Container implements En
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUomLabels(List<String> newUomLabels) {
         List<String> oldUomLabels = uomLabels;
         uomLabels = newUomLabels;

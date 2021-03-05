@@ -80,6 +80,7 @@ public class PolygonTypeImpl extends AbstractSurfaceTypeImpl implements PolygonT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getExteriorGroup() {
         if (exteriorGroup == null) {
             exteriorGroup = new BasicFeatureMap(this, Gml311Package.POLYGON_TYPE__EXTERIOR_GROUP);
@@ -92,6 +93,7 @@ public class PolygonTypeImpl extends AbstractSurfaceTypeImpl implements PolygonT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractRingPropertyType getExterior() {
         return (AbstractRingPropertyType)getExteriorGroup().get(Gml311Package.eINSTANCE.getPolygonType_Exterior(), true);
     }
@@ -110,6 +112,7 @@ public class PolygonTypeImpl extends AbstractSurfaceTypeImpl implements PolygonT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setExterior(AbstractRingPropertyType newExterior) {
         ((FeatureMap.Internal)getExteriorGroup()).set(Gml311Package.eINSTANCE.getPolygonType_Exterior(), newExterior);
     }
@@ -119,6 +122,7 @@ public class PolygonTypeImpl extends AbstractSurfaceTypeImpl implements PolygonT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getInteriorGroup() {
         if (interiorGroup == null) {
             interiorGroup = new BasicFeatureMap(this, Gml311Package.POLYGON_TYPE__INTERIOR_GROUP);
@@ -131,6 +135,7 @@ public class PolygonTypeImpl extends AbstractSurfaceTypeImpl implements PolygonT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<AbstractRingPropertyType> getInterior() {
         return getInteriorGroup().list(Gml311Package.eINSTANCE.getPolygonType_Interior());
     }

@@ -71,6 +71,7 @@ public interface SpatialCapabilitiesType extends EObject, SpatialCapabilities {
      *        extendedMetaData="kind='element' name='SpatialOperators' namespace='##targetNamespace'"
      * @generated
      */
+    @Override
     SpatialOperatorsType getSpatialOperators();
 
     /**

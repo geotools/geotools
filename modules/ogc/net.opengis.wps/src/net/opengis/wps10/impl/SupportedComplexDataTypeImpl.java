@@ -69,6 +69,7 @@ public class SupportedComplexDataTypeImpl extends EObjectImpl implements Support
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.SUPPORTED_COMPLEX_DATA_TYPE;
   }
@@ -78,6 +79,7 @@ public class SupportedComplexDataTypeImpl extends EObjectImpl implements Support
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ComplexDataCombinationType getDefault() {
     return default_;
   }
@@ -102,6 +104,7 @@ public class SupportedComplexDataTypeImpl extends EObjectImpl implements Support
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setDefault(ComplexDataCombinationType newDefault) {
     if (newDefault != default_) {
       NotificationChain msgs = null;
@@ -121,6 +124,7 @@ public class SupportedComplexDataTypeImpl extends EObjectImpl implements Support
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ComplexDataCombinationsType getSupported() {
     return supported;
   }
@@ -145,6 +149,7 @@ public class SupportedComplexDataTypeImpl extends EObjectImpl implements Support
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setSupported(ComplexDataCombinationsType newSupported) {
     if (newSupported != supported) {
       NotificationChain msgs = null;
@@ -164,6 +169,7 @@ public class SupportedComplexDataTypeImpl extends EObjectImpl implements Support
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.SUPPORTED_COMPLEX_DATA_TYPE__DEFAULT:
@@ -179,6 +185,7 @@ public class SupportedComplexDataTypeImpl extends EObjectImpl implements Support
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.SUPPORTED_COMPLEX_DATA_TYPE__DEFAULT:
@@ -194,6 +201,7 @@ public class SupportedComplexDataTypeImpl extends EObjectImpl implements Support
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.SUPPORTED_COMPLEX_DATA_TYPE__DEFAULT:
@@ -211,6 +219,7 @@ public class SupportedComplexDataTypeImpl extends EObjectImpl implements Support
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.SUPPORTED_COMPLEX_DATA_TYPE__DEFAULT:
@@ -228,6 +237,7 @@ public class SupportedComplexDataTypeImpl extends EObjectImpl implements Support
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.SUPPORTED_COMPLEX_DATA_TYPE__DEFAULT:

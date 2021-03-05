@@ -309,6 +309,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isPlanar() {
         return planar;
     }
@@ -318,6 +319,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPlanar(boolean newPlanar) {
         boolean oldPlanar = planar;
         planar = newPlanar;
@@ -332,6 +334,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetPlanar() {
         boolean oldPlanar = planar;
         boolean oldPlanarESet = planarESet;
@@ -346,6 +349,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetPlanar() {
         return planarESet;
     }
@@ -355,6 +359,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isDirected() {
         return directed;
     }
@@ -364,6 +369,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDirected(boolean newDirected) {
         boolean oldDirected = directed;
         directed = newDirected;
@@ -378,6 +384,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetDirected() {
         boolean oldDirected = directed;
         boolean oldDirectedESet = directedESet;
@@ -392,6 +399,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetDirected() {
         return directedESet;
     }
@@ -401,6 +409,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isGrid() {
         return grid;
     }
@@ -410,6 +419,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGrid(boolean newGrid) {
         boolean oldGrid = grid;
         grid = newGrid;
@@ -424,6 +434,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetGrid() {
         boolean oldGrid = grid;
         boolean oldGridESet = gridESet;
@@ -438,6 +449,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetGrid() {
         return gridESet;
     }
@@ -447,6 +459,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public double getMinDistance() {
         return minDistance;
     }
@@ -456,6 +469,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMinDistance(double newMinDistance) {
         double oldMinDistance = minDistance;
         minDistance = newMinDistance;
@@ -470,6 +484,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetMinDistance() {
         double oldMinDistance = minDistance;
         boolean oldMinDistanceESet = minDistanceESet;
@@ -484,6 +499,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetMinDistance() {
         return minDistanceESet;
     }
@@ -493,6 +509,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public double getMinAngle() {
         return minAngle;
     }
@@ -502,6 +519,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMinAngle(double newMinAngle) {
         double oldMinAngle = minAngle;
         minAngle = newMinAngle;
@@ -516,6 +534,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetMinAngle() {
         double oldMinAngle = minAngle;
         boolean oldMinAngleESet = minAngleESet;
@@ -530,6 +549,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetMinAngle() {
         return minAngleESet;
     }
@@ -539,6 +559,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GraphTypeType getGraphType() {
         return graphType;
     }
@@ -548,6 +569,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGraphType(GraphTypeType newGraphType) {
         GraphTypeType oldGraphType = graphType;
         graphType = newGraphType == null ? GRAPH_TYPE_EDEFAULT : newGraphType;
@@ -562,6 +584,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetGraphType() {
         GraphTypeType oldGraphType = graphType;
         boolean oldGraphTypeESet = graphTypeESet;
@@ -576,6 +599,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetGraphType() {
         return graphTypeESet;
     }
@@ -585,6 +609,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DrawingTypeType getDrawingType() {
         return drawingType;
     }
@@ -594,6 +619,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDrawingType(DrawingTypeType newDrawingType) {
         DrawingTypeType oldDrawingType = drawingType;
         drawingType = newDrawingType == null ? DRAWING_TYPE_EDEFAULT : newDrawingType;
@@ -608,6 +634,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetDrawingType() {
         DrawingTypeType oldDrawingType = drawingType;
         boolean oldDrawingTypeESet = drawingTypeESet;
@@ -622,6 +649,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetDrawingType() {
         return drawingTypeESet;
     }
@@ -631,6 +659,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LineTypeType getLineType() {
         return lineType;
     }
@@ -640,6 +669,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLineType(LineTypeType newLineType) {
         LineTypeType oldLineType = lineType;
         lineType = newLineType == null ? LINE_TYPE_EDEFAULT : newLineType;
@@ -654,6 +684,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetLineType() {
         LineTypeType oldLineType = lineType;
         boolean oldLineTypeESet = lineTypeESet;
@@ -668,6 +699,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetLineType() {
         return lineTypeESet;
     }
@@ -677,6 +709,7 @@ public class GraphStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements G
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<AesheticCriteriaType> getAestheticCriteria() {
         if (aestheticCriteria == null) {
             aestheticCriteria = new EDataTypeEList<>(AesheticCriteriaType.class, this, Gml311Package.GRAPH_STYLE_TYPE__AESTHETIC_CRITERIA);

@@ -104,6 +104,7 @@ public class CoverageOfferingTypeImpl extends CoverageOfferingBriefTypeImpl impl
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.COVERAGE_OFFERING_TYPE;
 	}
@@ -113,6 +114,7 @@ public class CoverageOfferingTypeImpl extends CoverageOfferingBriefTypeImpl impl
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public DomainSetType getDomainSet() {
 		return domainSet;
 	}
@@ -137,6 +139,7 @@ public class CoverageOfferingTypeImpl extends CoverageOfferingBriefTypeImpl impl
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setDomainSet(DomainSetType newDomainSet) {
 		if (newDomainSet != domainSet) {
 			NotificationChain msgs = null;
@@ -156,6 +159,7 @@ public class CoverageOfferingTypeImpl extends CoverageOfferingBriefTypeImpl impl
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public RangeSetType1 getRangeSet() {
 		return rangeSet;
 	}
@@ -180,6 +184,7 @@ public class CoverageOfferingTypeImpl extends CoverageOfferingBriefTypeImpl impl
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setRangeSet(RangeSetType1 newRangeSet) {
 		if (newRangeSet != rangeSet) {
 			NotificationChain msgs = null;
@@ -199,6 +204,7 @@ public class CoverageOfferingTypeImpl extends CoverageOfferingBriefTypeImpl impl
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public SupportedCRSsType getSupportedCRSs() {
 		return supportedCRSs;
 	}
@@ -223,6 +229,7 @@ public class CoverageOfferingTypeImpl extends CoverageOfferingBriefTypeImpl impl
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setSupportedCRSs(SupportedCRSsType newSupportedCRSs) {
 		if (newSupportedCRSs != supportedCRSs) {
 			NotificationChain msgs = null;
@@ -242,6 +249,7 @@ public class CoverageOfferingTypeImpl extends CoverageOfferingBriefTypeImpl impl
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public SupportedFormatsType getSupportedFormats() {
 		return supportedFormats;
 	}
@@ -266,6 +274,7 @@ public class CoverageOfferingTypeImpl extends CoverageOfferingBriefTypeImpl impl
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setSupportedFormats(SupportedFormatsType newSupportedFormats) {
 		if (newSupportedFormats != supportedFormats) {
 			NotificationChain msgs = null;
@@ -285,6 +294,7 @@ public class CoverageOfferingTypeImpl extends CoverageOfferingBriefTypeImpl impl
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public SupportedInterpolationsType getSupportedInterpolations() {
 		return supportedInterpolations;
 	}
@@ -309,6 +319,7 @@ public class CoverageOfferingTypeImpl extends CoverageOfferingBriefTypeImpl impl
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setSupportedInterpolations(SupportedInterpolationsType newSupportedInterpolations) {
 		if (newSupportedInterpolations != supportedInterpolations) {
 			NotificationChain msgs = null;
@@ -328,6 +339,7 @@ public class CoverageOfferingTypeImpl extends CoverageOfferingBriefTypeImpl impl
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.COVERAGE_OFFERING_TYPE__DOMAIN_SET:
@@ -349,6 +361,7 @@ public class CoverageOfferingTypeImpl extends CoverageOfferingBriefTypeImpl impl
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.COVERAGE_OFFERING_TYPE__DOMAIN_SET:
@@ -370,6 +383,7 @@ public class CoverageOfferingTypeImpl extends CoverageOfferingBriefTypeImpl impl
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.COVERAGE_OFFERING_TYPE__DOMAIN_SET:
@@ -396,6 +410,7 @@ public class CoverageOfferingTypeImpl extends CoverageOfferingBriefTypeImpl impl
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.COVERAGE_OFFERING_TYPE__DOMAIN_SET:
@@ -422,6 +437,7 @@ public class CoverageOfferingTypeImpl extends CoverageOfferingBriefTypeImpl impl
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.COVERAGE_OFFERING_TYPE__DOMAIN_SET:

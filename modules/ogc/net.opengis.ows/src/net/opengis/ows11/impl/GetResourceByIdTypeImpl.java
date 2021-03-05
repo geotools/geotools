@@ -123,7 +123,8 @@ public class GetResourceByIdTypeImpl extends EObjectImpl implements GetResourceB
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.GET_RESOURCE_BY_ID_TYPE;
   }
 
@@ -132,7 +133,8 @@ public class GetResourceByIdTypeImpl extends EObjectImpl implements GetResourceB
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getResourceID() {
+  @Override
+public String getResourceID() {
     return resourceID;
   }
 
@@ -141,7 +143,8 @@ public class GetResourceByIdTypeImpl extends EObjectImpl implements GetResourceB
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setResourceID(String newResourceID) {
+  @Override
+public void setResourceID(String newResourceID) {
     String oldResourceID = resourceID;
     resourceID = newResourceID;
     if (eNotificationRequired())
@@ -153,7 +156,8 @@ public class GetResourceByIdTypeImpl extends EObjectImpl implements GetResourceB
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getOutputFormat() {
+  @Override
+public String getOutputFormat() {
     return outputFormat;
   }
 
@@ -162,7 +166,8 @@ public class GetResourceByIdTypeImpl extends EObjectImpl implements GetResourceB
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setOutputFormat(String newOutputFormat) {
+  @Override
+public void setOutputFormat(String newOutputFormat) {
     String oldOutputFormat = outputFormat;
     outputFormat = newOutputFormat;
     if (eNotificationRequired())
@@ -174,7 +179,8 @@ public class GetResourceByIdTypeImpl extends EObjectImpl implements GetResourceB
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getService() {
+  @Override
+public String getService() {
     return service;
   }
 
@@ -183,7 +189,8 @@ public class GetResourceByIdTypeImpl extends EObjectImpl implements GetResourceB
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setService(String newService) {
+  @Override
+public void setService(String newService) {
     String oldService = service;
     service = newService;
     if (eNotificationRequired())
@@ -195,7 +202,8 @@ public class GetResourceByIdTypeImpl extends EObjectImpl implements GetResourceB
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getVersion() {
+  @Override
+public String getVersion() {
     return version;
   }
 
@@ -204,7 +212,8 @@ public class GetResourceByIdTypeImpl extends EObjectImpl implements GetResourceB
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setVersion(String newVersion) {
+  @Override
+public void setVersion(String newVersion) {
     String oldVersion = version;
     version = newVersion;
     if (eNotificationRequired())
@@ -216,7 +225,8 @@ public class GetResourceByIdTypeImpl extends EObjectImpl implements GetResourceB
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.GET_RESOURCE_BY_ID_TYPE__RESOURCE_ID:
         return getResourceID();
@@ -235,7 +245,8 @@ public class GetResourceByIdTypeImpl extends EObjectImpl implements GetResourceB
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.GET_RESOURCE_BY_ID_TYPE__RESOURCE_ID:
         setResourceID((String)newValue);
@@ -258,7 +269,8 @@ public class GetResourceByIdTypeImpl extends EObjectImpl implements GetResourceB
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.GET_RESOURCE_BY_ID_TYPE__RESOURCE_ID:
         setResourceID(RESOURCE_ID_EDEFAULT);
@@ -281,7 +293,8 @@ public class GetResourceByIdTypeImpl extends EObjectImpl implements GetResourceB
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.GET_RESOURCE_BY_ID_TYPE__RESOURCE_ID:
         return RESOURCE_ID_EDEFAULT == null ? resourceID != null : !RESOURCE_ID_EDEFAULT.equals(resourceID);
@@ -300,7 +313,8 @@ public class GetResourceByIdTypeImpl extends EObjectImpl implements GetResourceB
    * <!-- end-user-doc -->
    * @generated
    */
-  public String toString() {
+  @Override
+public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

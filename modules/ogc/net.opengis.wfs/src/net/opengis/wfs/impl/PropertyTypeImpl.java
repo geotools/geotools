@@ -87,7 +87,8 @@ public class PropertyTypeImpl extends EObjectImpl implements PropertyType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.PROPERTY_TYPE;
   }
 
@@ -96,7 +97,8 @@ public class PropertyTypeImpl extends EObjectImpl implements PropertyType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public QName getName() {
+	@Override
+    public QName getName() {
     return name;
   }
 
@@ -105,7 +107,8 @@ public class PropertyTypeImpl extends EObjectImpl implements PropertyType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setName(QName newName) {
+	@Override
+    public void setName(QName newName) {
     QName oldName = name;
     name = newName;
     if (eNotificationRequired())
@@ -117,7 +120,8 @@ public class PropertyTypeImpl extends EObjectImpl implements PropertyType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object getValue() {
+	@Override
+    public Object getValue() {
     return value;
   }
 
@@ -126,7 +130,8 @@ public class PropertyTypeImpl extends EObjectImpl implements PropertyType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setValue(Object newValue) {
+	@Override
+    public void setValue(Object newValue) {
     Object oldValue = value;
     value = newValue;
     if (eNotificationRequired())
@@ -138,7 +143,8 @@ public class PropertyTypeImpl extends EObjectImpl implements PropertyType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	@Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.PROPERTY_TYPE__NAME:
         return getName();
@@ -153,7 +159,8 @@ public class PropertyTypeImpl extends EObjectImpl implements PropertyType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(int featureID, Object newValue) {
+	@Override
+    public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.PROPERTY_TYPE__NAME:
         setName((QName)newValue);
@@ -170,7 +177,8 @@ public class PropertyTypeImpl extends EObjectImpl implements PropertyType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(int featureID) {
+	@Override
+    public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.PROPERTY_TYPE__NAME:
         setName(NAME_EDEFAULT);
@@ -187,7 +195,8 @@ public class PropertyTypeImpl extends EObjectImpl implements PropertyType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(int featureID) {
+	@Override
+    public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.PROPERTY_TYPE__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
@@ -202,7 +211,8 @@ public class PropertyTypeImpl extends EObjectImpl implements PropertyType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String toString() {
+	@Override
+    public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

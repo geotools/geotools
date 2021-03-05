@@ -199,6 +199,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.GET_CAPABILITIES_TYPE;
 	}
@@ -208,6 +209,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public CapabilitiesSectionType getSection() {
 		return section;
 	}
@@ -217,6 +219,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setSection(CapabilitiesSectionType newSection) {
 		CapabilitiesSectionType oldSection = section;
 		section = newSection == null ? SECTION_EDEFAULT : newSection;
@@ -231,6 +234,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void unsetSection() {
 		CapabilitiesSectionType oldSection = section;
 		boolean oldSectionESet = sectionESet;
@@ -245,6 +249,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean isSetSection() {
 		return sectionESet;
 	}
@@ -254,6 +259,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getService() {
 		return service;
 	}
@@ -263,6 +269,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setService(String newService) {
 		String oldService = service;
 		service = newService;
@@ -277,6 +284,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void unsetService() {
 		String oldService = service;
 		boolean oldServiceESet = serviceESet;
@@ -291,6 +299,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean isSetService() {
 		return serviceESet;
 	}
@@ -300,6 +309,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getUpdateSequence() {
 		return updateSequence;
 	}
@@ -309,6 +319,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setUpdateSequence(String newUpdateSequence) {
 		String oldUpdateSequence = updateSequence;
 		updateSequence = newUpdateSequence;
@@ -321,6 +332,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getVersion() {
 		return version;
 	}
@@ -330,6 +342,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setVersion(String newVersion) {
 		String oldVersion = version;
 		version = newVersion;
@@ -344,6 +357,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void unsetVersion() {
 		String oldVersion = version;
 		boolean oldVersionESet = versionESet;
@@ -358,6 +372,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean isSetVersion() {
 		return versionESet;
 	}
@@ -367,7 +382,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getBaseUrl() {
+	@Override
+    public String getBaseUrl() {
 		return baseUrl;
 	}
 
@@ -376,7 +392,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setBaseUrl(String newBaseUrl) {
+	@Override
+    public void setBaseUrl(String newBaseUrl) {
 		String oldBaseUrl = baseUrl;
 		baseUrl = newBaseUrl;
 		if (eNotificationRequired())
@@ -388,7 +405,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Map getExtendedProperties() {
+	@Override
+    public Map getExtendedProperties() {
 		return extendedProperties;
 	}
 
@@ -397,7 +415,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setExtendedProperties(Map newExtendedProperties) {
+	@Override
+    public void setExtendedProperties(Map newExtendedProperties) {
 		Map oldExtendedProperties = extendedProperties;
 		extendedProperties = newExtendedProperties;
 		if (eNotificationRequired())
@@ -409,6 +428,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.GET_CAPABILITIES_TYPE__SECTION:
@@ -432,6 +452,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.GET_CAPABILITIES_TYPE__SECTION:
@@ -461,6 +482,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.GET_CAPABILITIES_TYPE__SECTION:
@@ -490,6 +512,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.GET_CAPABILITIES_TYPE__SECTION:
@@ -513,6 +536,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

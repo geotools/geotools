@@ -191,6 +191,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getMixed() {
         if (mixed == null) {
             mixed = new BasicFeatureMap(this, Fes20Package.DOCUMENT_ROOT__MIXED);
@@ -203,6 +204,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EMap<String, String> getXMLNSPrefixMap() {
         if (xMLNSPrefixMap == null) {
             xMLNSPrefixMap = new EcoreEMap<>(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY, EStringToStringMapEntryImpl.class, this, Fes20Package.DOCUMENT_ROOT__XMLNS_PREFIX_MAP);
@@ -215,6 +217,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EMap<String, String> getXSISchemaLocation() {
         if (xSISchemaLocation == null) {
             xSISchemaLocation = new EcoreEMap<>(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY, EStringToStringMapEntryImpl.class, this, Fes20Package.DOCUMENT_ROOT__XSI_SCHEMA_LOCATION);
@@ -227,6 +230,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractIdType getId() {
         return (AbstractIdType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__ID, true);
     }
@@ -245,6 +249,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractAdhocQueryExpressionType getAbstractAdhocQueryExpression() {
         return (AbstractAdhocQueryExpressionType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__ABSTRACT_ADHOC_QUERY_EXPRESSION, true);
     }
@@ -263,6 +268,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractQueryExpressionType getAbstractQueryExpression() {
         return (AbstractQueryExpressionType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__ABSTRACT_QUERY_EXPRESSION, true);
     }
@@ -281,6 +287,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EObject getAbstractProjectionClause() {
         return (EObject)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__ABSTRACT_PROJECTION_CLAUSE, true);
     }
@@ -299,6 +306,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EObject getAbstractSelectionClause() {
         return (EObject)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__ABSTRACT_SELECTION_CLAUSE, true);
     }
@@ -317,6 +325,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EObject getAbstractSortingClause() {
         return (EObject)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__ABSTRACT_SORTING_CLAUSE, true);
     }
@@ -335,6 +344,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinaryTemporalOpType getAfter() {
         return (BinaryTemporalOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__AFTER, true);
     }
@@ -353,6 +363,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAfter(BinaryTemporalOpType newAfter) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__AFTER, newAfter);
     }
@@ -362,6 +373,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TemporalOpsType getTemporalOps() {
         return (TemporalOpsType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__TEMPORAL_OPS, true);
     }
@@ -380,6 +392,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinaryLogicOpType getAnd() {
         return (BinaryLogicOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__AND, true);
     }
@@ -398,6 +411,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAnd(BinaryLogicOpType newAnd) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__AND, newAnd);
     }
@@ -407,6 +421,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LogicOpsType getLogicOps() {
         return (LogicOpsType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__LOGIC_OPS, true);
     }
@@ -425,6 +440,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinaryTemporalOpType getAnyInteracts() {
         return (BinaryTemporalOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__ANY_INTERACTS, true);
     }
@@ -443,6 +459,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAnyInteracts(BinaryTemporalOpType newAnyInteracts) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__ANY_INTERACTS, newAnyInteracts);
     }
@@ -452,6 +469,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BBOXType getBBOX() {
         return (BBOXType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__BBOX, true);
     }
@@ -470,6 +488,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBBOX(BBOXType newBBOX) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__BBOX, newBBOX);
     }
@@ -479,6 +498,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SpatialOpsType getSpatialOps() {
         return (SpatialOpsType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__SPATIAL_OPS, true);
     }
@@ -497,6 +517,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinaryTemporalOpType getBefore() {
         return (BinaryTemporalOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__BEFORE, true);
     }
@@ -515,6 +536,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBefore(BinaryTemporalOpType newBefore) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__BEFORE, newBefore);
     }
@@ -524,6 +546,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinaryTemporalOpType getBegins() {
         return (BinaryTemporalOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__BEGINS, true);
     }
@@ -542,6 +565,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBegins(BinaryTemporalOpType newBegins) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__BEGINS, newBegins);
     }
@@ -551,6 +575,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinaryTemporalOpType getBegunBy() {
         return (BinaryTemporalOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__BEGUN_BY, true);
     }
@@ -569,6 +594,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBegunBy(BinaryTemporalOpType newBegunBy) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__BEGUN_BY, newBegunBy);
     }
@@ -578,6 +604,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DistanceBufferType getBeyond() {
         return (DistanceBufferType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__BEYOND, true);
     }
@@ -596,6 +623,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBeyond(DistanceBufferType newBeyond) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__BEYOND, newBeyond);
     }
@@ -605,6 +633,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ComparisonOpsType getComparisonOps() {
         return (ComparisonOpsType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__COMPARISON_OPS, true);
     }
@@ -623,6 +652,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinarySpatialOpType getContains() {
         return (BinarySpatialOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__CONTAINS, true);
     }
@@ -641,6 +671,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setContains(BinarySpatialOpType newContains) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__CONTAINS, newContains);
     }
@@ -650,6 +681,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinarySpatialOpType getCrosses() {
         return (BinarySpatialOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__CROSSES, true);
     }
@@ -668,6 +700,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCrosses(BinarySpatialOpType newCrosses) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__CROSSES, newCrosses);
     }
@@ -677,6 +710,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinarySpatialOpType getDisjoint() {
         return (BinarySpatialOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__DISJOINT, true);
     }
@@ -695,6 +729,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDisjoint(BinarySpatialOpType newDisjoint) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__DISJOINT, newDisjoint);
     }
@@ -704,6 +739,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinaryTemporalOpType getDuring() {
         return (BinaryTemporalOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__DURING, true);
     }
@@ -722,6 +758,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDuring(BinaryTemporalOpType newDuring) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__DURING, newDuring);
     }
@@ -731,6 +768,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DistanceBufferType getDWithin() {
         return (DistanceBufferType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__DWITHIN, true);
     }
@@ -749,6 +787,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDWithin(DistanceBufferType newDWithin) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__DWITHIN, newDWithin);
     }
@@ -758,6 +797,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinaryTemporalOpType getEndedBy() {
         return (BinaryTemporalOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__ENDED_BY, true);
     }
@@ -776,6 +816,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEndedBy(BinaryTemporalOpType newEndedBy) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__ENDED_BY, newEndedBy);
     }
@@ -785,6 +826,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinaryTemporalOpType getEnds() {
         return (BinaryTemporalOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__ENDS, true);
     }
@@ -803,6 +845,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEnds(BinaryTemporalOpType newEnds) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__ENDS, newEnds);
     }
@@ -812,6 +855,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinarySpatialOpType getEquals() {
         return (BinarySpatialOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__EQUALS, true);
     }
@@ -830,6 +874,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEquals(BinarySpatialOpType newEquals) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__EQUALS, newEquals);
     }
@@ -839,6 +884,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EObject getExpression() {
         return (EObject)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__EXPRESSION, true);
     }
@@ -857,6 +903,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ExtensionOpsType getExtensionOps() {
         return (ExtensionOpsType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__EXTENSION_OPS, true);
     }
@@ -875,6 +922,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FilterType getFilter() {
         return (FilterType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__FILTER, true);
     }
@@ -893,6 +941,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFilter(FilterType newFilter) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__FILTER, newFilter);
     }
@@ -902,6 +951,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FilterCapabilitiesType getFilterCapabilities() {
         return (FilterCapabilitiesType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__FILTER_CAPABILITIES, true);
     }
@@ -920,6 +970,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFilterCapabilities(FilterCapabilitiesType newFilterCapabilities) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__FILTER_CAPABILITIES, newFilterCapabilities);
     }
@@ -929,6 +980,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FunctionType getFunction() {
         return (FunctionType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__FUNCTION, true);
     }
@@ -947,6 +999,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFunction(FunctionType newFunction) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__FUNCTION, newFunction);
     }
@@ -956,6 +1009,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinarySpatialOpType getIntersects() {
         return (BinarySpatialOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__INTERSECTS, true);
     }
@@ -974,6 +1028,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIntersects(BinarySpatialOpType newIntersects) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__INTERSECTS, newIntersects);
     }
@@ -983,6 +1038,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LiteralType getLiteral() {
         return (LiteralType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__LITERAL, true);
     }
@@ -1001,6 +1057,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLiteral(LiteralType newLiteral) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__LITERAL, newLiteral);
     }
@@ -1010,6 +1067,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LogicalOperatorsType getLogicalOperators() {
         return (LogicalOperatorsType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__LOGICAL_OPERATORS, true);
     }
@@ -1028,6 +1086,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLogicalOperators(LogicalOperatorsType newLogicalOperators) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__LOGICAL_OPERATORS, newLogicalOperators);
     }
@@ -1037,6 +1096,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinaryTemporalOpType getMeets() {
         return (BinaryTemporalOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__MEETS, true);
     }
@@ -1055,6 +1115,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMeets(BinaryTemporalOpType newMeets) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__MEETS, newMeets);
     }
@@ -1064,6 +1125,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinaryTemporalOpType getMetBy() {
         return (BinaryTemporalOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__MET_BY, true);
     }
@@ -1082,6 +1144,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMetBy(BinaryTemporalOpType newMetBy) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__MET_BY, newMetBy);
     }
@@ -1091,6 +1154,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public UnaryLogicOpType getNot() {
         return (UnaryLogicOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__NOT, true);
     }
@@ -1109,6 +1173,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setNot(UnaryLogicOpType newNot) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__NOT, newNot);
     }
@@ -1118,6 +1183,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinaryLogicOpType getOr() {
         return (BinaryLogicOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__OR, true);
     }
@@ -1136,6 +1202,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOr(BinaryLogicOpType newOr) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__OR, newOr);
     }
@@ -1145,6 +1212,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinaryTemporalOpType getOverlappedBy() {
         return (BinaryTemporalOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__OVERLAPPED_BY, true);
     }
@@ -1163,6 +1231,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOverlappedBy(BinaryTemporalOpType newOverlappedBy) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__OVERLAPPED_BY, newOverlappedBy);
     }
@@ -1172,6 +1241,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinarySpatialOpType getOverlaps() {
         return (BinarySpatialOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__OVERLAPS, true);
     }
@@ -1190,6 +1260,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOverlaps(BinarySpatialOpType newOverlaps) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__OVERLAPS, newOverlaps);
     }
@@ -1199,6 +1270,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PropertyIsBetweenType getPropertyIsBetween() {
         return (PropertyIsBetweenType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_BETWEEN, true);
     }
@@ -1217,6 +1289,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPropertyIsBetween(PropertyIsBetweenType newPropertyIsBetween) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_BETWEEN, newPropertyIsBetween);
     }
@@ -1226,6 +1299,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinaryComparisonOpType getPropertyIsEqualTo() {
         return (BinaryComparisonOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_EQUAL_TO, true);
     }
@@ -1244,6 +1318,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPropertyIsEqualTo(BinaryComparisonOpType newPropertyIsEqualTo) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_EQUAL_TO, newPropertyIsEqualTo);
     }
@@ -1253,6 +1328,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinaryComparisonOpType getPropertyIsGreaterThan() {
         return (BinaryComparisonOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_GREATER_THAN, true);
     }
@@ -1271,6 +1347,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPropertyIsGreaterThan(BinaryComparisonOpType newPropertyIsGreaterThan) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_GREATER_THAN, newPropertyIsGreaterThan);
     }
@@ -1280,6 +1357,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinaryComparisonOpType getPropertyIsGreaterThanOrEqualTo() {
         return (BinaryComparisonOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_GREATER_THAN_OR_EQUAL_TO, true);
     }
@@ -1298,6 +1376,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPropertyIsGreaterThanOrEqualTo(BinaryComparisonOpType newPropertyIsGreaterThanOrEqualTo) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_GREATER_THAN_OR_EQUAL_TO, newPropertyIsGreaterThanOrEqualTo);
     }
@@ -1307,6 +1386,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinaryComparisonOpType getPropertyIsLessThan() {
         return (BinaryComparisonOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_LESS_THAN, true);
     }
@@ -1325,6 +1405,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPropertyIsLessThan(BinaryComparisonOpType newPropertyIsLessThan) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_LESS_THAN, newPropertyIsLessThan);
     }
@@ -1334,6 +1415,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinaryComparisonOpType getPropertyIsLessThanOrEqualTo() {
         return (BinaryComparisonOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_LESS_THAN_OR_EQUAL_TO, true);
     }
@@ -1352,6 +1434,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPropertyIsLessThanOrEqualTo(BinaryComparisonOpType newPropertyIsLessThanOrEqualTo) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_LESS_THAN_OR_EQUAL_TO, newPropertyIsLessThanOrEqualTo);
     }
@@ -1361,6 +1444,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PropertyIsLikeType getPropertyIsLike() {
         return (PropertyIsLikeType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_LIKE, true);
     }
@@ -1379,6 +1463,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPropertyIsLike(PropertyIsLikeType newPropertyIsLike) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_LIKE, newPropertyIsLike);
     }
@@ -1388,6 +1473,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PropertyIsNilType getPropertyIsNil() {
         return (PropertyIsNilType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_NIL, true);
     }
@@ -1406,6 +1492,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPropertyIsNil(PropertyIsNilType newPropertyIsNil) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_NIL, newPropertyIsNil);
     }
@@ -1415,6 +1502,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinaryComparisonOpType getPropertyIsNotEqualTo() {
         return (BinaryComparisonOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_NOT_EQUAL_TO, true);
     }
@@ -1433,6 +1521,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPropertyIsNotEqualTo(BinaryComparisonOpType newPropertyIsNotEqualTo) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_NOT_EQUAL_TO, newPropertyIsNotEqualTo);
     }
@@ -1442,6 +1531,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PropertyIsNullType getPropertyIsNull() {
         return (PropertyIsNullType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_NULL, true);
     }
@@ -1460,6 +1550,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPropertyIsNull(PropertyIsNullType newPropertyIsNull) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_NULL, newPropertyIsNull);
     }
@@ -1469,6 +1560,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ResourceIdType getResourceId() {
         return (ResourceIdType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__RESOURCE_ID, true);
     }
@@ -1487,6 +1579,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setResourceId(ResourceIdType newResourceId) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__RESOURCE_ID, newResourceId);
     }
@@ -1496,6 +1589,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SortByType getSortBy() {
         return (SortByType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__SORT_BY, true);
     }
@@ -1514,6 +1608,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSortBy(SortByType newSortBy) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__SORT_BY, newSortBy);
     }
@@ -1523,6 +1618,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinaryTemporalOpType getTContains() {
         return (BinaryTemporalOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__TCONTAINS, true);
     }
@@ -1541,6 +1637,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTContains(BinaryTemporalOpType newTContains) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__TCONTAINS, newTContains);
     }
@@ -1550,6 +1647,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinaryTemporalOpType getTEquals() {
         return (BinaryTemporalOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__TEQUALS, true);
     }
@@ -1568,6 +1666,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTEquals(BinaryTemporalOpType newTEquals) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__TEQUALS, newTEquals);
     }
@@ -1577,6 +1676,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinarySpatialOpType getTouches() {
         return (BinarySpatialOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__TOUCHES, true);
     }
@@ -1595,6 +1695,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTouches(BinarySpatialOpType newTouches) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__TOUCHES, newTouches);
     }
@@ -1604,6 +1705,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinaryTemporalOpType getTOverlaps() {
         return (BinaryTemporalOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__TOVERLAPS, true);
     }
@@ -1622,6 +1724,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTOverlaps(BinaryTemporalOpType newTOverlaps) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__TOVERLAPS, newTOverlaps);
     }
@@ -1631,6 +1734,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getValueReference() {
         return (String)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__VALUE_REFERENCE, true);
     }
@@ -1640,6 +1744,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValueReference(String newValueReference) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__VALUE_REFERENCE, newValueReference);
     }
@@ -1649,6 +1754,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinarySpatialOpType getWithin() {
         return (BinarySpatialOpType)getMixed().get(Fes20Package.Literals.DOCUMENT_ROOT__WITHIN, true);
     }
@@ -1667,6 +1773,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setWithin(BinarySpatialOpType newWithin) {
         ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__WITHIN, newWithin);
     }

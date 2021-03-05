@@ -150,6 +150,7 @@ public class ServiceTypeImpl extends AbstractDescriptionTypeImpl implements Serv
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.SERVICE_TYPE;
 	}
@@ -159,6 +160,7 @@ public class ServiceTypeImpl extends AbstractDescriptionTypeImpl implements Serv
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList getKeywords() {
 		if (keywords == null) {
 			keywords = new EObjectContainmentEList(KeywordsType.class, this, Wcs10Package.SERVICE_TYPE__KEYWORDS);
@@ -171,6 +173,7 @@ public class ServiceTypeImpl extends AbstractDescriptionTypeImpl implements Serv
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ResponsiblePartyType getResponsibleParty() {
 		return responsibleParty;
 	}
@@ -195,6 +198,7 @@ public class ServiceTypeImpl extends AbstractDescriptionTypeImpl implements Serv
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setResponsibleParty(ResponsiblePartyType newResponsibleParty) {
 		if (newResponsibleParty != responsibleParty) {
 			NotificationChain msgs = null;
@@ -214,6 +218,7 @@ public class ServiceTypeImpl extends AbstractDescriptionTypeImpl implements Serv
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public CodeListType getFees() {
 		return fees;
 	}
@@ -238,6 +243,7 @@ public class ServiceTypeImpl extends AbstractDescriptionTypeImpl implements Serv
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setFees(CodeListType newFees) {
 		if (newFees != fees) {
 			NotificationChain msgs = null;
@@ -257,6 +263,7 @@ public class ServiceTypeImpl extends AbstractDescriptionTypeImpl implements Serv
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList getAccessConstraints() {
 		if (accessConstraints == null) {
 			accessConstraints = new EObjectContainmentEList(CodeListType.class, this, Wcs10Package.SERVICE_TYPE__ACCESS_CONSTRAINTS);
@@ -269,6 +276,7 @@ public class ServiceTypeImpl extends AbstractDescriptionTypeImpl implements Serv
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getUpdateSequence() {
 		return updateSequence;
 	}
@@ -278,6 +286,7 @@ public class ServiceTypeImpl extends AbstractDescriptionTypeImpl implements Serv
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setUpdateSequence(String newUpdateSequence) {
 		String oldUpdateSequence = updateSequence;
 		updateSequence = newUpdateSequence;
@@ -290,6 +299,7 @@ public class ServiceTypeImpl extends AbstractDescriptionTypeImpl implements Serv
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getVersion() {
 		return version;
 	}
@@ -299,6 +309,7 @@ public class ServiceTypeImpl extends AbstractDescriptionTypeImpl implements Serv
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setVersion(String newVersion) {
 		String oldVersion = version;
 		version = newVersion;
@@ -313,6 +324,7 @@ public class ServiceTypeImpl extends AbstractDescriptionTypeImpl implements Serv
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void unsetVersion() {
 		String oldVersion = version;
 		boolean oldVersionESet = versionESet;
@@ -327,6 +339,7 @@ public class ServiceTypeImpl extends AbstractDescriptionTypeImpl implements Serv
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean isSetVersion() {
 		return versionESet;
 	}
@@ -336,6 +349,7 @@ public class ServiceTypeImpl extends AbstractDescriptionTypeImpl implements Serv
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.SERVICE_TYPE__KEYWORDS:
@@ -355,6 +369,7 @@ public class ServiceTypeImpl extends AbstractDescriptionTypeImpl implements Serv
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.SERVICE_TYPE__KEYWORDS:
@@ -378,6 +393,7 @@ public class ServiceTypeImpl extends AbstractDescriptionTypeImpl implements Serv
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.SERVICE_TYPE__KEYWORDS:
@@ -409,6 +425,7 @@ public class ServiceTypeImpl extends AbstractDescriptionTypeImpl implements Serv
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.SERVICE_TYPE__KEYWORDS:
@@ -438,6 +455,7 @@ public class ServiceTypeImpl extends AbstractDescriptionTypeImpl implements Serv
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.SERVICE_TYPE__KEYWORDS:
@@ -461,6 +479,7 @@ public class ServiceTypeImpl extends AbstractDescriptionTypeImpl implements Serv
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

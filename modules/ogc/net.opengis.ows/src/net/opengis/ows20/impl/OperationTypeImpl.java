@@ -129,6 +129,7 @@ public class OperationTypeImpl extends EObjectImpl implements OperationType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<DCPType> getDCP() {
     if (dCP == null) {
       dCP = new EObjectContainmentEList<>(DCPType.class, this, Ows20Package.OPERATION_TYPE__DCP);
@@ -141,6 +142,7 @@ public class OperationTypeImpl extends EObjectImpl implements OperationType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<DomainType> getParameter() {
     if (parameter == null) {
       parameter = new EObjectContainmentEList<>(DomainType.class, this, Ows20Package.OPERATION_TYPE__PARAMETER);
@@ -153,6 +155,7 @@ public class OperationTypeImpl extends EObjectImpl implements OperationType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<DomainType> getConstraint() {
     if (constraint == null) {
       constraint = new EObjectContainmentEList<>(DomainType.class, this, Ows20Package.OPERATION_TYPE__CONSTRAINT);
@@ -165,6 +168,7 @@ public class OperationTypeImpl extends EObjectImpl implements OperationType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureMap getMetadataGroup() {
     if (metadataGroup == null) {
       metadataGroup = new BasicFeatureMap(this, Ows20Package.OPERATION_TYPE__METADATA_GROUP);
@@ -177,6 +181,7 @@ public class OperationTypeImpl extends EObjectImpl implements OperationType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<MetadataType> getMetadata() {
     return getMetadataGroup().list(Ows20Package.Literals.OPERATION_TYPE__METADATA);
   }
@@ -186,6 +191,7 @@ public class OperationTypeImpl extends EObjectImpl implements OperationType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getName() {
     return name;
   }
@@ -195,6 +201,7 @@ public class OperationTypeImpl extends EObjectImpl implements OperationType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setName(String newName) {
     String oldName = name;
     name = newName;

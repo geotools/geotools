@@ -171,6 +171,7 @@ public class ValueRangeTypeImpl extends EObjectImpl implements ValueRangeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.VALUE_RANGE_TYPE;
 	}
@@ -180,6 +181,7 @@ public class ValueRangeTypeImpl extends EObjectImpl implements ValueRangeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public TypedLiteralType getMin() {
 		return min;
 	}
@@ -204,6 +206,7 @@ public class ValueRangeTypeImpl extends EObjectImpl implements ValueRangeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setMin(TypedLiteralType newMin) {
 		if (newMin != min) {
 			NotificationChain msgs = null;
@@ -223,6 +226,7 @@ public class ValueRangeTypeImpl extends EObjectImpl implements ValueRangeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public TypedLiteralType getMax() {
 		return max;
 	}
@@ -247,6 +251,7 @@ public class ValueRangeTypeImpl extends EObjectImpl implements ValueRangeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setMax(TypedLiteralType newMax) {
 		if (newMax != max) {
 			NotificationChain msgs = null;
@@ -266,6 +271,7 @@ public class ValueRangeTypeImpl extends EObjectImpl implements ValueRangeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean isAtomic() {
 		return atomic;
 	}
@@ -275,6 +281,7 @@ public class ValueRangeTypeImpl extends EObjectImpl implements ValueRangeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setAtomic(boolean newAtomic) {
 		boolean oldAtomic = atomic;
 		atomic = newAtomic;
@@ -289,6 +296,7 @@ public class ValueRangeTypeImpl extends EObjectImpl implements ValueRangeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void unsetAtomic() {
 		boolean oldAtomic = atomic;
 		boolean oldAtomicESet = atomicESet;
@@ -303,6 +311,7 @@ public class ValueRangeTypeImpl extends EObjectImpl implements ValueRangeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean isSetAtomic() {
 		return atomicESet;
 	}
@@ -312,6 +321,7 @@ public class ValueRangeTypeImpl extends EObjectImpl implements ValueRangeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ClosureType getClosure() {
 		return closure;
 	}
@@ -321,6 +331,7 @@ public class ValueRangeTypeImpl extends EObjectImpl implements ValueRangeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setClosure(ClosureType newClosure) {
 		ClosureType oldClosure = closure;
 		closure = newClosure == null ? CLOSURE_EDEFAULT : newClosure;
@@ -335,6 +346,7 @@ public class ValueRangeTypeImpl extends EObjectImpl implements ValueRangeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void unsetClosure() {
 		ClosureType oldClosure = closure;
 		boolean oldClosureESet = closureESet;
@@ -349,6 +361,7 @@ public class ValueRangeTypeImpl extends EObjectImpl implements ValueRangeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean isSetClosure() {
 		return closureESet;
 	}
@@ -358,6 +371,7 @@ public class ValueRangeTypeImpl extends EObjectImpl implements ValueRangeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getSemantic() {
 		return semantic;
 	}
@@ -367,6 +381,7 @@ public class ValueRangeTypeImpl extends EObjectImpl implements ValueRangeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setSemantic(String newSemantic) {
 		String oldSemantic = semantic;
 		semantic = newSemantic;
@@ -379,6 +394,7 @@ public class ValueRangeTypeImpl extends EObjectImpl implements ValueRangeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getType() {
 		return type;
 	}
@@ -388,6 +404,7 @@ public class ValueRangeTypeImpl extends EObjectImpl implements ValueRangeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setType(String newType) {
 		String oldType = type;
 		type = newType;
@@ -400,6 +417,7 @@ public class ValueRangeTypeImpl extends EObjectImpl implements ValueRangeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.VALUE_RANGE_TYPE__MIN:
@@ -415,6 +433,7 @@ public class ValueRangeTypeImpl extends EObjectImpl implements ValueRangeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.VALUE_RANGE_TYPE__MIN:
@@ -438,6 +457,7 @@ public class ValueRangeTypeImpl extends EObjectImpl implements ValueRangeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.VALUE_RANGE_TYPE__MIN:
@@ -467,6 +487,7 @@ public class ValueRangeTypeImpl extends EObjectImpl implements ValueRangeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.VALUE_RANGE_TYPE__MIN:
@@ -496,6 +517,7 @@ public class ValueRangeTypeImpl extends EObjectImpl implements ValueRangeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.VALUE_RANGE_TYPE__MIN:
@@ -519,6 +541,7 @@ public class ValueRangeTypeImpl extends EObjectImpl implements ValueRangeType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

@@ -111,6 +111,7 @@ public class SimpleLiteralImpl extends EObjectImpl implements SimpleLiteral {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object getValue() {
         return value;
     }
@@ -120,6 +121,7 @@ public class SimpleLiteralImpl extends EObjectImpl implements SimpleLiteral {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValue(Object newValue) {
         Object oldValue = value;
         value = newValue;
@@ -132,6 +134,7 @@ public class SimpleLiteralImpl extends EObjectImpl implements SimpleLiteral {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public URI getScheme() {
         return scheme;
     }
@@ -141,6 +144,7 @@ public class SimpleLiteralImpl extends EObjectImpl implements SimpleLiteral {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setScheme(URI newScheme) {
         URI oldScheme = scheme;
         scheme = newScheme;
@@ -152,6 +156,7 @@ public class SimpleLiteralImpl extends EObjectImpl implements SimpleLiteral {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -170,6 +175,7 @@ public class SimpleLiteralImpl extends EObjectImpl implements SimpleLiteral {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setName(String newName) {
         String oldName = name;
         name = newName;

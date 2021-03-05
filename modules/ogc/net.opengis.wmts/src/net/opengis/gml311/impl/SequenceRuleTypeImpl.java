@@ -111,6 +111,7 @@ public class SequenceRuleTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SequenceRuleNames getValue() {
         return value;
     }
@@ -120,6 +121,7 @@ public class SequenceRuleTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValue(SequenceRuleNames newValue) {
         SequenceRuleNames oldValue = value;
         value = newValue == null ? VALUE_EDEFAULT : newValue;
@@ -134,6 +136,7 @@ public class SequenceRuleTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetValue() {
         SequenceRuleNames oldValue = value;
         boolean oldValueESet = valueESet;
@@ -148,6 +151,7 @@ public class SequenceRuleTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetValue() {
         return valueESet;
     }
@@ -157,6 +161,7 @@ public class SequenceRuleTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public IncrementOrder getOrder() {
         return order;
     }
@@ -166,6 +171,7 @@ public class SequenceRuleTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOrder(IncrementOrder newOrder) {
         IncrementOrder oldOrder = order;
         order = newOrder == null ? ORDER_EDEFAULT : newOrder;
@@ -180,6 +186,7 @@ public class SequenceRuleTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetOrder() {
         IncrementOrder oldOrder = order;
         boolean oldOrderESet = orderESet;
@@ -194,6 +201,7 @@ public class SequenceRuleTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetOrder() {
         return orderESet;
     }

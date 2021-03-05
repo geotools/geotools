@@ -63,6 +63,7 @@ public class TopoPointPropertyTypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoPointType getTopoPoint() {
         return topoPoint;
     }
@@ -87,6 +88,7 @@ public class TopoPointPropertyTypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTopoPoint(TopoPointType newTopoPoint) {
         if (newTopoPoint != topoPoint) {
             NotificationChain msgs = null;

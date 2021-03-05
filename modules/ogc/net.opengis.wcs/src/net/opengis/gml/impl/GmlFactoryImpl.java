@@ -71,7 +71,8 @@ public class GmlFactoryImpl extends EFactoryImpl implements GmlFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EObject create(EClass eClass) {
+	@Override
+    public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
 			case GmlPackage.ABSTRACT_RING_PROPERTY_TYPE: return createAbstractRingPropertyType();
 			case GmlPackage.ABSTRACT_SURFACE_TYPE: return createAbstractSurfaceType();
@@ -104,7 +105,8 @@ public class GmlFactoryImpl extends EFactoryImpl implements GmlFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Object createFromString(EDataType eDataType, String initialValue) {
+	@Override
+    public Object createFromString(EDataType eDataType, String initialValue) {
 		switch (eDataType.getClassifierID()) {
 			case GmlPackage.TIME_INDETERMINATE_VALUE_TYPE:
 				return createTimeIndeterminateValueTypeFromString(eDataType, initialValue);
@@ -134,7 +136,8 @@ public class GmlFactoryImpl extends EFactoryImpl implements GmlFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertToString(EDataType eDataType, Object instanceValue) {
+	@Override
+    public String convertToString(EDataType eDataType, Object instanceValue) {
 		switch (eDataType.getClassifierID()) {
 			case GmlPackage.TIME_INDETERMINATE_VALUE_TYPE:
 				return convertTimeIndeterminateValueTypeToString(eDataType, instanceValue);
@@ -164,7 +167,8 @@ public class GmlFactoryImpl extends EFactoryImpl implements GmlFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public AbstractRingPropertyType createAbstractRingPropertyType() {
+	@Override
+    public AbstractRingPropertyType createAbstractRingPropertyType() {
 		AbstractRingPropertyTypeImpl abstractRingPropertyType = new AbstractRingPropertyTypeImpl();
 		return abstractRingPropertyType;
 	}
@@ -174,7 +178,8 @@ public class GmlFactoryImpl extends EFactoryImpl implements GmlFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public AbstractSurfaceType createAbstractSurfaceType() {
+	@Override
+    public AbstractSurfaceType createAbstractSurfaceType() {
 		AbstractSurfaceTypeImpl abstractSurfaceType = new AbstractSurfaceTypeImpl();
 		return abstractSurfaceType;
 	}
@@ -184,7 +189,8 @@ public class GmlFactoryImpl extends EFactoryImpl implements GmlFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public BoundingShapeType createBoundingShapeType() {
+	@Override
+    public BoundingShapeType createBoundingShapeType() {
 		BoundingShapeTypeImpl boundingShapeType = new BoundingShapeTypeImpl();
 		return boundingShapeType;
 	}
@@ -194,7 +200,8 @@ public class GmlFactoryImpl extends EFactoryImpl implements GmlFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public CodeListType createCodeListType() {
+	@Override
+    public CodeListType createCodeListType() {
 		CodeListTypeImpl codeListType = new CodeListTypeImpl();
 		return codeListType;
 	}
@@ -204,7 +211,8 @@ public class GmlFactoryImpl extends EFactoryImpl implements GmlFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public CodeType createCodeType() {
+	@Override
+    public CodeType createCodeType() {
 		CodeTypeImpl codeType = new CodeTypeImpl();
 		return codeType;
 	}
@@ -214,7 +222,8 @@ public class GmlFactoryImpl extends EFactoryImpl implements GmlFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public DirectPositionType createDirectPositionType() {
+	@Override
+    public DirectPositionType createDirectPositionType() {
 		DirectPositionTypeImpl directPositionType = new DirectPositionTypeImpl();
 		return directPositionType;
 	}
@@ -224,7 +233,8 @@ public class GmlFactoryImpl extends EFactoryImpl implements GmlFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public DocumentRoot createDocumentRoot() {
+	@Override
+    public DocumentRoot createDocumentRoot() {
 		DocumentRootImpl documentRoot = new DocumentRootImpl();
 		return documentRoot;
 	}
@@ -234,7 +244,8 @@ public class GmlFactoryImpl extends EFactoryImpl implements GmlFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EnvelopeType createEnvelopeType() {
+	@Override
+    public EnvelopeType createEnvelopeType() {
 		EnvelopeTypeImpl envelopeType = new EnvelopeTypeImpl();
 		return envelopeType;
 	}
@@ -244,7 +255,8 @@ public class GmlFactoryImpl extends EFactoryImpl implements GmlFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EnvelopeWithTimePeriodType createEnvelopeWithTimePeriodType() {
+	@Override
+    public EnvelopeWithTimePeriodType createEnvelopeWithTimePeriodType() {
 		EnvelopeWithTimePeriodTypeImpl envelopeWithTimePeriodType = new EnvelopeWithTimePeriodTypeImpl();
 		return envelopeWithTimePeriodType;
 	}
@@ -254,7 +266,8 @@ public class GmlFactoryImpl extends EFactoryImpl implements GmlFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public GridEnvelopeType createGridEnvelopeType() {
+	@Override
+    public GridEnvelopeType createGridEnvelopeType() {
 		GridEnvelopeTypeImpl gridEnvelopeType = new GridEnvelopeTypeImpl();
 		return gridEnvelopeType;
 	}
@@ -264,7 +277,8 @@ public class GmlFactoryImpl extends EFactoryImpl implements GmlFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public GridLimitsType createGridLimitsType() {
+	@Override
+    public GridLimitsType createGridLimitsType() {
 		GridLimitsTypeImpl gridLimitsType = new GridLimitsTypeImpl();
 		return gridLimitsType;
 	}
@@ -274,7 +288,8 @@ public class GmlFactoryImpl extends EFactoryImpl implements GmlFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public GridType createGridType() {
+	@Override
+    public GridType createGridType() {
 		GridTypeImpl gridType = new GridTypeImpl();
 		return gridType;
 	}
@@ -284,7 +299,8 @@ public class GmlFactoryImpl extends EFactoryImpl implements GmlFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public LinearRingType createLinearRingType() {
+	@Override
+    public LinearRingType createLinearRingType() {
 		LinearRingTypeImpl linearRingType = new LinearRingTypeImpl();
 		return linearRingType;
 	}
@@ -294,7 +310,8 @@ public class GmlFactoryImpl extends EFactoryImpl implements GmlFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public MetaDataPropertyType createMetaDataPropertyType() {
+	@Override
+    public MetaDataPropertyType createMetaDataPropertyType() {
 		MetaDataPropertyTypeImpl metaDataPropertyType = new MetaDataPropertyTypeImpl();
 		return metaDataPropertyType;
 	}
@@ -304,7 +321,8 @@ public class GmlFactoryImpl extends EFactoryImpl implements GmlFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public PointType createPointType() {
+	@Override
+    public PointType createPointType() {
 		PointTypeImpl pointType = new PointTypeImpl();
 		return pointType;
 	}
@@ -314,7 +332,8 @@ public class GmlFactoryImpl extends EFactoryImpl implements GmlFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public PolygonType createPolygonType() {
+	@Override
+    public PolygonType createPolygonType() {
 		PolygonTypeImpl polygonType = new PolygonTypeImpl();
 		return polygonType;
 	}
@@ -324,7 +343,8 @@ public class GmlFactoryImpl extends EFactoryImpl implements GmlFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public RectifiedGridType createRectifiedGridType() {
+	@Override
+    public RectifiedGridType createRectifiedGridType() {
 		RectifiedGridTypeImpl rectifiedGridType = new RectifiedGridTypeImpl();
 		return rectifiedGridType;
 	}
@@ -334,7 +354,8 @@ public class GmlFactoryImpl extends EFactoryImpl implements GmlFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ReferenceType createReferenceType() {
+	@Override
+    public ReferenceType createReferenceType() {
 		ReferenceTypeImpl referenceType = new ReferenceTypeImpl();
 		return referenceType;
 	}
@@ -344,7 +365,8 @@ public class GmlFactoryImpl extends EFactoryImpl implements GmlFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public StringOrRefType createStringOrRefType() {
+	@Override
+    public StringOrRefType createStringOrRefType() {
 		StringOrRefTypeImpl stringOrRefType = new StringOrRefTypeImpl();
 		return stringOrRefType;
 	}
@@ -354,7 +376,8 @@ public class GmlFactoryImpl extends EFactoryImpl implements GmlFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public TimePositionType createTimePositionType() {
+	@Override
+    public TimePositionType createTimePositionType() {
 		TimePositionTypeImpl timePositionType = new TimePositionTypeImpl();
 		return timePositionType;
 	}
@@ -364,7 +387,8 @@ public class GmlFactoryImpl extends EFactoryImpl implements GmlFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public VectorType createVectorType() {
+	@Override
+    public VectorType createVectorType() {
 		VectorTypeImpl vectorType = new VectorTypeImpl();
 		return vectorType;
 	}
@@ -736,7 +760,8 @@ public class GmlFactoryImpl extends EFactoryImpl implements GmlFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public GmlPackage getGmlPackage() {
+	@Override
+    public GmlPackage getGmlPackage() {
 		return (GmlPackage)getEPackage();
 	}
 

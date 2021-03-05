@@ -62,6 +62,7 @@ public abstract class AbstractDatumBaseTypeImpl extends DefinitionTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getDatumName() {
         return datumName;
     }
@@ -86,6 +87,7 @@ public abstract class AbstractDatumBaseTypeImpl extends DefinitionTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDatumName(CodeType newDatumName) {
         if (newDatumName != datumName) {
             NotificationChain msgs = null;

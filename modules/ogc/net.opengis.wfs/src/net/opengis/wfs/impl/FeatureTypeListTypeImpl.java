@@ -76,7 +76,8 @@ public class FeatureTypeListTypeImpl extends EObjectImpl implements FeatureTypeL
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.FEATURE_TYPE_LIST_TYPE;
   }
 
@@ -85,7 +86,8 @@ public class FeatureTypeListTypeImpl extends EObjectImpl implements FeatureTypeL
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public OperationsType getOperations() {
+	@Override
+    public OperationsType getOperations() {
     return operations;
   }
 
@@ -109,7 +111,8 @@ public class FeatureTypeListTypeImpl extends EObjectImpl implements FeatureTypeL
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setOperations(OperationsType newOperations) {
+	@Override
+    public void setOperations(OperationsType newOperations) {
     if (newOperations != operations) {
       NotificationChain msgs = null;
       if (operations != null)
@@ -128,7 +131,8 @@ public class FeatureTypeListTypeImpl extends EObjectImpl implements FeatureTypeL
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList getFeatureType() {
+	@Override
+    public EList getFeatureType() {
     if (featureType == null) {
       featureType = new EObjectContainmentEList(FeatureTypeType.class, this, WfsPackage.FEATURE_TYPE_LIST_TYPE__FEATURE_TYPE);
     }
@@ -140,7 +144,8 @@ public class FeatureTypeListTypeImpl extends EObjectImpl implements FeatureTypeL
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+	@Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case WfsPackage.FEATURE_TYPE_LIST_TYPE__OPERATIONS:
         return basicSetOperations(null, msgs);
@@ -155,7 +160,8 @@ public class FeatureTypeListTypeImpl extends EObjectImpl implements FeatureTypeL
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	@Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.FEATURE_TYPE_LIST_TYPE__OPERATIONS:
         return getOperations();
@@ -170,7 +176,8 @@ public class FeatureTypeListTypeImpl extends EObjectImpl implements FeatureTypeL
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(int featureID, Object newValue) {
+	@Override
+    public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.FEATURE_TYPE_LIST_TYPE__OPERATIONS:
         setOperations((OperationsType)newValue);
@@ -188,7 +195,8 @@ public class FeatureTypeListTypeImpl extends EObjectImpl implements FeatureTypeL
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(int featureID) {
+	@Override
+    public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.FEATURE_TYPE_LIST_TYPE__OPERATIONS:
         setOperations((OperationsType)null);
@@ -205,7 +213,8 @@ public class FeatureTypeListTypeImpl extends EObjectImpl implements FeatureTypeL
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(int featureID) {
+	@Override
+    public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.FEATURE_TYPE_LIST_TYPE__OPERATIONS:
         return operations != null;

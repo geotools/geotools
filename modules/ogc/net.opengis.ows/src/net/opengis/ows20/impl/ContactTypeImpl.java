@@ -129,6 +129,7 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public TelephoneType getPhone() {
     return phone;
   }
@@ -153,6 +154,7 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setPhone(TelephoneType newPhone) {
     if (newPhone != phone) {
       NotificationChain msgs = null;
@@ -172,6 +174,7 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AddressType getAddress() {
     return address;
   }
@@ -196,6 +199,7 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setAddress(AddressType newAddress) {
     if (newAddress != address) {
       NotificationChain msgs = null;
@@ -215,6 +219,7 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public OnlineResourceType getOnlineResource() {
     return onlineResource;
   }
@@ -239,6 +244,7 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setOnlineResource(OnlineResourceType newOnlineResource) {
     if (newOnlineResource != onlineResource) {
       NotificationChain msgs = null;
@@ -258,6 +264,7 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getHoursOfService() {
     return hoursOfService;
   }
@@ -267,6 +274,7 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setHoursOfService(String newHoursOfService) {
     String oldHoursOfService = hoursOfService;
     hoursOfService = newHoursOfService;
@@ -279,6 +287,7 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getContactInstructions() {
     return contactInstructions;
   }
@@ -288,6 +297,7 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setContactInstructions(String newContactInstructions) {
     String oldContactInstructions = contactInstructions;
     contactInstructions = newContactInstructions;

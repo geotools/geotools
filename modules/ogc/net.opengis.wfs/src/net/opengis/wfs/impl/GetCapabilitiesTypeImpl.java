@@ -72,7 +72,8 @@ public class GetCapabilitiesTypeImpl extends net.opengis.ows10.impl.GetCapabilit
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.GET_CAPABILITIES_TYPE;
   }
 
@@ -81,7 +82,8 @@ public class GetCapabilitiesTypeImpl extends net.opengis.ows10.impl.GetCapabilit
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getService() {
+	@Override
+    public String getService() {
     return service;
   }
 
@@ -90,7 +92,8 @@ public class GetCapabilitiesTypeImpl extends net.opengis.ows10.impl.GetCapabilit
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setService(String newService) {
+	@Override
+    public void setService(String newService) {
     String oldService = service;
     service = newService;
     boolean oldServiceESet = serviceESet;
@@ -104,7 +107,8 @@ public class GetCapabilitiesTypeImpl extends net.opengis.ows10.impl.GetCapabilit
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void unsetService() {
+	@Override
+    public void unsetService() {
     String oldService = service;
     boolean oldServiceESet = serviceESet;
     service = SERVICE_EDEFAULT;
@@ -118,7 +122,8 @@ public class GetCapabilitiesTypeImpl extends net.opengis.ows10.impl.GetCapabilit
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean isSetService() {
+	@Override
+    public boolean isSetService() {
     return serviceESet;
   }
 
@@ -127,7 +132,8 @@ public class GetCapabilitiesTypeImpl extends net.opengis.ows10.impl.GetCapabilit
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	@Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.GET_CAPABILITIES_TYPE__SERVICE:
         return getService();
@@ -140,7 +146,8 @@ public class GetCapabilitiesTypeImpl extends net.opengis.ows10.impl.GetCapabilit
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(int featureID, Object newValue) {
+	@Override
+    public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.GET_CAPABILITIES_TYPE__SERVICE:
         setService((String)newValue);
@@ -154,7 +161,8 @@ public class GetCapabilitiesTypeImpl extends net.opengis.ows10.impl.GetCapabilit
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(int featureID) {
+	@Override
+    public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.GET_CAPABILITIES_TYPE__SERVICE:
         unsetService();
@@ -168,7 +176,8 @@ public class GetCapabilitiesTypeImpl extends net.opengis.ows10.impl.GetCapabilit
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(int featureID) {
+	@Override
+    public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.GET_CAPABILITIES_TYPE__SERVICE:
         return isSetService();
@@ -181,7 +190,8 @@ public class GetCapabilitiesTypeImpl extends net.opengis.ows10.impl.GetCapabilit
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String toString() {
+	@Override
+    public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

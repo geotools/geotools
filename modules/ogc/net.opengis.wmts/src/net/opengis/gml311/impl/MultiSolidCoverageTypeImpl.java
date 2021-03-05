@@ -62,6 +62,7 @@ public class MultiSolidCoverageTypeImpl extends AbstractDiscreteCoverageTypeImpl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MultiSolidDomainType getMultiSolidDomain() {
         return multiSolidDomain;
     }
@@ -86,6 +87,7 @@ public class MultiSolidCoverageTypeImpl extends AbstractDiscreteCoverageTypeImpl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMultiSolidDomain(MultiSolidDomainType newMultiSolidDomain) {
         if (newMultiSolidDomain != multiSolidDomain) {
             NotificationChain msgs = null;

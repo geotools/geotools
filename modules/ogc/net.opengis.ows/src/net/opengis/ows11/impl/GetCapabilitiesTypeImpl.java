@@ -164,7 +164,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.GET_CAPABILITIES_TYPE;
   }
 
@@ -173,7 +174,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
    * <!-- end-user-doc -->
    * @generated
    */
-  public AcceptVersionsType getAcceptVersions() {
+  @Override
+public AcceptVersionsType getAcceptVersions() {
     return acceptVersions;
   }
 
@@ -197,7 +199,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setAcceptVersions(AcceptVersionsType newAcceptVersions) {
+  @Override
+public void setAcceptVersions(AcceptVersionsType newAcceptVersions) {
     if (newAcceptVersions != acceptVersions) {
       NotificationChain msgs = null;
       if (acceptVersions != null)
@@ -216,7 +219,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
    * <!-- end-user-doc -->
    * @generated
    */
-  public SectionsType getSections() {
+  @Override
+public SectionsType getSections() {
     return sections;
   }
 
@@ -240,7 +244,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setSections(SectionsType newSections) {
+  @Override
+public void setSections(SectionsType newSections) {
     if (newSections != sections) {
       NotificationChain msgs = null;
       if (sections != null)
@@ -259,7 +264,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
    * <!-- end-user-doc -->
    * @generated
    */
-  public AcceptFormatsType getAcceptFormats() {
+  @Override
+public AcceptFormatsType getAcceptFormats() {
     return acceptFormats;
   }
 
@@ -283,7 +289,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setAcceptFormats(AcceptFormatsType newAcceptFormats) {
+  @Override
+public void setAcceptFormats(AcceptFormatsType newAcceptFormats) {
     if (newAcceptFormats != acceptFormats) {
       NotificationChain msgs = null;
       if (acceptFormats != null)
@@ -302,7 +309,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getUpdateSequence() {
+  @Override
+public String getUpdateSequence() {
     return updateSequence;
   }
 
@@ -311,7 +319,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setUpdateSequence(String newUpdateSequence) {
+  @Override
+public void setUpdateSequence(String newUpdateSequence) {
     String oldUpdateSequence = updateSequence;
     updateSequence = newUpdateSequence;
     if (eNotificationRequired())
@@ -323,7 +332,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getBaseUrl() {
+  @Override
+public String getBaseUrl() {
     return baseUrl;
   }
 
@@ -332,7 +342,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setBaseUrl(String newBaseUrl) {
+  @Override
+public void setBaseUrl(String newBaseUrl) {
     String oldBaseUrl = baseUrl;
     baseUrl = newBaseUrl;
     if (eNotificationRequired())
@@ -344,7 +355,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getNamespace() {
+  @Override
+public String getNamespace() {
     return namespace;
   }
 
@@ -353,7 +365,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setNamespace(String newNamespace) {
+  @Override
+public void setNamespace(String newNamespace) {
     String oldNamespace = namespace;
     namespace = newNamespace;
     if (eNotificationRequired())
@@ -365,7 +378,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
    * <!-- end-user-doc -->
    * @generated
    */
-  public Map getExtendedProperties() {
+  @Override
+public Map getExtendedProperties() {
     return extendedProperties;
   }
 
@@ -374,7 +388,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setExtendedProperties(Map newExtendedProperties) {
+  @Override
+public void setExtendedProperties(Map newExtendedProperties) {
     Map oldExtendedProperties = extendedProperties;
     extendedProperties = newExtendedProperties;
     if (eNotificationRequired())
@@ -386,7 +401,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+  @Override
+public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Ows11Package.GET_CAPABILITIES_TYPE__ACCEPT_VERSIONS:
         return basicSetAcceptVersions(null, msgs);
@@ -403,7 +419,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.GET_CAPABILITIES_TYPE__ACCEPT_VERSIONS:
         return getAcceptVersions();
@@ -428,7 +445,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.GET_CAPABILITIES_TYPE__ACCEPT_VERSIONS:
         setAcceptVersions((AcceptVersionsType)newValue);
@@ -460,7 +478,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.GET_CAPABILITIES_TYPE__ACCEPT_VERSIONS:
         setAcceptVersions((AcceptVersionsType)null);
@@ -492,7 +511,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.GET_CAPABILITIES_TYPE__ACCEPT_VERSIONS:
         return acceptVersions != null;
@@ -517,7 +537,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
    * <!-- end-user-doc -->
    * @generated
    */
-  public String toString() {
+  @Override
+public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

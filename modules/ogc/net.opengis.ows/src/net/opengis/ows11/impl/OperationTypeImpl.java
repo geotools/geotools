@@ -116,7 +116,8 @@ public class OperationTypeImpl extends EObjectImpl implements OperationType {
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.OPERATION_TYPE;
   }
 
@@ -125,7 +126,8 @@ public class OperationTypeImpl extends EObjectImpl implements OperationType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList getDCP() {
+  @Override
+public EList getDCP() {
     if (dCP == null) {
       dCP = new EObjectContainmentEList(DCPType.class, this, Ows11Package.OPERATION_TYPE__DCP);
     }
@@ -137,7 +139,8 @@ public class OperationTypeImpl extends EObjectImpl implements OperationType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList getParameter() {
+  @Override
+public EList getParameter() {
     if (parameter == null) {
       parameter = new EObjectContainmentEList(DomainType.class, this, Ows11Package.OPERATION_TYPE__PARAMETER);
     }
@@ -149,7 +152,8 @@ public class OperationTypeImpl extends EObjectImpl implements OperationType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList getConstraint() {
+  @Override
+public EList getConstraint() {
     if (constraint == null) {
       constraint = new EObjectContainmentEList(DomainType.class, this, Ows11Package.OPERATION_TYPE__CONSTRAINT);
     }
@@ -161,7 +165,8 @@ public class OperationTypeImpl extends EObjectImpl implements OperationType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList getMetadata() {
+  @Override
+public EList getMetadata() {
     if (metadata == null) {
       metadata = new EObjectContainmentEList(MetadataType.class, this, Ows11Package.OPERATION_TYPE__METADATA);
     }
@@ -173,7 +178,8 @@ public class OperationTypeImpl extends EObjectImpl implements OperationType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getName() {
+  @Override
+public String getName() {
     return name;
   }
 
@@ -182,7 +188,8 @@ public class OperationTypeImpl extends EObjectImpl implements OperationType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setName(String newName) {
+  @Override
+public void setName(String newName) {
     String oldName = name;
     name = newName;
     if (eNotificationRequired())
@@ -194,7 +201,8 @@ public class OperationTypeImpl extends EObjectImpl implements OperationType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+  @Override
+public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Ows11Package.OPERATION_TYPE__DCP:
         return ((InternalEList)getDCP()).basicRemove(otherEnd, msgs);
@@ -213,7 +221,8 @@ public class OperationTypeImpl extends EObjectImpl implements OperationType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.OPERATION_TYPE__DCP:
         return getDCP();
@@ -234,7 +243,8 @@ public class OperationTypeImpl extends EObjectImpl implements OperationType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.OPERATION_TYPE__DCP:
         getDCP().clear();
@@ -264,7 +274,8 @@ public class OperationTypeImpl extends EObjectImpl implements OperationType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.OPERATION_TYPE__DCP:
         getDCP().clear();
@@ -290,7 +301,8 @@ public class OperationTypeImpl extends EObjectImpl implements OperationType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.OPERATION_TYPE__DCP:
         return dCP != null && !dCP.isEmpty();
@@ -311,7 +323,8 @@ public class OperationTypeImpl extends EObjectImpl implements OperationType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public String toString() {
+  @Override
+public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

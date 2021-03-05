@@ -491,6 +491,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isBoolean() {
         return boolean_;
     }
@@ -500,6 +501,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBoolean(boolean newBoolean) {
         boolean oldBoolean = boolean_;
         boolean_ = newBoolean;
@@ -514,6 +516,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetBoolean() {
         boolean oldBoolean = boolean_;
         boolean oldBooleanESet = booleanESet;
@@ -528,6 +531,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetBoolean() {
         return booleanESet;
     }
@@ -537,6 +541,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getCategory() {
         return category;
     }
@@ -561,6 +566,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCategory(CodeType newCategory) {
         if (newCategory != category) {
             NotificationChain msgs = null;
@@ -580,6 +586,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MeasureType getQuantity() {
         return quantity;
     }
@@ -604,6 +611,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setQuantity(MeasureType newQuantity) {
         if (newQuantity != quantity) {
             NotificationChain msgs = null;
@@ -623,6 +631,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getCount() {
         return count;
     }
@@ -632,6 +641,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCount(BigInteger newCount) {
         BigInteger oldCount = count;
         count = newCount;
@@ -644,6 +654,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public List<Object> getBooleanList() {
         return booleanList;
     }
@@ -653,6 +664,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBooleanList(List<Object> newBooleanList) {
         List<Object> oldBooleanList = booleanList;
         booleanList = newBooleanList;
@@ -665,6 +677,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeOrNullListType getCategoryList() {
         return categoryList;
     }
@@ -689,6 +702,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCategoryList(CodeOrNullListType newCategoryList) {
         if (newCategoryList != categoryList) {
             NotificationChain msgs = null;
@@ -708,6 +722,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MeasureOrNullListType getQuantityList() {
         return quantityList;
     }
@@ -732,6 +747,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setQuantityList(MeasureOrNullListType newQuantityList) {
         if (newQuantityList != quantityList) {
             NotificationChain msgs = null;
@@ -751,6 +767,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public List<Object> getCountList() {
         return countList;
     }
@@ -760,6 +777,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCountList(List<Object> newCountList) {
         List<Object> oldCountList = countList;
         countList = newCountList;
@@ -772,6 +790,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CategoryExtentType getCategoryExtent() {
         return categoryExtent;
     }
@@ -796,6 +815,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCategoryExtent(CategoryExtentType newCategoryExtent) {
         if (newCategoryExtent != categoryExtent) {
             NotificationChain msgs = null;
@@ -815,6 +835,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public QuantityExtentType getQuantityExtent() {
         return quantityExtent;
     }
@@ -839,6 +860,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setQuantityExtent(QuantityExtentType newQuantityExtent) {
         if (newQuantityExtent != quantityExtent) {
             NotificationChain msgs = null;
@@ -858,6 +880,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public List<Object> getCountExtent() {
         return countExtent;
     }
@@ -867,6 +890,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCountExtent(List<Object> newCountExtent) {
         List<Object> oldCountExtent = countExtent;
         countExtent = newCountExtent;
@@ -879,6 +903,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getCompositeValueGroup() {
         if (compositeValueGroup == null) {
             compositeValueGroup = new BasicFeatureMap(this, Gml311Package.VALUE_PROPERTY_TYPE__COMPOSITE_VALUE_GROUP);
@@ -891,6 +916,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CompositeValueType getCompositeValue() {
         return (CompositeValueType)getCompositeValueGroup().get(Gml311Package.eINSTANCE.getValuePropertyType_CompositeValue(), true);
     }
@@ -909,6 +935,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCompositeValue(CompositeValueType newCompositeValue) {
         ((FeatureMap.Internal)getCompositeValueGroup()).set(Gml311Package.eINSTANCE.getValuePropertyType_CompositeValue(), newCompositeValue);
     }
@@ -918,6 +945,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getObjectGroup() {
         if (objectGroup == null) {
             objectGroup = new BasicFeatureMap(this, Gml311Package.VALUE_PROPERTY_TYPE__OBJECT_GROUP);
@@ -930,6 +958,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EObject getObject() {
         return (EObject)getObjectGroup().get(Gml311Package.eINSTANCE.getValuePropertyType_Object(), true);
     }
@@ -948,6 +977,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object getNull() {
         return null_;
     }
@@ -957,6 +987,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setNull(Object newNull) {
         Object oldNull = null_;
         null_ = newNull;
@@ -969,6 +1000,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ActuateType getActuate() {
         return actuate;
     }
@@ -978,6 +1010,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setActuate(ActuateType newActuate) {
         ActuateType oldActuate = actuate;
         actuate = newActuate == null ? ACTUATE_EDEFAULT : newActuate;
@@ -992,6 +1025,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetActuate() {
         ActuateType oldActuate = actuate;
         boolean oldActuateESet = actuateESet;
@@ -1006,6 +1040,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetActuate() {
         return actuateESet;
     }
@@ -1015,6 +1050,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getArcrole() {
         return arcrole;
     }
@@ -1024,6 +1060,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setArcrole(String newArcrole) {
         String oldArcrole = arcrole;
         arcrole = newArcrole;
@@ -1036,6 +1073,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getHref() {
         return href;
     }
@@ -1045,6 +1083,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setHref(String newHref) {
         String oldHref = href;
         href = newHref;
@@ -1057,6 +1096,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getRemoteSchema() {
         return remoteSchema;
     }
@@ -1066,6 +1106,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRemoteSchema(String newRemoteSchema) {
         String oldRemoteSchema = remoteSchema;
         remoteSchema = newRemoteSchema;
@@ -1078,6 +1119,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getRole() {
         return role;
     }
@@ -1087,6 +1129,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRole(String newRole) {
         String oldRole = role;
         role = newRole;
@@ -1099,6 +1142,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ShowType getShow() {
         return show;
     }
@@ -1108,6 +1152,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setShow(ShowType newShow) {
         ShowType oldShow = show;
         show = newShow == null ? SHOW_EDEFAULT : newShow;
@@ -1122,6 +1167,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetShow() {
         ShowType oldShow = show;
         boolean oldShowESet = showESet;
@@ -1136,6 +1182,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetShow() {
         return showESet;
     }
@@ -1145,6 +1192,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getTitle() {
         return title;
     }
@@ -1154,6 +1202,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTitle(String newTitle) {
         String oldTitle = title;
         title = newTitle;
@@ -1166,6 +1215,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TypeType getType() {
         return type;
     }
@@ -1175,6 +1225,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setType(TypeType newType) {
         TypeType oldType = type;
         type = newType == null ? TYPE_EDEFAULT : newType;
@@ -1189,6 +1240,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetType() {
         TypeType oldType = type;
         boolean oldTypeESet = typeESet;
@@ -1203,6 +1255,7 @@ public class ValuePropertyTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetType() {
         return typeESet;
     }

@@ -184,7 +184,8 @@ public class UpdateElementTypeImpl extends EObjectImpl implements UpdateElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.UPDATE_ELEMENT_TYPE;
   }
 
@@ -193,7 +194,8 @@ public class UpdateElementTypeImpl extends EObjectImpl implements UpdateElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList getProperty() {
+	@Override
+    public EList getProperty() {
     if (property == null) {
       property = new EObjectContainmentEList(PropertyType.class, this, WfsPackage.UPDATE_ELEMENT_TYPE__PROPERTY);
     }
@@ -205,7 +207,8 @@ public class UpdateElementTypeImpl extends EObjectImpl implements UpdateElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Filter getFilter() {
+	@Override
+    public Filter getFilter() {
     return filter;
   }
 
@@ -214,7 +217,8 @@ public class UpdateElementTypeImpl extends EObjectImpl implements UpdateElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setFilter(Filter newFilter) {
+	@Override
+    public void setFilter(Filter newFilter) {
     Filter oldFilter = filter;
     filter = newFilter;
     if (eNotificationRequired())
@@ -226,7 +230,8 @@ public class UpdateElementTypeImpl extends EObjectImpl implements UpdateElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getHandle() {
+	@Override
+    public String getHandle() {
     return handle;
   }
 
@@ -235,7 +240,8 @@ public class UpdateElementTypeImpl extends EObjectImpl implements UpdateElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setHandle(String newHandle) {
+	@Override
+    public void setHandle(String newHandle) {
     String oldHandle = handle;
     handle = newHandle;
     if (eNotificationRequired())
@@ -247,7 +253,8 @@ public class UpdateElementTypeImpl extends EObjectImpl implements UpdateElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getInputFormat() {
+	@Override
+    public String getInputFormat() {
     return inputFormat;
   }
 
@@ -256,7 +263,8 @@ public class UpdateElementTypeImpl extends EObjectImpl implements UpdateElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setInputFormat(String newInputFormat) {
+	@Override
+    public void setInputFormat(String newInputFormat) {
     String oldInputFormat = inputFormat;
     inputFormat = newInputFormat;
     boolean oldInputFormatESet = inputFormatESet;
@@ -270,7 +278,8 @@ public class UpdateElementTypeImpl extends EObjectImpl implements UpdateElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void unsetInputFormat() {
+	@Override
+    public void unsetInputFormat() {
     String oldInputFormat = inputFormat;
     boolean oldInputFormatESet = inputFormatESet;
     inputFormat = INPUT_FORMAT_EDEFAULT;
@@ -284,7 +293,8 @@ public class UpdateElementTypeImpl extends EObjectImpl implements UpdateElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean isSetInputFormat() {
+	@Override
+    public boolean isSetInputFormat() {
     return inputFormatESet;
   }
 
@@ -293,7 +303,8 @@ public class UpdateElementTypeImpl extends EObjectImpl implements UpdateElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public URI getSrsName() {
+	@Override
+    public URI getSrsName() {
     return srsName;
   }
 
@@ -302,7 +313,8 @@ public class UpdateElementTypeImpl extends EObjectImpl implements UpdateElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setSrsName(URI newSrsName) {
+	@Override
+    public void setSrsName(URI newSrsName) {
     URI oldSrsName = srsName;
     srsName = newSrsName;
     if (eNotificationRequired())
@@ -314,7 +326,8 @@ public class UpdateElementTypeImpl extends EObjectImpl implements UpdateElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public QName getTypeName() {
+	@Override
+    public QName getTypeName() {
     return typeName;
   }
 
@@ -323,7 +336,8 @@ public class UpdateElementTypeImpl extends EObjectImpl implements UpdateElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setTypeName(QName newTypeName) {
+	@Override
+    public void setTypeName(QName newTypeName) {
     QName oldTypeName = typeName;
     typeName = newTypeName;
     if (eNotificationRequired())
@@ -335,7 +349,8 @@ public class UpdateElementTypeImpl extends EObjectImpl implements UpdateElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+	@Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case WfsPackage.UPDATE_ELEMENT_TYPE__PROPERTY:
         return ((InternalEList)getProperty()).basicRemove(otherEnd, msgs);
@@ -348,7 +363,8 @@ public class UpdateElementTypeImpl extends EObjectImpl implements UpdateElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	@Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.UPDATE_ELEMENT_TYPE__PROPERTY:
         return getProperty();
@@ -371,7 +387,8 @@ public class UpdateElementTypeImpl extends EObjectImpl implements UpdateElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(int featureID, Object newValue) {
+	@Override
+    public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.UPDATE_ELEMENT_TYPE__PROPERTY:
         getProperty().clear();
@@ -401,7 +418,8 @@ public class UpdateElementTypeImpl extends EObjectImpl implements UpdateElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(int featureID) {
+	@Override
+    public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.UPDATE_ELEMENT_TYPE__PROPERTY:
         getProperty().clear();
@@ -430,7 +448,8 @@ public class UpdateElementTypeImpl extends EObjectImpl implements UpdateElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(int featureID) {
+	@Override
+    public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.UPDATE_ELEMENT_TYPE__PROPERTY:
         return property != null && !property.isEmpty();
@@ -453,7 +472,8 @@ public class UpdateElementTypeImpl extends EObjectImpl implements UpdateElementT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String toString() {
+	@Override
+    public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

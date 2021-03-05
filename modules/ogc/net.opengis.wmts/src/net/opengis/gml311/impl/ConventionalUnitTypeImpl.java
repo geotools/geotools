@@ -92,6 +92,7 @@ public class ConventionalUnitTypeImpl extends UnitDefinitionTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ConversionToPreferredUnitType getConversionToPreferredUnit() {
         return conversionToPreferredUnit;
     }
@@ -116,6 +117,7 @@ public class ConventionalUnitTypeImpl extends UnitDefinitionTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setConversionToPreferredUnit(ConversionToPreferredUnitType newConversionToPreferredUnit) {
         if (newConversionToPreferredUnit != conversionToPreferredUnit) {
             NotificationChain msgs = null;
@@ -135,6 +137,7 @@ public class ConventionalUnitTypeImpl extends UnitDefinitionTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ConversionToPreferredUnitType getRoughConversionToPreferredUnit() {
         return roughConversionToPreferredUnit;
     }
@@ -159,6 +162,7 @@ public class ConventionalUnitTypeImpl extends UnitDefinitionTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRoughConversionToPreferredUnit(ConversionToPreferredUnitType newRoughConversionToPreferredUnit) {
         if (newRoughConversionToPreferredUnit != roughConversionToPreferredUnit) {
             NotificationChain msgs = null;
@@ -178,6 +182,7 @@ public class ConventionalUnitTypeImpl extends UnitDefinitionTypeImpl implements 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<DerivationUnitTermType> getDerivationUnitTerm() {
         if (derivationUnitTerm == null) {
             derivationUnitTerm = new EObjectContainmentEList<>(DerivationUnitTermType.class, this, Gml311Package.CONVENTIONAL_UNIT_TYPE__DERIVATION_UNIT_TERM);

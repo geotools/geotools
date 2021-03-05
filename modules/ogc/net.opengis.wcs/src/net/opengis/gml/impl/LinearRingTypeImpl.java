@@ -61,6 +61,7 @@ public class LinearRingTypeImpl extends AbstractRingTypeImpl implements LinearRi
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return GmlPackage.Literals.LINEAR_RING_TYPE;
 	}
@@ -70,6 +71,7 @@ public class LinearRingTypeImpl extends AbstractRingTypeImpl implements LinearRi
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList getPos() {
 		if (pos == null) {
 			pos = new EObjectContainmentEList(DirectPositionType.class, this, GmlPackage.LINEAR_RING_TYPE__POS);
@@ -82,6 +84,7 @@ public class LinearRingTypeImpl extends AbstractRingTypeImpl implements LinearRi
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case GmlPackage.LINEAR_RING_TYPE__POS:
@@ -95,6 +98,7 @@ public class LinearRingTypeImpl extends AbstractRingTypeImpl implements LinearRi
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case GmlPackage.LINEAR_RING_TYPE__POS:
@@ -108,6 +112,7 @@ public class LinearRingTypeImpl extends AbstractRingTypeImpl implements LinearRi
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case GmlPackage.LINEAR_RING_TYPE__POS:
@@ -123,6 +128,7 @@ public class LinearRingTypeImpl extends AbstractRingTypeImpl implements LinearRi
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case GmlPackage.LINEAR_RING_TYPE__POS:
@@ -137,6 +143,7 @@ public class LinearRingTypeImpl extends AbstractRingTypeImpl implements LinearRi
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case GmlPackage.LINEAR_RING_TYPE__POS:

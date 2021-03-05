@@ -84,6 +84,7 @@ public class TileMatrixSetLinkTypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getTileMatrixSet() {
         return tileMatrixSet;
     }
@@ -93,6 +94,7 @@ public class TileMatrixSetLinkTypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTileMatrixSet(String newTileMatrixSet) {
         String oldTileMatrixSet = tileMatrixSet;
         tileMatrixSet = newTileMatrixSet;
@@ -105,6 +107,7 @@ public class TileMatrixSetLinkTypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TileMatrixSetLimitsType getTileMatrixSetLimits() {
         return tileMatrixSetLimits;
     }
@@ -129,6 +132,7 @@ public class TileMatrixSetLinkTypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTileMatrixSetLimits(TileMatrixSetLimitsType newTileMatrixSetLimits) {
         if (newTileMatrixSetLimits != tileMatrixSetLimits) {
             NotificationChain msgs = null;

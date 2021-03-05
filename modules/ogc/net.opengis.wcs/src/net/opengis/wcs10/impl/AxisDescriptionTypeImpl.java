@@ -119,6 +119,7 @@ public class AxisDescriptionTypeImpl extends AbstractDescriptionTypeImpl impleme
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.AXIS_DESCRIPTION_TYPE;
 	}
@@ -128,6 +129,7 @@ public class AxisDescriptionTypeImpl extends AbstractDescriptionTypeImpl impleme
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ValuesType getValues() {
 		return values;
 	}
@@ -152,6 +154,7 @@ public class AxisDescriptionTypeImpl extends AbstractDescriptionTypeImpl impleme
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setValues(ValuesType newValues) {
 		if (newValues != values) {
 			NotificationChain msgs = null;
@@ -171,6 +174,7 @@ public class AxisDescriptionTypeImpl extends AbstractDescriptionTypeImpl impleme
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getRefSys() {
 		return refSys;
 	}
@@ -180,6 +184,7 @@ public class AxisDescriptionTypeImpl extends AbstractDescriptionTypeImpl impleme
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setRefSys(String newRefSys) {
 		String oldRefSys = refSys;
 		refSys = newRefSys;
@@ -192,6 +197,7 @@ public class AxisDescriptionTypeImpl extends AbstractDescriptionTypeImpl impleme
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getRefSysLabel() {
 		return refSysLabel;
 	}
@@ -201,6 +207,7 @@ public class AxisDescriptionTypeImpl extends AbstractDescriptionTypeImpl impleme
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setRefSysLabel(String newRefSysLabel) {
 		String oldRefSysLabel = refSysLabel;
 		refSysLabel = newRefSysLabel;
@@ -213,6 +220,7 @@ public class AxisDescriptionTypeImpl extends AbstractDescriptionTypeImpl impleme
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getSemantic() {
 		return semantic;
 	}
@@ -222,6 +230,7 @@ public class AxisDescriptionTypeImpl extends AbstractDescriptionTypeImpl impleme
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setSemantic(String newSemantic) {
 		String oldSemantic = semantic;
 		semantic = newSemantic;
@@ -234,6 +243,7 @@ public class AxisDescriptionTypeImpl extends AbstractDescriptionTypeImpl impleme
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.AXIS_DESCRIPTION_TYPE__VALUES:
@@ -247,6 +257,7 @@ public class AxisDescriptionTypeImpl extends AbstractDescriptionTypeImpl impleme
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.AXIS_DESCRIPTION_TYPE__VALUES:
@@ -266,6 +277,7 @@ public class AxisDescriptionTypeImpl extends AbstractDescriptionTypeImpl impleme
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.AXIS_DESCRIPTION_TYPE__VALUES:
@@ -289,6 +301,7 @@ public class AxisDescriptionTypeImpl extends AbstractDescriptionTypeImpl impleme
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.AXIS_DESCRIPTION_TYPE__VALUES:
@@ -312,6 +325,7 @@ public class AxisDescriptionTypeImpl extends AbstractDescriptionTypeImpl impleme
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.AXIS_DESCRIPTION_TYPE__VALUES:
@@ -331,6 +345,7 @@ public class AxisDescriptionTypeImpl extends AbstractDescriptionTypeImpl impleme
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

@@ -61,6 +61,7 @@ public class BoundingShapeTypeImpl extends EObjectImpl implements BoundingShapeT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return GmlPackage.Literals.BOUNDING_SHAPE_TYPE;
 	}
@@ -70,6 +71,7 @@ public class BoundingShapeTypeImpl extends EObjectImpl implements BoundingShapeT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public FeatureMap getEnvelopeGroup() {
 		if (envelopeGroup == null) {
 			envelopeGroup = new BasicFeatureMap(this, GmlPackage.BOUNDING_SHAPE_TYPE__ENVELOPE_GROUP);
@@ -82,6 +84,7 @@ public class BoundingShapeTypeImpl extends EObjectImpl implements BoundingShapeT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EnvelopeType getEnvelope() {
 		return (EnvelopeType)getEnvelopeGroup().get(GmlPackage.Literals.BOUNDING_SHAPE_TYPE__ENVELOPE, true);
 	}
@@ -100,6 +103,7 @@ public class BoundingShapeTypeImpl extends EObjectImpl implements BoundingShapeT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setEnvelope(EnvelopeType newEnvelope) {
 		((FeatureMap.Internal)getEnvelopeGroup()).set(GmlPackage.Literals.BOUNDING_SHAPE_TYPE__ENVELOPE, newEnvelope);
 	}
@@ -109,6 +113,7 @@ public class BoundingShapeTypeImpl extends EObjectImpl implements BoundingShapeT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case GmlPackage.BOUNDING_SHAPE_TYPE__ENVELOPE_GROUP:
@@ -124,6 +129,7 @@ public class BoundingShapeTypeImpl extends EObjectImpl implements BoundingShapeT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case GmlPackage.BOUNDING_SHAPE_TYPE__ENVELOPE_GROUP:
@@ -140,6 +146,7 @@ public class BoundingShapeTypeImpl extends EObjectImpl implements BoundingShapeT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case GmlPackage.BOUNDING_SHAPE_TYPE__ENVELOPE_GROUP:
@@ -157,6 +164,7 @@ public class BoundingShapeTypeImpl extends EObjectImpl implements BoundingShapeT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case GmlPackage.BOUNDING_SHAPE_TYPE__ENVELOPE_GROUP:
@@ -174,6 +182,7 @@ public class BoundingShapeTypeImpl extends EObjectImpl implements BoundingShapeT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case GmlPackage.BOUNDING_SHAPE_TYPE__ENVELOPE_GROUP:
@@ -189,6 +198,7 @@ public class BoundingShapeTypeImpl extends EObjectImpl implements BoundingShapeT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

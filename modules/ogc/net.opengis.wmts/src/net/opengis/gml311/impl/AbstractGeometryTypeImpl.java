@@ -157,6 +157,7 @@ public abstract class AbstractGeometryTypeImpl extends AbstractGMLTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public List<String> getAxisLabels() {
         return axisLabels;
     }
@@ -166,6 +167,7 @@ public abstract class AbstractGeometryTypeImpl extends AbstractGMLTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAxisLabels(List<String> newAxisLabels) {
         List<String> oldAxisLabels = axisLabels;
         axisLabels = newAxisLabels;
@@ -178,6 +180,7 @@ public abstract class AbstractGeometryTypeImpl extends AbstractGMLTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getGid() {
         return gid;
     }
@@ -187,6 +190,7 @@ public abstract class AbstractGeometryTypeImpl extends AbstractGMLTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGid(String newGid) {
         String oldGid = gid;
         gid = newGid;
@@ -199,6 +203,7 @@ public abstract class AbstractGeometryTypeImpl extends AbstractGMLTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getSrsDimension() {
         return srsDimension;
     }
@@ -208,6 +213,7 @@ public abstract class AbstractGeometryTypeImpl extends AbstractGMLTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSrsDimension(BigInteger newSrsDimension) {
         BigInteger oldSrsDimension = srsDimension;
         srsDimension = newSrsDimension;
@@ -220,6 +226,7 @@ public abstract class AbstractGeometryTypeImpl extends AbstractGMLTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getSrsName() {
         return srsName;
     }
@@ -229,6 +236,7 @@ public abstract class AbstractGeometryTypeImpl extends AbstractGMLTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSrsName(String newSrsName) {
         String oldSrsName = srsName;
         srsName = newSrsName;
@@ -241,6 +249,7 @@ public abstract class AbstractGeometryTypeImpl extends AbstractGMLTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public List<String> getUomLabels() {
         return uomLabels;
     }
@@ -250,6 +259,7 @@ public abstract class AbstractGeometryTypeImpl extends AbstractGMLTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUomLabels(List<String> newUomLabels) {
         List<String> oldUomLabels = uomLabels;
         uomLabels = newUomLabels;

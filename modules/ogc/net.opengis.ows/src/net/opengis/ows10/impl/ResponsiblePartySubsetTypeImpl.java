@@ -121,7 +121,8 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getIndividualName() {
+	@Override
+    public String getIndividualName() {
     return individualName;
   }
 
@@ -130,7 +131,8 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setIndividualName(String newIndividualName) {
+	@Override
+    public void setIndividualName(String newIndividualName) {
     String oldIndividualName = individualName;
     individualName = newIndividualName;
     if (eNotificationRequired())
@@ -142,7 +144,8 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getPositionName() {
+	@Override
+    public String getPositionName() {
     return positionName;
   }
 
@@ -151,7 +154,8 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setPositionName(String newPositionName) {
+	@Override
+    public void setPositionName(String newPositionName) {
     String oldPositionName = positionName;
     positionName = newPositionName;
     if (eNotificationRequired())
@@ -163,7 +167,8 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public ContactType getContactInfo() {
+	@Override
+    public ContactType getContactInfo() {
     return contactInfo;
   }
 
@@ -187,7 +192,8 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setContactInfo(ContactType newContactInfo) {
+	@Override
+    public void setContactInfo(ContactType newContactInfo) {
     if (newContactInfo != contactInfo) {
       NotificationChain msgs = null;
       if (contactInfo != null)
@@ -206,7 +212,8 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public CodeType getRole() {
+	@Override
+    public CodeType getRole() {
     return role;
   }
 
@@ -230,7 +237,8 @@ public class ResponsiblePartySubsetTypeImpl extends EObjectImpl implements Respo
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setRole(CodeType newRole) {
+	@Override
+    public void setRole(CodeType newRole) {
     if (newRole != role) {
       NotificationChain msgs = null;
       if (role != null)

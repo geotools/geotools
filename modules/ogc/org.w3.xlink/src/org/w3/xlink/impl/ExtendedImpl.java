@@ -124,6 +124,7 @@ public class ExtendedImpl extends EObjectImpl implements Extended {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EClass eStaticClass() {
         return XlinkPackage.Literals.EXTENDED;
     }
@@ -133,6 +134,7 @@ public class ExtendedImpl extends EObjectImpl implements Extended {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getTitle() {
         // TODO: implement this method to return the 'Title' containment reference list
         // Ensure that you remove @generated or mark it @generated NOT
@@ -146,6 +148,7 @@ public class ExtendedImpl extends EObjectImpl implements Extended {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getResource() {
         // TODO: implement this method to return the 'Resource' containment reference list
         // Ensure that you remove @generated or mark it @generated NOT
@@ -159,6 +162,7 @@ public class ExtendedImpl extends EObjectImpl implements Extended {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getLocator() {
         // TODO: implement this method to return the 'Locator' containment reference list
         // Ensure that you remove @generated or mark it @generated NOT
@@ -172,6 +176,7 @@ public class ExtendedImpl extends EObjectImpl implements Extended {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getArc() {
         // TODO: implement this method to return the 'Arc' containment reference list
         // Ensure that you remove @generated or mark it @generated NOT
@@ -185,6 +190,7 @@ public class ExtendedImpl extends EObjectImpl implements Extended {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getRole() {
         return role;
     }
@@ -194,6 +200,7 @@ public class ExtendedImpl extends EObjectImpl implements Extended {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRole(String newRole) {
         String oldRole = role;
         role = newRole;
@@ -206,6 +213,7 @@ public class ExtendedImpl extends EObjectImpl implements Extended {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TypeType getType() {
         return type;
     }
@@ -215,6 +223,7 @@ public class ExtendedImpl extends EObjectImpl implements Extended {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setType(TypeType newType) {
         TypeType oldType = type;
         type = newType == null ? TYPE_EDEFAULT : newType;
@@ -229,6 +238,7 @@ public class ExtendedImpl extends EObjectImpl implements Extended {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetType() {
         TypeType oldType = type;
         boolean oldTypeESet = typeESet;
@@ -243,6 +253,7 @@ public class ExtendedImpl extends EObjectImpl implements Extended {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetType() {
         return typeESet;
     }
@@ -252,6 +263,7 @@ public class ExtendedImpl extends EObjectImpl implements Extended {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getTitleAttribute() {
         return titleAttribute;
     }
@@ -261,6 +273,7 @@ public class ExtendedImpl extends EObjectImpl implements Extended {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTitleAttribute(String newTitleAttribute) {
         String oldTitleAttribute = titleAttribute;
         titleAttribute = newTitleAttribute;
@@ -273,6 +286,7 @@ public class ExtendedImpl extends EObjectImpl implements Extended {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case XlinkPackage.EXTENDED__TITLE:
@@ -292,6 +306,7 @@ public class ExtendedImpl extends EObjectImpl implements Extended {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case XlinkPackage.EXTENDED__TITLE:
@@ -317,6 +332,7 @@ public class ExtendedImpl extends EObjectImpl implements Extended {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case XlinkPackage.EXTENDED__ROLE:
@@ -337,6 +353,7 @@ public class ExtendedImpl extends EObjectImpl implements Extended {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case XlinkPackage.EXTENDED__ROLE:
@@ -357,6 +374,7 @@ public class ExtendedImpl extends EObjectImpl implements Extended {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case XlinkPackage.EXTENDED__TITLE:
@@ -382,6 +400,7 @@ public class ExtendedImpl extends EObjectImpl implements Extended {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String toString() {
         if (eIsProxy()) return super.toString();
 

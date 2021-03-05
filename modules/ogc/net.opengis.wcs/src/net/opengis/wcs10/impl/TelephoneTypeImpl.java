@@ -90,6 +90,7 @@ public class TelephoneTypeImpl extends EObjectImpl implements TelephoneType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.TELEPHONE_TYPE;
 	}
@@ -99,6 +100,7 @@ public class TelephoneTypeImpl extends EObjectImpl implements TelephoneType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getVoice() {
 		return voice;
 	}
@@ -108,7 +110,8 @@ public class TelephoneTypeImpl extends EObjectImpl implements TelephoneType {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setVoice(String newVoice) {
+	@Override
+    public void setVoice(String newVoice) {
 		String oldVoice = voice;
 		voice = newVoice;
 		if (eNotificationRequired())
@@ -120,6 +123,7 @@ public class TelephoneTypeImpl extends EObjectImpl implements TelephoneType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getFacsimile() {
 		return facsimile;
 	}
@@ -129,7 +133,8 @@ public class TelephoneTypeImpl extends EObjectImpl implements TelephoneType {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setFacsimile(String newFacsimile) {
+	@Override
+    public void setFacsimile(String newFacsimile) {
 		String oldFacsimile = facsimile;
 		facsimile = newFacsimile;
 		if (eNotificationRequired())
@@ -141,6 +146,7 @@ public class TelephoneTypeImpl extends EObjectImpl implements TelephoneType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.TELEPHONE_TYPE__VOICE:
@@ -156,6 +162,7 @@ public class TelephoneTypeImpl extends EObjectImpl implements TelephoneType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.TELEPHONE_TYPE__VOICE:
@@ -173,6 +180,7 @@ public class TelephoneTypeImpl extends EObjectImpl implements TelephoneType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.TELEPHONE_TYPE__VOICE:
@@ -190,6 +198,7 @@ public class TelephoneTypeImpl extends EObjectImpl implements TelephoneType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.TELEPHONE_TYPE__VOICE:
@@ -205,6 +214,7 @@ public class TelephoneTypeImpl extends EObjectImpl implements TelephoneType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

@@ -91,6 +91,7 @@ public class LanguageStringTypeImpl extends EObjectImpl implements LanguageStrin
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getValue() {
     return value;
   }
@@ -100,6 +101,7 @@ public class LanguageStringTypeImpl extends EObjectImpl implements LanguageStrin
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setValue(String newValue) {
     String oldValue = value;
     value = newValue;
@@ -112,6 +114,7 @@ public class LanguageStringTypeImpl extends EObjectImpl implements LanguageStrin
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getLang() {
     return lang;
   }
@@ -121,6 +124,7 @@ public class LanguageStringTypeImpl extends EObjectImpl implements LanguageStrin
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setLang(String newLang) {
     String oldLang = lang;
     lang = newLang;

@@ -152,6 +152,7 @@ public class TimePositionTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object getValue() {
         return value;
     }
@@ -161,6 +162,7 @@ public class TimePositionTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValue(Object newValue) {
         Object oldValue = value;
         value = newValue;
@@ -173,6 +175,7 @@ public class TimePositionTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getCalendarEraName() {
         return calendarEraName;
     }
@@ -182,6 +185,7 @@ public class TimePositionTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCalendarEraName(String newCalendarEraName) {
         String oldCalendarEraName = calendarEraName;
         calendarEraName = newCalendarEraName;
@@ -194,6 +198,7 @@ public class TimePositionTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getFrame() {
         return frame;
     }
@@ -203,6 +208,7 @@ public class TimePositionTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFrame(String newFrame) {
         String oldFrame = frame;
         frame = newFrame;
@@ -217,6 +223,7 @@ public class TimePositionTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetFrame() {
         String oldFrame = frame;
         boolean oldFrameESet = frameESet;
@@ -231,6 +238,7 @@ public class TimePositionTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetFrame() {
         return frameESet;
     }
@@ -240,6 +248,7 @@ public class TimePositionTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeIndeterminateValueType getIndeterminatePosition() {
         return indeterminatePosition;
     }
@@ -249,6 +258,7 @@ public class TimePositionTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIndeterminatePosition(TimeIndeterminateValueType newIndeterminatePosition) {
         TimeIndeterminateValueType oldIndeterminatePosition = indeterminatePosition;
         indeterminatePosition = newIndeterminatePosition == null ? INDETERMINATE_POSITION_EDEFAULT : newIndeterminatePosition;
@@ -263,6 +273,7 @@ public class TimePositionTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetIndeterminatePosition() {
         TimeIndeterminateValueType oldIndeterminatePosition = indeterminatePosition;
         boolean oldIndeterminatePositionESet = indeterminatePositionESet;
@@ -277,6 +288,7 @@ public class TimePositionTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetIndeterminatePosition() {
         return indeterminatePositionESet;
     }

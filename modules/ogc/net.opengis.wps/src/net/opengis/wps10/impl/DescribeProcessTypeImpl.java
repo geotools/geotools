@@ -61,6 +61,7 @@ public class DescribeProcessTypeImpl extends RequestBaseTypeImpl implements Desc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.DESCRIBE_PROCESS_TYPE;
   }
@@ -70,6 +71,7 @@ public class DescribeProcessTypeImpl extends RequestBaseTypeImpl implements Desc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList getIdentifier() {
     if (identifier == null) {
       identifier = new EObjectContainmentEList(CodeType.class, this, Wps10Package.DESCRIBE_PROCESS_TYPE__IDENTIFIER);
@@ -82,6 +84,7 @@ public class DescribeProcessTypeImpl extends RequestBaseTypeImpl implements Desc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.DESCRIBE_PROCESS_TYPE__IDENTIFIER:
@@ -95,6 +98,7 @@ public class DescribeProcessTypeImpl extends RequestBaseTypeImpl implements Desc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.DESCRIBE_PROCESS_TYPE__IDENTIFIER:
@@ -108,6 +112,7 @@ public class DescribeProcessTypeImpl extends RequestBaseTypeImpl implements Desc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.DESCRIBE_PROCESS_TYPE__IDENTIFIER:
@@ -123,6 +128,7 @@ public class DescribeProcessTypeImpl extends RequestBaseTypeImpl implements Desc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.DESCRIBE_PROCESS_TYPE__IDENTIFIER:
@@ -137,6 +143,7 @@ public class DescribeProcessTypeImpl extends RequestBaseTypeImpl implements Desc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.DESCRIBE_PROCESS_TYPE__IDENTIFIER:

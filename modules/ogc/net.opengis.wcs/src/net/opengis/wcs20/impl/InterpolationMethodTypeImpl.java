@@ -70,6 +70,7 @@ public class InterpolationMethodTypeImpl extends EObjectImpl implements Interpol
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getInterpolationMethod() {
 		return interpolationMethod;
 	}
@@ -79,6 +80,7 @@ public class InterpolationMethodTypeImpl extends EObjectImpl implements Interpol
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setInterpolationMethod(String newInterpolationMethod) {
 		String oldInterpolationMethod = interpolationMethod;
 		interpolationMethod = newInterpolationMethod;

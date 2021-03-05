@@ -153,6 +153,7 @@ public class MBTilesDataStoreFactory implements DataStoreFactorySpi {
         return "jdbc:sqlite:" + db;
     }
 
+    @Override
     public boolean canProcess(Map<String, ?> params) {
         if (!DataUtilities.canProcess(params, getParametersInfo())) {
             return false;

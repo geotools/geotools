@@ -53,10 +53,12 @@ public class PolygonLabelFunction implements Function {
         this.fallback = fallback;
     }
 
+    @Override
     public Object evaluate(Object object) {
         return evaluate(object, Point.class);
     }
 
+    @Override
     public <T> T evaluate(Object object, Class<T> context) {
         Expression geometryExpression = parameters.get(0);
         Geometry polygon = geometryExpression.evaluate(object, Geometry.class);
@@ -69,22 +71,27 @@ public class PolygonLabelFunction implements Function {
         return Converters.convert(point, context); // convert to requested format
     }
 
+    @Override
     public Object accept(ExpressionVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
 
+    @Override
     public String getName() {
         return NAME.getName();
     }
 
+    @Override
     public FunctionName getFunctionName() {
         return NAME;
     }
 
+    @Override
     public List<Expression> getParameters() {
         return parameters;
     }
 
+    @Override
     public Literal getFallbackValue() {
         return fallback;
     }

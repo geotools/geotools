@@ -36,6 +36,7 @@ import org.opengis.feature.simple.SimpleFeature;
 public abstract class AbstractGetFeatureResponseParserFactory extends AbstractWFSResponseFactory {
 
     /** @see WFSResponseFactory#isAvailable() */
+    @Override
     public boolean isAvailable() {
         return true;
     }
@@ -50,6 +51,7 @@ public abstract class AbstractGetFeatureResponseParserFactory extends AbstractWF
      *
      * @see WFSResponseFactory#canProcess(WFSOperationType, String)
      */
+    @Override
     public boolean canProcess(final WFSRequest request, final String contentType) {
         if (!WFSOperationType.GET_FEATURE.equals(request.getOperation())) {
             return false;
@@ -71,6 +73,7 @@ public abstract class AbstractGetFeatureResponseParserFactory extends AbstractWF
         return matches;
     }
 
+    @Override
     protected WFSResponse createResponseImpl(
             WFSRequest request, HTTPResponse response, InputStream in) throws IOException {
         GetParser<SimpleFeature> parser = parser((GetFeatureRequest) request, in);
@@ -82,6 +85,7 @@ public abstract class AbstractGetFeatureResponseParserFactory extends AbstractWF
     }
 
     /** @param head The first couple of characters from the response, typically the first 512 */
+    @Override
     protected boolean isValidResponseHead(String head) {
         return head.indexOf("FeatureCollection") > 0;
     }

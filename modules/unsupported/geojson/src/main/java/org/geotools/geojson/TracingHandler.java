@@ -31,6 +31,7 @@ public class TracingHandler implements InvocationHandler {
         this.delegate = delegate;
     }
 
+    @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         if ("startObject".equals(method.getName())) {
             startObject();

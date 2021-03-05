@@ -83,6 +83,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         super(dataStoreFactoryClass);
     }
 
+    @Override
     @After
     public void tearDown() throws Exception {
         for (OGRDataStore store : stores) {

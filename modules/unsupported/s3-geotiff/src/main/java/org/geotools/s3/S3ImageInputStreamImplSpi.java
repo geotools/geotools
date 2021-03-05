@@ -58,10 +58,12 @@ public class S3ImageInputStreamImplSpi extends ImageInputStreamSpi {
     }
 
     /** @see ImageInputStreamSpi#getDescription(Locale). */
+    @Override
     public String getDescription(Locale locale) {
         return "Service provider that wraps a file in S3";
     }
 
+    @Override
     @SuppressWarnings("PMD.ForLoopCanBeForeach")
     public void onRegistration(ServiceRegistry registry, Class<?> category) {
         super.onRegistration(registry, category);
@@ -86,6 +88,7 @@ public class S3ImageInputStreamImplSpi extends ImageInputStreamSpi {
      * @return an ImageInputStream instance.
      * @throws IllegalArgumentException if input is not an instance of the correct class or is null.
      */
+    @Override
     public ImageInputStream createInputStreamInstance(
             Object input, boolean useCache, File cacheDir) {
         if (LOGGER.isLoggable(Level.FINE)) {

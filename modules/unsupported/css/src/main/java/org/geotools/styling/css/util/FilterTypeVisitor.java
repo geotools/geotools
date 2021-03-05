@@ -152,71 +152,85 @@ class FilterTypeVisitor extends DefaultFilterVisitor {
         return super.visit(expression, data);
     }
 
+    @Override
     public Object visit(After after, Object data) {
         visitTemporalExpression(after);
         return super.visit(after, data);
     }
 
+    @Override
     public Object visit(AnyInteracts anyInteracts, Object data) {
         visitTemporalExpression(anyInteracts);
         return super.visit(anyInteracts, data);
     }
 
+    @Override
     public Object visit(Before before, Object data) {
         visitTemporalExpression(before);
         return super.visit(before, data);
     }
 
+    @Override
     public Object visit(Begins begins, Object data) {
         visitTemporalExpression(begins);
         return super.visit(begins, data);
     }
 
+    @Override
     public Object visit(BegunBy begunBy, Object data) {
         visitTemporalExpression(begunBy);
         return super.visit(begunBy, data);
     }
 
+    @Override
     public Object visit(During during, Object data) {
         visitTemporalExpression(during);
         return super.visit(during, data);
     }
 
+    @Override
     public Object visit(EndedBy endedBy, Object data) {
         visitTemporalExpression(endedBy);
         return super.visit(endedBy, data);
     }
 
+    @Override
     public Object visit(Ends ends, Object data) {
         visitTemporalExpression(ends);
         return super.visit(ends, data);
     }
 
+    @Override
     public Object visit(Meets meets, Object data) {
         visitTemporalExpression(meets);
         return super.visit(meets, data);
     }
 
+    @Override
     public Object visit(MetBy metBy, Object data) {
         visitTemporalExpression(metBy);
         return super.visit(metBy, data);
     }
 
+    @Override
     public Object visit(OverlappedBy overlappedBy, Object data) {
         visitTemporalExpression(overlappedBy);
         return super.visit(overlappedBy, data);
     }
 
+    @Override
     public Object visit(TContains contains, Object data) {
         visitTemporalExpression(contains);
         return super.visit(contains, data);
     }
 
+    @Override
     public Object visit(TEquals equals, Object data) {
         visitTemporalExpression(equals);
         return super.visit(equals, data);
     }
 
+    @Override
     public Object visit(TOverlaps contains, Object data) {
         visitTemporalExpression(contains);
         return super.visit(contains, data);
@@ -233,6 +247,7 @@ class FilterTypeVisitor extends DefaultFilterVisitor {
         }
     }
 
+    @Override
     public Object visit(PropertyIsBetween filter, Object data) {
         String name = getPropertyName(filter.getExpression());
         if (name != null) {
@@ -248,31 +263,37 @@ class FilterTypeVisitor extends DefaultFilterVisitor {
         return super.visit(filter, data);
     }
 
+    @Override
     public Object visit(PropertyIsEqualTo filter, Object data) {
         visitBinaryComparison(filter);
         return super.visit(filter, data);
     }
 
+    @Override
     public Object visit(PropertyIsNotEqualTo filter, Object data) {
         visitBinaryComparison(filter);
         return super.visit(filter, data);
     }
 
+    @Override
     public Object visit(PropertyIsGreaterThan filter, Object data) {
         visitBinaryComparison(filter);
         return super.visit(filter, data);
     }
 
+    @Override
     public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object data) {
         visitBinaryComparison(filter);
         return super.visit(filter, data);
     }
 
+    @Override
     public Object visit(PropertyIsLessThan filter, Object data) {
         visitBinaryComparison(filter);
         return super.visit(filter, data);
     }
 
+    @Override
     public Object visit(PropertyIsLessThanOrEqualTo filter, Object data) {
         visitBinaryComparison(filter);
         return super.visit(filter, data);
@@ -295,6 +316,7 @@ class FilterTypeVisitor extends DefaultFilterVisitor {
         }
     }
 
+    @Override
     public Object visit(PropertyIsLike filter, Object data) {
         String name = getPropertyName(filter.getExpression());
         if (name != null) {
@@ -303,51 +325,61 @@ class FilterTypeVisitor extends DefaultFilterVisitor {
         return null;
     }
 
+    @Override
     public Object visit(Beyond filter, Object data) {
         visitBinarySpatialOperator(filter);
         return super.visit(filter, data);
     }
 
+    @Override
     public Object visit(Contains filter, Object data) {
         visitBinarySpatialOperator(filter);
         return super.visit(filter, data);
     }
 
+    @Override
     public Object visit(Crosses filter, Object data) {
         visitBinarySpatialOperator(filter);
         return super.visit(filter, data);
     }
 
+    @Override
     public Object visit(Disjoint filter, Object data) {
         visitBinarySpatialOperator(filter);
         return super.visit(filter, data);
     }
 
+    @Override
     public Object visit(DWithin filter, Object data) {
         visitBinarySpatialOperator(filter);
         return super.visit(filter, data);
     }
 
+    @Override
     public Object visit(Equals filter, Object data) {
         visitBinarySpatialOperator(filter);
         return super.visit(filter, data);
     }
 
+    @Override
     public Object visit(Intersects filter, Object data) {
         visitBinarySpatialOperator(filter);
         return super.visit(filter, data);
     }
 
+    @Override
     public Object visit(Overlaps filter, Object data) {
         visitBinarySpatialOperator(filter);
         return super.visit(filter, data);
     }
 
+    @Override
     public Object visit(Touches filter, Object data) {
         visitBinarySpatialOperator(filter);
         return super.visit(filter, data);
     }
 
+    @Override
     public Object visit(Within filter, Object data) {
         visitBinarySpatialOperator(filter);
         return super.visit(filter, data);

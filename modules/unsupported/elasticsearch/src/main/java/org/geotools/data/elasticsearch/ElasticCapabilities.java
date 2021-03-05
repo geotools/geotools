@@ -167,14 +167,17 @@ class ElasticCapabilities extends Capabilities {
             super(getContents());
         }
 
+        @Override
         public Object visit(ExcludeFilter filter, Object extraData) {
             return true;
         }
 
+        @Override
         public Object visit(IncludeFilter filter, Object extraData) {
             return true;
         }
 
+        @Override
         public Object visit(BegunBy begunBy, Object extraData) {
             return visit((BinaryTemporalOperator) begunBy, BegunBy.NAME);
         }

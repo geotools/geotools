@@ -44,6 +44,7 @@ public class VariableIndexInputStream extends VPFInputStream {
      *
      * @return an <code>int</code> value
      */
+    @Override
     public int tableSize() {
         return ((VariableIndexHeader) getHeader()).getEntriesNumber();
     }
@@ -54,6 +55,7 @@ public class VariableIndexInputStream extends VPFInputStream {
      * @return a <code>VPFHeader</code> value
      * @exception IOException if an error occurs
      */
+    @Override
     public VPFHeader readHeader() throws IOException {
         return new VariableIndexHeader(readInteger(), readInteger());
     }
@@ -64,6 +66,7 @@ public class VariableIndexInputStream extends VPFInputStream {
      * @return a <code>VPFRow</code> value
      * @exception IOException if an error occurs
      */
+    @Override
     public VPFRow readRow() throws IOException {
         return new VariableIndexRow(readInteger(), readInteger());
     }

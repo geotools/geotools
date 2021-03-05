@@ -77,6 +77,7 @@ class CachedSimplifyingFilterVisitor extends UnboundSimplifyingFilterVisitor {
         return result;
     }
 
+    @Override
     protected List<Filter> extraAndSimplification(Object extraData, List<Filter> filters) {
         if (filters.size() > 1) {
             // if there are nested ors and top level filters, try factoring out common expression,
@@ -153,6 +154,7 @@ class CachedSimplifyingFilterVisitor extends UnboundSimplifyingFilterVisitor {
         return filters;
     }
 
+    @Override
     protected List<Filter> extraOrSimplification(Object extraData, List<Filter> filters) {
         if (filters.size() > 1) {
             // if there are nested ands and top level filters, try factoring out common expression,

@@ -55,6 +55,7 @@ public class DnDListItemsTransferable<T> implements Transferable {
      * The array should be ordered according to preference for providing the data (from most richly
      * descriptive to least descriptive).
      */
+    @Override
     public DataFlavor[] getTransferDataFlavors() {
         // @todo WRITE ME !
         return null;
@@ -64,6 +65,7 @@ public class DnDListItemsTransferable<T> implements Transferable {
      * Description copies from interface:<br>
      * Returns whether or not the specified data flavor is supported for this object.
      */
+    @Override
     public boolean isDataFlavorSupported(DataFlavor flavor) {
         // @todo WRITE ME !
         return true;
@@ -76,6 +78,7 @@ public class DnDListItemsTransferable<T> implements Transferable {
      * @throws IOException if the data is no longer available in the requested flavor.
      * @throws UnsupportedFlavorException if the requested data flavor is not supported.
      */
+    @Override
     public List<T> getTransferData(DataFlavor flavor)
             throws UnsupportedFlavorException, IOException {
         return items;

@@ -94,6 +94,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         return "wps";
     }
 
+    @Override
     public void connect() throws ServiceException, IOException {
         if (fixture == null) {
             return;

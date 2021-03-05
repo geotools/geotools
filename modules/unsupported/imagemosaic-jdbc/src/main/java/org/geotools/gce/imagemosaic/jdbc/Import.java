@@ -84,6 +84,7 @@ public class Import extends AbstractCmd {
 
         String extension;
 
+        @Override
         public boolean accept(File file) {
             int index = file.getName().lastIndexOf(".");
             if (index == -1) return false;

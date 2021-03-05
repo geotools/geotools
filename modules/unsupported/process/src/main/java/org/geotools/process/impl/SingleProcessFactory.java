@@ -74,52 +74,62 @@ public abstract class SingleProcessFactory implements ProcessFactory {
                             + "'");
     }
 
+    @Override
     public Process create(Name name) {
         checkName(name);
         return create();
     }
 
+    @Override
     public Set<Name> getNames() {
         return Collections.singleton(processName);
     }
 
+    @Override
     public InternationalString getDescription(Name name) {
         checkName(name);
         return getDescription();
     }
 
+    @Override
     public Map<String, Parameter<?>> getParameterInfo(Name name) {
         checkName(name);
         return getParameterInfo();
     }
 
+    @Override
     public Map<String, Parameter<?>> getResultInfo(Name name, Map<String, Object> parameters)
             throws IllegalArgumentException {
         checkName(name);
         return getResultInfo(parameters);
     }
 
+    @Override
     public InternationalString getTitle(Name name) {
         checkName(name);
         return getTitle();
     }
 
+    @Override
     public String getVersion(Name name) {
         checkName(name);
         return getVersion();
     }
 
+    @Override
     public boolean supportsProgress(Name name) {
         checkName(name);
         return supportsProgress();
     }
 
     /** Default Implementation return true */
+    @Override
     public boolean isAvailable() {
         return true;
     }
 
     /** The default implementation returns an empty map. */
+    @Override
     public Map<Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }
@@ -138,6 +148,7 @@ public abstract class SingleProcessFactory implements ProcessFactory {
      *
      * @return A short name suitable for display in a user interface.
      */
+    @Override
     public InternationalString getTitle() {
         return new SimpleInternationalString(processName.getLocalPart());
     }

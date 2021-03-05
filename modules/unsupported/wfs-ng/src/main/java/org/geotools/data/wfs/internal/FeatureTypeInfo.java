@@ -33,7 +33,9 @@ public interface FeatureTypeInfo extends ResourceInfo {
 
     String getAbstract();
 
+    @Override
     Set<String> getKeywords();
 
+    @Override
     String getTitle();
 }

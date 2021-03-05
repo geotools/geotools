@@ -49,6 +49,7 @@ public class AreaGeometryFactory extends VPFGeometryFactory implements FileConst
     /* (non-Javadoc)
      * @see com.ionicsoft.wfs.jdbc.geojdbc.module.vpf.VPFGeometryFactory#createGeometry(java.lang.String, int, int)
      */
+    @Override
     public synchronized void createGeometry(VPFFeatureType featureType, SimpleFeature values)
             throws SQLException, IOException, IllegalAttributeException {
 
@@ -60,6 +61,7 @@ public class AreaGeometryFactory extends VPFGeometryFactory implements FileConst
     /* (non-Javadoc)
      * @see com.ionicsoft.wfs.jdbc.geojdbc.module.vpf.VPFGeometryFactory#buildGeometry(java.lang.String, int, int)
      */
+    @Override
     public synchronized Geometry buildGeometry(VPFFeatureClass featureClass, SimpleFeature values)
             throws SQLException, IOException, IllegalAttributeException {
 

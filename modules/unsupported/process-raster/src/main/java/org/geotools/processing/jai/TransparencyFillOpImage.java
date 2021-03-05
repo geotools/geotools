@@ -387,6 +387,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
      * @param dest a WritableRaster tile containing the area to be computed.
      * @param destRect the rectangle within dest to be processed.
      */
+    @Override
     protected void computeRect(Raster[] sources, WritableRaster dest, Rectangle destRect) {
         // Retrieve format tags.
         RasterFormatTag[] formatTags = getFormatTags();

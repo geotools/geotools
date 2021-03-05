@@ -61,6 +61,7 @@ class ElasticFeatureSource extends ContentFeatureSource {
     }
 
     /** Access parent datastore */
+    @Override
     public ElasticDataStore getDataStore() {
         return (ElasticDataStore) super.getDataStore();
     }

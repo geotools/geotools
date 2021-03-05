@@ -239,6 +239,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
      *
      * @param filter the filter to be visited
      */
+    @Override
     public Object visit(ExcludeFilter filter, Object extraData) {
         queryBuilder =
                 ImmutableMap.of("bool", ImmutableMap.of("must_not", ElasticConstants.MATCH_ALL));
@@ -250,6 +251,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
      *
      * @param filter the filter to be visited
      */
+    @Override
     public Object visit(IncludeFilter filter, Object extraData) {
         queryBuilder = ElasticConstants.MATCH_ALL;
         return extraData;
@@ -260,6 +262,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
      *
      * @param filter the Filter to be visited.
      */
+    @Override
     public Object visit(PropertyIsBetween filter, Object extraData) {
         LOGGER.finest("exporting PropertyIsBetween");
 
@@ -310,6 +313,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
      *
      * @param filter the filter to be visited
      */
+    @Override
     public Object visit(PropertyIsLike filter, Object extraData) {
         char esc = filter.getEscape().charAt(0);
         char multi = filter.getWildCard().charAt(0);
@@ -375,6 +379,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
      * @param filter the filter to visit
      * @param extraData extra data (unused by this method)
      */
+    @Override
     public Object visit(And filter, Object extraData) {
         return visit((BinaryLogicOperator) filter, "AND");
     }
@@ -385,6 +390,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
      * @param filter the filter to visit
      * @param extraData extra data (unused by this method)
      */
+    @Override
     public Object visit(Not filter, Object extraData) {
         if (filter.getFilter() instanceof PropertyIsNull) {
             Expression expr = ((PropertyIsNull) filter.getFilter()).getExpression();
@@ -407,6 +413,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
      * @param filter the filter to visit
      * @param extraData extra data (unused by this method)
      */
+    @Override
     public Object visit(Or filter, Object extraData) {
         return visit((BinaryLogicOperator) filter, "OR");
     }
@@ -440,6 +447,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
      * @param filter the filter to visit
      * @param extraData extra data (unused by this method)
      */
+    @Override
     public Object visit(PropertyIsEqualTo filter, Object extraData) {
         visitBinaryComparisonOperator(filter, "=");
         return extraData;
@@ -451,6 +459,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
      * @param filter the filter to visit
      * @param extraData extra data (unused by this method)
      */
+    @Override
     public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object extraData) {
         visitBinaryComparisonOperator(filter, ">=");
         return extraData;
@@ -462,6 +471,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
      * @param filter the filter to visit
      * @param extraData extra data (unused by this method)
      */
+    @Override
     public Object visit(PropertyIsGreaterThan filter, Object extraData) {
         visitBinaryComparisonOperator(filter, ">");
         return extraData;
@@ -473,6 +483,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
      * @param filter the filter to visit
      * @param extraData extra data (unused by this method)
      */
+    @Override
     public Object visit(PropertyIsLessThan filter, Object extraData) {
         visitBinaryComparisonOperator(filter, "<");
         return extraData;
@@ -484,6 +495,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
      * @param filter the filter to visit
      * @param extraData extra data (unused by this method)
      */
+    @Override
     public Object visit(PropertyIsLessThanOrEqualTo filter, Object extraData) {
         visitBinaryComparisonOperator(filter, "<=");
         return extraData;
@@ -495,6 +507,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
      * @param filter the filter to visit
      * @param extraData extra data (unused by this method)
      */
+    @Override
     public Object visit(PropertyIsNotEqualTo filter, Object extraData) {
         visitBinaryComparisonOperator(filter, "!=");
         return extraData;
@@ -622,6 +635,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
      *
      * @param filter the null filter.
      */
+    @Override
     public Object visit(PropertyIsNull filter, Object extraData) {
         LOGGER.finest("exporting NullFilter");
 
@@ -639,6 +653,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
         return extraData;
     }
 
+    @Override
     public Object visit(PropertyIsNil filter, Object extraData) {
         throw new UnsupportedOperationException("isNil not supported");
     }
@@ -648,6 +663,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
      *
      * @param filter the
      */
+    @Override
     public Object visit(Id filter, Object extraData) {
         final List<String> idList = new ArrayList<>();
         for (final Identifier id : filter.getIdentifiers()) {
@@ -659,46 +675,57 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
         return extraData;
     }
 
+    @Override
     public Object visit(BBOX filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
 
+    @Override
     public Object visit(Beyond filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
 
+    @Override
     public Object visit(Contains filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
 
+    @Override
     public Object visit(Crosses filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
 
+    @Override
     public Object visit(Disjoint filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
 
+    @Override
     public Object visit(DWithin filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
 
+    @Override
     public Object visit(Equals filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
 
+    @Override
     public Object visit(Intersects filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
 
+    @Override
     public Object visit(Overlaps filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
 
+    @Override
     public Object visit(Touches filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
 
+    @Override
     public Object visit(Within filter, Object extraData) {
         return visitBinarySpatialOperator(filter, extraData);
     }
@@ -928,6 +955,7 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
      * @param extraData extra data to be used to evaluate the filter
      * @return the untouched extraData parameter
      */
+    @Override
     public Object visitNullFilter(Object extraData) {
         return extraData;
     }
@@ -1077,80 +1105,99 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
                         + "method to support encoding timeperiods");
     }
 
+    @Override
     public Object visit(Add expression, Object extraData) {
         throw new UnsupportedOperationException("Add expressions not supported");
     }
 
+    @Override
     public Object visit(Divide expression, Object extraData) {
         throw new UnsupportedOperationException("Divide expressions not supported");
     }
 
+    @Override
     public Object visit(Multiply expression, Object extraData) {
         throw new UnsupportedOperationException("Multiply expressions not supported");
     }
 
+    @Override
     public Object visit(Subtract expression, Object extraData) {
         throw new UnsupportedOperationException("Subtract expressions not supported");
     }
 
+    @Override
     public Object visit(NilExpression expression, Object extraData) {
         field = null;
         return extraData;
     }
 
     // temporal filters, not supported
+    @Override
     public Object visit(After after, Object extraData) {
         return visitBinaryTemporalOperator(after, extraData);
     }
 
+    @Override
     public Object visit(AnyInteracts anyInteracts, Object extraData) {
         return visitBinaryTemporalOperator(anyInteracts, extraData);
     }
 
+    @Override
     public Object visit(Before before, Object extraData) {
         return visitBinaryTemporalOperator(before, extraData);
     }
 
+    @Override
     public Object visit(Begins begins, Object extraData) {
         return visitBinaryTemporalOperator(begins, extraData);
     }
 
+    @Override
     public Object visit(BegunBy begunBy, Object extraData) {
         return visitBinaryTemporalOperator(begunBy, extraData);
     }
 
+    @Override
     public Object visit(During during, Object extraData) {
         return visitBinaryTemporalOperator(during, extraData);
     }
 
+    @Override
     public Object visit(EndedBy endedBy, Object extraData) {
         return visitBinaryTemporalOperator(endedBy, extraData);
     }
 
+    @Override
     public Object visit(Ends ends, Object extraData) {
         return visitBinaryTemporalOperator(ends, extraData);
     }
 
+    @Override
     public Object visit(Meets meets, Object extraData) {
         return visitBinaryTemporalOperator(meets, extraData);
     }
 
+    @Override
     public Object visit(MetBy metBy, Object extraData) {
         return visitBinaryTemporalOperator(metBy, extraData);
     }
 
+    @Override
     public Object visit(OverlappedBy overlappedBy, Object extraData) {
         return visitBinaryTemporalOperator(overlappedBy, extraData);
     }
 
+    @Override
     public Object visit(TContains contains, Object extraData) {
         return visitBinaryTemporalOperator(contains, extraData);
     }
 
+    @Override
     public Object visit(TEquals equals, Object extraData) {
         return visitBinaryTemporalOperator(equals, extraData);
     }
 
+    @Override
     public Object visit(TOverlaps contains, Object extraData) {
         return visitBinaryTemporalOperator(contains, extraData);
     }

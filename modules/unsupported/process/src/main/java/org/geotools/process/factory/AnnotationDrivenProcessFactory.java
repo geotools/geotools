@@ -91,10 +91,12 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
 
     protected abstract Method method(String localPart);
 
+    @Override
     public InternationalString getTitle() {
         return title;
     }
 
+    @Override
     public InternationalString getDescription(Name name) {
         DescribeProcess info = getProcessDescription(name);
         if (info != null) {
@@ -104,6 +106,7 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
         }
     }
 
+    @Override
     public Map<String, Parameter<?>> getParameterInfo(Name name) {
         // build the parameter descriptions by using the DescribeParameter
         // annotations
@@ -135,6 +138,7 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
         return paramTypes;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Map<String, Parameter<?>> getResultInfo(Name name, Map<String, Object> parameters)
             throws IllegalArgumentException {
@@ -201,6 +205,7 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
         result.put(resultParam.key, resultParam);
     }
 
+    @Override
     public InternationalString getTitle(Name name) {
         DescribeProcess info = getProcessDescription(name);
         if (info != null) {
@@ -210,6 +215,7 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
         }
     }
 
+    @Override
     public String getVersion(Name name) {
         DescribeProcess info = getProcessDescription(name);
         if (info != null) {
@@ -219,14 +225,17 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
         }
     }
 
+    @Override
     public boolean supportsProgress(Name name) {
         return false;
     }
 
+    @Override
     public boolean isAvailable() {
         return true;
     }
 
+    @Override
     public Map<Key, ?> getImplementationHints() {
         return null;
     }
@@ -458,6 +467,7 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
      *   <li>{@link #createProcessBean(Name)}: return a bean to use; or null for static methods
      * </ul>
      */
+    @Override
     public Process create(Name name) {
         String methodName = name.getLocalPart();
         Method meth = method(methodName);
@@ -610,6 +620,7 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
             this.targetObject = targetObject;
         }
 
+        @Override
         @SuppressWarnings("unchecked")
         public Map<String, Object> execute(Map<String, Object> input, ProgressListener monitor)
                 throws ProcessException {
@@ -821,6 +832,7 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
             super(method, targetObject);
         }
 
+        @Override
         public Query invertQuery(
                 Map<String, Object> input, Query targetQuery, GridGeometry targetGridGeometry)
                 throws ProcessException {
@@ -848,6 +860,7 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
             }
         }
 
+        @Override
         public GridGeometry invertGridGeometry(
                 Map<String, Object> input, Query targetQuery, GridGeometry targetGridGeometry)
                 throws ProcessException {

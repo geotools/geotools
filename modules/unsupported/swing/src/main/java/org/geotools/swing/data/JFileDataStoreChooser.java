@@ -139,6 +139,7 @@ public class JFileDataStoreChooser extends JFileChooser {
             addChoosableFileFilter(
                     new FileFilter() {
 
+                        @Override
                         public boolean accept(File f) {
                             if (f.isDirectory()) {
                                 return true;
@@ -172,6 +173,7 @@ public class JFileDataStoreChooser extends JFileChooser {
         setFileFilter(
                 new FileFilter() {
 
+                    @Override
                     public boolean accept(File f) {
                         if (f.isDirectory()) {
                             return true;
@@ -188,6 +190,7 @@ public class JFileDataStoreChooser extends JFileChooser {
                         return false;
                     }
 
+                    @Override
                     public String getDescription() {
                         return format.getDescription();
                     }

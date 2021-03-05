@@ -177,6 +177,7 @@ public class ContourProcessTest {
 
         Thread t =
                 new Thread() {
+                    @Override
                     public void run() {
                         synchronized (lock) {
                             while (frame.isVisible())

@@ -36,6 +36,7 @@ public class ImageMosaicJDBCFormatFactory implements GridFormatFactorySpi {
      *
      * @return False if something's missing, true otherwise.
      */
+    @Override
     public boolean isAvailable() {
         boolean available = true;
 
@@ -50,6 +51,7 @@ public class ImageMosaicJDBCFormatFactory implements GridFormatFactorySpi {
     }
 
     /** @see GridFormatFactorySpi#createFormat(). */
+    @Override
     public ImageMosaicJDBCFormat createFormat() {
         return new ImageMosaicJDBCFormat();
     }
@@ -59,6 +61,7 @@ public class ImageMosaicJDBCFormatFactory implements GridFormatFactorySpi {
      *
      * @return An empty map.
      */
+    @Override
     public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }

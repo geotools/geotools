@@ -52,6 +52,7 @@ public class VPFFileFeatureReader implements FeatureReader<SimpleFeatureType, Si
     /* (non-Javadoc)
      * @see org.geotools.data.FeatureReader#getFeatureType()
      */
+    @Override
     public SimpleFeatureType getFeatureType() {
         return file != null ? file.getFeatureType() : null;
     }
@@ -59,6 +60,7 @@ public class VPFFileFeatureReader implements FeatureReader<SimpleFeatureType, Si
     /* (non-Javadoc)
      * @see org.geotools.data.FeatureReader#next()
      */
+    @Override
     public SimpleFeature next() throws IOException, NoSuchElementException {
         if (!hasNext()) {
             throw new NoSuchElementException();
@@ -71,6 +73,7 @@ public class VPFFileFeatureReader implements FeatureReader<SimpleFeatureType, Si
     /* (non-Javadoc)
      * @see org.geotools.data.FeatureReader#hasNext()
      */
+    @Override
     public boolean hasNext() throws IOException {
 
         // Ask the stream if it has space for another object
@@ -81,6 +84,7 @@ public class VPFFileFeatureReader implements FeatureReader<SimpleFeatureType, Si
     /* (non-Javadoc)
      * @see org.geotools.data.FeatureReader#close()
      */
+    @Override
     public void close() throws IOException {
         // TODO Auto-generated method stub
         if (this.file != null) this.file.close();

@@ -39,6 +39,7 @@ public class EntityNodeGeometryFactory extends VPFGeometryFactory implements Fil
     /* (non-Javadoc)
      * @see com.ionicsoft.wfs.jdbc.geojdbc.module.vpf.VPFGeometryFactory#createGeometry(com.ionicsoft.wfs.jdbc.geojdbc.module.vpf.VPFIterator)
      */
+    @Override
     public synchronized void createGeometry(VPFFeatureType featureType, SimpleFeature values)
             throws SQLException, IOException, IllegalAttributeException {
 
@@ -50,6 +51,7 @@ public class EntityNodeGeometryFactory extends VPFGeometryFactory implements Fil
     /* (non-Javadoc)
      * @see com.ionicsoft.wfs.jdbc.geojdbc.module.vpf.VPFGeometryFactory#buildGeometry(java.lang.String, int, int)
      */
+    @Override
     public synchronized Geometry buildGeometry(VPFFeatureClass featureClass, SimpleFeature values)
             throws SQLException, IOException, IllegalAttributeException {
         int nodeId = ((Number) values.getAttribute("end_id")).intValue();

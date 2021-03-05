@@ -337,14 +337,17 @@ public class TransformProcess implements VectorProcess {
             fb = new SimpleFeatureBuilder(schema);
         }
 
+        @Override
         public void close() {
             delegate.close();
         }
 
+        @Override
         public boolean hasNext() {
             return delegate.hasNext();
         }
 
+        @Override
         public SimpleFeature next() throws NoSuchElementException {
             SimpleFeature feature = delegate.next();
 

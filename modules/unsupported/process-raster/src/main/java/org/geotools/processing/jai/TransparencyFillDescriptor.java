@@ -80,6 +80,7 @@ public class TransparencyFillDescriptor extends OperationDescriptorImpl {
      *
      * @return An array of property generators.
      */
+    @Override
     public PropertyGenerator[] getPropertyGenerators() {
         PropertyGenerator[] pg = new PropertyGenerator[1];
         pg[0] = new AreaOpPropertyGenerator();

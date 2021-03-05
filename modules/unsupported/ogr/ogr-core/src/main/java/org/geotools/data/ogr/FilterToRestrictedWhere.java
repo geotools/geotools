@@ -125,6 +125,7 @@ class FilterToRestrictedWhere implements FilterVisitor, ExpressionVisitor {
      * @param filter the Filter to be visited.
      * @throws RuntimeException for io exception with writer
      */
+    @Override
     public Object visit(PropertyIsBetween filter, Object extraData) throws RuntimeException {
         Expression expr = filter.getExpression();
         Expression lowerbounds = filter.getLowerBoundary();
@@ -157,6 +158,7 @@ class FilterToRestrictedWhere implements FilterVisitor, ExpressionVisitor {
      * @param filter the filter to visit
      * @param extraData extra data (unused by this method)
      */
+    @Override
     public Object visit(And filter, Object extraData) {
         return visit((BinaryLogicOperator) filter, "AND");
     }
@@ -167,6 +169,7 @@ class FilterToRestrictedWhere implements FilterVisitor, ExpressionVisitor {
      * @param filter the filter to visit
      * @param extraData extra data (unused by this method)
      */
+    @Override
     public Object visit(Or filter, Object extraData) {
         return visit((BinaryLogicOperator) filter, "OR");
     }
@@ -194,31 +197,37 @@ class FilterToRestrictedWhere implements FilterVisitor, ExpressionVisitor {
         return extraData;
     }
 
+    @Override
     public Object visit(PropertyIsEqualTo filter, Object extraData) {
         visitBinaryComparisonOperator(filter, "=");
         return extraData;
     }
 
+    @Override
     public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object extraData) {
         visitBinaryComparisonOperator(filter, ">=");
         return extraData;
     }
 
+    @Override
     public Object visit(PropertyIsGreaterThan filter, Object extraData) {
         visitBinaryComparisonOperator(filter, ">");
         return extraData;
     }
 
+    @Override
     public Object visit(PropertyIsLessThan filter, Object extraData) {
         visitBinaryComparisonOperator(filter, "<");
         return extraData;
     }
 
+    @Override
     public Object visit(PropertyIsLessThanOrEqualTo filter, Object extraData) {
         visitBinaryComparisonOperator(filter, "<=");
         return extraData;
     }
 
+    @Override
     public Object visit(PropertyIsNotEqualTo filter, Object extraData) {
         visitBinaryComparisonOperator(filter, "!=");
         return extraData;
@@ -250,6 +259,7 @@ class FilterToRestrictedWhere implements FilterVisitor, ExpressionVisitor {
         right.accept(this, rightContext);
     }
 
+    @Override
     public Object visit(PropertyName expression, Object extraData) throws RuntimeException {
         AttributeDescriptor attribute = null;
         try {
@@ -275,6 +285,7 @@ class FilterToRestrictedWhere implements FilterVisitor, ExpressionVisitor {
      * @param expression the Literal to export
      * @throws RuntimeException for io exception with writer
      */
+    @Override
     public Object visit(Literal expression, Object context) throws RuntimeException {
         // type to convert the literal to
         Class target = null;

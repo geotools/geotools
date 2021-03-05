@@ -393,6 +393,7 @@ public class JSimpleStyleDialog extends JDialog {
      *
      * @return fill opacity between 0 and 1
      */
+    @Override
     public float getOpacity() {
         return opacity;
     }

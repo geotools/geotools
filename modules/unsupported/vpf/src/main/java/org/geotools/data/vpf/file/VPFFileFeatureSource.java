@@ -37,6 +37,7 @@ public class VPFFileFeatureSource extends VPFFeatureSource {
         super(entry, query);
     }
 
+    @Override
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
         VPFFileStore vpf = (VPFFileStore) this.getDataStore();
@@ -45,6 +46,7 @@ public class VPFFileFeatureSource extends VPFFeatureSource {
         return new VPFFileFeatureReader(getState(), file);
     }
 
+    @Override
     protected int getCountInternal(Query query) throws IOException {
         return -1; // feature by feature scan required to count records
     }
@@ -53,10 +55,12 @@ public class VPFFileFeatureSource extends VPFFeatureSource {
      * Implementation that generates the total bounds (many file formats record this information in
      * the header)
      */
+    @Override
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
         return null; // feature by feature scan required to establish bounds
     }
 
+    @Override
     protected SimpleFeatureType buildFeatureType() throws IOException {
         VPFFileStore vpf = (VPFFileStore) this.getDataStore();
         return vpf.getFeatureType(this.entry);

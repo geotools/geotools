@@ -485,15 +485,18 @@ public class RasterAsPointCollectionProcess implements RasterProcess {
         }
 
         /** Closes this iterator */
+        @Override
         public void close() {
             // NO OP
         }
 
         /** Tells us whether or not we have more elements to iterate on. */
+        @Override
         public boolean hasNext() {
             return index < size;
         }
 
+        @Override
         public SimpleFeature next() throws NoSuchElementException {
 
             if (!hasNext()) {

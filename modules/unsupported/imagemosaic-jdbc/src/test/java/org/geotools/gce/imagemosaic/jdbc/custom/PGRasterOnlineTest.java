@@ -77,6 +77,7 @@ public class PGRasterOnlineTest extends AbstractTest {
         return suite;
     }
 
+    @Override
     protected String getSrsId() {
         return "4326";
     }
@@ -86,6 +87,7 @@ public class PGRasterOnlineTest extends AbstractTest {
         return "file:target/resources/oek.pgraster.xml";
     }
 
+    @Override
     protected String getSubDir() {
         return "pgraster";
     }
@@ -278,6 +280,7 @@ public class PGRasterOnlineTest extends AbstractTest {
         }
     }
 
+    @Override
     protected String[] getTileTableNames() {
         return new String[] {"rtable1", "rtable2", "rtable3"};
     }

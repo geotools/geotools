@@ -86,6 +86,7 @@ public class JIntegerField extends JValueField {
         document.addDocumentListener(
                 new DocumentListener() {
 
+                    @Override
                     public void insertUpdate(DocumentEvent e) {
                         if (fireEvents) {
                             ValueChangedEvent<Integer> ev =
@@ -97,6 +98,7 @@ public class JIntegerField extends JValueField {
                         }
                     }
 
+                    @Override
                     public void removeUpdate(DocumentEvent e) {
                         if (fireEvents) {
                             ValueChangedEvent<Integer> ev =
@@ -108,6 +110,7 @@ public class JIntegerField extends JValueField {
                         }
                     }
 
+                    @Override
                     public void changedUpdate(DocumentEvent e) {}
                 });
     }

@@ -30,6 +30,7 @@ public class PseudoClass extends Selector {
 
     public static final PseudoClass ROOT =
             new PseudoClass(null, -1) {
+                @Override
                 public String toString() {
                     return "ROOT";
                 };
@@ -96,6 +97,7 @@ public class PseudoClass extends Selector {
         }
     }
 
+    @Override
     public Object accept(SelectorVisitor visitor) {
         return visitor.visit(this);
     }

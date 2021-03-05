@@ -56,6 +56,7 @@ public class VariableIndexHeader implements VPFHeader {
      *
      * @return an <code>int</code> value of header length.
      */
+    @Override
     public int getLength() {
         return VARIABLE_INDEX_HEADER_LENGTH;
     }
@@ -67,6 +68,7 @@ public class VariableIndexHeader implements VPFHeader {
      *
      * @return an <code><code>int</code></code> value
      */
+    @Override
     public int getRecordSize() {
         return VARIABLE_INDEX_ROW_SIZE;
     }

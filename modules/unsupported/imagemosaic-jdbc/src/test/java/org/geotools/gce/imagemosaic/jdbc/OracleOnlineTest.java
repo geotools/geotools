@@ -99,14 +99,17 @@ public class OracleOnlineTest extends AbstractTest {
         return dialect;
     }
 
+    @Override
     void executeRegister(String stmt) throws SQLException {
         Connection.prepareStatement(stmt).execute();
     }
 
+    @Override
     void executeUnRegister(String stmt) throws SQLException {
         Connection.prepareStatement(stmt).execute();
     }
 
+    @Override
     protected String getXMLConnectFragmentName() {
         return "connect.oracle.xml.inc";
     }
@@ -116,6 +119,7 @@ public class OracleOnlineTest extends AbstractTest {
      *
      * @see org.geotools.gce.imagemosaic.jdbc.AbstractTest#getDriverClassName()
      */
+    @Override
     protected String getDriverClassName() {
         return "oracle.jdbc.OracleDriver";
     }
@@ -126,6 +130,7 @@ public class OracleOnlineTest extends AbstractTest {
      * @see org.geotools.gce.imagemosaic.jdbc.AbstractTest#getJDBCUrl(java.lang.String,
      *      java.lang.Integer, java.lang.String)
      */
+    @Override
     protected String getJDBCUrl(String host, Integer port, String dbName) {
         return "jdbc:oracle:thin:@" + host + ":" + port + ":" + dbName;
     }

@@ -67,26 +67,32 @@ class ParameterFunction implements Function {
         this.parameters = parameters;
     }
 
+    @Override
     public Literal getFallbackValue() {
         return fallbackValue;
     }
 
+    @Override
     public String getName() {
         return NAME.getName();
     }
 
+    @Override
     public FunctionName getFunctionName() {
         return NAME;
     }
 
+    @Override
     public List<Expression> getParameters() {
         return parameters;
     }
 
+    @Override
     public Object accept(ExpressionVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
 
+    @Override
     public Object evaluate(Object object) {
         if (parameters.isEmpty()) {
             throw new IllegalArgumentException(
@@ -124,6 +130,7 @@ class ParameterFunction implements Function {
         return Collections.singletonMap(name, value);
     }
 
+    @Override
     public <T> T evaluate(Object object, Class<T> context) {
         return Converters.convert(evaluate(object), context);
     }

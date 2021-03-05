@@ -60,6 +60,7 @@ public class ProcessRunPage extends JPage {
         this.paramMap = params;
     }
 
+    @Override
     public String getBackPageIdentifier() {
         if (this.factory == null) {
             ProcessSelectionPage selectionPage = new ProcessSelectionPage();
@@ -71,6 +72,7 @@ public class ProcessRunPage extends JPage {
         return inputPage.getPageIdentifier();
     }
 
+    @Override
     public String getNextPageIdentifier() {
         return FINISH;
     }

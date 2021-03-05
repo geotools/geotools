@@ -40,6 +40,7 @@ public class GeometryHandlerBase<G extends Geometry> extends HandlerBase
         this.factory = factory;
     }
 
+    @Override
     public G getValue() {
         return value;
     }

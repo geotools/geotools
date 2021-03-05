@@ -68,6 +68,7 @@ public class WPS1_0_0 extends WPSSpecification {
      *
      * @return the expect version value for this specification
      */
+    @Override
     public String getVersion() {
         return "1.0.0"; // $NON-NLS-1$
     }
@@ -79,6 +80,7 @@ public class WPS1_0_0 extends WPSSpecification {
      * @param server a URL that points to the 1.0.0 server
      * @return a AbstractGetCapabilitiesRequest object that can provide a valid request
      */
+    @Override
     public GetCapabilitiesRequest createGetCapabilitiesRequest(URL server) {
         return new GetCapsRequest(server);
     }
@@ -178,22 +180,27 @@ public class WPS1_0_0 extends WPSSpecification {
             super(urlGetCapabilities);
         }
 
+        @Override
         protected void initVersion() {
             properties.setProperty(VERSION, "1.0.0");
         }
 
+        @Override
         protected void initRequest() {
             setProperty("REQUEST", "GetCapabilities");
         }
 
+        @Override
         protected void initService() {
             setProperty("SERVICE", "WPS");
         }
 
+        @Override
         protected String processKey(String key) {
             return WPS1_0_0.processKey(key);
         }
 
+        @Override
         public Response createResponse(HTTPResponse httpResponse)
                 throws ServiceException, IOException {
             return new WPSGetCapabilitiesResponse(httpResponse, hints);
@@ -207,10 +214,12 @@ public class WPS1_0_0 extends WPSSpecification {
             super(onlineResource, properties);
         }
 
+        @Override
         protected void initVersion() {
             setProperty(VERSION, "1.0.0");
         }
 
+        @Override
         public Response createResponse(HTTPResponse httpResponse)
                 throws ServiceException, IOException {
             return new DescribeProcessResponse(httpResponse);
@@ -224,10 +233,12 @@ public class WPS1_0_0 extends WPSSpecification {
             super(onlineResource, properties);
         }
 
+        @Override
         protected void initVersion() {
             setProperty(VERSION, "1.0.0");
         }
 
+        @Override
         public Response createResponse(HTTPResponse httpResponse)
                 throws ServiceException, IOException {
             return new ExecuteProcessResponse(

@@ -47,6 +47,7 @@ public class SpatialIndexInputStream extends VPFInputStream {
      *
      * @return an <code>int</code> value
      */
+    @Override
     public int tableSize() {
         return -1;
     }
@@ -57,6 +58,7 @@ public class SpatialIndexInputStream extends VPFInputStream {
      * @return a <code>VPFHeader</code> value
      * @exception IOException if an error occurs
      */
+    @Override
     public VPFHeader readHeader() throws IOException {
         return new SpatialIndexHeader(
                 readInteger(), readFloat(), readFloat(), readFloat(), readFloat(), readInteger());
@@ -68,6 +70,7 @@ public class SpatialIndexInputStream extends VPFInputStream {
      * @return a <code>VPFRow</code> value
      * @exception IOException if an error occurs
      */
+    @Override
     public VPFRow readRow() throws IOException {
         return null;
     }
@@ -78,6 +81,7 @@ public class SpatialIndexInputStream extends VPFInputStream {
      * @param pos a <code>long</code> value
      * @exception IOException if an error occurs
      */
+    @Override
     public void setPosition(long pos) throws IOException {
         seek(SPATIAL_INDEX_ROW_SIZE * pos);
     }

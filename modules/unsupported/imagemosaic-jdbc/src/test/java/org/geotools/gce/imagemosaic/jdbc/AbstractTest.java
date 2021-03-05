@@ -819,6 +819,7 @@ public abstract class AbstractTest extends TestCase {
         }
     }
 
+    @Override
     public void setUp() throws Exception {
         super.setUp();
 

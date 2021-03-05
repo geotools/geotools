@@ -222,14 +222,17 @@ public class RasterZonalStatistics implements RasterProcess {
             }
         }
 
+        @Override
         public void close() {
             zones.close();
         }
 
+        @Override
         public boolean hasNext() {
             return !features.isEmpty() || zones.hasNext();
         }
 
+        @Override
         public SimpleFeature next() throws NoSuchElementException {
             // build the next set of features if necessary
             if (features.isEmpty()) {

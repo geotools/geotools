@@ -61,6 +61,7 @@ public class WPSProcess extends AbstractProcess {
      * @param monitor currently this is not used for this process reprensentation but it could be
      *     implemented in some form in the future.
      */
+    @Override
     @SuppressWarnings("unchecked")
     public Map<String, Object> execute(Map<String, Object> input, ProgressListener monitor) {
 

@@ -751,6 +751,7 @@ public class MBTilesFile implements AutoCloseable {
      * <p>The application should always call this method when done with a mbtiles to prevent
      * connection leakage.
      */
+    @Override
     public void close() {
         try {
             if (connPool instanceof BasicDataSource) {

@@ -165,22 +165,27 @@ public class H2Test extends AbstractTest {
         }
     }
 
+    @Override
     public void setUp() throws Exception {
         // No fixture check needed
     }
 
+    @Override
     protected String getFixtureId() {
         return null;
     }
 
+    @Override
     protected String getXMLConnectFragmentName() {
         return "connect.h2.xml.inc";
     }
 
+    @Override
     protected String getDriverClassName() {
         return "org.h2.Driver";
     }
 
+    @Override
     protected String getJDBCUrl(String host, Integer port, String dbName) {
         return "jdbc:h2:target/h2/testdata";
     }

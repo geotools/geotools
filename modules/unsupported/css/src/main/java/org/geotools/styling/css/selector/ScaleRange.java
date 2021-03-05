@@ -79,6 +79,7 @@ public class ScaleRange extends Selector {
         return "ScaleRange " + range;
     }
 
+    @Override
     public Object accept(SelectorVisitor visitor) {
         return visitor.visit(this);
     }

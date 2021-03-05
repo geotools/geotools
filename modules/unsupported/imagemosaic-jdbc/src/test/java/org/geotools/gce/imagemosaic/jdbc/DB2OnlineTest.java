@@ -102,6 +102,7 @@ public class DB2OnlineTest extends AbstractTest {
         return dialect;
     }
 
+    @Override
     @org.junit.Test
     public void testGetConnection() {
         super.testGetConnection();
@@ -118,6 +119,7 @@ public class DB2OnlineTest extends AbstractTest {
         }
     }
 
+    @Override
     void executeRegister(String stmt) throws SQLException {
         String s = "{" + stmt + "}";
         try (CallableStatement ps = Connection.prepareCall(s)) {
@@ -127,6 +129,7 @@ public class DB2OnlineTest extends AbstractTest {
         }
     }
 
+    @Override
     void executeUnRegister(String stmt) throws SQLException {
         String s = "{" + stmt + "}";
         try (CallableStatement ps = Connection.prepareCall(s)) {
@@ -136,6 +139,7 @@ public class DB2OnlineTest extends AbstractTest {
         }
     }
 
+    @Override
     protected String getXMLConnectFragmentName() {
         return "connect.db2.xml.inc";
     }
@@ -146,6 +150,7 @@ public class DB2OnlineTest extends AbstractTest {
      * @see org.geotools.gce.imagemosaic.jdbc.AbstractTest#getJDBCUrl(java.lang.String,
      *      java.lang.Integer, java.lang.String)
      */
+    @Override
     protected String getJDBCUrl(String host, Integer port, String dbName) {
         if (host == null) {
             return "jdbc:db2:" + dbName;
@@ -159,6 +164,7 @@ public class DB2OnlineTest extends AbstractTest {
      *
      * @see org.geotools.gce.imagemosaic.jdbc.AbstractTest#getDriverClassName()
      */
+    @Override
     protected String getDriverClassName() {
         return "com.ibm.db2.jcc.DB2Driver";
     }

@@ -61,6 +61,7 @@ abstract class GeometryMapper {
          * Reads the current feature's geometry using wkb encoding. A wkbReader should be provided
          * since it's not thread safe by design.
          */
+        @Override
         Geometry parseOgrGeometry(Object geom) throws IOException {
             int wkbSize = ogr.GeometryGetWkbSize(geom);
             byte[] wkb = new byte[wkbSize];
@@ -73,6 +74,7 @@ abstract class GeometryMapper {
             }
         }
 
+        @Override
         Object parseGTGeometry(Geometry geometry) throws IOException {
             byte[] wkb = wkbWriter.write(geometry);
             int[] ret = new int[1];
@@ -100,6 +102,7 @@ abstract class GeometryMapper {
          * Reads the current feature's geometry using wkb encoding. A wkbReader should be provided
          * since it's not thread safe by design.
          */
+        @Override
         Geometry parseOgrGeometry(Object geom) throws IOException {
             int[] ret = new int[1];
             String wkt = ogr.GeometryExportToWkt(geom, ret);
@@ -111,6 +114,7 @@ abstract class GeometryMapper {
             }
         }
 
+        @Override
         Object parseGTGeometry(Geometry geometry) throws IOException {
             String wkt = wktWriter.write(geometry);
             int[] ret = new int[1];

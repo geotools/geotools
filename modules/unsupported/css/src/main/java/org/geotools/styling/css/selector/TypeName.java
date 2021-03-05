@@ -72,6 +72,7 @@ public class TypeName extends Selector {
         return Specificity.ELEMENT_1;
     }
 
+    @Override
     public Object accept(SelectorVisitor visitor) {
         return visitor.visit(this);
     }

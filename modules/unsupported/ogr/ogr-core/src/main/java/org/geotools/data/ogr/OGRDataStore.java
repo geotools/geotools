@@ -153,6 +153,7 @@ public class OGRDataStore extends ContentDataStore {
         }
     }
 
+    @Override
     public void createSchema(SimpleFeatureType schema) throws IOException {
         // TODO: add a field to allow approximate definitions
         createSchema(schema, false, null);

@@ -92,6 +92,7 @@ public class BeanProcessFactoryTest {
         GeoTools.addFactoryIteratorProvider(
                 new FactoryIteratorProvider() {
 
+                    @Override
                     public <T> Iterator<T> iterator(Class<T> category) {
                         if (ProcessFactory.class.isAssignableFrom(category)) {
                             @SuppressWarnings("unchecked")

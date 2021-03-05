@@ -676,6 +676,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
     /* (non-Javadoc)
      * @see org.geotools.feature.FeatureType#getTypeName()
      */
+    @Override
     public String getTypeName() {
         return featureType.getTypeName();
     }
@@ -687,6 +688,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
     /* (non-Javadoc)
      * @see org.geotools.feature.FeatureType#getAttributeCount()
      */
+    @Override
     public int getAttributeCount() {
         return featureType.getAttributeCount();
     }
@@ -694,6 +696,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
     /* (non-Javadoc)
      * @see org.geotools.feature.FeatureType#isAbstract()
      */
+    @Override
     public boolean isAbstract() {
         return featureType.isAbstract();
     }
@@ -703,94 +706,117 @@ public class VPFFeatureClass implements SimpleFeatureType {
         return geometryFactory;
     }
 
+    @Override
     public boolean equals(Object obj) {
         return featureType.equals(obj);
     }
 
+    @Override
     public int hashCode() {
         return featureType.hashCode();
     }
 
+    @Override
     public AttributeDescriptor getDescriptor(Name name) {
         return featureType.getDescriptor(name);
     }
 
+    @Override
     public AttributeDescriptor getDescriptor(String name) {
         return featureType.getDescriptor(name);
     }
 
+    @Override
     public AttributeDescriptor getDescriptor(int index) {
         return featureType.getDescriptor(index);
     }
 
+    @Override
     public List<AttributeDescriptor> getAttributeDescriptors() {
         return featureType.getAttributeDescriptors();
     }
 
+    @Override
     public org.opengis.feature.type.AttributeType getType(Name name) {
         return featureType.getType(name);
     }
 
+    @Override
     public org.opengis.feature.type.AttributeType getType(String name) {
         return featureType.getType(name);
     }
 
+    @Override
     public org.opengis.feature.type.AttributeType getType(int index) {
         return featureType.getType(index);
     }
 
+    @Override
     public List<AttributeType> getTypes() {
         return featureType.getTypes();
     }
 
+    @Override
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return featureType.getCoordinateReferenceSystem();
     }
 
+    @Override
     public GeometryDescriptor getGeometryDescriptor() {
         return featureType.getGeometryDescriptor();
     }
 
+    @Override
     public Class<Collection<Property>> getBinding() {
         return featureType.getBinding();
     }
 
+    @Override
     public Collection<PropertyDescriptor> getDescriptors() {
         return featureType.getDescriptors();
     }
 
+    @Override
     public boolean isInline() {
         return featureType.isInline();
     }
 
+    @Override
     public org.opengis.feature.type.AttributeType getSuper() {
         return featureType.getSuper();
     }
 
+    @Override
     public boolean isIdentified() {
         return featureType.isIdentified();
     }
 
+    @Override
     public InternationalString getDescription() {
         return featureType.getDescription();
     }
 
+    @Override
     public Name getName() {
         return featureType.getName();
     }
 
+    @Override
     public int indexOf(String name) {
         return featureType.indexOf(name);
     }
 
+    @Override
     public int indexOf(Name name) {
         return featureType.indexOf(name);
     }
 
+    @Override
     public List<Filter> getRestrictions() {
         return featureType.getRestrictions();
     }
 
+    @Override
     public Map<Object, Object> getUserData() {
         return featureType.getUserData();
     }

@@ -71,10 +71,12 @@ public class ProcessFunctionFactory implements FunctionFactory {
     /** The cache list of functions wrapping processes */
     private ArrayList<FunctionName> functionNames;
 
+    @Override
     public Function function(String name, List<Expression> args, Literal fallback) {
         return function(new NameImpl(name), args, fallback);
     }
 
+    @Override
     public Function function(Name processName, List<Expression> args, Literal fallback) {
         // if the param function just return it
         if (processName.equals(new NameImpl(ParameterFunction.NAME.getName()))) {
@@ -102,6 +104,7 @@ public class ProcessFunctionFactory implements FunctionFactory {
         }
     }
 
+    @Override
     public List<FunctionName> getFunctionNames() {
         if (functionNames == null) {
             init();

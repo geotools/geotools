@@ -116,18 +116,22 @@ public class PostGisOnlineTest extends AbstractTest {
         return dialect;
     }
 
+    @Override
     void executeRegister(String stmt) throws SQLException {
         Connection.prepareStatement(stmt).executeQuery();
     }
 
+    @Override
     void executeUnRegister(String stmt) throws SQLException {
         Connection.prepareStatement(stmt).executeQuery();
     }
 
+    @Override
     protected String getXMLConnectFragmentName() {
         return "connect.postgis.xml.inc";
     }
 
+    @Override
     protected String getDriverClassName() {
         return "org.postgresql.Driver";
     }
@@ -138,6 +142,7 @@ public class PostGisOnlineTest extends AbstractTest {
      * @see org.geotools.gce.imagemosaic.jdbc.AbstractTest#getJDBCUrl(java.lang.String,
      *      java.lang.Integer, java.lang.String)
      */
+    @Override
     protected String getJDBCUrl(String host, Integer port, String dbName) {
         return "jdbc:postgresql://" + host + ":" + port + "/" + dbName;
     }

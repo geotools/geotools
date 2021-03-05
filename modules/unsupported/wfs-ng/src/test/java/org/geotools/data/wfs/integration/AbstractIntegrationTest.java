@@ -200,6 +200,7 @@ public abstract class AbstractIntegrationTest {
 
                 List<FeatureEvent> events = new ArrayList<>();
 
+                @Override
                 public void changed(FeatureEvent featureEvent) {
                     this.events.add(featureEvent);
                 }

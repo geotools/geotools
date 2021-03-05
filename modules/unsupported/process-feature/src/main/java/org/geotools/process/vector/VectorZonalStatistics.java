@@ -171,14 +171,17 @@ public class VectorZonalStatistics implements VectorProcess {
             this.dataGeomName = data.getSchema().getGeometryDescriptor().getLocalName();
         }
 
+        @Override
         public void close() {
             zones.close();
         }
 
+        @Override
         public boolean hasNext() {
             return zones.hasNext();
         }
 
+        @Override
         public SimpleFeature next() throws NoSuchElementException {
             // grab the current zone
             SimpleFeature zone = zones.next();

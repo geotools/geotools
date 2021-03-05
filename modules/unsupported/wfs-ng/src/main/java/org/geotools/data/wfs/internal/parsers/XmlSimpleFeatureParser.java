@@ -1,18 +1,15 @@
 /*
- *    GeoTools - The Open Source Java GIS Toolkit
- *    http://geotools.org
+ * GeoTools - The Open Source Java GIS Toolkit http://geotools.org
  *
- *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
+ * (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
- *    This library is free software; you can redistribute it and/or
- *    modify it under the terms of the GNU Lesser General Public
- *    License as published by the Free Software Foundation;
- *    version 2.1 of the License.
+ * This library is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU Lesser General Public License as published by the Free Software Foundation; version 2.1 of
+ * the License.
  *
- *    This library is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *    Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  */
 package org.geotools.data.wfs.internal.parsers;
 
@@ -32,6 +29,7 @@ import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.data.wfs.internal.Loggers;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.geometry.jts.MultiCurve;
 import org.geotools.gml3.GML;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -65,7 +63,7 @@ import org.xmlpull.v1.XmlPullParserException;
  * @author Gabriel Roldan (TOPP)
  * @version $Id$
  * @since 2.5.x
- *     <p>
+ *        <p>
  */
 @SuppressWarnings("nls")
 public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
@@ -92,11 +90,8 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
 
     private final String axisOrder;
 
-    public XmlSimpleFeatureParser(
-            final InputStream getFeatureResponseStream,
-            final SimpleFeatureType targetType,
-            QName featureDescriptorName,
-            String axisOrder)
+    public XmlSimpleFeatureParser(final InputStream getFeatureResponseStream,
+            final SimpleFeatureType targetType, QName featureDescriptorName, String axisOrder)
             throws IOException {
 
         // this.inputStream = new TeeInputStream(inputStream, System.err);
@@ -190,8 +185,7 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
                 }
                 tagNs = parser.getNamespace();
                 tagName = parser.getName();
-                if (END_TAG == tagType
-                        && featureNamespace.equals(tagNs)
+                if (END_TAG == tagType && featureNamespace.equals(tagNs)
                         && featureName.equals(tagName)) {
                     // found end of current feature
                     break;
@@ -239,12 +233,12 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
     /**
      * Precondition: parser cursor positioned on a geometry property (ej, {@code gml:Point}, etc)
      *
-     * <p>Postcondition: parser gets positioned at the end tag of the element it started parsing the
+     * <p>
+     * Postcondition: parser gets positioned at the end tag of the element it started parsing the
      * geometry at
      */
-    private Geometry parseGeom()
-            throws NoSuchAuthorityCodeException, FactoryException, XmlPullParserException,
-                    IOException {
+    private Geometry parseGeom() throws NoSuchAuthorityCodeException, FactoryException,
+            XmlPullParserException, IOException {
         final QName startingGeometryTagName = new QName(parser.getNamespace(), parser.getName());
         int dimension = crsDimension(2);
         CoordinateReferenceSystem crs = crs(DefaultGeographicCRS.WGS84);
@@ -260,6 +254,8 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
             geom = parseMultiPoint(dimension, crs);
         } else if (GML.MultiLineString.equals(startingGeometryTagName)) {
             geom = parseMultiLineString(dimension, crs);
+        } else if (GML.MultiCurve.equals(startingGeometryTagName)) {
+            geom = parseMultiCurve(dimension, crs);
         } else if (GML.MultiSurface.equals(startingGeometryTagName)) {
             geom = parseMultiSurface(dimension, crs);
         } else if (GML.MultiPolygon.equals(startingGeometryTagName)) {
@@ -269,25 +265,64 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
                     "Unrecognized geometry element " + startingGeometryTagName);
         }
 
-        parser.require(
-                END_TAG,
-                startingGeometryTagName.getNamespaceURI(),
+        parser.require(END_TAG, startingGeometryTagName.getNamespaceURI(),
                 startingGeometryTagName.getLocalPart());
 
+        return geom;
+    }
+
+    private Geometry parseMultiCurve(int dimension, CoordinateReferenceSystem crs)
+            throws XmlPullParserException, IOException, NoSuchAuthorityCodeException,
+            FactoryException {
+
+        parser.require(START_TAG, GML.NAMESPACE, GML.MultiCurve.getLocalPart());
+
+        List<LineString> lines = new ArrayList<>(2);
+
+        while (true) {
+            parser.nextTag();
+            if (END_TAG == parser.getEventType()
+                    && GML.MultiCurve.getLocalPart().equals(parser.getName())) {
+                // we're done
+                break;
+            }
+            parser.require(START_TAG, GML.NAMESPACE, GML.curveMember.getLocalPart());
+            parser.nextTag();
+            final QName startingGeometryTagName = new QName(parser.getNamespace(), parser.getName());
+            if (GML.LineString.equals(startingGeometryTagName)) {
+                lines.add(parseLineString(dimension, crs));
+            } else if (GML.CompositeCurve.equals(startingGeometryTagName)) {
+                throw new UnsupportedOperationException(GML.CompositeCurve+" is not supported yet");
+            } else if (GML.Curve.equals(startingGeometryTagName)) {
+                throw new UnsupportedOperationException(GML.Curve+" is not supported yet");
+            } else if (GML.OrientableCurve.equals(startingGeometryTagName)) {
+                throw new UnsupportedOperationException(GML.OrientableCurve+" is not supported yet");
+            }
+            
+            parser.nextTag();
+            parser.require(END_TAG, GML.NAMESPACE, GML.curveMember.getLocalPart());
+        }
+
+        parser.require(END_TAG, GML.NAMESPACE, GML.MultiCurve.getLocalPart());
+
+        MultiCurve geom =
+                new MultiCurve(lines, geomFac, 1.0);
         return geom;
     }
 
     /**
      * Parses a MultiPoint.
      *
-     * <p>Precondition: parser positioned at a {@link GML#MultiPoint MultiPoint} start tag
+     * <p>
+     * Precondition: parser positioned at a {@link GML#MultiPoint MultiPoint} start tag
      *
-     * <p>Postcondition: parser positioned at the {@link GML#MultiPoint MultiPoint} end tag of the
+     * <p>
+     * Postcondition: parser positioned at the {@link GML#MultiPoint MultiPoint} end tag of the
      * starting tag
      */
     private Geometry parseMultiPoint(int dimension, CoordinateReferenceSystem crs)
             throws XmlPullParserException, IOException, NoSuchAuthorityCodeException,
-                    FactoryException {
+            FactoryException {
         parser.nextTag();
         final QName memberTag = new QName(parser.getNamespace(), parser.getName());
         List<Point> points = new ArrayList<>(4);
@@ -329,14 +364,16 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
     /**
      * Parses a MultiLineString.
      *
-     * <p>Precondition: parser positioned at a {@link GML#MultiLineString MultiLineString} start tag
+     * <p>
+     * Precondition: parser positioned at a {@link GML#MultiLineString MultiLineString} start tag
      *
-     * <p>Postcondition: parser positioned at the {@link GML#MultiLineString MultiLineString} end
-     * tag of the starting tag
+     * <p>
+     * Postcondition: parser positioned at the {@link GML#MultiLineString MultiLineString} end tag
+     * of the starting tag
      */
     private MultiLineString parseMultiLineString(int dimension, CoordinateReferenceSystem crs)
             throws XmlPullParserException, IOException, NoSuchAuthorityCodeException,
-                    FactoryException {
+            FactoryException {
 
         parser.require(START_TAG, GML.NAMESPACE, GML.MultiLineString.getLocalPart());
 
@@ -370,14 +407,16 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
      * Parses a MultiPolygon out of a MultiSurface element (because our geometry model only supports
      * MultiPolygon).
      *
-     * <p>Precondition: parser positioned at a {@link GML#MultiSurface MultiSurface} start tag
+     * <p>
+     * Precondition: parser positioned at a {@link GML#MultiSurface MultiSurface} start tag
      *
-     * <p>Postcondition: parser positioned at the {@link GML#MultiSurface MultiSurface} end tag of
-     * the starting tag
+     * <p>
+     * Postcondition: parser positioned at the {@link GML#MultiSurface MultiSurface} end tag of the
+     * starting tag
      */
     private Geometry parseMultiSurface(int dimension, CoordinateReferenceSystem crs)
             throws XmlPullParserException, IOException, NoSuchAuthorityCodeException,
-                    FactoryException {
+            FactoryException {
 
         parser.require(START_TAG, GML.NAMESPACE, GML.MultiSurface.getLocalPart());
 
@@ -419,7 +458,7 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
 
     private Geometry parseMultiPolygon(int dimension, CoordinateReferenceSystem crs)
             throws XmlPullParserException, IOException, NoSuchAuthorityCodeException,
-                    FactoryException {
+            FactoryException {
 
         parser.require(START_TAG, GML.NAMESPACE, GML.MultiPolygon.getLocalPart());
 
@@ -449,14 +488,16 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
     /**
      * Parses a polygon.
      *
-     * <p>Precondition: parser positioned at a {@link GML#Polygon Polygon} start tag
+     * <p>
+     * Precondition: parser positioned at a {@link GML#Polygon Polygon} start tag
      *
-     * <p>Postcondition: parser positioned at the {@link GML#Polygon Polygon} end tag of the
-     * starting tag
+     * <p>
+     * Postcondition: parser positioned at the {@link GML#Polygon Polygon} end tag of the starting
+     * tag
      */
     private Polygon parsePolygon(int dimension, CoordinateReferenceSystem crs)
             throws XmlPullParserException, IOException, NoSuchAuthorityCodeException,
-                    FactoryException {
+            FactoryException {
         LinearRing shell;
         List<LinearRing> holes = null;
 
@@ -524,7 +565,7 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
 
     private LinearRing parseLinearRing(final int dimension, CoordinateReferenceSystem crs)
             throws XmlPullParserException, IOException, NoSuchAuthorityCodeException,
-                    FactoryException {
+            FactoryException {
         parser.require(START_TAG, GML.NAMESPACE, GML.LinearRing.getLocalPart());
 
         crs = crs(crs);
@@ -539,7 +580,7 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
 
     private LineString parseLineString(int dimension, CoordinateReferenceSystem crs)
             throws XmlPullParserException, IOException, NoSuchAuthorityCodeException,
-                    FactoryException {
+            FactoryException {
 
         parser.require(START_TAG, GML.NAMESPACE, GML.LineString.getLocalPart());
 
@@ -608,7 +649,7 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
 
     private Point parsePoint(int dimension, CoordinateReferenceSystem crs)
             throws XmlPullParserException, IOException, NoSuchAuthorityCodeException,
-                    FactoryException {
+            FactoryException {
 
         parser.require(START_TAG, GML.NAMESPACE, GML.Point.getLocalPart());
 
@@ -719,32 +760,23 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
         }
 
         String rawTextValue = parser.nextText();
-        Coordinate[] coords =
-                toCoordList(
-                        rawTextValue,
-                        decimalSeparator,
-                        coordSeparator,
-                        tupleSeparator,
-                        dimension,
-                        crs);
+        Coordinate[] coords = toCoordList(rawTextValue, decimalSeparator, coordSeparator,
+                tupleSeparator, dimension, crs);
 
         parser.require(END_TAG, GML.NAMESPACE, GML.coordinates.getLocalPart());
         return coords;
     }
 
-    private Coordinate[] toCoordList(
-            String rawTextValue, final int dimension, CoordinateReferenceSystem crs) {
+    private Coordinate[] toCoordList(String rawTextValue, final int dimension,
+            CoordinateReferenceSystem crs) {
         rawTextValue = rawTextValue.trim();
         rawTextValue = rawTextValue.replaceAll("\n", " ");
         rawTextValue = rawTextValue.replaceAll("\r", " ");
         String[] split = rawTextValue.trim().split(" +");
         final int ordinatesLength = split.length;
         if (ordinatesLength % dimension != 0) {
-            throw new IllegalArgumentException(
-                    "Number of ordinates ("
-                            + ordinatesLength
-                            + ") does not match crs dimension: "
-                            + dimension);
+            throw new IllegalArgumentException("Number of ordinates (" + ordinatesLength
+                    + ") does not match crs dimension: " + dimension);
         }
         boolean invertXY = WFSConfig.invertAxisNeeded(axisOrder, crs);
         final int nCoords = ordinatesLength / dimension;
@@ -775,12 +807,8 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
         return coords;
     }
 
-    private Coordinate[] toCoordList(
-            String rawTextValue,
-            final String decimalSeparator,
-            final String coordSeparator,
-            final String tupleSeparator,
-            final int dimension,
+    private Coordinate[] toCoordList(String rawTextValue, final String decimalSeparator,
+            final String coordSeparator, final String tupleSeparator, final int dimension,
             CoordinateReferenceSystem crs) {
 
         rawTextValue = rawTextValue.replaceAll("[\n\r]", " ").trim();
@@ -846,9 +874,8 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
                 String namespace = parser.getNamespace();
                 String name = parser.getName();
                 if (featureNamespace.equals(namespace) && featureName.equals(name)) {
-                    String featureId =
-                            parser.getAttributeValue(
-                                    GML.id.getNamespaceURI(), GML.id.getLocalPart());
+                    String featureId = parser.getAttributeValue(GML.id.getNamespaceURI(),
+                            GML.id.getLocalPart());
 
                     if (featureId == null) {
                         featureId = parser.getAttributeValue(null, "fid");

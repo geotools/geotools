@@ -18,7 +18,7 @@ This repository is setup with the following branches of GeoTools:
 
    * - Branch
      - Version
-   * - `master <https://github.com/geotools/geotools/tree/master>`_
+   * - `main <https://github.com/geotools/geotools/tree/main>`_
      - this is what we are currently working on
    * - `8.x <https://github.com/geotools/geotools/tree/8.x>`_
      - stable development branch
@@ -35,19 +35,19 @@ repository switching between branches is trivial::
    [geotools]% git branch
       2.7.x
       8.x
-    * master
-   [geotools]% git checkout master
+    * main
+   [geotools]% git checkout main
    [geotools]% git checkout 8.x
    [geotools]% git checkout 2.7.x
 
 Developers generally do most work on a branch, even small scale bug fixes. This is typical with Git since branches are so cheap::
 
-   [geotools]% git checkout -b bugfix master
+   [geotools]% git checkout -b bugfix main
    [geotools]% git branch
       2.7.x
       8.x
     * bugfix
-      master
+      main
    
 A developers repository will usually contain several of these "feature branches" but they generally never get pushed into the main/canonical git
 repository.
@@ -67,7 +67,7 @@ While extra steps may seem cumbersome at first they are actually very handy in m
 documentation change. ``git status`` gives the current state of the local repository::
 
   [geotools]% git status
-  # On branch master
+  # On branch main
   # Changes not staged for commit:
   #   (use "git add <file>..." to update what will be committed)
   #   (use "git checkout -- <file>..." to discard changes in working directory)
@@ -81,7 +81,7 @@ stage the file for commit::
 
   [geotools]% git add advanced/build/source.rst
   [geotools]% git status
-  # On branch master
+  # On branch main
   # Changes to be committed:
   #   (use "git reset HEAD <file>..." to unstage)
   #
@@ -95,8 +95,8 @@ Status now reports the file is ready for commit. The syntax of ``git commit`` is
 Doing another status reports no more local changes::
 
   [geotools]% git status
-  # On branch master
-  # Your branch is ahead of 'geotools/master' by 1 commit.
+  # On branch main
+  # Your branch is ahead of 'geotools/main' by 1 commit.
   #
   nothing to commit (working directory clean)
 
@@ -104,8 +104,8 @@ But also reports that our local branch is ahead of the remote branch by 1 commit
 the commit. Before pushing it is always a good idea to first pull in case we have any commits that conflict with 
 other commits that have already been pushed up to the repository::
 
-  [geotools]% git pull geotools master
-  [geotools]% git push geotools master
+  [geotools]% git pull geotools main
+  [geotools]% git push geotools main
 
 At this point the change has been pushed up to the remote git repository.
 

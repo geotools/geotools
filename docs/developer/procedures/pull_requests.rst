@@ -141,7 +141,7 @@ Long Standing Pull Requests
 
 There are some questions raised for a long standing pull request.
 
-* What is the status for an old pull request on the master branch when a new stable branch is created? Is it left as it is, moved to the new stable branch, duplicated to the new stable branch or closed unmerged?
+* What is the status for an old pull request on the main branch when a new stable branch is created? Is it left as it is, moved to the new stable branch, duplicated to the new stable branch or closed unmerged?
 * Despite being no problems with the merging of a pull request; the issue maybe resolved by the GeoTools community in other ways. Merging the pull request would only add cruft to the code base.
 
 Long standing pull requests need to be handled appropriately so that everyone benefits. Contributors may learn how to better

@@ -40,16 +40,16 @@ Regardless of what you want to achieve, there are some common steps to consider:
    ````
    In case you're making a pull request, single commit ones are preferred, you can use `rebase -i` to squash multiple commits into one
 
-5. Rebase the branch from master so you get a nice clean set of changes:
+5. Rebase the branch from main so you get a nice clean set of changes:
    ````
-   git pull --rebase master
+   git pull --rebase main
    ````
 6. Do a full maven build (with tests) to make sure your fix compiles cleanly:
    ````
    mvn clean install -Dall
    ````
    * **Don't break the Build:** We do have this nice rule about breaking the build (don't). This means that if you are working on core interfaces you will be running all over the place cleaning up modules. One very good reason to talk to the list first is to give other module maintainers a chance to get out of the way, or offer to help you clean up the mess.
-   * **Master First:** Changes cannot be accepted directly onto the stable branch, they need to be tried out on master first. We are able to accept fixes and changes that do not break compatibility onto the stable branch after they have been tested on master.
+   * **Master First:** Changes cannot be accepted directly onto the stable branch, they need to be tried out on main first. We are able to accept fixes and changes that do not break compatibility onto the stable branch after they have been tested on main.
 
 7. Submit pull request: for instructions on submitting a pull request see [Using Pull Requests](https://help.github.com/articles/using-pull-requests) on GitHub.
   

@@ -108,7 +108,7 @@ In Windows you cannot create a ".geotools" folder!
     C:\\Documents and Settings\\Fred\\.geotools\\postgis>notepad typical.properties
 
 
-4. And use these as a guide: https://github.com/geotools/geotools/tree/master/build/fixtures
+4. And use these as a guide: https://github.com/geotools/geotools/tree/main/build/fixtures
 
    Examples:
 
@@ -121,7 +121,7 @@ Setting up a database for online testing
 
 You can use `docker <https://www.docker.com/>`_ to run a database flavour of your choice,
 some examples are given below. Also the GitHub workflows show how to run SQL Server, MySQL, Db2, PostgreSQL  
-and Oracle XE (see `.github/workflows/ <https://github.com/geotools/geotools/tree/master/.github/workflows>`_).
+and Oracle XE (see `.github/workflows/ <https://github.com/geotools/geotools/tree/main/.github/workflows>`_).
 Using docker will prevent the hassle of local installation on your computer possibly messing up your configuration.
 Note that not all docker images are available for each and every operating system that supports docker; 
 you may need to setup a Linux virtual machine to run docker.
@@ -155,7 +155,7 @@ To create a user and schema for testing you can use the following command::
 
     docker exec -i geotools sqlplus -l system/oracle@//localhost:1521/XE < build/ci/oracle/setup-oracle.sql
 
-The ``setup-oracle.sql`` can be found in `.travis/ <https://github.com/geotools/geotools/tree/master/.travis>`_ it consists of::
+The ``setup-oracle.sql`` can be found in `.travis/ <https://github.com/geotools/geotools/tree/main/.travis>`_ it consists of::
 
     ALTER SESSION SET "_ORACLE_SCRIPT"=true;
     CREATE USER "GEOTOOLS" IDENTIFIED BY "geotools"  DEFAULT TABLESPACE "USERS" TEMPORARY TABLESPACE "TEMP";

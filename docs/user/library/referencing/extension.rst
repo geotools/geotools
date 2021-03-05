@@ -11,8 +11,8 @@ The Plugin will work out of the box, just include it in your CLASSPATH path.
 References
 '''''''''''
 
-* `esri.properties <https://github.com/geotools/geotools/blob/master/modules/plugin/epsg-extension/src/main/resources/org/geotools/referencing/factory/epsg/esri.properties>`_ Additional ESRI Compatibility Codes 
-* `unnamed.properties <https://github.com/geotools/geotools/blob/master/modules/plugin/epsg-extension/src/main/resources/org/geotools/referencing/factory/epsg/unnamed.properties>`_ Additional EPSG Codes
+* `esri.properties <https://github.com/geotools/geotools/blob/main/modules/plugin/epsg-extension/src/main/resources/org/geotools/referencing/factory/epsg/esri.properties>`_ Additional ESRI Compatibility Codes 
+* `unnamed.properties <https://github.com/geotools/geotools/blob/main/modules/plugin/epsg-extension/src/main/resources/org/geotools/referencing/factory/epsg/unnamed.properties>`_ Additional EPSG Codes
 
 **Maven**::
    

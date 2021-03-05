@@ -82,7 +82,7 @@ Primary Branches
 Like the old Subversion repository maintains typically two branches that are usually 
 under active development:
 
-#. ``master`` - The equivalent of what was ``trunk`` in svn
+#. ``main`` - The equivalent of what was ``trunk`` in svn
 #. ``<?>.x`` - The current stable branch, what was ``2.7.x`` in svn
 
 In addition to these two branches a number of "maintenance" branches, branches that were
@@ -92,7 +92,7 @@ branches should show::
   % git branch
   2.7.x
   8.x
-  master
+  main
 
 .. note::
 
@@ -108,7 +108,7 @@ feature branch into a primary branch. A typical branch workflow looks like the f
 
 #. Create a new feature branch from a primary branch::
 
-   % git checkout -b my_feature master
+   % git checkout -b my_feature main
 
 #. Make some changes
 
@@ -119,7 +119,7 @@ feature branch into a primary branch. A typical branch workflow looks like the f
 
 #. Merge into primary branch::
 
-   % git checkout master
+   % git checkout main
    % git merge my_feature
 
 In reality often a change is trivial enough to not require a feature branch and just be
@@ -141,7 +141,7 @@ yourself and your fellow developers in the foot.
 Porting changes across primary branches
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Generally when working on a change or bug fix it must be committed to both the ``master``
+Generally when working on a change or bug fix it must be committed to both the ``main``
 branch and the current ``stable branch``. This should **not** be done with a standard 
 git merge. Instead making use of "cherry picking" is recommended.
 
@@ -157,7 +157,7 @@ branch. It should be noted that the resulting commit is a totally different comm
 git. It is simply a convenient way to work with change sets that is the equivalent of 
 manually generating a diff and applying it with a patch command::
 
-  % git checkout master
+  % git checkout main
   % git commit -m "GEOT-XYZ, fixing a bug"
   % git log 
   commit 9e6b6fca0104ac4d3630bd8444713fa2e2089547
@@ -169,10 +169,10 @@ manually generating a diff and applying it with a patch command::
   % git checkout 8.x
   % git cherry-pick 9e6b6fca0104ac4d3630bd8444713fa2e2089547
 
-The above commands make a commit to ``master`` and then cherry-pick the commit onto the 
+The above commands make a commit to ``main`` and then cherry-pick the commit onto the 
 ``8.x`` branch. An equivalent but far less convenient approach would be::
 
-    % git checkout master
+    % git checkout main
     % git commit -m "GEOT-XYZ, fixing a bug"
     % git log 
     commit 9e6b6fca0104ac4d3630bd8444713fa2e2089547
@@ -225,7 +225,7 @@ of for rebasing include:
   on the branch appear at the head or tip of "b". For example::
 
     % git checkout my_feature
-    % git rebase master
+    % git rebase main
 
 * Reorganizing commits on a branch to be more sensible, merging commits, deleting
   others, etc... This is referred to as "interactive rebasing". For example::
@@ -292,17 +292,17 @@ In git a *merge commit* results when a branch is merged with another branch. Thi
 commonly occurs when a developer pulls in changes from a branch in the canonical 
 repository. For example::
 
-  % git checkout master
+  % git checkout main
   % git commit -m "GEOT-XYZ, making a simple change"
-  % git pull geotools master
+  % git pull geotools main
 
 The pull from the canonical repository will cause a merge commit to occur. A simple way
 to avoid this is to force a "fast forward" by using the "--rebase" option to the pull 
 command::
 
-  % git checkout master
+  % git checkout main
   % git commit -m "GEOT-XYZ, making a simple change"
-  % git pull --rebase geotools master
+  % git pull --rebase geotools main
 
 The rebase option essentially will stash all local changes before doing the full, 
 resulting in a fast forward update (avoiding a merge commit), and then replay the local
@@ -339,8 +339,8 @@ Pulling from canonical
 
 The equivalent of ``svn update``::
 
-  % git checkout master
-  % git pull --rebase geotools master
+  % git checkout main
+  % git pull --rebase geotools main
   % git checkout 8.x
   % git pull --rebase geotools 8.x
   
@@ -350,10 +350,10 @@ Pushing to canonical
 
 The equivalent of ``svn commit``::
 
-  % git checkout master
+  % git checkout main
   # make some local changes
-  % git pull --rebase geotools master
-  % git push geotools master
+  % git pull --rebase geotools main
+  % git push geotools main
   
 .. note::
 

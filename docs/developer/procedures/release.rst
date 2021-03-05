@@ -43,7 +43,7 @@ To obtain the GeoServer and GeoTools revisions that have passed testing, navigat
     geowebcache revision = 27eec3fb31b8b4064ce8cc0894fa84d0ff97be61/27eec
     hudson build = -1
 
-Since we don't make any release from master, ensure you select the right nightly download page to obtain the right revision.
+Since we don't make any release from main, ensure you select the right nightly download page to obtain the right revision.
 
 Release in JIRA
 ---------------
@@ -59,24 +59,24 @@ If you are cutting the first RC of a series, create the stable branch
 
 .. note:: The RC is the first release of a series, released one month before the .0 release. This replaces the beta release, which no longer exists.
 
-When creating the first release candidate of a series, there are some extra steps to create the new stable branch and update the version on master.
+When creating the first release candidate of a series, there are some extra steps to create the new stable branch and update the version on main.
 
-* Checkout the master branch and make sure it is up to date and that there are no changes in your local workspace::
+* Checkout the main branch and make sure it is up to date and that there are no changes in your local workspace::
 
-    git checkout master
+    git checkout main
     git pull
     git status
 
-* Create the new stable branch and push it to GitHub; for example, if master is ``27-SNAPSHOT`` and the remote for the official GeoTools is called ``upstream``::
+* Create the new stable branch and push it to GitHub; for example, if main is ``27-SNAPSHOT`` and the remote for the official GeoTools is called ``upstream``::
 
     git checkout -b 27.x
     git push upstream 27.x
 
 * `GitHub branch protection <https://github.com/geotools/geotools/settings/branches>`_ uses some wild cards to protect the new branch.
 
-* Checkout the master branch and update the version in all ``pom.xml`` files and a few miscellaneous files; for example, if changing master from ``27-SNAPSHOT`` to ``28-SNAPSHOT``::
+* Checkout the main branch and update the version in all ``pom.xml`` files and a few miscellaneous files; for example, if changing main from ``27-SNAPSHOT`` to ``28-SNAPSHOT``::
 
-    git checkout master
+    git checkout main
     ant -f build/release.xml -Drelease=24-SNAPSHOT
     
   This replaces::
@@ -96,12 +96,12 @@ When creating the first release candidate of a series, there are some extra step
   
         find . -name ``pom.xml`` -exec sed -i '' 's/17-SNAPSHOT/28-SNAPSHOT/g' {} \;
 
-* Commit the changes and push to the master branch on GitHub::
+* Commit the changes and push to the main branch on GitHub::
 
     git commit -am "Update version to 27-SNAPSHOT"
-    git push geotools master
+    git push geotools main
       
-* Create the new release candidate version in `JIRA <https://osgeo-org.atlassian.net/projects/GEOT>`_ for issues on master; for example, if master is now ``24-SNAPSHOT``, create a Jira version ``24-RC1`` for the first release of the ``24.x`` series
+* Create the new release candidate version in `JIRA <https://osgeo-org.atlassian.net/projects/GEOT>`_ for issues on main; for example, if main is now ``24-SNAPSHOT``, create a Jira version ``24-RC1`` for the first release of the ``24.x`` series
 
 * Create the new ``GeoTools $VER Releases`` (e.g. ``GeoTools 22 Releases``) folder in `SourceForge <https://sourceforge.net/projects/geotools/files/>`__
 
@@ -111,7 +111,7 @@ When creating the first release candidate of a series, there are some extra step
 
   * The previous stable branch is changed to maintenance role by editing to ``DIST=maintenance`` so that javadocs and user manual are uploaded to the correct documentation folder.
   
-  * For the new stable Create new jobs, duplicate from the existing ``master`` jobs, editing:
+  * For the new stable Create new jobs, duplicate from the existing ``main`` jobs, editing:
   
     * the branch specifier 
     * the ``DIST=stable`` configuration
@@ -159,7 +159,7 @@ Run the `geotools-release <https://build.geoserver.org/view/geotools/job/geotool
 
 **BRANCH**
 
-  The branch to release from, "8.x", "9.x", etc... This must be a stable branch. Releases are not performed from master.
+  The branch to release from, "8.x", "9.x", etc... This must be a stable branch. Releases are not performed from main.
      
 **REV**
 

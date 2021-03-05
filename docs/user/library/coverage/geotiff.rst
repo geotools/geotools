@@ -5,8 +5,8 @@ The ``gt-geotiff`` module in the plugin group provides access to the GeoTiff fil
 
 **References**
 
-* `GeoTiffReaderTest.java <https://github.com/geotools/geotools/blob/master/modules/plugin/geotiff/src/test/java/org/geotools/gce/geotiff/GeoTiffReaderTest.java>`_
-* `GeoTiffWriterTest.java <https://github.com/geotools/geotools/blob/master/modules/plugin/geotiff/src/test/java/org/geotools/gce/geotiff/GeoTiffWriterTest.java>`_
+* `GeoTiffReaderTest.java <https://github.com/geotools/geotools/blob/main/modules/plugin/geotiff/src/test/java/org/geotools/gce/geotiff/GeoTiffReaderTest.java>`_
+* `GeoTiffWriterTest.java <https://github.com/geotools/geotools/blob/main/modules/plugin/geotiff/src/test/java/org/geotools/gce/geotiff/GeoTiffWriterTest.java>`_
 
 **Maven**::
    

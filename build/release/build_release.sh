@@ -13,7 +13,7 @@ function usage() {
   echo
   echo "Options:"
   echo " -h          : Print usage"
-  echo " -b <branch> : Branch to release from (eg: master, 8.x, ...)"
+  echo " -b <branch> : Branch to release from (eg: main, 8.x, ...)"
   echo " -r <rev>    : Revision to release (eg: a1b2kc4...)"
   echo
   echo "Environment variables:"

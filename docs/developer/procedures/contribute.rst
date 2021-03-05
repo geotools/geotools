@@ -67,9 +67,9 @@ Regardless of what you want to achieve, there are some common steps to consider:
    
    In case you're making a pull request, single commit ones are preferred, you can use ``rebase -i`` to squash multiple commits into one, it's fine to have two commits if one is used to isolate code formatting changes
 
-#. Rebase the branch from master so you get a nice clean set of changes::
+#. Rebase the branch from main so you get a nice clean set of changes::
 
-      git pull --rebase master
+      git pull --rebase main
 
 #. Do a full maven build (with tests) to make sure your fix compiles cleanly::
 
@@ -85,9 +85,9 @@ Regardless of what you want to achieve, there are some common steps to consider:
 
    .. admonition:: Master First
    
-      Changes cannot be accepted directly onto the stable branch, they need to be tried out on master first.
+      Changes cannot be accepted directly onto the stable branch, they need to be tried out on main first.
       
-      We are able to accept fixes and changes that do not break compatibility onto the stable branch after they have been tested on master.
+      We are able to accept fixes and changes that do not break compatibility onto the stable branch after they have been tested on main.
 
 #. Submit pull request: for instructions on submitting a pull request see `Using Pull Requests <https://help.github.com/articles/using-pull-requests>`_ on GitHub.
   
@@ -100,7 +100,7 @@ Regardless of what you want to achieve, there are some common steps to consider:
       
       #. Create the patch::
 
-           git format-patch master > featureLock.patch
+           git format-patch main > featureLock.patch
 
       #. Open a JIRA issues against the subsystem in which the patch was made, the subject should
          describe the contribution and ideally mention that a patch is included. Example: `Patch

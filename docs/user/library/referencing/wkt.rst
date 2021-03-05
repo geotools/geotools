@@ -26,4 +26,4 @@ If you have any additions or corrections please raise a bug report.
 
 The complete definitions can be read directly out of Source Repository :
 
- * https://github.com/geotools/geotools/blob/master/modules/plugin/epsg-wkt/src/main/resources/org/geotools/referencing/crs/epsg.properties
+ * https://github.com/geotools/geotools/blob/main/modules/plugin/epsg-wkt/src/main/resources/org/geotools/referencing/crs/epsg.properties

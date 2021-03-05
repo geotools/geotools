@@ -742,7 +742,8 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
      *
      * @return the highest resolution values.
      */
-    double[] getHighestRes() {
+    @Override
+    protected double[] getHighestRes() {
         return super.highestRes;
     }
 

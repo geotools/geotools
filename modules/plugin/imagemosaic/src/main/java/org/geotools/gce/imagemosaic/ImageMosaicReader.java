@@ -669,7 +669,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
      *
      * @return the highest resolution values.
      */
-    double[] getHighestRes() {
+    @Override
+    protected double[] getHighestRes() {
         return super.highestRes;
     }
 

@@ -221,7 +221,8 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
     }
 
     /** Package scope highest resolution serviceInfo accessor */
-    double[] getHighestRes() {
+    @Override
+    protected double[] getHighestRes() {
         return highestRes;
     }
 

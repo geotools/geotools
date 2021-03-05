@@ -13,6 +13,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.TestData;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
@@ -27,6 +29,7 @@ import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.CRS;
+import org.geotools.util.logging.Logging;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -48,6 +51,7 @@ public class AxisOrderTest {
     private static File directory;
     private static FileDataStore parkStore;
     private static GeometryFactory gf = new GeometryFactory();
+    static final Logger LOGGER = Logging.getLogger(AxisOrderTest.class);
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -60,8 +64,7 @@ public class AxisOrderTest {
                     ShapefileDataStoreFactory.NAMESPACEP.key,
                     new URI("http://localhost/geotools.xsd"));
         } catch (URISyntaxException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "", e);
         }
         store = DataStoreFinder.getDataStore(params);
 
@@ -71,7 +74,7 @@ public class AxisOrderTest {
         try { // Make sure the CRS is correctly set features = new
             ReprojectingFeatureCollection(features, CRS.decode("EPSG:4269"));
         } catch (FactoryException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "", e);
         }
         File parks = org.geotools.test.TestData.file(AxisOrderTest.class, "national-parks.shp");
         parkStore = FileDataStoreFinder.getDataStore(parks);

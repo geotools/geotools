@@ -54,6 +54,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.data.vpf.VPFColumn;
 import org.geotools.data.vpf.VPFLogger;
 import org.geotools.data.vpf.exc.VPFHeaderFormatException;
@@ -68,6 +69,7 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.AnnotationFeatureType;
 import org.geotools.text.Text;
+import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateList;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -89,6 +91,7 @@ public class VPFFile {
     //    private final TableInputStream stream;
     private static String ACCESS_MODE = "r";
 
+    static final Logger LOGGER = Logging.getLogger(VPFFile.class);
     /**
      * Variable <code>byteOrder</code> keeps value of byte order in which table is written:
      *
@@ -351,7 +354,7 @@ public class VPFFile {
                 result = getRowFromIterator(joinedIter, idName, id);
             }
         } catch (IOException exc) {
-            exc.printStackTrace();
+            LOGGER.log(Level.SEVERE, "", exc);
         }
 
         return result;
@@ -384,7 +387,7 @@ public class VPFFile {
                 }
             } catch (NumberFormatException exc) {
                 // If this happens, the data is invalid so dumping a stack trace seems reasonable
-                exc.printStackTrace();
+                LOGGER.log(Level.SEVERE, "", exc);
             }
         }
 
@@ -418,7 +421,7 @@ public class VPFFile {
             }
         } catch (IOException exc) {
             // No idea what to do if this happens
-            exc.printStackTrace();
+            LOGGER.log(Level.SEVERE, "", exc);
         }
 
         return result;
@@ -636,7 +639,7 @@ public class VPFFile {
             result = SimpleFeatureBuilder.build(featureType, values, null);
         } catch (EOFException exp) {
             // Should we be throwing an exception instead of eating it?
-            exp.printStackTrace();
+            LOGGER.log(Level.SEVERE, "", exp);
 
             debug = true;
 

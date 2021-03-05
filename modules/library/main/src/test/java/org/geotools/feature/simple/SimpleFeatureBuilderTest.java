@@ -206,7 +206,6 @@ public class SimpleFeatureBuilderTest {
             feature.validate();
             Assert.fail("this should fail because the value is not either a, b or c, but d");
         } catch (Exception e) {
-            e.printStackTrace();
             // good
         }
     }
@@ -236,7 +235,6 @@ public class SimpleFeatureBuilderTest {
             feature.validate();
             Assert.fail("this should fail because the value is not either a, b or c, but d");
         } catch (Exception e) {
-            e.printStackTrace();
             // good
         }
     }

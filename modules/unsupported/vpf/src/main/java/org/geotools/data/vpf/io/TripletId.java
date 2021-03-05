@@ -16,8 +16,11 @@
  */
 package org.geotools.data.vpf.io;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.data.vpf.VPFLogger;
 import org.geotools.data.vpf.exc.VPFDataFormatException;
+import org.geotools.util.logging.Logging;
 
 /**
  * Class TripletId.java is responsible for
@@ -34,6 +37,7 @@ public class TripletId extends Number {
     /** The raw data that can be decomposed into as many as three separate numbers */
     private byte[] rawData = null;
 
+    static final Logger LOGGER = Logging.getLogger(TripletId.class);
     /**
      * Creates a new <code>TripletId</code> instance.
      *
@@ -119,7 +123,7 @@ public class TripletId extends Number {
                     result += (piece << (8 * inx));
                 }
             } catch (RuntimeException exp) {
-                exp.printStackTrace();
+                LOGGER.log(Level.SEVERE, "", exp);
                 result = 0;
             }
         }
@@ -151,7 +155,7 @@ public class TripletId extends Number {
                     result += (piece << (8 * inx));
                 }
             } catch (RuntimeException exp) {
-                exp.printStackTrace();
+                LOGGER.log(Level.SEVERE, "", exp);
                 result = 0;
             }
         }
@@ -183,7 +187,7 @@ public class TripletId extends Number {
                     result += (piece << (8 * inx));
                 }
             } catch (RuntimeException exp) {
-                exp.printStackTrace();
+                LOGGER.log(Level.SEVERE, "", exp);
                 result = 0;
             }
         }

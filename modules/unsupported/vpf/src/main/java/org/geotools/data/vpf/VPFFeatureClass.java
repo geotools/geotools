@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.data.vpf.file.VPFFile;
 import org.geotools.data.vpf.file.VPFFileFactory;
 import org.geotools.data.vpf.readers.AreaGeometryFactory;
@@ -48,6 +49,7 @@ import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.AnnotationFeatureType;
+import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
@@ -111,6 +113,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
 
     private boolean debug = false;
 
+    static final Logger LOGGER = Logging.getLogger(VPFFeatureClass.class);
     /**
      * Constructor
      *
@@ -499,7 +502,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
                     geometry = jcs.geometryFactory.buildGeometry(this, fcs.currRow);
                 } catch (Exception e) {
                     geometry = null;
-                    e.printStackTrace();
+                    LOGGER.log(Level.SEVERE, "", e);
                 }
                 jcs.geometry = geometry;
 

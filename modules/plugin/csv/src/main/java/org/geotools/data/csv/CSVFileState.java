@@ -29,8 +29,11 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.URI;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.referencing.CRS;
+import org.geotools.util.logging.Logging;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -41,6 +44,8 @@ public class CSVFileState {
     private char escapechar = '\\';
     private String lineSeparator = System.lineSeparator();
     private boolean quoteAllFields = false;
+
+    static final Logger LOGGER = Logging.getLogger(CSVFileState.class);
 
     private static CoordinateReferenceSystem DEFAULT_CRS() throws FactoryException {
         return CRS.decode("EPSG:4326");
@@ -80,8 +85,7 @@ public class CSVFileState {
                 }
                 setCrs(CRS.parseWKT(prj.toString()));
             } catch (IOException | FactoryException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                LOGGER.log(Level.SEVERE, "", e);
             }
         }
     }

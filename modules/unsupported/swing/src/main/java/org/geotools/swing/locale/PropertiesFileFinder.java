@@ -30,7 +30,10 @@ import java.util.ListIterator;
 import java.util.Locale;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.util.URLs;
+import org.geotools.util.logging.Logging;
 
 /**
  * Searches for properties files in a resource directory within the gt-swing module and records the
@@ -49,7 +52,7 @@ import org.geotools.util.URLs;
  * @version $Id$
  */
 public class PropertiesFileFinder {
-
+    static final Logger LOGGER = Logging.getLogger(PropertiesFileFinder.class);
     /**
      * Searches for properties files in the specified resource directory and returns information
      * about each file and the {@code Locales} that it supports.
@@ -78,16 +81,16 @@ public class PropertiesFileFinder {
                 classFileLocator = Class.forName("org.eclipse.core.runtime.FileLocator");
                 toFileURLMethod = classFileLocator.getMethod("toFileURL", URL.class);
             } catch (LinkageError | ClassNotFoundException ex) {
-                ex.printStackTrace();
+                LOGGER.log(Level.FINE, "", ex);
                 throw new IllegalArgumentException(
                         "trying to load a bundle resource "
                                 + resourceDir
                                 + " whilst the org.eclipse.core.runtime.FileLocator is not available",
                         ex);
             } catch (NoSuchMethodException | SecurityException ex) {
-                ex.printStackTrace();
+                LOGGER.log(Level.FINE, "", ex);
                 throw new IllegalArgumentException(
-                        "did not found method toFileUTL in class the org.eclipse.core.runtime.FileLocator",
+                        "did not find method toFileUTL in class the org.eclipse.core.runtime.FileLocator",
                         ex);
             }
             // convert to a directory we can list
@@ -104,7 +107,7 @@ public class PropertiesFileFinder {
             } catch (IllegalAccessException
                     | IllegalArgumentException
                     | InvocationTargetException e) {
-                e.printStackTrace();
+                LOGGER.log(Level.FINE, "", e);
                 throw new RuntimeException(
                         "error while converting the url " + url + " to a file", e);
             }

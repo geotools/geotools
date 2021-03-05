@@ -110,6 +110,7 @@ public class Data extends Selector {
         return new Specificity(0, extractor.getSpecificityScore(), 0);
     }
 
+    @Override
     public Object accept(SelectorVisitor visitor) {
         return visitor.visit(this);
     }

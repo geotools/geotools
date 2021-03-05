@@ -118,6 +118,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
             this.defaultValue = defaultValue;
         }
 
+        @Override
         public T lookUp(final Map params) throws IOException {
             @SuppressWarnings("unchecked")
             T parameter = (T) super.lookUp(params);

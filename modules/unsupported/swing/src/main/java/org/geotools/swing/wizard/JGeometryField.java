@@ -38,10 +38,12 @@ public class JGeometryField extends ParamField {
         super(parameter);
     }
 
+    @Override
     public JComponent doLayout() {
         text = new JTextArea(40, 3);
         text.addKeyListener(
                 new KeyAdapter() {
+                    @Override
                     public void keyReleased(KeyEvent e) {
                         validate();
                     }
@@ -57,6 +59,7 @@ public class JGeometryField extends ParamField {
         return scroll;
     }
 
+    @Override
     public Object getValue() {
         WKTReader reader = new WKTReader();
         String wkt = text.getText();
@@ -90,6 +93,7 @@ public class JGeometryField extends ParamField {
         }
     }
 
+    @Override
     public void setValue(Object value) {
         Geometry geom = (Geometry) value;
 
@@ -99,14 +103,17 @@ public class JGeometryField extends ParamField {
         text.setText(wkt);
     }
 
+    @Override
     public void addListener(Controller controller) {
         text.addKeyListener(controller);
     }
 
+    @Override
     public void removeListener(Controller controller) {
         text.addKeyListener(controller);
     }
 
+    @Override
     public boolean validate() {
         WKTReader reader = new WKTReader();
         String wkt = text.getText();

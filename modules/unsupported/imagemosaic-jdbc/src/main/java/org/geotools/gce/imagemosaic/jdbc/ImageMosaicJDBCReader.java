@@ -236,6 +236,7 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
      *
      * @see org.opengis.coverage.grid.GridCoverageReader#getFormat()
      */
+    @Override
     public Format getFormat() {
         return new ImageMosaicJDBCFormat();
     }
@@ -259,6 +260,7 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
      * org.opengis.coverage.grid.GridCoverageReader#read(org.opengis.parameter.GeneralParameterValue
      * [])
      */
+    @Override
     public GridCoverage2D read(GeneralParameterValue[] params) throws IOException {
         logRequestParams(params);
 

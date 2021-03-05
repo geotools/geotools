@@ -43,6 +43,7 @@ public abstract class Signature implements Cloneable {
     public abstract int size();
 
     /** Clones the signature */
+    @Override
     public abstract Object clone();
 
     @Override
@@ -83,6 +84,7 @@ public abstract class Signature implements Cloneable {
             this.size = other.size;
         }
 
+        @Override
         public void increment() {
             for (int i = 0; i < bs.size(); i++) {
                 if (bs.get(i)) {
@@ -94,6 +96,7 @@ public abstract class Signature implements Cloneable {
             }
         }
 
+        @Override
         public boolean contains(Signature otherSignature, int k) {
             BitsetSignature other = (BitsetSignature) otherSignature;
             final int max = Math.min(bs.size(), k + 1);
@@ -125,6 +128,7 @@ public abstract class Signature implements Cloneable {
             return size;
         }
 
+        @Override
         public Object clone() {
             return new BitsetSignature(this);
         }

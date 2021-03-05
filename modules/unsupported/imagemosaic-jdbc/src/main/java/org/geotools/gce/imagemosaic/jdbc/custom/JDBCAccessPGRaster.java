@@ -80,6 +80,7 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
      *
      * @see org.geotools.gce.imagemosaic.jdbc.JDBCAccess#initialize()
      */
+    @Override
     public void initialize() throws IOException {
 
         try (Connection con = getConnection()) {
@@ -149,6 +150,7 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
      * org.geotools.geometry.GeneralEnvelope, org.geotools.gce.imagemosaic.jdbc.ImageLevelInfo,
      * java.util.concurrent.LinkedBlockingQueue)
      */
+    @Override
     public void startTileDecoders(
             Rectangle pixelDimension,
             GeneralEnvelope requestEnvelope,

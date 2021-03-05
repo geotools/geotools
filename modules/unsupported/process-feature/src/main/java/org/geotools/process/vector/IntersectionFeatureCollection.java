@@ -530,10 +530,12 @@ public class IntersectionFeatureCollection implements VectorProcess {
             logger.fine("Schema created");
         }
 
+        @Override
         public void close() {
             delegate.close();
         }
 
+        @Override
         public boolean hasNext() {
             //   logger.info("qui");
             logger.finer("HAS NEXT");
@@ -685,6 +687,7 @@ public class IntersectionFeatureCollection implements VectorProcess {
             fb.set("percentageB", percentageB);
         }
 
+        @Override
         public SimpleFeature next() throws NoSuchElementException {
             if (!hasNext()) {
                 throw new NoSuchElementException("hasNext() returned false!");

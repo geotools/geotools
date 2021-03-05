@@ -116,6 +116,7 @@ public abstract class AbstractGetFeatureParserTest {
             this.expectedGeometries = expectedGeometries;
         }
 
+        @Override
         public void visit(final Feature feature) {
             assertNotNull(feature);
             assertNotNull(feature.getIdentifier().getID());

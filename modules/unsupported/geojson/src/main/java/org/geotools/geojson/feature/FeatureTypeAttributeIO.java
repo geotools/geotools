@@ -40,20 +40,24 @@ public class FeatureTypeAttributeIO implements AttributeIO {
         }
     }
 
+    @Override
     public String encode(String att, Object value) {
         return ios.get(att).encode(att, value);
     }
 
+    @Override
     public Object parse(String att, String value) {
         return ios.get(att).parse(att, value);
     }
 
     static class DateAttributeIO implements AttributeIO {
 
+        @Override
         public String encode(String att, Object value) {
             return GeoJSONUtil.dateFormatter.format((Date) value);
         }
 
+        @Override
         public Object parse(String att, String value) {
             try {
                 final SimpleDateFormat sdf = new SimpleDateFormat(GeoJSONUtil.DATE_FORMAT);

@@ -50,6 +50,7 @@ public class VPFTest extends OnlineTestCase {
         super.disconnect();
     }
 
+    @Override
     protected String getFixtureId() {
         return "vpf.vmap";
     }
@@ -60,6 +61,7 @@ public class VPFTest extends OnlineTestCase {
      *
      * @return fixture listing where vmap folder (that contains lht)
      */
+    @Override
     protected Properties createExampleFixture() {
         Properties fixture = new Properties();
         fixture.put("vmap", "C:\\data\\v0noa_5\\vmaplv0\\noamer");

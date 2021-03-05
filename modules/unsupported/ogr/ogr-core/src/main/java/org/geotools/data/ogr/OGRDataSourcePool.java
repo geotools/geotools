@@ -140,6 +140,7 @@ class OGRDataSourcePool implements AutoCloseable {
         return ds;
     }
 
+    @Override
     public void close() {
         try {
             readOnlyPool.close();

@@ -192,6 +192,7 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
      *
      * @see #getPostContents(WFSRequest)
      */
+    @Override
     public abstract Configuration getWfsConfiguration();
 
     /*

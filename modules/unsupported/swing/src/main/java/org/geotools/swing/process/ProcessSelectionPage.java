@@ -81,10 +81,12 @@ public class ProcessSelectionPage extends JPage {
         selectedFactory = null;
     }
 
+    @Override
     public String getBackPageIdentifier() {
         return null;
     }
 
+    @Override
     public String getNextPageIdentifier() {
         if (selectedFactory == null) {
             return null;

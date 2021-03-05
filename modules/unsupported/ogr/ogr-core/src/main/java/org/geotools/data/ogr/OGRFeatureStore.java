@@ -82,18 +82,22 @@ class OGRFeatureStore extends ContentFeatureStore {
     // METHODS DELEGATED TO OGRFeatureSource
     // ----------------------------------------------------------------------------------------
 
+    @Override
     public OGRDataStore getDataStore() {
         return delegate.getDataStore();
     }
 
+    @Override
     public Transaction getTransaction() {
         return delegate.getTransaction();
     }
 
+    @Override
     public ResourceInfo getInfo() {
         return delegate.getInfo();
     }
 
+    @Override
     public QueryCapabilities getQueryCapabilities() {
         return delegate.getQueryCapabilities();
     }

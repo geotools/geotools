@@ -30,6 +30,7 @@ public class Accept extends Selector {
         return Specificity.ZERO;
     }
 
+    @Override
     public Object accept(SelectorVisitor visitor) {
         return visitor.visit(this);
     }

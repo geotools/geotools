@@ -128,6 +128,7 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
 
     protected abstract OGR createOGR();
 
+    @Override
     public boolean canProcess(Map<String, ?> params) {
         String ogrName = null;
         String ogrDriver = null;
@@ -146,11 +147,13 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
         return accept;
     }
 
+    @Override
     public DataStore createDataStore(Map<String, ?> params) throws IOException {
         return createNewDataStore(params);
     }
 
     /** Not implemented yet. */
+    @Override
     public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
 
         String ogrName = (String) OGR_NAME.lookUp(params);
@@ -168,6 +171,7 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
         return ds;
     }
 
+    @Override
     public String getDisplayName() {
         return "OGR";
     }
@@ -178,6 +182,7 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
      * @return String a human readable description of the type of restore supported by this
      *     datastore.
      */
+    @Override
     public String getDescription() {
         return "Uses OGR as a data source";
     }
@@ -190,6 +195,7 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
      * @task REVISIT: I'm just adding this method to compile, maintainer should revisit to check for
      *     any libraries that may be necessary for datastore creations.
      */
+    @Override
     public final boolean isAvailable() {
         return isAvailable(true);
     }
@@ -229,6 +235,7 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
      *
      * @see org.geotools.data.DataStoreFactorySpi#getParametersInfo()
      */
+    @Override
     public Param[] getParametersInfo() {
         return new Param[] {
             OGR_NAME,
@@ -289,6 +296,7 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
         return result;
     }
 
+    @Override
     public Map<RenderingHints.Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }

@@ -67,15 +67,18 @@ public abstract class FeatureToFeatureProcessFactory
         resultInfo.put(RESULT.key, RESULT);
     }
 
+    @Override
     public final Map<String, Parameter<?>> getResultInfo(Map<String, Object> parameters)
             throws IllegalArgumentException {
         return Collections.unmodifiableMap(resultInfo);
     }
 
+    @Override
     public final boolean supportsProgress() {
         return true;
     }
 
+    @Override
     public String getVersion() {
         return VERSION;
     }

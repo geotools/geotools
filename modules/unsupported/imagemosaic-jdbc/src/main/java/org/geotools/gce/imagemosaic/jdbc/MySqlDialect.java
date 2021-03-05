@@ -31,6 +31,7 @@ public class MySqlDialect extends DBDialect {
      *
      * @see org.geotools.gce.imagemosaic.jdbc.DBDialect#getDropIndexStatment(java.lang.String)
      */
+    @Override
     String getDropIndexStatment(String tn) {
         return "drop index IX_" + tn + " on " + tn;
     }

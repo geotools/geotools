@@ -74,23 +74,28 @@ public class WPSFactory extends SingleProcessFactory {
     }
 
     /** Create a representation of a process */
+    @Override
     public Process create() {
         return new WPSProcess(this);
     }
 
+    @Override
     public InternationalString getDescription() {
         return Text.text(description);
     }
 
+    @Override
     public Map<String, Parameter<?>> getParameterInfo() {
         return Collections.unmodifiableMap(parameterInfo);
     }
 
+    @Override
     public Map<String, Parameter<?>> getResultInfo(Map<String, Object> parameters)
             throws IllegalArgumentException {
         return Collections.unmodifiableMap(resultInfo);
     }
 
+    @Override
     public InternationalString getTitle() {
         return Text.text(title);
     }
@@ -99,10 +104,12 @@ public class WPSFactory extends SingleProcessFactory {
         return identifier;
     }
 
+    @Override
     public String getVersion() {
         return version;
     }
 
+    @Override
     public boolean supportsProgress() {
         // unknown, so return false
         return false;

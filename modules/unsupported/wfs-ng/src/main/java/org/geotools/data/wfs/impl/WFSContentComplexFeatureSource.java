@@ -117,6 +117,7 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
                 words.add(WFSContentComplexFeatureSource.this.getName().getURI());
             }
 
+            @Override
             public ReferencedEnvelope getBounds() {
                 try {
                     return WFSContentComplexFeatureSource.this.getBounds();
@@ -125,24 +126,29 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
                 }
             }
 
+            @Override
             public CoordinateReferenceSystem getCRS() {
                 return WFSContentComplexFeatureSource.this
                         .getSchema()
                         .getCoordinateReferenceSystem();
             }
 
+            @Override
             public String getDescription() {
                 return null;
             }
 
+            @Override
             public Set<String> getKeywords() {
                 return words;
             }
 
+            @Override
             public String getName() {
                 return WFSContentComplexFeatureSource.this.getName().getURI();
             }
 
+            @Override
             public URI getSchema() {
                 Name name = WFSContentComplexFeatureSource.this.getSchema().getName();
                 URI namespace;
@@ -154,6 +160,7 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
                 }
             }
 
+            @Override
             public String getTitle() {
                 Name name = WFSContentComplexFeatureSource.this.getSchema().getName();
                 return name.getLocalPart();

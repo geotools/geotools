@@ -93,6 +93,7 @@ public class MySqlOnlineTest extends AbstractTest {
         return dialect;
     }
 
+    @Override
     protected String getXMLConnectFragmentName() {
         return "connect.mysql.xml.inc";
     }
@@ -102,6 +103,7 @@ public class MySqlOnlineTest extends AbstractTest {
      *
      * @see org.geotools.gce.imagemosaic.jdbc.AbstractTest#getDriverClassName()
      */
+    @Override
     protected String getDriverClassName() {
         return "com.mysql.cj.jdbc.Driver";
     }
@@ -112,6 +114,7 @@ public class MySqlOnlineTest extends AbstractTest {
      * @see org.geotools.gce.imagemosaic.jdbc.AbstractTest#getJDBCUrl(java.lang.String,
      *      java.lang.Integer, java.lang.String)
      */
+    @Override
     protected String getJDBCUrl(String host, Integer port, String dbName) {
         return "jdbc:mysql://" + host + ":" + port + "/" + dbName;
     }

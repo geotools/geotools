@@ -38,6 +38,7 @@ public abstract class OGRPeformanceTest extends TestCaseSupport {
         super(dataStoreFactoryClass);
     }
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();

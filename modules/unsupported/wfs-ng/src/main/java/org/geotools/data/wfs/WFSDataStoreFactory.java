@@ -265,6 +265,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
      *
      * @return <code>true</code>
      */
+    @Override
     public boolean isAvailable() {
         return true;
     }

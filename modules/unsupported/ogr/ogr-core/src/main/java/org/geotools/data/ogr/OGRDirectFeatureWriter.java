@@ -71,6 +71,7 @@ class OGRDirectFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
         this.ogr = ogr;
     }
 
+    @Override
     public void close() throws IOException {
         if (reader != null) {
             try {
@@ -90,14 +91,17 @@ class OGRDirectFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
         }
     }
 
+    @Override
     public SimpleFeatureType getFeatureType() {
         return featureType;
     }
 
+    @Override
     public boolean hasNext() throws IOException {
         return reader.hasNext();
     }
 
+    @Override
     public SimpleFeature next() throws IOException {
         if (live != null) {
             write();
@@ -114,6 +118,7 @@ class OGRDirectFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
         return live;
     }
 
+    @Override
     public void remove() throws IOException {
         long ogrId = mapper.convertGTFID(original);
         if (!ogr.LayerDeleteFeature(layer, ogrId)) {
@@ -122,6 +127,7 @@ class OGRDirectFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
         deletedFeatures = true;
     }
 
+    @Override
     public void write() throws IOException {
         if (live == null) throw new IOException("No current feature to write");
 

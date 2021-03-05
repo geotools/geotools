@@ -43,6 +43,7 @@ import org.opengis.parameter.ParameterValueGroup;
 public class GT30ZipWriterTest extends GT30TestBase {
 
     /** Testing zipped-package writing capabilites. */
+    @Override
     @Test
     public void test() throws Exception {
         final URL statURL = TestData.getResource(this, this.fileName + ".DEM");

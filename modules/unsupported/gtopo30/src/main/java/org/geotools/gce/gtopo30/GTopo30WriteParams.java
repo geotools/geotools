@@ -27,22 +27,27 @@ import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
  */
 public final class GTopo30WriteParams extends GeoToolsWriteParams {
 
+    @Override
     public int getCompressionMode() {
         return compressionMode;
     }
 
+    @Override
     public String getCompressionType() {
         return compressionType;
     }
 
+    @Override
     public boolean hasController() {
         return false;
     }
 
+    @Override
     public void setCompressionMode(int compressionMode) {
         this.compressionMode = compressionMode;
     }
 
+    @Override
     public void setCompressionType(String ct) {
         compressionType = ct;
     }
@@ -61,6 +66,7 @@ public final class GTopo30WriteParams extends GeoToolsWriteParams {
         controller = null;
     }
 
+    @Override
     public String[] getCompressionTypes() {
         return compressionTypes;
     }

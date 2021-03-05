@@ -50,6 +50,7 @@ class RenderingProcessFunction extends ProcessFunction implements RenderingTrans
         super(processName, inputExpressions, parameters, process, fallbackValue);
     }
 
+    @Override
     public Query invertQuery(Query targetQuery, GridGeometry gridGeometry) {
         RenderingProcess process = (RenderingProcess) this.process;
         // evaluate input expressions
@@ -63,6 +64,7 @@ class RenderingProcessFunction extends ProcessFunction implements RenderingTrans
         }
     }
 
+    @Override
     public GridGeometry invertGridGeometry(Query targetQuery, GridGeometry targetGridGeometry) {
         RenderingProcess process = (RenderingProcess) this.process;
         // evaluate input expressions

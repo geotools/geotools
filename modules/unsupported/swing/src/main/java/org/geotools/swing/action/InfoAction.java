@@ -60,6 +60,7 @@ public class InfoAction extends MapAction {
      *
      * @param ev the event (not used)
      */
+    @Override
     public void actionPerformed(ActionEvent ev) {
         getMapPane().setCursorTool(new InfoTool());
     }

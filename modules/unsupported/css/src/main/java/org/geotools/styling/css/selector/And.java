@@ -43,6 +43,7 @@ public class And extends Composite {
         return "And [children=" + getChildren() + "]";
     }
 
+    @Override
     public Object accept(SelectorVisitor visitor) {
         return visitor.visit(this);
     }

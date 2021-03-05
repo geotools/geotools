@@ -56,6 +56,7 @@ public final class CapabilitiesServiceInfo implements WFSServiceInfo {
      *
      * @see ServiceInfo#getDescription()
      */
+    @Override
     public String getDescription() {
         ServiceIdentificationType serviceIdentification = capabilities.getServiceIdentification();
         return serviceIdentification == null ? null : serviceIdentification.getAbstract();
@@ -74,6 +75,7 @@ public final class CapabilitiesServiceInfo implements WFSServiceInfo {
      *
      * @see ServiceInfo#getDescription()
      */
+    @Override
     public Set<String> getKeywords() {
         Set<String> kws = new HashSet<>();
         ServiceIdentificationType serviceIdentification = capabilities.getServiceIdentification();
@@ -91,6 +93,7 @@ public final class CapabilitiesServiceInfo implements WFSServiceInfo {
     }
 
     /** @see ServiceInfo#getPublisher() */
+    @Override
     public URI getPublisher() {
         ServiceProviderType serviceProvider = capabilities.getServiceProvider();
         if (null == serviceProvider) {
@@ -113,6 +116,7 @@ public final class CapabilitiesServiceInfo implements WFSServiceInfo {
      *
      * @see ServiceInfo#getSchema()
      */
+    @Override
     public URI getSchema() {
         return schemaUri;
     }
@@ -122,17 +126,20 @@ public final class CapabilitiesServiceInfo implements WFSServiceInfo {
      *
      * @see ServiceInfo#getSource()
      */
+    @Override
     public URI getSource() {
         return getCapsUrl;
     }
 
     /** @see ServiceInfo#getTitle() */
+    @Override
     public String getTitle() {
         ServiceIdentificationType serviceIdentification = capabilities.getServiceIdentification();
         return serviceIdentification == null ? null : serviceIdentification.getTitle();
     }
 
     /** @see WFSServiceInfo#getVersion() */
+    @Override
     public String getVersion() {
         return capabilities.getVersion();
     }

@@ -39,6 +39,7 @@ public class StaticMethodsProcessFactory<T> extends AnnotationDrivenProcessFacto
     }
 
     /** Finds the DescribeProcess description for the specified name */
+    @Override
     protected DescribeProcess getProcessDescription(Name name) {
         Method method = method(name.getLocalPart());
         if (method == null) {
@@ -48,6 +49,7 @@ public class StaticMethodsProcessFactory<T> extends AnnotationDrivenProcessFacto
         return info;
     }
 
+    @Override
     public Method method(String name) {
         for (Method method : targetClass.getMethods()) {
             if (name.equalsIgnoreCase(method.getName())) {
@@ -60,6 +62,7 @@ public class StaticMethodsProcessFactory<T> extends AnnotationDrivenProcessFacto
         return null;
     }
 
+    @Override
     public Set<Name> getNames() {
         // look for the methods that have the DescribeProcess annotation. use
         // a linkedHashSet to make sure we don't report duplicate names

@@ -89,6 +89,7 @@ public class TableColumnDef implements DataTypesDefinition {
      *
      * @return a <code>String</code> value
      */
+    @Override
     public String toString() {
         String emptyStr = "";
         StringBuffer buff = new StringBuffer();

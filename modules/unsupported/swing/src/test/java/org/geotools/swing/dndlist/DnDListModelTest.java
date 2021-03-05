@@ -44,14 +44,17 @@ public class DnDListModelTest {
             removed = 0;
         }
 
+        @Override
         public void contentsChanged(ListDataEvent e) {
             changed++;
         }
 
+        @Override
         public void intervalAdded(ListDataEvent e) {
             added++;
         }
 
+        @Override
         public void intervalRemoved(ListDataEvent e) {
             removed++;
         }

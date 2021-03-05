@@ -109,10 +109,12 @@ public class ProcessFunction implements Function {
         functionName = new FunctionNameImpl(name, result, inputParams);
     }
 
+    @Override
     public Literal getFallbackValue() {
         return fallbackValue;
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -121,23 +123,28 @@ public class ProcessFunction implements Function {
         return processName;
     }
 
+    @Override
     public FunctionName getFunctionName() {
         return functionName;
     }
 
+    @Override
     public List<Expression> getParameters() {
         return inputExpressions;
     }
 
+    @Override
     public Object accept(ExpressionVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
 
+    @Override
     public <T> T evaluate(Object object, Class<T> context) {
         Object o = evaluate(object);
         return Converters.convert(o, context);
     }
 
+    @Override
     public Object evaluate(Object object) {
         Map<String, Object> processInputs = evaluateInputs(object);
 

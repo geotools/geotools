@@ -155,6 +155,7 @@ public final class NoDataReplacerOpImage extends PointOpImage {
      * @param dest The destination tile.
      * @param destRect the rectangle within the destination to be written.
      */
+    @Override
     protected void computeRect(
             final PlanarImage[] sources, final WritableRaster dest, final Rectangle destRect) {
         final PlanarImage source = sources[0];
@@ -244,6 +245,7 @@ public final class NoDataReplacerOpImage extends PointOpImage {
          * @param param The parameter block for the operation to performs.
          * @param message A buffer for formatting an error message if any.
          */
+        @Override
         protected boolean validateParameters(
                 final String modeName, final ParameterBlock param, final StringBuffer message) {
             if (!super.validateParameters(modeName, param, message)) {
@@ -259,6 +261,7 @@ public final class NoDataReplacerOpImage extends PointOpImage {
          * Creates a {@link RenderedImage} representing the results of an imaging operation for a
          * given {@link ParameterBlock} and {@link RenderingHints}.
          */
+        @Override
         public RenderedImage create(final ParameterBlock param, final RenderingHints hints) {
             final RenderedImage source = (RenderedImage) param.getSource(0);
 

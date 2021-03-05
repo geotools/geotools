@@ -51,6 +51,7 @@ public class TableRow implements VPFRow {
      *
      * @return a <code>String</code> value
      */
+    @Override
     public String toString() {
         //     StringBuffer buff = new StringBuffer(" ["+getClass().getName());
         //     buff.append(" (fieldsMap=");
@@ -121,6 +122,7 @@ public class TableRow implements VPFRow {
      * @param obj an <code>Object</code> value
      * @return a <code>boolean</code> value
      */
+    @Override
     public boolean equals(Object obj) {
         if ((obj == null) || !(obj instanceof TableRow)) {
             return false;
@@ -149,6 +151,7 @@ public class TableRow implements VPFRow {
         return true;
     }
 
+    @Override
     public int hashCode() {
         int code = 0;
 

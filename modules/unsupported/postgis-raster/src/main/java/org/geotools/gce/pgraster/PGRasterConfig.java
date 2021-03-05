@@ -212,6 +212,7 @@ class PGRasterConfig implements Closeable {
         return el.getFirstChild().getNodeValue();
     }
 
+    @Override
     public void close() {
         if (dataSource instanceof PGRasterDataSource) {
             try {

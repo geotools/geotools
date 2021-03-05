@@ -83,6 +83,7 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
     /* (non-Javadoc)
      * @see org.geotools.data.FeatureReader#next()
      */
+    @Override
     public synchronized SimpleFeature next()
             throws IOException, IllegalAttributeException, NoSuchElementException {
         readNext();

@@ -119,6 +119,7 @@ public class JDBCAccessOracleGeoRaster extends JDBCAccessCustom {
      *
      * Gathers the initial meta data needed
      */
+    @Override
     public void initialize() {
 
         LOGGER.fine("Starting GeoRaster Image Mosaic");
@@ -363,6 +364,7 @@ public class JDBCAccessOracleGeoRaster extends JDBCAccessCustom {
      * @param tileQueue Queue to place retrieved tile into
      * @param coverageFactory not used (passed as per interface requirement)
      */
+    @Override
     public void startTileDecoders(
             Rectangle pixelDimension,
             GeneralEnvelope requestEnvelope,

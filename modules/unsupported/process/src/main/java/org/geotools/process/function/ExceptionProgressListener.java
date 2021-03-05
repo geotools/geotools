@@ -30,6 +30,7 @@ class ExceptionProgressListener implements ProgressListener {
 
     List<Throwable> exceptions = new ArrayList<>();
 
+    @Override
     public void exceptionOccurred(Throwable exception) {
         exceptions.add(exception);
     }
@@ -38,16 +39,19 @@ class ExceptionProgressListener implements ProgressListener {
         return exceptions;
     }
 
+    @Override
     public boolean isCanceled() {
         return !exceptions.isEmpty();
     }
 
     // all other methods we don't care about
 
+    @Override
     public void complete() {
         // nothing to do here
     }
 
+    @Override
     public void dispose() {
         // nothing to do here
     }
@@ -56,18 +60,22 @@ class ExceptionProgressListener implements ProgressListener {
         return null;
     }
 
+    @Override
     public float getProgress() {
         return 0;
     }
 
+    @Override
     public InternationalString getTask() {
         return null;
     }
 
+    @Override
     public void progress(float percent) {
         // nothing to do here
     }
 
+    @Override
     public void setCanceled(boolean cancel) {
         // nothing to do here
     }
@@ -76,14 +84,17 @@ class ExceptionProgressListener implements ProgressListener {
         // nothing to do here
     }
 
+    @Override
     public void setTask(InternationalString task) {
         // nothing to do here
     }
 
+    @Override
     public void started() {
         // nothing to do here
     }
 
+    @Override
     public void warningOccurred(String source, String location, String warning) {
         // nothing to do here
     }

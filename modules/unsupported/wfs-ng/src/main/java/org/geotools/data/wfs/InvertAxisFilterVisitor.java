@@ -52,6 +52,7 @@ public class InvertAxisFilterVisitor extends DuplicatingFilterVisitor {
         this.geometryFactory = geometryFactory;
     }
 
+    @Override
     public Object visit(BBOX filter, Object extraData) {
         if (filter.getExpression2() instanceof Literal) {
             Literal bboxLiteral = (Literal) filter.getExpression2();
@@ -86,6 +87,7 @@ public class InvertAxisFilterVisitor extends DuplicatingFilterVisitor {
         return filter;
     }
 
+    @Override
     public Object visit(Literal expression, Object extraData) {
         if (!(expression.getValue() instanceof Geometry)) return super.visit(expression, extraData);
 

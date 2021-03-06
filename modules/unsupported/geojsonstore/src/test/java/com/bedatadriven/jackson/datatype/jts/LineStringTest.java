@@ -20,11 +20,36 @@ package com.bedatadriven.jackson.datatype.jts;
  *
  */
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import org.junit.After;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LineString;
 
 /** Created by mihaildoronin on 11/11/15. */
+@RunWith(Parameterized.class)
 public class LineStringTest extends BaseJtsModuleTest<LineString> {
+
+    private final Locale previousLocale;
+
+    @Parameterized.Parameters(name = "{0}")
+    public static List<Object[]> locales() {
+        return Arrays.asList(new Object[][] {{Locale.ENGLISH}, {Locale.ITALIAN}});
+    }
+
+    public LineStringTest(Locale locale) {
+        this.previousLocale = Locale.getDefault();
+        Locale.setDefault(locale);
+    }
+
+    @After
+    public void resetLocale() {
+        Locale.setDefault(previousLocale);
+    }
+
     @Override
     protected Class<LineString> getType() {
         return LineString.class;

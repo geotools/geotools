@@ -153,8 +153,7 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
             } else if (override.equalsIgnoreCase("arcgis")
                     && !Versions.v2_0_0.equals(capsVersion)) {
                 strategy = new ArcGisStrategy_1_X();
-            }
-            if (override.equalsIgnoreCase("arcgis") && Versions.v2_0_0.equals(capsVersion)) {
+            } else if (override.equalsIgnoreCase("arcgis") && Versions.v2_0_0.equals(capsVersion)) {
                 strategy = new ArcGisStrategy_2_0();
             } else {
                 LOGGER.warning(

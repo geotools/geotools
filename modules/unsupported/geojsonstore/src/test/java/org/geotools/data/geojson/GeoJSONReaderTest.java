@@ -24,11 +24,14 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.test.TestData;
+import org.geotools.util.logging.Logging;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -43,6 +46,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
 public class GeoJSONReaderTest {
 
     private final GeometryFactory gf = new GeometryFactory();
+
+    static final Logger LOGGER = Logging.getLogger(GeoJSONReaderTest.class);
 
     /** Test method for {@link org.geotools.data.geojson.GeoJSONReader#getFeatures()}. */
     @Test
@@ -236,7 +241,7 @@ public class GeoJSONReaderTest {
             assertFalse(features.isEmpty());
             f = (SimpleFeature) DataUtilities.first(features);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "", e);
         }
         assertNotNull(f);
         assertEquals("features.0", f.getID());

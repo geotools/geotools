@@ -24,6 +24,8 @@ import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import org.apache.commons.lang3.ArrayUtils;
 import org.geotools.data.FileDataStore;
@@ -39,6 +41,7 @@ import org.geotools.styling.SLD;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.swing.JMapFrame;
 import org.geotools.test.TestData;
+import org.geotools.util.logging.Logging;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
@@ -46,6 +49,8 @@ import org.opengis.util.ProgressListener;
 
 /** @author ian */
 public class ContourProcessTest {
+
+    static final Logger LOGGER = Logging.getLogger(ContourProcessTest.class);
 
     private FeatureCollection features;
 
@@ -178,7 +183,7 @@ public class ContourProcessTest {
                                 try {
                                     lock.wait();
                                 } catch (InterruptedException e) {
-                                    e.printStackTrace();
+                                    LOGGER.log(Level.WARNING, "", e);
                                 }
                         }
                     }

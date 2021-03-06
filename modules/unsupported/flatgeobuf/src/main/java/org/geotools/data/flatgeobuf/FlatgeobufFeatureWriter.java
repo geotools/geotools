@@ -16,6 +16,7 @@
  */
 package org.geotools.data.flatgeobuf;
 
+import com.google.flatbuffers.FlatBufferBuilder;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -30,6 +31,7 @@ import org.geotools.data.store.ContentState;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.wololo.flatgeobuf.geotools.FlatBuffers;
 
 public class FlatgeobufFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
 
@@ -51,6 +53,8 @@ public class FlatgeobufFeatureWriter implements FeatureWriter<SimpleFeatureType,
 
     private OutputStream outputStream;
 
+    private FlatBufferBuilder builder;
+
     public FlatgeobufFeatureWriter(ContentState state, Query query) throws IOException {
         this.state = state;
         String typeName = query.getTypeName();
@@ -64,7 +68,8 @@ public class FlatgeobufFeatureWriter implements FeatureWriter<SimpleFeatureType,
         this.temp =
                 File.createTempFile(typeName + System.currentTimeMillis(), "flatgeobuf", directory);
         this.outputStream = new FileOutputStream(this.temp);
-        this.writer = new FlatgeobufWriter(this.outputStream);
+        this.builder = FlatBuffers.newBuilder(4096);
+        this.writer = new FlatgeobufWriter(this.outputStream, this.builder);
         this.writer.writeFeatureType(state.getFeatureType());
         this.delegate = new FlatgeobufFeatureReader(state, query);
     }
@@ -142,6 +147,7 @@ public class FlatgeobufFeatureWriter implements FeatureWriter<SimpleFeatureType,
         this.outputStream.flush();
         this.outputStream.close();
         this.writer = null;
+        FlatBuffers.release(this.builder);
         if (delegate != null) {
             this.delegate.close();
             this.delegate = null;

@@ -180,7 +180,7 @@ public class VPFLibrary extends ContentDataStore {
         try {
             lhtFile.readFeature(); // check for errors
         } catch (IllegalAttributeException exc) {
-            exc.printStackTrace();
+            LOGGER.log(Level.FINE, "", exc);
             throw new IOException("Illegal values in library attribute table");
         }
         if (libraryFeature != null) {
@@ -580,7 +580,7 @@ public class VPFLibrary extends ContentDataStore {
             } catch (Exception ex) {
                 // Don't know what else can be done here, just dump it
                 if (!loggedCRSException) {
-                    ex.printStackTrace();
+                    LOGGER.log(Level.SEVERE, "", ex);
                     loggedCRSException = true;
                 }
             }

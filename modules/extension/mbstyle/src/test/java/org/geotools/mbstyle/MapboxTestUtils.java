@@ -22,6 +22,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.transform.TransformerException;
 import org.apache.commons.io.IOUtils;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -33,6 +35,7 @@ import org.geotools.styling.Style;
 import org.geotools.styling.StyledLayer;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.UserLayer;
+import org.geotools.util.logging.Logging;
 import org.geotools.xml.styling.SLDTransformer;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -41,7 +44,7 @@ import org.json.simple.parser.ParseException;
 public class MapboxTestUtils {
 
     static JSONParser jsonParser = new JSONParser();
-
+    static final Logger LOGGER = Logging.getLogger(MapboxTestUtils.class);
     /** Reader for a test Mapbox Style file (json). */
     public static Reader readerTestStyle(String filename) throws IOException, ParseException {
         try (InputStream is = MapboxTestUtils.class.getResourceAsStream(filename)) {
@@ -135,7 +138,7 @@ public class MapboxTestUtils {
         try {
             transformer.transform(sld, out);
         } catch (TransformerException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.WARNING, "", e);
         }
     }
 }

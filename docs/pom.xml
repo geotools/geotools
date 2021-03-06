@@ -13,7 +13,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>geotools</artifactId>
-    <version>25-SNAPSHOT</version>
+    <version>26-SNAPSHOT</version>
   </parent>
 
 
@@ -162,11 +162,6 @@
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-grid</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-validation</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

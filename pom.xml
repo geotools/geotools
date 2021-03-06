@@ -501,7 +501,7 @@
   <groupId>org.geotools</groupId>
   <artifactId>geotools</artifactId>
   <packaging>pom</packaging>
-  <version>25-SNAPSHOT</version>
+  <version>26-SNAPSHOT</version>
   <name>GeoTools</name>
 
   <scm>
@@ -1492,12 +1492,6 @@
         <artifactId>mockito-core</artifactId>
         <version>${mockito.core.version}</version>
         <scope>test</scope>
-      </dependency>
-     <!-- ArcSDE -->
-      <dependency>
-        <groupId>com.ibm.icu</groupId>
-        <artifactId>icu4j</artifactId>
-        <version>3.4.4</version>
       </dependency>
 
      <!-- JAIExt -->

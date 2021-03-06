@@ -27,11 +27,15 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.logging.Logging;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class CollectionType {
     static JsonFactory factory = new JsonFactory();
+    static final Logger LOGGER = Logging.getLogger(CollectionType.class);
     String identifier;
     String title;
     String description;
@@ -47,8 +51,7 @@ public class CollectionType {
         try {
             styles.add(style);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "", e);
         }
     }
 

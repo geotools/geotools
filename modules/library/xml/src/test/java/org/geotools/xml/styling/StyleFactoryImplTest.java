@@ -19,6 +19,7 @@ package org.geotools.xml.styling;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Random;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
@@ -227,7 +228,7 @@ public class StyleFactoryImplTest {
                 Expression exp = filterFactory.literal(name);
                 Assert.assertEquals("Wrong sort of mark returned ", exp, m.getWellKnownName());
             } catch (InvocationTargetException ite) {
-                ite.getTargetException().printStackTrace();
+                Logger.getGlobal().log(Level.SEVERE, "", ite);
                 Assert.fail("InvocationTargetException " + ite.getTargetException());
             } catch (Exception e) {
                 Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);

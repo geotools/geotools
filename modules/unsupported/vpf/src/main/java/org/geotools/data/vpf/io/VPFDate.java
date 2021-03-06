@@ -21,6 +21,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.geotools.util.logging.Logging;
 
 /**
  * VPFDate.java Created: Tue Jan 28 20:50:51 2003
@@ -35,6 +38,7 @@ public class VPFDate {
     /** Describe variable <code>dateBin</code> here. */
     private byte[] dateBin = null;
 
+    static final Logger LOGGER = Logging.getLogger(VPFDate.class);
     /**
      * Creates a new <code>VPFDate</code> instance.
      *
@@ -109,7 +113,7 @@ public class VPFDate {
         try {
             return sdf.parse(toString());
         } catch (ParseException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "", e);
         }
 
         return null;
@@ -126,7 +130,7 @@ public class VPFDate {
 
             return sdf.getCalendar();
         } catch (ParseException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "", e);
         }
 
         return null;

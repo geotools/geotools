@@ -27,18 +27,6 @@ Loughborough mapping file
     </Namespace>
   </namespaces>
   <sourceDataStores>
-    <!-- DataStore>
-      <id>sde</id>
-      <parameters>
-        <Parameter><name>dbtype</name><value>arcsde</value></Parameter>
-        <Parameter><name>server</name><value>server_name</value></Parameter>
-        <Parameter><name>port</name><value>port_number</value></Parameter>
-        <Parameter><name>instance</name><value>instance_name</value></Parameter>
-        <Parameter><name>user</name><value>user_name</value></Parameter>
-        <Parameter><name>password</name><value>password</value></Parameter>
-        <Parameter><name>pool.maxConnections</name><value>8</value></Parameter>
-      </parameters>
-    </DataStore-->
     <DataStore>
       <id>properties</id>
       <parameters>

@@ -31,7 +31,10 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,6 +63,8 @@ import org.geotools.util.logging.Logging;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
@@ -73,7 +78,10 @@ import org.opengis.filter.FilterFactory;
  *
  * <p>This test has a setup method used to copy locations.csv to a temporary file.
  */
+@RunWith(Parameterized.class)
 public class GeoJSONWriteTest {
+    private Locale previousLocale;
+
     File tmp;
 
     File file;
@@ -83,6 +91,21 @@ public class GeoJSONWriteTest {
     GeoJSONDataStoreFactory fac = new GeoJSONDataStoreFactory();
 
     private static Logger log = Logging.getLogger(GeoJSONWriter.class);
+
+    @Parameterized.Parameters(name = "{0}")
+    public static List<Object[]> locales() {
+        return Arrays.asList(new Object[][] {{Locale.ENGLISH}, {Locale.ITALIAN}});
+    }
+
+    public GeoJSONWriteTest(Locale locale) {
+        this.previousLocale = Locale.getDefault();
+        Locale.setDefault(locale);
+    }
+
+    @After
+    public void resetLocale() {
+        Locale.setDefault(previousLocale);
+    }
 
     @Before
     public void createTemporaryLocations() throws IOException {

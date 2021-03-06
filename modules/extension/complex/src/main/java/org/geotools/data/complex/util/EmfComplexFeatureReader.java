@@ -16,9 +16,14 @@
  */
 package org.geotools.data.complex.util;
 
+import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 import org.geotools.appschema.resolver.xml.AppSchemaConfiguration;
 import org.geotools.xml.resolver.SchemaCatalog;
 import org.geotools.xml.resolver.SchemaResolver;
@@ -28,9 +33,6 @@ import org.geotools.xsd.SchemaIndex;
 import org.geotools.xsd.Schemas;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
-import org.xmlpull.mxp1.MXParser;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
 
 /**
  * Parses an application schema given by a gtxml {@link Configuration} into a set of {@link
@@ -128,22 +130,27 @@ public class EmfComplexFeatureReader {
         // create stream parser
 
         try (InputStream input = resolvedLocation.openStream()) {
-            // parse root element
-            XmlPullParser parser = new MXParser();
-            parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true);
-            parser.setInput(input, "UTF-8");
-            parser.nextTag();
+            XMLInputFactory factory = XMLInputFactory.newFactory();
+            // disable DTDs
+            factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+            // disable external entities
+            factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
+            XMLStreamReader parser = factory.createXMLStreamReader(input, "UTF-8");
+            // position at root element
+            while (parser.hasNext()) {
+                if (START_ELEMENT == parser.next()) {
+                    break;
+                }
+            }
 
             // look for schema location
             for (int i = 0; i < parser.getAttributeCount(); i++) {
-                if ("targetNamespace".equals(parser.getAttributeName(i))) {
+                if ("targetNamespace".equals(parser.getAttributeLocalName(i))) {
                     targetNamespace = parser.getAttributeValue(i);
                     break;
                 }
             }
-            // reset input stream
-            parser.setInput(null);
-        } catch (XmlPullParserException e) {
+        } catch (XMLStreamException e) {
             String msg = "Cannot find target namespace for schema document " + resolvedLocation;
             throw (RuntimeException) new RuntimeException(msg).initCause(e);
         }

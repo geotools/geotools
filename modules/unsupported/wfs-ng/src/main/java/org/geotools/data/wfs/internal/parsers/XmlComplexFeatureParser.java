@@ -16,6 +16,10 @@
  */
 package org.geotools.data.wfs.internal.parsers;
 
+import static javax.xml.stream.XMLStreamConstants.END_DOCUMENT;
+import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
+import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -24,6 +28,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.complex.util.ComplexFeatureConstants;
@@ -49,8 +54,6 @@ import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.feature.type.PropertyType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
 
 /**
  * Parses complex features from a WFS response input stream.
@@ -137,7 +140,7 @@ public class XmlComplexFeatureParser extends XmlFeatureParser<FeatureType, Featu
                     featureBuilder.append(nextAttribute.name, (Property) nextAttribute.value);
                 }
             }
-        } catch (XmlPullParserException e) {
+        } catch (XMLStreamException e) {
             throw new DataSourceException(e);
         }
 
@@ -243,25 +246,23 @@ public class XmlComplexFeatureParser extends XmlFeatureParser<FeatureType, Featu
      */
     @SuppressWarnings("PMD.EmptyWhileStmt")
     private ReturnAttribute parseNextAttribute(ComplexType complexType)
-            throws XmlPullParserException, IOException {
+            throws XMLStreamException, IOException {
 
         // 1. Read through the XML until you come across a start tag, end tag or
         // the end of the document:
         int tagType;
         do {
             tagType = parser.next();
-        } while (tagType != XmlPullParser.START_TAG
-                && tagType != XmlPullParser.END_TAG
-                && tagType != XmlPullParser.END_DOCUMENT);
+        } while (tagType != START_ELEMENT && tagType != END_ELEMENT && tagType != END_DOCUMENT);
 
         // 2. We'll take an action depending on the type of tag we got.
-        if (tagType == XmlPullParser.START_TAG) {
+        if (tagType == START_ELEMENT) {
             // 2a. A start tag has been found; if it belongs to the complexType
             // then we should parse it and return it.
 
             // 3. Convert the tag's name into a NameImpl and then see if
             // there's a descriptor by that name in the type:
-            Name currentTagName = new NameImpl(parser.getNamespace(), parser.getName());
+            Name currentTagName = new NameImpl(parser.getNamespaceURI(), parser.getLocalName());
 
             PropertyDescriptor descriptor = complexType.getDescriptor(currentTagName);
             if (descriptor != null) {
@@ -286,7 +287,7 @@ public class XmlComplexFeatureParser extends XmlFeatureParser<FeatureType, Featu
                     // We've got the attribute but the parser is still
                     // pointing at this tag so
                     // we have to advance it till we get to the end tag.
-                    while (parser.next() != XmlPullParser.END_TAG) ;
+                    while (parser.next() != END_ELEMENT) ;
 
                     return new ReturnAttribute(id, currentTagName, hrefAttribute);
                 }
@@ -357,7 +358,7 @@ public class XmlComplexFeatureParser extends XmlFeatureParser<FeatureType, Featu
                         // We've got the attribute but the parser is still
                         // pointing at this tag so
                         // we have to advance it till we get to the end tag.
-                        while (parser.next() != XmlPullParser.END_TAG) ;
+                        while (parser.next() != END_ELEMENT) ;
 
                         return new ReturnAttribute(id, currentTagName, list);
                     }
@@ -416,7 +417,7 @@ public class XmlComplexFeatureParser extends XmlFeatureParser<FeatureType, Featu
                                 "WFS response structure unexpected. Could not find descriptor in type '%s' for '%s'.",
                                 complexType, currentTagName));
             }
-        } else if (tagType == XmlPullParser.END_DOCUMENT) {
+        } else if (tagType == END_DOCUMENT) {
             // 2b. Close the parser if we're at the end of the document.
             close();
         }

@@ -26,6 +26,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -80,7 +81,7 @@ public class GeoJSONWriter implements AutoCloseable {
 
     private boolean encodeFeatureCollectionCRS = false;
     private final JtsModule module;
-    private NumberFormat formatter = NumberFormat.getNumberInstance();
+    private NumberFormat formatter = NumberFormat.getNumberInstance(Locale.ENGLISH);
     private boolean notWritenBbox = true;
 
     public GeoJSONWriter(OutputStream outputStream) throws IOException {

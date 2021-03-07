@@ -1,5 +1,10 @@
 /*
+<<<<<<< HEAD
  * GeoTools - The Open Source Java GIS Toolkit http://geotools.org
+=======
+ * GeoTools - The Open Source Java GIS Toolkit
+ * http://geotools.org
+>>>>>>> f7ec09495e90d5c7426d207344d08575b36808d2
  *
  * (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
@@ -281,6 +286,7 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
     }
 
     private Geometry parseMultiCurve(int dimension, CoordinateReferenceSystem crs)
+
             throws IOException, NoSuchAuthorityCodeException,
             FactoryException, XMLStreamException {
 

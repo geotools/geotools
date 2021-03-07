@@ -286,9 +286,7 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
     }
 
     private Geometry parseMultiCurve(int dimension, CoordinateReferenceSystem crs)
-
-            throws IOException, NoSuchAuthorityCodeException,
-            FactoryException, XMLStreamException {
+            throws IOException, NoSuchAuthorityCodeException, FactoryException, XMLStreamException {
 
         parser.require(START_ELEMENT, GML.NAMESPACE, GML.MultiCurve.getLocalPart());
 
@@ -303,7 +301,8 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
             }
             parser.require(START_ELEMENT, GML.NAMESPACE, GML.curveMember.getLocalPart());
             parser.nextTag();
-            final QName startingGeometryTagName = new QName(parser.getNamespaceURI(), parser.getLocalName());
+            final QName startingGeometryTagName =
+                    new QName(parser.getNamespaceURI(), parser.getLocalName());
             if (GML.LineString.equals(startingGeometryTagName)) {
                 lines.add(parseLineString(dimension, crs));
             } else if (GML.CompositeCurve.equals(startingGeometryTagName)) {

@@ -295,7 +295,7 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
         while (true) {
             parser.nextTag();
             if (END_ELEMENT == parser.getEventType()
-                    && GML.MultiCurve.getLocalPart().equals(parser.getName())) {
+                    && GML.MultiCurve.getLocalPart().equals(parser.getLocalName())) {
                 // we're done
                 break;
             }

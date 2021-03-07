@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.XMLConstants;
 import net.opengis.ows10.KeywordsType;
 import net.opengis.ows10.WGS84BoundingBoxType;
@@ -34,12 +35,13 @@ import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.util.logging.Logging;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 
 public class FeatureTypeInfoImpl implements FeatureTypeInfo {
-
+    public static final Logger RESPONSES = Logging.getLogger(Loggers.class);
     private final FeatureTypeType eType;
 
     private final WFSConfig config;
@@ -126,7 +128,10 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
                 boolean forceLongitudFirst = defaultSRS.startsWith("EPSG:");
                 crs = CRS.decode(defaultSRS, forceLongitudFirst);
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                RESPONSES.log(
+                        Level.WARNING,
+                        "Unable to process CRS " + defaultSRS + " proceeding with CRS:80");
+                crs = DefaultGeographicCRS.WGS84;
             }
         }
         return crs;

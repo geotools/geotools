@@ -123,6 +123,7 @@ public class GetRecordsResponseTypeImpl extends EObjectImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getRequestId() {
         return requestId;
     }
@@ -132,6 +133,7 @@ public class GetRecordsResponseTypeImpl extends EObjectImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRequestId(String newRequestId) {
         String oldRequestId = requestId;
         requestId = newRequestId;
@@ -144,6 +146,7 @@ public class GetRecordsResponseTypeImpl extends EObjectImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RequestStatusType getSearchStatus() {
         return searchStatus;
     }
@@ -168,6 +171,7 @@ public class GetRecordsResponseTypeImpl extends EObjectImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSearchStatus(RequestStatusType newSearchStatus) {
         if (newSearchStatus != searchStatus) {
             NotificationChain msgs = null;
@@ -187,6 +191,7 @@ public class GetRecordsResponseTypeImpl extends EObjectImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SearchResultsType getSearchResults() {
         return searchResults;
     }
@@ -211,6 +216,7 @@ public class GetRecordsResponseTypeImpl extends EObjectImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSearchResults(SearchResultsType newSearchResults) {
         if (newSearchResults != searchResults) {
             NotificationChain msgs = null;
@@ -230,6 +236,7 @@ public class GetRecordsResponseTypeImpl extends EObjectImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getVersion() {
         return version;
     }
@@ -239,6 +246,7 @@ public class GetRecordsResponseTypeImpl extends EObjectImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setVersion(String newVersion) {
         String oldVersion = version;
         version = newVersion;

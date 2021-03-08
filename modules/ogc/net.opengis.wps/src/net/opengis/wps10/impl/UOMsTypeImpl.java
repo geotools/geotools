@@ -57,6 +57,7 @@ public class UOMsTypeImpl extends EObjectImpl implements UOMsType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.UO_MS_TYPE;
   }
@@ -66,6 +67,7 @@ public class UOMsTypeImpl extends EObjectImpl implements UOMsType {
      * Uses an ECoreEList inatance as we are managing Unit (which is not an EObject)
      * <!-- end-user-doc -->
      */
+    @Override
     public EList getUOM() {
         if (uOM == null) {
             uOM = new EObjectEList(Unit.class, this, Wps10Package.UO_MS_TYPE__UOM );
@@ -78,6 +80,7 @@ public class UOMsTypeImpl extends EObjectImpl implements UOMsType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.UO_MS_TYPE__UOM:
@@ -91,6 +94,7 @@ public class UOMsTypeImpl extends EObjectImpl implements UOMsType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.UO_MS_TYPE__UOM:
@@ -106,6 +110,7 @@ public class UOMsTypeImpl extends EObjectImpl implements UOMsType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.UO_MS_TYPE__UOM:
@@ -120,6 +125,7 @@ public class UOMsTypeImpl extends EObjectImpl implements UOMsType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.UO_MS_TYPE__UOM:

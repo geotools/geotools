@@ -50,6 +50,7 @@ import org.locationtech.jts.geom.Envelope;
  */
 public class GMLBoundingShapeTypeBinding extends AbstractComplexBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.BoundingShapeType;
     }
@@ -61,6 +62,7 @@ public class GMLBoundingShapeTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Envelope.class;
     }
@@ -72,6 +74,7 @@ public class GMLBoundingShapeTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // do the null check
         if (node.getChild("null") != null) {
@@ -86,6 +89,7 @@ public class GMLBoundingShapeTypeBinding extends AbstractComplexBinding {
         return node.getChildValue(0);
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         Envelope e = (Envelope) object;
 

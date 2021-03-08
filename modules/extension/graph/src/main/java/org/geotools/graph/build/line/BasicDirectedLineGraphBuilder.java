@@ -34,6 +34,7 @@ public class BasicDirectedLineGraphBuilder extends BasicDirectedGraphBuilder {
      * @see BasicDirectedXYNode
      * @see org.geotools.graph.build.GraphBuilder#buildNode()
      */
+    @Override
     public Node buildNode() {
         return (new BasicDirectedXYNode());
     }

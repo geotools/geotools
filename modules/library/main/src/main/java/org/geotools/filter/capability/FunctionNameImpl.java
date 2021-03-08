@@ -125,6 +125,7 @@ public class FunctionNameImpl extends OperatorImpl implements FunctionName {
         return getFunctionName().getLocalPart();
     }
 
+    @Override
     public int getArgumentCount() {
         int count = 0;
         int variable = 1;
@@ -137,10 +138,12 @@ public class FunctionNameImpl extends OperatorImpl implements FunctionName {
         return variable * count;
     }
 
+    @Override
     public List<Parameter<?>> getArguments() {
         return args;
     }
 
+    @Override
     public Parameter<?> getReturn() {
         return ret;
     }
@@ -172,6 +175,7 @@ public class FunctionNameImpl extends OperatorImpl implements FunctionName {
      *
      * <p>This is a fixed length list the same size as getArgumentCount().
      */
+    @Override
     public List<String> getArgumentNames() {
         List<String> names = new ArrayList<>();
         for (Parameter<?> arg : args) {

@@ -76,10 +76,12 @@ public class JDBCInsertFeatureWriter extends JDBCFeatureReader
         return result;
     }
 
+    @Override
     public boolean hasNext() throws IOException {
         return false;
     }
 
+    @Override
     public SimpleFeature next() throws IOException {
         // init, setting id to null explicity since the feature is yet to be
         // inserted
@@ -88,10 +90,12 @@ public class JDBCInsertFeatureWriter extends JDBCFeatureReader
         return rsf;
     }
 
+    @Override
     public void remove() throws IOException {
         // noop
     }
 
+    @Override
     public void write() throws IOException {
         if (++curBufferPos >= buffer.length) {
             // buffer full => do the inserts
@@ -149,6 +153,7 @@ public class JDBCInsertFeatureWriter extends JDBCFeatureReader
         }
     }
 
+    @Override
     public void close() throws IOException {
         try {
             flush();

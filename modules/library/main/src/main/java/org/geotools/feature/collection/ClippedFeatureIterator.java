@@ -92,10 +92,12 @@ public class ClippedFeatureIterator implements SimpleFeatureIterator {
         this.preserveZ = preserveZ;
     }
 
+    @Override
     public void close() {
         delegate.close();
     }
 
+    @Override
     public boolean hasNext() {
         while (next == null && delegate.hasNext()) {
             // try building the clipped feature out of the original feature, if the
@@ -136,6 +138,7 @@ public class ClippedFeatureIterator implements SimpleFeatureIterator {
         return clippedOut;
     }
 
+    @Override
     public SimpleFeature next() throws NoSuchElementException {
         if (!hasNext()) {
             throw new NoSuchElementException("hasNext() returned false!");
@@ -372,15 +375,12 @@ public class ClippedFeatureIterator implements SimpleFeatureIterator {
         public LinearElevationInterpolator(Geometry original, CoordinateReferenceSystem crs) {
             originalLines = new ArrayList<>();
             original.apply(
-                    new GeometryComponentFilter() {
-
-                        @Override
-                        public void filter(Geometry geom) {
-                            if (geom instanceof LineString) {
-                                originalLines.add((LineString) geom);
-                            }
-                        }
-                    });
+                    (GeometryComponentFilter)
+                            geom -> {
+                                if (geom instanceof LineString) {
+                                    originalLines.add((LineString) geom);
+                                }
+                            });
         }
 
         @Override

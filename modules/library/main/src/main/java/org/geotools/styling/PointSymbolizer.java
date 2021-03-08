@@ -78,6 +78,7 @@ public interface PointSymbolizer extends org.opengis.style.PointSymbolizer, Symb
      *
      * @return The Graphic to be used when drawing a point.
      */
+    @Override
     Graphic getGraphic();
 
     /** Provides the graphical-symbolization parameter to use for the point geometry. */

@@ -68,6 +68,7 @@ public class FeatureArrayPropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getFeatureGroup() {
         if (featureGroup == null) {
             featureGroup = new BasicFeatureMap(this, Gml311Package.FEATURE_ARRAY_PROPERTY_TYPE__FEATURE_GROUP);
@@ -80,6 +81,7 @@ public class FeatureArrayPropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<AbstractFeatureType> getFeature() {
         return getFeatureGroup().list(Gml311Package.eINSTANCE.getFeatureArrayPropertyType_Feature());
     }

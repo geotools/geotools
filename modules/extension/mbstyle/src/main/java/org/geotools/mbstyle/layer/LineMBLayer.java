@@ -533,6 +533,7 @@ public class LineMBLayer extends MBLayer {
      *     like resolving sprite and glyph names to full urls.
      * @return FeatureTypeStyle
      */
+    @Override
     public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
         MBStyleTransformer transformer = new MBStyleTransformer(parse);
         List<Symbolizer> symbolizers = new ArrayList<>();

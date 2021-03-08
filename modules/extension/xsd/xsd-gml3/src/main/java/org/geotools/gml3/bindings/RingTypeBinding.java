@@ -46,6 +46,7 @@ public class RingTypeBinding extends AbstractComplexBinding implements Comparabl
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.RingType;
     }
@@ -57,6 +58,7 @@ public class RingTypeBinding extends AbstractComplexBinding implements Comparabl
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return CurvedRing.class;
     }
@@ -73,6 +75,7 @@ public class RingTypeBinding extends AbstractComplexBinding implements Comparabl
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List members = node.getChildValues("curveMember");
 
@@ -105,6 +108,7 @@ public class RingTypeBinding extends AbstractComplexBinding implements Comparabl
         }
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         // System.out.println(name.getLocalPart());
         if ("curveMember".equals(name.getLocalPart())) {
@@ -124,6 +128,7 @@ public class RingTypeBinding extends AbstractComplexBinding implements Comparabl
         this.arcParameters = arcParameters;
     }
 
+    @Override
     public int compareTo(Object o) {
         if (o instanceof LinearRingTypeBinding) {
             return -1;

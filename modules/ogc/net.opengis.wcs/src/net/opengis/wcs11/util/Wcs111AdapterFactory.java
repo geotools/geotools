@@ -56,6 +56,7 @@ public class Wcs111AdapterFactory extends AdapterFactoryImpl {
      * @return whether this factory is applicable for the type of the object.
      * @generated
      */
+    @Override
     public boolean isFactoryForType(Object object) {
         if (object == modelPackage) {
             return true;
@@ -74,105 +75,139 @@ public class Wcs111AdapterFactory extends AdapterFactoryImpl {
      */
     protected Wcs111Switch modelSwitch =
         new Wcs111Switch() {
+            @Override
             public Object caseAvailableKeysType(AvailableKeysType object) {
                 return createAvailableKeysTypeAdapter();
             }
+            @Override
             public Object caseAxisSubsetType(AxisSubsetType object) {
                 return createAxisSubsetTypeAdapter();
             }
+            @Override
             public Object caseAxisType(AxisType object) {
                 return createAxisTypeAdapter();
             }
+            @Override
             public Object caseCapabilitiesType(CapabilitiesType object) {
                 return createCapabilitiesTypeAdapter();
             }
+            @Override
             public Object caseContentsType(ContentsType object) {
                 return createContentsTypeAdapter();
             }
+            @Override
             public Object caseCoverageDescriptionsType(CoverageDescriptionsType object) {
                 return createCoverageDescriptionsTypeAdapter();
             }
+            @Override
             public Object caseCoverageDescriptionType(CoverageDescriptionType object) {
                 return createCoverageDescriptionTypeAdapter();
             }
+            @Override
             public Object caseCoverageDomainType(CoverageDomainType object) {
                 return createCoverageDomainTypeAdapter();
             }
+            @Override
             public Object caseCoveragesType(CoveragesType object) {
                 return createCoveragesTypeAdapter();
             }
+            @Override
             public Object caseCoverageSummaryType(CoverageSummaryType object) {
                 return createCoverageSummaryTypeAdapter();
             }
+            @Override
             public Object caseDescribeCoverageType(DescribeCoverageType object) {
                 return createDescribeCoverageTypeAdapter();
             }
+            @Override
             public Object caseDocumentRoot(DocumentRoot object) {
                 return createDocumentRootAdapter();
             }
+            @Override
             public Object caseDomainSubsetType(DomainSubsetType object) {
                 return createDomainSubsetTypeAdapter();
             }
+            @Override
             public Object caseFieldSubsetType(FieldSubsetType object) {
                 return createFieldSubsetTypeAdapter();
             }
+            @Override
             public Object caseFieldType(FieldType object) {
                 return createFieldTypeAdapter();
             }
+            @Override
             public Object caseGetCapabilitiesType(GetCapabilitiesType object) {
                 return createGetCapabilitiesTypeAdapter();
             }
+            @Override
             public Object caseGetCoverageType(GetCoverageType object) {
                 return createGetCoverageTypeAdapter();
             }
+            @Override
             public Object caseGridCrsType(GridCrsType object) {
                 return createGridCrsTypeAdapter();
             }
+            @Override
             public Object caseImageCRSRefType(ImageCRSRefType object) {
                 return createImageCRSRefTypeAdapter();
             }
+            @Override
             public Object caseInterpolationMethodBaseType(InterpolationMethodBaseType object) {
                 return createInterpolationMethodBaseTypeAdapter();
             }
+            @Override
             public Object caseInterpolationMethodsType(InterpolationMethodsType object) {
                 return createInterpolationMethodsTypeAdapter();
             }
+            @Override
             public Object caseInterpolationMethodType(InterpolationMethodType object) {
                 return createInterpolationMethodTypeAdapter();
             }
+            @Override
             public Object caseOutputType(OutputType object) {
                 return createOutputTypeAdapter();
             }
+            @Override
             public Object caseRangeSubsetType(RangeSubsetType object) {
                 return createRangeSubsetTypeAdapter();
             }
+            @Override
             public Object caseRangeType(RangeType object) {
                 return createRangeTypeAdapter();
             }
+            @Override
             public Object caseRequestBaseType(RequestBaseType object) {
                 return createRequestBaseTypeAdapter();
             }
+            @Override
             public Object caseSpatialDomainType(SpatialDomainType object) {
                 return createSpatialDomainTypeAdapter();
             }
+            @Override
             public Object caseTimePeriodType(TimePeriodType object) {
                 return createTimePeriodTypeAdapter();
             }
+            @Override
             public Object caseTimeSequenceType(TimeSequenceType object) {
                 return createTimeSequenceTypeAdapter();
             }
+            @Override
             public Object caseDescriptionType(DescriptionType object) {
                 return createDescriptionTypeAdapter();
             }
+            @Override
             public Object caseCapabilitiesBaseType(CapabilitiesBaseType object) {
                 return createCapabilitiesBaseTypeAdapter();
             }
+            @Override
             public Object caseGetCapabilitiesType_1(net.opengis.ows11.GetCapabilitiesType object) {
                 return createGetCapabilitiesType_1Adapter();
             }
+            @Override
             public Object caseCodeType(CodeType object) {
                 return createCodeTypeAdapter();
             }
+            @Override
             public Object defaultCase(EObject object) {
                 return createEObjectAdapter();
             }
@@ -186,6 +221,7 @@ public class Wcs111AdapterFactory extends AdapterFactoryImpl {
      * @return the adapter for the <code>target</code>.
      * @generated
      */
+    @Override
     public Adapter createAdapter(Notifier target) {
         return (Adapter)modelSwitch.doSwitch((EObject)target);
     }

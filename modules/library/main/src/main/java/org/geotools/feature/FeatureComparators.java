@@ -26,13 +26,11 @@ import org.opengis.feature.simple.SimpleFeature;
 public final class FeatureComparators {
     /** A utility comparator for comparison by id. */
     public static final java.util.Comparator BY_ID =
-            new java.util.Comparator() {
-                public int compare(Object o1, Object o2) {
-                    SimpleFeature f1 = (SimpleFeature) o1;
-                    SimpleFeature f2 = (SimpleFeature) o2;
+            (o1, o2) -> {
+                SimpleFeature f1 = (SimpleFeature) o1;
+                SimpleFeature f2 = (SimpleFeature) o2;
 
-                    return f1.getID().compareTo(f2.getID());
-                }
+                return f1.getID().compareTo(f2.getID());
             };
 
     /** Private constructor so default constructor is not available for this utility class. */
@@ -83,6 +81,7 @@ public final class FeatureComparators {
          * @param o2 The second Feature
          * @return A value indicating less than, equal, or greater than.
          */
+        @Override
         public int compare(Object o1, Object o2) {
             SimpleFeature f1 = (SimpleFeature) o1;
             SimpleFeature f2 = (SimpleFeature) o2;
@@ -124,6 +123,7 @@ public final class FeatureComparators {
          * @param o2 The second Feature
          * @return A value indicating less than, equal, or greater than.
          */
+        @Override
         public int compare(Object o1, Object o2) {
             SimpleFeature f1 = (SimpleFeature) o1;
             SimpleFeature f2 = (SimpleFeature) o2;

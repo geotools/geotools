@@ -29,8 +29,6 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.collection.AbstractFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.opengis.feature.Feature;
-import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -108,13 +106,7 @@ public class ListFeatureCollection extends AbstractFeatureCollection
      */
     public ListFeatureCollection(SimpleFeatureCollection copy) throws IOException {
         this(copy.getSchema());
-        copy.accepts(
-                new FeatureVisitor() {
-                    public void visit(Feature feature) {
-                        list.add((SimpleFeature) feature);
-                    }
-                },
-                null);
+        copy.accepts(feature -> list.add((SimpleFeature) feature), null);
     }
 
     @Override

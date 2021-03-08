@@ -127,6 +127,7 @@ public class CogConfiguration implements URLSourceSPIProvider {
         return new BasicAuthURI(uri, isUseCache(), getUser(), getPassword());
     }
 
+    @Override
     public SourceSPIProvider getSourceSPIProvider(URL sourceUrl) {
         SourceSPIProvider readerInputObject =
                 new CogSourceSPIProvider(

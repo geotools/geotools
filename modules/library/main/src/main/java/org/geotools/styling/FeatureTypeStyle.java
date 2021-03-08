@@ -144,6 +144,7 @@ public interface FeatureTypeStyle extends org.opengis.style.FeatureTypeStyle {
      * @return Human readable description for use in user interfaces
      * @since 2.5.x
      */
+    @Override
     Description getDescription();
 
     /**
@@ -153,6 +154,7 @@ public interface FeatureTypeStyle extends org.opengis.style.FeatureTypeStyle {
      *
      * @since GeoTools 2.2.M3, GeoAPI 2.0
      */
+    @Override
     List<Rule> rules();
 
     /**
@@ -170,6 +172,7 @@ public interface FeatureTypeStyle extends org.opengis.style.FeatureTypeStyle {
      * taking a feature collection or a grid coverage as the evaluation context and returns a
      * feature collection or a grid coverage as an output)
      */
+    @Override
     Expression getTransformation();
 
     /**

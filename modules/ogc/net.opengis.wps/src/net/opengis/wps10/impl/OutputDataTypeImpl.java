@@ -68,6 +68,7 @@ public class OutputDataTypeImpl extends DescriptionTypeImpl implements OutputDat
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.OUTPUT_DATA_TYPE;
   }
@@ -77,6 +78,7 @@ public class OutputDataTypeImpl extends DescriptionTypeImpl implements OutputDat
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public OutputReferenceType getReference() {
     return reference;
   }
@@ -101,6 +103,7 @@ public class OutputDataTypeImpl extends DescriptionTypeImpl implements OutputDat
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setReference(OutputReferenceType newReference) {
     if (newReference != reference) {
       NotificationChain msgs = null;
@@ -120,6 +123,7 @@ public class OutputDataTypeImpl extends DescriptionTypeImpl implements OutputDat
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DataType getData() {
     return data;
   }
@@ -144,6 +148,7 @@ public class OutputDataTypeImpl extends DescriptionTypeImpl implements OutputDat
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setData(DataType newData) {
     if (newData != data) {
       NotificationChain msgs = null;
@@ -163,6 +168,7 @@ public class OutputDataTypeImpl extends DescriptionTypeImpl implements OutputDat
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.OUTPUT_DATA_TYPE__REFERENCE:
@@ -178,6 +184,7 @@ public class OutputDataTypeImpl extends DescriptionTypeImpl implements OutputDat
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.OUTPUT_DATA_TYPE__REFERENCE:
@@ -193,6 +200,7 @@ public class OutputDataTypeImpl extends DescriptionTypeImpl implements OutputDat
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.OUTPUT_DATA_TYPE__REFERENCE:
@@ -210,6 +218,7 @@ public class OutputDataTypeImpl extends DescriptionTypeImpl implements OutputDat
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.OUTPUT_DATA_TYPE__REFERENCE:
@@ -227,6 +236,7 @@ public class OutputDataTypeImpl extends DescriptionTypeImpl implements OutputDat
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.OUTPUT_DATA_TYPE__REFERENCE:

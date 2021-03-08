@@ -35,6 +35,7 @@ public class ColorReplacementBuilder extends AbstractStyleBuilder<ColorReplaceme
         reset();
     }
 
+    @Override
     public ColorReplacement build() {
         if (unset) {
             return null;
@@ -47,6 +48,7 @@ public class ColorReplacementBuilder extends AbstractStyleBuilder<ColorReplaceme
         return replacement;
     }
 
+    @Override
     public ColorReplacementBuilder reset() {
         propertyName = property("Raster");
         mapping.clear();
@@ -77,6 +79,7 @@ public class ColorReplacementBuilder extends AbstractStyleBuilder<ColorReplaceme
         return this;
     }
 
+    @Override
     public ColorReplacementBuilder unset() {
         return (ColorReplacementBuilder) super.unset();
     }

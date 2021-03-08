@@ -61,6 +61,7 @@ public class GMLMultiPolygonTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.MultiPolygonType;
     }
@@ -72,6 +73,7 @@ public class GMLMultiPolygonTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return OVERRIDE;
     }
@@ -83,6 +85,7 @@ public class GMLMultiPolygonTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return MultiPolygon.class;
     }
@@ -94,10 +97,12 @@ public class GMLMultiPolygonTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return GML2ParsingUtils.GeometryCollectionType_parse(node, MultiPolygon.class, gFactory);
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         if (GML.polygonMember.equals(name)) {
             return GML2ParsingUtils.asCollection((MultiPolygon) object);

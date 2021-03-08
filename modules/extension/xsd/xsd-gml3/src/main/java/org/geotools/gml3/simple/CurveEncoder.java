@@ -68,6 +68,7 @@ class CurveEncoder extends GeometryEncoder<LineString> {
         this.arcString = ARC_STRING.derive(gmlPrefix, gmlUri);
     }
 
+    @Override
     public void encode(LineString geometry, AttributesImpl atts, GMLWriter handler, String gmlId)
             throws Exception {
         if (gmlId != null) {

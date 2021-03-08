@@ -86,6 +86,7 @@ public class SupportedFormatsTypeImpl extends EObjectImpl implements SupportedFo
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.SUPPORTED_FORMATS_TYPE;
 	}
@@ -95,6 +96,7 @@ public class SupportedFormatsTypeImpl extends EObjectImpl implements SupportedFo
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList getFormats() {
 		if (formats == null) {
 			formats = new EObjectContainmentEList(CodeListType.class, this, Wcs10Package.SUPPORTED_FORMATS_TYPE__FORMATS);
@@ -107,6 +109,7 @@ public class SupportedFormatsTypeImpl extends EObjectImpl implements SupportedFo
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getNativeFormat() {
 		return nativeFormat;
 	}
@@ -116,6 +119,7 @@ public class SupportedFormatsTypeImpl extends EObjectImpl implements SupportedFo
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setNativeFormat(String newNativeFormat) {
 		String oldNativeFormat = nativeFormat;
 		nativeFormat = newNativeFormat;
@@ -128,6 +132,7 @@ public class SupportedFormatsTypeImpl extends EObjectImpl implements SupportedFo
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.SUPPORTED_FORMATS_TYPE__FORMATS:
@@ -141,6 +146,7 @@ public class SupportedFormatsTypeImpl extends EObjectImpl implements SupportedFo
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.SUPPORTED_FORMATS_TYPE__FORMATS:
@@ -156,6 +162,7 @@ public class SupportedFormatsTypeImpl extends EObjectImpl implements SupportedFo
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.SUPPORTED_FORMATS_TYPE__FORMATS:
@@ -174,6 +181,7 @@ public class SupportedFormatsTypeImpl extends EObjectImpl implements SupportedFo
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.SUPPORTED_FORMATS_TYPE__FORMATS:
@@ -191,6 +199,7 @@ public class SupportedFormatsTypeImpl extends EObjectImpl implements SupportedFo
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.SUPPORTED_FORMATS_TYPE__FORMATS:
@@ -206,6 +215,7 @@ public class SupportedFormatsTypeImpl extends EObjectImpl implements SupportedFo
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

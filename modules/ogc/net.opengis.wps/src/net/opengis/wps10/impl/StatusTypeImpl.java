@@ -145,6 +145,7 @@ public class StatusTypeImpl extends EObjectImpl implements StatusType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.STATUS_TYPE;
   }
@@ -154,6 +155,7 @@ public class StatusTypeImpl extends EObjectImpl implements StatusType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getProcessAccepted() {
     return processAccepted;
   }
@@ -163,6 +165,7 @@ public class StatusTypeImpl extends EObjectImpl implements StatusType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setProcessAccepted(String newProcessAccepted) {
     String oldProcessAccepted = processAccepted;
     processAccepted = newProcessAccepted;
@@ -175,6 +178,7 @@ public class StatusTypeImpl extends EObjectImpl implements StatusType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ProcessStartedType getProcessStarted() {
     return processStarted;
   }
@@ -199,6 +203,7 @@ public class StatusTypeImpl extends EObjectImpl implements StatusType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setProcessStarted(ProcessStartedType newProcessStarted) {
     if (newProcessStarted != processStarted) {
       NotificationChain msgs = null;
@@ -218,6 +223,7 @@ public class StatusTypeImpl extends EObjectImpl implements StatusType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ProcessStartedType getProcessPaused() {
     return processPaused;
   }
@@ -242,6 +248,7 @@ public class StatusTypeImpl extends EObjectImpl implements StatusType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setProcessPaused(ProcessStartedType newProcessPaused) {
     if (newProcessPaused != processPaused) {
       NotificationChain msgs = null;
@@ -261,6 +268,7 @@ public class StatusTypeImpl extends EObjectImpl implements StatusType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getProcessSucceeded() {
     return processSucceeded;
   }
@@ -270,6 +278,7 @@ public class StatusTypeImpl extends EObjectImpl implements StatusType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setProcessSucceeded(String newProcessSucceeded) {
     String oldProcessSucceeded = processSucceeded;
     processSucceeded = newProcessSucceeded;
@@ -282,6 +291,7 @@ public class StatusTypeImpl extends EObjectImpl implements StatusType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ProcessFailedType getProcessFailed() {
     return processFailed;
   }
@@ -306,6 +316,7 @@ public class StatusTypeImpl extends EObjectImpl implements StatusType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setProcessFailed(ProcessFailedType newProcessFailed) {
     if (newProcessFailed != processFailed) {
       NotificationChain msgs = null;
@@ -325,6 +336,7 @@ public class StatusTypeImpl extends EObjectImpl implements StatusType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object getCreationTime() {
     return creationTime;
   }
@@ -334,6 +346,7 @@ public class StatusTypeImpl extends EObjectImpl implements StatusType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setCreationTime(Object newCreationTime) {
     Object oldCreationTime = creationTime;
     creationTime = newCreationTime;
@@ -346,6 +359,7 @@ public class StatusTypeImpl extends EObjectImpl implements StatusType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.STATUS_TYPE__PROCESS_STARTED:
@@ -363,6 +377,7 @@ public class StatusTypeImpl extends EObjectImpl implements StatusType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.STATUS_TYPE__PROCESS_ACCEPTED:
@@ -386,6 +401,7 @@ public class StatusTypeImpl extends EObjectImpl implements StatusType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.STATUS_TYPE__PROCESS_ACCEPTED:
@@ -415,6 +431,7 @@ public class StatusTypeImpl extends EObjectImpl implements StatusType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.STATUS_TYPE__PROCESS_ACCEPTED:
@@ -444,6 +461,7 @@ public class StatusTypeImpl extends EObjectImpl implements StatusType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.STATUS_TYPE__PROCESS_ACCEPTED:
@@ -467,6 +485,7 @@ public class StatusTypeImpl extends EObjectImpl implements StatusType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String toString() {
     if (eIsProxy()) return super.toString();
 

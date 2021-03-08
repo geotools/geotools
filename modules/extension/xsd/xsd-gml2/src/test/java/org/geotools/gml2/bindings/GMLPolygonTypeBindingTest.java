@@ -36,6 +36,7 @@ public class GMLPolygonTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance iring;
     MutablePicoContainer container;
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();

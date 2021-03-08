@@ -41,6 +41,7 @@ public class FilterFunction_min_3 extends FunctionExpressionImpl {
         functionName = NAME;
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Object arg0 = getExpression(0).evaluate(feature);
         Object arg1 = getExpression(1).evaluate(feature);

@@ -72,6 +72,7 @@ public class TemporalOperandsTypeImpl extends EObjectImpl implements TemporalOpe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<TemporalOperandType> getTemporalOperand() {
         if (temporalOperand == null) {
             temporalOperand = new EObjectContainmentEList<>(TemporalOperandType.class, this, Fes20Package.TEMPORAL_OPERANDS_TYPE__TEMPORAL_OPERAND);

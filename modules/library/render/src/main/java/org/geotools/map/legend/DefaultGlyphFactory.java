@@ -40,6 +40,7 @@ public class DefaultGlyphFactory implements GlyphFactory {
      *
      * @return Icon For the provided layer
      */
+    @Override
     public Icon icon(Layer layer) {
         if (layer == null || layer.getFeatureSource() == null) {
             return geometry(null, null);
@@ -75,61 +76,73 @@ public class DefaultGlyphFactory implements GlyphFactory {
         return true;
     }
 
+    @Override
     public Icon polygon(Rule rule) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Icon geometry(Color color, Color fill) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Icon geometry(Rule rule) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Icon grid(Color color1, Color color2, Color color3, Color color4) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Icon icon(SimpleFeatureType schema) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Icon line(Color line, int width) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Icon line(Rule rule) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Icon palette(Color[] colors) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Icon point(Color point, Color fill) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Icon point(Rule rule) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Icon polygon(Color color, Color fill, int width) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Icon swatch(Color color) {
         // TODO Auto-generated method stub
         return null;

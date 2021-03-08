@@ -303,6 +303,7 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
     }
 
     /** @see org.opengis.coverage.grid.GridCoverageReader#getFormat() */
+    @Override
     public Format getFormat() {
         return new GTopo30Format();
     }
@@ -311,6 +312,7 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
      * @see
      *     org.opengis.coverage.grid.GridCoverageReader#read(org.opengis.parameter.GeneralParameterValue[])
      */
+    @Override
     public GridCoverage2D read(final GeneralParameterValue[] params)
             throws java.lang.IllegalArgumentException, java.io.IOException {
         // /////////////////////////////////////////////////////////////////////

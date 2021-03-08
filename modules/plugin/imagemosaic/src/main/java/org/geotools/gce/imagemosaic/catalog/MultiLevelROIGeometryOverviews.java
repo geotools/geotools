@@ -86,6 +86,7 @@ public class MultiLevelROIGeometryOverviews implements MultiLevelROI {
         this.hints = hints;
     }
 
+    @Override
     public ROIGeometry getTransformedROI(
             AffineTransform at,
             int imageIndex,
@@ -157,10 +158,12 @@ public class MultiLevelROIGeometryOverviews implements MultiLevelROI {
         return roiGeometry;
     }
 
+    @Override
     public boolean isEmpty() {
         return empty;
     }
 
+    @Override
     public Geometry getFootprint() {
         return originalFootprint;
     }

@@ -90,6 +90,7 @@ public class AppSchemaXSD extends XSD {
     @Override
     public SchemaLocator createSchemaLocator() {
         return new SchemaLocator(this) {
+            @Override
             public boolean canHandle(
                     XSDSchema schema,
                     String namespaceURI,

@@ -52,11 +52,13 @@ public final class EsriHdrFormat extends BaseGDALGridFormat implements Format {
     private static InfoWrapper INFO = new InfoWrapper("EHdr Coverage Format", "EHdr");
 
     /** Sets the metadata information. */
+    @Override
     protected void setInfo() {
         setInfo(INFO);
     }
 
     /** @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object, Hints) */
+    @Override
     public EsriHdrReader getReader(Object source, Hints hints) {
         try {
             return new EsriHdrReader(source, hints);

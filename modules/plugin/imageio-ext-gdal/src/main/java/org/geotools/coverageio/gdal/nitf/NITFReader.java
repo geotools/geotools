@@ -54,6 +54,7 @@ public final class NITFReader extends BaseGDALGridCoverage2DReader implements Gr
     }
 
     /** @see org.opengis.coverage.grid.GridCoverageReader#getFormat() */
+    @Override
     public Format getFormat() {
         return new NITFFormat();
     }

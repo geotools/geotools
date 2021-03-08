@@ -79,6 +79,7 @@ public class RelatedTimeTypeImpl extends TimePrimitivePropertyTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RelativePositionType getRelativePosition() {
         return relativePosition;
     }
@@ -88,6 +89,7 @@ public class RelatedTimeTypeImpl extends TimePrimitivePropertyTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRelativePosition(RelativePositionType newRelativePosition) {
         RelativePositionType oldRelativePosition = relativePosition;
         relativePosition = newRelativePosition == null ? RELATIVE_POSITION_EDEFAULT : newRelativePosition;
@@ -102,6 +104,7 @@ public class RelatedTimeTypeImpl extends TimePrimitivePropertyTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetRelativePosition() {
         RelativePositionType oldRelativePosition = relativePosition;
         boolean oldRelativePositionESet = relativePositionESet;
@@ -116,6 +119,7 @@ public class RelatedTimeTypeImpl extends TimePrimitivePropertyTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetRelativePosition() {
         return relativePositionESet;
     }

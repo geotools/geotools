@@ -303,11 +303,13 @@ public final class Geobuf {
                     }
                 }
 
+                @Override
                 public int getNumber() {
                     return this.value;
                 }
             };
 
+            @Override
             public IdTypeCase getIdTypeCase() {
                 return IdTypeCase.forNumber(idTypeCase_);
             }
@@ -320,10 +322,12 @@ public final class Geobuf {
             public static final int GEOMETRY_FIELD_NUMBER = 1;
             private org.geotools.data.geobuf.Geobuf.Data.Geometry geometry_;
             /** <code>required .org.geotools.data.geobuf.Data.Geometry geometry = 1;</code> */
+            @Override
             public boolean hasGeometry() {
                 return ((bitField0_ & 0x00000001) == 0x00000001);
             }
             /** <code>required .org.geotools.data.geobuf.Data.Geometry geometry = 1;</code> */
+            @Override
             public org.geotools.data.geobuf.Geobuf.Data.Geometry getGeometry() {
                 return geometry_ == null
                         ? org.geotools.data.geobuf.Geobuf.Data.Geometry.getDefaultInstance()
@@ -366,10 +370,12 @@ public final class Geobuf {
 
             public static final int ID_FIELD_NUMBER = 11;
             /** <code>optional string id = 11;</code> */
+            @Override
             public boolean hasId() {
                 return idTypeCase_ == 11;
             }
             /** <code>optional string id = 11;</code> */
+            @Override
             public java.lang.String getId() {
                 java.lang.String ref = "";
                 if (idTypeCase_ == 11) {
@@ -378,6 +384,7 @@ public final class Geobuf {
                 return ref;
             }
             /** <code>optional string id = 11;</code> */
+            @Override
             public com.google.protobuf.ByteString getIdBytes() {
                 java.lang.String ref = "";
                 if (idTypeCase_ == 11) {
@@ -411,10 +418,12 @@ public final class Geobuf {
 
             public static final int INT_ID_FIELD_NUMBER = 12;
             /** <code>optional sint64 int_id = 12;</code> */
+            @Override
             public boolean hasIntId() {
                 return idTypeCase_ == 12;
             }
             /** <code>optional sint64 int_id = 12;</code> */
+            @Override
             public long getIntId() {
                 if (idTypeCase_ == 12) {
                     return (java.lang.Long) idType_;
@@ -447,6 +456,7 @@ public final class Geobuf {
              *
              * <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code>
              */
+            @Override
             public java.util.List<org.geotools.data.geobuf.Geobuf.Data.Value> getValuesList() {
                 return values_;
             }
@@ -472,6 +482,7 @@ public final class Geobuf {
              *
              * <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code>
              */
+            @Override
             public int getValuesCount() {
                 return values_.size();
             }
@@ -484,6 +495,7 @@ public final class Geobuf {
              *
              * <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code>
              */
+            @Override
             public org.geotools.data.geobuf.Geobuf.Data.Value getValues(int index) {
                 return values_.get(index);
             }
@@ -649,6 +661,7 @@ public final class Geobuf {
              *
              * <code>repeated uint32 properties = 14 [packed = true];</code>
              */
+            @Override
             public java.util.List<java.lang.Integer> getPropertiesList() {
                 return properties_;
             }
@@ -661,6 +674,7 @@ public final class Geobuf {
              *
              * <code>repeated uint32 properties = 14 [packed = true];</code>
              */
+            @Override
             public int getPropertiesCount() {
                 return properties_.size();
             }
@@ -673,6 +687,7 @@ public final class Geobuf {
              *
              * <code>repeated uint32 properties = 14 [packed = true];</code>
              */
+            @Override
             public int getProperties(int index) {
                 return properties_.getInt(index);
             }
@@ -747,6 +762,7 @@ public final class Geobuf {
              *
              * <code>repeated uint32 custom_properties = 15 [packed = true];</code>
              */
+            @Override
             public java.util.List<java.lang.Integer> getCustomPropertiesList() {
                 return customProperties_;
             }
@@ -759,6 +775,7 @@ public final class Geobuf {
              *
              * <code>repeated uint32 custom_properties = 15 [packed = true];</code>
              */
+            @Override
             public int getCustomPropertiesCount() {
                 return customProperties_.size();
             }
@@ -771,6 +788,7 @@ public final class Geobuf {
              *
              * <code>repeated uint32 custom_properties = 15 [packed = true];</code>
              */
+            @Override
             public int getCustomProperties(int index) {
                 return customProperties_.getInt(index);
             }
@@ -836,6 +854,7 @@ public final class Geobuf {
                 customProperties_ = emptyIntList();
             }
 
+            @Override
             public void writeTo(com.google.protobuf.CodedOutputStream output)
                     throws java.io.IOException {
                 getSerializedSize();
@@ -868,6 +887,7 @@ public final class Geobuf {
                 unknownFields.writeTo(output);
             }
 
+            @Override
             public int getSerializedSize() {
                 int size = memoizedSerializedSize;
                 if (size != -1) return size;
@@ -1025,6 +1045,7 @@ public final class Geobuf {
                     super(DEFAULT_INSTANCE);
                 }
 
+                @Override
                 public IdTypeCase getIdTypeCase() {
                     return instance.getIdTypeCase();
                 }
@@ -1036,10 +1057,12 @@ public final class Geobuf {
                 }
 
                 /** <code>required .org.geotools.data.geobuf.Data.Geometry geometry = 1;</code> */
+                @Override
                 public boolean hasGeometry() {
                     return instance.hasGeometry();
                 }
                 /** <code>required .org.geotools.data.geobuf.Data.Geometry geometry = 1;</code> */
+                @Override
                 public org.geotools.data.geobuf.Geobuf.Data.Geometry getGeometry() {
                     return instance.getGeometry();
                 }
@@ -1070,14 +1093,17 @@ public final class Geobuf {
                 }
 
                 /** <code>optional string id = 11;</code> */
+                @Override
                 public boolean hasId() {
                     return instance.hasId();
                 }
                 /** <code>optional string id = 11;</code> */
+                @Override
                 public java.lang.String getId() {
                     return instance.getId();
                 }
                 /** <code>optional string id = 11;</code> */
+                @Override
                 public com.google.protobuf.ByteString getIdBytes() {
                     return instance.getIdBytes();
                 }
@@ -1101,10 +1127,12 @@ public final class Geobuf {
                 }
 
                 /** <code>optional sint64 int_id = 12;</code> */
+                @Override
                 public boolean hasIntId() {
                     return instance.hasIntId();
                 }
                 /** <code>optional sint64 int_id = 12;</code> */
+                @Override
                 public long getIntId() {
                     return instance.getIntId();
                 }
@@ -1130,6 +1158,7 @@ public final class Geobuf {
                  *
                  * <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code>
                  */
+                @Override
                 public java.util.List<org.geotools.data.geobuf.Geobuf.Data.Value> getValuesList() {
                     return java.util.Collections.unmodifiableList(instance.getValuesList());
                 }
@@ -1142,6 +1171,7 @@ public final class Geobuf {
                  *
                  * <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code>
                  */
+                @Override
                 public int getValuesCount() {
                     return instance.getValuesCount();
                 }
@@ -1154,6 +1184,7 @@ public final class Geobuf {
                  *
                  * <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code>
                  */
+                @Override
                 public org.geotools.data.geobuf.Geobuf.Data.Value getValues(int index) {
                     return instance.getValues(index);
                 }
@@ -1302,6 +1333,7 @@ public final class Geobuf {
                  *
                  * <code>repeated uint32 properties = 14 [packed = true];</code>
                  */
+                @Override
                 public java.util.List<java.lang.Integer> getPropertiesList() {
                     return java.util.Collections.unmodifiableList(instance.getPropertiesList());
                 }
@@ -1314,6 +1346,7 @@ public final class Geobuf {
                  *
                  * <code>repeated uint32 properties = 14 [packed = true];</code>
                  */
+                @Override
                 public int getPropertiesCount() {
                     return instance.getPropertiesCount();
                 }
@@ -1326,6 +1359,7 @@ public final class Geobuf {
                  *
                  * <code>repeated uint32 properties = 14 [packed = true];</code>
                  */
+                @Override
                 public int getProperties(int index) {
                     return instance.getProperties(index);
                 }
@@ -1396,6 +1430,7 @@ public final class Geobuf {
                  *
                  * <code>repeated uint32 custom_properties = 15 [packed = true];</code>
                  */
+                @Override
                 public java.util.List<java.lang.Integer> getCustomPropertiesList() {
                     return java.util.Collections.unmodifiableList(
                             instance.getCustomPropertiesList());
@@ -1409,6 +1444,7 @@ public final class Geobuf {
                  *
                  * <code>repeated uint32 custom_properties = 15 [packed = true];</code>
                  */
+                @Override
                 public int getCustomPropertiesCount() {
                     return instance.getCustomPropertiesCount();
                 }
@@ -1421,6 +1457,7 @@ public final class Geobuf {
                  *
                  * <code>repeated uint32 custom_properties = 15 [packed = true];</code>
                  */
+                @Override
                 public int getCustomProperties(int index) {
                     return instance.getCustomProperties(index);
                 }
@@ -1487,6 +1524,7 @@ public final class Geobuf {
 
             private byte memoizedIsInitialized = -1;
 
+            @Override
             @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
             protected final java.lang.Object dynamicMethod(
                     com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
@@ -1881,6 +1919,7 @@ public final class Geobuf {
                 /** <code>GEOMETRYCOLLECTION = 6;</code> */
                 public static final int GEOMETRYCOLLECTION_VALUE = 6;
 
+                @Override
                 public final int getNumber() {
                     return value;
                 }
@@ -1911,12 +1950,7 @@ public final class Geobuf {
                 }
 
                 private static final com.google.protobuf.Internal.EnumLiteMap<Type>
-                        internalValueMap =
-                                new com.google.protobuf.Internal.EnumLiteMap<Type>() {
-                                    public Type findValueByNumber(int number) {
-                                        return Type.forNumber(number);
-                                    }
-                                };
+                        internalValueMap = number -> Type.forNumber(number);
 
                 private final int value;
 
@@ -1931,10 +1965,12 @@ public final class Geobuf {
             public static final int TYPE_FIELD_NUMBER = 1;
             private int type_;
             /** <code>required .org.geotools.data.geobuf.Data.Geometry.Type type = 1;</code> */
+            @Override
             public boolean hasType() {
                 return ((bitField0_ & 0x00000001) == 0x00000001);
             }
             /** <code>required .org.geotools.data.geobuf.Data.Geometry.Type type = 1;</code> */
+            @Override
             public org.geotools.data.geobuf.Geobuf.Data.Geometry.Type getType() {
                 org.geotools.data.geobuf.Geobuf.Data.Geometry.Type result =
                         org.geotools.data.geobuf.Geobuf.Data.Geometry.Type.forNumber(type_);
@@ -1967,6 +2003,7 @@ public final class Geobuf {
              *
              * <code>repeated uint32 lengths = 2 [packed = true];</code>
              */
+            @Override
             public java.util.List<java.lang.Integer> getLengthsList() {
                 return lengths_;
             }
@@ -1979,6 +2016,7 @@ public final class Geobuf {
              *
              * <code>repeated uint32 lengths = 2 [packed = true];</code>
              */
+            @Override
             public int getLengthsCount() {
                 return lengths_.size();
             }
@@ -1991,6 +2029,7 @@ public final class Geobuf {
              *
              * <code>repeated uint32 lengths = 2 [packed = true];</code>
              */
+            @Override
             public int getLengths(int index) {
                 return lengths_.getInt(index);
             }
@@ -2065,6 +2104,7 @@ public final class Geobuf {
              *
              * <code>repeated sint64 coords = 3 [packed = true];</code>
              */
+            @Override
             public java.util.List<java.lang.Long> getCoordsList() {
                 return coords_;
             }
@@ -2077,6 +2117,7 @@ public final class Geobuf {
              *
              * <code>repeated sint64 coords = 3 [packed = true];</code>
              */
+            @Override
             public int getCoordsCount() {
                 return coords_.size();
             }
@@ -2089,6 +2130,7 @@ public final class Geobuf {
              *
              * <code>repeated sint64 coords = 3 [packed = true];</code>
              */
+            @Override
             public long getCoords(int index) {
                 return coords_.getLong(index);
             }
@@ -2157,6 +2199,7 @@ public final class Geobuf {
                             org.geotools.data.geobuf.Geobuf.Data.Geometry>
                     geometries_;
             /** <code>repeated .org.geotools.data.geobuf.Data.Geometry geometries = 4;</code> */
+            @Override
             public java.util.List<org.geotools.data.geobuf.Geobuf.Data.Geometry>
                     getGeometriesList() {
                 return geometries_;
@@ -2167,10 +2210,12 @@ public final class Geobuf {
                 return geometries_;
             }
             /** <code>repeated .org.geotools.data.geobuf.Data.Geometry geometries = 4;</code> */
+            @Override
             public int getGeometriesCount() {
                 return geometries_.size();
             }
             /** <code>repeated .org.geotools.data.geobuf.Data.Geometry geometries = 4;</code> */
+            @Override
             public org.geotools.data.geobuf.Geobuf.Data.Geometry getGeometries(int index) {
                 return geometries_.get(index);
             }
@@ -2254,6 +2299,7 @@ public final class Geobuf {
                             org.geotools.data.geobuf.Geobuf.Data.Value>
                     values_;
             /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
+            @Override
             public java.util.List<org.geotools.data.geobuf.Geobuf.Data.Value> getValuesList() {
                 return values_;
             }
@@ -2263,10 +2309,12 @@ public final class Geobuf {
                 return values_;
             }
             /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
+            @Override
             public int getValuesCount() {
                 return values_.size();
             }
             /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
+            @Override
             public org.geotools.data.geobuf.Geobuf.Data.Value getValues(int index) {
                 return values_.get(index);
             }
@@ -2344,14 +2392,17 @@ public final class Geobuf {
             public static final int CUSTOM_PROPERTIES_FIELD_NUMBER = 15;
             private com.google.protobuf.Internal.IntList customProperties_;
             /** <code>repeated uint32 custom_properties = 15 [packed = true];</code> */
+            @Override
             public java.util.List<java.lang.Integer> getCustomPropertiesList() {
                 return customProperties_;
             }
             /** <code>repeated uint32 custom_properties = 15 [packed = true];</code> */
+            @Override
             public int getCustomPropertiesCount() {
                 return customProperties_.size();
             }
             /** <code>repeated uint32 custom_properties = 15 [packed = true];</code> */
+            @Override
             public int getCustomProperties(int index) {
                 return customProperties_.getInt(index);
             }
@@ -2385,6 +2436,7 @@ public final class Geobuf {
                 customProperties_ = emptyIntList();
             }
 
+            @Override
             public void writeTo(com.google.protobuf.CodedOutputStream output)
                     throws java.io.IOException {
                 getSerializedSize();
@@ -2421,6 +2473,7 @@ public final class Geobuf {
                 unknownFields.writeTo(output);
             }
 
+            @Override
             public int getSerializedSize() {
                 int size = memoizedSerializedSize;
                 if (size != -1) return size;
@@ -2588,10 +2641,12 @@ public final class Geobuf {
                 }
 
                 /** <code>required .org.geotools.data.geobuf.Data.Geometry.Type type = 1;</code> */
+                @Override
                 public boolean hasType() {
                     return instance.hasType();
                 }
                 /** <code>required .org.geotools.data.geobuf.Data.Geometry.Type type = 1;</code> */
+                @Override
                 public org.geotools.data.geobuf.Geobuf.Data.Geometry.Type getType() {
                     return instance.getType();
                 }
@@ -2617,6 +2672,7 @@ public final class Geobuf {
                  *
                  * <code>repeated uint32 lengths = 2 [packed = true];</code>
                  */
+                @Override
                 public java.util.List<java.lang.Integer> getLengthsList() {
                     return java.util.Collections.unmodifiableList(instance.getLengthsList());
                 }
@@ -2629,6 +2685,7 @@ public final class Geobuf {
                  *
                  * <code>repeated uint32 lengths = 2 [packed = true];</code>
                  */
+                @Override
                 public int getLengthsCount() {
                     return instance.getLengthsCount();
                 }
@@ -2641,6 +2698,7 @@ public final class Geobuf {
                  *
                  * <code>repeated uint32 lengths = 2 [packed = true];</code>
                  */
+                @Override
                 public int getLengths(int index) {
                     return instance.getLengths(index);
                 }
@@ -2711,6 +2769,7 @@ public final class Geobuf {
                  *
                  * <code>repeated sint64 coords = 3 [packed = true];</code>
                  */
+                @Override
                 public java.util.List<java.lang.Long> getCoordsList() {
                     return java.util.Collections.unmodifiableList(instance.getCoordsList());
                 }
@@ -2723,6 +2782,7 @@ public final class Geobuf {
                  *
                  * <code>repeated sint64 coords = 3 [packed = true];</code>
                  */
+                @Override
                 public int getCoordsCount() {
                     return instance.getCoordsCount();
                 }
@@ -2735,6 +2795,7 @@ public final class Geobuf {
                  *
                  * <code>repeated sint64 coords = 3 [packed = true];</code>
                  */
+                @Override
                 public long getCoords(int index) {
                     return instance.getCoords(index);
                 }
@@ -2796,15 +2857,18 @@ public final class Geobuf {
                 }
 
                 /** <code>repeated .org.geotools.data.geobuf.Data.Geometry geometries = 4;</code> */
+                @Override
                 public java.util.List<org.geotools.data.geobuf.Geobuf.Data.Geometry>
                         getGeometriesList() {
                     return java.util.Collections.unmodifiableList(instance.getGeometriesList());
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Geometry geometries = 4;</code> */
+                @Override
                 public int getGeometriesCount() {
                     return instance.getGeometriesCount();
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Geometry geometries = 4;</code> */
+                @Override
                 public org.geotools.data.geobuf.Geobuf.Data.Geometry getGeometries(int index) {
                     return instance.getGeometries(index);
                 }
@@ -2873,14 +2937,17 @@ public final class Geobuf {
                 }
 
                 /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
+                @Override
                 public java.util.List<org.geotools.data.geobuf.Geobuf.Data.Value> getValuesList() {
                     return java.util.Collections.unmodifiableList(instance.getValuesList());
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
+                @Override
                 public int getValuesCount() {
                     return instance.getValuesCount();
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
+                @Override
                 public org.geotools.data.geobuf.Geobuf.Data.Value getValues(int index) {
                     return instance.getValues(index);
                 }
@@ -2949,15 +3016,18 @@ public final class Geobuf {
                 }
 
                 /** <code>repeated uint32 custom_properties = 15 [packed = true];</code> */
+                @Override
                 public java.util.List<java.lang.Integer> getCustomPropertiesList() {
                     return java.util.Collections.unmodifiableList(
                             instance.getCustomPropertiesList());
                 }
                 /** <code>repeated uint32 custom_properties = 15 [packed = true];</code> */
+                @Override
                 public int getCustomPropertiesCount() {
                     return instance.getCustomPropertiesCount();
                 }
                 /** <code>repeated uint32 custom_properties = 15 [packed = true];</code> */
+                @Override
                 public int getCustomProperties(int index) {
                     return instance.getCustomProperties(index);
                 }
@@ -2992,6 +3062,7 @@ public final class Geobuf {
 
             private byte memoizedIsInitialized = -1;
 
+            @Override
             @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
             protected final java.lang.Object dynamicMethod(
                     com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
@@ -3298,6 +3369,7 @@ public final class Geobuf {
                             org.geotools.data.geobuf.Geobuf.Data.Feature>
                     features_;
             /** <code>repeated .org.geotools.data.geobuf.Data.Feature features = 1;</code> */
+            @Override
             public java.util.List<org.geotools.data.geobuf.Geobuf.Data.Feature> getFeaturesList() {
                 return features_;
             }
@@ -3307,10 +3379,12 @@ public final class Geobuf {
                 return features_;
             }
             /** <code>repeated .org.geotools.data.geobuf.Data.Feature features = 1;</code> */
+            @Override
             public int getFeaturesCount() {
                 return features_.size();
             }
             /** <code>repeated .org.geotools.data.geobuf.Data.Feature features = 1;</code> */
+            @Override
             public org.geotools.data.geobuf.Geobuf.Data.Feature getFeatures(int index) {
                 return features_.get(index);
             }
@@ -3394,6 +3468,7 @@ public final class Geobuf {
                             org.geotools.data.geobuf.Geobuf.Data.Value>
                     values_;
             /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
+            @Override
             public java.util.List<org.geotools.data.geobuf.Geobuf.Data.Value> getValuesList() {
                 return values_;
             }
@@ -3403,10 +3478,12 @@ public final class Geobuf {
                 return values_;
             }
             /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
+            @Override
             public int getValuesCount() {
                 return values_.size();
             }
             /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
+            @Override
             public org.geotools.data.geobuf.Geobuf.Data.Value getValues(int index) {
                 return values_.get(index);
             }
@@ -3484,14 +3561,17 @@ public final class Geobuf {
             public static final int CUSTOM_PROPERTIES_FIELD_NUMBER = 15;
             private com.google.protobuf.Internal.IntList customProperties_;
             /** <code>repeated uint32 custom_properties = 15 [packed = true];</code> */
+            @Override
             public java.util.List<java.lang.Integer> getCustomPropertiesList() {
                 return customProperties_;
             }
             /** <code>repeated uint32 custom_properties = 15 [packed = true];</code> */
+            @Override
             public int getCustomPropertiesCount() {
                 return customProperties_.size();
             }
             /** <code>repeated uint32 custom_properties = 15 [packed = true];</code> */
+            @Override
             public int getCustomProperties(int index) {
                 return customProperties_.getInt(index);
             }
@@ -3525,6 +3605,7 @@ public final class Geobuf {
                 customProperties_ = emptyIntList();
             }
 
+            @Override
             public void writeTo(com.google.protobuf.CodedOutputStream output)
                     throws java.io.IOException {
                 getSerializedSize();
@@ -3544,6 +3625,7 @@ public final class Geobuf {
                 unknownFields.writeTo(output);
             }
 
+            @Override
             public int getSerializedSize() {
                 int size = memoizedSerializedSize;
                 if (size != -1) return size;
@@ -3677,15 +3759,18 @@ public final class Geobuf {
                 }
 
                 /** <code>repeated .org.geotools.data.geobuf.Data.Feature features = 1;</code> */
+                @Override
                 public java.util.List<org.geotools.data.geobuf.Geobuf.Data.Feature>
                         getFeaturesList() {
                     return java.util.Collections.unmodifiableList(instance.getFeaturesList());
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Feature features = 1;</code> */
+                @Override
                 public int getFeaturesCount() {
                     return instance.getFeaturesCount();
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Feature features = 1;</code> */
+                @Override
                 public org.geotools.data.geobuf.Geobuf.Data.Feature getFeatures(int index) {
                     return instance.getFeatures(index);
                 }
@@ -3754,14 +3839,17 @@ public final class Geobuf {
                 }
 
                 /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
+                @Override
                 public java.util.List<org.geotools.data.geobuf.Geobuf.Data.Value> getValuesList() {
                     return java.util.Collections.unmodifiableList(instance.getValuesList());
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
+                @Override
                 public int getValuesCount() {
                     return instance.getValuesCount();
                 }
                 /** <code>repeated .org.geotools.data.geobuf.Data.Value values = 13;</code> */
+                @Override
                 public org.geotools.data.geobuf.Geobuf.Data.Value getValues(int index) {
                     return instance.getValues(index);
                 }
@@ -3830,15 +3918,18 @@ public final class Geobuf {
                 }
 
                 /** <code>repeated uint32 custom_properties = 15 [packed = true];</code> */
+                @Override
                 public java.util.List<java.lang.Integer> getCustomPropertiesList() {
                     return java.util.Collections.unmodifiableList(
                             instance.getCustomPropertiesList());
                 }
                 /** <code>repeated uint32 custom_properties = 15 [packed = true];</code> */
+                @Override
                 public int getCustomPropertiesCount() {
                     return instance.getCustomPropertiesCount();
                 }
                 /** <code>repeated uint32 custom_properties = 15 [packed = true];</code> */
+                @Override
                 public int getCustomProperties(int index) {
                     return instance.getCustomProperties(index);
                 }
@@ -3873,6 +3964,7 @@ public final class Geobuf {
 
             private byte memoizedIsInitialized = -1;
 
+            @Override
             @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
             protected final java.lang.Object dynamicMethod(
                     com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
@@ -4141,11 +4233,13 @@ public final class Geobuf {
                     }
                 }
 
+                @Override
                 public int getNumber() {
                     return this.value;
                 }
             };
 
+            @Override
             public ValueTypeCase getValueTypeCase() {
                 return ValueTypeCase.forNumber(valueTypeCase_);
             }
@@ -4157,10 +4251,12 @@ public final class Geobuf {
 
             public static final int STRING_VALUE_FIELD_NUMBER = 1;
             /** <code>optional string string_value = 1;</code> */
+            @Override
             public boolean hasStringValue() {
                 return valueTypeCase_ == 1;
             }
             /** <code>optional string string_value = 1;</code> */
+            @Override
             public java.lang.String getStringValue() {
                 java.lang.String ref = "";
                 if (valueTypeCase_ == 1) {
@@ -4169,6 +4265,7 @@ public final class Geobuf {
                 return ref;
             }
             /** <code>optional string string_value = 1;</code> */
+            @Override
             public com.google.protobuf.ByteString getStringValueBytes() {
                 java.lang.String ref = "";
                 if (valueTypeCase_ == 1) {
@@ -4202,10 +4299,12 @@ public final class Geobuf {
 
             public static final int DOUBLE_VALUE_FIELD_NUMBER = 2;
             /** <code>optional double double_value = 2;</code> */
+            @Override
             public boolean hasDoubleValue() {
                 return valueTypeCase_ == 2;
             }
             /** <code>optional double double_value = 2;</code> */
+            @Override
             public double getDoubleValue() {
                 if (valueTypeCase_ == 2) {
                     return (java.lang.Double) valueType_;
@@ -4227,10 +4326,12 @@ public final class Geobuf {
 
             public static final int POS_INT_VALUE_FIELD_NUMBER = 3;
             /** <code>optional uint64 pos_int_value = 3;</code> */
+            @Override
             public boolean hasPosIntValue() {
                 return valueTypeCase_ == 3;
             }
             /** <code>optional uint64 pos_int_value = 3;</code> */
+            @Override
             public long getPosIntValue() {
                 if (valueTypeCase_ == 3) {
                     return (java.lang.Long) valueType_;
@@ -4252,10 +4353,12 @@ public final class Geobuf {
 
             public static final int NEG_INT_VALUE_FIELD_NUMBER = 4;
             /** <code>optional uint64 neg_int_value = 4;</code> */
+            @Override
             public boolean hasNegIntValue() {
                 return valueTypeCase_ == 4;
             }
             /** <code>optional uint64 neg_int_value = 4;</code> */
+            @Override
             public long getNegIntValue() {
                 if (valueTypeCase_ == 4) {
                     return (java.lang.Long) valueType_;
@@ -4277,10 +4380,12 @@ public final class Geobuf {
 
             public static final int BOOL_VALUE_FIELD_NUMBER = 5;
             /** <code>optional bool bool_value = 5;</code> */
+            @Override
             public boolean hasBoolValue() {
                 return valueTypeCase_ == 5;
             }
             /** <code>optional bool bool_value = 5;</code> */
+            @Override
             public boolean getBoolValue() {
                 if (valueTypeCase_ == 5) {
                     return (java.lang.Boolean) valueType_;
@@ -4302,10 +4407,12 @@ public final class Geobuf {
 
             public static final int JSON_VALUE_FIELD_NUMBER = 6;
             /** <code>optional string json_value = 6;</code> */
+            @Override
             public boolean hasJsonValue() {
                 return valueTypeCase_ == 6;
             }
             /** <code>optional string json_value = 6;</code> */
+            @Override
             public java.lang.String getJsonValue() {
                 java.lang.String ref = "";
                 if (valueTypeCase_ == 6) {
@@ -4314,6 +4421,7 @@ public final class Geobuf {
                 return ref;
             }
             /** <code>optional string json_value = 6;</code> */
+            @Override
             public com.google.protobuf.ByteString getJsonValueBytes() {
                 java.lang.String ref = "";
                 if (valueTypeCase_ == 6) {
@@ -4345,6 +4453,7 @@ public final class Geobuf {
                 valueType_ = value.toStringUtf8();
             }
 
+            @Override
             public void writeTo(com.google.protobuf.CodedOutputStream output)
                     throws java.io.IOException {
                 if (valueTypeCase_ == 1) {
@@ -4368,6 +4477,7 @@ public final class Geobuf {
                 unknownFields.writeTo(output);
             }
 
+            @Override
             public int getSerializedSize() {
                 int size = memoizedSerializedSize;
                 if (size != -1) return size;
@@ -4506,6 +4616,7 @@ public final class Geobuf {
                     super(DEFAULT_INSTANCE);
                 }
 
+                @Override
                 public ValueTypeCase getValueTypeCase() {
                     return instance.getValueTypeCase();
                 }
@@ -4517,14 +4628,17 @@ public final class Geobuf {
                 }
 
                 /** <code>optional string string_value = 1;</code> */
+                @Override
                 public boolean hasStringValue() {
                     return instance.hasStringValue();
                 }
                 /** <code>optional string string_value = 1;</code> */
+                @Override
                 public java.lang.String getStringValue() {
                     return instance.getStringValue();
                 }
                 /** <code>optional string string_value = 1;</code> */
+                @Override
                 public com.google.protobuf.ByteString getStringValueBytes() {
                     return instance.getStringValueBytes();
                 }
@@ -4548,10 +4662,12 @@ public final class Geobuf {
                 }
 
                 /** <code>optional double double_value = 2;</code> */
+                @Override
                 public boolean hasDoubleValue() {
                     return instance.hasDoubleValue();
                 }
                 /** <code>optional double double_value = 2;</code> */
+                @Override
                 public double getDoubleValue() {
                     return instance.getDoubleValue();
                 }
@@ -4569,10 +4685,12 @@ public final class Geobuf {
                 }
 
                 /** <code>optional uint64 pos_int_value = 3;</code> */
+                @Override
                 public boolean hasPosIntValue() {
                     return instance.hasPosIntValue();
                 }
                 /** <code>optional uint64 pos_int_value = 3;</code> */
+                @Override
                 public long getPosIntValue() {
                     return instance.getPosIntValue();
                 }
@@ -4590,10 +4708,12 @@ public final class Geobuf {
                 }
 
                 /** <code>optional uint64 neg_int_value = 4;</code> */
+                @Override
                 public boolean hasNegIntValue() {
                     return instance.hasNegIntValue();
                 }
                 /** <code>optional uint64 neg_int_value = 4;</code> */
+                @Override
                 public long getNegIntValue() {
                     return instance.getNegIntValue();
                 }
@@ -4611,10 +4731,12 @@ public final class Geobuf {
                 }
 
                 /** <code>optional bool bool_value = 5;</code> */
+                @Override
                 public boolean hasBoolValue() {
                     return instance.hasBoolValue();
                 }
                 /** <code>optional bool bool_value = 5;</code> */
+                @Override
                 public boolean getBoolValue() {
                     return instance.getBoolValue();
                 }
@@ -4632,14 +4754,17 @@ public final class Geobuf {
                 }
 
                 /** <code>optional string json_value = 6;</code> */
+                @Override
                 public boolean hasJsonValue() {
                     return instance.hasJsonValue();
                 }
                 /** <code>optional string json_value = 6;</code> */
+                @Override
                 public java.lang.String getJsonValue() {
                     return instance.getJsonValue();
                 }
                 /** <code>optional string json_value = 6;</code> */
+                @Override
                 public com.google.protobuf.ByteString getJsonValueBytes() {
                     return instance.getJsonValueBytes();
                 }
@@ -4665,6 +4790,7 @@ public final class Geobuf {
                 // @@protoc_insertion_point(builder_scope:org.geotools.data.geobuf.Data.Value)
             }
 
+            @Override
             @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
             protected final java.lang.Object dynamicMethod(
                     com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
@@ -4900,11 +5026,13 @@ public final class Geobuf {
                 }
             }
 
+            @Override
             public int getNumber() {
                 return this.value;
             }
         };
 
+        @Override
         public DataTypeCase getDataTypeCase() {
             return DataTypeCase.forNumber(dataTypeCase_);
         }
@@ -4925,6 +5053,7 @@ public final class Geobuf {
          *
          * <code>repeated string keys = 1;</code>
          */
+        @Override
         public java.util.List<java.lang.String> getKeysList() {
             return keys_;
         }
@@ -4937,6 +5066,7 @@ public final class Geobuf {
          *
          * <code>repeated string keys = 1;</code>
          */
+        @Override
         public int getKeysCount() {
             return keys_.size();
         }
@@ -4949,6 +5079,7 @@ public final class Geobuf {
          *
          * <code>repeated string keys = 1;</code>
          */
+        @Override
         public java.lang.String getKeys(int index) {
             return keys_.get(index);
         }
@@ -4961,6 +5092,7 @@ public final class Geobuf {
          *
          * <code>repeated string keys = 1;</code>
          */
+        @Override
         public com.google.protobuf.ByteString getKeysBytes(int index) {
             return com.google.protobuf.ByteString.copyFromUtf8(keys_.get(index));
         }
@@ -5055,6 +5187,7 @@ public final class Geobuf {
          *
          * <code>optional uint32 dimensions = 2 [default = 2];</code>
          */
+        @Override
         public boolean hasDimensions() {
             return ((bitField0_ & 0x00000001) == 0x00000001);
         }
@@ -5067,6 +5200,7 @@ public final class Geobuf {
          *
          * <code>optional uint32 dimensions = 2 [default = 2];</code>
          */
+        @Override
         public int getDimensions() {
             return dimensions_;
         }
@@ -5108,6 +5242,7 @@ public final class Geobuf {
          *
          * <code>optional uint32 precision = 3 [default = 6];</code>
          */
+        @Override
         public boolean hasPrecision() {
             return ((bitField0_ & 0x00000002) == 0x00000002);
         }
@@ -5120,6 +5255,7 @@ public final class Geobuf {
          *
          * <code>optional uint32 precision = 3 [default = 6];</code>
          */
+        @Override
         public int getPrecision() {
             return precision_;
         }
@@ -5155,6 +5291,7 @@ public final class Geobuf {
          * <code>optional .org.geotools.data.geobuf.Data.FeatureCollection feature_collection = 4;
          * </code>
          */
+        @Override
         public boolean hasFeatureCollection() {
             return dataTypeCase_ == 4;
         }
@@ -5162,6 +5299,7 @@ public final class Geobuf {
          * <code>optional .org.geotools.data.geobuf.Data.FeatureCollection feature_collection = 4;
          * </code>
          */
+        @Override
         public org.geotools.data.geobuf.Geobuf.Data.FeatureCollection getFeatureCollection() {
             if (dataTypeCase_ == 4) {
                 return (org.geotools.data.geobuf.Geobuf.Data.FeatureCollection) dataType_;
@@ -5223,10 +5361,12 @@ public final class Geobuf {
 
         public static final int FEATURE_FIELD_NUMBER = 5;
         /** <code>optional .org.geotools.data.geobuf.Data.Feature feature = 5;</code> */
+        @Override
         public boolean hasFeature() {
             return dataTypeCase_ == 5;
         }
         /** <code>optional .org.geotools.data.geobuf.Data.Feature feature = 5;</code> */
+        @Override
         public org.geotools.data.geobuf.Geobuf.Data.Feature getFeature() {
             if (dataTypeCase_ == 5) {
                 return (org.geotools.data.geobuf.Geobuf.Data.Feature) dataType_;
@@ -5272,10 +5412,12 @@ public final class Geobuf {
 
         public static final int GEOMETRY_FIELD_NUMBER = 6;
         /** <code>optional .org.geotools.data.geobuf.Data.Geometry geometry = 6;</code> */
+        @Override
         public boolean hasGeometry() {
             return dataTypeCase_ == 6;
         }
         /** <code>optional .org.geotools.data.geobuf.Data.Geometry geometry = 6;</code> */
+        @Override
         public org.geotools.data.geobuf.Geobuf.Data.Geometry getGeometry() {
             if (dataTypeCase_ == 6) {
                 return (org.geotools.data.geobuf.Geobuf.Data.Geometry) dataType_;
@@ -5319,6 +5461,7 @@ public final class Geobuf {
             }
         }
 
+        @Override
         public void writeTo(com.google.protobuf.CodedOutputStream output)
                 throws java.io.IOException {
             for (String s : keys_) {
@@ -5343,6 +5486,7 @@ public final class Geobuf {
             unknownFields.writeTo(output);
         }
 
+        @Override
         public int getSerializedSize() {
             int size = memoizedSerializedSize;
             if (size != -1) return size;
@@ -5480,6 +5624,7 @@ public final class Geobuf {
                 super(DEFAULT_INSTANCE);
             }
 
+            @Override
             public DataTypeCase getDataTypeCase() {
                 return instance.getDataTypeCase();
             }
@@ -5499,6 +5644,7 @@ public final class Geobuf {
              *
              * <code>repeated string keys = 1;</code>
              */
+            @Override
             public java.util.List<java.lang.String> getKeysList() {
                 return java.util.Collections.unmodifiableList(instance.getKeysList());
             }
@@ -5511,6 +5657,7 @@ public final class Geobuf {
              *
              * <code>repeated string keys = 1;</code>
              */
+            @Override
             public int getKeysCount() {
                 return instance.getKeysCount();
             }
@@ -5523,6 +5670,7 @@ public final class Geobuf {
              *
              * <code>repeated string keys = 1;</code>
              */
+            @Override
             public java.lang.String getKeys(int index) {
                 return instance.getKeys(index);
             }
@@ -5535,6 +5683,7 @@ public final class Geobuf {
              *
              * <code>repeated string keys = 1;</code>
              */
+            @Override
             public com.google.protobuf.ByteString getKeysBytes(int index) {
                 return instance.getKeysBytes(index);
             }
@@ -5618,6 +5767,7 @@ public final class Geobuf {
              *
              * <code>optional uint32 dimensions = 2 [default = 2];</code>
              */
+            @Override
             public boolean hasDimensions() {
                 return instance.hasDimensions();
             }
@@ -5630,6 +5780,7 @@ public final class Geobuf {
              *
              * <code>optional uint32 dimensions = 2 [default = 2];</code>
              */
+            @Override
             public int getDimensions() {
                 return instance.getDimensions();
             }
@@ -5671,6 +5822,7 @@ public final class Geobuf {
              *
              * <code>optional uint32 precision = 3 [default = 6];</code>
              */
+            @Override
             public boolean hasPrecision() {
                 return instance.hasPrecision();
             }
@@ -5683,6 +5835,7 @@ public final class Geobuf {
              *
              * <code>optional uint32 precision = 3 [default = 6];</code>
              */
+            @Override
             public int getPrecision() {
                 return instance.getPrecision();
             }
@@ -5720,6 +5873,7 @@ public final class Geobuf {
              * optional .org.geotools.data.geobuf.Data.FeatureCollection feature_collection = 4;
              * </code>
              */
+            @Override
             public boolean hasFeatureCollection() {
                 return instance.hasFeatureCollection();
             }
@@ -5728,6 +5882,7 @@ public final class Geobuf {
              * optional .org.geotools.data.geobuf.Data.FeatureCollection feature_collection = 4;
              * </code>
              */
+            @Override
             public org.geotools.data.geobuf.Geobuf.Data.FeatureCollection getFeatureCollection() {
                 return instance.getFeatureCollection();
             }
@@ -5777,10 +5932,12 @@ public final class Geobuf {
             }
 
             /** <code>optional .org.geotools.data.geobuf.Data.Feature feature = 5;</code> */
+            @Override
             public boolean hasFeature() {
                 return instance.hasFeature();
             }
             /** <code>optional .org.geotools.data.geobuf.Data.Feature feature = 5;</code> */
+            @Override
             public org.geotools.data.geobuf.Geobuf.Data.Feature getFeature() {
                 return instance.getFeature();
             }
@@ -5811,10 +5968,12 @@ public final class Geobuf {
             }
 
             /** <code>optional .org.geotools.data.geobuf.Data.Geometry geometry = 6;</code> */
+            @Override
             public boolean hasGeometry() {
                 return instance.hasGeometry();
             }
             /** <code>optional .org.geotools.data.geobuf.Data.Geometry geometry = 6;</code> */
+            @Override
             public org.geotools.data.geobuf.Geobuf.Data.Geometry getGeometry() {
                 return instance.getGeometry();
             }
@@ -5849,6 +6008,7 @@ public final class Geobuf {
 
         private byte memoizedIsInitialized = -1;
 
+        @Override
         @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
         protected final java.lang.Object dynamicMethod(
                 com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,

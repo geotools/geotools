@@ -141,6 +141,7 @@ public class TileMatrixSetTypeImpl extends DescriptionTypeImpl implements TileMa
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getIdentifier() {
         return identifier;
     }
@@ -165,6 +166,7 @@ public class TileMatrixSetTypeImpl extends DescriptionTypeImpl implements TileMa
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIdentifier(CodeType newIdentifier) {
         if (newIdentifier != identifier) {
             NotificationChain msgs = null;
@@ -184,6 +186,7 @@ public class TileMatrixSetTypeImpl extends DescriptionTypeImpl implements TileMa
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getBoundingBoxGroup() {
         if (boundingBoxGroup == null) {
             boundingBoxGroup = new BasicFeatureMap(this, wmtsv_1Package.TILE_MATRIX_SET_TYPE__BOUNDING_BOX_GROUP);
@@ -196,6 +199,7 @@ public class TileMatrixSetTypeImpl extends DescriptionTypeImpl implements TileMa
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BoundingBoxType getBoundingBox() {
         return (BoundingBoxType)getBoundingBoxGroup().get(wmtsv_1Package.Literals.TILE_MATRIX_SET_TYPE__BOUNDING_BOX, true);
     }
@@ -214,6 +218,7 @@ public class TileMatrixSetTypeImpl extends DescriptionTypeImpl implements TileMa
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBoundingBox(BoundingBoxType newBoundingBox) {
         ((FeatureMap.Internal)getBoundingBoxGroup()).set(wmtsv_1Package.Literals.TILE_MATRIX_SET_TYPE__BOUNDING_BOX, newBoundingBox);
     }
@@ -223,6 +228,7 @@ public class TileMatrixSetTypeImpl extends DescriptionTypeImpl implements TileMa
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getSupportedCRS() {
         return supportedCRS;
     }
@@ -232,6 +238,7 @@ public class TileMatrixSetTypeImpl extends DescriptionTypeImpl implements TileMa
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSupportedCRS(String newSupportedCRS) {
         String oldSupportedCRS = supportedCRS;
         supportedCRS = newSupportedCRS;
@@ -244,6 +251,7 @@ public class TileMatrixSetTypeImpl extends DescriptionTypeImpl implements TileMa
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getWellKnownScaleSet() {
         return wellKnownScaleSet;
     }
@@ -253,6 +261,7 @@ public class TileMatrixSetTypeImpl extends DescriptionTypeImpl implements TileMa
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setWellKnownScaleSet(String newWellKnownScaleSet) {
         String oldWellKnownScaleSet = wellKnownScaleSet;
         wellKnownScaleSet = newWellKnownScaleSet;
@@ -265,6 +274,7 @@ public class TileMatrixSetTypeImpl extends DescriptionTypeImpl implements TileMa
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<TileMatrixType> getTileMatrix() {
         if (tileMatrix == null) {
             tileMatrix = new EObjectContainmentEList<>(TileMatrixType.class, this, wmtsv_1Package.TILE_MATRIX_SET_TYPE__TILE_MATRIX);

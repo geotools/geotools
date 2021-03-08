@@ -29,6 +29,7 @@ public class TransparencyFillSpi implements OperationRegistrySpi {
     /** Default constructor. */
     public TransparencyFillSpi() {}
 
+    @Override
     public void updateRegistry(OperationRegistry registry) {
         TransparencyFillDescriptor op = new TransparencyFillDescriptor();
         registry.registerDescriptor(op);

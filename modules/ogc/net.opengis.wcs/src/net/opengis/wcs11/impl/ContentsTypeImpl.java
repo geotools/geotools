@@ -98,6 +98,7 @@ public class ContentsTypeImpl extends EObjectImpl implements ContentsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EClass eStaticClass() {
         return Wcs111Package.Literals.CONTENTS_TYPE;
     }
@@ -107,6 +108,7 @@ public class ContentsTypeImpl extends EObjectImpl implements ContentsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getCoverageSummary() {
         if (coverageSummary == null) {
             coverageSummary = new EObjectContainmentEList(CoverageSummaryType.class, this, Wcs111Package.CONTENTS_TYPE__COVERAGE_SUMMARY);
@@ -119,6 +121,7 @@ public class ContentsTypeImpl extends EObjectImpl implements ContentsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getSupportedCRS() {
         if (supportedCRS == null) {
             supportedCRS = new EDataTypeEList(String.class, this, Wcs111Package.CONTENTS_TYPE__SUPPORTED_CRS);
@@ -131,6 +134,7 @@ public class ContentsTypeImpl extends EObjectImpl implements ContentsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getSupportedFormat() {
         if (supportedFormat == null) {
             supportedFormat = new EDataTypeEList(String.class, this, Wcs111Package.CONTENTS_TYPE__SUPPORTED_FORMAT);
@@ -143,6 +147,7 @@ public class ContentsTypeImpl extends EObjectImpl implements ContentsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getOtherSource() {
         if (otherSource == null) {
             otherSource = new EObjectContainmentEList(OnlineResourceType.class, this, Wcs111Package.CONTENTS_TYPE__OTHER_SOURCE);
@@ -155,6 +160,7 @@ public class ContentsTypeImpl extends EObjectImpl implements ContentsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case Wcs111Package.CONTENTS_TYPE__COVERAGE_SUMMARY:
@@ -170,6 +176,7 @@ public class ContentsTypeImpl extends EObjectImpl implements ContentsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case Wcs111Package.CONTENTS_TYPE__COVERAGE_SUMMARY:
@@ -189,6 +196,7 @@ public class ContentsTypeImpl extends EObjectImpl implements ContentsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Wcs111Package.CONTENTS_TYPE__COVERAGE_SUMMARY:
@@ -216,6 +224,7 @@ public class ContentsTypeImpl extends EObjectImpl implements ContentsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case Wcs111Package.CONTENTS_TYPE__COVERAGE_SUMMARY:
@@ -239,6 +248,7 @@ public class ContentsTypeImpl extends EObjectImpl implements ContentsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case Wcs111Package.CONTENTS_TYPE__COVERAGE_SUMMARY:
@@ -258,6 +268,7 @@ public class ContentsTypeImpl extends EObjectImpl implements ContentsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String toString() {
         if (eIsProxy()) return super.toString();
 

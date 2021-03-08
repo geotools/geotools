@@ -33,6 +33,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  */
 public class TransverseMercatorHandlerFactory implements ProjectionHandlerFactory {
 
+    @Override
     public ProjectionHandler getHandler(
             ReferencedEnvelope renderingEnvelope,
             CoordinateReferenceSystem sourceCrs,

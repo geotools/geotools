@@ -37,6 +37,7 @@ public class FilterFunction_startAngle extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         LineString ls;
 

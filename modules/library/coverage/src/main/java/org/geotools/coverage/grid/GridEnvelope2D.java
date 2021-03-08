@@ -165,6 +165,7 @@ public class GridEnvelope2D extends Rectangle implements GridEnvelope, Cloneable
         setSize(index[0 + dimension] - index[0], index[1 + dimension] - index[1]);
     }
     /** Returns the number of dimensions, which is always 2. */
+    @Override
     public final int getDimension() {
         return 2;
     }
@@ -173,6 +174,7 @@ public class GridEnvelope2D extends Rectangle implements GridEnvelope, Cloneable
      * Returns the valid minimum inclusive grid coordinates. The sequence contains a minimum value
      * for each dimension of the grid coverage.
      */
+    @Override
     public GridCoordinates2D getLow() {
         return new GridCoordinates2D(x, y);
     }
@@ -181,6 +183,7 @@ public class GridEnvelope2D extends Rectangle implements GridEnvelope, Cloneable
      * Returns the valid maximum <strong>inclusive</strong> grid coordinates. The sequence contains
      * a maximum value for each dimension of the grid coverage.
      */
+    @Override
     public GridCoordinates2D getHigh() {
         return new GridCoordinates2D(x + width - 1, y + height - 1);
     }
@@ -190,6 +193,7 @@ public class GridEnvelope2D extends Rectangle implements GridEnvelope, Cloneable
      *
      * @see #getLow()
      */
+    @Override
     public int getLow(final int dimension) {
         switch (dimension) {
             case 0:
@@ -207,6 +211,7 @@ public class GridEnvelope2D extends Rectangle implements GridEnvelope, Cloneable
      *
      * @see #getHigh()
      */
+    @Override
     public int getHigh(final int dimension) {
         switch (dimension) {
             case 0:
@@ -222,6 +227,7 @@ public class GridEnvelope2D extends Rectangle implements GridEnvelope, Cloneable
      * Returns the number of integer grid coordinates along the specified dimension. This is equals
      * to {@code getHigh(dimension) - getLow(dimension)}.
      */
+    @Override
     public int getSpan(final int dimension) {
         switch (dimension) {
             case 0:

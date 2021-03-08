@@ -81,6 +81,7 @@ public class BoundingBoxTypeBinding extends ComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OWS.BoundingBoxType;
     }
@@ -92,6 +93,7 @@ public class BoundingBoxTypeBinding extends ComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         // BoundingBoxType bbox = Ows11Factory.eINSTANCE.createBoundingBoxType();

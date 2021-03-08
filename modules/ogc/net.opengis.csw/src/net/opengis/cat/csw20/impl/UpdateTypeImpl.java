@@ -122,6 +122,7 @@ public class UpdateTypeImpl extends EObjectImpl implements UpdateType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getAny() {
         if (any == null) {
             any = new BasicFeatureMap(this, Csw20Package.UPDATE_TYPE__ANY);
@@ -134,6 +135,7 @@ public class UpdateTypeImpl extends EObjectImpl implements UpdateType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<RecordPropertyType> getRecordProperty() {
         if (recordProperty == null) {
             recordProperty = new EObjectContainmentEList<>(RecordPropertyType.class, this, Csw20Package.UPDATE_TYPE__RECORD_PROPERTY);
@@ -146,6 +148,7 @@ public class UpdateTypeImpl extends EObjectImpl implements UpdateType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public QueryConstraintType getConstraint() {
         return constraint;
     }
@@ -170,6 +173,7 @@ public class UpdateTypeImpl extends EObjectImpl implements UpdateType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setConstraint(QueryConstraintType newConstraint) {
         if (newConstraint != constraint) {
             NotificationChain msgs = null;
@@ -189,6 +193,7 @@ public class UpdateTypeImpl extends EObjectImpl implements UpdateType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getHandle() {
         return handle;
     }
@@ -198,6 +203,7 @@ public class UpdateTypeImpl extends EObjectImpl implements UpdateType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setHandle(String newHandle) {
         String oldHandle = handle;
         handle = newHandle;

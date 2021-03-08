@@ -56,30 +56,37 @@ public class ToXlinkHrefFunction implements Function {
         this.fallback = fallback;
     }
 
+    @Override
     public String getName() {
         return NAME.getName();
     }
 
+    @Override
     public FunctionName getFunctionName() {
         return NAME;
     }
 
+    @Override
     public List<Expression> getParameters() {
         return Collections.unmodifiableList(parameters);
     }
 
+    @Override
     public Literal getFallbackValue() {
         return fallback;
     }
 
+    @Override
     public Object accept(ExpressionVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
 
+    @Override
     public Object evaluate(Object object) {
         return evaluate(object, Hints.class);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <T> T evaluate(Object object, Class<T> context) {
         return (T)

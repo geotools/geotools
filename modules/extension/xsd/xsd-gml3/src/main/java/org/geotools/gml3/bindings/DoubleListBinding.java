@@ -43,10 +43,12 @@ import org.geotools.xsd.InstanceComponent;
  */
 public class DoubleListBinding extends AbstractSimpleBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.doubleList;
     }
 
+    @Override
     public int getExecutionMode() {
         return OVERRIDE;
     }
@@ -58,6 +60,7 @@ public class DoubleListBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         // return double[].class;
         return Double[].class;
@@ -70,6 +73,7 @@ public class DoubleListBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         @SuppressWarnings("unchecked")
         List<Double> list = (List<Double>) value;

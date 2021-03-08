@@ -63,18 +63,22 @@ public class MaxSimpleFeatureCollection extends DecoratingSimpleFeatureCollectio
         return new DelegateFeatureReader<>(getSchema(), features());
     }
 
+    @Override
     public SimpleFeatureIterator features() {
         return new MaxFeaturesSimpleFeatureIterator(delegate.features(), start, max);
     }
 
+    @Override
     public SimpleFeatureCollection subCollection(Filter filter) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public SimpleFeatureCollection sort(SortBy order) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public int size() {
         int size = delegate.size();
         if (size < start) {
@@ -84,14 +88,17 @@ public class MaxSimpleFeatureCollection extends DecoratingSimpleFeatureCollectio
         }
     }
 
+    @Override
     public boolean isEmpty() {
         return delegate.isEmpty() || max == 0 || delegate.size() - start < 1;
     }
 
+    @Override
     public Object[] toArray() {
         return toArray(new Object[size()]);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <T> T[] toArray(T[] a) {
         List<T> list = new ArrayList<>();
@@ -103,6 +110,7 @@ public class MaxSimpleFeatureCollection extends DecoratingSimpleFeatureCollectio
         }
     }
 
+    @Override
     public boolean containsAll(Collection<?> c) {
         for (Object o : c) {
             if (!contains(o)) {
@@ -113,6 +121,7 @@ public class MaxSimpleFeatureCollection extends DecoratingSimpleFeatureCollectio
         return true;
     }
 
+    @Override
     public ReferencedEnvelope getBounds() {
         // calculate manually
         return DataUtilities.bounds(this);

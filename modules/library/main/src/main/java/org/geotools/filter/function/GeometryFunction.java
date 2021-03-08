@@ -70,6 +70,7 @@ public class GeometryFunction extends FunctionExpressionImpl implements Volatile
         }
     }
 
+    @Override
     public Object evaluate(Object object) {
         if (object instanceof Feature) {
             return evaluate((Feature) object);

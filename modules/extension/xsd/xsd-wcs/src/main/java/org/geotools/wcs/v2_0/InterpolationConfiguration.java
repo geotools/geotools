@@ -43,6 +43,7 @@ public class InterpolationConfiguration extends Configuration {
      *
      * @generated
      */
+    @Override
     @SuppressWarnings("unchecked")
     protected final void registerBindings(Map bindings) {
         // manually setup bindings

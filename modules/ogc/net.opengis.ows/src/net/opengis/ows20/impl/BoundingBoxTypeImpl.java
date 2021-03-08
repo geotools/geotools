@@ -137,6 +137,7 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public List<Double> getLowerCorner() {
     return lowerCorner;
   }
@@ -146,6 +147,7 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setLowerCorner(List<Double> newLowerCorner) {
     List<Double> oldLowerCorner = lowerCorner;
     lowerCorner = newLowerCorner;
@@ -158,6 +160,7 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public List<Double> getUpperCorner() {
     return upperCorner;
   }
@@ -167,6 +170,7 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setUpperCorner(List<Double> newUpperCorner) {
     List<Double> oldUpperCorner = upperCorner;
     upperCorner = newUpperCorner;
@@ -179,6 +183,7 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getCrs() {
     return crs;
   }
@@ -188,6 +193,7 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setCrs(String newCrs) {
     String oldCrs = crs;
     crs = newCrs;
@@ -200,6 +206,7 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public BigInteger getDimensions() {
     return dimensions;
   }
@@ -209,6 +216,7 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setDimensions(BigInteger newDimensions) {
     BigInteger oldDimensions = dimensions;
     dimensions = newDimensions;

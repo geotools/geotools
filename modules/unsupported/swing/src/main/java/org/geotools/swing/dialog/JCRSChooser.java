@@ -38,8 +38,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import net.miginfocom.swing.MigLayout;
 import org.geotools.referencing.CRS;
 import org.geotools.util.logging.Logging;
@@ -142,20 +140,16 @@ public class JCRSChooser {
             final Thread currentThread = Thread.currentThread();
 
             SwingUtilities.invokeLater(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                CoordinateReferenceSystem crs =
-                                        doShow(title, initialCode, authority);
-                                if (crs == null) {
-                                    currentThread.interrupt();
-                                } else {
-                                    sq.put(crs);
-                                }
-                            } catch (InterruptedException ex) {
-                                throw new RuntimeException(ex);
+                    () -> {
+                        try {
+                            CoordinateReferenceSystem crs = doShow(title, initialCode, authority);
+                            if (crs == null) {
+                                currentThread.interrupt();
+                            } else {
+                                sq.put(crs);
                             }
+                        } catch (InterruptedException ex) {
+                            throw new RuntimeException(ex);
                         }
                     });
 
@@ -267,13 +261,7 @@ public class JCRSChooser {
                         }
                     });
 
-            listBox.addListSelectionListener(
-                    new ListSelectionListener() {
-                        @Override
-                        public void valueChanged(ListSelectionEvent e) {
-                            setOKButtonState();
-                        }
-                    });
+            listBox.addListSelectionListener(e -> setOKButtonState());
 
             model.addListDataListener(
                     new CRSListModelListener() {

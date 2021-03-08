@@ -41,6 +41,7 @@ public class WFS_CapabilitiesTypeBinding extends AbstractComplexEMFBinding {
         return WFSCapabilitiesType.class;
     }
 
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // TODO: implement and remove call to super
         return super.parse(instance, node, value);

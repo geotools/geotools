@@ -232,6 +232,7 @@ public class Krovak extends MapProjection {
         return theAffineTransform;
     }
     /** {@inheritDoc} */
+    @Override
     public ParameterDescriptorGroup getParameterDescriptors() {
         return (esriDefinition) ? Provider.PARAMETERS_ESRI : Provider.PARAMETERS;
         //	return Provider.PARAMETERSESRI;
@@ -259,6 +260,7 @@ public class Krovak extends MapProjection {
      * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates (units in
      * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
      */
+    @Override
     protected Point2D transformNormalized(final double lambda, final double phi, Point2D ptDst)
             throws ProjectionException {
         final double esp = excentricity * sin(phi);
@@ -296,6 +298,7 @@ public class Krovak extends MapProjection {
      * Transforms the specified (<var>x</var>,<var>y</var>) coordinate and stores the result in
      * {@code ptDst}.
      */
+    @Override
     protected Point2D inverseTransformNormalized(final double x, final double y, Point2D ptDst)
             throws ProjectionException {
         // x -> southing, y -> westing
@@ -551,6 +554,7 @@ public class Krovak extends MapProjection {
          * @return The created math transform.
          * @throws ParameterNotFoundException if a required parameter was not found.
          */
+        @Override
         public MathTransform createMathTransform(final ParameterValueGroup parameters)
                 throws ParameterNotFoundException {
             return new Krovak(parameters, false);

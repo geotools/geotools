@@ -30,6 +30,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class AbstractFeatureTypeBindingTest extends GML3TestSupport {
+    @Override
     protected Configuration createConfiguration() {
         return new TestConfiguration();
     }

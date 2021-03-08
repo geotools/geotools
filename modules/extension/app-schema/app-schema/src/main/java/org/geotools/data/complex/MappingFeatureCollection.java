@@ -73,6 +73,7 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
      * @see org.geotools.feature.FeatureCollection#accepts(org.opengis.feature.FeatureVisitor,
      *     org.opengis.util.ProgressListener)
      */
+    @Override
     public void accepts(FeatureVisitor visitor, ProgressListener progress) throws IOException {
         DataUtilities.visit(this, visitor, progress);
     }
@@ -146,6 +147,7 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
      *
      * @see org.geotools.feature.FeatureCollection#contains(java.lang.Object)
      */
+    @Override
     public boolean contains(Object o) {
         throw new UnsupportedOperationException();
     }
@@ -155,6 +157,7 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
      *
      * @see org.geotools.feature.FeatureCollection#containsAll(java.util.Collection)
      */
+    @Override
     public boolean containsAll(Collection<?> o) {
         throw new UnsupportedOperationException();
     }
@@ -164,6 +167,7 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
      *
      * @see org.geotools.feature.FeatureCollection#features()
      */
+    @Override
     public FeatureIterator<Feature> features() {
         try {
             return MappingFeatureIteratorFactory.getInstance(store, mapping, query, unrolledFilter);
@@ -203,6 +207,7 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
      *
      * @see org.geotools.feature.FeatureCollection#getBounds()
      */
+    @Override
     public ReferencedEnvelope getBounds() {
         try (FeatureIterator<Feature> features = features()) {
             Envelope newBBox = new Envelope();
@@ -230,6 +235,7 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
      *
      * @see org.geotools.feature.FeatureCollection#getID()
      */
+    @Override
     public String getID() {
         // TODO Auto-generated method stub
         return null;
@@ -240,6 +246,7 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
      *
      * @see org.geotools.feature.FeatureCollection#getSchema()
      */
+    @Override
     public FeatureType getSchema() {
         return (FeatureType) mapping.getTargetFeature().getType();
     }
@@ -249,6 +256,7 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
      *
      * @see org.geotools.feature.FeatureCollection#isEmpty()
      */
+    @Override
     public boolean isEmpty() {
         return size() == 0;
     }
@@ -318,6 +326,7 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
      *
      * @see org.geotools.feature.FeatureCollection#size()
      */
+    @Override
     public int size() {
         try {
             return store.getCount(query);
@@ -335,6 +344,7 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
      *
      * @see org.geotools.feature.FeatureCollection#sort(org.opengis.filter.sort.SortBy)
      */
+    @Override
     public FeatureCollection<FeatureType, Feature> sort(SortBy order) {
         throw new UnsupportedOperationException();
     }
@@ -348,6 +358,7 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
      *
      * @see org.geotools.feature.FeatureCollection#subCollection(org.opengis.filter.Filter)
      */
+    @Override
     public FeatureCollection<FeatureType, Feature> subCollection(Filter filter) {
         throw new UnsupportedOperationException();
     }
@@ -357,6 +368,7 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
      *
      * @see org.geotools.feature.FeatureCollection#toArray()
      */
+    @Override
     public Object[] toArray() {
         throw new UnsupportedOperationException();
     }
@@ -366,6 +378,7 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
      *
      * @see org.geotools.feature.FeatureCollection#toArray(O[])
      */
+    @Override
     public <O> O[] toArray(O[] a) {
         throw new UnsupportedOperationException();
     }

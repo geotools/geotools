@@ -141,6 +141,7 @@ public class ResourceTypeImpl extends EObjectImpl implements ResourceType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EClass eStaticClass() {
         return XlinkPackage.Literals.RESOURCE_TYPE;
     }
@@ -150,6 +151,7 @@ public class ResourceTypeImpl extends EObjectImpl implements ResourceType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getLabel() {
         return label;
     }
@@ -159,6 +161,7 @@ public class ResourceTypeImpl extends EObjectImpl implements ResourceType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLabel(String newLabel) {
         String oldLabel = label;
         label = newLabel;
@@ -171,6 +174,7 @@ public class ResourceTypeImpl extends EObjectImpl implements ResourceType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getRole() {
         return role;
     }
@@ -180,6 +184,7 @@ public class ResourceTypeImpl extends EObjectImpl implements ResourceType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRole(String newRole) {
         String oldRole = role;
         role = newRole;
@@ -192,6 +197,7 @@ public class ResourceTypeImpl extends EObjectImpl implements ResourceType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getTitle() {
         return title;
     }
@@ -201,6 +207,7 @@ public class ResourceTypeImpl extends EObjectImpl implements ResourceType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTitle(String newTitle) {
         String oldTitle = title;
         title = newTitle;
@@ -213,6 +220,7 @@ public class ResourceTypeImpl extends EObjectImpl implements ResourceType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TypeType getType() {
         return type;
     }
@@ -222,6 +230,7 @@ public class ResourceTypeImpl extends EObjectImpl implements ResourceType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setType(TypeType newType) {
         TypeType oldType = type;
         type = newType == null ? TYPE_EDEFAULT : newType;
@@ -236,6 +245,7 @@ public class ResourceTypeImpl extends EObjectImpl implements ResourceType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetType() {
         TypeType oldType = type;
         boolean oldTypeESet = typeESet;
@@ -250,6 +260,7 @@ public class ResourceTypeImpl extends EObjectImpl implements ResourceType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetType() {
         return typeESet;
     }
@@ -259,6 +270,7 @@ public class ResourceTypeImpl extends EObjectImpl implements ResourceType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getContents() {
         // TODO: implement this method to return the 'Contents' reference list
         // Ensure that you remove @generated or mark it @generated NOT
@@ -272,6 +284,7 @@ public class ResourceTypeImpl extends EObjectImpl implements ResourceType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case XlinkPackage.RESOURCE_TYPE__LABEL:
@@ -293,6 +306,7 @@ public class ResourceTypeImpl extends EObjectImpl implements ResourceType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case XlinkPackage.RESOURCE_TYPE__LABEL:
@@ -316,6 +330,7 @@ public class ResourceTypeImpl extends EObjectImpl implements ResourceType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case XlinkPackage.RESOURCE_TYPE__LABEL:
@@ -339,6 +354,7 @@ public class ResourceTypeImpl extends EObjectImpl implements ResourceType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case XlinkPackage.RESOURCE_TYPE__LABEL:
@@ -360,6 +376,7 @@ public class ResourceTypeImpl extends EObjectImpl implements ResourceType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String toString() {
         if (eIsProxy()) return super.toString();
 

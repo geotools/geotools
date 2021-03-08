@@ -94,6 +94,7 @@ public class BaseRequestTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.BaseRequestType;
     }
@@ -105,6 +106,7 @@ public class BaseRequestTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return BaseRequestType.class;
     }

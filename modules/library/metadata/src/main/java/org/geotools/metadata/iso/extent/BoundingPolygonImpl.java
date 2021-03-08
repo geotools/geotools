@@ -58,6 +58,7 @@ public class BoundingPolygonImpl extends GeographicExtentImpl implements Boundin
 
     /** Returns the sets of points defining the bounding polygon. */
     // No class is currently implementing {@linkplain org.opengis.geometry.Geometry}.
+    @Override
     public Collection<Geometry> getPolygons() {
         return polygons = nonNullCollection(polygons, Geometry.class);
     }

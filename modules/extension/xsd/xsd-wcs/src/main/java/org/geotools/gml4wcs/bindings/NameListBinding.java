@@ -45,6 +45,7 @@ import org.geotools.xsd.InstanceComponent;
 public class NameListBinding extends AbstractSimpleBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.NameList;
     }
@@ -56,6 +57,7 @@ public class NameListBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return null;
     }
@@ -67,6 +69,7 @@ public class NameListBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
 
         // TODO: implement and remove call to super

@@ -22,7 +22,6 @@ import static org.geotools.data.shapefile.files.ShpFileType.SHP;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FilenameFilter;
 import java.io.FilterInputStream;
 import java.io.FilterOutputStream;
 import java.io.IOException;
@@ -181,14 +180,7 @@ public class ShpFiles {
             // doesn't exist
             return null;
         }
-        File[] files =
-                directory.listFiles(
-                        new FilenameFilter() {
-
-                            public boolean accept(File dir, String name) {
-                                return file.getName().equalsIgnoreCase(name);
-                            }
-                        });
+        File[] files = directory.listFiles((dir, name) -> file.getName().equalsIgnoreCase(name));
         if (files != null && files.length > 0) {
             try {
                 return files[0].toURI().toURL();

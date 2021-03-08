@@ -46,6 +46,7 @@ public class OGCSubBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.Sub;
     }
@@ -57,10 +58,12 @@ public class OGCSubBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Subtract.class;
     }
 
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -72,6 +75,7 @@ public class OGCSubBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return filterfactory.subtract(
                 (Expression) node.getChildValue(0), (Expression) node.getChildValue(1));

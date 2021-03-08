@@ -175,6 +175,7 @@ public class ShadedRelief extends OperationJAI {
         }
     }
 
+    @Override
     protected Map<String, ?> getProperties(
             RenderedImage data,
             CoordinateReferenceSystem crs,

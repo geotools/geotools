@@ -643,14 +643,17 @@ public final class JTS {
 
         return new AbstractDirectPosition() {
 
+            @Override
             public CoordinateReferenceSystem getCoordinateReferenceSystem() {
                 return crs;
             }
 
+            @Override
             public int getDimension() {
                 return crs.getCoordinateSystem().getDimension();
             }
 
+            @Override
             public double getOrdinate(int dimension) throws IndexOutOfBoundsException {
                 switch (dimension) {
                     case 0:
@@ -664,6 +667,7 @@ public final class JTS {
                 }
             }
 
+            @Override
             public void setOrdinate(int dimension, double value) throws IndexOutOfBoundsException {
                 switch (dimension) {
                     case 0:
@@ -1561,14 +1565,17 @@ public final class JTS {
         polygon.apply(
                 new CoordinateSequenceFilter() {
 
+                    @Override
                     public boolean isGeometryChanged() {
                         return false;
                     }
 
+                    @Override
                     public boolean isDone() {
                         return false;
                     }
 
+                    @Override
                     public void filter(CoordinateSequence seq, int i) {
                         if (i == 0) {
                             return;

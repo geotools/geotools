@@ -109,6 +109,7 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
     }
 
     /** Lazy create a filter based on index */
+    @Override
     protected Filter createFilter() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Set<FeatureId> featureIds = new HashSet<>();
@@ -136,6 +137,7 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
                 Collections.sort(
                         fids,
                         new Comparator<FeatureId>() {
+                            @Override
                             public int compare(FeatureId key1, FeatureId key2) {
                                 SimpleFeature feature1 = idAccessor.getFeature(key1.getID());
                                 SimpleFeature feature2 = idAccessor.getFeature(key2.getID());
@@ -208,6 +210,7 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
     // RandomFeatureAccess
     //
 
+    @Override
     public SimpleFeature getFeatureMember(String id) throws NoSuchElementException {
         int position = index.indexOf(ff.featureId(id));
         if (position == -1) {
@@ -233,16 +236,19 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
         String id;
         FeatureIdAccessor idAccessor = new FeatureIdAccessor(true);
 
+        @Override
         public boolean hasNext() {
             return iterator != null && iterator.hasNext();
         }
 
+        @Override
         public SimpleFeature next() {
             FeatureId fid = iterator.next();
             id = fid.getID();
             return idAccessor.getFeature(id);
         }
 
+        @Override
         public void remove() {
             removeFeatureMember(id);
         }

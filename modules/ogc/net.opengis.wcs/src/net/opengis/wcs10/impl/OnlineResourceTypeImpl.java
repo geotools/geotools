@@ -220,6 +220,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.ONLINE_RESOURCE_TYPE;
 	}
@@ -229,6 +230,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ActuateType getActuate() {
 		return actuate;
 	}
@@ -238,6 +240,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setActuate(ActuateType newActuate) {
 		ActuateType oldActuate = actuate;
 		actuate = newActuate == null ? ACTUATE_EDEFAULT : newActuate;
@@ -252,6 +255,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void unsetActuate() {
 		ActuateType oldActuate = actuate;
 		boolean oldActuateESet = actuateESet;
@@ -266,6 +270,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean isSetActuate() {
 		return actuateESet;
 	}
@@ -275,6 +280,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getArcrole() {
 		return arcrole;
 	}
@@ -284,6 +290,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setArcrole(String newArcrole) {
 		String oldArcrole = arcrole;
 		arcrole = newArcrole;
@@ -296,6 +303,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getHref() {
 		return href;
 	}
@@ -305,6 +313,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setHref(String newHref) {
 		String oldHref = href;
 		href = newHref;
@@ -317,6 +326,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getRole() {
 		return role;
 	}
@@ -326,6 +336,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setRole(String newRole) {
 		String oldRole = role;
 		role = newRole;
@@ -338,6 +349,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ShowType getShow() {
 		return show;
 	}
@@ -347,6 +359,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setShow(ShowType newShow) {
 		ShowType oldShow = show;
 		show = newShow == null ? SHOW_EDEFAULT : newShow;
@@ -361,6 +374,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void unsetShow() {
 		ShowType oldShow = show;
 		boolean oldShowESet = showESet;
@@ -375,6 +389,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean isSetShow() {
 		return showESet;
 	}
@@ -384,6 +399,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getTitle() {
 		return title;
 	}
@@ -393,6 +409,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setTitle(String newTitle) {
 		String oldTitle = title;
 		title = newTitle;
@@ -405,6 +422,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getType() {
 		return type;
 	}
@@ -414,6 +432,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setType(String newType) {
 		String oldType = type;
 		type = newType;
@@ -428,6 +447,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void unsetType() {
 		String oldType = type;
 		boolean oldTypeESet = typeESet;
@@ -442,6 +462,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean isSetType() {
 		return typeESet;
 	}
@@ -451,6 +472,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.ONLINE_RESOURCE_TYPE__ACTUATE:
@@ -476,6 +498,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.ONLINE_RESOURCE_TYPE__ACTUATE:
@@ -508,6 +531,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.ONLINE_RESOURCE_TYPE__ACTUATE:
@@ -540,6 +564,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.ONLINE_RESOURCE_TYPE__ACTUATE:
@@ -565,6 +590,7 @@ public class OnlineResourceTypeImpl extends EObjectImpl implements OnlineResourc
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

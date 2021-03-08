@@ -89,6 +89,7 @@ public class ContrastEnhancementBuilder extends AbstractStyleBuilder<ContrastEnh
         return gamma(cqlExpression(cqlExpression));
     }
 
+    @Override
     public ContrastEnhancement build() {
         if (unset) {
             return null;
@@ -99,6 +100,7 @@ public class ContrastEnhancementBuilder extends AbstractStyleBuilder<ContrastEnh
         return contrastEnhancement;
     }
 
+    @Override
     public ContrastEnhancementBuilder reset() {
         gamma = null;
         method = null;
@@ -106,6 +108,7 @@ public class ContrastEnhancementBuilder extends AbstractStyleBuilder<ContrastEnh
         return this;
     }
 
+    @Override
     public ContrastEnhancementBuilder reset(ContrastEnhancement contrastEnhancement) {
         if (contrastEnhancement == null) {
             return reset();
@@ -117,6 +120,7 @@ public class ContrastEnhancementBuilder extends AbstractStyleBuilder<ContrastEnh
         return this;
     }
 
+    @Override
     public ContrastEnhancementBuilder unset() {
         return (ContrastEnhancementBuilder) super.unset();
     }

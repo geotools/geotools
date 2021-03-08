@@ -32,6 +32,7 @@ public class H2ClobConverterFactory implements ConverterFactory {
 
     H2ClobConverter converter = new H2ClobConverter();
 
+    @Override
     public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {
         // can only convert towards String
         if (!(String.class.equals(target))) return null;
@@ -45,6 +46,7 @@ public class H2ClobConverterFactory implements ConverterFactory {
 
     class H2ClobConverter implements Converter {
 
+        @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {
             JdbcClob clob = (JdbcClob) source;
             Reader r = null;

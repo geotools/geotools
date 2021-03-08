@@ -154,11 +154,13 @@ final class LocalizationGridTransform2D extends AbstractMathTransform
     }
 
     /** Returns the dimension of input points. */
+    @Override
     public int getSourceDimensions() {
         return 2;
     }
 
     /** Returns the dimension of output points. */
+    @Override
     public int getTargetDimensions() {
         return 2;
     }
@@ -207,6 +209,7 @@ final class LocalizationGridTransform2D extends AbstractMathTransform
      * @param dstOff Index du premier point de sortie.
      * @param numPts Nombre de points à transformer.
      */
+    @Override
     public void transform(
             final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
         transform(null, srcPts, srcOff, null, dstPts, dstOff, numPts);
@@ -655,6 +658,7 @@ final class LocalizationGridTransform2D extends AbstractMathTransform
          * @param numPts the number of point objects to be transformed.
          * @throws TransformException if a point can't be transformed.
          */
+        @Override
         public void transform(
                 final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts)
                 throws TransformException {
@@ -748,6 +752,7 @@ final class LocalizationGridTransform2D extends AbstractMathTransform
          * @return The created math transform.
          * @throws ParameterNotFoundException if a required parameter was not found.
          */
+        @Override
         protected MathTransform createMathTransform(final ParameterValueGroup values)
                 throws ParameterNotFoundException, FactoryException {
             throw new FactoryException("Not yet implemented");

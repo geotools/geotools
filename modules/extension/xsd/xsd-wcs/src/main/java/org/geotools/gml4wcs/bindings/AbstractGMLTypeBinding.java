@@ -55,6 +55,7 @@ import org.geotools.xsd.Node;
 public class AbstractGMLTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.AbstractGMLType;
     }
@@ -66,6 +67,7 @@ public class AbstractGMLTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return null;
     }
@@ -77,6 +79,7 @@ public class AbstractGMLTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         // TODO: implement and remove call to super

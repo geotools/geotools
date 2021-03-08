@@ -93,6 +93,7 @@ public class FeatureInfoResponseBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WMTS.FeatureInfoResponse;
     }
@@ -104,6 +105,7 @@ public class FeatureInfoResponseBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return FeatureInfoResponseType.class;
     }
@@ -115,6 +117,7 @@ public class FeatureInfoResponseBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // TODO: check if this is right
         FeatureInfoResponseType fir = factory.createFeatureInfoResponseType();

@@ -89,10 +89,12 @@ public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
         return null;
     }
 
+    @Override
     public StyledLayer[] getStyledLayers() {
         return layers.toArray(new StyledLayerImpl[layers.size()]);
     }
 
+    @Override
     public void setStyledLayers(StyledLayer[] layers) {
         this.layers.clear();
 
@@ -103,10 +105,12 @@ public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
         LOGGER.fine("StyleLayerDescriptorImpl added " + this.layers.size() + " styled layers");
     }
 
+    @Override
     public List<StyledLayer> layers() {
         return layers;
     }
 
+    @Override
     public void addStyledLayer(StyledLayer layer) {
         layers.add(layer);
     }
@@ -116,6 +120,7 @@ public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
      *
      * @return Value of property name.
      */
+    @Override
     public String getName() {
         return this.name;
     }
@@ -125,6 +130,7 @@ public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
      *
      * @param name New value of property name.
      */
+    @Override
     public void setName(String name) {
         this.name = name;
     }
@@ -134,6 +140,7 @@ public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
      *
      * @return Value of property title.
      */
+    @Override
     public String getTitle() {
         return this.title;
     }
@@ -143,6 +150,7 @@ public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
      *
      * @param title New value of property title.
      */
+    @Override
     public void setTitle(String title) {
         this.title = title;
     }
@@ -152,6 +160,7 @@ public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
      *
      * @return Value of property abstractStr.
      */
+    @Override
     public java.lang.String getAbstract() {
         return abstractStr;
     }
@@ -161,14 +170,17 @@ public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
      *
      * @param abstractStr New value of property abstractStr.
      */
+    @Override
     public void setAbstract(java.lang.String abstractStr) {
         this.abstractStr = abstractStr;
     }
 
+    @Override
     public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
 
+    @Override
     public boolean equals(Object oth) {
         if (this == oth) {
             return true;

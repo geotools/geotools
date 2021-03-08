@@ -83,10 +83,12 @@ class ShadedReliefNode extends StyleVisitorCoverageProcessingNodeAdapter
         return reliefFactor;
     }
 
+    @Override
     public InternationalString getName() {
         return new SimpleInternationalString("Shaded Relief");
     }
 
+    @Override
     public void visit(final ShadedRelief sr) {
         // /////////////////////////////////////////////////////////////////////
         //
@@ -145,6 +147,7 @@ class ShadedReliefNode extends StyleVisitorCoverageProcessingNodeAdapter
                         "Node which applies ShadedRelief following SLD 1.0 spec."));
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     protected GridCoverage2D execute() {
         final Hints hints = getHints();

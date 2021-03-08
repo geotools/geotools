@@ -171,6 +171,7 @@ public class UpdateTypeImpl extends AbstractTransactionActionTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<PropertyType> getProperty() {
     if (property == null) {
       property = new EObjectContainmentEList<>(PropertyType.class, this, Wfs20Package.UPDATE_TYPE__PROPERTY);
@@ -183,6 +184,7 @@ public class UpdateTypeImpl extends AbstractTransactionActionTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Filter getFilter() {
     return filter;
   }
@@ -192,6 +194,7 @@ public class UpdateTypeImpl extends AbstractTransactionActionTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setFilter(Filter newFilter) {
     Filter oldFilter = filter;
     filter = newFilter;
@@ -204,6 +207,7 @@ public class UpdateTypeImpl extends AbstractTransactionActionTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getInputFormat() {
     return inputFormat;
   }
@@ -213,6 +217,7 @@ public class UpdateTypeImpl extends AbstractTransactionActionTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setInputFormat(String newInputFormat) {
     String oldInputFormat = inputFormat;
     inputFormat = newInputFormat;
@@ -227,6 +232,7 @@ public class UpdateTypeImpl extends AbstractTransactionActionTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetInputFormat() {
     String oldInputFormat = inputFormat;
     boolean oldInputFormatESet = inputFormatESet;
@@ -241,6 +247,7 @@ public class UpdateTypeImpl extends AbstractTransactionActionTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetInputFormat() {
     return inputFormatESet;
   }
@@ -250,6 +257,7 @@ public class UpdateTypeImpl extends AbstractTransactionActionTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getSrsName() {
     return srsName;
   }
@@ -259,6 +267,7 @@ public class UpdateTypeImpl extends AbstractTransactionActionTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setSrsName(String newSrsName) {
     String oldSrsName = srsName;
     srsName = newSrsName;
@@ -271,6 +280,7 @@ public class UpdateTypeImpl extends AbstractTransactionActionTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public QName getTypeName() {
     return typeName;
   }
@@ -280,6 +290,7 @@ public class UpdateTypeImpl extends AbstractTransactionActionTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setTypeName(QName newTypeName) {
     QName oldTypeName = typeName;
     typeName = newTypeName;

@@ -91,6 +91,7 @@ public class TextPayloadTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getFormat() {
         return format;
     }
@@ -100,6 +101,7 @@ public class TextPayloadTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFormat(String newFormat) {
         String oldFormat = format;
         format = newFormat;
@@ -112,6 +114,7 @@ public class TextPayloadTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getTextContent() {
         return textContent;
     }
@@ -121,6 +124,7 @@ public class TextPayloadTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTextContent(String newTextContent) {
         String oldTextContent = textContent;
         textContent = newTextContent;

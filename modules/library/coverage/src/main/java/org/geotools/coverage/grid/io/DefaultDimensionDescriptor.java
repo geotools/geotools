@@ -47,22 +47,27 @@ public class DefaultDimensionDescriptor implements DimensionDescriptor {
         this.endAttribute = endAttribute;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public String getUnitSymbol() {
         return unitSymbol;
     }
 
+    @Override
     public String getUnits() {
         return units;
     }
 
+    @Override
     public String getStartAttribute() {
         return startAttribute;
     }
 
+    @Override
     public String getEndAttribute() {
         return endAttribute;
     }

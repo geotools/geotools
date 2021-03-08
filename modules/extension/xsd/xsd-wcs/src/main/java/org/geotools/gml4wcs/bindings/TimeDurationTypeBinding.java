@@ -48,6 +48,7 @@ import org.geotools.xsd.InstanceComponent;
 public class TimeDurationTypeBinding extends AbstractSimpleBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.TimeDurationType;
     }
@@ -59,6 +60,7 @@ public class TimeDurationTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return null;
     }
@@ -70,6 +72,7 @@ public class TimeDurationTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
 
         // TODO: implement and remove call to super

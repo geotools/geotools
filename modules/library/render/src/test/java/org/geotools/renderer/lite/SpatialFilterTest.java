@@ -97,10 +97,12 @@ public class SpatialFilterTest {
         renderer.addRenderListener(
                 new RenderListener() {
 
+                    @Override
                     public void featureRenderer(SimpleFeature feature) {
                         renderedIds.add(feature.getID());
                     }
 
+                    @Override
                     public void errorOccurred(Exception e) {
                         errorCount++;
                     }

@@ -42,6 +42,7 @@ import org.opengis.filter.expression.Expression;
  */
 public class OGCLowerBoundaryTypeBinding extends AbstractComplexBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.LowerBoundaryType;
     }
@@ -53,6 +54,7 @@ public class OGCLowerBoundaryTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Expression.class;
     }
@@ -64,10 +66,12 @@ public class OGCLowerBoundaryTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return node.getChildValue(Expression.class);
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         // &lt;xsd:element ref="ogc:expression"/&gt;
         if (OGC.expression.equals(name)) {

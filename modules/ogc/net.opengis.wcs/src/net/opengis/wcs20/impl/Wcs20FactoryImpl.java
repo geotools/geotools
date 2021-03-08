@@ -200,6 +200,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public CapabilitiesType createCapabilitiesType() {
 		CapabilitiesTypeImpl capabilitiesType = new CapabilitiesTypeImpl();
 		return capabilitiesType;
@@ -210,6 +211,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ContentsType createContentsType() {
 		ContentsTypeImpl contentsType = new ContentsTypeImpl();
 		return contentsType;
@@ -220,6 +222,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public CoverageDescriptionsType createCoverageDescriptionsType() {
 		CoverageDescriptionsTypeImpl coverageDescriptionsType = new CoverageDescriptionsTypeImpl();
 		return coverageDescriptionsType;
@@ -230,6 +233,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public CoverageDescriptionType createCoverageDescriptionType() {
 		CoverageDescriptionTypeImpl coverageDescriptionType = new CoverageDescriptionTypeImpl();
 		return coverageDescriptionType;
@@ -240,6 +244,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public CoverageOfferingsType createCoverageOfferingsType() {
 		CoverageOfferingsTypeImpl coverageOfferingsType = new CoverageOfferingsTypeImpl();
 		return coverageOfferingsType;
@@ -250,6 +255,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public CoverageSubtypeParentType createCoverageSubtypeParentType() {
 		CoverageSubtypeParentTypeImpl coverageSubtypeParentType = new CoverageSubtypeParentTypeImpl();
 		return coverageSubtypeParentType;
@@ -260,6 +266,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public CoverageSummaryType createCoverageSummaryType() {
 		CoverageSummaryTypeImpl coverageSummaryType = new CoverageSummaryTypeImpl();
 		return coverageSummaryType;
@@ -270,6 +277,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public DescribeCoverageType createDescribeCoverageType() {
 		DescribeCoverageTypeImpl describeCoverageType = new DescribeCoverageTypeImpl();
 		return describeCoverageType;
@@ -280,6 +288,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public DimensionSliceType createDimensionSliceType() {
 		DimensionSliceTypeImpl dimensionSliceType = new DimensionSliceTypeImpl();
 		return dimensionSliceType;
@@ -290,6 +299,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public DimensionTrimType createDimensionTrimType() {
 		DimensionTrimTypeImpl dimensionTrimType = new DimensionTrimTypeImpl();
 		return dimensionTrimType;
@@ -300,6 +310,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public DocumentRoot createDocumentRoot() {
 		DocumentRootImpl documentRoot = new DocumentRootImpl();
 		return documentRoot;
@@ -310,6 +321,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ExtensionType createExtensionType() {
 		ExtensionTypeImpl extensionType = new ExtensionTypeImpl();
 		return extensionType;
@@ -320,6 +332,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public GetCapabilitiesType createGetCapabilitiesType() {
 		GetCapabilitiesTypeImpl getCapabilitiesType = new GetCapabilitiesTypeImpl();
 		return getCapabilitiesType;
@@ -330,6 +343,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public GetCoverageType createGetCoverageType() {
 		GetCoverageTypeImpl getCoverageType = new GetCoverageTypeImpl();
 		return getCoverageType;
@@ -340,6 +354,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public OfferedCoverageType createOfferedCoverageType() {
 		OfferedCoverageTypeImpl offeredCoverageType = new OfferedCoverageTypeImpl();
 		return offeredCoverageType;
@@ -350,6 +365,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ServiceMetadataType createServiceMetadataType() {
 		ServiceMetadataTypeImpl serviceMetadataType = new ServiceMetadataTypeImpl();
 		return serviceMetadataType;
@@ -360,6 +376,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ServiceParametersType createServiceParametersType() {
 		ServiceParametersTypeImpl serviceParametersType = new ServiceParametersTypeImpl();
 		return serviceParametersType;
@@ -370,6 +387,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ExtensionItemType createExtensionItemType() {
 		ExtensionItemTypeImpl extensionItemType = new ExtensionItemTypeImpl();
 		return extensionItemType;
@@ -380,6 +398,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public RangeIntervalType createRangeIntervalType() {
 		RangeIntervalTypeImpl rangeIntervalType = new RangeIntervalTypeImpl();
 		return rangeIntervalType;
@@ -390,6 +409,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public RangeItemType createRangeItemType() {
 		RangeItemTypeImpl rangeItemType = new RangeItemTypeImpl();
 		return rangeItemType;
@@ -400,6 +420,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public RangeSubsetType createRangeSubsetType() {
 		RangeSubsetTypeImpl rangeSubsetType = new RangeSubsetTypeImpl();
 		return rangeSubsetType;
@@ -410,6 +431,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ScaleAxisByFactorType createScaleAxisByFactorType() {
 		ScaleAxisByFactorTypeImpl scaleAxisByFactorType = new ScaleAxisByFactorTypeImpl();
 		return scaleAxisByFactorType;
@@ -420,6 +442,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ScaleAxisType createScaleAxisType() {
 		ScaleAxisTypeImpl scaleAxisType = new ScaleAxisTypeImpl();
 		return scaleAxisType;
@@ -430,6 +453,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ScaleByFactorType createScaleByFactorType() {
 		ScaleByFactorTypeImpl scaleByFactorType = new ScaleByFactorTypeImpl();
 		return scaleByFactorType;
@@ -440,6 +464,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ScaleToExtentType createScaleToExtentType() {
 		ScaleToExtentTypeImpl scaleToExtentType = new ScaleToExtentTypeImpl();
 		return scaleToExtentType;
@@ -450,6 +475,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ScaleToSizeType createScaleToSizeType() {
 		ScaleToSizeTypeImpl scaleToSizeType = new ScaleToSizeTypeImpl();
 		return scaleToSizeType;
@@ -460,6 +486,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ScalingType createScalingType() {
 		ScalingTypeImpl scalingType = new ScalingTypeImpl();
 		return scalingType;
@@ -470,6 +497,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public TargetAxisExtentType createTargetAxisExtentType() {
 		TargetAxisExtentTypeImpl targetAxisExtentType = new TargetAxisExtentTypeImpl();
 		return targetAxisExtentType;
@@ -480,6 +508,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public TargetAxisSizeType createTargetAxisSizeType() {
 		TargetAxisSizeTypeImpl targetAxisSizeType = new TargetAxisSizeTypeImpl();
 		return targetAxisSizeType;
@@ -490,6 +519,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public InterpolationAxesType createInterpolationAxesType() {
 		InterpolationAxesTypeImpl interpolationAxesType = new InterpolationAxesTypeImpl();
 		return interpolationAxesType;
@@ -500,6 +530,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public InterpolationAxisType createInterpolationAxisType() {
 		InterpolationAxisTypeImpl interpolationAxisType = new InterpolationAxisTypeImpl();
 		return interpolationAxisType;
@@ -510,6 +541,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public InterpolationMethodType createInterpolationMethodType() {
 		InterpolationMethodTypeImpl interpolationMethodType = new InterpolationMethodTypeImpl();
 		return interpolationMethodType;
@@ -520,6 +552,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public InterpolationType createInterpolationType() {
 		InterpolationTypeImpl interpolationType = new InterpolationTypeImpl();
 		return interpolationType;
@@ -530,6 +563,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public DescribeEOCoverageSetType createDescribeEOCoverageSetType() {
 		DescribeEOCoverageSetTypeImpl describeEOCoverageSetType = new DescribeEOCoverageSetTypeImpl();
 		return describeEOCoverageSetType;
@@ -540,6 +574,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Sections createSections() {
 		SectionsImpl sections = new SectionsImpl();
 		return sections;
@@ -680,6 +715,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Wcs20Package getWcs20Package() {
 		return (Wcs20Package)getEPackage();
 	}

@@ -109,6 +109,7 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
         }
     }
 
+    @Override
     protected boolean basicEvaluate(Geometry left, Geometry right) {
         Envelope envLeft = left.getEnvelopeInternal();
         Envelope envRight = right.getEnvelopeInternal();
@@ -139,10 +140,12 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
         // then true is returned in all cases
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
 
+    @Override
     public void setExpression1(Expression expression) {
         // BBOX filters can be also created setting the expressions directly, and some
         // old code sets the property name the other way around, try to handle this silliness
@@ -150,6 +153,7 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
         super.setExpression1(expression);
     }
 
+    @Override
     public void setExpression2(Expression expression) {
         // BBOX filters can be also created setting the expressions directly, and some
         // old code sets the property name the other way around, try to handle this silliness

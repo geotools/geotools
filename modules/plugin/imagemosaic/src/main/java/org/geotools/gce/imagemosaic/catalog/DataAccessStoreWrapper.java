@@ -57,26 +57,32 @@ class DataAccessStoreWrapper implements DataStore {
         this.delegate = delegate;
     }
 
+    @Override
     public ServiceInfo getInfo() {
         return delegate.getInfo();
     }
 
+    @Override
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         delegate.createSchema(featureType);
     }
 
+    @Override
     public void updateSchema(Name typeName, SimpleFeatureType featureType) throws IOException {
         delegate.updateSchema(typeName, featureType);
     }
 
+    @Override
     public void removeSchema(Name typeName) throws IOException {
         delegate.removeSchema(typeName);
     }
 
+    @Override
     public List getNames() throws IOException {
         return delegate.getNames();
     }
 
+    @Override
     public SimpleFeatureType getSchema(Name name) throws IOException {
         FeatureType schema = delegate.getSchema(name);
         if (schema instanceof SimpleFeatureType) {
@@ -86,10 +92,12 @@ class DataAccessStoreWrapper implements DataStore {
         }
     }
 
+    @Override
     public SimpleFeatureSource getFeatureSource(Name typeName) throws IOException {
         return DataUtilities.simple(delegate.getFeatureSource(typeName));
     }
 
+    @Override
     public void dispose() {
         delegate.dispose();
     }

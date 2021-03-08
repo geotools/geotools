@@ -38,14 +38,17 @@ public abstract class AbstractDescribeProcessRequest extends AbstractWPSRequest
         super(onlineResource, properties);
     }
 
+    @Override
     protected void initRequest() {
         setProperty(REQUEST, "DescribeProcess");
     }
 
     /** @see org.geotools.data.wps.request.DescribeProcessRequest#setIdentifier(java.lang.String) */
+    @Override
     public void setIdentifier(String processNames) {
         setProperty(IDENTIFIER, processNames);
     }
 
+    @Override
     protected abstract void initVersion();
 }

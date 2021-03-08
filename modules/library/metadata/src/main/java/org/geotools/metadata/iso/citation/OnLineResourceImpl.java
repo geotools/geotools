@@ -221,6 +221,7 @@ public class OnLineResourceImpl extends MetadataEntity implements OnLineResource
      * Returns the name of an application profile that can be used with the online resource. Returns
      * {@code null} if none.
      */
+    @Override
     public String getApplicationProfile() {
         return applicationProfile;
     }
@@ -236,6 +237,7 @@ public class OnLineResourceImpl extends MetadataEntity implements OnLineResource
      *
      * @since 2.4
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -254,6 +256,7 @@ public class OnLineResourceImpl extends MetadataEntity implements OnLineResource
      * Returns the detailed text description of what the online resource is/does. Returns {@code
      * null} if none.
      */
+    @Override
     public InternationalString getDescription() {
         return description;
     }
@@ -268,6 +271,7 @@ public class OnLineResourceImpl extends MetadataEntity implements OnLineResource
      * Returns the code for function performed by the online resource. Returns {@code null} if
      * unspecified.
      */
+    @Override
     public OnLineFunction getFunction() {
         return function;
     }
@@ -282,6 +286,7 @@ public class OnLineResourceImpl extends MetadataEntity implements OnLineResource
      * Returns the location (address) for on-line access using a Uniform Resource Locator address or
      * similar addressing scheme such as http://www.statkart.no/isotc211.
      */
+    @Override
     public URI getLinkage() {
         return linkage;
     }
@@ -296,6 +301,7 @@ public class OnLineResourceImpl extends MetadataEntity implements OnLineResource
     }
 
     /** Returns the connection protocol to be used. Returns {@code null} if none. */
+    @Override
     public String getProtocol() {
         final URI linkage = this.linkage;
         return (linkage != null) ? linkage.getScheme() : null;

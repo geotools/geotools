@@ -24,5 +24,6 @@ public interface ManageableDataSource extends DataSource, AutoCloseable {
      * Closes up the datasource, frees all of its resources. No other connection can be gathered
      * from this DataSource once close() has been called
      */
+    @Override
     public void close() throws SQLException;
 }

@@ -188,6 +188,7 @@ public class IndexFile implements FileReader {
     }
 
     /** @see java.lang.Object#finalize() */
+    @Override
     @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         this.close();
@@ -257,6 +258,7 @@ public class IndexFile implements FileReader {
         return ret;
     }
 
+    @Override
     public String id() {
         return getClass().getName();
     }

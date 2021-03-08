@@ -37,6 +37,7 @@ public class Geot553Test {
         MockHttpClient client =
                 new MockHttpClient() {
 
+                    @Override
                     public HTTPResponse get(URL url) throws IOException {
                         if (url.getQuery().contains("GetCapabilities")) {
                             URL caps = TestData.getResource(this, "geot553capabilities.xml");

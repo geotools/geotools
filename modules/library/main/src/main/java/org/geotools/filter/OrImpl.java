@@ -28,6 +28,7 @@ public class OrImpl extends LogicFilterImpl implements Or {
         super(children);
     }
 
+    @Override
     public boolean evaluate(Object feature) {
         for (Filter filter : children) {
             if (filter.evaluate(feature)) {
@@ -37,6 +38,7 @@ public class OrImpl extends LogicFilterImpl implements Or {
         return false;
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

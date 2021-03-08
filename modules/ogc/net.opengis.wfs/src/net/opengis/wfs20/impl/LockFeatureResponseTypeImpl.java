@@ -100,6 +100,7 @@ public class LockFeatureResponseTypeImpl extends EObjectImpl implements LockFeat
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeaturesLockedType getFeaturesLocked() {
     return featuresLocked;
   }
@@ -124,6 +125,7 @@ public class LockFeatureResponseTypeImpl extends EObjectImpl implements LockFeat
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setFeaturesLocked(FeaturesLockedType newFeaturesLocked) {
     if (newFeaturesLocked != featuresLocked) {
       NotificationChain msgs = null;
@@ -143,6 +145,7 @@ public class LockFeatureResponseTypeImpl extends EObjectImpl implements LockFeat
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeaturesNotLockedType getFeaturesNotLocked() {
     return featuresNotLocked;
   }
@@ -167,6 +170,7 @@ public class LockFeatureResponseTypeImpl extends EObjectImpl implements LockFeat
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setFeaturesNotLocked(FeaturesNotLockedType newFeaturesNotLocked) {
     if (newFeaturesNotLocked != featuresNotLocked) {
       NotificationChain msgs = null;
@@ -186,6 +190,7 @@ public class LockFeatureResponseTypeImpl extends EObjectImpl implements LockFeat
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getLockId() {
     return lockId;
   }
@@ -195,6 +200,7 @@ public class LockFeatureResponseTypeImpl extends EObjectImpl implements LockFeat
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setLockId(String newLockId) {
     String oldLockId = lockId;
     lockId = newLockId;

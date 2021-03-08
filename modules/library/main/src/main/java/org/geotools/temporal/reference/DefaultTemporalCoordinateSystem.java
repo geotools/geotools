@@ -59,10 +59,12 @@ public class DefaultTemporalCoordinateSystem extends DefaultTemporalReferenceSys
         this.interval = interval;
     }
 
+    @Override
     public Date getOrigin() {
         return origin;
     }
 
+    @Override
     public InternationalString getInterval() {
         return interval;
     }
@@ -71,6 +73,7 @@ public class DefaultTemporalCoordinateSystem extends DefaultTemporalReferenceSys
      * Returns the equivalent Date in the Gregorian calendar and UTC of a coordinate value defined
      * in this temporal coordinate system.
      */
+    @Override
     public Date transformCoord(TemporalCoordinate c_value) {
         Date response;
         final long yearMS = 31536000000L;
@@ -120,6 +123,7 @@ public class DefaultTemporalCoordinateSystem extends DefaultTemporalReferenceSys
      * Returns the equivalent TemporalCoordinate of a Date in Gregorian Calendar. Default of unit is
      * millisecond.
      */
+    @Override
     public TemporalCoordinate transformDateTime(Date dateTime) {
         final long yearMS = 31536000000L;
         final long monthMS = 2628000000L;

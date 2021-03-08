@@ -43,6 +43,7 @@ import org.locationtech.jts.geom.LinearRing;
  */
 public class BoundaryTypeBinding extends AbstractComplexBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return KML.boundaryType;
     }
@@ -54,6 +55,7 @@ public class BoundaryTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return LinearRing.class;
     }
@@ -65,10 +67,12 @@ public class BoundaryTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return node.getChildValue(LinearRing.class);
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         if (KML.LinearRing.getLocalPart().equals(name.getLocalPart())) {
             return object;

@@ -54,10 +54,12 @@ public class SurfacePropertyTypeBinding extends GeometryPropertyTypeBindingBase 
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.SurfacePropertyType;
     }
 
+    @Override
     public Class<? extends Geometry> getGeometryType() {
         return Polygon.class;
     }

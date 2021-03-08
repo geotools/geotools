@@ -33,6 +33,7 @@ import org.geotools.tile.impl.ZoomLevel;
  */
 public class OSMTileFactory extends WebMercatorTileFactory {
 
+    @Override
     public Tile findTileAtCoordinate(
             double lon, double lat, ZoomLevel zoomLevel, TileService service) {
         lat = TileFactory.normalizeDegreeValue(lat, 90);
@@ -82,6 +83,7 @@ public class OSMTileFactory extends WebMercatorTileFactory {
         return value;
     }
 
+    @Override
     public Tile findRightNeighbour(Tile tile, TileService service) {
         return new OSMTile(tile.getTileIdentifier().getRightNeighbour(), service);
     }

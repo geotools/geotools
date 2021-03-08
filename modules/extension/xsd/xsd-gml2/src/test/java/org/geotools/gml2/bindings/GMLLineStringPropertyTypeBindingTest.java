@@ -31,6 +31,7 @@ public class GMLLineStringPropertyTypeBindingTest extends AbstractGMLBindingTest
     ElementInstance association;
     ElementInstance geometry;
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();

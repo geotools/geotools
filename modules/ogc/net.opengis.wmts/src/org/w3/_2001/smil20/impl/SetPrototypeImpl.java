@@ -122,6 +122,7 @@ public class SetPrototypeImpl extends MinimalEObjectImpl.Container implements Se
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getAttributeName() {
         return attributeName;
     }
@@ -131,6 +132,7 @@ public class SetPrototypeImpl extends MinimalEObjectImpl.Container implements Se
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAttributeName(String newAttributeName) {
         String oldAttributeName = attributeName;
         attributeName = newAttributeName;
@@ -143,6 +145,7 @@ public class SetPrototypeImpl extends MinimalEObjectImpl.Container implements Se
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AttributeTypeType getAttributeType() {
         return attributeType;
     }
@@ -152,6 +155,7 @@ public class SetPrototypeImpl extends MinimalEObjectImpl.Container implements Se
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAttributeType(AttributeTypeType newAttributeType) {
         AttributeTypeType oldAttributeType = attributeType;
         attributeType = newAttributeType == null ? ATTRIBUTE_TYPE_EDEFAULT : newAttributeType;
@@ -166,6 +170,7 @@ public class SetPrototypeImpl extends MinimalEObjectImpl.Container implements Se
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetAttributeType() {
         AttributeTypeType oldAttributeType = attributeType;
         boolean oldAttributeTypeESet = attributeTypeESet;
@@ -180,6 +185,7 @@ public class SetPrototypeImpl extends MinimalEObjectImpl.Container implements Se
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetAttributeType() {
         return attributeTypeESet;
     }
@@ -189,6 +195,7 @@ public class SetPrototypeImpl extends MinimalEObjectImpl.Container implements Se
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getTo() {
         return to;
     }
@@ -198,6 +205,7 @@ public class SetPrototypeImpl extends MinimalEObjectImpl.Container implements Se
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTo(String newTo) {
         String oldTo = to;
         to = newTo;

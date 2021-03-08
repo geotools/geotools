@@ -165,6 +165,7 @@ class LockingGranuleCatalog extends GranuleCatalog {
         }
     }
 
+    @Override
     public BoundingBox getBounds(final String typeName, Transaction t) {
         Lock lock = rwLock.readLock();
         try {

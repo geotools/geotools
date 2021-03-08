@@ -36,6 +36,7 @@ public class DirectoryLockingManager implements LockingManager {
         this.cache = cache;
     }
 
+    @Override
     public boolean exists(String authID) {
         List<DataStore> stores = cache.getDataStores();
         for (DataStore store : stores) {
@@ -47,6 +48,7 @@ public class DirectoryLockingManager implements LockingManager {
         return false;
     }
 
+    @Override
     public boolean release(String authID, Transaction transaction) throws IOException {
         List<DataStore> stores = cache.getDataStores();
         for (DataStore store : stores) {
@@ -58,6 +60,7 @@ public class DirectoryLockingManager implements LockingManager {
         return false;
     }
 
+    @Override
     public boolean refresh(String authID, Transaction transaction) throws IOException {
         List<DataStore> stores = cache.getDataStores();
         for (DataStore store : stores) {
@@ -69,6 +72,7 @@ public class DirectoryLockingManager implements LockingManager {
         return false;
     }
 
+    @Override
     public void unLockFeatureID(
             String typeName, String authID, Transaction transaction, FeatureLock featureLock)
             throws IOException {
@@ -79,6 +83,7 @@ public class DirectoryLockingManager implements LockingManager {
         }
     }
 
+    @Override
     public void lockFeatureID(
             String typeName, String authID, Transaction transaction, FeatureLock featureLock)
             throws IOException {

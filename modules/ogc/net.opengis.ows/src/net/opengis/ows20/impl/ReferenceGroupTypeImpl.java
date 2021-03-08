@@ -66,6 +66,7 @@ public class ReferenceGroupTypeImpl extends BasicIdentificationTypeImpl implemen
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureMap getAbstractReferenceBaseGroup() {
     if (abstractReferenceBaseGroup == null) {
       abstractReferenceBaseGroup = new BasicFeatureMap(this, Ows20Package.REFERENCE_GROUP_TYPE__ABSTRACT_REFERENCE_BASE_GROUP);
@@ -78,6 +79,7 @@ public class ReferenceGroupTypeImpl extends BasicIdentificationTypeImpl implemen
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<AbstractReferenceBaseType> getAbstractReferenceBase() {
     return getAbstractReferenceBaseGroup().list(Ows20Package.Literals.REFERENCE_GROUP_TYPE__ABSTRACT_REFERENCE_BASE);
   }

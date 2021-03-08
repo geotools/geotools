@@ -45,6 +45,7 @@ import org.geotools.xsd.SimpleBinding;
  */
 public class XSPositiveIntegerBinding implements SimpleBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return XS.POSITIVEINTEGER;
     }
@@ -56,6 +57,7 @@ public class XSPositiveIntegerBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -68,6 +70,7 @@ public class XSPositiveIntegerBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return BigInteger.class;
     }
@@ -85,6 +88,7 @@ public class XSPositiveIntegerBinding implements SimpleBinding {
      * @return Number positive in range 1 to ...
      *     <!-- begin-user-doc -->
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         Number number = (Number) value;
 
@@ -103,6 +107,7 @@ public class XSPositiveIntegerBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public String encode(Object object, String value) throws Exception {
         Number number = (Number) object;
 

@@ -200,6 +200,7 @@ public class Version implements CharSequence, Comparable<Version>, Serializable 
      * @return A negative value if this version is lower than the supplied version, a positive value
      *     if it is higher, or 0 if they are equal.
      */
+    @Override
     public int compareTo(final Version other) {
         return compareTo(other, Integer.MAX_VALUE);
     }
@@ -219,16 +220,19 @@ public class Version implements CharSequence, Comparable<Version>, Serializable 
     }
 
     /** Returns the length of the version string. */
+    @Override
     public int length() {
         return version.length();
     }
 
     /** Returns the {@code char} value at the specified index. */
+    @Override
     public char charAt(final int index) {
         return version.charAt(index);
     }
 
     /** Returns a new version string that is a subsequence of this sequence. */
+    @Override
     public CharSequence subSequence(final int start, final int end) {
         return version.subSequence(start, end);
     }

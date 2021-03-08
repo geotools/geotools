@@ -80,6 +80,7 @@ public class DomainSetTypeImpl extends EObjectImpl implements DomainSetType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.DOMAIN_SET_TYPE;
 	}
@@ -89,6 +90,7 @@ public class DomainSetTypeImpl extends EObjectImpl implements DomainSetType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public SpatialDomainType getSpatialDomain() {
 		return spatialDomain;
 	}
@@ -113,6 +115,7 @@ public class DomainSetTypeImpl extends EObjectImpl implements DomainSetType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setSpatialDomain(SpatialDomainType newSpatialDomain) {
 		if (newSpatialDomain != spatialDomain) {
 			NotificationChain msgs = null;
@@ -132,6 +135,7 @@ public class DomainSetTypeImpl extends EObjectImpl implements DomainSetType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public TimeSequenceType getTemporalDomain() {
 		return temporalDomain;
 	}
@@ -156,6 +160,7 @@ public class DomainSetTypeImpl extends EObjectImpl implements DomainSetType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setTemporalDomain(TimeSequenceType newTemporalDomain) {
 		if (newTemporalDomain != temporalDomain) {
 			NotificationChain msgs = null;
@@ -175,6 +180,7 @@ public class DomainSetTypeImpl extends EObjectImpl implements DomainSetType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public TimeSequenceType getTemporalDomain1() {
 		return temporalDomain1;
 	}
@@ -199,6 +205,7 @@ public class DomainSetTypeImpl extends EObjectImpl implements DomainSetType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setTemporalDomain1(TimeSequenceType newTemporalDomain1) {
 		if (newTemporalDomain1 != temporalDomain1) {
 			NotificationChain msgs = null;
@@ -218,6 +225,7 @@ public class DomainSetTypeImpl extends EObjectImpl implements DomainSetType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.DOMAIN_SET_TYPE__SPATIAL_DOMAIN:
@@ -235,6 +243,7 @@ public class DomainSetTypeImpl extends EObjectImpl implements DomainSetType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.DOMAIN_SET_TYPE__SPATIAL_DOMAIN:
@@ -252,6 +261,7 @@ public class DomainSetTypeImpl extends EObjectImpl implements DomainSetType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.DOMAIN_SET_TYPE__SPATIAL_DOMAIN:
@@ -272,6 +282,7 @@ public class DomainSetTypeImpl extends EObjectImpl implements DomainSetType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.DOMAIN_SET_TYPE__SPATIAL_DOMAIN:
@@ -292,6 +303,7 @@ public class DomainSetTypeImpl extends EObjectImpl implements DomainSetType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.DOMAIN_SET_TYPE__SPATIAL_DOMAIN:

@@ -182,14 +182,17 @@ public class GeometryCoordinateSequenceTransformerTest {
             return firstSeqFound;
         }
 
+        @Override
         public void filter(CoordinateSequence seq, int i) {
             if (firstSeqFound == null) firstSeqFound = seq;
         }
 
+        @Override
         public boolean isDone() {
             return firstSeqFound != null;
         }
 
+        @Override
         public boolean isGeometryChanged() {
             return false;
         }
@@ -219,15 +222,18 @@ public class GeometryCoordinateSequenceTransformerTest {
             return isSame;
         }
 
+        @Override
         public void filter(CoordinateSequence seq, int i) {
             if (seq.getClass() != coordSeqClass) isSame = false;
             if (seq.getDimension() != dimension) isSame = false;
         }
 
+        @Override
         public boolean isDone() {
             return !isSame;
         }
 
+        @Override
         public boolean isGeometryChanged() {
             return false;
         }

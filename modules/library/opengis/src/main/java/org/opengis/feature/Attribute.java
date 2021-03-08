@@ -57,6 +57,7 @@ public interface Attribute extends Property {
      * @see Property#getDescriptor()
      * @return The attribute descriptor, may be null if this is a top level type
      */
+    @Override
     AttributeDescriptor getDescriptor();
 
     /**
@@ -65,6 +66,7 @@ public interface Attribute extends Property {
      * @see Property#getType()
      * @return The attribute type.
      */
+    @Override
     AttributeType getType();
 
     /**

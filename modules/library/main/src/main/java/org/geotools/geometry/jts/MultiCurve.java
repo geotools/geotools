@@ -38,10 +38,12 @@ public class MultiCurve extends MultiLineString implements MultiCurvedGeometry<M
         this.tolerance = tolerance;
     }
 
+    @Override
     public MultiLineString linearize() {
         return linearize(tolerance);
     }
 
+    @Override
     public MultiLineString linearize(double tolerance) {
         int numGeometries = getNumGeometries();
         LineString[] linearized = new LineString[numGeometries];
@@ -58,6 +60,7 @@ public class MultiCurve extends MultiLineString implements MultiCurvedGeometry<M
         return getFactory().createMultiLineString(linearized);
     }
 
+    @Override
     public String toCurvedText() {
         StringBuilder sb = new StringBuilder("MULTICURVE(");
         int numGeometries = getNumGeometries();

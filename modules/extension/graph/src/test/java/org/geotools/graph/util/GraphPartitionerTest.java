@@ -23,7 +23,6 @@ import org.geotools.graph.build.GraphBuilder;
 import org.geotools.graph.build.basic.BasicGraphBuilder;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.GraphVisitor;
-import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
 import org.geotools.graph.util.graph.GraphPartitioner;
 import org.junit.Assert;
@@ -63,11 +62,9 @@ public class GraphPartitionerTest {
         Assert.assertEquals(g.getEdges().size(), builder().getGraph().getEdges().size());
 
         GraphVisitor visitor =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-                        Assert.assertTrue(g.getNodes().contains(component));
-                        return 0;
-                    }
+                component -> {
+                    Assert.assertTrue(g.getNodes().contains(component));
+                    return 0;
                 };
         builder().getGraph().visitNodes(visitor);
     }
@@ -114,20 +111,16 @@ public class GraphPartitionerTest {
         Assert.assertEquals(right.getEdges().size(), (int) Math.pow(2, k) - 2);
 
         GraphVisitor visitor =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-                        Assert.assertTrue(component.getObject().toString().startsWith("0.0"));
-                        return 0;
-                    }
+                component -> {
+                    Assert.assertTrue(component.getObject().toString().startsWith("0.0"));
+                    return 0;
                 };
         left.visitNodes(visitor);
 
         visitor =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-                        Assert.assertTrue(component.getObject().toString().startsWith("0.1"));
-                        return 0;
-                    }
+                component -> {
+                    Assert.assertTrue(component.getObject().toString().startsWith("0.1"));
+                    return 0;
                 };
         right.visitNodes(visitor);
     }

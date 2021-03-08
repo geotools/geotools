@@ -77,6 +77,7 @@ public class ElementEncodeExecutor implements BindingWalker.Visitor {
         return encoding;
     }
 
+    @Override
     public void visit(Binding binding) {
         // ensure that the type of the object being encoded matches the type
         // of the binding

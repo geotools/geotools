@@ -53,7 +53,8 @@ public class DCPTypeImpl extends EObjectImpl implements DCPType {
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.DCP_TYPE;
   }
 
@@ -62,7 +63,8 @@ public class DCPTypeImpl extends EObjectImpl implements DCPType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public HTTPType getHTTP() {
+  @Override
+public HTTPType getHTTP() {
     return hTTP;
   }
 
@@ -86,7 +88,8 @@ public class DCPTypeImpl extends EObjectImpl implements DCPType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setHTTP(HTTPType newHTTP) {
+  @Override
+public void setHTTP(HTTPType newHTTP) {
     if (newHTTP != hTTP) {
       NotificationChain msgs = null;
       if (hTTP != null)
@@ -105,7 +108,8 @@ public class DCPTypeImpl extends EObjectImpl implements DCPType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+  @Override
+public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Ows11Package.DCP_TYPE__HTTP:
         return basicSetHTTP(null, msgs);
@@ -118,7 +122,8 @@ public class DCPTypeImpl extends EObjectImpl implements DCPType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.DCP_TYPE__HTTP:
         return getHTTP();
@@ -131,7 +136,8 @@ public class DCPTypeImpl extends EObjectImpl implements DCPType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.DCP_TYPE__HTTP:
         setHTTP((HTTPType)newValue);
@@ -145,7 +151,8 @@ public class DCPTypeImpl extends EObjectImpl implements DCPType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.DCP_TYPE__HTTP:
         setHTTP((HTTPType)null);
@@ -159,7 +166,8 @@ public class DCPTypeImpl extends EObjectImpl implements DCPType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.DCP_TYPE__HTTP:
         return hTTP != null;

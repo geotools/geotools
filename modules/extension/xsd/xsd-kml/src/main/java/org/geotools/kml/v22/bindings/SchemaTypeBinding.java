@@ -62,6 +62,7 @@ public class SchemaTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return KML.SchemaType;
     }
@@ -73,6 +74,7 @@ public class SchemaTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return SimpleFeatureType.class;
     }
@@ -84,6 +86,7 @@ public class SchemaTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         String featureTypeName = null;

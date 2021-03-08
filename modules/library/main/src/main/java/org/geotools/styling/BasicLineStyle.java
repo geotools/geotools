@@ -44,6 +44,7 @@ public class BasicLineStyle extends StyleImpl implements org.geotools.styling.St
         return "A simple line style";
     }
 
+    @Override
     public String getName() {
         return "default line style";
     }

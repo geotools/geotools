@@ -29,5 +29,6 @@ public interface FileServiceInfo extends ServiceInfo, FileGroupProvider {
      *
      * @return A {@link FileGroupProvider} instance providing info content.
      */
+    @Override
     CloseableIterator<FileGroup> getFiles(Query query);
 }

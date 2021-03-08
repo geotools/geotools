@@ -42,6 +42,7 @@ public final class GTS extends GML.DelegatingXSD {
     /** private constructor */
     private GTS() {}
 
+    @Override
     protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(GCO.getInstance());
     }
@@ -52,11 +53,13 @@ public final class GTS extends GML.DelegatingXSD {
     }
 
     /** Returns 'http://www.isotc211.org/2005/gts'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'gts.xsd.'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("gts.xsd").toString();
     }

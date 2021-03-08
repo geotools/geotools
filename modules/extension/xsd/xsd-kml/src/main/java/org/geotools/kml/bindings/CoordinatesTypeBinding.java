@@ -50,6 +50,7 @@ public class CoordinatesTypeBinding extends AbstractSimpleBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return KML.CoordinatesType;
     }
@@ -61,11 +62,13 @@ public class CoordinatesTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         // return Coordinate[].class;
         return CoordinateSequence.class;
     }
 
+    @Override
     public int getExecutionMode() {
         return OVERRIDE;
     }
@@ -77,6 +80,7 @@ public class CoordinatesTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         @SuppressWarnings("unchecked")
         List<String> list = (List) value;
@@ -99,6 +103,7 @@ public class CoordinatesTypeBinding extends AbstractSimpleBinding {
         return csFactory.create(coordinates);
     }
 
+    @Override
     public String encode(Object object, String value) throws Exception {
         StringBuffer sb = new StringBuffer();
         CoordinateSequence cs = (CoordinateSequence) object;

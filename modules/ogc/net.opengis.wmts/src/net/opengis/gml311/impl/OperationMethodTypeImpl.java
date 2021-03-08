@@ -149,6 +149,7 @@ public class OperationMethodTypeImpl extends OperationMethodBaseTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<IdentifierType> getMethodID() {
         if (methodID == null) {
             methodID = new EObjectContainmentEList<>(IdentifierType.class, this, Gml311Package.OPERATION_METHOD_TYPE__METHOD_ID);
@@ -161,6 +162,7 @@ public class OperationMethodTypeImpl extends OperationMethodBaseTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StringOrRefType getRemarks() {
         return remarks;
     }
@@ -185,6 +187,7 @@ public class OperationMethodTypeImpl extends OperationMethodBaseTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRemarks(StringOrRefType newRemarks) {
         if (newRemarks != remarks) {
             NotificationChain msgs = null;
@@ -204,6 +207,7 @@ public class OperationMethodTypeImpl extends OperationMethodBaseTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getMethodFormula() {
         return methodFormula;
     }
@@ -228,6 +232,7 @@ public class OperationMethodTypeImpl extends OperationMethodBaseTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMethodFormula(CodeType newMethodFormula) {
         if (newMethodFormula != methodFormula) {
             NotificationChain msgs = null;
@@ -247,6 +252,7 @@ public class OperationMethodTypeImpl extends OperationMethodBaseTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getSourceDimensions() {
         return sourceDimensions;
     }
@@ -256,6 +262,7 @@ public class OperationMethodTypeImpl extends OperationMethodBaseTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSourceDimensions(BigInteger newSourceDimensions) {
         BigInteger oldSourceDimensions = sourceDimensions;
         sourceDimensions = newSourceDimensions;
@@ -268,6 +275,7 @@ public class OperationMethodTypeImpl extends OperationMethodBaseTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getTargetDimensions() {
         return targetDimensions;
     }
@@ -277,6 +285,7 @@ public class OperationMethodTypeImpl extends OperationMethodBaseTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTargetDimensions(BigInteger newTargetDimensions) {
         BigInteger oldTargetDimensions = targetDimensions;
         targetDimensions = newTargetDimensions;
@@ -289,6 +298,7 @@ public class OperationMethodTypeImpl extends OperationMethodBaseTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<AbstractGeneralOperationParameterRefType> getUsesParameter() {
         if (usesParameter == null) {
             usesParameter = new EObjectContainmentEList<>(AbstractGeneralOperationParameterRefType.class, this, Gml311Package.OPERATION_METHOD_TYPE__USES_PARAMETER);

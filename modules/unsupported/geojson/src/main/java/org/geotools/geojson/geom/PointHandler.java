@@ -29,6 +29,7 @@ public class PointHandler extends GeometryHandlerBase<Point> {
         super(factory);
     }
 
+    @Override
     public boolean startObjectEntry(String key) throws ParseException, IOException {
         if ("coordinates".equals(key)) {
             ordinates = new ArrayList<>();

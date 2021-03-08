@@ -325,10 +325,12 @@ public class CapabilitiesFilterSplitterTest extends AbstractCapabilitiesFilterSp
                         null,
                         new ClientTransactionAccessor() {
 
+                            @Override
                             public Filter getDeleteFilter() {
                                 return null;
                             }
 
+                            @Override
                             public Filter getUpdateFilter(String attributePath) {
                                 if (attributePath.equals("eventtype")) {
                                     HashSet ids = new HashSet();

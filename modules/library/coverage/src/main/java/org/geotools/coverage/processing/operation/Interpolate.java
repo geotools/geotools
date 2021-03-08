@@ -118,6 +118,7 @@ public class Interpolate extends Operation2D {
      * Applies an interpolation to a grid coverage. This method is invoked by {@link
      * org.geotools.coverage.processing.DefaultProcessor} for the {@code "Interpolate"} operation.
      */
+    @Override
     public Coverage doOperation(final ParameterValueGroup parameters, final Hints hints) {
         final GridCoverage2D source = (GridCoverage2D) parameters.parameter("Source").getValue();
         final Object type = parameters.parameter("Type").getValue();

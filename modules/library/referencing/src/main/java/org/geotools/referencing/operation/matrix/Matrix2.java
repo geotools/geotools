@@ -91,6 +91,7 @@ public class Matrix2 implements XMatrix, Serializable {
      * Returns the number of rows in this matrix, which is always {@value #SIZE} in this
      * implementation.
      */
+    @Override
     public final int getNumRow() {
         return SIZE;
     }
@@ -99,11 +100,13 @@ public class Matrix2 implements XMatrix, Serializable {
      * Returns the number of colmuns in this matrix, which is always {@value #SIZE} in this
      * implementation.
      */
+    @Override
     public final int getNumCol() {
         return SIZE;
     }
 
     /** {@inheritDoc} */
+    @Override
     public final double getElement(final int row, final int col) {
         switch (row) {
             case 0:
@@ -131,6 +134,7 @@ public class Matrix2 implements XMatrix, Serializable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public final void setElement(final int row, final int col, final double value) {
         switch (row) {
             case 0:
@@ -162,11 +166,13 @@ public class Matrix2 implements XMatrix, Serializable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public final void setZero() {
         m00 = m01 = m10 = m11 = 0;
     }
 
     /** {@inheritDoc} */
+    @Override
     public final void setIdentity() {
         m01 = m10 = 0;
         m00 = m11 = 1;
@@ -174,21 +180,25 @@ public class Matrix2 implements XMatrix, Serializable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public final boolean isIdentity() {
         return m01 == 0 && m10 == 0 && m00 == 1 && m11 == 1;
     }
 
     /** {@inheritDoc} */
+    @Override
     public final boolean isIdentity(double tolerance) {
         return GeneralMatrix.isIdentity(this, tolerance);
     }
 
     /** {@inheritDoc} */
+    @Override
     public final boolean isAffine() {
         return m10 == 0 && m11 == 1;
     }
 
     /** {@inheritDoc} */
+    @Override
     public final void negate() {
         m00 = -m00;
         m01 = -m01;
@@ -206,6 +216,7 @@ public class Matrix2 implements XMatrix, Serializable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public final void transpose() {
         final double swap = m10;
         m10 = m01;
@@ -222,6 +233,7 @@ public class Matrix2 implements XMatrix, Serializable {
     }
 
     /** Inverts this matrix in place. */
+    @Override
     public final void invert() {
         final double det = m00 * m11 - m01 * m10;
         if (det == 0) {
@@ -247,11 +259,13 @@ public class Matrix2 implements XMatrix, Serializable {
         m01 = -k.m01 / det;
     }
 
+    @Override
     public final void multiply(final Matrix matrix) {
         mul(matrix);
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean equals(final Matrix matrix, final double tolerance) {
         return GeneralMatrix.epsilonEquals(this, matrix, tolerance);
     }

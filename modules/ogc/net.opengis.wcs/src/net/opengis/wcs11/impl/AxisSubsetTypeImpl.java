@@ -81,6 +81,7 @@ public class AxisSubsetTypeImpl extends EObjectImpl implements AxisSubsetType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EClass eStaticClass() {
         return Wcs111Package.Literals.AXIS_SUBSET_TYPE;
     }
@@ -90,6 +91,7 @@ public class AxisSubsetTypeImpl extends EObjectImpl implements AxisSubsetType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getIdentifier() {
         return identifier;
     }
@@ -99,6 +101,7 @@ public class AxisSubsetTypeImpl extends EObjectImpl implements AxisSubsetType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIdentifier(String newIdentifier) {
         String oldIdentifier = identifier;
         identifier = newIdentifier;
@@ -111,6 +114,7 @@ public class AxisSubsetTypeImpl extends EObjectImpl implements AxisSubsetType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getKey() {
         if (key == null) {
             key = new EDataTypeEList(String.class, this, Wcs111Package.AXIS_SUBSET_TYPE__KEY);
@@ -123,6 +127,7 @@ public class AxisSubsetTypeImpl extends EObjectImpl implements AxisSubsetType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case Wcs111Package.AXIS_SUBSET_TYPE__IDENTIFIER:
@@ -138,6 +143,7 @@ public class AxisSubsetTypeImpl extends EObjectImpl implements AxisSubsetType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Wcs111Package.AXIS_SUBSET_TYPE__IDENTIFIER:
@@ -156,6 +162,7 @@ public class AxisSubsetTypeImpl extends EObjectImpl implements AxisSubsetType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case Wcs111Package.AXIS_SUBSET_TYPE__IDENTIFIER:
@@ -173,6 +180,7 @@ public class AxisSubsetTypeImpl extends EObjectImpl implements AxisSubsetType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case Wcs111Package.AXIS_SUBSET_TYPE__IDENTIFIER:
@@ -188,6 +196,7 @@ public class AxisSubsetTypeImpl extends EObjectImpl implements AxisSubsetType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String toString() {
         if (eIsProxy()) return super.toString();
 

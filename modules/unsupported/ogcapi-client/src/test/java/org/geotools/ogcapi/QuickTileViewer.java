@@ -21,8 +21,6 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.awt.Cursor;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -271,26 +269,21 @@ public class QuickTileViewer {
         layerDialog = new LayerDialog(this, "Select a layer");
         JButton button = new JButton(imageIcon);
         button.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        layerDialog.updateLayers(collections);
-                        layerDialog.setVisible(true);
-                        String newLayer = layerDialog.getLayer();
-                        if (newLayer != null && !newLayer.isEmpty()) {
-                            SwingUtilities.invokeLater(
-                                    new Runnable() {
-                                        public void run() {
-                                            try {
-                                                addLayer(newLayer);
-                                            } catch (IOException
-                                                    | SAXException
-                                                    | ParserConfigurationException e1) {
-                                                LOGGER.log(Level.WARNING, "", e);
-                                            }
-                                        }
-                                    });
-                        }
+                e -> {
+                    layerDialog.updateLayers(collections);
+                    layerDialog.setVisible(true);
+                    String newLayer = layerDialog.getLayer();
+                    if (newLayer != null && !newLayer.isEmpty()) {
+                        SwingUtilities.invokeLater(
+                                () -> {
+                                    try {
+                                        addLayer(newLayer);
+                                    } catch (IOException
+                                            | SAXException
+                                            | ParserConfigurationException ex) {
+                                        LOGGER.log(Level.WARNING, "", ex);
+                                    }
+                                });
                     }
                 });
         frame.enableToolBar(true);

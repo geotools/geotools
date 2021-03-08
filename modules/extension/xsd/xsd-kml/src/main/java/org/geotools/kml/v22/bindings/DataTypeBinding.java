@@ -54,6 +54,7 @@ import org.opengis.feature.type.Name;
 public class DataTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return KML.DataType;
     }
@@ -65,6 +66,7 @@ public class DataTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Map.Entry.class;
     }
@@ -76,12 +78,14 @@ public class DataTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         // TODO: implement and remove call to super
         return super.parse(instance, node, value);
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         @SuppressWarnings("unchecked")
         Map.Entry<Name, Object> data = (Map.Entry<Name, Object>) object;

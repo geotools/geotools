@@ -132,6 +132,7 @@ public class WKTMarkFactory implements MarkFactory {
      * @see org.geotools.renderer.style.MarkFactory#getShape(java.awt.Graphics2D,
      *     org.opengis.filter.expression.Expression, org.opengis.feature.Feature)
      */
+    @Override
     public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature)
             throws Exception {
 

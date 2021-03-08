@@ -62,6 +62,7 @@ public class OutputDefinitionsTypeImpl extends EObjectImpl implements OutputDefi
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.OUTPUT_DEFINITIONS_TYPE;
   }
@@ -71,6 +72,7 @@ public class OutputDefinitionsTypeImpl extends EObjectImpl implements OutputDefi
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList getOutput() {
     if (output == null) {
       output = new EObjectContainmentEList(DocumentOutputDefinitionType.class, this, Wps10Package.OUTPUT_DEFINITIONS_TYPE__OUTPUT);
@@ -83,6 +85,7 @@ public class OutputDefinitionsTypeImpl extends EObjectImpl implements OutputDefi
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.OUTPUT_DEFINITIONS_TYPE__OUTPUT:
@@ -96,6 +99,7 @@ public class OutputDefinitionsTypeImpl extends EObjectImpl implements OutputDefi
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.OUTPUT_DEFINITIONS_TYPE__OUTPUT:
@@ -109,6 +113,7 @@ public class OutputDefinitionsTypeImpl extends EObjectImpl implements OutputDefi
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.OUTPUT_DEFINITIONS_TYPE__OUTPUT:
@@ -124,6 +129,7 @@ public class OutputDefinitionsTypeImpl extends EObjectImpl implements OutputDefi
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.OUTPUT_DEFINITIONS_TYPE__OUTPUT:
@@ -138,6 +144,7 @@ public class OutputDefinitionsTypeImpl extends EObjectImpl implements OutputDefi
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.OUTPUT_DEFINITIONS_TYPE__OUTPUT:

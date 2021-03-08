@@ -137,6 +137,7 @@ public class SelectSampleDimension extends Operation2D {
      * @param hints A set of rendering hints, or {@code null} if none.
      * @return The result as a grid coverage.
      */
+    @Override
     public Coverage doOperation(final ParameterValueGroup parameters, final Hints hints) {
         return BandSelector2D.create(parameters, hints);
     }

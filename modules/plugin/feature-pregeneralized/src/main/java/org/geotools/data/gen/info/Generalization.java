@@ -58,6 +58,7 @@ public class Generalization implements Comparable<Generalization> {
         return geomPropertyName;
     }
 
+    @Override
     public int compareTo(Generalization other) {
         return getDistance().compareTo(other.getDistance());
     }

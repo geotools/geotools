@@ -37,15 +37,19 @@ import org.opengis.referencing.operation.Projection;
 @UML(identifier = "SC_ProjectedCRS", specification = ISO_19111)
 public interface ProjectedCRS extends GeneralDerivedCRS {
     /** Returns the base coordinate reference system, which must be geographic. */
+    @Override
     GeographicCRS getBaseCRS();
 
     /** Returns the map projection from the {@linkplain #getBaseCRS base CRS} to this CRS. */
+    @Override
     Projection getConversionFromBase();
 
     /** Returns the coordinate system, which must be cartesian. */
+    @Override
     @UML(identifier = "usesCS", obligation = MANDATORY, specification = ISO_19111)
     CartesianCS getCoordinateSystem();
 
     /** Returns the datum. */
+    @Override
     GeodeticDatum getDatum();
 }

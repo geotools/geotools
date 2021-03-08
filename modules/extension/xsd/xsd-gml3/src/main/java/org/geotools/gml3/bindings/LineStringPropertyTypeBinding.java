@@ -62,10 +62,12 @@ public class LineStringPropertyTypeBinding extends GeometryPropertyTypeBindingBa
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.LineStringPropertyType;
     }
 
+    @Override
     public Class<? extends Geometry> getGeometryType() {
         return LineString.class;
     }

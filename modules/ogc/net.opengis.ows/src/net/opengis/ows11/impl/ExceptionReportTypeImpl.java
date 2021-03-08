@@ -102,7 +102,8 @@ public class ExceptionReportTypeImpl extends EObjectImpl implements ExceptionRep
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.EXCEPTION_REPORT_TYPE;
   }
 
@@ -111,7 +112,8 @@ public class ExceptionReportTypeImpl extends EObjectImpl implements ExceptionRep
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList getException() {
+  @Override
+public EList getException() {
     if (exception == null) {
       exception = new EObjectContainmentEList(ExceptionType.class, this, Ows11Package.EXCEPTION_REPORT_TYPE__EXCEPTION);
     }
@@ -123,7 +125,8 @@ public class ExceptionReportTypeImpl extends EObjectImpl implements ExceptionRep
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getLang() {
+  @Override
+public String getLang() {
     return lang;
   }
 
@@ -132,7 +135,8 @@ public class ExceptionReportTypeImpl extends EObjectImpl implements ExceptionRep
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setLang(String newLang) {
+  @Override
+public void setLang(String newLang) {
     String oldLang = lang;
     lang = newLang;
     if (eNotificationRequired())
@@ -144,7 +148,8 @@ public class ExceptionReportTypeImpl extends EObjectImpl implements ExceptionRep
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getVersion() {
+  @Override
+public String getVersion() {
     return version;
   }
 
@@ -153,7 +158,8 @@ public class ExceptionReportTypeImpl extends EObjectImpl implements ExceptionRep
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setVersion(String newVersion) {
+  @Override
+public void setVersion(String newVersion) {
     String oldVersion = version;
     version = newVersion;
     if (eNotificationRequired())
@@ -165,7 +171,8 @@ public class ExceptionReportTypeImpl extends EObjectImpl implements ExceptionRep
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+  @Override
+public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Ows11Package.EXCEPTION_REPORT_TYPE__EXCEPTION:
         return ((InternalEList)getException()).basicRemove(otherEnd, msgs);
@@ -178,7 +185,8 @@ public class ExceptionReportTypeImpl extends EObjectImpl implements ExceptionRep
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.EXCEPTION_REPORT_TYPE__EXCEPTION:
         return getException();
@@ -195,7 +203,8 @@ public class ExceptionReportTypeImpl extends EObjectImpl implements ExceptionRep
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.EXCEPTION_REPORT_TYPE__EXCEPTION:
         getException().clear();
@@ -216,7 +225,8 @@ public class ExceptionReportTypeImpl extends EObjectImpl implements ExceptionRep
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.EXCEPTION_REPORT_TYPE__EXCEPTION:
         getException().clear();
@@ -236,7 +246,8 @@ public class ExceptionReportTypeImpl extends EObjectImpl implements ExceptionRep
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.EXCEPTION_REPORT_TYPE__EXCEPTION:
         return exception != null && !exception.isEmpty();
@@ -253,7 +264,8 @@ public class ExceptionReportTypeImpl extends EObjectImpl implements ExceptionRep
    * <!-- end-user-doc -->
    * @generated
    */
-  public String toString() {
+  @Override
+public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

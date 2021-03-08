@@ -31,6 +31,7 @@ public interface ExtensionSymbolizer extends org.opengis.style.ExtensionSymboliz
      *
      * @return the symbolizer name
      */
+    @Override
     String getExtensionName();
 
     /** Name of vendor specific extensions */
@@ -41,5 +42,6 @@ public interface ExtensionSymbolizer extends org.opengis.style.ExtensionSymboliz
      *
      * @return map of all expressions.
      */
+    @Override
     Map<String, Expression> getParameters();
 }

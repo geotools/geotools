@@ -224,6 +224,7 @@ public class SimpleImpl extends EObjectImpl implements Simple {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EClass eStaticClass() {
         return XlinkPackage.Literals.SIMPLE;
     }
@@ -233,6 +234,7 @@ public class SimpleImpl extends EObjectImpl implements Simple {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ActuateType getActuate() {
         return actuate;
     }
@@ -242,6 +244,7 @@ public class SimpleImpl extends EObjectImpl implements Simple {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setActuate(ActuateType newActuate) {
         ActuateType oldActuate = actuate;
         actuate = newActuate == null ? ACTUATE_EDEFAULT : newActuate;
@@ -256,6 +259,7 @@ public class SimpleImpl extends EObjectImpl implements Simple {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetActuate() {
         ActuateType oldActuate = actuate;
         boolean oldActuateESet = actuateESet;
@@ -270,6 +274,7 @@ public class SimpleImpl extends EObjectImpl implements Simple {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetActuate() {
         return actuateESet;
     }
@@ -279,6 +284,7 @@ public class SimpleImpl extends EObjectImpl implements Simple {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getArcrole() {
         return arcrole;
     }
@@ -288,6 +294,7 @@ public class SimpleImpl extends EObjectImpl implements Simple {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setArcrole(String newArcrole) {
         String oldArcrole = arcrole;
         arcrole = newArcrole;
@@ -300,6 +307,7 @@ public class SimpleImpl extends EObjectImpl implements Simple {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getHref() {
         return href;
     }
@@ -309,6 +317,7 @@ public class SimpleImpl extends EObjectImpl implements Simple {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setHref(String newHref) {
         String oldHref = href;
         href = newHref;
@@ -321,6 +330,7 @@ public class SimpleImpl extends EObjectImpl implements Simple {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getRole() {
         return role;
     }
@@ -330,6 +340,7 @@ public class SimpleImpl extends EObjectImpl implements Simple {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRole(String newRole) {
         String oldRole = role;
         role = newRole;
@@ -342,6 +353,7 @@ public class SimpleImpl extends EObjectImpl implements Simple {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ShowType getShow() {
         return show;
     }
@@ -351,6 +363,7 @@ public class SimpleImpl extends EObjectImpl implements Simple {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setShow(ShowType newShow) {
         ShowType oldShow = show;
         show = newShow == null ? SHOW_EDEFAULT : newShow;
@@ -365,6 +378,7 @@ public class SimpleImpl extends EObjectImpl implements Simple {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetShow() {
         ShowType oldShow = show;
         boolean oldShowESet = showESet;
@@ -379,6 +393,7 @@ public class SimpleImpl extends EObjectImpl implements Simple {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetShow() {
         return showESet;
     }
@@ -388,6 +403,7 @@ public class SimpleImpl extends EObjectImpl implements Simple {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getTitle() {
         return title;
     }
@@ -397,6 +413,7 @@ public class SimpleImpl extends EObjectImpl implements Simple {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTitle(String newTitle) {
         String oldTitle = title;
         title = newTitle;
@@ -409,6 +426,7 @@ public class SimpleImpl extends EObjectImpl implements Simple {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TypeType getType() {
         return type;
     }
@@ -418,6 +436,7 @@ public class SimpleImpl extends EObjectImpl implements Simple {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setType(TypeType newType) {
         TypeType oldType = type;
         type = newType == null ? TYPE_EDEFAULT : newType;
@@ -432,6 +451,7 @@ public class SimpleImpl extends EObjectImpl implements Simple {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetType() {
         TypeType oldType = type;
         boolean oldTypeESet = typeESet;
@@ -446,6 +466,7 @@ public class SimpleImpl extends EObjectImpl implements Simple {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetType() {
         return typeESet;
     }
@@ -455,6 +476,7 @@ public class SimpleImpl extends EObjectImpl implements Simple {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getContents() {
         // TODO: implement this method to return the 'Contents' reference list
         // Ensure that you remove @generated or mark it @generated NOT
@@ -468,6 +490,7 @@ public class SimpleImpl extends EObjectImpl implements Simple {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case XlinkPackage.SIMPLE__ACTUATE:
@@ -495,6 +518,7 @@ public class SimpleImpl extends EObjectImpl implements Simple {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case XlinkPackage.SIMPLE__ACTUATE:
@@ -527,6 +551,7 @@ public class SimpleImpl extends EObjectImpl implements Simple {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case XlinkPackage.SIMPLE__ACTUATE:
@@ -559,6 +584,7 @@ public class SimpleImpl extends EObjectImpl implements Simple {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case XlinkPackage.SIMPLE__ACTUATE:
@@ -586,6 +612,7 @@ public class SimpleImpl extends EObjectImpl implements Simple {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String toString() {
         if (eIsProxy()) return super.toString();
 

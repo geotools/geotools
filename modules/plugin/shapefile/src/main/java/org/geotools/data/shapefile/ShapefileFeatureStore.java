@@ -101,18 +101,22 @@ class ShapefileFeatureStore extends ContentFeatureStore {
     // METHODS DELEGATED TO OGRFeatureSource
     // ----------------------------------------------------------------------------------------
 
+    @Override
     public ShapefileDataStore getDataStore() {
         return delegate.getDataStore();
     }
 
+    @Override
     public Transaction getTransaction() {
         return delegate.getTransaction();
     }
 
+    @Override
     public ResourceInfo getInfo() {
         return delegate.getInfo();
     }
 
+    @Override
     public QueryCapabilities getQueryCapabilities() {
         return delegate.getQueryCapabilities();
     }

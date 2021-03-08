@@ -63,6 +63,7 @@ public class InsertResultsTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.InsertResultsType;
     }
@@ -74,10 +75,12 @@ public class InsertResultsTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return InsertResultsType.class;
     }
 
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         InsertResultsType resultType = (InsertResultsType) super.parse(instance, node, value);

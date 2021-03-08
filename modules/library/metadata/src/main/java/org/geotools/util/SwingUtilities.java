@@ -182,12 +182,7 @@ public final class SwingUtilities {
         // Delegates to Swing thread if this method is invoked from an other thread.
         if (!EventQueue.isDispatchThread()) {
             final boolean result[] = new boolean[1];
-            invokeAndWait(
-                    new Runnable() {
-                        public void run() {
-                            result[0] = showOptionDialog(owner, dialog, title, reset);
-                        }
-                    });
+            invokeAndWait(() -> result[0] = showOptionDialog(owner, dialog, title, reset));
             return result[0];
         }
         // Constructs the buttons bar.
@@ -255,12 +250,7 @@ public final class SwingUtilities {
     public static void showMessageDialog(
             final Component owner, final Object message, final String title, final int type) {
         if (!EventQueue.isDispatchThread()) {
-            invokeAndWait(
-                    new Runnable() {
-                        public void run() {
-                            showMessageDialog(owner, message, title, type);
-                        }
-                    });
+            invokeAndWait(() -> showMessageDialog(owner, message, title, type));
             return;
         }
         if (JOptionPane.getDesktopPaneForComponent(owner) != null) {
@@ -294,12 +284,7 @@ public final class SwingUtilities {
             final Component owner, final Object message, final String title, final int type) {
         if (!EventQueue.isDispatchThread()) {
             final boolean result[] = new boolean[1];
-            invokeAndWait(
-                    new Runnable() {
-                        public void run() {
-                            result[0] = showConfirmDialog(owner, message, title, type);
-                        }
-                    });
+            invokeAndWait(() -> result[0] = showConfirmDialog(owner, message, title, type));
             return result[0];
         }
         final int choice;

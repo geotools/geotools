@@ -69,6 +69,7 @@ public class ConcatenateBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.Concatenate;
     }
@@ -80,6 +81,7 @@ public class ConcatenateBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Expression.class;
     }
@@ -91,6 +93,7 @@ public class ConcatenateBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         // &lt;xsd:element maxOccurs="unbounded" ref="se:StringValue"/&gt;

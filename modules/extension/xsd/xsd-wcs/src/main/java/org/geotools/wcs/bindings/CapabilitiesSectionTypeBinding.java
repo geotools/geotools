@@ -67,6 +67,7 @@ import org.geotools.xsd.InstanceComponent;
 public class CapabilitiesSectionTypeBinding extends AbstractSimpleBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WCS.CapabilitiesSectionType;
     }
@@ -78,6 +79,7 @@ public class CapabilitiesSectionTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return CapabilitiesSectionType.class;
     }
@@ -89,6 +91,7 @@ public class CapabilitiesSectionTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         return CapabilitiesSectionType.get((String) value);
     }

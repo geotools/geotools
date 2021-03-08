@@ -95,6 +95,7 @@ public abstract class GML3TestSupport extends XMLTestSupport {
      * binds to the GMLConfiguration in the current package
      * i.e. this is a GML3 specific binding configuration.
      */
+    @Override
     protected Configuration createConfiguration() {
         return new GMLConfiguration(enableExtendedArcSurfaceSupport());
     }

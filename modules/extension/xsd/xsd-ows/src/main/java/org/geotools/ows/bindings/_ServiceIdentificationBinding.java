@@ -70,6 +70,7 @@ public class _ServiceIdentificationBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OWS._ServiceIdentification;
     }
@@ -81,6 +82,7 @@ public class _ServiceIdentificationBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return super.getType();
     }
@@ -92,6 +94,7 @@ public class _ServiceIdentificationBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // TODO: implement and remove call to super
         return super.parse(instance, node, value);

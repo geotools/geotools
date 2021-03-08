@@ -63,6 +63,7 @@ public class JoiningAttributeReader implements AttributeReader {
         return md;
     }
 
+    @Override
     public void close() throws IOException {
         IOException dse = null;
 
@@ -79,6 +80,7 @@ public class JoiningAttributeReader implements AttributeReader {
         }
     }
 
+    @Override
     public boolean hasNext() throws IOException {
         for (AttributeReader reader : readers) {
             if (reader.hasNext()) {
@@ -89,6 +91,7 @@ public class JoiningAttributeReader implements AttributeReader {
         return false;
     }
 
+    @Override
     public void next() throws IOException {
         for (AttributeReader reader : readers) {
             if (reader.hasNext()) {
@@ -97,6 +100,7 @@ public class JoiningAttributeReader implements AttributeReader {
         }
     }
 
+    @Override
     public Object read(int idx) throws IOException {
         AttributeReader reader = null;
 
@@ -116,10 +120,12 @@ public class JoiningAttributeReader implements AttributeReader {
         return reader.read(idx);
     }
 
+    @Override
     public int getAttributeCount() {
         return metaData.length;
     }
 
+    @Override
     public AttributeDescriptor getAttributeType(int i) {
         return metaData[i];
     }

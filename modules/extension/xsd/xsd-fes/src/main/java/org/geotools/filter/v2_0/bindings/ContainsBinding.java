@@ -42,6 +42,7 @@ public class ContainsBinding extends OGCContainsBinding {
         super(filterFactory, geometryFactory);
     }
 
+    @Override
     public QName getTarget() {
         return FES.Contains;
     }

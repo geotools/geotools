@@ -132,6 +132,7 @@ public abstract class BaseMathOperationJAI extends OperationJAI {
                         getOperationDescriptor(name), new HashSet<>(REPLACED_DESCRIPTORS)));
     }
 
+    @Override
     protected void extractSources(
             final ParameterValueGroup parameters,
             final Collection<GridCoverage2D> sources,

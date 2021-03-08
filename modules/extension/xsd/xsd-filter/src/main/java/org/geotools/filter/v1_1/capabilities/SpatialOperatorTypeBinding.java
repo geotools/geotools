@@ -52,6 +52,7 @@ public class SpatialOperatorTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.SpatialOperatorType;
     }
@@ -63,6 +64,7 @@ public class SpatialOperatorTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return SpatialOperator.class;
     }
@@ -74,6 +76,7 @@ public class SpatialOperatorTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // &lt;xsd:element minOccurs="0" name="GeometryOperands"
         // type="ogc:GeometryOperandsType"/&gt;
@@ -83,6 +86,7 @@ public class SpatialOperatorTypeBinding extends AbstractComplexBinding {
         return factory.spatialOperator((String) node.getAttributeValue("name"), gos);
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         SpatialOperator sop = (SpatialOperator) object;
 

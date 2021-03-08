@@ -90,6 +90,7 @@ public class WFSResponse extends Response {
      *
      * @return the content type of the response
      */
+    @Override
     public String getContentType() {
         return contentType;
     }

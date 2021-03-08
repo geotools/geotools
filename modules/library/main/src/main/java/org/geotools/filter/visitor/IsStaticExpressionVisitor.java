@@ -50,10 +50,12 @@ public class IsStaticExpressionVisitor implements ExpressionVisitor {
     /** visit each expression and check that they are static */
     protected IsStaticExpressionVisitor() {}
     /** visit each expression and check that they are static */
+    @Override
     public Boolean visit(NilExpression expression, Object data) {
         return true;
     }
     /** visit each expression and check that they are static */
+    @Override
     public Boolean visit(Add expression, Object data) {
         boolean isStatic = (Boolean) expression.getExpression1().accept(this, data);
         if (isStatic == false) return false;
@@ -61,6 +63,7 @@ public class IsStaticExpressionVisitor implements ExpressionVisitor {
         return isStatic;
     }
     /** visit each expression and check that they are static */
+    @Override
     public Boolean visit(Divide expression, Object data) {
         boolean isStatic = (Boolean) expression.getExpression1().accept(this, data);
         if (isStatic == false) return false;
@@ -68,6 +71,7 @@ public class IsStaticExpressionVisitor implements ExpressionVisitor {
         return isStatic;
     }
     /** Visit each parameter and check if they are static */
+    @Override
     public Boolean visit(Function expression, Object data) {
         boolean isStatic = true;
         if (expression.getParameters() != null) {
@@ -83,6 +87,7 @@ public class IsStaticExpressionVisitor implements ExpressionVisitor {
      *
      * @return true
      */
+    @Override
     public Boolean visit(Literal expression, Object data) {
         return true;
     }
@@ -91,6 +96,7 @@ public class IsStaticExpressionVisitor implements ExpressionVisitor {
      *
      * @return true if getExpression1 and getExpression2 are static
      */
+    @Override
     public Boolean visit(Multiply expression, Object data) {
         boolean isStatic = (Boolean) expression.getExpression1().accept(this, data);
         if (isStatic == false) return false;
@@ -102,6 +108,7 @@ public class IsStaticExpressionVisitor implements ExpressionVisitor {
      *
      * @return false
      */
+    @Override
     public Boolean visit(PropertyName expression, Object data) {
         return false;
     }
@@ -110,6 +117,7 @@ public class IsStaticExpressionVisitor implements ExpressionVisitor {
      *
      * @return true if getExpression1 and getExpression2 are static
      */
+    @Override
     public Boolean visit(Subtract expression, Object data) {
         boolean isStatic = (Boolean) expression.getExpression1().accept(this, data);
         if (isStatic == false) return false;

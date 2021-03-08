@@ -39,6 +39,7 @@ public class FilterBuilder implements Builder<Filter> {
     }
 
     /** Build the expression. */
+    @Override
     public Filter build() {
         if (unset) {
             return null;
@@ -46,6 +47,7 @@ public class FilterBuilder implements Builder<Filter> {
         return filter;
     }
 
+    @Override
     public FilterBuilder reset() {
         this.delegate = null;
         this.filter = org.opengis.filter.Filter.EXCLUDE;
@@ -53,6 +55,7 @@ public class FilterBuilder implements Builder<Filter> {
         return this;
     }
 
+    @Override
     public FilterBuilder reset(Filter filter) {
         if (filter == null) {
             return unset();
@@ -62,6 +65,7 @@ public class FilterBuilder implements Builder<Filter> {
         return this;
     }
 
+    @Override
     public FilterBuilder unset() {
         this.unset = true;
         this.delegate = null;

@@ -57,6 +57,7 @@ public class MaxFeaturesIterator<F extends Feature> implements FeatureIterator<F
         return delegate;
     }
 
+    @Override
     public boolean hasNext() {
         if (counter < start) {
             // skip to just before start if needed
@@ -65,6 +66,7 @@ public class MaxFeaturesIterator<F extends Feature> implements FeatureIterator<F
         return delegate.hasNext() && counter < end;
     }
 
+    @Override
     public F next() {
         if (counter < start) {
             // skip to just before start if needed

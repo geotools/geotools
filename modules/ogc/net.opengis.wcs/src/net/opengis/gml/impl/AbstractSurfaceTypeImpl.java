@@ -36,6 +36,7 @@ public class AbstractSurfaceTypeImpl extends AbstractGeometricPrimitiveTypeImpl 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return GmlPackage.Literals.ABSTRACT_SURFACE_TYPE;
 	}

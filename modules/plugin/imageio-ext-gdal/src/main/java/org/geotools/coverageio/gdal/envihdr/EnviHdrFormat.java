@@ -52,11 +52,13 @@ public final class EnviHdrFormat extends BaseGDALGridFormat implements Format {
     private static InfoWrapper INFO = new InfoWrapper("ENVIHdr Coverage Format", "ENVIHdr");
 
     /** Sets the metadata information. */
+    @Override
     protected void setInfo() {
         setInfo(INFO);
     }
 
     /** @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object, Hints) */
+    @Override
     public EnviHdrReader getReader(Object source, Hints hints) {
         try {
             return new EnviHdrReader(source, hints);

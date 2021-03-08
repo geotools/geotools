@@ -123,6 +123,7 @@ public class ReprojectFeatureReader
         transformer.setMathTransform(CRS.findMathTransform(original, cs, true));
     }
 
+    @Override
     public FeatureReader<SimpleFeatureType, SimpleFeature> getDelegate() {
         return reader;
     }
@@ -134,6 +135,7 @@ public class ReprojectFeatureReader
      *
      * @see org.geotools.data.FeatureReader#getFeatureType()
      */
+    @Override
     public SimpleFeatureType getFeatureType() {
         if (schema == null) {
             throw new IllegalStateException("Reader has already been closed");
@@ -149,6 +151,7 @@ public class ReprojectFeatureReader
      *
      * @see org.geotools.data.FeatureReader#next()
      */
+    @Override
     public SimpleFeature next()
             throws IOException, IllegalAttributeException, NoSuchElementException {
         if (reader == null) {
@@ -184,6 +187,7 @@ public class ReprojectFeatureReader
      *
      * @see org.geotools.data.FeatureReader#hasNext()
      */
+    @Override
     public boolean hasNext() throws IOException {
         if (reader == null) {
             throw new IllegalStateException("Reader has already been closed");
@@ -199,6 +203,7 @@ public class ReprojectFeatureReader
      *
      * @see org.geotools.data.FeatureReader#close()
      */
+    @Override
     public void close() throws IOException {
         if (reader == null) {
             throw new IllegalStateException("Reader has already been closed");

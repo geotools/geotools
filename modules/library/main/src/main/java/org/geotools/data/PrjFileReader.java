@@ -146,6 +146,7 @@ public class PrjFileReader implements Closeable {
      * The reader will close itself right after reading the CRS from the prj file, so no actual need
      * to call it explicitly anymore.
      */
+    @Override
     public void close() throws IOException {
         if (buffer != null) {
             NIOUtilities.clean(buffer); // will close if a MappedByteBuffer

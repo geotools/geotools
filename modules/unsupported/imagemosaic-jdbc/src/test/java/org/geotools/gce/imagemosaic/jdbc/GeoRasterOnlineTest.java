@@ -73,6 +73,7 @@ public class GeoRasterOnlineTest extends AbstractTest {
         return suite;
     }
 
+    @Override
     protected String getSrsId() {
         return "4326";
     }
@@ -83,6 +84,7 @@ public class GeoRasterOnlineTest extends AbstractTest {
         return "file:target/resources/oek.georaster.xml";
     }
 
+    @Override
     protected String getSubDir() {
         return "georaster";
     }

@@ -31,6 +31,7 @@ public class ExampleTransformer extends TransformerBase {
         this.ignoreErrors = ignoreErrors;
     }
 
+    @Override
     public Translator createTranslator(ContentHandler handler) {
         return new ExampleTranslator(handler);
     }
@@ -40,6 +41,7 @@ public class ExampleTransformer extends TransformerBase {
             super(handler, "test", "http://geotools.org/test");
         }
 
+        @Override
         public void encode(Object o) {
             Integer i = (Integer) o;
             start("integers");

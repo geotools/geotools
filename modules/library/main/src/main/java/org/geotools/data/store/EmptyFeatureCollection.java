@@ -37,31 +37,38 @@ public class EmptyFeatureCollection extends DataFeatureCollection {
         super(null, schema);
     }
 
+    @Override
     public ReferencedEnvelope getBounds() {
         return bounds;
     }
 
+    @Override
     public int getCount() throws IOException {
         return 0;
     }
 
+    @Override
     protected Iterator<SimpleFeature> openIterator() {
         return new EmptyIterator<>();
     }
 
+    @Override
     protected void closeIterator(Iterator close) {
         // do nothing
     }
 
     // read only access
+    @Override
     public boolean add(SimpleFeature object) {
         return false;
     }
 
+    @Override
     public boolean remove(Object object) {
         return false;
     }
 
+    @Override
     public boolean removeAll(Collection collection) {
         return false;
     }

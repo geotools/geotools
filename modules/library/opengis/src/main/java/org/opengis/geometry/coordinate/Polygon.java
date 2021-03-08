@@ -43,6 +43,7 @@ public interface Polygon extends SurfacePatch {
      * and would not play in any topological relation between {@linkplain Surface surface} and
      * {@linkplain Curve curve} that defines the connectivity of the {@linkplain Complex complex}.
      */
+    @Override
     @UML(identifier = "boundary", obligation = MANDATORY, specification = ISO_19107)
     SurfaceBoundary getBoundary();
 
@@ -58,6 +59,7 @@ public interface Polygon extends SurfacePatch {
     List<Surface> getSpanningSurface();
 
     /** Returns the patch which own this surface patch. */
+    @Override
     @UML(identifier = "surface", obligation = MANDATORY, specification = ISO_19107)
     PolyhedralSurface getSurface();
 }

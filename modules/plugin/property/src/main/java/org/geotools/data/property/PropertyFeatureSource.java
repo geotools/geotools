@@ -61,6 +61,7 @@ public class PropertyFeatureSource extends ContentFeatureSource {
         hints.add(Hints.FEATURE_DETACHED);
     }
 
+    @Override
     public PropertyDataStore getDataStore() {
         return (PropertyDataStore) super.getDataStore();
     }
@@ -68,6 +69,7 @@ public class PropertyFeatureSource extends ContentFeatureSource {
     @Override
     protected QueryCapabilities buildQueryCapabilities() {
         return new QueryCapabilities() {
+            @Override
             public boolean isUseProvidedFIDSupported() {
                 return true;
             }

@@ -33,6 +33,7 @@ public class GMLMultiLineStringPropertyTypeBindingTest extends AbstractGMLBindin
     ElementInstance association;
     ElementInstance geometry;
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();

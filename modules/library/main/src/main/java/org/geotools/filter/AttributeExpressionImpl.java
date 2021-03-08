@@ -128,6 +128,7 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
         this.hints = hints;
     }
 
+    @Override
     public NamespaceSupport getNamespaceContext() {
         return namespaceSupport;
     }
@@ -150,6 +151,7 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
      *
      * <p>{@link org.opengis.filter.expression.PropertyName#getPropertyName()}
      */
+    @Override
     public String getPropertyName() {
         return attPath;
     }
@@ -181,6 +183,7 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
      *
      * @param obj Object from which we need to extract a property value.
      */
+    @Override
     public Object evaluate(Object obj) {
         return evaluate(obj, null);
     }
@@ -191,6 +194,7 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
      * @param obj Object from which to extract attribute value.
      * @param target Target Class
      */
+    @Override
     @SuppressWarnings("unchecked")
     public <T> T evaluate(Object obj, Class<T> target) {
         PropertyAccessor accessor = lastAccessor;
@@ -263,6 +267,7 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
      *
      * @return String representation of this attribute expression.
      */
+    @Override
     public String toString() {
         return attPath;
     }
@@ -275,6 +280,7 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
      * @param obj - the object to compare this ExpressionAttribute against.
      * @return true if specified object is equal to this filter; else false
      */
+    @Override
     public boolean equals(Object obj) {
         if (obj == null) return false;
 
@@ -327,6 +333,7 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
      *
      * @return a code to hash this object by.
      */
+    @Override
     public int hashCode() {
         int result = 17;
         result = (37 * result) + (attPath == null ? 0 : attPath.hashCode());
@@ -343,6 +350,7 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
      * @param visitor The visitor which requires access to this filter, the method must call
      *     visitor.visit(this);
      */
+    @Override
     public Object accept(ExpressionVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

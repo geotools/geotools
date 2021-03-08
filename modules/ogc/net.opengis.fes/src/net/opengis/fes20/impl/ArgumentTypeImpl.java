@@ -112,6 +112,7 @@ public class ArgumentTypeImpl extends EObjectImpl implements ArgumentType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MetadataType getMetadata() {
         return metadata;
     }
@@ -136,6 +137,7 @@ public class ArgumentTypeImpl extends EObjectImpl implements ArgumentType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMetadata(MetadataType newMetadata) {
         if (newMetadata != metadata) {
             NotificationChain msgs = null;
@@ -155,6 +157,7 @@ public class ArgumentTypeImpl extends EObjectImpl implements ArgumentType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public QName getType() {
         return type;
     }
@@ -164,6 +167,7 @@ public class ArgumentTypeImpl extends EObjectImpl implements ArgumentType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setType(QName newType) {
         QName oldType = type;
         type = newType;
@@ -176,6 +180,7 @@ public class ArgumentTypeImpl extends EObjectImpl implements ArgumentType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -185,6 +190,7 @@ public class ArgumentTypeImpl extends EObjectImpl implements ArgumentType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setName(String newName) {
         String oldName = name;
         name = newName;

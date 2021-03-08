@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import org.geotools.data.DataSourceException;
@@ -64,6 +63,7 @@ public class MemoryDataStore extends ContentDataStore {
     }
 
     /** Use MemoryState to manage internal storage. */
+    @Override
     protected MemoryState createContentState(ContentEntry entry) {
         return new MemoryState((MemoryEntry) entry);
     }
@@ -296,18 +296,14 @@ public class MemoryDataStore extends ContentDataStore {
      * @return List of type names
      * @see org.geotools.data.ContentDataStore#getFeatureTypes()
      */
+    @Override
     protected List<Name> createTypeNames() {
         List<Name> names = new ArrayList<>(this.entries.keySet());
-        Collections.sort(
-                names,
-                new Comparator<Name>() {
-                    public int compare(Name n1, Name n2) {
-                        return n1.toString().compareTo(n2.toString());
-                    }
-                });
+        Collections.sort(names, (n1, n2) -> n1.toString().compareTo(n2.toString()));
         return names;
     }
 
+    @Override
     protected ContentFeatureSource createFeatureSource(ContentEntry entry) {
         return createFeatureSource(entry, Query.ALL);
     }
@@ -326,6 +322,7 @@ public class MemoryDataStore extends ContentDataStore {
      * @throws IOException If featureType already exists
      * @see org.geotools.data.DataStore#createSchema(org.geotools.feature.SimpleFeatureType)
      */
+    @Override
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         Name typeName = featureType.getName();
         if (entries.containsKey(typeName)) {

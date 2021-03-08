@@ -78,6 +78,7 @@ public class FormatImpl extends MetadataEntity implements Format {
     }
 
     /** Returns the name of the data transfer format(s). */
+    @Override
     public InternationalString getName() {
         return name;
     }
@@ -89,6 +90,7 @@ public class FormatImpl extends MetadataEntity implements Format {
     }
 
     /** Returne the version of the format (date, number, etc.). */
+    @Override
     public InternationalString getVersion() {
         return version;
     }
@@ -100,6 +102,7 @@ public class FormatImpl extends MetadataEntity implements Format {
     }
 
     /** Returns the amendment number of the format version. */
+    @Override
     public InternationalString getAmendmentNumber() {
         return amendmentNumber;
     }
@@ -111,6 +114,7 @@ public class FormatImpl extends MetadataEntity implements Format {
     }
 
     /** Returns the name of a subset, profile, or product specification of the format. */
+    @Override
     public InternationalString getSpecification() {
         return specification;
     }
@@ -125,6 +129,7 @@ public class FormatImpl extends MetadataEntity implements Format {
      * Returns recommendations of algorithms or processes that can be applied to read or expand
      * resources to which compression techniques have been applied.
      */
+    @Override
     public InternationalString getFileDecompressionTechnique() {
         return fileDecompressionTechnique;
     }
@@ -139,6 +144,7 @@ public class FormatImpl extends MetadataEntity implements Format {
     }
 
     /** Provides information about the distributors format. */
+    @Override
     public Collection<Distributor> getFormatDistributors() {
         return (formatDistributors = nonNullCollection(formatDistributors, Distributor.class));
     }

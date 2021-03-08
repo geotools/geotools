@@ -47,6 +47,7 @@ public class FeaturesLockedTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.FeaturesLockedType;
     }
@@ -58,6 +59,7 @@ public class FeaturesLockedTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return null;
     }
@@ -69,6 +71,7 @@ public class FeaturesLockedTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // TODO: implement and remove call to super
         return super.parse(instance, node, value);

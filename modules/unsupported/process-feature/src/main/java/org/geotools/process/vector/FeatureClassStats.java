@@ -213,22 +213,27 @@ public class FeatureClassStats implements VectorProcess {
             this.firstStat = sampleStats[0].getStatistics().iterator().next();
         }
 
+        @Override
         public int size() {
             return ranges.size();
         }
 
+        @Override
         public Set<Statistic> getStats() {
             return sampleStats[0].getStatistics();
         }
 
+        @Override
         public Range range(int i) {
             return ranges.get(i);
         }
 
+        @Override
         public Double value(int i, Statistic stat) {
             return sampleStats[i].getStatisticValue(stat);
         }
 
+        @Override
         public Long count(int i) {
             return sampleStats[i].getNumAccepted(firstStat);
         }

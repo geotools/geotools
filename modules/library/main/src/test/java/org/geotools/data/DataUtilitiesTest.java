@@ -172,11 +172,9 @@ public class DataUtilitiesTest extends DataTestCase {
         assertFalse("Home is not a readable file", DataUtilities.checkFileReadable(home, null));
 
         FilenameFilter findFilter =
-                new FilenameFilter() {
-                    public boolean accept(File dir, String name) {
-                        File target = new File(dir, name);
-                        return target.isFile() && target.canRead();
-                    }
+                (dir, name) -> {
+                    File target = new File(dir, name);
+                    return target.isFile() && target.canRead();
                 };
         File readable[] = home.listFiles(findFilter);
         if (readable.length > 0) {
@@ -189,18 +187,14 @@ public class DataUtilitiesTest extends DataTestCase {
     public void testFilters() {
         File home = new File(System.getProperty("user.home"));
         FilenameFilter directoryFilter =
-                new FilenameFilter() {
-                    public boolean accept(File dir, String name) {
-                        File target = new File(dir, name);
-                        return target.isDirectory();
-                    }
+                (dir, name) -> {
+                    File target = new File(dir, name);
+                    return target.isDirectory();
                 };
         FilenameFilter hiddenFilter =
-                new FilenameFilter() {
-                    public boolean accept(File dir, String name) {
-                        File target = new File(dir, name);
-                        return target.isHidden();
-                    }
+                (dir, name) -> {
+                    File target = new File(dir, name);
+                    return target.isHidden();
                 };
         List<String> dir = Arrays.asList(home.list(directoryFilter));
         List<String> hidden = Arrays.asList(home.list(hiddenFilter));

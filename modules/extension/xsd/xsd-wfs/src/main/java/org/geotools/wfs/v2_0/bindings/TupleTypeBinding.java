@@ -44,6 +44,7 @@ import org.opengis.feature.Feature;
 public class TupleTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.TupleType;
     }
@@ -55,6 +56,7 @@ public class TupleTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Feature[].class;
     }
@@ -66,6 +68,7 @@ public class TupleTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return super.parse(instance, node, value);
     }

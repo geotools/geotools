@@ -75,11 +75,13 @@ public class RepresentativeFractionImpl extends Number implements Representative
      *
      * @return <code>1.0 / {@linkplain #getDenominator() denominator}</code>
      */
+    @Override
     public double doubleValue() {
         return 1.0 / (double) denominator;
     }
 
     /** Returns the scale as a {@code float} type. */
+    @Override
     public float floatValue() {
         return 1.0f / (float) denominator;
     }
@@ -90,6 +92,7 @@ public class RepresentativeFractionImpl extends Number implements Representative
      *
      * @throws ArithmeticException if the {@linkplain #getDenominator denominator} is 0.
      */
+    @Override
     public long longValue() throws ArithmeticException {
         return intValue();
     }
@@ -102,6 +105,7 @@ public class RepresentativeFractionImpl extends Number implements Representative
      *
      * @throws ArithmeticException if the {@linkplain #getDenominator denominator} is 0.
      */
+    @Override
     public int intValue() throws ArithmeticException {
         if (denominator == 1) {
             return 1;
@@ -113,6 +117,7 @@ public class RepresentativeFractionImpl extends Number implements Representative
     }
 
     /** Returns the number below the line in a vulgar fraction. */
+    @Override
     public long getDenominator() {
         return denominator;
     }

@@ -153,6 +153,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.GET_CAPABILITIES_TYPE;
   }
@@ -162,6 +163,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AcceptVersionsType getAcceptVersions() {
     return acceptVersions;
   }
@@ -186,6 +188,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setAcceptVersions(AcceptVersionsType newAcceptVersions) {
     if (newAcceptVersions != acceptVersions) {
       NotificationChain msgs = null;
@@ -205,6 +208,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getLanguage() {
     return language;
   }
@@ -214,6 +218,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setLanguage(String newLanguage) {
     String oldLanguage = language;
     language = newLanguage;
@@ -226,6 +231,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getService() {
     return service;
   }
@@ -235,6 +241,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setService(String newService) {
     String oldService = service;
     service = newService;
@@ -249,6 +256,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetService() {
     String oldService = service;
     boolean oldServiceESet = serviceESet;
@@ -263,6 +271,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetService() {
     return serviceESet;
   }
@@ -272,6 +281,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getBaseUrl() {
     return baseUrl;
   }
@@ -281,6 +291,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setBaseUrl(String newBaseUrl) {
     String oldBaseUrl = baseUrl;
     baseUrl = newBaseUrl;
@@ -293,7 +304,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Map getExtendedProperties() {
+	@Override
+    public Map getExtendedProperties() {
     return extendedProperties;
   }
 
@@ -302,7 +314,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setExtendedProperties(Map newExtendedProperties) {
+	@Override
+    public void setExtendedProperties(Map newExtendedProperties) {
     Map oldExtendedProperties = extendedProperties;
     extendedProperties = newExtendedProperties;
     if (eNotificationRequired())
@@ -314,6 +327,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.GET_CAPABILITIES_TYPE__ACCEPT_VERSIONS:
@@ -327,6 +341,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.GET_CAPABILITIES_TYPE__ACCEPT_VERSIONS:
@@ -348,6 +363,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.GET_CAPABILITIES_TYPE__ACCEPT_VERSIONS:
@@ -374,6 +390,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.GET_CAPABILITIES_TYPE__ACCEPT_VERSIONS:
@@ -400,6 +417,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.GET_CAPABILITIES_TYPE__ACCEPT_VERSIONS:
@@ -421,6 +439,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String toString() {
     if (eIsProxy()) return super.toString();
 

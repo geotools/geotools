@@ -44,6 +44,7 @@ public class DimensionParsingTest {
             this.capabilitiesFileName = capabilitiesFileName;
         }
 
+        @Override
         public HTTPResponse get(URL url) throws IOException {
             if (url.getQuery().contains("GetCapabilities")) {
                 File getCaps = TestData.file(this, capabilitiesFileName);

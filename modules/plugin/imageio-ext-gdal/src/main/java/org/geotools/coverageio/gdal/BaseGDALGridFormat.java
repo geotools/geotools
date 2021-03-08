@@ -128,6 +128,7 @@ public abstract class BaseGDALGridFormat extends AbstractGridFormat implements F
      *     <p>Actually, the plugin does not support write capabilities. The method throws an {@code
      *     UnsupportedOperationException}.
      */
+    @Override
     public GridCoverageWriter getWriter(Object destination, Hints hints) {
         throw new UnsupportedOperationException(
                 "This plugin does not support writing at this time.");

@@ -95,7 +95,8 @@ public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.EXCEPTION_TYPE;
   }
 
@@ -104,7 +105,8 @@ public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList getExceptionText() {
+  @Override
+public EList getExceptionText() {
     if (exceptionText == null) {
       exceptionText = new EDataTypeEList(String.class, this, Ows11Package.EXCEPTION_TYPE__EXCEPTION_TEXT);
     }
@@ -116,7 +118,8 @@ public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getExceptionCode() {
+  @Override
+public String getExceptionCode() {
     return exceptionCode;
   }
 
@@ -125,7 +128,8 @@ public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setExceptionCode(String newExceptionCode) {
+  @Override
+public void setExceptionCode(String newExceptionCode) {
     String oldExceptionCode = exceptionCode;
     exceptionCode = newExceptionCode;
     if (eNotificationRequired())
@@ -137,7 +141,8 @@ public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getLocator() {
+  @Override
+public String getLocator() {
     return locator;
   }
 
@@ -146,7 +151,8 @@ public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setLocator(String newLocator) {
+  @Override
+public void setLocator(String newLocator) {
     String oldLocator = locator;
     locator = newLocator;
     if (eNotificationRequired())
@@ -158,7 +164,8 @@ public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.EXCEPTION_TYPE__EXCEPTION_TEXT:
         return getExceptionText();
@@ -175,7 +182,8 @@ public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.EXCEPTION_TYPE__EXCEPTION_TEXT:
         getExceptionText().clear();
@@ -196,7 +204,8 @@ public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.EXCEPTION_TYPE__EXCEPTION_TEXT:
         getExceptionText().clear();
@@ -216,7 +225,8 @@ public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.EXCEPTION_TYPE__EXCEPTION_TEXT:
         return exceptionText != null && !exceptionText.isEmpty();
@@ -233,7 +243,8 @@ public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public String toString() {
+  @Override
+public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

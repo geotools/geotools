@@ -83,6 +83,7 @@ public class CQLException extends ParseException {
      *
      * @return the cause
      */
+    @Override
     public Throwable getCause() {
         return cause;
     }
@@ -92,6 +93,7 @@ public class CQLException extends ParseException {
      *
      * @return a message
      */
+    @Override
     public String getMessage() {
 
         return super.getMessage() + " Parsing : " + this.cqlSource + ".";

@@ -91,6 +91,7 @@ public class ScaleAxisTypeImpl extends EObjectImpl implements ScaleAxisType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getAxis() {
 		return axis;
 	}
@@ -100,6 +101,7 @@ public class ScaleAxisTypeImpl extends EObjectImpl implements ScaleAxisType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setAxis(String newAxis) {
 		String oldAxis = axis;
 		axis = newAxis;
@@ -112,6 +114,7 @@ public class ScaleAxisTypeImpl extends EObjectImpl implements ScaleAxisType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public double getScaleFactor() {
 		return scaleFactor;
 	}
@@ -121,6 +124,7 @@ public class ScaleAxisTypeImpl extends EObjectImpl implements ScaleAxisType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setScaleFactor(double newScaleFactor) {
 		double oldScaleFactor = scaleFactor;
 		scaleFactor = newScaleFactor;

@@ -251,6 +251,7 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getAbout() {
     return about;
   }
@@ -260,6 +261,7 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setAbout(String newAbout) {
     String oldAbout = about;
     about = newAbout;
@@ -272,6 +274,7 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ActuateType getActuate() {
     return actuate;
   }
@@ -281,6 +284,7 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setActuate(ActuateType newActuate) {
     ActuateType oldActuate = actuate;
     actuate = newActuate == null ? ACTUATE_EDEFAULT : newActuate;
@@ -295,6 +299,7 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetActuate() {
     ActuateType oldActuate = actuate;
     boolean oldActuateESet = actuateESet;
@@ -309,6 +314,7 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetActuate() {
     return actuateESet;
   }
@@ -318,6 +324,7 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getArcrole() {
     return arcrole;
   }
@@ -327,6 +334,7 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setArcrole(String newArcrole) {
     String oldArcrole = arcrole;
     arcrole = newArcrole;
@@ -339,6 +347,7 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getHref() {
     return href;
   }
@@ -348,6 +357,7 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setHref(String newHref) {
     String oldHref = href;
     href = newHref;
@@ -360,6 +370,7 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getRole() {
     return role;
   }
@@ -369,6 +380,7 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setRole(String newRole) {
     String oldRole = role;
     role = newRole;
@@ -381,6 +393,7 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ShowType getShow() {
     return show;
   }
@@ -390,6 +403,7 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setShow(ShowType newShow) {
     ShowType oldShow = show;
     show = newShow == null ? SHOW_EDEFAULT : newShow;
@@ -404,6 +418,7 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetShow() {
     ShowType oldShow = show;
     boolean oldShowESet = showESet;
@@ -418,6 +433,7 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetShow() {
     return showESet;
   }
@@ -427,6 +443,7 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getTitle() {
     return title;
   }
@@ -436,6 +453,7 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setTitle(String newTitle) {
     String oldTitle = title;
     title = newTitle;
@@ -448,6 +466,7 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getType() {
     return type;
   }
@@ -457,6 +476,7 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setType(String newType) {
     String oldType = type;
     type = newType;
@@ -471,6 +491,7 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetType() {
     String oldType = type;
     boolean oldTypeESet = typeESet;
@@ -485,6 +506,7 @@ public class MetadataURLTypeImpl extends EObjectImpl implements MetadataURLType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetType() {
     return typeESet;
   }

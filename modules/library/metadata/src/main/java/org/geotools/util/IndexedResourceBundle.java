@@ -254,12 +254,14 @@ public class IndexedResourceBundle extends ResourceBundle {
     }
 
     /** Returns an enumeration of the keys. */
+    @Override
     public final Enumeration<String> getKeys() {
         // Synchronization performed by 'ensureLoaded'
         final String[] values = ensureLoaded(null);
         return new Enumeration<String>() {
             private int i = 0;
 
+            @Override
             public boolean hasMoreElements() {
                 while (true) {
                     if (i >= values.length) return false;
@@ -268,6 +270,7 @@ public class IndexedResourceBundle extends ResourceBundle {
                 }
             }
 
+            @Override
             public String nextElement() {
                 while (true) {
                     if (i >= values.length) throw new NoSuchElementException();
@@ -286,6 +289,7 @@ public class IndexedResourceBundle extends ResourceBundle {
      * @exception NullPointerException if {@code key} is {@code null}
      * @return the object for the given key, or null
      */
+    @Override
     protected final Object handleGetObject(final String key) {
         // Synchronization performed by 'ensureLoaded'
         final String[] values = ensureLoaded(key);

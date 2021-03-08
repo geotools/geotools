@@ -298,6 +298,7 @@ public class Circle {
         return coordinates;
     }
 
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -321,6 +322,7 @@ public class Circle {
         return Objects.hash(center, radius, precisionModel);
     }
 
+    @Override
     public String toString() {
         return "Circle with Radius = "
                 + this.radius
@@ -551,6 +553,7 @@ public class Circle {
             return this.clockwise;
         }
 
+        @Override
         public String toString() {
             return "P1: " + this.p1 + " P2: " + this.p2 + " clockwise: " + this.clockwise;
         }

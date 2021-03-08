@@ -32,10 +32,12 @@ public class TouchesImpl extends GeometryFilterImpl implements Touches {
         super(e1, e2, matchAction);
     }
 
+    @Override
     public boolean evaluateInternal(Geometry left, Geometry right) {
         return left.touches(right);
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

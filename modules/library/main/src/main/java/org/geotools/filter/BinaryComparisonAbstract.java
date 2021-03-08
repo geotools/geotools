@@ -78,6 +78,7 @@ public abstract class BinaryComparisonAbstract extends AbstractFilter implements
         return matchingCase;
     }
 
+    @Override
     public MatchAction getMatchAction() {
         return MatchAction.ANY; // default
     }

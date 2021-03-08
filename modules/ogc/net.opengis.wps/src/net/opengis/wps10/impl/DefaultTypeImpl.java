@@ -64,6 +64,7 @@ public class DefaultTypeImpl extends EObjectImpl implements DefaultType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.DEFAULT_TYPE;
   }
@@ -73,6 +74,7 @@ public class DefaultTypeImpl extends EObjectImpl implements DefaultType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getCRS() {
     return cRS;
   }
@@ -82,6 +84,7 @@ public class DefaultTypeImpl extends EObjectImpl implements DefaultType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setCRS(String newCRS) {
     String oldCRS = cRS;
     cRS = newCRS;
@@ -94,6 +97,7 @@ public class DefaultTypeImpl extends EObjectImpl implements DefaultType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.DEFAULT_TYPE__CRS:
@@ -107,6 +111,7 @@ public class DefaultTypeImpl extends EObjectImpl implements DefaultType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.DEFAULT_TYPE__CRS:
@@ -121,6 +126,7 @@ public class DefaultTypeImpl extends EObjectImpl implements DefaultType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.DEFAULT_TYPE__CRS:
@@ -135,6 +141,7 @@ public class DefaultTypeImpl extends EObjectImpl implements DefaultType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.DEFAULT_TYPE__CRS:
@@ -148,6 +155,7 @@ public class DefaultTypeImpl extends EObjectImpl implements DefaultType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String toString() {
     if (eIsProxy()) return super.toString();
 

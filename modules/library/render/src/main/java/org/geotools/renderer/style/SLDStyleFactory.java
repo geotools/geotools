@@ -1599,6 +1599,7 @@ public class SLDStyleFactory {
         }
 
         /** @see java.lang.Object#equals(java.lang.Object) */
+        @Override
         public boolean equals(Object obj) {
             if (!(obj instanceof SymbolizerKey)) {
                 return false;
@@ -1612,6 +1613,7 @@ public class SLDStyleFactory {
         }
 
         /** @see java.lang.Object#hashCode() */
+        @Override
         public int hashCode() {
             return ((((17 + System.identityHashCode(symbolizer)) * 37) + doubleHash(minScale)) * 37)
                     + doubleHash(maxScale);

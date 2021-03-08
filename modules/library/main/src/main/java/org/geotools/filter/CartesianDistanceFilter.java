@@ -70,10 +70,12 @@ public abstract class CartesianDistanceFilter extends GeometryFilterImpl
      *
      * @return distance the length beyond which this filter is valid or not.
      */
+    @Override
     public double getDistance() {
         return distance;
     }
 
+    @Override
     public String getDistanceUnits() {
         return units;
     }
@@ -87,6 +89,7 @@ public abstract class CartesianDistanceFilter extends GeometryFilterImpl
      *
      * @return String representation of the between filter.
      */
+    @Override
     public String toString() {
         String operator = null;
 
@@ -125,6 +128,7 @@ public abstract class CartesianDistanceFilter extends GeometryFilterImpl
      * @param oFilter The filter to test equality against.
      * @return True if the objects are equal.
      */
+    @Override
     public boolean equals(Object oFilter) {
         return super.equals(oFilter)
                 && (this.distance == ((CartesianDistanceFilter) oFilter).distance);
@@ -135,6 +139,7 @@ public abstract class CartesianDistanceFilter extends GeometryFilterImpl
      *
      * @return a code to hash this object by.
      */
+    @Override
     public int hashCode() {
         int result = super.hashCode();
         long bits = Double.doubleToLongBits(distance);

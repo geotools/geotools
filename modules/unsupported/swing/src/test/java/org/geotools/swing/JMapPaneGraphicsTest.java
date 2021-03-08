@@ -90,14 +90,7 @@ public class JMapPaneGraphicsTest extends JMapPaneGraphicsTestBase {
         window.show(new Dimension(WIDTH, HEIGHT));
         MapContent mapContent = createMapContent(createMatchedBounds(mapPane.getVisibleRect()));
         mapPane.setMapContent(mapContent);
-        SwingUtilities.invokeAndWait(
-                new Runnable() {
-
-                    @Override
-                    public void run() {
-                        mapPane.setBackground(Color.BLUE);
-                    }
-                });
+        SwingUtilities.invokeAndWait(() -> mapPane.setBackground(Color.BLUE));
 
         mapPane.drawLayers(true);
         BufferedImage image = (BufferedImage) mapPane.getBaseImage();

@@ -226,6 +226,7 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ActuateType getActuate() {
     return actuate;
   }
@@ -235,6 +236,7 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setActuate(ActuateType newActuate) {
     ActuateType oldActuate = actuate;
     actuate = newActuate;
@@ -249,6 +251,7 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetActuate() {
     ActuateType oldActuate = actuate;
     boolean oldActuateESet = actuateESet;
@@ -263,6 +266,7 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetActuate() {
     return actuateESet;
   }
@@ -272,6 +276,7 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getArcrole() {
     return arcrole;
   }
@@ -281,6 +286,7 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setArcrole(String newArcrole) {
     String oldArcrole = arcrole;
     arcrole = newArcrole;
@@ -293,6 +299,7 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getHref() {
     return href;
   }
@@ -302,6 +309,7 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setHref(String newHref) {
     String oldHref = href;
     href = newHref;
@@ -314,6 +322,7 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getRole() {
     return role;
   }
@@ -323,6 +332,7 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setRole(String newRole) {
     String oldRole = role;
     role = newRole;
@@ -335,6 +345,7 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ShowType getShow() {
     return show;
   }
@@ -344,6 +355,7 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setShow(ShowType newShow) {
     ShowType oldShow = show;
     show = newShow;
@@ -358,6 +370,7 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetShow() {
     ShowType oldShow = show;
     boolean oldShowESet = showESet;
@@ -372,6 +385,7 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetShow() {
     return showESet;
   }
@@ -381,6 +395,7 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getTitle() {
     return title;
   }
@@ -390,6 +405,7 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setTitle(String newTitle) {
     String oldTitle = title;
     title = newTitle;
@@ -402,6 +418,7 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getType() {
     return type;
   }
@@ -411,6 +428,7 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setType(String newType) {
     String oldType = type;
     type = newType;
@@ -425,6 +443,7 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetType() {
     String oldType = type;
     boolean oldTypeESet = typeESet;
@@ -439,6 +458,7 @@ public class AbstractReferenceBaseTypeImpl extends EObjectImpl implements Abstra
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetType() {
     return typeESet;
   }

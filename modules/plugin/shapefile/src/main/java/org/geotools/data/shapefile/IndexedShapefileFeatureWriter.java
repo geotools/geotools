@@ -99,6 +99,7 @@ class IndexedShapefileFeatureWriter extends ShapefileFeatureWriter implements Fi
     }
 
     /** Release resources and flush the header information. */
+    @Override
     public void close() throws IOException {
         super.close();
         fidWriter.close();
@@ -140,6 +141,7 @@ class IndexedShapefileFeatureWriter extends ShapefileFeatureWriter implements Fi
         }
     }
 
+    @Override
     public String id() {
         return getClass().getName();
     }

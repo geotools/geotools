@@ -95,6 +95,7 @@ public class ZonalStats extends BaseStatisticsOperationJAI {
      *     InternationalString, MathTransform, GridCoverage2D[],
      *     org.geotools.coverage.processing.OperationJAI.Parameters),
      */
+    @Override
     protected Map<String, ?> getProperties(
             RenderedImage data,
             CoordinateReferenceSystem crs,

@@ -88,6 +88,7 @@ public class SpatialDomainTypeImpl extends EObjectImpl implements SpatialDomainT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.SPATIAL_DOMAIN_TYPE;
 	}
@@ -97,7 +98,8 @@ public class SpatialDomainTypeImpl extends EObjectImpl implements SpatialDomainT
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public EList getEnvelope() {
+	@Override
+    public EList getEnvelope() {
 		if (envelope == null) {
 			envelope = new EDataTypeUniqueEList(GeneralEnvelope.class, this, Wcs10Package.SPATIAL_DOMAIN_TYPE__ENVELOPE);
 		}
@@ -130,6 +132,7 @@ public class SpatialDomainTypeImpl extends EObjectImpl implements SpatialDomainT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public FeatureMap getGridGroup() {
 		if (gridGroup == null) {
 			gridGroup = new BasicFeatureMap(this, Wcs10Package.SPATIAL_DOMAIN_TYPE__GRID_GROUP);
@@ -142,6 +145,7 @@ public class SpatialDomainTypeImpl extends EObjectImpl implements SpatialDomainT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList getGrid() {
 		return getGridGroup().list(Wcs10Package.Literals.SPATIAL_DOMAIN_TYPE__GRID);
 	}
@@ -151,6 +155,7 @@ public class SpatialDomainTypeImpl extends EObjectImpl implements SpatialDomainT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList getPolygon() {
 		if (polygon == null) {
 			polygon = new EObjectContainmentEList(PolygonType.class, this, Wcs10Package.SPATIAL_DOMAIN_TYPE__POLYGON);
@@ -163,6 +168,7 @@ public class SpatialDomainTypeImpl extends EObjectImpl implements SpatialDomainT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.SPATIAL_DOMAIN_TYPE__GRID_GROUP:
@@ -180,6 +186,7 @@ public class SpatialDomainTypeImpl extends EObjectImpl implements SpatialDomainT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.SPATIAL_DOMAIN_TYPE__ENVELOPE:
@@ -200,6 +207,7 @@ public class SpatialDomainTypeImpl extends EObjectImpl implements SpatialDomainT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.SPATIAL_DOMAIN_TYPE__ENVELOPE:
@@ -226,6 +234,7 @@ public class SpatialDomainTypeImpl extends EObjectImpl implements SpatialDomainT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.SPATIAL_DOMAIN_TYPE__ENVELOPE:
@@ -249,6 +258,7 @@ public class SpatialDomainTypeImpl extends EObjectImpl implements SpatialDomainT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.SPATIAL_DOMAIN_TYPE__ENVELOPE:
@@ -268,6 +278,7 @@ public class SpatialDomainTypeImpl extends EObjectImpl implements SpatialDomainT
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

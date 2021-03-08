@@ -55,30 +55,37 @@ public class PropertyDescriptorImpl implements PropertyDescriptor {
         }
     }
 
+    @Override
     public PropertyType getType() {
         return type;
     }
 
+    @Override
     public Name getName() {
         return name;
     }
 
+    @Override
     public int getMinOccurs() {
         return minOccurs;
     }
 
+    @Override
     public int getMaxOccurs() {
         return maxOccurs;
     }
 
+    @Override
     public boolean isNillable() {
         return isNillable;
     }
 
+    @Override
     public Map<Object, Object> getUserData() {
         return userData;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof PropertyDescriptorImpl)) {
             return false;
@@ -92,10 +99,12 @@ public class PropertyDescriptorImpl implements PropertyDescriptor {
                 && (isNillable == other.isNillable);
     }
 
+    @Override
     public int hashCode() {
         return (37 * minOccurs + 37 * maxOccurs) ^ type.hashCode() ^ name.hashCode();
     }
 
+    @Override
     public String toString() {
         StringBuffer sb = new StringBuffer(Classes.getShortClassName(this));
         sb.append(" ");

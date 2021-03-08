@@ -21,6 +21,7 @@ import org.geotools.jdbc.JDBCSkipColumnTestSetup;
 
 public class TeradataSkipColumnOnlineTest extends JDBCSkipColumnOnlineTest {
 
+    @Override
     protected JDBCSkipColumnTestSetup createTestSetup() {
         return new TeradataSkipColumnTestSetup(new TeradataTestSetup());
     }

@@ -73,6 +73,7 @@ public class TileMatrixSetLinkBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WMTS.TileMatrixSetLink;
     }
@@ -84,6 +85,7 @@ public class TileMatrixSetLinkBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return TileMatrixSetLinkType.class;
     }
@@ -95,6 +97,7 @@ public class TileMatrixSetLinkBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         TileMatrixSetLinkType link = factory.createTileMatrixSetLinkType();
 

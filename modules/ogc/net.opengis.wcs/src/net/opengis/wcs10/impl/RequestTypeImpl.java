@@ -81,6 +81,7 @@ public class RequestTypeImpl extends EObjectImpl implements RequestType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.REQUEST_TYPE;
 	}
@@ -90,6 +91,7 @@ public class RequestTypeImpl extends EObjectImpl implements RequestType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public GetCapabilitiesType1 getGetCapabilities() {
 		return getCapabilities;
 	}
@@ -114,6 +116,7 @@ public class RequestTypeImpl extends EObjectImpl implements RequestType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setGetCapabilities(GetCapabilitiesType1 newGetCapabilities) {
 		if (newGetCapabilities != getCapabilities) {
 			NotificationChain msgs = null;
@@ -133,6 +136,7 @@ public class RequestTypeImpl extends EObjectImpl implements RequestType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public DescribeCoverageType1 getDescribeCoverage() {
 		return describeCoverage;
 	}
@@ -157,6 +161,7 @@ public class RequestTypeImpl extends EObjectImpl implements RequestType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setDescribeCoverage(DescribeCoverageType1 newDescribeCoverage) {
 		if (newDescribeCoverage != describeCoverage) {
 			NotificationChain msgs = null;
@@ -176,6 +181,7 @@ public class RequestTypeImpl extends EObjectImpl implements RequestType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public GetCoverageType1 getGetCoverage() {
 		return getCoverage;
 	}
@@ -200,6 +206,7 @@ public class RequestTypeImpl extends EObjectImpl implements RequestType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setGetCoverage(GetCoverageType1 newGetCoverage) {
 		if (newGetCoverage != getCoverage) {
 			NotificationChain msgs = null;
@@ -219,6 +226,7 @@ public class RequestTypeImpl extends EObjectImpl implements RequestType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.REQUEST_TYPE__GET_CAPABILITIES:
@@ -236,6 +244,7 @@ public class RequestTypeImpl extends EObjectImpl implements RequestType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.REQUEST_TYPE__GET_CAPABILITIES:
@@ -253,6 +262,7 @@ public class RequestTypeImpl extends EObjectImpl implements RequestType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.REQUEST_TYPE__GET_CAPABILITIES:
@@ -273,6 +283,7 @@ public class RequestTypeImpl extends EObjectImpl implements RequestType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.REQUEST_TYPE__GET_CAPABILITIES:
@@ -293,6 +304,7 @@ public class RequestTypeImpl extends EObjectImpl implements RequestType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.REQUEST_TYPE__GET_CAPABILITIES:

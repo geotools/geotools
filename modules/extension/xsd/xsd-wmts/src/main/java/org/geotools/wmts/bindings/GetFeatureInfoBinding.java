@@ -80,6 +80,7 @@ public class GetFeatureInfoBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WMTS.GetFeatureInfo;
     }
@@ -91,6 +92,7 @@ public class GetFeatureInfoBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return GetFeatureInfoType.class;
     }
@@ -102,6 +104,7 @@ public class GetFeatureInfoBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         GetFeatureInfoType fti = factory.createGetFeatureInfoType();
         fti.setService((String) node.getChildValue("service"));

@@ -44,6 +44,7 @@ import org.geotools.xsd.Node;
  */
 public class MLAttachmentTypeBinding extends AbstractComplexBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return ML.ATTACHMENTTYPE;
     }
@@ -55,10 +56,12 @@ public class MLAttachmentTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
 
+    @Override
     public Class getType() {
         return Attachment.class;
     }
@@ -70,6 +73,7 @@ public class MLAttachmentTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Map mime = (Map) node.getChildValue("mimetype");
         MimeType mimeType = new MimeType((String) mime.get("type"), (String) mime.get("subtype"));

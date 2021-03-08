@@ -347,6 +347,7 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
     }
 
     /** Returns the number of dimensions. */
+    @Override
     public int getDimension() {
         return index.length / 2;
     }
@@ -355,6 +356,7 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
      * Returns the valid minimum inclusive grid coordinates. The sequence contains a minimum value
      * for each dimension of the grid coverage.
      */
+    @Override
     public GridCoordinates getLow() {
         if (low == null) {
             low = new GeneralGridCoordinates.Immutable(index, 0, index.length / 2);
@@ -366,6 +368,7 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
      * Returns the valid maximum <strong>inclusive</strong> grid coordinates. The sequence contains
      * a maximum value for each dimension of the grid coverage.
      */
+    @Override
     public GridCoordinates getHigh() {
         if (high == null) {
             final GeneralGridCoordinates.Immutable coords =
@@ -381,6 +384,7 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
      *
      * @see #getLow()
      */
+    @Override
     public int getLow(final int dimension) {
         if (dimension < index.length / 2) {
             return index[dimension];
@@ -394,6 +398,7 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
      *
      * @see #getHigh()
      */
+    @Override
     public int getHigh(final int dimension) {
         if (dimension >= 0) {
             return index[dimension + index.length / 2] - 1;
@@ -405,6 +410,7 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
      * Returns the number of integer grid coordinates along the specified dimension. This is equals
      * to {@code getHigh(dimension) - getLow(dimension)}.
      */
+    @Override
     public int getSpan(final int dimension) {
         return index[dimension + index.length / 2] - index[dimension];
     }

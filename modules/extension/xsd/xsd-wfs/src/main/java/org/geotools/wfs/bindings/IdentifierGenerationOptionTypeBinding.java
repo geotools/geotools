@@ -77,6 +77,7 @@ public class IdentifierGenerationOptionTypeBinding extends AbstractSimpleBinding
     public IdentifierGenerationOptionTypeBinding(WfsFactory factory) {}
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.IdentifierGenerationOptionType;
     }
@@ -88,6 +89,7 @@ public class IdentifierGenerationOptionTypeBinding extends AbstractSimpleBinding
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return null;
     }
@@ -99,6 +101,7 @@ public class IdentifierGenerationOptionTypeBinding extends AbstractSimpleBinding
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         // TODO: implement and remove call to super
         return super.parse(instance, value);

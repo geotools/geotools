@@ -36,6 +36,7 @@ public abstract class AbstractGeometricPrimitiveTypeImpl extends AbstractGeometr
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return GmlPackage.Literals.ABSTRACT_GEOMETRIC_PRIMITIVE_TYPE;
 	}

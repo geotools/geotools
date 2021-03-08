@@ -18,7 +18,6 @@ package org.geotools.map;
 
 import java.io.IOException;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.FeatureEvent;
 import org.geotools.data.FeatureListener;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
@@ -92,14 +91,11 @@ public class FeatureLayer extends StyleLayer {
     }
 
     /** Used to connect/disconnect a FeatureListener if any map layer listeners are registered. */
+    @Override
     protected synchronized void connectDataListener(boolean listen) {
         if (sourceListener == null) {
             sourceListener =
-                    new FeatureListener() {
-                        public void changed(FeatureEvent featureEvent) {
-                            fireMapLayerListenerLayerChanged(MapLayerEvent.DATA_CHANGED);
-                        }
-                    };
+                    featureEvent -> fireMapLayerListenerLayerChanged(MapLayerEvent.DATA_CHANGED);
         }
         if (listen) {
             featureSource.addFeatureListener(sourceListener);
@@ -151,6 +147,7 @@ public class FeatureLayer extends StyleLayer {
      * @return Query used to process content prior to display, or Query.ALL to indicate all content
      *     is used
      */
+    @Override
     public Query getQuery() {
         if (query == null) {
             return Query.ALL;

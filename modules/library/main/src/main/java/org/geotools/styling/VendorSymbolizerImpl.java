@@ -83,22 +83,27 @@ public class VendorSymbolizerImpl extends AbstractSymbolizer implements Extensio
         }
     }
 
+    @Override
     public String getExtensionName() {
         return extensionName;
     }
 
+    @Override
     public Map<String, Expression> getParameters() {
         return parameters;
     }
 
+    @Override
     public void setExtensionName(String name) {
         this.extensionName = name;
     }
 
+    @Override
     public Object accept(StyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
+    @Override
     public void accept(org.geotools.styling.StyleVisitor visitor) {
         visitor.visit(this);
     }

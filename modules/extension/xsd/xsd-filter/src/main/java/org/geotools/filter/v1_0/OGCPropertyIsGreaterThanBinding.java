@@ -47,6 +47,7 @@ public class OGCPropertyIsGreaterThanBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.PropertyIsGreaterThan;
     }
@@ -58,10 +59,12 @@ public class OGCPropertyIsGreaterThanBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return PropertyIsGreaterThan.class;
     }
 
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -73,6 +76,7 @@ public class OGCPropertyIsGreaterThanBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Expression e1 = (Expression) node.getChildValue(0);
         Expression e2 = (Expression) node.getChildValue(1);

@@ -143,6 +143,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
      *
      * @see org.opengis.coverage.grid.GridCoverageWriter#getFormat()
      */
+    @Override
     public Format getFormat() {
         return new GeoTiffFormat();
     }
@@ -153,6 +154,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
      * @see org.opengis.coverage.grid.GridCoverageWriter#write(org.opengis.coverage.grid.GridCoverage,
      *      org.opengis.parameter.GeneralParameterValue[])
      */
+    @Override
     @SuppressWarnings("rawtypes")
     public void write(final GridCoverage gc, final GeneralParameterValue[] params)
             throws IllegalArgumentException, IOException, IndexOutOfBoundsException {

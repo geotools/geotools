@@ -51,6 +51,7 @@ public abstract class AbstractFeatureCollectionProcessFactory extends SingleProc
                     Text.text("Features to process"));
 
     /** Adds the {@link #FEATURES} parameter and then delegates to {@link #addParameters(Map)}. */
+    @Override
     public final Map<String, Parameter<?>> getParameterInfo() {
         HashMap<String, Parameter<?>> parameterInfo = new LinkedHashMap<>();
         parameterInfo.put(FEATURES.key, FEATURES);

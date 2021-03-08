@@ -21,7 +21,6 @@ import java.util.Iterator;
 import java.util.List;
 import org.geotools.graph.build.line.BasicLineGraphGenerator;
 import org.geotools.graph.path.DijkstraShortestPathFinder;
-import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
 import org.geotools.graph.traverse.standard.DijkstraIterator;
@@ -89,18 +88,10 @@ public class DijkstraShortestPathFinderWithTurnCostsTest {
     }
 
     protected DijkstraIterator.EdgeWeighter costFunction() {
-        return (new DijkstraIterator.EdgeWeighter() {
-            public double getWeight(Edge e) {
-                return 1;
-            }
-        });
+        return (e -> 1);
     }
 
     protected DijkstraIterator.NodeWeighter tcostFunction() {
-        return (new DijkstraIterator.NodeWeighter() {
-            public double getWeight(Node n, Edge e1, Edge e2) {
-                return 1.0;
-            }
-        });
+        return ((n, e1, e2) -> 1.0);
     }
 }

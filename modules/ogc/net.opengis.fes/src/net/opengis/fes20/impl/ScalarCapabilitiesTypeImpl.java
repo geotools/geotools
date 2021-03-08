@@ -82,6 +82,7 @@ public class ScalarCapabilitiesTypeImpl extends EObjectImpl implements ScalarCap
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LogicalOperatorsType getLogicalOperators() {
         return logicalOperators;
     }
@@ -106,6 +107,7 @@ public class ScalarCapabilitiesTypeImpl extends EObjectImpl implements ScalarCap
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLogicalOperators(LogicalOperatorsType newLogicalOperators) {
         if (newLogicalOperators != logicalOperators) {
             NotificationChain msgs = null;
@@ -125,6 +127,7 @@ public class ScalarCapabilitiesTypeImpl extends EObjectImpl implements ScalarCap
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ComparisonOperatorsType getComparisonOperators() {
         return comparisonOperators;
     }
@@ -149,6 +152,7 @@ public class ScalarCapabilitiesTypeImpl extends EObjectImpl implements ScalarCap
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setComparisonOperators(ComparisonOperatorsType newComparisonOperators) {
         if (newComparisonOperators != comparisonOperators) {
             NotificationChain msgs = null;

@@ -59,6 +59,7 @@ public class OGCLiteralTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.LiteralType;
     }
@@ -70,6 +71,7 @@ public class OGCLiteralTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return OVERRIDE;
     }
@@ -81,6 +83,7 @@ public class OGCLiteralTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Literal.class;
     }
@@ -92,6 +95,7 @@ public class OGCLiteralTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
@@ -102,6 +106,7 @@ public class OGCLiteralTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // number of possibilities here since single child is of type any
 
@@ -120,6 +125,7 @@ public class OGCLiteralTypeBinding extends AbstractComplexBinding {
         return factory.literal(value);
     }
 
+    @Override
     public Element encode(Object object, Document document, Element value) throws Exception {
         Literal literal = (Literal) object;
 

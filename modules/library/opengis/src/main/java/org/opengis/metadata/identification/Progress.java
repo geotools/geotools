@@ -82,6 +82,7 @@ public final class Progress extends CodeList<Progress> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public Progress[] family() {
         return values();
     }

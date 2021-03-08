@@ -90,6 +90,7 @@ public class BinaryLogicOpTypeImpl extends LogicOpsTypeImpl implements BinaryLog
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getFilterPredicates() {
         if (filterPredicates == null) {
             filterPredicates = new BasicFeatureMap(this, Fes20Package.BINARY_LOGIC_OP_TYPE__FILTER_PREDICATES);
@@ -102,6 +103,7 @@ public class BinaryLogicOpTypeImpl extends LogicOpsTypeImpl implements BinaryLog
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getComparisonOpsGroup() {
         return (FeatureMap)getFilterPredicates().<FeatureMap.Entry>list(Fes20Package.Literals.BINARY_LOGIC_OP_TYPE__COMPARISON_OPS_GROUP);
     }
@@ -111,6 +113,7 @@ public class BinaryLogicOpTypeImpl extends LogicOpsTypeImpl implements BinaryLog
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<ComparisonOpsType> getComparisonOps() {
         return getComparisonOpsGroup().list(Fes20Package.Literals.BINARY_LOGIC_OP_TYPE__COMPARISON_OPS);
     }
@@ -120,6 +123,7 @@ public class BinaryLogicOpTypeImpl extends LogicOpsTypeImpl implements BinaryLog
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getSpatialOpsGroup() {
         return (FeatureMap)getFilterPredicates().<FeatureMap.Entry>list(Fes20Package.Literals.BINARY_LOGIC_OP_TYPE__SPATIAL_OPS_GROUP);
     }
@@ -129,6 +133,7 @@ public class BinaryLogicOpTypeImpl extends LogicOpsTypeImpl implements BinaryLog
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<SpatialOpsType> getSpatialOps() {
         return getSpatialOpsGroup().list(Fes20Package.Literals.BINARY_LOGIC_OP_TYPE__SPATIAL_OPS);
     }
@@ -138,6 +143,7 @@ public class BinaryLogicOpTypeImpl extends LogicOpsTypeImpl implements BinaryLog
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getTemporalOpsGroup() {
         return (FeatureMap)getFilterPredicates().<FeatureMap.Entry>list(Fes20Package.Literals.BINARY_LOGIC_OP_TYPE__TEMPORAL_OPS_GROUP);
     }
@@ -147,6 +153,7 @@ public class BinaryLogicOpTypeImpl extends LogicOpsTypeImpl implements BinaryLog
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<TemporalOpsType> getTemporalOps() {
         return getTemporalOpsGroup().list(Fes20Package.Literals.BINARY_LOGIC_OP_TYPE__TEMPORAL_OPS);
     }
@@ -156,6 +163,7 @@ public class BinaryLogicOpTypeImpl extends LogicOpsTypeImpl implements BinaryLog
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getLogicOpsGroup() {
         return (FeatureMap)getFilterPredicates().<FeatureMap.Entry>list(Fes20Package.Literals.BINARY_LOGIC_OP_TYPE__LOGIC_OPS_GROUP);
     }
@@ -165,6 +173,7 @@ public class BinaryLogicOpTypeImpl extends LogicOpsTypeImpl implements BinaryLog
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<LogicOpsType> getLogicOps() {
         return getLogicOpsGroup().list(Fes20Package.Literals.BINARY_LOGIC_OP_TYPE__LOGIC_OPS);
     }
@@ -174,6 +183,7 @@ public class BinaryLogicOpTypeImpl extends LogicOpsTypeImpl implements BinaryLog
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getExtensionOpsGroup() {
         return (FeatureMap)getFilterPredicates().<FeatureMap.Entry>list(Fes20Package.Literals.BINARY_LOGIC_OP_TYPE__EXTENSION_OPS_GROUP);
     }
@@ -183,6 +193,7 @@ public class BinaryLogicOpTypeImpl extends LogicOpsTypeImpl implements BinaryLog
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<ExtensionOpsType> getExtensionOps() {
         return getExtensionOpsGroup().list(Fes20Package.Literals.BINARY_LOGIC_OP_TYPE__EXTENSION_OPS);
     }
@@ -192,6 +203,7 @@ public class BinaryLogicOpTypeImpl extends LogicOpsTypeImpl implements BinaryLog
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<FunctionType> getFunction() {
         return getFilterPredicates().list(Fes20Package.Literals.BINARY_LOGIC_OP_TYPE__FUNCTION);
     }
@@ -201,6 +213,7 @@ public class BinaryLogicOpTypeImpl extends LogicOpsTypeImpl implements BinaryLog
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getIdGroup() {
         return (FeatureMap)getFilterPredicates().<FeatureMap.Entry>list(Fes20Package.Literals.BINARY_LOGIC_OP_TYPE__ID_GROUP);
     }
@@ -210,6 +223,7 @@ public class BinaryLogicOpTypeImpl extends LogicOpsTypeImpl implements BinaryLog
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<AbstractIdType> getId() {
         return getIdGroup().list(Fes20Package.Literals.BINARY_LOGIC_OP_TYPE__ID);
     }

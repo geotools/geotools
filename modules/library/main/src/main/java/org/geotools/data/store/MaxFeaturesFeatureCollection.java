@@ -53,30 +53,37 @@ public class MaxFeaturesFeatureCollection<T extends FeatureType, F extends Featu
         return new DelegateFeatureReader<>(getSchema(), features());
     }
 
+    @Override
     public FeatureIterator<F> features() {
         return new MaxFeaturesIterator<>(delegate.features(), max);
     }
 
+    @Override
     public FeatureCollection<T, F> subCollection(Filter filter) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public FeatureCollection<T, F> sort(SortBy order) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public int size() {
         return (int) Math.min(delegate.size(), max);
     }
 
+    @Override
     public boolean isEmpty() {
         return delegate.isEmpty() || max == 0;
     }
 
+    @Override
     public Object[] toArray() {
         return toArray(new Object[size()]);
     }
 
+    @Override
     public <O> O[] toArray(O[] a) {
         List<F> list = new ArrayList<>();
         try (FeatureIterator<F> i = features()) {
@@ -87,6 +94,7 @@ public class MaxFeaturesFeatureCollection<T extends FeatureType, F extends Featu
         }
     }
 
+    @Override
     public boolean containsAll(Collection<?> c) {
         for (Object o : c) {
             if (!contains(o)) {
@@ -96,6 +104,7 @@ public class MaxFeaturesFeatureCollection<T extends FeatureType, F extends Featu
         return true;
     }
 
+    @Override
     public ReferencedEnvelope getBounds() {
         // calculate manually
         return DataUtilities.bounds(this);

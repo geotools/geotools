@@ -106,6 +106,7 @@ public class Preprocessor extends Format {
      * @param position Identification of a field in the formatted text.
      * @return The string buffer passed in as {@code toAppendTo}, with formatted text appended
      */
+    @Override
     public StringBuffer format(
             final Object object, final StringBuffer toAppendTo, final FieldPosition position) {
         return parser.format(object, toAppendTo, position);
@@ -120,6 +121,7 @@ public class Preprocessor extends Format {
      * @param position The index of the first character to parse.
      * @return The parsed object, or {@code null} in case of failure.
      */
+    @Override
     public Object parseObject(final String wkt, final ParsePosition position) {
         /*
          * NOTE:  the other way around (parseObject(String) invoking

@@ -48,6 +48,7 @@ public class OverlappedByBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return FES.OverlappedBy;
     }
@@ -59,6 +60,7 @@ public class OverlappedByBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return OverlappedBy.class;
     }
@@ -75,6 +77,7 @@ public class OverlappedByBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Expression[] e = FESParseEncodeUtil.temporal(node, filterFactory);
         return filterFactory.overlappedBy(e[0], e[1]);

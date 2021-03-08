@@ -68,6 +68,7 @@ public abstract class StyleLayer extends Layer {
      *
      * @return The style (SLD).
      */
+    @Override
     public Style getStyle() {
         return style;
     }

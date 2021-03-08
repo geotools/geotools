@@ -73,41 +73,50 @@ public class FeatureTypeAttributePointer extends NodePointer {
     }
 
     /** */
+    @Override
     public boolean isLeaf() {
         return !(attType instanceof ComplexType);
     }
 
     /** */
+    @Override
     public boolean isCollection() {
         return false;
     }
 
     /** Return number of elements */
+    @Override
     public int getLength() {
         return 1;
     }
 
     /** Returns the qname */
+    @Override
     public QName getName() {
         return new QName(name.getNamespaceURI(), name.getLocalPart());
     }
 
+    @Override
     public Object getBaseValue() {
         return parentType;
     }
 
+    @Override
     public Object getImmediateNode() {
         return descriptor;
     }
 
+    @Override
     public void setValue(Object value) {
         throw new UnsupportedOperationException("Feature types are immutable");
     }
 
+    @Override
     public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2) {
         return 0;
     }
 
+    @Override
     public NodeIterator childIterator(NodeTest test, boolean reverse, NodePointer startWith) {
         if (test instanceof NodeNameTest) {
             NodeNameTest nodeNameTest = (NodeNameTest) test;
@@ -135,6 +144,7 @@ public class FeatureTypeAttributePointer extends NodePointer {
         return super.childIterator(test, reverse, startWith);
     }
 
+    @Override
     public NodeIterator attributeIterator(QName qname) {
         return new DescriptorXmlAttributeNodeIterator(
                 this,

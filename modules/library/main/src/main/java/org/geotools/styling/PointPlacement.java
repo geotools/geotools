@@ -56,6 +56,7 @@ public interface PointPlacement extends org.opengis.style.PointPlacement, LabelP
      *
      * @return anchorPoint from the relative to the original geometry
      */
+    @Override
     AnchorPoint getAnchorPoint();
 
     /**
@@ -72,6 +73,7 @@ public interface PointPlacement extends org.opengis.style.PointPlacement, LabelP
      *
      * @return Offset to use when rendering text near a point
      */
+    @Override
     Displacement getDisplacement();
 
     /**
@@ -85,6 +87,7 @@ public interface PointPlacement extends org.opengis.style.PointPlacement, LabelP
      *
      * @return rotation of the label as a dynamic expression
      */
+    @Override
     Expression getRotation();
 
     /**

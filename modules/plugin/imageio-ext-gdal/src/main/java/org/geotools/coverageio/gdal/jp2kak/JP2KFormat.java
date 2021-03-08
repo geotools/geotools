@@ -51,11 +51,13 @@ public final class JP2KFormat extends BaseGDALGridFormat implements Format {
     private static InfoWrapper INFO = new InfoWrapper("JP2K (Kakadu) Coverage Format", "JP2KAK");
 
     /** Sets the metadata information. */
+    @Override
     protected void setInfo() {
         setInfo(INFO);
     }
 
     /** @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object, Hints) */
+    @Override
     public JP2KReader getReader(Object source, Hints hints) {
         try {
             return new JP2KReader(source, hints);

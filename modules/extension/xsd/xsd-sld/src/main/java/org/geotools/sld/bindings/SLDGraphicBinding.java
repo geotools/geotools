@@ -70,6 +70,7 @@ public class SLDGraphicBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SLD.GRAPHIC;
     }
@@ -81,6 +82,7 @@ public class SLDGraphicBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -92,6 +94,7 @@ public class SLDGraphicBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Graphic.class;
     }
@@ -103,6 +106,7 @@ public class SLDGraphicBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
@@ -112,6 +116,7 @@ public class SLDGraphicBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         List<Symbol> symbols = node.getChildValues(Symbol.class);

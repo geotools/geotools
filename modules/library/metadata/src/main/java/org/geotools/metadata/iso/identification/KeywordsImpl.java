@@ -67,6 +67,7 @@ public class KeywordsImpl extends MetadataEntity implements Keywords {
     }
 
     /** Commonly used word(s) or formalised word(s) or phrase(s) used to describe the subject. */
+    @Override
     public Collection<InternationalString> getKeywords() {
         return keywords = nonNullCollection(keywords, InternationalString.class);
     }
@@ -79,6 +80,7 @@ public class KeywordsImpl extends MetadataEntity implements Keywords {
     }
 
     /** Subject matter used to group similar keywords. */
+    @Override
     public KeywordType getType() {
         return type;
     }
@@ -90,6 +92,7 @@ public class KeywordsImpl extends MetadataEntity implements Keywords {
     }
 
     /** Name of the formally registered thesaurus or a similar authoritative source of keywords. */
+    @Override
     public Citation getThesaurusName() {
         return thesaurusName;
     }

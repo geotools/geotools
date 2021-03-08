@@ -525,6 +525,7 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
     /**
      * Returns the organization or party responsible for definition and maintenance of the database.
      */
+    @Override
     public Citation getAuthority() {
         return getAuthorityFactory().getAuthority();
     }
@@ -534,12 +535,14 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
      *
      * @todo We should returns the union of authority codes from all underlying factories.
      */
+    @Override
     public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type)
             throws FactoryException {
         return getAuthorityFactory(null).getAuthorityCodes(type);
     }
 
     /** Returns a description for the object identified by the specified code. */
+    @Override
     public InternationalString getDescriptionText(final String code) throws FactoryException {
         return getAuthorityFactory(code).getDescriptionText(toBackingFactoryCode(code));
     }

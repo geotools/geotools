@@ -474,6 +474,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
         return true;
     }
 
+    @Override
     public void encodePrimaryKey(String column, StringBuffer sql) {
         encodeColumnName(null, column, sql);
         //       sql.append(" PRIMARY KEY not null generated always as identity (start with 0)
@@ -481,6 +482,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
         sql.append(" PRIMARY KEY not null integer");
     }
 
+    @Override
     public Integer getGeometrySRID(
             String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
@@ -526,10 +528,12 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
         return null;
     }
 
+    @Override
     public String getGeometryTypeName(Integer type) {
         return "ST_Geometry";
     }
 
+    @Override
     public Class<?> getMapping(ResultSet columnMetaData, Connection cx) throws SQLException {
         String typeName = columnMetaData.getString("TYPE_NAME");
         String gType = null;
@@ -818,6 +822,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
         }
     }
 
+    @Override
     public void postCreateTable(String schemaName, SimpleFeatureType featureType, Connection cx)
             throws SQLException {
 
@@ -999,6 +1004,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
         }
     }
 
+    @Override
     public void registerClassToSqlMappings(Map<Class<?>, Integer> mappings) {
         super.registerClassToSqlMappings(mappings);
 
@@ -1006,6 +1012,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
         mappings.put(Geometry.class, Types.OTHER);
     }
 
+    @Override
     public void registerSqlTypeNameToClassMappings(Map<String, Class<?>> mappings) {
         super.registerSqlTypeNameToClassMappings(mappings);
 

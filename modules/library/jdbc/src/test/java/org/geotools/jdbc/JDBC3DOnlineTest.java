@@ -24,6 +24,7 @@ package org.geotools.jdbc;
  */
 public abstract class JDBC3DOnlineTest extends JDBCGeneric3DOnlineTest {
 
+    @Override
     protected abstract JDBC3DTestSetup createTestSetup();
 
     @Override

@@ -88,11 +88,13 @@ public class SubtractFromConst extends OperationJAI {
                 getOperationDescriptor(JAIExt.getOperationName("SubtractFromConst")));
     }
 
+    @Override
     public String getName() {
         return "SubtractFromConst";
     }
 
     /** Returns the expected range of values for the resulting image. */
+    @Override
     protected NumberRange<? extends Number> deriveRange(
             final NumberRange<? extends Number>[] ranges, final Parameters parameters) {
         final double[] constants = (double[]) parameters.parameters.getObjectParameter("constants");
@@ -106,6 +108,7 @@ public class SubtractFromConst extends OperationJAI {
         return super.deriveRange(ranges, parameters);
     }
 
+    @Override
     protected void handleJAIEXTParams(
             ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
         GridCoverage2D source = (GridCoverage2D) parameters2.parameter("source0").getValue();
@@ -115,6 +118,7 @@ public class SubtractFromConst extends OperationJAI {
         handleROINoDataInternal(parameters, source, "operationConst", 2, 3);
     }
 
+    @Override
     protected Map<String, ?> getProperties(
             RenderedImage data,
             CoordinateReferenceSystem crs,

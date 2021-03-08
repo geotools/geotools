@@ -35,11 +35,13 @@ public class FilterSpecificityExtractor extends DefaultFilterVisitor {
 
     Set<Expression> properties = new HashSet<>();
 
+    @Override
     public Object visit(PropertyName expression, Object data) {
         properties.add(expression);
         return data;
     }
 
+    @Override
     public Object visit(org.opengis.filter.expression.Function expression, Object data) {
         super.visit(expression, data);
         if (expression instanceof VolatileFunction) {

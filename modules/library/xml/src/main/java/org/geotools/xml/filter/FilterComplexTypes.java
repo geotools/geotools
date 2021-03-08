@@ -77,6 +77,7 @@ public class FilterComplexTypes {
         };
         private static Choice choice =
                 new ChoiceGT(elements) {
+                    @Override
                     public int getMaxOccurs() {
                         return Integer.MAX_VALUE;
                     }
@@ -87,11 +88,13 @@ public class FilterComplexTypes {
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChild() */
+        @Override
         public ElementGrouping getChild() {
             return choice;
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChildElements() */
+        @Override
         public Element[] getChildElements() {
             return elements;
         }
@@ -100,6 +103,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
+        @Override
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException, SAXNotSupportedException {
@@ -124,11 +128,13 @@ public class FilterComplexTypes {
         }
 
         /** @see org.geotools.xml.schema.Type#getName() */
+        @Override
         public String getName() {
             return "Comparison_OperatorsType";
         }
 
         /** @see org.geotools.xml.schema.Type#getInstanceType() */
+        @Override
         public Class<?> getInstanceType() {
             return FilterCapabilities.class;
         }
@@ -137,6 +143,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             // TODO Auto-generated method stub
             return false;
@@ -146,6 +153,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(
                 Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
@@ -164,6 +172,7 @@ public class FilterComplexTypes {
         };
         private static Choice choice =
                 new ChoiceGT(elements) {
+                    @Override
                     public int getMaxOccurs() {
                         return Integer.MAX_VALUE;
                     }
@@ -174,11 +183,13 @@ public class FilterComplexTypes {
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChild() */
+        @Override
         public ElementGrouping getChild() {
             return choice;
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChildElements() */
+        @Override
         public Element[] getChildElements() {
             return elements;
         }
@@ -187,6 +198,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
+        @Override
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException, SAXNotSupportedException {
@@ -208,11 +220,13 @@ public class FilterComplexTypes {
         }
 
         /** @see org.geotools.xml.schema.Type#getName() */
+        @Override
         public String getName() {
             return "Comparison_OperatorsType";
         }
 
         /** @see org.geotools.xml.schema.Type#getInstanceType() */
+        @Override
         public Class getInstanceType() {
             return FilterCapabilities.class;
         }
@@ -221,6 +235,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             // TODO Auto-generated method stub
             return false;
@@ -230,6 +245,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(
                 Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
@@ -246,16 +262,19 @@ public class FilterComplexTypes {
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChild() */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChildElements() */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getParent() */
+        @Override
         public Type getParent() {
             return XSISimpleTypes.String.getInstance();
         }
@@ -264,6 +283,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
+        @Override
         public Object getValue(
                 Element element,
                 ElementValue[] value,
@@ -277,11 +297,13 @@ public class FilterComplexTypes {
         }
 
         /** @see org.geotools.xml.schema.Type#getName() */
+        @Override
         public String getName() {
             return "Function_NameType";
         }
 
         /** @see org.geotools.xml.schema.Type#getInstanceType() */
+        @Override
         public Class getInstanceType() {
             return FilterCapabilities.class;
         }
@@ -290,6 +312,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             // TODO Auto-generated method stub
             return false;
@@ -299,6 +322,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(
                 Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
@@ -306,6 +330,7 @@ public class FilterComplexTypes {
             throw new OperationNotSupportedException();
         }
 
+        @Override
         public boolean isMixed() {
             return true;
         }
@@ -319,6 +344,7 @@ public class FilterComplexTypes {
                 };
         private static Sequence seq =
                 new SequenceGT(elements) {
+                    @Override
                     public int getMaxOccurs() {
                         return Integer.MAX_VALUE;
                     }
@@ -329,11 +355,13 @@ public class FilterComplexTypes {
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChild() */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChildElements() */
+        @Override
         public Element[] getChildElements() {
             return elements;
         }
@@ -342,6 +370,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
+        @Override
         public Object getValue(
                 Element element,
                 ElementValue[] value,
@@ -355,11 +384,13 @@ public class FilterComplexTypes {
         }
 
         /** @see org.geotools.xml.schema.Type#getName() */
+        @Override
         public String getName() {
             return "Function_NamesType";
         }
 
         /** @see org.geotools.xml.schema.Type#getInstanceType() */
+        @Override
         public Class getInstanceType() {
             return FilterCapabilities.class;
         }
@@ -368,6 +399,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             // TODO Auto-generated method stub
             return false;
@@ -377,6 +409,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(
                 Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
@@ -398,11 +431,13 @@ public class FilterComplexTypes {
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChild() */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChildElements() */
+        @Override
         public Element[] getChildElements() {
             return elements;
         }
@@ -411,6 +446,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
+        @Override
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
@@ -426,11 +462,13 @@ public class FilterComplexTypes {
         }
 
         /** @see org.geotools.xml.schema.Type#getName() */
+        @Override
         public String getName() {
             return "FunctionsType";
         }
 
         /** @see org.geotools.xml.schema.Type#getInstanceType() */
+        @Override
         public Class getInstanceType() {
             return null;
         }
@@ -439,6 +477,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             // TODO Auto-generated method stub
             return false;
@@ -448,6 +487,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(
                 Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
@@ -474,6 +514,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
+        @Override
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException, SAXNotSupportedException {
@@ -521,12 +562,14 @@ public class FilterComplexTypes {
         }
 
         /** @see org.geotools.xml.schema.Type#getName() */
+        @Override
         public String getName() {
             //            return "Filter_CapabilitiesType";
             return "";
         }
 
         /** @see org.geotools.xml.schema.Type#getInstanceType() */
+        @Override
         public Class getInstanceType() {
             return FilterCapabilities.class;
         }
@@ -535,6 +578,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             // TODO Auto-generated method stub
             return false;
@@ -544,6 +588,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(
                 Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
@@ -552,11 +597,13 @@ public class FilterComplexTypes {
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChild() */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChildElements() */
+        @Override
         public Element[] getChildElements() {
             return elements;
         }
@@ -571,6 +618,7 @@ public class FilterComplexTypes {
         };
         private static Choice choice =
                 new ChoiceGT(elements) {
+                    @Override
                     public int getMaxOccurs() {
                         return Integer.MAX_VALUE;
                     }
@@ -581,11 +629,13 @@ public class FilterComplexTypes {
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChild() */
+        @Override
         public ElementGrouping getChild() {
             return choice;
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChildElements() */
+        @Override
         public Element[] getChildElements() {
             return elements;
         }
@@ -594,6 +644,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
+        @Override
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException, SAXNotSupportedException {
@@ -633,11 +684,13 @@ public class FilterComplexTypes {
         }
 
         /** @see org.geotools.xml.schema.Type#getName() */
+        @Override
         public String getName() {
             return "Scalar_CapabilitiesType";
         }
 
         /** @see org.geotools.xml.schema.Type#getInstanceType() */
+        @Override
         public Class getInstanceType() {
             return FilterCapabilities.class;
         }
@@ -646,6 +699,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             // TODO Auto-generated method stub
             return false;
@@ -655,6 +709,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(
                 Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
@@ -675,11 +730,13 @@ public class FilterComplexTypes {
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChild() */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChildElements() */
+        @Override
         public Element[] getChildElements() {
             return elements;
         }
@@ -688,6 +745,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
+        @Override
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException, SAXNotSupportedException {
@@ -703,11 +761,13 @@ public class FilterComplexTypes {
         }
 
         /** @see org.geotools.xml.schema.Type#getName() */
+        @Override
         public String getName() {
             return "Spatial_CapabilitiesType";
         }
 
         /** @see org.geotools.xml.schema.Type#getInstanceType() */
+        @Override
         public Class getInstanceType() {
             return FilterCapabilities.class;
         }
@@ -716,6 +776,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             // TODO Auto-generated method stub
             return false;
@@ -725,6 +786,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(
                 Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
@@ -750,6 +812,7 @@ public class FilterComplexTypes {
         };
         private static Choice choice =
                 new ChoiceGT(elements) {
+                    @Override
                     public int getMaxOccurs() {
                         return Integer.MAX_VALUE;
                     }
@@ -760,11 +823,13 @@ public class FilterComplexTypes {
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChild() */
+        @Override
         public ElementGrouping getChild() {
             return choice;
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChildElements() */
+        @Override
         public Element[] getChildElements() {
             return elements;
         }
@@ -773,6 +838,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
+        @Override
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException, SAXNotSupportedException {
@@ -794,11 +860,13 @@ public class FilterComplexTypes {
         }
 
         /** @see org.geotools.xml.schema.Type#getName() */
+        @Override
         public String getName() {
             return "Spatial_OperatorsType";
         }
 
         /** @see org.geotools.xml.schema.Type#getInstanceType() */
+        @Override
         public Class getInstanceType() {
             return FilterCapabilities.class;
         }
@@ -807,6 +875,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             // TODO Auto-generated method stub
             return false;
@@ -816,6 +885,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(
                 Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
@@ -832,16 +902,19 @@ public class FilterComplexTypes {
             return instance;
         }
 
+        @Override
         public boolean isAbstract() {
             return true;
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChild() */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChildElements() */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -850,6 +923,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
+        @Override
         public Object getValue(
                 Element element,
                 ElementValue[] value,
@@ -860,11 +934,13 @@ public class FilterComplexTypes {
         }
 
         /** @see org.geotools.xml.schema.Type#getName() */
+        @Override
         public String getName() {
             return "ExpressionType";
         }
 
         /** @see org.geotools.xml.schema.Type#getInstanceType() */
+        @Override
         public Class getInstanceType() {
             return Expression.class;
         }
@@ -873,6 +949,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if (hints != null && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
@@ -891,6 +968,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(
                 Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
@@ -1014,10 +1092,12 @@ public class FilterComplexTypes {
         private static Element[] elems =
                 new Element[] {
                     new FilterElement("expression", ExpressionType.getInstance()) {
+                        @Override
                         public int getMinOccurs() {
                             return 2;
                         }
 
+                        @Override
                         public int getMaxOccurs() {
                             return 2;
                         }
@@ -1029,16 +1109,19 @@ public class FilterComplexTypes {
             return instance;
         }
 
+        @Override
         public Type getParent() {
             return ExpressionType.getInstance();
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChild() */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChildElements() */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -1047,6 +1130,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
+        @Override
         public Object getValue(
                 Element element,
                 ElementValue[] value,
@@ -1057,11 +1141,13 @@ public class FilterComplexTypes {
         }
 
         /** @see org.geotools.xml.schema.Type#getName() */
+        @Override
         public String getName() {
             return "BinaryOperatorType";
         }
 
         /** @see org.geotools.xml.schema.Type#getInstanceType() */
+        @Override
         public Class getInstanceType() {
             return BinaryExpression.class;
         }
@@ -1070,6 +1156,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if (hints != null && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
@@ -1089,6 +1176,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(
                 Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
@@ -1121,10 +1209,12 @@ public class FilterComplexTypes {
         private static Element[] elems =
                 new Element[] {
                     new FilterElement("expression", ExpressionType.getInstance()) {
+                        @Override
                         public int getMinOccurs() {
                             return 0;
                         }
 
+                        @Override
                         public int getMaxOccurs() {
                             return Integer.MAX_VALUE;
                         }
@@ -1141,20 +1231,24 @@ public class FilterComplexTypes {
             return instance;
         }
 
+        @Override
         public Attribute[] getAttributes() {
             return attrs;
         }
 
+        @Override
         public Type getParent() {
             return ExpressionType.getInstance();
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChild() */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChildElements() */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -1163,6 +1257,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
+        @Override
         public Object getValue(
                 Element element,
                 ElementValue[] value,
@@ -1172,11 +1267,13 @@ public class FilterComplexTypes {
         }
 
         /** @see org.geotools.xml.schema.Type#getName() */
+        @Override
         public String getName() {
             return "FunctionType";
         }
 
         /** @see org.geotools.xml.schema.Type#getInstanceType() */
+        @Override
         public Class getInstanceType() {
             return FunctionExpression.class;
         }
@@ -1185,6 +1282,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             if (hints != null && hints.containsKey(FilterSchema.FILTER_CAP_KEY)) {
                 FilterCapabilities fc = (FilterCapabilities) hints.get(FilterSchema.FILTER_CAP_KEY);
@@ -1204,6 +1302,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(
                 Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
@@ -1247,20 +1346,24 @@ public class FilterComplexTypes {
             return instance;
         }
 
+        @Override
         public boolean isMixed() {
             return true;
         }
 
+        @Override
         public Type getParent() {
             return ExpressionType.getInstance();
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChild() */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChildElements() */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -1269,6 +1372,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
+        @Override
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
@@ -1294,11 +1398,13 @@ public class FilterComplexTypes {
         }
 
         /** @see org.geotools.xml.schema.Type#getName() */
+        @Override
         public String getName() {
             return "LiteralType";
         }
 
         /** @see org.geotools.xml.schema.Type#getInstanceType() */
+        @Override
         public Class getInstanceType() {
             return Literal.class;
         }
@@ -1307,6 +1413,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return (element.getType() != null)
                     && getName().equals(element.getType().getName())
@@ -1317,6 +1424,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(
                 Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
@@ -1377,20 +1485,24 @@ public class FilterComplexTypes {
         //            <xsd:extension base="ogc:ExpressionType"/>
         //          </xsd:complexContent>
         //        </xsd:complexType>
+        @Override
         public boolean isMixed() {
             return true;
         }
 
+        @Override
         public Type getParent() {
             return ExpressionType.getInstance();
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChild() */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChildElements() */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -1399,6 +1511,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
+        @Override
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
@@ -1416,11 +1529,13 @@ public class FilterComplexTypes {
         }
 
         /** @see org.geotools.xml.schema.Type#getName() */
+        @Override
         public String getName() {
             return "PropertyNameType";
         }
 
         /** @see org.geotools.xml.schema.Type#getInstanceType() */
+        @Override
         public Class getInstanceType() {
             return PropertyName.class;
         }
@@ -1429,6 +1544,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return (value instanceof PropertyName || value instanceof String)
                     && (element.getType() != null)
@@ -1439,6 +1555,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(
                 Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
@@ -1513,20 +1630,24 @@ public class FilterComplexTypes {
             return instance;
         }
 
+        @Override
         public boolean isMixed() {
             return true;
         }
 
+        @Override
         public Attribute[] getAttributes() {
             return attrs;
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChild() */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChildElements() */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -1535,6 +1656,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.ComplexType#cache(org.geotools.xml.schema.Element,
          *     java.util.Map)
          */
+        @Override
         public boolean cache(Element element, Map<String, Object> hints) {
             return (hints != null) && hints.containsKey(CACHE_SERVICE_EXCEPTIONS);
         }
@@ -1543,6 +1665,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
+        @Override
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws SAXException, SAXNotSupportedException {
@@ -1580,11 +1703,13 @@ public class FilterComplexTypes {
         }
 
         /** @see org.geotools.xml.schema.Type#getName() */
+        @Override
         public String getName() {
             return "ServiceExceptionType";
         }
 
         /** @see org.geotools.xml.schema.Type#getInstanceType() */
+        @Override
         public Class getInstanceType() {
             return ServiceException.class;
         }
@@ -1593,6 +1718,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             // TODO Auto-generated method stub
             return false;
@@ -1602,6 +1728,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(
                 Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
@@ -1631,10 +1758,12 @@ public class FilterComplexTypes {
         private static Element[] elems =
                 new Element[] {
                     new FilterElement("ServiceException", ServiceExceptionType.getInstance()) {
+                        @Override
                         public int getMinOccurs() {
                             return 0;
                         }
 
+                        @Override
                         public int getMaxOccurs() {
                             return Integer.MAX_VALUE;
                         }
@@ -1656,16 +1785,19 @@ public class FilterComplexTypes {
             return instance;
         }
 
+        @Override
         public Attribute[] getAttributes() {
             return attrs;
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChild() */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChildElements() */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -1674,6 +1806,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
+        @Override
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws SAXException, SAXNotSupportedException {
@@ -1694,11 +1827,13 @@ public class FilterComplexTypes {
         }
 
         /** @see org.geotools.xml.schema.Type#getName() */
+        @Override
         public String getName() {
             return "ServiceExceptionReportType";
         }
 
         /** @see org.geotools.xml.schema.Type#getInstanceType() */
+        @Override
         public Class getInstanceType() {
             return ServiceException[].class;
         }
@@ -1707,6 +1842,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             // TODO Auto-generated method stub
             return false;
@@ -1716,6 +1852,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(
                 Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
@@ -1731,11 +1868,13 @@ public class FilterComplexTypes {
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChild() */
+        @Override
         public ElementGrouping getChild() {
             return null;
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChildElements() */
+        @Override
         public Element[] getChildElements() {
             return null;
         }
@@ -1744,6 +1883,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
+        @Override
         public Object getValue(
                 Element element,
                 ElementValue[] value,
@@ -1753,11 +1893,13 @@ public class FilterComplexTypes {
         }
 
         /** @see org.geotools.xml.schema.Type#getName() */
+        @Override
         public String getName() {
             return null;
         }
 
         /** @see org.geotools.xml.schema.Type#getInstanceType() */
+        @Override
         public Class getInstanceType() {
             return null;
         }
@@ -1766,6 +1908,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return false;
         }
@@ -1774,6 +1917,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(
                 Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
@@ -1800,12 +1944,14 @@ public class FilterComplexTypes {
         private static Element[] loadE() {
             Element exp =
                     new FilterElement("expression", ExpressionType.getInstance()) {
+                        @Override
                         public boolean isAbstract() {
                             return true;
                         }
                     };
             return new Element[] {
                 new FilterElement("PropertyName", PropertyNameType.getInstance(), exp) {
+                    @Override
                     public int getMaxOccurs() {
                         return ElementGrouping.UNBOUNDED;
                     }
@@ -1825,11 +1971,13 @@ public class FilterComplexTypes {
                             false)
                 };
         /** @see org.geotools.xml.schema.ComplexType#getChild() */
+        @Override
         public ElementGrouping getChild() {
             return seq;
         }
 
         /** @see org.geotools.xml.schema.ComplexType#getChildElements() */
+        @Override
         public Element[] getChildElements() {
             return elems;
         }
@@ -1839,6 +1987,7 @@ public class FilterComplexTypes {
          *
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */
+        @Override
         public Attribute[] getAttributes() {
             return attrs;
         }
@@ -1846,6 +1995,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
+        @Override
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException {
@@ -1853,11 +2003,13 @@ public class FilterComplexTypes {
         }
 
         /** @see org.geotools.xml.schema.Type#getName() */
+        @Override
         public String getName() {
             return "SortByType";
         }
 
         /** @see org.geotools.xml.schema.Type#getInstanceType() */
+        @Override
         public Class getInstanceType() {
             return PropertyName[].class;
         }
@@ -1866,6 +2018,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return element != null
                     && element.getType().equals(this)
@@ -1877,6 +2030,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(
                 Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
@@ -1918,6 +2072,7 @@ public class FilterComplexTypes {
          *
          * @see org.geotools.xml.schema.SimpleType#getFinal()
          */
+        @Override
         public int getFinal() {
             return 0;
         }
@@ -1926,6 +2081,7 @@ public class FilterComplexTypes {
          *
          * @see org.geotools.xml.schema.SimpleType#getId()
          */
+        @Override
         public String getId() {
             return null;
         }
@@ -1935,6 +2091,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.SimpleType#toAttribute(org.geotools.xml.schema.Attribute,
          *     java.lang.Object, java.util.Map)
          */
+        @Override
         public AttributeValue toAttribute(
                 Attribute attribute, Object value, Map<String, Object> hints)
                 throws OperationNotSupportedException {
@@ -1947,6 +2104,7 @@ public class FilterComplexTypes {
          *     org.geotools.xml.schema.SimpleType#canCreateAttributes(org.geotools.xml.schema.Attribute,
          *     java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canCreateAttributes(
                 Attribute attribute, Object value, Map<String, Object> hints) {
             return false;
@@ -1956,6 +2114,7 @@ public class FilterComplexTypes {
          *
          * @see org.geotools.xml.schema.SimpleType#getChildType()
          */
+        @Override
         public int getChildType() {
             return RESTRICTION;
         }
@@ -1964,6 +2123,7 @@ public class FilterComplexTypes {
          *
          * @see org.geotools.xml.schema.SimpleType#getParents()
          */
+        @Override
         public SimpleType[] getParents() {
             return parents;
         }
@@ -1975,6 +2135,7 @@ public class FilterComplexTypes {
          *
          * @see org.geotools.xml.schema.SimpleType#getFacets()
          */
+        @Override
         public Facet[] getFacets() {
             return facets;
         }
@@ -1989,6 +2150,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#getValue(org.geotools.xml.schema.Element,
          *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
          */
+        @Override
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws OperationNotSupportedException {
@@ -1999,6 +2161,7 @@ public class FilterComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getName()
          */
+        @Override
         public String getName() {
             return "SortOrderType";
         }
@@ -2007,6 +2170,7 @@ public class FilterComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getNamespace()
          */
+        @Override
         public URI getNamespace() {
             return FilterSchema.NAMESPACE;
         }
@@ -2015,6 +2179,7 @@ public class FilterComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#getInstanceType()
          */
+        @Override
         public Class getInstanceType() {
             return String.class;
         }
@@ -2024,6 +2189,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
          *     java.lang.Object, java.util.Map)
          */
+        @Override
         public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
             return false;
         }
@@ -2033,6 +2199,7 @@ public class FilterComplexTypes {
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
+        @Override
         public void encode(
                 Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws OperationNotSupportedException {
@@ -2043,6 +2210,7 @@ public class FilterComplexTypes {
          *
          * @see org.geotools.xml.schema.Type#findChildElement(java.lang.String)
          */
+        @Override
         public Element findChildElement(String name) {
             return null;
         }

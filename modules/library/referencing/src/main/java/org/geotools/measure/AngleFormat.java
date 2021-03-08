@@ -831,6 +831,7 @@ public class AngleFormat extends Format {
      * @throws IllegalArgumentException if {@code obj} if not an object of class {@link Angle} or
      *     {@link Number}.
      */
+    @Override
     public synchronized StringBuffer format(
             final Object obj, StringBuffer toAppendTo, final FieldPosition pos)
             throws IllegalArgumentException {
@@ -1409,6 +1410,7 @@ public class AngleFormat extends Format {
      * @param pos Position where to start parsing.
      * @return The parsed string as an {@link Angle}, {@link Latitude} or {@link Longitude} object.
      */
+    @Override
     public Angle parseObject(final String source, final ParsePosition pos) {
         return parse(source, pos);
     }

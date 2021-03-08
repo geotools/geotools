@@ -63,6 +63,7 @@ public abstract class AbstractPositionalAccuracyTypeImpl extends MinimalEObjectI
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getMeasureDescription() {
         return measureDescription;
     }
@@ -87,6 +88,7 @@ public abstract class AbstractPositionalAccuracyTypeImpl extends MinimalEObjectI
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMeasureDescription(CodeType newMeasureDescription) {
         if (newMeasureDescription != measureDescription) {
             NotificationChain msgs = null;

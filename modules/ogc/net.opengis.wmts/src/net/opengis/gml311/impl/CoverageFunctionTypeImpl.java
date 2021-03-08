@@ -80,6 +80,7 @@ public class CoverageFunctionTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StringOrRefType getMappingRule() {
         return mappingRule;
     }
@@ -104,6 +105,7 @@ public class CoverageFunctionTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMappingRule(StringOrRefType newMappingRule) {
         if (newMappingRule != mappingRule) {
             NotificationChain msgs = null;
@@ -123,6 +125,7 @@ public class CoverageFunctionTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getGridFunctionGroup() {
         if (gridFunctionGroup == null) {
             gridFunctionGroup = new BasicFeatureMap(this, Gml311Package.COVERAGE_FUNCTION_TYPE__GRID_FUNCTION_GROUP);
@@ -135,6 +138,7 @@ public class CoverageFunctionTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GridFunctionType getGridFunction() {
         return (GridFunctionType)getGridFunctionGroup().get(Gml311Package.eINSTANCE.getCoverageFunctionType_GridFunction(), true);
     }
@@ -153,6 +157,7 @@ public class CoverageFunctionTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGridFunction(GridFunctionType newGridFunction) {
         ((FeatureMap.Internal)getGridFunctionGroup()).set(Gml311Package.eINSTANCE.getCoverageFunctionType_GridFunction(), newGridFunction);
     }

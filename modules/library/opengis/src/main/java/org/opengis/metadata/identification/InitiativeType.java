@@ -114,6 +114,7 @@ public final class InitiativeType extends CodeList<InitiativeType> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public InitiativeType[] family() {
         return values();
     }

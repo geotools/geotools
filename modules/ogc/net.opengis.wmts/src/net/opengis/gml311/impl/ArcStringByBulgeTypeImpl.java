@@ -177,6 +177,7 @@ public class ArcStringByBulgeTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getGroup() {
         if (group == null) {
             group = new BasicFeatureMap(this, Gml311Package.ARC_STRING_BY_BULGE_TYPE__GROUP);
@@ -189,6 +190,7 @@ public class ArcStringByBulgeTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<DirectPositionType> getPos() {
         return getGroup().list(Gml311Package.eINSTANCE.getArcStringByBulgeType_Pos());
     }
@@ -198,6 +200,7 @@ public class ArcStringByBulgeTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<PointPropertyType> getPointProperty() {
         return getGroup().list(Gml311Package.eINSTANCE.getArcStringByBulgeType_PointProperty());
     }
@@ -207,6 +210,7 @@ public class ArcStringByBulgeTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<PointPropertyType> getPointRep() {
         return getGroup().list(Gml311Package.eINSTANCE.getArcStringByBulgeType_PointRep());
     }
@@ -216,6 +220,7 @@ public class ArcStringByBulgeTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectPositionListType getPosList() {
         return posList;
     }
@@ -240,6 +245,7 @@ public class ArcStringByBulgeTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPosList(DirectPositionListType newPosList) {
         if (newPosList != posList) {
             NotificationChain msgs = null;
@@ -259,6 +265,7 @@ public class ArcStringByBulgeTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinatesType getCoordinates() {
         return coordinates;
     }
@@ -283,6 +290,7 @@ public class ArcStringByBulgeTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCoordinates(CoordinatesType newCoordinates) {
         if (newCoordinates != coordinates) {
             NotificationChain msgs = null;
@@ -302,6 +310,7 @@ public class ArcStringByBulgeTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<Double> getBulge() {
         if (bulge == null) {
             bulge = new EDataTypeEList<>(Double.class, this, Gml311Package.ARC_STRING_BY_BULGE_TYPE__BULGE);
@@ -314,6 +323,7 @@ public class ArcStringByBulgeTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<VectorType> getNormal() {
         if (normal == null) {
             normal = new EObjectContainmentEList<>(VectorType.class, this, Gml311Package.ARC_STRING_BY_BULGE_TYPE__NORMAL);
@@ -326,6 +336,7 @@ public class ArcStringByBulgeTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CurveInterpolationType getInterpolation() {
         return interpolation;
     }
@@ -335,6 +346,7 @@ public class ArcStringByBulgeTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setInterpolation(CurveInterpolationType newInterpolation) {
         CurveInterpolationType oldInterpolation = interpolation;
         interpolation = newInterpolation == null ? INTERPOLATION_EDEFAULT : newInterpolation;
@@ -349,6 +361,7 @@ public class ArcStringByBulgeTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetInterpolation() {
         CurveInterpolationType oldInterpolation = interpolation;
         boolean oldInterpolationESet = interpolationESet;
@@ -363,6 +376,7 @@ public class ArcStringByBulgeTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetInterpolation() {
         return interpolationESet;
     }
@@ -372,6 +386,7 @@ public class ArcStringByBulgeTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getNumArc() {
         return numArc;
     }
@@ -381,6 +396,7 @@ public class ArcStringByBulgeTypeImpl extends AbstractCurveSegmentTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setNumArc(BigInteger newNumArc) {
         BigInteger oldNumArc = numArc;
         numArc = newNumArc;

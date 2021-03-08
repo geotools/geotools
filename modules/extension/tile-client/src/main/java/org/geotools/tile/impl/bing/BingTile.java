@@ -53,6 +53,7 @@ public class BingTile extends Tile {
                 service);
     }
 
+    @Override
     public URL getUrl() {
         String url = this.service.getBaseUrl().replace("${code}", getTileIdentifier().getCode());
         try {

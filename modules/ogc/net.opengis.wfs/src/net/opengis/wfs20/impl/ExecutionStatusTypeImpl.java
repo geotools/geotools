@@ -83,6 +83,7 @@ public class ExecutionStatusTypeImpl extends EObjectImpl implements ExecutionSta
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getStatus() {
     return status;
   }
@@ -92,6 +93,7 @@ public class ExecutionStatusTypeImpl extends EObjectImpl implements ExecutionSta
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setStatus(String newStatus) {
     String oldStatus = status;
     status = newStatus;
@@ -106,6 +108,7 @@ public class ExecutionStatusTypeImpl extends EObjectImpl implements ExecutionSta
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetStatus() {
     String oldStatus = status;
     boolean oldStatusESet = statusESet;
@@ -120,6 +123,7 @@ public class ExecutionStatusTypeImpl extends EObjectImpl implements ExecutionSta
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetStatus() {
     return statusESet;
   }

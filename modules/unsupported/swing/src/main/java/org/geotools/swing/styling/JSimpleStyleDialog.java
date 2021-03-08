@@ -21,8 +21,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Frame;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
@@ -36,8 +34,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.MutableComboBoxModel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import net.miginfocom.swing.MigLayout;
 import org.geotools.data.DataStore;
 import org.geotools.factory.CommonFactoryFinder;
@@ -397,6 +393,7 @@ public class JSimpleStyleDialog extends JDialog {
      *
      * @return fill opacity between 0 and 1
      */
+    @Override
     public float getOpacity() {
         return opacity;
     }
@@ -471,12 +468,7 @@ public class JSimpleStyleDialog extends JDialog {
         panel.add(label, "wrap");
 
         JButton btn = new JButton("Color...");
-        btn.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        chooseLineColor();
-                    }
-                });
+        btn.addActionListener(e -> chooseLineColor());
         panel.add(btn, "gapbefore indent");
         controls.put(btn, ControlCategory.LINE);
 
@@ -493,12 +485,7 @@ public class JSimpleStyleDialog extends JDialog {
         }
         final JComboBox<Integer> lineWidthCBox = new JComboBox<>(widths);
         lineWidthCBox.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        lineWidth =
-                                ((Number) lineWidthCBox.getModel().getSelectedItem()).intValue();
-                    }
-                });
+                e -> lineWidth = ((Number) lineWidthCBox.getModel().getSelectedItem()).intValue());
         panel.add(lineWidthCBox, "wrap");
         controls.put(lineWidthCBox, ControlCategory.LINE);
 
@@ -510,12 +497,7 @@ public class JSimpleStyleDialog extends JDialog {
         panel.add(label, "wrap");
 
         btn = new JButton("Color...");
-        btn.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        chooseFillColor();
-                    }
-                });
+        btn.addActionListener(e -> chooseFillColor());
         panel.add(btn, "gapbefore indent");
         controls.put(btn, ControlCategory.FILL);
 
@@ -530,12 +512,7 @@ public class JSimpleStyleDialog extends JDialog {
         fillOpacitySlider.setPaintLabels(true);
         fillOpacitySlider.setMajorTickSpacing(20);
         fillOpacitySlider.addChangeListener(
-                new ChangeListener() {
-
-                    public void stateChanged(ChangeEvent e) {
-                        opacity = (float) fillOpacitySlider.getValue() / 100;
-                    }
-                });
+                e -> opacity = (float) fillOpacitySlider.getValue() / 100);
         panel.add(fillOpacitySlider, "span, wrap");
         controls.put(fillOpacitySlider, ControlCategory.FILL);
 
@@ -555,12 +532,7 @@ public class JSimpleStyleDialog extends JDialog {
         }
         pointSizeCBox = new JComboBox<>(sizes);
         pointSizeCBox.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        pointSize =
-                                ((Number) pointSizeCBox.getModel().getSelectedItem()).intValue();
-                    }
-                });
+                e -> pointSize = ((Number) pointSizeCBox.getModel().getSelectedItem()).intValue());
         panel.add(pointSizeCBox);
         controls.put(pointSizeCBox, ControlCategory.POINT);
 
@@ -569,13 +541,10 @@ public class JSimpleStyleDialog extends JDialog {
 
         pointSymbolCBox = new JComboBox<>(WELL_KNOWN_SYMBOL_NAMES);
         pointSymbolCBox.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
+                e ->
                         pointSymbolName =
                                 WELL_KNOWN_SYMBOL_NAMES[pointSymbolCBox.getSelectedIndex()]
-                                        .toString();
-                    }
-                });
+                                        .toString());
         panel.add(pointSymbolCBox, "wrap");
         controls.put(pointSymbolCBox, ControlCategory.POINT);
 
@@ -587,29 +556,18 @@ public class JSimpleStyleDialog extends JDialog {
         panel.add(label, "wrap");
 
         final JButton fontBtn = new JButton("Font...");
-        fontBtn.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        chooseLabelFont();
-                    }
-                });
+        fontBtn.addActionListener(e -> chooseLabelFont());
 
         labelCBox = new JComboBox<>();
         labelCBox.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        labelField = labelCBox.getModel().getSelectedItem().toString();
-                    }
-                });
+                e -> labelField = labelCBox.getModel().getSelectedItem().toString());
 
         final JCheckBox checkBox = new JCheckBox();
         checkBox.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        labelFeatures = checkBox.isSelected();
-                        labelCBox.setEnabled(labelFeatures);
-                        fontBtn.setEnabled(labelFeatures);
-                    }
+                e -> {
+                    labelFeatures = checkBox.isSelected();
+                    labelCBox.setEnabled(labelFeatures);
+                    fontBtn.setEnabled(labelFeatures);
                 });
         panel.add(checkBox, "gapbefore indent, span, split 3");
 
@@ -625,21 +583,17 @@ public class JSimpleStyleDialog extends JDialog {
          */
         btn = new JButton("Apply");
         btn.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        completed = true;
-                        setVisible(false);
-                    }
+                e -> {
+                    completed = true;
+                    setVisible(false);
                 });
         panel.add(btn, "span, split 2, align right");
 
         btn = new JButton("Cancel");
         btn.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        geomType = null;
-                        setVisible(false);
-                    }
+                e -> {
+                    geomType = null;
+                    setVisible(false);
                 });
         panel.add(btn);
 

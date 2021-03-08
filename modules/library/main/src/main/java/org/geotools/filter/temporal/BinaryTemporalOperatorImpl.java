@@ -35,18 +35,22 @@ public abstract class BinaryTemporalOperatorImpl implements BinaryTemporalOperat
         this.matchAction = matchAction;
     }
 
+    @Override
     public Expression getExpression1() {
         return e1;
     }
 
+    @Override
     public Expression getExpression2() {
         return e2;
     }
 
+    @Override
     public MatchAction getMatchAction() {
         return matchAction;
     }
 
+    @Override
     public boolean evaluate(Object object) {
         TemporalPrimitive left = toTemporal(object, e1);
         TemporalPrimitive right = toTemporal(object, e2);

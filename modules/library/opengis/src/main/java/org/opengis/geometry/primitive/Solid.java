@@ -50,6 +50,7 @@ public interface Solid extends Primitive {
      *
      * @return The sets of positions on the boundary.
      */
+    @Override
     @UML(identifier = "boundary", obligation = MANDATORY, specification = ISO_19107)
     SolidBoundary getBoundary();
 
@@ -77,6 +78,7 @@ public interface Solid extends Primitive {
      *
      * @issue http://jira.codehaus.org/browse/GEO-63
      */
+    @Override
     @Association("Oriented")
     @UML(identifier = "proxy", obligation = FORBIDDEN, specification = ISO_19107)
     OrientablePrimitive[] getProxy();

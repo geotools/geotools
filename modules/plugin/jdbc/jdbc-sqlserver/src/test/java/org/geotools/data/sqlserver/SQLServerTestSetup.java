@@ -44,12 +44,14 @@ public class SQLServerTestSetup extends JDBCTestSetup {
         return fixture;
     }
 
+    @Override
     protected void setUpDataStore(JDBCDataStore dataStore) {
         super.setUpDataStore(dataStore);
 
         dataStore.setDatabaseSchema(null);
     }
 
+    @Override
     protected void setUpData() throws Exception {
         // drop old data
         runSafe("DROP TABLE ft1");

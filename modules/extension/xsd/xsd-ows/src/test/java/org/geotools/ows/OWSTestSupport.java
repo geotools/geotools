@@ -21,6 +21,7 @@ import org.geotools.xsd.ows.OWSConfiguration;
 import org.geotools.xsd.test.XMLTestSupport;
 
 public class OWSTestSupport extends XMLTestSupport {
+    @Override
     protected Configuration createConfiguration() {
         return new OWSConfiguration();
     }

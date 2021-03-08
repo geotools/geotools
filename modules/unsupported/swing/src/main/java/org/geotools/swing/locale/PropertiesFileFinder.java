@@ -24,7 +24,6 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
@@ -251,14 +250,7 @@ public class PropertiesFileFinder {
         List<PropertiesFileInfo> pfiList = new ArrayList<>();
 
         if (!infoList.isEmpty()) {
-            Collections.sort(
-                    infoList,
-                    new Comparator<SingleFileInfo>() {
-                        @Override
-                        public int compare(SingleFileInfo o1, SingleFileInfo o2) {
-                            return o1.name.compareTo(o2.name);
-                        }
-                    });
+            Collections.sort(infoList, (o1, o2) -> o1.name.compareTo(o2.name));
 
             String curName = infoList.get(0).name;
             List<Locale> locales = new ArrayList<>();

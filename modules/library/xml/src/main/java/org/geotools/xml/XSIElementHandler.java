@@ -113,6 +113,7 @@ public abstract class XSIElementHandler implements Serializable {
     public abstract String getLocalName();
 
     /** @see java.lang.Object#equals(java.lang.Object) */
+    @Override
     public boolean equals(Object obj) {
         if (super.equals(obj)) {
             return true;
@@ -132,6 +133,7 @@ public abstract class XSIElementHandler implements Serializable {
     }
 
     /** @see java.lang.Object#hashCode() */
+    @Override
     public abstract int hashCode();
 
     /** Sets the logging level for all XSIElementHandlers */

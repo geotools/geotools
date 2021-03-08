@@ -49,6 +49,7 @@ public class DefaultPeriod extends DefaultTemporalGeometricPrimitive implements 
     }
 
     /** Links this period to the instant at which it starts. */
+    @Override
     public Instant getBeginning() {
         return begining;
     }
@@ -62,6 +63,7 @@ public class DefaultPeriod extends DefaultTemporalGeometricPrimitive implements 
     }
 
     /** Links this period to the instant at which it ends. */
+    @Override
     public Instant getEnding() {
         return ending;
     }

@@ -486,6 +486,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getActionType() {
     return actionTypeEClass;
   }
@@ -494,6 +495,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getActionType_Message() {
     return (EAttribute)actionTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -502,6 +504,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getActionType_Code() {
     return (EAttribute)actionTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -510,6 +513,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getActionType_Locator() {
     return (EAttribute)actionTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -518,6 +522,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getBaseRequestType() {
     return baseRequestTypeEClass;
   }
@@ -526,6 +531,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getBaseRequestType_Handle() {
     return (EAttribute)baseRequestTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -534,6 +540,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getBaseRequestType_Service() {
     return (EAttribute)baseRequestTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -542,6 +549,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getBaseRequestType_Version() {
     return (EAttribute)baseRequestTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -550,6 +558,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getBaseRequestType_BaseUrl() {
     return (EAttribute)baseRequestTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -558,6 +567,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getBaseRequestType_ProvidedVersion() {
     return (EAttribute)baseRequestTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -566,6 +576,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getBaseRequestType_ExtendedProperties() {
     return (EAttribute)baseRequestTypeEClass.getEStructuralFeatures().get(5);
   }
@@ -574,6 +585,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getDeleteElementType() {
     return deleteElementTypeEClass;
   }
@@ -582,6 +594,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDeleteElementType_Filter() {
     return (EAttribute)deleteElementTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -590,6 +603,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDeleteElementType_Handle() {
     return (EAttribute)deleteElementTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -598,6 +612,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDeleteElementType_TypeName() {
     return (EAttribute)deleteElementTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -606,6 +621,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getDescribeFeatureTypeType() {
     return describeFeatureTypeTypeEClass;
   }
@@ -614,6 +630,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDescribeFeatureTypeType_TypeName() {
     return (EAttribute)describeFeatureTypeTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -622,6 +639,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDescribeFeatureTypeType_OutputFormat() {
     return (EAttribute)describeFeatureTypeTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -630,6 +648,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getDocumentRoot() {
     return documentRootEClass;
   }
@@ -638,6 +657,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDocumentRoot_Mixed() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(0);
   }
@@ -646,6 +666,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_XMLNSPrefixMap() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(1);
   }
@@ -654,6 +675,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_XSISchemaLocation() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(2);
   }
@@ -662,6 +684,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Delete() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(3);
   }
@@ -670,6 +693,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_DescribeFeatureType() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(4);
   }
@@ -678,6 +702,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_FeatureCollection() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(5);
   }
@@ -686,6 +711,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_FeatureTypeList() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(6);
   }
@@ -694,6 +720,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_GetCapabilities() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(7);
   }
@@ -702,6 +729,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_GetFeature() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(8);
   }
@@ -710,6 +738,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_GetFeatureWithLock() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(9);
   }
@@ -718,6 +747,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_GetGmlObject() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(10);
   }
@@ -726,6 +756,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Insert() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(11);
   }
@@ -734,6 +765,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_LockFeature() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(12);
   }
@@ -742,6 +774,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_LockFeatureResponse() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(13);
   }
@@ -750,6 +783,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDocumentRoot_LockId() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(14);
   }
@@ -758,6 +792,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Native() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(15);
   }
@@ -766,6 +801,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Property() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(16);
   }
@@ -774,6 +810,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDocumentRoot_PropertyName() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(17);
   }
@@ -782,6 +819,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Query() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(18);
   }
@@ -790,6 +828,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_ServesGMLObjectTypeList() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(19);
   }
@@ -798,6 +837,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_SupportsGMLObjectTypeList() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(20);
   }
@@ -806,6 +846,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Transaction() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(21);
   }
@@ -814,6 +855,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_TransactionResponse() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(22);
   }
@@ -822,6 +864,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Update() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(23);
   }
@@ -830,6 +873,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_WfsCapabilities() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(24);
   }
@@ -838,6 +882,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_XlinkPropertyName() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(25);
   }
@@ -846,6 +891,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getFeatureCollectionType() {
     return featureCollectionTypeEClass;
   }
@@ -854,6 +900,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getFeatureCollectionType_LockId() {
     return (EAttribute)featureCollectionTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -862,6 +909,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getFeatureCollectionType_TimeStamp() {
     return (EAttribute)featureCollectionTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -870,6 +918,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getFeatureCollectionType_NumberOfFeatures() {
     return (EAttribute)featureCollectionTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -878,6 +927,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getFeatureCollectionType_Feature() {
     return (EAttribute)featureCollectionTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -886,6 +936,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getFeatureTypeListType() {
     return featureTypeListTypeEClass;
   }
@@ -894,6 +945,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getFeatureTypeListType_Operations() {
     return (EReference)featureTypeListTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -902,6 +954,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getFeatureTypeListType_FeatureType() {
     return (EReference)featureTypeListTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -910,6 +963,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getFeatureTypeType() {
     return featureTypeTypeEClass;
   }
@@ -918,6 +972,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getFeatureTypeType_Name() {
     return (EAttribute)featureTypeTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -926,6 +981,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getFeatureTypeType_Title() {
     return (EAttribute)featureTypeTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -934,6 +990,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getFeatureTypeType_Abstract() {
     return (EAttribute)featureTypeTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -942,6 +999,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getFeatureTypeType_Keywords() {
     return (EReference)featureTypeTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -950,6 +1008,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getFeatureTypeType_DefaultSRS() {
     return (EAttribute)featureTypeTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -958,6 +1017,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getFeatureTypeType_OtherSRS() {
     return (EAttribute)featureTypeTypeEClass.getEStructuralFeatures().get(5);
   }
@@ -966,6 +1026,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getFeatureTypeType_NoSRS() {
     return (EReference)featureTypeTypeEClass.getEStructuralFeatures().get(6);
   }
@@ -974,6 +1035,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getFeatureTypeType_Operations() {
     return (EReference)featureTypeTypeEClass.getEStructuralFeatures().get(7);
   }
@@ -982,6 +1044,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getFeatureTypeType_OutputFormats() {
     return (EReference)featureTypeTypeEClass.getEStructuralFeatures().get(8);
   }
@@ -990,6 +1053,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getFeatureTypeType_WGS84BoundingBox() {
     return (EReference)featureTypeTypeEClass.getEStructuralFeatures().get(9);
   }
@@ -998,6 +1062,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getFeatureTypeType_MetadataURL() {
     return (EReference)featureTypeTypeEClass.getEStructuralFeatures().get(10);
   }
@@ -1006,6 +1071,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getFeaturesLockedType() {
     return featuresLockedTypeEClass;
   }
@@ -1014,6 +1080,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getFeaturesLockedType_Group() {
     return (EAttribute)featuresLockedTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1022,6 +1089,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getFeaturesLockedType_FeatureId() {
     return (EAttribute)featuresLockedTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1030,6 +1098,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getFeaturesNotLockedType() {
     return featuresNotLockedTypeEClass;
   }
@@ -1038,6 +1107,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getFeaturesNotLockedType_Group() {
     return (EAttribute)featuresNotLockedTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1046,6 +1116,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getFeaturesNotLockedType_FeatureId() {
     return (EAttribute)featuresNotLockedTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1054,6 +1125,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getGMLObjectTypeListType() {
     return gmlObjectTypeListTypeEClass;
   }
@@ -1062,6 +1134,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getGMLObjectTypeListType_GMLObjectType() {
     return (EReference)gmlObjectTypeListTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1070,6 +1143,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getGMLObjectTypeType() {
     return gmlObjectTypeTypeEClass;
   }
@@ -1078,6 +1152,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGMLObjectTypeType_Name() {
     return (EAttribute)gmlObjectTypeTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1086,6 +1161,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGMLObjectTypeType_Title() {
     return (EAttribute)gmlObjectTypeTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1094,6 +1170,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGMLObjectTypeType_Abstract() {
     return (EAttribute)gmlObjectTypeTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1102,6 +1179,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getGMLObjectTypeType_Keywords() {
     return (EReference)gmlObjectTypeTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -1110,6 +1188,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getGMLObjectTypeType_OutputFormats() {
     return (EReference)gmlObjectTypeTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -1118,6 +1197,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getGetCapabilitiesType() {
     return getCapabilitiesTypeEClass;
   }
@@ -1126,6 +1206,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetCapabilitiesType_Service() {
     return (EAttribute)getCapabilitiesTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1134,6 +1215,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getGetFeatureType() {
     return getFeatureTypeEClass;
   }
@@ -1142,6 +1224,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getGetFeatureType_Query() {
     return (EReference)getFeatureTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1150,6 +1233,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetFeatureType_MaxFeatures() {
     return (EAttribute)getFeatureTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1158,6 +1242,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetFeatureType_OutputFormat() {
     return (EAttribute)getFeatureTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1166,6 +1251,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetFeatureType_ResultType() {
     return (EAttribute)getFeatureTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -1174,6 +1260,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetFeatureType_TraverseXlinkDepth() {
     return (EAttribute)getFeatureTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -1182,6 +1269,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetFeatureType_TraverseXlinkExpiry() {
     return (EAttribute)getFeatureTypeEClass.getEStructuralFeatures().get(5);
   }
@@ -1190,6 +1278,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetFeatureType_FormatOptions() {
     return (EAttribute)getFeatureTypeEClass.getEStructuralFeatures().get(6);
   }
@@ -1198,6 +1287,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetFeatureType_Metadata() {
     return (EAttribute)getFeatureTypeEClass.getEStructuralFeatures().get(7);
   }
@@ -1206,6 +1296,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetFeatureType_StartIndex() {
     return (EAttribute)getFeatureTypeEClass.getEStructuralFeatures().get(8);
   }
@@ -1214,6 +1305,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetFeatureType_ViewParams() {
     return (EAttribute)getFeatureTypeEClass.getEStructuralFeatures().get(9);
   }
@@ -1222,6 +1314,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getGetFeatureWithLockType() {
     return getFeatureWithLockTypeEClass;
   }
@@ -1230,6 +1323,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetFeatureWithLockType_Expiry() {
     return (EAttribute)getFeatureWithLockTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1238,6 +1332,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getGetGmlObjectType() {
     return getGmlObjectTypeEClass;
   }
@@ -1246,6 +1341,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetGmlObjectType_GmlObjectId() {
     return (EAttribute)getGmlObjectTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1254,6 +1350,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetGmlObjectType_OutputFormat() {
     return (EAttribute)getGmlObjectTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1262,6 +1359,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetGmlObjectType_TraverseXlinkDepth() {
     return (EAttribute)getGmlObjectTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1270,6 +1368,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetGmlObjectType_TraverseXlinkExpiry() {
     return (EAttribute)getGmlObjectTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -1278,6 +1377,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getInsertElementType() {
     return insertElementTypeEClass;
   }
@@ -1286,6 +1386,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getInsertElementType_Feature() {
     return (EAttribute)insertElementTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1294,6 +1395,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getInsertElementType_Handle() {
     return (EAttribute)insertElementTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1302,6 +1404,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getInsertElementType_Idgen() {
     return (EAttribute)insertElementTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1310,6 +1413,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getInsertElementType_InputFormat() {
     return (EAttribute)insertElementTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -1318,6 +1422,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getInsertElementType_SrsName() {
     return (EAttribute)insertElementTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -1326,6 +1431,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getInsertResultsType() {
     return insertResultsTypeEClass;
   }
@@ -1334,6 +1440,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getInsertResultsType_Feature() {
     return (EReference)insertResultsTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1342,6 +1449,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getInsertedFeatureType() {
     return insertedFeatureTypeEClass;
   }
@@ -1350,6 +1458,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getInsertedFeatureType_FeatureId() {
     return (EAttribute)insertedFeatureTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1358,6 +1467,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getInsertedFeatureType_Handle() {
     return (EAttribute)insertedFeatureTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1366,6 +1476,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getLockFeatureResponseType() {
     return lockFeatureResponseTypeEClass;
   }
@@ -1374,6 +1485,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getLockFeatureResponseType_LockId() {
     return (EAttribute)lockFeatureResponseTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1382,6 +1494,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getLockFeatureResponseType_FeaturesLocked() {
     return (EReference)lockFeatureResponseTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1390,6 +1503,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getLockFeatureResponseType_FeaturesNotLocked() {
     return (EReference)lockFeatureResponseTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1398,6 +1512,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getLockFeatureType() {
     return lockFeatureTypeEClass;
   }
@@ -1406,6 +1521,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getLockFeatureType_Lock() {
     return (EReference)lockFeatureTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1414,6 +1530,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getLockFeatureType_Expiry() {
     return (EAttribute)lockFeatureTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1422,6 +1539,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getLockFeatureType_LockAction() {
     return (EAttribute)lockFeatureTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1430,6 +1548,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getLockType() {
     return lockTypeEClass;
   }
@@ -1438,6 +1557,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getLockType_Filter() {
     return (EAttribute)lockTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1446,6 +1566,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getLockType_Handle() {
     return (EAttribute)lockTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1454,6 +1575,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getLockType_TypeName() {
     return (EAttribute)lockTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1462,6 +1584,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getMetadataURLType() {
     return metadataURLTypeEClass;
   }
@@ -1470,6 +1593,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMetadataURLType_Value() {
     return (EAttribute)metadataURLTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1478,6 +1602,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMetadataURLType_Format() {
     return (EAttribute)metadataURLTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1486,6 +1611,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMetadataURLType_Type() {
     return (EAttribute)metadataURLTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1494,6 +1620,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getNativeType() {
     return nativeTypeEClass;
   }
@@ -1502,6 +1629,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getNativeType_SafeToIgnore() {
     return (EAttribute)nativeTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1510,6 +1638,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getNativeType_VendorId() {
     return (EAttribute)nativeTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1518,6 +1647,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getNativeType_Value() {
     return (EAttribute)nativeTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1526,6 +1656,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getNoSRSType() {
     return noSRSTypeEClass;
   }
@@ -1534,6 +1665,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getOperationsType() {
     return operationsTypeEClass;
   }
@@ -1542,6 +1674,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getOperationsType_Operation() {
     return (EAttribute)operationsTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1550,6 +1683,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getOutputFormatListType() {
     return outputFormatListTypeEClass;
   }
@@ -1558,6 +1692,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getOutputFormatListType_Group() {
     return (EAttribute)outputFormatListTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1566,6 +1701,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getOutputFormatListType_Format() {
     return (EAttribute)outputFormatListTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1574,6 +1710,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getPropertyType() {
     return propertyTypeEClass;
   }
@@ -1582,6 +1719,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getPropertyType_Name() {
     return (EAttribute)propertyTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1590,6 +1728,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getPropertyType_Value() {
     return (EAttribute)propertyTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1598,6 +1737,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getQueryType() {
     return queryTypeEClass;
   }
@@ -1606,6 +1746,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getQueryType_Group() {
     return (EAttribute)queryTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1614,6 +1755,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getQueryType_PropertyName() {
     return (EAttribute)queryTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1622,6 +1764,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getQueryType_XlinkPropertyName() {
     return (EReference)queryTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1630,6 +1773,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getQueryType_Function() {
     return (EAttribute)queryTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -1638,6 +1782,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getQueryType_Filter() {
     return (EAttribute)queryTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -1646,6 +1791,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getQueryType_SortBy() {
     return (EAttribute)queryTypeEClass.getEStructuralFeatures().get(5);
   }
@@ -1654,6 +1800,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getQueryType_FeatureVersion() {
     return (EAttribute)queryTypeEClass.getEStructuralFeatures().get(6);
   }
@@ -1662,6 +1809,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getQueryType_Handle() {
     return (EAttribute)queryTypeEClass.getEStructuralFeatures().get(7);
   }
@@ -1670,6 +1818,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getQueryType_SrsName() {
     return (EAttribute)queryTypeEClass.getEStructuralFeatures().get(8);
   }
@@ -1678,6 +1827,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getQueryType_TypeName() {
     return (EAttribute)queryTypeEClass.getEStructuralFeatures().get(9);
   }
@@ -1686,6 +1836,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getTransactionResponseType() {
     return transactionResponseTypeEClass;
   }
@@ -1694,6 +1845,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getTransactionResponseType_TransactionSummary() {
     return (EReference)transactionResponseTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1702,6 +1854,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getTransactionResponseType_TransactionResults() {
     return (EReference)transactionResponseTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1710,6 +1863,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getTransactionResponseType_InsertResults() {
     return (EReference)transactionResponseTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1718,6 +1872,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getTransactionResponseType_Version() {
     return (EAttribute)transactionResponseTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -1726,6 +1881,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getTransactionResultsType() {
     return transactionResultsTypeEClass;
   }
@@ -1734,6 +1890,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getTransactionResultsType_Handle() {
     return (EAttribute)transactionResultsTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1742,6 +1899,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getTransactionResultsType_Action() {
     return (EReference)transactionResultsTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1750,6 +1908,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getTransactionSummaryType() {
     return transactionSummaryTypeEClass;
   }
@@ -1758,6 +1917,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getTransactionSummaryType_TotalInserted() {
     return (EAttribute)transactionSummaryTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1766,6 +1926,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getTransactionSummaryType_TotalUpdated() {
     return (EAttribute)transactionSummaryTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1774,6 +1935,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getTransactionSummaryType_TotalDeleted() {
     return (EAttribute)transactionSummaryTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1782,6 +1944,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getTransactionType() {
     return transactionTypeEClass;
   }
@@ -1790,6 +1953,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getTransactionType_LockId() {
     return (EAttribute)transactionTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1798,6 +1962,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getTransactionType_Group() {
     return (EAttribute)transactionTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1806,6 +1971,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getTransactionType_Insert() {
     return (EReference)transactionTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1814,6 +1980,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getTransactionType_Update() {
     return (EReference)transactionTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -1822,6 +1989,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getTransactionType_Delete() {
     return (EReference)transactionTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -1830,6 +1998,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getTransactionType_Native() {
     return (EReference)transactionTypeEClass.getEStructuralFeatures().get(5);
   }
@@ -1838,6 +2007,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getTransactionType_ReleaseAction() {
     return (EAttribute)transactionTypeEClass.getEStructuralFeatures().get(6);
   }
@@ -1846,6 +2016,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getUpdateElementType() {
     return updateElementTypeEClass;
   }
@@ -1854,6 +2025,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getUpdateElementType_Property() {
     return (EReference)updateElementTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1862,6 +2034,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getUpdateElementType_Filter() {
     return (EAttribute)updateElementTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1870,6 +2043,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getUpdateElementType_Handle() {
     return (EAttribute)updateElementTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1878,6 +2052,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getUpdateElementType_InputFormat() {
     return (EAttribute)updateElementTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -1886,6 +2061,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getUpdateElementType_SrsName() {
     return (EAttribute)updateElementTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -1894,6 +2070,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getUpdateElementType_TypeName() {
     return (EAttribute)updateElementTypeEClass.getEStructuralFeatures().get(5);
   }
@@ -1902,6 +2079,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getWFSCapabilitiesType() {
     return wfsCapabilitiesTypeEClass;
   }
@@ -1910,6 +2088,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getWFSCapabilitiesType_FeatureTypeList() {
     return (EReference)wfsCapabilitiesTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1918,6 +2097,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getWFSCapabilitiesType_ServesGMLObjectTypeList() {
     return (EReference)wfsCapabilitiesTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1926,6 +2106,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getWFSCapabilitiesType_SupportsGMLObjectTypeList() {
     return (EReference)wfsCapabilitiesTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1934,6 +2115,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getWFSCapabilitiesType_FilterCapabilities() {
     return (EAttribute)wfsCapabilitiesTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -1942,6 +2124,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getXlinkPropertyNameType() {
     return xlinkPropertyNameTypeEClass;
   }
@@ -1950,6 +2133,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getXlinkPropertyNameType_Value() {
     return (EAttribute)xlinkPropertyNameTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1958,6 +2142,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getXlinkPropertyNameType_TraverseXlinkDepth() {
     return (EAttribute)xlinkPropertyNameTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1966,6 +2151,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getXlinkPropertyNameType_TraverseXlinkExpiry() {
     return (EAttribute)xlinkPropertyNameTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1974,6 +2160,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EEnum getAllSomeType() {
     return allSomeTypeEEnum;
   }
@@ -1982,6 +2169,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EEnum getIdentifierGenerationOptionType() {
     return identifierGenerationOptionTypeEEnum;
   }
@@ -1990,6 +2178,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EEnum getOperationType() {
     return operationTypeEEnum;
   }
@@ -1998,6 +2187,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EEnum getResultTypeType() {
     return resultTypeTypeEEnum;
   }
@@ -2006,6 +2196,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getServiceType() {
     return serviceTypeEDataType;
   }
@@ -2014,6 +2205,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getFilter() {
     return filterEDataType;
   }
@@ -2022,6 +2214,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getFilterCapabilities() {
     return filterCapabilitiesEDataType;
   }
@@ -2030,6 +2223,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getQName() {
     return qNameEDataType;
   }
@@ -2038,6 +2232,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getCalendar() {
     return calendarEDataType;
   }
@@ -2046,6 +2241,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getFeatureCollection() {
     return featureCollectionEDataType;
   }
@@ -2054,6 +2250,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getFeatureId() {
     return featureIdEDataType;
   }
@@ -2062,6 +2259,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getServiceType_1() {
     return serviceType_1EDataType;
   }
@@ -2070,6 +2268,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getURI() {
     return uriEDataType;
   }
@@ -2078,6 +2277,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getFormatType() {
     return formatTypeEDataType;
   }
@@ -2086,6 +2286,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getTypeType() {
     return typeTypeEDataType;
   }
@@ -2094,6 +2295,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getFunction() {
     return functionEDataType;
   }
@@ -2102,6 +2304,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getSortBy() {
     return sortByEDataType;
   }
@@ -2110,6 +2313,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getTypeNameListType() {
     return typeNameListTypeEDataType;
   }
@@ -2118,6 +2322,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getMap() {
     return mapEDataType;
   }
@@ -2126,6 +2331,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public WfsFactory getWfsFactory() {
     return (WfsFactory)getEFactoryInstance();
   }

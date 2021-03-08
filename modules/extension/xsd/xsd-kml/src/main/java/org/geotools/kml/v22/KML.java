@@ -41,16 +41,19 @@ public final class KML extends XSD {
     /** private constructor */
     private KML() {}
 
+    @Override
     protected void addDependencies(Set dependencies) {
         // TODO: add dependencies here
     }
 
     /** Returns 'http://www.opengis.net/kml/2.2'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'ogckml22.xsd.'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("ogckml22.xsd").toString();
     }

@@ -28,6 +28,7 @@ public class SQLServerJNDIDataSourceOnlineTest extends JDBCJNDIDataSourceOnlineT
 
     static final Logger LOGGER = Logging.getLogger(SQLServerJNDIDataSourceOnlineTest.class);
 
+    @Override
     protected JDBCJNDITestSetup createTestSetup() {
         return new JDBCJNDITestSetup(new SQLServerTestSetup());
     }

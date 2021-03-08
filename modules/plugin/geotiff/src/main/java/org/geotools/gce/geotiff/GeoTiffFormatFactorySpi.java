@@ -67,6 +67,7 @@ public class GeoTiffFormatFactorySpi implements GridFormatFactorySpi {
      * @return <CODE>GeoTiffFormat</CODE> object.
      * @throws UnsupportedOperationException if this format is unavailable.
      */
+    @Override
     public AbstractGridFormat createFormat() {
         if (!isAvailable()) {
             throw new UnsupportedOperationException(
@@ -81,6 +82,7 @@ public class GeoTiffFormatFactorySpi implements GridFormatFactorySpi {
      *
      * @return availability of the GeoTiff format.
      */
+    @Override
     public boolean isAvailable() {
         boolean available = true;
 
@@ -101,6 +103,7 @@ public class GeoTiffFormatFactorySpi implements GridFormatFactorySpi {
      *
      * @return Empty Map.
      */
+    @Override
     public Map<RenderingHints.Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }

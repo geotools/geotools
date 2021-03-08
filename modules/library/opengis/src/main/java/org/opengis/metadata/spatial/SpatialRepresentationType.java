@@ -86,6 +86,7 @@ public final class SpatialRepresentationType extends CodeList<SpatialRepresentat
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public SpatialRepresentationType[] family() {
         return values();
     }

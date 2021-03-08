@@ -249,20 +249,24 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         return product;
     }
 
+    @Override
     public Object visit(ExcludeFilter filter, Object arg1) {
         return filter;
     }
 
+    @Override
     public Object visit(IncludeFilter filter, Object arg1) {
         return filter;
     }
 
+    @Override
     public Object visit(And filter, Object arg1) {
         List<Filter> list = visitBinaryLogicOp(filter);
         Filter unrolled = ff.and(list);
         return unrolled;
     }
 
+    @Override
     public Object visit(Id filter, Object arg1) {
         Set fids = filter.getIdentifiers();
 
@@ -333,18 +337,21 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         return unrolled;
     }
 
+    @Override
     public Object visit(Not filter, Object arg1) {
         Filter unrolled = (Filter) filter.getFilter().accept(this, null);
         unrolled = ff.not(unrolled);
         return unrolled;
     }
 
+    @Override
     public Object visit(Or filter, Object arg1) {
         List<Filter> list = visitBinaryLogicOp(filter);
         Filter unrolled = ff.or(list);
         return unrolled;
     }
 
+    @Override
     public Object visit(PropertyIsBetween filter, Object arg1) {
         Expression expression = filter.getExpression();
         Expression lower = filter.getLowerBoundary();
@@ -374,6 +381,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         return unrolled;
     }
 
+    @Override
     public Object visit(PropertyIsEqualTo filter, Object arg1) {
         Expression[][] expressions = visitBinaryComparisonOperator(filter);
 
@@ -391,6 +399,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         return unrolled;
     }
 
+    @Override
     public Object visit(PropertyIsNotEqualTo filter, Object arg1) {
         Expression[][] expressions = visitBinaryComparisonOperator(filter);
 
@@ -408,6 +417,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         return unrolled;
     }
 
+    @Override
     public Object visit(PropertyIsGreaterThan filter, Object arg1) {
         Expression[][] expressions = visitBinaryComparisonOperator(filter);
 
@@ -425,6 +435,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         return unrolled;
     }
 
+    @Override
     public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object arg1) {
         Expression[][] expressions = visitBinaryComparisonOperator(filter);
 
@@ -443,6 +454,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         return unrolled;
     }
 
+    @Override
     public Object visit(PropertyIsLessThan filter, Object arg1) {
         Expression[][] expressions = visitBinaryComparisonOperator(filter);
 
@@ -460,6 +472,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         return unrolled;
     }
 
+    @Override
     public Object visit(PropertyIsLessThanOrEqualTo filter, Object arg1) {
         Expression[][] expressions = visitBinaryComparisonOperator(filter);
 
@@ -477,6 +490,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         return unrolled;
     }
 
+    @Override
     public Object visit(PropertyIsLike filter, Object arg1) {
         Expression value = filter.getExpression();
         @SuppressWarnings("unchecked")
@@ -499,6 +513,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         return unrolled;
     }
 
+    @Override
     public Object visit(PropertyIsNull filter, Object arg1) {
         Expression nullCheck = filter.getExpression();
         @SuppressWarnings("unchecked")
@@ -515,10 +530,12 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         return unrolled;
     }
 
+    @Override
     public Object visit(PropertyIsNil filter, Object extraData) {
         throw new UnsupportedOperationException("visit(PropertyIsNil filter, Object extraData)");
     }
 
+    @Override
     public Object visit(BBOX filter, Object arg1) {
         String propertyName = ((PropertyName) filter.getExpression1()).getPropertyName();
         if (propertyName.length() < 1) {
@@ -544,6 +561,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         return unrolled;
     }
 
+    @Override
     public Object visit(Beyond filter, Object arg1) {
         Expression[][] exps = visitBinarySpatialOp(filter);
 
@@ -567,6 +585,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         return unrolled;
     }
 
+    @Override
     public Object visit(Contains filter, Object arg1) {
         Expression[][] exps = visitBinarySpatialOp(filter);
 
@@ -584,6 +603,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         return unrolled;
     }
 
+    @Override
     public Object visit(Crosses filter, Object arg1) {
         Expression[][] exps = visitBinarySpatialOp(filter);
 
@@ -601,6 +621,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         return unrolled;
     }
 
+    @Override
     public Object visit(Disjoint filter, Object arg1) {
         Expression[][] exps = visitBinarySpatialOp(filter);
 
@@ -618,6 +639,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         return unrolled;
     }
 
+    @Override
     public Object visit(DWithin filter, Object arg1) {
         Expression[][] exps = visitBinarySpatialOp(filter);
 
@@ -641,6 +663,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         return unrolled;
     }
 
+    @Override
     public Object visit(Equals filter, Object arg1) {
         Expression[][] exps = visitBinarySpatialOp(filter);
 
@@ -658,6 +681,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         return unrolled;
     }
 
+    @Override
     public Object visit(Intersects filter, Object arg1) {
         Expression[][] exps = visitBinarySpatialOp(filter);
 
@@ -675,6 +699,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         return unrolled;
     }
 
+    @Override
     public Object visit(Overlaps filter, Object arg1) {
         Expression[][] exps = visitBinarySpatialOp(filter);
 
@@ -692,6 +717,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         return unrolled;
     }
 
+    @Override
     public Object visit(Touches filter, Object arg1) {
         Expression[][] exps = visitBinarySpatialOp(filter);
 
@@ -709,6 +735,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         return unrolled;
     }
 
+    @Override
     public Object visit(Within filter, Object arg1) {
         Expression[][] exps = visitBinarySpatialOp(filter);
 
@@ -726,14 +753,17 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         return unrolled;
     }
 
+    @Override
     public Object visitNullFilter(Object arg0) {
         return Filter.EXCLUDE;
     }
 
+    @Override
     public Object visit(NilExpression expr, Object arg1) {
         return Collections.singletonList(expr);
     }
 
+    @Override
     public Object visit(Add expr, Object arg1) {
         Expression[][] expressions = visitBinaryExpression(expr);
 
@@ -749,6 +779,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         return combinedExpressions;
     }
 
+    @Override
     public Object visit(Divide expr, Object arg1) {
         Expression[][] expressions = visitBinaryExpression(expr);
 
@@ -770,6 +801,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
      *     <code>description</code> because the mapping has attribute mappings for both <code>
      *     gml:name[1] = name</code> and <code>gml:name[2] = description</code>.
      */
+    @Override
     public Object visit(Function function, Object arg1) {
 
         final List<Expression> expressions = function.getParameters();
@@ -796,10 +828,12 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         return Collections.singletonList(unmappedFunction);
     }
 
+    @Override
     public Object visit(Literal expr, Object arg1) {
         return Collections.singletonList(expr);
     }
 
+    @Override
     public Object visit(Multiply expr, Object arg1) {
         Expression[][] expressions = visitBinaryExpression(expr);
 
@@ -815,6 +849,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         return combinedExpressions;
     }
 
+    @Override
     public List<Expression> visit(PropertyName expr, Object arg1) {
 
         String targetXPath = expr.getPropertyName();
@@ -866,6 +901,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         return matchingMappings;
     }
 
+    @Override
     public Object visit(Subtract expr, Object arg1) {
         Expression[][] expressions = visitBinaryExpression(expr);
 
@@ -882,58 +918,72 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     }
 
     // temporal filters
+    @Override
     public Object visit(After after, Object extraData) {
         return visit((BinaryTemporalOperator) after, extraData);
     }
 
+    @Override
     public Object visit(AnyInteracts anyInteracts, Object extraData) {
         return visit((BinaryTemporalOperator) anyInteracts, extraData);
     }
 
+    @Override
     public Object visit(Before before, Object extraData) {
         return visit((BinaryTemporalOperator) before, extraData);
     }
 
+    @Override
     public Object visit(Begins begins, Object extraData) {
         return visit((BinaryTemporalOperator) begins, extraData);
     }
 
+    @Override
     public Object visit(BegunBy begunBy, Object extraData) {
         return visit((BinaryTemporalOperator) begunBy, extraData);
     }
 
+    @Override
     public Object visit(During during, Object extraData) {
         return visit((BinaryTemporalOperator) during, extraData);
     }
 
+    @Override
     public Object visit(EndedBy endedBy, Object extraData) {
         return visit((BinaryTemporalOperator) endedBy, extraData);
     }
 
+    @Override
     public Object visit(Ends ends, Object extraData) {
         return visit((BinaryTemporalOperator) ends, extraData);
     }
 
+    @Override
     public Object visit(Meets meets, Object extraData) {
         return visit((BinaryTemporalOperator) meets, extraData);
     }
 
+    @Override
     public Object visit(MetBy metBy, Object extraData) {
         return visit((BinaryTemporalOperator) metBy, extraData);
     }
 
+    @Override
     public Object visit(OverlappedBy overlappedBy, Object extraData) {
         return visit((BinaryTemporalOperator) overlappedBy, extraData);
     }
 
+    @Override
     public Object visit(TContains contains, Object extraData) {
         return visit((BinaryTemporalOperator) contains, extraData);
     }
 
+    @Override
     public Object visit(TEquals equals, Object extraData) {
         return visit((BinaryTemporalOperator) equals, extraData);
     }
 
+    @Override
     public Object visit(TOverlaps contains, Object extraData) {
         return visit((BinaryTemporalOperator) contains, extraData);
     }

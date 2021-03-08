@@ -94,6 +94,7 @@ public class LocalName extends org.geotools.util.GenericName implements org.open
      * Returns the scope (name space) of this generic name. This method is protected from overriding
      * by the user.
      */
+    @Override
     protected GenericName getInternalScope() {
         if (asScopedName != null) {
             final NameSpace scope = asScopedName.scope();
@@ -113,6 +114,7 @@ public class LocalName extends org.geotools.util.GenericName implements org.open
      *
      * @since 2.3
      */
+    @Override
     public NameSpace scope() {
         return (asScopedName != null) ? asScopedName.scope() : super.scope();
     }
@@ -122,6 +124,7 @@ public class LocalName extends org.geotools.util.GenericName implements org.open
      *
      * @since 2.3
      */
+    @Override
     public int depth() {
         return 1;
     }
@@ -131,6 +134,7 @@ public class LocalName extends org.geotools.util.GenericName implements org.open
      * object is itself a locale name, this method always returns a singleton containing only {@code
      * this}.
      */
+    @Override
     public List<org.opengis.util.LocalName> getParsedNames() {
         // No need to sychronize: it is not a big deal if this object is built twice.
         if (parsedNames == null) {
@@ -158,6 +162,7 @@ public class LocalName extends org.geotools.util.GenericName implements org.open
      *
      * @since 2.3
      */
+    @Override
     public GenericName toFullyQualifiedName() {
         if (asScopedName == null) {
             return this;
@@ -184,6 +189,7 @@ public class LocalName extends org.geotools.util.GenericName implements org.open
      * @since 2.3
      * @todo Not yet implemented.
      */
+    @Override
     public ScopedName push(GenericName scope) {
         throw new UnsupportedOperationException("Not yet implemented");
     }

@@ -81,6 +81,7 @@ abstract class AbstractStyleBuilder<T> extends AbstractSLDBuilder<T> {
         }
     }
 
+    @Override
     public Object buildRoot() {
         if (parent != null) {
             return parent.build();
@@ -91,16 +92,19 @@ abstract class AbstractStyleBuilder<T> extends AbstractSLDBuilder<T> {
 
     protected abstract void buildStyleInternal(StyleBuilder sb);
 
+    @Override
     protected void init(Builder<T> other) {
         reset(other.build());
     }
 
+    @Override
     public AbstractStyleBuilder<T> unset() {
         reset();
         unset = true;
         return this;
     }
 
+    @Override
     boolean isUnset() {
         return unset;
     }

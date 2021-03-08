@@ -51,11 +51,13 @@ public final class ErdasImgFormat extends BaseGDALGridFormat implements Format {
     private static InfoWrapper INFO = new InfoWrapper("Erdas Imagine Coverage Format", "ERDASImg");
 
     /** Sets the metadata information. */
+    @Override
     protected void setInfo() {
         setInfo(INFO);
     }
 
     /** @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object, Hints) */
+    @Override
     public ErdasImgReader getReader(Object source, Hints hints) {
         try {
             return new ErdasImgReader(source, hints);

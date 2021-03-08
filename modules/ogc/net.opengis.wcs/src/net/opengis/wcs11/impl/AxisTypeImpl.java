@@ -144,6 +144,7 @@ public class AxisTypeImpl extends DescriptionTypeImpl implements AxisType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EClass eStaticClass() {
         return Wcs111Package.Literals.AXIS_TYPE;
     }
@@ -153,6 +154,7 @@ public class AxisTypeImpl extends DescriptionTypeImpl implements AxisType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AvailableKeysType getAvailableKeys() {
         return availableKeys;
     }
@@ -177,6 +179,7 @@ public class AxisTypeImpl extends DescriptionTypeImpl implements AxisType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAvailableKeys(AvailableKeysType newAvailableKeys) {
         if (newAvailableKeys != availableKeys) {
             NotificationChain msgs = null;
@@ -196,6 +199,7 @@ public class AxisTypeImpl extends DescriptionTypeImpl implements AxisType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DomainMetadataType getMeaning() {
         return meaning;
     }
@@ -220,6 +224,7 @@ public class AxisTypeImpl extends DescriptionTypeImpl implements AxisType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMeaning(DomainMetadataType newMeaning) {
         if (newMeaning != meaning) {
             NotificationChain msgs = null;
@@ -239,6 +244,7 @@ public class AxisTypeImpl extends DescriptionTypeImpl implements AxisType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DomainMetadataType getDataType() {
         return dataType;
     }
@@ -263,6 +269,7 @@ public class AxisTypeImpl extends DescriptionTypeImpl implements AxisType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDataType(DomainMetadataType newDataType) {
         if (newDataType != dataType) {
             NotificationChain msgs = null;
@@ -282,6 +289,7 @@ public class AxisTypeImpl extends DescriptionTypeImpl implements AxisType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DomainMetadataType getUOM() {
         return uOM;
     }
@@ -306,6 +314,7 @@ public class AxisTypeImpl extends DescriptionTypeImpl implements AxisType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUOM(DomainMetadataType newUOM) {
         if (newUOM != uOM) {
             NotificationChain msgs = null;
@@ -325,6 +334,7 @@ public class AxisTypeImpl extends DescriptionTypeImpl implements AxisType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DomainMetadataType getReferenceSystem() {
         return referenceSystem;
     }
@@ -349,6 +359,7 @@ public class AxisTypeImpl extends DescriptionTypeImpl implements AxisType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setReferenceSystem(DomainMetadataType newReferenceSystem) {
         if (newReferenceSystem != referenceSystem) {
             NotificationChain msgs = null;
@@ -368,6 +379,7 @@ public class AxisTypeImpl extends DescriptionTypeImpl implements AxisType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getMetadata() {
         if (metadata == null) {
             metadata = new EObjectContainmentEList(MetadataType.class, this, Wcs111Package.AXIS_TYPE__METADATA);
@@ -380,6 +392,7 @@ public class AxisTypeImpl extends DescriptionTypeImpl implements AxisType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getIdentifier() {
         return identifier;
     }
@@ -389,6 +402,7 @@ public class AxisTypeImpl extends DescriptionTypeImpl implements AxisType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIdentifier(String newIdentifier) {
         String oldIdentifier = identifier;
         identifier = newIdentifier;
@@ -401,6 +415,7 @@ public class AxisTypeImpl extends DescriptionTypeImpl implements AxisType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case Wcs111Package.AXIS_TYPE__AVAILABLE_KEYS:
@@ -424,6 +439,7 @@ public class AxisTypeImpl extends DescriptionTypeImpl implements AxisType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case Wcs111Package.AXIS_TYPE__AVAILABLE_KEYS:
@@ -449,6 +465,7 @@ public class AxisTypeImpl extends DescriptionTypeImpl implements AxisType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Wcs111Package.AXIS_TYPE__AVAILABLE_KEYS:
@@ -482,6 +499,7 @@ public class AxisTypeImpl extends DescriptionTypeImpl implements AxisType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case Wcs111Package.AXIS_TYPE__AVAILABLE_KEYS:
@@ -514,6 +532,7 @@ public class AxisTypeImpl extends DescriptionTypeImpl implements AxisType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case Wcs111Package.AXIS_TYPE__AVAILABLE_KEYS:
@@ -539,6 +558,7 @@ public class AxisTypeImpl extends DescriptionTypeImpl implements AxisType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String toString() {
         if (eIsProxy()) return super.toString();
 

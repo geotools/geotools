@@ -37,6 +37,7 @@ public class LonLatEnvelopeBaseTypeImpl extends EnvelopeTypeImpl implements LonL
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.LON_LAT_ENVELOPE_BASE_TYPE;
 	}

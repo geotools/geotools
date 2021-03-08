@@ -44,6 +44,7 @@ import org.geotools.xsd.InstanceComponent;
 public class ThreshholdsBelongToTypeBinding extends AbstractSimpleBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.ThreshholdsBelongToType;
     }
@@ -55,6 +56,7 @@ public class ThreshholdsBelongToTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return ThreshholdsBelongTo.class;
     }
@@ -66,6 +68,7 @@ public class ThreshholdsBelongToTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         if ("succeeding".equals(value)) {
             return ThreshholdsBelongTo.SUCCEEDING;

@@ -36,10 +36,12 @@ public class ResourceIdTypeBinding extends AbstractComplexBinding {
     }
 
     /** @return {@code FeatureId.class}, meant to catch {@code ResourceId.class} too */
+    @Override
     public Class<?> getType() {
         return FeatureId.class;
     }
 
+    @Override
     public QName getTarget() {
         return FES.ResourceIdType;
     }

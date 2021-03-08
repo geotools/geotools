@@ -37,6 +37,7 @@ public class ValueReferenceTypeBinding extends AbstractComplexEMFBinding {
         this.namespaceContext = namespaceContext;
     }
 
+    @Override
     public QName getTarget() {
         return WFS.PropertyType_ValueReference;
     }

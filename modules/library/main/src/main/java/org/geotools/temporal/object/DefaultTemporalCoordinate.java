@@ -50,6 +50,7 @@ public class DefaultTemporalCoordinate extends DefaultTemporalPosition
      *
      * @todo Should we return a primitive type?
      */
+    @Override
     public Number getCoordinateValue() {
         return coordinateValue;
     }

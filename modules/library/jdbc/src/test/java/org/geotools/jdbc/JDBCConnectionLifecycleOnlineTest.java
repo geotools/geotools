@@ -36,6 +36,7 @@ public abstract class JDBCConnectionLifecycleOnlineTest extends JDBCTestSupport 
 
     JDBCFeatureStore featureStore;
 
+    @Override
     protected void connect() throws Exception {
         super.connect();
         featureStore = (JDBCFeatureStore) dataStore.getFeatureSource(tname("ft1"));
@@ -102,18 +103,22 @@ public abstract class JDBCConnectionLifecycleOnlineTest extends JDBCTestSupport 
 
         boolean onRollbackCalled;
 
+        @Override
         public void onBorrow(JDBCDataStore store, Connection cx) throws SQLException {
             onBorrowCalled = true;
         }
 
+        @Override
         public void onRelease(JDBCDataStore store, Connection cx) throws SQLException {
             onReleaseCalled = true;
         }
 
+        @Override
         public void onCommit(JDBCDataStore store, Connection cx) throws SQLException {
             onCommitCalled = true;
         }
 
+        @Override
         public void onRollback(JDBCDataStore store, Connection cx) throws SQLException {
             onRollbackCalled = true;
         }
@@ -121,18 +126,22 @@ public abstract class JDBCConnectionLifecycleOnlineTest extends JDBCTestSupport 
 
     private static class ExceptionListener implements ConnectionLifecycleListener {
 
+        @Override
         public void onBorrow(JDBCDataStore store, Connection cx) throws SQLException {
             // nothing to do
         }
 
+        @Override
         public void onRelease(JDBCDataStore store, Connection cx) throws SQLException {
             throw new SQLException("Ha, are you relasing the connection anyways??");
         }
 
+        @Override
         public void onCommit(JDBCDataStore store, Connection cx) throws SQLException {
             throw new SQLException("Nope, no writes sir");
         }
 
+        @Override
         public void onRollback(JDBCDataStore store, Connection cx) throws SQLException {
             // nothing to do
         }

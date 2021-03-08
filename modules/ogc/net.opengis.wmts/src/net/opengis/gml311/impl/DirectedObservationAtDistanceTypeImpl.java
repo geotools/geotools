@@ -62,6 +62,7 @@ public class DirectedObservationAtDistanceTypeImpl extends DirectedObservationTy
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MeasureType getDistance() {
         return distance;
     }
@@ -86,6 +87,7 @@ public class DirectedObservationAtDistanceTypeImpl extends DirectedObservationTy
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDistance(MeasureType newDistance) {
         if (newDistance != distance) {
             NotificationChain msgs = null;

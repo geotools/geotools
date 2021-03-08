@@ -160,6 +160,7 @@ public class CoordinatesTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getValue() {
         return value;
     }
@@ -169,6 +170,7 @@ public class CoordinatesTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValue(String newValue) {
         String oldValue = value;
         value = newValue;
@@ -181,6 +183,7 @@ public class CoordinatesTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getCs() {
         return cs;
     }
@@ -190,6 +193,7 @@ public class CoordinatesTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCs(String newCs) {
         String oldCs = cs;
         cs = newCs;
@@ -204,6 +208,7 @@ public class CoordinatesTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetCs() {
         String oldCs = cs;
         boolean oldCsESet = csESet;
@@ -218,6 +223,7 @@ public class CoordinatesTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetCs() {
         return csESet;
     }
@@ -227,6 +233,7 @@ public class CoordinatesTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getDecimal() {
         return decimal;
     }
@@ -236,6 +243,7 @@ public class CoordinatesTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDecimal(String newDecimal) {
         String oldDecimal = decimal;
         decimal = newDecimal;
@@ -250,6 +258,7 @@ public class CoordinatesTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetDecimal() {
         String oldDecimal = decimal;
         boolean oldDecimalESet = decimalESet;
@@ -264,6 +273,7 @@ public class CoordinatesTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetDecimal() {
         return decimalESet;
     }
@@ -273,6 +283,7 @@ public class CoordinatesTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getTs() {
         return ts;
     }
@@ -282,6 +293,7 @@ public class CoordinatesTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTs(String newTs) {
         String oldTs = ts;
         ts = newTs;
@@ -296,6 +308,7 @@ public class CoordinatesTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetTs() {
         String oldTs = ts;
         boolean oldTsESet = tsESet;
@@ -310,6 +323,7 @@ public class CoordinatesTypeImpl extends MinimalEObjectImpl.Container implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetTs() {
         return tsESet;
     }

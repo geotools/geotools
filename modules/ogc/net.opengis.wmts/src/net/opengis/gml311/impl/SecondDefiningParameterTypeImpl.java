@@ -105,6 +105,7 @@ public class SecondDefiningParameterTypeImpl extends MinimalEObjectImpl.Containe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MeasureType getInverseFlattening() {
         return inverseFlattening;
     }
@@ -129,6 +130,7 @@ public class SecondDefiningParameterTypeImpl extends MinimalEObjectImpl.Containe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setInverseFlattening(MeasureType newInverseFlattening) {
         if (newInverseFlattening != inverseFlattening) {
             NotificationChain msgs = null;
@@ -148,6 +150,7 @@ public class SecondDefiningParameterTypeImpl extends MinimalEObjectImpl.Containe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MeasureType getSemiMinorAxis() {
         return semiMinorAxis;
     }
@@ -172,6 +175,7 @@ public class SecondDefiningParameterTypeImpl extends MinimalEObjectImpl.Containe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSemiMinorAxis(MeasureType newSemiMinorAxis) {
         if (newSemiMinorAxis != semiMinorAxis) {
             NotificationChain msgs = null;
@@ -191,6 +195,7 @@ public class SecondDefiningParameterTypeImpl extends MinimalEObjectImpl.Containe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public IsSphereType getIsSphere() {
         return isSphere;
     }
@@ -200,6 +205,7 @@ public class SecondDefiningParameterTypeImpl extends MinimalEObjectImpl.Containe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIsSphere(IsSphereType newIsSphere) {
         IsSphereType oldIsSphere = isSphere;
         isSphere = newIsSphere == null ? IS_SPHERE_EDEFAULT : newIsSphere;
@@ -214,6 +220,7 @@ public class SecondDefiningParameterTypeImpl extends MinimalEObjectImpl.Containe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetIsSphere() {
         IsSphereType oldIsSphere = isSphere;
         boolean oldIsSphereESet = isSphereESet;
@@ -228,6 +235,7 @@ public class SecondDefiningParameterTypeImpl extends MinimalEObjectImpl.Containe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetIsSphere() {
         return isSphereESet;
     }

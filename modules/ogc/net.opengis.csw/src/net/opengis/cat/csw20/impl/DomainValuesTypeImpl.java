@@ -179,6 +179,7 @@ public class DomainValuesTypeImpl extends EObjectImpl implements DomainValuesTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getPropertyName() {
         return propertyName;
     }
@@ -188,6 +189,7 @@ public class DomainValuesTypeImpl extends EObjectImpl implements DomainValuesTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPropertyName(String newPropertyName) {
         String oldPropertyName = propertyName;
         propertyName = newPropertyName;
@@ -200,6 +202,7 @@ public class DomainValuesTypeImpl extends EObjectImpl implements DomainValuesTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getParameterName() {
         return parameterName;
     }
@@ -209,6 +212,7 @@ public class DomainValuesTypeImpl extends EObjectImpl implements DomainValuesTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setParameterName(String newParameterName) {
         String oldParameterName = parameterName;
         parameterName = newParameterName;
@@ -221,6 +225,7 @@ public class DomainValuesTypeImpl extends EObjectImpl implements DomainValuesTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ListOfValuesType getListOfValues() {
         return listOfValues;
     }
@@ -245,6 +250,7 @@ public class DomainValuesTypeImpl extends EObjectImpl implements DomainValuesTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setListOfValues(ListOfValuesType newListOfValues) {
         if (newListOfValues != listOfValues) {
             NotificationChain msgs = null;
@@ -264,6 +270,7 @@ public class DomainValuesTypeImpl extends EObjectImpl implements DomainValuesTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ConceptualSchemeType getConceptualScheme() {
         return conceptualScheme;
     }
@@ -288,6 +295,7 @@ public class DomainValuesTypeImpl extends EObjectImpl implements DomainValuesTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setConceptualScheme(ConceptualSchemeType newConceptualScheme) {
         if (newConceptualScheme != conceptualScheme) {
             NotificationChain msgs = null;
@@ -307,6 +315,7 @@ public class DomainValuesTypeImpl extends EObjectImpl implements DomainValuesTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RangeOfValuesType getRangeOfValues() {
         return rangeOfValues;
     }
@@ -331,6 +340,7 @@ public class DomainValuesTypeImpl extends EObjectImpl implements DomainValuesTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRangeOfValues(RangeOfValuesType newRangeOfValues) {
         if (newRangeOfValues != rangeOfValues) {
             NotificationChain msgs = null;
@@ -350,6 +360,7 @@ public class DomainValuesTypeImpl extends EObjectImpl implements DomainValuesTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public QName getType() {
         return type;
     }
@@ -359,6 +370,7 @@ public class DomainValuesTypeImpl extends EObjectImpl implements DomainValuesTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setType(QName newType) {
         QName oldType = type;
         type = newType;
@@ -371,6 +383,7 @@ public class DomainValuesTypeImpl extends EObjectImpl implements DomainValuesTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getUom() {
         return uom;
     }
@@ -380,6 +393,7 @@ public class DomainValuesTypeImpl extends EObjectImpl implements DomainValuesTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUom(String newUom) {
         String oldUom = uom;
         uom = newUom;

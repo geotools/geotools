@@ -99,6 +99,7 @@ public final class SortOrder extends CodeList<SortOrder> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public SortOrder[] family() {
         return values();
     }

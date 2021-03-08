@@ -32,6 +32,7 @@ public class MercatorHandlerFactory implements ProjectionHandlerFactory {
             new ReferencedEnvelope(
                     -Integer.MAX_VALUE, Integer.MAX_VALUE, -85, 85, DefaultGeographicCRS.WGS84);
 
+    @Override
     public ProjectionHandler getHandler(
             ReferencedEnvelope renderingEnvelope,
             CoordinateReferenceSystem sourceCrs,

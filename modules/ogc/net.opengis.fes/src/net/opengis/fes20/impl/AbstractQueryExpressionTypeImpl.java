@@ -74,6 +74,7 @@ public abstract class AbstractQueryExpressionTypeImpl extends EObjectImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getHandle() {
         return handle;
     }
@@ -83,6 +84,7 @@ public abstract class AbstractQueryExpressionTypeImpl extends EObjectImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setHandle(String newHandle) {
         String oldHandle = handle;
         handle = newHandle;

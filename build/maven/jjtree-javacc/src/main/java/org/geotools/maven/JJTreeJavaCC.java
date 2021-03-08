@@ -158,6 +158,7 @@ public class JJTreeJavaCC extends AbstractMojo {
      *
      * @throws MojoExecutionException if the plugin execution failed.
      */
+    @Override
     @SuppressWarnings("PMD.SystemPrintln")
     public void execute() throws MojoExecutionException, MojoFailureException {
         // if not windows, don't rewrite file

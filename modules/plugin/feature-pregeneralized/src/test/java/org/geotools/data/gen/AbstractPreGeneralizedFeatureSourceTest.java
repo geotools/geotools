@@ -40,7 +40,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -516,14 +515,11 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest {
 
             final List<Long> catIds = new ArrayList<>();
             FeatureVisitor checkSortVisitor =
-                    new FeatureVisitor() {
-
-                        public void visit(Feature feature) {
-                            SimpleFeature sf = (SimpleFeature) feature;
-                            Assert.assertTrue(feature instanceof PreGeneralizedSimpleFeature);
-                            long catid = (Long) sf.getAttribute("CAT_ID");
-                            catIds.add(catid);
-                        }
+                    feature -> {
+                        SimpleFeature sf = (SimpleFeature) feature;
+                        Assert.assertTrue(feature instanceof PreGeneralizedSimpleFeature);
+                        long catid = (Long) sf.getAttribute("CAT_ID");
+                        catIds.add(catid);
                     };
 
             try {
@@ -564,22 +560,27 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest {
 
             PropertyName propertyName =
                     new PropertyName() {
+                        @Override
                         public String getPropertyName() {
                             return "CAT_ID";
                         }
 
+                        @Override
                         public Object accept(ExpressionVisitor arg0, Object arg1) {
                             return true;
                         }
 
+                        @Override
                         public Object evaluate(Object arg0) {
                             return arg0;
                         }
 
+                        @Override
                         public <T> T evaluate(Object arg0, Class<T> arg1) {
                             return null;
                         }
 
+                        @Override
                         public NamespaceSupport getNamespaceContext() {
                             return null;
                         }

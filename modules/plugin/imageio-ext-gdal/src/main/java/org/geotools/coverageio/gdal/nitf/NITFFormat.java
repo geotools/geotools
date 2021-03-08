@@ -51,11 +51,13 @@ public final class NITFFormat extends BaseGDALGridFormat implements Format {
     private static InfoWrapper INFO = new InfoWrapper("NITF Coverage Format", "NITF");
 
     /** Sets the metadata information. */
+    @Override
     protected void setInfo() {
         setInfo(INFO);
     }
 
     /** @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object, Hints) */
+    @Override
     public NITFReader getReader(Object source, Hints hints) {
         try {
             return new NITFReader(source, hints);

@@ -29,5 +29,6 @@ public class SMIL20Configuration extends Configuration {
         super(SMIL20.getInstance());
     }
 
+    @Override
     protected void registerBindings(MutablePicoContainer container) {}
 }

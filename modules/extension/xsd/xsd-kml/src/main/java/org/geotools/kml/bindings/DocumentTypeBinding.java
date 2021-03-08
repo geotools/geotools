@@ -76,6 +76,7 @@ public class DocumentTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return KML.DocumentType;
     }
@@ -87,10 +88,12 @@ public class DocumentTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return FeatureCollection.class;
     }
 
+    @Override
     public int getExecutionMode() {
         return Binding.AFTER;
     }
@@ -102,6 +105,7 @@ public class DocumentTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(FeatureType);
 
@@ -117,6 +121,7 @@ public class DocumentTypeBinding extends AbstractComplexBinding {
         return b.buildFeature(feature.getID());
     }
 
+    @Override
     public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
             throws Exception {
         Object[] prop = new Object[2];

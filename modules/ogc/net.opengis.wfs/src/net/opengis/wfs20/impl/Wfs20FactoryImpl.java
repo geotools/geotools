@@ -290,6 +290,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AbstractType createAbstractType() {
     AbstractTypeImpl abstractType = new AbstractTypeImpl();
     return abstractType;
@@ -299,6 +300,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ActionResultsType createActionResultsType() {
     ActionResultsTypeImpl actionResultsType = new ActionResultsTypeImpl();
     return actionResultsType;
@@ -308,6 +310,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AdditionalObjectsType createAdditionalObjectsType() {
     AdditionalObjectsTypeImpl additionalObjectsType = new AdditionalObjectsTypeImpl();
     return additionalObjectsType;
@@ -317,6 +320,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AdditionalValuesType createAdditionalValuesType() {
     AdditionalValuesTypeImpl additionalValuesType = new AdditionalValuesTypeImpl();
     return additionalValuesType;
@@ -326,6 +330,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public CreatedOrModifiedFeatureType createCreatedOrModifiedFeatureType() {
     CreatedOrModifiedFeatureTypeImpl createdOrModifiedFeatureType = new CreatedOrModifiedFeatureTypeImpl();
     return createdOrModifiedFeatureType;
@@ -335,6 +340,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public CreateStoredQueryResponseType createCreateStoredQueryResponseType() {
     CreateStoredQueryResponseTypeImpl createStoredQueryResponseType = new CreateStoredQueryResponseTypeImpl();
     return createStoredQueryResponseType;
@@ -344,6 +350,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public CreateStoredQueryType createCreateStoredQueryType() {
     CreateStoredQueryTypeImpl createStoredQueryType = new CreateStoredQueryTypeImpl();
     return createStoredQueryType;
@@ -353,6 +360,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DeleteType createDeleteType() {
     DeleteTypeImpl deleteType = new DeleteTypeImpl();
     return deleteType;
@@ -362,6 +370,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DescribeFeatureTypeType createDescribeFeatureTypeType() {
     DescribeFeatureTypeTypeImpl describeFeatureTypeType = new DescribeFeatureTypeTypeImpl();
     return describeFeatureTypeType;
@@ -371,6 +380,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DescribeStoredQueriesResponseType createDescribeStoredQueriesResponseType() {
     DescribeStoredQueriesResponseTypeImpl describeStoredQueriesResponseType = new DescribeStoredQueriesResponseTypeImpl();
     return describeStoredQueriesResponseType;
@@ -380,6 +390,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DescribeStoredQueriesType createDescribeStoredQueriesType() {
     DescribeStoredQueriesTypeImpl describeStoredQueriesType = new DescribeStoredQueriesTypeImpl();
     return describeStoredQueriesType;
@@ -389,6 +400,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DocumentRoot createDocumentRoot() {
     DocumentRootImpl documentRoot = new DocumentRootImpl();
     return documentRoot;
@@ -398,6 +410,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DropStoredQueryType createDropStoredQueryType() {
     DropStoredQueryTypeImpl dropStoredQueryType = new DropStoredQueryTypeImpl();
     return dropStoredQueryType;
@@ -407,6 +420,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ElementType createElementType() {
     ElementTypeImpl elementType = new ElementTypeImpl();
     return elementType;
@@ -416,6 +430,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EmptyType createEmptyType() {
     EmptyTypeImpl emptyType = new EmptyTypeImpl();
     return emptyType;
@@ -425,6 +440,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EnvelopePropertyType createEnvelopePropertyType() {
     EnvelopePropertyTypeImpl envelopePropertyType = new EnvelopePropertyTypeImpl();
     return envelopePropertyType;
@@ -434,6 +450,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ExecutionStatusType createExecutionStatusType() {
     ExecutionStatusTypeImpl executionStatusType = new ExecutionStatusTypeImpl();
     return executionStatusType;
@@ -443,6 +460,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ExtendedDescriptionType createExtendedDescriptionType() {
     ExtendedDescriptionTypeImpl extendedDescriptionType = new ExtendedDescriptionTypeImpl();
     return extendedDescriptionType;
@@ -452,6 +470,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureCollectionType createFeatureCollectionType() {
     FeatureCollectionTypeImpl featureCollectionType = new FeatureCollectionTypeImpl();
     return featureCollectionType;
@@ -461,6 +480,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeaturesLockedType createFeaturesLockedType() {
     FeaturesLockedTypeImpl featuresLockedType = new FeaturesLockedTypeImpl();
     return featuresLockedType;
@@ -470,6 +490,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeaturesNotLockedType createFeaturesNotLockedType() {
     FeaturesNotLockedTypeImpl featuresNotLockedType = new FeaturesNotLockedTypeImpl();
     return featuresNotLockedType;
@@ -479,6 +500,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureTypeListType createFeatureTypeListType() {
     FeatureTypeListTypeImpl featureTypeListType = new FeatureTypeListTypeImpl();
     return featureTypeListType;
@@ -488,6 +510,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureTypeType createFeatureTypeType() {
     FeatureTypeTypeImpl featureTypeType = new FeatureTypeTypeImpl();
     return featureTypeType;
@@ -497,6 +520,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public GetCapabilitiesType createGetCapabilitiesType() {
     GetCapabilitiesTypeImpl getCapabilitiesType = new GetCapabilitiesTypeImpl();
     return getCapabilitiesType;
@@ -506,6 +530,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public GetFeatureType createGetFeatureType() {
     GetFeatureTypeImpl getFeatureType = new GetFeatureTypeImpl();
     return getFeatureType;
@@ -515,6 +540,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public GetFeatureWithLockType createGetFeatureWithLockType() {
     GetFeatureWithLockTypeImpl getFeatureWithLockType = new GetFeatureWithLockTypeImpl();
     return getFeatureWithLockType;
@@ -524,6 +550,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public GetPropertyValueType createGetPropertyValueType() {
     GetPropertyValueTypeImpl getPropertyValueType = new GetPropertyValueTypeImpl();
     return getPropertyValueType;
@@ -533,6 +560,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public InsertType createInsertType() {
     InsertTypeImpl insertType = new InsertTypeImpl();
     return insertType;
@@ -542,6 +570,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ListStoredQueriesResponseType createListStoredQueriesResponseType() {
     ListStoredQueriesResponseTypeImpl listStoredQueriesResponseType = new ListStoredQueriesResponseTypeImpl();
     return listStoredQueriesResponseType;
@@ -551,6 +580,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ListStoredQueriesType createListStoredQueriesType() {
     ListStoredQueriesTypeImpl listStoredQueriesType = new ListStoredQueriesTypeImpl();
     return listStoredQueriesType;
@@ -560,6 +590,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public LockFeatureResponseType createLockFeatureResponseType() {
     LockFeatureResponseTypeImpl lockFeatureResponseType = new LockFeatureResponseTypeImpl();
     return lockFeatureResponseType;
@@ -569,6 +600,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public LockFeatureType createLockFeatureType() {
     LockFeatureTypeImpl lockFeatureType = new LockFeatureTypeImpl();
     return lockFeatureType;
@@ -578,6 +610,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public MemberPropertyType createMemberPropertyType() {
     MemberPropertyTypeImpl memberPropertyType = new MemberPropertyTypeImpl();
     return memberPropertyType;
@@ -587,6 +620,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public MetadataURLType createMetadataURLType() {
     MetadataURLTypeImpl metadataURLType = new MetadataURLTypeImpl();
     return metadataURLType;
@@ -596,6 +630,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NativeType createNativeType() {
     NativeTypeImpl nativeType = new NativeTypeImpl();
     return nativeType;
@@ -605,6 +640,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NoCRSType createNoCRSType() {
     NoCRSTypeImpl noCRSType = new NoCRSTypeImpl();
     return noCRSType;
@@ -614,6 +650,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public OutputFormatListType createOutputFormatListType() {
     OutputFormatListTypeImpl outputFormatListType = new OutputFormatListTypeImpl();
     return outputFormatListType;
@@ -623,6 +660,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ParameterExpressionType createParameterExpressionType() {
     ParameterExpressionTypeImpl parameterExpressionType = new ParameterExpressionTypeImpl();
     return parameterExpressionType;
@@ -632,6 +670,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ParameterType createParameterType() {
     ParameterTypeImpl parameterType = new ParameterTypeImpl();
     return parameterType;
@@ -641,6 +680,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public PropertyNameType createPropertyNameType() {
     PropertyNameTypeImpl propertyNameType = new PropertyNameTypeImpl();
     return propertyNameType;
@@ -650,6 +690,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public PropertyType createPropertyType() {
     PropertyTypeImpl propertyType = new PropertyTypeImpl();
     return propertyType;
@@ -659,6 +700,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public QueryExpressionTextType createQueryExpressionTextType() {
     QueryExpressionTextTypeImpl queryExpressionTextType = new QueryExpressionTextTypeImpl();
     return queryExpressionTextType;
@@ -668,6 +710,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public QueryType createQueryType() {
     QueryTypeImpl queryType = new QueryTypeImpl();
     return queryType;
@@ -677,6 +720,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ReplaceType createReplaceType() {
     ReplaceTypeImpl replaceType = new ReplaceTypeImpl();
     return replaceType;
@@ -686,6 +730,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public SimpleFeatureCollectionType createSimpleFeatureCollectionType() {
     SimpleFeatureCollectionTypeImpl simpleFeatureCollectionType = new SimpleFeatureCollectionTypeImpl();
     return simpleFeatureCollectionType;
@@ -695,6 +740,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public StoredQueryDescriptionType createStoredQueryDescriptionType() {
     StoredQueryDescriptionTypeImpl storedQueryDescriptionType = new StoredQueryDescriptionTypeImpl();
     return storedQueryDescriptionType;
@@ -704,6 +750,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public StoredQueryListItemType createStoredQueryListItemType() {
     StoredQueryListItemTypeImpl storedQueryListItemType = new StoredQueryListItemTypeImpl();
     return storedQueryListItemType;
@@ -713,6 +760,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public StoredQueryType createStoredQueryType() {
     StoredQueryTypeImpl storedQueryType = new StoredQueryTypeImpl();
     return storedQueryType;
@@ -722,6 +770,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public TitleType createTitleType() {
     TitleTypeImpl titleType = new TitleTypeImpl();
     return titleType;
@@ -731,6 +780,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public TransactionResponseType createTransactionResponseType() {
     TransactionResponseTypeImpl transactionResponseType = new TransactionResponseTypeImpl();
     return transactionResponseType;
@@ -740,6 +790,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public TransactionSummaryType createTransactionSummaryType() {
     TransactionSummaryTypeImpl transactionSummaryType = new TransactionSummaryTypeImpl();
     return transactionSummaryType;
@@ -749,6 +800,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public TransactionType createTransactionType() {
     TransactionTypeImpl transactionType = new TransactionTypeImpl();
     return transactionType;
@@ -758,6 +810,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public TruncatedResponseType createTruncatedResponseType() {
     TruncatedResponseTypeImpl truncatedResponseType = new TruncatedResponseTypeImpl();
     return truncatedResponseType;
@@ -767,6 +820,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public TupleType createTupleType() {
     TupleTypeImpl tupleType = new TupleTypeImpl();
     return tupleType;
@@ -776,6 +830,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public UpdateType createUpdateType() {
     UpdateTypeImpl updateType = new UpdateTypeImpl();
     return updateType;
@@ -785,6 +840,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ValueCollectionType createValueCollectionType() {
     ValueCollectionTypeImpl valueCollectionType = new ValueCollectionTypeImpl();
     return valueCollectionType;
@@ -794,6 +850,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ValueListType createValueListType() {
     ValueListTypeImpl valueListType = new ValueListTypeImpl();
     return valueListType;
@@ -803,6 +860,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ValueReferenceType createValueReferenceType() {
     ValueReferenceTypeImpl valueReferenceType = new ValueReferenceTypeImpl();
     return valueReferenceType;
@@ -812,6 +870,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public WFSCapabilitiesType createWFSCapabilitiesType() {
     WFSCapabilitiesTypeImpl wfsCapabilitiesType = new WFSCapabilitiesTypeImpl();
     return wfsCapabilitiesType;
@@ -821,6 +880,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public WSDLType createWSDLType() {
     WSDLTypeImpl wsdlType = new WSDLTypeImpl();
     return wsdlType;
@@ -1483,6 +1543,7 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Wfs20Package getWfs20Package() {
     return (Wfs20Package)getEPackage();
   }

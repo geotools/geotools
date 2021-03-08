@@ -32,6 +32,7 @@ public class NoOpFunction extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object gc) {
         return gc;
     }

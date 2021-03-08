@@ -32,6 +32,7 @@ public class DB2NGJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
         super(new DB2NGDataStoreFactory());
     }
 
+    @Override
     protected void setupParameters(Map parameters) {
         super.setupParameters(parameters);
         parameters.put(DBTYPE.key, DBTYPE);

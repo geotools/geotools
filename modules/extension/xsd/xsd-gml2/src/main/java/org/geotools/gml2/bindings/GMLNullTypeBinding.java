@@ -54,6 +54,7 @@ import org.locationtech.jts.geom.Envelope;
  */
 public class GMLNullTypeBinding implements SimpleBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.NullType;
     }
@@ -65,6 +66,7 @@ public class GMLNullTypeBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return OVERRIDE;
     }
@@ -76,6 +78,7 @@ public class GMLNullTypeBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Envelope.class;
     }
@@ -90,6 +93,7 @@ public class GMLNullTypeBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         // dont do anything special, here just return the string
         return value;
@@ -102,6 +106,7 @@ public class GMLNullTypeBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public String encode(Object object, String value) {
         return "unknown";
     }

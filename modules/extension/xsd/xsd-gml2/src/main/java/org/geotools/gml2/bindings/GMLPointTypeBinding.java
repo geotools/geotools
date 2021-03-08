@@ -62,11 +62,13 @@ public class GMLPointTypeBinding extends AbstractComplexBinding {
         this.gFactory = gFactory;
     }
 
+    @Override
     public int getExecutionMode() {
         return BEFORE;
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.PointType;
     }
@@ -78,6 +80,7 @@ public class GMLPointTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Point.class;
     }
@@ -89,6 +92,7 @@ public class GMLPointTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         if (node.getChild("coord") != null) {
             Coordinate c = (Coordinate) node.getChild("coord").getValue();
@@ -105,6 +109,7 @@ public class GMLPointTypeBinding extends AbstractComplexBinding {
         throw new RuntimeException("Could not find a coordinate");
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         Point point = (Point) object;
 

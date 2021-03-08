@@ -35,6 +35,7 @@ public interface OrientableCurve extends OrientablePrimitive {
      *
      * @return The sets of positions on the boundary.
      */
+    @Override
     @UML(identifier = "boundary", obligation = MANDATORY, specification = ISO_19107)
     CurveBoundary getBoundary();
 
@@ -46,6 +47,7 @@ public interface OrientableCurve extends OrientablePrimitive {
      * @see Curve#getProxy
      * @issue http://jira.codehaus.org/browse/GEO-63
      */
+    @Override
     @Association("Oriented")
     @UML(identifier = "primitive", obligation = OPTIONAL, specification = ISO_19107)
     Curve getPrimitive();
@@ -60,6 +62,7 @@ public interface OrientableCurve extends OrientablePrimitive {
      * @see CompositeCurve#getGenerators
      * @issue http://jira.codehaus.org/browse/GEO-63
      */
+    @Override
     @Association("Composition")
     @UML(identifier = "composite", obligation = OPTIONAL, specification = ISO_19107)
     CompositeCurve getComposite();

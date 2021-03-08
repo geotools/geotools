@@ -40,6 +40,7 @@ public class GMLLineStringTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance coords;
     MutablePicoContainer container;
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();

@@ -87,9 +87,12 @@ public interface SimpleFeatureCollection
      * }
      * </code></pre>
      */
+    @Override
     public SimpleFeatureIterator features();
 
+    @Override
     public SimpleFeatureCollection subCollection(Filter filter);
 
+    @Override
     public SimpleFeatureCollection sort(SortBy order);
 }

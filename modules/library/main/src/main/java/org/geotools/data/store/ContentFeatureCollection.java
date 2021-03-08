@@ -113,11 +113,13 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
         }
     }
 
+    @Override
     public SimpleFeatureType getSchema() {
         return featureType;
     }
 
     // Visitors
+    @Override
     public void accepts(
             org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress)
             throws IOException {
@@ -133,6 +135,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
             this.delegate = delegate;
         }
 
+        @Override
         public boolean hasNext() {
             try {
                 return delegate.hasNext();
@@ -141,6 +144,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
             }
         }
 
+        @Override
         public SimpleFeature next() throws java.util.NoSuchElementException {
             try {
                 return delegate.next();
@@ -149,6 +153,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
             }
         }
 
+        @Override
         public void close() {
             try {
                 delegate.close();
@@ -158,6 +163,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
         }
     }
 
+    @Override
     public SimpleFeatureIterator features() {
         try {
             return new WrappingFeatureIterator(featureSource.getReader(query));
@@ -166,6 +172,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
         }
     }
 
+    @Override
     public ReferencedEnvelope getBounds() {
         FeatureReader<SimpleFeatureType, SimpleFeature> reader = null;
         try {
@@ -219,6 +226,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
         }
     }
 
+    @Override
     public int size() {
         FeatureReader<?, ?> fr = null;
         try {
@@ -293,6 +301,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
         }
     }
 
+    @Override
     public boolean isEmpty() {
         // build a minimal query
         Query notEmptyQuery = new Query(query);
@@ -320,6 +329,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
         throw new UnsupportedOperationException("read only");
     }
 
+    @Override
     public SimpleFeatureCollection sort(org.opengis.filter.sort.SortBy sort) {
         Query query = new Query();
         query.setSortBy(sort);
@@ -328,6 +338,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
         return new ContentFeatureCollection(featureSource, query);
     }
 
+    @Override
     public SimpleFeatureCollection subCollection(Filter filter) {
         Query query = new Query();
         query.setFilter(filter);
@@ -351,6 +362,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
      * @param o object to be checked for containment in this collection.
      * @return <tt>true</tt> if this collection contains the specified element.
      */
+    @Override
     public boolean contains(Object o) {
         // TODO: base this on reader
         try (SimpleFeatureIterator e = this.features()) {
@@ -382,6 +394,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
      * @throws NullPointerException if the specified collection is null.
      * @see #contains(Object)
      */
+    @Override
     public boolean containsAll(Collection<?> c) {
         Iterator<?> e = c.iterator();
         try {
@@ -428,6 +441,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
      *
      * @return an array containing all of the elements in this collection.
      */
+    @Override
     public Object[] toArray() {
         // code based on AbstractFeatureCollection
         // TODO: base this on reader
@@ -440,6 +454,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
         }
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <T> T[] toArray(T[] array) {
         int size = size();
@@ -461,6 +476,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
         }
     }
 
+    @Override
     public String getID() {
         return null; // Only useful for XML Content
     }

@@ -40,16 +40,19 @@ public final class SLD extends XSD {
     /** private constructor */
     private SLD() {}
 
+    @Override
     protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(SE.getInstance());
     }
 
     /** Returns 'http://www.opengis.net/sld'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'all.xsd.'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("StyledLayerDescriptor.xsd").toString();
         // return getClass().getResource("all.xsd").toString();

@@ -108,7 +108,8 @@ public class DatasetDescriptionSummaryBaseTypeImpl extends DescriptionTypeImpl i
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.DATASET_DESCRIPTION_SUMMARY_BASE_TYPE;
   }
 
@@ -117,7 +118,8 @@ public class DatasetDescriptionSummaryBaseTypeImpl extends DescriptionTypeImpl i
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList getWGS84BoundingBox() {
+  @Override
+public EList getWGS84BoundingBox() {
     if (wGS84BoundingBox == null) {
       wGS84BoundingBox = new EObjectContainmentEList(WGS84BoundingBoxType.class, this, Ows11Package.DATASET_DESCRIPTION_SUMMARY_BASE_TYPE__WGS84_BOUNDING_BOX);
     }
@@ -129,7 +131,8 @@ public class DatasetDescriptionSummaryBaseTypeImpl extends DescriptionTypeImpl i
    * <!-- end-user-doc -->
    * @generated
    */
-  public CodeType getIdentifier() {
+  @Override
+public CodeType getIdentifier() {
     return identifier;
   }
 
@@ -153,7 +156,8 @@ public class DatasetDescriptionSummaryBaseTypeImpl extends DescriptionTypeImpl i
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setIdentifier(CodeType newIdentifier) {
+  @Override
+public void setIdentifier(CodeType newIdentifier) {
     if (newIdentifier != identifier) {
       NotificationChain msgs = null;
       if (identifier != null)
@@ -172,7 +176,8 @@ public class DatasetDescriptionSummaryBaseTypeImpl extends DescriptionTypeImpl i
    * <!-- end-user-doc -->
    * @generated
    */
-  public FeatureMap getBoundingBoxGroup() {
+  @Override
+public FeatureMap getBoundingBoxGroup() {
     if (boundingBoxGroup == null) {
       boundingBoxGroup = new BasicFeatureMap(this, Ows11Package.DATASET_DESCRIPTION_SUMMARY_BASE_TYPE__BOUNDING_BOX_GROUP);
     }
@@ -184,7 +189,8 @@ public class DatasetDescriptionSummaryBaseTypeImpl extends DescriptionTypeImpl i
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList getBoundingBox() {
+  @Override
+public EList getBoundingBox() {
     return getBoundingBoxGroup().list(Ows11Package.Literals.DATASET_DESCRIPTION_SUMMARY_BASE_TYPE__BOUNDING_BOX);
   }
 
@@ -193,7 +199,8 @@ public class DatasetDescriptionSummaryBaseTypeImpl extends DescriptionTypeImpl i
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList getMetadata() {
+  @Override
+public EList getMetadata() {
     if (metadata == null) {
       metadata = new EObjectContainmentEList(MetadataType.class, this, Ows11Package.DATASET_DESCRIPTION_SUMMARY_BASE_TYPE__METADATA);
     }
@@ -205,7 +212,8 @@ public class DatasetDescriptionSummaryBaseTypeImpl extends DescriptionTypeImpl i
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList getDatasetDescriptionSummary() {
+  @Override
+public EList getDatasetDescriptionSummary() {
     if (datasetDescriptionSummary == null) {
       datasetDescriptionSummary = new EObjectContainmentEList(DatasetDescriptionSummaryBaseType.class, this, Ows11Package.DATASET_DESCRIPTION_SUMMARY_BASE_TYPE__DATASET_DESCRIPTION_SUMMARY);
     }
@@ -217,7 +225,8 @@ public class DatasetDescriptionSummaryBaseTypeImpl extends DescriptionTypeImpl i
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+  @Override
+public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Ows11Package.DATASET_DESCRIPTION_SUMMARY_BASE_TYPE__WGS84_BOUNDING_BOX:
         return ((InternalEList)getWGS84BoundingBox()).basicRemove(otherEnd, msgs);
@@ -240,7 +249,8 @@ public class DatasetDescriptionSummaryBaseTypeImpl extends DescriptionTypeImpl i
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.DATASET_DESCRIPTION_SUMMARY_BASE_TYPE__WGS84_BOUNDING_BOX:
         return getWGS84BoundingBox();
@@ -264,7 +274,8 @@ public class DatasetDescriptionSummaryBaseTypeImpl extends DescriptionTypeImpl i
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.DATASET_DESCRIPTION_SUMMARY_BASE_TYPE__WGS84_BOUNDING_BOX:
         getWGS84BoundingBox().clear();
@@ -297,7 +308,8 @@ public class DatasetDescriptionSummaryBaseTypeImpl extends DescriptionTypeImpl i
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.DATASET_DESCRIPTION_SUMMARY_BASE_TYPE__WGS84_BOUNDING_BOX:
         getWGS84BoundingBox().clear();
@@ -326,7 +338,8 @@ public class DatasetDescriptionSummaryBaseTypeImpl extends DescriptionTypeImpl i
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.DATASET_DESCRIPTION_SUMMARY_BASE_TYPE__WGS84_BOUNDING_BOX:
         return wGS84BoundingBox != null && !wGS84BoundingBox.isEmpty();
@@ -349,7 +362,8 @@ public class DatasetDescriptionSummaryBaseTypeImpl extends DescriptionTypeImpl i
    * <!-- end-user-doc -->
    * @generated
    */
-  public String toString() {
+  @Override
+public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

@@ -77,6 +77,7 @@ public class GeometryTransformer extends TransformerBase {
     }
 
     /** @TODO remove constant from GometryTraslator contructor call */
+    @Override
     public org.geotools.xml.transform.Translator createTranslator(ContentHandler handler) {
         return new GeometryTranslator(
                 handler, numDecimals, padWithZeros, forceDecimalEncoding, useDummyZ);
@@ -223,6 +224,7 @@ public class GeometryTransformer extends TransformerBase {
             }
         }
 
+        @Override
         public void encode(Object o) throws IllegalArgumentException {
             encode(o, null);
         }

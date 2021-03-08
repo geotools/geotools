@@ -30,16 +30,19 @@ import org.opengis.filter.expression.Literal;
 
 public class PolygonLabelFunctionFactory implements FunctionFactory {
 
+    @Override
     public List<FunctionName> getFunctionNames() {
         List<FunctionName> functionList = new ArrayList<>();
         functionList.add(PolygonLabelFunction.NAME);
         return Collections.unmodifiableList(functionList);
     }
 
+    @Override
     public Function function(String name, List<Expression> args, Literal fallback) {
         return function(new NameImpl(name), args, fallback);
     }
 
+    @Override
     public Function function(Name name, List<Expression> args, Literal fallback) {
         if (PolygonLabelFunction.NAME.getFunctionName().equals(name)) {
             return new PolygonLabelFunction(args, fallback);

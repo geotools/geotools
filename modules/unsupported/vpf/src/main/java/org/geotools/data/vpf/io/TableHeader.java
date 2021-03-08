@@ -93,6 +93,7 @@ public class TableHeader implements VPFHeader, DataTypesDefinition {
      *
      * @return a <code>String</code> value
      */
+    @Override
     public String toString() {
         String endLine = System.getProperty("line.separator");
         StringBuffer buff = new StringBuffer();
@@ -121,6 +122,7 @@ public class TableHeader implements VPFHeader, DataTypesDefinition {
      *
      * @return the value of headerLength
      */
+    @Override
     public int getLength() {
         return this.headerLength + 4;
     }
@@ -132,6 +134,7 @@ public class TableHeader implements VPFHeader, DataTypesDefinition {
      *
      * @return an <code><code>int</code></code> value
      */
+    @Override
     public int getRecordSize() {
         int size = 0;
 

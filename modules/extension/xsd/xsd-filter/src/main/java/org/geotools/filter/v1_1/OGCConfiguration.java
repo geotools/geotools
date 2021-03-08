@@ -89,6 +89,7 @@ public class OGCConfiguration extends Configuration {
         addDependency(new GMLConfiguration());
     }
 
+    @Override
     protected void registerBindings(MutablePicoContainer container) {
         // Types
         // container.registerComponentImplementation(OGC.ABSTRACTIDTYPE,AbstractIdTypeBinding.class);
@@ -275,6 +276,7 @@ public class OGCConfiguration extends Configuration {
      *   <li>{@link FilterFactoryImpl} under {@link FilterFactory}
      * </ul>
      */
+    @Override
     public void configureContext(MutablePicoContainer container) {
         super.configureContext(container);
 

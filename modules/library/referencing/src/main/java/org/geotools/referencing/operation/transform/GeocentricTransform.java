@@ -195,11 +195,13 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
     }
 
     /** Gets the dimension of input points, which is 2 or 3. */
+    @Override
     public int getSourceDimensions() {
         return hasHeight ? 3 : 2;
     }
 
     /** Gets the dimension of output points, which is 3. */
+    @Override
     public final int getTargetDimensions() {
         return 3;
     }
@@ -208,6 +210,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
      * Converts geodetic coordinates (longitude, latitude, height) to geocentric coordinates (x, y,
      * z) according to the current ellipsoid parameters.
      */
+    @Override
     public void transform(double[] srcPts, int srcOff, double[] dstPts, int dstOff, int numPts) {
         transform(srcPts, srcOff, dstPts, dstOff, numPts, false);
     }
@@ -512,6 +515,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
         }
 
         /** Inverse transform an array of points. */
+        @Override
         public void transform(
                 final double[] source,
                 final int srcOffset,
@@ -660,6 +664,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
          * @return The created math transform.
          * @throws ParameterNotFoundException if a required parameter was not found.
          */
+        @Override
         protected MathTransform createMathTransform(final ParameterValueGroup values)
                 throws ParameterNotFoundException {
             final int dimGeographic = intValue(DIM, values);

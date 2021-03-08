@@ -300,6 +300,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AbstractQueryExpressionType getAbstractQueryExpression() {
     if (abstractQueryExpression != null && abstractQueryExpression.eIsProxy()) {
       InternalEObject oldAbstractQueryExpression = (InternalEObject)abstractQueryExpression;
@@ -326,6 +327,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setAbstractQueryExpression(AbstractQueryExpressionType newAbstractQueryExpression) {
     AbstractQueryExpressionType oldAbstractQueryExpression = abstractQueryExpression;
     abstractQueryExpression = newAbstractQueryExpression;
@@ -338,6 +340,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public BigInteger getCount() {
     return count;
   }
@@ -347,6 +350,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setCount(BigInteger newCount) {
     BigInteger oldCount = count;
     count = newCount;
@@ -359,6 +363,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getOutputFormat() {
     return outputFormat;
   }
@@ -368,6 +373,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setOutputFormat(String newOutputFormat) {
     String oldOutputFormat = outputFormat;
     outputFormat = newOutputFormat;
@@ -382,6 +388,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetOutputFormat() {
     String oldOutputFormat = outputFormat;
     boolean oldOutputFormatESet = outputFormatESet;
@@ -396,6 +403,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetOutputFormat() {
     return outputFormatESet;
   }
@@ -405,6 +413,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ResolveValueType getResolve() {
     return resolve;
   }
@@ -414,6 +423,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setResolve(ResolveValueType newResolve) {
     ResolveValueType oldResolve = resolve;
     resolve = newResolve == null ? RESOLVE_EDEFAULT : newResolve;
@@ -428,6 +438,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetResolve() {
     ResolveValueType oldResolve = resolve;
     boolean oldResolveESet = resolveESet;
@@ -442,6 +453,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetResolve() {
     return resolveESet;
   }
@@ -451,6 +463,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getResolveDepth() {
     return resolveDepth;
   }
@@ -460,6 +473,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setResolveDepth(String newResolveDepth) {
     String oldResolveDepth = resolveDepth;
     resolveDepth = newResolveDepth;
@@ -472,6 +486,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getResolvePath() {
     return resolvePath;
   }
@@ -481,6 +496,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setResolvePath(String newResolvePath) {
     String oldResolvePath = resolvePath;
     resolvePath = newResolvePath;
@@ -493,6 +509,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public BigInteger getResolveTimeout() {
     return resolveTimeout;
   }
@@ -502,6 +519,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setResolveTimeout(BigInteger newResolveTimeout) {
     BigInteger oldResolveTimeout = resolveTimeout;
     resolveTimeout = newResolveTimeout;
@@ -516,6 +534,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetResolveTimeout() {
     BigInteger oldResolveTimeout = resolveTimeout;
     boolean oldResolveTimeoutESet = resolveTimeoutESet;
@@ -530,6 +549,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetResolveTimeout() {
     return resolveTimeoutESet;
   }
@@ -539,6 +559,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ResultTypeType getResultType() {
     return resultType;
   }
@@ -548,6 +569,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setResultType(ResultTypeType newResultType) {
     ResultTypeType oldResultType = resultType;
     resultType = newResultType == null ? RESULT_TYPE_EDEFAULT : newResultType;
@@ -562,6 +584,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetResultType() {
     ResultTypeType oldResultType = resultType;
     boolean oldResultTypeESet = resultTypeESet;
@@ -576,6 +599,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetResultType() {
     return resultTypeESet;
   }
@@ -585,6 +609,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public BigInteger getStartIndex() {
     return startIndex;
   }
@@ -594,6 +619,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setStartIndex(BigInteger newStartIndex) {
     BigInteger oldStartIndex = startIndex;
     startIndex = newStartIndex;
@@ -608,6 +634,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetStartIndex() {
     BigInteger oldStartIndex = startIndex;
     boolean oldStartIndexESet = startIndexESet;
@@ -622,6 +649,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetStartIndex() {
     return startIndexESet;
   }
@@ -631,6 +659,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getValueReference() {
     return valueReference;
   }
@@ -640,6 +669,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setValueReference(String newValueReference) {
     String oldValueReference = valueReference;
     valueReference = newValueReference;

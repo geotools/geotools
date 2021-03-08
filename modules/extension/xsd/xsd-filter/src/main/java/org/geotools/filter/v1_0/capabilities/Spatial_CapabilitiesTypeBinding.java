@@ -49,6 +49,7 @@ public class Spatial_CapabilitiesTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.Spatial_CapabilitiesType;
     }
@@ -60,6 +61,7 @@ public class Spatial_CapabilitiesTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return SpatialCapabilities.class;
     }
@@ -71,10 +73,12 @@ public class Spatial_CapabilitiesTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return factory.spatialCapabilities(null, node.getChildValue(SpatialOperators.class));
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         SpatialCapabilities spatial = (SpatialCapabilities) object;
 

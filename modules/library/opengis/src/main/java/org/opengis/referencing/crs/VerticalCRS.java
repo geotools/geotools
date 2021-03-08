@@ -54,10 +54,12 @@ import org.opengis.referencing.datum.VerticalDatum;
 @UML(identifier = "SC_VerticalCRS", specification = ISO_19111)
 public interface VerticalCRS extends SingleCRS {
     /** Returns the coordinate system, which must be vertical. */
+    @Override
     @UML(identifier = "usesCS", obligation = MANDATORY, specification = ISO_19111)
     VerticalCS getCoordinateSystem();
 
     /** Returns the datum, which must be vertical. */
+    @Override
     @UML(identifier = "usesDatum", obligation = MANDATORY, specification = ISO_19111)
     VerticalDatum getDatum();
 }

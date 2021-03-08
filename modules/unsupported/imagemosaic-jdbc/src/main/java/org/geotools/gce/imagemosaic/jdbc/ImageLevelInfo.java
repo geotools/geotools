@@ -167,6 +167,7 @@ public class ImageLevelInfo implements Comparable<ImageLevelInfo> {
                 + getTileTableName();
     }
 
+    @Override
     public int compareTo(ImageLevelInfo other) {
         int res = 0;
 

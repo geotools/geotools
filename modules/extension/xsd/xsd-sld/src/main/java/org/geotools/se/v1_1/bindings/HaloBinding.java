@@ -50,6 +50,7 @@ public class HaloBinding extends SLDHaloBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.Halo;
     }

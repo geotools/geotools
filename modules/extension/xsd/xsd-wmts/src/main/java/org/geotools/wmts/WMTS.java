@@ -75,17 +75,20 @@ public final class WMTS extends XSD {
     /** private constructor */
     private WMTS() {}
 
+    @Override
     protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(org.geotools.ows.v1_1.OWS.getInstance());
         super.addDependencies(dependencies);
     }
 
     /** Returns 'http://www.opengis.net/wmts/1.0'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'wmts.xsd.'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("wmtsKVP.xsd").toString();
     }

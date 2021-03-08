@@ -20,8 +20,6 @@ package org.geotools.swing;
 import java.awt.BorderLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.ref.WeakReference;
@@ -272,49 +270,25 @@ public class MapLayerTable extends JPanel {
 
         JButton btn = new JButton(showIcon);
         btn.setToolTipText(SHOW_ALL_LAYERS);
-        btn.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        onShowAllLayers();
-                    }
-                });
+        btn.addActionListener(e -> onShowAllLayers());
         btnPanel.add(btn);
 
         Icon hideIcon = MapLayerTableCellRenderer.LayerControlItem.VISIBLE.getOffIcon();
         btn = new JButton(hideIcon);
         btn.setToolTipText(HIDE_ALL_LAYERS);
-        btn.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        onHideAllLayers();
-                    }
-                });
+        btn.addActionListener(e -> onHideAllLayers());
         btnPanel.add(btn);
 
         Icon onIcon = MapLayerTableCellRenderer.LayerControlItem.SELECTED.getIcon();
         btn = new JButton(onIcon);
         btn.setToolTipText(SELECT_ALL_LAYERS);
-        btn.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        onSelectAllLayers();
-                    }
-                });
+        btn.addActionListener(e -> onSelectAllLayers());
         btnPanel.add(btn);
 
         Icon offIcon = MapLayerTableCellRenderer.LayerControlItem.SELECTED.getOffIcon();
         btn = new JButton(offIcon);
         btn.setToolTipText(DESELECT_ALL_LAYERS);
-        btn.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        onUnselectAllLayers();
-                    }
-                });
+        btn.addActionListener(e -> onUnselectAllLayers());
         btnPanel.add(btn);
 
         setLayout(new BorderLayout());

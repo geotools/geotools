@@ -114,6 +114,7 @@ public abstract class GeoSpatialImageReader extends ImageReader
         }
     }
 
+    @Override
     public int getNumImages(final boolean allowSearch) throws IOException {
         return numImages;
     }

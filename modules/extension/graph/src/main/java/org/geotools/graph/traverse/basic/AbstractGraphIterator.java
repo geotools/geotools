@@ -31,11 +31,13 @@ public abstract class AbstractGraphIterator implements GraphIterator {
     private GraphTraversal m_traversal;
 
     /** @see GraphIterator#setTraversal(GraphTraversal) */
+    @Override
     public void setTraversal(GraphTraversal traversal) {
         m_traversal = traversal;
     }
 
     /** @see GraphIterator#getTraversal() */
+    @Override
     public GraphTraversal getTraversal() {
         return (m_traversal);
     }

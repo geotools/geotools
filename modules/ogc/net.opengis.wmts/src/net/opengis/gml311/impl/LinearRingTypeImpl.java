@@ -111,6 +111,7 @@ public class LinearRingTypeImpl extends AbstractRingTypeImpl implements LinearRi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getGroup() {
         if (group == null) {
             group = new BasicFeatureMap(this, Gml311Package.LINEAR_RING_TYPE__GROUP);
@@ -123,6 +124,7 @@ public class LinearRingTypeImpl extends AbstractRingTypeImpl implements LinearRi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<DirectPositionType> getPos() {
         return getGroup().list(Gml311Package.eINSTANCE.getLinearRingType_Pos());
     }
@@ -132,6 +134,7 @@ public class LinearRingTypeImpl extends AbstractRingTypeImpl implements LinearRi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<PointPropertyType> getPointProperty() {
         return getGroup().list(Gml311Package.eINSTANCE.getLinearRingType_PointProperty());
     }
@@ -141,6 +144,7 @@ public class LinearRingTypeImpl extends AbstractRingTypeImpl implements LinearRi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<PointPropertyType> getPointRep() {
         return getGroup().list(Gml311Package.eINSTANCE.getLinearRingType_PointRep());
     }
@@ -150,6 +154,7 @@ public class LinearRingTypeImpl extends AbstractRingTypeImpl implements LinearRi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectPositionListType getPosList() {
         return posList;
     }
@@ -174,6 +179,7 @@ public class LinearRingTypeImpl extends AbstractRingTypeImpl implements LinearRi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPosList(DirectPositionListType newPosList) {
         if (newPosList != posList) {
             NotificationChain msgs = null;
@@ -193,6 +199,7 @@ public class LinearRingTypeImpl extends AbstractRingTypeImpl implements LinearRi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinatesType getCoordinates() {
         return coordinates;
     }
@@ -217,6 +224,7 @@ public class LinearRingTypeImpl extends AbstractRingTypeImpl implements LinearRi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCoordinates(CoordinatesType newCoordinates) {
         if (newCoordinates != coordinates) {
             NotificationChain msgs = null;
@@ -236,6 +244,7 @@ public class LinearRingTypeImpl extends AbstractRingTypeImpl implements LinearRi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<CoordType> getCoord() {
         if (coord == null) {
             coord = new EObjectContainmentEList<>(CoordType.class, this, Gml311Package.LINEAR_RING_TYPE__COORD);

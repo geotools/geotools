@@ -31,6 +31,7 @@ public class GeographicHandlerFactory implements ProjectionHandlerFactory {
     static final double MAX_LATITUDE = 89.99;
     static final double MIN_LATITUDE = -89.99;
 
+    @Override
     public ProjectionHandler getHandler(
             ReferencedEnvelope renderingEnvelope,
             CoordinateReferenceSystem sourceCrs,

@@ -62,6 +62,7 @@ public class TopoPointTypeImpl extends AbstractTopologyTypeImpl implements TopoP
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectedNodePropertyType getDirectedNode() {
         return directedNode;
     }
@@ -86,6 +87,7 @@ public class TopoPointTypeImpl extends AbstractTopologyTypeImpl implements TopoP
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDirectedNode(DirectedNodePropertyType newDirectedNode) {
         if (newDirectedNode != directedNode) {
             NotificationChain msgs = null;

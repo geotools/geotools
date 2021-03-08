@@ -84,6 +84,7 @@ class ZGroupLayer extends Layer {
         // issued
         ProgressListener cancellationListener =
                 new DefaultProgressListener() {
+                    @Override
                     public boolean isCanceled() {
                         return renderer.renderingStopRequested;
                     };

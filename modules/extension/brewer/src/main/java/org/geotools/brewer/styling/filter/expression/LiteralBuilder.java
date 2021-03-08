@@ -40,6 +40,7 @@ public class LiteralBuilder implements Builder<Literal> {
         return this;
     }
 
+    @Override
     public Literal build() {
         if (unset) {
             return null;
@@ -47,18 +48,21 @@ public class LiteralBuilder implements Builder<Literal> {
         return ff.literal(literal);
     }
 
+    @Override
     public LiteralBuilder reset() {
         unset = false;
         literal = null;
         return this;
     }
 
+    @Override
     public LiteralBuilder reset(Literal original) {
         unset = false;
         literal = original.getValue();
         return this;
     }
 
+    @Override
     public LiteralBuilder unset() {
         unset = true;
         return this;

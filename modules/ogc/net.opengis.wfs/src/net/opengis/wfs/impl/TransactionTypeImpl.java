@@ -119,7 +119,8 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.TRANSACTION_TYPE;
   }
 
@@ -128,7 +129,8 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getLockId() {
+	@Override
+    public String getLockId() {
     return lockId;
   }
 
@@ -137,7 +139,8 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setLockId(String newLockId) {
+	@Override
+    public void setLockId(String newLockId) {
     String oldLockId = lockId;
     lockId = newLockId;
     if (eNotificationRequired())
@@ -149,7 +152,8 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public FeatureMap getGroup() {
+	@Override
+    public FeatureMap getGroup() {
     if (group == null) {
       group = new BasicFeatureMap(this, WfsPackage.TRANSACTION_TYPE__GROUP);
     }
@@ -161,7 +165,8 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList getInsert() {
+	@Override
+    public EList getInsert() {
     return getGroup().list(WfsPackage.Literals.TRANSACTION_TYPE__INSERT);
   }
 
@@ -170,7 +175,8 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList getUpdate() {
+	@Override
+    public EList getUpdate() {
     return getGroup().list(WfsPackage.Literals.TRANSACTION_TYPE__UPDATE);
   }
 
@@ -179,7 +185,8 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList getDelete() {
+	@Override
+    public EList getDelete() {
     return getGroup().list(WfsPackage.Literals.TRANSACTION_TYPE__DELETE);
   }
 
@@ -188,7 +195,8 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList getNative() {
+	@Override
+    public EList getNative() {
     return getGroup().list(WfsPackage.Literals.TRANSACTION_TYPE__NATIVE);
   }
 
@@ -197,7 +205,8 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public AllSomeType getReleaseAction() {
+	@Override
+    public AllSomeType getReleaseAction() {
     return releaseAction;
   }
 
@@ -206,7 +215,8 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setReleaseAction(AllSomeType newReleaseAction) {
+	@Override
+    public void setReleaseAction(AllSomeType newReleaseAction) {
     AllSomeType oldReleaseAction = releaseAction;
     releaseAction = newReleaseAction == null ? RELEASE_ACTION_EDEFAULT : newReleaseAction;
     boolean oldReleaseActionESet = releaseActionESet;
@@ -220,7 +230,8 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void unsetReleaseAction() {
+	@Override
+    public void unsetReleaseAction() {
     AllSomeType oldReleaseAction = releaseAction;
     boolean oldReleaseActionESet = releaseActionESet;
     releaseAction = RELEASE_ACTION_EDEFAULT;
@@ -234,7 +245,8 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean isSetReleaseAction() {
+	@Override
+    public boolean isSetReleaseAction() {
     return releaseActionESet;
   }
 
@@ -243,7 +255,8 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+	@Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case WfsPackage.TRANSACTION_TYPE__GROUP:
         return ((InternalEList)getGroup()).basicRemove(otherEnd, msgs);
@@ -264,7 +277,8 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	@Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.TRANSACTION_TYPE__LOCK_ID:
         return getLockId();
@@ -290,7 +304,8 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(int featureID, Object newValue) {
+	@Override
+    public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.TRANSACTION_TYPE__LOCK_ID:
         setLockId((String)newValue);
@@ -326,7 +341,8 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(int featureID) {
+	@Override
+    public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.TRANSACTION_TYPE__LOCK_ID:
         setLockId(LOCK_ID_EDEFAULT);
@@ -358,7 +374,8 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(int featureID) {
+	@Override
+    public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.TRANSACTION_TYPE__LOCK_ID:
         return LOCK_ID_EDEFAULT == null ? lockId != null : !LOCK_ID_EDEFAULT.equals(lockId);
@@ -383,7 +400,8 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String toString() {
+	@Override
+    public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

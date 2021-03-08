@@ -37,6 +37,7 @@ public interface Feature extends ComplexAttribute {
      *
      * @return The feature type
      */
+    @Override
     FeatureType getType();
 
     /**
@@ -54,6 +55,7 @@ public interface Feature extends ComplexAttribute {
      *
      * @return The feature identifier, never <code>null</code>.
      */
+    @Override
     FeatureId getIdentifier();
 
     /**

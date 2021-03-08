@@ -36,6 +36,7 @@ public class JXPathStreamingParserHandler extends StreamingParserHandler {
         this.xpath = xpath;
     }
 
+    @Override
     protected boolean stream(ElementHandler handler) {
         // create an xpath context from the root element
         // TODO: cache the context, should work just the same

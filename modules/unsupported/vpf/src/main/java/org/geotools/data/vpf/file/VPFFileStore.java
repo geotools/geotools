@@ -66,6 +66,7 @@ public class VPFFileStore extends ContentDataStore {
     /* (non-Javadoc)
      * @see org.geotools.data.ContentDataStore#getNames()
      */
+    @Override
     public List<Name> getNames() {
         // String[] result = new String[files.size()];
         ArrayList<Name> result = new ArrayList<>();

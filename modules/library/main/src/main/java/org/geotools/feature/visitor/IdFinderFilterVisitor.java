@@ -26,6 +26,7 @@ import org.opengis.filter.Id;
  */
 public class IdFinderFilterVisitor extends AbstractFinderFilterVisitor {
 
+    @Override
     public Object visit(Id filter, Object data) {
         found = true;
         return found;

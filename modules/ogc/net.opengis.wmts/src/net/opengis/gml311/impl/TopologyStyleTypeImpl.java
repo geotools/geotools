@@ -137,6 +137,7 @@ public class TopologyStyleTypeImpl extends BaseStyleDescriptorTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SymbolType getSymbol() {
         return symbol;
     }
@@ -161,6 +162,7 @@ public class TopologyStyleTypeImpl extends BaseStyleDescriptorTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSymbol(SymbolType newSymbol) {
         if (newSymbol != symbol) {
             NotificationChain msgs = null;
@@ -180,6 +182,7 @@ public class TopologyStyleTypeImpl extends BaseStyleDescriptorTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getStyle() {
         return style;
     }
@@ -189,6 +192,7 @@ public class TopologyStyleTypeImpl extends BaseStyleDescriptorTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setStyle(String newStyle) {
         String oldStyle = style;
         style = newStyle;
@@ -201,6 +205,7 @@ public class TopologyStyleTypeImpl extends BaseStyleDescriptorTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LabelStylePropertyType getLabelStyle() {
         return labelStyle;
     }
@@ -225,6 +230,7 @@ public class TopologyStyleTypeImpl extends BaseStyleDescriptorTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLabelStyle(LabelStylePropertyType newLabelStyle) {
         if (newLabelStyle != labelStyle) {
             NotificationChain msgs = null;
@@ -244,6 +250,7 @@ public class TopologyStyleTypeImpl extends BaseStyleDescriptorTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getTopologyProperty() {
         return topologyProperty;
     }
@@ -253,6 +260,7 @@ public class TopologyStyleTypeImpl extends BaseStyleDescriptorTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTopologyProperty(String newTopologyProperty) {
         String oldTopologyProperty = topologyProperty;
         topologyProperty = newTopologyProperty;
@@ -265,6 +273,7 @@ public class TopologyStyleTypeImpl extends BaseStyleDescriptorTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getTopologyType() {
         return topologyType;
     }
@@ -274,6 +283,7 @@ public class TopologyStyleTypeImpl extends BaseStyleDescriptorTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTopologyType(String newTopologyType) {
         String oldTopologyType = topologyType;
         topologyType = newTopologyType;

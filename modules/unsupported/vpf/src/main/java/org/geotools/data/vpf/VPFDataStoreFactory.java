@@ -81,6 +81,7 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
      *  (non-Javadoc)
      * @see org.geotools.data.DataStoreFactorySpi#canProcess(java.util.Map)
      */
+    @Override
     public boolean canProcess(Map<String, ?> params) {
 
         boolean result = false;
@@ -227,6 +228,7 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
      *  (non-Javadoc)
      * @see org.geotools.data.DataStoreFactorySpi#createNewDataStore(java.util.Map)
      */
+    @Override
     public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
 
         return create(params);

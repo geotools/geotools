@@ -230,6 +230,7 @@ public class DefaultOperationMethod extends AbstractIdentifiedObject implements 
      * publication. Note that the operation method may not be analytic, in which case this attribute
      * references or contains the procedure, not an analytic formula.
      */
+    @Override
     public InternationalString getFormula() {
         return formula;
     }
@@ -239,16 +240,19 @@ public class DefaultOperationMethod extends AbstractIdentifiedObject implements 
      *
      * @return The dimension of source CRS.
      */
+    @Override
     public int getSourceDimensions() {
         return sourceDimensions;
     }
 
     /** Number of dimensions in the target CRS of this operation method. */
+    @Override
     public int getTargetDimensions() {
         return targetDimensions;
     }
 
     /** Returns the set of parameters. */
+    @Override
     public ParameterDescriptorGroup getParameters() {
         return (parameters != null) ? parameters : Parameters.EMPTY_GROUP;
     }

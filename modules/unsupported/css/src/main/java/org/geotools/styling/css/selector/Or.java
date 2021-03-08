@@ -41,6 +41,7 @@ public class Or extends Composite {
         return max;
     }
 
+    @Override
     public Object accept(SelectorVisitor visitor) {
         return visitor.visit(this);
     }

@@ -259,6 +259,7 @@ public class OperationJAI extends Operation2D {
      * @throws CoverageProcessingException if the operation can't be applied.
      * @see #deriveGridCoverage
      */
+    @Override
     public Coverage doOperation(final ParameterValueGroup parameters, final Hints hints)
             throws CoverageProcessingException {
         final ParameterBlockJAI block = prepareParameters(parameters);
@@ -944,6 +945,7 @@ public class OperationJAI extends Operation2D {
         }
 
         /** Returns a string localized in the given locale. */
+        @Override
         public String toString(final Locale locale) {
             final StringBuilder buffer = new StringBuilder(operation);
             buffer.append('(');

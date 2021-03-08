@@ -52,6 +52,7 @@ public class ValueCollectionTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.ValueCollectionType;
     }
@@ -63,6 +64,7 @@ public class ValueCollectionTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return ValueCollectionType.class;
     }
@@ -74,6 +76,7 @@ public class ValueCollectionTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         // TODO: implement and remove call to super

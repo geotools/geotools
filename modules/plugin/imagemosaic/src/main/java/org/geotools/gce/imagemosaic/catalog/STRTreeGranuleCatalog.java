@@ -110,6 +110,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
          *
          * @see org.locationtech.jts.index.ItemVisitor#visitItem(java.lang.Object)
          */
+        @Override
         public void visitItem(Object o) {
             if (maxGranules > 0 && granuleIndex > maxGranules) {
                 return; // Skip
@@ -195,14 +196,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
         try {
 
             wrappedCatalogue.getGranuleDescriptors(
-                    new Query(typeName),
-                    new GranuleCatalogVisitor() {
-
-                        @Override
-                        public void visit(GranuleDescriptor granule, SimpleFeature o) {
-                            features.add(granule);
-                        }
-                    });
+                    new Query(typeName), (granule, o) -> features.add(granule));
             if (features == null)
                 throw new NullPointerException(
                         "The provided SimpleFeatureCollection is null, it's impossible to create an index!");
@@ -282,6 +276,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
         }
     }
 
+    @Override
     public void dispose() {
         final Lock l = rwLock.writeLock();
         try {
@@ -306,6 +301,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
         }
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public SimpleFeatureCollection getGranules(Query q) throws IOException {
         q = mergeHints(q);
@@ -372,6 +368,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
         return getGranules(this.getBounds(typeName));
     }
 
+    @Override
     public void getGranuleDescriptors(Query q, GranuleCatalogVisitor visitor) throws IOException {
         Utilities.ensureNonNull("q", q);
         final Lock lock = rwLock.readLock();
@@ -421,6 +418,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
         }
     }
 
+    @Override
     public BoundingBox getBounds(String typeName) {
         final Lock lock = rwLock.readLock();
         try {
@@ -463,6 +461,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
         return typeName != null ? new String[] {typeName} : null;
     }
 
+    @Override
     public void computeAggregateFunction(Query query, FeatureCalc function) throws IOException {
         query = mergeHints(query);
         final Lock lock = rwLock.readLock();

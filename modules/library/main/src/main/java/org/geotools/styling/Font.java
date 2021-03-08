@@ -35,6 +35,7 @@ public interface Font extends org.opengis.style.Font {
      *
      * @return live list of font-family parameters in preferred order
      */
+    @Override
     List<Expression> getFamily();
 
     /**
@@ -44,6 +45,7 @@ public interface Font extends org.opengis.style.Font {
      *
      * @return Expression or null
      */
+    @Override
     Expression getStyle();
 
     /** @param style The "font-style" SVG parameter (one of "normal", "italic", or "oblique" */
@@ -56,6 +58,7 @@ public interface Font extends org.opengis.style.Font {
      *
      * @return font-weight SVG parameter
      */
+    @Override
     Expression getWeight();
 
     /** @param weight The "font-weight" SVG parameter (one of "normal", "bold") */
@@ -69,6 +72,7 @@ public interface Font extends org.opengis.style.Font {
      *
      * @return font size
      */
+    @Override
     Expression getSize();
 
     /** @param size the font size in pixels */

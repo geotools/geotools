@@ -74,6 +74,7 @@ public class GeodeticDatumTypeImpl extends AbstractDatumTypeImpl implements Geod
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PrimeMeridianRefType getUsesPrimeMeridian() {
         return usesPrimeMeridian;
     }
@@ -98,6 +99,7 @@ public class GeodeticDatumTypeImpl extends AbstractDatumTypeImpl implements Geod
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesPrimeMeridian(PrimeMeridianRefType newUsesPrimeMeridian) {
         if (newUsesPrimeMeridian != usesPrimeMeridian) {
             NotificationChain msgs = null;
@@ -117,6 +119,7 @@ public class GeodeticDatumTypeImpl extends AbstractDatumTypeImpl implements Geod
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EllipsoidRefType getUsesEllipsoid() {
         return usesEllipsoid;
     }
@@ -141,6 +144,7 @@ public class GeodeticDatumTypeImpl extends AbstractDatumTypeImpl implements Geod
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesEllipsoid(EllipsoidRefType newUsesEllipsoid) {
         if (newUsesEllipsoid != usesEllipsoid) {
             NotificationChain msgs = null;

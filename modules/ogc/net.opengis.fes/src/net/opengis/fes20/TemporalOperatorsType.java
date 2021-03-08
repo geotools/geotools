@@ -44,6 +44,7 @@ public interface TemporalOperatorsType extends EObject, TemporalOperators {
      *        extendedMetaData="kind='element' name='TemporalOperator' namespace='##targetNamespace'"
      * @generated
      */
+    @Override
     EList<TemporalOperator> getOperators();
 
 } // TemporalOperatorsType

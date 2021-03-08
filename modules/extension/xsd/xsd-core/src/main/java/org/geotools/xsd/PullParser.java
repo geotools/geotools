@@ -155,18 +155,22 @@ public class PullParser {
 
     class Attributes implements org.xml.sax.Attributes {
 
+        @Override
         public int getLength() {
             return pp.getAttributeCount();
         }
 
+        @Override
         public String getURI(int index) {
             return pp.getAttributeNamespace(index);
         }
 
+        @Override
         public String getLocalName(int index) {
             return pp.getAttributeLocalName(index);
         }
 
+        @Override
         public String getQName(int index) {
             final String prefix = pp.getAttributePrefix(index);
             if (prefix != null) {
@@ -176,14 +180,17 @@ public class PullParser {
             }
         }
 
+        @Override
         public String getType(int index) {
             return pp.getAttributeType(index);
         }
 
+        @Override
         public String getValue(int index) {
             return pp.getAttributeValue(index);
         }
 
+        @Override
         public int getIndex(String uri, String localName) {
             for (int i = 0; i < pp.getAttributeCount(); i++) {
                 if (pp.getAttributeNamespace(i).equals(uri)
@@ -194,6 +201,7 @@ public class PullParser {
             return -1;
         }
 
+        @Override
         public int getIndex(String qName) {
             for (int i = 0; i < pp.getAttributeCount(); i++) {
                 if ((pp.getAttributePrefix(i) + ":" + pp.getAttributeLocalName(i)).equals(qName)) {
@@ -203,6 +211,7 @@ public class PullParser {
             return -1;
         }
 
+        @Override
         public String getType(String uri, String localName) {
             for (int i = 0; i < pp.getAttributeCount(); i++) {
                 if (pp.getAttributeNamespace(i).equals(uri)
@@ -213,6 +222,7 @@ public class PullParser {
             return null;
         }
 
+        @Override
         public String getType(String qName) {
             for (int i = 0; i < pp.getAttributeCount(); i++) {
                 if ((pp.getAttributePrefix(i) + ":" + pp.getAttributeName(i)).equals(qName)) {
@@ -222,10 +232,12 @@ public class PullParser {
             return null;
         }
 
+        @Override
         public String getValue(String uri, String localName) {
             return pp.getAttributeValue(uri, localName);
         }
 
+        @Override
         public String getValue(String qName) {
             return pp.getAttributeValue(null, qName);
         }

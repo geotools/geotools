@@ -39,6 +39,7 @@ import org.geotools.xsd.InstanceComponent;
  */
 public class DateTimeTypeBinding extends AbstractSimpleBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return KML.dateTimeType;
     }
@@ -50,6 +51,7 @@ public class DateTimeTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return null;
     }
@@ -61,6 +63,7 @@ public class DateTimeTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         // TODO: implement
         return null;

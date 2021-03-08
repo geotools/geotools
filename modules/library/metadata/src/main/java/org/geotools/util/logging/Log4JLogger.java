@@ -96,16 +96,19 @@ final class Log4JLogger extends LoggerAdapter {
     }
 
     /** Set the level for this logger. */
+    @Override
     public void setLevel(final Level level) {
         logger.setLevel(toLog4JLevel(level));
     }
 
     /** Returns the level for this logger. */
+    @Override
     public Level getLevel() {
         return toJavaLevel(logger.getEffectiveLevel());
     }
 
     /** Returns {@code true} if the specified level is loggable. */
+    @Override
     public boolean isLoggable(final Level level) {
         return logger.isEnabledFor(toLog4JLevel(level));
     }
@@ -122,30 +125,37 @@ final class Log4JLogger extends LoggerAdapter {
         logger.log(toLog4JLevel(level), message, thrown);
     }
 
+    @Override
     public void severe(String message) {
         logger.error(message);
     }
 
+    @Override
     public void warning(String message) {
         logger.warn(message);
     }
 
+    @Override
     public void info(String message) {
         logger.info(message);
     }
 
+    @Override
     public void config(String message) {
         logger.info(message);
     }
 
+    @Override
     public void fine(String message) {
         logger.debug(message);
     }
 
+    @Override
     public void finer(String message) {
         logger.debug(message);
     }
 
+    @Override
     public void finest(String message) {
         logger.trace(message);
     }

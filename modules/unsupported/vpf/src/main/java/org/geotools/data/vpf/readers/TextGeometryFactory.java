@@ -37,6 +37,7 @@ import org.opengis.feature.simple.SimpleFeature;
  */
 public class TextGeometryFactory extends VPFGeometryFactory implements FileConstants {
 
+    @Override
     public synchronized void createGeometry(VPFFeatureType featureType, SimpleFeature values)
             throws SQLException, IOException, IllegalAttributeException {
 
@@ -45,6 +46,7 @@ public class TextGeometryFactory extends VPFGeometryFactory implements FileConst
         values.setDefaultGeometry(result);
     }
 
+    @Override
     public synchronized Geometry buildGeometry(VPFFeatureClass featureClass, SimpleFeature values)
             throws SQLException, IOException, IllegalAttributeException {
 

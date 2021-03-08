@@ -228,6 +228,7 @@ public class LabelCacheImpl implements LabelCache {
     private BiFunction<Graphics2D, LabelRenderingMode, LabelPainter> constructPainter =
             LabelPainter::new;
 
+    @Override
     public void enableLayer(String layerId) {
         needsOrdering = true;
         enabledLayers.add(layerId);
@@ -251,16 +252,19 @@ public class LabelCacheImpl implements LabelCache {
         this.constructPainter = constructPainter;
     }
 
+    @Override
     public void stop() {
         stop = true;
         activeLayers.clear();
     }
 
     /** @see org.geotools.renderer.lite.LabelCache#start() */
+    @Override
     public void start() {
         stop = false;
     }
 
+    @Override
     public void clear() {
         if (!activeLayers.isEmpty()) {
             throw new IllegalStateException(
@@ -274,6 +278,7 @@ public class LabelCacheImpl implements LabelCache {
         enabledLayers.clear();
     }
 
+    @Override
     public void clear(String layerId) {
         if (activeLayers.contains(layerId)) {
             throw new IllegalStateException(
@@ -292,12 +297,14 @@ public class LabelCacheImpl implements LabelCache {
         enabledLayers.remove(layerId);
     }
 
+    @Override
     public void disableLayer(String layerId) {
         needsOrdering = true;
         enabledLayers.remove(layerId);
     }
 
     /** @see org.geotools.renderer.lite.LabelCache#startLayer(String) */
+    @Override
     public void startLayer(String layerId) {
         enabledLayers.add(layerId);
         activeLayers.add(layerId);
@@ -325,6 +332,7 @@ public class LabelCacheImpl implements LabelCache {
      * @see org.geotools.renderer.lite.LabelCache#put(String,TextSymbolizer,Feature,
      *     LiteShape2,NumberRange)
      */
+    @Override
     public void put(
             String layerId,
             TextSymbolizer symbolizer,
@@ -375,6 +383,7 @@ public class LabelCacheImpl implements LabelCache {
         }
     }
 
+    @Override
     public void put(Rectangle2D area) {
         reserved.add(area);
     }
@@ -461,11 +470,13 @@ public class LabelCacheImpl implements LabelCache {
     }
 
     /** @see org.geotools.renderer.lite.LabelCache#endLayer(String,Graphics2D,Rectangle) */
+    @Override
     public void endLayer(String layerId, Graphics2D graphics, Rectangle displayArea) {
         activeLayers.remove(layerId);
     }
 
     /** Return a list with all the values in priority order. Both grouped and non-grouped */
+    @Override
     public List<LabelCacheItem> orderedLabels() {
         List<LabelCacheItem> al = getActiveLabels();
         Collections.sort(al);
@@ -492,6 +503,7 @@ public class LabelCacheImpl implements LabelCache {
     }
 
     /** @see org.geotools.renderer.lite.LabelCache#end(java.awt.Graphics2D, java.awt.Rectangle) */
+    @Override
     public void end(Graphics2D graphics, Rectangle displayArea) {
         final Object antialiasing = graphics.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
         final Object textAntialiasing =
@@ -2232,6 +2244,7 @@ public class LabelCacheImpl implements LabelCache {
 
     /** sorts a list of LineStrings by length (long=1st) */
     private final class LineLengthComparator implements java.util.Comparator<LineString> {
+        @Override
         public int compare(LineString o1, LineString o2) {
             // sort big->small
             return Double.compare(o2.getLength(), o1.getLength());

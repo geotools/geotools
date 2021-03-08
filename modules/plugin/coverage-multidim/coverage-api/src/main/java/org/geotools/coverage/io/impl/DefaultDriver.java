@@ -66,10 +66,12 @@ public class DefaultDriver implements Driver {
         this.title = new SimpleInternationalString(title);
     }
 
+    @Override
     public String getName() {
         return this.name;
     }
 
+    @Override
     public InternationalString getTitle() {
         return this.title;
     }
@@ -80,14 +82,17 @@ public class DefaultDriver implements Driver {
      * <p>Often these hints are configuration and factory settings used to intergrate the driver
      * with application services.
      */
+    @Override
     public Map<Key, ?> getImplementationHints() {
         return this.implementationHints;
     }
 
+    @Override
     public InternationalString getDescription() {
         return this.description;
     }
 
+    @Override
     public boolean canAccess(
             final DriverCapabilities operation, final Map<String, Serializable> params) {
 
@@ -106,6 +111,7 @@ public class DefaultDriver implements Driver {
         }
     }
 
+    @Override
     public CoverageAccess access(
             final DriverCapabilities operation,
             final Map<String, Serializable> params,
@@ -159,6 +165,7 @@ public class DefaultDriver implements Driver {
         return createParameterInfo;
     }
 
+    @Override
     public Map<String, Parameter<?>> getParameterInfo(DriverCapabilities operation) {
         switch (operation) {
             case CONNECT:
@@ -215,10 +222,12 @@ public class DefaultDriver implements Driver {
         throw new UnsupportedOperationException("Operation not currently implemented");
     }
 
+    @Override
     public EnumSet<DriverCapabilities> getDriverCapabilities() {
         return driverCapabilities;
     }
 
+    @Override
     public boolean isAvailable() {
         return false;
     }

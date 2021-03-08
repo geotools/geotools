@@ -22,6 +22,7 @@ import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class DB2DataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
+    @Override
     protected JDBCDataStoreAPITestSetup createTestSetup() {
         return new DB2DataStoreAPITestSetup();
     }
@@ -66,6 +67,7 @@ public class DB2DataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
         // TODO skip
     }
 
+    @Override
     public void testTransactionIsolation() throws Exception {
         // TODO skip, check for DB2
     }
@@ -75,6 +77,7 @@ public class DB2DataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
         // TODO skip , check for DB2
     }
 
+    @Override
     protected boolean areCRSEqual(CoordinateReferenceSystem crs1, CoordinateReferenceSystem crs2) {
         if (crs1 == null && crs2 == null) return true;
 

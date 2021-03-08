@@ -236,6 +236,7 @@ public class ArcTypeImpl extends EObjectImpl implements ArcType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EClass eStaticClass() {
         return XlinkPackage.Literals.ARC_TYPE;
     }
@@ -245,6 +246,7 @@ public class ArcTypeImpl extends EObjectImpl implements ArcType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getTitleGroup() {
         if (titleGroup == null) {
             titleGroup = new BasicFeatureMap(this, XlinkPackage.ARC_TYPE__TITLE_GROUP);
@@ -257,6 +259,7 @@ public class ArcTypeImpl extends EObjectImpl implements ArcType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getTitle() {
         return getTitleGroup().list(XlinkPackage.Literals.ARC_TYPE__TITLE);
     }
@@ -266,6 +269,7 @@ public class ArcTypeImpl extends EObjectImpl implements ArcType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ActuateType getActuate() {
         return actuate;
     }
@@ -275,6 +279,7 @@ public class ArcTypeImpl extends EObjectImpl implements ArcType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setActuate(ActuateType newActuate) {
         ActuateType oldActuate = actuate;
         actuate = newActuate == null ? ACTUATE_EDEFAULT : newActuate;
@@ -289,6 +294,7 @@ public class ArcTypeImpl extends EObjectImpl implements ArcType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetActuate() {
         ActuateType oldActuate = actuate;
         boolean oldActuateESet = actuateESet;
@@ -303,6 +309,7 @@ public class ArcTypeImpl extends EObjectImpl implements ArcType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetActuate() {
         return actuateESet;
     }
@@ -312,6 +319,7 @@ public class ArcTypeImpl extends EObjectImpl implements ArcType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getArcrole() {
         return arcrole;
     }
@@ -321,6 +329,7 @@ public class ArcTypeImpl extends EObjectImpl implements ArcType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setArcrole(String newArcrole) {
         String oldArcrole = arcrole;
         arcrole = newArcrole;
@@ -333,6 +342,7 @@ public class ArcTypeImpl extends EObjectImpl implements ArcType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getFrom() {
         return from;
     }
@@ -342,6 +352,7 @@ public class ArcTypeImpl extends EObjectImpl implements ArcType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFrom(String newFrom) {
         String oldFrom = from;
         from = newFrom;
@@ -354,6 +365,7 @@ public class ArcTypeImpl extends EObjectImpl implements ArcType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ShowType getShow() {
         return show;
     }
@@ -363,6 +375,7 @@ public class ArcTypeImpl extends EObjectImpl implements ArcType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setShow(ShowType newShow) {
         ShowType oldShow = show;
         show = newShow == null ? SHOW_EDEFAULT : newShow;
@@ -377,6 +390,7 @@ public class ArcTypeImpl extends EObjectImpl implements ArcType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetShow() {
         ShowType oldShow = show;
         boolean oldShowESet = showESet;
@@ -391,6 +405,7 @@ public class ArcTypeImpl extends EObjectImpl implements ArcType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetShow() {
         return showESet;
     }
@@ -400,6 +415,7 @@ public class ArcTypeImpl extends EObjectImpl implements ArcType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getTitle1() {
         return title1;
     }
@@ -409,6 +425,7 @@ public class ArcTypeImpl extends EObjectImpl implements ArcType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTitle1(String newTitle1) {
         String oldTitle1 = title1;
         title1 = newTitle1;
@@ -421,6 +438,7 @@ public class ArcTypeImpl extends EObjectImpl implements ArcType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getTo() {
         return to;
     }
@@ -430,6 +448,7 @@ public class ArcTypeImpl extends EObjectImpl implements ArcType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTo(String newTo) {
         String oldTo = to;
         to = newTo;
@@ -442,6 +461,7 @@ public class ArcTypeImpl extends EObjectImpl implements ArcType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TypeType getType() {
         return type;
     }
@@ -451,6 +471,7 @@ public class ArcTypeImpl extends EObjectImpl implements ArcType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setType(TypeType newType) {
         TypeType oldType = type;
         type = newType == null ? TYPE_EDEFAULT : newType;
@@ -465,6 +486,7 @@ public class ArcTypeImpl extends EObjectImpl implements ArcType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetType() {
         TypeType oldType = type;
         boolean oldTypeESet = typeESet;
@@ -479,6 +501,7 @@ public class ArcTypeImpl extends EObjectImpl implements ArcType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetType() {
         return typeESet;
     }
@@ -488,6 +511,7 @@ public class ArcTypeImpl extends EObjectImpl implements ArcType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case XlinkPackage.ARC_TYPE__TITLE_GROUP:
@@ -503,6 +527,7 @@ public class ArcTypeImpl extends EObjectImpl implements ArcType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case XlinkPackage.ARC_TYPE__TITLE_GROUP:
@@ -533,6 +558,7 @@ public class ArcTypeImpl extends EObjectImpl implements ArcType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case XlinkPackage.ARC_TYPE__TITLE_GROUP:
@@ -568,6 +594,7 @@ public class ArcTypeImpl extends EObjectImpl implements ArcType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case XlinkPackage.ARC_TYPE__TITLE_GROUP:
@@ -603,6 +630,7 @@ public class ArcTypeImpl extends EObjectImpl implements ArcType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case XlinkPackage.ARC_TYPE__TITLE_GROUP:
@@ -632,6 +660,7 @@ public class ArcTypeImpl extends EObjectImpl implements ArcType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String toString() {
         if (eIsProxy()) return super.toString();
 

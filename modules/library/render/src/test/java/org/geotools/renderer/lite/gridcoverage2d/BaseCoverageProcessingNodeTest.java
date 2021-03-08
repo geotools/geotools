@@ -41,6 +41,7 @@ public class BaseCoverageProcessingNodeTest {
                         1,
                         SimpleInternationalString.wrap("fake node"),
                         SimpleInternationalString.wrap("fake node")) {
+                    @Override
                     protected GridCoverage2D execute() {
                         return CoverageFactoryFinder.getGridCoverageFactory(null)
                                 .create(
@@ -67,6 +68,7 @@ public class BaseCoverageProcessingNodeTest {
                         SimpleInternationalString.wrap("fake node"),
                         SimpleInternationalString.wrap("fake node")) {
 
+                    @Override
                     protected GridCoverage2D execute() {
                         return CoverageFactoryFinder.getGridCoverageFactory(null)
                                 .create(

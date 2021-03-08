@@ -88,6 +88,7 @@ public class AffineTransform2D extends AffineTransform implements Matrix {
      * Returns the number of rows in this matrix, which is always {@value #SIZE} in this
      * implementation.
      */
+    @Override
     public final int getNumRow() {
         return SIZE;
     }
@@ -96,6 +97,7 @@ public class AffineTransform2D extends AffineTransform implements Matrix {
      * Returns the number of colmuns in this matrix, which is always {@value #SIZE} in this
      * implementation.
      */
+    @Override
     public final int getNumCol() {
         return SIZE;
     }
@@ -107,6 +109,7 @@ public class AffineTransform2D extends AffineTransform implements Matrix {
      * @param column The column number to be retrieved (zero indexed).
      * @return The value at the indexed element.
      */
+    @Override
     public double getElement(final int row, final int column) {
         switch (row) {
             case 0:
@@ -161,6 +164,7 @@ public class AffineTransform2D extends AffineTransform implements Matrix {
      * @param column The column number to be retrieved (zero indexed).
      * @param value The new matrix element value.
      */
+    @Override
     public void setElement(final int row, final int column, final double value) {
         if (row < 0 || row >= SIZE) {
             throw new IndexOutOfBoundsException(

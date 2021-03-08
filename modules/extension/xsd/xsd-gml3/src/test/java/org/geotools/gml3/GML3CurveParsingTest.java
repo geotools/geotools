@@ -44,6 +44,7 @@ public class GML3CurveParsingTest extends GML3TestSupport {
 
     protected Configuration gml;
 
+    @Override
     @Before
     public void setUp() throws Exception {
         GMLConfiguration configuration = new GMLConfiguration(true);

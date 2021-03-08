@@ -131,6 +131,7 @@ public class DijkstraShortestPathFinder implements GraphWalker {
      *
      * @see GraphWalker#visit(Graphable, GraphTraversal)
      */
+    @Override
     public int visit(Graphable element, GraphTraversal traversal) {
         return (GraphTraversal.CONTINUE);
     }
@@ -140,5 +141,6 @@ public class DijkstraShortestPathFinder implements GraphWalker {
      *
      * @see GraphWalker#finish()
      */
+    @Override
     public void finish() {}
 }

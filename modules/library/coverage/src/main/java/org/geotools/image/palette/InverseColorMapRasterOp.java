@@ -107,11 +107,13 @@ public final class InverseColorMapRasterOp implements RasterOp {
         this(destCM, DEFAULT_QUANTIZATION_COLORS, DEFAULT_ALPHA_TH);
     }
 
+    @Override
     public WritableRaster createCompatibleDestRaster(Raster src) {
         return icm.createCompatibleWritableRaster(src.getWidth(), src.getHeight())
                 .createWritableTranslatedChild(src.getMinX(), src.getMinY());
     }
 
+    @Override
     public WritableRaster filter(Raster src, WritableRaster dest) {
         if (dest == null) dest = createCompatibleDestRaster(src);
         else {
@@ -151,16 +153,19 @@ public final class InverseColorMapRasterOp implements RasterOp {
         return dest;
     }
 
+    @Override
     public Rectangle2D getBounds2D(Raster src) {
         return (Rectangle) src.getBounds().clone();
     }
 
+    @Override
     public Point2D getPoint2D(Point2D srcPt, Point2D dstPt) {
         if (dstPt == null) dstPt = new Point();
         dstPt.setLocation(srcPt);
         return dstPt;
     }
 
+    @Override
     public RenderingHints getRenderingHints() {
         return null;
     }

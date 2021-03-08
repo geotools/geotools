@@ -242,10 +242,12 @@ public abstract class DerivedMap<BK, K, V> extends AbstractMap<K, V> implements 
             super(base, keyType);
         }
 
+        @Override
         protected K baseToDerived(final BK element) {
             return DerivedMap.this.baseToDerived(element);
         }
 
+        @Override
         protected BK derivedToBase(final K element) {
             return DerivedMap.this.derivedToBase(element);
         }
@@ -260,11 +262,13 @@ public abstract class DerivedMap<BK, K, V> extends AbstractMap<K, V> implements 
             super(base, (Class) Entry.class);
         }
 
+        @Override
         protected Entry<BK, K, V> baseToDerived(final Map.Entry<BK, V> entry) {
             final K derived = DerivedMap.this.baseToDerived(entry.getKey());
             return derived != null ? new Entry<>(entry, derived) : null;
         }
 
+        @Override
         protected Map.Entry<BK, V> derivedToBase(final Entry<BK, K, V> element) {
             return element.entry;
         }
@@ -280,14 +284,17 @@ public abstract class DerivedMap<BK, K, V> extends AbstractMap<K, V> implements 
             this.derived = derived;
         }
 
+        @Override
         public K getKey() {
             return derived;
         }
 
+        @Override
         public V getValue() {
             return entry.getValue();
         }
 
+        @Override
         public V setValue(V value) {
             return entry.setValue(value);
         }

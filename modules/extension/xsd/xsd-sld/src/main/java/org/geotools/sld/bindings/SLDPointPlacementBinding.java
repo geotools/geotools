@@ -62,6 +62,7 @@ public class SLDPointPlacementBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SLD.POINTPLACEMENT;
     }
@@ -73,6 +74,7 @@ public class SLDPointPlacementBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -84,6 +86,7 @@ public class SLDPointPlacementBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return PointPlacement.class;
     }
@@ -95,6 +98,7 @@ public class SLDPointPlacementBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
@@ -104,6 +108,7 @@ public class SLDPointPlacementBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // &lt;xsd:element ref="sld:AnchorPoint" minOccurs="0"/&gt;
         AnchorPoint anchorPoint = (AnchorPoint) node.getChildValue("AnchorPoint");

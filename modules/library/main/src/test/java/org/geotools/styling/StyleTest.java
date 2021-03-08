@@ -47,14 +47,17 @@ public class StyleTest {
 
         org.opengis.style.Displacement external =
                 new Displacement() {
+                    @Override
                     public Expression getDisplacementY() {
                         return ff.literal(1.0);
                     }
 
+                    @Override
                     public Expression getDisplacementX() {
                         return ff.literal(1.0);
                     }
 
+                    @Override
                     public Object accept(StyleVisitor visitor, Object data) {
                         return visitor.visit(this, data);
                     }

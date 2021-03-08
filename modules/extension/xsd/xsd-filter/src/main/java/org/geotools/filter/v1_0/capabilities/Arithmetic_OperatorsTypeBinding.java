@@ -51,6 +51,7 @@ public class Arithmetic_OperatorsTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.Arithmetic_OperatorsType;
     }
@@ -62,6 +63,7 @@ public class Arithmetic_OperatorsTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return ArithmeticOperators.class;
     }
@@ -73,6 +75,7 @@ public class Arithmetic_OperatorsTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // &lt;xsd:element ref="ogc:Simple_Arithmetic"/&gt;
         boolean simpleArithmetic =
@@ -84,6 +87,7 @@ public class Arithmetic_OperatorsTypeBinding extends AbstractComplexBinding {
         return factory.arithmeticOperators(simpleArithmetic, functions);
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         ArithmeticOperators arithmetic = (ArithmeticOperators) object;
 

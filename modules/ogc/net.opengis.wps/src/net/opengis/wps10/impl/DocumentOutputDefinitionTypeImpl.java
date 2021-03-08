@@ -98,6 +98,7 @@ public class DocumentOutputDefinitionTypeImpl extends OutputDefinitionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.DOCUMENT_OUTPUT_DEFINITION_TYPE;
   }
@@ -107,6 +108,7 @@ public class DocumentOutputDefinitionTypeImpl extends OutputDefinitionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public LanguageStringType getTitle() {
     return title;
   }
@@ -131,6 +133,7 @@ public class DocumentOutputDefinitionTypeImpl extends OutputDefinitionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setTitle(LanguageStringType newTitle) {
     if (newTitle != title) {
       NotificationChain msgs = null;
@@ -150,6 +153,7 @@ public class DocumentOutputDefinitionTypeImpl extends OutputDefinitionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public LanguageStringType getAbstract() {
     return abstract_;
   }
@@ -174,6 +178,7 @@ public class DocumentOutputDefinitionTypeImpl extends OutputDefinitionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setAbstract(LanguageStringType newAbstract) {
     if (newAbstract != abstract_) {
       NotificationChain msgs = null;
@@ -193,6 +198,7 @@ public class DocumentOutputDefinitionTypeImpl extends OutputDefinitionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isAsReference() {
     return asReference;
   }
@@ -202,6 +208,7 @@ public class DocumentOutputDefinitionTypeImpl extends OutputDefinitionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setAsReference(boolean newAsReference) {
     boolean oldAsReference = asReference;
     asReference = newAsReference;
@@ -216,6 +223,7 @@ public class DocumentOutputDefinitionTypeImpl extends OutputDefinitionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetAsReference() {
     boolean oldAsReference = asReference;
     boolean oldAsReferenceESet = asReferenceESet;
@@ -230,6 +238,7 @@ public class DocumentOutputDefinitionTypeImpl extends OutputDefinitionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetAsReference() {
     return asReferenceESet;
   }
@@ -239,6 +248,7 @@ public class DocumentOutputDefinitionTypeImpl extends OutputDefinitionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.DOCUMENT_OUTPUT_DEFINITION_TYPE__TITLE:
@@ -254,6 +264,7 @@ public class DocumentOutputDefinitionTypeImpl extends OutputDefinitionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.DOCUMENT_OUTPUT_DEFINITION_TYPE__TITLE:
@@ -271,6 +282,7 @@ public class DocumentOutputDefinitionTypeImpl extends OutputDefinitionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.DOCUMENT_OUTPUT_DEFINITION_TYPE__TITLE:
@@ -291,6 +303,7 @@ public class DocumentOutputDefinitionTypeImpl extends OutputDefinitionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.DOCUMENT_OUTPUT_DEFINITION_TYPE__TITLE:
@@ -311,6 +324,7 @@ public class DocumentOutputDefinitionTypeImpl extends OutputDefinitionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.DOCUMENT_OUTPUT_DEFINITION_TYPE__TITLE:
@@ -328,6 +342,7 @@ public class DocumentOutputDefinitionTypeImpl extends OutputDefinitionTypeImpl i
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String toString() {
     if (eIsProxy()) return super.toString();
 

@@ -120,6 +120,7 @@ public class WMSCoverageReaderTest {
         MockHttpClient client =
                 new MockHttpClient() {
 
+                    @Override
                     public HTTPResponse get(URL url) throws IOException {
                         if (url.getQuery().contains("GetCapabilities")) {
                             URL caps130 = WMSCoverageReaderTest.class.getResource("caps130.xml");
@@ -158,6 +159,7 @@ public class WMSCoverageReaderTest {
         MockHttpClient client =
                 new MockHttpClient() {
 
+                    @Override
                     public HTTPResponse get(URL url) throws IOException {
                         if (url.getQuery().contains("GetCapabilities")) {
                             URL caps130 = WMSCoverageReaderTest.class.getResource("caps130.xml");
@@ -170,6 +172,7 @@ public class WMSCoverageReaderTest {
                             assertEquals("EPSG:4326", params.get("CRS"));
                             URL world = WMSCoverageReaderTest.class.getResource("world.png");
                             return new MockHttpResponse(world, null) {
+                                @Override
                                 public void dispose() {
                                     disposeCalled.set(true);
                                     super.dispose();
@@ -228,6 +231,7 @@ public class WMSCoverageReaderTest {
         MockHttpClient client =
                 new MockHttpClient() {
 
+                    @Override
                     public HTTPResponse get(URL url) throws IOException {
                         if (url.getQuery().contains("GetCapabilities")) {
                             URL caps130 = WMSCoverageReaderTest.class.getResource("caps110.xml");
@@ -260,6 +264,7 @@ public class WMSCoverageReaderTest {
         MockHttpClient client =
                 new MockHttpClient() {
 
+                    @Override
                     public HTTPResponse get(URL url) throws IOException {
                         if (url.getQuery().contains("GetCapabilities")) {
                             URL caps130 =

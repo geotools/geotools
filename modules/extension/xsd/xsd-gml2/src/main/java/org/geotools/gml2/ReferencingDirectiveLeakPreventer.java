@@ -40,18 +40,22 @@ public class ReferencingDirectiveLeakPreventer implements Adapter {
 
     XSDSchema target;
 
+    @Override
     public Notifier getTarget() {
         return target;
     }
 
+    @Override
     public void setTarget(Notifier newTarget) {
         target = (XSDSchema) newTarget;
     }
 
+    @Override
     public boolean isAdapterForType(Object type) {
         return type instanceof XSDSchema;
     }
 
+    @Override
     public void notifyChanged(Notification notification) {
         int featureId = notification.getFeatureID(target.getClass());
         if (featureId != XSDPackage.XSD_SCHEMA__REFERENCING_DIRECTIVES) {

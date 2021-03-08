@@ -185,6 +185,7 @@ public class WKBAttributeIO {
             this.position = 0;
         }
 
+        @Override
         public int read(final byte[] buf) throws IOException {
             final int size = buf.length;
             System.arraycopy(buffer, position, buf, 0, size);
@@ -200,6 +201,7 @@ public class WKBAttributeIO {
             this.in = in;
         }
 
+        @Override
         public int read(final byte[] buf) throws IOException {
             return in.read(buf);
         }

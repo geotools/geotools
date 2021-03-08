@@ -139,6 +139,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EMap<String, String> getXMLNSPrefixMap() {
 		if (xMLNSPrefixMap == null) {
 			xMLNSPrefixMap = new EcoreEMap<>(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY, EStringToStringMapEntryImpl.class, this, Wcs20Package.DOCUMENT_ROOT__XMLNS_PREFIX_MAP);
@@ -151,6 +152,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EMap<String, String> getXSISchemaLocation() {
 		if (xSISchemaLocation == null) {
 			xSISchemaLocation = new EcoreEMap<>(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY, EStringToStringMapEntryImpl.class, this, Wcs20Package.DOCUMENT_ROOT__XSI_SCHEMA_LOCATION);
@@ -163,6 +165,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public CapabilitiesType getCapabilities() {
 		// TODO: implement this method to return the 'Capabilities' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -188,6 +191,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setCapabilities(CapabilitiesType newCapabilities) {
 		// TODO: implement this method to set the 'Capabilities' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -199,6 +203,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ContentsType getContents() {
 		// TODO: implement this method to return the 'Contents' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -224,6 +229,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setContents(ContentsType newContents) {
 		// TODO: implement this method to set the 'Contents' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -235,6 +241,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public CoverageDescriptionType getCoverageDescription() {
 		// TODO: implement this method to return the 'Coverage Description' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -260,6 +267,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setCoverageDescription(CoverageDescriptionType newCoverageDescription) {
 		// TODO: implement this method to set the 'Coverage Description' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -271,6 +279,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public CoverageDescriptionsType getCoverageDescriptions() {
 		// TODO: implement this method to return the 'Coverage Descriptions' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -296,6 +305,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setCoverageDescriptions(CoverageDescriptionsType newCoverageDescriptions) {
 		// TODO: implement this method to set the 'Coverage Descriptions' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -307,6 +317,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getCoverageId() {
 		// TODO: implement this method to return the 'Coverage Id' attribute
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -318,6 +329,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setCoverageId(String newCoverageId) {
 		// TODO: implement this method to set the 'Coverage Id' attribute
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -329,6 +341,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public CoverageOfferingsType getCoverageOfferings() {
 		// TODO: implement this method to return the 'Coverage Offerings' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -354,6 +367,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setCoverageOfferings(CoverageOfferingsType newCoverageOfferings) {
 		// TODO: implement this method to set the 'Coverage Offerings' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -365,6 +379,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public QName getCoverageSubtype() {
 		// TODO: implement this method to return the 'Coverage Subtype' attribute
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -376,6 +391,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setCoverageSubtype(QName newCoverageSubtype) {
 		// TODO: implement this method to set the 'Coverage Subtype' attribute
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -387,6 +403,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public CoverageSubtypeParentType getCoverageSubtypeParent() {
 		// TODO: implement this method to return the 'Coverage Subtype Parent' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -412,6 +429,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setCoverageSubtypeParent(CoverageSubtypeParentType newCoverageSubtypeParent) {
 		// TODO: implement this method to set the 'Coverage Subtype Parent' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -423,6 +441,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public CoverageSummaryType getCoverageSummary() {
 		// TODO: implement this method to return the 'Coverage Summary' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -448,6 +467,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setCoverageSummary(CoverageSummaryType newCoverageSummary) {
 		// TODO: implement this method to set the 'Coverage Summary' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -459,6 +479,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public DescribeCoverageType getDescribeCoverage() {
 		// TODO: implement this method to return the 'Describe Coverage' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -484,6 +505,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setDescribeCoverage(DescribeCoverageType newDescribeCoverage) {
 		// TODO: implement this method to set the 'Describe Coverage' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -495,6 +517,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public DimensionSliceType getDimensionSlice() {
 		// TODO: implement this method to return the 'Dimension Slice' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -520,6 +543,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setDimensionSlice(DimensionSliceType newDimensionSlice) {
 		// TODO: implement this method to set the 'Dimension Slice' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -531,6 +555,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public DimensionSubsetType getDimensionSubset() {
 		// TODO: implement this method to return the 'Dimension Subset' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -556,6 +581,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public DimensionTrimType getDimensionTrim() {
 		// TODO: implement this method to return the 'Dimension Trim' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -581,6 +607,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setDimensionTrim(DimensionTrimType newDimensionTrim) {
 		// TODO: implement this method to set the 'Dimension Trim' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -592,6 +619,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ExtensionType getExtension() {
 		// TODO: implement this method to return the 'Extension' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -617,6 +645,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setExtension(ExtensionType newExtension) {
 		// TODO: implement this method to set the 'Extension' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -628,6 +657,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public GetCapabilitiesType getGetCapabilities() {
 		// TODO: implement this method to return the 'Get Capabilities' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -653,6 +683,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setGetCapabilities(GetCapabilitiesType newGetCapabilities) {
 		// TODO: implement this method to set the 'Get Capabilities' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -664,6 +695,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public GetCoverageType getGetCoverage() {
 		// TODO: implement this method to return the 'Get Coverage' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -689,6 +721,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setGetCoverage(GetCoverageType newGetCoverage) {
 		// TODO: implement this method to set the 'Get Coverage' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -700,6 +733,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public OfferedCoverageType getOfferedCoverage() {
 		// TODO: implement this method to return the 'Offered Coverage' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -725,6 +759,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setOfferedCoverage(OfferedCoverageType newOfferedCoverage) {
 		// TODO: implement this method to set the 'Offered Coverage' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -736,6 +771,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ServiceMetadataType getServiceMetadata() {
 		// TODO: implement this method to return the 'Service Metadata' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -761,6 +797,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setServiceMetadata(ServiceMetadataType newServiceMetadata) {
 		// TODO: implement this method to set the 'Service Metadata' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -772,6 +809,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ServiceParametersType getServiceParameters() {
 		// TODO: implement this method to return the 'Service Parameters' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -797,6 +835,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setServiceParameters(ServiceParametersType newServiceParameters) {
 		// TODO: implement this method to set the 'Service Parameters' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT

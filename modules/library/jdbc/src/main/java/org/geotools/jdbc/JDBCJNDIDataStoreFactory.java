@@ -84,6 +84,7 @@ public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     /** Override to create the datasource from the external JNDI conection. */
+    @Override
     protected DataSource createDataSource(Map<String, ?> params, SQLDialect dialect)
             throws IOException {
         String jndiName = (String) JNDI_REFNAME.lookUp(params);
@@ -132,6 +133,7 @@ public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
      * <p>Check in an Initial Context is available, that is all what can be done Checking for the
      * right jdbc jars in the classpath is not possible here
      */
+    @Override
     public boolean isAvailable() {
         try {
             GeoTools.getInitialContext(GeoTools.getDefaultHints());
@@ -142,6 +144,7 @@ public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     /** Override to omit all those parameters which define the creation of the connection. */
+    @Override
     protected void setupParameters(Map<String, Object> parameters) {
         parameters.put(
                 DBTYPE.key,
@@ -173,6 +176,7 @@ public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
         return delegate.getDisplayName() + " (JNDI)";
     }
 
+    @Override
     public String getDescription() {
         return delegate.getDescription() + " (JNDI)";
     }
@@ -183,10 +187,12 @@ public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
         return delegate.createDataStoreInternal(dataStore, params);
     }
 
+    @Override
     public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
         return delegate.createNewDataStore(params);
     }
 
+    @Override
     public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
         return delegate.getImplementationHints();
     }

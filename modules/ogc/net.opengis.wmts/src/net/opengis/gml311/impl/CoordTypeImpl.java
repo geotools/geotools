@@ -114,6 +114,7 @@ public class CoordTypeImpl extends MinimalEObjectImpl.Container implements Coord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigDecimal getX() {
         return x;
     }
@@ -123,6 +124,7 @@ public class CoordTypeImpl extends MinimalEObjectImpl.Container implements Coord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setX(BigDecimal newX) {
         BigDecimal oldX = x;
         x = newX;
@@ -135,6 +137,7 @@ public class CoordTypeImpl extends MinimalEObjectImpl.Container implements Coord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigDecimal getY() {
         return y;
     }
@@ -144,6 +147,7 @@ public class CoordTypeImpl extends MinimalEObjectImpl.Container implements Coord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setY(BigDecimal newY) {
         BigDecimal oldY = y;
         y = newY;
@@ -156,6 +160,7 @@ public class CoordTypeImpl extends MinimalEObjectImpl.Container implements Coord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigDecimal getZ() {
         return z;
     }
@@ -165,6 +170,7 @@ public class CoordTypeImpl extends MinimalEObjectImpl.Container implements Coord
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setZ(BigDecimal newZ) {
         BigDecimal oldZ = z;
         z = newZ;

@@ -42,24 +42,29 @@ public class ColorMapImpl implements ColorMap {
         this.function = function;
     }
 
+    @Override
     public void addColorMapEntry(ColorMapEntry entry) {
         list.add(entry);
     }
 
+    @Override
     public ColorMapEntry[] getColorMapEntries() {
         return list.toArray(new ColorMapEntry[0]);
     }
 
+    @Override
     public ColorMapEntry getColorMapEntry(int index) {
         return list.get(index);
     }
 
     /** @see org.geotools.styling.ColorMap#getType() */
+    @Override
     public int getType() {
         return type;
     }
 
     /** @see org.geotools.styling.ColorMap#setType(int) */
+    @Override
     public void setType(int type) {
         if ((type < TYPE_RAMP) || (type > TYPE_VALUES)) {
             throw new IllegalArgumentException();
@@ -67,22 +72,27 @@ public class ColorMapImpl implements ColorMap {
         this.type = type;
     }
 
+    @Override
     public Object accept(StyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
+    @Override
     public boolean getExtendedColors() {
         return extendedColors;
     }
 
+    @Override
     public void setExtendedColors(boolean extended) {
         extendedColors = extended;
     }
 
+    @Override
     public Function getFunction() {
         return function;
     }
 
+    @Override
     public void accept(org.geotools.styling.StyleVisitor visitor) {
         visitor.visit(this);
     }

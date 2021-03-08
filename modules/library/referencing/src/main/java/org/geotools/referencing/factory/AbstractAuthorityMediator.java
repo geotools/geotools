@@ -230,13 +230,16 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
      * @param code The code to trim.
      * @return The code without the authority scope.
      */
+    @Override
     protected String trimAuthority(String code) {
         return toKey(code);
     }
 
     /** The authority body of the objects this factory provides. */
+    @Override
     public abstract Citation getAuthority();
 
+    @Override
     public Set<String> getAuthorityCodes(Class type) throws FactoryException {
         @SuppressWarnings("unchecked")
         Set<String> codes = (Set) cache.get(type);
@@ -271,8 +274,10 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
         return codes;
     }
 
+    @Override
     public abstract InternationalString getDescriptionText(String code) throws FactoryException;
 
+    @Override
     public IdentifiedObject createObject(String code) throws FactoryException {
         final String key = toKey(code);
         IdentifiedObject obj = (IdentifiedObject) cache.get(key);
@@ -308,6 +313,7 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
     //
     // CRSAuthority
     //
+    @Override
     public synchronized CompoundCRS createCompoundCRS(final String code) throws FactoryException {
         final String key = toKey(code);
         CompoundCRS crs = (CompoundCRS) cache.get(key);
@@ -340,12 +346,14 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
         return crs;
     }
 
+    @Override
     public CoordinateReferenceSystem createCoordinateReferenceSystem(String code)
             throws FactoryException {
         final String key = toKey(code);
         return createWith(
                 key,
                 new WorkerSafeRunnable() {
+                    @Override
                     public Object run(AbstractCachedAuthorityFactory worker)
                             throws FactoryException {
                         return worker.createCoordinateReferenceSystem(key);
@@ -353,11 +361,13 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
                 });
     }
 
+    @Override
     public DerivedCRS createDerivedCRS(String code) throws FactoryException {
         final String key = toKey(code);
         return createWith(
                 key,
                 new WorkerSafeRunnable() {
+                    @Override
                     public Object run(AbstractCachedAuthorityFactory worker)
                             throws FactoryException {
                         return worker.createEngineeringCRS(key);
@@ -365,11 +375,13 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
                 });
     }
 
+    @Override
     public GeocentricCRS createGeocentricCRS(String code) throws FactoryException {
         final String key = toKey(code);
         return createWith(
                 key,
                 new WorkerSafeRunnable() {
+                    @Override
                     public Object run(AbstractCachedAuthorityFactory worker)
                             throws FactoryException {
                         return worker.createGeocentricCRS(key);
@@ -377,11 +389,13 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
                 });
     }
 
+    @Override
     public GeographicCRS createGeographicCRS(String code) throws FactoryException {
         final String key = toKey(code);
         return createWith(
                 key,
                 new WorkerSafeRunnable() {
+                    @Override
                     public Object run(AbstractCachedAuthorityFactory worker)
                             throws FactoryException {
                         return worker.createGeographicCRS(key);
@@ -389,11 +403,13 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
                 });
     }
 
+    @Override
     public ImageCRS createImageCRS(String code) throws FactoryException {
         final String key = toKey(code);
         return createWith(
                 key,
                 new WorkerSafeRunnable() {
+                    @Override
                     public Object run(AbstractCachedAuthorityFactory worker)
                             throws FactoryException {
                         return worker.createImageCRS(key);
@@ -401,11 +417,13 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
                 });
     }
 
+    @Override
     public ProjectedCRS createProjectedCRS(String code) throws FactoryException {
         final String key = toKey(code);
         return createWith(
                 key,
                 new WorkerSafeRunnable() {
+                    @Override
                     public Object run(AbstractCachedAuthorityFactory worker)
                             throws FactoryException {
                         return worker.createProjectedCRS(key);
@@ -413,11 +431,13 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
                 });
     }
 
+    @Override
     public TemporalCRS createTemporalCRS(String code) throws FactoryException {
         final String key = toKey(code);
         return createWith(
                 key,
                 new WorkerSafeRunnable() {
+                    @Override
                     public Object run(AbstractCachedAuthorityFactory worker)
                             throws FactoryException {
                         return worker.createTemporalCRS(key);
@@ -425,11 +445,13 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
                 });
     }
 
+    @Override
     public VerticalCRS createVerticalCRS(String code) throws FactoryException {
         final String key = toKey(code);
         return createWith(
                 key,
                 new WorkerSafeRunnable() {
+                    @Override
                     public Object run(AbstractCachedAuthorityFactory worker)
                             throws FactoryException {
                         return worker.createVerticalCRS(key);
@@ -440,11 +462,13 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
     //
     // CSAuthority
     //
+    @Override
     public CartesianCS createCartesianCS(String code) throws FactoryException {
         final String key = toKey(code);
         return createWith(
                 key,
                 new WorkerSafeRunnable() {
+                    @Override
                     public Object run(AbstractCachedAuthorityFactory worker)
                             throws FactoryException {
                         return worker.createCartesianCS(key);
@@ -452,11 +476,13 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
                 });
     }
 
+    @Override
     public CoordinateSystem createCoordinateSystem(String code) throws FactoryException {
         final String key = toKey(code);
         return createWith(
                 key,
                 new WorkerSafeRunnable() {
+                    @Override
                     public Object run(AbstractCachedAuthorityFactory worker)
                             throws FactoryException {
                         return worker.createCoordinateSystem(key);
@@ -465,11 +491,13 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
     }
 
     // sample implemenation with get/test
+    @Override
     public CoordinateSystemAxis createCoordinateSystemAxis(String code) throws FactoryException {
         final String key = toKey(code);
         return createWith(
                 key,
                 new WorkerSafeRunnable() {
+                    @Override
                     public Object run(AbstractCachedAuthorityFactory worker)
                             throws FactoryException {
                         return worker.createCoordinateSystemAxis(key);
@@ -477,11 +505,13 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
                 });
     }
 
+    @Override
     public CylindricalCS createCylindricalCS(String code) throws FactoryException {
         final String key = toKey(code);
         return createWith(
                 key,
                 new WorkerSafeRunnable() {
+                    @Override
                     public Object run(AbstractCachedAuthorityFactory worker)
                             throws FactoryException {
                         return worker.createCylindricalCS(key);
@@ -489,11 +519,13 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
                 });
     }
 
+    @Override
     public EllipsoidalCS createEllipsoidalCS(String code) throws FactoryException {
         final String key = toKey(code);
         return createWith(
                 key,
                 new WorkerSafeRunnable() {
+                    @Override
                     public Object run(AbstractCachedAuthorityFactory worker)
                             throws FactoryException {
                         return worker.createEllipsoidalCS(key);
@@ -501,11 +533,13 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
                 });
     }
 
+    @Override
     public PolarCS createPolarCS(String code) throws FactoryException {
         final String key = toKey(code);
         return createWith(
                 key,
                 new WorkerSafeRunnable() {
+                    @Override
                     public Object run(AbstractCachedAuthorityFactory worker)
                             throws FactoryException {
                         return worker.createPolarCS(key);
@@ -513,11 +547,13 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
                 });
     }
 
+    @Override
     public SphericalCS createSphericalCS(String code) throws FactoryException {
         final String key = toKey(code);
         return createWith(
                 key,
                 new WorkerSafeRunnable() {
+                    @Override
                     public Object run(AbstractCachedAuthorityFactory worker)
                             throws FactoryException {
                         return worker.createSphericalCS(key);
@@ -525,11 +561,13 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
                 });
     }
 
+    @Override
     public TimeCS createTimeCS(String code) throws FactoryException {
         final String key = toKey(code);
         return createWith(
                 key,
                 new WorkerSafeRunnable() {
+                    @Override
                     public Object run(AbstractCachedAuthorityFactory worker)
                             throws FactoryException {
                         return worker.createTimeCS(key);
@@ -537,11 +575,13 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
                 });
     }
 
+    @Override
     public Unit<?> createUnit(String code) throws FactoryException {
         final String key = toKey(code);
         return createWith(
                 key,
                 new WorkerSafeRunnable() {
+                    @Override
                     public Object run(AbstractCachedAuthorityFactory worker)
                             throws FactoryException {
                         return worker.createUnit(key);
@@ -549,11 +589,13 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
                 });
     }
 
+    @Override
     public VerticalCS createVerticalCS(String code) throws FactoryException {
         final String key = toKey(code);
         return createWith(
                 key,
                 new WorkerSafeRunnable() {
+                    @Override
                     public Object run(AbstractCachedAuthorityFactory worker)
                             throws FactoryException {
                         return worker.createVerticalCS(key);
@@ -564,11 +606,13 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
     //
     // DatumAuthorityFactory
     //
+    @Override
     public Datum createDatum(String code) throws FactoryException {
         final String key = toKey(code);
         return createWith(
                 key,
                 new WorkerSafeRunnable() {
+                    @Override
                     public Object run(AbstractCachedAuthorityFactory worker)
                             throws FactoryException {
                         return worker.createDatum(key);
@@ -576,11 +620,13 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
                 });
     }
 
+    @Override
     public Ellipsoid createEllipsoid(String code) throws FactoryException {
         final String key = toKey(code);
         return createWith(
                 key,
                 new WorkerSafeRunnable() {
+                    @Override
                     public Object run(AbstractCachedAuthorityFactory worker)
                             throws FactoryException {
                         return worker.createEllipsoid(key);
@@ -588,11 +634,13 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
                 });
     }
 
+    @Override
     public EngineeringDatum createEngineeringDatum(String code) throws FactoryException {
         final String key = toKey(code);
         return createWith(
                 key,
                 new WorkerSafeRunnable() {
+                    @Override
                     public Object run(AbstractCachedAuthorityFactory worker)
                             throws FactoryException {
                         return worker.createEngineeringDatum(key);
@@ -600,11 +648,13 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
                 });
     }
 
+    @Override
     public GeodeticDatum createGeodeticDatum(String code) throws FactoryException {
         final String key = toKey(code);
         return createWith(
                 key,
                 new WorkerSafeRunnable() {
+                    @Override
                     public Object run(AbstractCachedAuthorityFactory worker)
                             throws FactoryException {
                         return worker.createGeodeticDatum(key);
@@ -612,11 +662,13 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
                 });
     }
 
+    @Override
     public ImageDatum createImageDatum(String code) throws FactoryException {
         final String key = toKey(code);
         return createWith(
                 key,
                 new WorkerSafeRunnable() {
+                    @Override
                     public Object run(AbstractCachedAuthorityFactory worker)
                             throws FactoryException {
                         return worker.createImageDatum(key);
@@ -624,11 +676,13 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
                 });
     }
 
+    @Override
     public PrimeMeridian createPrimeMeridian(String code) throws FactoryException {
         final String key = toKey(code);
         return createWith(
                 key,
                 new WorkerSafeRunnable() {
+                    @Override
                     public Object run(AbstractCachedAuthorityFactory worker)
                             throws FactoryException {
                         return worker.createPrimeMeridian(key);
@@ -636,11 +690,13 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
                 });
     }
 
+    @Override
     public TemporalDatum createTemporalDatum(String code) throws FactoryException {
         final String key = toKey(code);
         return createWith(
                 key,
                 new WorkerSafeRunnable() {
+                    @Override
                     public Object run(AbstractCachedAuthorityFactory worker)
                             throws FactoryException {
                         return worker.createTemporalDatum(key);
@@ -648,11 +704,13 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
                 });
     }
 
+    @Override
     public VerticalDatum createVerticalDatum(String code) throws FactoryException {
         final String key = toKey(code);
         return createWith(
                 key,
                 new WorkerSafeRunnable() {
+                    @Override
                     public Object run(AbstractCachedAuthorityFactory worker)
                             throws FactoryException {
                         return worker.createVerticalDatum(key);
@@ -660,11 +718,13 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
                 });
     }
 
+    @Override
     public CoordinateOperation createCoordinateOperation(String code) throws FactoryException {
         final String key = toKey(code);
         return createWith(
                 key,
                 new WorkerSafeRunnable() {
+                    @Override
                     public Object run(AbstractCachedAuthorityFactory worker)
                             throws FactoryException {
                         return worker.createCoordinateOperation(key);
@@ -672,6 +732,7 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
                 });
     }
 
+    @Override
     public synchronized Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(
             final String sourceCode, final String targetCode) throws FactoryException {
 
@@ -679,6 +740,7 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
         return createWith(
                 key,
                 new WorkerSafeRunnable() {
+                    @Override
                     public Object run(AbstractCachedAuthorityFactory worker)
                             throws FactoryException {
                         return worker.createFromCoordinateReferenceSystemCodes(
@@ -775,6 +837,7 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
         public abstract Object run(AbstractCachedAuthorityFactory worker) throws FactoryException;
     }
 
+    @Override
     public String getBackingStoreDescription() throws FactoryException {
         AbstractCachedAuthorityFactory worker = null;
         try {
@@ -798,6 +861,7 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
      * <p>Subclasses may wish to override this method if they have their own resources to clean up
      * (like a database connection). If you do this please remember to call super.dispose().
      */
+    @Override
     public void dispose() throws FactoryException {
         if (workers != null) {
             try {
@@ -820,25 +884,30 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
 
         AuthorityPoolableObjectFactory() {}
 
+        @Override
         public void activateObject(Object obj) throws Exception {
             AbstractCachedAuthorityFactory worker = (AbstractCachedAuthorityFactory) obj;
             worker.cache = cache;
             activateWorker(worker);
         }
 
+        @Override
         public void destroyObject(Object obj) throws Exception {
             destroyWorker((AbstractCachedAuthorityFactory) obj);
         }
 
+        @Override
         public Object makeObject() throws Exception {
             AbstractCachedAuthorityFactory worker = makeWorker();
             return worker;
         }
 
+        @Override
         public void passivateObject(Object obj) throws Exception {
             passivateWorker((AbstractCachedAuthorityFactory) obj);
         }
 
+        @Override
         public boolean validateObject(Object obj) {
             return validateWorker((AbstractCachedAuthorityFactory) obj);
         }
@@ -878,6 +947,7 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
      * @throws FactoryException if the finder can not be created.
      * @since 2.4
      */
+    @Override
     public IdentifiedObjectFinder getIdentifiedObjectFinder(
             final Class<? extends IdentifiedObject> type) throws FactoryException {
         return new LazyCachedFinder(type);
@@ -954,6 +1024,7 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
             }
         }
 
+        @Override
         protected Citation getAuthority() {
             return AbstractAuthorityMediator.this.getAuthority();
         }

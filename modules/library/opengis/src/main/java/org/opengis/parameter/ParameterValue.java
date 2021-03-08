@@ -39,6 +39,7 @@ public interface ParameterValue<T> extends GeneralParameterValue {
      *
      * @return The abstract definition of this parameter value.
      */
+    @Override
     ParameterDescriptor<T> getDescriptor();
 
     /**
@@ -275,5 +276,6 @@ public interface ParameterValue<T> extends GeneralParameterValue {
      *
      * @return A copy of this parameter value.
      */
+    @Override
     ParameterValue clone();
 }

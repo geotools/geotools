@@ -65,6 +65,7 @@ public class ResolutionImpl extends MetadataEntity implements Resolution {
      * {@linkplain #getEquivalentScale equivalent scale} and {@linkplain #getDistance ground sample
      * distance} may be provided.
      */
+    @Override
     public RepresentativeFraction getEquivalentScale() {
         return equivalentScale;
     }
@@ -83,6 +84,7 @@ public class ResolutionImpl extends MetadataEntity implements Resolution {
      * Ground sample distance. Only one of {@linkplain #getEquivalentScale equivalent scale} and
      * {@linkplain #getDistance ground sample distance} may be provided.
      */
+    @Override
     public Double getDistance() {
         return distance;
     }

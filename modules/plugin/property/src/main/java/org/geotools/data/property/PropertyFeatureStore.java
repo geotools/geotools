@@ -61,12 +61,15 @@ public class PropertyFeatureStore extends ContentFeatureStore {
     }
 
     /** We handle events internally */
+    @Override
     protected boolean canEvent() {
         return false;
     }
 
+    @Override
     protected QueryCapabilities buildQueryCapabilities() {
         return new QueryCapabilities() {
+            @Override
             public boolean isUseProvidedFIDSupported() {
                 return true;
             }
@@ -145,22 +148,27 @@ public class PropertyFeatureStore extends ContentFeatureStore {
         return delegate.getEntry();
     }
 
+    @Override
     public Transaction getTransaction() {
         return delegate.getTransaction();
     }
 
+    @Override
     public ContentState getState() {
         return delegate.getState();
     }
 
+    @Override
     public ResourceInfo getInfo() {
         return delegate.getInfo();
     }
 
+    @Override
     public Name getName() {
         return delegate.getName();
     }
 
+    @Override
     public QueryCapabilities getQueryCapabilities() {
         return delegate.getQueryCapabilities();
     }

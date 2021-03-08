@@ -98,6 +98,7 @@ public abstract class AbstractCRS extends AbstractReferenceSystem
     }
 
     /** Returns the coordinate system. */
+    @Override
     public CoordinateSystem getCoordinateSystem() {
         return coordinateSystem;
     }

@@ -38,6 +38,7 @@ public class OperatorImpl implements Operator {
         this.name = name;
     }
 
+    @Override
     public String getName() {
         return name;
     }

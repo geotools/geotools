@@ -122,6 +122,7 @@ public class WebCRSFactory extends DirectAuthorityFactory implements CRSAuthorit
     }
 
     /** Returns the authority for this factory, which is {@link Citations#CRS CRS}. */
+    @Override
     public Citation getAuthority() {
         return Citations.CRS;
     }
@@ -137,6 +138,7 @@ public class WebCRSFactory extends DirectAuthorityFactory implements CRSAuthorit
      * org.geotools.referencing.factory.AllAuthoritiesFactory#getAuthorityCodes all authorities
      * factory}.
      */
+    @Override
     public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type)
             throws FactoryException {
         ensureInitialized();
@@ -154,6 +156,7 @@ public class WebCRSFactory extends DirectAuthorityFactory implements CRSAuthorit
     }
 
     /** Returns the CRS name for the given code. */
+    @Override
     public InternationalString getDescriptionText(final String code) throws FactoryException {
         return new SimpleInternationalString(createObject(code).getName().getCode());
     }
@@ -162,11 +165,13 @@ public class WebCRSFactory extends DirectAuthorityFactory implements CRSAuthorit
      * Creates an object from the specified code. The default implementation delegates to <code>
      * {@linkplain #createCoordinateReferenceSystem createCoordinateReferenceSystem}(code)</code>.
      */
+    @Override
     public IdentifiedObject createObject(final String code) throws FactoryException {
         return createCoordinateReferenceSystem(code);
     }
 
     /** Creates a coordinate reference system from the specified code. */
+    @Override
     public CoordinateReferenceSystem createCoordinateReferenceSystem(final String code)
             throws FactoryException {
         String c = trimAuthority(code).toUpperCase();

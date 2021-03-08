@@ -146,10 +146,12 @@ public final class WarpTransformTest {
             final WarpPolynomial warp =
                     executeTest(
                             new Formula() {
+                                @Override
                                 public String message() {
                                     return "WarpAffine[" + scaleX + ',' + scaleY + ']';
                                 }
 
+                                @Override
                                 public void transform(final Point point) {
                                     point.x *= scaleX;
                                     point.y *= scaleY;
@@ -174,10 +176,12 @@ public final class WarpTransformTest {
             final WarpPolynomial warp =
                     executeTest(
                             new Formula() {
+                                @Override
                                 public String message() {
                                     return "WarpQuadratic[" + scaleX + ',' + scaleY + ']';
                                 }
 
+                                @Override
                                 public void transform(final Point point) {
                                     point.x *= scaleX * point.x;
                                     point.y *= scaleY;

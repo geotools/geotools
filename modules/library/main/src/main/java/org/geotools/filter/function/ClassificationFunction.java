@@ -74,16 +74,20 @@ public abstract class ClassificationFunction extends DefaultExpression
     }
 
     /** @see org.opengis.filter.expression.Expression#accept(ExpressionVisitor, Object) */
+    @Override
     public Object accept(ExpressionVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
 
+    @Override
     public abstract Object evaluate(Object arg);
 
+    @Override
     public void setFallbackValue(Literal fallback) {
         this.fallback = fallback;
     }
 
+    @Override
     public Literal getFallbackValue() {
         return fallback;
     }
@@ -93,10 +97,12 @@ public abstract class ClassificationFunction extends DefaultExpression
      *
      * @return the name of the function.
      */
+    @Override
     public String getName() {
         return name.getName();
     }
 
+    @Override
     public FunctionName getFunctionName() {
         return name;
     }
@@ -105,11 +111,13 @@ public abstract class ClassificationFunction extends DefaultExpression
      * Returns the function parameters (the contents are Expressions, usually attribute expression
      * and literal expression).
      */
+    @Override
     public List<org.opengis.filter.expression.Expression> getParameters() {
         return params;
     }
 
     /** Sets the function parameters. */
+    @Override
     public void setParameters(List<org.opengis.filter.expression.Expression> params) {
         this.params = params;
     }
@@ -134,6 +142,7 @@ public abstract class ClassificationFunction extends DefaultExpression
     }
 
     /** Returns the implementation hints. The default implementation returns an empty map. */
+    @Override
     public Map<RenderingHints.Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }

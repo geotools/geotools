@@ -131,6 +131,7 @@ public final class VerticalDatumType extends CodeList<VerticalDatumType> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public VerticalDatumType[] family() {
         return values();
     }

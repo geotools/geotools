@@ -160,6 +160,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
      *
      * <p>
      */
+    @Override
     public void visit(org.geotools.styling.Stroke stroke) {
         Stroke copy = sf.getDefaultStroke();
         copy.setColor(copy(stroke.getColor()));
@@ -175,6 +176,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
     }
 
     /** Make graphics (such as used with PointSymbolizer) bigger */
+    @Override
     public void visit(Graphic gr) {
 
         Displacement displacementCopy = null;

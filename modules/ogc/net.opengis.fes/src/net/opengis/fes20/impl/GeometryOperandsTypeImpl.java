@@ -72,6 +72,7 @@ public class GeometryOperandsTypeImpl extends EObjectImpl implements GeometryOpe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<GeometryOperandType> getGeometryOperand() {
         if (geometryOperand == null) {
             geometryOperand = new EObjectContainmentEList<>(GeometryOperandType.class, this, Fes20Package.GEOMETRY_OPERANDS_TYPE__GEOMETRY_OPERAND);

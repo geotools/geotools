@@ -159,6 +159,7 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public FeatureMap getAbstractQueryExpressionGroup() {
     if (abstractQueryExpressionGroup == null) {
       abstractQueryExpressionGroup = new BasicFeatureMap(this, Wfs20Package.LOCK_FEATURE_TYPE__ABSTRACT_QUERY_EXPRESSION_GROUP);
@@ -171,6 +172,7 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<AbstractQueryExpressionType> getAbstractQueryExpression() {
     return getAbstractQueryExpressionGroup().list(Wfs20Package.Literals.LOCK_FEATURE_TYPE__ABSTRACT_QUERY_EXPRESSION);
   }
@@ -180,6 +182,7 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public BigInteger getExpiry() {
     return expiry;
   }
@@ -189,6 +192,7 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setExpiry(BigInteger newExpiry) {
     BigInteger oldExpiry = expiry;
     expiry = newExpiry;
@@ -203,6 +207,7 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetExpiry() {
     BigInteger oldExpiry = expiry;
     boolean oldExpiryESet = expiryESet;
@@ -217,6 +222,7 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetExpiry() {
     return expiryESet;
   }
@@ -226,6 +232,7 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AllSomeType getLockAction() {
     return lockAction;
   }
@@ -235,6 +242,7 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setLockAction(AllSomeType newLockAction) {
     AllSomeType oldLockAction = lockAction;
     lockAction = newLockAction == null ? LOCK_ACTION_EDEFAULT : newLockAction;
@@ -249,6 +257,7 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetLockAction() {
     AllSomeType oldLockAction = lockAction;
     boolean oldLockActionESet = lockActionESet;
@@ -263,6 +272,7 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetLockAction() {
     return lockActionESet;
   }
@@ -272,6 +282,7 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getLockId() {
     return lockId;
   }
@@ -281,6 +292,7 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setLockId(String newLockId) {
     String oldLockId = lockId;
     lockId = newLockId;

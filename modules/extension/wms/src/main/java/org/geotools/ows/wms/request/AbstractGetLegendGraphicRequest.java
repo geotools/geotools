@@ -31,15 +31,18 @@ public abstract class AbstractGetLegendGraphicRequest extends AbstractWMSRequest
         super(onlineResource, null);
     }
 
+    @Override
     protected void initRequest() {
         setProperty(REQUEST, "GetLegendGraphic");
     }
 
+    @Override
     protected abstract void initVersion();
 
     /* (non-Javadoc)
      * @see org.geotools.data.wms.request.GetLegendGraphic#setLayer(java.lang.String)
      */
+    @Override
     public void setLayer(String layer) {
         setProperty(LAYER, layer);
     }
@@ -47,6 +50,7 @@ public abstract class AbstractGetLegendGraphicRequest extends AbstractWMSRequest
     /* (non-Javadoc)
      * @see org.geotools.data.wms.request.GetLegendGraphic#setStyle(java.lang.String)
      */
+    @Override
     public void setStyle(String style) {
         setProperty(STYLE, style);
     }
@@ -54,6 +58,7 @@ public abstract class AbstractGetLegendGraphicRequest extends AbstractWMSRequest
     /* (non-Javadoc)
      * @see org.geotools.data.wms.request.GetLegendGraphic#setFeatureType(java.lang.String)
      */
+    @Override
     public void setFeatureType(String featureType) {
         setProperty(FEATURETYPE, featureType);
     }
@@ -61,6 +66,7 @@ public abstract class AbstractGetLegendGraphicRequest extends AbstractWMSRequest
     /* (non-Javadoc)
      * @see org.geotools.data.wms.request.GetLegendGraphic#setRule(java.lang.String)
      */
+    @Override
     public void setRule(String rule) {
         setProperty(RULE, rule);
     }
@@ -68,6 +74,7 @@ public abstract class AbstractGetLegendGraphicRequest extends AbstractWMSRequest
     /* (non-Javadoc)
      * @see org.geotools.data.wms.request.GetLegendGraphic#setScale(java.lang.String)
      */
+    @Override
     public void setScale(String scale) {
         setProperty(SCALE, scale);
     }
@@ -75,6 +82,7 @@ public abstract class AbstractGetLegendGraphicRequest extends AbstractWMSRequest
     /* (non-Javadoc)
      * @see org.geotools.data.wms.request.GetLegendGraphic#setSLD(java.lang.String)
      */
+    @Override
     public void setSLD(String sld) {
         setProperty(SLD, sld);
     }
@@ -82,6 +90,7 @@ public abstract class AbstractGetLegendGraphicRequest extends AbstractWMSRequest
     /* (non-Javadoc)
      * @see org.geotools.data.wms.request.GetLegendGraphic#setSLDBody(java.lang.String)
      */
+    @Override
     public void setSLDBody(String sldBody) {
         setProperty(SLD_BODY, sldBody);
     }
@@ -89,6 +98,7 @@ public abstract class AbstractGetLegendGraphicRequest extends AbstractWMSRequest
     /* (non-Javadoc)
      * @see org.geotools.data.wms.request.GetLegendGraphic#setFormat(java.lang.String)
      */
+    @Override
     public void setFormat(String format) {
         setProperty(FORMAT, format);
     }
@@ -96,6 +106,7 @@ public abstract class AbstractGetLegendGraphicRequest extends AbstractWMSRequest
     /* (non-Javadoc)
      * @see org.geotools.data.wms.request.GetLegendGraphic#setWidth(java.lang.String)
      */
+    @Override
     public void setWidth(String width) {
         setProperty(WIDTH, width);
     }
@@ -103,6 +114,7 @@ public abstract class AbstractGetLegendGraphicRequest extends AbstractWMSRequest
     /* (non-Javadoc)
      * @see org.geotools.data.wms.request.GetLegendGraphic#setHeight(java.lang.String)
      */
+    @Override
     public void setHeight(String height) {
         setProperty(HEIGHT, height);
     }
@@ -110,6 +122,7 @@ public abstract class AbstractGetLegendGraphicRequest extends AbstractWMSRequest
     /* (non-Javadoc)
      * @see org.geotools.data.wms.request.GetLegendGraphic#setExceptions(java.lang.String)
      */
+    @Override
     public void setExceptions(String exceptions) {
         setProperty(EXCEPTIONS, exceptions);
     }

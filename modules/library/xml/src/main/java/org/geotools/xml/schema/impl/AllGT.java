@@ -41,6 +41,7 @@ public class AllGT implements All {
     /* (non-Javadoc)
      * @see org.geotools.xml.schema.All#getElements()
      */
+    @Override
     public Element[] getElements() {
         return elements;
     }
@@ -48,6 +49,7 @@ public class AllGT implements All {
     /* (non-Javadoc)
      * @see org.geotools.xml.schema.All#getId()
      */
+    @Override
     public String getId() {
         return id;
     }
@@ -55,6 +57,7 @@ public class AllGT implements All {
     /* (non-Javadoc)
      * @see org.geotools.xml.schema.ElementGrouping#getMaxOccurs()
      */
+    @Override
     public int getMaxOccurs() {
         return max;
     }
@@ -62,6 +65,7 @@ public class AllGT implements All {
     /* (non-Javadoc)
      * @see org.geotools.xml.schema.ElementGrouping#getMinOccurs()
      */
+    @Override
     public int getMinOccurs() {
         return min;
     }
@@ -69,6 +73,7 @@ public class AllGT implements All {
     /* (non-Javadoc)
      * @see org.geotools.xml.schema.ElementGrouping#getGrouping()
      */
+    @Override
     public int getGrouping() {
         return ALL;
     }
@@ -76,6 +81,7 @@ public class AllGT implements All {
     /* (non-Javadoc)
      * @see org.geotools.xml.schema.ElementGrouping#findChildElement(java.lang.String)
      */
+    @Override
     public Element findChildElement(String name) {
         if (elements != null) {
             for (Element element : elements) {
@@ -90,6 +96,7 @@ public class AllGT implements All {
         return null;
     }
 
+    @Override
     public Element findChildElement(String localName, URI namespaceURI) {
         if (elements != null) {
             for (Element element : elements) {

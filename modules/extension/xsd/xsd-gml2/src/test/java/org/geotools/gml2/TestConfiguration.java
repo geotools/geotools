@@ -25,6 +25,7 @@ public class TestConfiguration extends Configuration {
         addDependency(new GMLConfiguration());
     }
 
+    @Override
     protected void registerBindings(MutablePicoContainer container) {
         // no bindings
     }

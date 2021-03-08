@@ -69,6 +69,7 @@ import org.w3c.dom.Element;
 public class LonLatEnvelopeTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WCS.LonLatEnvelopeType;
     }
@@ -80,6 +81,7 @@ public class LonLatEnvelopeTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return GeneralEnvelope.class;
     }
@@ -92,6 +94,7 @@ public class LonLatEnvelopeTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         GeneralEnvelope envelope = (GeneralEnvelope) value;
 
@@ -166,6 +169,7 @@ public class LonLatEnvelopeTypeBinding extends AbstractComplexBinding {
         return null;
     }
 
+    @Override
     public Object getProperty(Object object, QName name) {
         GeneralEnvelope envelope = (GeneralEnvelope) object;
 

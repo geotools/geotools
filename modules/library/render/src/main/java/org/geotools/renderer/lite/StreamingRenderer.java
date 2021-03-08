@@ -475,6 +475,7 @@ public class StreamingRenderer implements GTRenderer {
      * @see RenderListener
      * @param listener the listener to add.
      */
+    @Override
     public void addRenderListener(RenderListener listener) {
         renderListeners.add(listener);
         if (labelCache instanceof LabelCacheImpl) {
@@ -488,6 +489,7 @@ public class StreamingRenderer implements GTRenderer {
      * @see RenderListener
      * @param listener the listener to remove.
      */
+    @Override
     public void removeRenderListener(RenderListener listener) {
         renderListeners.remove(listener);
     }
@@ -529,6 +531,7 @@ public class StreamingRenderer implements GTRenderer {
      * If you call this method from another thread than the one that called <code>paint</code> or
      * <code>render</code> the rendering will be forcefully stopped before termination
      */
+    @Override
     public void stopRendering() {
         renderingStopRequested = true;
         // un-block the queue in case it was filled with requests and the main
@@ -562,6 +565,7 @@ public class StreamingRenderer implements GTRenderer {
      * @task Need to check if the Layer CoordinateSystem is different to the BoundingBox rendering
      *     CoordinateSystem and if so, then transform the coordinates.
      */
+    @Override
     public void paint(Graphics2D graphics, Rectangle paintArea, AffineTransform worldToScreen) {
         if (worldToScreen == null || paintArea == null) {
             LOGGER.info("renderer passed null arguments");
@@ -588,6 +592,7 @@ public class StreamingRenderer implements GTRenderer {
      * @param paintArea The size of the output area in output units (eg: pixels).
      * @param mapArea the map's visible area (viewport) in map coordinates.
      */
+    @Override
     public void paint(Graphics2D graphics, Rectangle paintArea, Envelope mapArea) {
         if (mapArea == null || paintArea == null) {
             LOGGER.info("renderer passed null arguments");
@@ -622,6 +627,7 @@ public class StreamingRenderer implements GTRenderer {
      * @param paintArea The size of the output area in output units (eg: pixels).
      * @param mapArea the map's visible area (viewport) in map coordinates.
      */
+    @Override
     public void paint(Graphics2D graphics, Rectangle paintArea, ReferencedEnvelope mapArea) {
         if (mapArea == null || paintArea == null) {
             LOGGER.info("renderer passed null arguments");
@@ -647,6 +653,7 @@ public class StreamingRenderer implements GTRenderer {
      * @param mapArea the map's visible area (viewport) in map coordinates.
      * @param worldToScreen A transform which converts World coordinates to Screen coordinates.
      */
+    @Override
     public void paint(
             Graphics2D graphics,
             Rectangle paintArea,
@@ -694,6 +701,7 @@ public class StreamingRenderer implements GTRenderer {
      *     ALWAYS 2D
      * @param worldToScreen A transform which converts World coordinates to Screen coordinates.
      */
+    @Override
     public void paint(
             Graphics2D graphics,
             Rectangle paintArea,
@@ -3263,6 +3271,7 @@ public class StreamingRenderer implements GTRenderer {
      *
      * @see org.geotools.renderer.GTRenderer#setJava2DHints(java.awt.RenderingHints)
      */
+    @Override
     public void setJava2DHints(RenderingHints hints) {
         this.java2dHints = hints;
         styleFactory.setRenderingHints(hints);
@@ -3273,10 +3282,12 @@ public class StreamingRenderer implements GTRenderer {
      *
      * @see org.geotools.renderer.GTRenderer#getJava2DHints()
      */
+    @Override
     public RenderingHints getJava2DHints() {
         return java2dHints;
     }
 
+    @Override
     public void setRendererHints(Map<?, ?> hints) {
         if (hints != null && hints.containsKey(LABEL_CACHE_KEY)) {
             LabelCache cache = (LabelCache) hints.get(LABEL_CACHE_KEY);
@@ -3302,15 +3313,18 @@ public class StreamingRenderer implements GTRenderer {
      *
      * @see org.geotools.renderer.GTRenderer#getRendererHints()
      */
+    @Override
     @SuppressWarnings("unchecked")
     public Map<Object, Object> getRendererHints() {
         return (Map<Object, Object>) rendererHints;
     }
 
+    @Override
     public void setMapContent(MapContent mapContent) {
         this.mapContent = mapContent;
     }
 
+    @Override
     public MapContent getMapContent() {
         return mapContent;
     }
@@ -4014,6 +4028,7 @@ public class StreamingRenderer implements GTRenderer {
             }
         }
 
+        @Override
         public void run() {
             thread = Thread.currentThread();
             boolean done = false;

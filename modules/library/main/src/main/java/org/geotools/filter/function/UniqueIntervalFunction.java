@@ -21,7 +21,6 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -74,21 +73,19 @@ public class UniqueIntervalFunction extends ClassificationFunction {
             // sort the results and put them in an array
             Collections.sort(
                     result,
-                    new Comparator() {
-                        public int compare(Object o1, Object o2) {
-                            if (o1 == null) {
-                                if (o2 == null) {
-                                    return 0; // equal
-                                }
-                                return -1; // less than
-                            } else if (o2 == null) {
-                                return 1;
+                    (o1, o2) -> {
+                        if (o1 == null) {
+                            if (o2 == null) {
+                                return 0; // equal
                             }
-                            if (o1 instanceof String && o2 instanceof String) {
-                                return ((String) o1).compareTo((String) o2);
-                            }
-                            return 0;
+                            return -1; // less than
+                        } else if (o2 == null) {
+                            return 1;
                         }
+                        if (o1 instanceof String && o2 instanceof String) {
+                            return ((String) o1).compareTo((String) o2);
+                        }
+                        return 0;
                     });
             Object[] results = result.toArray();
             // put the results into their respective slots/bins/buckets
@@ -146,6 +143,7 @@ public class UniqueIntervalFunction extends ClassificationFunction {
         }
     }
 
+    @Override
     public Object evaluate(Object feature) {
         if (!(feature instanceof FeatureCollection)) {
             return null;

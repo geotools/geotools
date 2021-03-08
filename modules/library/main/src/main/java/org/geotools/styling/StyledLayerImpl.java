@@ -24,10 +24,12 @@ package org.geotools.styling;
 public class StyledLayerImpl implements StyledLayer {
     protected String name;
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         if ((name == this.name) || ((name != null) && name.equals(this.name))) {
             return;

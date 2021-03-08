@@ -51,6 +51,7 @@ final class ComparableAxisWrapper implements Comparable<ComparableAxisWrapper> {
     /**
      * Compares with the specified object. See class javadoc for a description of the sorting order.
      */
+    @Override
     public int compareTo(final ComparableAxisWrapper other) {
         final ComparableAxisWrapper that = other;
         final AxisDirection d1 = this.axis.getDirection();

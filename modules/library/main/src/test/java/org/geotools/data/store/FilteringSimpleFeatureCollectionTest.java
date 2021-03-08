@@ -32,7 +32,6 @@ import org.geotools.feature.visitor.CountVisitor;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -45,6 +44,7 @@ public class FilteringSimpleFeatureCollectionTest extends FeatureCollectionWrapp
     FeatureVisitor lastVisitor = null;
     private ListFeatureCollection visitorCollection;
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
@@ -53,6 +53,7 @@ public class FilteringSimpleFeatureCollectionTest extends FeatureCollectionWrapp
                         "BasicPolygons", "the_geom:MultiPolygon:srid=4326,ID:String,value:int");
         visitorCollection =
                 new ListFeatureCollection(schema) {
+                    @Override
                     public void accepts(FeatureVisitor visitor, ProgressListener progress)
                             throws java.io.IOException {
                         lastVisitor = visitor;
@@ -88,13 +89,7 @@ public class FilteringSimpleFeatureCollectionTest extends FeatureCollectionWrapp
         Filter filter = ff.equal(ff.property("someAtt"), ff.literal("1"), false);
         SimpleFeatureCollection collection = new FilteringSimpleFeatureCollection(delegate, filter);
         collection.accepts(
-                new FeatureVisitor() {
-
-                    public void visit(Feature feature) {
-                        assertEquals(1, feature.getProperty("someAtt").getValue());
-                    }
-                },
-                null);
+                feature -> assertEquals(1, feature.getProperty("someAtt").getValue()), null);
     }
 
     @Test

@@ -62,6 +62,7 @@ public class ExternalMarkBuilder extends AbstractStyleBuilder<ExternalMark> {
         return this;
     }
 
+    @Override
     public ExternalMark build() {
         if (unset) {
             return null;
@@ -73,6 +74,7 @@ public class ExternalMarkBuilder extends AbstractStyleBuilder<ExternalMark> {
         }
     }
 
+    @Override
     public ExternalMarkBuilder reset() {
         this.format = null;
         this.resource = null;
@@ -95,6 +97,7 @@ public class ExternalMarkBuilder extends AbstractStyleBuilder<ExternalMark> {
         return this;
     }
 
+    @Override
     public ExternalMarkBuilder reset(ExternalMark mark) {
         if (mark == null) {
             return reset();
@@ -108,6 +111,7 @@ public class ExternalMarkBuilder extends AbstractStyleBuilder<ExternalMark> {
         return this;
     }
 
+    @Override
     public ExternalMarkBuilder unset() {
         return (ExternalMarkBuilder) super.unset();
     }

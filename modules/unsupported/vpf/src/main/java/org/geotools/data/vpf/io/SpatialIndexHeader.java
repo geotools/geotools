@@ -73,6 +73,7 @@ public class SpatialIndexHeader implements VPFHeader {
      *
      * @return an <code>int</code> value of header length.
      */
+    @Override
     public int getLength() {
         return SPATIAL_INDEX_HEADER_LENGTH;
     }
@@ -84,6 +85,7 @@ public class SpatialIndexHeader implements VPFHeader {
      *
      * @return an <code><code>int</code></code> value
      */
+    @Override
     public int getRecordSize() {
         return -1;
     }

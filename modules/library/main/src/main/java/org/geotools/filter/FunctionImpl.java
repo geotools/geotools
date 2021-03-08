@@ -65,6 +65,7 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
      *
      * @return the name of the function.
      */
+    @Override
     public String getName() {
         if (name == null && functionName != null) {
             return functionName.getName();
@@ -72,6 +73,7 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
         return name;
     }
 
+    @Override
     public synchronized FunctionName getFunctionName() {
         if (functionName == null) {
             functionName = new FunctionNameImpl(name, getParameters().size());
@@ -85,6 +87,7 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
     }
 
     /** Returns the function parameters. */
+    @Override
     public List<Expression> getParameters() {
         return new ArrayList<>(params);
     }
@@ -97,6 +100,7 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
      * @param object Object being evaluated; often a Feature
      * @return value for the provided object
      */
+    @Override
     public Object evaluate(Object object) {
         if (fallbackValue != null) {
             return fallbackValue.evaluate(object);
@@ -115,10 +119,12 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
         this.fallbackValue = fallbackValue;
     }
 
+    @Override
     public Literal getFallbackValue() {
         return fallbackValue;
     }
 
+    @Override
     public Object accept(ExpressionVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
@@ -128,6 +134,7 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
      * The String created should be good for most subclasses
      */
     // Copied from FunctionExpressionImpl KS
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(getName());

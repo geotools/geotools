@@ -61,9 +61,9 @@ for this project
 
 Notes:
 
-* You can switch between the master and stable branches easily::
+* You can switch between the main and stable branches easily::
 
-     C:\java\geotools> git checkout master
+     C:\java\geotools> git checkout main
      C:\java\geotools> git checkout 11.x 
      C:\java\geotools> git checkout 8.x
 

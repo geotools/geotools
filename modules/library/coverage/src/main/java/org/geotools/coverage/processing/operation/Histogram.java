@@ -84,6 +84,7 @@ public class Histogram extends BaseStatisticsOperationJAI {
         super(HISTOGRAM, getOperationDescriptor(JAIExt.getOperationName(HISTOGRAM)));
     }
 
+    @Override
     public String getName() {
         return HISTOGRAM;
     }
@@ -99,6 +100,7 @@ public class Histogram extends BaseStatisticsOperationJAI {
      *     InternationalString, MathTransform, GridCoverage2D[],
      *     org.geotools.coverage.processing.OperationJAI.Parameters),
      */
+    @Override
     protected Map<String, ?> getProperties(
             RenderedImage data,
             CoordinateReferenceSystem crs,
@@ -177,6 +179,7 @@ public class Histogram extends BaseStatisticsOperationJAI {
         return block;
     }
 
+    @Override
     protected void handleJAIEXTParams(
             ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
         if (JAIExt.isJAIExtOperation(STATS)) {

@@ -74,14 +74,17 @@ public class LanguagesBinding extends AbstractComplexBinding {
         this.factory = factory;
     }
 
+    @Override
     public QName getTarget() {
         return WPS._Languages;
     }
 
+    @Override
     public Class getType() {
         return LanguagesType1.class;
     }
 
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         LanguagesType1 langs = factory.createLanguagesType1();
 

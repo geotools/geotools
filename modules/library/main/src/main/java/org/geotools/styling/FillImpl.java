@@ -58,6 +58,7 @@ public class FillImpl implements Fill, Cloneable {
      *
      * @return The color of the Fill encoded as a hexidecimal RGB value.
      */
+    @Override
     public Expression getColor() {
         return color;
     }
@@ -73,6 +74,7 @@ public class FillImpl implements Fill, Cloneable {
      *
      * @param rgb The color of the Fill encoded as a hexidecimal RGB value.
      */
+    @Override
     public void setColor(Expression rgb) {
         if (color == rgb) return;
         color = rgb;
@@ -94,6 +96,7 @@ public class FillImpl implements Fill, Cloneable {
      * @return The opacity of the fill, where 0.0 is completely transparent and 1.0 is completely
      *     opaque.
      */
+    @Override
     public Expression getOpacity() {
         return opacity;
     }
@@ -103,6 +106,7 @@ public class FillImpl implements Fill, Cloneable {
      *
      * @param opacity New value of property opacity.
      */
+    @Override
     public void setOpacity(Expression opacity) {
         if (this.opacity == opacity) return;
 
@@ -122,6 +126,7 @@ public class FillImpl implements Fill, Cloneable {
      * @return graphic The graphic to use as a stipple fill. If null then no Stipple fill should be
      *     used.
      */
+    @Override
     public org.geotools.styling.Graphic getGraphicFill() {
         return graphicFill;
     }
@@ -131,15 +136,18 @@ public class FillImpl implements Fill, Cloneable {
      *
      * @param graphicFill New value of property graphic.
      */
+    @Override
     public void setGraphicFill(org.opengis.style.Graphic graphicFill) {
         if (this.graphicFill == graphicFill) return;
         this.graphicFill = GraphicImpl.cast(graphicFill);
     }
 
+    @Override
     public Object accept(StyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
+    @Override
     public void accept(org.geotools.styling.StyleVisitor visitor) {
         visitor.visit(this);
     }
@@ -149,6 +157,7 @@ public class FillImpl implements Fill, Cloneable {
      *
      * @see org.geotools.styling.Fill#clone()
      */
+    @Override
     public Object clone() {
         try {
             FillImpl clone = (FillImpl) super.clone();
@@ -167,6 +176,7 @@ public class FillImpl implements Fill, Cloneable {
      *
      * @return The hashcode.
      */
+    @Override
     public int hashCode() {
         final int PRIME = 1000003;
         int result = 0;
@@ -192,6 +202,7 @@ public class FillImpl implements Fill, Cloneable {
      * @param oth The other FillImpl
      * @return True if this FillImpl is equal to oth.
      */
+    @Override
     public boolean equals(Object oth) {
         if (this == oth) {
             return true;

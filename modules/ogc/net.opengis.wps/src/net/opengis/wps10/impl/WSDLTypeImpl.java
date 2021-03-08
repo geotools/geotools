@@ -64,6 +64,7 @@ public class WSDLTypeImpl extends EObjectImpl implements WSDLType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.WSDL_TYPE;
   }
@@ -73,6 +74,7 @@ public class WSDLTypeImpl extends EObjectImpl implements WSDLType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getHref() {
     return href;
   }
@@ -82,6 +84,7 @@ public class WSDLTypeImpl extends EObjectImpl implements WSDLType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setHref(String newHref) {
     String oldHref = href;
     href = newHref;
@@ -94,6 +97,7 @@ public class WSDLTypeImpl extends EObjectImpl implements WSDLType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.WSDL_TYPE__HREF:
@@ -107,6 +111,7 @@ public class WSDLTypeImpl extends EObjectImpl implements WSDLType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.WSDL_TYPE__HREF:
@@ -121,6 +126,7 @@ public class WSDLTypeImpl extends EObjectImpl implements WSDLType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.WSDL_TYPE__HREF:
@@ -135,6 +141,7 @@ public class WSDLTypeImpl extends EObjectImpl implements WSDLType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.WSDL_TYPE__HREF:
@@ -148,6 +155,7 @@ public class WSDLTypeImpl extends EObjectImpl implements WSDLType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String toString() {
     if (eIsProxy()) return super.toString();
 

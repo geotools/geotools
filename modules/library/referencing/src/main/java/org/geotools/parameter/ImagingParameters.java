@@ -259,6 +259,7 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
      * may contains sources found in the JAI's {@linkplain OperationDescriptor operation
      * descriptor}.
      */
+    @Override
     public synchronized List<GeneralParameterValue> values() {
         if (values == null) {
             createElements();
@@ -278,6 +279,7 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
      * @throws ParameterNotFoundException if there is no parameter value for the given identifier
      *     code.
      */
+    @Override
     public synchronized ParameterValue parameter(String name) throws ParameterNotFoundException {
         ensureNonNull("name", name);
         name = name.trim();
@@ -296,6 +298,7 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
      * Always throws an exception, since JAI's {@linkplain ParameterList parameter list} don't have
      * subgroups.
      */
+    @Override
     public List<ParameterValueGroup> groups(final String name) throws ParameterNotFoundException {
         throw new ParameterNotFoundException(
                 Errors.format(ErrorKeys.MISSING_PARAMETER_$1, name), name);
@@ -305,6 +308,7 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
      * Always throws an exception, since JAI's {@linkplain ParameterList parameter list} don't have
      * subgroups.
      */
+    @Override
     public ParameterValueGroup addGroup(final String name) throws ParameterNotFoundException {
         throw new ParameterNotFoundException(
                 Errors.format(ErrorKeys.MISSING_PARAMETER_$1, name), name);

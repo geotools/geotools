@@ -59,7 +59,8 @@ public class DomainTypeImpl extends UnNamedDomainTypeImpl implements DomainType 
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.DOMAIN_TYPE;
   }
 
@@ -68,7 +69,8 @@ public class DomainTypeImpl extends UnNamedDomainTypeImpl implements DomainType 
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getName() {
+  @Override
+public String getName() {
     return name;
   }
 
@@ -77,7 +79,8 @@ public class DomainTypeImpl extends UnNamedDomainTypeImpl implements DomainType 
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setName(String newName) {
+  @Override
+public void setName(String newName) {
     String oldName = name;
     name = newName;
     if (eNotificationRequired())
@@ -89,7 +92,8 @@ public class DomainTypeImpl extends UnNamedDomainTypeImpl implements DomainType 
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.DOMAIN_TYPE__NAME:
         return getName();
@@ -102,7 +106,8 @@ public class DomainTypeImpl extends UnNamedDomainTypeImpl implements DomainType 
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.DOMAIN_TYPE__NAME:
         setName((String)newValue);
@@ -116,7 +121,8 @@ public class DomainTypeImpl extends UnNamedDomainTypeImpl implements DomainType 
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.DOMAIN_TYPE__NAME:
         setName(NAME_EDEFAULT);
@@ -130,7 +136,8 @@ public class DomainTypeImpl extends UnNamedDomainTypeImpl implements DomainType 
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.DOMAIN_TYPE__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
@@ -143,7 +150,8 @@ public class DomainTypeImpl extends UnNamedDomainTypeImpl implements DomainType 
    * <!-- end-user-doc -->
    * @generated
    */
-  public String toString() {
+  @Override
+public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

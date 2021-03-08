@@ -29,5 +29,6 @@ public class XLINKConfiguration extends Configuration {
         super(XLINK.getInstance());
     }
 
+    @Override
     protected final void registerBindings(MutablePicoContainer container) {}
 }

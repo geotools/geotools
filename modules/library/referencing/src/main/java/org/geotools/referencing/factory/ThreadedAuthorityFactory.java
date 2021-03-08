@@ -299,6 +299,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
      * Returns the organization or party responsible for definition and maintenance of the
      * underlying database.
      */
+    @Override
     public Citation getAuthority() {
         return (backingStore != null) ? backingStore.getAuthority() : null;
     }
@@ -324,6 +325,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
      *     {@linkplain java.util.Collections.emptySet() empty set}.
      * @throws FactoryException if access to the underlying database failed.
      */
+    @Override
     public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type)
             throws FactoryException {
         return getBackingStore().getAuthorityCodes(type);
@@ -338,6 +340,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
      * @throws NoSuchAuthorityCodeException if the specified {@code code} was not found.
      * @throws FactoryException if the query failed for some other reason.
      */
+    @Override
     public InternationalString getDescriptionText(final String code) throws FactoryException {
         return getBackingStore().getDescriptionText(code);
     }

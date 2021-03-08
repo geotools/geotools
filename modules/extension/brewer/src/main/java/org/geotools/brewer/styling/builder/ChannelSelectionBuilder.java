@@ -57,6 +57,7 @@ public class ChannelSelectionBuilder extends AbstractStyleBuilder<ChannelSelecti
         return blue;
     }
 
+    @Override
     public ChannelSelection build() {
         if (unset) {
             return null;
@@ -73,6 +74,7 @@ public class ChannelSelectionBuilder extends AbstractStyleBuilder<ChannelSelecti
         return result;
     }
 
+    @Override
     public ChannelSelectionBuilder reset() {
         gray.unset();
         red.unset();
@@ -82,6 +84,7 @@ public class ChannelSelectionBuilder extends AbstractStyleBuilder<ChannelSelecti
         return this;
     }
 
+    @Override
     public ChannelSelectionBuilder reset(ChannelSelection original) {
         if (original == null) {
             return unset();
@@ -98,6 +101,7 @@ public class ChannelSelectionBuilder extends AbstractStyleBuilder<ChannelSelecti
         return this;
     }
 
+    @Override
     public ChannelSelectionBuilder unset() {
         return (ChannelSelectionBuilder) super.unset();
     }

@@ -33,6 +33,7 @@ public class FilterFunction_not extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         boolean arg0;
 

@@ -208,11 +208,13 @@ public class MolodenskiTransform extends AbstractMathTransform implements Serial
     }
 
     /** Gets the dimension of input points. */
+    @Override
     public int getSourceDimensions() {
         return source3D ? 3 : 2;
     }
 
     /** Gets the dimension of output points. */
+    @Override
     public final int getTargetDimensions() {
         return target3D ? 3 : 2;
     }
@@ -234,6 +236,7 @@ public class MolodenskiTransform extends AbstractMathTransform implements Serial
      *     destination array.
      * @param numPts the number of point objects to be transformed.
      */
+    @Override
     public void transform(double[] srcPts, int srcOff, double[] dstPts, int dstOff, int numPts) {
         transform(null, srcPts, srcOff, null, dstPts, dstOff, numPts);
         /*
@@ -737,6 +740,7 @@ public class MolodenskiTransform extends AbstractMathTransform implements Serial
          * @return The created math transform.
          * @throws ParameterNotFoundException if a required parameter was not found.
          */
+        @Override
         protected MathTransform createMathTransform(final ParameterValueGroup values)
                 throws ParameterNotFoundException {
             final boolean hasHeight;

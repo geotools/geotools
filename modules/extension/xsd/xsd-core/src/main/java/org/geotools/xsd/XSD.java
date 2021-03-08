@@ -251,6 +251,7 @@ public abstract class XSD {
     }
 
     /** Implementation of equals, equality is based soley on {@link #getNamespaceURI()}. */
+    @Override
     public final boolean equals(Object obj) {
         if (obj instanceof XSD) {
             XSD other = (XSD) obj;
@@ -261,10 +262,12 @@ public abstract class XSD {
         return false;
     }
 
+    @Override
     public final int hashCode() {
         return getNamespaceURI().hashCode();
     }
 
+    @Override
     public String toString() {
         return getNamespaceURI();
     }

@@ -63,6 +63,7 @@ import org.w3c.dom.Element;
 public class TimePositionTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.TimePositionType;
     }
@@ -74,6 +75,7 @@ public class TimePositionTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Position.class;
     }
@@ -85,6 +87,7 @@ public class TimePositionTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Position timePosition = new DefaultPosition(new SimpleInternationalString((String) value));
         return timePosition;
@@ -108,6 +111,7 @@ public class TimePositionTypeBinding extends AbstractComplexBinding {
         return null;
     }
 
+    @Override
     public Object getProperty(Object object, QName name) {
         if (name.getLocalPart().equals("frame")) {
             return "ISO-8601";

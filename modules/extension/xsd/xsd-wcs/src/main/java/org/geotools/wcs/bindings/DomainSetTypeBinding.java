@@ -53,6 +53,7 @@ import org.geotools.xsd.Node;
 public class DomainSetTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WCS.DomainSetType;
     }
@@ -64,6 +65,7 @@ public class DomainSetTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return DomainSetType.class;
     }
@@ -75,6 +77,7 @@ public class DomainSetTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         return super.parse(instance, node, value);

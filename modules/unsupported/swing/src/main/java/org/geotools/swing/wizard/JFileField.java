@@ -16,8 +16,6 @@
  */
 package org.geotools.swing.wizard;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -49,18 +47,14 @@ public class JFileField extends ParamField {
         super(parameter);
     }
 
+    @Override
     public JComponent doLayout() {
         final JPanel panel = new JPanel(new MigLayout("insets 0"));
         panel.add(field = new JTextField(32), "width 200::700, growx");
         // field.setActionCommand(FINISH); // pressing return will Finish wizard
 
         panel.add(browse = new JButton("Browse"), "wrap");
-        browse.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        browse();
-                    }
-                });
+        browse.addActionListener(e -> browse());
         return panel;
     }
 
@@ -89,18 +83,21 @@ public class JFileField extends ParamField {
         }
     }
 
+    @Override
     public void addListener(Controller controller) {
         // field.addKeyListener(controller);
         field.addActionListener(controller);
         field.getDocument().addDocumentListener(controller);
     }
 
+    @Override
     public void removeListener(Controller controller) {
         // field.removeKeyListener(controller);
         field.removeActionListener(controller);
         field.getDocument().removeDocumentListener(controller);
     }
 
+    @Override
     public File getValue() {
         String txt = field.getText();
         if (txt == null || txt.equals("")) {
@@ -119,6 +116,7 @@ public class JFileField extends ParamField {
         return null; // not a file
     }
 
+    @Override
     public void setValue(Object value) {
         if (value instanceof File) {
             File file = (File) value;
@@ -131,6 +129,7 @@ public class JFileField extends ParamField {
         }
     }
 
+    @Override
     public boolean validate() {
         String txt = field.getText();
         if (txt == null || txt.equals("")) {

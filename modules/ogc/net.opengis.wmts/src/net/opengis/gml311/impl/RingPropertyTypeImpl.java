@@ -63,6 +63,7 @@ public class RingPropertyTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RingType getRing() {
         return ring;
     }
@@ -87,6 +88,7 @@ public class RingPropertyTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRing(RingType newRing) {
         if (newRing != ring) {
             NotificationChain msgs = null;

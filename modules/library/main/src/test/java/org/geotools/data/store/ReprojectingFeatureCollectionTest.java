@@ -58,6 +58,7 @@ public class ReprojectingFeatureCollectionTest extends FeatureCollectionWrapperT
 
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();

@@ -66,11 +66,13 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
             super(expr);
         }
 
+        @Override
         public void visit(Feature feature) {
             super.visit(feature);
             visited = true;
         }
 
+        @Override
         public void visit(SimpleFeature feature) {
             super.visit(feature);
             visited = true;
@@ -93,11 +95,13 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
             super(expr);
         }
 
+        @Override
         public void visit(Feature feature) {
             super.visit(feature);
             visited = true;
         }
 
+        @Override
         public void visit(SimpleFeature feature) {
             super.visit(feature);
             visited = true;
@@ -174,11 +178,13 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
             super(expr);
         }
 
+        @Override
         public void visit(Feature feature) {
             super.visit(feature);
             visited = true;
         }
 
+        @Override
         public void visit(SimpleFeature feature) {
             super.visit(feature);
             visited = true;
@@ -232,11 +238,13 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
             super(expr);
         }
 
+        @Override
         public void visit(Feature feature) {
             super.visit(feature);
             visited = true;
         }
 
+        @Override
         public void visit(SimpleFeature feature) {
             super.visit(feature);
             visited = true;
@@ -290,11 +298,13 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
             super(expr);
         }
 
+        @Override
         public void visit(Feature feature) {
             super.visit(feature);
             visited = true;
         }
 
+        @Override
         public void visit(SimpleFeature feature) {
             super.visit(feature);
             visited = true;
@@ -434,6 +444,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
             super(expr, valueToMatch);
         }
 
+        @Override
         public void visit(Feature feature) {
             super.visit(feature);
             visited = true;
@@ -500,11 +511,13 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
             super(expr);
         }
 
+        @Override
         public void visit(Feature feature) {
             super.visit(feature);
             visited = true;
         }
 
+        @Override
         public void visit(SimpleFeature feature) {
             super.visit(feature);
             visited = true;
@@ -558,11 +571,13 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
             super(expr);
         }
 
+        @Override
         public void visit(Feature feature) {
             super.visit(feature);
             visited = true;
         }
 
+        @Override
         public void visit(SimpleFeature feature) {
             super.visit(feature);
             visited = true;

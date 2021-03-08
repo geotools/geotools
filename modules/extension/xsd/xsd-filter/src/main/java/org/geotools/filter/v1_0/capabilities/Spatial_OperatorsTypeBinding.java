@@ -62,6 +62,7 @@ public class Spatial_OperatorsTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.Spatial_OperatorsType;
     }
@@ -73,6 +74,7 @@ public class Spatial_OperatorsTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return SpatialOperators.class;
     }
@@ -84,6 +86,7 @@ public class Spatial_OperatorsTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List<SpatialOperator> ops = new ArrayList<>();
 
@@ -94,6 +97,7 @@ public class Spatial_OperatorsTypeBinding extends AbstractComplexBinding {
         return factory.spatialOperators(ops.toArray(new SpatialOperator[ops.size()]));
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         SpatialOperators spatial = (SpatialOperators) object;
 

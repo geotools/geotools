@@ -28,12 +28,14 @@ import org.geotools.util.factory.Hints;
  */
 public class QNameConverterFactory implements ConverterFactory {
 
+    @Override
     public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {
         if (target.equals(String.class)) {
             // qname to string
             if (source.equals(QName.class)) {
                 return new Converter() {
 
+                    @Override
                     public <T> T convert(Object source, Class<T> target) throws Exception {
                         QName qname = (QName) source;
                         if (qname.getPrefix() == null || "".equals(qname.getPrefix())) {

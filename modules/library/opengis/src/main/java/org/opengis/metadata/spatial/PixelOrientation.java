@@ -90,6 +90,7 @@ public final class PixelOrientation extends CodeList<PixelOrientation> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public PixelOrientation[] family() {
         return values();
     }

@@ -68,6 +68,7 @@ public class ExtensionTypeImpl extends EObjectImpl implements ExtensionType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList<ExtensionItemType> getContents() {
 		if (contents == null) {
 			contents = new EObjectResolvingEList<>(ExtensionItemType.class, this, Wcs20Package.EXTENSION_TYPE__CONTENTS);

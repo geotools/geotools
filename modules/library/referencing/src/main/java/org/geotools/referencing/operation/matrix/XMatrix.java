@@ -32,12 +32,15 @@ import org.opengis.referencing.operation.Matrix;
  */
 public interface XMatrix extends Matrix {
     /** Returns the number of rows in this matrix. */
+    @Override
     int getNumRow();
 
     /** Returns the number of colmuns in this matrix. */
+    @Override
     int getNumCol();
 
     /** Returns the element at the specified index. */
+    @Override
     double getElement(int row, int column);
 
     /** Extract row to provided array */

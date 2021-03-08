@@ -45,6 +45,7 @@ public class GTDataStoreGranuleCatalog extends AbstractGTDataStoreGranuleCatalog
         super(params, create, spi, hints);
     }
 
+    @Override
     protected void initTileIndexStore(
             final Properties params, final boolean create, final DataStoreFactorySpi spi)
             throws IOException, MalformedURLException {
@@ -101,6 +102,7 @@ public class GTDataStoreGranuleCatalog extends AbstractGTDataStoreGranuleCatalog
         initializeTypeNames(params);
     }
 
+    @Override
     protected void handleInitializationException(Throwable t) {
         try {
             if (tileIndexStore != null) tileIndexStore.dispose();
@@ -116,6 +118,7 @@ public class GTDataStoreGranuleCatalog extends AbstractGTDataStoreGranuleCatalog
         return tileIndexStore;
     }
 
+    @Override
     protected void disposeTileIndexStore() {
         try {
             if (tileIndexStore != null) {

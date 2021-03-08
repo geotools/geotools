@@ -38,6 +38,7 @@ public class FilterFactoryImplNamespaceAware extends FilterFactoryImpl {
     }
 
     // @Override
+    @Override
     public PropertyName property(String name) {
         return property(name, namespaceContext);
     }

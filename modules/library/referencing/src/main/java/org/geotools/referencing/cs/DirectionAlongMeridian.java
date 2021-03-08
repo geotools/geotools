@@ -250,6 +250,7 @@ public final class DirectionAlongMeridian
      *   <tr><td>North along 130 deg West</td>  <td>North along 140 deg East</td></tr>
      * </table>
      */
+    @Override
     public int compareTo(final DirectionAlongMeridian that) {
         final int c = baseDirection.compareTo(that.baseDirection);
         if (c != 0) {

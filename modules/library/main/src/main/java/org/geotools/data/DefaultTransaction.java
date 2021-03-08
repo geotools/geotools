@@ -74,6 +74,7 @@ public class DefaultTransaction implements Transaction {
      * @see org.geotools.data.Transaction#putState(java.lang.Object,
      *     org.geotools.data.Transaction.State)
      */
+    @Override
     public void putState(Object key, State state) {
         if (stateLookup == null) {
             return;
@@ -114,6 +115,7 @@ public class DefaultTransaction implements Transaction {
      * @throws IllegalArgumentException If no State was maintained for supplied <code>key</code>
      * @see org.geotools.data.Transaction#removeState(java.lang.Object)
      */
+    @Override
     public void removeState(Object key) {
         if (stateLookup == null) {
             throw new IllegalStateException("Transaction has been closed");
@@ -138,6 +140,7 @@ public class DefaultTransaction implements Transaction {
      * @return Previously externalized State.
      * @see org.geotools.data.Transaction#getState(java.lang.Object)
      */
+    @Override
     public State getState(Object key) {
         if (stateLookup == null) {
             throw new IllegalStateException("Transaction has been closed");
@@ -155,6 +158,7 @@ public class DefaultTransaction implements Transaction {
      * @throws DataSourceException See IOException
      * @see org.geotools.data.Transaction#commit()
      */
+    @Override
     public void commit() throws IOException {
         State state;
         int problemCount = 0;
@@ -192,6 +196,7 @@ public class DefaultTransaction implements Transaction {
      * @throws DataSourceException IOException
      * @see org.geotools.data.Transaction#rollback()
      */
+    @Override
     public void rollback() throws IOException {
         int problemCount = 0;
         IOException io = null;
@@ -220,6 +225,7 @@ public class DefaultTransaction implements Transaction {
     }
 
     /** Frees all State held by this Transaction. */
+    @Override
     public synchronized void close() {
         for (Object o : stateLookup.values()) {
             State state = (State) o;
@@ -240,6 +246,7 @@ public class DefaultTransaction implements Transaction {
      *
      * @return Set of Authorization IDs
      */
+    @Override
     public Set<String> getAuthorizations() {
         if (authorizations == null) {
             throw new IllegalStateException("Transaction has been closed");
@@ -257,6 +264,7 @@ public class DefaultTransaction implements Transaction {
      * @throws DataSourceException See IOException
      * @see org.geotools.data.Transaction#setAuthorization(java.lang.String)
      */
+    @Override
     public void addAuthorization(String authID) throws IOException {
         if (authorizations == null) {
             throw new IllegalStateException("Transaction has been closed");
@@ -292,6 +300,7 @@ public class DefaultTransaction implements Transaction {
      *
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         return handle;
     }
@@ -301,6 +310,7 @@ public class DefaultTransaction implements Transaction {
      *
      * @see org.geotools.data.Transaction#getProperty(java.lang.Object)
      */
+    @Override
     public Object getProperty(Object key) {
         if (propertyLookup == null) {
             throw new IllegalStateException("Transaction has been closed");
@@ -313,6 +323,7 @@ public class DefaultTransaction implements Transaction {
      *
      * @see org.geotools.data.Transaction#addProperty(java.lang.Object, java.lang.Object)
      */
+    @Override
     public void putProperty(Object key, Object value) throws IOException {
         if (propertyLookup == null) {
             throw new IllegalStateException("Transaction has been closed");
@@ -320,6 +331,7 @@ public class DefaultTransaction implements Transaction {
         propertyLookup.put(key, value);
     }
 
+    @Override
     @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         if (stateLookup != null) {

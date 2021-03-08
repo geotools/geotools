@@ -81,6 +81,7 @@ public class ThemeBinding extends DescriptionTypeBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WMTS.Theme;
     }
@@ -92,6 +93,7 @@ public class ThemeBinding extends DescriptionTypeBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class<?> getType() {
         return ThemeType.class;
     }
@@ -103,6 +105,7 @@ public class ThemeBinding extends DescriptionTypeBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         if (!(value instanceof ThemeType)) {

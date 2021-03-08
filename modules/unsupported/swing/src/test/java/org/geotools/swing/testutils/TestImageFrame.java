@@ -77,13 +77,7 @@ public class TestImageFrame {
         if (SwingUtilities.isEventDispatchThread()) {
             doShowImage(image, frameTitle, latch);
         } else {
-            SwingUtilities.invokeAndWait(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            doShowImage(image, frameTitle, latch);
-                        }
-                    });
+            SwingUtilities.invokeAndWait(() -> doShowImage(image, frameTitle, latch));
         }
 
         return latch;

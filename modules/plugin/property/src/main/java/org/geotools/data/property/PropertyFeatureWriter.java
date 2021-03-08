@@ -89,12 +89,14 @@ public class PropertyFeatureWriter implements FeatureWriter<SimpleFeatureType, S
     // constructor end
 
     // getFeatureType start
+    @Override
     public SimpleFeatureType getFeatureType() {
         return state.getFeatureType();
     }
     // getFeatureType end
 
     // hasNext start
+    @Override
     public boolean hasNext() throws IOException {
         if (writer == null) {
             return false; // writer has been closed
@@ -165,6 +167,7 @@ public class PropertyFeatureWriter implements FeatureWriter<SimpleFeatureType, S
     // writeImplementation end
 
     // next start
+    @Override
     public SimpleFeature next() throws IOException {
         if (writer == null) {
             throw new IOException("Writer has been closed");
@@ -199,6 +202,7 @@ public class PropertyFeatureWriter implements FeatureWriter<SimpleFeatureType, S
     // next end
 
     // write start
+    @Override
     public void write() throws IOException {
         if (live == null) {
             throw new IOException("No current feature to write");
@@ -226,6 +230,7 @@ public class PropertyFeatureWriter implements FeatureWriter<SimpleFeatureType, S
     // write end
 
     // remove start
+    @Override
     public void remove() throws IOException {
         if (live == null) {
             throw new IOException("No current feature to remove");
@@ -243,6 +248,7 @@ public class PropertyFeatureWriter implements FeatureWriter<SimpleFeatureType, S
     // remove end
 
     // close start
+    @Override
     public void close() throws IOException {
         if (writer == null) {
             throw new IOException("writer already closed");

@@ -20,7 +20,6 @@ import java.util.ArrayDeque;
 import java.util.Iterator;
 import java.util.Queue;
 import org.geotools.graph.structure.Graph;
-import org.geotools.graph.structure.GraphVisitor;
 import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
 import org.geotools.graph.traverse.GraphTraversal;
@@ -61,18 +60,15 @@ public class BreadthFirstTopologicalIterator extends AbstractGraphIterator {
 
         // initialize nodes
         graph.visitNodes(
-                new GraphVisitor() {
-                    @Override
-                    public int visit(Graphable component) {
-                        Node node = (Node) component;
+                component -> {
+                    Node node = (Node) component;
 
-                        // reset counter to zero
-                        node.setCount(0);
+                    // reset counter to zero
+                    node.setCount(0);
 
-                        if (node.getDegree() < 2) m_queue.add(node);
+                    if (node.getDegree() < 2) m_queue.add(node);
 
-                        return (0);
-                    }
+                    return (0);
                 });
     }
 

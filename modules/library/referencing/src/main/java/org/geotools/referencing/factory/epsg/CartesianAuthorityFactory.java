@@ -81,6 +81,7 @@ public class CartesianAuthorityFactory extends DirectAuthorityFactory
         return Citations.EPSG;
     }
 
+    @Override
     public Set<String> getAuthorityCodes(Class<? extends IdentifiedObject> type)
             throws FactoryException {
         if (type.isAssignableFrom(EngineeringCRS.class)) {
@@ -92,6 +93,7 @@ public class CartesianAuthorityFactory extends DirectAuthorityFactory
         }
     }
 
+    @Override
     public InternationalString getDescriptionText(String code)
             throws NoSuchAuthorityCodeException, FactoryException {
         if (code.equals("EPSG:" + GENERIC_2D_CODE)) {
@@ -106,6 +108,7 @@ public class CartesianAuthorityFactory extends DirectAuthorityFactory
      * Creates an object from the specified code. The default implementation delegates to <code>
      * {@linkplain #createCoordinateReferenceSystem createCoordinateReferenceSystem}(code)</code> .
      */
+    @Override
     public IdentifiedObject createObject(final String code) throws FactoryException {
         return createCoordinateReferenceSystem(code);
     }
@@ -114,6 +117,7 @@ public class CartesianAuthorityFactory extends DirectAuthorityFactory
      * Creates a coordinate reference system from the specified code. The default implementation
      * delegates to <code>{@linkplain #createEngineeringCRS(String)}(code)</code>.
      */
+    @Override
     public CoordinateReferenceSystem createCoordinateReferenceSystem(final String code)
             throws FactoryException {
         return createEngineeringCRS(code);

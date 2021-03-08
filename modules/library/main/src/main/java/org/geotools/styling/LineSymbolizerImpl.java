@@ -51,10 +51,12 @@ public class LineSymbolizerImpl extends AbstractSymbolizer implements LineSymbol
         super(name, desc, geom, uom);
     }
 
+    @Override
     public Expression getPerpendicularOffset() {
         return offset;
     }
 
+    @Override
     public void setPerpendicularOffset(Expression offset) {
         this.offset = offset;
     }
@@ -64,6 +66,7 @@ public class LineSymbolizerImpl extends AbstractSymbolizer implements LineSymbol
      *
      * @return The Stroke style to use when rendering lines.
      */
+    @Override
     public StrokeImpl getStroke() {
         return stroke;
     }
@@ -73,6 +76,7 @@ public class LineSymbolizerImpl extends AbstractSymbolizer implements LineSymbol
      *
      * @param stroke The Stroke style to use when rendering lines.
      */
+    @Override
     public void setStroke(org.opengis.style.Stroke stroke) {
         if (this.stroke == stroke) {
             return;
@@ -85,10 +89,12 @@ public class LineSymbolizerImpl extends AbstractSymbolizer implements LineSymbol
      *
      * @param visitor The visitor to accept.
      */
+    @Override
     public Object accept(StyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
+    @Override
     public void accept(org.geotools.styling.StyleVisitor visitor) {
         visitor.visit(this);
     }
@@ -98,6 +104,7 @@ public class LineSymbolizerImpl extends AbstractSymbolizer implements LineSymbol
      *
      * @return The deep copy clone.
      */
+    @Override
     public Object clone() {
         LineSymbolizerImpl clone;
 
@@ -115,6 +122,7 @@ public class LineSymbolizerImpl extends AbstractSymbolizer implements LineSymbol
         return clone;
     }
 
+    @Override
     public String toString() {
         StringBuffer buf = new StringBuffer();
         buf.append("<LineSymbolizerImp property=");

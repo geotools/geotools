@@ -95,6 +95,7 @@ public class GridEnvelopeTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public List<BigInteger> getLow() {
         return low;
     }
@@ -104,6 +105,7 @@ public class GridEnvelopeTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLow(List<BigInteger> newLow) {
         List<BigInteger> oldLow = low;
         low = newLow;
@@ -116,6 +118,7 @@ public class GridEnvelopeTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public List<BigInteger> getHigh() {
         return high;
     }
@@ -125,6 +128,7 @@ public class GridEnvelopeTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setHigh(List<BigInteger> newHigh) {
         List<BigInteger> oldHigh = high;
         high = newHigh;

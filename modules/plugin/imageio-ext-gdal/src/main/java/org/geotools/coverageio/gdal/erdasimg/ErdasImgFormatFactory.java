@@ -41,6 +41,7 @@ public final class ErdasImgFormatFactory extends BaseGridFormatFactorySPI
      *
      * @return {@code true} if the plugin is available, {@code false} otherwise.
      */
+    @Override
     public boolean isAvailable() {
         boolean available = true;
 
@@ -69,6 +70,7 @@ public final class ErdasImgFormatFactory extends BaseGridFormatFactorySPI
      *
      * @return A {@link ErdasImgFormat}
      */
+    @Override
     public ErdasImgFormat createFormat() {
         return new ErdasImgFormat();
     }

@@ -109,6 +109,7 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
         return "Oracle NG";
     }
 
+    @Override
     public String getDescription() {
         return "Oracle Database";
     }
@@ -137,6 +138,7 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
         }
     }
 
+    @Override
     protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params)
             throws IOException {
 

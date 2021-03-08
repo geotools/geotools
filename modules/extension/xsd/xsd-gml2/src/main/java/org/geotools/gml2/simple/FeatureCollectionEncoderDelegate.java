@@ -93,6 +93,7 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
         gml.registerGeometryEncoders(geometryEncoders, encoder);
     }
 
+    @Override
     public void encode(ContentHandler handler) throws Exception {
         GMLWriter output =
                 new GMLWriter(

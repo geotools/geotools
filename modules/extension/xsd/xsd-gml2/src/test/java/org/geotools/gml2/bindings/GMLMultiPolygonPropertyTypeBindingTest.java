@@ -33,6 +33,7 @@ public class GMLMultiPolygonPropertyTypeBindingTest extends AbstractGMLBindingTe
     ElementInstance association;
     ElementInstance geometry;
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();

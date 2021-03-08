@@ -31,6 +31,7 @@ public interface OperationType extends PropertyType {
      *
      * @return super type
      */
+    @Override
     OperationType getSuper();
 
     /**
@@ -41,6 +42,7 @@ public interface OperationType extends PropertyType {
      * that was abstract, and a sub type road would define "related" based on touches, or "contains"
      * or "common vertex".
      */
+    @Override
     boolean isAbstract();
 
     /** AttributeType this operation type can function against. */
@@ -68,5 +70,6 @@ public interface OperationType extends PropertyType {
      *
      * @return Restrictions on valid return values
      */
+    @Override
     List<Filter> getRestrictions();
 }

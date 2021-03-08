@@ -94,8 +94,8 @@ There are also some "unsupported" formats that are either popular or under devel
 
 The current authoritative list of plugins is of course the source code: 
 
-* https://github.com/geotools/geotools/tree/master/modules/plugin
-* https://github.com/geotools/geotools/tree/master/modules/unsupported
+* https://github.com/geotools/geotools/tree/main/modules/plugin
+* https://github.com/geotools/geotools/tree/main/modules/unsupported
 
 GeoTools versions
 ^^^^^^^^^^^^^^^^^
@@ -106,7 +106,7 @@ Q. How are GeoTools versions organized?
 Like many open source projects, GeoTools has a *development* version and one or more *stable* versions active at any
 given time. By active, we mean that the project developers are working on new features, improvements and bug fixes.
 
-The development version is the master branch in the GitHub repository (https://github.com/geotools/geotools).
+The development version is the main branch in the GitHub repository (https://github.com/geotools/geotools).
 This is the 'bleeding edge' code where the latest features are being worked on. Eventually this code will become
 the next stable branch. 
 
@@ -141,7 +141,7 @@ Usually there will be three active snapshots:
 
 * one associated with the stable branch (e.g GeoTools 23-SNAPSHOT);
 * a second associated with the maintenance branch (e.g. 22-SNAPSHOT);
-* and a third for master branch (e.g. 24-SNAPSHOT).
+* and a third for main branch (e.g. 24-SNAPSHOT).
 
 At times there will also be snapshot releases for an earlier branch that is having a bug fixe
 applied (e.g. GeoTools 19-SNAPSHOT).

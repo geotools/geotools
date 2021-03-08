@@ -53,10 +53,12 @@ public class FeatureListenerTest {
         renderer.addRenderListener(
                 new RenderListener() {
 
+                    @Override
                     public void featureRenderer(SimpleFeature feature) {
                         count.incrementAndGet();
                     }
 
+                    @Override
                     public void errorOccurred(Exception e) {}
                 });
 

@@ -40,18 +40,22 @@ public class SubstitutionGroupLeakPreventer implements Adapter {
 
     XSDElementDeclaration target;
 
+    @Override
     public Notifier getTarget() {
         return target;
     }
 
+    @Override
     public void setTarget(Notifier newTarget) {
         target = (XSDElementDeclaration) newTarget;
     }
 
+    @Override
     public boolean isAdapterForType(Object type) {
         return type instanceof XSDElementDeclaration;
     }
 
+    @Override
     public void notifyChanged(Notification notification) {
         int featureId = notification.getFeatureID(target.getClass());
         if (featureId != XSDPackage.XSD_ELEMENT_DECLARATION__SUBSTITUTION_GROUP) {

@@ -52,6 +52,7 @@ public class DB2WKBWriter {
     static class DimensionCoordFilter implements CoordinateFilter {
         int dimension = 2;
 
+        @Override
         public void filter(Coordinate coord) {
             if (dimension == 3) // no further testing needed
             return;

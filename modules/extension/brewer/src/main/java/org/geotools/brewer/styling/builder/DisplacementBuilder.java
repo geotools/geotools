@@ -33,6 +33,7 @@ public class DisplacementBuilder extends AbstractStyleBuilder<Displacement> {
         reset();
     }
 
+    @Override
     public Displacement build() {
         if (unset) {
             return null;
@@ -69,6 +70,7 @@ public class DisplacementBuilder extends AbstractStyleBuilder<Displacement> {
         return y(cqlExpression(cqlExpression));
     }
 
+    @Override
     public DisplacementBuilder reset() {
         x = literal(0);
         y = literal(0);
@@ -76,6 +78,7 @@ public class DisplacementBuilder extends AbstractStyleBuilder<Displacement> {
         return this;
     }
 
+    @Override
     public DisplacementBuilder reset(Displacement displacement) {
         if (displacement == null) {
             return reset();
@@ -86,6 +89,7 @@ public class DisplacementBuilder extends AbstractStyleBuilder<Displacement> {
         return this;
     }
 
+    @Override
     public DisplacementBuilder unset() {
         return (DisplacementBuilder) super.unset();
     }

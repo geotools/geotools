@@ -157,6 +157,7 @@ public final class GeoKeyEntry implements Comparable<GeoKeyEntry> {
      * order. This is done to avoid forcing software to perform N-squared sort operations when
      * reading and writing tags.
      */
+    @Override
     public int compareTo(GeoKeyEntry o) {
         return this.keyID > o.keyID ? 1 : (this.keyID == o.keyID ? 0 : 1);
     }

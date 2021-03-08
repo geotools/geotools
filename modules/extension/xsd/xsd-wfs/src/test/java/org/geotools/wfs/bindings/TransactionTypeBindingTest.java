@@ -39,6 +39,7 @@ public class TransactionTypeBindingTest extends WFSTestSupport {
         super(WFS.TransactionType, TransactionType.class, Binding.OVERRIDE);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     @Test
     public void testEncode() throws Exception {
@@ -54,6 +55,7 @@ public class TransactionTypeBindingTest extends WFSTestSupport {
         assertEquals(2, getElementsByQName(dom, WFS.Query).getLength());
     }
 
+    @Override
     @Test
     public void testParse() throws Exception {
         final URL resource = TestData.getResource(this, "TransactionTypeBindingTest.xml");

@@ -405,7 +405,8 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
         EValidator.Registry.INSTANCE.put
             (thewmtsv_1Package, 
              new EValidator.Descriptor() {
-                 public EValidator getEValidator() {
+                 @Override
+                public EValidator getEValidator() {
                      return wmtsv_1Validator.INSTANCE;
                  }
              });
@@ -424,6 +425,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getBinaryPayloadType() {
         return binaryPayloadTypeEClass;
     }
@@ -433,6 +435,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getBinaryPayloadType_Format() {
         return (EAttribute)binaryPayloadTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -442,6 +445,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getBinaryPayloadType_BinaryContent() {
         return (EAttribute)binaryPayloadTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -451,6 +455,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getCapabilitiesType() {
         return capabilitiesTypeEClass;
     }
@@ -460,6 +465,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getCapabilitiesType_Contents() {
         return (EReference)capabilitiesTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -469,6 +475,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getCapabilitiesType_Themes() {
         return (EReference)capabilitiesTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -478,6 +485,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getCapabilitiesType_WSDL() {
         return (EReference)capabilitiesTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -487,6 +495,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getCapabilitiesType_ServiceMetadataURL() {
         return (EReference)capabilitiesTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -496,6 +505,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getContentsType() {
         return contentsTypeEClass;
     }
@@ -505,6 +515,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getContentsType_TileMatrixSet() {
         return (EReference)contentsTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -514,6 +525,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getDimensionNameValueType() {
         return dimensionNameValueTypeEClass;
     }
@@ -523,6 +535,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDimensionNameValueType_Value() {
         return (EAttribute)dimensionNameValueTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -532,6 +545,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDimensionNameValueType_Name() {
         return (EAttribute)dimensionNameValueTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -541,6 +555,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getDimensionType() {
         return dimensionTypeEClass;
     }
@@ -550,6 +565,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDimensionType_Identifier() {
         return (EReference)dimensionTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -559,6 +575,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDimensionType_UOM() {
         return (EReference)dimensionTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -568,6 +585,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDimensionType_UnitSymbol() {
         return (EAttribute)dimensionTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -577,6 +595,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDimensionType_Default() {
         return (EAttribute)dimensionTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -586,6 +605,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDimensionType_Current() {
         return (EAttribute)dimensionTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -595,6 +615,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDimensionType_Value() {
         return (EAttribute)dimensionTypeEClass.getEStructuralFeatures().get(5);
     }
@@ -604,6 +625,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getDocumentRoot() {
         return documentRootEClass;
     }
@@ -613,6 +635,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDocumentRoot_Mixed() {
         return (EAttribute)documentRootEClass.getEStructuralFeatures().get(0);
     }
@@ -622,6 +645,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_XMLNSPrefixMap() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(1);
     }
@@ -631,6 +655,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_XSISchemaLocation() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(2);
     }
@@ -640,6 +665,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_BinaryPayload() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(3);
     }
@@ -649,6 +675,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Capabilities() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(4);
     }
@@ -658,6 +685,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Dimension() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(5);
     }
@@ -667,6 +695,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_DimensionNameValue() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(6);
     }
@@ -676,6 +705,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_FeatureInfoResponse() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(7);
     }
@@ -685,6 +715,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_GetCapabilities() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(8);
     }
@@ -694,6 +725,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_GetFeatureInfo() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(9);
     }
@@ -703,6 +735,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_GetTile() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(10);
     }
@@ -712,6 +745,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Layer() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(11);
     }
@@ -721,6 +755,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_LegendURL() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(12);
     }
@@ -730,6 +765,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Style() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(13);
     }
@@ -739,6 +775,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_TextPayload() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(14);
     }
@@ -748,6 +785,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Theme() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(15);
     }
@@ -757,6 +795,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Themes() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(16);
     }
@@ -766,6 +805,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_TileMatrix() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(17);
     }
@@ -775,6 +815,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_TileMatrixLimits() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(18);
     }
@@ -784,6 +825,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_TileMatrixSet() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(19);
     }
@@ -793,6 +835,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_TileMatrixSetLimits() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(20);
     }
@@ -802,6 +845,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_TileMatrixSetLink() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(21);
     }
@@ -811,6 +855,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getFeatureInfoResponseType() {
         return featureInfoResponseTypeEClass;
     }
@@ -820,6 +865,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getFeatureInfoResponseType_FeatureCollectionGroup() {
         return (EAttribute)featureInfoResponseTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -829,6 +875,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getFeatureInfoResponseType_FeatureCollection() {
         return (EReference)featureInfoResponseTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -838,6 +885,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getFeatureInfoResponseType_TextPayload() {
         return (EReference)featureInfoResponseTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -847,6 +895,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getFeatureInfoResponseType_BinaryPayload() {
         return (EReference)featureInfoResponseTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -856,6 +905,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getFeatureInfoResponseType_AnyContent() {
         return (EReference)featureInfoResponseTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -865,6 +915,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getGetCapabilitiesType() {
         return getCapabilitiesTypeEClass;
     }
@@ -874,6 +925,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetCapabilitiesType_Service() {
         return (EAttribute)getCapabilitiesTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -883,6 +935,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getGetFeatureInfoType() {
         return getFeatureInfoTypeEClass;
     }
@@ -892,6 +945,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getGetFeatureInfoType_GetTile() {
         return (EReference)getFeatureInfoTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -901,6 +955,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetFeatureInfoType_J() {
         return (EAttribute)getFeatureInfoTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -910,6 +965,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetFeatureInfoType_I() {
         return (EAttribute)getFeatureInfoTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -919,6 +975,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetFeatureInfoType_InfoFormat() {
         return (EAttribute)getFeatureInfoTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -928,6 +985,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetFeatureInfoType_Service() {
         return (EAttribute)getFeatureInfoTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -937,6 +995,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetFeatureInfoType_Version() {
         return (EAttribute)getFeatureInfoTypeEClass.getEStructuralFeatures().get(5);
     }
@@ -946,6 +1005,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getGetTileType() {
         return getTileTypeEClass;
     }
@@ -955,6 +1015,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetTileType_Layer() {
         return (EAttribute)getTileTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -964,6 +1025,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetTileType_Style() {
         return (EAttribute)getTileTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -973,6 +1035,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetTileType_Format() {
         return (EAttribute)getTileTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -982,6 +1045,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getGetTileType_DimensionNameValue() {
         return (EReference)getTileTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -991,6 +1055,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetTileType_TileMatrixSet() {
         return (EAttribute)getTileTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -1000,6 +1065,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetTileType_TileMatrix() {
         return (EAttribute)getTileTypeEClass.getEStructuralFeatures().get(5);
     }
@@ -1009,6 +1075,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetTileType_TileRow() {
         return (EAttribute)getTileTypeEClass.getEStructuralFeatures().get(6);
     }
@@ -1018,6 +1085,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetTileType_TileCol() {
         return (EAttribute)getTileTypeEClass.getEStructuralFeatures().get(7);
     }
@@ -1027,6 +1095,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetTileType_Service() {
         return (EAttribute)getTileTypeEClass.getEStructuralFeatures().get(8);
     }
@@ -1036,6 +1105,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGetTileType_Version() {
         return (EAttribute)getTileTypeEClass.getEStructuralFeatures().get(9);
     }
@@ -1045,6 +1115,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getLayerType() {
         return layerTypeEClass;
     }
@@ -1054,6 +1125,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getLayerType_Style() {
         return (EReference)layerTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1063,6 +1135,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getLayerType_Format() {
         return (EAttribute)layerTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1072,6 +1145,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getLayerType_InfoFormat() {
         return (EAttribute)layerTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1081,6 +1155,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getLayerType_Dimension() {
         return (EReference)layerTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -1090,6 +1165,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getLayerType_TileMatrixSetLink() {
         return (EReference)layerTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -1099,6 +1175,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getLayerType_ResourceURL() {
         return (EReference)layerTypeEClass.getEStructuralFeatures().get(5);
     }
@@ -1108,6 +1185,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getLegendURLType() {
         return legendURLTypeEClass;
     }
@@ -1117,6 +1195,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getLegendURLType_Format() {
         return (EAttribute)legendURLTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1126,6 +1205,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getLegendURLType_Height() {
         return (EAttribute)legendURLTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1135,6 +1215,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getLegendURLType_MaxScaleDenominator() {
         return (EAttribute)legendURLTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1144,6 +1225,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getLegendURLType_MinScaleDenominator() {
         return (EAttribute)legendURLTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -1153,6 +1235,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getLegendURLType_Width() {
         return (EAttribute)legendURLTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -1162,6 +1245,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getStyleType() {
         return styleTypeEClass;
     }
@@ -1171,6 +1255,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getStyleType_Identifier() {
         return (EReference)styleTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1180,6 +1265,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getStyleType_LegendURL() {
         return (EReference)styleTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1189,6 +1275,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getStyleType_IsDefault() {
         return (EAttribute)styleTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1198,6 +1285,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getTextPayloadType() {
         return textPayloadTypeEClass;
     }
@@ -1207,6 +1295,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTextPayloadType_Format() {
         return (EAttribute)textPayloadTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1216,6 +1305,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTextPayloadType_TextContent() {
         return (EAttribute)textPayloadTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1225,6 +1315,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getThemesType() {
         return themesTypeEClass;
     }
@@ -1234,6 +1325,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getThemesType_Theme() {
         return (EReference)themesTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1243,6 +1335,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getThemeType() {
         return themeTypeEClass;
     }
@@ -1252,6 +1345,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getThemeType_Identifier() {
         return (EReference)themeTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1261,6 +1355,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getThemeType_Theme() {
         return (EReference)themeTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1270,6 +1365,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getThemeType_LayerRef() {
         return (EAttribute)themeTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1279,6 +1375,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getTileMatrixLimitsType() {
         return tileMatrixLimitsTypeEClass;
     }
@@ -1288,6 +1385,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTileMatrixLimitsType_TileMatrix() {
         return (EAttribute)tileMatrixLimitsTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1297,6 +1395,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTileMatrixLimitsType_MinTileRow() {
         return (EAttribute)tileMatrixLimitsTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1306,6 +1405,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTileMatrixLimitsType_MaxTileRow() {
         return (EAttribute)tileMatrixLimitsTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1315,6 +1415,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTileMatrixLimitsType_MinTileCol() {
         return (EAttribute)tileMatrixLimitsTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -1324,6 +1425,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTileMatrixLimitsType_MaxTileCol() {
         return (EAttribute)tileMatrixLimitsTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -1333,6 +1435,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getTileMatrixSetLimitsType() {
         return tileMatrixSetLimitsTypeEClass;
     }
@@ -1342,6 +1445,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getTileMatrixSetLimitsType_TileMatrixLimits() {
         return (EReference)tileMatrixSetLimitsTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1351,6 +1455,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getTileMatrixSetLinkType() {
         return tileMatrixSetLinkTypeEClass;
     }
@@ -1360,6 +1465,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTileMatrixSetLinkType_TileMatrixSet() {
         return (EAttribute)tileMatrixSetLinkTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1369,6 +1475,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getTileMatrixSetLinkType_TileMatrixSetLimits() {
         return (EReference)tileMatrixSetLinkTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1378,6 +1485,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getTileMatrixSetType() {
         return tileMatrixSetTypeEClass;
     }
@@ -1387,6 +1495,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getTileMatrixSetType_Identifier() {
         return (EReference)tileMatrixSetTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1396,6 +1505,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTileMatrixSetType_BoundingBoxGroup() {
         return (EAttribute)tileMatrixSetTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1405,6 +1515,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getTileMatrixSetType_BoundingBox() {
         return (EReference)tileMatrixSetTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1414,6 +1525,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTileMatrixSetType_SupportedCRS() {
         return (EAttribute)tileMatrixSetTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -1423,6 +1535,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTileMatrixSetType_WellKnownScaleSet() {
         return (EAttribute)tileMatrixSetTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -1432,6 +1545,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getTileMatrixSetType_TileMatrix() {
         return (EReference)tileMatrixSetTypeEClass.getEStructuralFeatures().get(5);
     }
@@ -1441,6 +1555,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getTileMatrixType() {
         return tileMatrixTypeEClass;
     }
@@ -1450,6 +1565,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getTileMatrixType_Identifier() {
         return (EReference)tileMatrixTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1459,6 +1575,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTileMatrixType_ScaleDenominator() {
         return (EAttribute)tileMatrixTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1468,6 +1585,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTileMatrixType_TopLeftCorner() {
         return (EAttribute)tileMatrixTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1477,6 +1595,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTileMatrixType_TileWidth() {
         return (EAttribute)tileMatrixTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -1486,6 +1605,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTileMatrixType_TileHeight() {
         return (EAttribute)tileMatrixTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -1495,6 +1615,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTileMatrixType_MatrixWidth() {
         return (EAttribute)tileMatrixTypeEClass.getEStructuralFeatures().get(5);
     }
@@ -1504,6 +1625,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTileMatrixType_MatrixHeight() {
         return (EAttribute)tileMatrixTypeEClass.getEStructuralFeatures().get(6);
     }
@@ -1513,6 +1635,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getURLTemplateType() {
         return urlTemplateTypeEClass;
     }
@@ -1522,6 +1645,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getURLTemplateType_Format() {
         return (EAttribute)urlTemplateTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1531,6 +1655,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getURLTemplateType_ResourceType() {
         return (EAttribute)urlTemplateTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1540,6 +1665,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getURLTemplateType_Template() {
         return (EAttribute)urlTemplateTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1549,6 +1675,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EEnum getGetCapabilitiesValueType() {
         return getCapabilitiesValueTypeEEnum;
     }
@@ -1558,6 +1685,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EEnum getGetFeatureInfoValueType() {
         return getFeatureInfoValueTypeEEnum;
     }
@@ -1567,6 +1695,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EEnum getGetTileValueType() {
         return getTileValueTypeEEnum;
     }
@@ -1576,6 +1705,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EEnum getRequestServiceType() {
         return requestServiceTypeEEnum;
     }
@@ -1585,6 +1715,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EEnum getResourceTypeType() {
         return resourceTypeTypeEEnum;
     }
@@ -1594,6 +1725,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EEnum getVersionType() {
         return versionTypeEEnum;
     }
@@ -1603,6 +1735,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getAcceptedFormatsType() {
         return acceptedFormatsTypeEDataType;
     }
@@ -1612,6 +1745,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getGetCapabilitiesValueTypeObject() {
         return getCapabilitiesValueTypeObjectEDataType;
     }
@@ -1621,6 +1755,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getGetFeatureInfoValueTypeObject() {
         return getFeatureInfoValueTypeObjectEDataType;
     }
@@ -1630,6 +1765,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getGetTileValueTypeObject() {
         return getTileValueTypeObjectEDataType;
     }
@@ -1639,6 +1775,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getRequestServiceTypeObject() {
         return requestServiceTypeObjectEDataType;
     }
@@ -1648,6 +1785,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getResourceTypeTypeObject() {
         return resourceTypeTypeObjectEDataType;
     }
@@ -1657,6 +1795,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getSectionsType() {
         return sectionsTypeEDataType;
     }
@@ -1666,6 +1805,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getTemplateType() {
         return templateTypeEDataType;
     }
@@ -1675,6 +1815,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getVersionTypeObject() {
         return versionTypeObjectEDataType;
     }
@@ -1684,6 +1825,7 @@ public class wmtsv_1PackageImpl extends EPackageImpl implements wmtsv_1Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public wmtsv_1Factory getwmtsv_1Factory() {
         return (wmtsv_1Factory)getEFactoryInstance();
     }

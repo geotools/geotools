@@ -146,6 +146,7 @@ public class ExecuteResponseTypeImpl extends ResponseBaseTypeImpl implements Exe
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.EXECUTE_RESPONSE_TYPE;
   }
@@ -155,6 +156,7 @@ public class ExecuteResponseTypeImpl extends ResponseBaseTypeImpl implements Exe
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ProcessBriefType getProcess() {
     return process;
   }
@@ -179,6 +181,7 @@ public class ExecuteResponseTypeImpl extends ResponseBaseTypeImpl implements Exe
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setProcess(ProcessBriefType newProcess) {
     if (newProcess != process) {
       NotificationChain msgs = null;
@@ -198,6 +201,7 @@ public class ExecuteResponseTypeImpl extends ResponseBaseTypeImpl implements Exe
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public StatusType getStatus() {
     return status;
   }
@@ -222,6 +226,7 @@ public class ExecuteResponseTypeImpl extends ResponseBaseTypeImpl implements Exe
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setStatus(StatusType newStatus) {
     if (newStatus != status) {
       NotificationChain msgs = null;
@@ -241,6 +246,7 @@ public class ExecuteResponseTypeImpl extends ResponseBaseTypeImpl implements Exe
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DataInputsType1 getDataInputs() {
     return dataInputs;
   }
@@ -265,6 +271,7 @@ public class ExecuteResponseTypeImpl extends ResponseBaseTypeImpl implements Exe
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setDataInputs(DataInputsType1 newDataInputs) {
     if (newDataInputs != dataInputs) {
       NotificationChain msgs = null;
@@ -284,6 +291,7 @@ public class ExecuteResponseTypeImpl extends ResponseBaseTypeImpl implements Exe
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public OutputDefinitionsType getOutputDefinitions() {
     return outputDefinitions;
   }
@@ -308,6 +316,7 @@ public class ExecuteResponseTypeImpl extends ResponseBaseTypeImpl implements Exe
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setOutputDefinitions(OutputDefinitionsType newOutputDefinitions) {
     if (newOutputDefinitions != outputDefinitions) {
       NotificationChain msgs = null;
@@ -327,6 +336,7 @@ public class ExecuteResponseTypeImpl extends ResponseBaseTypeImpl implements Exe
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ProcessOutputsType1 getProcessOutputs() {
     return processOutputs;
   }
@@ -351,6 +361,7 @@ public class ExecuteResponseTypeImpl extends ResponseBaseTypeImpl implements Exe
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setProcessOutputs(ProcessOutputsType1 newProcessOutputs) {
     if (newProcessOutputs != processOutputs) {
       NotificationChain msgs = null;
@@ -370,6 +381,7 @@ public class ExecuteResponseTypeImpl extends ResponseBaseTypeImpl implements Exe
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getServiceInstance() {
     return serviceInstance;
   }
@@ -379,6 +391,7 @@ public class ExecuteResponseTypeImpl extends ResponseBaseTypeImpl implements Exe
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setServiceInstance(String newServiceInstance) {
     String oldServiceInstance = serviceInstance;
     serviceInstance = newServiceInstance;
@@ -391,6 +404,7 @@ public class ExecuteResponseTypeImpl extends ResponseBaseTypeImpl implements Exe
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getStatusLocation() {
     return statusLocation;
   }
@@ -400,6 +414,7 @@ public class ExecuteResponseTypeImpl extends ResponseBaseTypeImpl implements Exe
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setStatusLocation(String newStatusLocation) {
     String oldStatusLocation = statusLocation;
     statusLocation = newStatusLocation;
@@ -412,6 +427,7 @@ public class ExecuteResponseTypeImpl extends ResponseBaseTypeImpl implements Exe
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.EXECUTE_RESPONSE_TYPE__PROCESS:
@@ -433,6 +449,7 @@ public class ExecuteResponseTypeImpl extends ResponseBaseTypeImpl implements Exe
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.EXECUTE_RESPONSE_TYPE__PROCESS:
@@ -458,6 +475,7 @@ public class ExecuteResponseTypeImpl extends ResponseBaseTypeImpl implements Exe
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.EXECUTE_RESPONSE_TYPE__PROCESS:
@@ -490,6 +508,7 @@ public class ExecuteResponseTypeImpl extends ResponseBaseTypeImpl implements Exe
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.EXECUTE_RESPONSE_TYPE__PROCESS:
@@ -522,6 +541,7 @@ public class ExecuteResponseTypeImpl extends ResponseBaseTypeImpl implements Exe
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.EXECUTE_RESPONSE_TYPE__PROCESS:
@@ -547,6 +567,7 @@ public class ExecuteResponseTypeImpl extends ResponseBaseTypeImpl implements Exe
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String toString() {
     if (eIsProxy()) return super.toString();
 

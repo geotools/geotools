@@ -141,6 +141,7 @@ public abstract class AbstractAdhocQueryExpressionTypeImpl extends AbstractQuery
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<Object> getAbstractProjectionClause() {
         if (abstractProjectionClause == null) {
             abstractProjectionClause = new EDataTypeUniqueEList<>(Object.class, this, Fes20Package.ABSTRACT_ADHOC_QUERY_EXPRESSION_TYPE__ABSTRACT_PROJECTION_CLAUSE);
@@ -153,6 +154,7 @@ public abstract class AbstractAdhocQueryExpressionTypeImpl extends AbstractQuery
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object getAbstractSelectionClause() {
         return abstractSelectionClause;
     }
@@ -162,6 +164,7 @@ public abstract class AbstractAdhocQueryExpressionTypeImpl extends AbstractQuery
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAbstractSelectionClause(Object newAbstractSelectionClause) {
         Object oldAbstractSelectionClause = abstractSelectionClause;
         abstractSelectionClause = newAbstractSelectionClause;
@@ -174,6 +177,7 @@ public abstract class AbstractAdhocQueryExpressionTypeImpl extends AbstractQuery
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object getAbstractSortingClause() {
         return abstractSortingClause;
     }
@@ -183,6 +187,7 @@ public abstract class AbstractAdhocQueryExpressionTypeImpl extends AbstractQuery
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAbstractSortingClause(Object newAbstractSortingClause) {
         Object oldAbstractSortingClause = abstractSortingClause;
         abstractSortingClause = newAbstractSortingClause;
@@ -195,6 +200,7 @@ public abstract class AbstractAdhocQueryExpressionTypeImpl extends AbstractQuery
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<String> getAliases() {
         if (aliases == null) {
             aliases = new EDataTypeUniqueEList<>(String.class, this, Fes20Package.ABSTRACT_ADHOC_QUERY_EXPRESSION_TYPE__ALIASES);
@@ -207,6 +213,7 @@ public abstract class AbstractAdhocQueryExpressionTypeImpl extends AbstractQuery
      * <!-- end-user-doc -->
      * @generated NOT
      */
+    @Override
     public EList<Object> getTypeNames() {
         if (typeNames == null) {
             typeNames = new EDataTypeEList<>(Object.class, this, Fes20Package.ABSTRACT_ADHOC_QUERY_EXPRESSION_TYPE__TYPE_NAMES);

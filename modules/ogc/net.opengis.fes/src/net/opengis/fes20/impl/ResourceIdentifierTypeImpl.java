@@ -91,6 +91,7 @@ public class ResourceIdentifierTypeImpl extends EObjectImpl implements ResourceI
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MetadataType getMetadata() {
         return metadata;
     }
@@ -115,6 +116,7 @@ public class ResourceIdentifierTypeImpl extends EObjectImpl implements ResourceI
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMetadata(MetadataType newMetadata) {
         if (newMetadata != metadata) {
             NotificationChain msgs = null;
@@ -134,6 +136,7 @@ public class ResourceIdentifierTypeImpl extends EObjectImpl implements ResourceI
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public QName getName() {
         return name;
     }
@@ -143,6 +146,7 @@ public class ResourceIdentifierTypeImpl extends EObjectImpl implements ResourceI
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setName(QName newName) {
         QName oldName = name;
         name = newName;

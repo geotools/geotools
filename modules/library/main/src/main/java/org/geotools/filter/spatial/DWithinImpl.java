@@ -37,6 +37,7 @@ public class DWithinImpl extends CartesianDistanceFilter implements DWithin {
         return left.isWithinDistance(right, getDistance());
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

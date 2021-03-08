@@ -106,7 +106,8 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.RANGE_TYPE;
   }
 
@@ -115,7 +116,8 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public ValueType getMinimumValue() {
+  @Override
+public ValueType getMinimumValue() {
     return minimumValue;
   }
 
@@ -139,7 +141,8 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setMinimumValue(ValueType newMinimumValue) {
+  @Override
+public void setMinimumValue(ValueType newMinimumValue) {
     if (newMinimumValue != minimumValue) {
       NotificationChain msgs = null;
       if (minimumValue != null)
@@ -158,7 +161,8 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public ValueType getMaximumValue() {
+  @Override
+public ValueType getMaximumValue() {
     return maximumValue;
   }
 
@@ -182,7 +186,8 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setMaximumValue(ValueType newMaximumValue) {
+  @Override
+public void setMaximumValue(ValueType newMaximumValue) {
     if (newMaximumValue != maximumValue) {
       NotificationChain msgs = null;
       if (maximumValue != null)
@@ -201,7 +206,8 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public ValueType getSpacing() {
+  @Override
+public ValueType getSpacing() {
     return spacing;
   }
 
@@ -225,7 +231,8 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setSpacing(ValueType newSpacing) {
+  @Override
+public void setSpacing(ValueType newSpacing) {
     if (newSpacing != spacing) {
       NotificationChain msgs = null;
       if (spacing != null)
@@ -244,7 +251,8 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public RangeClosureType getRangeClosure() {
+  @Override
+public RangeClosureType getRangeClosure() {
     return rangeClosure;
   }
 
@@ -253,7 +261,8 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setRangeClosure(RangeClosureType newRangeClosure) {
+  @Override
+public void setRangeClosure(RangeClosureType newRangeClosure) {
     RangeClosureType oldRangeClosure = rangeClosure;
     rangeClosure = newRangeClosure == null ? RANGE_CLOSURE_EDEFAULT : newRangeClosure;
     boolean oldRangeClosureESet = rangeClosureESet;
@@ -267,7 +276,8 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void unsetRangeClosure() {
+  @Override
+public void unsetRangeClosure() {
     RangeClosureType oldRangeClosure = rangeClosure;
     boolean oldRangeClosureESet = rangeClosureESet;
     rangeClosure = RANGE_CLOSURE_EDEFAULT;
@@ -281,7 +291,8 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean isSetRangeClosure() {
+  @Override
+public boolean isSetRangeClosure() {
     return rangeClosureESet;
   }
 
@@ -290,7 +301,8 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+  @Override
+public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Ows11Package.RANGE_TYPE__MINIMUM_VALUE:
         return basicSetMinimumValue(null, msgs);
@@ -307,7 +319,8 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.RANGE_TYPE__MINIMUM_VALUE:
         return getMinimumValue();
@@ -326,7 +339,8 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.RANGE_TYPE__MINIMUM_VALUE:
         setMinimumValue((ValueType)newValue);
@@ -349,7 +363,8 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.RANGE_TYPE__MINIMUM_VALUE:
         setMinimumValue((ValueType)null);
@@ -372,7 +387,8 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.RANGE_TYPE__MINIMUM_VALUE:
         return minimumValue != null;
@@ -391,7 +407,8 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public String toString() {
+  @Override
+public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

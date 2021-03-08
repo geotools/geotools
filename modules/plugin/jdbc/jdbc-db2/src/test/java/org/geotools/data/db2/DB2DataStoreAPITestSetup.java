@@ -25,10 +25,12 @@ public class DB2DataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         super(new DB2TestSetup());
     }
 
+    @Override
     protected int getInitialPrimaryKeyValue() {
         return 1;
     }
 
+    @Override
     protected void createRoadTable() throws Exception {
         try (Connection con = getDataSource().getConnection()) {
             con.prepareStatement(
@@ -74,6 +76,7 @@ public class DB2DataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         }
     }
 
+    @Override
     protected void createRiverTable() throws Exception {
         try (Connection con = getDataSource().getConnection()) {
 
@@ -108,6 +111,7 @@ public class DB2DataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         }
     }
 
+    @Override
     protected void createLakeTable() throws Exception {
         try (Connection con = getDataSource().getConnection()) {
             con.prepareStatement(
@@ -133,6 +137,7 @@ public class DB2DataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         }
     }
 
+    @Override
     protected void dropRoadTable() throws Exception {
         try (Connection con = getDataSource().getConnection()) {
             DB2Util.executeUnRegister(DB2TestUtil.SCHEMA, "road", "geom", con);
@@ -140,6 +145,7 @@ public class DB2DataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         }
     }
 
+    @Override
     protected void dropRiverTable() throws Exception {
         try (Connection con = getDataSource().getConnection()) {
             DB2Util.executeUnRegister(DB2TestUtil.SCHEMA, "river", "geom", con);
@@ -147,6 +153,7 @@ public class DB2DataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         }
     }
 
+    @Override
     protected void dropLakeTable() throws Exception {
         try (Connection con = getDataSource().getConnection()) {
             DB2Util.executeUnRegister(DB2TestUtil.SCHEMA, "lake", "geom", con);
@@ -154,6 +161,7 @@ public class DB2DataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         }
     }
 
+    @Override
     protected void dropBuildingTable() throws Exception {
         try (Connection con = getDataSource().getConnection()) {
             DB2Util.executeUnRegister(DB2TestUtil.SCHEMA, "building", "geom", con);

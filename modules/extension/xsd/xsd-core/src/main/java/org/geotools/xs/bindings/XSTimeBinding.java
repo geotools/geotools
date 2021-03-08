@@ -61,6 +61,7 @@ import org.geotools.xsd.SimpleBinding;
  */
 public class XSTimeBinding implements SimpleBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return XS.TIME;
     }
@@ -72,6 +73,7 @@ public class XSTimeBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -84,6 +86,7 @@ public class XSTimeBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Time.class;
     }
@@ -96,6 +99,7 @@ public class XSTimeBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Time parse(InstanceComponent instance, Object value) throws Exception {
         Calendar calTime = DatatypeConverterImpl.getInstance().parseTime((String) value);
         Time time = new Time(calTime.getTimeInMillis());
@@ -109,6 +113,7 @@ public class XSTimeBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public String encode(Object object, String value) {
         final Time time = (Time) object;
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));

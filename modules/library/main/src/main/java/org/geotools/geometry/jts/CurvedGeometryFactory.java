@@ -188,22 +188,27 @@ public class CurvedGeometryFactory extends GeometryFactory {
 
     /* Delegate methods */
 
+    @Override
     public Geometry toGeometry(Envelope envelope) {
         return delegate.toGeometry(envelope);
     }
 
+    @Override
     public PrecisionModel getPrecisionModel() {
         return delegate.getPrecisionModel();
     }
 
+    @Override
     public Point createPoint(Coordinate coordinate) {
         return delegate.createPoint(coordinate);
     }
 
+    @Override
     public Point createPoint(CoordinateSequence coordinates) {
         return delegate.createPoint(coordinates);
     }
 
+    @Override
     public MultiLineString createMultiLineString(LineString[] lineStrings) {
         boolean curved = false;
         for (LineString ls : lineStrings) {
@@ -219,10 +224,12 @@ public class CurvedGeometryFactory extends GeometryFactory {
         }
     }
 
+    @Override
     public GeometryCollection createGeometryCollection(Geometry[] geometries) {
         return delegate.createGeometryCollection(geometries);
     }
 
+    @Override
     public MultiPolygon createMultiPolygon(Polygon[] polygons) {
         if (containsCurves(polygons)) {
             return new MultiSurface(polygons, this, tolerance);
@@ -230,27 +237,33 @@ public class CurvedGeometryFactory extends GeometryFactory {
         return delegate.createMultiPolygon(polygons);
     }
 
+    @Override
     public LinearRing createLinearRing(Coordinate[] coordinates) {
         return delegate.createLinearRing(coordinates);
     }
 
+    @Override
     public LinearRing createLinearRing(CoordinateSequence coordinates) {
         return delegate.createLinearRing(coordinates);
     }
 
+    @Override
     public MultiPoint createMultiPoint(Point[] point) {
         return delegate.createMultiPoint(point);
     }
 
+    @Override
     @SuppressWarnings("deprecation")
     public MultiPoint createMultiPoint(Coordinate[] coordinates) {
         return delegate.createMultiPoint(coordinates);
     }
 
+    @Override
     public MultiPoint createMultiPoint(CoordinateSequence coordinates) {
         return delegate.createMultiPoint(coordinates);
     }
 
+    @Override
     public Polygon createPolygon(LinearRing shell, LinearRing[] holes) {
         if (shell instanceof CurvedGeometry || containsCurves(holes)) {
             return new CurvePolygon(shell, holes, this, tolerance);
@@ -259,14 +272,17 @@ public class CurvedGeometryFactory extends GeometryFactory {
         }
     }
 
+    @Override
     public Polygon createPolygon(CoordinateSequence coordinates) {
         return delegate.createPolygon(coordinates);
     }
 
+    @Override
     public Polygon createPolygon(Coordinate[] coordinates) {
         return delegate.createPolygon(coordinates);
     }
 
+    @Override
     public Polygon createPolygon(LinearRing shell) {
         if (shell instanceof CurvedGeometry) {
             return new CurvePolygon(shell, (LinearRing[]) null, this, tolerance);
@@ -275,26 +291,32 @@ public class CurvedGeometryFactory extends GeometryFactory {
         }
     }
 
+    @Override
     public Geometry buildGeometry(Collection geomList) {
         return delegate.buildGeometry(geomList);
     }
 
+    @Override
     public LineString createLineString(Coordinate[] coordinates) {
         return delegate.createLineString(coordinates);
     }
 
+    @Override
     public LineString createLineString(CoordinateSequence coordinates) {
         return delegate.createLineString(coordinates);
     }
 
+    @Override
     public Geometry createGeometry(Geometry g) {
         return delegate.createGeometry(g);
     }
 
+    @Override
     public int getSRID() {
         return delegate.getSRID();
     }
 
+    @Override
     public CoordinateSequenceFactory getCoordinateSequenceFactory() {
         return delegate.getCoordinateSequenceFactory();
     }
@@ -307,15 +329,12 @@ public class CurvedGeometryFactory extends GeometryFactory {
 
         final AtomicBoolean hasCurves = new AtomicBoolean(false);
         g.apply(
-                new GeometryComponentFilter() {
-
-                    @Override
-                    public void filter(Geometry geom) {
-                        if (geom instanceof CurvedGeometry) {
-                            hasCurves.set(true);
-                        }
-                    }
-                });
+                (GeometryComponentFilter)
+                        geom -> {
+                            if (geom instanceof CurvedGeometry) {
+                                hasCurves.set(true);
+                            }
+                        });
 
         return hasCurves.get();
     }

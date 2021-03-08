@@ -24,10 +24,12 @@ public class MySQLDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         super(new MySQLTestSetup());
     }
 
+    @Override
     protected int getInitialPrimaryKeyValue() {
         return 1;
     }
 
+    @Override
     protected void createRoadTable() throws Exception {
         run(
                 "CREATE TABLE road(fid int AUTO_INCREMENT PRIMARY KEY, id int, "
@@ -46,6 +48,7 @@ public class MySQLDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
                         + "'r3')");
     }
 
+    @Override
     protected void createRiverTable() throws Exception {
         run(
                 "CREATE TABLE river(fid int AUTO_INCREMENT PRIMARY KEY, id int, "
@@ -61,6 +64,7 @@ public class MySQLDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
                         + "'rv2', 3.0)");
     }
 
+    @Override
     protected void createLakeTable() throws Exception {
         run(
                 "CREATE TABLE lake(fid int AUTO_INCREMENT PRIMARY KEY, id int, "
@@ -72,18 +76,22 @@ public class MySQLDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
                         + "'muddy')");
     }
 
+    @Override
     protected void dropRoadTable() throws Exception {
         run("DROP TABLE road");
     }
 
+    @Override
     protected void dropRiverTable() throws Exception {
         run("DROP TABLE river");
     }
 
+    @Override
     protected void dropLakeTable() throws Exception {
         run("DROP TABLE lake");
     }
 
+    @Override
     protected void dropBuildingTable() throws Exception {
         run("DROP TABLE building");
     }

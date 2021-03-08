@@ -65,6 +65,7 @@ public class ContentsTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WMTS.ContentsType;
     }
@@ -76,6 +77,7 @@ public class ContentsTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return ContentsTypeBinding.class;
     }
@@ -87,6 +89,7 @@ public class ContentsTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         ContentsType contents = factory.createContentsType();

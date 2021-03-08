@@ -43,34 +43,42 @@ public class DescriptionImpl implements Description {
         this(description.getTitle(), description.getAbstract());
     }
 
+    @Override
     public InternationalString getTitle() {
         return title;
     }
 
+    @Override
     public void setTitle(InternationalString title) {
         this.title = title;
     }
 
+    @Override
     public void setTitle(String title) {
         this.title = title != null ? new SimpleInternationalString(title) : null;
     }
 
+    @Override
     public InternationalString getAbstract() {
         return description;
     }
 
+    @Override
     public void setAbstract(InternationalString description) {
         this.description = description;
     }
 
+    @Override
     public void setAbstract(String description) {
         this.description = description != null ? new SimpleInternationalString(description) : null;
     }
 
+    @Override
     public Object accept(org.opengis.style.StyleVisitor visitor, Object extraData) {
         return null;
     }
 
+    @Override
     public void accept(StyleVisitor visitor) {
         // nothing to do
     }

@@ -72,6 +72,7 @@ public class MultiLevelROIGeometryProvider implements MultiLevelROIProvider {
         }
     }
 
+    @Override
     public void dispose() {
         geometryProvider.dispose();
     }

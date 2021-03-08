@@ -247,6 +247,7 @@ public class PostGISDialect extends BasicSQLDialect {
         return simplifyEnabled;
     }
 
+    @Override
     public boolean canSimplifyPoints() {
         // TWKB encoding is a form of simplified points representation (reduced precision)
         return version != null && version.compareTo(V_2_2_0) >= 0 && isSimplifyEnabled();
@@ -328,6 +329,7 @@ public class PostGISDialect extends BasicSQLDialect {
         }
     }
 
+    @Override
     public Geometry decodeGeometryValue(
             GeometryDescriptor descriptor,
             ResultSet rs,
@@ -1471,6 +1473,7 @@ public class PostGISDialect extends BasicSQLDialect {
         return getVersion(cx).compareTo(V_1_5_0) >= 0;
     }
 
+    @Override
     protected void addSupportedHints(Set<Hints.Key> hints) {
         if (isSimplifyEnabled()) {
             hints.add(Hints.GEOMETRY_SIMPLIFICATION);
@@ -1497,6 +1500,7 @@ public class PostGISDialect extends BasicSQLDialect {
                 : "ST_Estimated_Extent";
     }
 
+    @Override
     public Filter[] splitFilter(Filter filter, SimpleFeatureType schema) {
 
         PostPreProcessFilterSplittingVisitor splitter =

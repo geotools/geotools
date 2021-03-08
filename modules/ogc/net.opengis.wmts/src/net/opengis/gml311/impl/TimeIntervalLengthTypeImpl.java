@@ -136,6 +136,7 @@ public class TimeIntervalLengthTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigDecimal getValue() {
         return value;
     }
@@ -145,6 +146,7 @@ public class TimeIntervalLengthTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValue(BigDecimal newValue) {
         BigDecimal oldValue = value;
         value = newValue;
@@ -157,6 +159,7 @@ public class TimeIntervalLengthTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getFactor() {
         return factor;
     }
@@ -166,6 +169,7 @@ public class TimeIntervalLengthTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFactor(BigInteger newFactor) {
         BigInteger oldFactor = factor;
         factor = newFactor;
@@ -178,6 +182,7 @@ public class TimeIntervalLengthTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getRadix() {
         return radix;
     }
@@ -187,6 +192,7 @@ public class TimeIntervalLengthTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRadix(BigInteger newRadix) {
         BigInteger oldRadix = radix;
         radix = newRadix;
@@ -199,6 +205,7 @@ public class TimeIntervalLengthTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object getUnit() {
         return unit;
     }
@@ -208,6 +215,7 @@ public class TimeIntervalLengthTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUnit(Object newUnit) {
         Object oldUnit = unit;
         unit = newUnit;

@@ -40,6 +40,7 @@ public class OptionalComponentParameter extends BasicComponentParameter {
      * Always return true, because since the setter is optional even its not in teh container we can
      * always resolve to <code>null</code>.
      */
+    @Override
     public boolean isResolvable(
             PicoContainer container, ComponentAdapter adapter, Class expectedType) {
         return true;

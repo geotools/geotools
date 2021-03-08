@@ -49,21 +49,18 @@ public class ProcessFunctionFactory implements FunctionFactory {
 
     /** Compares process factories by their title */
     static final Comparator<ProcessFactory> FACTORY_COMPARATOR =
-            new Comparator<ProcessFactory>() {
-
-                public int compare(ProcessFactory pf1, ProcessFactory pf2) {
-                    if (pf1.getTitle() == null) {
-                        if (pf2.getTitle() == null) {
-                            return 0;
-                        } else {
-                            return -1;
-                        }
+            (pf1, pf2) -> {
+                if (pf1.getTitle() == null) {
+                    if (pf2.getTitle() == null) {
+                        return 0;
                     } else {
-                        if (pf2.getTitle() == null) {
-                            return 1;
-                        } else {
-                            return pf1.getTitle().compareTo(pf2.getTitle());
-                        }
+                        return -1;
+                    }
+                } else {
+                    if (pf2.getTitle() == null) {
+                        return 1;
+                    } else {
+                        return pf1.getTitle().compareTo(pf2.getTitle());
                     }
                 }
             };
@@ -74,10 +71,12 @@ public class ProcessFunctionFactory implements FunctionFactory {
     /** The cache list of functions wrapping processes */
     private ArrayList<FunctionName> functionNames;
 
+    @Override
     public Function function(String name, List<Expression> args, Literal fallback) {
         return function(new NameImpl(name), args, fallback);
     }
 
+    @Override
     public Function function(Name processName, List<Expression> args, Literal fallback) {
         // if the param function just return it
         if (processName.equals(new NameImpl(ParameterFunction.NAME.getName()))) {
@@ -105,6 +104,7 @@ public class ProcessFunctionFactory implements FunctionFactory {
         }
     }
 
+    @Override
     public List<FunctionName> getFunctionNames() {
         if (functionNames == null) {
             init();

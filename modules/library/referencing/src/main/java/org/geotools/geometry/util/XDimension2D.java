@@ -69,17 +69,20 @@ public final class XDimension2D {
          * @param w The width.
          * @param h The height.
          */
+        @Override
         public void setSize(final double w, final double h) {
             width = (float) w;
             height = (float) h;
         }
 
         /** Returns the width. */
+        @Override
         public double getWidth() {
             return width;
         }
 
         /** Returns the height. */
+        @Override
         public double getHeight() {
             return height;
         }
@@ -128,17 +131,20 @@ public final class XDimension2D {
          * @param w The width.
          * @param h The height.
          */
+        @Override
         public void setSize(final double w, final double h) {
             width = w;
             height = h;
         }
 
         /** Returns the width. */
+        @Override
         public double getWidth() {
             return width;
         }
 
         /** Returns the height. */
+        @Override
         public double getHeight() {
             return height;
         }

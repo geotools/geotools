@@ -103,5 +103,6 @@ public interface FeatureReader<T extends FeatureType, F extends Feature> extends
      *
      * @throws IOException if an I/O error occurs
      */
+    @Override
     void close() throws IOException;
 }

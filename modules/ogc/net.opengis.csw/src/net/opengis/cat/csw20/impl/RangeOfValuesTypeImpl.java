@@ -78,6 +78,7 @@ public class RangeOfValuesTypeImpl extends EObjectImpl implements RangeOfValuesT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EObject getMinValue() {
         return minValue;
     }
@@ -102,6 +103,7 @@ public class RangeOfValuesTypeImpl extends EObjectImpl implements RangeOfValuesT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMinValue(EObject newMinValue) {
         if (newMinValue != minValue) {
             NotificationChain msgs = null;
@@ -121,6 +123,7 @@ public class RangeOfValuesTypeImpl extends EObjectImpl implements RangeOfValuesT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EObject getMaxValue() {
         return maxValue;
     }
@@ -145,6 +148,7 @@ public class RangeOfValuesTypeImpl extends EObjectImpl implements RangeOfValuesT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMaxValue(EObject newMaxValue) {
         if (newMaxValue != maxValue) {
             NotificationChain msgs = null;

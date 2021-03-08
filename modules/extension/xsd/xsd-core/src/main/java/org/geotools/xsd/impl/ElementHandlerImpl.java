@@ -75,6 +75,7 @@ public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
         // childHandlers = new ArrayList();
     }
 
+    @Override
     public void startElement(QName qName, Attributes attributes) throws SAXException {
         // clear handler list
         // childHandlers.clear();
@@ -204,6 +205,7 @@ public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
         // getContext() );
     }
 
+    @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
 
         // simply add the text to the element
@@ -215,6 +217,7 @@ public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
         }
     }
 
+    @Override
     public void endElement(QName qName) throws SAXException {
         if (isMixed()) {
             node.collapseWhitespace();
@@ -268,6 +271,7 @@ public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
         return false;
     }
 
+    @Override
     public Handler createChildHandler(QName qName) {
         return getChildHandlerInternal(qName);
     }
@@ -325,6 +329,7 @@ public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
     //    public List getChildHandlers() {
     //        return childHandlers;
     //    }
+    @Override
     public void startChildHandler(Handler child) {
         // childHandlers.add(child);
         node.addChild(child.getParseNode());
@@ -340,27 +345,33 @@ public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
         }
     }
 
+    @Override
     public void endChildHandler(Handler child) {
         // add the node to the parse tree
         // childHandlers.remove(child);
     }
 
+    @Override
     public Handler getParentHandler() {
         return parent;
     }
 
+    @Override
     public XSDSchemaContent getSchemaContent() {
         return content;
     }
 
+    @Override
     public Node getParseNode() {
         return node;
     }
 
+    @Override
     public XSDElementDeclaration getElementDeclaration() {
         return content;
     }
 
+    @Override
     public InstanceComponent getComponent() {
         return element;
     }
@@ -383,6 +394,7 @@ public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
                 && ((XSDComplexTypeDefinition) content.getType()).isMixed();
     }
 
+    @Override
     public String toString() {
         return (node != null) ? node.toString() : "";
     }

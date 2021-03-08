@@ -78,6 +78,7 @@ public class DefaultFileFilter extends javax.swing.filechooser.FileFilter
     }
 
     /** Returns the description of this filter. For example: {@code "PNG images"}. */
+    @Override
     public String getDescription() {
         return description;
     }
@@ -88,6 +89,7 @@ public class DefaultFileFilter extends javax.swing.filechooser.FileFilter
      * @param file The file to be tested.
      * @return {@code true} if and only if the name matches the pattern.
      */
+    @Override
     public boolean accept(final File file) {
         return (file != null) && pattern.matcher(file.getName()).matches();
     }
@@ -99,6 +101,7 @@ public class DefaultFileFilter extends javax.swing.filechooser.FileFilter
      * @param name The name of the file.
      * @return {@code true} if and only if the name matches the pattern.
      */
+    @Override
     public boolean accept(final File directory, final String name) {
         return (name != null) && pattern.matcher(name).matches();
     }

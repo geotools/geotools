@@ -217,6 +217,7 @@ public class GridCrsTypeImpl extends EObjectImpl implements GridCrsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EClass eStaticClass() {
         return Wcs111Package.Literals.GRID_CRS_TYPE;
     }
@@ -226,6 +227,7 @@ public class GridCrsTypeImpl extends EObjectImpl implements GridCrsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object getSrsName() {
         return srsName;
     }
@@ -235,6 +237,7 @@ public class GridCrsTypeImpl extends EObjectImpl implements GridCrsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSrsName(Object newSrsName) {
         Object oldSrsName = srsName;
         srsName = newSrsName;
@@ -247,6 +250,7 @@ public class GridCrsTypeImpl extends EObjectImpl implements GridCrsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getGridBaseCRS() {
         return gridBaseCRS;
     }
@@ -256,6 +260,7 @@ public class GridCrsTypeImpl extends EObjectImpl implements GridCrsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGridBaseCRS(String newGridBaseCRS) {
         String oldGridBaseCRS = gridBaseCRS;
         gridBaseCRS = newGridBaseCRS;
@@ -268,6 +273,7 @@ public class GridCrsTypeImpl extends EObjectImpl implements GridCrsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getGridType() {
         return gridType;
     }
@@ -277,6 +283,7 @@ public class GridCrsTypeImpl extends EObjectImpl implements GridCrsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGridType(String newGridType) {
         String oldGridType = gridType;
         gridType = newGridType;
@@ -291,6 +298,7 @@ public class GridCrsTypeImpl extends EObjectImpl implements GridCrsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetGridType() {
         String oldGridType = gridType;
         boolean oldGridTypeESet = gridTypeESet;
@@ -305,6 +313,7 @@ public class GridCrsTypeImpl extends EObjectImpl implements GridCrsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetGridType() {
         return gridTypeESet;
     }
@@ -314,6 +323,7 @@ public class GridCrsTypeImpl extends EObjectImpl implements GridCrsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object getGridOrigin() {
         return gridOrigin;
     }
@@ -323,6 +333,7 @@ public class GridCrsTypeImpl extends EObjectImpl implements GridCrsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGridOrigin(Object newGridOrigin) {
         Object oldGridOrigin = gridOrigin;
         gridOrigin = newGridOrigin;
@@ -337,6 +348,7 @@ public class GridCrsTypeImpl extends EObjectImpl implements GridCrsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetGridOrigin() {
         Object oldGridOrigin = gridOrigin;
         boolean oldGridOriginESet = gridOriginESet;
@@ -351,6 +363,7 @@ public class GridCrsTypeImpl extends EObjectImpl implements GridCrsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetGridOrigin() {
         return gridOriginESet;
     }
@@ -360,6 +373,7 @@ public class GridCrsTypeImpl extends EObjectImpl implements GridCrsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object getGridOffsets() {
         return gridOffsets;
     }
@@ -369,6 +383,7 @@ public class GridCrsTypeImpl extends EObjectImpl implements GridCrsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGridOffsets(Object newGridOffsets) {
         Object oldGridOffsets = gridOffsets;
         gridOffsets = newGridOffsets;
@@ -381,6 +396,7 @@ public class GridCrsTypeImpl extends EObjectImpl implements GridCrsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getGridCS() {
         return gridCS;
     }
@@ -390,6 +406,7 @@ public class GridCrsTypeImpl extends EObjectImpl implements GridCrsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGridCS(String newGridCS) {
         String oldGridCS = gridCS;
         gridCS = newGridCS;
@@ -404,6 +421,7 @@ public class GridCrsTypeImpl extends EObjectImpl implements GridCrsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetGridCS() {
         String oldGridCS = gridCS;
         boolean oldGridCSESet = gridCSESet;
@@ -418,6 +436,7 @@ public class GridCrsTypeImpl extends EObjectImpl implements GridCrsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetGridCS() {
         return gridCSESet;
     }
@@ -427,6 +446,7 @@ public class GridCrsTypeImpl extends EObjectImpl implements GridCrsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object getId() {
         return id;
     }
@@ -436,6 +456,7 @@ public class GridCrsTypeImpl extends EObjectImpl implements GridCrsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setId(Object newId) {
         Object oldId = id;
         id = newId;
@@ -448,6 +469,7 @@ public class GridCrsTypeImpl extends EObjectImpl implements GridCrsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case Wcs111Package.GRID_CRS_TYPE__SRS_NAME:
@@ -473,6 +495,7 @@ public class GridCrsTypeImpl extends EObjectImpl implements GridCrsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Wcs111Package.GRID_CRS_TYPE__SRS_NAME:
@@ -505,6 +528,7 @@ public class GridCrsTypeImpl extends EObjectImpl implements GridCrsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case Wcs111Package.GRID_CRS_TYPE__SRS_NAME:
@@ -537,6 +561,7 @@ public class GridCrsTypeImpl extends EObjectImpl implements GridCrsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case Wcs111Package.GRID_CRS_TYPE__SRS_NAME:
@@ -562,6 +587,7 @@ public class GridCrsTypeImpl extends EObjectImpl implements GridCrsType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String toString() {
         if (eIsProxy()) return super.toString();
 

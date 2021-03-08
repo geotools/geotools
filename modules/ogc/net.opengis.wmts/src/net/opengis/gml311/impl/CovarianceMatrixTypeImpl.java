@@ -78,6 +78,7 @@ public class CovarianceMatrixTypeImpl extends AbstractPositionalAccuracyTypeImpl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<UnitOfMeasureType> getUnitOfMeasure() {
         if (unitOfMeasure == null) {
             unitOfMeasure = new EObjectContainmentEList<>(UnitOfMeasureType.class, this, Gml311Package.COVARIANCE_MATRIX_TYPE__UNIT_OF_MEASURE);
@@ -90,6 +91,7 @@ public class CovarianceMatrixTypeImpl extends AbstractPositionalAccuracyTypeImpl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<CovarianceElementType> getIncludesElement() {
         if (includesElement == null) {
             includesElement = new EObjectContainmentEList<>(CovarianceElementType.class, this, Gml311Package.COVARIANCE_MATRIX_TYPE__INCLUDES_ELEMENT);

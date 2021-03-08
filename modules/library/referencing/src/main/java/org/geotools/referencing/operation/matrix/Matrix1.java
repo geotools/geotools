@@ -64,6 +64,7 @@ public class Matrix1 implements XMatrix, Serializable {
      * Returns the number of rows in this matrix, which is always {@value #SIZE} in this
      * implementation.
      */
+    @Override
     public final int getNumRow() {
         return SIZE;
     }
@@ -72,11 +73,13 @@ public class Matrix1 implements XMatrix, Serializable {
      * Returns the number of colmuns in this matrix, which is always {@value #SIZE} in this
      * implementation.
      */
+    @Override
     public final int getNumCol() {
         return SIZE;
     }
 
     /** {@inheritDoc} */
+    @Override
     public final double getElement(final int row, final int col) {
         if (row == 0 && col == 0) {
             return m00;
@@ -86,6 +89,7 @@ public class Matrix1 implements XMatrix, Serializable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public final void setElement(final int row, final int col, final double value) {
         if (row == 0 && col == 0) {
             m00 = value;
@@ -95,31 +99,37 @@ public class Matrix1 implements XMatrix, Serializable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public final void setZero() {
         m00 = 0;
     }
 
     /** {@inheritDoc} */
+    @Override
     public final void setIdentity() {
         m00 = 1;
     }
 
     /** {@inheritDoc} */
+    @Override
     public final boolean isIdentity() {
         return m00 == 1;
     }
 
     /** {@inheritDoc} */
+    @Override
     public final boolean isIdentity(double tolerance) {
         return Math.abs(m00 - 1) <= Math.abs(tolerance);
     }
 
     /** {@inheritDoc} */
+    @Override
     public final boolean isAffine() {
         return m00 == 1;
     }
 
     /** {@inheritDoc} */
+    @Override
     public final void negate() {
         m00 = -m00;
     }
@@ -133,6 +143,7 @@ public class Matrix1 implements XMatrix, Serializable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public final void transpose() {
         // Nothing to do for a 1x1 matrix.
     }
@@ -146,6 +157,7 @@ public class Matrix1 implements XMatrix, Serializable {
     }
 
     /** Inverts this matrix in place. */
+    @Override
     public final void invert() {
         if (m00 == 0) {
             throw new SingularMatrixException("1 dimensional m is singular");
@@ -165,6 +177,7 @@ public class Matrix1 implements XMatrix, Serializable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public final void multiply(final Matrix matrix) {
         if (matrix.getNumRow() != SIZE || matrix.getNumCol() != SIZE) {
             throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_MATRIX_SIZE));
@@ -173,6 +186,7 @@ public class Matrix1 implements XMatrix, Serializable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean equals(final Matrix matrix, final double tolerance) {
         return GeneralMatrix.epsilonEquals(this, matrix, tolerance);
     }

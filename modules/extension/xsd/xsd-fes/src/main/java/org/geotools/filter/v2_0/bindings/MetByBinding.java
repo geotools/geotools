@@ -48,6 +48,7 @@ public class MetByBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return FES.MetBy;
     }
@@ -59,6 +60,7 @@ public class MetByBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return MetBy.class;
     }
@@ -75,6 +77,7 @@ public class MetByBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Expression[] e = FESParseEncodeUtil.temporal(node, filterFactory);
         return filterFactory.metBy(e[0], e[1]);

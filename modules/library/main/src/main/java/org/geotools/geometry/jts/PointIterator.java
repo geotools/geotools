@@ -59,21 +59,25 @@ public final class PointIterator extends AbstractLiteIterator {
      *
      * @return <code>WIND_EVEN_ODD</code> by default.
      */
+    @Override
     public int getWindingRule() {
         return WIND_EVEN_ODD;
     }
 
     /** @see java.awt.geom.PathIterator#next() */
+    @Override
     public void next() {
         done = true;
     }
 
     /** @see java.awt.geom.PathIterator#isDone() */
+    @Override
     public boolean isDone() {
         return done && moved;
     }
 
     /** @see java.awt.geom.PathIterator#currentSegment(double[]) */
+    @Override
     public int currentSegment(double[] coords) {
         if (!done && !moved) {
             coords[0] = point.getX();

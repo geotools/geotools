@@ -165,6 +165,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getAnimateColorType() {
         return animateColorTypeEClass;
     }
@@ -174,6 +175,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorType_Group() {
         return (EAttribute)animateColorTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -183,6 +185,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorType_Any() {
         return (EAttribute)animateColorTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -192,6 +195,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorType_Alt() {
         return (EAttribute)animateColorTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -201,6 +205,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorType_Begin() {
         return (EAttribute)animateColorTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -210,6 +215,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorType_CalcMode() {
         return (EAttribute)animateColorTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -219,6 +225,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorType_Class() {
         return (EAttribute)animateColorTypeEClass.getEStructuralFeatures().get(5);
     }
@@ -228,6 +235,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorType_Dur() {
         return (EAttribute)animateColorTypeEClass.getEStructuralFeatures().get(6);
     }
@@ -237,6 +245,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorType_End() {
         return (EAttribute)animateColorTypeEClass.getEStructuralFeatures().get(7);
     }
@@ -246,6 +255,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorType_Fill() {
         return (EAttribute)animateColorTypeEClass.getEStructuralFeatures().get(8);
     }
@@ -255,6 +265,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorType_FillDefault() {
         return (EAttribute)animateColorTypeEClass.getEStructuralFeatures().get(9);
     }
@@ -264,6 +275,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorType_Id() {
         return (EAttribute)animateColorTypeEClass.getEStructuralFeatures().get(10);
     }
@@ -273,6 +285,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorType_Lang() {
         return (EAttribute)animateColorTypeEClass.getEStructuralFeatures().get(11);
     }
@@ -282,6 +295,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorType_Longdesc() {
         return (EAttribute)animateColorTypeEClass.getEStructuralFeatures().get(12);
     }
@@ -291,6 +305,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorType_Max() {
         return (EAttribute)animateColorTypeEClass.getEStructuralFeatures().get(13);
     }
@@ -300,6 +315,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorType_Min() {
         return (EAttribute)animateColorTypeEClass.getEStructuralFeatures().get(14);
     }
@@ -309,6 +325,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorType_Repeat() {
         return (EAttribute)animateColorTypeEClass.getEStructuralFeatures().get(15);
     }
@@ -318,6 +335,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorType_RepeatCount() {
         return (EAttribute)animateColorTypeEClass.getEStructuralFeatures().get(16);
     }
@@ -327,6 +345,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorType_RepeatDur() {
         return (EAttribute)animateColorTypeEClass.getEStructuralFeatures().get(17);
     }
@@ -336,6 +355,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorType_Restart() {
         return (EAttribute)animateColorTypeEClass.getEStructuralFeatures().get(18);
     }
@@ -345,6 +365,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorType_RestartDefault() {
         return (EAttribute)animateColorTypeEClass.getEStructuralFeatures().get(19);
     }
@@ -354,6 +375,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorType_SkipContent() {
         return (EAttribute)animateColorTypeEClass.getEStructuralFeatures().get(20);
     }
@@ -363,6 +385,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorType_SyncBehavior() {
         return (EAttribute)animateColorTypeEClass.getEStructuralFeatures().get(21);
     }
@@ -372,6 +395,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorType_SyncBehaviorDefault() {
         return (EAttribute)animateColorTypeEClass.getEStructuralFeatures().get(22);
     }
@@ -381,6 +405,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorType_SyncTolerance() {
         return (EAttribute)animateColorTypeEClass.getEStructuralFeatures().get(23);
     }
@@ -390,6 +415,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorType_SyncToleranceDefault() {
         return (EAttribute)animateColorTypeEClass.getEStructuralFeatures().get(24);
     }
@@ -399,6 +425,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorType_TargetElement() {
         return (EAttribute)animateColorTypeEClass.getEStructuralFeatures().get(25);
     }
@@ -408,6 +435,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateColorType_AnyAttribute() {
         return (EAttribute)animateColorTypeEClass.getEStructuralFeatures().get(26);
     }
@@ -417,6 +445,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getAnimateMotionType() {
         return animateMotionTypeEClass;
     }
@@ -426,6 +455,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionType_Group() {
         return (EAttribute)animateMotionTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -435,6 +465,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionType_Any() {
         return (EAttribute)animateMotionTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -444,6 +475,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionType_Alt() {
         return (EAttribute)animateMotionTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -453,6 +485,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionType_Begin() {
         return (EAttribute)animateMotionTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -462,6 +495,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionType_CalcMode() {
         return (EAttribute)animateMotionTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -471,6 +505,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionType_Class() {
         return (EAttribute)animateMotionTypeEClass.getEStructuralFeatures().get(5);
     }
@@ -480,6 +515,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionType_Dur() {
         return (EAttribute)animateMotionTypeEClass.getEStructuralFeatures().get(6);
     }
@@ -489,6 +525,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionType_End() {
         return (EAttribute)animateMotionTypeEClass.getEStructuralFeatures().get(7);
     }
@@ -498,6 +535,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionType_Fill() {
         return (EAttribute)animateMotionTypeEClass.getEStructuralFeatures().get(8);
     }
@@ -507,6 +545,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionType_FillDefault() {
         return (EAttribute)animateMotionTypeEClass.getEStructuralFeatures().get(9);
     }
@@ -516,6 +555,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionType_Id() {
         return (EAttribute)animateMotionTypeEClass.getEStructuralFeatures().get(10);
     }
@@ -525,6 +565,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionType_Lang() {
         return (EAttribute)animateMotionTypeEClass.getEStructuralFeatures().get(11);
     }
@@ -534,6 +575,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionType_Longdesc() {
         return (EAttribute)animateMotionTypeEClass.getEStructuralFeatures().get(12);
     }
@@ -543,6 +585,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionType_Max() {
         return (EAttribute)animateMotionTypeEClass.getEStructuralFeatures().get(13);
     }
@@ -552,6 +595,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionType_Min() {
         return (EAttribute)animateMotionTypeEClass.getEStructuralFeatures().get(14);
     }
@@ -561,6 +605,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionType_Repeat() {
         return (EAttribute)animateMotionTypeEClass.getEStructuralFeatures().get(15);
     }
@@ -570,6 +615,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionType_RepeatCount() {
         return (EAttribute)animateMotionTypeEClass.getEStructuralFeatures().get(16);
     }
@@ -579,6 +625,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionType_RepeatDur() {
         return (EAttribute)animateMotionTypeEClass.getEStructuralFeatures().get(17);
     }
@@ -588,6 +635,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionType_Restart() {
         return (EAttribute)animateMotionTypeEClass.getEStructuralFeatures().get(18);
     }
@@ -597,6 +645,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionType_RestartDefault() {
         return (EAttribute)animateMotionTypeEClass.getEStructuralFeatures().get(19);
     }
@@ -606,6 +655,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionType_SkipContent() {
         return (EAttribute)animateMotionTypeEClass.getEStructuralFeatures().get(20);
     }
@@ -615,6 +665,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionType_SyncBehavior() {
         return (EAttribute)animateMotionTypeEClass.getEStructuralFeatures().get(21);
     }
@@ -624,6 +675,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionType_SyncBehaviorDefault() {
         return (EAttribute)animateMotionTypeEClass.getEStructuralFeatures().get(22);
     }
@@ -633,6 +685,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionType_SyncTolerance() {
         return (EAttribute)animateMotionTypeEClass.getEStructuralFeatures().get(23);
     }
@@ -642,6 +695,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionType_SyncToleranceDefault() {
         return (EAttribute)animateMotionTypeEClass.getEStructuralFeatures().get(24);
     }
@@ -651,6 +705,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionType_TargetElement() {
         return (EAttribute)animateMotionTypeEClass.getEStructuralFeatures().get(25);
     }
@@ -660,6 +715,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateMotionType_AnyAttribute() {
         return (EAttribute)animateMotionTypeEClass.getEStructuralFeatures().get(26);
     }
@@ -669,6 +725,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getAnimateType() {
         return animateTypeEClass;
     }
@@ -678,6 +735,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateType_Group() {
         return (EAttribute)animateTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -687,6 +745,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateType_Any() {
         return (EAttribute)animateTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -696,6 +755,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateType_Alt() {
         return (EAttribute)animateTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -705,6 +765,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateType_Begin() {
         return (EAttribute)animateTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -714,6 +775,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateType_CalcMode() {
         return (EAttribute)animateTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -723,6 +785,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateType_Class() {
         return (EAttribute)animateTypeEClass.getEStructuralFeatures().get(5);
     }
@@ -732,6 +795,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateType_Dur() {
         return (EAttribute)animateTypeEClass.getEStructuralFeatures().get(6);
     }
@@ -741,6 +805,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateType_End() {
         return (EAttribute)animateTypeEClass.getEStructuralFeatures().get(7);
     }
@@ -750,6 +815,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateType_Fill() {
         return (EAttribute)animateTypeEClass.getEStructuralFeatures().get(8);
     }
@@ -759,6 +825,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateType_FillDefault() {
         return (EAttribute)animateTypeEClass.getEStructuralFeatures().get(9);
     }
@@ -768,6 +835,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateType_Id() {
         return (EAttribute)animateTypeEClass.getEStructuralFeatures().get(10);
     }
@@ -777,6 +845,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateType_Lang() {
         return (EAttribute)animateTypeEClass.getEStructuralFeatures().get(11);
     }
@@ -786,6 +855,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateType_Longdesc() {
         return (EAttribute)animateTypeEClass.getEStructuralFeatures().get(12);
     }
@@ -795,6 +865,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateType_Max() {
         return (EAttribute)animateTypeEClass.getEStructuralFeatures().get(13);
     }
@@ -804,6 +875,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateType_Min() {
         return (EAttribute)animateTypeEClass.getEStructuralFeatures().get(14);
     }
@@ -813,6 +885,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateType_Repeat() {
         return (EAttribute)animateTypeEClass.getEStructuralFeatures().get(15);
     }
@@ -822,6 +895,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateType_RepeatCount() {
         return (EAttribute)animateTypeEClass.getEStructuralFeatures().get(16);
     }
@@ -831,6 +905,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateType_RepeatDur() {
         return (EAttribute)animateTypeEClass.getEStructuralFeatures().get(17);
     }
@@ -840,6 +915,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateType_Restart() {
         return (EAttribute)animateTypeEClass.getEStructuralFeatures().get(18);
     }
@@ -849,6 +925,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateType_RestartDefault() {
         return (EAttribute)animateTypeEClass.getEStructuralFeatures().get(19);
     }
@@ -858,6 +935,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateType_SkipContent() {
         return (EAttribute)animateTypeEClass.getEStructuralFeatures().get(20);
     }
@@ -867,6 +945,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateType_SyncBehavior() {
         return (EAttribute)animateTypeEClass.getEStructuralFeatures().get(21);
     }
@@ -876,6 +955,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateType_SyncBehaviorDefault() {
         return (EAttribute)animateTypeEClass.getEStructuralFeatures().get(22);
     }
@@ -885,6 +965,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateType_SyncTolerance() {
         return (EAttribute)animateTypeEClass.getEStructuralFeatures().get(23);
     }
@@ -894,6 +975,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateType_SyncToleranceDefault() {
         return (EAttribute)animateTypeEClass.getEStructuralFeatures().get(24);
     }
@@ -903,6 +985,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateType_TargetElement() {
         return (EAttribute)animateTypeEClass.getEStructuralFeatures().get(25);
     }
@@ -912,6 +995,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAnimateType_AnyAttribute() {
         return (EAttribute)animateTypeEClass.getEStructuralFeatures().get(26);
     }
@@ -921,6 +1005,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getDocumentRoot() {
         return documentRootEClass;
     }
@@ -930,6 +1015,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDocumentRoot_Mixed() {
         return (EAttribute)documentRootEClass.getEStructuralFeatures().get(0);
     }
@@ -939,6 +1025,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_XMLNSPrefixMap() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(1);
     }
@@ -948,6 +1035,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_XSISchemaLocation() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(2);
     }
@@ -957,6 +1045,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Animate() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(3);
     }
@@ -966,6 +1055,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_AnimateColor() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(4);
     }
@@ -975,6 +1065,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_AnimateMotion() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(5);
     }
@@ -984,6 +1075,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Set() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(6);
     }
@@ -993,6 +1085,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getSetType() {
         return setTypeEClass;
     }
@@ -1002,6 +1095,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSetType_Group() {
         return (EAttribute)setTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1011,6 +1105,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSetType_Any() {
         return (EAttribute)setTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1020,6 +1115,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSetType_Alt() {
         return (EAttribute)setTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1029,6 +1125,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSetType_Begin() {
         return (EAttribute)setTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -1038,6 +1135,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSetType_Class() {
         return (EAttribute)setTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -1047,6 +1145,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSetType_Dur() {
         return (EAttribute)setTypeEClass.getEStructuralFeatures().get(5);
     }
@@ -1056,6 +1155,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSetType_End() {
         return (EAttribute)setTypeEClass.getEStructuralFeatures().get(6);
     }
@@ -1065,6 +1165,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSetType_Fill() {
         return (EAttribute)setTypeEClass.getEStructuralFeatures().get(7);
     }
@@ -1074,6 +1175,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSetType_FillDefault() {
         return (EAttribute)setTypeEClass.getEStructuralFeatures().get(8);
     }
@@ -1083,6 +1185,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSetType_Id() {
         return (EAttribute)setTypeEClass.getEStructuralFeatures().get(9);
     }
@@ -1092,6 +1195,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSetType_Lang() {
         return (EAttribute)setTypeEClass.getEStructuralFeatures().get(10);
     }
@@ -1101,6 +1205,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSetType_Longdesc() {
         return (EAttribute)setTypeEClass.getEStructuralFeatures().get(11);
     }
@@ -1110,6 +1215,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSetType_Max() {
         return (EAttribute)setTypeEClass.getEStructuralFeatures().get(12);
     }
@@ -1119,6 +1225,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSetType_Min() {
         return (EAttribute)setTypeEClass.getEStructuralFeatures().get(13);
     }
@@ -1128,6 +1235,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSetType_Repeat() {
         return (EAttribute)setTypeEClass.getEStructuralFeatures().get(14);
     }
@@ -1137,6 +1245,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSetType_RepeatCount() {
         return (EAttribute)setTypeEClass.getEStructuralFeatures().get(15);
     }
@@ -1146,6 +1255,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSetType_RepeatDur() {
         return (EAttribute)setTypeEClass.getEStructuralFeatures().get(16);
     }
@@ -1155,6 +1265,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSetType_Restart() {
         return (EAttribute)setTypeEClass.getEStructuralFeatures().get(17);
     }
@@ -1164,6 +1275,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSetType_RestartDefault() {
         return (EAttribute)setTypeEClass.getEStructuralFeatures().get(18);
     }
@@ -1173,6 +1285,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSetType_SkipContent() {
         return (EAttribute)setTypeEClass.getEStructuralFeatures().get(19);
     }
@@ -1182,6 +1295,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSetType_SyncBehavior() {
         return (EAttribute)setTypeEClass.getEStructuralFeatures().get(20);
     }
@@ -1191,6 +1305,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSetType_SyncBehaviorDefault() {
         return (EAttribute)setTypeEClass.getEStructuralFeatures().get(21);
     }
@@ -1200,6 +1315,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSetType_SyncTolerance() {
         return (EAttribute)setTypeEClass.getEStructuralFeatures().get(22);
     }
@@ -1209,6 +1325,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSetType_SyncToleranceDefault() {
         return (EAttribute)setTypeEClass.getEStructuralFeatures().get(23);
     }
@@ -1218,6 +1335,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSetType_TargetElement() {
         return (EAttribute)setTypeEClass.getEStructuralFeatures().get(24);
     }
@@ -1227,6 +1345,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSetType_AnyAttribute() {
         return (EAttribute)setTypeEClass.getEStructuralFeatures().get(25);
     }
@@ -1236,6 +1355,7 @@ public class LanguagePackageImpl extends EPackageImpl implements LanguagePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LanguageFactory getLanguageFactory() {
         return (LanguageFactory)getEFactoryInstance();
     }

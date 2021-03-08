@@ -72,6 +72,7 @@ public class GraphicStyle2D extends Style2D implements PointStyle2D {
      *
      * @return graphic rotation in radians
      */
+    @Override
     public float getRotation() {
         return rotation;
     }
@@ -86,6 +87,7 @@ public class GraphicStyle2D extends Style2D implements PointStyle2D {
      *
      * @param radians graphic rotation
      */
+    @Override
     public void setRotation(float radians) {
         rotation = radians;
     }
@@ -102,42 +104,52 @@ public class GraphicStyle2D extends Style2D implements PointStyle2D {
         this.border = border;
     }
 
+    @Override
     public float getDisplacementX() {
         return displacementX;
     }
 
+    @Override
     public void setDisplacementX(float displacementX) {
         this.displacementX = displacementX;
     }
 
+    @Override
     public float getDisplacementY() {
         return displacementY;
     }
 
+    @Override
     public void setDisplacementY(float displacementY) {
         this.displacementY = displacementY;
     }
 
+    @Override
     public float getAnchorPointX() {
         return anchorPointX;
     }
 
+    @Override
     public void setAnchorPointX(float anchorPointX) {
         this.anchorPointX = anchorPointX;
     }
 
+    @Override
     public float getAnchorPointY() {
         return anchorPointY;
     }
 
+    @Override
     public void setAnchorPointY(float anchorPointY) {
         this.anchorPointY = anchorPointY;
     }
 
+    @Override
     public Composite getComposite() {
         return composite;
     }
 
+    @Override
     public void setComposite(Composite composite) {
         this.composite = composite;
     }

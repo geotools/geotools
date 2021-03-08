@@ -48,6 +48,7 @@ public class DuringBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return FES.During;
     }
@@ -59,6 +60,7 @@ public class DuringBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return During.class;
     }
@@ -75,6 +77,7 @@ public class DuringBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Expression[] e = FESParseEncodeUtil.temporal(node, filterFactory);
         return filterFactory.during(e[0], e[1]);

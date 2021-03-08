@@ -47,6 +47,7 @@ public class AreaFunction extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         org.opengis.filter.expression.Expression geom = getParameters().get(0);
         Geometry g = (Geometry) geom.evaluate(feature);

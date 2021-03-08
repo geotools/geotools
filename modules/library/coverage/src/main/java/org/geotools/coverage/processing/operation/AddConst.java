@@ -87,11 +87,13 @@ public class AddConst extends OperationJAI {
         super(ADD_CONST, getOperationDescriptor(JAIExt.getOperationName(ADD_CONST)));
     }
 
+    @Override
     public String getName() {
         return ADD_CONST;
     }
 
     /** Returns the expected range of values for the resulting image. */
+    @Override
     protected NumberRange<? extends Number> deriveRange(
             final NumberRange<? extends Number>[] ranges, final Parameters parameters) {
         final double[] constants = (double[]) parameters.parameters.getObjectParameter("constants");
@@ -105,6 +107,7 @@ public class AddConst extends OperationJAI {
         return super.deriveRange(ranges, parameters);
     }
 
+    @Override
     protected void handleJAIEXTParams(
             ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
         GridCoverage2D source = (GridCoverage2D) parameters2.parameter("source0").getValue();
@@ -114,6 +117,7 @@ public class AddConst extends OperationJAI {
         handleROINoDataInternal(parameters, source, OPERATION_CONST, 2, 3);
     }
 
+    @Override
     protected Map<String, ?> getProperties(
             RenderedImage data,
             CoordinateReferenceSystem crs,

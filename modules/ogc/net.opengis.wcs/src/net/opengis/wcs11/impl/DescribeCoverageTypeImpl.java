@@ -55,6 +55,7 @@ public class DescribeCoverageTypeImpl extends RequestBaseTypeImpl implements Des
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EClass eStaticClass() {
         return Wcs111Package.Literals.DESCRIBE_COVERAGE_TYPE;
     }
@@ -64,6 +65,7 @@ public class DescribeCoverageTypeImpl extends RequestBaseTypeImpl implements Des
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getIdentifier() {
         if (identifier == null) {
             identifier = new EDataTypeEList(String.class, this, Wcs111Package.DESCRIBE_COVERAGE_TYPE__IDENTIFIER);
@@ -76,6 +78,7 @@ public class DescribeCoverageTypeImpl extends RequestBaseTypeImpl implements Des
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case Wcs111Package.DESCRIBE_COVERAGE_TYPE__IDENTIFIER:
@@ -89,6 +92,7 @@ public class DescribeCoverageTypeImpl extends RequestBaseTypeImpl implements Des
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Wcs111Package.DESCRIBE_COVERAGE_TYPE__IDENTIFIER:
@@ -104,6 +108,7 @@ public class DescribeCoverageTypeImpl extends RequestBaseTypeImpl implements Des
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case Wcs111Package.DESCRIBE_COVERAGE_TYPE__IDENTIFIER:
@@ -118,6 +123,7 @@ public class DescribeCoverageTypeImpl extends RequestBaseTypeImpl implements Des
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case Wcs111Package.DESCRIBE_COVERAGE_TYPE__IDENTIFIER:
@@ -131,6 +137,7 @@ public class DescribeCoverageTypeImpl extends RequestBaseTypeImpl implements Des
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String toString() {
         if (eIsProxy()) return super.toString();
 

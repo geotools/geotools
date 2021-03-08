@@ -56,6 +56,7 @@ public class OGCFunctionTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.FunctionType;
     }
@@ -67,6 +68,7 @@ public class OGCFunctionTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Function.class;
     }
@@ -78,6 +80,7 @@ public class OGCFunctionTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
@@ -87,6 +90,7 @@ public class OGCFunctionTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Expression[] args = new Expression[node.getChildren().size()];
 
@@ -100,6 +104,7 @@ public class OGCFunctionTypeBinding extends AbstractComplexBinding {
         return factory.function(name, args);
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         Function function = (Function) object;
 

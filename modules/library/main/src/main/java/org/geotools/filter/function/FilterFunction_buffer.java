@@ -43,6 +43,7 @@ public class FilterFunction_buffer extends FunctionExpressionImpl
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Geometry arg0;
         double arg1;
@@ -71,6 +72,7 @@ public class FilterFunction_buffer extends FunctionExpressionImpl
      * If the buffering size is feature dependent the user will have to expand the rendering area
      * via the renderer buffer parameter
      */
+    @Override
     public ReferencedEnvelope invert(ReferencedEnvelope renderingEnvelope) {
         Double buffer = getExpression(1).evaluate(null, Double.class);
         if (buffer == null || buffer <= 0.0) {

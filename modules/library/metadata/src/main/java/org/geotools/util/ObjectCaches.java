@@ -73,6 +73,7 @@ public final class ObjectCaches {
             this.target = target;
         }
 
+        @Override
         public int hashCode() {
             int code = 0;
             if (source != null) code = source.hashCode();
@@ -80,6 +81,7 @@ public final class ObjectCaches {
             return code;
         }
 
+        @Override
         public boolean equals(final Object other) {
             if (other instanceof Pair) {
                 final Pair that = (Pair) other;
@@ -89,6 +91,7 @@ public final class ObjectCaches {
             return false;
         }
 
+        @Override
         public String toString() {
             return source + " \u21E8 " + target;
         }
@@ -120,10 +123,12 @@ public final class ObjectCaches {
         if (level1 == null) return level2;
         if (level2 == null) return level1;
         return new ObjectCache<K, V>() {
+            @Override
             public void clear() {
                 level1.clear();
             }
 
+            @Override
             public V get(K key) {
                 V value = level1.get(key);
                 if (value == null) {
@@ -144,26 +149,32 @@ public final class ObjectCaches {
                 return value;
             }
 
+            @Override
             public V peek(K key) {
                 return level1.peek(key);
             }
 
+            @Override
             public void put(K key, V object) {
                 level1.put(key, object);
             }
 
+            @Override
             public void writeLock(K key) {
                 level1.writeLock(key);
             }
 
+            @Override
             public void writeUnLock(K key) {
                 level1.writeLock(key);
             }
 
+            @Override
             public Set<K> getKeys() {
                 return level1.getKeys();
             }
 
+            @Override
             public void remove(K key) {
                 level1.remove(key);
             }

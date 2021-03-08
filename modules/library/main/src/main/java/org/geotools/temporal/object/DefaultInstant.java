@@ -51,6 +51,7 @@ public class DefaultInstant extends DefaultTemporalGeometricPrimitive implements
     }
 
     /** Get the position of this instant. */
+    @Override
     public Position getPosition() {
         return position;
     }
@@ -61,6 +62,7 @@ public class DefaultInstant extends DefaultTemporalGeometricPrimitive implements
      *
      * @see Period#begin
      */
+    @Override
     public Collection<Period> getBegunBy() {
         return begunBy;
     }
@@ -71,6 +73,7 @@ public class DefaultInstant extends DefaultTemporalGeometricPrimitive implements
      *
      * @see Period#end
      */
+    @Override
     public Collection<Period> getEndedBy() {
         return endBy;
     }

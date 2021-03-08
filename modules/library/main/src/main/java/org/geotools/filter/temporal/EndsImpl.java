@@ -37,6 +37,7 @@ public class EndsImpl extends BinaryTemporalOperatorImpl implements Ends {
         return pos == RelativePosition.ENDS;
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

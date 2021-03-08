@@ -54,6 +54,7 @@ class ImageMosaicDatastoreWalker extends ImageMosaicWalker implements Runnable {
     }
 
     /** run the walker on the store */
+    @Override
     public void run() {
 
         SimpleFeatureIterator it = null;

@@ -215,6 +215,7 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public QName getName() {
     return name;
   }
@@ -224,6 +225,7 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setName(QName newName) {
     QName oldName = name;
     name = newName;
@@ -236,6 +238,7 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<TitleType> getTitle() {
     if (title == null) {
       title = new EObjectContainmentEList<>(TitleType.class, this, Wfs20Package.FEATURE_TYPE_TYPE__TITLE);
@@ -248,6 +251,7 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<AbstractType> getAbstract() {
     if (abstract_ == null) {
       abstract_ = new EObjectContainmentEList<>(AbstractType.class, this, Wfs20Package.FEATURE_TYPE_TYPE__ABSTRACT);
@@ -260,6 +264,7 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<KeywordsType> getKeywords() {
     if (keywords == null) {
       keywords = new EObjectContainmentEList<>(KeywordsType.class, this, Wfs20Package.FEATURE_TYPE_TYPE__KEYWORDS);
@@ -272,6 +277,7 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getDefaultCRS() {
     return defaultCRS;
   }
@@ -281,6 +287,7 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setDefaultCRS(String newDefaultCRS) {
     String oldDefaultCRS = defaultCRS;
     defaultCRS = newDefaultCRS;
@@ -293,6 +300,7 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<String> getOtherCRS() {
     if (otherCRS == null) {
       otherCRS = new EDataTypeEList<>(String.class, this, Wfs20Package.FEATURE_TYPE_TYPE__OTHER_CRS);
@@ -305,6 +313,7 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NoCRSType getNoCRS() {
     return noCRS;
   }
@@ -329,6 +338,7 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setNoCRS(NoCRSType newNoCRS) {
     if (newNoCRS != noCRS) {
       NotificationChain msgs = null;
@@ -348,6 +358,7 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public OutputFormatListType getOutputFormats() {
     return outputFormats;
   }
@@ -372,7 +383,8 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setOutputFormats(OutputFormatListType newOutputFormats) {
+  @Override
+public void setOutputFormats(OutputFormatListType newOutputFormats) {
     if (newOutputFormats != outputFormats) {
       NotificationChain msgs = null;
       if (outputFormats != null)
@@ -391,6 +403,7 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<WGS84BoundingBoxType> getWGS84BoundingBox() {
     if (wGS84BoundingBox == null) {
       wGS84BoundingBox = new EObjectContainmentEList<>(WGS84BoundingBoxType.class, this, Wfs20Package.FEATURE_TYPE_TYPE__WGS84_BOUNDING_BOX);
@@ -403,6 +416,7 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<MetadataURLType> getMetadataURL() {
     if (metadataURL == null) {
       metadataURL = new EObjectContainmentEList<>(MetadataURLType.class, this, Wfs20Package.FEATURE_TYPE_TYPE__METADATA_URL);
@@ -415,6 +429,7 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ExtendedDescriptionType getExtendedDescription() {
     return extendedDescription;
   }
@@ -439,6 +454,7 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setExtendedDescription(ExtendedDescriptionType newExtendedDescription) {
     if (newExtendedDescription != extendedDescription) {
       NotificationChain msgs = null;

@@ -64,6 +64,7 @@ public class ParseExecutor implements Visitor {
         this.parser = parser;
     }
 
+    @Override
     public void visit(Binding binding) {
         // TODO: the check for InstanceBinding is a temporary measure to allow
         // for bindings that are not registered by class, but by instance.
@@ -260,10 +261,12 @@ public class ParseExecutor implements Visitor {
                 // create a new instance of the specified type
                 InstanceComponentImpl theInstance =
                         new InstanceComponentImpl() {
+                            @Override
                             public XSDTypeDefinition getTypeDefinition() {
                                 return itemType;
                             }
 
+                            @Override
                             public XSDNamedComponent getDeclaration() {
                                 return element;
                             };

@@ -67,6 +67,7 @@ public class DescriptionTypeOws11Binding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OWS.DescriptionType;
     }
@@ -78,6 +79,7 @@ public class DescriptionTypeOws11Binding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return null;
     }
@@ -89,6 +91,7 @@ public class DescriptionTypeOws11Binding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         // TODO: implement and remove call to super

@@ -80,6 +80,7 @@ public class DomainSubsetTypeImpl extends EObjectImpl implements DomainSubsetTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.DOMAIN_SUBSET_TYPE;
 	}
@@ -89,6 +90,7 @@ public class DomainSubsetTypeImpl extends EObjectImpl implements DomainSubsetTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public SpatialSubsetType getSpatialSubset() {
 		return spatialSubset;
 	}
@@ -113,6 +115,7 @@ public class DomainSubsetTypeImpl extends EObjectImpl implements DomainSubsetTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setSpatialSubset(SpatialSubsetType newSpatialSubset) {
 		if (newSpatialSubset != spatialSubset) {
 			NotificationChain msgs = null;
@@ -132,6 +135,7 @@ public class DomainSubsetTypeImpl extends EObjectImpl implements DomainSubsetTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public TimeSequenceType getTemporalSubset() {
 		return temporalSubset;
 	}
@@ -156,6 +160,7 @@ public class DomainSubsetTypeImpl extends EObjectImpl implements DomainSubsetTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setTemporalSubset(TimeSequenceType newTemporalSubset) {
 		if (newTemporalSubset != temporalSubset) {
 			NotificationChain msgs = null;
@@ -175,6 +180,7 @@ public class DomainSubsetTypeImpl extends EObjectImpl implements DomainSubsetTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public TimeSequenceType getTemporalSubset1() {
 		return temporalSubset1;
 	}
@@ -199,6 +205,7 @@ public class DomainSubsetTypeImpl extends EObjectImpl implements DomainSubsetTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setTemporalSubset1(TimeSequenceType newTemporalSubset1) {
 		if (newTemporalSubset1 != temporalSubset1) {
 			NotificationChain msgs = null;
@@ -218,6 +225,7 @@ public class DomainSubsetTypeImpl extends EObjectImpl implements DomainSubsetTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.DOMAIN_SUBSET_TYPE__SPATIAL_SUBSET:
@@ -235,6 +243,7 @@ public class DomainSubsetTypeImpl extends EObjectImpl implements DomainSubsetTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.DOMAIN_SUBSET_TYPE__SPATIAL_SUBSET:
@@ -252,6 +261,7 @@ public class DomainSubsetTypeImpl extends EObjectImpl implements DomainSubsetTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.DOMAIN_SUBSET_TYPE__SPATIAL_SUBSET:
@@ -272,6 +282,7 @@ public class DomainSubsetTypeImpl extends EObjectImpl implements DomainSubsetTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.DOMAIN_SUBSET_TYPE__SPATIAL_SUBSET:
@@ -292,6 +303,7 @@ public class DomainSubsetTypeImpl extends EObjectImpl implements DomainSubsetTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.DOMAIN_SUBSET_TYPE__SPATIAL_SUBSET:

@@ -87,6 +87,7 @@ public class ExtensionSymbolizerBuilder extends AbstractStyleBuilder<ExtensionSy
         return this;
     }
 
+    @Override
     public ExtensionSymbolizer build() {
         if (unset) {
             return null;
@@ -101,6 +102,7 @@ public class ExtensionSymbolizerBuilder extends AbstractStyleBuilder<ExtensionSy
         return symbolizer;
     }
 
+    @Override
     public ExtensionSymbolizerBuilder reset() {
         name = null;
         geometry = null;
@@ -112,6 +114,7 @@ public class ExtensionSymbolizerBuilder extends AbstractStyleBuilder<ExtensionSy
         return this;
     }
 
+    @Override
     public ExtensionSymbolizerBuilder reset(ExtensionSymbolizer symbolizer) {
         if (symbolizer == null) {
             return unset();
@@ -127,6 +130,7 @@ public class ExtensionSymbolizerBuilder extends AbstractStyleBuilder<ExtensionSy
         return this;
     }
 
+    @Override
     public ExtensionSymbolizerBuilder unset() {
         return (ExtensionSymbolizerBuilder) super.unset();
     }

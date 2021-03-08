@@ -62,6 +62,7 @@ public class ProcessOutputsType1Impl extends EObjectImpl implements ProcessOutpu
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.PROCESS_OUTPUTS_TYPE1;
   }
@@ -71,6 +72,7 @@ public class ProcessOutputsType1Impl extends EObjectImpl implements ProcessOutpu
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList getOutput() {
     if (output == null) {
       output = new EObjectContainmentEList(OutputDataType.class, this, Wps10Package.PROCESS_OUTPUTS_TYPE1__OUTPUT);
@@ -83,6 +85,7 @@ public class ProcessOutputsType1Impl extends EObjectImpl implements ProcessOutpu
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.PROCESS_OUTPUTS_TYPE1__OUTPUT:
@@ -96,6 +99,7 @@ public class ProcessOutputsType1Impl extends EObjectImpl implements ProcessOutpu
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.PROCESS_OUTPUTS_TYPE1__OUTPUT:
@@ -109,6 +113,7 @@ public class ProcessOutputsType1Impl extends EObjectImpl implements ProcessOutpu
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.PROCESS_OUTPUTS_TYPE1__OUTPUT:
@@ -124,6 +129,7 @@ public class ProcessOutputsType1Impl extends EObjectImpl implements ProcessOutpu
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.PROCESS_OUTPUTS_TYPE1__OUTPUT:
@@ -138,6 +144,7 @@ public class ProcessOutputsType1Impl extends EObjectImpl implements ProcessOutpu
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.PROCESS_OUTPUTS_TYPE1__OUTPUT:

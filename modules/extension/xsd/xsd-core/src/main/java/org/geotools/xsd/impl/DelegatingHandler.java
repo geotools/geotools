@@ -52,44 +52,56 @@ public class DelegatingHandler implements DocumentHandler, ElementHandler {
         parseTree = new NodeImpl(instance);
     }
 
+    @Override
     public void setContext(MutablePicoContainer context) {}
 
+    @Override
     public MutablePicoContainer getContext() {
         return null;
     }
 
+    @Override
     public XSDElementDeclaration getElementDeclaration() {
         return ((ElementInstance) parseTree.getComponent()).getElementDeclaration();
     }
 
+    @Override
     public Handler getParentHandler() {
         return parent;
     }
 
+    @Override
     public Handler createChildHandler(QName name) {
         return new DelegatingHandler(delegate, name, this);
     }
 
+    @Override
     public void startChildHandler(Handler child) {}
 
+    @Override
     public void endChildHandler(Handler child) {}
 
+    @Override
     public InstanceComponent getComponent() {
         return null;
     }
 
+    @Override
     public Node getParseNode() {
         return parseTree;
     }
 
+    @Override
     public XSDSchemaContent getSchemaContent() {
         return null;
     }
 
+    @Override
     public void startDocument() throws SAXException {
         delegate.startDocument();
     }
 
+    @Override
     public void endDocument() throws SAXException {
         delegate.endDocument();
     }
@@ -99,6 +111,7 @@ public class DelegatingHandler implements DocumentHandler, ElementHandler {
         delegate.startPrefixMapping(prefix, uri);
     }
 
+    @Override
     public void startElement(QName name, Attributes attributes) throws SAXException {
 
         if (!(parent instanceof DelegatingHandler)) {
@@ -108,14 +121,17 @@ public class DelegatingHandler implements DocumentHandler, ElementHandler {
         delegate.startElement(name.getNamespaceURI(), name.getLocalPart(), qname(name), attributes);
     }
 
+    @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
         delegate.characters(ch, start, length);
     }
 
+    @Override
     public void endElement(QName name) throws SAXException {
         delegate.endElement(name.getNamespaceURI(), name.getLocalPart(), qname(name));
     }
 
+    @Override
     public void endPrefixMapping(String prefix) throws SAXException {
         delegate.endPrefixMapping(prefix);
     }

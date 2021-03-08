@@ -740,7 +740,8 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
         EValidator.Registry.INSTANCE.put
             (theFes20Package, 
              new EValidator.Descriptor() {
-                 public EValidator getEValidator() {
+                 @Override
+                public EValidator getEValidator() {
                      return Fes20Validator.INSTANCE;
                  }
              });
@@ -759,6 +760,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getAbstractAdhocQueryExpressionType() {
         return abstractAdhocQueryExpressionTypeEClass;
     }
@@ -768,6 +770,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAbstractAdhocQueryExpressionType_AbstractProjectionClause() {
         return (EAttribute)abstractAdhocQueryExpressionTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -777,6 +780,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAbstractAdhocQueryExpressionType_AbstractSelectionClause() {
         return (EAttribute)abstractAdhocQueryExpressionTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -786,6 +790,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAbstractAdhocQueryExpressionType_AbstractSortingClause() {
         return (EAttribute)abstractAdhocQueryExpressionTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -795,6 +800,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAbstractAdhocQueryExpressionType_Aliases() {
         return (EAttribute)abstractAdhocQueryExpressionTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -804,6 +810,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAbstractAdhocQueryExpressionType_TypeNames() {
         return (EAttribute)abstractAdhocQueryExpressionTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -813,6 +820,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getAbstractIdType() {
         return abstractIdTypeEClass;
     }
@@ -822,6 +830,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getAbstractProjectionClauseType() {
         return abstractProjectionClauseTypeEClass;
     }
@@ -831,6 +840,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getAbstractQueryExpressionType() {
         return abstractQueryExpressionTypeEClass;
     }
@@ -840,6 +850,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAbstractQueryExpressionType_Handle() {
         return (EAttribute)abstractQueryExpressionTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -849,6 +860,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getAbstractSelectionClauseType() {
         return abstractSelectionClauseTypeEClass;
     }
@@ -858,6 +870,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getAbstractSortingClauseType() {
         return abstractSortingClauseTypeEClass;
     }
@@ -867,6 +880,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getAdditionalOperatorsType() {
         return additionalOperatorsTypeEClass;
     }
@@ -876,6 +890,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getAdditionalOperatorsType_Operator() {
         return (EReference)additionalOperatorsTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -885,6 +900,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getArgumentsType() {
         return argumentsTypeEClass;
     }
@@ -894,6 +910,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getArgumentsType_Argument() {
         return (EReference)argumentsTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -903,6 +920,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getArgumentType() {
         return argumentTypeEClass;
     }
@@ -912,6 +930,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getArgumentType_Metadata() {
         return (EReference)argumentTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -921,6 +940,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getArgumentType_Type() {
         return (EAttribute)argumentTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -930,6 +950,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getArgumentType_Name() {
         return (EAttribute)argumentTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -939,6 +960,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getAvailableFunctionsType() {
         return availableFunctionsTypeEClass;
     }
@@ -948,6 +970,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getAvailableFunctionsType_Function() {
         return (EReference)availableFunctionsTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -957,6 +980,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getAvailableFunctionType() {
         return availableFunctionTypeEClass;
     }
@@ -966,6 +990,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getAvailableFunctionType_Metadata() {
         return (EReference)availableFunctionTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -975,6 +1000,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAvailableFunctionType_Returns() {
         return (EAttribute)availableFunctionTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -984,6 +1010,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getAvailableFunctionType_Arguments() {
         return (EReference)availableFunctionTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -993,6 +1020,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getAvailableFunctionType_Name() {
         return (EAttribute)availableFunctionTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -1002,6 +1030,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getBBOXType() {
         return bboxTypeEClass;
     }
@@ -1011,6 +1040,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getBBOXType_ExpressionGroup() {
         return (EAttribute)bboxTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1020,6 +1050,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getBBOXType_Expression() {
         return (EReference)bboxTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1029,6 +1060,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getBBOXType_Any() {
         return (EAttribute)bboxTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1038,6 +1070,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getBinaryComparisonOpType() {
         return binaryComparisonOpTypeEClass;
     }
@@ -1047,6 +1080,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getBinaryComparisonOpType_ExpressionGroup() {
         return (EAttribute)binaryComparisonOpTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1056,6 +1090,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getBinaryComparisonOpType_Expression() {
         return (EReference)binaryComparisonOpTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1065,6 +1100,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getBinaryComparisonOpType_MatchAction() {
         return (EAttribute)binaryComparisonOpTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1074,6 +1110,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getBinaryComparisonOpType_MatchCase() {
         return (EAttribute)binaryComparisonOpTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -1083,6 +1120,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getBinaryLogicOpType() {
         return binaryLogicOpTypeEClass;
     }
@@ -1092,6 +1130,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getBinaryLogicOpType_FilterPredicates() {
         return (EAttribute)binaryLogicOpTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1101,6 +1140,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getBinaryLogicOpType_ComparisonOpsGroup() {
         return (EAttribute)binaryLogicOpTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1110,6 +1150,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getBinaryLogicOpType_ComparisonOps() {
         return (EReference)binaryLogicOpTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1119,6 +1160,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getBinaryLogicOpType_SpatialOpsGroup() {
         return (EAttribute)binaryLogicOpTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -1128,6 +1170,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getBinaryLogicOpType_SpatialOps() {
         return (EReference)binaryLogicOpTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -1137,6 +1180,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getBinaryLogicOpType_TemporalOpsGroup() {
         return (EAttribute)binaryLogicOpTypeEClass.getEStructuralFeatures().get(5);
     }
@@ -1146,6 +1190,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getBinaryLogicOpType_TemporalOps() {
         return (EReference)binaryLogicOpTypeEClass.getEStructuralFeatures().get(6);
     }
@@ -1155,6 +1200,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getBinaryLogicOpType_LogicOpsGroup() {
         return (EAttribute)binaryLogicOpTypeEClass.getEStructuralFeatures().get(7);
     }
@@ -1164,6 +1210,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getBinaryLogicOpType_LogicOps() {
         return (EReference)binaryLogicOpTypeEClass.getEStructuralFeatures().get(8);
     }
@@ -1173,6 +1220,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getBinaryLogicOpType_ExtensionOpsGroup() {
         return (EAttribute)binaryLogicOpTypeEClass.getEStructuralFeatures().get(9);
     }
@@ -1182,6 +1230,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getBinaryLogicOpType_ExtensionOps() {
         return (EReference)binaryLogicOpTypeEClass.getEStructuralFeatures().get(10);
     }
@@ -1191,6 +1240,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getBinaryLogicOpType_Function() {
         return (EReference)binaryLogicOpTypeEClass.getEStructuralFeatures().get(11);
     }
@@ -1200,6 +1250,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getBinaryLogicOpType_IdGroup() {
         return (EAttribute)binaryLogicOpTypeEClass.getEStructuralFeatures().get(12);
     }
@@ -1209,6 +1260,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getBinaryLogicOpType_Id() {
         return (EReference)binaryLogicOpTypeEClass.getEStructuralFeatures().get(13);
     }
@@ -1218,6 +1270,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getBinarySpatialOpType() {
         return binarySpatialOpTypeEClass;
     }
@@ -1227,6 +1280,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getBinarySpatialOpType_ValueReference() {
         return (EAttribute)binarySpatialOpTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1236,6 +1290,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getBinarySpatialOpType_ExpressionGroup() {
         return (EAttribute)binarySpatialOpTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1245,6 +1300,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getBinarySpatialOpType_Expression() {
         return (EReference)binarySpatialOpTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1254,6 +1310,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getBinarySpatialOpType_Any() {
         return (EAttribute)binarySpatialOpTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -1263,6 +1320,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getBinaryTemporalOpType() {
         return binaryTemporalOpTypeEClass;
     }
@@ -1272,6 +1330,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getBinaryTemporalOpType_ValueReference() {
         return (EAttribute)binaryTemporalOpTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1281,6 +1340,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getBinaryTemporalOpType_ExpressionGroup() {
         return (EAttribute)binaryTemporalOpTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1290,6 +1350,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getBinaryTemporalOpType_Expression() {
         return (EReference)binaryTemporalOpTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1299,6 +1360,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getBinaryTemporalOpType_Any() {
         return (EAttribute)binaryTemporalOpTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -1308,6 +1370,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getComparisonOperatorsType() {
         return comparisonOperatorsTypeEClass;
     }
@@ -1317,6 +1380,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getComparisonOperatorsType_Group() {
         return (EAttribute)comparisonOperatorsTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1326,6 +1390,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getComparisonOperatorsType_ComparisonOperator() {
         return (EReference)comparisonOperatorsTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1335,6 +1400,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getComparisonOperatorType() {
         return comparisonOperatorTypeEClass;
     }
@@ -1344,6 +1410,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getComparisonOperatorType_Name() {
         return (EAttribute)comparisonOperatorTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1353,6 +1420,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getComparisonOpsType() {
         return comparisonOpsTypeEClass;
     }
@@ -1362,6 +1430,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getConformanceType() {
         return conformanceTypeEClass;
     }
@@ -1371,6 +1440,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getConformanceType_Constraint() {
         return (EReference)conformanceTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1380,6 +1450,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getDistanceBufferType() {
         return distanceBufferTypeEClass;
     }
@@ -1389,6 +1460,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDistanceBufferType_ExpressionGroup() {
         return (EAttribute)distanceBufferTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -1398,6 +1470,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDistanceBufferType_Expression() {
         return (EReference)distanceBufferTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -1407,6 +1480,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDistanceBufferType_Any() {
         return (EAttribute)distanceBufferTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -1416,6 +1490,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDistanceBufferType_Distance() {
         return (EReference)distanceBufferTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -1425,6 +1500,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getDocumentRoot() {
         return documentRootEClass;
     }
@@ -1434,6 +1510,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDocumentRoot_Mixed() {
         return (EAttribute)documentRootEClass.getEStructuralFeatures().get(0);
     }
@@ -1443,6 +1520,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_XMLNSPrefixMap() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(1);
     }
@@ -1452,6 +1530,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_XSISchemaLocation() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(2);
     }
@@ -1461,6 +1540,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Id() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(3);
     }
@@ -1470,6 +1550,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_AbstractAdhocQueryExpression() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(4);
     }
@@ -1479,6 +1560,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_AbstractQueryExpression() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(5);
     }
@@ -1488,6 +1570,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_AbstractProjectionClause() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(6);
     }
@@ -1497,6 +1580,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_AbstractSelectionClause() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(7);
     }
@@ -1506,6 +1590,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_AbstractSortingClause() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(8);
     }
@@ -1515,6 +1600,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_After() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(9);
     }
@@ -1524,6 +1610,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_TemporalOps() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(10);
     }
@@ -1533,6 +1620,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_And() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(11);
     }
@@ -1542,6 +1630,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_LogicOps() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(12);
     }
@@ -1551,6 +1640,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_AnyInteracts() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(13);
     }
@@ -1560,6 +1650,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_BBOX() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(14);
     }
@@ -1569,6 +1660,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_SpatialOps() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(15);
     }
@@ -1578,6 +1670,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Before() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(16);
     }
@@ -1587,6 +1680,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Begins() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(17);
     }
@@ -1596,6 +1690,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_BegunBy() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(18);
     }
@@ -1605,6 +1700,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Beyond() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(19);
     }
@@ -1614,6 +1710,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_ComparisonOps() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(20);
     }
@@ -1623,6 +1720,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Contains() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(21);
     }
@@ -1632,6 +1730,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Crosses() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(22);
     }
@@ -1641,6 +1740,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Disjoint() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(23);
     }
@@ -1650,6 +1750,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_During() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(24);
     }
@@ -1659,6 +1760,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_DWithin() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(25);
     }
@@ -1668,6 +1770,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_EndedBy() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(26);
     }
@@ -1677,6 +1780,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Ends() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(27);
     }
@@ -1686,6 +1790,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Equals() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(28);
     }
@@ -1695,6 +1800,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Expression() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(29);
     }
@@ -1704,6 +1810,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_ExtensionOps() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(30);
     }
@@ -1713,6 +1820,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Filter() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(31);
     }
@@ -1722,6 +1830,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_FilterCapabilities() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(32);
     }
@@ -1731,6 +1840,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Function() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(33);
     }
@@ -1740,6 +1850,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Intersects() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(34);
     }
@@ -1749,6 +1860,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Literal() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(35);
     }
@@ -1758,6 +1870,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_LogicalOperators() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(36);
     }
@@ -1767,6 +1880,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Meets() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(37);
     }
@@ -1776,6 +1890,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_MetBy() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(38);
     }
@@ -1785,6 +1900,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Not() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(39);
     }
@@ -1794,6 +1910,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Or() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(40);
     }
@@ -1803,6 +1920,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_OverlappedBy() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(41);
     }
@@ -1812,6 +1930,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Overlaps() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(42);
     }
@@ -1821,6 +1940,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_PropertyIsBetween() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(43);
     }
@@ -1830,6 +1950,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_PropertyIsEqualTo() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(44);
     }
@@ -1839,6 +1960,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_PropertyIsGreaterThan() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(45);
     }
@@ -1848,6 +1970,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_PropertyIsGreaterThanOrEqualTo() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(46);
     }
@@ -1857,6 +1980,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_PropertyIsLessThan() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(47);
     }
@@ -1866,6 +1990,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_PropertyIsLessThanOrEqualTo() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(48);
     }
@@ -1875,6 +2000,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_PropertyIsLike() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(49);
     }
@@ -1884,6 +2010,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_PropertyIsNil() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(50);
     }
@@ -1893,6 +2020,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_PropertyIsNotEqualTo() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(51);
     }
@@ -1902,6 +2030,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_PropertyIsNull() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(52);
     }
@@ -1911,6 +2040,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_ResourceId() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(53);
     }
@@ -1920,6 +2050,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_SortBy() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(54);
     }
@@ -1929,6 +2060,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_TContains() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(55);
     }
@@ -1938,6 +2070,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_TEquals() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(56);
     }
@@ -1947,6 +2080,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Touches() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(57);
     }
@@ -1956,6 +2090,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_TOverlaps() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(58);
     }
@@ -1965,6 +2100,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getDocumentRoot_ValueReference() {
         return (EAttribute)documentRootEClass.getEStructuralFeatures().get(59);
     }
@@ -1974,6 +2110,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getDocumentRoot_Within() {
         return (EReference)documentRootEClass.getEStructuralFeatures().get(60);
     }
@@ -1983,6 +2120,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getExtendedCapabilitiesType() {
         return extendedCapabilitiesTypeEClass;
     }
@@ -1992,6 +2130,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getExtendedCapabilitiesType_AdditionalOperators() {
         return (EReference)extendedCapabilitiesTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2001,6 +2140,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getExtensionOperatorType() {
         return extensionOperatorTypeEClass;
     }
@@ -2010,6 +2150,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getExtensionOperatorType_Name() {
         return (EAttribute)extensionOperatorTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2019,6 +2160,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getExtensionOpsType() {
         return extensionOpsTypeEClass;
     }
@@ -2028,6 +2170,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getFilterCapabilitiesType() {
         return filterCapabilitiesTypeEClass;
     }
@@ -2037,6 +2180,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getFilterCapabilitiesType_Conformance() {
         return (EReference)filterCapabilitiesTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2046,6 +2190,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getFilterCapabilitiesType_IdCapabilities() {
         return (EReference)filterCapabilitiesTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -2055,6 +2200,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getFilterCapabilitiesType_ScalarCapabilities() {
         return (EReference)filterCapabilitiesTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -2064,6 +2210,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getFilterCapabilitiesType_SpatialCapabilities() {
         return (EReference)filterCapabilitiesTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -2073,6 +2220,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getFilterCapabilitiesType_TemporalCapabilities() {
         return (EReference)filterCapabilitiesTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -2082,6 +2230,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getFilterCapabilitiesType_Functions() {
         return (EReference)filterCapabilitiesTypeEClass.getEStructuralFeatures().get(5);
     }
@@ -2091,6 +2240,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getFilterCapabilitiesType_ExtendedCapabilities() {
         return (EReference)filterCapabilitiesTypeEClass.getEStructuralFeatures().get(6);
     }
@@ -2100,6 +2250,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getFilterType() {
         return filterTypeEClass;
     }
@@ -2109,6 +2260,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getFilterType_ComparisonOpsGroup() {
         return (EAttribute)filterTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2118,6 +2270,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getFilterType_ComparisonOps() {
         return (EReference)filterTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -2127,6 +2280,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getFilterType_SpatialOpsGroup() {
         return (EAttribute)filterTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -2136,6 +2290,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getFilterType_SpatialOps() {
         return (EReference)filterTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -2145,6 +2300,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getFilterType_TemporalOpsGroup() {
         return (EAttribute)filterTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -2154,6 +2310,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getFilterType_TemporalOps() {
         return (EReference)filterTypeEClass.getEStructuralFeatures().get(5);
     }
@@ -2163,6 +2320,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getFilterType_LogicOpsGroup() {
         return (EAttribute)filterTypeEClass.getEStructuralFeatures().get(6);
     }
@@ -2172,6 +2330,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getFilterType_LogicOps() {
         return (EReference)filterTypeEClass.getEStructuralFeatures().get(7);
     }
@@ -2181,6 +2340,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getFilterType_ExtensionOpsGroup() {
         return (EAttribute)filterTypeEClass.getEStructuralFeatures().get(8);
     }
@@ -2190,6 +2350,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getFilterType_ExtensionOps() {
         return (EReference)filterTypeEClass.getEStructuralFeatures().get(9);
     }
@@ -2199,6 +2360,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getFilterType_Function() {
         return (EReference)filterTypeEClass.getEStructuralFeatures().get(10);
     }
@@ -2208,6 +2370,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getFilterType_IdGroup() {
         return (EAttribute)filterTypeEClass.getEStructuralFeatures().get(11);
     }
@@ -2217,6 +2380,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getFilterType_Id() {
         return (EReference)filterTypeEClass.getEStructuralFeatures().get(12);
     }
@@ -2226,6 +2390,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getFunctionType() {
         return functionTypeEClass;
     }
@@ -2235,6 +2400,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getFunctionType_ExpressionGroup() {
         return (EAttribute)functionTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2244,6 +2410,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getFunctionType_Expression() {
         return (EReference)functionTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -2253,6 +2420,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getFunctionType_Name() {
         return (EAttribute)functionTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -2262,6 +2430,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getGeometryOperandsType() {
         return geometryOperandsTypeEClass;
     }
@@ -2271,6 +2440,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getGeometryOperandsType_GeometryOperand() {
         return (EReference)geometryOperandsTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2280,6 +2450,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getGeometryOperandType() {
         return geometryOperandTypeEClass;
     }
@@ -2289,6 +2460,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getGeometryOperandType_Name() {
         return (EAttribute)geometryOperandTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2298,6 +2470,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getIdCapabilitiesType() {
         return idCapabilitiesTypeEClass;
     }
@@ -2307,6 +2480,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getIdCapabilitiesType_ResourceIdentifier() {
         return (EReference)idCapabilitiesTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2316,6 +2490,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getLiteralType() {
         return literalTypeEClass;
     }
@@ -2325,6 +2500,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getLiteralType_Mixed() {
         return (EAttribute)literalTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2334,6 +2510,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getLiteralType_Any() {
         return (EAttribute)literalTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -2343,6 +2520,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getLiteralType_Type() {
         return (EAttribute)literalTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -2352,6 +2530,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getLogicalOperatorsType() {
         return logicalOperatorsTypeEClass;
     }
@@ -2361,6 +2540,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getLogicOpsType() {
         return logicOpsTypeEClass;
     }
@@ -2370,6 +2550,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getLowerBoundaryType() {
         return lowerBoundaryTypeEClass;
     }
@@ -2379,6 +2560,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getLowerBoundaryType_ExpressionGroup() {
         return (EAttribute)lowerBoundaryTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2388,6 +2570,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getLowerBoundaryType_Expression() {
         return (EReference)lowerBoundaryTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -2397,6 +2580,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getMeasureType() {
         return measureTypeEClass;
     }
@@ -2406,6 +2590,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getMeasureType_Value() {
         return (EAttribute)measureTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2415,6 +2600,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getMeasureType_Uom() {
         return (EAttribute)measureTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -2424,6 +2610,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getPropertyIsBetweenType() {
         return propertyIsBetweenTypeEClass;
     }
@@ -2433,6 +2620,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getPropertyIsBetweenType_ExpressionGroup() {
         return (EAttribute)propertyIsBetweenTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2442,6 +2630,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getPropertyIsBetweenType_Expression() {
         return (EReference)propertyIsBetweenTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -2451,6 +2640,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getPropertyIsBetweenType_LowerBoundary() {
         return (EReference)propertyIsBetweenTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -2460,6 +2650,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getPropertyIsBetweenType_UpperBoundary() {
         return (EReference)propertyIsBetweenTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -2469,6 +2660,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getPropertyIsLikeType() {
         return propertyIsLikeTypeEClass;
     }
@@ -2478,6 +2670,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getPropertyIsLikeType_ExpressionGroup() {
         return (EAttribute)propertyIsLikeTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2487,6 +2680,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getPropertyIsLikeType_Expression() {
         return (EReference)propertyIsLikeTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -2496,6 +2690,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getPropertyIsLikeType_EscapeChar() {
         return (EAttribute)propertyIsLikeTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -2505,6 +2700,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getPropertyIsLikeType_SingleChar() {
         return (EAttribute)propertyIsLikeTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -2514,6 +2710,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getPropertyIsLikeType_WildCard() {
         return (EAttribute)propertyIsLikeTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -2523,6 +2720,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getPropertyIsNilType() {
         return propertyIsNilTypeEClass;
     }
@@ -2532,6 +2730,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getPropertyIsNilType_ExpressionGroup() {
         return (EAttribute)propertyIsNilTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2541,6 +2740,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getPropertyIsNilType_Expression() {
         return (EReference)propertyIsNilTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -2550,6 +2750,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getPropertyIsNilType_NilReason() {
         return (EAttribute)propertyIsNilTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -2559,6 +2760,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getPropertyIsNullType() {
         return propertyIsNullTypeEClass;
     }
@@ -2568,6 +2770,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getPropertyIsNullType_ExpressionGroup() {
         return (EAttribute)propertyIsNullTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2577,6 +2780,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getPropertyIsNullType_Expression() {
         return (EReference)propertyIsNullTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -2586,6 +2790,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getResourceIdentifierType() {
         return resourceIdentifierTypeEClass;
     }
@@ -2595,6 +2800,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getResourceIdentifierType_Metadata() {
         return (EReference)resourceIdentifierTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2604,6 +2810,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getResourceIdentifierType_Name() {
         return (EAttribute)resourceIdentifierTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -2613,6 +2820,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getResourceIdType() {
         return resourceIdTypeEClass;
     }
@@ -2622,6 +2830,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getResourceIdType_EndDate() {
         return (EAttribute)resourceIdTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2631,6 +2840,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getResourceIdType_PreviousRid() {
         return (EAttribute)resourceIdTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -2640,6 +2850,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getResourceIdType_Rid() {
         return (EAttribute)resourceIdTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -2649,6 +2860,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getResourceIdType_StartDate() {
         return (EAttribute)resourceIdTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -2658,6 +2870,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getResourceIdType_Version() {
         return (EAttribute)resourceIdTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -2667,6 +2880,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getScalarCapabilitiesType() {
         return scalarCapabilitiesTypeEClass;
     }
@@ -2676,6 +2890,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getScalarCapabilitiesType_LogicalOperators() {
         return (EReference)scalarCapabilitiesTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2685,6 +2900,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getScalarCapabilitiesType_ComparisonOperators() {
         return (EReference)scalarCapabilitiesTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -2694,6 +2910,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getSortByType() {
         return sortByTypeEClass;
     }
@@ -2703,6 +2920,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getSortByType_SortProperty() {
         return (EReference)sortByTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2712,6 +2930,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getSortPropertyType() {
         return sortPropertyTypeEClass;
     }
@@ -2721,6 +2940,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSortPropertyType_ValueReference() {
         return (EAttribute)sortPropertyTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2730,6 +2950,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSortPropertyType_SortOrder() {
         return (EAttribute)sortPropertyTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -2739,6 +2960,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getSpatialCapabilitiesType() {
         return spatialCapabilitiesTypeEClass;
     }
@@ -2748,6 +2970,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getSpatialCapabilitiesType_GeometryOperands() {
         return (EReference)spatialCapabilitiesTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2757,6 +2980,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getSpatialCapabilitiesType_SpatialOperators() {
         return (EReference)spatialCapabilitiesTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -2766,6 +2990,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getSpatialOperatorsType() {
         return spatialOperatorsTypeEClass;
     }
@@ -2775,6 +3000,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getSpatialOperatorsType_SpatialOperator() {
         return (EReference)spatialOperatorsTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2784,6 +3010,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getSpatialOperatorType() {
         return spatialOperatorTypeEClass;
     }
@@ -2793,6 +3020,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getSpatialOperatorType_GeometryOperands() {
         return (EReference)spatialOperatorTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2802,6 +3030,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getSpatialOperatorType_Name() {
         return (EAttribute)spatialOperatorTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -2811,6 +3040,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getSpatialOpsType() {
         return spatialOpsTypeEClass;
     }
@@ -2820,6 +3050,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getTemporalCapabilitiesType() {
         return temporalCapabilitiesTypeEClass;
     }
@@ -2829,6 +3060,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getTemporalCapabilitiesType_TemporalOperands() {
         return (EReference)temporalCapabilitiesTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2838,6 +3070,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getTemporalCapabilitiesType_TemporalOperators() {
         return (EReference)temporalCapabilitiesTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -2847,6 +3080,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getTemporalOperandsType() {
         return temporalOperandsTypeEClass;
     }
@@ -2856,6 +3090,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getTemporalOperandsType_TemporalOperand() {
         return (EReference)temporalOperandsTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2865,6 +3100,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getTemporalOperandType() {
         return temporalOperandTypeEClass;
     }
@@ -2874,6 +3110,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTemporalOperandType_Name() {
         return (EAttribute)temporalOperandTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2883,6 +3120,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getTemporalOperatorsType() {
         return temporalOperatorsTypeEClass;
     }
@@ -2892,6 +3130,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getTemporalOperatorsType_TemporalOperator() {
         return (EReference)temporalOperatorsTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2901,6 +3140,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getTemporalOperatorType() {
         return temporalOperatorTypeEClass;
     }
@@ -2910,6 +3150,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getTemporalOperatorType_TemporalOperands() {
         return (EReference)temporalOperatorTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2919,6 +3160,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getTemporalOperatorType_Name() {
         return (EAttribute)temporalOperatorTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -2928,6 +3170,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getTemporalOpsType() {
         return temporalOpsTypeEClass;
     }
@@ -2937,6 +3180,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getUnaryLogicOpType() {
         return unaryLogicOpTypeEClass;
     }
@@ -2946,6 +3190,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getUnaryLogicOpType_ComparisonOpsGroup() {
         return (EAttribute)unaryLogicOpTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -2955,6 +3200,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getUnaryLogicOpType_ComparisonOps() {
         return (EReference)unaryLogicOpTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -2964,6 +3210,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getUnaryLogicOpType_SpatialOpsGroup() {
         return (EAttribute)unaryLogicOpTypeEClass.getEStructuralFeatures().get(2);
     }
@@ -2973,6 +3220,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getUnaryLogicOpType_SpatialOps() {
         return (EReference)unaryLogicOpTypeEClass.getEStructuralFeatures().get(3);
     }
@@ -2982,6 +3230,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getUnaryLogicOpType_TemporalOpsGroup() {
         return (EAttribute)unaryLogicOpTypeEClass.getEStructuralFeatures().get(4);
     }
@@ -2991,6 +3240,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getUnaryLogicOpType_TemporalOps() {
         return (EReference)unaryLogicOpTypeEClass.getEStructuralFeatures().get(5);
     }
@@ -3000,6 +3250,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getUnaryLogicOpType_LogicOpsGroup() {
         return (EAttribute)unaryLogicOpTypeEClass.getEStructuralFeatures().get(6);
     }
@@ -3009,6 +3260,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getUnaryLogicOpType_LogicOps() {
         return (EReference)unaryLogicOpTypeEClass.getEStructuralFeatures().get(7);
     }
@@ -3018,6 +3270,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getUnaryLogicOpType_ExtensionOpsGroup() {
         return (EAttribute)unaryLogicOpTypeEClass.getEStructuralFeatures().get(8);
     }
@@ -3027,6 +3280,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getUnaryLogicOpType_ExtensionOps() {
         return (EReference)unaryLogicOpTypeEClass.getEStructuralFeatures().get(9);
     }
@@ -3036,6 +3290,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getUnaryLogicOpType_Function() {
         return (EReference)unaryLogicOpTypeEClass.getEStructuralFeatures().get(10);
     }
@@ -3045,6 +3300,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getUnaryLogicOpType_IdGroup() {
         return (EAttribute)unaryLogicOpTypeEClass.getEStructuralFeatures().get(11);
     }
@@ -3054,6 +3310,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getUnaryLogicOpType_Id() {
         return (EReference)unaryLogicOpTypeEClass.getEStructuralFeatures().get(12);
     }
@@ -3063,6 +3320,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getUpperBoundaryType() {
         return upperBoundaryTypeEClass;
     }
@@ -3072,6 +3330,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getUpperBoundaryType_ExpressionGroup() {
         return (EAttribute)upperBoundaryTypeEClass.getEStructuralFeatures().get(0);
     }
@@ -3081,6 +3340,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EReference getUpperBoundaryType_Expression() {
         return (EReference)upperBoundaryTypeEClass.getEStructuralFeatures().get(1);
     }
@@ -3090,6 +3350,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EEnum getComparisonOperatorNameTypeMember0() {
         return comparisonOperatorNameTypeMember0EEnum;
     }
@@ -3099,6 +3360,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EEnum getMatchActionType() {
         return matchActionTypeEEnum;
     }
@@ -3108,6 +3370,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EEnum getSortOrderType() {
         return sortOrderTypeEEnum;
     }
@@ -3117,6 +3380,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EEnum getSpatialOperatorNameTypeMember0() {
         return spatialOperatorNameTypeMember0EEnum;
     }
@@ -3126,6 +3390,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EEnum getTemporalOperatorNameTypeMember0() {
         return temporalOperatorNameTypeMember0EEnum;
     }
@@ -3135,6 +3400,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EEnum getVersionActionTokens() {
         return versionActionTokensEEnum;
     }
@@ -3144,6 +3410,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getAliasesType() {
         return aliasesTypeEDataType;
     }
@@ -3153,6 +3420,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getComparisonOperatorNameType() {
         return comparisonOperatorNameTypeEDataType;
     }
@@ -3162,6 +3430,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getComparisonOperatorNameTypeMember0Object() {
         return comparisonOperatorNameTypeMember0ObjectEDataType;
     }
@@ -3171,6 +3440,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getComparisonOperatorNameTypeMember1() {
         return comparisonOperatorNameTypeMember1EDataType;
     }
@@ -3180,6 +3450,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getMatchActionTypeObject() {
         return matchActionTypeObjectEDataType;
     }
@@ -3189,6 +3460,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getSchemaElement() {
         return schemaElementEDataType;
     }
@@ -3198,6 +3470,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getSortOrderTypeObject() {
         return sortOrderTypeObjectEDataType;
     }
@@ -3207,6 +3480,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getSpatialOperatorNameType() {
         return spatialOperatorNameTypeEDataType;
     }
@@ -3216,6 +3490,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getSpatialOperatorNameTypeMember0Object() {
         return spatialOperatorNameTypeMember0ObjectEDataType;
     }
@@ -3225,6 +3500,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getSpatialOperatorNameTypeMember1() {
         return spatialOperatorNameTypeMember1EDataType;
     }
@@ -3234,6 +3510,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getTemporalOperatorNameType() {
         return temporalOperatorNameTypeEDataType;
     }
@@ -3243,6 +3520,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getTemporalOperatorNameTypeMember0Object() {
         return temporalOperatorNameTypeMember0ObjectEDataType;
     }
@@ -3252,6 +3530,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getTemporalOperatorNameTypeMember1() {
         return temporalOperatorNameTypeMember1EDataType;
     }
@@ -3261,6 +3540,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getTypeNamesListType() {
         return typeNamesListTypeEDataType;
     }
@@ -3270,6 +3550,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getTypeNamesType() {
         return typeNamesTypeEDataType;
     }
@@ -3279,6 +3560,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getUomIdentifier() {
         return uomIdentifierEDataType;
     }
@@ -3288,6 +3570,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getUomSymbol() {
         return uomSymbolEDataType;
     }
@@ -3297,6 +3580,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getUomURI() {
         return uomURIEDataType;
     }
@@ -3306,6 +3590,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getVersionActionTokensObject() {
         return versionActionTokensObjectEDataType;
     }
@@ -3315,6 +3600,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getVersionType() {
         return versionTypeEDataType;
     }
@@ -3324,6 +3610,7 @@ public class Fes20PackageImpl extends EPackageImpl implements Fes20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Fes20Factory getFes20Factory() {
         return (Fes20Factory)getEFactoryInstance();
     }

@@ -42,6 +42,7 @@ public class MapPropertyAccessorFactory implements PropertyAccessorFactory {
      * @return The property accessor, or <code>null</code> if this factory cannot create an accessor
      *     for the specified type.
      */
+    @Override
     public PropertyAccessor createPropertyAccessor(
             Class type, String xpath, Class target, Hints hints) {
         if (Map.class.isAssignableFrom(type)) {
@@ -53,10 +54,12 @@ public class MapPropertyAccessorFactory implements PropertyAccessorFactory {
     private static PropertyAccessor MAP_ACCESSOR =
             new PropertyAccessor() {
 
+                @Override
                 public boolean canHandle(Object object, String xpath, Class target) {
                     return object instanceof Map;
                 }
 
+                @Override
                 @SuppressWarnings("unchecked")
                 public <T> T get(Object object, String xpath, Class<T> target)
                         throws IllegalArgumentException {
@@ -65,6 +68,7 @@ public class MapPropertyAccessorFactory implements PropertyAccessorFactory {
                     return (T) context.getValue(xpath);
                 }
 
+                @Override
                 public void set(Object object, String xpath, Object value, Class target)
                         throws IllegalAttributeException, IllegalArgumentException {
                     throw new IllegalAttributeException("not implemented");

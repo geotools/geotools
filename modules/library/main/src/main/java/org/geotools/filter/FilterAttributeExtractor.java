@@ -100,6 +100,7 @@ public class FilterAttributeExtractor extends DefaultFilterVisitor {
         usingVolatileFunctions = false;
     }
 
+    @Override
     public Object visit(PropertyName expression, Object data) {
         if (data instanceof Set && data != attributeNames) {
             @SuppressWarnings("unchecked")
@@ -125,6 +126,7 @@ public class FilterAttributeExtractor extends DefaultFilterVisitor {
         return attributeNames;
     }
 
+    @Override
     public Object visit(org.opengis.filter.expression.Function expression, Object data) {
         if (expression instanceof VolatileFunction) {
             usingVolatileFunctions = true;

@@ -55,16 +55,19 @@ public class BasicGraphBuilder implements GraphBuilder {
     }
 
     /** @see GraphBuilder#buildNode() */
+    @Override
     public Node buildNode() {
         return (new BasicNode());
     }
 
     /** @see GraphBuilder#buildEdge(Node, Node) */
+    @Override
     public Edge buildEdge(Node nodeA, Node nodeB) {
         return (new BasicEdge(nodeA, nodeB));
     }
 
     /** @see GraphBuilder#addNode(Node) */
+    @Override
     public void addNode(Node node) {
         m_nodes.add(node);
     }
@@ -75,6 +78,7 @@ public class BasicGraphBuilder implements GraphBuilder {
      *
      * @see GraphBuilder#addEdge(Edge)
      */
+    @Override
     public void addEdge(Edge edge) {
         edge.getNodeA().add(edge);
 
@@ -84,6 +88,7 @@ public class BasicGraphBuilder implements GraphBuilder {
     }
 
     /** @see GraphBuilder#removeNode(Node) */
+    @Override
     public void removeNode(Node node) {
         // prevents concurrent modification
         ArrayList toRemove = new ArrayList<>(node.getEdges());
@@ -92,6 +97,7 @@ public class BasicGraphBuilder implements GraphBuilder {
     }
 
     /** @see GraphBuilder#removeNodes(Collection) */
+    @Override
     public void removeNodes(Collection nodes) {
         for (Object node : nodes) {
             Node n = (Node) node;
@@ -100,6 +106,7 @@ public class BasicGraphBuilder implements GraphBuilder {
     }
 
     /** @see GraphBuilder#removeEdge(Edge) */
+    @Override
     public void removeEdge(Edge edge) {
         edge.getNodeA().remove(edge);
         edge.getNodeB().remove(edge);
@@ -107,6 +114,7 @@ public class BasicGraphBuilder implements GraphBuilder {
     }
 
     /** @see GraphBuilder#removeEdges(Collection) */
+    @Override
     public void removeEdges(Collection edges) {
         for (Object edge : edges) {
             Edge e = (Edge) edge;
@@ -115,11 +123,13 @@ public class BasicGraphBuilder implements GraphBuilder {
     }
 
     /** @see GraphBuilder#getGraph() */
+    @Override
     public Graph getGraph() {
         return (m_graph);
     }
 
     /** @see GraphBuilder#clone(boolean) */
+    @Override
     public Object clone(boolean deep) throws Exception {
         GraphBuilder builder = getClass().getDeclaredConstructor().newInstance();
         if (deep) builder.importGraph(getGraph());
@@ -128,6 +138,7 @@ public class BasicGraphBuilder implements GraphBuilder {
     }
 
     /** @see GraphBuilder#importGraph(Graph) */
+    @Override
     public void importGraph(Graph g) {
         m_nodes = new HashSet<>(g.getNodes());
         m_edges = new HashSet<>(g.getEdges());

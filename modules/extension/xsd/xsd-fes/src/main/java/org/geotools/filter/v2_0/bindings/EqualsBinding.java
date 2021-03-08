@@ -42,6 +42,7 @@ public class EqualsBinding extends OGCEqualsBinding {
         super(filterFactory, geometryFactory);
     }
 
+    @Override
     public QName getTarget() {
         return FES.Equals;
     }

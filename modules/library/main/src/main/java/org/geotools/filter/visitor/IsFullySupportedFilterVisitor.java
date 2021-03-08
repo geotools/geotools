@@ -112,14 +112,17 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
     }
 
     /** INCLUDE and EXCLUDE are never supported */
+    @Override
     public Object visit(ExcludeFilter filter, Object extraData) {
         return false;
     }
     /** INCLUDE and EXCLUDE are never supported */
+    @Override
     public Object visit(IncludeFilter filter, Object extraData) {
         return false;
     }
 
+    @Override
     public Object visit(And filter, Object extraData) {
         ScalarCapabilities scalar = capabilities.getScalarCapabilities();
         if (scalar == null || !scalar.hasLogicalOperators()) {
@@ -134,6 +137,7 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
         return true;
     }
 
+    @Override
     public Object visit(Id filter, Object extraData) {
         IdCapabilities idCapabilities = capabilities.getIdCapabilities();
         if (idCapabilities == null) return false;
@@ -153,6 +157,7 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
         return true;
     }
 
+    @Override
     public Object visit(Not filter, Object extraData) {
         ScalarCapabilities scalar = capabilities.getScalarCapabilities();
         if (scalar == null || !scalar.hasLogicalOperators()) {
@@ -161,6 +166,7 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
         return filter.getFilter().accept(this, null);
     }
 
+    @Override
     public Object visit(Or filter, Object extraData) {
         ScalarCapabilities scalar = capabilities.getScalarCapabilities();
         if (scalar == null || !scalar.hasLogicalOperators()) {
@@ -175,6 +181,7 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
         return true;
     }
 
+    @Override
     public Object visit(PropertyIsBetween filter, Object extraData) {
         ScalarCapabilities scalar = capabilities.getScalarCapabilities();
         if (scalar == null) return false;
@@ -189,6 +196,7 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
                 && (Boolean) filter.getUpperBoundary().accept(this, null);
     }
 
+    @Override
     public Object visit(PropertyIsEqualTo filter, Object extraData) {
         ScalarCapabilities scalar = capabilities.getScalarCapabilities();
         if (scalar == null) return false;
@@ -202,6 +210,7 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
                 && (Boolean) filter.getExpression2().accept(this, null);
     }
 
+    @Override
     public Object visit(PropertyIsNotEqualTo filter, Object extraData) {
         ScalarCapabilities scalar = capabilities.getScalarCapabilities();
         if (scalar == null) return false;
@@ -215,6 +224,7 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
                 && (Boolean) filter.getExpression2().accept(this, null);
     }
 
+    @Override
     public Object visit(PropertyIsGreaterThan filter, Object extraData) {
         ScalarCapabilities scalar = capabilities.getScalarCapabilities();
         if (scalar == null) return false;
@@ -228,6 +238,7 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
                 && (Boolean) filter.getExpression2().accept(this, null);
     }
 
+    @Override
     public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object extraData) {
         ScalarCapabilities scalar = capabilities.getScalarCapabilities();
         if (scalar == null) return false;
@@ -238,6 +249,7 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
         return operators.getOperator(PropertyIsGreaterThanOrEqualTo.NAME) != null;
     }
 
+    @Override
     public Object visit(PropertyIsLessThan filter, Object extraData) {
         ScalarCapabilities scalar = capabilities.getScalarCapabilities();
         if (scalar == null) return false;
@@ -248,6 +260,7 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
         return operators.getOperator(PropertyIsLessThan.NAME) != null;
     }
 
+    @Override
     public Object visit(PropertyIsLessThanOrEqualTo filter, Object extraData) {
         ScalarCapabilities scalar = capabilities.getScalarCapabilities();
         if (scalar == null) return false;
@@ -258,6 +271,7 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
         return operators.getOperator(PropertyIsLessThanOrEqualTo.NAME) != null;
     }
 
+    @Override
     public Object visit(PropertyIsLike filter, Object extraData) {
         ScalarCapabilities scalar = capabilities.getScalarCapabilities();
         if (scalar == null) return false;
@@ -268,6 +282,7 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
         return operators.getOperator(PropertyIsLike.NAME) != null;
     }
 
+    @Override
     public Object visit(PropertyIsNull filter, Object extraData) {
         ScalarCapabilities scalar = capabilities.getScalarCapabilities();
         if (scalar == null) return false;
@@ -278,6 +293,7 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
         return operators.getOperator(PropertyIsNull.NAME) != null;
     }
 
+    @Override
     public Object visit(PropertyIsNil filter, Object extraData) {
         ScalarCapabilities scalar = capabilities.getScalarCapabilities();
         if (scalar == null) return false;
@@ -288,6 +304,7 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
         return operators.getOperator(PropertyIsNil.NAME) != null;
     }
 
+    @Override
     public Object visit(BBOX filter, Object extraData) {
         SpatialCapabilities spatial = capabilities.getSpatialCapabilities();
         if (spatial == null) return false;
@@ -298,6 +315,7 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
         return operators.getOperator(BBOX.NAME) != null;
     }
 
+    @Override
     public Object visit(Beyond filter, Object extraData) {
         SpatialCapabilities spatial = capabilities.getSpatialCapabilities();
         if (spatial == null) return false;
@@ -308,6 +326,7 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
         return operators.getOperator(Beyond.NAME) != null;
     }
 
+    @Override
     public Object visit(Contains filter, Object extraData) {
         SpatialCapabilities spatial = capabilities.getSpatialCapabilities();
         if (spatial == null) return false;
@@ -318,6 +337,7 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
         return operators.getOperator(Contains.NAME) != null;
     }
 
+    @Override
     public Object visit(Crosses filter, Object extraData) {
         SpatialCapabilities spatial = capabilities.getSpatialCapabilities();
         if (spatial == null) return false;
@@ -328,6 +348,7 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
         return operators.getOperator(Crosses.NAME) != null;
     }
 
+    @Override
     public Object visit(Disjoint filter, Object extraData) {
         SpatialCapabilities spatial = capabilities.getSpatialCapabilities();
         if (spatial == null) return false;
@@ -338,6 +359,7 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
         return operators.getOperator(Disjoint.NAME) != null;
     }
 
+    @Override
     public Object visit(DWithin filter, Object extraData) {
         SpatialCapabilities spatial = capabilities.getSpatialCapabilities();
         if (spatial == null) return false;
@@ -348,6 +370,7 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
         return operators.getOperator(DWithin.NAME) != null;
     }
 
+    @Override
     public Object visit(Equals filter, Object extraData) {
         SpatialCapabilities spatial = capabilities.getSpatialCapabilities();
         if (spatial == null) return false;
@@ -358,6 +381,7 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
         return operators.getOperator(Equals.NAME) != null;
     }
 
+    @Override
     public Object visit(Intersects filter, Object extraData) {
         SpatialCapabilities spatial = capabilities.getSpatialCapabilities();
         if (spatial == null) return false;
@@ -368,6 +392,7 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
         return operators.getOperator(Intersects.NAME) != null;
     }
 
+    @Override
     public Object visit(Overlaps filter, Object extraData) {
         SpatialCapabilities spatial = capabilities.getSpatialCapabilities();
         if (spatial == null) return false;
@@ -378,6 +403,7 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
         return operators.getOperator(Overlaps.NAME) != null;
     }
 
+    @Override
     public Object visit(Touches filter, Object extraData) {
         SpatialCapabilities spatial = capabilities.getSpatialCapabilities();
         if (spatial == null) return false;
@@ -388,6 +414,7 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
         return operators.getOperator(Touches.NAME) != null;
     }
 
+    @Override
     public Object visit(Within filter, Object extraData) {
         SpatialCapabilities spatial = capabilities.getSpatialCapabilities();
         if (spatial == null) return false;
@@ -398,6 +425,7 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
         return operators.getOperator(Within.NAME) != null;
     }
 
+    @Override
     public Object visitNullFilter(Object extraData) {
         return false;
     }
@@ -405,10 +433,12 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
     // Expressions
     //
     /** NilExpression is a placeholder and is never supported */
+    @Override
     public Object visit(NilExpression expression, Object extraData) {
         return false;
     }
 
+    @Override
     public Object visit(Add expression, Object extraData) {
         ScalarCapabilities scalar = capabilities.getScalarCapabilities();
         if (scalar == null) return false;
@@ -419,6 +449,7 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
         return operators.hasSimpleArithmetic();
     }
 
+    @Override
     public Object visit(Divide expression, Object extraData) {
         ScalarCapabilities scalar = capabilities.getScalarCapabilities();
         if (scalar == null) return false;
@@ -429,6 +460,7 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
         return operators.hasSimpleArithmetic();
     }
 
+    @Override
     public Object visit(Function function, Object extraData) {
         ScalarCapabilities scalar = capabilities.getScalarCapabilities();
         if (scalar == null) return false;
@@ -445,10 +477,12 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
         return found != null;
     }
 
+    @Override
     public Object visit(Literal expression, Object extraData) {
         return true;
     }
 
+    @Override
     public Object visit(Multiply expression, Object extraData) {
         ScalarCapabilities scalar = capabilities.getScalarCapabilities();
         if (scalar == null) return false;
@@ -460,10 +494,12 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
     }
 
     /** You can override this to perform a sanity check against a provided FeatureType. */
+    @Override
     public Object visit(PropertyName expression, Object extraData) {
         return true;
     }
 
+    @Override
     public Object visit(Subtract expression, Object extraData) {
         ScalarCapabilities scalar = capabilities.getScalarCapabilities();
         if (scalar == null) return false;
@@ -474,58 +510,72 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
         return operators.hasSimpleArithmetic();
     }
 
+    @Override
     public Object visit(After after, Object extraData) {
         return visit((BinaryTemporalOperator) after, After.NAME);
     }
 
+    @Override
     public Object visit(AnyInteracts anyInteracts, Object extraData) {
         return visit((BinaryTemporalOperator) anyInteracts, AnyInteracts.NAME);
     }
 
+    @Override
     public Object visit(Before before, Object extraData) {
         return visit((BinaryTemporalOperator) before, Before.NAME);
     }
 
+    @Override
     public Object visit(Begins begins, Object extraData) {
         return visit((BinaryTemporalOperator) begins, Begins.NAME);
     }
 
+    @Override
     public Object visit(BegunBy begunBy, Object extraData) {
         return visit((BinaryTemporalOperator) begunBy, BegunBy.NAME);
     }
 
+    @Override
     public Object visit(During during, Object extraData) {
         return visit((BinaryTemporalOperator) during, During.NAME);
     }
 
+    @Override
     public Object visit(EndedBy endedBy, Object extraData) {
         return visit((BinaryTemporalOperator) endedBy, EndedBy.NAME);
     }
 
+    @Override
     public Object visit(Ends ends, Object extraData) {
         return visit((BinaryTemporalOperator) ends, Ends.NAME);
     }
 
+    @Override
     public Object visit(Meets meets, Object extraData) {
         return visit((BinaryTemporalOperator) meets, Meets.NAME);
     }
 
+    @Override
     public Object visit(MetBy metBy, Object extraData) {
         return visit((BinaryTemporalOperator) metBy, MetBy.NAME);
     }
 
+    @Override
     public Object visit(OverlappedBy overlappedBy, Object extraData) {
         return visit((BinaryTemporalOperator) overlappedBy, OverlappedBy.NAME);
     }
 
+    @Override
     public Object visit(TContains contains, Object extraData) {
         return visit((BinaryTemporalOperator) contains, TContains.NAME);
     }
 
+    @Override
     public Object visit(TEquals equals, Object extraData) {
         return visit((BinaryTemporalOperator) equals, TEquals.NAME);
     }
 
+    @Override
     public Object visit(TOverlaps contains, Object extraData) {
         return visit((BinaryTemporalOperator) contains, TOverlaps.NAME);
     }

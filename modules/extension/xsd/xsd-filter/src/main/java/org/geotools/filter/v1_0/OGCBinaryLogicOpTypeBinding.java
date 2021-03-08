@@ -63,6 +63,7 @@ import org.picocontainer.MutablePicoContainer;
 public class OGCBinaryLogicOpTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.BinaryLogicOpType;
     }
@@ -74,6 +75,7 @@ public class OGCBinaryLogicOpTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return OVERRIDE;
     }
@@ -85,6 +87,7 @@ public class OGCBinaryLogicOpTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return BinaryLogicOperator.class;
     }
@@ -96,6 +99,7 @@ public class OGCBinaryLogicOpTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
@@ -105,6 +109,7 @@ public class OGCBinaryLogicOpTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // implemented by element bindigns
         return null;
@@ -129,6 +134,7 @@ public class OGCBinaryLogicOpTypeBinding extends AbstractComplexBinding {
         //        }
     }
 
+    @Override
     public Object getProperty(Object object, QName qName) throws Exception {
         BinaryLogicOperator operator = (BinaryLogicOperator) object;
 

@@ -62,6 +62,7 @@ public class NamedStyleBinding extends SLDNamedStyleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         NamedStyle style = (NamedStyle) super.parse(instance, node, value);
 

@@ -57,6 +57,7 @@ import org.geotools.xsd.SimpleBinding;
  */
 public class XSBase64BinaryBinding implements SimpleBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return XS.BASE64BINARY;
     }
@@ -68,6 +69,7 @@ public class XSBase64BinaryBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -80,6 +82,7 @@ public class XSBase64BinaryBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return byte[].class;
     }
@@ -92,6 +95,7 @@ public class XSBase64BinaryBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
 
         return DatatypeConverterImpl.getInstance().parseBase64Binary((String) value);
@@ -104,6 +108,7 @@ public class XSBase64BinaryBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public String encode(Object object, String value) {
         byte[] bin = (byte[]) object;
 

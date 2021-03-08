@@ -49,26 +49,32 @@ public class ProgressTask implements Runnable, Progress {
         synchronizer = new Synchronizer(process, input);
     }
 
+    @Override
     public float getProgress() {
         return synchronizer.getProgress();
     }
 
+    @Override
     public boolean isCancelled() {
         return synchronizer.innerIsCancelled();
     }
 
+    @Override
     public boolean isDone() {
         return synchronizer.innerIsDone();
     }
 
+    @Override
     public boolean cancel(boolean mayInterruptIfRunning) {
         return synchronizer.innerCancel(mayInterruptIfRunning);
     }
 
+    @Override
     public Map<String, Object> get() throws InterruptedException, ExecutionException {
         return synchronizer.innerGet();
     }
 
+    @Override
     public Map<String, Object> get(long timeout, TimeUnit unit)
             throws InterruptedException, ExecutionException, TimeoutException {
         return synchronizer.innerGet(unit.toNanos(timeout));
@@ -103,6 +109,7 @@ public class ProgressTask implements Runnable, Progress {
     }
 
     /** Sets this ProgressTask to the result of the computation unless it has been canceled. */
+    @Override
     public void run() {
         synchronizer.innerRun();
     }
@@ -304,46 +311,57 @@ public class ProgressTask implements Runnable, Progress {
             }
         }
 
+        @Override
         public void complete() {
             // ignore
         }
 
+        @Override
         public void dispose() {
             // ignore
         }
 
+        @Override
         public void exceptionOccurred(Throwable t) {
             innerSetException(t);
         }
 
+        @Override
         public float getProgress() {
             return percentComplete;
         }
 
+        @Override
         public InternationalString getTask() {
             return processName;
         }
 
+        @Override
         public boolean isCanceled() {
             return innerIsCancelled();
         }
 
+        @Override
         public void progress(float percent) {
             this.percentComplete = percent;
         }
 
+        @Override
         public void setCanceled(boolean stop) {
             innerCancel(stop);
         }
 
+        @Override
         public void setTask(InternationalString name) {
             this.processName = name;
         }
 
+        @Override
         public void started() {
             // ignore
         }
 
+        @Override
         public void warningOccurred(String arg0, String arg1, String arg2) {
             // ignore
         }

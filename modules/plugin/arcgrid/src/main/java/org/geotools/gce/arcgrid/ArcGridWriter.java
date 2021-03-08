@@ -162,6 +162,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
      * @return the format of the data source we will write to. (ArcGridFormat in this case)
      * @see org.opengis.coverage.grid.GridCoverageWriter#getFormat()
      */
+    @Override
     public Format getFormat() {
         return new ArcGridFormat();
     }
@@ -459,6 +460,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
      *     org.opengis.coverage.grid.GridCoverageWriter#write(org.opengis.coverage.grid.GridCoverage,
      *     org.opengis.parameter.GeneralParameterValue[])
      */
+    @Override
     public void write(GridCoverage coverage, GeneralParameterValue[] parameters)
             throws IllegalArgumentException, IOException {
         ensureWeCanWrite(coverage, parameters);
@@ -542,6 +544,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
     }
 
     /** @see org.opengis.coverage.grid.GridCoverageWriter#dispose() */
+    @Override
     public void dispose() {
 
         if (mWriter != null) {

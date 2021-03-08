@@ -48,56 +48,67 @@ public class SpatialFilterVisitor extends DefaultFilterVisitor {
         hasSpatialFilter = false;
     }
 
+    @Override
     public Object visit(final BBOX filter, Object data) {
         hasSpatialFilter = true;
         return data;
     }
 
+    @Override
     public Object visit(Beyond filter, Object data) {
         hasSpatialFilter = true;
         return data;
     }
 
+    @Override
     public Object visit(Contains filter, Object data) {
         hasSpatialFilter = true;
         return data;
     }
 
+    @Override
     public Object visit(Crosses filter, Object data) {
         hasSpatialFilter = true;
         return data;
     }
 
+    @Override
     public Object visit(Disjoint filter, Object data) {
         hasSpatialFilter = true;
         return data;
     }
 
+    @Override
     public Object visit(DWithin filter, Object data) {
         hasSpatialFilter = true;
         return data;
     }
 
+    @Override
     public Object visit(Equals filter, Object data) {
         hasSpatialFilter = true;
         return data;
     }
 
+    @Override
     public Object visit(Intersects filter, Object data) {
         hasSpatialFilter = true;
         return data;
     }
 
+    @Override
     public Object visit(Overlaps filter, Object data) {
         hasSpatialFilter = true;
         return data;
     }
 
+    @Override
     public Object visit(Touches filter, Object data) {
         hasSpatialFilter = true;
         return data;
     }
 
+    @Override
     public Object visit(Within filter, Object data) {
         hasSpatialFilter = true;
         return data;

@@ -71,6 +71,7 @@ public class DictionaryTypeImpl extends DefinitionTypeImpl implements Dictionary
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getGroup() {
         if (group == null) {
             group = new BasicFeatureMap(this, Gml311Package.DICTIONARY_TYPE__GROUP);
@@ -83,6 +84,7 @@ public class DictionaryTypeImpl extends DefinitionTypeImpl implements Dictionary
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getDictionaryEntryGroup() {
         return (FeatureMap)getGroup().<FeatureMap.Entry>list(Gml311Package.eINSTANCE.getDictionaryType_DictionaryEntryGroup());
     }
@@ -92,6 +94,7 @@ public class DictionaryTypeImpl extends DefinitionTypeImpl implements Dictionary
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<DictionaryEntryType> getDictionaryEntry() {
         return getDictionaryEntryGroup().list(Gml311Package.eINSTANCE.getDictionaryType_DictionaryEntry());
     }
@@ -101,6 +104,7 @@ public class DictionaryTypeImpl extends DefinitionTypeImpl implements Dictionary
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<IndirectEntryType> getIndirectEntry() {
         return getGroup().list(Gml311Package.eINSTANCE.getDictionaryType_IndirectEntry());
     }

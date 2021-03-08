@@ -32,6 +32,7 @@ public class HanaJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
         super(new HanaDataStoreFactory());
     }
 
+    @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
     protected void setupParameters(Map parameters) {
         super.setupParameters(parameters);

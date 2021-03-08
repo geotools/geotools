@@ -36,6 +36,7 @@ public class DelaunayNode extends BasicXYNode {
         return feature;
     }
 
+    @Override
     public boolean equals(Object o) {
         return ((o instanceof DelaunayNode)
                 && (this.getCoordinate().x == ((DelaunayNode) o).getCoordinate().x)
@@ -63,6 +64,7 @@ public class DelaunayNode extends BasicXYNode {
         }
     */
 
+    @Override
     public String toString() {
         //        return "(" + roundToSigDigs(this.getCoordinate().x, 5) + "," +
         // roundToSigDigs(this.getCoordinate().y, 5) + ")";

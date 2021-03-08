@@ -42,6 +42,7 @@ public class PropertyIsEqualToBinding extends OGCPropertyIsEqualToBinding {
         super(filterfactory);
     }
 
+    @Override
     public QName getTarget() {
         return FES.PropertyIsEqualTo;
     }

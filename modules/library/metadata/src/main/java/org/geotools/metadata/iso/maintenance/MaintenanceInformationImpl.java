@@ -93,6 +93,7 @@ public class MaintenanceInformationImpl extends MetadataEntity implements Mainte
      * Returns the frequency with which changes and additions are made to the resource after the
      * initial resource is completed.
      */
+    @Override
     public MaintenanceFrequency getMaintenanceAndUpdateFrequency() {
         return maintenanceAndUpdateFrequency;
     }
@@ -107,6 +108,7 @@ public class MaintenanceInformationImpl extends MetadataEntity implements Mainte
     }
 
     /** Returns the scheduled revision date for resource. */
+    @Override
     public Date getDateOfNextUpdate() {
         return (dateOfNextUpdate != Long.MIN_VALUE) ? new Date(dateOfNextUpdate) : null;
     }
@@ -123,6 +125,7 @@ public class MaintenanceInformationImpl extends MetadataEntity implements Mainte
      * @return The period, in milliseconds. @TODO: needs an implementation of org.opengis.temporal
      *     modules to anntote this parameter.
      */
+    @Override
     public PeriodDuration getUserDefinedMaintenanceFrequency() {
         return userDefinedMaintenanceFrequency;
     }
@@ -138,6 +141,7 @@ public class MaintenanceInformationImpl extends MetadataEntity implements Mainte
      *
      * @since 2.4
      */
+    @Override
     public Collection<ScopeCode> getUpdateScopes() {
         return (updateScopes = nonNullCollection(updateScopes, ScopeCode.class));
     }
@@ -156,6 +160,7 @@ public class MaintenanceInformationImpl extends MetadataEntity implements Mainte
      *
      * @since 2.4
      */
+    @Override
     public Collection<ScopeDescription> getUpdateScopeDescriptions() {
         return (updateScopeDescriptions =
                 nonNullCollection(updateScopeDescriptions, ScopeDescription.class));
@@ -176,6 +181,7 @@ public class MaintenanceInformationImpl extends MetadataEntity implements Mainte
      *
      * @since 2.4
      */
+    @Override
     public Collection<InternationalString> getMaintenanceNotes() {
         return (maintenanceNotes = nonNullCollection(maintenanceNotes, InternationalString.class));
     }
@@ -195,6 +201,7 @@ public class MaintenanceInformationImpl extends MetadataEntity implements Mainte
      *
      * @since 2.4
      */
+    @Override
     public Collection<ResponsibleParty> getContacts() {
         return (contacts = nonNullCollection(contacts, ResponsibleParty.class));
     }

@@ -44,6 +44,7 @@ import org.geotools.xsd.SimpleBinding;
  */
 public class XSUnsignedByteBinding implements SimpleBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return XS.UNSIGNEDBYTE;
     }
@@ -55,6 +56,7 @@ public class XSUnsignedByteBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -67,6 +69,7 @@ public class XSUnsignedByteBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Short.class;
     }
@@ -79,6 +82,7 @@ public class XSUnsignedByteBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         return Short.valueOf(((Number) value).shortValue());
     }
@@ -90,6 +94,7 @@ public class XSUnsignedByteBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public String encode(Object object, String value) {
         Short s = (Short) object;
 

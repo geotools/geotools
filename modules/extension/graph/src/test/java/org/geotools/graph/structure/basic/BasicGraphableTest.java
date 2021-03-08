@@ -31,6 +31,7 @@ public class BasicGraphableTest {
 
         m_graphable =
                 new BasicGraphable() {
+                    @Override
                     public Iterator<? extends Graphable> getRelated() {
                         return null;
                     }

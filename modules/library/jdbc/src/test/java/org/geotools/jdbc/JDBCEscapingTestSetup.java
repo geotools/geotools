@@ -8,6 +8,7 @@ public abstract class JDBCEscapingTestSetup extends JDBCDelegatingTestSetup {
         super(delegate);
     }
 
+    @Override
     protected final void setUpData() throws Exception {
         try {
             dropEscapingTable();

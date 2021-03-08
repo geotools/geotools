@@ -98,6 +98,7 @@ public class RectangleTypeImpl extends AbstractSurfacePatchTypeImpl implements R
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getExteriorGroup() {
         if (exteriorGroup == null) {
             exteriorGroup = new BasicFeatureMap(this, Gml311Package.RECTANGLE_TYPE__EXTERIOR_GROUP);
@@ -110,6 +111,7 @@ public class RectangleTypeImpl extends AbstractSurfacePatchTypeImpl implements R
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractRingPropertyType getExterior() {
         return (AbstractRingPropertyType)getExteriorGroup().get(Gml311Package.eINSTANCE.getRectangleType_Exterior(), true);
     }
@@ -128,6 +130,7 @@ public class RectangleTypeImpl extends AbstractSurfacePatchTypeImpl implements R
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setExterior(AbstractRingPropertyType newExterior) {
         ((FeatureMap.Internal)getExteriorGroup()).set(Gml311Package.eINSTANCE.getRectangleType_Exterior(), newExterior);
     }
@@ -137,6 +140,7 @@ public class RectangleTypeImpl extends AbstractSurfacePatchTypeImpl implements R
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SurfaceInterpolationType getInterpolation() {
         return interpolation;
     }
@@ -146,6 +150,7 @@ public class RectangleTypeImpl extends AbstractSurfacePatchTypeImpl implements R
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setInterpolation(SurfaceInterpolationType newInterpolation) {
         SurfaceInterpolationType oldInterpolation = interpolation;
         interpolation = newInterpolation == null ? INTERPOLATION_EDEFAULT : newInterpolation;
@@ -160,6 +165,7 @@ public class RectangleTypeImpl extends AbstractSurfacePatchTypeImpl implements R
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetInterpolation() {
         SurfaceInterpolationType oldInterpolation = interpolation;
         boolean oldInterpolationESet = interpolationESet;
@@ -174,6 +180,7 @@ public class RectangleTypeImpl extends AbstractSurfacePatchTypeImpl implements R
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetInterpolation() {
         return interpolationESet;
     }

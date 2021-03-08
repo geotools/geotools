@@ -168,6 +168,7 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
     }
 
     /** @see org.locationtech.jts.geom.CoordinateSequence#getCoordinate(int) */
+    @Override
     public Coordinate getCoordinateInternal(int i) {
         double x = coords[i * dimension];
         double y = coords[i * dimension + 1];
@@ -176,10 +177,12 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
     }
 
     /** @see org.locationtech.jts.geom.CoordinateSequence#size() */
+    @Override
     public int size() {
         return size;
     }
 
+    @Override
     @SuppressWarnings("deprecation")
     public Object clone() {
         double[] clone = new double[coords.length];
@@ -197,26 +200,31 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
      *     performace reasons the ordinate index is not checked, if it's over dimensions you may not
      *     get an exception but a meaningless value.
      */
+    @Override
     public double getOrdinate(int index, int ordinate) {
         return coords[index * dimension + ordinate];
     }
 
     /** @see org.locationtech.jts.geom.CoordinateSequence#getX(int) */
+    @Override
     public double getX(int index) {
         return coords[index * dimension];
     }
 
     /** @see org.locationtech.jts.geom.CoordinateSequence#getY(int) */
+    @Override
     public double getY(int index) {
         return coords[index * dimension + 1];
     }
 
     /** @see org.locationtech.jts.geom.PackedCoordinateSequence#setOrdinate(int, int, double) */
+    @Override
     public void setOrdinate(int index, int ordinate, double value) {
         coordRef = null;
         coords[index * dimension + ordinate] = value;
     }
 
+    @Override
     public Envelope expandEnvelope(Envelope env) {
         double minx = coords[0];
         double maxx = minx;
@@ -386,6 +394,7 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
         return geomFac.buildGeometry(gs);
     }
 
+    @Override
     public String toString() {
         if (size > 0) {
             StringBuffer strBuf = new StringBuffer((9 * dimension) * size);

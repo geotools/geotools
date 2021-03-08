@@ -47,6 +47,7 @@ final class JDBCTransactionState implements State {
         this.external = external;
     }
 
+    @Override
     public void setTransaction(Transaction tx) {
         if (tx != null && this.tx != null) {
             throw new IllegalStateException(
@@ -71,8 +72,10 @@ final class JDBCTransactionState implements State {
         this.tx = tx;
     }
 
+    @Override
     public void addAuthorization(String AuthID) throws IOException {}
 
+    @Override
     public void commit() throws IOException {
         if (!external) {
             try {
@@ -84,6 +87,7 @@ final class JDBCTransactionState implements State {
         }
     }
 
+    @Override
     public void rollback() throws IOException {
         if (!external) {
             try {

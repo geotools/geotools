@@ -177,11 +177,13 @@ public class UnionFeatureCollection implements VectorProcess {
             fb = new SimpleFeatureBuilder(schema);
         }
 
+        @Override
         public void close() {
             firstDelegate.close();
             secondDelegate.close();
         }
 
+        @Override
         public boolean hasNext() {
 
             while (next == null && firstDelegate.hasNext()) {
@@ -205,6 +207,7 @@ public class UnionFeatureCollection implements VectorProcess {
             return next != null;
         }
 
+        @Override
         public SimpleFeature next() throws NoSuchElementException {
             if (!hasNext()) {
                 throw new NoSuchElementException("hasNext() returned false!");

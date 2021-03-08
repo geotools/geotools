@@ -94,6 +94,7 @@ final class MultiBandsIndexColorModel extends IndexColorModel {
      * <p>All other {@code getDataElement} methods in this color model are ultimately defined in
      * terms of this method, so overriding this method should be enough.
      */
+    @Override
     public Object getDataElements(final int RGB, Object pixel) {
         if (pixel == null) {
             switch (transferType) {
@@ -142,6 +143,7 @@ final class MultiBandsIndexColorModel extends IndexColorModel {
      * Returns an array of unnormalized color/alpha components for a specified pixel in this color
      * model. This method is the converse of {@link #getDataElements}.
      */
+    @Override
     public int[] getComponents(final Object pixel, final int[] components, final int offset) {
         final int i;
         switch (transferType) {
@@ -165,6 +167,7 @@ final class MultiBandsIndexColorModel extends IndexColorModel {
      * Returns the red color component for the specified pixel, scaled from 0 to 255 in the default
      * RGB {@code ColorSpace}, sRGB.
      */
+    @Override
     public int getRed(final Object inData) {
         final int pixel;
         switch (transferType) {
@@ -195,6 +198,7 @@ final class MultiBandsIndexColorModel extends IndexColorModel {
      * Returns the green color component for the specified pixel, scaled from 0 to 255 in the
      * default RGB {@code ColorSpace}, sRGB.
      */
+    @Override
     public int getGreen(final Object inData) {
         final int pixel;
         switch (transferType) {
@@ -225,6 +229,7 @@ final class MultiBandsIndexColorModel extends IndexColorModel {
      * Returns the blue color component for the specified pixel, scaled from 0 to 255 in the default
      * RGB {@code ColorSpace}, sRGB.
      */
+    @Override
     public int getBlue(final Object inData) {
         final int pixel;
         switch (transferType) {
@@ -252,6 +257,7 @@ final class MultiBandsIndexColorModel extends IndexColorModel {
     }
 
     /** Returns the alpha component for the specified pixel, scaled from 0 to 255. */
+    @Override
     public int getAlpha(final Object inData) {
         final int pixel;
         switch (transferType) {
@@ -287,11 +293,13 @@ final class MultiBandsIndexColorModel extends IndexColorModel {
      * Creates a {@code WritableRaster} with the specified width and height that has a data layout
      * ({@code SampleModel}) compatible with this {@code ColorModel}.
      */
+    @Override
     public WritableRaster createCompatibleWritableRaster(final int width, final int height) {
         return Raster.createBandedRaster(transferType, width, height, numBands, null);
     }
 
     /** Returns {@code true} if {@code raster} is compatible with this {@code ColorModel}. */
+    @Override
     public boolean isCompatibleRaster(final Raster raster) {
         return isCompatibleSampleModel(raster.getSampleModel());
     }
@@ -300,11 +308,13 @@ final class MultiBandsIndexColorModel extends IndexColorModel {
      * Creates a {@code SampleModel} with the specified width and height that has a data layout
      * compatible with this {@code ColorModel}.
      */
+    @Override
     public SampleModel createCompatibleSampleModel(final int width, final int height) {
         return new BandedSampleModel(transferType, width, height, numBands);
     }
 
     /** Checks if the specified {@code SampleModel} is compatible with this {@code ColorModel}. */
+    @Override
     public boolean isCompatibleSampleModel(final SampleModel sm) {
         return (sm instanceof ComponentSampleModel)
                 && sm.getTransferType() == transferType

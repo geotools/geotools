@@ -53,6 +53,7 @@ public class RuleBinding extends SLDRuleBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.Rule;
     }
@@ -64,6 +65,7 @@ public class RuleBinding extends SLDRuleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Rule rule = (Rule) super.parse(instance, node, value);
 

@@ -81,6 +81,7 @@ public class MultiGeometryTypeImpl extends AbstractGeometricAggregateTypeImpl im
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<GeometryPropertyType> getGeometryMember() {
         if (geometryMember == null) {
             geometryMember = new EObjectContainmentEList<>(GeometryPropertyType.class, this, Gml311Package.MULTI_GEOMETRY_TYPE__GEOMETRY_MEMBER);
@@ -93,6 +94,7 @@ public class MultiGeometryTypeImpl extends AbstractGeometricAggregateTypeImpl im
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeometryArrayPropertyType getGeometryMembers() {
         return geometryMembers;
     }
@@ -117,6 +119,7 @@ public class MultiGeometryTypeImpl extends AbstractGeometricAggregateTypeImpl im
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGeometryMembers(GeometryArrayPropertyType newGeometryMembers) {
         if (newGeometryMembers != geometryMembers) {
             NotificationChain msgs = null;

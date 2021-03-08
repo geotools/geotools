@@ -29,6 +29,7 @@ public class StreamingParserHandler extends ParserHandler {
         buffer = new Buffer();
     }
 
+    @Override
     protected void endElementInternal(ElementHandler handler) {
         super.endElementInternal(handler);
 
@@ -50,6 +51,7 @@ public class StreamingParserHandler extends ParserHandler {
         return false;
     }
 
+    @Override
     public void endDocument() throws SAXException {
         super.endDocument();
         buffer.close();

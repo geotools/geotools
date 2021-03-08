@@ -108,11 +108,13 @@ public class JDBCFeatureSource extends ContentFeatureSource {
     }
 
     /** Type narrow to {@link JDBCDataStore}. */
+    @Override
     public JDBCDataStore getDataStore() {
         return (JDBCDataStore) super.getDataStore();
     }
 
     /** Type narrow to {@link JDBCState}. */
+    @Override
     public JDBCState getState() {
         return (JDBCState) super.getState();
     }
@@ -143,6 +145,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
     }
 
     /** Builds the feature type from database metadata. */
+    @Override
     protected SimpleFeatureType buildFeatureType() throws IOException {
         // grab the primary key
         PrimaryKey pkey = getDataStore().getPrimaryKey(entry);
@@ -363,7 +366,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
     }
 
     /** Helper method for splitting a filter. */
-    Filter[] splitFilter(Filter original) {
+    protected Filter[] splitFilter(Filter original) {
         return splitFilter(original, this);
     }
 
@@ -394,6 +397,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         return split;
     }
 
+    @Override
     protected int getCountInternal(Query query) throws IOException {
         JDBCDataStore store = getDataStore();
 
@@ -459,6 +463,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         }
     }
 
+    @Override
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
         JDBCDataStore dataStore = getDataStore();
 
@@ -515,14 +520,17 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         }
     }
 
+    @Override
     protected boolean canFilter() {
         return true;
     }
 
+    @Override
     protected boolean canSort() {
         return true;
     }
 
+    @Override
     protected boolean canRetype() {
         return true;
     }
@@ -542,6 +550,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         return true;
     }
 
+    @Override
     @SuppressWarnings("PMD.CloseResource") // the cx is passed to the reader which will close it
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {

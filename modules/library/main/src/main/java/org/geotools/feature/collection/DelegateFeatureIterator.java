@@ -43,15 +43,18 @@ public class DelegateFeatureIterator<F extends Feature> implements FeatureIterat
         delegate = iterator;
     }
 
+    @Override
     public boolean hasNext() {
         return delegate != null && delegate.hasNext();
     }
 
+    @Override
     public F next() throws NoSuchElementException {
         if (delegate == null) throw new NoSuchElementException();
         return delegate.next();
     }
 
+    @Override
     public void close() {
         DataUtilities.close(delegate);
         delegate = null;

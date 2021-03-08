@@ -75,6 +75,7 @@ final class PredefinedCS implements Comparator<CoordinateSystem> {
      * Compares the ordering between two coordinate systems. This comparator is used for sorting the
      * axis in an user-supplied compound CS in an order closes to some "standard" order.
      */
+    @Override
     public int compare(final CoordinateSystem object1, final CoordinateSystem object2) {
         final Class<? extends CoordinateSystem> type1 = object1.getClass();
         final Class<? extends CoordinateSystem> type2 = object2.getClass();

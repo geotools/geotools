@@ -23,7 +23,6 @@ import java.util.PriorityQueue;
 import org.geotools.graph.structure.DirectedGraphable;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
-import org.geotools.graph.structure.GraphVisitor;
 import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
 import org.geotools.graph.traverse.GraphTraversal;
@@ -77,12 +76,7 @@ public class DijkstraIterator extends SourceGraphIterator {
 
     /** compares two internal nodes used by the iteration by comparing costs * */
     private static Comparator<DijkstraNode> comparator =
-            new Comparator<DijkstraNode>() {
-                @Override
-                public int compare(DijkstraNode n1, DijkstraNode n2) {
-                    return (n1.cost < n2.cost ? -1 : n1.cost > n2.cost ? 1 : 0);
-                }
-            };
+            (n1, n2) -> (n1.cost < n2.cost ? -1 : n1.cost > n2.cost ? 1 : 0);
 
     /** provides weights for edges in the graph * */
     protected EdgeWeighter weighter;
@@ -130,23 +124,20 @@ public class DijkstraIterator extends SourceGraphIterator {
 
         // place nodes into priority queue
         graph.visitNodes(
-                new GraphVisitor() {
-                    @Override
-                    public int visit(Graphable component) {
-                        // create a Dijkstra node with infinite cost
-                        DijkstraNode dn = new DijkstraNode((Node) component, Double.MAX_VALUE);
+                component -> {
+                    // create a Dijkstra node with infinite cost
+                    DijkstraNode dn = new DijkstraNode((Node) component, Double.MAX_VALUE);
 
-                        // create the mapping
-                        nodemap.put(component, dn);
+                    // create the mapping
+                    nodemap.put(component, dn);
 
-                        // source component gets a cost of 0
-                        if (component == getSource()) dn.cost = 0d;
+                    // source component gets a cost of 0
+                    if (component == getSource()) dn.cost = 0d;
 
-                        // place into priority queue
-                        queue.add(dn);
+                    // place into priority queue
+                    queue.add(dn);
 
-                        return 0;
-                    }
+                    return 0;
                 });
     }
 

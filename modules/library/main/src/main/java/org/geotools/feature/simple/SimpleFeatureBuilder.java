@@ -160,6 +160,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
     }
 
     /** Returns the simple feature type used by this builder as a feature template */
+    @Override
     public SimpleFeatureType getFeatureType() {
         return featureType;
     }
@@ -292,6 +293,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
      * @param id The id of the feature, or <code>null</code>.
      * @return The new feature.
      */
+    @Override
     public SimpleFeature buildFeature(String id) {
         // ensure id
         if (id == null) {

@@ -50,6 +50,7 @@ public class DepthFirstTopologicalIteratorTest {
 
         CountingWalker walker =
                 new CountingWalker() {
+                    @Override
                     public int visit(Graphable element, GraphTraversal traversal) {
                         element.setCount(getCount());
                         return super.visit(element, traversal);
@@ -97,11 +98,9 @@ public class DepthFirstTopologicalIteratorTest {
         traversal.traverse();
 
         GraphVisitor visitor =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-                        Assert.assertFalse(component.isVisited());
-                        return 0;
-                    }
+                component -> {
+                    Assert.assertFalse(component.isVisited());
+                    return 0;
                 };
         builder().getGraph().visitNodes(visitor);
 

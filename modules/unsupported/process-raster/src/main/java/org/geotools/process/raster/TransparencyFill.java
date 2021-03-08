@@ -38,6 +38,7 @@ public class TransparencyFill extends OperationJAI {
         super("TransparencyFill");
     }
 
+    @Override
     public String getName() {
         return "TransparencyFill";
     }

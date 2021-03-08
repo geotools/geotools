@@ -577,7 +577,8 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
     EValidator.Registry.INSTANCE.put
       (theWps10Package,
        new EValidator.Descriptor() {
-         public EValidator getEValidator() {
+         @Override
+        public EValidator getEValidator() {
            return Wps10Validator.INSTANCE;
          }
        });
@@ -595,6 +596,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getBodyReferenceType() {
     return bodyReferenceTypeEClass;
   }
@@ -604,6 +606,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getBodyReferenceType_Href() {
     return (EAttribute)bodyReferenceTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -613,6 +616,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getComplexDataCombinationsType() {
     return complexDataCombinationsTypeEClass;
   }
@@ -622,6 +626,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getComplexDataCombinationsType_Format() {
     return (EReference)complexDataCombinationsTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -631,6 +636,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getComplexDataCombinationType() {
     return complexDataCombinationTypeEClass;
   }
@@ -640,6 +646,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getComplexDataCombinationType_Format() {
     return (EReference)complexDataCombinationTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -649,6 +656,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getComplexDataDescriptionType() {
     return complexDataDescriptionTypeEClass;
   }
@@ -658,6 +666,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getComplexDataDescriptionType_MimeType() {
     return (EAttribute)complexDataDescriptionTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -667,6 +676,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getComplexDataDescriptionType_Encoding() {
     return (EAttribute)complexDataDescriptionTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -676,6 +686,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getComplexDataDescriptionType_Schema() {
     return (EAttribute)complexDataDescriptionTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -685,6 +696,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getComplexDataType() {
     return complexDataTypeEClass;
   }
@@ -694,6 +706,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getComplexDataType_Encoding() {
     return (EAttribute)complexDataTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -703,6 +716,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getComplexDataType_MimeType() {
     return (EAttribute)complexDataTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -712,6 +726,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getComplexDataType_Schema() {
     return (EAttribute)complexDataTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -721,6 +736,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getComplexDataType_Data() {
     return (EAttribute)complexDataTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -730,6 +746,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getCRSsType() {
     return crSsTypeEClass;
   }
@@ -739,6 +756,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getCRSsType_CRS() {
     return (EAttribute)crSsTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -748,6 +766,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getDataInputsType() {
     return dataInputsTypeEClass;
   }
@@ -757,6 +776,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDataInputsType_Input() {
     return (EReference)dataInputsTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -766,6 +786,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getDataInputsType1() {
     return dataInputsType1EClass;
   }
@@ -775,6 +796,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDataInputsType1_Input() {
     return (EReference)dataInputsType1EClass.getEStructuralFeatures().get(0);
   }
@@ -784,6 +806,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getDataType() {
     return dataTypeEClass;
   }
@@ -793,6 +816,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDataType_ComplexData() {
     return (EReference)dataTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -802,6 +826,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDataType_LiteralData() {
     return (EReference)dataTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -811,6 +836,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDataType_BoundingBoxData() {
     return (EReference)dataTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -820,6 +846,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getDefaultType() {
     return defaultTypeEClass;
   }
@@ -829,6 +856,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDefaultType_CRS() {
     return (EAttribute)defaultTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -838,6 +866,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getDefaultType1() {
     return defaultType1EClass;
   }
@@ -847,6 +876,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDefaultType1_UOM() {
     return (EReference)defaultType1EClass.getEStructuralFeatures().get(0);
   }
@@ -856,6 +886,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getDefaultType2() {
     return defaultType2EClass;
   }
@@ -865,6 +896,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDefaultType2_Language() {
     return (EAttribute)defaultType2EClass.getEStructuralFeatures().get(0);
   }
@@ -874,6 +906,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getDescribeProcessType() {
     return describeProcessTypeEClass;
   }
@@ -883,6 +916,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDescribeProcessType_Identifier() {
     return (EReference)describeProcessTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -892,6 +926,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getDescriptionType() {
     return descriptionTypeEClass;
   }
@@ -901,6 +936,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDescriptionType_Identifier() {
     return (EReference)descriptionTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -910,6 +946,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDescriptionType_Title() {
     return (EReference)descriptionTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -919,6 +956,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDescriptionType_Abstract() {
     return (EReference)descriptionTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -928,6 +966,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDescriptionType_Metadata() {
     return (EReference)descriptionTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -937,6 +976,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getDocumentOutputDefinitionType() {
     return documentOutputDefinitionTypeEClass;
   }
@@ -946,6 +986,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentOutputDefinitionType_Title() {
     return (EReference)documentOutputDefinitionTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -955,6 +996,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentOutputDefinitionType_Abstract() {
     return (EReference)documentOutputDefinitionTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -964,6 +1006,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDocumentOutputDefinitionType_AsReference() {
     return (EAttribute)documentOutputDefinitionTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -973,6 +1016,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getDocumentRoot() {
     return documentRootEClass;
   }
@@ -982,6 +1026,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDocumentRoot_Mixed() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(0);
   }
@@ -991,6 +1036,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_XMLNSPrefixMap() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(1);
   }
@@ -1000,6 +1046,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_XSISchemaLocation() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(2);
   }
@@ -1009,6 +1056,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Capabilities() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(3);
   }
@@ -1018,6 +1066,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_DescribeProcess() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(4);
   }
@@ -1027,6 +1076,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Execute() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(5);
   }
@@ -1036,6 +1086,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_ExecuteResponse() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(6);
   }
@@ -1045,6 +1096,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_GetCapabilities() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(7);
   }
@@ -1054,6 +1106,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Languages() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(8);
   }
@@ -1063,6 +1116,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_ProcessDescriptions() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(9);
   }
@@ -1072,6 +1126,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_ProcessOfferings() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(10);
   }
@@ -1081,6 +1136,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_WSDL() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(11);
   }
@@ -1090,6 +1146,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDocumentRoot_ProcessVersion() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(12);
   }
@@ -1099,6 +1156,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getExecuteResponseType() {
     return executeResponseTypeEClass;
   }
@@ -1108,6 +1166,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getExecuteResponseType_Process() {
     return (EReference)executeResponseTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1117,6 +1176,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getExecuteResponseType_Status() {
     return (EReference)executeResponseTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1126,6 +1186,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getExecuteResponseType_DataInputs() {
     return (EReference)executeResponseTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1135,6 +1196,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getExecuteResponseType_OutputDefinitions() {
     return (EReference)executeResponseTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -1144,6 +1206,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getExecuteResponseType_ProcessOutputs() {
     return (EReference)executeResponseTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -1153,6 +1216,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getExecuteResponseType_ServiceInstance() {
     return (EAttribute)executeResponseTypeEClass.getEStructuralFeatures().get(5);
   }
@@ -1162,6 +1226,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getExecuteResponseType_StatusLocation() {
     return (EAttribute)executeResponseTypeEClass.getEStructuralFeatures().get(6);
   }
@@ -1171,6 +1236,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getExecuteType() {
     return executeTypeEClass;
   }
@@ -1180,6 +1246,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getExecuteType_Identifier() {
     return (EReference)executeTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1189,6 +1256,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getExecuteType_DataInputs() {
     return (EReference)executeTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1198,6 +1266,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getExecuteType_ResponseForm() {
     return (EReference)executeTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1207,6 +1276,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getGetCapabilitiesType() {
     return getCapabilitiesTypeEClass;
   }
@@ -1216,6 +1286,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getGetCapabilitiesType_AcceptVersions() {
     return (EReference)getCapabilitiesTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1225,6 +1296,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetCapabilitiesType_Language() {
     return (EAttribute)getCapabilitiesTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1234,6 +1306,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetCapabilitiesType_Service() {
     return (EAttribute)getCapabilitiesTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1243,6 +1316,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetCapabilitiesType_BaseUrl() {
     return (EAttribute)getCapabilitiesTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -1252,7 +1326,8 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EAttribute getGetCapabilitiesType_ExtendedProperties() {
+	@Override
+    public EAttribute getGetCapabilitiesType_ExtendedProperties() {
     return (EAttribute)getCapabilitiesTypeEClass.getEStructuralFeatures().get(4);
   }
 
@@ -1261,6 +1336,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getHeaderType() {
     return headerTypeEClass;
   }
@@ -1270,6 +1346,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getHeaderType_Key() {
     return (EAttribute)headerTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1279,6 +1356,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getHeaderType_Value() {
     return (EAttribute)headerTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1288,6 +1366,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getInputDescriptionType() {
     return inputDescriptionTypeEClass;
   }
@@ -1297,6 +1376,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getInputDescriptionType_ComplexData() {
     return (EReference)inputDescriptionTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1306,6 +1386,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getInputDescriptionType_LiteralData() {
     return (EReference)inputDescriptionTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1315,6 +1396,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getInputDescriptionType_BoundingBoxData() {
     return (EReference)inputDescriptionTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1324,6 +1406,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getInputDescriptionType_MaxOccurs() {
     return (EAttribute)inputDescriptionTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -1333,6 +1416,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getInputDescriptionType_MinOccurs() {
     return (EAttribute)inputDescriptionTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -1342,6 +1426,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getInputReferenceType() {
     return inputReferenceTypeEClass;
   }
@@ -1351,6 +1436,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getInputReferenceType_Header() {
     return (EReference)inputReferenceTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1360,6 +1446,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getInputReferenceType_Body() {
     return (EAttribute)inputReferenceTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1369,6 +1456,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getInputReferenceType_BodyReference() {
     return (EReference)inputReferenceTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1378,6 +1466,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getInputReferenceType_Encoding() {
     return (EAttribute)inputReferenceTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -1387,6 +1476,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getInputReferenceType_Href() {
     return (EAttribute)inputReferenceTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -1396,6 +1486,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getInputReferenceType_Method() {
     return (EAttribute)inputReferenceTypeEClass.getEStructuralFeatures().get(5);
   }
@@ -1405,6 +1496,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getInputReferenceType_MimeType() {
     return (EAttribute)inputReferenceTypeEClass.getEStructuralFeatures().get(6);
   }
@@ -1414,6 +1506,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getInputReferenceType_Schema() {
     return (EAttribute)inputReferenceTypeEClass.getEStructuralFeatures().get(7);
   }
@@ -1423,6 +1516,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getInputType() {
     return inputTypeEClass;
   }
@@ -1432,6 +1526,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getInputType_Identifier() {
     return (EReference)inputTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1441,6 +1536,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getInputType_Title() {
     return (EReference)inputTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1450,6 +1546,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getInputType_Abstract() {
     return (EReference)inputTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1459,6 +1556,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getInputType_Reference() {
     return (EReference)inputTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -1468,6 +1566,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getInputType_Data() {
     return (EReference)inputTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -1477,6 +1576,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getLanguagesType() {
     return languagesTypeEClass;
   }
@@ -1486,6 +1586,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getLanguagesType_Language() {
     return (EAttribute)languagesTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1495,6 +1596,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getLanguagesType1() {
     return languagesType1EClass;
   }
@@ -1504,6 +1606,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getLanguagesType1_Default() {
     return (EReference)languagesType1EClass.getEStructuralFeatures().get(0);
   }
@@ -1513,6 +1616,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getLanguagesType1_Supported() {
     return (EReference)languagesType1EClass.getEStructuralFeatures().get(1);
   }
@@ -1522,6 +1626,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getLiteralDataType() {
     return literalDataTypeEClass;
   }
@@ -1531,6 +1636,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getLiteralDataType_Value() {
     return (EAttribute)literalDataTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1540,6 +1646,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getLiteralDataType_DataType() {
     return (EAttribute)literalDataTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1549,6 +1656,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getLiteralDataType_Uom() {
     return (EAttribute)literalDataTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1558,6 +1666,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getLiteralInputType() {
     return literalInputTypeEClass;
   }
@@ -1567,6 +1676,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getLiteralInputType_AllowedValues() {
     return (EReference)literalInputTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1576,6 +1686,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getLiteralInputType_AnyValue() {
     return (EReference)literalInputTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1585,6 +1696,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getLiteralInputType_ValuesReference() {
     return (EReference)literalInputTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1594,6 +1706,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getLiteralInputType_DefaultValue() {
     return (EAttribute)literalInputTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -1603,6 +1716,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getLiteralOutputType() {
     return literalOutputTypeEClass;
   }
@@ -1612,6 +1726,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getLiteralOutputType_DataType() {
     return (EReference)literalOutputTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1621,6 +1736,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getLiteralOutputType_UOMs() {
     return (EReference)literalOutputTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1630,6 +1746,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getOutputDataType() {
     return outputDataTypeEClass;
   }
@@ -1639,6 +1756,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getOutputDataType_Reference() {
     return (EReference)outputDataTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1648,6 +1766,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getOutputDataType_Data() {
     return (EReference)outputDataTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1657,6 +1776,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getOutputDefinitionsType() {
     return outputDefinitionsTypeEClass;
   }
@@ -1666,6 +1786,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getOutputDefinitionsType_Output() {
     return (EReference)outputDefinitionsTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1675,6 +1796,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getOutputDefinitionType() {
     return outputDefinitionTypeEClass;
   }
@@ -1684,6 +1806,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getOutputDefinitionType_Identifier() {
     return (EReference)outputDefinitionTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1693,6 +1816,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getOutputDefinitionType_Encoding() {
     return (EAttribute)outputDefinitionTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1702,6 +1826,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getOutputDefinitionType_MimeType() {
     return (EAttribute)outputDefinitionTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1711,6 +1836,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getOutputDefinitionType_Schema() {
     return (EAttribute)outputDefinitionTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -1720,6 +1846,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getOutputDefinitionType_Uom() {
     return (EAttribute)outputDefinitionTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -1729,6 +1856,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getOutputDescriptionType() {
     return outputDescriptionTypeEClass;
   }
@@ -1738,6 +1866,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getOutputDescriptionType_ComplexOutput() {
     return (EReference)outputDescriptionTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1747,6 +1876,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getOutputDescriptionType_LiteralOutput() {
     return (EReference)outputDescriptionTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1756,6 +1886,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getOutputDescriptionType_BoundingBoxOutput() {
     return (EReference)outputDescriptionTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1765,6 +1896,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getOutputReferenceType() {
     return outputReferenceTypeEClass;
   }
@@ -1774,6 +1906,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getOutputReferenceType_Encoding() {
     return (EAttribute)outputReferenceTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1783,6 +1916,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getOutputReferenceType_Href() {
     return (EAttribute)outputReferenceTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1792,6 +1926,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getOutputReferenceType_MimeType() {
     return (EAttribute)outputReferenceTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1801,6 +1936,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getOutputReferenceType_Schema() {
     return (EAttribute)outputReferenceTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -1810,6 +1946,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getProcessBriefType() {
     return processBriefTypeEClass;
   }
@@ -1819,6 +1956,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getProcessBriefType_Profile() {
     return (EAttribute)processBriefTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1828,6 +1966,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getProcessBriefType_WSDL() {
     return (EReference)processBriefTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1837,6 +1976,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getProcessBriefType_ProcessVersion() {
     return (EAttribute)processBriefTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1846,6 +1986,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getProcessDescriptionsType() {
     return processDescriptionsTypeEClass;
   }
@@ -1855,6 +1996,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getProcessDescriptionsType_ProcessDescription() {
     return (EReference)processDescriptionsTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1864,6 +2006,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getProcessDescriptionType() {
     return processDescriptionTypeEClass;
   }
@@ -1873,6 +2016,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getProcessDescriptionType_DataInputs() {
     return (EReference)processDescriptionTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1882,6 +2026,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getProcessDescriptionType_ProcessOutputs() {
     return (EReference)processDescriptionTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1891,6 +2036,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getProcessDescriptionType_StatusSupported() {
     return (EAttribute)processDescriptionTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1900,6 +2046,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getProcessDescriptionType_StoreSupported() {
     return (EAttribute)processDescriptionTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -1909,6 +2056,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getProcessFailedType() {
     return processFailedTypeEClass;
   }
@@ -1918,6 +2066,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getProcessFailedType_ExceptionReport() {
     return (EReference)processFailedTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1927,6 +2076,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getProcessOfferingsType() {
     return processOfferingsTypeEClass;
   }
@@ -1936,6 +2086,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getProcessOfferingsType_Process() {
     return (EReference)processOfferingsTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1945,6 +2096,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getProcessOutputsType() {
     return processOutputsTypeEClass;
   }
@@ -1954,6 +2106,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getProcessOutputsType_Output() {
     return (EReference)processOutputsTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1963,6 +2116,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getProcessOutputsType1() {
     return processOutputsType1EClass;
   }
@@ -1972,6 +2126,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getProcessOutputsType1_Output() {
     return (EReference)processOutputsType1EClass.getEStructuralFeatures().get(0);
   }
@@ -1981,6 +2136,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getProcessStartedType() {
     return processStartedTypeEClass;
   }
@@ -1990,6 +2146,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getProcessStartedType_Value() {
     return (EAttribute)processStartedTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1999,6 +2156,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getProcessStartedType_PercentCompleted() {
     return (EAttribute)processStartedTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2008,6 +2166,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getRequestBaseType() {
     return requestBaseTypeEClass;
   }
@@ -2017,6 +2176,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getRequestBaseType_Language() {
     return (EAttribute)requestBaseTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2026,6 +2186,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getRequestBaseType_Service() {
     return (EAttribute)requestBaseTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2035,6 +2196,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getRequestBaseType_Version() {
     return (EAttribute)requestBaseTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2044,6 +2206,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getRequestBaseType_BaseUrl() {
     return (EAttribute)requestBaseTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -2053,7 +2216,8 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EAttribute getRequestBaseType_ExtendedProperties() {
+	@Override
+    public EAttribute getRequestBaseType_ExtendedProperties() {
     return (EAttribute)requestBaseTypeEClass.getEStructuralFeatures().get(4);
   }
 
@@ -2062,6 +2226,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getResponseBaseType() {
     return responseBaseTypeEClass;
   }
@@ -2071,6 +2236,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getResponseBaseType_Lang() {
     return (EAttribute)responseBaseTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2080,6 +2246,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getResponseBaseType_Service() {
     return (EAttribute)responseBaseTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2089,6 +2256,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getResponseBaseType_Version() {
     return (EAttribute)responseBaseTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2098,6 +2266,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getResponseDocumentType() {
     return responseDocumentTypeEClass;
   }
@@ -2107,6 +2276,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getResponseDocumentType_Output() {
     return (EReference)responseDocumentTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2116,6 +2286,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getResponseDocumentType_Lineage() {
     return (EAttribute)responseDocumentTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2125,6 +2296,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getResponseDocumentType_Status() {
     return (EAttribute)responseDocumentTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2134,6 +2306,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getResponseDocumentType_StoreExecuteResponse() {
     return (EAttribute)responseDocumentTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -2143,6 +2316,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getResponseFormType() {
     return responseFormTypeEClass;
   }
@@ -2152,6 +2326,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getResponseFormType_ResponseDocument() {
     return (EReference)responseFormTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2161,6 +2336,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getResponseFormType_RawDataOutput() {
     return (EReference)responseFormTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2170,6 +2346,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getStatusType() {
     return statusTypeEClass;
   }
@@ -2179,6 +2356,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getStatusType_ProcessAccepted() {
     return (EAttribute)statusTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2188,6 +2366,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getStatusType_ProcessStarted() {
     return (EReference)statusTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2197,6 +2376,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getStatusType_ProcessPaused() {
     return (EReference)statusTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2206,6 +2386,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getStatusType_ProcessSucceeded() {
     return (EAttribute)statusTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -2215,6 +2396,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getStatusType_ProcessFailed() {
     return (EReference)statusTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -2224,6 +2406,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getStatusType_CreationTime() {
     return (EAttribute)statusTypeEClass.getEStructuralFeatures().get(5);
   }
@@ -2233,6 +2416,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getSupportedComplexDataInputType() {
     return supportedComplexDataInputTypeEClass;
   }
@@ -2242,6 +2426,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getSupportedComplexDataInputType_MaximumMegabytes() {
     return (EAttribute)supportedComplexDataInputTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2251,6 +2436,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getSupportedComplexDataType() {
     return supportedComplexDataTypeEClass;
   }
@@ -2260,6 +2446,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getSupportedComplexDataType_Default() {
     return (EReference)supportedComplexDataTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2269,6 +2456,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getSupportedComplexDataType_Supported() {
     return (EReference)supportedComplexDataTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2278,6 +2466,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getSupportedCRSsType() {
     return supportedCRSsTypeEClass;
   }
@@ -2287,6 +2476,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getSupportedCRSsType_Default() {
     return (EReference)supportedCRSsTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2296,6 +2486,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getSupportedCRSsType_Supported() {
     return (EReference)supportedCRSsTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2305,6 +2496,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getSupportedUOMsType() {
     return supportedUOMsTypeEClass;
   }
@@ -2314,6 +2506,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getSupportedUOMsType_Default() {
     return (EReference)supportedUOMsTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2323,6 +2516,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getSupportedUOMsType_Supported() {
     return (EReference)supportedUOMsTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2332,6 +2526,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getUOMsType() {
     return uoMsTypeEClass;
   }
@@ -2341,6 +2536,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getUOMsType_UOM() {
     return (EReference)uoMsTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2350,6 +2546,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getValuesReferenceType() {
     return valuesReferenceTypeEClass;
   }
@@ -2359,6 +2556,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getValuesReferenceType_Reference() {
     return (EAttribute)valuesReferenceTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2368,6 +2566,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getValuesReferenceType_ValuesForm() {
     return (EAttribute)valuesReferenceTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2377,6 +2576,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getWPSCapabilitiesType() {
     return wpsCapabilitiesTypeEClass;
   }
@@ -2386,6 +2586,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getWPSCapabilitiesType_ProcessOfferings() {
     return (EReference)wpsCapabilitiesTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2395,6 +2596,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getWPSCapabilitiesType_Languages() {
     return (EReference)wpsCapabilitiesTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2404,6 +2606,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getWPSCapabilitiesType_WSDL() {
     return (EReference)wpsCapabilitiesTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2413,6 +2616,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getWPSCapabilitiesType_Lang() {
     return (EAttribute)wpsCapabilitiesTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -2422,6 +2626,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getWPSCapabilitiesType_Service() {
     return (EAttribute)wpsCapabilitiesTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -2431,6 +2636,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getWSDLType() {
     return wsdlTypeEClass;
   }
@@ -2440,6 +2646,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getWSDLType_Href() {
     return (EAttribute)wsdlTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2449,6 +2656,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getUnit() {
     return unitEClass;
   }
@@ -2458,6 +2666,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EEnum getMethodType() {
     return methodTypeEEnum;
   }
@@ -2467,6 +2676,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getMethodTypeObject() {
     return methodTypeObjectEDataType;
   }
@@ -2476,6 +2686,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getPercentCompletedType() {
     return percentCompletedTypeEDataType;
   }
@@ -2485,7 +2696,8 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EDataType getMap() {
+	@Override
+    public EDataType getMap() {
     return mapEDataType;
   }
 
@@ -2494,6 +2706,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getQName() {
     return qNameEDataType;
   }
@@ -2503,6 +2716,7 @@ public class Wps10PackageImpl extends EPackageImpl implements Wps10Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Wps10Factory getWps10Factory() {
     return (Wps10Factory)getEFactoryInstance();
   }

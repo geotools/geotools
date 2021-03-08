@@ -68,6 +68,7 @@ public class TruncatedResponseTypeImpl extends EObjectImpl implements TruncatedR
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ExceptionReportType getExceptionReport() {
     return exceptionReport;
   }
@@ -92,6 +93,7 @@ public class TruncatedResponseTypeImpl extends EObjectImpl implements TruncatedR
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setExceptionReport(ExceptionReportType newExceptionReport) {
     if (newExceptionReport != exceptionReport) {
       NotificationChain msgs = null;

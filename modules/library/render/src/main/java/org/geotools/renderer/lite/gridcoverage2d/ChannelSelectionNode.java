@@ -52,6 +52,7 @@ class ChannelSelectionNode extends SubchainStyleVisitorCoverageProcessingAdapter
      * (non-Javadoc)
      * @see CoverageProcessingNode#getName()
      */
+    @Override
     public InternationalString getName() {
         return Vocabulary.formatInternational(VocabularyKeys.CHANNEL_SELECTION);
     }
@@ -80,6 +81,7 @@ class ChannelSelectionNode extends SubchainStyleVisitorCoverageProcessingAdapter
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.StyleVisitorAdapter#visit(org.geotools.styling.ChannelSelection)
      */
+    @Override
     public void visit(final ChannelSelection cs) {
         // /////////////////////////////////////////////////////////////////////
         //

@@ -59,6 +59,7 @@ public class AsMultiGeometryFunctionExpression extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object obj) {
         if (!(obj instanceof Attribute)) {
             return null;

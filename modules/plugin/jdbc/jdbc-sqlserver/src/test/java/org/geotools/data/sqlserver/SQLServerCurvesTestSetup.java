@@ -25,6 +25,7 @@ public class SQLServerCurvesTestSetup extends JDBCCurvesTestSetup {
         super(new SQLServerTestSetup());
     }
 
+    @Override
     protected void createCircularStringsTable() throws Exception {
         String sql =
                 "CREATE TABLE \"circularStrings\" ("
@@ -36,6 +37,7 @@ public class SQLServerCurvesTestSetup extends JDBCCurvesTestSetup {
         run(sql);
     }
 
+    @Override
     protected void createCompoundCurvesTable() throws Exception {
         String sql =
                 "CREATE TABLE \"compoundCurves\" ("
@@ -47,6 +49,7 @@ public class SQLServerCurvesTestSetup extends JDBCCurvesTestSetup {
         run(sql);
     }
 
+    @Override
     protected void createCurvesTable() throws Exception {
         String sql =
                 "CREATE TABLE \"curves\" ("
@@ -100,14 +103,17 @@ public class SQLServerCurvesTestSetup extends JDBCCurvesTestSetup {
         run(sql);
     }
 
+    @Override
     protected void dropCurvesTable() throws Exception {
         runSafe("DROP TABLE curves");
     }
 
+    @Override
     protected void dropCircularStringsTable() {
         runSafe("DROP TABLE circularStrings");
     }
 
+    @Override
     protected void dropCompoundCurvesTable() {
         runSafe("DROP TABLE compoundCurves");
     }

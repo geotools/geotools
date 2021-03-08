@@ -63,6 +63,7 @@ public class SimpleGraphWalker implements GraphWalker {
      *
      * @see GraphWalker#visit(Graphable, GraphTraversal)
      */
+    @Override
     public int visit(Graphable element, GraphTraversal traversal) {
         return (m_visitor.visit(element));
     }
@@ -72,5 +73,6 @@ public class SimpleGraphWalker implements GraphWalker {
      *
      * @see GraphWalker#finish()
      */
+    @Override
     public void finish() {}
 }

@@ -26,6 +26,7 @@ import org.geotools.xsd.test.XMLTestSupport;
  * @generated
  */
 public abstract class OGCTestSupport extends XMLTestSupport {
+    @Override
     protected Configuration createConfiguration() {
         return new OGCConfiguration();
     }

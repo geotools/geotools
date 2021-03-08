@@ -111,7 +111,8 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.TRANSACTION_RESPONSE_TYPE;
   }
 
@@ -120,7 +121,8 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public TransactionSummaryType getTransactionSummary() {
+	@Override
+    public TransactionSummaryType getTransactionSummary() {
     return transactionSummary;
   }
 
@@ -144,7 +146,8 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setTransactionSummary(TransactionSummaryType newTransactionSummary) {
+	@Override
+    public void setTransactionSummary(TransactionSummaryType newTransactionSummary) {
     if (newTransactionSummary != transactionSummary) {
       NotificationChain msgs = null;
       if (transactionSummary != null)
@@ -163,7 +166,8 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public TransactionResultsType getTransactionResults() {
+	@Override
+    public TransactionResultsType getTransactionResults() {
     return transactionResults;
   }
 
@@ -187,7 +191,8 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setTransactionResults(TransactionResultsType newTransactionResults) {
+	@Override
+    public void setTransactionResults(TransactionResultsType newTransactionResults) {
     if (newTransactionResults != transactionResults) {
       NotificationChain msgs = null;
       if (transactionResults != null)
@@ -206,7 +211,8 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public InsertResultsType getInsertResults() {
+	@Override
+    public InsertResultsType getInsertResults() {
     return insertResults;
   }
 
@@ -230,7 +236,8 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setInsertResults(InsertResultsType newInsertResults) {
+	@Override
+    public void setInsertResults(InsertResultsType newInsertResults) {
     if (newInsertResults != insertResults) {
       NotificationChain msgs = null;
       if (insertResults != null)
@@ -249,7 +256,8 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getVersion() {
+	@Override
+    public String getVersion() {
     return version;
   }
 
@@ -258,7 +266,8 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setVersion(String newVersion) {
+	@Override
+    public void setVersion(String newVersion) {
     String oldVersion = version;
     version = newVersion;
     boolean oldVersionESet = versionESet;
@@ -272,7 +281,8 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void unsetVersion() {
+	@Override
+    public void unsetVersion() {
     String oldVersion = version;
     boolean oldVersionESet = versionESet;
     version = VERSION_EDEFAULT;
@@ -286,7 +296,8 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean isSetVersion() {
+	@Override
+    public boolean isSetVersion() {
     return versionESet;
   }
 
@@ -295,7 +306,8 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+	@Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case WfsPackage.TRANSACTION_RESPONSE_TYPE__TRANSACTION_SUMMARY:
         return basicSetTransactionSummary(null, msgs);
@@ -312,7 +324,8 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	@Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.TRANSACTION_RESPONSE_TYPE__TRANSACTION_SUMMARY:
         return getTransactionSummary();
@@ -331,7 +344,8 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(int featureID, Object newValue) {
+	@Override
+    public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.TRANSACTION_RESPONSE_TYPE__TRANSACTION_SUMMARY:
         setTransactionSummary((TransactionSummaryType)newValue);
@@ -354,7 +368,8 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(int featureID) {
+	@Override
+    public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.TRANSACTION_RESPONSE_TYPE__TRANSACTION_SUMMARY:
         setTransactionSummary((TransactionSummaryType)null);
@@ -377,7 +392,8 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(int featureID) {
+	@Override
+    public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.TRANSACTION_RESPONSE_TYPE__TRANSACTION_SUMMARY:
         return transactionSummary != null;
@@ -396,7 +412,8 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String toString() {
+	@Override
+    public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

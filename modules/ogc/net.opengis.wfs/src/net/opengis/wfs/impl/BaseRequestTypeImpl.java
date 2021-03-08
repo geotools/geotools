@@ -189,7 +189,8 @@ public abstract class BaseRequestTypeImpl extends EObjectImpl implements BaseReq
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.BASE_REQUEST_TYPE;
   }
 
@@ -198,7 +199,8 @@ public abstract class BaseRequestTypeImpl extends EObjectImpl implements BaseReq
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getHandle() {
+	@Override
+    public String getHandle() {
     return handle;
   }
 
@@ -207,7 +209,8 @@ public abstract class BaseRequestTypeImpl extends EObjectImpl implements BaseReq
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setHandle(String newHandle) {
+	@Override
+    public void setHandle(String newHandle) {
     String oldHandle = handle;
     handle = newHandle;
     if (eNotificationRequired())
@@ -219,7 +222,8 @@ public abstract class BaseRequestTypeImpl extends EObjectImpl implements BaseReq
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getService() {
+	@Override
+    public String getService() {
     return service;
   }
 
@@ -228,7 +232,8 @@ public abstract class BaseRequestTypeImpl extends EObjectImpl implements BaseReq
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setService(String newService) {
+	@Override
+    public void setService(String newService) {
     String oldService = service;
     service = newService;
     boolean oldServiceESet = serviceESet;
@@ -242,7 +247,8 @@ public abstract class BaseRequestTypeImpl extends EObjectImpl implements BaseReq
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void unsetService() {
+	@Override
+    public void unsetService() {
     String oldService = service;
     boolean oldServiceESet = serviceESet;
     service = SERVICE_EDEFAULT;
@@ -256,7 +262,8 @@ public abstract class BaseRequestTypeImpl extends EObjectImpl implements BaseReq
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean isSetService() {
+	@Override
+    public boolean isSetService() {
     return serviceESet;
   }
 
@@ -265,7 +272,8 @@ public abstract class BaseRequestTypeImpl extends EObjectImpl implements BaseReq
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getVersion() {
+	@Override
+    public String getVersion() {
     return version;
   }
 
@@ -274,7 +282,8 @@ public abstract class BaseRequestTypeImpl extends EObjectImpl implements BaseReq
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setVersion(String newVersion) {
+	@Override
+    public void setVersion(String newVersion) {
     String oldVersion = version;
     version = newVersion;
     boolean oldVersionESet = versionESet;
@@ -288,7 +297,8 @@ public abstract class BaseRequestTypeImpl extends EObjectImpl implements BaseReq
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void unsetVersion() {
+	@Override
+    public void unsetVersion() {
     String oldVersion = version;
     boolean oldVersionESet = versionESet;
     version = VERSION_EDEFAULT;
@@ -302,7 +312,8 @@ public abstract class BaseRequestTypeImpl extends EObjectImpl implements BaseReq
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean isSetVersion() {
+	@Override
+    public boolean isSetVersion() {
     return versionESet;
   }
 
@@ -311,6 +322,7 @@ public abstract class BaseRequestTypeImpl extends EObjectImpl implements BaseReq
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getBaseUrl() {
     return baseUrl;
   }
@@ -320,6 +332,7 @@ public abstract class BaseRequestTypeImpl extends EObjectImpl implements BaseReq
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setBaseUrl(String newBaseUrl) {
     String oldBaseUrl = baseUrl;
     baseUrl = newBaseUrl;
@@ -332,6 +345,7 @@ public abstract class BaseRequestTypeImpl extends EObjectImpl implements BaseReq
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getProvidedVersion() {
     return providedVersion;
   }
@@ -341,6 +355,7 @@ public abstract class BaseRequestTypeImpl extends EObjectImpl implements BaseReq
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setProvidedVersion(String newProvidedVersion) {
     String oldProvidedVersion = providedVersion;
     providedVersion = newProvidedVersion;
@@ -353,7 +368,8 @@ public abstract class BaseRequestTypeImpl extends EObjectImpl implements BaseReq
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Map getExtendedProperties() {
+	@Override
+    public Map getExtendedProperties() {
     return extendedProperties;
   }
 
@@ -362,7 +378,8 @@ public abstract class BaseRequestTypeImpl extends EObjectImpl implements BaseReq
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setExtendedProperties(Map newExtendedProperties) {
+	@Override
+    public void setExtendedProperties(Map newExtendedProperties) {
     Map oldExtendedProperties = extendedProperties;
     extendedProperties = newExtendedProperties;
     if (eNotificationRequired())
@@ -374,7 +391,8 @@ public abstract class BaseRequestTypeImpl extends EObjectImpl implements BaseReq
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	@Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.BASE_REQUEST_TYPE__HANDLE:
         return getHandle();
@@ -397,7 +415,8 @@ public abstract class BaseRequestTypeImpl extends EObjectImpl implements BaseReq
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(int featureID, Object newValue) {
+	@Override
+    public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.BASE_REQUEST_TYPE__HANDLE:
         setHandle((String)newValue);
@@ -426,7 +445,8 @@ public abstract class BaseRequestTypeImpl extends EObjectImpl implements BaseReq
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(int featureID) {
+	@Override
+    public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.BASE_REQUEST_TYPE__HANDLE:
         setHandle(HANDLE_EDEFAULT);
@@ -455,7 +475,8 @@ public abstract class BaseRequestTypeImpl extends EObjectImpl implements BaseReq
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(int featureID) {
+	@Override
+    public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.BASE_REQUEST_TYPE__HANDLE:
         return HANDLE_EDEFAULT == null ? handle != null : !HANDLE_EDEFAULT.equals(handle);
@@ -478,7 +499,8 @@ public abstract class BaseRequestTypeImpl extends EObjectImpl implements BaseReq
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String toString() {
+	@Override
+    public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

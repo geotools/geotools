@@ -63,6 +63,7 @@ public class KnotPropertyTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public KnotType getKnot() {
         return knot;
     }
@@ -87,6 +88,7 @@ public class KnotPropertyTypeImpl extends MinimalEObjectImpl.Container implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setKnot(KnotType newKnot) {
         if (newKnot != knot) {
             NotificationChain msgs = null;

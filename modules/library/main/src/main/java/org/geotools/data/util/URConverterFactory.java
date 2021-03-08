@@ -44,6 +44,7 @@ public class URConverterFactory implements ConverterFactory {
 
     public static final Converter StringToURL =
             new Converter() {
+                @Override
                 public <T> T convert(Object source, Class<T> target) throws Exception {
                     String s = (String) source;
                     try {
@@ -63,6 +64,7 @@ public class URConverterFactory implements ConverterFactory {
     public static final Converter StringToURI =
             new Converter() {
 
+                @Override
                 public <T> T convert(Object source, Class<T> target) throws Exception {
                     String s = (String) source;
                     try {
@@ -82,6 +84,7 @@ public class URConverterFactory implements ConverterFactory {
     public static final Converter URLToURI =
             new Converter() {
 
+                @Override
                 public <T> T convert(Object source, Class<T> target) throws Exception {
                     URL url = (URL) source;
                     return target.cast(url.toURI());
@@ -91,12 +94,14 @@ public class URConverterFactory implements ConverterFactory {
     public static final Converter URIToURL =
             new Converter() {
 
+                @Override
                 public <T> T convert(Object source, Class<T> target) throws Exception {
                     URI uri = (URI) source;
                     return target.cast(uri.toURL());
                 }
             };
 
+    @Override
     public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {
         if (String.class.equals(source)) {
             if (URL.class.equals(target)) {

@@ -174,6 +174,7 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
      *
      * @see #getMinimumOccurs
      */
+    @Override
     public int getMaximumOccurs() {
         return maximumOccurs;
     }
@@ -184,6 +185,7 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
      * org.opengis.parameter.ParameterValueGroup#getDescriptor parameter value descriptor} for the
      * created group will be {@code this} object.
      */
+    @Override
     public ParameterValueGroup createValue() {
         return new ParameterGroup(this);
     }
@@ -216,6 +218,7 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
     }
 
     /** Returns the parameters in this group. */
+    @Override
     @SuppressWarnings("fallthrough")
     public List<GeneralParameterDescriptor> descriptors() {
         if (asList == null) {
@@ -249,6 +252,7 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
      * @return The parameter for the given identifier code.
      * @throws ParameterNotFoundException if there is no parameter for the given identifier code.
      */
+    @Override
     public GeneralParameterDescriptor descriptor(String name) throws ParameterNotFoundException {
         ensureNonNull("name", name);
         name = name.trim();

@@ -45,78 +45,96 @@ public abstract class DecoratingDataStore extends AbstractDecorator<DataStore>
         super(delegate);
     }
 
+    @Override
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         delegate.createSchema(featureType);
     }
 
+    @Override
     public void dispose() {
         delegate.dispose();
     }
 
+    @Override
     public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
             Query query, Transaction transaction) throws IOException {
         return delegate.getFeatureReader(query, transaction);
     }
 
+    @Override
     public SimpleFeatureSource getFeatureSource(Name typeName) throws IOException {
         return delegate.getFeatureSource(typeName);
     }
 
+    @Override
     public SimpleFeatureSource getFeatureSource(String typeName) throws IOException {
         return delegate.getFeatureSource(typeName);
     }
 
+    @Override
     public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
             String typeName, Filter filter, Transaction transaction) throws IOException {
         return delegate.getFeatureWriter(typeName, filter, transaction);
     }
 
+    @Override
     public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
             String typeName, Transaction transaction) throws IOException {
         return delegate.getFeatureWriter(typeName, transaction);
     }
 
+    @Override
     public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(
             String typeName, Transaction transaction) throws IOException {
         return delegate.getFeatureWriterAppend(typeName, transaction);
     }
 
+    @Override
     public ServiceInfo getInfo() {
         return delegate.getInfo();
     }
 
+    @Override
     public LockingManager getLockingManager() {
         return delegate.getLockingManager();
     }
 
+    @Override
     public List<Name> getNames() throws IOException {
         return delegate.getNames();
     }
 
+    @Override
     public SimpleFeatureType getSchema(Name name) throws IOException {
         return delegate.getSchema(name);
     }
 
+    @Override
     public SimpleFeatureType getSchema(String typeName) throws IOException {
         return delegate.getSchema(typeName);
     }
 
+    @Override
     public String[] getTypeNames() throws IOException {
         return delegate.getTypeNames();
     }
 
+    @Override
     public void updateSchema(Name typeName, SimpleFeatureType featureType) throws IOException {
         delegate.updateSchema(typeName, featureType);
     }
 
+    @Override
     public void updateSchema(String typeName, SimpleFeatureType featureType) throws IOException {
         delegate.updateSchema(typeName, featureType);
     }
 
+    @Override
     public void removeSchema(Name typeName) throws IOException {
         delegate.removeSchema(typeName);
     }
 
+    @Override
     public void removeSchema(String typeName) throws IOException {
         delegate.removeSchema(typeName);
     }

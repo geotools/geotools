@@ -64,6 +64,7 @@ public class DefaultType2Impl extends EObjectImpl implements DefaultType2 {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.DEFAULT_TYPE2;
   }
@@ -73,6 +74,7 @@ public class DefaultType2Impl extends EObjectImpl implements DefaultType2 {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getLanguage() {
     return language;
   }
@@ -82,6 +84,7 @@ public class DefaultType2Impl extends EObjectImpl implements DefaultType2 {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setLanguage(String newLanguage) {
     String oldLanguage = language;
     language = newLanguage;
@@ -94,6 +97,7 @@ public class DefaultType2Impl extends EObjectImpl implements DefaultType2 {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.DEFAULT_TYPE2__LANGUAGE:
@@ -107,6 +111,7 @@ public class DefaultType2Impl extends EObjectImpl implements DefaultType2 {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.DEFAULT_TYPE2__LANGUAGE:
@@ -121,6 +126,7 @@ public class DefaultType2Impl extends EObjectImpl implements DefaultType2 {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.DEFAULT_TYPE2__LANGUAGE:
@@ -135,6 +141,7 @@ public class DefaultType2Impl extends EObjectImpl implements DefaultType2 {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.DEFAULT_TYPE2__LANGUAGE:
@@ -148,6 +155,7 @@ public class DefaultType2Impl extends EObjectImpl implements DefaultType2 {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String toString() {
     if (eIsProxy()) return super.toString();
 

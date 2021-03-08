@@ -247,6 +247,7 @@ public class AnimateColorPrototypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AccumulateType getAccumulate() {
         return accumulate;
     }
@@ -256,6 +257,7 @@ public class AnimateColorPrototypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAccumulate(AccumulateType newAccumulate) {
         AccumulateType oldAccumulate = accumulate;
         accumulate = newAccumulate == null ? ACCUMULATE_EDEFAULT : newAccumulate;
@@ -270,6 +272,7 @@ public class AnimateColorPrototypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetAccumulate() {
         AccumulateType oldAccumulate = accumulate;
         boolean oldAccumulateESet = accumulateESet;
@@ -284,6 +287,7 @@ public class AnimateColorPrototypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetAccumulate() {
         return accumulateESet;
     }
@@ -293,6 +297,7 @@ public class AnimateColorPrototypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AdditiveType getAdditive() {
         return additive;
     }
@@ -302,6 +307,7 @@ public class AnimateColorPrototypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAdditive(AdditiveType newAdditive) {
         AdditiveType oldAdditive = additive;
         additive = newAdditive == null ? ADDITIVE_EDEFAULT : newAdditive;
@@ -316,6 +322,7 @@ public class AnimateColorPrototypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetAdditive() {
         AdditiveType oldAdditive = additive;
         boolean oldAdditiveESet = additiveESet;
@@ -330,6 +337,7 @@ public class AnimateColorPrototypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetAdditive() {
         return additiveESet;
     }
@@ -339,6 +347,7 @@ public class AnimateColorPrototypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getAttributeName() {
         return attributeName;
     }
@@ -348,6 +357,7 @@ public class AnimateColorPrototypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAttributeName(String newAttributeName) {
         String oldAttributeName = attributeName;
         attributeName = newAttributeName;
@@ -360,6 +370,7 @@ public class AnimateColorPrototypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AttributeTypeType getAttributeType() {
         return attributeType;
     }
@@ -369,6 +380,7 @@ public class AnimateColorPrototypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAttributeType(AttributeTypeType newAttributeType) {
         AttributeTypeType oldAttributeType = attributeType;
         attributeType = newAttributeType == null ? ATTRIBUTE_TYPE_EDEFAULT : newAttributeType;
@@ -383,6 +395,7 @@ public class AnimateColorPrototypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetAttributeType() {
         AttributeTypeType oldAttributeType = attributeType;
         boolean oldAttributeTypeESet = attributeTypeESet;
@@ -397,6 +410,7 @@ public class AnimateColorPrototypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetAttributeType() {
         return attributeTypeESet;
     }
@@ -406,6 +420,7 @@ public class AnimateColorPrototypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getBy() {
         return by;
     }
@@ -415,6 +430,7 @@ public class AnimateColorPrototypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBy(String newBy) {
         String oldBy = by;
         by = newBy;
@@ -427,6 +443,7 @@ public class AnimateColorPrototypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getFrom() {
         return from;
     }
@@ -436,6 +453,7 @@ public class AnimateColorPrototypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFrom(String newFrom) {
         String oldFrom = from;
         from = newFrom;
@@ -448,6 +466,7 @@ public class AnimateColorPrototypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getTo() {
         return to;
     }
@@ -457,6 +476,7 @@ public class AnimateColorPrototypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTo(String newTo) {
         String oldTo = to;
         to = newTo;
@@ -469,6 +489,7 @@ public class AnimateColorPrototypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getValues() {
         return values;
     }
@@ -478,6 +499,7 @@ public class AnimateColorPrototypeImpl extends MinimalEObjectImpl.Container impl
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValues(String newValues) {
         String oldValues = values;
         values = newValues;

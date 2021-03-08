@@ -58,6 +58,7 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
 
     StringWriter writer;
 
+    @Override
     @Before
     public void setUp() throws IllegalAttributeException, SchemaException {
         ff = CommonFactoryFinder.getFilterFactory2();

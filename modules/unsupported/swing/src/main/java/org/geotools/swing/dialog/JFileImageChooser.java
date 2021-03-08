@@ -167,13 +167,7 @@ public class JFileImageChooser extends JFileChooser {
         } else {
             try {
                 SwingUtilities.invokeAndWait(
-                        new Runnable() {
-
-                            @Override
-                            public void run() {
-                                file[0] = doShow(parent, workingDir, SAVE_DIALOG);
-                            }
-                        });
+                        () -> file[0] = doShow(parent, workingDir, SAVE_DIALOG));
             } catch (InterruptedException ex) {
                 LOGGER.log(Level.SEVERE, "Thread interrupted while prompting for file", ex);
 
@@ -220,13 +214,7 @@ public class JFileImageChooser extends JFileChooser {
         } else {
             try {
                 SwingUtilities.invokeAndWait(
-                        new Runnable() {
-
-                            @Override
-                            public void run() {
-                                file[0] = doShow(parent, workingDir, OPEN_DIALOG);
-                            }
-                        });
+                        () -> file[0] = doShow(parent, workingDir, OPEN_DIALOG));
             } catch (InterruptedException ex) {
                 LOGGER.log(Level.SEVERE, "Thread interrupted while prompting for file", ex);
 

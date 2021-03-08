@@ -44,6 +44,7 @@ class ColumnPair {
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public int hashCode() {
         int result = 78236951;
         if (column1 != null) result = result * 37 + column1.hashCode();
@@ -55,6 +56,7 @@ class ColumnPair {
     /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals(Object arg0) {
         boolean result = false;
 

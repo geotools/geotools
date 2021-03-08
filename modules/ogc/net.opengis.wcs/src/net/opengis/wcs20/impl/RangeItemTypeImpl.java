@@ -83,6 +83,7 @@ public class RangeItemTypeImpl extends EObjectImpl implements RangeItemType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getRangeComponent() {
 		return rangeComponent;
 	}
@@ -92,6 +93,7 @@ public class RangeItemTypeImpl extends EObjectImpl implements RangeItemType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setRangeComponent(String newRangeComponent) {
 		String oldRangeComponent = rangeComponent;
 		rangeComponent = newRangeComponent;
@@ -104,6 +106,7 @@ public class RangeItemTypeImpl extends EObjectImpl implements RangeItemType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public RangeIntervalType getRangeInterval() {
 		if (rangeInterval != null && rangeInterval.eIsProxy()) {
 			InternalEObject oldRangeInterval = (InternalEObject)rangeInterval;
@@ -130,6 +133,7 @@ public class RangeItemTypeImpl extends EObjectImpl implements RangeItemType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setRangeInterval(RangeIntervalType newRangeInterval) {
 		RangeIntervalType oldRangeInterval = rangeInterval;
 		rangeInterval = newRangeInterval;

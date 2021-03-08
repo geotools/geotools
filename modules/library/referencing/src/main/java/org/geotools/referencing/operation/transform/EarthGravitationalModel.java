@@ -298,6 +298,7 @@ public final class EarthGravitationalModel extends VerticalTransform {
     }
 
     /** {@inheritDoc} */
+    @Override
     public double heightOffset(final double longitude, final double latitude, final double height)
             throws TransformException {
         /*
@@ -419,6 +420,7 @@ public final class EarthGravitationalModel extends VerticalTransform {
          * @throws ParameterNotFoundException if a required parameter was not found.
          * @throws FactoryException if this method failed to load the coefficient file.
          */
+        @Override
         protected MathTransform createMathTransform(final ParameterValueGroup values)
                 throws ParameterNotFoundException, FactoryException {
             int nmax = intValue(ORDER, values);

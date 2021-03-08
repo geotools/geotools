@@ -141,7 +141,8 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public List getLowerCorner() {
+	@Override
+    public List getLowerCorner() {
     return lowerCorner;
   }
 
@@ -150,7 +151,8 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setLowerCorner(List newLowerCorner) {
+	@Override
+    public void setLowerCorner(List newLowerCorner) {
     List oldLowerCorner = lowerCorner;
     lowerCorner = newLowerCorner;
     if (eNotificationRequired())
@@ -162,7 +164,8 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public List getUpperCorner() {
+	@Override
+    public List getUpperCorner() {
     return upperCorner;
   }
 
@@ -171,7 +174,8 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setUpperCorner(List newUpperCorner) {
+	@Override
+    public void setUpperCorner(List newUpperCorner) {
     List oldUpperCorner = upperCorner;
     upperCorner = newUpperCorner;
     if (eNotificationRequired())
@@ -183,7 +187,8 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getCrs() {
+	@Override
+    public String getCrs() {
     return crs;
   }
 
@@ -192,7 +197,8 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setCrs(String newCrs) {
+	@Override
+    public void setCrs(String newCrs) {
     String oldCrs = crs;
     crs = newCrs;
     if (eNotificationRequired())
@@ -204,7 +210,8 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public BigInteger getDimensions() {
+	@Override
+    public BigInteger getDimensions() {
     return dimensions;
   }
 
@@ -213,7 +220,8 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setDimensions(BigInteger newDimensions) {
+	@Override
+    public void setDimensions(BigInteger newDimensions) {
     BigInteger oldDimensions = dimensions;
     dimensions = newDimensions;
     if (eNotificationRequired())

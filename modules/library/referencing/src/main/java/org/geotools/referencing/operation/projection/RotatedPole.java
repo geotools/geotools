@@ -79,6 +79,7 @@ public class RotatedPole extends MapProjection {
      * @param x The longitude of the coordinate, in <strong>radians</strong>.
      * @param y The latitude of the coordinate, in <strong>radians</strong>.
      */
+    @Override
     protected Point2D transformNormalized(double x, double y, Point2D ptDst)
             throws ProjectionException {
         final double sinlat = sin(y);
@@ -107,6 +108,7 @@ public class RotatedPole extends MapProjection {
      * Transforms the specified (<var>x</var>,<var>y</var>) coordinates (units in radians) and
      * stores the result in {@code ptDst} (linear distance on a unit sphere).
      */
+    @Override
     protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
             throws ProjectionException {
         final double scalePI = globalScale * PI / 180;
@@ -184,6 +186,7 @@ public class RotatedPole extends MapProjection {
          * @return The created math transform.
          * @throws ParameterNotFoundException if a required parameter was not found.
          */
+        @Override
         protected MathTransform createMathTransform(final ParameterValueGroup parameters)
                 throws ParameterNotFoundException, FactoryException {
             if (isSpherical(parameters)) {

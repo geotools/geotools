@@ -24,6 +24,7 @@ public abstract class JDBCPrimaryKeyFinderTestSetup extends JDBCDelegatingTestSe
         super(delegate);
     }
 
+    @Override
     protected final void setUpData() throws Exception {
         // kill all the data
         try {

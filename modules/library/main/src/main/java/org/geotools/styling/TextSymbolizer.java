@@ -344,6 +344,7 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer, Symbol
      *
      * @return Expression that will be evaulated as a String to display on screen
      */
+    @Override
     Expression getLabel();
 
     /**
@@ -365,6 +366,7 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer, Symbol
      *
      * @return Initial Font used to render label, or null if unavailable.
      */
+    @Override
     Font getFont();
 
     /**
@@ -377,6 +379,7 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer, Symbol
      * A LabelPlacement specifies how a text element should be rendered relative to its geometric
      * point or line.
      */
+    @Override
     LabelPlacement getLabelPlacement();
 
     /**
@@ -389,6 +392,7 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer, Symbol
      * A halo fills an extended area outside the glyphs of a rendered text label to make the label
      * easier to read over a background.
      */
+    @Override
     Halo getHalo();
 
     /**
@@ -398,6 +402,7 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer, Symbol
     void setHalo(org.opengis.style.Halo halo);
 
     /** Returns the object that indicates how the text will be filled. */
+    @Override
     Fill getFill();
 
     /**
@@ -422,5 +427,6 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer, Symbol
      *
      * @return null - no options set
      */
+    @Override
     Map<String, String> getOptions();
 }

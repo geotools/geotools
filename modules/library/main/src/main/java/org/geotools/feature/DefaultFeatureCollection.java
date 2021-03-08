@@ -130,6 +130,7 @@ public class DefaultFeatureCollection
      *
      * @return the envelope of the geometries contained by this feature collection.
      */
+    @Override
     public ReferencedEnvelope getBounds() {
         if (bounds == null) {
             bounds = new ReferencedEnvelope();
@@ -166,6 +167,7 @@ public class DefaultFeatureCollection
      * @param o element whose presence in this collection is to be ensured.
      * @return <tt>true</tt> if this collection changed as a result of the call
      */
+    @Override
     public boolean add(SimpleFeature o) {
         return add(o, true);
     }
@@ -237,6 +239,7 @@ public class DefaultFeatureCollection
      * Removes all of the elements from this collection (optional operation). This collection will
      * be empty after this method returns unless it throws an exception.
      */
+    @Override
     public void clear() {
         contents.clear();
     }
@@ -249,6 +252,7 @@ public class DefaultFeatureCollection
      * @param o element whose presence in this collection is to be tested.
      * @return <tt>true</tt> if this collection contains the specified element
      */
+    @Override
     public boolean contains(Object o) {
         // The contract of Set doesn't say we have to cast here, but I think its
         // useful for client sanity to get a ClassCastException and not just a
@@ -266,6 +270,7 @@ public class DefaultFeatureCollection
      *
      * @return true if collection is completly covered
      */
+    @Override
     public boolean containsAll(Collection<?> collection) {
         Iterator<?> iterator = collection.iterator();
         try {
@@ -288,6 +293,7 @@ public class DefaultFeatureCollection
      *
      * @return <tt>true</tt> if this collection contains no elements
      */
+    @Override
     public boolean isEmpty() {
         return contents.isEmpty();
     }
@@ -299,21 +305,25 @@ public class DefaultFeatureCollection
      *
      * @return an <tt>Iterator</tt> over the elements in this collection
      */
+    @Override
     public Iterator<SimpleFeature> iterator() {
         // return contents.values().iterator();
         final Iterator<SimpleFeature> iterator = contents.values().iterator();
         return new Iterator<SimpleFeature>() {
             SimpleFeature currFeature = null;
 
+            @Override
             public boolean hasNext() {
                 return iterator.hasNext();
             }
 
+            @Override
             public SimpleFeature next() {
                 currFeature = iterator.next();
                 return currFeature;
             }
 
+            @Override
             public void remove() {
                 iterator.remove();
                 bounds = null; // recalc
@@ -327,6 +337,7 @@ public class DefaultFeatureCollection
      *
      * @return the SimpleFeatureIterator for this collection.
      */
+    @Override
     public SimpleFeatureIterator features() {
         return new SimpleFeatureIteratorImpl(contents.values());
     }
@@ -341,6 +352,7 @@ public class DefaultFeatureCollection
      * @param o element to be removed from this collection, if present.
      * @return <tt>true</tt> if this collection changed as a result of the call
      */
+    @Override
     public boolean remove(Object o) {
         if (!(o instanceof SimpleFeature)) return false;
 
@@ -359,6 +371,7 @@ public class DefaultFeatureCollection
      * @see #remove(Object)
      * @see #contains(Object)
      */
+    @Override
     public boolean removeAll(Collection<?> collection) {
         boolean changed = false;
         Iterator<?> iterator = collection.iterator();
@@ -389,6 +402,7 @@ public class DefaultFeatureCollection
      * @see #remove(Object)
      * @see #contains(Object)
      */
+    @Override
     public boolean retainAll(Collection<?> collection) {
         boolean modified = false;
         for (Iterator<?> it = contents.values().iterator(); it.hasNext(); ) {
@@ -407,6 +421,7 @@ public class DefaultFeatureCollection
      *
      * @return the number of elements in this collection
      */
+    @Override
     public int size() {
         return contents.size();
     }
@@ -424,6 +439,7 @@ public class DefaultFeatureCollection
      *
      * @return an array containing all of the elements in this collection
      */
+    @Override
     public Object[] toArray() {
         return contents.values().toArray();
     }
@@ -460,6 +476,7 @@ public class DefaultFeatureCollection
      *     enough; otherwise, a new array of the same runtime type is allocated for this purpose.
      * @return an array containing the elements of this collection
      */
+    @Override
     public <T> T[] toArray(T[] a) {
         return contents.values().toArray(a);
     }
@@ -479,19 +496,23 @@ public class DefaultFeatureCollection
         @SuppressWarnings("PMD.CloseResource") // wrapped and returned
         final SimpleFeatureIterator iterator = features();
         return new FeatureReader<SimpleFeatureType, SimpleFeature>() {
+            @Override
             public SimpleFeatureType getFeatureType() {
                 return getSchema();
             }
 
+            @Override
             public SimpleFeature next()
                     throws IOException, IllegalAttributeException, NoSuchElementException {
                 return iterator.next();
             }
 
+            @Override
             public boolean hasNext() throws IOException {
                 return iterator.hasNext();
             }
 
+            @Override
             public void close() throws IOException {
                 DefaultFeatureCollection.this.close(iterator);
             }
@@ -531,6 +552,7 @@ public class DefaultFeatureCollection
         return Collections.unmodifiableSet(contents.keySet());
     }
 
+    @Override
     public void accepts(
             org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress)
             throws IOException {
@@ -548,6 +570,7 @@ public class DefaultFeatureCollection
      * @param filter Filter used to determine sub collection.
      * @since GeoTools 2.2, Filter 1.1
      */
+    @Override
     public SimpleFeatureCollection subCollection(Filter filter) {
         if (filter == Filter.INCLUDE) {
             return this;
@@ -568,6 +591,7 @@ public class DefaultFeatureCollection
      * @param order Filter 1.1 SortBy Construction of a Sort
      * @return FeatureList sorted according to provided order
      */
+    @Override
     public SimpleFeatureCollection sort(SortBy order) {
         if (order == SortBy.NATURAL_ORDER) {
             return this;
@@ -581,10 +605,12 @@ public class DefaultFeatureCollection
 
     public void validate() {}
 
+    @Override
     public String getID() {
         return id;
     }
 
+    @Override
     public SimpleFeatureType getSchema() {
         return schema;
     }

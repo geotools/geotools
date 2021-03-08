@@ -32,6 +32,7 @@ public class ElementSetNameTypeBinding extends SimpleContentComplexEMFBinding {
         super(Csw20Factory.eINSTANCE, CSW.ElementSetNameType);
     }
 
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         ElementSetNameType result = (ElementSetNameType) createEObject(value);

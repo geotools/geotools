@@ -75,6 +75,7 @@ public class ColorReductionDescriptor extends OperationDescriptorImpl {
      * @param param The parameter block for the operation to performs.
      * @param message A buffer for formatting an error message if any.
      */
+    @Override
     protected boolean validateSources(
             final String modeName, final ParameterBlock param, final StringBuffer message) {
         if (super.validateSources(modeName, param, message)) {
@@ -97,6 +98,7 @@ public class ColorReductionDescriptor extends OperationDescriptorImpl {
      * @param param The parameter block for the operation to performs.
      * @param message A buffer for formatting an error message if any.
      */
+    @Override
     protected boolean validateParameters(
             final String modeName, final ParameterBlock param, final StringBuffer message) {
         if (!super.validateParameters(modeName, param, message)) {

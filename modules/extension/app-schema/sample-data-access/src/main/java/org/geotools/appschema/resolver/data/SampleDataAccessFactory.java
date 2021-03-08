@@ -66,6 +66,7 @@ public class SampleDataAccessFactory implements DataAccessFactory {
      *
      * @see org.geotools.data.DataAccessFactory#canProcess(java.util.Map)
      */
+    @Override
     public boolean canProcess(Map<String, ?> params) {
         return DBTYPE_STRING.equals(params.get(SampleDataAccessFactory.DBTYPE.key));
     }
@@ -75,6 +76,7 @@ public class SampleDataAccessFactory implements DataAccessFactory {
      *
      * @see org.geotools.data.DataAccessFactory#createDataStore(java.util.Map)
      */
+    @Override
     public DataAccess<? extends FeatureType, ? extends Feature> createDataStore(
             Map<String, ?> params) throws IOException {
         return new SampleDataAccess();
@@ -85,6 +87,7 @@ public class SampleDataAccessFactory implements DataAccessFactory {
      *
      * @see org.geotools.data.DataAccessFactory#getDescription()
      */
+    @Override
     public String getDescription() {
         // FIXME implement this
         return null;
@@ -95,6 +98,7 @@ public class SampleDataAccessFactory implements DataAccessFactory {
      *
      * @see org.geotools.data.DataAccessFactory#getDisplayName()
      */
+    @Override
     public String getDisplayName() {
         // FIXME implement this
         return null;
@@ -105,6 +109,7 @@ public class SampleDataAccessFactory implements DataAccessFactory {
      *
      * @see org.geotools.data.DataAccessFactory#getParametersInfo()
      */
+    @Override
     public Param[] getParametersInfo() {
         // FIXME implement this
         return null;
@@ -115,6 +120,7 @@ public class SampleDataAccessFactory implements DataAccessFactory {
      *
      * @see org.geotools.data.DataAccessFactory#isAvailable()
      */
+    @Override
     public boolean isAvailable() {
         return true;
     }
@@ -124,6 +130,7 @@ public class SampleDataAccessFactory implements DataAccessFactory {
      *
      * @see org.geotools.util.factory.Factory#getImplementationHints()
      */
+    @Override
     public Map<Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }

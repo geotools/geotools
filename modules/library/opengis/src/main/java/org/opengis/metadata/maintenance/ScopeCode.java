@@ -127,6 +127,7 @@ public final class ScopeCode extends CodeList<ScopeCode> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public ScopeCode[] family() {
         return values();
     }

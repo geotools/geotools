@@ -37,6 +37,7 @@ public class DuringImpl extends BinaryTemporalOperatorImpl implements During {
         return pos == RelativePosition.DURING;
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

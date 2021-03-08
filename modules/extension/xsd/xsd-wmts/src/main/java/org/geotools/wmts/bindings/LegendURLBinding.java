@@ -101,6 +101,7 @@ public class LegendURLBinding extends OnlineResourceTypeBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WMTS.LegendURL;
     }
@@ -112,6 +113,7 @@ public class LegendURLBinding extends OnlineResourceTypeBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return LegendURLType.class;
     }
@@ -123,6 +125,7 @@ public class LegendURLBinding extends OnlineResourceTypeBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         if (!(value instanceof LegendURLType)) {

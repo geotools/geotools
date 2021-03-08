@@ -68,6 +68,7 @@ public class CurveArrayPropertyTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getCurveGroup() {
         if (curveGroup == null) {
             curveGroup = new BasicFeatureMap(this, Gml311Package.CURVE_ARRAY_PROPERTY_TYPE__CURVE_GROUP);
@@ -80,6 +81,7 @@ public class CurveArrayPropertyTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<AbstractCurveType> getCurve() {
         return getCurveGroup().list(Gml311Package.eINSTANCE.getCurveArrayPropertyType_Curve());
     }

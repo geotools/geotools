@@ -736,7 +736,8 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
     EValidator.Registry.INSTANCE.put
       (theWfs20Package,
        new EValidator.Descriptor() {
-         public EValidator getEValidator() {
+         @Override
+        public EValidator getEValidator() {
            return Wfs20Validator.INSTANCE;
          }
        });
@@ -753,6 +754,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getAbstractTransactionActionType() {
     return abstractTransactionActionTypeEClass;
   }
@@ -761,6 +763,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getAbstractTransactionActionType_Handle() {
     return (EAttribute)abstractTransactionActionTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -769,6 +772,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getAbstractType() {
     return abstractTypeEClass;
   }
@@ -777,6 +781,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getAbstractType_Value() {
     return (EAttribute)abstractTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -785,6 +790,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getAbstractType_Lang() {
     return (EAttribute)abstractTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -793,6 +799,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getActionResultsType() {
     return actionResultsTypeEClass;
   }
@@ -801,6 +808,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getActionResultsType_Feature() {
     return (EReference)actionResultsTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -809,6 +817,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getAdditionalObjectsType() {
     return additionalObjectsTypeEClass;
   }
@@ -817,6 +826,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getAdditionalObjectsType_ValueCollection() {
     return (EReference)additionalObjectsTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -825,6 +835,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getAdditionalObjectsType_SimpleFeatureCollectionGroup() {
     return (EAttribute)additionalObjectsTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -833,6 +844,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getAdditionalObjectsType_SimpleFeatureCollection() {
     return (EReference)additionalObjectsTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -841,6 +853,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getAdditionalValuesType() {
     return additionalValuesTypeEClass;
   }
@@ -849,6 +862,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getAdditionalValuesType_ValueCollection() {
     return (EReference)additionalValuesTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -857,6 +871,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getAdditionalValuesType_SimpleFeatureCollectionGroup() {
     return (EAttribute)additionalValuesTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -865,6 +880,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getAdditionalValuesType_SimpleFeatureCollection() {
     return (EReference)additionalValuesTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -873,6 +889,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getBaseRequestType() {
     return baseRequestTypeEClass;
   }
@@ -881,6 +898,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getBaseRequestType_Handle() {
     return (EAttribute)baseRequestTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -889,6 +907,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getBaseRequestType_Service() {
     return (EAttribute)baseRequestTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -897,6 +916,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getBaseRequestType_Version() {
     return (EAttribute)baseRequestTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -905,6 +925,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getBaseRequestType_BaseUrl() {
     return (EAttribute)baseRequestTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -913,6 +934,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getBaseRequestType_ExtendedProperties() {
     return (EAttribute)baseRequestTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -921,6 +943,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getCreatedOrModifiedFeatureType() {
     return createdOrModifiedFeatureTypeEClass;
   }
@@ -929,6 +952,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getCreatedOrModifiedFeatureType_ResourceId() {
     return (EAttribute)createdOrModifiedFeatureTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -937,6 +961,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getCreatedOrModifiedFeatureType_Handle() {
     return (EAttribute)createdOrModifiedFeatureTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -945,6 +970,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getCreateStoredQueryResponseType() {
     return createStoredQueryResponseTypeEClass;
   }
@@ -953,6 +979,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getCreateStoredQueryType() {
     return createStoredQueryTypeEClass;
   }
@@ -961,6 +988,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getCreateStoredQueryType_StoredQueryDefinition() {
     return (EReference)createStoredQueryTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -969,6 +997,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getDeleteType() {
     return deleteTypeEClass;
   }
@@ -977,6 +1006,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDeleteType_Filter() {
     return (EAttribute)deleteTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -985,6 +1015,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDeleteType_TypeName() {
     return (EAttribute)deleteTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -993,6 +1024,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getDescribeFeatureTypeType() {
     return describeFeatureTypeTypeEClass;
   }
@@ -1001,6 +1033,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDescribeFeatureTypeType_TypeName() {
     return (EAttribute)describeFeatureTypeTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1009,6 +1042,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDescribeFeatureTypeType_OutputFormat() {
     return (EAttribute)describeFeatureTypeTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1017,6 +1051,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getDescribeStoredQueriesResponseType() {
     return describeStoredQueriesResponseTypeEClass;
   }
@@ -1025,6 +1060,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDescribeStoredQueriesResponseType_StoredQueryDescription() {
     return (EReference)describeStoredQueriesResponseTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1033,6 +1069,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getDescribeStoredQueriesType() {
     return describeStoredQueriesTypeEClass;
   }
@@ -1041,6 +1078,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDescribeStoredQueriesType_StoredQueryId() {
     return (EAttribute)describeStoredQueriesTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1049,6 +1087,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getDocumentRoot() {
     return documentRootEClass;
   }
@@ -1057,6 +1096,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDocumentRoot_Mixed() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(0);
   }
@@ -1065,6 +1105,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_XMLNSPrefixMap() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(1);
   }
@@ -1073,6 +1114,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_XSISchemaLocation() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(2);
   }
@@ -1081,6 +1123,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Abstract() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(3);
   }
@@ -1089,6 +1132,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_AbstractTransactionAction() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(4);
   }
@@ -1097,6 +1141,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_AdditionalObjects() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(5);
   }
@@ -1105,6 +1150,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_AdditionalValues() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(6);
   }
@@ -1113,6 +1159,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_BoundedBy() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(7);
   }
@@ -1121,6 +1168,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_CreateStoredQuery() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(8);
   }
@@ -1129,6 +1177,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_CreateStoredQueryResponse() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(9);
   }
@@ -1137,6 +1186,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Delete() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(10);
   }
@@ -1145,6 +1195,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_DescribeFeatureType() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(11);
   }
@@ -1153,6 +1204,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_DescribeStoredQueries() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(12);
   }
@@ -1161,6 +1213,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_DescribeStoredQueriesResponse() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(13);
   }
@@ -1169,6 +1222,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_DropStoredQuery() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(14);
   }
@@ -1177,6 +1231,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_DropStoredQueryResponse() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(15);
   }
@@ -1185,6 +1240,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Element() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(16);
   }
@@ -1193,6 +1249,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_FeatureCollection() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(17);
   }
@@ -1201,6 +1258,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_SimpleFeatureCollection() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(18);
   }
@@ -1209,6 +1267,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_FeatureTypeList() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(19);
   }
@@ -1217,6 +1276,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_GetCapabilities() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(20);
   }
@@ -1225,6 +1285,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_GetFeature() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(21);
   }
@@ -1233,6 +1294,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_GetFeatureWithLock() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(22);
   }
@@ -1241,6 +1303,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_GetPropertyValue() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(23);
   }
@@ -1249,6 +1312,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Insert() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(24);
   }
@@ -1257,6 +1321,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_ListStoredQueries() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(25);
   }
@@ -1265,6 +1330,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_ListStoredQueriesResponse() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(26);
   }
@@ -1273,6 +1339,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_LockFeature() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(27);
   }
@@ -1281,6 +1348,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_LockFeatureResponse() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(28);
   }
@@ -1289,6 +1357,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Member() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(29);
   }
@@ -1297,6 +1366,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Native() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(30);
   }
@@ -1305,6 +1375,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Property() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(31);
   }
@@ -1313,6 +1384,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_PropertyName() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(32);
   }
@@ -1321,6 +1393,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Query() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(33);
   }
@@ -1329,6 +1402,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Replace() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(34);
   }
@@ -1337,6 +1411,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_StoredQuery() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(35);
   }
@@ -1345,6 +1420,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Title() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(36);
   }
@@ -1353,6 +1429,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Transaction() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(37);
   }
@@ -1361,6 +1438,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_TransactionResponse() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(38);
   }
@@ -1369,6 +1447,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_TruncatedResponse() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(39);
   }
@@ -1377,6 +1456,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Tuple() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(40);
   }
@@ -1385,6 +1465,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Update() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(41);
   }
@@ -1393,6 +1474,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Value() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(42);
   }
@@ -1401,6 +1483,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_ValueCollection() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(43);
   }
@@ -1409,6 +1492,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_ValueList() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(44);
   }
@@ -1417,6 +1501,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_WFSCapabilities() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(45);
   }
@@ -1425,6 +1510,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getDropStoredQueryType() {
     return dropStoredQueryTypeEClass;
   }
@@ -1433,6 +1519,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDropStoredQueryType_Id() {
     return (EAttribute)dropStoredQueryTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1441,6 +1528,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getElementType() {
     return elementTypeEClass;
   }
@@ -1449,6 +1537,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getElementType_Metadata() {
     return (EReference)elementTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1457,6 +1546,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getElementType_ValueList() {
     return (EReference)elementTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1465,6 +1555,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getElementType_Name() {
     return (EAttribute)elementTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1473,6 +1564,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getElementType_Type() {
     return (EAttribute)elementTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -1481,6 +1573,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getEmptyType() {
     return emptyTypeEClass;
   }
@@ -1489,6 +1582,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getEnvelopePropertyType() {
     return envelopePropertyTypeEClass;
   }
@@ -1497,6 +1591,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getEnvelopePropertyType_Any() {
     return (EAttribute)envelopePropertyTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1505,6 +1600,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getExecutionStatusType() {
     return executionStatusTypeEClass;
   }
@@ -1513,6 +1609,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getExecutionStatusType_Status() {
     return (EAttribute)executionStatusTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1521,6 +1618,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getExtendedDescriptionType() {
     return extendedDescriptionTypeEClass;
   }
@@ -1529,6 +1627,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getExtendedDescriptionType_Element() {
     return (EReference)extendedDescriptionTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1537,6 +1636,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getFeatureCollectionType() {
     return featureCollectionTypeEClass;
   }
@@ -1545,6 +1645,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getFeatureCollectionType_AdditionalObjects() {
     return (EReference)featureCollectionTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1553,6 +1654,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getFeatureCollectionType_TruncatedResponse() {
     return (EReference)featureCollectionTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1561,6 +1663,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getFeatureCollectionType_LockId() {
     return (EAttribute)featureCollectionTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1569,6 +1672,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getFeatureCollectionType_Next() {
     return (EAttribute)featureCollectionTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -1577,6 +1681,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getFeatureCollectionType_NumberMatched() {
     return (EAttribute)featureCollectionTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -1585,6 +1690,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getFeatureCollectionType_NumberReturned() {
     return (EAttribute)featureCollectionTypeEClass.getEStructuralFeatures().get(5);
   }
@@ -1593,6 +1699,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getFeatureCollectionType_Previous() {
     return (EAttribute)featureCollectionTypeEClass.getEStructuralFeatures().get(6);
   }
@@ -1601,6 +1708,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getFeatureCollectionType_TimeStamp() {
     return (EAttribute)featureCollectionTypeEClass.getEStructuralFeatures().get(7);
   }
@@ -1609,6 +1717,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getFeaturesLockedType() {
     return featuresLockedTypeEClass;
   }
@@ -1617,6 +1726,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getFeaturesLockedType_Group() {
     return (EAttribute)featuresLockedTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1625,6 +1735,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getFeaturesLockedType_ResourceId() {
     return (EAttribute)featuresLockedTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1633,6 +1744,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getFeaturesNotLockedType() {
     return featuresNotLockedTypeEClass;
   }
@@ -1641,6 +1753,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getFeaturesNotLockedType_Group() {
     return (EAttribute)featuresNotLockedTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1649,6 +1762,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getFeaturesNotLockedType_ResourceId() {
     return (EAttribute)featuresNotLockedTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1657,6 +1771,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getFeatureTypeListType() {
     return featureTypeListTypeEClass;
   }
@@ -1665,6 +1780,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getFeatureTypeListType_FeatureType() {
     return (EReference)featureTypeListTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1673,6 +1789,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getFeatureTypeType() {
     return featureTypeTypeEClass;
   }
@@ -1681,6 +1798,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getFeatureTypeType_Name() {
     return (EAttribute)featureTypeTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1689,6 +1807,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getFeatureTypeType_Title() {
     return (EReference)featureTypeTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1697,6 +1816,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getFeatureTypeType_Abstract() {
     return (EReference)featureTypeTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1705,6 +1825,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getFeatureTypeType_Keywords() {
     return (EReference)featureTypeTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -1713,6 +1834,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getFeatureTypeType_DefaultCRS() {
     return (EAttribute)featureTypeTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -1721,6 +1843,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getFeatureTypeType_OtherCRS() {
     return (EAttribute)featureTypeTypeEClass.getEStructuralFeatures().get(5);
   }
@@ -1729,6 +1852,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getFeatureTypeType_NoCRS() {
     return (EReference)featureTypeTypeEClass.getEStructuralFeatures().get(6);
   }
@@ -1737,6 +1861,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getFeatureTypeType_OutputFormats() {
     return (EReference)featureTypeTypeEClass.getEStructuralFeatures().get(7);
   }
@@ -1745,6 +1870,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getFeatureTypeType_WGS84BoundingBox() {
     return (EReference)featureTypeTypeEClass.getEStructuralFeatures().get(8);
   }
@@ -1753,6 +1879,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getFeatureTypeType_MetadataURL() {
     return (EReference)featureTypeTypeEClass.getEStructuralFeatures().get(9);
   }
@@ -1761,6 +1888,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getFeatureTypeType_ExtendedDescription() {
     return (EReference)featureTypeTypeEClass.getEStructuralFeatures().get(10);
   }
@@ -1769,6 +1897,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getGetCapabilitiesType() {
     return getCapabilitiesTypeEClass;
   }
@@ -1777,6 +1906,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetCapabilitiesType_Service() {
     return (EAttribute)getCapabilitiesTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1785,6 +1915,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getGetFeatureType() {
     return getFeatureTypeEClass;
   }
@@ -1793,6 +1924,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetFeatureType_Count() {
     return (EAttribute)getFeatureTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1801,6 +1933,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetFeatureType_OutputFormat() {
     return (EAttribute)getFeatureTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1809,6 +1942,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetFeatureType_Resolve() {
     return (EAttribute)getFeatureTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1817,6 +1951,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetFeatureType_ResolveDepth() {
     return (EAttribute)getFeatureTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -1825,6 +1960,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetFeatureType_ResolveTimeout() {
     return (EAttribute)getFeatureTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -1833,6 +1969,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetFeatureType_ResultType() {
     return (EAttribute)getFeatureTypeEClass.getEStructuralFeatures().get(5);
   }
@@ -1841,6 +1978,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetFeatureType_StartIndex() {
     return (EAttribute)getFeatureTypeEClass.getEStructuralFeatures().get(6);
   }
@@ -1849,6 +1987,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetFeatureType_Metadata() {
     return (EAttribute)getFeatureTypeEClass.getEStructuralFeatures().get(7);
   }
@@ -1857,6 +1996,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetFeatureType_FormatOptions() {
     return (EAttribute)getFeatureTypeEClass.getEStructuralFeatures().get(8);
   }
@@ -1865,6 +2005,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetFeatureType_ViewParams() {
     return (EAttribute)getFeatureTypeEClass.getEStructuralFeatures().get(9);
   }
@@ -1873,6 +2014,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetFeatureType_AbstractQueryExpressionGroup() {
     return (EAttribute)getFeatureTypeEClass.getEStructuralFeatures().get(10);
   }
@@ -1881,6 +2023,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getGetFeatureType_AbstractQueryExpression() {
     return (EReference)getFeatureTypeEClass.getEStructuralFeatures().get(11);
   }
@@ -1889,6 +2032,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getGetFeatureWithLockType() {
     return getFeatureWithLockTypeEClass;
   }
@@ -1897,6 +2041,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetFeatureWithLockType_Expiry() {
     return (EAttribute)getFeatureWithLockTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1905,6 +2050,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetFeatureWithLockType_LockAction() {
     return (EAttribute)getFeatureWithLockTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1913,6 +2059,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getGetPropertyValueType() {
     return getPropertyValueTypeEClass;
   }
@@ -1921,6 +2068,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getGetPropertyValueType_AbstractQueryExpression() {
     return (EReference)getPropertyValueTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1929,6 +2077,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetPropertyValueType_Count() {
     return (EAttribute)getPropertyValueTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1937,6 +2086,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetPropertyValueType_OutputFormat() {
     return (EAttribute)getPropertyValueTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1945,6 +2095,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetPropertyValueType_Resolve() {
     return (EAttribute)getPropertyValueTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -1953,6 +2104,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetPropertyValueType_ResolveDepth() {
     return (EAttribute)getPropertyValueTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -1961,6 +2113,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetPropertyValueType_ResolvePath() {
     return (EAttribute)getPropertyValueTypeEClass.getEStructuralFeatures().get(5);
   }
@@ -1969,6 +2122,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetPropertyValueType_ResolveTimeout() {
     return (EAttribute)getPropertyValueTypeEClass.getEStructuralFeatures().get(6);
   }
@@ -1977,6 +2131,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetPropertyValueType_ResultType() {
     return (EAttribute)getPropertyValueTypeEClass.getEStructuralFeatures().get(7);
   }
@@ -1985,6 +2140,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetPropertyValueType_StartIndex() {
     return (EAttribute)getPropertyValueTypeEClass.getEStructuralFeatures().get(8);
   }
@@ -1993,6 +2149,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetPropertyValueType_ValueReference() {
     return (EAttribute)getPropertyValueTypeEClass.getEStructuralFeatures().get(9);
   }
@@ -2001,6 +2158,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getInsertType() {
     return insertTypeEClass;
   }
@@ -2009,6 +2167,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getInsertType_Any() {
     return (EAttribute)insertTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2017,6 +2176,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getInsertType_InputFormat() {
     return (EAttribute)insertTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2025,6 +2185,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getInsertType_SrsName() {
     return (EAttribute)insertTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2033,6 +2194,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getListStoredQueriesResponseType() {
     return listStoredQueriesResponseTypeEClass;
   }
@@ -2041,6 +2203,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getListStoredQueriesResponseType_StoredQuery() {
     return (EReference)listStoredQueriesResponseTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2049,6 +2212,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getListStoredQueriesType() {
     return listStoredQueriesTypeEClass;
   }
@@ -2057,6 +2221,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getLockFeatureResponseType() {
     return lockFeatureResponseTypeEClass;
   }
@@ -2065,6 +2230,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getLockFeatureResponseType_FeaturesLocked() {
     return (EReference)lockFeatureResponseTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2073,6 +2239,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getLockFeatureResponseType_FeaturesNotLocked() {
     return (EReference)lockFeatureResponseTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2081,6 +2248,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getLockFeatureResponseType_LockId() {
     return (EAttribute)lockFeatureResponseTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2089,6 +2257,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getLockFeatureType() {
     return lockFeatureTypeEClass;
   }
@@ -2097,6 +2266,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getLockFeatureType_AbstractQueryExpressionGroup() {
     return (EAttribute)lockFeatureTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2105,6 +2275,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getLockFeatureType_AbstractQueryExpression() {
     return (EReference)lockFeatureTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2113,6 +2284,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getLockFeatureType_Expiry() {
     return (EAttribute)lockFeatureTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2121,6 +2293,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getLockFeatureType_LockAction() {
     return (EAttribute)lockFeatureTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -2129,6 +2302,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getLockFeatureType_LockId() {
     return (EAttribute)lockFeatureTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -2137,6 +2311,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getMemberPropertyType() {
     return memberPropertyTypeEClass;
   }
@@ -2145,6 +2320,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMemberPropertyType_Mixed() {
     return (EAttribute)memberPropertyTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2153,6 +2329,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMemberPropertyType_Any() {
     return (EAttribute)memberPropertyTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2161,6 +2338,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getMemberPropertyType_Tuple() {
     return (EReference)memberPropertyTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2169,6 +2347,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMemberPropertyType_SimpleFeatureCollectionGroup() {
     return (EAttribute)memberPropertyTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -2177,6 +2356,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getMemberPropertyType_SimpleFeatureCollection() {
     return (EReference)memberPropertyTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -2185,6 +2365,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMemberPropertyType_Actuate() {
     return (EAttribute)memberPropertyTypeEClass.getEStructuralFeatures().get(5);
   }
@@ -2193,6 +2374,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMemberPropertyType_Arcrole() {
     return (EAttribute)memberPropertyTypeEClass.getEStructuralFeatures().get(6);
   }
@@ -2201,6 +2383,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMemberPropertyType_Href() {
     return (EAttribute)memberPropertyTypeEClass.getEStructuralFeatures().get(7);
   }
@@ -2209,6 +2392,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMemberPropertyType_Role() {
     return (EAttribute)memberPropertyTypeEClass.getEStructuralFeatures().get(8);
   }
@@ -2217,6 +2401,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMemberPropertyType_Show() {
     return (EAttribute)memberPropertyTypeEClass.getEStructuralFeatures().get(9);
   }
@@ -2225,6 +2410,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMemberPropertyType_State() {
     return (EAttribute)memberPropertyTypeEClass.getEStructuralFeatures().get(10);
   }
@@ -2233,6 +2419,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMemberPropertyType_Title() {
     return (EAttribute)memberPropertyTypeEClass.getEStructuralFeatures().get(11);
   }
@@ -2241,6 +2428,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMemberPropertyType_Type() {
     return (EAttribute)memberPropertyTypeEClass.getEStructuralFeatures().get(12);
   }
@@ -2249,6 +2437,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getMetadataURLType() {
     return metadataURLTypeEClass;
   }
@@ -2257,6 +2446,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMetadataURLType_About() {
     return (EAttribute)metadataURLTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2265,6 +2455,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMetadataURLType_Actuate() {
     return (EAttribute)metadataURLTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2273,6 +2464,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMetadataURLType_Arcrole() {
     return (EAttribute)metadataURLTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2281,6 +2473,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMetadataURLType_Href() {
     return (EAttribute)metadataURLTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -2289,6 +2482,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMetadataURLType_Role() {
     return (EAttribute)metadataURLTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -2297,6 +2491,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMetadataURLType_Show() {
     return (EAttribute)metadataURLTypeEClass.getEStructuralFeatures().get(5);
   }
@@ -2305,6 +2500,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMetadataURLType_Title() {
     return (EAttribute)metadataURLTypeEClass.getEStructuralFeatures().get(6);
   }
@@ -2313,6 +2509,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMetadataURLType_Type() {
     return (EAttribute)metadataURLTypeEClass.getEStructuralFeatures().get(7);
   }
@@ -2321,6 +2518,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getNativeType() {
     return nativeTypeEClass;
   }
@@ -2329,6 +2527,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getNativeType_Mixed() {
     return (EAttribute)nativeTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2337,6 +2536,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getNativeType_Any() {
     return (EAttribute)nativeTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2345,6 +2545,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getNativeType_SafeToIgnore() {
     return (EAttribute)nativeTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2353,6 +2554,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getNativeType_VendorId() {
     return (EAttribute)nativeTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -2361,6 +2563,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getNoCRSType() {
     return noCRSTypeEClass;
   }
@@ -2369,6 +2572,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getOutputFormatListType() {
     return outputFormatListTypeEClass;
   }
@@ -2377,6 +2581,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getOutputFormatListType_Group() {
     return (EAttribute)outputFormatListTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2385,6 +2590,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getOutputFormatListType_Format() {
     return (EAttribute)outputFormatListTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2393,6 +2599,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getParameterExpressionType() {
     return parameterExpressionTypeEClass;
   }
@@ -2401,6 +2608,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getParameterExpressionType_Title() {
     return (EReference)parameterExpressionTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2409,6 +2617,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getParameterExpressionType_Abstract() {
     return (EReference)parameterExpressionTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2417,6 +2626,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getParameterExpressionType_Metadata() {
     return (EReference)parameterExpressionTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2425,6 +2635,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getParameterExpressionType_Name() {
     return (EAttribute)parameterExpressionTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -2433,6 +2644,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getParameterExpressionType_Type() {
     return (EAttribute)parameterExpressionTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -2441,6 +2653,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getParameterType() {
     return parameterTypeEClass;
   }
@@ -2449,6 +2662,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getParameterType_Name() {
     return (EAttribute)parameterTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2457,6 +2671,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getParameterType_Value() {
     return (EAttribute)parameterTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2465,6 +2680,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getPropertyNameType() {
     return propertyNameTypeEClass;
   }
@@ -2473,6 +2689,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getPropertyNameType_Value() {
     return (EAttribute)propertyNameTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2481,6 +2698,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getPropertyNameType_Resolve() {
     return (EAttribute)propertyNameTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2489,6 +2707,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getPropertyNameType_ResolveDepth() {
     return (EAttribute)propertyNameTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2497,6 +2716,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getPropertyNameType_ResolvePath() {
     return (EAttribute)propertyNameTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -2505,6 +2725,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getPropertyNameType_ResolveTimeout() {
     return (EAttribute)propertyNameTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -2513,6 +2734,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getPropertyType() {
     return propertyTypeEClass;
   }
@@ -2521,6 +2743,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getPropertyType_ValueReference() {
     return (EReference)propertyTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2529,6 +2752,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getPropertyType_Value() {
     return (EAttribute)propertyTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2537,6 +2761,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getQueryExpressionTextType() {
     return queryExpressionTextTypeEClass;
   }
@@ -2545,6 +2770,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getQueryExpressionTextType_IsPrivate() {
     return (EAttribute)queryExpressionTextTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2553,6 +2779,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getQueryExpressionTextType_Language() {
     return (EAttribute)queryExpressionTextTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2561,6 +2788,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getQueryExpressionTextType_ReturnFeatureTypes() {
     return (EAttribute)queryExpressionTextTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2569,6 +2797,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getQueryExpressionTextType_Value() {
     return (EAttribute)queryExpressionTextTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -2577,6 +2806,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getQueryType() {
     return queryTypeEClass;
   }
@@ -2585,6 +2815,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getQueryType_FeatureVersion() {
     return (EAttribute)queryTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2593,6 +2824,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getQueryType_SrsName() {
     return (EAttribute)queryTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2601,6 +2833,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getQueryType_Filter() {
     return (EAttribute)queryTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2609,6 +2842,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getQueryType_PropertyNames() {
     return (EAttribute)queryTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -2617,6 +2851,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getQueryType_SortBy() {
     return (EAttribute)queryTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -2625,6 +2860,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getReplaceType() {
     return replaceTypeEClass;
   }
@@ -2633,6 +2869,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getReplaceType_Any() {
     return (EAttribute)replaceTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2641,6 +2878,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getReplaceType_Filter() {
     return (EAttribute)replaceTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2649,6 +2887,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getReplaceType_InputFormat() {
     return (EAttribute)replaceTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2657,6 +2896,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getReplaceType_SrsName() {
     return (EAttribute)replaceTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -2665,6 +2905,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getSimpleFeatureCollectionType() {
     return simpleFeatureCollectionTypeEClass;
   }
@@ -2673,6 +2914,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getSimpleFeatureCollectionType_BoundedBy() {
     return (EReference)simpleFeatureCollectionTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2681,6 +2923,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getSimpleFeatureCollectionType_Member() {
     return (EAttribute)simpleFeatureCollectionTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2689,6 +2932,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getStoredQueryDescriptionType() {
     return storedQueryDescriptionTypeEClass;
   }
@@ -2697,6 +2941,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getStoredQueryDescriptionType_Title() {
     return (EReference)storedQueryDescriptionTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2705,6 +2950,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getStoredQueryDescriptionType_Abstract() {
     return (EReference)storedQueryDescriptionTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2713,6 +2959,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getStoredQueryDescriptionType_Metadata() {
     return (EReference)storedQueryDescriptionTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2721,6 +2968,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getStoredQueryDescriptionType_Parameter() {
     return (EReference)storedQueryDescriptionTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -2729,6 +2977,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getStoredQueryDescriptionType_QueryExpressionText() {
     return (EReference)storedQueryDescriptionTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -2737,6 +2986,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getStoredQueryDescriptionType_Id() {
     return (EAttribute)storedQueryDescriptionTypeEClass.getEStructuralFeatures().get(5);
   }
@@ -2745,6 +2995,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getStoredQueryListItemType() {
     return storedQueryListItemTypeEClass;
   }
@@ -2753,6 +3004,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getStoredQueryListItemType_Title() {
     return (EReference)storedQueryListItemTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2761,6 +3013,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getStoredQueryListItemType_ReturnFeatureType() {
     return (EAttribute)storedQueryListItemTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2769,6 +3022,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getStoredQueryListItemType_Id() {
     return (EAttribute)storedQueryListItemTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2777,6 +3031,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getStoredQueryType() {
     return storedQueryTypeEClass;
   }
@@ -2785,6 +3040,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getStoredQueryType_Parameter() {
     return (EReference)storedQueryTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2793,6 +3049,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getStoredQueryType_Id() {
     return (EAttribute)storedQueryTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2801,6 +3058,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getTitleType() {
     return titleTypeEClass;
   }
@@ -2809,6 +3067,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getTitleType_Value() {
     return (EAttribute)titleTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2817,6 +3076,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getTitleType_Lang() {
     return (EAttribute)titleTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2825,6 +3085,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getTransactionResponseType() {
     return transactionResponseTypeEClass;
   }
@@ -2833,6 +3094,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getTransactionResponseType_TransactionSummary() {
     return (EReference)transactionResponseTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2841,6 +3103,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getTransactionResponseType_InsertResults() {
     return (EReference)transactionResponseTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2849,6 +3112,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getTransactionResponseType_UpdateResults() {
     return (EReference)transactionResponseTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2857,6 +3121,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getTransactionResponseType_ReplaceResults() {
     return (EReference)transactionResponseTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -2865,6 +3130,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getTransactionResponseType_Version() {
     return (EAttribute)transactionResponseTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -2873,6 +3139,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getTransactionSummaryType() {
     return transactionSummaryTypeEClass;
   }
@@ -2881,6 +3148,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getTransactionSummaryType_TotalInserted() {
     return (EAttribute)transactionSummaryTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2889,6 +3157,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getTransactionSummaryType_TotalUpdated() {
     return (EAttribute)transactionSummaryTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2897,6 +3166,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getTransactionSummaryType_TotalReplaced() {
     return (EAttribute)transactionSummaryTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2905,6 +3175,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getTransactionSummaryType_TotalDeleted() {
     return (EAttribute)transactionSummaryTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -2913,6 +3184,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getTransactionType() {
     return transactionTypeEClass;
   }
@@ -2921,6 +3193,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getTransactionType_Group() {
     return (EAttribute)transactionTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2929,6 +3202,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getTransactionType_AbstractTransactionActionGroup() {
     return (EAttribute)transactionTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2937,6 +3211,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getTransactionType_AbstractTransactionAction() {
     return (EReference)transactionTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2945,6 +3220,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getTransactionType_LockId() {
     return (EAttribute)transactionTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -2953,6 +3229,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getTransactionType_ReleaseAction() {
     return (EAttribute)transactionTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -2961,6 +3238,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getTransactionType_SrsName() {
     return (EAttribute)transactionTypeEClass.getEStructuralFeatures().get(5);
   }
@@ -2969,6 +3247,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getTruncatedResponseType() {
     return truncatedResponseTypeEClass;
   }
@@ -2977,6 +3256,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getTruncatedResponseType_ExceptionReport() {
     return (EReference)truncatedResponseTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2985,6 +3265,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getTupleType() {
     return tupleTypeEClass;
   }
@@ -2993,6 +3274,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getTupleType_Member() {
     return (EReference)tupleTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -3001,6 +3283,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getUpdateType() {
     return updateTypeEClass;
   }
@@ -3009,6 +3292,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getUpdateType_Property() {
     return (EReference)updateTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -3017,6 +3301,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getUpdateType_Filter() {
     return (EAttribute)updateTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -3025,6 +3310,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getUpdateType_InputFormat() {
     return (EAttribute)updateTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -3033,6 +3319,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getUpdateType_SrsName() {
     return (EAttribute)updateTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -3041,6 +3328,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getUpdateType_TypeName() {
     return (EAttribute)updateTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -3049,6 +3337,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getValueCollectionType() {
     return valueCollectionTypeEClass;
   }
@@ -3057,6 +3346,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getValueCollectionType_Member() {
     return (EAttribute)valueCollectionTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -3065,6 +3355,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getValueCollectionType_AdditionalValues() {
     return (EReference)valueCollectionTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -3073,6 +3364,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getValueCollectionType_TruncatedResponse() {
     return (EReference)valueCollectionTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -3081,6 +3373,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getValueCollectionType_Next() {
     return (EAttribute)valueCollectionTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -3089,6 +3382,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getValueCollectionType_NumberMatched() {
     return (EAttribute)valueCollectionTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -3097,6 +3391,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getValueCollectionType_NumberReturned() {
     return (EAttribute)valueCollectionTypeEClass.getEStructuralFeatures().get(5);
   }
@@ -3105,6 +3400,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getValueCollectionType_Previous() {
     return (EAttribute)valueCollectionTypeEClass.getEStructuralFeatures().get(6);
   }
@@ -3113,6 +3409,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getValueCollectionType_TimeStamp() {
     return (EAttribute)valueCollectionTypeEClass.getEStructuralFeatures().get(7);
   }
@@ -3121,6 +3418,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getValueListType() {
     return valueListTypeEClass;
   }
@@ -3129,6 +3427,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getValueListType_Group() {
     return (EAttribute)valueListTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -3137,6 +3436,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getValueListType_Value() {
     return (EReference)valueListTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -3145,6 +3445,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getValueReferenceType() {
     return valueReferenceTypeEClass;
   }
@@ -3153,6 +3454,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getValueReferenceType_Value() {
     return (EAttribute)valueReferenceTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -3161,6 +3463,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getValueReferenceType_Action() {
     return (EAttribute)valueReferenceTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -3169,6 +3472,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getWFSCapabilitiesType() {
     return wfsCapabilitiesTypeEClass;
   }
@@ -3177,6 +3481,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getWFSCapabilitiesType_WSDL() {
     return (EReference)wfsCapabilitiesTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -3185,6 +3490,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getWFSCapabilitiesType_FeatureTypeList() {
     return (EReference)wfsCapabilitiesTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -3193,6 +3499,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getWFSCapabilitiesType_FilterCapabilities() {
     return (EReference)wfsCapabilitiesTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -3201,6 +3508,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getWSDLType() {
     return wsdlTypeEClass;
   }
@@ -3209,6 +3517,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getWSDLType_Actuate() {
     return (EAttribute)wsdlTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -3217,6 +3526,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getWSDLType_Arcrole() {
     return (EAttribute)wsdlTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -3225,6 +3535,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getWSDLType_Href() {
     return (EAttribute)wsdlTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -3233,6 +3544,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getWSDLType_Role() {
     return (EAttribute)wsdlTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -3241,6 +3553,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getWSDLType_Show() {
     return (EAttribute)wsdlTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -3249,6 +3562,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getWSDLType_Title() {
     return (EAttribute)wsdlTypeEClass.getEStructuralFeatures().get(5);
   }
@@ -3257,6 +3571,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getWSDLType_Type() {
     return (EAttribute)wsdlTypeEClass.getEStructuralFeatures().get(6);
   }
@@ -3265,6 +3580,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EEnum getAllSomeType() {
     return allSomeTypeEEnum;
   }
@@ -3273,6 +3589,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EEnum getNonNegativeIntegerOrUnknownMember0() {
     return nonNegativeIntegerOrUnknownMember0EEnum;
   }
@@ -3281,6 +3598,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EEnum getResolveValueType() {
     return resolveValueTypeEEnum;
   }
@@ -3289,6 +3607,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EEnum getResultTypeType() {
     return resultTypeTypeEEnum;
   }
@@ -3297,6 +3616,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EEnum getStarStringType() {
     return starStringTypeEEnum;
   }
@@ -3305,6 +3625,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EEnum getStateValueTypeMember0() {
     return stateValueTypeMember0EEnum;
   }
@@ -3313,6 +3634,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EEnum getUpdateActionType() {
     return updateActionTypeEEnum;
   }
@@ -3321,6 +3643,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getAllSomeTypeObject() {
     return allSomeTypeObjectEDataType;
   }
@@ -3329,6 +3652,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getNonNegativeIntegerOrUnknown() {
     return nonNegativeIntegerOrUnknownEDataType;
   }
@@ -3337,6 +3661,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getNonNegativeIntegerOrUnknownMember0Object() {
     return nonNegativeIntegerOrUnknownMember0ObjectEDataType;
   }
@@ -3345,6 +3670,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getNonNegativeIntegerOrUnknownMember1() {
     return nonNegativeIntegerOrUnknownMember1EDataType;
   }
@@ -3353,6 +3679,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getPositiveIntegerWithStar() {
     return positiveIntegerWithStarEDataType;
   }
@@ -3361,6 +3688,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getResolveValueTypeObject() {
     return resolveValueTypeObjectEDataType;
   }
@@ -3369,6 +3697,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getResultTypeTypeObject() {
     return resultTypeTypeObjectEDataType;
   }
@@ -3377,6 +3706,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getReturnFeatureTypesListType() {
     return returnFeatureTypesListTypeEDataType;
   }
@@ -3385,6 +3715,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getStarStringTypeObject() {
     return starStringTypeObjectEDataType;
   }
@@ -3393,6 +3724,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getStateValueType() {
     return stateValueTypeEDataType;
   }
@@ -3401,6 +3733,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getStateValueTypeMember0Object() {
     return stateValueTypeMember0ObjectEDataType;
   }
@@ -3409,6 +3742,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getStateValueTypeMember1() {
     return stateValueTypeMember1EDataType;
   }
@@ -3417,6 +3751,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getUpdateActionTypeObject() {
     return updateActionTypeObjectEDataType;
   }
@@ -3425,6 +3760,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getURI() {
     return uriEDataType;
   }
@@ -3433,6 +3769,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getMap() {
     return mapEDataType;
   }
@@ -3441,6 +3778,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getFilter() {
     return filterEDataType;
   }
@@ -3449,6 +3787,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getQName() {
     return qNameEDataType;
   }
@@ -3457,6 +3796,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getSortBy() {
     return sortByEDataType;
   }
@@ -3465,6 +3805,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getCalendar() {
     return calendarEDataType;
   }
@@ -3473,6 +3814,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getFeatureCollection() {
     return featureCollectionEDataType;
   }
@@ -3481,6 +3823,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getPropertyName() {
     return propertyNameEDataType;
   }
@@ -3489,6 +3832,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getFeatureId() {
     return featureIdEDataType;
   }
@@ -3497,6 +3841,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getCollection() {
     return collectionEDataType;
   }
@@ -3505,6 +3850,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Wfs20Factory getWfs20Factory() {
     return (Wfs20Factory)getEFactoryInstance();
   }

@@ -42,6 +42,7 @@ public class Path extends Walk {
      * 1. Each pair of adjacent nodes share an edge.<br>
      * 2. There are no node repetitions.
      */
+    @Override
     public boolean isValid() {
         if (super.isValid()) {
             // test repetitions

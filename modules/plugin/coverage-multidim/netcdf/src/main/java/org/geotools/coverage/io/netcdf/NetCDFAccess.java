@@ -175,6 +175,7 @@ public class NetCDFAccess extends DefaultFileCoverageAccess
         return names.remove(name);
     }
 
+    @Override
     public CoverageSource access(
             Name name,
             Map<String, Serializable> params,

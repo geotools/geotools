@@ -52,14 +52,17 @@ public class FilteringFeatureCollection<T extends FeatureType, F extends Feature
         this.filter = (Filter) filter.accept(new BindingFilterVisitor(delegate.getSchema()), null);
     }
 
+    @Override
     public FeatureCollection<T, F> subCollection(Filter filter) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public FeatureCollection<T, F> sort(SortBy order) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public int size() {
         int count = 0;
         try (FeatureIterator<F> i = features()) {
@@ -72,14 +75,17 @@ public class FilteringFeatureCollection<T extends FeatureType, F extends Feature
         }
     }
 
+    @Override
     public boolean isEmpty() {
         return size() == 0;
     }
 
+    @Override
     public Object[] toArray() {
         return toArray(new Object[size()]);
     }
 
+    @Override
     public <O> O[] toArray(O[] a) {
         List<F> list = new ArrayList<>();
         try (FeatureIterator<F> i = features()) {
@@ -90,10 +96,12 @@ public class FilteringFeatureCollection<T extends FeatureType, F extends Feature
         }
     }
 
+    @Override
     public boolean contains(Object o) {
         return delegate.contains(o) && filter.evaluate(o);
     }
 
+    @Override
     public boolean containsAll(Collection<?> c) {
         for (Object o : c) {
             if (!contains(o)) {
@@ -103,6 +111,7 @@ public class FilteringFeatureCollection<T extends FeatureType, F extends Feature
         return true;
     }
 
+    @Override
     public FeatureIterator<F> features() {
         return new FilteringFeatureIterator<>(delegate.features(), filter);
     }
@@ -111,6 +120,7 @@ public class FilteringFeatureCollection<T extends FeatureType, F extends Feature
         return new DelegateFeatureReader<>(getSchema(), features());
     }
 
+    @Override
     public ReferencedEnvelope getBounds() {
         // calculate manually
         return DataUtilities.bounds(this);

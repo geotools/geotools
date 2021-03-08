@@ -42,6 +42,7 @@ public class GTopo30FormatFactory implements GridFormatFactorySpi {
      *
      * @return an instance of GTopo30Format
      */
+    @Override
     public GTopo30Format createFormat() {
         return new GTopo30Format();
     }
@@ -51,6 +52,7 @@ public class GTopo30FormatFactory implements GridFormatFactorySpi {
      *
      * @return true if all libraries are available
      */
+    @Override
     public boolean isAvailable() {
         boolean available = true;
 
@@ -73,6 +75,7 @@ public class GTopo30FormatFactory implements GridFormatFactorySpi {
      *
      * @return the implementation hints (an empty map, actually)
      */
+    @Override
     public Map<RenderingHints.Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }

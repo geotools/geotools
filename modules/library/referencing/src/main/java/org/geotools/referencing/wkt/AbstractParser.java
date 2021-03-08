@@ -160,6 +160,7 @@ public abstract class AbstractParser extends Format {
      * @param position The position to start parsing from.
      * @return The object.
      */
+    @Override
     public final Object parseObject(final String text, final ParsePosition position) {
         final int origin = position.getIndex();
         try {
@@ -245,6 +246,7 @@ public abstract class AbstractParser extends Format {
      * @param pos An identification of a field in the formatted text.
      * @see #getWarning
      */
+    @Override
     public StringBuffer format(
             final Object object, final StringBuffer toAppendTo, final FieldPosition pos) {
         final Formatter formatter = getFormatter();

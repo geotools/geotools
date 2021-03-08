@@ -70,6 +70,7 @@ public interface ChannelSelection extends org.opengis.style.ChannelSelection {
      *
      * @return array of channels in RGB order
      */
+    @Override
     SelectedChannelType[] getRGBChannels();
 
     /**
@@ -84,6 +85,7 @@ public interface ChannelSelection extends org.opengis.style.ChannelSelection {
      *
      * @return the gray channel
      */
+    @Override
     SelectedChannelType getGrayChannel();
 
     void accept(org.geotools.styling.StyleVisitor visitor);

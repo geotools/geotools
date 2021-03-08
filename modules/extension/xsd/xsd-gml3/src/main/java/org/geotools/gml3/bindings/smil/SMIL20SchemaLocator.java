@@ -25,6 +25,7 @@ import org.geotools.gml3.smil.SMIL20LANG;
 import org.geotools.xsd.Schemas;
 
 public class SMIL20SchemaLocator implements XSDSchemaLocator {
+    @Override
     public XSDSchema locateSchema(
             XSDSchema schema,
             String namespaceURI,

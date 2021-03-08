@@ -143,7 +143,8 @@ public class IdentificationTypeImpl extends DescriptionTypeImpl implements Ident
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public CodeType getIdentifier() {
+	@Override
+    public CodeType getIdentifier() {
     return identifier;
   }
 
@@ -167,7 +168,8 @@ public class IdentificationTypeImpl extends DescriptionTypeImpl implements Ident
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setIdentifier(CodeType newIdentifier) {
+	@Override
+    public void setIdentifier(CodeType newIdentifier) {
     if (newIdentifier != identifier) {
       NotificationChain msgs = null;
       if (identifier != null)
@@ -186,7 +188,8 @@ public class IdentificationTypeImpl extends DescriptionTypeImpl implements Ident
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public FeatureMap getBoundingBoxGroup() {
+	@Override
+    public FeatureMap getBoundingBoxGroup() {
     if (boundingBoxGroup == null) {
       boundingBoxGroup = new BasicFeatureMap(this, Ows10Package.IDENTIFICATION_TYPE__BOUNDING_BOX_GROUP);
     }
@@ -198,7 +201,8 @@ public class IdentificationTypeImpl extends DescriptionTypeImpl implements Ident
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList<BoundingBoxType> getBoundingBox() {
+	@Override
+    public EList<BoundingBoxType> getBoundingBox() {
     return getBoundingBoxGroup().list(Ows10Package.eINSTANCE.getIdentificationType_BoundingBox());
   }
 
@@ -207,7 +211,8 @@ public class IdentificationTypeImpl extends DescriptionTypeImpl implements Ident
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getOutputFormat() {
+	@Override
+    public String getOutputFormat() {
     return outputFormat;
   }
 
@@ -216,7 +221,8 @@ public class IdentificationTypeImpl extends DescriptionTypeImpl implements Ident
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setOutputFormat(String newOutputFormat) {
+	@Override
+    public void setOutputFormat(String newOutputFormat) {
     String oldOutputFormat = outputFormat;
     outputFormat = newOutputFormat;
     if (eNotificationRequired())
@@ -228,7 +234,8 @@ public class IdentificationTypeImpl extends DescriptionTypeImpl implements Ident
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public FeatureMap getAvailableCRSGroup() {
+	@Override
+    public FeatureMap getAvailableCRSGroup() {
     if (availableCRSGroup == null) {
       availableCRSGroup = new BasicFeatureMap(this, Ows10Package.IDENTIFICATION_TYPE__AVAILABLE_CRS_GROUP);
     }
@@ -240,7 +247,8 @@ public class IdentificationTypeImpl extends DescriptionTypeImpl implements Ident
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getAvailableCRS() {
+	@Override
+    public String getAvailableCRS() {
     return (String)getAvailableCRSGroup().get(Ows10Package.eINSTANCE.getIdentificationType_AvailableCRS(), true);
   }
 
@@ -249,7 +257,8 @@ public class IdentificationTypeImpl extends DescriptionTypeImpl implements Ident
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setAvailableCRS(String newAvailableCRS) {
+	@Override
+    public void setAvailableCRS(String newAvailableCRS) {
     ((FeatureMap.Internal)getAvailableCRSGroup()).set(Ows10Package.eINSTANCE.getIdentificationType_AvailableCRS(), newAvailableCRS);
   }
 
@@ -258,7 +267,8 @@ public class IdentificationTypeImpl extends DescriptionTypeImpl implements Ident
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList<MetadataType> getMetadata() {
+	@Override
+    public EList<MetadataType> getMetadata() {
     if (metadata == null) {
       metadata = new EObjectContainmentEList<>(MetadataType.class, this, Ows10Package.IDENTIFICATION_TYPE__METADATA);
     }

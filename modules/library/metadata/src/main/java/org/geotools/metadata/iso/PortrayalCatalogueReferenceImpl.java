@@ -57,6 +57,7 @@ public class PortrayalCatalogueReferenceImpl extends MetadataEntity
     }
 
     /** Bibliographic reference to the portrayal catalogue cited. */
+    @Override
     public Collection<Citation> getPortrayalCatalogueCitations() {
         return portrayalCatalogueCitations =
                 nonNullCollection(portrayalCatalogueCitations, Citation.class);

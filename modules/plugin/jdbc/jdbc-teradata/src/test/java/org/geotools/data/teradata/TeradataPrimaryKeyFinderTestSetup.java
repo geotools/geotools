@@ -30,6 +30,7 @@ public class TeradataPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestS
         return (TeradataTestSetup) delegate;
     }
 
+    @Override
     protected void createMetadataTable() throws Exception {
         run(
                 "CREATE TABLE gt_pk_metadata ("
@@ -43,16 +44,20 @@ public class TeradataPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestS
                         + "check (pk_policy in ('sequence', 'assigned', 'autoincrement')))");
     }
 
+    @Override
     protected void dropMetadataTable() throws Exception {
         runSafe("DROP TABLE \"gt_pk_metadata\"");
     }
 
+    @Override
     protected void createSequencedPrimaryKeyTable() throws Exception {
         // not supported
     }
 
+    @Override
     protected void dropSequencedPrimaryKeyTable() throws Exception {}
 
+    @Override
     protected void createPlainTable() throws Exception {
         run(
                 "CREATE TABLE \"plaintable\" ( \"key1\" int, \"key2\" int, \"name\" VARCHAR(256), \"geom\" ST_GEOMETRY)");
@@ -69,11 +74,13 @@ public class TeradataPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestS
         run("INSERT INTO \"plaintable\" VALUES (3, 4, 'three', NULL)");
     }
 
+    @Override
     protected void dropPlainTable() throws Exception {
         runSafe("DROP TABLE \"plaintable\"");
         runSafe("delete from SYSSPATIAL.GEOMETRY_COLUMNS where f_table_name='plaintable'");
     }
 
+    @Override
     protected void createAssignedSinglePkView() throws Exception {
         run("CREATE VIEW \"assignedsinglepk\" AS SELECT * FROM \"plaintable\"");
         run(
@@ -82,10 +89,12 @@ public class TeradataPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestS
                         + "', 'assignedsinglepk', 'key1', 0, 'assigned', NULL)");
     }
 
+    @Override
     protected void dropAssignedSinglePkView() throws Exception {
         runSafe("DROP VIEW \"assignedsinglepk\"");
     }
 
+    @Override
     protected void createAssignedMultiPkView() throws Exception {
         run("CREATE VIEW \"assignedmultipk\" AS SELECT * FROM \"plaintable\"");
         run(
@@ -98,6 +107,7 @@ public class TeradataPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestS
                         + "', 'assignedmultipk', 'key2', 1, 'assigned', NULL)");
     }
 
+    @Override
     protected void dropAssignedMultiPkView() throws Exception {
         runSafe("DROP VIEW \"assignedmultipk\"");
     }

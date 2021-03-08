@@ -214,22 +214,27 @@ public class CoverageClassStats implements RasterProcess {
             ranges = zonalStats.statistic(firstStat).results();
         }
 
+        @Override
         public int size() {
             return ranges.size();
         }
 
+        @Override
         public Set<Statistic> getStats() {
             return stats;
         }
 
+        @Override
         public Range range(int i) {
             return ranges.get(i).getRanges().iterator().next();
         }
 
+        @Override
         public Double value(int i, Statistic stat) {
             return zonalStats.statistic(stat).results().get(i).getValue();
         }
 
+        @Override
         public Long count(int i) {
             return zonalStats.statistic(firstStat).results().get(i).getNumAccepted();
         }

@@ -44,6 +44,7 @@ public final class GMX extends GML.DelegatingXSD {
     /** private constructor */
     private GMX() {}
 
+    @Override
     protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(XLINK.getInstance());
         dependencies.add(GCO.getInstance());
@@ -56,11 +57,13 @@ public final class GMX extends GML.DelegatingXSD {
     }
 
     /** Returns 'http://www.isotc211.org/2005/gmx'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'gmx.xsd.'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("gmx.xsd").toString();
     }

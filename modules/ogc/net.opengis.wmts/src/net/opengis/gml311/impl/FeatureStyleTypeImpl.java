@@ -187,6 +187,7 @@ public class FeatureStyleTypeImpl extends AbstractGMLTypeImpl implements Feature
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getFeatureConstraint() {
         return featureConstraint;
     }
@@ -196,6 +197,7 @@ public class FeatureStyleTypeImpl extends AbstractGMLTypeImpl implements Feature
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFeatureConstraint(String newFeatureConstraint) {
         String oldFeatureConstraint = featureConstraint;
         featureConstraint = newFeatureConstraint;
@@ -208,6 +210,7 @@ public class FeatureStyleTypeImpl extends AbstractGMLTypeImpl implements Feature
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<GeometryStylePropertyType> getGeometryStyle() {
         if (geometryStyle == null) {
             geometryStyle = new EObjectContainmentEList<>(GeometryStylePropertyType.class, this, Gml311Package.FEATURE_STYLE_TYPE__GEOMETRY_STYLE);
@@ -220,6 +223,7 @@ public class FeatureStyleTypeImpl extends AbstractGMLTypeImpl implements Feature
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<TopologyStylePropertyType> getTopologyStyle() {
         if (topologyStyle == null) {
             topologyStyle = new EObjectContainmentEList<>(TopologyStylePropertyType.class, this, Gml311Package.FEATURE_STYLE_TYPE__TOPOLOGY_STYLE);
@@ -232,6 +236,7 @@ public class FeatureStyleTypeImpl extends AbstractGMLTypeImpl implements Feature
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LabelStylePropertyType getLabelStyle() {
         return labelStyle;
     }
@@ -256,6 +261,7 @@ public class FeatureStyleTypeImpl extends AbstractGMLTypeImpl implements Feature
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLabelStyle(LabelStylePropertyType newLabelStyle) {
         if (newLabelStyle != labelStyle) {
             NotificationChain msgs = null;
@@ -275,6 +281,7 @@ public class FeatureStyleTypeImpl extends AbstractGMLTypeImpl implements Feature
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getBaseType() {
         return baseType;
     }
@@ -284,6 +291,7 @@ public class FeatureStyleTypeImpl extends AbstractGMLTypeImpl implements Feature
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBaseType(String newBaseType) {
         String oldBaseType = baseType;
         baseType = newBaseType;
@@ -296,6 +304,7 @@ public class FeatureStyleTypeImpl extends AbstractGMLTypeImpl implements Feature
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getFeatureType() {
         return featureType;
     }
@@ -305,6 +314,7 @@ public class FeatureStyleTypeImpl extends AbstractGMLTypeImpl implements Feature
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFeatureType(String newFeatureType) {
         String oldFeatureType = featureType;
         featureType = newFeatureType;
@@ -317,6 +327,7 @@ public class FeatureStyleTypeImpl extends AbstractGMLTypeImpl implements Feature
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public QueryGrammarEnumeration getQueryGrammar() {
         return queryGrammar;
     }
@@ -326,6 +337,7 @@ public class FeatureStyleTypeImpl extends AbstractGMLTypeImpl implements Feature
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setQueryGrammar(QueryGrammarEnumeration newQueryGrammar) {
         QueryGrammarEnumeration oldQueryGrammar = queryGrammar;
         queryGrammar = newQueryGrammar == null ? QUERY_GRAMMAR_EDEFAULT : newQueryGrammar;
@@ -340,6 +352,7 @@ public class FeatureStyleTypeImpl extends AbstractGMLTypeImpl implements Feature
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetQueryGrammar() {
         QueryGrammarEnumeration oldQueryGrammar = queryGrammar;
         boolean oldQueryGrammarESet = queryGrammarESet;
@@ -354,6 +367,7 @@ public class FeatureStyleTypeImpl extends AbstractGMLTypeImpl implements Feature
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetQueryGrammar() {
         return queryGrammarESet;
     }

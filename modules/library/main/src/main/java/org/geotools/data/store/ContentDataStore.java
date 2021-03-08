@@ -240,6 +240,7 @@ public abstract class ContentDataStore implements DataStore {
     // DataStore API
     //
 
+    @Override
     public ServiceInfo getInfo() {
         DefaultServiceInfo info = new DefaultServiceInfo();
         info.setDescription("Features from " + getClass().getSimpleName());
@@ -255,6 +256,7 @@ public abstract class ContentDataStore implements DataStore {
      *
      * @see DataStore#getTypeNames()
      */
+    @Override
     public final String[] getTypeNames() throws IOException {
         List<Name> typeNames = createTypeNames();
         String[] names = new String[typeNames.size()];
@@ -275,6 +277,7 @@ public abstract class ContentDataStore implements DataStore {
      *
      * @see DataStore#createSchema(FeatureType)
      */
+    @Override
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         throw new UnsupportedOperationException();
     }
@@ -286,6 +289,7 @@ public abstract class ContentDataStore implements DataStore {
      *
      * @see DataStore#getSchema(String)
      */
+    @Override
     public final SimpleFeatureType getSchema(String typeName) throws IOException {
         ContentFeatureSource featureSource = getFeatureSource(typeName);
         return featureSource.getSchema();
@@ -299,6 +303,7 @@ public abstract class ContentDataStore implements DataStore {
      *
      * @see DataStore#getFeatureSource(String)
      */
+    @Override
     public ContentFeatureSource getFeatureSource(String typeName) throws IOException {
         return getFeatureSource(new NameImpl(null, typeName), Transaction.AUTO_COMMIT);
     }
@@ -351,6 +356,7 @@ public abstract class ContentDataStore implements DataStore {
      * <p>This method is not intended to be overridden and is marked final. This implementation
      * delegates to {@link FeatureCollection} and wraps an iterator in a {@link FeatureReader}.
      */
+    @Override
     public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
             Query query, Transaction tx) throws IOException {
 
@@ -367,6 +373,7 @@ public abstract class ContentDataStore implements DataStore {
      * <p>This method is not intended to be overridden and is marked final. This implementation
      * delegates to {@link FeatureCollection} and wraps an iterator in a {@link FeatureWriter}.
      */
+    @Override
     public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
             String typeName, Filter filter, Transaction tx) throws IOException {
 
@@ -398,6 +405,7 @@ public abstract class ContentDataStore implements DataStore {
      *
      * <p>This method is convenience for <code>getFeatureWriter(typeName,Filter.INCLUDE,tx)</code>.
      */
+    @Override
     public final FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
             String typeName, Transaction tx) throws IOException {
 
@@ -410,6 +418,7 @@ public abstract class ContentDataStore implements DataStore {
      * <p>This method is not intended to be overridden and is marked final. This implementation
      * delegates to {@link FeatureCollection} and wraps an iterator in a {@link FeatureWriter}.
      */
+    @Override
     public final FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(
             String typeName, Transaction tx) throws IOException {
 
@@ -424,15 +433,18 @@ public abstract class ContentDataStore implements DataStore {
         return writer;
     }
 
+    @Override
     public final LockingManager getLockingManager() {
         return lockingManager;
     }
 
+    @Override
     public final void updateSchema(String typeName, SimpleFeatureType featureType)
             throws IOException {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public void dispose() {
         for (ContentEntry entry : entries.values()) {
             entry.dispose();
@@ -588,6 +600,7 @@ public abstract class ContentDataStore implements DataStore {
      * @since 2.5
      * @see DataAccess#getFeatureSource(Name)
      */
+    @Override
     public SimpleFeatureSource getFeatureSource(Name typeName) throws IOException {
         return getFeatureSource(typeName, Transaction.AUTO_COMMIT);
     }
@@ -599,6 +612,7 @@ public abstract class ContentDataStore implements DataStore {
      * @since 2.5
      * @see DataAccess#getNames()
      */
+    @Override
     public List<Name> getNames() throws IOException {
         String[] typeNames = getTypeNames();
         List<Name> names = new ArrayList<>(typeNames.length);
@@ -614,6 +628,7 @@ public abstract class ContentDataStore implements DataStore {
      * @since 2.5
      * @see DataAccess#getSchema(Name)
      */
+    @Override
     public SimpleFeatureType getSchema(Name name) throws IOException {
         return getSchema(name.getLocalPart());
     }
@@ -625,16 +640,19 @@ public abstract class ContentDataStore implements DataStore {
      * @since 2.5
      * @see DataAccess#getFeatureSource(Name)
      */
+    @Override
     public void updateSchema(Name typeName, SimpleFeatureType featureType) throws IOException {
         updateSchema(typeName.getLocalPart(), featureType);
     }
 
     /** @see DataAccess#removeSchema(Name) */
+    @Override
     public void removeSchema(Name typeName) throws IOException {
         throw new UnsupportedOperationException("Schema removal not supported");
     }
 
     /** @see DataStore#removeSchema(String) */
+    @Override
     public void removeSchema(String typeName) throws IOException {
         throw new UnsupportedOperationException("Schema removal not supported");
     }

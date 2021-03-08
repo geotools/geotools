@@ -28,6 +28,7 @@ public class DB2GeometryOnlineTest extends JDBCGeometryOnlineTest {
         return new DB2GeometryTestSetup();
     }
 
+    @Override
     public void testLinearRing() throws Exception {
         assertEquals(LineString.class, checkGeometryType(LinearRing.class));
     }

@@ -32,14 +32,17 @@ import org.geotools.coverage.grid.io.UnknownFormat;
  */
 public class BaseGridFormatFactorySPI implements GridFormatFactorySpi {
 
+    @Override
     public AbstractGridFormat createFormat() {
         return new UnknownFormat();
     }
 
+    @Override
     public boolean isAvailable() {
         return false;
     }
 
+    @Override
     public Map<Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }

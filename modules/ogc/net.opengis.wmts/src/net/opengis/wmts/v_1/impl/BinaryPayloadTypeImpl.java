@@ -93,6 +93,7 @@ public class BinaryPayloadTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getFormat() {
         return format;
     }
@@ -102,6 +103,7 @@ public class BinaryPayloadTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFormat(String newFormat) {
         String oldFormat = format;
         format = newFormat;
@@ -114,6 +116,7 @@ public class BinaryPayloadTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public byte[] getBinaryContent() {
         return binaryContent;
     }
@@ -123,6 +126,7 @@ public class BinaryPayloadTypeImpl extends MinimalEObjectImpl.Container implemen
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBinaryContent(byte[] newBinaryContent) {
         byte[] oldBinaryContent = binaryContent;
         binaryContent = newBinaryContent;

@@ -81,8 +81,10 @@ public class SLDMarkBindingTest extends SLDTestSupport {
         assertEquals("file://test/foo.svg", Filters.asString(mark.getWellKnownName()));
     }
 
+    @Override
     protected Configuration createConfiguration() {
         return new SLDConfiguration() {
+            @Override
             protected void configureContext(MutablePicoContainer container) {
                 container.registerComponentImplementation(
                         StyleFactory.class, StyleFactoryImpl.class);

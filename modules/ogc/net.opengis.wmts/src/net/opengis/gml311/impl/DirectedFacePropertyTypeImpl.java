@@ -293,6 +293,7 @@ public class DirectedFacePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FaceType getFace() {
         return face;
     }
@@ -317,6 +318,7 @@ public class DirectedFacePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFace(FaceType newFace) {
         if (newFace != face) {
             NotificationChain msgs = null;
@@ -336,6 +338,7 @@ public class DirectedFacePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ActuateType getActuate() {
         return actuate;
     }
@@ -345,6 +348,7 @@ public class DirectedFacePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setActuate(ActuateType newActuate) {
         ActuateType oldActuate = actuate;
         actuate = newActuate == null ? ACTUATE_EDEFAULT : newActuate;
@@ -359,6 +363,7 @@ public class DirectedFacePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetActuate() {
         ActuateType oldActuate = actuate;
         boolean oldActuateESet = actuateESet;
@@ -373,6 +378,7 @@ public class DirectedFacePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetActuate() {
         return actuateESet;
     }
@@ -382,6 +388,7 @@ public class DirectedFacePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getArcrole() {
         return arcrole;
     }
@@ -391,6 +398,7 @@ public class DirectedFacePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setArcrole(String newArcrole) {
         String oldArcrole = arcrole;
         arcrole = newArcrole;
@@ -403,6 +411,7 @@ public class DirectedFacePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getHref() {
         return href;
     }
@@ -412,6 +421,7 @@ public class DirectedFacePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setHref(String newHref) {
         String oldHref = href;
         href = newHref;
@@ -424,6 +434,7 @@ public class DirectedFacePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SignType getOrientation() {
         return orientation;
     }
@@ -433,6 +444,7 @@ public class DirectedFacePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOrientation(SignType newOrientation) {
         SignType oldOrientation = orientation;
         orientation = newOrientation == null ? ORIENTATION_EDEFAULT : newOrientation;
@@ -447,6 +459,7 @@ public class DirectedFacePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetOrientation() {
         SignType oldOrientation = orientation;
         boolean oldOrientationESet = orientationESet;
@@ -461,6 +474,7 @@ public class DirectedFacePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetOrientation() {
         return orientationESet;
     }
@@ -470,6 +484,7 @@ public class DirectedFacePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getRemoteSchema() {
         return remoteSchema;
     }
@@ -479,6 +494,7 @@ public class DirectedFacePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRemoteSchema(String newRemoteSchema) {
         String oldRemoteSchema = remoteSchema;
         remoteSchema = newRemoteSchema;
@@ -491,6 +507,7 @@ public class DirectedFacePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getRole() {
         return role;
     }
@@ -500,6 +517,7 @@ public class DirectedFacePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRole(String newRole) {
         String oldRole = role;
         role = newRole;
@@ -512,6 +530,7 @@ public class DirectedFacePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ShowType getShow() {
         return show;
     }
@@ -521,6 +540,7 @@ public class DirectedFacePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setShow(ShowType newShow) {
         ShowType oldShow = show;
         show = newShow == null ? SHOW_EDEFAULT : newShow;
@@ -535,6 +555,7 @@ public class DirectedFacePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetShow() {
         ShowType oldShow = show;
         boolean oldShowESet = showESet;
@@ -549,6 +570,7 @@ public class DirectedFacePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetShow() {
         return showESet;
     }
@@ -558,6 +580,7 @@ public class DirectedFacePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getTitle() {
         return title;
     }
@@ -567,6 +590,7 @@ public class DirectedFacePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTitle(String newTitle) {
         String oldTitle = title;
         title = newTitle;
@@ -579,6 +603,7 @@ public class DirectedFacePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TypeType getType() {
         return type;
     }
@@ -588,6 +613,7 @@ public class DirectedFacePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setType(TypeType newType) {
         TypeType oldType = type;
         type = newType == null ? TYPE_EDEFAULT : newType;
@@ -602,6 +628,7 @@ public class DirectedFacePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetType() {
         TypeType oldType = type;
         boolean oldTypeESet = typeESet;
@@ -616,6 +643,7 @@ public class DirectedFacePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetType() {
         return typeESet;
     }

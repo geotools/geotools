@@ -52,22 +52,26 @@ public abstract class DefaultExpressionVisitor implements ExpressionVisitor {
 
     public DefaultExpressionVisitor() {}
 
+    @Override
     public Object visit(NilExpression expression, Object data) {
         return data;
     }
 
+    @Override
     public Object visit(Add expression, Object data) {
         data = expression.getExpression1().accept(this, data);
         data = expression.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(Divide expression, Object data) {
         data = expression.getExpression1().accept(this, data);
         data = expression.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(Function expression, Object data) {
         if (expression.getParameters() != null) {
             for (Expression parameter : expression.getParameters()) {
@@ -77,20 +81,24 @@ public abstract class DefaultExpressionVisitor implements ExpressionVisitor {
         return data;
     }
 
+    @Override
     public Object visit(Literal expression, Object data) {
         return data;
     }
 
+    @Override
     public Object visit(Multiply expression, Object data) {
         data = expression.getExpression1().accept(this, data);
         data = expression.getExpression2().accept(this, data);
         return data;
     }
 
+    @Override
     public Object visit(PropertyName expression, Object data) {
         return data;
     }
 
+    @Override
     public Object visit(Subtract expression, Object data) {
         data = expression.getExpression1().accept(this, data);
         data = expression.getExpression2().accept(this, data);

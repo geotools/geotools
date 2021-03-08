@@ -288,6 +288,7 @@ public class DefaultStylePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getStyleGroup() {
         if (styleGroup == null) {
             styleGroup = new BasicFeatureMap(this, Gml311Package.DEFAULT_STYLE_PROPERTY_TYPE__STYLE_GROUP);
@@ -300,6 +301,7 @@ public class DefaultStylePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractStyleType getStyle() {
         return (AbstractStyleType)getStyleGroup().get(Gml311Package.eINSTANCE.getDefaultStylePropertyType_Style(), true);
     }
@@ -318,6 +320,7 @@ public class DefaultStylePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getAbout() {
         return about;
     }
@@ -327,6 +330,7 @@ public class DefaultStylePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAbout(String newAbout) {
         String oldAbout = about;
         about = newAbout;
@@ -339,6 +343,7 @@ public class DefaultStylePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ActuateType getActuate() {
         return actuate;
     }
@@ -348,6 +353,7 @@ public class DefaultStylePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setActuate(ActuateType newActuate) {
         ActuateType oldActuate = actuate;
         actuate = newActuate == null ? ACTUATE_EDEFAULT : newActuate;
@@ -362,6 +368,7 @@ public class DefaultStylePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetActuate() {
         ActuateType oldActuate = actuate;
         boolean oldActuateESet = actuateESet;
@@ -376,6 +383,7 @@ public class DefaultStylePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetActuate() {
         return actuateESet;
     }
@@ -385,6 +393,7 @@ public class DefaultStylePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getArcrole() {
         return arcrole;
     }
@@ -394,6 +403,7 @@ public class DefaultStylePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setArcrole(String newArcrole) {
         String oldArcrole = arcrole;
         arcrole = newArcrole;
@@ -406,6 +416,7 @@ public class DefaultStylePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getHref() {
         return href;
     }
@@ -415,6 +426,7 @@ public class DefaultStylePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setHref(String newHref) {
         String oldHref = href;
         href = newHref;
@@ -427,6 +439,7 @@ public class DefaultStylePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getRemoteSchema() {
         return remoteSchema;
     }
@@ -436,6 +449,7 @@ public class DefaultStylePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRemoteSchema(String newRemoteSchema) {
         String oldRemoteSchema = remoteSchema;
         remoteSchema = newRemoteSchema;
@@ -448,6 +462,7 @@ public class DefaultStylePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getRole() {
         return role;
     }
@@ -457,6 +472,7 @@ public class DefaultStylePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRole(String newRole) {
         String oldRole = role;
         role = newRole;
@@ -469,6 +485,7 @@ public class DefaultStylePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ShowType getShow() {
         return show;
     }
@@ -478,6 +495,7 @@ public class DefaultStylePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setShow(ShowType newShow) {
         ShowType oldShow = show;
         show = newShow == null ? SHOW_EDEFAULT : newShow;
@@ -492,6 +510,7 @@ public class DefaultStylePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetShow() {
         ShowType oldShow = show;
         boolean oldShowESet = showESet;
@@ -506,6 +525,7 @@ public class DefaultStylePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetShow() {
         return showESet;
     }
@@ -515,6 +535,7 @@ public class DefaultStylePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getTitle() {
         return title;
     }
@@ -524,6 +545,7 @@ public class DefaultStylePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTitle(String newTitle) {
         String oldTitle = title;
         title = newTitle;
@@ -536,6 +558,7 @@ public class DefaultStylePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TypeType getType() {
         return type;
     }
@@ -545,6 +568,7 @@ public class DefaultStylePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setType(TypeType newType) {
         TypeType oldType = type;
         type = newType == null ? TYPE_EDEFAULT : newType;
@@ -559,6 +583,7 @@ public class DefaultStylePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetType() {
         TypeType oldType = type;
         boolean oldTypeESet = typeESet;
@@ -573,6 +598,7 @@ public class DefaultStylePropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetType() {
         return typeESet;
     }

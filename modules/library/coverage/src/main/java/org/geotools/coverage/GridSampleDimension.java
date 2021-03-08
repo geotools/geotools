@@ -656,6 +656,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      *
      * @return A code value indicating grid value data type.
      */
+    @Override
     @SuppressWarnings("unchecked")
     public SampleDimensionType getSampleDimensionType() {
         final NumberRange range = getRange();
@@ -671,6 +672,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      *
      * @return The title or description of this sample dimension.
      */
+    @Override
     public InternationalString getDescription() {
         return description;
     }
@@ -698,6 +700,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      * @see #getCategories
      * @see #getCategory
      */
+    @Override
     public InternationalString[] getCategoryNames() throws IllegalStateException {
         if (categories == null) {
             return null;
@@ -761,6 +764,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      * @throws IllegalStateException if some qualitative categories use a range of non-integer
      *     values.
      */
+    @Override
     public double[] getNoDataValues() throws IllegalStateException {
         if (!hasQuantitative) {
             return null;
@@ -831,6 +835,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      *
      * @see #getRange
      */
+    @Override
     public double getMinimumValue() {
         if (categories != null && !categories.isEmpty()) {
             for (Category cat : categories) {
@@ -854,6 +859,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      *
      * @see #getRange
      */
+    @Override
     public double getMaximumValue() {
         if (categories != null && !categories.isEmpty()) {
             for (int i = categories.size(); --i >= 0; ) {
@@ -936,6 +942,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      * Returns the unit information for this sample dimension. May returns {@code null} if this
      * dimension has no units.
      */
+    @Override
     public Unit<?> getUnits() {
         return (categories != null) ? categories.getUnits() : units;
     }
@@ -956,6 +963,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      *
      * @return The offset to add to grid values.
      */
+    @Override
     public double getOffset() {
         return offset;
     }
@@ -976,6 +984,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      *
      * @return The scale to multiply to grid value.
      */
+    @Override
     public double getScale() {
         return scale;
     }

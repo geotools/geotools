@@ -29,6 +29,7 @@ public class NotImpl extends LogicFilterImpl implements Not {
         this.children.add(filter);
     }
 
+    @Override
     public Filter getFilter() {
         return children.get(0);
     }
@@ -42,10 +43,12 @@ public class NotImpl extends LogicFilterImpl implements Not {
     }
 
     // @Override
+    @Override
     public boolean evaluate(Object feature) {
         return !getFilter().evaluate(feature);
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

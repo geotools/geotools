@@ -49,6 +49,7 @@ public class ChannelSelectionBinding extends SLDChannelSelectionBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.ChannelSelection;
     }

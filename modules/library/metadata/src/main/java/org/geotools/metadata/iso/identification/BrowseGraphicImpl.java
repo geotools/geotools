@@ -83,6 +83,7 @@ public class BrowseGraphicImpl extends MetadataEntity implements BrowseGraphic {
     }
 
     /** Name of the file that contains a graphic that provides an illustration of the dataset. */
+    @Override
     public URI getFileName() {
         return fileName;
     }
@@ -97,6 +98,7 @@ public class BrowseGraphicImpl extends MetadataEntity implements BrowseGraphic {
     }
 
     /** Text description of the illustration. */
+    @Override
     public InternationalString getFileDescription() {
         return fileDescription;
     }
@@ -111,6 +113,7 @@ public class BrowseGraphicImpl extends MetadataEntity implements BrowseGraphic {
      * Format in which the illustration is encoded. Examples: CGM, EPS, GIF, JPEG, PBM, PS, TIFF,
      * XWD.
      */
+    @Override
     public String getFileType() {
         return fileType;
     }

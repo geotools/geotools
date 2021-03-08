@@ -17,6 +17,7 @@ public class SQLServerViewOnlineTest extends JDBCViewOnlineTest {
      * Override since sql server metadata over nullability over views works differently than in
      * other databases
      */
+    @Override
     protected void assertAttributesEqual(AttributeDescriptor expected, AttributeDescriptor actual) {
         assertEquals(aname(expected.getName()), actual.getName());
         // assertEquals(expected.getMinOccurs(), actual.getMinOccurs());

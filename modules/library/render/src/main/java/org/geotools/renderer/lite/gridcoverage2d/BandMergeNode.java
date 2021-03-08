@@ -60,6 +60,7 @@ class BandMergeNode extends BaseCoverageProcessingNode implements CoverageProces
      * (non-Javadoc)
      * @see CoverageProcessingNode#getName()
      */
+    @Override
     public InternationalString getName() {
         return Vocabulary.formatInternational(VocabularyKeys.BAND_MERGE);
     }
@@ -68,6 +69,7 @@ class BandMergeNode extends BaseCoverageProcessingNode implements CoverageProces
      * (non-Javadoc)
      * @see org.geotools.renderer.lite.gridcoverage2d.BaseCoverageProcessingNode#dispose(boolean)
      */
+    @Override
     public void dispose(boolean force) {
         ///////////////////////////////////////////////////////////////////////
         //
@@ -107,6 +109,7 @@ class BandMergeNode extends BaseCoverageProcessingNode implements CoverageProces
                         "Node which applies a BandMergeNode following SLD 1.0 spec."));
     }
 
+    @Override
     protected GridCoverage execute() {
         assert getSources().size() <= 3;
 

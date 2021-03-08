@@ -100,18 +100,22 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
         this.minScaleDenominator = rule.getMinScaleDenominator();
     }
 
+    @Override
     public GraphicLegend getLegend() {
         return legend;
     }
 
+    @Override
     public void setLegend(GraphicLegend legend) {
         this.legend = legend;
     }
 
+    @Override
     public List<Symbolizer> symbolizers() {
         return symbolizers;
     }
 
+    @Override
     public org.geotools.styling.Symbolizer[] getSymbolizers() {
 
         final Symbolizer[] ret = new Symbolizer[symbolizers.size()];
@@ -122,34 +126,42 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
         return ret;
     }
 
+    @Override
     public DescriptionImpl getDescription() {
         return description;
     }
 
+    @Override
     public void setDescription(org.opengis.style.Description description) {
         this.description = DescriptionImpl.cast(description);
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
+    @Override
     public Filter getFilter() {
         return filter;
     }
 
+    @Override
     public void setFilter(Filter filter) {
         this.filter = filter;
     }
 
+    @Override
     public boolean isElseFilter() {
         return hasElseFilter;
     }
 
+    @Override
     public void setElseFilter(boolean defaultb) {
         hasElseFilter = defaultb;
     }
@@ -159,6 +171,7 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
      *
      * @return Value of property maxScaleDenominator.
      */
+    @Override
     public double getMaxScaleDenominator() {
         return maxScaleDenominator;
     }
@@ -168,6 +181,7 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
      *
      * @param maxScaleDenominator New value of property maxScaleDenominator.
      */
+    @Override
     public void setMaxScaleDenominator(double maxScaleDenominator) {
         this.maxScaleDenominator = maxScaleDenominator;
     }
@@ -177,6 +191,7 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
      *
      * @return Value of property minScaleDenominator.
      */
+    @Override
     public double getMinScaleDenominator() {
         return minScaleDenominator;
     }
@@ -186,14 +201,17 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
      *
      * @param minScaleDenominator New value of property minScaleDenominator.
      */
+    @Override
     public void setMinScaleDenominator(double minScaleDenominator) {
         this.minScaleDenominator = minScaleDenominator;
     }
 
+    @Override
     public Object accept(StyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
+    @Override
     public void accept(org.geotools.styling.StyleVisitor visitor) {
         visitor.visit(this);
     }
@@ -203,6 +221,7 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
      *
      * @see org.geotools.styling.Rule#clone()
      */
+    @Override
     public Object clone() {
         try {
             RuleImpl clone = (RuleImpl) super.clone();
@@ -240,6 +259,7 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
      *
      * @return The hashcode.
      */
+    @Override
     public int hashCode() {
         final int PRIME = 1000003;
         int result = 0;
@@ -282,6 +302,7 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
      * @param oth The other rule to compare with.
      * @return True if this and oth are equal.
      */
+    @Override
     public boolean equals(Object oth) {
         if (this == oth) {
             return true;
@@ -326,10 +347,12 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
         return buf.toString();
     }
 
+    @Override
     public OnLineResource getOnlineResource() {
         return online;
     }
 
+    @Override
     public void setOnlineResource(OnLineResource online) {
         this.online = online;
     }

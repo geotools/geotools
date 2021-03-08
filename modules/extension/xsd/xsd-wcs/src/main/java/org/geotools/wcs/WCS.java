@@ -40,6 +40,7 @@ public final class WCS extends XSD {
     /** private constructor */
     private WCS() {}
 
+    @Override
     protected void addDependencies(Set<XSD> dependencies) {
         super.addDependencies(dependencies);
 
@@ -47,11 +48,13 @@ public final class WCS extends XSD {
     }
 
     /** Returns 'http://www.opengis.net/wcs'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'getCoverage.xsd.'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("getCoverage.xsd").toString();
     }

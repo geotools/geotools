@@ -158,15 +158,12 @@ public class OffsetCurveBuilder {
             g.normalize();
         } else if (g instanceof GeometryCollection) {
             g.apply(
-                    new GeometryFilter() {
-
-                        @Override
-                        public void filter(Geometry geom) {
-                            if (geom instanceof Polygon) {
-                                geom.normalize();
-                            }
-                        }
-                    });
+                    (GeometryFilter)
+                            geom -> {
+                                if (geom instanceof Polygon) {
+                                    geom.normalize();
+                                }
+                            });
         }
 
         // then extract the lines
@@ -175,15 +172,12 @@ public class OffsetCurveBuilder {
             lines.add((LineString) g);
         } else {
             g.apply(
-                    new GeometryComponentFilter() {
-
-                        @Override
-                        public void filter(Geometry geom) {
-                            if (geom instanceof LineString) {
-                                lines.add((LineString) geom);
-                            }
-                        }
-                    });
+                    (GeometryComponentFilter)
+                            geom -> {
+                                if (geom instanceof LineString) {
+                                    lines.add((LineString) geom);
+                                }
+                            });
         }
         return lines;
     }

@@ -34,7 +34,6 @@ import org.geotools.graph.structure.DirectedNode;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.GraphVisitor;
-import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
 import org.junit.Test;
 
@@ -45,6 +44,7 @@ public class DirectedGraphSerializerTest extends BasicGraphSerializerTest {
      * <br>
      * Expected: 1. before and after graph should have same structure.
      */
+    @Override
     @Test
     public void test_0() {
         final int nnodes = 100;
@@ -68,37 +68,32 @@ public class DirectedGraphSerializerTest extends BasicGraphSerializerTest {
 
             // ensure same graph structure
             GraphVisitor visitor =
-                    new GraphVisitor() {
-                        public int visit(Graphable component) {
-                            DirectedEdge e = (DirectedEdge) component;
+                    component -> {
+                        DirectedEdge e = (DirectedEdge) component;
 
-                            assertEquals(e.getInNode().getID(), e.getID());
-                            assertEquals(e.getOutNode().getID(), e.getID() + 1);
+                        assertEquals(e.getInNode().getID(), e.getID());
+                        assertEquals(e.getOutNode().getID(), e.getID() + 1);
 
-                            return (0);
-                        }
+                        return (0);
                     };
             after.visitEdges(visitor);
 
             visitor =
-                    new GraphVisitor() {
-                        public int visit(Graphable component) {
-                            DirectedNode n = (DirectedNode) component;
+                    component -> {
+                        DirectedNode n = (DirectedNode) component;
 
-                            if (n.getDegree() == 1) {
-                                assertTrue(n.getID() == 0 || n.getID() == nnodes - 1);
-                            } else {
-                                assertEquals(2, n.getDegree());
+                        if (n.getDegree() == 1) {
+                            assertTrue(n.getID() == 0 || n.getID() == nnodes - 1);
+                        } else {
+                            assertEquals(2, n.getDegree());
 
-                                Edge in = n.getInEdges().get(0);
-                                Edge out = n.getOutEdges().get(0);
+                            Edge in = n.getInEdges().get(0);
+                            Edge out = n.getOutEdges().get(0);
 
-                                assertTrue(
-                                        (in.getID() == n.getID() - 1 && out.getID() == n.getID()));
-                            }
-
-                            return (0);
+                            assertTrue((in.getID() == n.getID() - 1 && out.getID() == n.getID()));
                         }
+
+                        return (0);
                     };
             after.visitNodes(visitor);
 
@@ -113,6 +108,7 @@ public class DirectedGraphSerializerTest extends BasicGraphSerializerTest {
      * <br>
      * Expected: 1. Same structure before and after.
      */
+    @Override
     @Test
     public void test_1() {
         final int k = 5;
@@ -136,67 +132,65 @@ public class DirectedGraphSerializerTest extends BasicGraphSerializerTest {
 
             // ensure same structure
             GraphVisitor visitor =
-                    new GraphVisitor() {
-                        public int visit(Graphable component) {
-                            DirectedNode n = (DirectedNode) component;
-                            String id = (String) n.getObject();
+                    component -> {
+                        DirectedNode n = (DirectedNode) component;
+                        String id = (String) n.getObject();
 
-                            assertNotNull(obj2node.get(id));
+                        assertNotNull(obj2node.get(id));
 
-                            StringTokenizer st = new StringTokenizer(id, ".");
+                        StringTokenizer st = new StringTokenizer(id, ".");
 
-                            if (st.countTokens() == 1) {
-                                // root
-                                assertEquals(2, n.getDegree());
+                        if (st.countTokens() == 1) {
+                            // root
+                            assertEquals(2, n.getDegree());
 
-                                Node n0 = n.getEdges().get(0).getOtherNode(n);
-                                Node n1 = n.getEdges().get(1).getOtherNode(n);
+                            Node n0 = n.getEdges().get(0).getOtherNode(n);
+                            Node n1 = n.getEdges().get(1).getOtherNode(n);
 
-                                assertTrue(
-                                        n0.getObject().equals("0.0") && n1.getObject().equals("0.1")
-                                                || n0.getObject().equals("0.1")
-                                                        && n1.getObject().equals("0.0"));
-                            } else if (st.countTokens() == k + 1) {
-                                // leaf
-                                assertEquals(1, n.getDegree());
+                            assertTrue(
+                                    n0.getObject().equals("0.0") && n1.getObject().equals("0.1")
+                                            || n0.getObject().equals("0.1")
+                                                    && n1.getObject().equals("0.0"));
+                        } else if (st.countTokens() == k + 1) {
+                            // leaf
+                            assertEquals(1, n.getDegree());
 
-                                Node parent = ((DirectedEdge) n.getInEdges().get(0)).getInNode();
-                                String parentid = (String) parent.getObject();
+                            Node parent = ((DirectedEdge) n.getInEdges().get(0)).getInNode();
+                            String parentid = (String) parent.getObject();
 
-                                assertEquals(parentid, id.substring(0, id.length() - 2));
-                            } else {
-                                // internal
-                                assertEquals(3, n.getDegree());
+                            assertEquals(parentid, id.substring(0, id.length() - 2));
+                        } else {
+                            // internal
+                            assertEquals(3, n.getDegree());
 
-                                String parent =
-                                        ((DirectedEdge) n.getInEdges().get(0))
-                                                .getInNode()
-                                                .getObject()
-                                                .toString();
-                                String c0 =
-                                        ((DirectedEdge) n.getOutEdges().get(0))
-                                                .getOutNode()
-                                                .getObject()
-                                                .toString();
-                                String c1 =
-                                        ((DirectedEdge) n.getOutEdges().get(1))
-                                                .getOutNode()
-                                                .getObject()
-                                                .toString();
+                            String parent =
+                                    ((DirectedEdge) n.getInEdges().get(0))
+                                            .getInNode()
+                                            .getObject()
+                                            .toString();
+                            String c0 =
+                                    ((DirectedEdge) n.getOutEdges().get(0))
+                                            .getOutNode()
+                                            .getObject()
+                                            .toString();
+                            String c1 =
+                                    ((DirectedEdge) n.getOutEdges().get(1))
+                                            .getOutNode()
+                                            .getObject()
+                                            .toString();
 
-                                String parentid = id.substring(0, id.length() - 2);
+                            String parentid = id.substring(0, id.length() - 2);
 
-                                assertTrue(
-                                        parent.equals(parentid)
-                                                        && c0.equals(id + ".0")
-                                                        && c1.equals(id + ".1")
-                                                || parent.equals(parentid)
-                                                        && c1.equals(id + ".0")
-                                                        && c0.equals(id + ".1"));
-                            }
-
-                            return (0);
+                            assertTrue(
+                                    parent.equals(parentid)
+                                                    && c0.equals(id + ".0")
+                                                    && c1.equals(id + ".1")
+                                            || parent.equals(parentid)
+                                                    && c1.equals(id + ".0")
+                                                    && c0.equals(id + ".1"));
                         }
+
+                        return (0);
                     };
             after.visitNodes(visitor);
 
@@ -212,6 +206,7 @@ public class DirectedGraphSerializerTest extends BasicGraphSerializerTest {
      * <br>
      * Exepcted: 1. Same graph structure.
      */
+    @Override
     @Test
     public void test_2() {
         final int nnodes = 100;
@@ -243,17 +238,15 @@ public class DirectedGraphSerializerTest extends BasicGraphSerializerTest {
             assertEquals(before.getEdges().size(), after.getEdges().size());
 
             GraphVisitor visitor =
-                    new GraphVisitor() {
-                        public int visit(Graphable component) {
-                            Node n = (Node) component;
-                            if (n.getID() == 0 || n.getID() == nnodes - 1)
-                                assertEquals(0, n.getDegree());
-                            else if (n.getID() == 1 || n.getID() == nnodes - 2)
-                                assertEquals(1, n.getDegree());
-                            else assertEquals(2, n.getDegree());
+                    component -> {
+                        Node n = (Node) component;
+                        if (n.getID() == 0 || n.getID() == nnodes - 1)
+                            assertEquals(0, n.getDegree());
+                        else if (n.getID() == 1 || n.getID() == nnodes - 2)
+                            assertEquals(1, n.getDegree());
+                        else assertEquals(2, n.getDegree());
 
-                            return (0);
-                        }
+                        return (0);
                     };
             after.visitNodes(visitor);
         } catch (Exception e) {
@@ -262,10 +255,12 @@ public class DirectedGraphSerializerTest extends BasicGraphSerializerTest {
         }
     }
 
+    @Override
     protected GraphBuilder createBuilder() {
         return (new BasicDirectedGraphBuilder());
     }
 
+    @Override
     protected GraphBuilder createRebuilder() {
         return (new BasicDirectedGraphBuilder());
     }

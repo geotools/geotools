@@ -65,6 +65,7 @@ public class ECQLComparisonPredicateTest extends CQLComparisonPredicateTest {
     }
 
     /** Equals predicate sample */
+    @Override
     @Test
     public void deprecatedPredicate() throws Exception {
 

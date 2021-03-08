@@ -32,6 +32,7 @@ import org.opengis.filter.PropertyIsEqualTo;
 
 public class TeradataDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
 
+    @Override
     protected JDBCTestSetup createTestSetup() {
         return new TeradataTestSetup();
     }
@@ -54,26 +55,23 @@ public class TeradataDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
             final int id = i + 1;
             t[i] =
                     new Thread(
-                            new Runnable() {
-                                @Override
-                                public void run() {
-                                    for (int j = 0; j < 50; j++) {
-                                        try (FeatureWriter w =
-                                                dataStore.getFeatureWriter(
-                                                        tname("ft2"), Transaction.AUTO_COMMIT)) {
+                            () -> {
+                                for (int j = 0; j < 50; j++) {
+                                    try (FeatureWriter w =
+                                            dataStore.getFeatureWriter(
+                                                    tname("ft2"), Transaction.AUTO_COMMIT)) {
 
-                                            while (w.hasNext()) {
-                                                w.next();
-                                            }
-                                            SimpleFeature f = (SimpleFeature) w.next();
-                                            f.setAttribute(1, Integer.valueOf((id * 100) + j));
-                                            f.setAttribute(2, "one");
-                                            w.write();
-                                        } catch (Exception ex) {
-                                            java.util.logging.Logger.getGlobal()
-                                                    .log(java.util.logging.Level.INFO, "", ex);
-                                            errors[0] = true;
+                                        while (w.hasNext()) {
+                                            w.next();
                                         }
+                                        SimpleFeature f = (SimpleFeature) w.next();
+                                        f.setAttribute(1, Integer.valueOf((id * 100) + j));
+                                        f.setAttribute(2, "one");
+                                        w.write();
+                                    } catch (Exception ex) {
+                                        java.util.logging.Logger.getGlobal()
+                                                .log(java.util.logging.Level.INFO, "", ex);
+                                        errors[0] = true;
                                     }
                                 }
                             });

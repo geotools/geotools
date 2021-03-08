@@ -40,6 +40,7 @@ public class OptXYNode extends OptNode implements XYNode {
      *
      * @see XYNode#getCoordinate()
      */
+    @Override
     public Coordinate getCoordinate() {
         return (new Coordinate(m_x, m_y));
     }
@@ -49,6 +50,7 @@ public class OptXYNode extends OptNode implements XYNode {
      *
      * @see XYNode#setCoordinate(Coordinate)
      */
+    @Override
     public void setCoordinate(Coordinate c) {
         m_x = c.x;
         m_y = c.y;

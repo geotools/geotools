@@ -106,7 +106,8 @@ public class ActionTypeImpl extends EObjectImpl implements ActionType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.ACTION_TYPE;
   }
 
@@ -115,7 +116,8 @@ public class ActionTypeImpl extends EObjectImpl implements ActionType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getMessage() {
+	@Override
+    public String getMessage() {
     return message;
   }
 
@@ -124,7 +126,8 @@ public class ActionTypeImpl extends EObjectImpl implements ActionType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setMessage(String newMessage) {
+	@Override
+    public void setMessage(String newMessage) {
     String oldMessage = message;
     message = newMessage;
     if (eNotificationRequired())
@@ -136,7 +139,8 @@ public class ActionTypeImpl extends EObjectImpl implements ActionType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getCode() {
+	@Override
+    public String getCode() {
     return code;
   }
 
@@ -145,7 +149,8 @@ public class ActionTypeImpl extends EObjectImpl implements ActionType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setCode(String newCode) {
+	@Override
+    public void setCode(String newCode) {
     String oldCode = code;
     code = newCode;
     if (eNotificationRequired())
@@ -157,7 +162,8 @@ public class ActionTypeImpl extends EObjectImpl implements ActionType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getLocator() {
+	@Override
+    public String getLocator() {
     return locator;
   }
 
@@ -166,7 +172,8 @@ public class ActionTypeImpl extends EObjectImpl implements ActionType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setLocator(String newLocator) {
+	@Override
+    public void setLocator(String newLocator) {
     String oldLocator = locator;
     locator = newLocator;
     if (eNotificationRequired())
@@ -178,7 +185,8 @@ public class ActionTypeImpl extends EObjectImpl implements ActionType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	@Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.ACTION_TYPE__MESSAGE:
         return getMessage();
@@ -195,7 +203,8 @@ public class ActionTypeImpl extends EObjectImpl implements ActionType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(int featureID, Object newValue) {
+	@Override
+    public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.ACTION_TYPE__MESSAGE:
         setMessage((String)newValue);
@@ -215,7 +224,8 @@ public class ActionTypeImpl extends EObjectImpl implements ActionType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(int featureID) {
+	@Override
+    public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.ACTION_TYPE__MESSAGE:
         setMessage(MESSAGE_EDEFAULT);
@@ -235,7 +245,8 @@ public class ActionTypeImpl extends EObjectImpl implements ActionType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(int featureID) {
+	@Override
+    public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.ACTION_TYPE__MESSAGE:
         return MESSAGE_EDEFAULT == null ? message != null : !MESSAGE_EDEFAULT.equals(message);
@@ -252,7 +263,8 @@ public class ActionTypeImpl extends EObjectImpl implements ActionType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String toString() {
+	@Override
+    public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

@@ -24,18 +24,22 @@ public class OtherTextImpl implements OtherText {
 
     Expression text;
 
+    @Override
     public String getTarget() {
         return location;
     }
 
+    @Override
     public void setTarget(String location) {
         this.location = location;
     }
 
+    @Override
     public Expression getText() {
         return text;
     }
 
+    @Override
     public void setText(Expression text) {
         this.text = text;
     }

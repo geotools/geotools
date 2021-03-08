@@ -55,18 +55,22 @@ public class PreGeneralizedFeatureReader
         this.indexMapping = indexMapping;
     }
 
+    @Override
     public void close() throws IOException {
         backendReader.close();
     }
 
+    @Override
     public SimpleFeatureType getFeatureType() {
         return returnedFeatureType;
     }
 
+    @Override
     public boolean hasNext() throws IOException {
         return backendReader.hasNext();
     }
 
+    @Override
     public SimpleFeature next()
             throws IOException, IllegalArgumentException, NoSuchElementException {
         SimpleFeature next = backendReader.next();

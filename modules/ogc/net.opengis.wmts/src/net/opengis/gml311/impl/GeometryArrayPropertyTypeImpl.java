@@ -68,6 +68,7 @@ public class GeometryArrayPropertyTypeImpl extends MinimalEObjectImpl.Container 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getGeometryGroup() {
         if (geometryGroup == null) {
             geometryGroup = new BasicFeatureMap(this, Gml311Package.GEOMETRY_ARRAY_PROPERTY_TYPE__GEOMETRY_GROUP);
@@ -80,6 +81,7 @@ public class GeometryArrayPropertyTypeImpl extends MinimalEObjectImpl.Container 
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<AbstractGeometryType> getGeometry() {
         return getGeometryGroup().list(Gml311Package.eINSTANCE.getGeometryArrayPropertyType_Geometry());
     }

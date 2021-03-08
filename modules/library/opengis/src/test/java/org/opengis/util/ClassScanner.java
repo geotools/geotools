@@ -68,11 +68,13 @@ final class ClassScanner implements Iterator<Class<?>> {
     }
 
     /** Returns {@code true} if there is more OpenGIS classes or interfaces in the classpath. */
+    @Override
     public boolean hasNext() {
         return index < classNames.size();
     }
 
     /** Returns the next OpenGIS class or interface in the classpath. */
+    @Override
     public Class<?> next() {
         if (hasNext())
             try {
@@ -84,6 +86,7 @@ final class ClassScanner implements Iterator<Class<?>> {
     }
 
     /** Unsupported operation. */
+    @Override
     public void remove() {
         throw new UnsupportedOperationException();
     }

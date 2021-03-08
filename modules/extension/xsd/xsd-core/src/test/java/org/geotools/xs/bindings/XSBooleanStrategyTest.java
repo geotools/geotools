@@ -50,6 +50,7 @@ public class XSBooleanStrategyTest extends TestSchema {
         }
     }
 
+    @Override
     protected QName getQName() {
         return XS.BOOLEAN;
     }

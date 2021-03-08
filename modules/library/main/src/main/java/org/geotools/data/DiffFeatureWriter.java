@@ -63,6 +63,7 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
      *
      * @see org.geotools.data.FeatureWriter#getFeatureType()
      */
+    @Override
     public SimpleFeatureType getFeatureType() {
         return reader.getFeatureType();
     }
@@ -72,6 +73,7 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
      *
      * @see org.geotools.data.FeatureWriter#next()
      */
+    @Override
     public SimpleFeature next() throws IOException {
         SimpleFeatureType type = getFeatureType();
         if (hasNext()) {
@@ -108,6 +110,7 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
     }
 
     /** @see org.geotools.data.FeatureWriter#remove() */
+    @Override
     public void remove() throws IOException {
         if (live != null) {
             // mark live as removed
@@ -127,6 +130,7 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
      *
      * @see org.geotools.data.FeatureWriter#write()
      */
+    @Override
     public void write() throws IOException {
         // DJB: I modified this so it doesnt throw an error if you
         //     do an update and you didnt actually change anything.
@@ -170,6 +174,7 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
      *
      * @see org.geotools.data.FeatureWriter#hasNext()
      */
+    @Override
     public boolean hasNext() throws IOException {
         if (next != null) {
             // we found next already
@@ -204,6 +209,7 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
      *
      * @see org.geotools.data.FeatureWriter#close()
      */
+    @Override
     public void close() throws IOException {
         if (reader != null) {
             reader.close();

@@ -173,6 +173,7 @@ public class TypeMapping implements Serializable {
         this.indexTypeName = indexTypeName;
     }
 
+    @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("TypeMappingDTO[");

@@ -81,6 +81,7 @@ public class CompositeValueTypeImpl extends AbstractGMLTypeImpl implements Compo
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<ValuePropertyType> getValueComponent() {
         if (valueComponent == null) {
             valueComponent = new EObjectContainmentEList<>(ValuePropertyType.class, this, Gml311Package.COMPOSITE_VALUE_TYPE__VALUE_COMPONENT);
@@ -93,6 +94,7 @@ public class CompositeValueTypeImpl extends AbstractGMLTypeImpl implements Compo
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ValueArrayPropertyType getValueComponents() {
         return valueComponents;
     }
@@ -117,6 +119,7 @@ public class CompositeValueTypeImpl extends AbstractGMLTypeImpl implements Compo
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValueComponents(ValueArrayPropertyType newValueComponents) {
         if (newValueComponents != valueComponents) {
             NotificationChain msgs = null;

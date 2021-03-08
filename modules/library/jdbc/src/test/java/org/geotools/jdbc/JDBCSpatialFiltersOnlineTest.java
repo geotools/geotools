@@ -55,6 +55,7 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
 
     TestData td;
 
+    @Override
     protected void connect() throws Exception {
         super.connect();
 
@@ -80,6 +81,7 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
         }
     }
 
+    @Override
     protected abstract JDBCDataStoreAPITestSetup createTestSetup();
 
     public void testBboxFilter() throws Exception {

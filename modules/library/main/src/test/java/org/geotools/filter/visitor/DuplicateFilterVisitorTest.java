@@ -77,6 +77,7 @@ public class DuplicateFilterVisitorTest {
     public void testOptimizationExample() {
         Expression add = fac.add(fac.literal(1), fac.literal(2));
         class Optimization extends DuplicatingFilterVisitor {
+            @Override
             public Object visit(Add expression, Object extraData) {
                 Expression expr1 = expression.getExpression1();
                 Expression expr2 = expression.getExpression2();

@@ -40,6 +40,7 @@ public interface PolynomialSpline extends SplineCurve {
      * The interpolation mechanism for a {@code PolynomialSpline} is {@link
      * CurveInterpolation#POLYNOMIAL_SPLINE POLYNOMIAL_SPLINE}.
      */
+    @Override
     @UML(identifier = "interpolation", obligation = MANDATORY, specification = ISO_19107)
     CurveInterpolation getInterpolation();
 

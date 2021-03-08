@@ -69,6 +69,7 @@ public class StyledLayerDescriptorBinding extends SLDStyledLayerDescriptorBindin
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         StyledLayerDescriptor sld = (StyledLayerDescriptor) super.parse(instance, node, value);

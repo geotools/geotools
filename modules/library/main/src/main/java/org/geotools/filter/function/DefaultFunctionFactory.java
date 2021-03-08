@@ -55,6 +55,7 @@ public class DefaultFunctionFactory implements FunctionFactory {
 
     private volatile Map<Name, FunctionDescriptor> functionCache;
 
+    @Override
     public List<FunctionName> getFunctionNames() {
         ArrayList<FunctionName> list = new ArrayList<>(functionCache().size());
         for (FunctionDescriptor fd : functionCache().values()) {
@@ -66,10 +67,12 @@ public class DefaultFunctionFactory implements FunctionFactory {
         return list;
     }
 
+    @Override
     public Function function(String name, List<Expression> parameters, Literal fallback) {
         return function(new NameImpl(name), parameters, fallback);
     }
 
+    @Override
     public Function function(Name name, List<Expression> parameters, Literal fallback) {
 
         // cache lookup

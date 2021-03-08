@@ -79,6 +79,7 @@ public class LazySearchIterator implements CloseableIterator<Data> {
         this.next = null;
     }
 
+    @Override
     public boolean hasNext() {
         if (closed) throw new IllegalStateException("Iterator has been closed!");
         if (next != null) return true;
@@ -146,6 +147,7 @@ public class LazySearchIterator implements CloseableIterator<Data> {
         data = dataList.iterator();
     }
 
+    @Override
     public Data next() {
         if (!hasNext()) throw new NoSuchElementException("No more elements available");
         Data temp = next;
@@ -153,10 +155,12 @@ public class LazySearchIterator implements CloseableIterator<Data> {
         return temp;
     }
 
+    @Override
     public void remove() {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public void close() throws IOException {
         tree.close(this);
         tree.close();

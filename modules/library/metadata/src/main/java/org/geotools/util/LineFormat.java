@@ -574,6 +574,7 @@ public class LineFormat extends Format {
      *
      * @since 2.4
      */
+    @Override
     public StringBuffer format(
             final Object values, final StringBuffer toAppendTo, final FieldPosition position) {
         setValues(values);
@@ -598,6 +599,7 @@ public class LineFormat extends Format {
      *
      * @since 2.4
      */
+    @Override
     public Object parseObject(final String source, final ParsePosition position) {
         final int lower = position.getIndex();
         final int upper = getLineEnd(source, lower, true);

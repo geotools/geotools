@@ -116,6 +116,7 @@ public class GMLConfiguration extends Configuration {
         return srsSyntax;
     }
 
+    @Override
     public void registerBindings(MutablePicoContainer container) {
         // geometry
         container.registerComponentImplementation(
@@ -194,6 +195,7 @@ public class GMLConfiguration extends Configuration {
      *   <li>{@link FeatureTypeCache}
      * </ul>
      */
+    @Override
     public void configureContext(MutablePicoContainer container) {
         super.configureContext(container);
 

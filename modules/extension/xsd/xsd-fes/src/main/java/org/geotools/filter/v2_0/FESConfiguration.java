@@ -118,6 +118,7 @@ public class FESConfiguration extends Configuration {
      *
      * @generated
      */
+    @Override
     protected final void registerBindings(MutablePicoContainer container) {
         // Types
         //

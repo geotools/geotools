@@ -40,6 +40,7 @@ public interface CoordinateAccess extends CoordinateSequence {
      *
      * @return Number of spatially significant ordinates
      */
+    @Override
     int getDimension();
 
     /**
@@ -58,6 +59,7 @@ public interface CoordinateAccess extends CoordinateSequence {
      * @param ordinate Ordinate to retrieve from coordinate
      * @return Specified ordinate
      */
+    @Override
     double getOrdinate(int coordinate, int ordinate);
 
     /**
@@ -76,6 +78,7 @@ public interface CoordinateAccess extends CoordinateSequence {
      * @param ordinate Ordinate to modify in coordinate
      * @param value new value
      */
+    @Override
     void setOrdinate(int coordinate, int ordinate, double value);
 
     /**

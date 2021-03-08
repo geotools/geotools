@@ -150,25 +150,30 @@ public final class GeometryOperand implements Name, Serializable {
     }
 
     /** Retrieve the Local name. */
+    @Override
     public String getLocalPart() {
         return name;
     }
 
     /** Returns the name space, which is usually {@code "http://www.opengis.net/gml"}. */
+    @Override
     public String getNamespaceURI() {
         return namespaceURI;
     }
 
     /** Convert this name to a complete URI. */
+    @Override
     public String getURI() {
         return namespaceURI + '/' + name;
     }
 
     /** Returns {@code false} since this name has a {@linkplain #getNamespaceURI namespace}. */
+    @Override
     public boolean isGlobal() {
         return false;
     }
 
+    @Override
     public String getSeparator() {
         return "#";
     }

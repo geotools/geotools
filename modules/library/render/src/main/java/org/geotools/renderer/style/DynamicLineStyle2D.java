@@ -46,6 +46,7 @@ public class DynamicLineStyle2D extends org.geotools.renderer.style.LineStyle2D 
     }
 
     /** Computes and returns the stroke */
+    @Override
     public java.awt.Stroke getStroke() {
         Stroke stroke = ls.getStroke();
 
@@ -101,6 +102,7 @@ public class DynamicLineStyle2D extends org.geotools.renderer.style.LineStyle2D 
     }
 
     /** Computes and returns the contour style */
+    @Override
     public java.awt.Composite getContourComposite() {
         Stroke stroke = ls.getStroke();
 
@@ -119,6 +121,7 @@ public class DynamicLineStyle2D extends org.geotools.renderer.style.LineStyle2D 
      *
      * @return the contour paint
      */
+    @Override
     public java.awt.Paint getContour() {
         Stroke stroke = ls.getStroke();
 

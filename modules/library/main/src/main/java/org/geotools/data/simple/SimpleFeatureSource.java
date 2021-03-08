@@ -25,9 +25,12 @@ import org.opengis.filter.Filter;
 
 /** FeatureSource explicitly working with SimpleFeatureCollection. */
 public interface SimpleFeatureSource extends FeatureSource<SimpleFeatureType, SimpleFeature> {
+    @Override
     public SimpleFeatureCollection getFeatures() throws IOException;
 
+    @Override
     public SimpleFeatureCollection getFeatures(Filter filter) throws IOException;
 
+    @Override
     public SimpleFeatureCollection getFeatures(Query query) throws IOException;
 }

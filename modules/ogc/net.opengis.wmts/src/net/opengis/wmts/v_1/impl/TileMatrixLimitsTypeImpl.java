@@ -156,6 +156,7 @@ public class TileMatrixLimitsTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getTileMatrix() {
         return tileMatrix;
     }
@@ -165,6 +166,7 @@ public class TileMatrixLimitsTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTileMatrix(String newTileMatrix) {
         String oldTileMatrix = tileMatrix;
         tileMatrix = newTileMatrix;
@@ -177,6 +179,7 @@ public class TileMatrixLimitsTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getMinTileRow() {
         return minTileRow;
     }
@@ -186,6 +189,7 @@ public class TileMatrixLimitsTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMinTileRow(BigInteger newMinTileRow) {
         BigInteger oldMinTileRow = minTileRow;
         minTileRow = newMinTileRow;
@@ -198,6 +202,7 @@ public class TileMatrixLimitsTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getMaxTileRow() {
         return maxTileRow;
     }
@@ -207,6 +212,7 @@ public class TileMatrixLimitsTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMaxTileRow(BigInteger newMaxTileRow) {
         BigInteger oldMaxTileRow = maxTileRow;
         maxTileRow = newMaxTileRow;
@@ -219,6 +225,7 @@ public class TileMatrixLimitsTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getMinTileCol() {
         return minTileCol;
     }
@@ -228,6 +235,7 @@ public class TileMatrixLimitsTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMinTileCol(BigInteger newMinTileCol) {
         BigInteger oldMinTileCol = minTileCol;
         minTileCol = newMinTileCol;
@@ -240,6 +248,7 @@ public class TileMatrixLimitsTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getMaxTileCol() {
         return maxTileCol;
     }
@@ -249,6 +258,7 @@ public class TileMatrixLimitsTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMaxTileCol(BigInteger newMaxTileCol) {
         BigInteger oldMaxTileCol = maxTileCol;
         maxTileCol = newMaxTileCol;

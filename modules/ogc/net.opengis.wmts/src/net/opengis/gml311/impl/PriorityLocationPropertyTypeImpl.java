@@ -69,6 +69,7 @@ public class PriorityLocationPropertyTypeImpl extends LocationPropertyTypeImpl i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getPriority() {
         return priority;
     }
@@ -78,6 +79,7 @@ public class PriorityLocationPropertyTypeImpl extends LocationPropertyTypeImpl i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPriority(String newPriority) {
         String oldPriority = priority;
         priority = newPriority;

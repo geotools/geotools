@@ -165,6 +165,7 @@ public class DescribeCoverageTypeImpl extends EObjectImpl implements DescribeCov
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.DESCRIBE_COVERAGE_TYPE;
 	}
@@ -174,6 +175,7 @@ public class DescribeCoverageTypeImpl extends EObjectImpl implements DescribeCov
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList getCoverage() {
 		if (coverage == null) {
 			coverage = new EDataTypeUniqueEList(String.class, this, Wcs10Package.DESCRIBE_COVERAGE_TYPE__COVERAGE);
@@ -186,6 +188,7 @@ public class DescribeCoverageTypeImpl extends EObjectImpl implements DescribeCov
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getService() {
 		return service;
 	}
@@ -195,6 +198,7 @@ public class DescribeCoverageTypeImpl extends EObjectImpl implements DescribeCov
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setService(String newService) {
 		String oldService = service;
 		service = newService;
@@ -209,6 +213,7 @@ public class DescribeCoverageTypeImpl extends EObjectImpl implements DescribeCov
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void unsetService() {
 		String oldService = service;
 		boolean oldServiceESet = serviceESet;
@@ -223,6 +228,7 @@ public class DescribeCoverageTypeImpl extends EObjectImpl implements DescribeCov
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean isSetService() {
 		return serviceESet;
 	}
@@ -232,6 +238,7 @@ public class DescribeCoverageTypeImpl extends EObjectImpl implements DescribeCov
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getVersion() {
 		return version;
 	}
@@ -241,6 +248,7 @@ public class DescribeCoverageTypeImpl extends EObjectImpl implements DescribeCov
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setVersion(String newVersion) {
 		String oldVersion = version;
 		version = newVersion;
@@ -255,6 +263,7 @@ public class DescribeCoverageTypeImpl extends EObjectImpl implements DescribeCov
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void unsetVersion() {
 		String oldVersion = version;
 		boolean oldVersionESet = versionESet;
@@ -269,6 +278,7 @@ public class DescribeCoverageTypeImpl extends EObjectImpl implements DescribeCov
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean isSetVersion() {
 		return versionESet;
 	}
@@ -278,7 +288,8 @@ public class DescribeCoverageTypeImpl extends EObjectImpl implements DescribeCov
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getBaseUrl() {
+	@Override
+    public String getBaseUrl() {
 		return baseUrl;
 	}
 
@@ -287,7 +298,8 @@ public class DescribeCoverageTypeImpl extends EObjectImpl implements DescribeCov
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setBaseUrl(String newBaseUrl) {
+	@Override
+    public void setBaseUrl(String newBaseUrl) {
 		String oldBaseUrl = baseUrl;
 		baseUrl = newBaseUrl;
 		if (eNotificationRequired())
@@ -299,7 +311,8 @@ public class DescribeCoverageTypeImpl extends EObjectImpl implements DescribeCov
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Map getExtendedProperties() {
+	@Override
+    public Map getExtendedProperties() {
 		return extendedProperties;
 	}
 
@@ -308,7 +321,8 @@ public class DescribeCoverageTypeImpl extends EObjectImpl implements DescribeCov
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setExtendedProperties(Map newExtendedProperties) {
+	@Override
+    public void setExtendedProperties(Map newExtendedProperties) {
 		Map oldExtendedProperties = extendedProperties;
 		extendedProperties = newExtendedProperties;
 		if (eNotificationRequired())
@@ -320,6 +334,7 @@ public class DescribeCoverageTypeImpl extends EObjectImpl implements DescribeCov
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.DESCRIBE_COVERAGE_TYPE__COVERAGE:
@@ -341,6 +356,7 @@ public class DescribeCoverageTypeImpl extends EObjectImpl implements DescribeCov
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.DESCRIBE_COVERAGE_TYPE__COVERAGE:
@@ -368,6 +384,7 @@ public class DescribeCoverageTypeImpl extends EObjectImpl implements DescribeCov
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.DESCRIBE_COVERAGE_TYPE__COVERAGE:
@@ -394,6 +411,7 @@ public class DescribeCoverageTypeImpl extends EObjectImpl implements DescribeCov
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.DESCRIBE_COVERAGE_TYPE__COVERAGE:
@@ -415,6 +433,7 @@ public class DescribeCoverageTypeImpl extends EObjectImpl implements DescribeCov
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

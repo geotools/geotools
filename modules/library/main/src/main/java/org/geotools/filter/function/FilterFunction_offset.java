@@ -48,6 +48,7 @@ public class FilterFunction_offset extends FunctionExpressionImpl
         return 3;
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Geometry geom = getExpression(0).evaluate(feature, Geometry.class);
         Double offsetX = getExpression(1).evaluate(feature, Double.class);
@@ -69,6 +70,7 @@ public class FilterFunction_offset extends FunctionExpressionImpl
      * the offsets are feature dependent the user will have to expand the rendering area via the
      * renderer buffer parameter
      */
+    @Override
     public ReferencedEnvelope invert(ReferencedEnvelope renderingEnvelope) {
         Double offsetX = getExpression(1).evaluate(null, Double.class);
         Double offsetY = getExpression(2).evaluate(null, Double.class);
@@ -92,15 +94,18 @@ public class FilterFunction_offset extends FunctionExpressionImpl
             this.offsetY = offsetY;
         }
 
+        @Override
         public void filter(CoordinateSequence seq, int i) {
             seq.setOrdinate(i, 0, seq.getOrdinate(i, 0) + offsetX);
             seq.setOrdinate(i, 1, seq.getOrdinate(i, 1) + offsetY);
         }
 
+        @Override
         public boolean isDone() {
             return false;
         }
 
+        @Override
         public boolean isGeometryChanged() {
             return true;
         }

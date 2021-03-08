@@ -22,7 +22,6 @@ import org.geotools.graph.structure.DirectedNode;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.GraphVisitor;
-import org.geotools.graph.structure.Graphable;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -69,43 +68,38 @@ public class DirectedLineGraphGeneratorTest {
         Assert.assertEquals(built.getNodes().size(), n + 1);
 
         GraphVisitor visitor =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-                        DirectedNode node = (DirectedNode) component;
-                        Coordinate c = (Coordinate) node.getObject();
+                component -> {
+                    DirectedNode node = (DirectedNode) component;
+                    Coordinate c = (Coordinate) node.getObject();
 
-                        if (node.getDegree() == 1) {
-                            Assert.assertTrue(
-                                    (node.getID() == 0
-                                                    && node.getInDegree() == 0
-                                                    && node.getOutDegree() == 1)
-                                            || (node.getID() == n
-                                                    && node.getInDegree() == 1
-                                                    && node.getOutDegree() == 0));
-                        } else {
-                            Assert.assertTrue(node.getInDegree() == 1 && node.getOutDegree() == 1);
-                        }
-
+                    if (node.getDegree() == 1) {
                         Assert.assertTrue(
-                                c.x == base.x + node.getID() && c.y == base.y + node.getID());
-                        return (0);
+                                (node.getID() == 0
+                                                && node.getInDegree() == 0
+                                                && node.getOutDegree() == 1)
+                                        || (node.getID() == n
+                                                && node.getInDegree() == 1
+                                                && node.getOutDegree() == 0));
+                    } else {
+                        Assert.assertTrue(node.getInDegree() == 1 && node.getOutDegree() == 1);
                     }
+
+                    Assert.assertTrue(c.x == base.x + node.getID() && c.y == base.y + node.getID());
+                    return (0);
                 };
         built.visitNodes(visitor);
 
         // ensure correct edge direction
         visitor =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-                        DirectedEdge e = (DirectedEdge) component;
-                        Coordinate c0 = (Coordinate) e.getInNode().getObject();
-                        Coordinate c1 = (Coordinate) e.getOutNode().getObject();
-                        LineSegment ls = (LineSegment) e.getObject();
+                component -> {
+                    DirectedEdge e = (DirectedEdge) component;
+                    Coordinate c0 = (Coordinate) e.getInNode().getObject();
+                    Coordinate c1 = (Coordinate) e.getOutNode().getObject();
+                    LineSegment ls = (LineSegment) e.getObject();
 
-                        Assert.assertTrue(ls.p0.equals(c0) && ls.p1.equals(c1));
+                    Assert.assertTrue(ls.p0.equals(c0) && ls.p1.equals(c1));
 
-                        return (0);
-                    }
+                    return (0);
                 };
     }
 

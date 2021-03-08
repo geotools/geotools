@@ -582,6 +582,7 @@ public class Mosaic extends OperationJAI {
                         getOperationDescriptor("Mosaic"), REPLACED_DESCRIPTORS));
     }
 
+    @Override
     public Coverage doOperation(final ParameterValueGroup parameters, final Hints hints)
             throws CoverageProcessingException {
         /*
@@ -848,6 +849,7 @@ public class Mosaic extends OperationJAI {
      * We override this one to get some extra behavior that ImageWorker has (ROI, paletted images
      * management)
      */
+    @Override
     protected RenderedImage createRenderedImage(
             final ParameterBlockJAI parameters, RenderingHints hints) {
         parameters.getSources();
@@ -989,6 +991,7 @@ public class Mosaic extends OperationJAI {
         return properties;
     }
 
+    @Override
     protected void extractSources(
             final ParameterValueGroup parameters,
             final Collection<GridCoverage2D> sources,

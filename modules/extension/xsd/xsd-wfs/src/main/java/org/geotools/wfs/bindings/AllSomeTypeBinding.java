@@ -44,6 +44,7 @@ import org.geotools.xsd.impl.AttributeImpl;
 public class AllSomeTypeBinding extends AbstractSimpleBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.AllSomeType;
     }
@@ -55,6 +56,7 @@ public class AllSomeTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return AllSomeType.class;
     }
@@ -66,6 +68,7 @@ public class AllSomeTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         AttributeImpl att = (AttributeImpl) instance;
         String text = att.getText();

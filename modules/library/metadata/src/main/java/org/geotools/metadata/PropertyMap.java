@@ -125,11 +125,13 @@ final class PropertyMap extends AbstractMap<String, Object> {
         }
 
         /** Returns the key corresponding to this entry. */
+        @Override
         public String getKey() {
             return accessor.name(index);
         }
 
         /** Returns the value corresponding to this entry. */
+        @Override
         public Object getValue() {
             final Object value = accessor.get(index, metadata);
             return PropertyAccessor.isEmpty(value) ? null : value;
@@ -140,6 +142,7 @@ final class PropertyMap extends AbstractMap<String, Object> {
          *
          * @throws ClassCastException if the given value is not of the expected type.
          */
+        @Override
         public Object setValue(Object value) throws ClassCastException {
             return accessor.set(index, metadata, value);
         }
@@ -206,11 +209,13 @@ final class PropertyMap extends AbstractMap<String, Object> {
         }
 
         /** Returns {@code true} if the iteration has more elements. */
+        @Override
         public boolean hasNext() {
             return next != null;
         }
 
         /** Returns the next element in the iteration. */
+        @Override
         public Map.Entry<String, Object> next() {
             if (next != null) {
                 current = next;
@@ -222,6 +227,7 @@ final class PropertyMap extends AbstractMap<String, Object> {
         }
 
         /** Removes from the underlying collection the last element returned by the iterator. */
+        @Override
         public void remove() {
             if (current != null) {
                 current.setValue(null);
@@ -248,6 +254,7 @@ final class PropertyMap extends AbstractMap<String, Object> {
         }
 
         /** Returns the number of elements in this collection. */
+        @Override
         public int size() {
             return accessor.count(metadata, Integer.MAX_VALUE);
         }

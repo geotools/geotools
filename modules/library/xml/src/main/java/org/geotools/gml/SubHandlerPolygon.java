@@ -68,6 +68,7 @@ public class SubHandlerPolygon extends SubHandler {
      * @param message Name of sub geometry located.
      * @param type Type of sub geometry located.
      */
+    @Override
     public void subGeometry(String message, int type) {
         // if we have found a linear ring, either
         // add it to the list of inner boundaries if we are reading them
@@ -101,6 +102,7 @@ public class SubHandlerPolygon extends SubHandler {
      *
      * @param coordinate Name of sub geometry located.
      */
+    @Override
     public void addCoordinate(Coordinate coordinate) {
         currentHandler.addCoordinate(coordinate);
     }
@@ -111,6 +113,7 @@ public class SubHandlerPolygon extends SubHandler {
      * @param message Name of GML element that prompted this check.
      * @return Flag indicating whether or not the geometry is ready to be returned.
      */
+    @Override
     public boolean isComplete(String message) {
         // the conditions checked here are that the endGeometry message that
         // prompted this check is a Polygon and that this Polygon has an outer
@@ -137,6 +140,7 @@ public class SubHandlerPolygon extends SubHandler {
      * @param geometryFactory Geometry factory to be used in Polygon creation.
      * @return Completed OGC Polygon.
      */
+    @Override
     public Geometry create(GeometryFactory geometryFactory) {
         for (LinearRing hole : innerBoundaries) {
             if (hole.crosses(outerBoundary)) {

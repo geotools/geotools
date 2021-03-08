@@ -276,6 +276,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      *     {@link javax.imageio.IIOException} if an error was thrown by the underlying image
      *     library.
      */
+    @Override
     public abstract GridCoverage2D read(GeneralParameterValue[] parameters)
             throws IllegalArgumentException, IOException;
 
@@ -519,6 +520,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      * Returns the actual resolution used to read the data given the specified target resolution and
      * the specified overview policy
      */
+    @Override
     public double[] getReadingResolutions(OverviewPolicy policy, double[] requestedResolution)
             throws IOException {
         // Default implementation for backwards compatibility
@@ -579,12 +581,14 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
             this.imageChoice = imageChoice;
         }
 
+        @Override
         public int compareTo(Resolution other) {
             if (scaleFactor > other.scaleFactor) return 1;
             else if (scaleFactor < other.scaleFactor) return -1;
             else return 0;
         }
 
+        @Override
         public String toString() {
             return "Resolution[Choice=" + imageChoice + ",scaleFactor=" + scaleFactor + "]";
         }
@@ -788,6 +792,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      * @return the {@link GeneralGridEnvelope} that represents the raster grid dimensions of the
      *     highest resolution level in this dataset.
      */
+    @Override
     public GridEnvelope getOriginalGridRange() {
         return getOriginalGridRange(coverageName);
     }
@@ -844,6 +849,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      *
      * @return the {@link GeneralEnvelope} for this {@link AbstractGridCoverage2DReader}.
      */
+    @Override
     public GeneralEnvelope getOriginalEnvelope() {
         return getOriginalEnvelope(coverageName);
     }
@@ -870,6 +876,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      * @return the original grid to world transformation for this {@link
      *     AbstractGridCoverage2DReader}.
      */
+    @Override
     public MathTransform getOriginalGridToWorld(final PixelInCell pixInCell) {
         // Default implementation for backwards compatibility
         return getOriginalGridToWorld(coverageName, pixInCell);
@@ -922,6 +929,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      *
      * @return the source for this {@link AbstractGridCoverage2DReader}.
      */
+    @Override
     public final Object getSource() {
         return source;
     }
@@ -931,6 +939,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      *
      * <p>This method just tries to close the underlying {@link ImageInputStream}.
      */
+    @Override
     public void dispose() {
         if (inStream != null && closeMe) {
             try {
@@ -947,6 +956,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         return new String[] {coverageName};
     }
 
+    @Override
     public String[] getMetadataNames(final String coverageName) {
         if (!checkName(coverageName)) {
             throw new IllegalArgumentException(
@@ -956,15 +966,18 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     }
 
     /** @see org.opengis.coverage.grid.GridCoverageReader#getMetadataNames() */
+    @Override
     public String[] getMetadataNames() {
         return null;
     }
 
     /** @see org.opengis.coverage.grid.GridCoverageReader#getMetadataValue(java.lang.String) */
+    @Override
     public String getMetadataValue(final String name) {
         return getMetadataValue(coverageName, name);
     }
 
+    @Override
     public String getMetadataValue(final String coverageName, final String name) {
         if (!checkName(coverageName)) {
             throw new IllegalArgumentException(
@@ -974,6 +987,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     }
 
     /** @see org.opengis.coverage.grid.GridCoverageReader#getGridCoverageCount() */
+    @Override
     public int getGridCoverageCount() {
         return 1;
     }
@@ -985,6 +999,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      *
      * @return ServiceInfo describing getSource().
      */
+    @Override
     public ServiceInfo getInfo() {
         DefaultServiceInfo info;
         try {
@@ -1082,6 +1097,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      * Return the set of dynamic parameterDescriptors (the ones related to domains) for this reader.
      * Default implementation returns an empty set of parameters
      */
+    @Override
     @SuppressWarnings("rawtypes")
     public Set<ParameterDescriptor<List>> getDynamicParameters() throws IOException {
         return getDynamicParameters(coverageName);
@@ -1091,17 +1107,20 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      * Return the set of dynamic parameterDescriptors (the ones related to domains) for this reader.
      * Default implementation returns an empty set of parameters
      */
+    @Override
     @SuppressWarnings("rawtypes")
     public Set<ParameterDescriptor<List>> getDynamicParameters(String coverageName)
             throws IOException {
         return Collections.emptySet();
     }
 
+    @Override
     public DatasetLayout getDatasetLayout() {
         // Default implementation for backwards compatibility
         return getDatasetLayout(coverageName);
     }
 
+    @Override
     public DatasetLayout getDatasetLayout(String coverageName) {
         if (!checkName(coverageName)) {
             throw new IllegalArgumentException(
@@ -1216,7 +1235,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         return highestRes;
     }
 
-    double[] getHighestRes() {
+    protected double[] getHighestRes() {
         return getHighestRes(coverageName);
     }
 

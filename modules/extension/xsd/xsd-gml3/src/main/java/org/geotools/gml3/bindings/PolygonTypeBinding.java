@@ -61,10 +61,12 @@ public class PolygonTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.PolygonType;
     }
 
+    @Override
     public int getExecutionMode() {
         return BEFORE;
     }
@@ -76,6 +78,7 @@ public class PolygonTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Polygon.class;
     }
@@ -87,6 +90,7 @@ public class PolygonTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // TODO: schema allows no exterior ring, but what the heck is that all about ?
         LinearRing exterior = (LinearRing) node.getChildValue("exterior");
@@ -101,6 +105,7 @@ public class PolygonTypeBinding extends AbstractComplexBinding {
         return gFactory.createPolygon(exterior, interior);
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         Polygon polygon = (Polygon) object;
 

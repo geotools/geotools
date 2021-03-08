@@ -44,11 +44,13 @@ final class InfiniteRectangle2D extends Rectangle2D implements Serializable {
     private InfiniteRectangle2D() {}
 
     /** Returns the minimum value, which is negative infinity. */
+    @Override
     public double getX() {
         return java.lang.Double.NEGATIVE_INFINITY;
     }
 
     /** Returns the minimum value, which is negative infinity. */
+    @Override
     public double getY() {
         return java.lang.Double.NEGATIVE_INFINITY;
     }
@@ -78,11 +80,13 @@ final class InfiniteRectangle2D extends Rectangle2D implements Serializable {
     }
 
     /** Returns the width, which is positive infinity. */
+    @Override
     public double getWidth() {
         return java.lang.Double.POSITIVE_INFINITY;
     }
 
     /** Returns the height, which is positive infinity. */
+    @Override
     public double getHeight() {
         return java.lang.Double.POSITIVE_INFINITY;
     }
@@ -112,6 +116,7 @@ final class InfiniteRectangle2D extends Rectangle2D implements Serializable {
     public void add(double x, double y) {}
 
     /** Returns 0, since the specified point can't be outside this rectangle. */
+    @Override
     public int outcode(double x, double y) {
         return 0;
     }
@@ -171,6 +176,7 @@ final class InfiniteRectangle2D extends Rectangle2D implements Serializable {
     }
 
     /** Returns {@code false} since an infinite rectangle is far from empty. */
+    @Override
     public boolean isEmpty() {
         return false;
     }
@@ -191,11 +197,13 @@ final class InfiniteRectangle2D extends Rectangle2D implements Serializable {
      * Returns {@code this}, since this rectangle can't be extended. No need to returns a clone,
      * since this rectangle is immutable.
      */
+    @Override
     public Rectangle2D createUnion(Rectangle2D rect) {
         return this;
     }
 
     /** Returns a clone of the specified rectangle. */
+    @Override
     public Rectangle2D createIntersection(Rectangle2D rect) {
         return (Rectangle2D) rect.clone();
     }
@@ -205,6 +213,7 @@ final class InfiniteRectangle2D extends Rectangle2D implements Serializable {
      *
      * @todo Throws UnmodifiableGeometryException instead? (defined in renderer module for now)
      */
+    @Override
     public void setRect(double x, double y, double w, double h) {
         throw new UnsupportedOperationException();
     }

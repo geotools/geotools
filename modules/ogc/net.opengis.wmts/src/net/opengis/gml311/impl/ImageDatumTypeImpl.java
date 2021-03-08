@@ -62,6 +62,7 @@ public class ImageDatumTypeImpl extends AbstractDatumTypeImpl implements ImageDa
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PixelInCellType getPixelInCell() {
         return pixelInCell;
     }
@@ -86,6 +87,7 @@ public class ImageDatumTypeImpl extends AbstractDatumTypeImpl implements ImageDa
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPixelInCell(PixelInCellType newPixelInCell) {
         if (newPixelInCell != pixelInCell) {
             NotificationChain msgs = null;

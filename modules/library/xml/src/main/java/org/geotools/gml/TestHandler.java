@@ -32,6 +32,7 @@ public class TestHandler extends XMLFilterImpl implements GMLHandlerJTS {
 
     static final Logger LOGGER = Logging.getLogger(TestHandler.class);
 
+    @Override
     public void geometry(Geometry geometry) {
         LOGGER.info("here is the geometry: " + geometry);
     }

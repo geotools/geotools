@@ -84,6 +84,7 @@ public class JDBCJNDITestSetup extends JDBCDelegatingTestSetup {
             MockInitialDirContextFactory.dataSource = dataSource;
         }
 
+        @Override
         @SuppressWarnings("PMD.ReplaceHashtableWithMap") // JDK API, we cannot do anything about it
         public Context getInitialContext(Hashtable environment) throws NamingException {
             mockContext = Mockito.mock(Context.class);

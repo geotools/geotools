@@ -147,6 +147,7 @@ public class GrassBinaryImageReader extends ImageReader {
         }
     }
 
+    @Override
     public int getHeight(final int imageIndex) throws IOException {
         // BufferedImage bufferedImage = imagesMap.get(imageIndex);
         // if (bufferedImage != null) {
@@ -159,6 +160,7 @@ public class GrassBinaryImageReader extends ImageReader {
         return -1;
     }
 
+    @Override
     public int getWidth(final int imageIndex) throws IOException {
         ensureOpen();
         if (rasterHandler != null) {
@@ -167,10 +169,12 @@ public class GrassBinaryImageReader extends ImageReader {
         return -1;
     }
 
+    @Override
     public int getNumImages(final boolean allowSearch) throws IOException {
         return imagesMap.size();
     }
 
+    @Override
     public synchronized Iterator<ImageTypeSpecifier> getImageTypes(final int imageIndex)
             throws IOException {
         ensureOpen();
@@ -185,11 +189,13 @@ public class GrassBinaryImageReader extends ImageReader {
         return l.iterator();
     }
 
+    @Override
     public IIOMetadata getStreamMetadata() throws IOException {
         // grass raster data do not support stream metadata.
         return null;
     }
 
+    @Override
     public IIOMetadata getImageMetadata(final int imageIndex) throws IOException {
         ensureOpen();
         if (metadata == null) metadata = new GrassBinaryImageMetadata(this.rasterHandler);
@@ -255,6 +261,7 @@ public class GrassBinaryImageReader extends ImageReader {
         return read(imageIndex, param);
     }
 
+    @Override
     public BufferedImage read(final int imageIndex, ImageReadParam param) throws IOException {
         ensureOpen();
 
@@ -278,11 +285,13 @@ public class GrassBinaryImageReader extends ImageReader {
         return bi;
     }
 
+    @Override
     public BufferedImage read(final int imageIndex) throws IOException {
         ensureOpen();
         return read(imageIndex, null);
     }
 
+    @Override
     public Raster readRaster(final int imageIndex, ImageReadParam param) throws IOException {
         ensureOpen();
         try {
@@ -304,6 +313,7 @@ public class GrassBinaryImageReader extends ImageReader {
     }
 
     /** Cleans this {@link GrassBinaryImageReader} up. */
+    @Override
     public void dispose() {
         if (rasterHandler != null) {
             try {
@@ -317,6 +327,7 @@ public class GrassBinaryImageReader extends ImageReader {
     }
 
     /** Resets this {@link GrassBinaryImageReader}. */
+    @Override
     public void reset() {
         dispose();
         super.setInput(null, false, false);
@@ -327,6 +338,7 @@ public class GrassBinaryImageReader extends ImageReader {
     }
 
     /** Request to abort any current read operation. */
+    @Override
     public synchronized void abort() {
         // super.abort();
         if (rasterHandler != null) {
@@ -336,6 +348,7 @@ public class GrassBinaryImageReader extends ImageReader {
     }
 
     /** Checks if a request to abort the current read operation has been made. */
+    @Override
     protected synchronized boolean abortRequested() {
         return rasterHandler.isAborting();
     }

@@ -28,8 +28,6 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import net.miginfocom.swing.MigLayout;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataStoreFinder;
@@ -87,12 +85,7 @@ public class JDataChoosePage extends JPage {
                     }
                 };
         list.setCellRenderer(cellRenderer);
-        list.addListSelectionListener(
-                new ListSelectionListener() {
-                    public void valueChanged(ListSelectionEvent e) {
-                        format = list.getSelectedValue();
-                    }
-                });
+        list.addListSelectionListener(e -> format = list.getSelectedValue());
         JScrollPane scroll = new JScrollPane(list);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scroll.setPreferredSize(new Dimension(300, 100));

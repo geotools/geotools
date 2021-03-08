@@ -44,14 +44,17 @@ public class ApplicationSchemaXSD extends XSD {
         this.schemaLocation = schemaLocation;
     }
 
+    @Override
     protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(GML.getInstance());
     }
 
+    @Override
     public String getNamespaceURI() {
         return namespaceURI;
     }
 
+    @Override
     public String getSchemaLocation() {
         return schemaLocation;
     }
@@ -67,8 +70,10 @@ public class ApplicationSchemaXSD extends XSD {
      *     </code> if <code>location</code> can't be resolved as a relative path of the <code>schema
      *     </code> location.
      */
+    @Override
     public SchemaLocationResolver createSchemaLocationResolver() {
         return new SchemaLocationResolver(this) {
+            @Override
             public String resolveSchemaLocation(XSDSchema schema, String uri, String location) {
                 String schemaLocation;
 

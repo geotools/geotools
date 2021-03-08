@@ -191,16 +191,19 @@ public final class OGC extends XSD {
         return instance;
     }
 
+    @Override
     protected void addDependencies(Set dependencies) {
         // TODO: add dependencies here
     }
 
     /** Returns 'http://www.opengis.net/ogc'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'filterCapabilities.xsd.'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("filterCapabilities.xsd").toString();
     }

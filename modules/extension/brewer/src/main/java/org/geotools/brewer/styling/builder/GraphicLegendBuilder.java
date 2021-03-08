@@ -43,6 +43,7 @@ public class GraphicLegendBuilder extends AbstractStyleBuilder<GraphicLegend> {
         reset();
     }
 
+    @Override
     public GraphicLegend build() {
         if (unset) {
             return null;
@@ -107,6 +108,7 @@ public class GraphicLegendBuilder extends AbstractStyleBuilder<GraphicLegend> {
         return rotation(cqlExpression(cqlExpression));
     }
 
+    @Override
     public GraphicLegendBuilder reset() {
         opacity = literal(1);
         size = literal(16); // TODO: check what the actual default size is
@@ -130,6 +132,7 @@ public class GraphicLegendBuilder extends AbstractStyleBuilder<GraphicLegend> {
         return this;
     }
 
+    @Override
     public GraphicLegendBuilder unset() {
         return (GraphicLegendBuilder) super.unset();
     }

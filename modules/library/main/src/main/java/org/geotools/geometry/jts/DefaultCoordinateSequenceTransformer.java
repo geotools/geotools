@@ -60,6 +60,7 @@ public class DefaultCoordinateSequenceTransformer implements CoordinateSequenceT
     }
 
     /** {@inheritDoc} */
+    @Override
     public CoordinateSequence transform(
             final CoordinateSequence sequence, final MathTransform transform)
             throws TransformException {

@@ -45,6 +45,7 @@ class ColorMapEntryResolver extends DuplicatingStyleVisitor {
         return simplified;
     }
 
+    @Override
     public void visit(ColorMapEntry colorMapEntry) {
         ColorMapEntry copy = sf.createColorMapEntry();
         copy.setColor(copyCqlExpression(colorMapEntry.getColor()));

@@ -51,6 +51,7 @@ public class RowField extends Number implements DataTypesDefinition {
      *
      * @return a <code><code>String</code></code> value
      */
+    @Override
     public String toString() {
         if (value != null) {
             return value.toString().trim();
@@ -65,6 +66,7 @@ public class RowField extends Number implements DataTypesDefinition {
      * @param obj an <code><code>Object</code></code> value
      * @return a <code><code>boolean</code></code> value
      */
+    @Override
     public boolean equals(Object obj) {
         if ((obj == null) || !(obj instanceof RowField)) {
             return false;
@@ -72,6 +74,7 @@ public class RowField extends Number implements DataTypesDefinition {
         return toString().equals(obj.toString());
     }
 
+    @Override
     public int hashCode() {
         return toString().hashCode();
     }
@@ -97,6 +100,7 @@ public class RowField extends Number implements DataTypesDefinition {
     /* (non-Javadoc)
      * @see java.lang.Number#intValue()
      */
+    @Override
     public int intValue() {
         return ((Number) value).intValue();
     }
@@ -104,6 +108,7 @@ public class RowField extends Number implements DataTypesDefinition {
     /* (non-Javadoc)
      * @see java.lang.Number#longValue()
      */
+    @Override
     public long longValue() {
         return ((Number) value).longValue();
     }
@@ -111,12 +116,14 @@ public class RowField extends Number implements DataTypesDefinition {
     /* (non-Javadoc)
      * @see java.lang.Number#byteValue()
      */
+    @Override
     public byte byteValue() {
         return ((Number) value).byteValue();
     }
     /* (non-Javadoc)
      * @see java.lang.Number#shortValue()
      */
+    @Override
     public short shortValue() {
         return ((Number) value).shortValue();
     }
@@ -124,6 +131,7 @@ public class RowField extends Number implements DataTypesDefinition {
     /* (non-Javadoc)
      * @see java.lang.Number#floatValue()
      */
+    @Override
     public float floatValue() {
         return ((Number) value).floatValue();
     }
@@ -131,6 +139,7 @@ public class RowField extends Number implements DataTypesDefinition {
     /* (non-Javadoc)
      * @see java.lang.Number#doubleValue()
      */
+    @Override
     public double doubleValue() {
         return ((Number) value).doubleValue();
     }

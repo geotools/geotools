@@ -633,6 +633,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getAbstractDescriptionBaseType() {
 		return abstractDescriptionBaseTypeEClass;
 	}
@@ -642,6 +643,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getAbstractDescriptionType() {
 		return abstractDescriptionTypeEClass;
 	}
@@ -651,6 +653,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getAbstractDescriptionType_MetadataLink() {
 		return (EReference)abstractDescriptionTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -660,6 +663,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getAbstractDescriptionType_Description1() {
 		return (EAttribute)abstractDescriptionTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -669,6 +673,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getAbstractDescriptionType_Name1() {
 		return (EAttribute)abstractDescriptionTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -678,6 +683,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getAbstractDescriptionType_Label() {
 		return (EAttribute)abstractDescriptionTypeEClass.getEStructuralFeatures().get(3);
 	}
@@ -687,6 +693,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getAddressType() {
 		return addressTypeEClass;
 	}
@@ -696,6 +703,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getAddressType_DeliveryPoint() {
 		return (EAttribute)addressTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -705,6 +713,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getAddressType_City() {
 		return (EAttribute)addressTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -714,6 +723,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getAddressType_AdministrativeArea() {
 		return (EAttribute)addressTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -723,6 +733,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getAddressType_PostalCode() {
 		return (EAttribute)addressTypeEClass.getEStructuralFeatures().get(3);
 	}
@@ -732,6 +743,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getAddressType_Country() {
 		return (EAttribute)addressTypeEClass.getEStructuralFeatures().get(4);
 	}
@@ -741,6 +753,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getAddressType_ElectronicMailAddress() {
 		return (EAttribute)addressTypeEClass.getEStructuralFeatures().get(5);
 	}
@@ -750,6 +763,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getAxisDescriptionType() {
 		return axisDescriptionTypeEClass;
 	}
@@ -759,6 +773,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getAxisDescriptionType_Values() {
 		return (EReference)axisDescriptionTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -768,6 +783,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getAxisDescriptionType_RefSys() {
 		return (EAttribute)axisDescriptionTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -777,6 +793,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getAxisDescriptionType_RefSysLabel() {
 		return (EAttribute)axisDescriptionTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -786,6 +803,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getAxisDescriptionType_Semantic() {
 		return (EAttribute)axisDescriptionTypeEClass.getEStructuralFeatures().get(3);
 	}
@@ -795,6 +813,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getAxisDescriptionType1() {
 		return axisDescriptionType1EClass;
 	}
@@ -804,6 +823,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getAxisDescriptionType1_AxisDescription() {
 		return (EReference)axisDescriptionType1EClass.getEStructuralFeatures().get(0);
 	}
@@ -813,6 +833,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getAxisSubsetType() {
 		return axisSubsetTypeEClass;
 	}
@@ -822,6 +843,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getAxisSubsetType_Name() {
 		return (EAttribute)axisSubsetTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -831,6 +853,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getContactType() {
 		return contactTypeEClass;
 	}
@@ -840,6 +863,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getContactType_Phone() {
 		return (EReference)contactTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -849,6 +873,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getContactType_Address() {
 		return (EReference)contactTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -858,6 +883,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getContactType_OnlineResource() {
 		return (EReference)contactTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -867,6 +893,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getContentMetadataType() {
 		return contentMetadataTypeEClass;
 	}
@@ -876,6 +903,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getContentMetadataType_CoverageOfferingBrief() {
 		return (EReference)contentMetadataTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -885,6 +913,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getContentMetadataType_Actuate() {
 		return (EAttribute)contentMetadataTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -894,6 +923,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getContentMetadataType_Arcrole() {
 		return (EAttribute)contentMetadataTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -903,6 +933,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getContentMetadataType_Href() {
 		return (EAttribute)contentMetadataTypeEClass.getEStructuralFeatures().get(3);
 	}
@@ -912,6 +943,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getContentMetadataType_RemoteSchema() {
 		return (EAttribute)contentMetadataTypeEClass.getEStructuralFeatures().get(4);
 	}
@@ -921,6 +953,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getContentMetadataType_Role() {
 		return (EAttribute)contentMetadataTypeEClass.getEStructuralFeatures().get(5);
 	}
@@ -930,6 +963,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getContentMetadataType_Show() {
 		return (EAttribute)contentMetadataTypeEClass.getEStructuralFeatures().get(6);
 	}
@@ -939,6 +973,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getContentMetadataType_Title() {
 		return (EAttribute)contentMetadataTypeEClass.getEStructuralFeatures().get(7);
 	}
@@ -948,6 +983,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getContentMetadataType_Type() {
 		return (EAttribute)contentMetadataTypeEClass.getEStructuralFeatures().get(8);
 	}
@@ -957,6 +993,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getContentMetadataType_UpdateSequence() {
 		return (EAttribute)contentMetadataTypeEClass.getEStructuralFeatures().get(9);
 	}
@@ -966,6 +1003,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getContentMetadataType_Version() {
 		return (EAttribute)contentMetadataTypeEClass.getEStructuralFeatures().get(10);
 	}
@@ -975,6 +1013,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getCoverageDescriptionType() {
 		return coverageDescriptionTypeEClass;
 	}
@@ -984,6 +1023,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getCoverageDescriptionType_CoverageOffering() {
 		return (EReference)coverageDescriptionTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -993,6 +1033,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getCoverageDescriptionType_UpdateSequence() {
 		return (EAttribute)coverageDescriptionTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -1002,6 +1043,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getCoverageDescriptionType_Version() {
 		return (EAttribute)coverageDescriptionTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -1011,6 +1053,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getCoverageOfferingBriefType() {
 		return coverageOfferingBriefTypeEClass;
 	}
@@ -1020,6 +1063,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getCoverageOfferingBriefType_LonLatEnvelope() {
 		return (EReference)coverageOfferingBriefTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1029,6 +1073,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getCoverageOfferingBriefType_Keywords() {
 		return (EReference)coverageOfferingBriefTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -1038,6 +1083,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getCoverageOfferingType() {
 		return coverageOfferingTypeEClass;
 	}
@@ -1047,6 +1093,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getCoverageOfferingType_DomainSet() {
 		return (EReference)coverageOfferingTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1056,6 +1103,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getCoverageOfferingType_RangeSet() {
 		return (EReference)coverageOfferingTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -1065,6 +1113,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getCoverageOfferingType_SupportedCRSs() {
 		return (EReference)coverageOfferingTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -1074,6 +1123,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getCoverageOfferingType_SupportedFormats() {
 		return (EReference)coverageOfferingTypeEClass.getEStructuralFeatures().get(3);
 	}
@@ -1083,6 +1133,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getCoverageOfferingType_SupportedInterpolations() {
 		return (EReference)coverageOfferingTypeEClass.getEStructuralFeatures().get(4);
 	}
@@ -1092,6 +1143,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getDCPTypeType() {
 		return dcpTypeTypeEClass;
 	}
@@ -1101,6 +1153,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDCPTypeType_HTTP() {
 		return (EReference)dcpTypeTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1110,6 +1163,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getDescribeCoverageType() {
 		return describeCoverageTypeEClass;
 	}
@@ -1119,6 +1173,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getDescribeCoverageType_Coverage() {
 		return (EAttribute)describeCoverageTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1128,6 +1183,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getDescribeCoverageType_Service() {
 		return (EAttribute)describeCoverageTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -1137,6 +1193,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getDescribeCoverageType_Version() {
 		return (EAttribute)describeCoverageTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -1146,7 +1203,8 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getDescribeCoverageType_BaseUrl() {
+	@Override
+    public EAttribute getDescribeCoverageType_BaseUrl() {
 		return (EAttribute)describeCoverageTypeEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -1155,7 +1213,8 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getDescribeCoverageType_ExtendedProperties() {
+	@Override
+    public EAttribute getDescribeCoverageType_ExtendedProperties() {
 		return (EAttribute)describeCoverageTypeEClass.getEStructuralFeatures().get(4);
 	}
 
@@ -1164,6 +1223,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getDescribeCoverageType1() {
 		return describeCoverageType1EClass;
 	}
@@ -1173,6 +1233,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDescribeCoverageType1_DCPType() {
 		return (EReference)describeCoverageType1EClass.getEStructuralFeatures().get(0);
 	}
@@ -1182,6 +1243,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getDocumentRoot() {
 		return documentRootEClass;
 	}
@@ -1191,6 +1253,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getDocumentRoot_Mixed() {
 		return (EAttribute)documentRootEClass.getEStructuralFeatures().get(0);
 	}
@@ -1200,6 +1263,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_XMLNSPrefixMap() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(1);
 	}
@@ -1209,6 +1273,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_XSISchemaLocation() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(2);
 	}
@@ -1218,6 +1283,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_AxisDescription() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(3);
 	}
@@ -1227,6 +1293,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_AxisDescription1() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(4);
 	}
@@ -1236,6 +1303,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_Capability() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(5);
 	}
@@ -1245,6 +1313,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_ContentMetadata() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(6);
 	}
@@ -1254,6 +1323,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_CoverageDescription() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(7);
 	}
@@ -1263,6 +1333,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_CoverageOffering() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(8);
 	}
@@ -1272,6 +1343,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_CoverageOfferingBrief() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(9);
 	}
@@ -1281,6 +1353,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_DescribeCoverage() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(10);
 	}
@@ -1290,6 +1363,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getDocumentRoot_Description() {
 		return (EAttribute)documentRootEClass.getEStructuralFeatures().get(11);
 	}
@@ -1299,6 +1373,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_DomainSet() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(12);
 	}
@@ -1308,6 +1383,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_Formats() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(13);
 	}
@@ -1317,6 +1393,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_GetCapabilities() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(14);
 	}
@@ -1326,6 +1403,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_GetCoverage() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(15);
 	}
@@ -1335,6 +1413,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getDocumentRoot_InterpolationMethod() {
 		return (EAttribute)documentRootEClass.getEStructuralFeatures().get(16);
 	}
@@ -1344,6 +1423,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_Interval() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(17);
 	}
@@ -1353,6 +1433,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_Keywords() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(18);
 	}
@@ -1362,6 +1443,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_LonLatEnvelope() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(19);
 	}
@@ -1371,6 +1453,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_MetadataLink() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(20);
 	}
@@ -1380,6 +1463,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getDocumentRoot_Name() {
 		return (EAttribute)documentRootEClass.getEStructuralFeatures().get(21);
 	}
@@ -1389,6 +1473,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_RangeSet() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(22);
 	}
@@ -1398,6 +1483,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_RangeSet1() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(23);
 	}
@@ -1407,6 +1493,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_Service() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(24);
 	}
@@ -1416,6 +1503,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_SingleValue() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(25);
 	}
@@ -1425,6 +1513,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_SpatialDomain() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(26);
 	}
@@ -1434,6 +1523,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_SpatialSubset() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(27);
 	}
@@ -1443,6 +1533,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_SupportedCRSs() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(28);
 	}
@@ -1452,6 +1543,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_SupportedFormats() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(29);
 	}
@@ -1461,6 +1553,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_SupportedInterpolations() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(30);
 	}
@@ -1470,6 +1563,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_TemporalDomain() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(31);
 	}
@@ -1479,6 +1573,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_TemporalSubset() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(32);
 	}
@@ -1488,6 +1583,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_TimePeriod() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(33);
 	}
@@ -1497,6 +1593,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_TimeSequence() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(34);
 	}
@@ -1506,6 +1603,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDocumentRoot_WCSCapabilities() {
 		return (EReference)documentRootEClass.getEStructuralFeatures().get(35);
 	}
@@ -1515,6 +1613,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getDocumentRoot_Closure() {
 		return (EAttribute)documentRootEClass.getEStructuralFeatures().get(36);
 	}
@@ -1524,6 +1623,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getDocumentRoot_Semantic() {
 		return (EAttribute)documentRootEClass.getEStructuralFeatures().get(37);
 	}
@@ -1533,6 +1633,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getDocumentRoot_Type() {
 		return (EAttribute)documentRootEClass.getEStructuralFeatures().get(38);
 	}
@@ -1542,6 +1643,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getDomainSetType() {
 		return domainSetTypeEClass;
 	}
@@ -1551,6 +1653,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDomainSetType_SpatialDomain() {
 		return (EReference)domainSetTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1560,6 +1663,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDomainSetType_TemporalDomain() {
 		return (EReference)domainSetTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -1569,6 +1673,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDomainSetType_TemporalDomain1() {
 		return (EReference)domainSetTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -1578,6 +1683,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getDomainSubsetType() {
 		return domainSubsetTypeEClass;
 	}
@@ -1587,6 +1693,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDomainSubsetType_SpatialSubset() {
 		return (EReference)domainSubsetTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1596,6 +1703,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDomainSubsetType_TemporalSubset() {
 		return (EReference)domainSubsetTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -1605,6 +1713,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getDomainSubsetType_TemporalSubset1() {
 		return (EReference)domainSubsetTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -1614,6 +1723,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getExceptionType() {
 		return exceptionTypeEClass;
 	}
@@ -1623,6 +1733,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getExceptionType_Format() {
 		return (EAttribute)exceptionTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1632,6 +1743,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getGetCapabilitiesType() {
 		return getCapabilitiesTypeEClass;
 	}
@@ -1641,6 +1753,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getGetCapabilitiesType_Section() {
 		return (EAttribute)getCapabilitiesTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1650,6 +1763,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getGetCapabilitiesType_Service() {
 		return (EAttribute)getCapabilitiesTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -1659,6 +1773,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getGetCapabilitiesType_UpdateSequence() {
 		return (EAttribute)getCapabilitiesTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -1668,6 +1783,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getGetCapabilitiesType_Version() {
 		return (EAttribute)getCapabilitiesTypeEClass.getEStructuralFeatures().get(3);
 	}
@@ -1677,7 +1793,8 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getGetCapabilitiesType_BaseUrl() {
+	@Override
+    public EAttribute getGetCapabilitiesType_BaseUrl() {
 		return (EAttribute)getCapabilitiesTypeEClass.getEStructuralFeatures().get(4);
 	}
 
@@ -1686,7 +1803,8 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getGetCapabilitiesType_ExtendedProperties() {
+	@Override
+    public EAttribute getGetCapabilitiesType_ExtendedProperties() {
 		return (EAttribute)getCapabilitiesTypeEClass.getEStructuralFeatures().get(5);
 	}
 
@@ -1695,6 +1813,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getGetCapabilitiesType1() {
 		return getCapabilitiesType1EClass;
 	}
@@ -1704,6 +1823,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getGetCapabilitiesType1_DCPType() {
 		return (EReference)getCapabilitiesType1EClass.getEStructuralFeatures().get(0);
 	}
@@ -1713,6 +1833,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getGetCoverageType() {
 		return getCoverageTypeEClass;
 	}
@@ -1722,6 +1843,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getGetCoverageType_SourceCoverage() {
 		return (EAttribute)getCoverageTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1731,6 +1853,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getGetCoverageType_DomainSubset() {
 		return (EReference)getCoverageTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -1740,6 +1863,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getGetCoverageType_RangeSubset() {
 		return (EReference)getCoverageTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -1749,6 +1873,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getGetCoverageType_InterpolationMethod() {
 		return (EAttribute)getCoverageTypeEClass.getEStructuralFeatures().get(3);
 	}
@@ -1758,6 +1883,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getGetCoverageType_Output() {
 		return (EReference)getCoverageTypeEClass.getEStructuralFeatures().get(4);
 	}
@@ -1767,6 +1893,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getGetCoverageType_Service() {
 		return (EAttribute)getCoverageTypeEClass.getEStructuralFeatures().get(5);
 	}
@@ -1776,6 +1903,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getGetCoverageType_Version() {
 		return (EAttribute)getCoverageTypeEClass.getEStructuralFeatures().get(6);
 	}
@@ -1785,7 +1913,8 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getGetCoverageType_BaseUrl() {
+	@Override
+    public EAttribute getGetCoverageType_BaseUrl() {
 		return (EAttribute)getCoverageTypeEClass.getEStructuralFeatures().get(7);
 	}
 
@@ -1794,7 +1923,8 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getGetCoverageType_ExtendedProperties() {
+	@Override
+    public EAttribute getGetCoverageType_ExtendedProperties() {
 		return (EAttribute)getCoverageTypeEClass.getEStructuralFeatures().get(8);
 	}
 
@@ -1803,6 +1933,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getGetCoverageType1() {
 		return getCoverageType1EClass;
 	}
@@ -1812,6 +1943,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getGetCoverageType1_DCPType() {
 		return (EReference)getCoverageType1EClass.getEStructuralFeatures().get(0);
 	}
@@ -1821,6 +1953,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getGetType() {
 		return getTypeEClass;
 	}
@@ -1830,6 +1963,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getGetType_OnlineResource() {
 		return (EReference)getTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1839,6 +1973,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getHTTPType() {
 		return httpTypeEClass;
 	}
@@ -1848,6 +1983,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getHTTPType_Group() {
 		return (EAttribute)httpTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1857,6 +1993,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getHTTPType_Get() {
 		return (EReference)httpTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -1866,6 +2003,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getHTTPType_Post() {
 		return (EReference)httpTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -1875,6 +2013,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getIntervalType() {
 		return intervalTypeEClass;
 	}
@@ -1884,6 +2023,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getIntervalType_Res() {
 		return (EReference)intervalTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1893,6 +2033,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getKeywordsType() {
 		return keywordsTypeEClass;
 	}
@@ -1902,6 +2043,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getKeywordsType_Keyword() {
 		return (EAttribute)keywordsTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1911,6 +2053,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getKeywordsType_Type() {
 		return (EReference)keywordsTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -1920,6 +2063,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getLonLatEnvelopeBaseType() {
 		return lonLatEnvelopeBaseTypeEClass;
 	}
@@ -1929,6 +2073,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getLonLatEnvelopeType() {
 		return lonLatEnvelopeTypeEClass;
 	}
@@ -1938,6 +2083,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getLonLatEnvelopeType_TimePosition() {
 		return (EReference)lonLatEnvelopeTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1947,6 +2093,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getMetadataAssociationType() {
 		return metadataAssociationTypeEClass;
 	}
@@ -1956,6 +2103,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getMetadataLinkType() {
 		return metadataLinkTypeEClass;
 	}
@@ -1965,6 +2113,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getMetadataLinkType_MetadataType() {
 		return (EAttribute)metadataLinkTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1974,6 +2123,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getOnlineResourceType() {
 		return onlineResourceTypeEClass;
 	}
@@ -1983,6 +2133,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getOnlineResourceType_Actuate() {
 		return (EAttribute)onlineResourceTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -1992,6 +2143,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getOnlineResourceType_Arcrole() {
 		return (EAttribute)onlineResourceTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -2001,6 +2153,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getOnlineResourceType_Href() {
 		return (EAttribute)onlineResourceTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -2010,6 +2163,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getOnlineResourceType_Role() {
 		return (EAttribute)onlineResourceTypeEClass.getEStructuralFeatures().get(3);
 	}
@@ -2019,6 +2173,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getOnlineResourceType_Show() {
 		return (EAttribute)onlineResourceTypeEClass.getEStructuralFeatures().get(4);
 	}
@@ -2028,6 +2183,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getOnlineResourceType_Title() {
 		return (EAttribute)onlineResourceTypeEClass.getEStructuralFeatures().get(5);
 	}
@@ -2037,6 +2193,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getOnlineResourceType_Type() {
 		return (EAttribute)onlineResourceTypeEClass.getEStructuralFeatures().get(6);
 	}
@@ -2046,6 +2203,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getOutputType() {
 		return outputTypeEClass;
 	}
@@ -2055,6 +2213,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getOutputType_Crs() {
 		return (EReference)outputTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -2064,6 +2223,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getOutputType_Format() {
 		return (EReference)outputTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -2073,6 +2233,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getPostType() {
 		return postTypeEClass;
 	}
@@ -2082,6 +2243,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getPostType_OnlineResource() {
 		return (EReference)postTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -2091,6 +2253,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getRangeSetType() {
 		return rangeSetTypeEClass;
 	}
@@ -2100,6 +2263,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getRangeSetType_AxisDescription() {
 		return (EReference)rangeSetTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -2109,6 +2273,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getRangeSetType_NullValues() {
 		return (EReference)rangeSetTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -2118,6 +2283,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getRangeSetType_RefSys() {
 		return (EAttribute)rangeSetTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -2127,6 +2293,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getRangeSetType_RefSysLabel() {
 		return (EAttribute)rangeSetTypeEClass.getEStructuralFeatures().get(3);
 	}
@@ -2136,6 +2303,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getRangeSetType_Semantic() {
 		return (EAttribute)rangeSetTypeEClass.getEStructuralFeatures().get(4);
 	}
@@ -2145,6 +2313,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getRangeSetType1() {
 		return rangeSetType1EClass;
 	}
@@ -2154,6 +2323,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getRangeSetType1_RangeSet() {
 		return (EReference)rangeSetType1EClass.getEStructuralFeatures().get(0);
 	}
@@ -2163,6 +2333,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getRangeSubsetType() {
 		return rangeSubsetTypeEClass;
 	}
@@ -2172,6 +2343,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getRangeSubsetType_AxisSubset() {
 		return (EReference)rangeSubsetTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -2181,6 +2353,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getRequestType() {
 		return requestTypeEClass;
 	}
@@ -2190,6 +2363,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getRequestType_GetCapabilities() {
 		return (EReference)requestTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -2199,6 +2373,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getRequestType_DescribeCoverage() {
 		return (EReference)requestTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -2208,6 +2383,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getRequestType_GetCoverage() {
 		return (EReference)requestTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -2217,6 +2393,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getResponsiblePartyType() {
 		return responsiblePartyTypeEClass;
 	}
@@ -2226,6 +2403,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getResponsiblePartyType_IndividualName() {
 		return (EAttribute)responsiblePartyTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -2235,6 +2413,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getResponsiblePartyType_OrganisationName() {
 		return (EAttribute)responsiblePartyTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -2244,6 +2423,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getResponsiblePartyType_OrganisationName1() {
 		return (EAttribute)responsiblePartyTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -2253,6 +2433,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getResponsiblePartyType_PositionName() {
 		return (EAttribute)responsiblePartyTypeEClass.getEStructuralFeatures().get(3);
 	}
@@ -2262,6 +2443,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getResponsiblePartyType_ContactInfo() {
 		return (EReference)responsiblePartyTypeEClass.getEStructuralFeatures().get(4);
 	}
@@ -2271,6 +2453,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getServiceType() {
 		return serviceTypeEClass;
 	}
@@ -2280,6 +2463,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getServiceType_Keywords() {
 		return (EReference)serviceTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -2289,6 +2473,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getServiceType_ResponsibleParty() {
 		return (EReference)serviceTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -2298,6 +2483,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getServiceType_Fees() {
 		return (EReference)serviceTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -2307,6 +2493,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getServiceType_AccessConstraints() {
 		return (EReference)serviceTypeEClass.getEStructuralFeatures().get(3);
 	}
@@ -2316,6 +2503,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getServiceType_UpdateSequence() {
 		return (EAttribute)serviceTypeEClass.getEStructuralFeatures().get(4);
 	}
@@ -2325,6 +2513,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getServiceType_Version() {
 		return (EAttribute)serviceTypeEClass.getEStructuralFeatures().get(5);
 	}
@@ -2334,6 +2523,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getSpatialDomainType() {
 		return spatialDomainTypeEClass;
 	}
@@ -2343,6 +2533,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getSpatialDomainType_Envelope() {
 		return (EReference)spatialDomainTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -2352,6 +2543,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getSpatialDomainType_GridGroup() {
 		return (EAttribute)spatialDomainTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -2361,6 +2553,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getSpatialDomainType_Grid() {
 		return (EReference)spatialDomainTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -2370,6 +2563,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getSpatialDomainType_Polygon() {
 		return (EReference)spatialDomainTypeEClass.getEStructuralFeatures().get(3);
 	}
@@ -2379,6 +2573,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getSpatialSubsetType() {
 		return spatialSubsetTypeEClass;
 	}
@@ -2388,6 +2583,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getSupportedCRSsType() {
 		return supportedCRSsTypeEClass;
 	}
@@ -2397,6 +2593,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getSupportedCRSsType_RequestResponseCRSs() {
 		return (EReference)supportedCRSsTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -2406,6 +2603,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getSupportedCRSsType_RequestCRSs() {
 		return (EReference)supportedCRSsTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -2415,6 +2613,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getSupportedCRSsType_ResponseCRSs() {
 		return (EReference)supportedCRSsTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -2424,6 +2623,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getSupportedCRSsType_NativeCRSs() {
 		return (EReference)supportedCRSsTypeEClass.getEStructuralFeatures().get(3);
 	}
@@ -2433,6 +2633,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getSupportedFormatsType() {
 		return supportedFormatsTypeEClass;
 	}
@@ -2442,6 +2643,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getSupportedFormatsType_Formats() {
 		return (EReference)supportedFormatsTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -2451,6 +2653,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getSupportedFormatsType_NativeFormat() {
 		return (EAttribute)supportedFormatsTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -2460,6 +2663,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getSupportedInterpolationsType() {
 		return supportedInterpolationsTypeEClass;
 	}
@@ -2469,6 +2673,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getSupportedInterpolationsType_InterpolationMethod() {
 		return (EAttribute)supportedInterpolationsTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -2478,6 +2683,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getSupportedInterpolationsType_Default() {
 		return (EAttribute)supportedInterpolationsTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -2487,6 +2693,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getTelephoneType() {
 		return telephoneTypeEClass;
 	}
@@ -2496,6 +2703,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getTelephoneType_Voice() {
 		return (EAttribute)telephoneTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -2505,6 +2713,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getTelephoneType_Facsimile() {
 		return (EAttribute)telephoneTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -2514,6 +2723,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getTimePeriodType() {
 		return timePeriodTypeEClass;
 	}
@@ -2523,6 +2733,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getTimePeriodType_BeginPosition() {
 		return (EReference)timePeriodTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -2532,6 +2743,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getTimePeriodType_EndPosition() {
 		return (EReference)timePeriodTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -2541,6 +2753,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getTimePeriodType_TimeResolution() {
 		return (EAttribute)timePeriodTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -2550,6 +2763,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getTimePeriodType_Frame() {
 		return (EAttribute)timePeriodTypeEClass.getEStructuralFeatures().get(3);
 	}
@@ -2559,6 +2773,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getTimeSequenceType() {
 		return timeSequenceTypeEClass;
 	}
@@ -2568,6 +2783,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getTimeSequenceType_Group() {
 		return (EAttribute)timeSequenceTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -2577,6 +2793,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getTimeSequenceType_TimePosition() {
 		return (EReference)timeSequenceTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -2586,6 +2803,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getTimeSequenceType_TimePeriod() {
 		return (EReference)timeSequenceTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -2595,6 +2813,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getTypedLiteralType() {
 		return typedLiteralTypeEClass;
 	}
@@ -2604,6 +2823,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getTypedLiteralType_Value() {
 		return (EAttribute)typedLiteralTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -2613,6 +2833,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getTypedLiteralType_Type() {
 		return (EAttribute)typedLiteralTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -2622,6 +2843,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getValueEnumBaseType() {
 		return valueEnumBaseTypeEClass;
 	}
@@ -2631,6 +2853,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getValueEnumBaseType_Group() {
 		return (EAttribute)valueEnumBaseTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -2640,6 +2863,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getValueEnumBaseType_Interval() {
 		return (EReference)valueEnumBaseTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -2649,6 +2873,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getValueEnumBaseType_SingleValue() {
 		return (EReference)valueEnumBaseTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -2658,6 +2883,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getValueEnumType() {
 		return valueEnumTypeEClass;
 	}
@@ -2667,6 +2893,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getValueEnumType_Semantic() {
 		return (EAttribute)valueEnumTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -2676,6 +2903,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getValueEnumType_Type() {
 		return (EAttribute)valueEnumTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -2685,6 +2913,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getValueRangeType() {
 		return valueRangeTypeEClass;
 	}
@@ -2694,6 +2923,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getValueRangeType_Min() {
 		return (EReference)valueRangeTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -2703,6 +2933,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getValueRangeType_Max() {
 		return (EReference)valueRangeTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -2712,6 +2943,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getValueRangeType_Atomic() {
 		return (EAttribute)valueRangeTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -2721,6 +2953,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getValueRangeType_Closure() {
 		return (EAttribute)valueRangeTypeEClass.getEStructuralFeatures().get(3);
 	}
@@ -2730,6 +2963,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getValueRangeType_Semantic() {
 		return (EAttribute)valueRangeTypeEClass.getEStructuralFeatures().get(4);
 	}
@@ -2739,6 +2973,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getValueRangeType_Type() {
 		return (EAttribute)valueRangeTypeEClass.getEStructuralFeatures().get(5);
 	}
@@ -2748,6 +2983,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getValuesType() {
 		return valuesTypeEClass;
 	}
@@ -2757,6 +2993,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getValuesType_Default() {
 		return (EReference)valuesTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -2766,6 +3003,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getVendorSpecificCapabilitiesType() {
 		return vendorSpecificCapabilitiesTypeEClass;
 	}
@@ -2775,6 +3013,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getVendorSpecificCapabilitiesType_Any() {
 		return (EAttribute)vendorSpecificCapabilitiesTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -2784,6 +3023,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getWCSCapabilitiesType() {
 		return wcsCapabilitiesTypeEClass;
 	}
@@ -2793,6 +3033,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getWCSCapabilitiesType_Service() {
 		return (EReference)wcsCapabilitiesTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -2802,6 +3043,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getWCSCapabilitiesType_Capability() {
 		return (EReference)wcsCapabilitiesTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -2811,6 +3053,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getWCSCapabilitiesType_ContentMetadata() {
 		return (EReference)wcsCapabilitiesTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -2820,6 +3063,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getWCSCapabilitiesType_UpdateSequence() {
 		return (EAttribute)wcsCapabilitiesTypeEClass.getEStructuralFeatures().get(3);
 	}
@@ -2829,6 +3073,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getWCSCapabilitiesType_Version() {
 		return (EAttribute)wcsCapabilitiesTypeEClass.getEStructuralFeatures().get(4);
 	}
@@ -2838,6 +3083,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EClass getWCSCapabilityType() {
 		return wcsCapabilityTypeEClass;
 	}
@@ -2847,6 +3093,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getWCSCapabilityType_Request() {
 		return (EReference)wcsCapabilityTypeEClass.getEStructuralFeatures().get(0);
 	}
@@ -2856,6 +3103,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getWCSCapabilityType_Exception() {
 		return (EReference)wcsCapabilityTypeEClass.getEStructuralFeatures().get(1);
 	}
@@ -2865,6 +3113,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EReference getWCSCapabilityType_VendorSpecificCapabilities() {
 		return (EReference)wcsCapabilityTypeEClass.getEStructuralFeatures().get(2);
 	}
@@ -2874,6 +3123,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getWCSCapabilityType_UpdateSequence() {
 		return (EAttribute)wcsCapabilityTypeEClass.getEStructuralFeatures().get(3);
 	}
@@ -2883,6 +3133,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EAttribute getWCSCapabilityType_Version() {
 		return (EAttribute)wcsCapabilityTypeEClass.getEStructuralFeatures().get(4);
 	}
@@ -2892,7 +3143,8 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getEnvelope() {
+	@Override
+    public EClass getEnvelope() {
 		return envelopeEClass;
 	}
 
@@ -2901,7 +3153,8 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getGeneralEnvelope() {
+	@Override
+    public EClass getGeneralEnvelope() {
 		return generalEnvelopeEClass;
 	}
 
@@ -2910,6 +3163,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EEnum getCapabilitiesSectionType() {
 		return capabilitiesSectionTypeEEnum;
 	}
@@ -2919,6 +3173,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EEnum getClosureType() {
 		return closureTypeEEnum;
 	}
@@ -2928,6 +3183,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EEnum getInterpolationMethodType() {
 		return interpolationMethodTypeEEnum;
 	}
@@ -2937,6 +3193,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EEnum getMetadataTypeType() {
 		return metadataTypeTypeEEnum;
 	}
@@ -2946,6 +3203,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EDataType getCapabilitiesSectionTypeObject() {
 		return capabilitiesSectionTypeObjectEDataType;
 	}
@@ -2955,6 +3213,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EDataType getClosureTypeObject() {
 		return closureTypeObjectEDataType;
 	}
@@ -2964,6 +3223,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EDataType getInterpolationMethodTypeObject() {
 		return interpolationMethodTypeObjectEDataType;
 	}
@@ -2973,6 +3233,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EDataType getMetadataTypeTypeObject() {
 		return metadataTypeTypeObjectEDataType;
 	}
@@ -2982,7 +3243,8 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EDataType getMap() {
+	@Override
+    public EDataType getMap() {
 		return mapEDataType;
 	}
 
@@ -2991,6 +3253,7 @@ public class Wcs10PackageImpl extends EPackageImpl implements Wcs10Package {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Wcs10Factory getWcs10Factory() {
 		return (Wcs10Factory)getEFactoryInstance();
 	}

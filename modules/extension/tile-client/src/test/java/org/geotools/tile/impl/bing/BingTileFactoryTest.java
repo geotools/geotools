@@ -96,6 +96,7 @@ public class BingTileFactoryTest extends TileFactoryTest {
         return new BingService("Road", baseURL);
     }
 
+    @Override
     protected TileFactory createFactory() {
         return new BingTileFactory();
     }

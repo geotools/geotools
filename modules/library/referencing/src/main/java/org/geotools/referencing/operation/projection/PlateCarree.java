@@ -142,6 +142,7 @@ public class PlateCarree extends EquidistantCylindrical {
          * @return The created math transform.
          * @throws ParameterNotFoundException if a required parameter was not found.
          */
+        @Override
         protected MathTransform createMathTransform(final ParameterValueGroup parameters)
                 throws ParameterNotFoundException, FactoryException {
             if (isSpherical(parameters)) {

@@ -81,6 +81,7 @@ public class MultiSolidTypeImpl extends AbstractGeometricAggregateTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<SolidPropertyType> getSolidMember() {
         if (solidMember == null) {
             solidMember = new EObjectContainmentEList<>(SolidPropertyType.class, this, Gml311Package.MULTI_SOLID_TYPE__SOLID_MEMBER);
@@ -93,6 +94,7 @@ public class MultiSolidTypeImpl extends AbstractGeometricAggregateTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SolidArrayPropertyType getSolidMembers() {
         return solidMembers;
     }
@@ -117,6 +119,7 @@ public class MultiSolidTypeImpl extends AbstractGeometricAggregateTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSolidMembers(SolidArrayPropertyType newSolidMembers) {
         if (newSolidMembers != solidMembers) {
             NotificationChain msgs = null;

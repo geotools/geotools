@@ -83,6 +83,7 @@ public class ContentsTypeImpl extends ContentsBaseTypeImpl implements ContentsTy
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList<CoverageSummaryType> getCoverageSummary() {
 		if (coverageSummary == null) {
 			coverageSummary = new EObjectContainmentEList<>(CoverageSummaryType.class, this, Wcs20Package.CONTENTS_TYPE__COVERAGE_SUMMARY);
@@ -95,6 +96,7 @@ public class ContentsTypeImpl extends ContentsBaseTypeImpl implements ContentsTy
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ExtensionType getExtension() {
 		return extension;
 	}
@@ -119,6 +121,7 @@ public class ContentsTypeImpl extends ContentsBaseTypeImpl implements ContentsTy
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setExtension(ExtensionType newExtension) {
 		if (newExtension != extension) {
 			NotificationChain msgs = null;

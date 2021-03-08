@@ -44,6 +44,7 @@ import org.geotools.sld.bindings.SLDGraphicFillBinding;
 public class GraphicFillBinding extends SLDGraphicFillBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.GraphicFill;
     }

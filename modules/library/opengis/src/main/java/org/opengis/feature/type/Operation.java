@@ -24,6 +24,7 @@ public interface Operation extends PropertyDescriptor {
      *
      * @return 0 in order to not trip up
      */
+    @Override
     int getMaxOccurs();
 
     /**
@@ -31,9 +32,11 @@ public interface Operation extends PropertyDescriptor {
      *
      * @return 0 in order to not trip up
      */
+    @Override
     int getMinOccurs();
 
     /** Indicates the OpperationType of this attribute */
+    @Override
     OperationType getType();
 
     /**

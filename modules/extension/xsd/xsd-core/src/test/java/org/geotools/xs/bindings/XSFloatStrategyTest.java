@@ -49,6 +49,7 @@ public class XSFloatStrategyTest extends TestSchema {
         validateValues("INF", Float.valueOf(Float.POSITIVE_INFINITY));
     }
 
+    @Override
     protected QName getQName() {
         return XS.FLOAT;
     }

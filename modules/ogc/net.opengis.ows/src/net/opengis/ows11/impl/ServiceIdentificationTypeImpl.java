@@ -136,7 +136,8 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.SERVICE_IDENTIFICATION_TYPE;
   }
 
@@ -145,7 +146,8 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public CodeType getServiceType() {
+  @Override
+public CodeType getServiceType() {
     return serviceType;
   }
 
@@ -169,7 +171,8 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setServiceType(CodeType newServiceType) {
+  @Override
+public void setServiceType(CodeType newServiceType) {
     if (newServiceType != serviceType) {
       NotificationChain msgs = null;
       if (serviceType != null)
@@ -188,7 +191,8 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getServiceTypeVersion() {
+  @Override
+public String getServiceTypeVersion() {
     return serviceTypeVersion;
   }
 
@@ -197,7 +201,8 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setServiceTypeVersion(String newServiceTypeVersion) {
+  @Override
+public void setServiceTypeVersion(String newServiceTypeVersion) {
     String oldServiceTypeVersion = serviceTypeVersion;
     serviceTypeVersion = newServiceTypeVersion;
     if (eNotificationRequired())
@@ -209,7 +214,8 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getProfile() {
+  @Override
+public String getProfile() {
     return profile;
   }
 
@@ -218,7 +224,8 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setProfile(String newProfile) {
+  @Override
+public void setProfile(String newProfile) {
     String oldProfile = profile;
     profile = newProfile;
     if (eNotificationRequired())
@@ -230,7 +237,8 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getFees() {
+  @Override
+public String getFees() {
     return fees;
   }
 
@@ -239,7 +247,8 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setFees(String newFees) {
+  @Override
+public void setFees(String newFees) {
     String oldFees = fees;
     fees = newFees;
     if (eNotificationRequired())
@@ -251,7 +260,8 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getAccessConstraints() {
+  @Override
+public String getAccessConstraints() {
     return accessConstraints;
   }
 
@@ -260,7 +270,8 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setAccessConstraints(String newAccessConstraints) {
+  @Override
+public void setAccessConstraints(String newAccessConstraints) {
     String oldAccessConstraints = accessConstraints;
     accessConstraints = newAccessConstraints;
     if (eNotificationRequired())
@@ -272,7 +283,8 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+  @Override
+public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Ows11Package.SERVICE_IDENTIFICATION_TYPE__SERVICE_TYPE:
         return basicSetServiceType(null, msgs);
@@ -285,7 +297,8 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.SERVICE_IDENTIFICATION_TYPE__SERVICE_TYPE:
         return getServiceType();
@@ -306,7 +319,8 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.SERVICE_IDENTIFICATION_TYPE__SERVICE_TYPE:
         setServiceType((CodeType)newValue);
@@ -332,7 +346,8 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.SERVICE_IDENTIFICATION_TYPE__SERVICE_TYPE:
         setServiceType((CodeType)null);
@@ -358,7 +373,8 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.SERVICE_IDENTIFICATION_TYPE__SERVICE_TYPE:
         return serviceType != null;
@@ -379,7 +395,8 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public String toString() {
+  @Override
+public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

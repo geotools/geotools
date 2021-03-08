@@ -85,6 +85,7 @@ public class GridCoverageLayer extends RasterLayer {
      *
      * @return layer bounds generated from the grid coverage.
      */
+    @Override
     public ReferencedEnvelope getBounds() {
         if (coverage != null) {
             CoordinateReferenceSystem crs = coverage.getCoordinateReferenceSystem();
@@ -98,6 +99,7 @@ public class GridCoverageLayer extends RasterLayer {
         return null;
     }
 
+    @Override
     public SimpleFeatureCollection toFeatureCollection() {
         SimpleFeatureCollection collection;
         try {

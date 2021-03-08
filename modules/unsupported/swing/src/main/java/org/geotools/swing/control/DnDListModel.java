@@ -52,6 +52,7 @@ public class DnDListModel<T> extends AbstractListModel<T> {
         return notify;
     }
 
+    @Override
     public int getSize() {
         return items.size();
     }
@@ -63,6 +64,7 @@ public class DnDListModel<T> extends AbstractListModel<T> {
      *
      * @throws IndexOutOfBoundsException if index is invalid
      */
+    @Override
     public T getElementAt(int index) {
         return items.get(index);
     }

@@ -81,6 +81,7 @@ public class BandImpl extends RangeDimensionImpl implements Band {
      * Returns the longest wavelength that the sensor is capable of collecting within a designated
      * band. Returns {@code null} if unspecified.
      */
+    @Override
     public Double getMaxValue() {
         return maxValue;
     }
@@ -98,6 +99,7 @@ public class BandImpl extends RangeDimensionImpl implements Band {
      * Returns the shortest wavelength that the sensor is capable of collecting within a designated
      * band.
      */
+    @Override
     public Double getMinValue() {
         return minValue;
     }
@@ -115,6 +117,7 @@ public class BandImpl extends RangeDimensionImpl implements Band {
      * Returns the units in which sensor wavelengths are expressed. Should be non-null if
      * {@linkplain #getMinValue min value} or {@linkplain #getMaxValue max value} are provided.
      */
+    @Override
     public Unit<Length> getUnits() {
         return units;
     }
@@ -132,6 +135,7 @@ public class BandImpl extends RangeDimensionImpl implements Band {
      * Returns the wavelength at which the response is the highest. Returns {@code null} if
      * unspecified.
      */
+    @Override
     public Double getPeakResponse() {
         return peakResponse;
     }
@@ -146,6 +150,7 @@ public class BandImpl extends RangeDimensionImpl implements Band {
      * Returns the maximum number of significant bits in the uncompressed representation for the
      * value in each band of each pixel. Returns {@code null} if unspecified.
      */
+    @Override
     public Integer getBitsPerValue() {
         return bitsPerValue;
     }
@@ -163,6 +168,7 @@ public class BandImpl extends RangeDimensionImpl implements Band {
      * Returns the number of discrete numerical values in the grid data. Returns {@code null} if
      * unspecified.
      */
+    @Override
     public Integer getToneGradation() {
         return toneGradation;
     }
@@ -177,6 +183,7 @@ public class BandImpl extends RangeDimensionImpl implements Band {
      * Returns the scale factor which has been applied to the cell value. Returns {@code null} if
      * unspecified.
      */
+    @Override
     public Double getScaleFactor() {
         return scaleFactor;
     }
@@ -191,6 +198,7 @@ public class BandImpl extends RangeDimensionImpl implements Band {
      * Returns the physical value corresponding to a cell value of zero. Returns {@code null} if
      * unspecified.
      */
+    @Override
     public Double getOffset() {
         return offset;
     }

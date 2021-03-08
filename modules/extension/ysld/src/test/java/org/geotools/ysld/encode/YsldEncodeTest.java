@@ -70,7 +70,6 @@ import org.geotools.ysld.Ysld;
 import org.geotools.ysld.parse.YsldParser;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.function.ThrowingRunnable;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
@@ -1743,16 +1742,7 @@ public class YsldEncodeTest {
 
         StringWriter out = new StringWriter();
 
-        Assert.assertThrows(
-                IllegalArgumentException.class,
-                new ThrowingRunnable() {
-
-                    @Override
-                    public void run() throws Throwable {
-
-                        Ysld.encode(sld(fts), out);
-                    }
-                });
+        Assert.assertThrows(IllegalArgumentException.class, () -> Ysld.encode(sld(fts), out));
     }
 
     @Test

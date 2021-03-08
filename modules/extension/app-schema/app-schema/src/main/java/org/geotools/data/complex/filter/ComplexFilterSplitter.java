@@ -81,30 +81,36 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
             return capable;
         }
 
+        @Override
         public Object visit(NilExpression expr, Object extraData) {
             return null;
         }
 
+        @Override
         public Object visit(Add expr, Object extraData) {
             visitMathExpression(expr);
             return null;
         }
 
+        @Override
         public Object visit(Subtract expr, Object extraData) {
             visitMathExpression(expr);
             return null;
         }
 
+        @Override
         public Object visit(Divide expr, Object extraData) {
             visitMathExpression(expr);
             return null;
         }
 
+        @Override
         public Object visit(Multiply expr, Object extraData) {
             visitMathExpression(expr);
             return null;
         }
 
+        @Override
         public Object visit(Function expr, Object extraData) {
             for (int i = 0; i < expr.getParameters().size(); i++) {
                 expr.getParameters().get(i).accept(this, null);
@@ -114,10 +120,12 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
             return null;
         }
 
+        @Override
         public Object visit(Literal expr, Object extraData) {
             return null;
         }
 
+        @Override
         public Object visit(PropertyName expr, Object extraData) {
             return null;
         }
@@ -137,6 +145,7 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
         this.mappings = mappings;
     }
 
+    @Override
     public Object visit(Id filter, Object notUsed) {
         CapabilitiesExpressionVisitor visitor = new CapabilitiesExpressionVisitor();
         mappings.getFeatureIdExpression().accept(visitor, null);
@@ -278,6 +287,7 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
         return ret;
     }
 
+    @Override
     public Object visit(PropertyName expression, Object notUsed) {
 
         // replace the artificial DEFAULT_GEOMETRY property with the actual one

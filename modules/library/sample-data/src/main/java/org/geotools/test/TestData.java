@@ -135,27 +135,26 @@ public class TestData implements Runnable {
                     final Class mImage = mediaLibImage;
                     mediaLib =
                             AccessController.doPrivileged(
-                                    new PrivilegedAction<Boolean>() {
-                                        public Boolean run() {
-                                            try {
-                                                // get the method
-                                                final Class params[] = {};
-                                                Method method =
-                                                        mImage.getDeclaredMethod(
-                                                                "isAvailable", params);
+                                    (PrivilegedAction<Boolean>)
+                                            () -> {
+                                                try {
+                                                    // get the method
+                                                    final Class params[] = {};
+                                                    Method method =
+                                                            mImage.getDeclaredMethod(
+                                                                    "isAvailable", params);
 
-                                                // invoke
-                                                final Object paramsObj[] = {};
+                                                    // invoke
+                                                    final Object paramsObj[] = {};
 
-                                                final Object o =
-                                                        mImage.getDeclaredConstructor()
-                                                                .newInstance();
-                                                return (Boolean) method.invoke(o, paramsObj);
-                                            } catch (Throwable e) {
-                                                return false;
-                                            }
-                                        }
-                                    });
+                                                    final Object o =
+                                                            mImage.getDeclaredConstructor()
+                                                                    .newInstance();
+                                                    return (Boolean) method.invoke(o, paramsObj);
+                                                } catch (Throwable e) {
+                                                    return false;
+                                                }
+                                            });
                 }
             } catch (Throwable e) {
                 // Because the property com.sun.media.jai.disableMediaLib isn't
@@ -523,6 +522,7 @@ public class TestData implements Runnable {
      * Deletes all temporary files. This method is invoked automatically at shutdown time and should
      * not be invoked directly. It is public only as an implementation side effect.
      */
+    @Override
     @SuppressWarnings("PMD.SystemPrintln")
     public void run() {
         int iteration = 5; // Maximum number of iterations

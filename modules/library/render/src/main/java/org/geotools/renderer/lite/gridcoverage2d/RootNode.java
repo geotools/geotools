@@ -39,6 +39,7 @@ class RootNode extends BaseCoverageProcessingNode implements CoverageProcessingN
      * (non-Javadoc)
      * @see CoverageProcessingNode#getName()
      */
+    @Override
     public InternationalString getName() {
         return Vocabulary.formatInternational(VocabularyKeys.ROOT_NODE);
     }
@@ -83,6 +84,7 @@ class RootNode extends BaseCoverageProcessingNode implements CoverageProcessingN
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.BaseCoverageProcessingNode#addSource(org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode)
      */
+    @Override
     public boolean addSource(CoverageProcessingNode source) {
         throw new UnsupportedOperationException(
                 Errors.format(
@@ -94,6 +96,7 @@ class RootNode extends BaseCoverageProcessingNode implements CoverageProcessingN
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.BaseCoverageProcessingNode#getSource(int)
      */
+    @Override
     public CoverageProcessingNode getSource(int index) {
         throw new UnsupportedOperationException();
     }
@@ -103,6 +106,7 @@ class RootNode extends BaseCoverageProcessingNode implements CoverageProcessingN
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.BaseCoverageProcessingNode#getSources()
      */
+    @Override
     public List<CoverageProcessingNode> getSources() {
         return Collections.emptyList();
     }
@@ -112,6 +116,7 @@ class RootNode extends BaseCoverageProcessingNode implements CoverageProcessingN
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.BaseCoverageProcessingNode#dispose(boolean)
      */
+    @Override
     public void dispose(boolean force) {
         super.dispose(force);
         sourceCoverage.dispose(force);
@@ -122,6 +127,7 @@ class RootNode extends BaseCoverageProcessingNode implements CoverageProcessingN
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.BaseCoverageProcessingNode#execute()
      */
+    @Override
     protected GridCoverage2D execute() {
         return sourceCoverage;
     }

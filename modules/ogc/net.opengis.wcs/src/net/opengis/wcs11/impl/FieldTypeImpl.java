@@ -123,6 +123,7 @@ public class FieldTypeImpl extends DescriptionTypeImpl implements FieldType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EClass eStaticClass() {
         return Wcs111Package.Literals.FIELD_TYPE;
     }
@@ -132,6 +133,7 @@ public class FieldTypeImpl extends DescriptionTypeImpl implements FieldType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getIdentifier() {
         return identifier;
     }
@@ -141,6 +143,7 @@ public class FieldTypeImpl extends DescriptionTypeImpl implements FieldType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIdentifier(String newIdentifier) {
         String oldIdentifier = identifier;
         identifier = newIdentifier;
@@ -153,6 +156,7 @@ public class FieldTypeImpl extends DescriptionTypeImpl implements FieldType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public UnNamedDomainType getDefinition() {
         return definition;
     }
@@ -177,6 +181,7 @@ public class FieldTypeImpl extends DescriptionTypeImpl implements FieldType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDefinition(UnNamedDomainType newDefinition) {
         if (newDefinition != definition) {
             NotificationChain msgs = null;
@@ -196,6 +201,7 @@ public class FieldTypeImpl extends DescriptionTypeImpl implements FieldType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getNullValue() {
         if (nullValue == null) {
             nullValue = new EObjectContainmentEList(CodeType.class, this, Wcs111Package.FIELD_TYPE__NULL_VALUE);
@@ -208,6 +214,7 @@ public class FieldTypeImpl extends DescriptionTypeImpl implements FieldType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public InterpolationMethodsType getInterpolationMethods() {
         return interpolationMethods;
     }
@@ -232,6 +239,7 @@ public class FieldTypeImpl extends DescriptionTypeImpl implements FieldType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setInterpolationMethods(InterpolationMethodsType newInterpolationMethods) {
         if (newInterpolationMethods != interpolationMethods) {
             NotificationChain msgs = null;
@@ -251,6 +259,7 @@ public class FieldTypeImpl extends DescriptionTypeImpl implements FieldType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getAxis() {
         if (axis == null) {
             axis = new EObjectContainmentEList(AxisType.class, this, Wcs111Package.FIELD_TYPE__AXIS);
@@ -263,6 +272,7 @@ public class FieldTypeImpl extends DescriptionTypeImpl implements FieldType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case Wcs111Package.FIELD_TYPE__DEFINITION:
@@ -282,6 +292,7 @@ public class FieldTypeImpl extends DescriptionTypeImpl implements FieldType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case Wcs111Package.FIELD_TYPE__IDENTIFIER:
@@ -303,6 +314,7 @@ public class FieldTypeImpl extends DescriptionTypeImpl implements FieldType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Wcs111Package.FIELD_TYPE__IDENTIFIER:
@@ -331,6 +343,7 @@ public class FieldTypeImpl extends DescriptionTypeImpl implements FieldType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case Wcs111Package.FIELD_TYPE__IDENTIFIER:
@@ -357,6 +370,7 @@ public class FieldTypeImpl extends DescriptionTypeImpl implements FieldType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case Wcs111Package.FIELD_TYPE__IDENTIFIER:
@@ -378,6 +392,7 @@ public class FieldTypeImpl extends DescriptionTypeImpl implements FieldType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String toString() {
         if (eIsProxy()) return super.toString();
 

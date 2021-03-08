@@ -26,6 +26,7 @@ public class TypeStreamingParserHandler extends StreamingParserHandler {
         this.type = type;
     }
 
+    @Override
     protected boolean stream(ElementHandler handler) {
         return (handler.getParseNode().getValue() != null)
                 && type.isAssignableFrom(handler.getParseNode().getValue().getClass());

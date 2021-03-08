@@ -52,6 +52,7 @@ public class GMLObjectTypeListTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.GMLObjectTypeListType;
     }
@@ -63,6 +64,7 @@ public class GMLObjectTypeListTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return GMLObjectTypeListType.class;
     }

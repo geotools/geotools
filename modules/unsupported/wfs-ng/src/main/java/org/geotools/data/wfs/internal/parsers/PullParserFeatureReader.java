@@ -77,6 +77,7 @@ public class PullParserFeatureReader implements GetParser<SimpleFeature> {
     }
 
     /** @see GetParser<SimpleFeature>#close() */
+    @Override
     public void close() throws IOException {
         if (inputStream != null) {
             try {
@@ -89,6 +90,7 @@ public class PullParserFeatureReader implements GetParser<SimpleFeature> {
     }
 
     /** @see GetParser<SimpleFeature>#parse() */
+    @Override
     public SimpleFeature parse() throws IOException {
         Object parsed;
         try {
@@ -118,6 +120,7 @@ public class PullParserFeatureReader implements GetParser<SimpleFeature> {
     }
 
     /** @see GetParser<SimpleFeature>#getNumberOfFeatures() */
+    @Override
     public int getNumberOfFeatures() {
         LOGGER.warning("Pull Parser doesn't implement counting features");
         return -1;

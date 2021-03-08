@@ -35,6 +35,7 @@ public interface MultiCurve extends MultiPrimitive {
      *
      * @return The set containing the orientable curves.
      */
+    @Override
     @UML(identifier = "element", obligation = MANDATORY, specification = ISO_19107)
     Set<OrientableCurve> getElements();
 

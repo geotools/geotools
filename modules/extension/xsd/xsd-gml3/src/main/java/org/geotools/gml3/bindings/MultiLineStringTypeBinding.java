@@ -59,6 +59,7 @@ public class MultiLineStringTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.MultiLineStringType;
     }
@@ -70,10 +71,12 @@ public class MultiLineStringTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return MultiLineString.class;
     }
 
+    @Override
     public int getExecutionMode() {
         return BEFORE;
     }
@@ -85,12 +88,14 @@ public class MultiLineStringTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List<LineString> lines = node.getChildValues(LineString.class);
 
         return gFactory.createMultiLineString(lines.toArray(new LineString[lines.size()]));
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         if (GML.lineStringMember.equals(name)) {
             MultiLineString multiLineString = (MultiLineString) object;

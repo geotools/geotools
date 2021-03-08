@@ -44,10 +44,12 @@ public class Angle implements Comparable<Angle>, Serializable {
     static {
         ClassChanger.register(
                 new ClassChanger<Angle, Double>(Angle.class, Double.class) {
+                    @Override
                     protected Double convert(final Angle o) {
                         return o.theta;
                     }
 
+                    @Override
                     protected Angle inverseConvert(final Double value) {
                         return new Angle(value);
                     }
@@ -128,6 +130,7 @@ public class Angle implements Comparable<Angle>, Serializable {
      * Compares two {@code Angle} objects numerically. The comparaison is done as if by the {@link
      * Double#compare(double,double)} method.
      */
+    @Override
     public int compareTo(final Angle that) {
         return Double.compare(this.theta, that.theta);
     }

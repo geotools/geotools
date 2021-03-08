@@ -25,6 +25,7 @@ public class Coordinate2D {
         this.y = y;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof Coordinate2D) {
             Coordinate2D other = (Coordinate2D) obj;
@@ -33,6 +34,7 @@ public class Coordinate2D {
         return (false);
     }
 
+    @Override
     public int hashCode() {
         long v = Double.doubleToLongBits(x + y);
         return ((int) (v ^ (v >>> 32)));

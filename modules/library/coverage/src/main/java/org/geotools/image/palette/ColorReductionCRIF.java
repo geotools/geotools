@@ -23,6 +23,7 @@ import javax.media.jai.CRIFImpl;
 
 public class ColorReductionCRIF extends CRIFImpl {
 
+    @Override
     public RenderedImage create(ParameterBlock pb, RenderingHints hints) {
         final RenderedImage image = (RenderedImage) pb.getSource(0);
         final int numColors = pb.getIntParameter(0);

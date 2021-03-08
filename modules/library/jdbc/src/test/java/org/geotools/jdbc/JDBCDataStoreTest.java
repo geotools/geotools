@@ -112,21 +112,18 @@ public class JDBCDataStoreTest {
             for (int j = 0; j < nThreads; j++) {
                 Future f =
                         executorService.submit(
-                                new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        try {
-                                            // Get all the threads to the same point to increase the
-                                            // likelihood
-                                            // of finding the issue
-                                            latch.countDown();
-                                            latch.await();
-                                        } catch (InterruptedException e) {
-                                            Thread.interrupted();
-                                            return;
-                                        }
-                                        jdbcDataStore.getMapping(DateSubClass.class);
+                                () -> {
+                                    try {
+                                        // Get all the threads to the same point to increase the
+                                        // likelihood
+                                        // of finding the issue
+                                        latch.countDown();
+                                        latch.await();
+                                    } catch (InterruptedException e) {
+                                        Thread.interrupted();
+                                        return;
                                     }
+                                    jdbcDataStore.getMapping(DateSubClass.class);
                                 });
                 futures.add(f);
             }

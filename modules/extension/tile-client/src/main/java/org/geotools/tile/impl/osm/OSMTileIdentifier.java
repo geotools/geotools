@@ -56,6 +56,7 @@ public class OSMTileIdentifier extends TileIdentifier {
         return sb;
     }
 
+    @Override
     public TileIdentifier getRightNeighbour() {
         return new OSMTileIdentifier(
                 TileIdentifier.arithmeticMod((getX() + 1), getZoomLevel().getMaxTilePerRowNumber()),
@@ -64,6 +65,7 @@ public class OSMTileIdentifier extends TileIdentifier {
                 getServiceName());
     }
 
+    @Override
     public TileIdentifier getLowerNeighbour() {
         return new OSMTileIdentifier(
                 getX(),

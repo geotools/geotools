@@ -62,7 +62,8 @@ public class GMLObjectTypeListTypeImpl extends EObjectImpl implements GMLObjectT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.GML_OBJECT_TYPE_LIST_TYPE;
   }
 
@@ -71,7 +72,8 @@ public class GMLObjectTypeListTypeImpl extends EObjectImpl implements GMLObjectT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList getGMLObjectType() {
+	@Override
+    public EList getGMLObjectType() {
     if (gMLObjectType == null) {
       gMLObjectType = new EObjectContainmentEList(GMLObjectTypeType.class, this, WfsPackage.GML_OBJECT_TYPE_LIST_TYPE__GML_OBJECT_TYPE);
     }
@@ -83,7 +85,8 @@ public class GMLObjectTypeListTypeImpl extends EObjectImpl implements GMLObjectT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+	@Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case WfsPackage.GML_OBJECT_TYPE_LIST_TYPE__GML_OBJECT_TYPE:
         return ((InternalEList)getGMLObjectType()).basicRemove(otherEnd, msgs);
@@ -96,7 +99,8 @@ public class GMLObjectTypeListTypeImpl extends EObjectImpl implements GMLObjectT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	@Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.GML_OBJECT_TYPE_LIST_TYPE__GML_OBJECT_TYPE:
         return getGMLObjectType();
@@ -109,7 +113,8 @@ public class GMLObjectTypeListTypeImpl extends EObjectImpl implements GMLObjectT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(int featureID, Object newValue) {
+	@Override
+    public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.GML_OBJECT_TYPE_LIST_TYPE__GML_OBJECT_TYPE:
         getGMLObjectType().clear();
@@ -124,7 +129,8 @@ public class GMLObjectTypeListTypeImpl extends EObjectImpl implements GMLObjectT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(int featureID) {
+	@Override
+    public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.GML_OBJECT_TYPE_LIST_TYPE__GML_OBJECT_TYPE:
         getGMLObjectType().clear();
@@ -138,7 +144,8 @@ public class GMLObjectTypeListTypeImpl extends EObjectImpl implements GMLObjectT
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(int featureID) {
+	@Override
+    public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.GML_OBJECT_TYPE_LIST_TYPE__GML_OBJECT_TYPE:
         return gMLObjectType != null && !gMLObjectType.isEmpty();

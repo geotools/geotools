@@ -97,6 +97,7 @@ public abstract class GeometryEncoder<T extends Geometry> extends ObjectEncoder<
      * @param atts Its attributes
      * @param handler The handler used to write XML
      */
+    @Override
     public void encode(T geometry, AttributesImpl atts, GMLWriter handler) throws Exception {
         encode(geometry, atts, handler, null);
     }

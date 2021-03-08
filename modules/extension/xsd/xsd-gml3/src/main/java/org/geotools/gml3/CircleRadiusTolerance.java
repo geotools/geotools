@@ -24,6 +24,7 @@ public class CircleRadiusTolerance implements LinearizationTolerance {
         this.circleRadiusMultiplier = circleRadiusMultiplier;
     }
 
+    @Override
     public double getTolerance(Circle circle) {
         return circleRadiusMultiplier * circle.getRadius();
     }

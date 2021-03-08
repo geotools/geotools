@@ -101,6 +101,7 @@ public class DescribeFeatureTypeTypeImpl extends BaseRequestTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<QName> getTypeName() {
     if (typeName == null) {
       typeName = new EDataTypeEList<>(QName.class, this, Wfs20Package.DESCRIBE_FEATURE_TYPE_TYPE__TYPE_NAME);
@@ -113,6 +114,7 @@ public class DescribeFeatureTypeTypeImpl extends BaseRequestTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getOutputFormat() {
     return outputFormat;
   }
@@ -122,6 +124,7 @@ public class DescribeFeatureTypeTypeImpl extends BaseRequestTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setOutputFormat(String newOutputFormat) {
     String oldOutputFormat = outputFormat;
     outputFormat = newOutputFormat;
@@ -136,6 +139,7 @@ public class DescribeFeatureTypeTypeImpl extends BaseRequestTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetOutputFormat() {
     String oldOutputFormat = outputFormat;
     boolean oldOutputFormatESet = outputFormatESet;
@@ -150,6 +154,7 @@ public class DescribeFeatureTypeTypeImpl extends BaseRequestTypeImpl implements 
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetOutputFormat() {
     return outputFormatESet;
   }

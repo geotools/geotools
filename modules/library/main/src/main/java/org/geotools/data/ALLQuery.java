@@ -36,38 +36,47 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * </code></pre>
  */
 class ALLQuery extends Query {
+    @Override
     public final String[] getPropertyNames() {
         return null;
     }
 
+    @Override
     public final boolean retrieveAllProperties() {
         return true;
     }
 
+    @Override
     public final int getMaxFeatures() {
         return DEFAULT_MAX; // consider Integer.MAX_VALUE
     }
 
+    @Override
     public Integer getStartIndex() {
         return null;
     }
 
+    @Override
     public final Filter getFilter() {
         return Filter.INCLUDE;
     }
 
+    @Override
     public final String getTypeName() {
         return null;
     }
 
+    @Override
     public URI getNamespace() {
         return NO_NAMESPACE;
     }
 
+    @Override
     public final String getHandle() {
         return "Request All Features";
     }
 
+    @Override
     public final String getVersion() {
         return null;
     }
@@ -77,6 +86,7 @@ class ALLQuery extends Query {
      *
      * @return hascode for filter
      */
+    @Override
     public int hashCode() {
         String[] n = getPropertyNames();
 
@@ -99,6 +109,7 @@ class ALLQuery extends Query {
      * @param obj Other object to compare against
      * @return <code>true</code> if <code>obj</code> matches this filter
      */
+    @Override
     public boolean equals(Object obj) {
         if ((obj == null) || !(obj instanceof Query)) {
             return false;
@@ -131,6 +142,7 @@ class ALLQuery extends Query {
                                 .equals(other.getCoordinateSystemReproject()));
     }
 
+    @Override
     public String toString() {
         return "Query.ALL";
     }
@@ -141,6 +153,7 @@ class ALLQuery extends Query {
      * @return <code>null</code> as override is not required.
      * @see org.geotools.data.Query#getCoordinateSystem()
      */
+    @Override
     public CoordinateReferenceSystem getCoordinateSystem() {
         return null;
     }
@@ -151,16 +164,19 @@ class ALLQuery extends Query {
      * @return <code>null</code> as reprojection is not required.
      * @see org.geotools.data.Query#getCoordinateSystemReproject()
      */
+    @Override
     public CoordinateReferenceSystem getCoordinateSystemReproject() {
         return null;
     }
 
     /** @return {@link SortBy#UNSORTED}. */
+    @Override
     public SortBy[] getSortBy() {
         return SortBy.UNSORTED;
     }
 
     /** Returns an empty Hints set */
+    @Override
     public Hints getHints() {
         return new Hints();
     }

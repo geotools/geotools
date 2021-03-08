@@ -29,7 +29,8 @@ public class WGS84BoundingBoxTypeImpl extends BoundingBoxTypeImpl implements WGS
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.WGS84_BOUNDING_BOX_TYPE;
   }
 

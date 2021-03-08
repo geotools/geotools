@@ -86,6 +86,7 @@ public class ImageCRSTypeImpl extends AbstractReferenceSystemTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CartesianCSRefType getUsesCartesianCS() {
         return usesCartesianCS;
     }
@@ -110,6 +111,7 @@ public class ImageCRSTypeImpl extends AbstractReferenceSystemTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesCartesianCS(CartesianCSRefType newUsesCartesianCS) {
         if (newUsesCartesianCS != usesCartesianCS) {
             NotificationChain msgs = null;
@@ -129,6 +131,7 @@ public class ImageCRSTypeImpl extends AbstractReferenceSystemTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ObliqueCartesianCSRefType getUsesObliqueCartesianCS() {
         return usesObliqueCartesianCS;
     }
@@ -153,6 +156,7 @@ public class ImageCRSTypeImpl extends AbstractReferenceSystemTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesObliqueCartesianCS(ObliqueCartesianCSRefType newUsesObliqueCartesianCS) {
         if (newUsesObliqueCartesianCS != usesObliqueCartesianCS) {
             NotificationChain msgs = null;
@@ -172,6 +176,7 @@ public class ImageCRSTypeImpl extends AbstractReferenceSystemTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ImageDatumRefType getUsesImageDatum() {
         return usesImageDatum;
     }
@@ -196,6 +201,7 @@ public class ImageCRSTypeImpl extends AbstractReferenceSystemTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesImageDatum(ImageDatumRefType newUsesImageDatum) {
         if (newUsesImageDatum != usesImageDatum) {
             NotificationChain msgs = null;

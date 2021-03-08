@@ -667,14 +667,11 @@ public class ProjectionHandlerTest {
         Geometry reprojected = JTS.transform(preProcessed, prepared);
         assertTrue(reprojected.isValid());
         reprojected.apply(
-                new CoordinateFilter() {
-
-                    @Override
-                    public void filter(Coordinate coord) {
-                        assertEquals(90.0, Math.abs(coord.getOrdinate(0)), 0.1);
-                        assertEquals(180.0, Math.abs(coord.getOrdinate(1)), 5);
-                    }
-                });
+                (CoordinateFilter)
+                        coord -> {
+                            assertEquals(90.0, Math.abs(coord.getOrdinate(0)), 0.1);
+                            assertEquals(180.0, Math.abs(coord.getOrdinate(1)), 5);
+                        });
         // post process, this should wrap the geometry, make sure it's valid, and avoid large jumps
         // in its border
         Geometry postProcessed = handler.postProcess(prepared, reprojected);
@@ -1005,16 +1002,13 @@ public class ProjectionHandlerTest {
         // make sure we got the geometry unwrapped and replicated
         assertEquals(3, postProcessed.getNumGeometries());
         postProcessed.apply(
-                new GeometryComponentFilter() {
-
-                    @Override
-                    public void filter(Geometry geom) {
-                        if (geom != postProcessed
-                                && geom.getEnvelopeInternal().getWidth() > 40000000) {
-                            fail("The geometry did not get rewrapped properly");
-                        }
-                    }
-                });
+                (GeometryComponentFilter)
+                        geom -> {
+                            if (geom != postProcessed
+                                    && geom.getEnvelopeInternal().getWidth() > 40000000) {
+                                fail("The geometry did not get rewrapped properly");
+                            }
+                        });
     }
 
     @Test

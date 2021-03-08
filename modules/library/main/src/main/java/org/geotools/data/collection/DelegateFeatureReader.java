@@ -44,10 +44,12 @@ public class DelegateFeatureReader<T extends FeatureType, F extends Feature>
         this.delegate = features;
     }
 
+    @Override
     public T getFeatureType() {
         return schema;
     }
 
+    @Override
     public F next() throws IOException, IllegalAttributeException, NoSuchElementException {
         if (delegate == null) {
             throw new IOException("Feature Reader has been closed");
@@ -61,10 +63,12 @@ public class DelegateFeatureReader<T extends FeatureType, F extends Feature>
         }
     }
 
+    @Override
     public boolean hasNext() throws IOException {
         return delegate != null && delegate.hasNext();
     }
 
+    @Override
     public void close() throws IOException {
         if (delegate != null) delegate.close();
         delegate = null;

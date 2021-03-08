@@ -119,6 +119,7 @@ public interface SimpleFeatureType extends FeatureType {
      * @return The attribute descriptor matching the specified name, or <code>null</code> if no such
      *     attribute exists.
      */
+    @Override
     AttributeDescriptor getDescriptor(String name);
 
     /**
@@ -136,6 +137,7 @@ public interface SimpleFeatureType extends FeatureType {
      * @return The attribute descriptor matching the specified name, or <code>null</code> if no such
      *     attribute exists.
      */
+    @Override
     AttributeDescriptor getDescriptor(Name name);
 
     /**

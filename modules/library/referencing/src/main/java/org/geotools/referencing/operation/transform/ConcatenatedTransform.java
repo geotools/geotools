@@ -350,11 +350,13 @@ public class ConcatenatedTransform extends AbstractMathTransform implements Seri
     }
 
     /** Gets the dimension of input points. */
+    @Override
     public final int getSourceDimensions() {
         return transform1.getSourceDimensions();
     }
 
     /** Gets the dimension of output points. */
+    @Override
     public final int getTargetDimensions() {
         return transform2.getTargetDimensions();
     }
@@ -401,6 +403,7 @@ public class ConcatenatedTransform extends AbstractMathTransform implements Seri
      * by {@link #transform1}, then the intermediate points are transformed by {@link #transform2}.
      * The transformations are performed without intermediate buffer if it can be avoided.
      */
+    @Override
     public void transform(
             final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts)
             throws TransformException {

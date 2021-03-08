@@ -242,14 +242,17 @@ public class CoordinateSequences extends org.locationtech.jts.geom.CoordinateSeq
             return firstSeqFound;
         }
 
+        @Override
         public void filter(CoordinateSequence seq, int i) {
             if (firstSeqFound == null) firstSeqFound = seq;
         }
 
+        @Override
         public boolean isDone() {
             return firstSeqFound != null;
         }
 
+        @Override
         public boolean isGeometryChanged() {
             return false;
         }
@@ -269,14 +272,17 @@ public class CoordinateSequences extends org.locationtech.jts.geom.CoordinateSeq
             return sequences;
         }
 
+        @Override
         public void filter(CoordinateSequence seq, int i) {
             sequences.add(seq);
         }
 
+        @Override
         public boolean isDone() {
             return false;
         }
 
+        @Override
         public boolean isGeometryChanged() {
             return false;
         }

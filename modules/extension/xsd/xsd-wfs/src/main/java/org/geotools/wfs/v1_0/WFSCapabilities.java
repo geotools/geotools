@@ -42,6 +42,7 @@ public final class WFSCapabilities extends org.geotools.wfs.WFS {
     }
 
     /** Returns the location of 'WFS-transaction.xsd.'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("WFS-capabilities.xsd").toString();
     }

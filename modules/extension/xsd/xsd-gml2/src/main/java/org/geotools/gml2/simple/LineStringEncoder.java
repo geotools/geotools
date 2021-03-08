@@ -42,6 +42,7 @@ class LineStringEncoder extends GeometryEncoder<LineString> {
         this.element = element;
     }
 
+    @Override
     public void encode(LineString geometry, AttributesImpl atts, GMLWriter handler)
             throws Exception {
         handler.startElement(element, atts);

@@ -135,6 +135,7 @@ public class FilterCapabilitiesImpl implements FilterCapabilities {
         this.version = version;
     }
 
+    @Override
     public String getVersion() {
         return version;
     }
@@ -143,6 +144,7 @@ public class FilterCapabilitiesImpl implements FilterCapabilities {
         this.id = toIdCapabilitiesImpl(id);
     }
 
+    @Override
     public IdCapabilitiesImpl getIdCapabilities() {
         if (id == null) {
             id = new IdCapabilitiesImpl();
@@ -154,6 +156,7 @@ public class FilterCapabilitiesImpl implements FilterCapabilities {
         this.scalar = toScalarCapabilitiesImpl(scalar);
     }
 
+    @Override
     public ScalarCapabilitiesImpl getScalarCapabilities() {
         if (scalar == null) {
             scalar = new ScalarCapabilitiesImpl();
@@ -165,6 +168,7 @@ public class FilterCapabilitiesImpl implements FilterCapabilities {
         this.spatial = toSpatialCapabiltiesImpl(spatial);
     }
 
+    @Override
     public SpatialCapabiltiesImpl getSpatialCapabilities() {
         if (spatial == null) {
             spatial = new SpatialCapabiltiesImpl();
@@ -176,6 +180,7 @@ public class FilterCapabilitiesImpl implements FilterCapabilities {
         this.temporal = temporal;
     }
 
+    @Override
     public TemporalCapabilities getTemporalCapabilities() {
         if (temporal == null) {
             temporal = new TemporalCapabilitiesImpl();
@@ -192,6 +197,7 @@ public class FilterCapabilitiesImpl implements FilterCapabilities {
         }
     }
 
+    @Override
     public String toString() {
         StringBuffer buf = new StringBuffer();
         buf.append("FilterCapabilities [");

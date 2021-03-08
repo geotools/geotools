@@ -24,6 +24,7 @@ import org.opengis.annotation.XmlElement;
 @XmlElement("GMLObjectId")
 public interface GmlObjectId extends Identifier {
     /** The identifier value, which is a string. */
+    @Override
     @XmlElement("id")
     String getID();
 
@@ -33,5 +34,6 @@ public interface GmlObjectId extends Identifier {
      * @param object The construct to be tested.
      * @return {@code true} if a match, otherwise {@code false}.
      */
+    @Override
     boolean matches(Object object);
 }

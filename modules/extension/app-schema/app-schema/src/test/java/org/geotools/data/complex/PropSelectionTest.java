@@ -112,6 +112,7 @@ public class PropSelectionTest extends AppSchemaTestSupport {
         properties.add(propertyName1);
         Query query = new Query();
         query.setProperties(properties);
+        query.setFilter(ff.not(ff.id(ff.featureId("mf5"))));
 
         FeatureCollection<FeatureType, Feature> mfCollection = mfSource.getFeatures(query);
 

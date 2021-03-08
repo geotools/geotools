@@ -73,6 +73,7 @@ public class MetadataLinkTypeImpl extends MetadataAssociationTypeImpl implements
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.METADATA_LINK_TYPE;
 	}
@@ -82,6 +83,7 @@ public class MetadataLinkTypeImpl extends MetadataAssociationTypeImpl implements
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public MetadataTypeType getMetadataType() {
 		return metadataType;
 	}
@@ -91,6 +93,7 @@ public class MetadataLinkTypeImpl extends MetadataAssociationTypeImpl implements
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setMetadataType(MetadataTypeType newMetadataType) {
 		MetadataTypeType oldMetadataType = metadataType;
 		metadataType = newMetadataType == null ? METADATA_TYPE_EDEFAULT : newMetadataType;
@@ -105,6 +108,7 @@ public class MetadataLinkTypeImpl extends MetadataAssociationTypeImpl implements
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void unsetMetadataType() {
 		MetadataTypeType oldMetadataType = metadataType;
 		boolean oldMetadataTypeESet = metadataTypeESet;
@@ -119,6 +123,7 @@ public class MetadataLinkTypeImpl extends MetadataAssociationTypeImpl implements
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean isSetMetadataType() {
 		return metadataTypeESet;
 	}
@@ -128,6 +133,7 @@ public class MetadataLinkTypeImpl extends MetadataAssociationTypeImpl implements
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.METADATA_LINK_TYPE__METADATA_TYPE:
@@ -141,6 +147,7 @@ public class MetadataLinkTypeImpl extends MetadataAssociationTypeImpl implements
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.METADATA_LINK_TYPE__METADATA_TYPE:
@@ -155,6 +162,7 @@ public class MetadataLinkTypeImpl extends MetadataAssociationTypeImpl implements
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.METADATA_LINK_TYPE__METADATA_TYPE:
@@ -169,6 +177,7 @@ public class MetadataLinkTypeImpl extends MetadataAssociationTypeImpl implements
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.METADATA_LINK_TYPE__METADATA_TYPE:
@@ -182,6 +191,7 @@ public class MetadataLinkTypeImpl extends MetadataAssociationTypeImpl implements
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

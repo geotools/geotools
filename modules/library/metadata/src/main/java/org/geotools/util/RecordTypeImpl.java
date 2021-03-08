@@ -107,11 +107,13 @@ public class RecordTypeImpl implements RecordType {
      *
      * </blockquote>
      */
+    @Override
     public TypeName getTypeName() {
         return typeName;
     }
 
     /** Returns the schema that contains this record type. */
+    @Override
     public RecordSchema getContainer() {
         return parent;
     }
@@ -120,6 +122,7 @@ public class RecordTypeImpl implements RecordType {
      * Returns the unmodifiable dictionary of all (<var>name</var>, <var>type</var>) pairs in this
      * record type.
      */
+    @Override
     public Map<MemberName, TypeName> getAttributeTypes() {
         return attributeTypes;
     }
@@ -129,6 +132,7 @@ public class RecordTypeImpl implements RecordType {
      * are no attributes, this method returns the empty set. This method is functionally equivalent
      * to <code>{@linkplain #getAttributeTypes()}.{@linkplain Map#keySet() keySet()}</code>.
      */
+    @Override
     public Set<MemberName> getMembers() {
         return getAttributeTypes().keySet();
     }
@@ -142,6 +146,7 @@ public class RecordTypeImpl implements RecordType {
      * @todo Does it make sense given that {@link MemberName#getAttributeType} already provides this
      *     information?
      */
+    @Override
     public TypeName locate(final MemberName memberName) {
         return getAttributeTypes().get(memberName);
     }
@@ -162,6 +167,7 @@ public class RecordTypeImpl implements RecordType {
      *
      * @todo Replace {@code equals} by {@code containsAll}.
      */
+    @Override
     public boolean isInstance(final Record record) {
         return getMembers().equals(record.getAttributes().keySet());
     }

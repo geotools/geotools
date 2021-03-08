@@ -79,6 +79,7 @@ public class _XlinkPropertyNameBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS._XlinkPropertyName;
     }
@@ -89,6 +90,7 @@ public class _XlinkPropertyNameBinding extends AbstractComplexEMFBinding {
      *
      * @see ComplexBinding#encode(Object, Document, Element).
      */
+    @Override
     public Element encode(final Object object, final Document document, Element value)
             throws Exception {
         final XlinkPropertyNameType xlink = (XlinkPropertyNameType) object;

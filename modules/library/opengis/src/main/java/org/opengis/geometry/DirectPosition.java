@@ -157,6 +157,7 @@ public interface DirectPosition extends Position {
      * @return {@code true} if the given object is equals to this direct position.
      * @since GeoAPI 2.1
      */
+    @Override
     /// @Override
     boolean equals(Object object);
 
@@ -169,6 +170,7 @@ public interface DirectPosition extends Position {
      * @return A hash code value for this direct position.
      * @since GeoAPI 2.1
      */
+    @Override
     /// @Override
     int hashCode();
 }

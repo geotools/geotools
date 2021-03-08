@@ -42,6 +42,7 @@ public class QuantileFunction extends AbstractQuantityClassificationFunction {
         super(NAME);
     }
 
+    @Override
     protected QuantileListVisitor getListVisitor() {
         // use a visitor to find the values in each bin
         return new QuantileListVisitor(getParameters().get(0), getClasses());

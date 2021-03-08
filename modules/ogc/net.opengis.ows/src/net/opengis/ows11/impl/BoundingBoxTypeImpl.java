@@ -127,7 +127,8 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.BOUNDING_BOX_TYPE;
   }
 
@@ -136,7 +137,8 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
    * <!-- end-user-doc -->
    * @generated
    */
-  public List getLowerCorner() {
+  @Override
+public List getLowerCorner() {
     return lowerCorner;
   }
 
@@ -145,7 +147,8 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setLowerCorner(List newLowerCorner) {
+  @Override
+public void setLowerCorner(List newLowerCorner) {
     List oldLowerCorner = lowerCorner;
     lowerCorner = newLowerCorner;
     if (eNotificationRequired())
@@ -157,7 +160,8 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
    * <!-- end-user-doc -->
    * @generated
    */
-  public List getUpperCorner() {
+  @Override
+public List getUpperCorner() {
     return upperCorner;
   }
 
@@ -166,7 +170,8 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setUpperCorner(List newUpperCorner) {
+  @Override
+public void setUpperCorner(List newUpperCorner) {
     List oldUpperCorner = upperCorner;
     upperCorner = newUpperCorner;
     if (eNotificationRequired())
@@ -178,7 +183,8 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getCrs() {
+  @Override
+public String getCrs() {
     return crs;
   }
 
@@ -187,7 +193,8 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setCrs(String newCrs) {
+  @Override
+public void setCrs(String newCrs) {
     String oldCrs = crs;
     crs = newCrs;
     if (eNotificationRequired())
@@ -199,7 +206,8 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
    * <!-- end-user-doc -->
    * @generated
    */
-  public BigInteger getDimensions() {
+  @Override
+public BigInteger getDimensions() {
     return dimensions;
   }
 
@@ -208,7 +216,8 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setDimensions(BigInteger newDimensions) {
+  @Override
+public void setDimensions(BigInteger newDimensions) {
     BigInteger oldDimensions = dimensions;
     dimensions = newDimensions;
     if (eNotificationRequired())
@@ -220,7 +229,8 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.BOUNDING_BOX_TYPE__LOWER_CORNER:
         return getLowerCorner();
@@ -239,7 +249,8 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.BOUNDING_BOX_TYPE__LOWER_CORNER:
         setLowerCorner((List)newValue);
@@ -262,7 +273,8 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.BOUNDING_BOX_TYPE__LOWER_CORNER:
         setLowerCorner(LOWER_CORNER_EDEFAULT);
@@ -285,7 +297,8 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.BOUNDING_BOX_TYPE__LOWER_CORNER:
         return LOWER_CORNER_EDEFAULT == null ? lowerCorner != null : !LOWER_CORNER_EDEFAULT.equals(lowerCorner);
@@ -304,7 +317,8 @@ public class BoundingBoxTypeImpl extends EObjectImpl implements BoundingBoxType 
    * <!-- end-user-doc -->
    * @generated
    */
-  public String toString() {
+  @Override
+public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

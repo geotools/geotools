@@ -55,18 +55,22 @@ public class GeometryAttributeImpl extends AttributeImpl implements GeometryAttr
         super(content, descriptor, id);
     }
 
+    @Override
     public GeometryType getType() {
         return (GeometryType) super.getType();
     }
 
+    @Override
     public GeometryDescriptor getDescriptor() {
         return (GeometryDescriptor) super.getDescriptor();
     }
 
+    @Override
     public Geometry getValue() {
         return (Geometry) super.getValue();
     }
 
+    @Override
     public void setValue(Object newValue) throws IllegalArgumentException, IllegalStateException {
         super.setValue(newValue);
     }
@@ -76,6 +80,7 @@ public class GeometryAttributeImpl extends AttributeImpl implements GeometryAttr
     }
 
     /** Set the bounds for the contained geometry. */
+    @Override
     public synchronized void setBounds(BoundingBox bbox) {
         bounds = bbox;
     }
@@ -84,6 +89,7 @@ public class GeometryAttributeImpl extends AttributeImpl implements GeometryAttr
      * Returns the non null envelope of this attribute. If the attribute's geometry is <code>null
      * </code> the returned Envelope <code>isNull()</code> is true.
      */
+    @Override
     public synchronized BoundingBox getBounds() {
         if (bounds == null) {
             ReferencedEnvelope bbox =
@@ -99,6 +105,7 @@ public class GeometryAttributeImpl extends AttributeImpl implements GeometryAttr
         return bounds;
     }
 
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -156,6 +163,7 @@ public class GeometryAttributeImpl extends AttributeImpl implements GeometryAttr
         return true;
     }
 
+    @Override
     public int hashCode() {
         int hash = descriptor.hashCode();
 
@@ -166,6 +174,7 @@ public class GeometryAttributeImpl extends AttributeImpl implements GeometryAttr
         return hash;
     }
 
+    @Override
     public String toString() {
         StringBuffer sb = new StringBuffer(getClass().getSimpleName()).append(":");
         sb.append(getDescriptor().getName().getLocalPart());

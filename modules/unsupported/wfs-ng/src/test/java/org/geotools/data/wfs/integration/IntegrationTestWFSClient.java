@@ -34,7 +34,6 @@ import net.opengis.wfs.TransactionResponseType;
 import net.opengis.wfs.WfsFactory;
 import net.opengis.wfs20.CreatedOrModifiedFeatureType;
 import net.opengis.wfs20.Wfs20Factory;
-import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Diff;
@@ -68,7 +67,6 @@ import org.geotools.wfs.v1_1.WFS;
 import org.geotools.xml.XMLHandlerHints;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Encoder;
-import org.geotools.xsd.impl.ParserHandler.ContextCustomizer;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -76,7 +74,6 @@ import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.identity.FeatureId;
-import org.picocontainer.MutablePicoContainer;
 import org.xml.sax.EntityResolver;
 
 public class IntegrationTestWFSClient extends WFSClient {
@@ -174,21 +171,15 @@ public class IntegrationTestWFSClient extends WFSClient {
         if (allFeatures instanceof PullParserFeatureReader) {
             ((PullParserFeatureReader) allFeatures)
                     .setContextCustomizer(
-                            new ContextCustomizer() {
-                                @Override
-                                public void customizeContext(MutablePicoContainer context) {
-                                    QName key =
-                                            new QName(
-                                                    "http://www.openplans.org/spearfish",
-                                                    "schemaLocationResolver");
-                                    context.registerComponentInstance(
-                                            key,
-                                            new XSDSchemaLocationResolver() {
-                                                @Override
-                                                public String resolveSchemaLocation(
-                                                        XSDSchema xsdSchema,
-                                                        String namespaceURI,
-                                                        String schemaLocationURI) {
+                            context -> {
+                                QName key =
+                                        new QName(
+                                                "http://www.openplans.org/spearfish",
+                                                "schemaLocationResolver");
+                                context.registerComponentInstance(
+                                        key,
+                                        (XSDSchemaLocationResolver)
+                                                (xsdSchema, namespaceURI, schemaLocationURI) -> {
                                                     if (schemaLocationURI.startsWith(
                                                             "DescribeFeatureType")) {
                                                         try {
@@ -201,9 +192,7 @@ public class IntegrationTestWFSClient extends WFSClient {
                                                         }
                                                     }
                                                     return schemaLocationURI;
-                                                }
-                                            });
-                                }
+                                                });
                             });
         }
 

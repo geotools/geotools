@@ -35,6 +35,7 @@ public class SpatialSubsetTypeImpl extends SpatialDomainTypeImpl implements Spat
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.SPATIAL_SUBSET_TYPE;
 	}

@@ -183,29 +183,35 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         functionFinder = new FunctionFinder(null);
     }
 
+    @Override
     public FeatureId featureId(String id) {
         return new FeatureIdImpl(id);
     }
 
+    @Override
     public GmlObjectId gmlObjectId(String id) {
         return new GmlObjectIdImpl(id);
     }
 
     /** Creates a new feature id with version information */
+    @Override
     public FeatureId featureId(String fid, String featureVersion) {
         return new FeatureIdVersionedImpl(fid, featureVersion);
     }
 
     /** ResouceId for identifier based query */
+    @Override
     public ResourceId resourceId(String fid, String featureVersion, Version version) {
         return new ResourceIdImpl(fid, featureVersion, version);
     }
 
     /** ResourceId for time based query */
+    @Override
     public ResourceId resourceId(String fid, Date startTime, Date endTime) {
         return new ResourceIdImpl(fid, startTime, endTime);
     }
 
+    @Override
     public And and(Filter f, Filter g) {
         List<Filter> list = new ArrayList<>(2);
         list.add(f);
@@ -213,10 +219,12 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return new AndImpl(list);
     }
 
+    @Override
     public And and(List<Filter> filters) {
         return new AndImpl(filters);
     }
 
+    @Override
     public Or or(Filter f, Filter g) {
         List<Filter> list = new ArrayList<>(2);
         list.add(f);
@@ -224,19 +232,23 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return new OrImpl(list);
     }
 
+    @Override
     public Or or(List<Filter> filters) {
         return new OrImpl(filters);
     }
 
     /** Java 5 type narrowing used to advertise explicit implementation for chaining */
+    @Override
     public Not /*NotImpl*/ not(Filter filter) {
         return new NotImpl(filter);
     }
 
+    @Override
     public Id id(Set<? extends Identifier> id) {
         return new FidFilterImpl(id);
     }
 
+    @Override
     public Id id(FeatureId... fids) {
         Set<FeatureId> selection = new HashSet<>();
         for (FeatureId featureId : fids) {
@@ -246,108 +258,132 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return id(selection);
     }
 
+    @Override
     public PropertyName property(String name) {
         return new AttributeExpressionImpl(name);
     }
 
+    @Override
     public PropertyIsBetween between(Expression expr, Expression lower, Expression upper) {
         return new IsBetweenImpl(lower, expr, upper);
     }
 
+    @Override
     public PropertyIsBetween between(
             Expression expr, Expression lower, Expression upper, MatchAction matchAction) {
         return new IsBetweenImpl(lower, expr, upper, matchAction);
     }
 
+    @Override
     public PropertyIsEqualTo equals(Expression expr1, Expression expr2) {
         return equal(expr1, expr2, true);
     }
 
+    @Override
     public PropertyIsEqualTo equal(Expression expr1, Expression expr2, boolean matchCase) {
         return new IsEqualsToImpl(expr1, expr2, matchCase);
     }
 
+    @Override
     public PropertyIsEqualTo equal(
             Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction) {
         return new IsEqualsToImpl(expr1, expr2, matchCase, matchAction);
     }
 
+    @Override
     public PropertyIsNotEqualTo notEqual(Expression expr1, Expression expr2) {
         return notEqual(expr1, expr2, false);
     }
 
+    @Override
     public PropertyIsNotEqualTo notEqual(Expression expr1, Expression expr2, boolean matchCase) {
         return new IsNotEqualToImpl(expr1, expr2, matchCase);
     }
 
+    @Override
     public PropertyIsNotEqualTo notEqual(
             Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction) {
         return new IsNotEqualToImpl(expr1, expr2, matchCase, matchAction);
     }
 
+    @Override
     public PropertyIsGreaterThan greater(Expression expr1, Expression expr2) {
         return greater(expr1, expr2, false);
     }
 
+    @Override
     public PropertyIsGreaterThan greater(Expression expr1, Expression expr2, boolean matchCase) {
         return new IsGreaterThanImpl(expr1, expr2);
     }
 
+    @Override
     public PropertyIsGreaterThan greater(
             Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction) {
         return new IsGreaterThanImpl(expr1, expr2, matchAction);
     }
 
+    @Override
     public PropertyIsGreaterThanOrEqualTo greaterOrEqual(Expression expr1, Expression expr2) {
         return greaterOrEqual(expr1, expr2, false);
     }
 
+    @Override
     public PropertyIsGreaterThanOrEqualTo greaterOrEqual(
             Expression expr1, Expression expr2, boolean matchCase) {
         return new IsGreaterThanOrEqualToImpl(expr1, expr2, matchCase);
     }
 
+    @Override
     public PropertyIsGreaterThanOrEqualTo greaterOrEqual(
             Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction) {
         return new IsGreaterThanOrEqualToImpl(expr1, expr2, matchCase, matchAction);
     }
 
+    @Override
     public PropertyIsLessThan less(Expression expr1, Expression expr2) {
         return less(expr1, expr2, false);
     }
 
+    @Override
     public PropertyIsLessThan less(Expression expr1, Expression expr2, boolean matchCase) {
         return new IsLessThenImpl(expr1, expr2, matchCase);
     }
 
+    @Override
     public PropertyIsLessThan less(
             Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction) {
         return new IsLessThenImpl(expr1, expr2, matchCase, matchAction);
     }
 
+    @Override
     public PropertyIsLessThanOrEqualTo lessOrEqual(Expression expr1, Expression expr2) {
         return lessOrEqual(expr1, expr2, false);
     }
 
+    @Override
     public PropertyIsLessThanOrEqualTo lessOrEqual(
             Expression expr1, Expression expr2, boolean matchCase) {
         return new IsLessThenOrEqualToImpl(expr1, expr2, false);
     }
 
+    @Override
     public PropertyIsLessThanOrEqualTo lessOrEqual(
             Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction) {
         return new IsLessThenOrEqualToImpl(expr1, expr2, false, matchAction);
     }
 
+    @Override
     public PropertyIsLike like(Expression expr, String pattern) {
         return like(expr, pattern, "*", "?", "\\");
     }
 
+    @Override
     public PropertyIsLike like(
             Expression expr, String pattern, String wildcard, String singleChar, String escape) {
         return like(expr, pattern, wildcard, singleChar, escape, false);
     }
 
+    @Override
     public PropertyIsLike like(
             Expression expr,
             String pattern,
@@ -367,6 +403,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return filter;
     }
 
+    @Override
     public PropertyIsLike like(
             Expression expr,
             String pattern,
@@ -388,10 +425,12 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
     }
 
     /** XXX Java 5 type narrowing used to make generated class explicit for chaining */
+    @Override
     public PropertyIsNull /*IsNullImpl*/ isNull(Expression expr) {
         return new IsNullImpl(expr);
     }
 
+    @Override
     public PropertyIsNil isNil(Expression expr, Object nilReason) {
         return new IsNilImpl(expr, nilReason);
     }
@@ -403,6 +442,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
      * geom().disjoint( geom( bbox )).not()
      * </code>
      */
+    @Override
     public BBOX bbox(
             String propertyName, double minx, double miny, double maxx, double maxy, String srs) {
 
@@ -410,10 +450,12 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return bbox(name, minx, miny, maxx, maxy, srs);
     }
 
+    @Override
     public BBOX bbox(Expression geometry, Expression bounds) {
         return new BBOXImpl(geometry, bounds);
     }
 
+    @Override
     public BBOX bbox(Expression geometry, Expression bounds, MatchAction machAction) {
         if (bounds instanceof Literal) {
             Object value = ((Literal) bounds).getValue();
@@ -432,6 +474,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return new BBOXImpl(geometry, bounds, machAction);
     }
 
+    @Override
     public BBOX bbox(Expression geometry, BoundingBox bounds) {
         if (bounds instanceof BoundingBox3D) {
             return bbox(geometry, (BoundingBox3D) bounds);
@@ -440,6 +483,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         }
     }
 
+    @Override
     public BBOX bbox(Expression geometry, BoundingBox bounds, MatchAction matchAction) {
         if (bounds instanceof BoundingBox3D) {
             return bbox(geometry, (BoundingBox3D) bounds);
@@ -467,6 +511,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return new BBOXImpl(name, bbox, matchAction);
     }
 
+    @Override
     public BBOX bbox(
             String propertyName,
             double minx,
@@ -479,11 +524,13 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return bbox(name, minx, miny, maxx, maxy, srs, matchAction);
     }
 
+    @Override
     public BBOX bbox(
             Expression geometry, double minx, double miny, double maxx, double maxy, String srs) {
         return bbox(geometry, minx, miny, maxx, maxy, srs, MatchAction.ANY);
     }
 
+    @Override
     public BBOX bbox(
             Expression e,
             double minx,
@@ -515,18 +562,22 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return box;
     }
 
+    @Override
     public BBOX3D bbox(String propertyName, BoundingBox3D env) {
         return bbox(property(propertyName), env, MatchAction.ANY);
     }
 
+    @Override
     public BBOX3D bbox(String propertyName, BoundingBox3D env, MatchAction matchAction) {
         return bbox(property(propertyName), env, matchAction);
     }
 
+    @Override
     public BBOX3D bbox(Expression geometry, BoundingBox3D env) {
         return bbox(geometry, env, MatchAction.ANY);
     }
 
+    @Override
     public BBOX3D bbox(Expression e, BoundingBox3D env, MatchAction matchAction) {
         PropertyName name = null;
         if (e instanceof PropertyName) {
@@ -538,6 +589,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return new BBOX3DImpl(name, new ReferencedEnvelope3D(env), this);
     }
 
+    @Override
     public Beyond beyond(String propertyName, Geometry geometry, double distance, String units) {
 
         PropertyName name = property(propertyName);
@@ -546,6 +598,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return beyond(name, geom, distance, units);
     }
 
+    @Override
     public Beyond beyond(
             String propertyName,
             Geometry geometry,
@@ -558,6 +611,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return beyond(name, geom, distance, units, matchAction);
     }
 
+    @Override
     public Beyond beyond(
             Expression geometry1, Expression geometry2, double distance, String units) {
 
@@ -568,6 +622,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return beyond;
     }
 
+    @Override
     public Beyond beyond(
             Expression geometry1,
             Expression geometry2,
@@ -581,6 +636,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return beyond;
     }
 
+    @Override
     public Contains contains(String propertyName, Geometry geometry) {
         PropertyName name = property(propertyName);
         Literal geom = literal(geometry);
@@ -588,14 +644,17 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return contains(name, geom);
     }
 
+    @Override
     public Contains contains(Expression geometry1, Expression geometry2) {
         return new ContainsImpl(geometry1, geometry2);
     }
 
+    @Override
     public Contains contains(Expression geometry1, Expression geometry2, MatchAction matchAction) {
         return new ContainsImpl(geometry1, geometry2, matchAction);
     }
 
+    @Override
     public Contains contains(String propertyName, Geometry geometry, MatchAction matchAction) {
         PropertyName name = property(propertyName);
         Literal geom = literal(geometry);
@@ -603,6 +662,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return contains(name, geom, matchAction);
     }
 
+    @Override
     public Crosses crosses(String propertyName, Geometry geometry) {
         PropertyName name = property(propertyName);
         Literal geom = literal(geometry);
@@ -610,6 +670,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return crosses(name, geom);
     }
 
+    @Override
     public Crosses crosses(String propertyName, Geometry geometry, MatchAction matchAction) {
         PropertyName name = property(propertyName);
         Literal geom = literal(geometry);
@@ -617,14 +678,17 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return crosses(name, geom, matchAction);
     }
 
+    @Override
     public Crosses crosses(Expression geometry1, Expression geometry2) {
         return new CrossesImpl(geometry1, geometry2);
     }
 
+    @Override
     public Crosses crosses(Expression geometry1, Expression geometry2, MatchAction matchAction) {
         return new CrossesImpl(geometry1, geometry2, matchAction);
     }
 
+    @Override
     public Disjoint disjoint(String propertyName, Geometry geometry) {
         PropertyName name = property(propertyName);
         Literal geom = literal(geometry);
@@ -632,6 +696,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return disjoint(name, geom);
     }
 
+    @Override
     public Disjoint disjoint(String propertyName, Geometry geometry, MatchAction matchAction) {
         PropertyName name = property(propertyName);
         Literal geom = literal(geometry);
@@ -639,14 +704,17 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return disjoint(name, geom, matchAction);
     }
 
+    @Override
     public Disjoint disjoint(Expression geometry1, Expression geometry2, MatchAction matchAction) {
         return new DisjointImpl(geometry1, geometry2, matchAction);
     }
 
+    @Override
     public Disjoint disjoint(Expression geometry1, Expression geometry2) {
         return new DisjointImpl(geometry1, geometry2);
     }
 
+    @Override
     public DWithin dwithin(String propertyName, Geometry geometry, double distance, String units) {
         PropertyName name = property(propertyName);
         Literal geom = literal(geometry);
@@ -654,6 +722,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return dwithin(name, geom, distance, units);
     }
 
+    @Override
     public DWithin dwithin(
             String propertyName,
             Geometry geometry,
@@ -666,6 +735,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return dwithin(name, geom, distance, units, matchAction);
     }
 
+    @Override
     public DWithin dwithin(
             Expression geometry1,
             Expression geometry2,
@@ -679,6 +749,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return dwithin;
     }
 
+    @Override
     public DWithin dwithin(
             Expression geometry1, Expression geometry2, double distance, String units) {
         DWithinImpl dwithin = new DWithinImpl(geometry1, geometry2);
@@ -688,6 +759,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return dwithin;
     }
 
+    @Override
     public Equals equals(String propertyName, Geometry geometry) {
         PropertyName name = property(propertyName);
         Literal geom = literal(geometry);
@@ -695,6 +767,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return equal(name, geom);
     }
 
+    @Override
     public Equals equals(String propertyName, Geometry geometry, MatchAction matchAction) {
         PropertyName name = property(propertyName);
         Literal geom = literal(geometry);
@@ -702,14 +775,17 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return equal(name, geom, matchAction);
     }
 
+    @Override
     public Equals equal(Expression geometry1, Expression geometry2) {
         return new EqualsImpl(geometry1, geometry2);
     }
 
+    @Override
     public Equals equal(Expression geometry1, Expression geometry2, MatchAction matchAction) {
         return new EqualsImpl(geometry1, geometry2, matchAction);
     }
 
+    @Override
     public Intersects intersects(String propertyName, Geometry geometry) {
         PropertyName name = property(propertyName);
         Literal geom = literal(geometry);
@@ -717,6 +793,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return intersects(name, geom);
     }
 
+    @Override
     public Intersects intersects(String propertyName, Geometry geometry, MatchAction matchAction) {
         PropertyName name = property(propertyName);
         Literal geom = literal(geometry);
@@ -724,15 +801,18 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return intersects(name, geom, matchAction);
     }
 
+    @Override
     public Intersects intersects(Expression geometry1, Expression geometry2) {
         return new IntersectsImpl(geometry1, geometry2);
     }
 
+    @Override
     public Intersects intersects(
             Expression geometry1, Expression geometry2, MatchAction matchAction) {
         return new IntersectsImpl(geometry1, geometry2, matchAction);
     }
 
+    @Override
     public Overlaps overlaps(String propertyName, Geometry geometry) {
         PropertyName name = property(propertyName);
         Literal geom = literal(geometry);
@@ -740,6 +820,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return overlaps(name, geom);
     }
 
+    @Override
     public Overlaps overlaps(String propertyName, Geometry geometry, MatchAction matchAction) {
         PropertyName name = property(propertyName);
         Literal geom = literal(geometry);
@@ -747,14 +828,17 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return overlaps(name, geom, matchAction);
     }
 
+    @Override
     public Overlaps overlaps(Expression geometry1, Expression geometry2) {
         return new OverlapsImpl(geometry1, geometry2);
     }
 
+    @Override
     public Overlaps overlaps(Expression geometry1, Expression geometry2, MatchAction matchAction) {
         return new OverlapsImpl(geometry1, geometry2, matchAction);
     }
 
+    @Override
     public Touches touches(String propertyName, Geometry geometry) {
         PropertyName name = property(propertyName);
         Literal geom = literal(geometry);
@@ -762,6 +846,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return touches(name, geom);
     }
 
+    @Override
     public Touches touches(String propertyName, Geometry geometry, MatchAction matchAction) {
         PropertyName name = property(propertyName);
         Literal geom = literal(geometry);
@@ -769,14 +854,17 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return touches(name, geom, matchAction);
     }
 
+    @Override
     public Touches touches(Expression geometry1, Expression geometry2) {
         return new TouchesImpl(geometry1, geometry2);
     }
 
+    @Override
     public Touches touches(Expression geometry1, Expression geometry2, MatchAction matchAction) {
         return new TouchesImpl(geometry1, geometry2, matchAction);
     }
 
+    @Override
     public Within within(String propertyName, Geometry geometry) {
         PropertyName name = property(propertyName);
         Literal geom = literal(geometry);
@@ -784,6 +872,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return within(name, geom);
     }
 
+    @Override
     public Within within(String propertyName, Geometry geometry, MatchAction matchAction) {
         PropertyName name = property(propertyName);
         Literal geom = literal(geometry);
@@ -791,35 +880,43 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return within(name, geom, matchAction);
     }
 
+    @Override
     public Within within(Expression geometry1, Expression geometry2) {
         return new WithinImpl(geometry1, geometry2);
     }
 
+    @Override
     public Within within(Expression geometry1, Expression geometry2, MatchAction matchAction) {
         return new WithinImpl(geometry1, geometry2, matchAction);
     }
 
+    @Override
     public Add add(Expression expr1, Expression expr2) {
         return new AddImpl(expr1, expr2);
     }
 
+    @Override
     public Divide divide(Expression expr1, Expression expr2) {
         return new DivideImpl(expr1, expr2);
     }
 
+    @Override
     public Multiply multiply(Expression expr1, Expression expr2) {
         return new MultiplyImpl(expr1, expr2);
     }
 
+    @Override
     public Subtract subtract(Expression expr1, Expression expr2) {
         return new SubtractImpl(expr1, expr2);
     }
 
+    @Override
     public Function function(String name, Expression[] args) {
         Function function = functionFinder.findFunction(name, Arrays.asList(args));
         return function;
     }
 
+    @Override
     public Function function(Name name, Expression... args) {
         Function function = functionFinder.findFunction(name, Arrays.asList(args));
         return function;
@@ -845,6 +942,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return function;
     }
 
+    @Override
     public Literal literal(Object obj) {
         try {
             return new LiteralExpressionImpl(obj);
@@ -855,156 +953,194 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return null;
     }
 
+    @Override
     public Literal literal(byte b) {
         return new LiteralExpressionImpl(b);
     }
 
+    @Override
     public Literal literal(short s) {
         return new LiteralExpressionImpl(s);
     }
 
+    @Override
     public Literal literal(int i) {
         return new LiteralExpressionImpl(i);
     }
 
+    @Override
     public Literal literal(long l) {
         return new LiteralExpressionImpl(l);
     }
 
+    @Override
     public Literal literal(float f) {
         return new LiteralExpressionImpl(f);
     }
 
+    @Override
     public Literal literal(double d) {
         return new LiteralExpressionImpl(d);
     }
 
+    @Override
     public Literal literal(char c) {
         return new LiteralExpressionImpl(c);
     }
 
+    @Override
     public Literal literal(boolean b) {
         return b
                 ? new LiteralExpressionImpl(Boolean.TRUE)
                 : new LiteralExpressionImpl(Boolean.FALSE);
     }
 
+    @Override
     public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }
 
+    @Override
     public SortBy sort(String propertyName, SortOrder order) {
         return new SortByImpl(property(propertyName), order);
     }
 
+    @Override
     public After after(Expression expr1, Expression expr2) {
         return new AfterImpl(expr1, expr2);
     }
 
+    @Override
     public After after(Expression expr1, Expression expr2, MatchAction matchAction) {
         return new AfterImpl(expr1, expr2, matchAction);
     }
 
+    @Override
     public AnyInteracts anyInteracts(Expression expr1, Expression expr2) {
         return new AnyInteractsImpl(expr1, expr2);
     }
 
+    @Override
     public AnyInteracts anyInteracts(Expression expr1, Expression expr2, MatchAction matchAction) {
         return new AnyInteractsImpl(expr1, expr2, matchAction);
     }
 
+    @Override
     public Before before(Expression expr1, Expression expr2) {
         return new BeforeImpl(expr1, expr2);
     }
 
+    @Override
     public Before before(Expression expr1, Expression expr2, MatchAction matchAction) {
         return new BeforeImpl(expr1, expr2, matchAction);
     }
 
+    @Override
     public Begins begins(Expression expr1, Expression expr2) {
         return new BeginsImpl(expr1, expr2);
     }
 
+    @Override
     public Begins begins(Expression expr1, Expression expr2, MatchAction matchAction) {
         return new BeginsImpl(expr1, expr2, matchAction);
     }
 
+    @Override
     public BegunBy begunBy(Expression expr1, Expression expr2) {
         return new BegunByImpl(expr1, expr2);
     }
 
+    @Override
     public BegunBy begunBy(Expression expr1, Expression expr2, MatchAction matchAction) {
         return new BegunByImpl(expr1, expr2, matchAction);
     }
 
+    @Override
     public During during(Expression expr1, Expression expr2) {
         return new DuringImpl(expr1, expr2);
     }
 
+    @Override
     public During during(Expression expr1, Expression expr2, MatchAction matchAction) {
         return new DuringImpl(expr1, expr2, matchAction);
     }
 
+    @Override
     public EndedBy endedBy(Expression expr1, Expression expr2) {
         return new EndedByImpl(expr1, expr2);
     }
 
+    @Override
     public EndedBy endedBy(Expression expr1, Expression expr2, MatchAction matchAction) {
         return new EndedByImpl(expr1, expr2, matchAction);
     }
 
+    @Override
     public Ends ends(Expression expr1, Expression expr2) {
         return new EndsImpl(expr1, expr2);
     }
 
+    @Override
     public Ends ends(Expression expr1, Expression expr2, MatchAction matchAction) {
         return new EndsImpl(expr1, expr2, matchAction);
     }
 
+    @Override
     public Meets meets(Expression expr1, Expression expr2) {
         return new MeetsImpl(expr1, expr2);
     }
 
+    @Override
     public Meets meets(Expression expr1, Expression expr2, MatchAction matchAction) {
         return new MeetsImpl(expr1, expr2, matchAction);
     }
 
+    @Override
     public MetBy metBy(Expression expr1, Expression expr2) {
         return new MetByImpl(expr1, expr2);
     }
 
+    @Override
     public MetBy metBy(Expression expr1, Expression expr2, MatchAction matchAction) {
         return new MetByImpl(expr1, expr2, matchAction);
     }
 
+    @Override
     public OverlappedBy overlappedBy(Expression expr1, Expression expr2) {
         return new OverlappedByImpl(expr1, expr2);
     }
 
+    @Override
     public OverlappedBy overlappedBy(Expression expr1, Expression expr2, MatchAction matchAction) {
         return new OverlappedByImpl(expr1, expr2, matchAction);
     }
 
+    @Override
     public TContains tcontains(Expression expr1, Expression expr2) {
         return new TContainsImpl(expr1, expr2);
     }
 
+    @Override
     public TContains tcontains(Expression expr1, Expression expr2, MatchAction matchAction) {
         return new TContainsImpl(expr1, expr2, matchAction);
     }
 
+    @Override
     public TEquals tequals(Expression expr1, Expression expr2) {
         return new TEqualsImpl(expr1, expr2);
     }
 
+    @Override
     public TEquals tequals(Expression expr1, Expression expr2, MatchAction matchAction) {
         return new TEqualsImpl(expr1, expr2, matchAction);
     }
 
+    @Override
     public TOverlaps toverlaps(Expression expr1, Expression expr2) {
         return new TOverlapsImpl(expr1, expr2);
     }
 
+    @Override
     public TOverlaps toverlaps(Expression expr1, Expression expr2, MatchAction matchAction) {
         return new TOverlapsImpl(expr1, expr2, matchAction);
     }
@@ -1027,10 +1163,12 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return beyond(geometry1, literal(geometry2), distance, units);
     }
 
+    @Override
     public PropertyName property(Name name) {
         return new AttributeExpressionImpl(name);
     }
 
+    @Override
     public PropertyName property(String name, NamespaceSupport namespaceContext) {
         if (namespaceContext == null) {
             return property(name);
@@ -1042,18 +1180,22 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return within(geometry1, literal(geometry2));
     }
 
+    @Override
     public Operator operator(String name) {
         return new OperatorImpl(name);
     }
 
+    @Override
     public SpatialOperator spatialOperator(String name, GeometryOperand[] geometryOperands) {
         return new SpatialOperatorImpl(name, geometryOperands);
     }
 
+    @Override
     public TemporalOperator temporalOperator(String name) {
         return new TemporalOperatorImpl(name);
     }
 
+    @Override
     public <T> Parameter<T> parameter(
             String name,
             Class<T> type,
@@ -1067,6 +1209,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
                 name, type, title, description, required, minOccurs, maxOccurs, defaultValue, null);
     };
 
+    @Override
     public FunctionName functionName(String name, int nargs) {
         return new FunctionNameImpl(name, nargs);
     }
@@ -1076,6 +1219,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return new FunctionNameImpl(name, nargs);
     }
 
+    @Override
     public FunctionName functionName(String name, int nargs, List<String> argNames) {
         return new FunctionNameImpl(name, nargs, argNames);
     }
@@ -1085,6 +1229,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return new FunctionNameImpl(name, nargs, argNames);
     }
 
+    @Override
     public FunctionName functionName(String name, List<Parameter<?>> args, Parameter<?> ret) {
         return new FunctionNameImpl(name, ret, args);
     }
@@ -1094,22 +1239,27 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return new FunctionNameImpl(name, ret, args);
     }
 
+    @Override
     public Functions functions(FunctionName[] functionNames) {
         return new FunctionsImpl(functionNames);
     }
 
+    @Override
     public SpatialOperators spatialOperators(SpatialOperator[] spatialOperators) {
         return new SpatialOperatorsImpl(spatialOperators);
     }
 
+    @Override
     public ArithmeticOperators arithmeticOperators(boolean simple, Functions functions) {
         return new ArithmeticOperatorsImpl(simple, functions);
     }
 
+    @Override
     public ComparisonOperators comparisonOperators(Operator[] comparisonOperators) {
         return new ComparisonOperatorsImpl(comparisonOperators);
     }
 
+    @Override
     public FilterCapabilities capabilities(
             String version,
             ScalarCapabilities scalar,
@@ -1118,6 +1268,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return new FilterCapabilitiesImpl(version, scalar, spatial, id);
     }
 
+    @Override
     public FilterCapabilities capabilities(
             String version,
             ScalarCapabilities scalar,
@@ -1127,6 +1278,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return new FilterCapabilitiesImpl(version, scalar, spatial, id, temporal);
     }
 
+    @Override
     public ScalarCapabilities scalarCapabilities(
             ComparisonOperators comparison,
             ArithmeticOperators arithmetic,
@@ -1134,19 +1286,23 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return new ScalarCapabilitiesImpl(comparison, arithmetic, logicalOperators);
     }
 
+    @Override
     public SpatialCapabilities spatialCapabilities(
             GeometryOperand[] geometryOperands, SpatialOperators spatial) {
         return new SpatialCapabiltiesImpl(geometryOperands, spatial);
     }
 
+    @Override
     public IdCapabilities idCapabilities(boolean eid, boolean fid) {
         return new IdCapabilitiesImpl(eid, fid);
     }
 
+    @Override
     public TemporalCapabilities temporalCapabilities(TemporalOperator[] temporalOperators) {
         return new TemporalCapabilitiesImpl(Arrays.asList(temporalOperators));
     }
 
+    @Override
     public NativeFilter nativeFilter(String nativeFilter) {
         return new NativeFilterImpl(nativeFilter);
     }

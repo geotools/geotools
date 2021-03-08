@@ -59,6 +59,7 @@ public final class AIGReader extends BaseGDALGridCoverage2DReader implements Gri
     }
 
     /** @see org.opengis.coverage.grid.GridCoverageReader#getFormat() */
+    @Override
     public Format getFormat() {
         return new AIGFormat();
     }

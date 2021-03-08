@@ -76,6 +76,7 @@ public class StyleBuilder extends AbstractStyleBuilder<Style> {
         return background;
     }
 
+    @Override
     public Style build() {
         if (unset) {
             return null;
@@ -104,10 +105,12 @@ public class StyleBuilder extends AbstractStyleBuilder<Style> {
         return s;
     }
 
+    @Override
     public StyleBuilder unset() {
         return (StyleBuilder) super.unset();
     }
 
+    @Override
     public StyleBuilder reset() {
         fts.clear();
         name = null;
@@ -119,6 +122,7 @@ public class StyleBuilder extends AbstractStyleBuilder<Style> {
         return this;
     }
 
+    @Override
     public StyleBuilder reset(Style style) {
         if (style == null) {
             return unset();

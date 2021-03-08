@@ -149,10 +149,12 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
         compPattern = null;
     }
 
+    @Override
     public boolean isMatchingCase() {
         return matchingCase;
     }
 
+    @Override
     public MatchAction getMatchAction() {
         return matchAction;
     }
@@ -217,6 +219,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
      * <p>This method calls th deprecated {@link #getValue()} for backwards compatability with
      * subclasses.
      */
+    @Override
     public org.opengis.filter.expression.Expression getExpression() {
         return attribute;
     }
@@ -226,6 +229,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
     }
 
     /** Returns the pattern. */
+    @Override
     public String getLiteral() {
         return this.pattern;
     }
@@ -243,6 +247,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
      * @return Flag confirming whether or not this feature is inside the filter.
      * @task REVISIT: could the pattern be null such that a null = null?
      */
+    @Override
     public boolean evaluate(Object feature) {
         // Checks to ensure that the attribute has been set
         if (attribute == null) {
@@ -308,6 +313,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
      *
      * @return String representation of this like filter.
      */
+    @Override
     public String toString() {
         return "[ " + attribute.toString() + " is like " + pattern + " ]";
     }
@@ -317,6 +323,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
      *
      * @return Value of property escape.
      */
+    @Override
     public java.lang.String getEscape() {
         return escape;
     }
@@ -326,6 +333,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
      *
      * @see org.opengis.filter.PropertyIsLike#getWildCard().
      */
+    @Override
     public String getWildCard() {
         return wildcardMulti;
     }
@@ -335,6 +343,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
      *
      * @see org.opengis.filter.PropertyIsLike#getSingleChar()().
      */
+    @Override
     public String getSingleChar() {
         return wildcardSingle;
     }
@@ -378,6 +387,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
      * @param visitor The visitor which requires access to this filter, the method must call
      *     visitor.visit(this);
      */
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

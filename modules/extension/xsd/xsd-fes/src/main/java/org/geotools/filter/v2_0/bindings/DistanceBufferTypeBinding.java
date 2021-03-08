@@ -50,6 +50,7 @@ import org.opengis.filter.spatial.DistanceBufferOperator;
 public class DistanceBufferTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return FES.DistanceBufferType;
     }
@@ -61,6 +62,7 @@ public class DistanceBufferTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return DistanceBufferOperator.class;
     }

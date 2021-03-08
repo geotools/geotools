@@ -52,6 +52,7 @@ public class NamedLayerBuilder extends AbstractSLDBuilder<NamedLayer> {
         return sb;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public NamedLayer build() {
         if (unset) {
@@ -75,6 +76,7 @@ public class NamedLayerBuilder extends AbstractSLDBuilder<NamedLayer> {
         return layer;
     }
 
+    @Override
     public NamedLayerBuilder reset() {
         unset = false;
         this.name = null;
@@ -82,6 +84,7 @@ public class NamedLayerBuilder extends AbstractSLDBuilder<NamedLayer> {
         return this;
     }
 
+    @Override
     public NamedLayerBuilder reset(NamedLayer layer) {
         if (layer == null) {
             return unset();
@@ -102,6 +105,7 @@ public class NamedLayerBuilder extends AbstractSLDBuilder<NamedLayer> {
         return this;
     }
 
+    @Override
     public NamedLayerBuilder unset() {
         return (NamedLayerBuilder) super.unset();
     }

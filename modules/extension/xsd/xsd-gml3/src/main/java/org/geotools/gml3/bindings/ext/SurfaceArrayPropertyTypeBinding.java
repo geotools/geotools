@@ -42,6 +42,7 @@ public class SurfaceArrayPropertyTypeBinding
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return MultiPolygon.class;
     }
@@ -53,6 +54,7 @@ public class SurfaceArrayPropertyTypeBinding
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         List<Polygon> polygons = new ArrayList<>();
@@ -77,6 +79,7 @@ public class SurfaceArrayPropertyTypeBinding
         return gf.createMultiPolygon(polygons.toArray(new Polygon[polygons.size()]));
     }
 
+    @Override
     public int compareTo(Object o) {
         if (o instanceof SurfaceTypeBinding) {
             return 1;

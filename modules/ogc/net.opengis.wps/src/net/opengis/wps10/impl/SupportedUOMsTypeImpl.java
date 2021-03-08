@@ -69,6 +69,7 @@ public class SupportedUOMsTypeImpl extends EObjectImpl implements SupportedUOMsT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.SUPPORTED_UO_MS_TYPE;
   }
@@ -78,6 +79,7 @@ public class SupportedUOMsTypeImpl extends EObjectImpl implements SupportedUOMsT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DefaultType1 getDefault() {
     return default_;
   }
@@ -102,6 +104,7 @@ public class SupportedUOMsTypeImpl extends EObjectImpl implements SupportedUOMsT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setDefault(DefaultType1 newDefault) {
     if (newDefault != default_) {
       NotificationChain msgs = null;
@@ -121,6 +124,7 @@ public class SupportedUOMsTypeImpl extends EObjectImpl implements SupportedUOMsT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public UOMsType getSupported() {
     return supported;
   }
@@ -145,6 +149,7 @@ public class SupportedUOMsTypeImpl extends EObjectImpl implements SupportedUOMsT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setSupported(UOMsType newSupported) {
     if (newSupported != supported) {
       NotificationChain msgs = null;
@@ -164,6 +169,7 @@ public class SupportedUOMsTypeImpl extends EObjectImpl implements SupportedUOMsT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.SUPPORTED_UO_MS_TYPE__DEFAULT:
@@ -179,6 +185,7 @@ public class SupportedUOMsTypeImpl extends EObjectImpl implements SupportedUOMsT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.SUPPORTED_UO_MS_TYPE__DEFAULT:
@@ -194,6 +201,7 @@ public class SupportedUOMsTypeImpl extends EObjectImpl implements SupportedUOMsT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.SUPPORTED_UO_MS_TYPE__DEFAULT:
@@ -211,6 +219,7 @@ public class SupportedUOMsTypeImpl extends EObjectImpl implements SupportedUOMsT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.SUPPORTED_UO_MS_TYPE__DEFAULT:
@@ -228,6 +237,7 @@ public class SupportedUOMsTypeImpl extends EObjectImpl implements SupportedUOMsT
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.SUPPORTED_UO_MS_TYPE__DEFAULT:

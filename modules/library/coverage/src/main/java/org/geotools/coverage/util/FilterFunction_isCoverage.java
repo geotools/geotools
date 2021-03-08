@@ -40,6 +40,7 @@ public class FilterFunction_isCoverage extends FunctionExpressionImpl implements
                 || FeatureUtilities.isWrappedCoverage(feature.getFeatureType());
     }
 
+    @Override
     public Object evaluate(Object object) {
         if (object instanceof SimpleFeature) {
             return evaluate((SimpleFeature) object);

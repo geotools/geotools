@@ -36,6 +36,7 @@ public class GMLMultiLineStringTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance line2;
     GeometryFactory gf;
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();

@@ -48,6 +48,7 @@ public class WMSParserTest {
             this.capsResource = capsResource;
         }
 
+        @Override
         public HTTPResponse get(URL url) throws IOException {
             if (url.getQuery().toLowerCase().contains("capabilities")) {
                 URL caps = TestData.getResource(WMSParserTest.class, capsResource);

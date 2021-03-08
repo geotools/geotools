@@ -70,6 +70,7 @@ public abstract class DerivedSet<B, E> extends AbstractSet<E>
      *
      * @since 2.5
      */
+    @Override
     public Class<E> getElementType() {
         return derivedType;
     }
@@ -97,6 +98,7 @@ public abstract class DerivedSet<B, E> extends AbstractSet<E>
      *
      * @return an iterator over the elements contained in this set.
      */
+    @Override
     public Iterator<E> iterator() {
         return new Iter(base.iterator());
     }
@@ -107,6 +109,7 @@ public abstract class DerivedSet<B, E> extends AbstractSet<E>
      *
      * @return the number of elements in this set.
      */
+    @Override
     @SuppressWarnings("PMD.UnusedLocalVariable")
     public int size() {
         int count = 0;
@@ -190,6 +193,7 @@ public abstract class DerivedSet<B, E> extends AbstractSet<E>
         }
 
         /** Returns {@code true} if the iteration has more elements. */
+        @Override
         public boolean hasNext() {
             while (next == null) {
                 if (!iterator.hasNext()) {
@@ -201,6 +205,7 @@ public abstract class DerivedSet<B, E> extends AbstractSet<E>
         }
 
         /** Returns the next element in the iteration. */
+        @Override
         public E next() {
             while (next == null) {
                 next = baseToDerived(iterator.next());
@@ -216,6 +221,7 @@ public abstract class DerivedSet<B, E> extends AbstractSet<E>
          * @throws UnsupportedOperationException if the {@linkplain #base} set doesn't supports the
          *     {@code remove} operation.
          */
+        @Override
         public void remove() {
             iterator.remove();
         }

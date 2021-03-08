@@ -55,11 +55,13 @@ public class WMS1_1_1_OnlineTest extends WMS1_1_0_OnlineTest {
                         "http://mapserv2.esrin.esa.it/cubestor/cubeserv/cubeserv.cgi?VERSION=1.1.1&REQUEST=GetCapabilities&SERVICE=WMS");
     }
 
+    @Override
     @Test
     public void testGetVersion() {
         assertEquals(spec.getVersion(), "1.1.1");
     }
 
+    @Override
     @Test
     public void testCreateParser() throws Exception {
         try {
@@ -287,12 +289,14 @@ public class WMS1_1_1_OnlineTest extends WMS1_1_0_OnlineTest {
     /* (non-Javadoc)
      * @see org.geotools.data.wms.test.WMS1_0_0Test#checkProperties(java.util.Properties)
      */
+    @Override
     protected void checkProperties(Properties properties) {
         assertEquals(properties.get("VERSION"), "1.1.1");
         assertEquals(properties.get("REQUEST"), "GetCapabilities");
         assertEquals(properties.get("SERVICE"), "WMS");
     }
 
+    @Override
     protected WebMapServer getCustomWMS(URL featureURL)
             throws SAXException, URISyntaxException, IOException {
         return new CustomWMS(featureURL);
@@ -306,6 +310,7 @@ public class WMS1_1_1_OnlineTest extends WMS1_1_0_OnlineTest {
             // TODO Auto-generated constructor stub
         }
 
+        @Override
         protected void setupSpecifications() {
             specs = new Specification[1];
             specs[0] = new WMS1_1_1();

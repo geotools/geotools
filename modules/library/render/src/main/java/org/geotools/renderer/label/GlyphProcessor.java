@@ -50,6 +50,7 @@ abstract class GlyphProcessor {
             super(painter);
         }
 
+        @Override
         public boolean process(GlyphVector glyphVector, int g, AffineTransform tx, char c) {
             if (Character.isWhitespace(c)) return false;
             painter.graphics.draw(
@@ -86,6 +87,7 @@ abstract class GlyphProcessor {
             minDistance = labelItem.getMinGroupDistance();
         }
 
+        @Override
         public boolean process(GlyphVector glyphVector, int g, AffineTransform tx, char c) {
             Rectangle2D labelEnvelope =
                     tx.createTransformedShape(glyphVector.getGlyphLogicalBounds(g)).getBounds2D();
@@ -110,6 +112,7 @@ abstract class GlyphProcessor {
             this.index = index;
         }
 
+        @Override
         public boolean process(GlyphVector glyphVector, int g, AffineTransform tx, char c) {
             if (Character.isWhitespace(c)) return false;
             Rectangle2D labelEnvelope =

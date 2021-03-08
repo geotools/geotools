@@ -176,6 +176,7 @@ final class MetadataResult implements AutoCloseable {
      *
      * @throws SQLException if an SQL operation failed.
      */
+    @Override
     public void close() throws SQLException {
         if (results != null) {
             results.close();

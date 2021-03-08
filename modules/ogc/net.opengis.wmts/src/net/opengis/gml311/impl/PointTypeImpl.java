@@ -86,6 +86,7 @@ public class PointTypeImpl extends AbstractGeometricPrimitiveTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectPositionType getPos() {
         return pos;
     }
@@ -110,6 +111,7 @@ public class PointTypeImpl extends AbstractGeometricPrimitiveTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPos(DirectPositionType newPos) {
         if (newPos != pos) {
             NotificationChain msgs = null;
@@ -129,6 +131,7 @@ public class PointTypeImpl extends AbstractGeometricPrimitiveTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinatesType getCoordinates() {
         return coordinates;
     }
@@ -153,6 +156,7 @@ public class PointTypeImpl extends AbstractGeometricPrimitiveTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCoordinates(CoordinatesType newCoordinates) {
         if (newCoordinates != coordinates) {
             NotificationChain msgs = null;
@@ -172,6 +176,7 @@ public class PointTypeImpl extends AbstractGeometricPrimitiveTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordType getCoord() {
         return coord;
     }
@@ -196,6 +201,7 @@ public class PointTypeImpl extends AbstractGeometricPrimitiveTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCoord(CoordType newCoord) {
         if (newCoord != coord) {
             NotificationChain msgs = null;

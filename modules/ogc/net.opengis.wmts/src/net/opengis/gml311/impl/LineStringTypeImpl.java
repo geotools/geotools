@@ -100,6 +100,7 @@ public class LineStringTypeImpl extends AbstractCurveTypeImpl implements LineStr
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getGroup() {
         if (group == null) {
             group = new BasicFeatureMap(this, Gml311Package.LINE_STRING_TYPE__GROUP);
@@ -112,6 +113,7 @@ public class LineStringTypeImpl extends AbstractCurveTypeImpl implements LineStr
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<DirectPositionType> getPos() {
         return getGroup().list(Gml311Package.eINSTANCE.getLineStringType_Pos());
     }
@@ -121,6 +123,7 @@ public class LineStringTypeImpl extends AbstractCurveTypeImpl implements LineStr
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<PointPropertyType> getPointProperty() {
         return getGroup().list(Gml311Package.eINSTANCE.getLineStringType_PointProperty());
     }
@@ -130,6 +133,7 @@ public class LineStringTypeImpl extends AbstractCurveTypeImpl implements LineStr
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<PointPropertyType> getPointRep() {
         return getGroup().list(Gml311Package.eINSTANCE.getLineStringType_PointRep());
     }
@@ -139,6 +143,7 @@ public class LineStringTypeImpl extends AbstractCurveTypeImpl implements LineStr
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<CoordType> getCoord() {
         return getGroup().list(Gml311Package.eINSTANCE.getLineStringType_Coord());
     }
@@ -148,6 +153,7 @@ public class LineStringTypeImpl extends AbstractCurveTypeImpl implements LineStr
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectPositionListType getPosList() {
         return posList;
     }
@@ -172,6 +178,7 @@ public class LineStringTypeImpl extends AbstractCurveTypeImpl implements LineStr
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPosList(DirectPositionListType newPosList) {
         if (newPosList != posList) {
             NotificationChain msgs = null;
@@ -191,6 +198,7 @@ public class LineStringTypeImpl extends AbstractCurveTypeImpl implements LineStr
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinatesType getCoordinates() {
         return coordinates;
     }
@@ -215,6 +223,7 @@ public class LineStringTypeImpl extends AbstractCurveTypeImpl implements LineStr
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCoordinates(CoordinatesType newCoordinates) {
         if (newCoordinates != coordinates) {
             NotificationChain msgs = null;

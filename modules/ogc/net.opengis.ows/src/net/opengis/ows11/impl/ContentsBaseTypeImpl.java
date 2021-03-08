@@ -70,7 +70,8 @@ public class ContentsBaseTypeImpl extends EObjectImpl implements ContentsBaseTyp
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.CONTENTS_BASE_TYPE;
   }
 
@@ -79,7 +80,8 @@ public class ContentsBaseTypeImpl extends EObjectImpl implements ContentsBaseTyp
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList getDatasetDescriptionSummary() {
+  @Override
+public EList getDatasetDescriptionSummary() {
     if (datasetDescriptionSummary == null) {
       datasetDescriptionSummary = new EObjectContainmentEList(DatasetDescriptionSummaryBaseType.class, this, Ows11Package.CONTENTS_BASE_TYPE__DATASET_DESCRIPTION_SUMMARY);
     }
@@ -91,7 +93,8 @@ public class ContentsBaseTypeImpl extends EObjectImpl implements ContentsBaseTyp
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList getOtherSource() {
+  @Override
+public EList getOtherSource() {
     if (otherSource == null) {
       otherSource = new EObjectContainmentEList(MetadataType.class, this, Ows11Package.CONTENTS_BASE_TYPE__OTHER_SOURCE);
     }
@@ -103,7 +106,8 @@ public class ContentsBaseTypeImpl extends EObjectImpl implements ContentsBaseTyp
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+  @Override
+public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Ows11Package.CONTENTS_BASE_TYPE__DATASET_DESCRIPTION_SUMMARY:
         return ((InternalEList)getDatasetDescriptionSummary()).basicRemove(otherEnd, msgs);
@@ -118,7 +122,8 @@ public class ContentsBaseTypeImpl extends EObjectImpl implements ContentsBaseTyp
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.CONTENTS_BASE_TYPE__DATASET_DESCRIPTION_SUMMARY:
         return getDatasetDescriptionSummary();
@@ -133,7 +138,8 @@ public class ContentsBaseTypeImpl extends EObjectImpl implements ContentsBaseTyp
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.CONTENTS_BASE_TYPE__DATASET_DESCRIPTION_SUMMARY:
         getDatasetDescriptionSummary().clear();
@@ -152,7 +158,8 @@ public class ContentsBaseTypeImpl extends EObjectImpl implements ContentsBaseTyp
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.CONTENTS_BASE_TYPE__DATASET_DESCRIPTION_SUMMARY:
         getDatasetDescriptionSummary().clear();
@@ -169,7 +176,8 @@ public class ContentsBaseTypeImpl extends EObjectImpl implements ContentsBaseTyp
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.CONTENTS_BASE_TYPE__DATASET_DESCRIPTION_SUMMARY:
         return datasetDescriptionSummary != null && !datasetDescriptionSummary.isEmpty();

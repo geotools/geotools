@@ -35,6 +35,7 @@ public class NamedStyleImpl extends StyleImpl implements NamedStyle {
      *
      * @return style name
      */
+    @Override
     public String getName() {
         return this.name;
     }
@@ -44,6 +45,7 @@ public class NamedStyleImpl extends StyleImpl implements NamedStyle {
      *
      * @param name style name
      */
+    @Override
     public void setName(String name) {
         this.name = name;
     }
@@ -78,31 +80,37 @@ public class NamedStyleImpl extends StyleImpl implements NamedStyle {
     }
 
     /** */
+    @Override
     public boolean isDefault() {
         return false;
     }
 
     /** */
+    @Override
     public void setDefault(boolean isDefault) {
         throw new UnsupportedOperationException();
     }
 
     /** */
+    @Override
     public org.geotools.styling.FeatureTypeStyle[] getFeatureTypeStyles() {
         return new org.geotools.styling.FeatureTypeStyle[0];
     }
 
     /** */
+    @Override
     public void setFeatureTypeStyles(org.geotools.styling.FeatureTypeStyle[] types) {
         throw new UnsupportedOperationException();
     }
 
     /** */
+    @Override
     public void addFeatureTypeStyle(org.geotools.styling.FeatureTypeStyle type) {
         throw new UnsupportedOperationException();
     }
 
     /** */
+    @Override
     public Object accept(StyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }

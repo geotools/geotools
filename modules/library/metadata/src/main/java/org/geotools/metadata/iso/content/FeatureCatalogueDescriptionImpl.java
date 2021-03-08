@@ -66,6 +66,7 @@ public class FeatureCatalogueDescriptionImpl extends ContentInformationImpl
     }
 
     /** Returns whether or not the cited feature catalogue complies with ISO 19110. */
+    @Override
     public Boolean isCompliant() {
         return compliant;
     }
@@ -77,6 +78,7 @@ public class FeatureCatalogueDescriptionImpl extends ContentInformationImpl
     }
 
     /** Returns the language(s) used within the catalogue */
+    @Override
     public Collection<Locale> getLanguages() {
         return (languages = nonNullCollection(languages, Locale.class));
     }
@@ -87,6 +89,7 @@ public class FeatureCatalogueDescriptionImpl extends ContentInformationImpl
     }
 
     /** Returns whether or not the feature catalogue is included with the dataset. */
+    @Override
     public boolean isIncludedWithDataset() {
         return includeWithDataset;
     }
@@ -101,6 +104,7 @@ public class FeatureCatalogueDescriptionImpl extends ContentInformationImpl
      * Returns the Complete bibliographic reference to one or more external feature
      * catalogues. @TODO: annotate the org.geotools.util package before.
      */
+    @Override
     public Collection<GenericName> getFeatureTypes() {
         return featureTypes = nonNullCollection(featureTypes, GenericName.class);
     }
@@ -111,6 +115,7 @@ public class FeatureCatalogueDescriptionImpl extends ContentInformationImpl
     }
 
     /** Returns the Complete bibliographic reference to one or more external feature catalogues. */
+    @Override
     public Collection<Citation> getFeatureCatalogueCitations() {
         return featureCatalogueCitations =
                 nonNullCollection(featureCatalogueCitations, Citation.class);

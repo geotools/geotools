@@ -74,6 +74,7 @@ public class VerticalCRSTypeImpl extends AbstractReferenceSystemTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public VerticalCSRefType getUsesVerticalCS() {
         return usesVerticalCS;
     }
@@ -98,6 +99,7 @@ public class VerticalCRSTypeImpl extends AbstractReferenceSystemTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesVerticalCS(VerticalCSRefType newUsesVerticalCS) {
         if (newUsesVerticalCS != usesVerticalCS) {
             NotificationChain msgs = null;
@@ -117,6 +119,7 @@ public class VerticalCRSTypeImpl extends AbstractReferenceSystemTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public VerticalDatumRefType getUsesVerticalDatum() {
         return usesVerticalDatum;
     }
@@ -141,6 +144,7 @@ public class VerticalCRSTypeImpl extends AbstractReferenceSystemTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesVerticalDatum(VerticalDatumRefType newUsesVerticalDatum) {
         if (newUsesVerticalDatum != usesVerticalDatum) {
             NotificationChain msgs = null;

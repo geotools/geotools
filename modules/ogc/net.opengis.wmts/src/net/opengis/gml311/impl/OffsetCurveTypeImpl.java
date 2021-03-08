@@ -86,6 +86,7 @@ public class OffsetCurveTypeImpl extends AbstractCurveSegmentTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CurvePropertyType getOffsetBase() {
         return offsetBase;
     }
@@ -110,6 +111,7 @@ public class OffsetCurveTypeImpl extends AbstractCurveSegmentTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOffsetBase(CurvePropertyType newOffsetBase) {
         if (newOffsetBase != offsetBase) {
             NotificationChain msgs = null;
@@ -129,6 +131,7 @@ public class OffsetCurveTypeImpl extends AbstractCurveSegmentTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LengthType getDistance() {
         return distance;
     }
@@ -153,6 +156,7 @@ public class OffsetCurveTypeImpl extends AbstractCurveSegmentTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDistance(LengthType newDistance) {
         if (newDistance != distance) {
             NotificationChain msgs = null;
@@ -172,6 +176,7 @@ public class OffsetCurveTypeImpl extends AbstractCurveSegmentTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public VectorType getRefDirection() {
         return refDirection;
     }
@@ -196,6 +201,7 @@ public class OffsetCurveTypeImpl extends AbstractCurveSegmentTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRefDirection(VectorType newRefDirection) {
         if (newRefDirection != refDirection) {
             NotificationChain msgs = null;

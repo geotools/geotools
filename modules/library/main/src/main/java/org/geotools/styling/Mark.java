@@ -68,6 +68,7 @@ public interface Mark extends org.opengis.style.Mark, Symbol {
      *
      * @return The well-known name of a shape. The default value is "square".
      */
+    @Override
     Expression getWellKnownName();
 
     /**
@@ -85,6 +86,7 @@ public interface Mark extends org.opengis.style.Mark, Symbol {
      *
      * @return The Stroke definition to use when rendering the Mark.
      */
+    @Override
     Stroke getStroke();
 
     /**
@@ -99,6 +101,7 @@ public interface Mark extends org.opengis.style.Mark, Symbol {
      *
      * @return the Fill definition to use when rendering the Mark.
      */
+    @Override
     Fill getFill();
 
     /**
@@ -113,6 +116,7 @@ public interface Mark extends org.opengis.style.Mark, Symbol {
      *
      * @return ExternalMark or null if WellKNownName is being used
      */
+    @Override
     ExternalMark getExternalMark();
 
     /**
@@ -122,5 +126,6 @@ public interface Mark extends org.opengis.style.Mark, Symbol {
      */
     void setExternalMark(org.opengis.style.ExternalMark externalMark);
 
+    @Override
     void accept(org.geotools.styling.StyleVisitor visitor);
 }

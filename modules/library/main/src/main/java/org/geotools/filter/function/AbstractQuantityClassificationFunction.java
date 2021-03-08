@@ -166,6 +166,7 @@ public abstract class AbstractQuantityClassificationFunction extends Classificat
         //      localMax[i] = (Comparable) thisBin.get(thisBin.size()-1);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         if (!(feature instanceof FeatureCollection)) {
             return null;

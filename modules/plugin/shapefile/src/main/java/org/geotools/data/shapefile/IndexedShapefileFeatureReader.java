@@ -59,6 +59,7 @@ class IndexedShapefileFeatureReader extends ShapefileFeatureReader {
         this.fidReader = fidReader;
     }
 
+    @Override
     public void close() throws IOException {
         try {
             super.close();
@@ -70,6 +71,7 @@ class IndexedShapefileFeatureReader extends ShapefileFeatureReader {
         }
     }
 
+    @Override
     public boolean hasNext() throws IOException {
         while (nextFeature == null && this.goodRecs.hasNext()) {
             next = goodRecs.next();

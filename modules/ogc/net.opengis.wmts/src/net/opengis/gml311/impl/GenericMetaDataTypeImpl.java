@@ -51,6 +51,7 @@ public class GenericMetaDataTypeImpl extends AbstractMetaDataTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getAny() {
         return (FeatureMap)getMixed().<FeatureMap.Entry>list(Gml311Package.eINSTANCE.getGenericMetaDataType_Any());
     }

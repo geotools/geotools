@@ -60,6 +60,7 @@ public abstract class JDBCAccessCustom implements JDBCAccess {
     /* (non-Javadoc)
      * @see org.geotools.gce.imagemosaic.jdbc.JDBCAccess#getLevelInfo(int)
      */
+    @Override
     public ImageLevelInfo getLevelInfo(int level) {
         LOGGER.fine("getLevelInfo Method");
         return levelInfos.get(level);
@@ -68,6 +69,7 @@ public abstract class JDBCAccessCustom implements JDBCAccess {
     /* (non-Javadoc)
      * @see org.geotools.gce.imagemosaic.jdbc.JDBCAccess#getNumOverviews()
      */
+    @Override
     public int getNumOverviews() {
         LOGGER.fine("getNumOverviews Method");
         return levelInfos.size() - 1;
@@ -76,11 +78,13 @@ public abstract class JDBCAccessCustom implements JDBCAccess {
     /* (non-Javadoc)
      * @see org.geotools.gce.imagemosaic.jdbc.JDBCAccess#initialize()
      */
+    @Override
     public abstract void initialize() throws SQLException, IOException;
 
     /* (non-Javadoc)
      * @see org.geotools.gce.imagemosaic.jdbc.JDBCAccess#startTileDecoders(java.awt.Rectangle, org.geotools.geometry.GeneralEnvelope, org.geotools.gce.imagemosaic.jdbc.ImageLevelInfo, java.util.concurrent.LinkedBlockingQueue, org.geotools.coverage.grid.GridCoverageFactory)
      */
+    @Override
     public abstract void startTileDecoders(
             Rectangle pixelDimension,
             GeneralEnvelope requestEnvelope,

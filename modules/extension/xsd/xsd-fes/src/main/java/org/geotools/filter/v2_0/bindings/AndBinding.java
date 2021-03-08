@@ -41,6 +41,7 @@ public class AndBinding extends OGCAndBinding {
         super(filterfactory);
     }
 
+    @Override
     public QName getTarget() {
         return FES.And;
     }

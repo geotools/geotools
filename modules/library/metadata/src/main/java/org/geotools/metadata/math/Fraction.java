@@ -340,6 +340,7 @@ public final class Fraction extends Number implements Comparable<Fraction>, Clon
      * @return A negative number if this fraction is smaller than the given fraction, a positive
      *     number if greater, or 0 if equals.
      */
+    @Override
     public int compareTo(final Fraction other) {
         return numerator * other.denominator - other.numerator * denominator;
     }

@@ -85,6 +85,7 @@ public class TypedLiteralTypeImpl extends EObjectImpl implements TypedLiteralTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.TYPED_LITERAL_TYPE;
 	}
@@ -94,6 +95,7 @@ public class TypedLiteralTypeImpl extends EObjectImpl implements TypedLiteralTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getValue() {
 		return value;
 	}
@@ -103,6 +105,7 @@ public class TypedLiteralTypeImpl extends EObjectImpl implements TypedLiteralTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setValue(String newValue) {
 		String oldValue = value;
 		value = newValue;
@@ -115,6 +118,7 @@ public class TypedLiteralTypeImpl extends EObjectImpl implements TypedLiteralTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getType() {
 		return type;
 	}
@@ -124,6 +128,7 @@ public class TypedLiteralTypeImpl extends EObjectImpl implements TypedLiteralTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setType(String newType) {
 		String oldType = type;
 		type = newType;
@@ -136,6 +141,7 @@ public class TypedLiteralTypeImpl extends EObjectImpl implements TypedLiteralTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.TYPED_LITERAL_TYPE__VALUE:
@@ -151,6 +157,7 @@ public class TypedLiteralTypeImpl extends EObjectImpl implements TypedLiteralTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.TYPED_LITERAL_TYPE__VALUE:
@@ -168,6 +175,7 @@ public class TypedLiteralTypeImpl extends EObjectImpl implements TypedLiteralTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.TYPED_LITERAL_TYPE__VALUE:
@@ -185,6 +193,7 @@ public class TypedLiteralTypeImpl extends EObjectImpl implements TypedLiteralTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.TYPED_LITERAL_TYPE__VALUE:
@@ -200,6 +209,7 @@ public class TypedLiteralTypeImpl extends EObjectImpl implements TypedLiteralTyp
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

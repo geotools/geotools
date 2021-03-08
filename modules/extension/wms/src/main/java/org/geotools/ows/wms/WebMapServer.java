@@ -109,6 +109,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
             icon = new ImageIcon(globe2);
         }
 
+        @Override
         public String getDescription() {
             String description = null;
             if (capabilities != null && capabilities.getService() != null) {
@@ -124,10 +125,12 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
             return icon;
         }
 
+        @Override
         public Set<String> getKeywords() {
             return keywords;
         }
 
+        @Override
         public URI getPublisher() {
             try {
                 return capabilities
@@ -150,6 +153,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
          *
          * @return WMSSchema.NAMESPACE;
          */
+        @Override
         public URI getSchema() {
             return WMSSchema.NAMESPACE;
         }
@@ -161,6 +165,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
          * unambiguous capabilities URI. This covers the case where the capabilities document has
          * been cached on disk and we are restoring a WebMapServer instance.
          */
+        @Override
         public URI getSource() {
             try {
                 URL source = getCapabilities().getRequest().getGetCapabilities().getGet();
@@ -174,6 +179,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
             }
         }
 
+        @Override
         public String getTitle() {
             if (capabilities != null && capabilities.getService() != null) {
                 return capabilities.getService().getTitle();
@@ -257,14 +263,17 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
             keywords.addAll(getInfo().getKeywords());
         }
 
+        @Override
         public ReferencedEnvelope getBounds() {
             return bounds;
         }
 
+        @Override
         public CoordinateReferenceSystem getCRS() {
             return bounds.getCoordinateReferenceSystem();
         }
 
+        @Override
         public String getDescription() {
             String description = layer.get_abstract();
             if (description != null && description.length() != 0) {
@@ -314,18 +323,22 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
             return icon;
         }
 
+        @Override
         public Set<String> getKeywords() {
             return keywords;
         }
 
+        @Override
         public String getName() {
             return layer.getName();
         }
 
+        @Override
         public URI getSchema() {
             return getInfo().getSchema();
         }
 
+        @Override
         public String getTitle() {
             String title = layer.getTitle();
             if (title != null && title.length() != 0) {
@@ -412,6 +425,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
     }
 
     /** Sets up the specifications/versions that this server is capable of communicating with. */
+    @Override
     protected void setupSpecifications() {
         specs = new Specification[4];
         specs[0] = new WMS1_0_0();
@@ -425,10 +439,12 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
         return new WMSInfo();
     }
 
+    @Override
     protected ResourceInfo createInfo(Layer layer) {
         return new LayerInfo(layer);
     }
 
+    @Override
     public GetCapabilitiesResponse issueRequest(GetCapabilitiesRequest request)
             throws IOException, ServiceException {
         return (GetCapabilitiesResponse) internalIssueRequest(request);
@@ -469,6 +485,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
      *
      * @return a WMSCapabilities object, representing the Capabilities of the server
      */
+    @Override
     public WMSCapabilities getCapabilities() {
         return capabilities;
     }

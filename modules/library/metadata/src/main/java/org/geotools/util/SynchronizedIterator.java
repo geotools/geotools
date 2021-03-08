@@ -39,6 +39,7 @@ final class SynchronizedIterator<E> implements Iterator<E> {
     }
 
     /** Returns {@code true} if there is more elements to iterate over. */
+    @Override
     public boolean hasNext() {
         synchronized (lock) {
             return iterator.hasNext();
@@ -46,6 +47,7 @@ final class SynchronizedIterator<E> implements Iterator<E> {
     }
 
     /** Returns the next element in iteratior order. */
+    @Override
     public E next() {
         synchronized (lock) {
             return iterator.next();
@@ -53,6 +55,7 @@ final class SynchronizedIterator<E> implements Iterator<E> {
     }
 
     /** Removes the last iterated element. */
+    @Override
     public void remove() {
         synchronized (lock) {
             iterator.remove();

@@ -70,6 +70,7 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter
      * (non-Javadoc)
      * @see CoverageProcessingNode#getName()
      */
+    @Override
     public InternationalString getName() {
         return Vocabulary.formatInternational(VocabularyKeys.COLOR_MAP);
     }
@@ -105,6 +106,7 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter
      * Visits the provided {@link ColorMapTransform} and build up a {@link Domain1D} for later
      * creation of a palette rendering for this coverage.
      */
+    @Override
     public void visit(ColorMap colorMap) {
         // //
         //
@@ -252,6 +254,7 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter
      * Note that the color map can be applied only to a single band hence, in principle, applying
      * the {@link ColorMapTransform} element to a coverage with more than one band is an error.
      */
+    @Override
     protected GridCoverage2D execute() {
         ///////////////////////////////////////////////////////////////////
         //

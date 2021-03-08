@@ -254,6 +254,7 @@ abstract class Value {
             return true;
         }
 
+        @Override
         public org.opengis.filter.expression.Expression toExpression() {
             Matcher matcher = PERCENTAGE.matcher(body);
             if (matcher.matches()) {
@@ -264,6 +265,7 @@ abstract class Value {
             return FF.literal(body);
         }
 
+        @Override
         public String toLiteral() {
             return body;
         }
@@ -543,10 +545,12 @@ abstract class Value {
             return "Expression [expression=" + expression + "]";
         }
 
+        @Override
         public org.opengis.filter.expression.Expression toExpression() {
             return expression;
         }
 
+        @Override
         public String toLiteral() {
             throw new UnsupportedOperationException(
                     "Cannot turn this value into a literal: " + this);

@@ -52,6 +52,7 @@ public interface Triangle extends Polygon {
     List<Position> getCorners();
 
     /** Returns the patch which own this surface patch. */
+    @Override
     @UML(identifier = "surface", obligation = MANDATORY, specification = ISO_19107)
     TriangulatedSurface getSurface();
 }

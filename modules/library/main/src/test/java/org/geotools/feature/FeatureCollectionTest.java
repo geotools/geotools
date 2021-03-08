@@ -27,6 +27,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 /** @author en */
 public class FeatureCollectionTest extends org.geotools.data.collection.FeatureCollectionTest {
 
+    @Override
     protected SimpleFeatureCollection newCollection(
             SimpleFeatureType schema, List<SimpleFeature> list) {
         DefaultFeatureCollection features = new DefaultFeatureCollection();

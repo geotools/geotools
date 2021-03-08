@@ -251,6 +251,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AbstractReferenceBaseType createAbstractReferenceBaseType() {
     AbstractReferenceBaseTypeImpl abstractReferenceBaseType = new AbstractReferenceBaseTypeImpl();
     return abstractReferenceBaseType;
@@ -261,6 +262,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AcceptFormatsType createAcceptFormatsType() {
     AcceptFormatsTypeImpl acceptFormatsType = new AcceptFormatsTypeImpl();
     return acceptFormatsType;
@@ -271,6 +273,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AcceptLanguagesType createAcceptLanguagesType() {
     AcceptLanguagesTypeImpl acceptLanguagesType = new AcceptLanguagesTypeImpl();
     return acceptLanguagesType;
@@ -281,6 +284,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AcceptVersionsType createAcceptVersionsType() {
     AcceptVersionsTypeImpl acceptVersionsType = new AcceptVersionsTypeImpl();
     return acceptVersionsType;
@@ -291,6 +295,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AdditionalParametersBaseType createAdditionalParametersBaseType() {
     AdditionalParametersBaseTypeImpl additionalParametersBaseType = new AdditionalParametersBaseTypeImpl();
     return additionalParametersBaseType;
@@ -301,6 +306,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AdditionalParametersType createAdditionalParametersType() {
     AdditionalParametersTypeImpl additionalParametersType = new AdditionalParametersTypeImpl();
     return additionalParametersType;
@@ -311,6 +317,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AdditionalParameterType createAdditionalParameterType() {
     AdditionalParameterTypeImpl additionalParameterType = new AdditionalParameterTypeImpl();
     return additionalParameterType;
@@ -321,6 +328,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AddressType createAddressType() {
     AddressTypeImpl addressType = new AddressTypeImpl();
     return addressType;
@@ -331,6 +339,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AllowedValuesType createAllowedValuesType() {
     AllowedValuesTypeImpl allowedValuesType = new AllowedValuesTypeImpl();
     return allowedValuesType;
@@ -341,6 +350,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AnyValueType createAnyValueType() {
     AnyValueTypeImpl anyValueType = new AnyValueTypeImpl();
     return anyValueType;
@@ -351,6 +361,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public BasicIdentificationType createBasicIdentificationType() {
     BasicIdentificationTypeImpl basicIdentificationType = new BasicIdentificationTypeImpl();
     return basicIdentificationType;
@@ -361,6 +372,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public BoundingBoxType createBoundingBoxType() {
     BoundingBoxTypeImpl boundingBoxType = new BoundingBoxTypeImpl();
     return boundingBoxType;
@@ -371,6 +383,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public CapabilitiesBaseType createCapabilitiesBaseType() {
     CapabilitiesBaseTypeImpl capabilitiesBaseType = new CapabilitiesBaseTypeImpl();
     return capabilitiesBaseType;
@@ -381,6 +394,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public CodeType createCodeType() {
     CodeTypeImpl codeType = new CodeTypeImpl();
     return codeType;
@@ -391,6 +405,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ContactType createContactType() {
     ContactTypeImpl contactType = new ContactTypeImpl();
     return contactType;
@@ -401,6 +416,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ContentsBaseType createContentsBaseType() {
     ContentsBaseTypeImpl contentsBaseType = new ContentsBaseTypeImpl();
     return contentsBaseType;
@@ -411,6 +427,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DatasetDescriptionSummaryBaseType createDatasetDescriptionSummaryBaseType() {
     DatasetDescriptionSummaryBaseTypeImpl datasetDescriptionSummaryBaseType = new DatasetDescriptionSummaryBaseTypeImpl();
     return datasetDescriptionSummaryBaseType;
@@ -421,6 +438,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DCPType createDCPType() {
     DCPTypeImpl dcpType = new DCPTypeImpl();
     return dcpType;
@@ -431,6 +449,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DescriptionType createDescriptionType() {
     DescriptionTypeImpl descriptionType = new DescriptionTypeImpl();
     return descriptionType;
@@ -441,6 +460,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DocumentRoot createDocumentRoot() {
     DocumentRootImpl documentRoot = new DocumentRootImpl();
     return documentRoot;
@@ -451,6 +471,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DomainMetadataType createDomainMetadataType() {
     DomainMetadataTypeImpl domainMetadataType = new DomainMetadataTypeImpl();
     return domainMetadataType;
@@ -461,6 +482,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public DomainType createDomainType() {
     DomainTypeImpl domainType = new DomainTypeImpl();
     return domainType;
@@ -471,6 +493,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ExceptionReportType createExceptionReportType() {
     ExceptionReportTypeImpl exceptionReportType = new ExceptionReportTypeImpl();
     return exceptionReportType;
@@ -481,6 +504,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ExceptionType createExceptionType() {
     ExceptionTypeImpl exceptionType = new ExceptionTypeImpl();
     return exceptionType;
@@ -491,6 +515,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public GetCapabilitiesType createGetCapabilitiesType() {
     GetCapabilitiesTypeImpl getCapabilitiesType = new GetCapabilitiesTypeImpl();
     return getCapabilitiesType;
@@ -501,6 +526,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public GetResourceByIdType createGetResourceByIdType() {
     GetResourceByIdTypeImpl getResourceByIdType = new GetResourceByIdTypeImpl();
     return getResourceByIdType;
@@ -511,6 +537,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public HTTPType createHTTPType() {
     HTTPTypeImpl httpType = new HTTPTypeImpl();
     return httpType;
@@ -521,6 +548,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public IdentificationType createIdentificationType() {
     IdentificationTypeImpl identificationType = new IdentificationTypeImpl();
     return identificationType;
@@ -531,6 +559,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public KeywordsType createKeywordsType() {
     KeywordsTypeImpl keywordsType = new KeywordsTypeImpl();
     return keywordsType;
@@ -541,6 +570,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public LanguageStringType createLanguageStringType() {
     LanguageStringTypeImpl languageStringType = new LanguageStringTypeImpl();
     return languageStringType;
@@ -551,6 +581,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public LanguagesType createLanguagesType() {
     LanguagesTypeImpl languagesType = new LanguagesTypeImpl();
     return languagesType;
@@ -561,6 +592,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ManifestType createManifestType() {
     ManifestTypeImpl manifestType = new ManifestTypeImpl();
     return manifestType;
@@ -571,6 +603,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public MetadataType createMetadataType() {
     MetadataTypeImpl metadataType = new MetadataTypeImpl();
     return metadataType;
@@ -581,6 +614,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NilValueType createNilValueType() {
     NilValueTypeImpl nilValueType = new NilValueTypeImpl();
     return nilValueType;
@@ -591,6 +625,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NoValuesType createNoValuesType() {
     NoValuesTypeImpl noValuesType = new NoValuesTypeImpl();
     return noValuesType;
@@ -601,6 +636,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public OnlineResourceType createOnlineResourceType() {
     OnlineResourceTypeImpl onlineResourceType = new OnlineResourceTypeImpl();
     return onlineResourceType;
@@ -611,6 +647,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public OperationsMetadataType createOperationsMetadataType() {
     OperationsMetadataTypeImpl operationsMetadataType = new OperationsMetadataTypeImpl();
     return operationsMetadataType;
@@ -621,6 +658,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public OperationType createOperationType() {
     OperationTypeImpl operationType = new OperationTypeImpl();
     return operationType;
@@ -631,6 +669,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public RangeType createRangeType() {
     RangeTypeImpl rangeType = new RangeTypeImpl();
     return rangeType;
@@ -641,6 +680,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ReferenceGroupType createReferenceGroupType() {
     ReferenceGroupTypeImpl referenceGroupType = new ReferenceGroupTypeImpl();
     return referenceGroupType;
@@ -651,6 +691,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ReferenceType createReferenceType() {
     ReferenceTypeImpl referenceType = new ReferenceTypeImpl();
     return referenceType;
@@ -661,6 +702,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public RequestMethodType createRequestMethodType() {
     RequestMethodTypeImpl requestMethodType = new RequestMethodTypeImpl();
     return requestMethodType;
@@ -671,6 +713,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ResponsiblePartySubsetType createResponsiblePartySubsetType() {
     ResponsiblePartySubsetTypeImpl responsiblePartySubsetType = new ResponsiblePartySubsetTypeImpl();
     return responsiblePartySubsetType;
@@ -681,6 +724,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ResponsiblePartyType createResponsiblePartyType() {
     ResponsiblePartyTypeImpl responsiblePartyType = new ResponsiblePartyTypeImpl();
     return responsiblePartyType;
@@ -691,6 +735,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public SectionsType createSectionsType() {
     SectionsTypeImpl sectionsType = new SectionsTypeImpl();
     return sectionsType;
@@ -701,6 +746,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ServiceIdentificationType createServiceIdentificationType() {
     ServiceIdentificationTypeImpl serviceIdentificationType = new ServiceIdentificationTypeImpl();
     return serviceIdentificationType;
@@ -711,6 +757,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ServiceProviderType createServiceProviderType() {
     ServiceProviderTypeImpl serviceProviderType = new ServiceProviderTypeImpl();
     return serviceProviderType;
@@ -721,6 +768,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ServiceReferenceType createServiceReferenceType() {
     ServiceReferenceTypeImpl serviceReferenceType = new ServiceReferenceTypeImpl();
     return serviceReferenceType;
@@ -731,6 +779,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public TelephoneType createTelephoneType() {
     TelephoneTypeImpl telephoneType = new TelephoneTypeImpl();
     return telephoneType;
@@ -741,6 +790,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public UnNamedDomainType createUnNamedDomainType() {
     UnNamedDomainTypeImpl unNamedDomainType = new UnNamedDomainTypeImpl();
     return unNamedDomainType;
@@ -751,6 +801,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ValuesReferenceType createValuesReferenceType() {
     ValuesReferenceTypeImpl valuesReferenceType = new ValuesReferenceTypeImpl();
     return valuesReferenceType;
@@ -761,6 +812,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public ValueType createValueType() {
     ValueTypeImpl valueType = new ValueTypeImpl();
     return valueType;
@@ -771,6 +823,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public WGS84BoundingBoxType createWGS84BoundingBoxType() {
     WGS84BoundingBoxTypeImpl wgs84BoundingBoxType = new WGS84BoundingBoxTypeImpl();
     return wgs84BoundingBoxType;
@@ -1228,6 +1281,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Ows20Package getOws20Package() {
     return (Ows20Package)getEPackage();
   }

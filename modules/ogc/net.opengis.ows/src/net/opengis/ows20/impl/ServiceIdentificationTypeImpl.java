@@ -152,6 +152,7 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public CodeType getServiceType() {
     return serviceType;
   }
@@ -176,6 +177,7 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setServiceType(CodeType newServiceType) {
     if (newServiceType != serviceType) {
       NotificationChain msgs = null;
@@ -195,6 +197,7 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getServiceTypeVersion() {
     return serviceTypeVersion;
   }
@@ -204,6 +207,7 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setServiceTypeVersion(String newServiceTypeVersion) {
     String oldServiceTypeVersion = serviceTypeVersion;
     serviceTypeVersion = newServiceTypeVersion;
@@ -216,6 +220,7 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getProfile() {
     return profile;
   }
@@ -225,6 +230,7 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setProfile(String newProfile) {
     String oldProfile = profile;
     profile = newProfile;
@@ -237,6 +243,7 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getFees() {
     return fees;
   }
@@ -246,6 +253,7 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setFees(String newFees) {
     String oldFees = fees;
     fees = newFees;
@@ -258,6 +266,7 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getAccessConstraints() {
     return accessConstraints;
   }
@@ -267,6 +276,7 @@ public class ServiceIdentificationTypeImpl extends DescriptionTypeImpl implement
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setAccessConstraints(String newAccessConstraints) {
     String oldAccessConstraints = accessConstraints;
     accessConstraints = newAccessConstraints;

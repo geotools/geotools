@@ -74,6 +74,7 @@ public class TemporalCRSTypeImpl extends AbstractReferenceSystemTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TemporalCSRefType getUsesTemporalCS() {
         return usesTemporalCS;
     }
@@ -98,6 +99,7 @@ public class TemporalCRSTypeImpl extends AbstractReferenceSystemTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesTemporalCS(TemporalCSRefType newUsesTemporalCS) {
         if (newUsesTemporalCS != usesTemporalCS) {
             NotificationChain msgs = null;
@@ -117,6 +119,7 @@ public class TemporalCRSTypeImpl extends AbstractReferenceSystemTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TemporalDatumRefType getUsesTemporalDatum() {
         return usesTemporalDatum;
     }
@@ -141,6 +144,7 @@ public class TemporalCRSTypeImpl extends AbstractReferenceSystemTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesTemporalDatum(TemporalDatumRefType newUsesTemporalDatum) {
         if (newUsesTemporalDatum != usesTemporalDatum) {
             NotificationChain msgs = null;

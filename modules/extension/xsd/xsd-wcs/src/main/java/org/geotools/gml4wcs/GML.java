@@ -42,6 +42,7 @@ public final class GML extends XSD {
     /** private constructor */
     private GML() {}
 
+    @Override
     protected void addDependencies(Set<XSD> dependencies) {
         super.addDependencies(dependencies);
 
@@ -49,11 +50,13 @@ public final class GML extends XSD {
     }
 
     /** Returns 'http://www.opengis.net/gml'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'gml4wcs.xsd.'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("gml4wcs.xsd").toString();
     }

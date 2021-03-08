@@ -65,17 +65,15 @@ public class AStarIteratorTest {
         traversal.traverse();
 
         GraphVisitor visitor =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-                        Assert.assertTrue(component.isVisited());
-                        if (component.getID() == 0)
-                            Assert.assertNull(iterator.getParent((Node) component));
-                        else
-                            Assert.assertEquals(
-                                    component.getID(),
-                                    iterator.getParent((Node) component).getID() + 1);
-                        return 0;
-                    }
+                component -> {
+                    Assert.assertTrue(component.isVisited());
+                    if (component.getID() == 0)
+                        Assert.assertNull(iterator.getParent((Node) component));
+                    else
+                        Assert.assertEquals(
+                                component.getID(),
+                                iterator.getParent((Node) component).getID() + 1);
+                    return 0;
                 };
         builder().getGraph().visitNodes(visitor);
 
@@ -101,6 +99,7 @@ public class AStarIteratorTest {
                 new CountingWalker() {
                     int m_mode = 0;
 
+                    @Override
                     public int visit(Graphable element, GraphTraversal traversal) {
                         super.visit(element, traversal);
                         if (m_mode == 0) {
@@ -124,12 +123,10 @@ public class AStarIteratorTest {
         traversal.traverse();
 
         GraphVisitor visitor =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-                        if (component.getID() <= suspend) Assert.assertTrue(component.isVisited());
-                        else Assert.assertFalse(component.isVisited());
-                        return 0;
-                    }
+                component -> {
+                    if (component.getID() <= suspend) Assert.assertTrue(component.isVisited());
+                    else Assert.assertFalse(component.isVisited());
+                    return 0;
                 };
         builder().getGraph().visitNodes(visitor);
         Assert.assertEquals(walker.getCount(), nnodes - suspend + 1);
@@ -138,18 +135,16 @@ public class AStarIteratorTest {
         traversal.traverse();
 
         visitor =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-                        Assert.assertTrue(component.isVisited());
-                        if (component.getID() == 0)
-                            Assert.assertNull(iterator.getParent((Node) component));
-                        else
-                            Assert.assertEquals(
-                                    iterator.getParent((Node) component).getID(),
-                                    component.getID() - 1);
+                component -> {
+                    Assert.assertTrue(component.isVisited());
+                    if (component.getID() == 0)
+                        Assert.assertNull(iterator.getParent((Node) component));
+                    else
+                        Assert.assertEquals(
+                                iterator.getParent((Node) component).getID(),
+                                component.getID() - 1);
 
-                        return 0;
-                    }
+                    return 0;
                 };
         builder().getGraph().visitNodes(visitor);
         Assert.assertEquals(walker.getCount(), nnodes);
@@ -183,10 +178,12 @@ public class AStarIteratorTest {
         class Factory {
             public AStarIterator.AStarFunctions createFunctions(Node target) {
                 return (new AStarIterator.AStarFunctions(target) {
+                    @Override
                     public double cost(AStarNode n1, AStarNode n2) {
                         return 1;
                     }
 
+                    @Override
                     public double h(Node n) {
                         String dest = hashmap.get(this.getDest()).toString();
                         String current = hashmap.get(n).toString();
@@ -258,26 +255,23 @@ public class AStarIteratorTest {
         traversal.traverse();
 
         GraphVisitor visitor =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-
-                        Iterator related = iterator.getRelated(component);
-                        int count = 0;
-                        int expectedCount = 2;
-                        if (component.getID() == 0 || component.getID() == nnodes - 1) {
-                            expectedCount = 1;
-                        }
-                        while (related.hasNext()) {
-                            Graphable relatedComponent = (Graphable) related.next();
-                            Assert.assertTrue(
-                                    component.getID() == relatedComponent.getID() - 1
-                                            || component.getID() == relatedComponent.getID() + 1);
-                            count++;
-                        }
-                        Assert.assertEquals(expectedCount, count);
-
-                        return 0;
+                component -> {
+                    Iterator related = iterator.getRelated(component);
+                    int count = 0;
+                    int expectedCount = 2;
+                    if (component.getID() == 0 || component.getID() == nnodes - 1) {
+                        expectedCount = 1;
                     }
+                    while (related.hasNext()) {
+                        Graphable relatedComponent = (Graphable) related.next();
+                        Assert.assertTrue(
+                                component.getID() == relatedComponent.getID() - 1
+                                        || component.getID() == relatedComponent.getID() + 1);
+                        count++;
+                    }
+                    Assert.assertEquals(expectedCount, count);
+
+                    return 0;
                 };
         builder().getGraph().visitNodes(visitor);
 
@@ -306,24 +300,21 @@ public class AStarIteratorTest {
         traversal.traverse();
 
         GraphVisitor visitor =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-
-                        Iterator related = iterator.getRelated(component);
-                        int count = 0;
-                        int expectedCount = 1;
-                        if (component.getID() == nnodes - 1) {
-                            expectedCount = 0;
-                        }
-                        while (related.hasNext()) {
-                            Graphable relatedComponent = (Graphable) related.next();
-                            Assert.assertEquals(component.getID(), relatedComponent.getID() - 1);
-                            count++;
-                        }
-                        Assert.assertEquals(expectedCount, count);
-
-                        return 0;
+                component -> {
+                    Iterator related = iterator.getRelated(component);
+                    int count = 0;
+                    int expectedCount = 1;
+                    if (component.getID() == nnodes - 1) {
+                        expectedCount = 0;
                     }
+                    while (related.hasNext()) {
+                        Graphable relatedComponent = (Graphable) related.next();
+                        Assert.assertEquals(component.getID(), relatedComponent.getID() - 1);
+                        count++;
+                    }
+                    Assert.assertEquals(expectedCount, count);
+
+                    return 0;
                 };
         directedBuilder().getGraph().visitNodes(visitor);
 
@@ -333,6 +324,7 @@ public class AStarIteratorTest {
     private class MyVisitor implements GraphVisitor {
         public int count = 0;
 
+        @Override
         public int visit(Graphable component) {
             if (component.isVisited()) {
                 count++;
@@ -362,10 +354,12 @@ public class AStarIteratorTest {
                 source,
                 new AStarIterator.AStarFunctions(target) {
 
+                    @Override
                     public double cost(AStarNode n1, AStarNode n2) {
                         return 1;
                     }
 
+                    @Override
                     public double h(Node n) {
                         return (getDest().getID() - n.getID());
                     }

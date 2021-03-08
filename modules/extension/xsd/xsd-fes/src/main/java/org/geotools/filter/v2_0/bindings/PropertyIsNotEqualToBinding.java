@@ -42,6 +42,7 @@ public class PropertyIsNotEqualToBinding extends OGCPropertyIsNotEqualToBinding 
         super(filterfactory);
     }
 
+    @Override
     public QName getTarget() {
         return FES.PropertyIsNotEqualTo;
     }

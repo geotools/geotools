@@ -57,6 +57,7 @@ public class ChoiceGeometryTypeImpl extends ChoiceAttributeTypeImpl
         this.crs = crs;
     }
 
+    @Override
     public Object convert(Object obj) {
         GeometryFactory fac = new GeometryFactory();
         if (getBinding() == MultiPolygon.class && obj instanceof Polygon) {
@@ -77,10 +78,12 @@ public class ChoiceGeometryTypeImpl extends ChoiceAttributeTypeImpl
         return obj;
     }
 
+    @Override
     public GeometryType getType() {
         return this;
     }
 
+    @Override
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return crs;
     }

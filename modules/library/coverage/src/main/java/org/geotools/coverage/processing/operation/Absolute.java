@@ -76,11 +76,13 @@ public class Absolute extends BaseMathOperationJAI {
         super(ABSOLUTE, getOperationDescriptor(JAIExt.getOperationName(ABSOLUTE)));
     }
 
+    @Override
     public String getName() {
         return ABSOLUTE;
     }
 
     /** Returns the expected range of values for the resulting image. */
+    @Override
     protected NumberRange<? extends Number> deriveRange(
             final NumberRange<? extends Number>[] ranges, final Parameters parameters) {
         final NumberRange range = ranges[0];
@@ -89,6 +91,7 @@ public class Absolute extends BaseMathOperationJAI {
         return (max < min) ? NumberRange.create(max, min) : NumberRange.create(min, max);
     }
 
+    @Override
     protected void handleJAIEXTParams(
             ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
         if (JAIExt.isJAIExtOperation(ALGEBRIC)) {
@@ -102,6 +105,7 @@ public class Absolute extends BaseMathOperationJAI {
         }
     }
 
+    @Override
     protected Map<String, ?> getProperties(
             RenderedImage data,
             CoordinateReferenceSystem crs,

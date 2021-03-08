@@ -74,6 +74,7 @@ public class UnitDefinitionTypeImpl extends DefinitionTypeImpl implements UnitDe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StringOrRefType getQuantityType() {
         return quantityType;
     }
@@ -98,6 +99,7 @@ public class UnitDefinitionTypeImpl extends DefinitionTypeImpl implements UnitDe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setQuantityType(StringOrRefType newQuantityType) {
         if (newQuantityType != quantityType) {
             NotificationChain msgs = null;
@@ -117,6 +119,7 @@ public class UnitDefinitionTypeImpl extends DefinitionTypeImpl implements UnitDe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getCatalogSymbol() {
         return catalogSymbol;
     }
@@ -141,6 +144,7 @@ public class UnitDefinitionTypeImpl extends DefinitionTypeImpl implements UnitDe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCatalogSymbol(CodeType newCatalogSymbol) {
         if (newCatalogSymbol != catalogSymbol) {
             NotificationChain msgs = null;

@@ -85,11 +85,13 @@ public class MultiplyConst extends OperationJAI {
         super("MultiplyConst", getOperationDescriptor(JAIExt.getOperationName("MultiplyConst")));
     }
 
+    @Override
     public String getName() {
         return "MultiplyConst";
     }
 
     /** Returns the expected range of values for the resulting image. */
+    @Override
     protected NumberRange<? extends Number> deriveRange(
             final NumberRange<? extends Number>[] ranges, final Parameters parameters) {
         final double[] constants = (double[]) parameters.parameters.getObjectParameter("constants");
@@ -103,6 +105,7 @@ public class MultiplyConst extends OperationJAI {
         return super.deriveRange(ranges, parameters);
     }
 
+    @Override
     protected void handleJAIEXTParams(
             ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
         GridCoverage2D source = (GridCoverage2D) parameters2.parameter("source0").getValue();
@@ -112,6 +115,7 @@ public class MultiplyConst extends OperationJAI {
         handleROINoDataInternal(parameters, source, "operationConst", 2, 3);
     }
 
+    @Override
     protected Map<String, ?> getProperties(
             RenderedImage data,
             CoordinateReferenceSystem crs,

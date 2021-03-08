@@ -309,6 +309,7 @@ public class JWizard extends JDialog {
             implements ActionListener, KeyListener, DocumentListener, ListSelectionListener {
         public boolean listen = true;
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             if (!listen) return;
 
@@ -397,30 +398,37 @@ public class JWizard extends JDialog {
             }
         }
 
+        @Override
         public void keyPressed(KeyEvent e) {
             // ignore
         }
 
+        @Override
         public void keyReleased(KeyEvent e) {
             syncButtonsToPage();
         }
 
+        @Override
         public void keyTyped(KeyEvent e) {
             syncButtonsToPage();
         }
 
+        @Override
         public void changedUpdate(DocumentEvent e) {
             syncButtonsToPage();
         }
 
+        @Override
         public void insertUpdate(DocumentEvent e) {
             syncButtonsToPage();
         }
 
+        @Override
         public void removeUpdate(DocumentEvent e) {
             syncButtonsToPage();
         }
 
+        @Override
         public void valueChanged(ListSelectionEvent e) {
             syncButtonsToPage();
         }

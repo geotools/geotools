@@ -965,10 +965,12 @@ public class DataUtilities {
 
             int offset = -1;
 
+            @Override
             public SimpleFeatureType getFeatureType() {
                 return features[0].getFeatureType();
             }
 
+            @Override
             public SimpleFeature next() {
                 if (!hasNext()) {
                     throw new NoSuchElementException("No more features");
@@ -977,10 +979,12 @@ public class DataUtilities {
                 return array[++offset];
             }
 
+            @Override
             public boolean hasNext() {
                 return (array != null) && (offset < (array.length - 1));
             }
 
+            @Override
             public void close() {
                 array = null;
                 offset = -1;
@@ -1484,13 +1488,7 @@ public class DataUtilities {
     public static Set<String> fidSet(FeatureCollection<?, ?> featureCollection) {
         final HashSet<String> fids = new HashSet<>();
         try {
-            featureCollection.accepts(
-                    new FeatureVisitor() {
-                        public void visit(Feature feature) {
-                            fids.add(feature.getIdentifier().getID());
-                        }
-                    },
-                    null);
+            featureCollection.accepts(feature -> fids.add(feature.getIdentifier().getID()), null);
         } catch (IOException ignore) {
         }
         return fids;
@@ -2270,43 +2268,35 @@ public class DataUtilities {
      *
      * @return Comparator suitable for use with Arrays.sort( SimpleFeature[], comparator )
      */
+    @SuppressWarnings("unchecked")
     public static Comparator<SimpleFeature> sortComparator(SortBy sortBy) {
         if (sortBy == null) {
             sortBy = SortBy.NATURAL_ORDER;
         }
         if (sortBy == SortBy.NATURAL_ORDER) {
-            return new Comparator<SimpleFeature>() {
-                public int compare(SimpleFeature f1, SimpleFeature f2) {
-                    return f1.getID().compareTo(f2.getID());
-                }
-            };
+            return (f1, f2) -> f1.getID().compareTo(f2.getID());
         } else if (sortBy == SortBy.REVERSE_ORDER) {
-            return new Comparator<SimpleFeature>() {
-                public int compare(SimpleFeature f1, SimpleFeature f2) {
-                    int compare = f1.getID().compareTo(f2.getID());
-                    return -compare;
-                }
+            return (f1, f2) -> {
+                int compare = f1.getID().compareTo(f2.getID());
+                return -compare;
             };
         } else {
             final PropertyName propertyName = sortBy.getPropertyName();
             final SortOrder sortOrder = sortBy.getSortOrder();
-            return new Comparator<SimpleFeature>() {
-                @SuppressWarnings("unchecked")
-                public int compare(SimpleFeature f1, SimpleFeature f2) {
-                    Object value1 = propertyName.evaluate(f1, Comparable.class);
-                    Object value2 = propertyName.evaluate(f2, Comparable.class);
-                    if (value1 == null || value2 == null) {
-                        return 0; // cannot perform comparison
-                    }
-                    if (value1 instanceof Comparable && value1.getClass().isInstance(value2)) {
-                        if (sortOrder == SortOrder.ASCENDING) {
-                            return ((Comparable<Object>) value1).compareTo(value2);
-                        } else {
-                            return ((Comparable<Object>) value2).compareTo(value1);
-                        }
+            return (f1, f2) -> {
+                Object value1 = propertyName.evaluate(f1, Comparable.class);
+                Object value2 = propertyName.evaluate(f2, Comparable.class);
+                if (value1 == null || value2 == null) {
+                    return 0; // cannot perform comparison
+                }
+                if (value1 instanceof Comparable && value1.getClass().isInstance(value2)) {
+                    if (sortOrder == SortOrder.ASCENDING) {
+                        return ((Comparable<Object>) value1).compareTo(value2);
                     } else {
-                        return 0; // cannot perform comparison
+                        return ((Comparable<Object>) value2).compareTo(value1);
                     }
+                } else {
+                    return 0; // cannot perform comparison
                 }
             };
         }
@@ -2925,18 +2915,16 @@ public class DataUtilities {
      */
     public static FilenameFilter excludeFilters(
             final FilenameFilter inputFilter, final FilenameFilter... filters) {
-        return new FilenameFilter() {
-            public boolean accept(File dir, String name) {
-                if (inputFilter.accept(dir, name)) {
-                    for (FilenameFilter exclude : filters) {
-                        if (exclude.accept(dir, name)) {
-                            return false;
-                        }
+        return (dir, name) -> {
+            if (inputFilter.accept(dir, name)) {
+                for (FilenameFilter exclude : filters) {
+                    if (exclude.accept(dir, name)) {
+                        return false;
                     }
-                    return true;
                 }
-                return false;
+                return true;
             }
+            return false;
         };
     }
 
@@ -2950,18 +2938,16 @@ public class DataUtilities {
      */
     public static FilenameFilter includeFilters(
             final FilenameFilter inputFilter, final FilenameFilter... filters) {
-        return new FilenameFilter() {
-            public boolean accept(File dir, String name) {
-                if (inputFilter.accept(dir, name)) {
+        return (dir, name) -> {
+            if (inputFilter.accept(dir, name)) {
+                return true;
+            }
+            for (FilenameFilter include : filters) {
+                if (include.accept(dir, name)) {
                     return true;
                 }
-                for (FilenameFilter include : filters) {
-                    if (include.accept(dir, name)) {
-                        return true;
-                    }
-                }
-                return false;
             }
+            return false;
         };
     }
 

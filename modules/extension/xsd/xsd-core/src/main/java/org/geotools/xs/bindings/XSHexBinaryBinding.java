@@ -58,6 +58,7 @@ import org.geotools.xsd.SimpleBinding;
 public class XSHexBinaryBinding implements SimpleBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return XS.HEXBINARY;
     }
@@ -69,6 +70,7 @@ public class XSHexBinaryBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -80,6 +82,7 @@ public class XSHexBinaryBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return byte[].class;
     }
@@ -91,6 +94,7 @@ public class XSHexBinaryBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         return DatatypeConverterImpl.getInstance().parseHexBinary((String) value);
     }
@@ -102,6 +106,7 @@ public class XSHexBinaryBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public String encode(Object object, String value) {
         return DatatypeConverterImpl.getInstance().printHexBinary((byte[]) object);
     }

@@ -96,6 +96,7 @@ public class TelephoneTypeImpl extends EObjectImpl implements TelephoneType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getVoice() {
     return voice;
   }
@@ -105,6 +106,7 @@ public class TelephoneTypeImpl extends EObjectImpl implements TelephoneType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setVoice(String newVoice) {
     String oldVoice = voice;
     voice = newVoice;
@@ -117,6 +119,7 @@ public class TelephoneTypeImpl extends EObjectImpl implements TelephoneType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getFacsimile() {
     return facsimile;
   }
@@ -126,6 +129,7 @@ public class TelephoneTypeImpl extends EObjectImpl implements TelephoneType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setFacsimile(String newFacsimile) {
     String oldFacsimile = facsimile;
     facsimile = newFacsimile;

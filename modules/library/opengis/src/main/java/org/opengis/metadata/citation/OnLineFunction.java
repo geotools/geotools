@@ -74,6 +74,7 @@ public final class OnLineFunction extends CodeList<OnLineFunction> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public OnLineFunction[] family() {
         return values();
     }

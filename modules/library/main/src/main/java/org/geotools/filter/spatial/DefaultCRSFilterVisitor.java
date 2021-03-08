@@ -40,6 +40,7 @@ public class DefaultCRSFilterVisitor extends DuplicatingFilterVisitor {
         this.defaultCrs = defaultCrs;
     }
 
+    @Override
     public Object visit(BBOX filter, Object extraData) {
         // if no srs is specified we can't transform anyways
         ReferencedEnvelope envelope = ReferencedEnvelope.reference(filter.getBounds());
@@ -66,6 +67,7 @@ public class DefaultCRSFilterVisitor extends DuplicatingFilterVisitor {
         }
     }
 
+    @Override
     public Object visit(Literal expression, Object extraData) {
         if (!(expression.getValue() instanceof Geometry)) return super.visit(expression, extraData);
 

@@ -90,6 +90,7 @@ public final class TopologyLevel extends CodeList<TopologyLevel> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public TopologyLevel[] family() {
         return values();
     }

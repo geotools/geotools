@@ -40,6 +40,7 @@ public class GrassCoverageFormatFactory implements GridFormatFactorySpi {
      *
      * @return an instance of GrassCoverageFormat
      */
+    @Override
     public GrassCoverageFormat createFormat() {
         return new GrassCoverageFormat();
     }
@@ -49,6 +50,7 @@ public class GrassCoverageFormatFactory implements GridFormatFactorySpi {
      *
      * @return true if all libraries are available
      */
+    @Override
     public boolean isAvailable() {
         boolean available = true;
 
@@ -71,6 +73,7 @@ public class GrassCoverageFormatFactory implements GridFormatFactorySpi {
      *
      * @return the implementation hints (an empty map, actually)
      */
+    @Override
     public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }

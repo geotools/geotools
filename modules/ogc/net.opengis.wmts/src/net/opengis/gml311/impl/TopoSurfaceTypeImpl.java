@@ -66,6 +66,7 @@ public class TopoSurfaceTypeImpl extends AbstractTopologyTypeImpl implements Top
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<DirectedFacePropertyType> getDirectedFace() {
         if (directedFace == null) {
             directedFace = new EObjectContainmentEList<>(DirectedFacePropertyType.class, this, Gml311Package.TOPO_SURFACE_TYPE__DIRECTED_FACE);

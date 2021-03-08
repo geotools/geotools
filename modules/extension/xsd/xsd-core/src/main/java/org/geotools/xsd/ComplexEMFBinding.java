@@ -65,6 +65,7 @@ public class ComplexEMFBinding extends AbstractComplexEMFBinding implements Inst
         this.target = target;
     }
 
+    @Override
     public QName getTarget() {
         return target;
     }

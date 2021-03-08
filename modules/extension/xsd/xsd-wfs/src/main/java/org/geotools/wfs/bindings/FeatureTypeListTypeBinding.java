@@ -51,6 +51,7 @@ public class FeatureTypeListTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.FeatureTypeListType;
     }

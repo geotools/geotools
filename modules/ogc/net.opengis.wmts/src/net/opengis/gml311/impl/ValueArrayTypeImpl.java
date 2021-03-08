@@ -90,6 +90,7 @@ public class ValueArrayTypeImpl extends CompositeValueTypeImpl implements ValueA
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getCodeSpace() {
         return codeSpace;
     }
@@ -99,6 +100,7 @@ public class ValueArrayTypeImpl extends CompositeValueTypeImpl implements ValueA
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCodeSpace(String newCodeSpace) {
         String oldCodeSpace = codeSpace;
         codeSpace = newCodeSpace;
@@ -111,6 +113,7 @@ public class ValueArrayTypeImpl extends CompositeValueTypeImpl implements ValueA
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getUom() {
         return uom;
     }
@@ -120,6 +123,7 @@ public class ValueArrayTypeImpl extends CompositeValueTypeImpl implements ValueA
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUom(String newUom) {
         String oldUom = uom;
         uom = newUom;

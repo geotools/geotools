@@ -34,6 +34,7 @@ public class ThreadPoolProcessExecutor extends ThreadPoolExecutor implements Pro
                 threadFactory);
     }
 
+    @Override
     public Progress submit(Process task, Map<String, Object> input) {
         if (task == null) throw new NullPointerException();
         ProgressTask ftask = new ProgressTask(task, input);

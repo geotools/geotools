@@ -38,6 +38,7 @@ public class ReprojectFeatureResultsTest extends FeatureCollectionWrapperTestSup
     CoordinateReferenceSystem target;
     GeometryCoordinateSequenceTransformer transformer;
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();

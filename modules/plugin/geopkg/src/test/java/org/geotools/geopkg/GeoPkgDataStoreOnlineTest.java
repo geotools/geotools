@@ -34,6 +34,7 @@ public class GeoPkgDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
         // See FAQ (9) from http://www.sqlite.org/faq.html
     }
 
+    @Override
     protected CoordinateReferenceSystem getUTMCRS() throws FactoryException {
         return CRS.decode("EPSG:26713", true);
     }

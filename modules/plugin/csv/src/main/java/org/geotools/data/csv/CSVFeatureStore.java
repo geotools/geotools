@@ -120,22 +120,27 @@ public class CSVFeatureStore extends ContentFeatureStore {
         return delegate.getEntry();
     }
 
+    @Override
     public Transaction getTransaction() {
         return delegate.getTransaction();
     }
 
+    @Override
     public ContentState getState() {
         return delegate.getState();
     }
 
+    @Override
     public ResourceInfo getInfo() {
         return delegate.getInfo();
     }
 
+    @Override
     public Name getName() {
         return delegate.getName();
     }
 
+    @Override
     public QueryCapabilities getQueryCapabilities() {
         return delegate.getQueryCapabilities();
     }

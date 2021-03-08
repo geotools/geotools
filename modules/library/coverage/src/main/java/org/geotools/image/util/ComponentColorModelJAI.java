@@ -81,6 +81,7 @@ public class ComponentColorModelJAI extends ComponentColorModel {
      * Returns a compatible sample model. This implementation is nearly identical to default J2SE's
      * implementation, except that it construct a JAI color model instead of a J2SE one.
      */
+    @Override
     public SampleModel createCompatibleSampleModel(final int w, final int h) {
         switch (transferType) {
             default:
@@ -106,6 +107,7 @@ public class ComponentColorModelJAI extends ComponentColorModel {
      *
      * @return a {@code String} representing the contents of this {@code ColorModel} object.
      */
+    @Override
     public String toString() {
         return new String(
                 "ComponentColorModelJAI: #pixelBits = "

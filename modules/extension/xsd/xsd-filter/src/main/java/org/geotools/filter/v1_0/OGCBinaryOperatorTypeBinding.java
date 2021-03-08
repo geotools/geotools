@@ -49,6 +49,7 @@ import org.picocontainer.MutablePicoContainer;
 public class OGCBinaryOperatorTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.BinaryOperatorType;
     }
@@ -60,6 +61,7 @@ public class OGCBinaryOperatorTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return OVERRIDE;
     }
@@ -71,6 +73,7 @@ public class OGCBinaryOperatorTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return BinaryExpression.class;
     }
@@ -83,6 +86,7 @@ public class OGCBinaryOperatorTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
@@ -92,6 +96,7 @@ public class OGCBinaryOperatorTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // implemented by element bindings
         return null;
@@ -130,6 +135,7 @@ public class OGCBinaryOperatorTypeBinding extends AbstractComplexBinding {
         // Div");
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         BinaryExpression binary = (BinaryExpression) object;
 

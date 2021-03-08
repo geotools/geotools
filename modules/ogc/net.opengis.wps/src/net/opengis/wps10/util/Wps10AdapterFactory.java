@@ -57,6 +57,7 @@ public class Wps10AdapterFactory extends AdapterFactoryImpl {
    * @return whether this factory is applicable for the type of the object.
    * @generated
    */
+    @Override
     public boolean isFactoryForType(Object object) {
     if (object == modelPackage) {
       return true;
@@ -75,178 +76,236 @@ public class Wps10AdapterFactory extends AdapterFactoryImpl {
    */
     protected Wps10Switch modelSwitch =
         new Wps10Switch() {
-      public Object caseBodyReferenceType(BodyReferenceType object) {
+      @Override
+    public Object caseBodyReferenceType(BodyReferenceType object) {
         return createBodyReferenceTypeAdapter();
       }
-      public Object caseComplexDataCombinationsType(ComplexDataCombinationsType object) {
+      @Override
+    public Object caseComplexDataCombinationsType(ComplexDataCombinationsType object) {
         return createComplexDataCombinationsTypeAdapter();
       }
-      public Object caseComplexDataCombinationType(ComplexDataCombinationType object) {
+      @Override
+    public Object caseComplexDataCombinationType(ComplexDataCombinationType object) {
         return createComplexDataCombinationTypeAdapter();
       }
-      public Object caseComplexDataDescriptionType(ComplexDataDescriptionType object) {
+      @Override
+    public Object caseComplexDataDescriptionType(ComplexDataDescriptionType object) {
         return createComplexDataDescriptionTypeAdapter();
       }
-      public Object caseComplexDataType(ComplexDataType object) {
+      @Override
+    public Object caseComplexDataType(ComplexDataType object) {
         return createComplexDataTypeAdapter();
       }
-      public Object caseCRSsType(CRSsType object) {
+      @Override
+    public Object caseCRSsType(CRSsType object) {
         return createCRSsTypeAdapter();
       }
-      public Object caseDataInputsType(DataInputsType object) {
+      @Override
+    public Object caseDataInputsType(DataInputsType object) {
         return createDataInputsTypeAdapter();
       }
-      public Object caseDataInputsType1(DataInputsType1 object) {
+      @Override
+    public Object caseDataInputsType1(DataInputsType1 object) {
         return createDataInputsType1Adapter();
       }
-      public Object caseDataType(DataType object) {
+      @Override
+    public Object caseDataType(DataType object) {
         return createDataTypeAdapter();
       }
-      public Object caseDefaultType(DefaultType object) {
+      @Override
+    public Object caseDefaultType(DefaultType object) {
         return createDefaultTypeAdapter();
       }
-      public Object caseDefaultType1(DefaultType1 object) {
+      @Override
+    public Object caseDefaultType1(DefaultType1 object) {
         return createDefaultType1Adapter();
       }
-      public Object caseDefaultType2(DefaultType2 object) {
+      @Override
+    public Object caseDefaultType2(DefaultType2 object) {
         return createDefaultType2Adapter();
       }
-      public Object caseDescribeProcessType(DescribeProcessType object) {
+      @Override
+    public Object caseDescribeProcessType(DescribeProcessType object) {
         return createDescribeProcessTypeAdapter();
       }
-      public Object caseDescriptionType(DescriptionType object) {
+      @Override
+    public Object caseDescriptionType(DescriptionType object) {
         return createDescriptionTypeAdapter();
       }
-      public Object caseDocumentOutputDefinitionType(DocumentOutputDefinitionType object) {
+      @Override
+    public Object caseDocumentOutputDefinitionType(DocumentOutputDefinitionType object) {
         return createDocumentOutputDefinitionTypeAdapter();
       }
-      public Object caseDocumentRoot(DocumentRoot object) {
+      @Override
+    public Object caseDocumentRoot(DocumentRoot object) {
         return createDocumentRootAdapter();
       }
-      public Object caseExecuteResponseType(ExecuteResponseType object) {
+      @Override
+    public Object caseExecuteResponseType(ExecuteResponseType object) {
         return createExecuteResponseTypeAdapter();
       }
-      public Object caseExecuteType(ExecuteType object) {
+      @Override
+    public Object caseExecuteType(ExecuteType object) {
         return createExecuteTypeAdapter();
       }
-      public Object caseGetCapabilitiesType(GetCapabilitiesType object) {
+      @Override
+    public Object caseGetCapabilitiesType(GetCapabilitiesType object) {
         return createGetCapabilitiesTypeAdapter();
       }
-      public Object caseHeaderType(HeaderType object) {
+      @Override
+    public Object caseHeaderType(HeaderType object) {
         return createHeaderTypeAdapter();
       }
-      public Object caseInputDescriptionType(InputDescriptionType object) {
+      @Override
+    public Object caseInputDescriptionType(InputDescriptionType object) {
         return createInputDescriptionTypeAdapter();
       }
-      public Object caseInputReferenceType(InputReferenceType object) {
+      @Override
+    public Object caseInputReferenceType(InputReferenceType object) {
         return createInputReferenceTypeAdapter();
       }
-      public Object caseInputType(InputType object) {
+      @Override
+    public Object caseInputType(InputType object) {
         return createInputTypeAdapter();
       }
-      public Object caseLanguagesType(LanguagesType object) {
+      @Override
+    public Object caseLanguagesType(LanguagesType object) {
         return createLanguagesTypeAdapter();
       }
-      public Object caseLanguagesType1(LanguagesType1 object) {
+      @Override
+    public Object caseLanguagesType1(LanguagesType1 object) {
         return createLanguagesType1Adapter();
       }
-      public Object caseLiteralDataType(LiteralDataType object) {
+      @Override
+    public Object caseLiteralDataType(LiteralDataType object) {
         return createLiteralDataTypeAdapter();
       }
-      public Object caseLiteralInputType(LiteralInputType object) {
+      @Override
+    public Object caseLiteralInputType(LiteralInputType object) {
         return createLiteralInputTypeAdapter();
       }
-      public Object caseLiteralOutputType(LiteralOutputType object) {
+      @Override
+    public Object caseLiteralOutputType(LiteralOutputType object) {
         return createLiteralOutputTypeAdapter();
       }
-      public Object caseOutputDataType(OutputDataType object) {
+      @Override
+    public Object caseOutputDataType(OutputDataType object) {
         return createOutputDataTypeAdapter();
       }
-      public Object caseOutputDefinitionsType(OutputDefinitionsType object) {
+      @Override
+    public Object caseOutputDefinitionsType(OutputDefinitionsType object) {
         return createOutputDefinitionsTypeAdapter();
       }
-      public Object caseOutputDefinitionType(OutputDefinitionType object) {
+      @Override
+    public Object caseOutputDefinitionType(OutputDefinitionType object) {
         return createOutputDefinitionTypeAdapter();
       }
-      public Object caseOutputDescriptionType(OutputDescriptionType object) {
+      @Override
+    public Object caseOutputDescriptionType(OutputDescriptionType object) {
         return createOutputDescriptionTypeAdapter();
       }
-      public Object caseOutputReferenceType(OutputReferenceType object) {
+      @Override
+    public Object caseOutputReferenceType(OutputReferenceType object) {
         return createOutputReferenceTypeAdapter();
       }
-      public Object caseProcessBriefType(ProcessBriefType object) {
+      @Override
+    public Object caseProcessBriefType(ProcessBriefType object) {
         return createProcessBriefTypeAdapter();
       }
-      public Object caseProcessDescriptionsType(ProcessDescriptionsType object) {
+      @Override
+    public Object caseProcessDescriptionsType(ProcessDescriptionsType object) {
         return createProcessDescriptionsTypeAdapter();
       }
-      public Object caseProcessDescriptionType(ProcessDescriptionType object) {
+      @Override
+    public Object caseProcessDescriptionType(ProcessDescriptionType object) {
         return createProcessDescriptionTypeAdapter();
       }
-      public Object caseProcessFailedType(ProcessFailedType object) {
+      @Override
+    public Object caseProcessFailedType(ProcessFailedType object) {
         return createProcessFailedTypeAdapter();
       }
-      public Object caseProcessOfferingsType(ProcessOfferingsType object) {
+      @Override
+    public Object caseProcessOfferingsType(ProcessOfferingsType object) {
         return createProcessOfferingsTypeAdapter();
       }
-      public Object caseProcessOutputsType(ProcessOutputsType object) {
+      @Override
+    public Object caseProcessOutputsType(ProcessOutputsType object) {
         return createProcessOutputsTypeAdapter();
       }
-      public Object caseProcessOutputsType1(ProcessOutputsType1 object) {
+      @Override
+    public Object caseProcessOutputsType1(ProcessOutputsType1 object) {
         return createProcessOutputsType1Adapter();
       }
-      public Object caseProcessStartedType(ProcessStartedType object) {
+      @Override
+    public Object caseProcessStartedType(ProcessStartedType object) {
         return createProcessStartedTypeAdapter();
       }
-      public Object caseRequestBaseType(RequestBaseType object) {
+      @Override
+    public Object caseRequestBaseType(RequestBaseType object) {
         return createRequestBaseTypeAdapter();
       }
-      public Object caseResponseBaseType(ResponseBaseType object) {
+      @Override
+    public Object caseResponseBaseType(ResponseBaseType object) {
         return createResponseBaseTypeAdapter();
       }
-      public Object caseResponseDocumentType(ResponseDocumentType object) {
+      @Override
+    public Object caseResponseDocumentType(ResponseDocumentType object) {
         return createResponseDocumentTypeAdapter();
       }
-      public Object caseResponseFormType(ResponseFormType object) {
+      @Override
+    public Object caseResponseFormType(ResponseFormType object) {
         return createResponseFormTypeAdapter();
       }
-      public Object caseStatusType(StatusType object) {
+      @Override
+    public Object caseStatusType(StatusType object) {
         return createStatusTypeAdapter();
       }
-      public Object caseSupportedComplexDataInputType(SupportedComplexDataInputType object) {
+      @Override
+    public Object caseSupportedComplexDataInputType(SupportedComplexDataInputType object) {
         return createSupportedComplexDataInputTypeAdapter();
       }
-      public Object caseSupportedComplexDataType(SupportedComplexDataType object) {
+      @Override
+    public Object caseSupportedComplexDataType(SupportedComplexDataType object) {
         return createSupportedComplexDataTypeAdapter();
       }
-      public Object caseSupportedCRSsType(SupportedCRSsType object) {
+      @Override
+    public Object caseSupportedCRSsType(SupportedCRSsType object) {
         return createSupportedCRSsTypeAdapter();
       }
-      public Object caseSupportedUOMsType(SupportedUOMsType object) {
+      @Override
+    public Object caseSupportedUOMsType(SupportedUOMsType object) {
         return createSupportedUOMsTypeAdapter();
       }
-      public Object caseUOMsType(UOMsType object) {
+      @Override
+    public Object caseUOMsType(UOMsType object) {
         return createUOMsTypeAdapter();
       }
-      public Object caseValuesReferenceType(ValuesReferenceType object) {
+      @Override
+    public Object caseValuesReferenceType(ValuesReferenceType object) {
         return createValuesReferenceTypeAdapter();
       }
-      public Object caseWPSCapabilitiesType(WPSCapabilitiesType object) {
+      @Override
+    public Object caseWPSCapabilitiesType(WPSCapabilitiesType object) {
         return createWPSCapabilitiesTypeAdapter();
       }
-      public Object caseWSDLType(WSDLType object) {
+      @Override
+    public Object caseWSDLType(WSDLType object) {
         return createWSDLTypeAdapter();
       }
-      public Object caseUnit(javax.measure.Unit object) {
+      @Override
+    public Object caseUnit(javax.measure.Unit object) {
         return createUnitAdapter();
       }
-      public Object caseAnyType(AnyType object) {
+      @Override
+    public Object caseAnyType(AnyType object) {
         return createAnyTypeAdapter();
       }
-      public Object caseCapabilitiesBaseType(CapabilitiesBaseType object) {
+      @Override
+    public Object caseCapabilitiesBaseType(CapabilitiesBaseType object) {
         return createCapabilitiesBaseTypeAdapter();
       }
-      public Object defaultCase(EObject object) {
+      @Override
+    public Object defaultCase(EObject object) {
         return createEObjectAdapter();
       }
     };
@@ -259,6 +318,7 @@ public class Wps10AdapterFactory extends AdapterFactoryImpl {
    * @return the adapter for the <code>target</code>.
    * @generated
    */
+    @Override
     public Adapter createAdapter(Notifier target) {
     return (Adapter)modelSwitch.doSwitch((EObject)target);
   }

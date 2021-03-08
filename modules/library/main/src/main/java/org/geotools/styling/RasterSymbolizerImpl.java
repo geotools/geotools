@@ -128,6 +128,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
      *
      * @return the ChannelSelection object set or null if none is available.
      */
+    @Override
     public ChannelSelection getChannelSelection() {
         return channelSelection;
     }
@@ -145,6 +146,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
      *
      * @return the ColorMap for the raster
      */
+    @Override
     public ColorMapImpl getColorMap() {
         return colorMap;
     }
@@ -164,6 +166,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
      *
      * @return the ContrastEnhancement
      */
+    @Override
     public ContrastEnhancementImpl getContrastEnhancement() {
         return contrastEnhancement;
     }
@@ -190,6 +193,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
      *
      * @return The relevent symbolizer
      */
+    @Override
     public Symbolizer getImageOutline() {
         return symbolizer;
     }
@@ -199,6 +203,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
      *
      * @return The expression
      */
+    @Override
     public Expression getOpacity() {
         return opacity;
     }
@@ -214,6 +219,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
      *
      * @return The expression which evaluates to LATEST_ON_TOP, EARLIEST_ON_TOP, AVERAGE or RANDOM
      */
+    @Override
     public Expression getOverlap() {
         OverlapBehavior overlap = getOverlapBehavior();
         if (overlap == null) {
@@ -222,10 +228,12 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
         return filterFactory.literal(overlap.toString());
     }
 
+    @Override
     public OverlapBehavior getOverlapBehavior() {
         return behavior;
     }
 
+    @Override
     public void setOverlapBehavior(OverlapBehavior overlapBehavior) {
         this.behavior = overlapBehavior;
     }
@@ -243,6 +251,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
      *
      * @return the shadedrelief object
      */
+    @Override
     public ShadedReliefImpl getShadedRelief() {
         return shadedRelief;
     }
@@ -258,6 +267,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
      *
      * @param channel the channel selected
      */
+    @Override
     public void setChannelSelection(org.opengis.style.ChannelSelection channel) {
         if (this.channelSelection == channel) {
             return;
@@ -278,6 +288,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
      *
      * @param colorMap the ColorMap for the raster
      */
+    @Override
     public void setColorMap(org.opengis.style.ColorMap colorMap) {
         if (this.colorMap == colorMap) {
             return;
@@ -300,6 +311,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
      *
      * @param contrastEnhancement the contrastEnhancement
      */
+    @Override
     public void setContrastEnhancement(org.opengis.style.ContrastEnhancement contrastEnhancement) {
         if (this.contrastEnhancement == contrastEnhancement) {
             return;
@@ -330,6 +342,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
      * @param symbolizer the symbolizer to be used. If this is <B>not</B> a polygon or a line
      *     symbolizer an unexpected argument exception may be thrown by an implementing class.
      */
+    @Override
     public void setImageOutline(org.opengis.style.Symbolizer symbolizer) {
         if (symbolizer == null) {
             this.symbolizer = null;
@@ -350,6 +363,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
      *
      * @param opacity An expression which evaluates to the the opacity (0-1)
      */
+    @Override
     public void setOpacity(Expression opacity) {
         if (this.opacity == opacity) {
             return;
@@ -369,6 +383,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
      * @param overlap the expression which evaluates to LATEST_ON_TOP, EARLIEST_ON_TOP, AVERAGE or
      *     RANDOM
      */
+    @Override
     public void setOverlap(Expression overlap) {
         if (overlap == null) {
             return;
@@ -392,6 +407,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
      *
      * @param shadedRelief the shadedrelief object
      */
+    @Override
     public void setShadedRelief(org.opengis.style.ShadedRelief shadedRelief) {
         if (this.shadedRelief == shadedRelief) {
             return;
@@ -399,10 +415,12 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
         this.shadedRelief = ShadedReliefImpl.cast(shadedRelief);
     }
 
+    @Override
     public Object accept(StyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
+    @Override
     public void accept(org.geotools.styling.StyleVisitor visitor) {
         visitor.visit(this);
     }
@@ -412,6 +430,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
      *
      * @return The deep copy clone.
      */
+    @Override
     public Object clone() {
         Object clone;
 

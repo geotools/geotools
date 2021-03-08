@@ -23,7 +23,6 @@ import org.geotools.graph.GraphTestUtil;
 import org.geotools.graph.build.GraphBuilder;
 import org.geotools.graph.build.basic.BasicDirectedGraphBuilder;
 import org.geotools.graph.structure.GraphVisitor;
-import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
 import org.geotools.graph.traverse.basic.BasicGraphTraversal;
 import org.geotools.graph.traverse.basic.DummyGraphWalker;
@@ -51,20 +50,20 @@ public class DirectedDepthFirstIteratorTest extends DepthFirstIteratorTest {
 
         // ensure only last node visited
         GraphVisitor visitor =
-                new GraphVisitor() {
-                    public int visit(Graphable component) {
-                        if (component == ends[1]) assertTrue(component.isVisited());
-                        else assertFalse(component.isVisited());
-                        return (0);
-                    }
+                component -> {
+                    if (component == ends[1]) assertTrue(component.isVisited());
+                    else assertFalse(component.isVisited());
+                    return (0);
                 };
         builder().getGraph().visitNodes(visitor);
     }
 
+    @Override
     protected DepthFirstIterator createIterator() {
         return (new DirectedDepthFirstIterator());
     }
 
+    @Override
     protected GraphBuilder createBuilder() {
         return (new BasicDirectedGraphBuilder());
     }

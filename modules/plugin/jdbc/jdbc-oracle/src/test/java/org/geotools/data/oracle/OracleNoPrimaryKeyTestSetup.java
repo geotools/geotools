@@ -9,6 +9,7 @@ public class OracleNoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
         super(new OracleTestSetup());
     }
 
+    @Override
     protected void createLakeTable() throws Exception {
         // set up table
         run("CREATE TABLE lake (id int, " + "geom MDSYS.SDO_GEOMETRY, name varchar(255))");

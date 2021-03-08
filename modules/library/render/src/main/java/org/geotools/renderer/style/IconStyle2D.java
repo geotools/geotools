@@ -56,21 +56,25 @@ public class IconStyle2D extends Style2D implements PointStyle2D {
      *
      * @return icon rotation, in radians.
      */
+    @Override
     public float getRotation() {
         return rotation;
     }
 
     /** The icon composite */
+    @Override
     public Composite getComposite() {
         return composite;
     }
 
     /** The icon x displacement */
+    @Override
     public float getDisplacementX() {
         return displacementX;
     }
 
     /** The icon y displacement */
+    @Override
     public float getDisplacementY() {
         return displacementY;
     }
@@ -84,34 +88,42 @@ public class IconStyle2D extends Style2D implements PointStyle2D {
         this.icon = icon;
     }
 
+    @Override
     public void setRotation(float rotation) {
         this.rotation = rotation;
     }
 
+    @Override
     public void setComposite(Composite composite) {
         this.composite = composite;
     }
 
+    @Override
     public void setDisplacementX(float displacementX) {
         this.displacementX = displacementX;
     }
 
+    @Override
     public void setDisplacementY(float displacementY) {
         this.displacementY = displacementY;
     }
 
+    @Override
     public float getAnchorPointX() {
         return anchorPointX;
     }
 
+    @Override
     public void setAnchorPointX(float anchorPointX) {
         this.anchorPointX = anchorPointX;
     }
 
+    @Override
     public float getAnchorPointY() {
         return anchorPointY;
     }
 
+    @Override
     public void setAnchorPointY(float anchorPointY) {
         this.anchorPointY = anchorPointY;
     };

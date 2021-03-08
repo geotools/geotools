@@ -25,6 +25,7 @@ public class ShapeFilePreGeneralizedFeatureSourceTest
 
     static final String ConfigName = "src/test/resources/geninfo_shapefile.xml";
 
+    @Override
     protected Repository getRepository() {
         return new DSFinderRepository();
     }

@@ -260,6 +260,7 @@ public class AbstractFactory implements Factory, RegistrableFactory {
      *
      * @return The map of hints, or an empty map if none.
      */
+    @Override
     public Map<RenderingHints.Key, ?> getImplementationHints() {
         return unmodifiableHints;
     }
@@ -278,6 +279,7 @@ public class AbstractFactory implements Factory, RegistrableFactory {
      * @see #MINIMUM_PRIORITY
      * @see #MAXIMUM_PRIORITY
      */
+    @Override
     @SuppressWarnings("unchecked")
     public void onRegistration(final FactoryRegistry registry, final Class<?> category) {
         registry.getFactories(category, false)
@@ -308,6 +310,7 @@ public class AbstractFactory implements Factory, RegistrableFactory {
      *     deregistered.
      * @param category The registry category from which this object is being deregistered.
      */
+    @Override
     public void onDeregistration(final FactoryRegistry registry, final Class category) {
         // No action needed.
     }

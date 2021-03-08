@@ -187,6 +187,7 @@ public final class CRS {
     static {
         GeoTools.addChangeListener(
                 new ChangeListener() {
+                    @Override
                     public void stateChanged(ChangeEvent e) {
                         synchronized (CRS.class) {
                             defaultFactory = null;

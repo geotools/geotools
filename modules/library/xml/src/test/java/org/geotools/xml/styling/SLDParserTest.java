@@ -25,7 +25,6 @@ import static org.junit.Assert.fail;
 import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.net.MalformedURLException;
@@ -51,9 +50,7 @@ import org.junit.Test;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.ContrastMethod;
 import org.opengis.style.GraphicalSymbol;
-import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 public class SLDParserTest {
 
@@ -629,6 +626,7 @@ public class SLDParserTest {
         parser.setOnLineResourceLocator(
                 new ResourceLocator() {
 
+                    @Override
                     public URL locateResource(String uri) {
                         assertEquals("test-data/blob.gif", uri);
                         return getClass().getResource(uri);
@@ -669,14 +667,7 @@ public class SLDParserTest {
         // system.
         // When resolving an XML entity, the empty InputSource returned by this resolver provokes
         // a MalformedURLException
-        parser.setEntityResolver(
-                new EntityResolver() {
-                    @Override
-                    public InputSource resolveEntity(String publicId, String systemId)
-                            throws SAXException, IOException {
-                        return new InputSource();
-                    }
-                });
+        parser.setEntityResolver((publicId, systemId) -> new InputSource());
 
         try {
             parser.readXML();
@@ -688,15 +679,11 @@ public class SLDParserTest {
         parser = new SLDParser(styleFactory, input(SLD_EXTERNALENTITY));
         // Set another EntityResolver
         parser.setEntityResolver(
-                new EntityResolver() {
-                    @Override
-                    public InputSource resolveEntity(String publicId, String systemId)
-                            throws SAXException, IOException {
-                        if ("file:///this/file/is/top/secret".equals(systemId)) {
-                            return new InputSource(new StringReader("hello"));
-                        } else {
-                            return new InputSource();
-                        }
+                (publicId, systemId) -> {
+                    if ("file:///this/file/is/top/secret".equals(systemId)) {
+                        return new InputSource(new StringReader("hello"));
+                    } else {
+                        return new InputSource();
                     }
                 });
 

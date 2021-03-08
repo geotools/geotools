@@ -104,6 +104,7 @@ public class PaletteType {
         return true;
     }
 
+    @Override
     public boolean equals(Object arg0) {
         if (!(arg0 instanceof PaletteType)) {
             return false;

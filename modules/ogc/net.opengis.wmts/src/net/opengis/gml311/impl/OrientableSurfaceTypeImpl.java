@@ -93,6 +93,7 @@ public class OrientableSurfaceTypeImpl extends AbstractSurfaceTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SurfacePropertyType getBaseSurface() {
         return baseSurface;
     }
@@ -117,6 +118,7 @@ public class OrientableSurfaceTypeImpl extends AbstractSurfaceTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBaseSurface(SurfacePropertyType newBaseSurface) {
         if (newBaseSurface != baseSurface) {
             NotificationChain msgs = null;
@@ -136,6 +138,7 @@ public class OrientableSurfaceTypeImpl extends AbstractSurfaceTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SignType getOrientation() {
         return orientation;
     }
@@ -145,6 +148,7 @@ public class OrientableSurfaceTypeImpl extends AbstractSurfaceTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOrientation(SignType newOrientation) {
         SignType oldOrientation = orientation;
         orientation = newOrientation == null ? ORIENTATION_EDEFAULT : newOrientation;
@@ -159,6 +163,7 @@ public class OrientableSurfaceTypeImpl extends AbstractSurfaceTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetOrientation() {
         SignType oldOrientation = orientation;
         boolean oldOrientationESet = orientationESet;
@@ -173,6 +178,7 @@ public class OrientableSurfaceTypeImpl extends AbstractSurfaceTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetOrientation() {
         return orientationESet;
     }

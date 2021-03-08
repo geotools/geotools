@@ -44,6 +44,7 @@ public class JDBCUpdateInsertFeatureWriter extends JDBCUpdateFeatureWriter {
         super(ps, cx, featureSource, query);
     }
 
+    @Override
     public boolean hasNext() throws IOException {
         if (inserter != null) {
             return inserter.hasNext();
@@ -60,6 +61,7 @@ public class JDBCUpdateInsertFeatureWriter extends JDBCUpdateFeatureWriter {
         return hasNext;
     }
 
+    @Override
     public SimpleFeature next()
             throws IOException, IllegalArgumentException, NoSuchElementException {
         if (inserter != null) {
@@ -69,6 +71,7 @@ public class JDBCUpdateInsertFeatureWriter extends JDBCUpdateFeatureWriter {
         return super.next();
     }
 
+    @Override
     public void remove() throws IOException {
         if (inserter != null) {
             inserter.remove();
@@ -78,6 +81,7 @@ public class JDBCUpdateInsertFeatureWriter extends JDBCUpdateFeatureWriter {
         super.remove();
     }
 
+    @Override
     public void write() throws IOException {
         if (inserter != null) {
             inserter.write();
@@ -87,6 +91,7 @@ public class JDBCUpdateInsertFeatureWriter extends JDBCUpdateFeatureWriter {
         super.write();
     }
 
+    @Override
     public void close() throws IOException {
         if (inserter != null) {
             // JD: do not call close because the inserter borrowed all of its state

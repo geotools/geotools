@@ -116,6 +116,7 @@ public class OperationParameterGroupTypeImpl extends OperationParameterGroupBase
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<IdentifierType> getGroupID() {
         if (groupID == null) {
             groupID = new EObjectContainmentEList<>(IdentifierType.class, this, Gml311Package.OPERATION_PARAMETER_GROUP_TYPE__GROUP_ID);
@@ -128,6 +129,7 @@ public class OperationParameterGroupTypeImpl extends OperationParameterGroupBase
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StringOrRefType getRemarks() {
         return remarks;
     }
@@ -152,6 +154,7 @@ public class OperationParameterGroupTypeImpl extends OperationParameterGroupBase
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRemarks(StringOrRefType newRemarks) {
         if (newRemarks != remarks) {
             NotificationChain msgs = null;
@@ -171,6 +174,7 @@ public class OperationParameterGroupTypeImpl extends OperationParameterGroupBase
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getMaximumOccurs() {
         return maximumOccurs;
     }
@@ -180,6 +184,7 @@ public class OperationParameterGroupTypeImpl extends OperationParameterGroupBase
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMaximumOccurs(BigInteger newMaximumOccurs) {
         BigInteger oldMaximumOccurs = maximumOccurs;
         maximumOccurs = newMaximumOccurs;
@@ -192,6 +197,7 @@ public class OperationParameterGroupTypeImpl extends OperationParameterGroupBase
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<AbstractGeneralOperationParameterRefType> getIncludesParameter() {
         if (includesParameter == null) {
             includesParameter = new EObjectContainmentEList<>(AbstractGeneralOperationParameterRefType.class, this, Gml311Package.OPERATION_PARAMETER_GROUP_TYPE__INCLUDES_PARAMETER);

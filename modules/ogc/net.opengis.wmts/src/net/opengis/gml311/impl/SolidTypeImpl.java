@@ -80,6 +80,7 @@ public class SolidTypeImpl extends AbstractSolidTypeImpl implements SolidType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SurfacePropertyType getExterior() {
         return exterior;
     }
@@ -104,6 +105,7 @@ public class SolidTypeImpl extends AbstractSolidTypeImpl implements SolidType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setExterior(SurfacePropertyType newExterior) {
         if (newExterior != exterior) {
             NotificationChain msgs = null;
@@ -123,6 +125,7 @@ public class SolidTypeImpl extends AbstractSolidTypeImpl implements SolidType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<SurfacePropertyType> getInterior() {
         if (interior == null) {
             interior = new EObjectContainmentEList<>(SurfacePropertyType.class, this, Gml311Package.SOLID_TYPE__INTERIOR);

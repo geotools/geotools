@@ -70,6 +70,7 @@ public class DefaultFileDriver extends DefaultDriver implements FileDriver {
         this.fileExtensions = new ArrayList<>(fileExtensions);
     }
 
+    @Override
     public List<String> getFileExtensions() {
         return new ArrayList<>(fileExtensions);
     }
@@ -167,6 +168,7 @@ public class DefaultFileDriver extends DefaultDriver implements FileDriver {
         return delete(url, params, hints, listener);
     }
 
+    @Override
     public boolean canProcess(
             DriverCapabilities operation, URL url, Map<String, Serializable> params) {
 
@@ -198,6 +200,7 @@ public class DefaultFileDriver extends DefaultDriver implements FileDriver {
         }
     }
 
+    @Override
     public CoverageAccess process(
             DriverCapabilities operation,
             URL url,

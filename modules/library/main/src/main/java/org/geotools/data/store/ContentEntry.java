@@ -157,6 +157,7 @@ public class ContentEntry {
         }
     }
 
+    @Override
     public String toString() {
         return "ContentEntry " + getTypeName();
     }

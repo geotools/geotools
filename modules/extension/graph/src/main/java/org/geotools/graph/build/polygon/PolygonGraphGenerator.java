@@ -90,6 +90,7 @@ public class PolygonGraphGenerator implements GraphGenerator {
         index = new Quadtree();
     }
 
+    @Override
     public Graphable add(Object obj) {
         Node node = (Node) get(obj);
         if (node == null) {
@@ -106,11 +107,13 @@ public class PolygonGraphGenerator implements GraphGenerator {
         return node;
     }
 
+    @Override
     public Graphable get(Object obj) {
         Polygon polygon = (Polygon) obj;
         return find(polygon);
     }
 
+    @Override
     public Graphable remove(Object obj) {
         Node node = (Node) get(obj);
         if (node != null) {
@@ -123,14 +126,17 @@ public class PolygonGraphGenerator implements GraphGenerator {
         return node;
     }
 
+    @Override
     public void setGraphBuilder(GraphBuilder builder) {
         this.builder = builder;
     }
 
+    @Override
     public GraphBuilder getGraphBuilder() {
         return builder;
     }
 
+    @Override
     public Graph getGraph() {
         return builder.getGraph();
     }

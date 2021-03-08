@@ -570,6 +570,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
      *     {@code false}).
      * @see GridGeometry2D#getGridRange2D
      */
+    @Override
     public GridEnvelope getGridRange() throws InvalidGridGeometryException {
         if (gridRange != null) {
             assert isDefined(GRID_RANGE_BITMASK);
@@ -595,6 +596,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
      * @see GridGeometry2D#getGridToCRS2D()
      * @since 2.3
      */
+    @Override
     public MathTransform getGridToCRS() throws InvalidGridGeometryException {
         if (gridToCRS != null) {
             assert isDefined(GRID_TO_CRS_BITMASK);

@@ -116,7 +116,8 @@ public class ExceptionReportTypeImpl extends EObjectImpl implements ExceptionRep
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public EList<ExceptionType> getException() {
+	@Override
+    public EList<ExceptionType> getException() {
     if (exception == null) {
       exception = new EObjectContainmentEList<>(ExceptionType.class, this, Ows10Package.EXCEPTION_REPORT_TYPE__EXCEPTION);
     }
@@ -128,7 +129,8 @@ public class ExceptionReportTypeImpl extends EObjectImpl implements ExceptionRep
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getLanguage() {
+	@Override
+    public String getLanguage() {
     return language;
   }
 
@@ -137,7 +139,8 @@ public class ExceptionReportTypeImpl extends EObjectImpl implements ExceptionRep
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setLanguage(String newLanguage) {
+	@Override
+    public void setLanguage(String newLanguage) {
     String oldLanguage = language;
     language = newLanguage;
     if (eNotificationRequired())
@@ -149,7 +152,8 @@ public class ExceptionReportTypeImpl extends EObjectImpl implements ExceptionRep
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getVersion() {
+	@Override
+    public String getVersion() {
     return version;
   }
 
@@ -158,7 +162,8 @@ public class ExceptionReportTypeImpl extends EObjectImpl implements ExceptionRep
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setVersion(String newVersion) {
+	@Override
+    public void setVersion(String newVersion) {
     String oldVersion = version;
     version = newVersion;
     if (eNotificationRequired())

@@ -163,6 +163,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
      * which implies that this adapter has precedence over the wrapped factories. Subclasses should
      * override this method if they want a different priority order for this instance.
      */
+    @Override
     public int getPriority() {
         return priority + 1;
     }
@@ -253,6 +254,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
      * @return The new coordinate system, or {@code cs} if no change were needed.
      * @throws FactoryException if an error occured while creating the new coordinate system.
      */
+    @Override
     // @Override
     @SuppressWarnings("unchecked")
     protected CoordinateSystem replace(final CoordinateSystem cs) throws FactoryException {
@@ -287,6 +289,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
      * @throws FactoryException if an error occured while creating the new datum.
      */
     // @Override
+    @Override
     protected Datum replace(final Datum datum) throws FactoryException {
         return super.replace(datum);
     }
@@ -303,6 +306,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
      * @throws FactoryException if an error occured while creating the new CRS object.
      */
     // @Override
+    @Override
     protected CoordinateReferenceSystem replace(final CoordinateReferenceSystem crs)
             throws FactoryException {
         /*
@@ -408,6 +412,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
      * @throws FactoryException if an error occured while creating the new operation object.
      */
     // @Override
+    @Override
     protected CoordinateOperation replace(final CoordinateOperation operation)
             throws FactoryException {
         final CoordinateReferenceSystem oldSrcCRS = operation.getSourceCRS();
@@ -523,6 +528,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
      * invokes the same method from the {@linkplain #operationFactory underlying operation factory},
      * and next invokes {@link #replace(CoordinateOperation) replace} for each operations.
      */
+    @Override
     @SuppressWarnings("PMD.ForLoopCanBeForeach")
     public Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(
             final String sourceCode, final String targetCode) throws FactoryException {
@@ -552,6 +558,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
      * <strong>not</strong> dispose the resources of wrapped factories (e.g. {@link #crsFactory
      * crsFactory}), because they may still in use by other classes.
      */
+    @Override
     public synchronized void dispose() throws FactoryException {
         pool.clear();
         super.dispose();

@@ -73,6 +73,7 @@ public class MediumImpl extends MetadataEntity implements Medium {
     }
 
     /** Returns the name of the medium on which the resource can be received. */
+    @Override
     public MediumName getName() {
         return name;
     }
@@ -84,6 +85,7 @@ public class MediumImpl extends MetadataEntity implements Medium {
     }
 
     /** Returns the units of measure for the recording density. */
+    @Override
     public Unit getDensityUnits() {
         return densityUnits;
     }
@@ -95,6 +97,7 @@ public class MediumImpl extends MetadataEntity implements Medium {
     }
 
     /** Returns the number of items in the media identified. Returns {@code null} if unknown. */
+    @Override
     public Integer getVolumes() {
         return volumes;
     }
@@ -106,6 +109,7 @@ public class MediumImpl extends MetadataEntity implements Medium {
     }
 
     /** Returns the method used to write to the medium. */
+    @Override
     public Collection<MediumFormat> getMediumFormats() {
         return (mediumFormats = nonNullCollection(mediumFormats, MediumFormat.class));
     }
@@ -116,6 +120,7 @@ public class MediumImpl extends MetadataEntity implements Medium {
     }
 
     /** Returns a description of other limitations or requirements for using the medium. */
+    @Override
     public InternationalString getMediumNote() {
         return mediumNote;
     }
@@ -129,6 +134,7 @@ public class MediumImpl extends MetadataEntity implements Medium {
     /**
      * Returns the density at which the data is recorded. The numbers should be greater than zero.
      */
+    @Override
     public Collection<Double> getDensities() {
         return (densities = nonNullCollection(densities, Double.class));
     }

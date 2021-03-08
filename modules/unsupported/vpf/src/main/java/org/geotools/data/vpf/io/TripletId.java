@@ -51,6 +51,7 @@ public class TripletId extends Number {
      *  (non-Javadoc)
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         String result = "";
 
@@ -246,6 +247,7 @@ public class TripletId extends Number {
     /* (non-Javadoc)
      * @see java.lang.Number#doubleValue()
      */
+    @Override
     public double doubleValue() {
         return Integer.valueOf(getId()).doubleValue();
     }
@@ -253,6 +255,7 @@ public class TripletId extends Number {
     /* (non-Javadoc)
      * @see java.lang.Number#floatValue()
      */
+    @Override
     public float floatValue() {
         return Integer.valueOf(getId()).floatValue();
     }
@@ -260,6 +263,7 @@ public class TripletId extends Number {
     /* (non-Javadoc)
      * @see java.lang.Number#intValue()
      */
+    @Override
     public int intValue() {
         return getId();
     }
@@ -267,6 +271,7 @@ public class TripletId extends Number {
     /* (non-Javadoc)
      * @see java.lang.Number#longValue()
      */
+    @Override
     public long longValue() {
         return Integer.valueOf(getId()).longValue();
     }
@@ -274,6 +279,7 @@ public class TripletId extends Number {
     /* (non-Javadoc)
      * @see java.lang.Number#byteValue()
      */
+    @Override
     public byte byteValue() {
         return Integer.valueOf(getId()).byteValue();
     }
@@ -281,6 +287,7 @@ public class TripletId extends Number {
     /* (non-Javadoc)
      * @see java.lang.Number#shortValue()
      */
+    @Override
     public short shortValue() {
         return Integer.valueOf(getId()).shortValue();
     }

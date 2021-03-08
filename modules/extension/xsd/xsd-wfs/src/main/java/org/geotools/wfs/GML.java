@@ -289,19 +289,16 @@ public class GML {
         // sort by isAssignable so we get the most specific match possible
         //
         Comparator<Entry<Name, AttributeType>> sort =
-                new Comparator<Entry<Name, AttributeType>>() {
-                    public int compare(
-                            Entry<Name, AttributeType> o1, Entry<Name, AttributeType> o2) {
-                        Class<?> binding1 = o1.getValue().getBinding();
-                        Class<?> binding2 = o2.getValue().getBinding();
-                        if (binding1.equals(binding2)) {
-                            return 0;
-                        }
-                        if (binding1.isAssignableFrom(binding2)) {
-                            return 1;
-                        } else {
-                            return 0;
-                        }
+                (o1, o2) -> {
+                    Class<?> binding1 = o1.getValue().getBinding();
+                    Class<?> binding2 = o2.getValue().getBinding();
+                    if (binding1.equals(binding2)) {
+                        return 0;
+                    }
+                    if (binding1.isAssignableFrom(binding2)) {
+                        return 1;
+                    } else {
+                        return 0;
                     }
                 };
         List<Entry<Name, AttributeType>> match = new ArrayList<>();
@@ -473,6 +470,7 @@ public class GML {
                             addDependency(gmlConfiguration); // use our GML configuration
                         }
 
+                        @Override
                         protected void registerBindings(java.util.Map bindings) {
                             // we have no special bindings
                         }
@@ -695,6 +693,7 @@ public class GML {
 
             Object next;
 
+            @Override
             public boolean hasNext() {
                 if (next != null) {
                     return true;
@@ -703,6 +702,7 @@ public class GML {
                 return next != null;
             }
 
+            @Override
             public SimpleFeature next() {
                 if (next == null) {
                     next = parser.parse();
@@ -722,6 +722,7 @@ public class GML {
                 }
             }
 
+            @Override
             public void close() {
                 schema = null;
             }

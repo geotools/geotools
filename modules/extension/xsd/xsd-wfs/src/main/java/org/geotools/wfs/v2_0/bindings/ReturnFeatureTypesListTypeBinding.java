@@ -49,6 +49,7 @@ public class ReturnFeatureTypesListTypeBinding extends AbstractSimpleBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.ReturnFeatureTypesListType;
     }
@@ -60,6 +61,7 @@ public class ReturnFeatureTypesListTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return List.class;
     }
@@ -76,6 +78,7 @@ public class ReturnFeatureTypesListTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         return super.parse(instance, value);
     }

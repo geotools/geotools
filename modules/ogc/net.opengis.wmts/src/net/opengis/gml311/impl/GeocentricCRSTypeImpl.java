@@ -86,6 +86,7 @@ public class GeocentricCRSTypeImpl extends AbstractReferenceSystemTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CartesianCSRefType getUsesCartesianCS() {
         return usesCartesianCS;
     }
@@ -110,6 +111,7 @@ public class GeocentricCRSTypeImpl extends AbstractReferenceSystemTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesCartesianCS(CartesianCSRefType newUsesCartesianCS) {
         if (newUsesCartesianCS != usesCartesianCS) {
             NotificationChain msgs = null;
@@ -129,6 +131,7 @@ public class GeocentricCRSTypeImpl extends AbstractReferenceSystemTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SphericalCSRefType getUsesSphericalCS() {
         return usesSphericalCS;
     }
@@ -153,6 +156,7 @@ public class GeocentricCRSTypeImpl extends AbstractReferenceSystemTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesSphericalCS(SphericalCSRefType newUsesSphericalCS) {
         if (newUsesSphericalCS != usesSphericalCS) {
             NotificationChain msgs = null;
@@ -172,6 +176,7 @@ public class GeocentricCRSTypeImpl extends AbstractReferenceSystemTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeodeticDatumRefType getUsesGeodeticDatum() {
         return usesGeodeticDatum;
     }
@@ -196,6 +201,7 @@ public class GeocentricCRSTypeImpl extends AbstractReferenceSystemTypeImpl imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setUsesGeodeticDatum(GeodeticDatumRefType newUsesGeodeticDatum) {
         if (newUsesGeodeticDatum != usesGeodeticDatum) {
             NotificationChain msgs = null;

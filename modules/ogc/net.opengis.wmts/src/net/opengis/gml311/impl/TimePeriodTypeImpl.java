@@ -131,6 +131,7 @@ public class TimePeriodTypeImpl extends AbstractTimeGeometricPrimitiveTypeImpl i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimePositionType getBeginPosition() {
         return beginPosition;
     }
@@ -155,6 +156,7 @@ public class TimePeriodTypeImpl extends AbstractTimeGeometricPrimitiveTypeImpl i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBeginPosition(TimePositionType newBeginPosition) {
         if (newBeginPosition != beginPosition) {
             NotificationChain msgs = null;
@@ -174,6 +176,7 @@ public class TimePeriodTypeImpl extends AbstractTimeGeometricPrimitiveTypeImpl i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeInstantPropertyType getBegin() {
         return begin;
     }
@@ -198,6 +201,7 @@ public class TimePeriodTypeImpl extends AbstractTimeGeometricPrimitiveTypeImpl i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBegin(TimeInstantPropertyType newBegin) {
         if (newBegin != begin) {
             NotificationChain msgs = null;
@@ -217,6 +221,7 @@ public class TimePeriodTypeImpl extends AbstractTimeGeometricPrimitiveTypeImpl i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimePositionType getEndPosition() {
         return endPosition;
     }
@@ -241,6 +246,7 @@ public class TimePeriodTypeImpl extends AbstractTimeGeometricPrimitiveTypeImpl i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEndPosition(TimePositionType newEndPosition) {
         if (newEndPosition != endPosition) {
             NotificationChain msgs = null;
@@ -260,6 +266,7 @@ public class TimePeriodTypeImpl extends AbstractTimeGeometricPrimitiveTypeImpl i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeInstantPropertyType getEnd() {
         return end;
     }
@@ -284,6 +291,7 @@ public class TimePeriodTypeImpl extends AbstractTimeGeometricPrimitiveTypeImpl i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEnd(TimeInstantPropertyType newEnd) {
         if (newEnd != end) {
             NotificationChain msgs = null;
@@ -303,6 +311,7 @@ public class TimePeriodTypeImpl extends AbstractTimeGeometricPrimitiveTypeImpl i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Duration getDuration() {
         return duration;
     }
@@ -312,6 +321,7 @@ public class TimePeriodTypeImpl extends AbstractTimeGeometricPrimitiveTypeImpl i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDuration(Duration newDuration) {
         Duration oldDuration = duration;
         duration = newDuration;
@@ -324,6 +334,7 @@ public class TimePeriodTypeImpl extends AbstractTimeGeometricPrimitiveTypeImpl i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TimeIntervalLengthType getTimeInterval() {
         return timeInterval;
     }
@@ -348,6 +359,7 @@ public class TimePeriodTypeImpl extends AbstractTimeGeometricPrimitiveTypeImpl i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTimeInterval(TimeIntervalLengthType newTimeInterval) {
         if (newTimeInterval != timeInterval) {
             NotificationChain msgs = null;

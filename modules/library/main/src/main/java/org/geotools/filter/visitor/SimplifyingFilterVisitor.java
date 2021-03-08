@@ -95,12 +95,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
     /**
      * A 'null-object' fid validator that assumes any feature id in an {@link Id} filter is valid
      */
-    public static final FIDValidator ANY_FID_VALID =
-            new FIDValidator() {
-                public boolean isValid(String fid) {
-                    return true;
-                }
-            };
+    public static final FIDValidator ANY_FID_VALID = fid -> true;
 
     /**
      * A FID validator that matches the fids with a given regular expression to determine the fid's
@@ -120,6 +115,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
             pattern = Pattern.compile(regularExpression);
         }
 
+        @Override
         public boolean isValid(String fid) {
             return pattern.matcher(fid).matches();
         }
@@ -386,6 +382,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         return validIdFilter;
     }
 
+    @Override
     public Object visit(Not filter, Object extraData) {
         FilterFactory2 ff = getFactory(extraData);
         Filter inner = filter.getFilter();
@@ -462,6 +459,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         return featureType instanceof SimpleFeatureType;
     }
 
+    @Override
     public Object visit(org.opengis.filter.expression.Function function, Object extraData) {
         // can't optimize out volatile functions
         if (isVolatileFunction(function)) {
@@ -524,6 +522,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         return attributeExtractor.isConstantExpression();
     }
 
+    @Override
     public Object visit(PropertyIsBetween filter, Object extraData) {
         PropertyIsBetween clone = (PropertyIsBetween) super.visit(filter, extraData);
         if (isConstant(clone.getExpression())
@@ -543,6 +542,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         }
     }
 
+    @Override
     public Object visit(PropertyIsEqualTo filter, Object extraData) {
         return simplifyBinaryComparisonOperator(
                 (BinaryComparisonOperator) super.visit(filter, extraData));
@@ -556,26 +556,31 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         }
     }
 
+    @Override
     public Object visit(PropertyIsNotEqualTo filter, Object extraData) {
         return simplifyBinaryComparisonOperator(
                 (BinaryComparisonOperator) super.visit(filter, extraData));
     }
 
+    @Override
     public Object visit(PropertyIsGreaterThan filter, Object extraData) {
         return simplifyBinaryComparisonOperator(
                 (BinaryComparisonOperator) super.visit(filter, extraData));
     }
 
+    @Override
     public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object extraData) {
         return simplifyBinaryComparisonOperator(
                 (BinaryComparisonOperator) super.visit(filter, extraData));
     }
 
+    @Override
     public Object visit(PropertyIsLessThan filter, Object extraData) {
         return simplifyBinaryComparisonOperator(
                 (BinaryComparisonOperator) super.visit(filter, extraData));
     }
 
+    @Override
     public Object visit(PropertyIsLessThanOrEqualTo filter, Object extraData) {
         return simplifyBinaryComparisonOperator(
                 (BinaryComparisonOperator) super.visit(filter, extraData));

@@ -17,8 +17,6 @@
 package org.geotools.swing.process;
 
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -77,10 +75,12 @@ public class ProcessParameterPage extends JPage {
         return this.factory;
     }
 
+    @Override
     public String getBackPageIdentifier() {
         return "select";
     }
 
+    @Override
     public String getNextPageIdentifier() {
         createParamMap();
         // validate the params first...
@@ -121,6 +121,7 @@ public class ProcessParameterPage extends JPage {
         }
     }
 
+    @Override
     public void preDisplayPanel() {
         JPanel page = getPanel();
         page.removeAll();
@@ -165,12 +166,7 @@ public class ProcessParameterPage extends JPage {
         page.add(buttLabel);
 
         JButton butt = new JButton("+");
-        butt.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        createNewField(parameter, true);
-                    }
-                });
+        butt.addActionListener(e -> createNewField(parameter, true));
         page.add(butt);
     }
 

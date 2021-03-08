@@ -124,12 +124,9 @@ public class BasicGraph implements Graph, Serializable {
         final int degree = n;
 
         return (queryNodes(
-                new GraphVisitor() {
-                    @Override
-                    public int visit(Graphable component) {
-                        if (((Node) component).getDegree() == degree) return (PASS_AND_CONTINUE);
-                        return (FAIL_QUERY);
-                    }
+                component -> {
+                    if (((Node) component).getDegree() == degree) return (PASS_AND_CONTINUE);
+                    return (FAIL_QUERY);
                 }));
     }
 
@@ -227,12 +224,9 @@ public class BasicGraph implements Graph, Serializable {
         final boolean isVisited = visited;
         return (query(
                 components,
-                new GraphVisitor() {
-                    @Override
-                    public int visit(Graphable component) {
-                        if (component.isVisited() == isVisited) return (PASS_AND_CONTINUE);
-                        return (FAIL_QUERY);
-                    }
+                component -> {
+                    if (component.isVisited() == isVisited) return (PASS_AND_CONTINUE);
+                    return (FAIL_QUERY);
                 }));
     }
 }

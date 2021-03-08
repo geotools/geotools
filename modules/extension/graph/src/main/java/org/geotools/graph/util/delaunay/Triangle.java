@@ -351,6 +351,7 @@ public class Triangle {
         return ((edge1.equals(e)) || (edge2.equals(e)) || (edge3.equals(e)));
     }
 
+    @Override
     public boolean equals(Object o) {
         boolean ret;
         if (o instanceof Triangle) {
@@ -369,6 +370,7 @@ public class Triangle {
         return Objects.hash(edge1, edge2, edge3, node1, node2, node3, fact);
     }
 
+    @Override
     public String toString() {
         return ("{" + node1.toString() + ", " + node2.toString() + ", " + node3.toString() + "}");
     }

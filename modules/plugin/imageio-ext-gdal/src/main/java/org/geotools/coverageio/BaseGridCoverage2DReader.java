@@ -221,7 +221,8 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
     }
 
     /** Package scope highest resolution serviceInfo accessor */
-    double[] getHighestRes() {
+    @Override
+    protected double[] getHighestRes() {
         return highestRes;
     }
 
@@ -361,6 +362,7 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
      *
      * @param params a {@code GeneralParameterValue} array to customize the read operation.
      */
+    @Override
     public GridCoverage2D read(GeneralParameterValue[] params)
             throws IllegalArgumentException, IOException {
 
@@ -507,6 +509,7 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
      *
      * @return ServiceInfo describing getSource().
      */
+    @Override
     public synchronized ServiceInfo getInfo() {
         if (serviceInfo != null) {
             return new DefaultServiceInfo(this.serviceInfo);
@@ -544,6 +547,7 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
      * @param subname Name indicing grid coverage to describe
      * @return ResourceInfo describing grid coverage indicated
      */
+    @Override
     public synchronized ResourceInfo getInfo(String subname) {
 
         if (this.resourceInfo != null) {
@@ -591,6 +595,7 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
     }
 
     /** @return the gridCoverage count */
+    @Override
     public int getGridCoverageCount() {
         return 1;
     }

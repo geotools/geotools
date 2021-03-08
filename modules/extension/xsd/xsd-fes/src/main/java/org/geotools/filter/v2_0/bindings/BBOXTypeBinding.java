@@ -70,10 +70,12 @@ public class BBOXTypeBinding extends OGCBBOXTypeBinding {
         }
     }
 
+    @Override
     public QName getTarget() {
         return FES.BBOXType;
     }
 
+    @Override
     public Class getType() {
         return BBOX.class;
     }

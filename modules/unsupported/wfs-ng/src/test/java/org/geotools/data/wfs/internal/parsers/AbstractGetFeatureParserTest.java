@@ -16,6 +16,7 @@
  */
 package org.geotools.data.wfs.internal.parsers;
 
+import static org.geotools.data.wfs.WFSTestData.ARCGIS_CURVE;
 import static org.geotools.data.wfs.WFSTestData.CUBEWERX_GOVUNITCE;
 import static org.geotools.data.wfs.WFSTestData.CUBEWERX_ROADSEG;
 import static org.geotools.data.wfs.WFSTestData.GEOS_ARCHSITES_11;
@@ -116,6 +117,7 @@ public abstract class AbstractGetFeatureParserTest {
             this.expectedGeometries = expectedGeometries;
         }
 
+        @Override
         public void visit(final Feature feature) {
             assertNotNull(feature);
             assertNotNull(feature.getIdentifier().getID());
@@ -743,5 +745,23 @@ public abstract class AbstractGetFeatureParserTest {
 
         FeatureVisitor assertor = new FeatureAssertor(featureType);
         testParseGetFeatures(featureName, featureType, parser, assertor, 3);
+    }
+
+    @Test
+    public void testParseArcGIS_GML3_1_MultiCurve() throws Exception {
+        final QName featureName = ARCGIS_CURVE.TYPENAME;
+        final int expectedCount = 2;
+        final URL schemaLocation = ARCGIS_CURVE.SCHEMA;
+
+        final String[] properties = {"Shape", "OBJECTID", "Shape_Length"};
+        final SimpleFeatureType featureType =
+                getTypeView(featureName, schemaLocation, ARCGIS_CURVE.CRS, properties);
+
+        final FeatureVisitor assertor = new FeatureAssertor(featureType);
+
+        GetParser<SimpleFeature> parser =
+                getParser(featureName, schemaLocation, featureType, ARCGIS_CURVE.DATA, null);
+
+        testParseGetFeatures(featureName, featureType, parser, assertor, expectedCount);
     }
 }

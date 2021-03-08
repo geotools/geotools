@@ -88,6 +88,7 @@ public class AbstractFeatureTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.AbstractFeatureType;
     }
@@ -99,6 +100,7 @@ public class AbstractFeatureTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Feature.class;
     }
@@ -110,6 +112,7 @@ public class AbstractFeatureTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return GML3ParsingUtils.parseFeature(instance, node, value, ftCache, bwFactory);
 
@@ -131,6 +134,7 @@ public class AbstractFeatureTypeBinding extends AbstractComplexBinding {
         //        return GML3ParsingUtils.feature(fType, fid, node);
     }
 
+    @Override
     public Element encode(Object object, Document document, Element value) throws Exception {
         return encodingUtils.AbstractFeatureTypeEncode(object, document, value, idSet);
     }

@@ -70,26 +70,32 @@ public class VocabFunction implements Function {
         this.fallback = fallback;
     }
 
+    @Override
     public String getName() {
         return NAME.getName();
     }
 
+    @Override
     public FunctionName getFunctionName() {
         return NAME;
     }
 
+    @Override
     public List<Expression> getParameters() {
         return Collections.unmodifiableList(parameters);
     }
 
+    @Override
     public Object accept(ExpressionVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
 
+    @Override
     public Object evaluate(Object object) {
         return evaluate(object, Object.class);
     }
 
+    @Override
     public <T> T evaluate(Object object, Class<T> context) {
         final Expression expr = parameters.get(0);
         Expression vocab = parameters.get(1);
@@ -136,6 +142,7 @@ public class VocabFunction implements Function {
         return properties;
     }
 
+    @Override
     public Literal getFallbackValue() {
         return fallback;
     }

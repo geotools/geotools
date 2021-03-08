@@ -188,6 +188,7 @@ public class GetFeatureInfoTypeImpl extends MinimalEObjectImpl.Container impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GetTileType getGetTile() {
         return getTile;
     }
@@ -212,6 +213,7 @@ public class GetFeatureInfoTypeImpl extends MinimalEObjectImpl.Container impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGetTile(GetTileType newGetTile) {
         if (newGetTile != getTile) {
             NotificationChain msgs = null;
@@ -231,6 +233,7 @@ public class GetFeatureInfoTypeImpl extends MinimalEObjectImpl.Container impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getJ() {
         return j;
     }
@@ -240,6 +243,7 @@ public class GetFeatureInfoTypeImpl extends MinimalEObjectImpl.Container impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setJ(BigInteger newJ) {
         BigInteger oldJ = j;
         j = newJ;
@@ -252,6 +256,7 @@ public class GetFeatureInfoTypeImpl extends MinimalEObjectImpl.Container impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getI() {
         return i;
     }
@@ -261,6 +266,7 @@ public class GetFeatureInfoTypeImpl extends MinimalEObjectImpl.Container impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setI(BigInteger newI) {
         BigInteger oldI = i;
         i = newI;
@@ -273,6 +279,7 @@ public class GetFeatureInfoTypeImpl extends MinimalEObjectImpl.Container impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getInfoFormat() {
         return infoFormat;
     }
@@ -282,6 +289,7 @@ public class GetFeatureInfoTypeImpl extends MinimalEObjectImpl.Container impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setInfoFormat(String newInfoFormat) {
         String oldInfoFormat = infoFormat;
         infoFormat = newInfoFormat;
@@ -294,6 +302,7 @@ public class GetFeatureInfoTypeImpl extends MinimalEObjectImpl.Container impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getService() {
         return service;
     }
@@ -303,6 +312,7 @@ public class GetFeatureInfoTypeImpl extends MinimalEObjectImpl.Container impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setService(String newService) {
         String oldService = service;
         service = newService;
@@ -317,6 +327,7 @@ public class GetFeatureInfoTypeImpl extends MinimalEObjectImpl.Container impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetService() {
         String oldService = service;
         boolean oldServiceESet = serviceESet;
@@ -331,6 +342,7 @@ public class GetFeatureInfoTypeImpl extends MinimalEObjectImpl.Container impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetService() {
         return serviceESet;
     }
@@ -340,6 +352,7 @@ public class GetFeatureInfoTypeImpl extends MinimalEObjectImpl.Container impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getVersion() {
         return version;
     }
@@ -349,6 +362,7 @@ public class GetFeatureInfoTypeImpl extends MinimalEObjectImpl.Container impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setVersion(String newVersion) {
         String oldVersion = version;
         version = newVersion;
@@ -363,6 +377,7 @@ public class GetFeatureInfoTypeImpl extends MinimalEObjectImpl.Container impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetVersion() {
         String oldVersion = version;
         boolean oldVersionESet = versionESet;
@@ -377,6 +392,7 @@ public class GetFeatureInfoTypeImpl extends MinimalEObjectImpl.Container impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetVersion() {
         return versionESet;
     }

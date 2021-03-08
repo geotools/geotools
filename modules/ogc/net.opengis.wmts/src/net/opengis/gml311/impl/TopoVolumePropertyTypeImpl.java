@@ -63,6 +63,7 @@ public class TopoVolumePropertyTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TopoVolumeType getTopoVolume() {
         return topoVolume;
     }
@@ -87,6 +88,7 @@ public class TopoVolumePropertyTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTopoVolume(TopoVolumeType newTopoVolume) {
         if (newTopoVolume != topoVolume) {
             NotificationChain msgs = null;

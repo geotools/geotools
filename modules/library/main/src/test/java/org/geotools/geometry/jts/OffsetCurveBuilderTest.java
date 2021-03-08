@@ -31,8 +31,6 @@ import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
@@ -74,6 +72,7 @@ public class OffsetCurveBuilderTest {
     public TestWatcher interactiveReporter =
             new TestWatcher() {
 
+                @Override
                 protected void succeeded(org.junit.runner.Description description) {
                     if (curve != null && INTERACTIVE_ON_SUCCESS) {
                         displayCurves(false);
@@ -163,13 +162,7 @@ public class OffsetCurveBuilderTest {
             content.add(imageViewer);
 
             JButton close = new JButton("Close");
-            close.addActionListener(
-                    new ActionListener() {
-
-                        public void actionPerformed(ActionEvent e) {
-                            ImageDisplay.this.setVisible(false);
-                        }
-                    });
+            close.addActionListener(e -> setVisible(false));
             content.add(close, BorderLayout.SOUTH);
             pack();
         }
@@ -400,34 +393,31 @@ public class OffsetCurveBuilderTest {
         assertTrue(offset.getLength() > 0);
         assertEquals(abs(offsetDistance), offset.distance(geom), EPS * abs(offsetDistance));
         offset.apply(
-                new GeometryComponentFilter() {
-
-                    @Override
-                    public void filter(Geometry geom) {
-                        if (geom instanceof LineString) {
-                            LineString ls = (LineString) geom;
-                            CoordinateSequence cs = ls.getCoordinateSequence();
-                            if (cs.size() < 2) {
-                                return;
-                            }
-                            double px = cs.getOrdinate(0, 0);
-                            double py = cs.getOrdinate(0, 1);
-                            for (int i = 1; i < cs.size(); i++) {
-                                double cx = cs.getOrdinate(i, 0);
-                                double cy = cs.getOrdinate(i, 1);
-                                if (cx == px && cy == py) {
-                                    fail(
-                                            "Found two subsequent ordinates with the same value: "
-                                                    + cx
-                                                    + ", "
-                                                    + py);
+                (GeometryComponentFilter)
+                        geom1 -> {
+                            if (geom1 instanceof LineString) {
+                                LineString ls = (LineString) geom1;
+                                CoordinateSequence cs = ls.getCoordinateSequence();
+                                if (cs.size() < 2) {
+                                    return;
                                 }
-                                px = cx;
-                                py = cy;
+                                double px = cs.getOrdinate(0, 0);
+                                double py = cs.getOrdinate(0, 1);
+                                for (int i = 1; i < cs.size(); i++) {
+                                    double cx = cs.getOrdinate(i, 0);
+                                    double cy = cs.getOrdinate(i, 1);
+                                    if (cx == px && cy == py) {
+                                        fail(
+                                                "Found two subsequent ordinates with the same value: "
+                                                        + cx
+                                                        + ", "
+                                                        + py);
+                                    }
+                                    px = cx;
+                                    py = cy;
+                                }
                             }
-                        }
-                    }
-                });
+                        });
         return offset;
     }
 

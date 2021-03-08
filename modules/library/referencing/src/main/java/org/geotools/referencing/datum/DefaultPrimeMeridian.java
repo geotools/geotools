@@ -116,6 +116,7 @@ public class DefaultPrimeMeridian extends AbstractIdentifiedObject implements Pr
      *
      * @return The prime meridian Greenwich longitude, in {@linkplain #getAngularUnit angular unit}.
      */
+    @Override
     public double getGreenwichLongitude() {
         return greenwichLongitude;
     }
@@ -134,6 +135,7 @@ public class DefaultPrimeMeridian extends AbstractIdentifiedObject implements Pr
     }
 
     /** Returns the angular unit of the {@linkplain #getGreenwichLongitude Greenwich longitude}. */
+    @Override
     public Unit<Angle> getAngularUnit() {
         return angularUnit;
     }

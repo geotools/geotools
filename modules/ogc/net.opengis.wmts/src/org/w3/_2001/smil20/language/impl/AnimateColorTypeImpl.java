@@ -675,6 +675,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getGroup() {
         if (group == null) {
             group = new BasicFeatureMap(this, LanguagePackage.ANIMATE_COLOR_TYPE__GROUP);
@@ -687,6 +688,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getAny() {
         return (FeatureMap)getGroup().<FeatureMap.Entry>list(LanguagePackage.Literals.ANIMATE_COLOR_TYPE__ANY);
     }
@@ -696,6 +698,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getAlt() {
         return alt;
     }
@@ -705,6 +708,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAlt(String newAlt) {
         String oldAlt = alt;
         alt = newAlt;
@@ -717,6 +721,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getBegin() {
         return begin;
     }
@@ -726,6 +731,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBegin(String newBegin) {
         String oldBegin = begin;
         begin = newBegin;
@@ -738,6 +744,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CalcModeType getCalcMode() {
         return calcMode;
     }
@@ -747,6 +754,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCalcMode(CalcModeType newCalcMode) {
         CalcModeType oldCalcMode = calcMode;
         calcMode = newCalcMode == null ? CALC_MODE_EDEFAULT : newCalcMode;
@@ -761,6 +769,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetCalcMode() {
         CalcModeType oldCalcMode = calcMode;
         boolean oldCalcModeESet = calcModeESet;
@@ -775,6 +784,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetCalcMode() {
         return calcModeESet;
     }
@@ -784,6 +794,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getClass_() {
         return class_;
     }
@@ -793,6 +804,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setClass(String newClass) {
         String oldClass = class_;
         class_ = newClass;
@@ -805,6 +817,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getDur() {
         return dur;
     }
@@ -814,6 +827,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDur(String newDur) {
         String oldDur = dur;
         dur = newDur;
@@ -826,6 +840,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getEnd() {
         return end;
     }
@@ -835,6 +850,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEnd(String newEnd) {
         String oldEnd = end;
         end = newEnd;
@@ -847,6 +863,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FillTimingAttrsType getFill() {
         return fill;
     }
@@ -856,6 +873,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFill(FillTimingAttrsType newFill) {
         FillTimingAttrsType oldFill = fill;
         fill = newFill == null ? FILL_EDEFAULT : newFill;
@@ -870,6 +888,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetFill() {
         FillTimingAttrsType oldFill = fill;
         boolean oldFillESet = fillESet;
@@ -884,6 +903,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetFill() {
         return fillESet;
     }
@@ -893,6 +913,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FillDefaultType getFillDefault() {
         return fillDefault;
     }
@@ -902,6 +923,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFillDefault(FillDefaultType newFillDefault) {
         FillDefaultType oldFillDefault = fillDefault;
         fillDefault = newFillDefault == null ? FILL_DEFAULT_EDEFAULT : newFillDefault;
@@ -916,6 +938,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetFillDefault() {
         FillDefaultType oldFillDefault = fillDefault;
         boolean oldFillDefaultESet = fillDefaultESet;
@@ -930,6 +953,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetFillDefault() {
         return fillDefaultESet;
     }
@@ -939,6 +963,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getId() {
         return id;
     }
@@ -948,6 +973,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setId(String newId) {
         String oldId = id;
         id = newId;
@@ -960,6 +986,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getLang() {
         return lang;
     }
@@ -969,6 +996,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLang(String newLang) {
         String oldLang = lang;
         lang = newLang;
@@ -981,6 +1009,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getLongdesc() {
         return longdesc;
     }
@@ -990,6 +1019,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLongdesc(String newLongdesc) {
         String oldLongdesc = longdesc;
         longdesc = newLongdesc;
@@ -1002,6 +1032,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getMax() {
         return max;
     }
@@ -1011,6 +1042,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMax(String newMax) {
         String oldMax = max;
         max = newMax;
@@ -1023,6 +1055,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getMin() {
         return min;
     }
@@ -1032,6 +1065,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMin(String newMin) {
         String oldMin = min;
         min = newMin;
@@ -1044,6 +1078,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getRepeat() {
         return repeat;
     }
@@ -1053,6 +1088,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRepeat(BigInteger newRepeat) {
         BigInteger oldRepeat = repeat;
         repeat = newRepeat;
@@ -1065,6 +1101,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigDecimal getRepeatCount() {
         return repeatCount;
     }
@@ -1074,6 +1111,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRepeatCount(BigDecimal newRepeatCount) {
         BigDecimal oldRepeatCount = repeatCount;
         repeatCount = newRepeatCount;
@@ -1086,6 +1124,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getRepeatDur() {
         return repeatDur;
     }
@@ -1095,6 +1134,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRepeatDur(String newRepeatDur) {
         String oldRepeatDur = repeatDur;
         repeatDur = newRepeatDur;
@@ -1107,6 +1147,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RestartTimingType getRestart() {
         return restart;
     }
@@ -1116,6 +1157,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRestart(RestartTimingType newRestart) {
         RestartTimingType oldRestart = restart;
         restart = newRestart == null ? RESTART_EDEFAULT : newRestart;
@@ -1130,6 +1172,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetRestart() {
         RestartTimingType oldRestart = restart;
         boolean oldRestartESet = restartESet;
@@ -1144,6 +1187,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetRestart() {
         return restartESet;
     }
@@ -1153,6 +1197,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RestartDefaultType getRestartDefault() {
         return restartDefault;
     }
@@ -1162,6 +1207,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRestartDefault(RestartDefaultType newRestartDefault) {
         RestartDefaultType oldRestartDefault = restartDefault;
         restartDefault = newRestartDefault == null ? RESTART_DEFAULT_EDEFAULT : newRestartDefault;
@@ -1176,6 +1222,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetRestartDefault() {
         RestartDefaultType oldRestartDefault = restartDefault;
         boolean oldRestartDefaultESet = restartDefaultESet;
@@ -1190,6 +1237,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetRestartDefault() {
         return restartDefaultESet;
     }
@@ -1199,6 +1247,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSkipContent() {
         return skipContent;
     }
@@ -1208,6 +1257,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSkipContent(boolean newSkipContent) {
         boolean oldSkipContent = skipContent;
         skipContent = newSkipContent;
@@ -1222,6 +1272,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetSkipContent() {
         boolean oldSkipContent = skipContent;
         boolean oldSkipContentESet = skipContentESet;
@@ -1236,6 +1287,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetSkipContent() {
         return skipContentESet;
     }
@@ -1245,6 +1297,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SyncBehaviorType getSyncBehavior() {
         return syncBehavior;
     }
@@ -1254,6 +1307,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSyncBehavior(SyncBehaviorType newSyncBehavior) {
         SyncBehaviorType oldSyncBehavior = syncBehavior;
         syncBehavior = newSyncBehavior == null ? SYNC_BEHAVIOR_EDEFAULT : newSyncBehavior;
@@ -1268,6 +1322,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetSyncBehavior() {
         SyncBehaviorType oldSyncBehavior = syncBehavior;
         boolean oldSyncBehaviorESet = syncBehaviorESet;
@@ -1282,6 +1337,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetSyncBehavior() {
         return syncBehaviorESet;
     }
@@ -1291,6 +1347,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SyncBehaviorDefaultType getSyncBehaviorDefault() {
         return syncBehaviorDefault;
     }
@@ -1300,6 +1357,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSyncBehaviorDefault(SyncBehaviorDefaultType newSyncBehaviorDefault) {
         SyncBehaviorDefaultType oldSyncBehaviorDefault = syncBehaviorDefault;
         syncBehaviorDefault = newSyncBehaviorDefault == null ? SYNC_BEHAVIOR_DEFAULT_EDEFAULT : newSyncBehaviorDefault;
@@ -1314,6 +1372,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetSyncBehaviorDefault() {
         SyncBehaviorDefaultType oldSyncBehaviorDefault = syncBehaviorDefault;
         boolean oldSyncBehaviorDefaultESet = syncBehaviorDefaultESet;
@@ -1328,6 +1387,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetSyncBehaviorDefault() {
         return syncBehaviorDefaultESet;
     }
@@ -1337,6 +1397,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getSyncTolerance() {
         return syncTolerance;
     }
@@ -1346,6 +1407,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSyncTolerance(String newSyncTolerance) {
         String oldSyncTolerance = syncTolerance;
         syncTolerance = newSyncTolerance;
@@ -1358,6 +1420,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getSyncToleranceDefault() {
         return syncToleranceDefault;
     }
@@ -1367,6 +1430,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSyncToleranceDefault(String newSyncToleranceDefault) {
         String oldSyncToleranceDefault = syncToleranceDefault;
         syncToleranceDefault = newSyncToleranceDefault;
@@ -1381,6 +1445,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetSyncToleranceDefault() {
         String oldSyncToleranceDefault = syncToleranceDefault;
         boolean oldSyncToleranceDefaultESet = syncToleranceDefaultESet;
@@ -1395,6 +1460,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetSyncToleranceDefault() {
         return syncToleranceDefaultESet;
     }
@@ -1404,6 +1470,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getTargetElement() {
         return targetElement;
     }
@@ -1413,6 +1480,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTargetElement(String newTargetElement) {
         String oldTargetElement = targetElement;
         targetElement = newTargetElement;
@@ -1425,6 +1493,7 @@ public class AnimateColorTypeImpl extends AnimateColorPrototypeImpl implements A
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getAnyAttribute() {
         if (anyAttribute == null) {
             anyAttribute = new BasicFeatureMap(this, LanguagePackage.ANIMATE_COLOR_TYPE__ANY_ATTRIBUTE);

@@ -39,6 +39,7 @@ public class FilterFunction_setCRS extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Geometry geom;
         CoordinateReferenceSystem crs;

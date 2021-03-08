@@ -3,7 +3,6 @@ package org.geotools.gce.geotiff;
 import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;
 import java.util.ArrayList;
@@ -24,18 +23,15 @@ public class GeoTiffDeadlockTest {
         final File dir = TestData.file(GeoTiffReaderTest.class, "");
         final File files[] =
                 dir.listFiles(
-                        new FileFilter() {
-
-                            public boolean accept(File file) {
-                                String name = file.getName();
-                                if (name.startsWith("no_crs_no_envelope")
-                                        || name.startsWith("ovr")
-                                        || name.startsWith("leak")
-                                        || file.isDirectory()) {
-                                    return false;
-                                }
-                                return true;
+                        file -> {
+                            String name = file.getName();
+                            if (name.startsWith("no_crs_no_envelope")
+                                    || name.startsWith("ovr")
+                                    || name.startsWith("leak")
+                                    || file.isDirectory()) {
+                                return false;
                             }
+                            return true;
                         });
         final int numFiles = files.length;
 
@@ -50,16 +46,14 @@ public class GeoTiffDeadlockTest {
         for (int index = 0; index < total; index++) {
             final File file = files[index % numFiles];
             Runnable testRunner =
-                    new Runnable() {
-                        public void run() {
-                            try {
-                                GeoTiffReader reader = new GeoTiffReader(file);
-                                reader.read(null);
-                            } catch (Exception e) {
-                                throw new RuntimeException("Exception opening file " + file, e);
-                            } finally {
-                                ai.decrementAndGet();
-                            }
+                    () -> {
+                        try {
+                            GeoTiffReader reader = new GeoTiffReader(file);
+                            reader.read(null);
+                        } catch (Exception e) {
+                            throw new RuntimeException("Exception opening file " + file, e);
+                        } finally {
+                            ai.decrementAndGet();
                         }
                     };
 

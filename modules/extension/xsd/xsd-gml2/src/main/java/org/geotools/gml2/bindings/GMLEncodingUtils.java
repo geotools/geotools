@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.xml.XMLConstants;
@@ -239,25 +238,20 @@ public class GMLEncodingUtils {
                                         particles
                                                 .stream()
                                                 .map(
-                                                        new Function() {
-
-                                                            @Override
-                                                            public Object apply(Object particle) {
-                                                                XSDElementDeclaration attr =
-                                                                        (XSDElementDeclaration)
-                                                                                ((XSDParticle)
-                                                                                                particle)
-                                                                                        .getContent();
-                                                                if (attr
-                                                                        .isElementDeclarationReference()) {
-                                                                    attr =
-                                                                            attr
-                                                                                    .getResolvedElementDeclaration();
-                                                                }
-                                                                return new NameImpl(
-                                                                        attr.getTargetNamespace(),
-                                                                        attr.getName());
+                                                        p -> {
+                                                            XSDElementDeclaration attr =
+                                                                    (XSDElementDeclaration)
+                                                                            ((XSDParticle) p)
+                                                                                    .getContent();
+                                                            if (attr
+                                                                    .isElementDeclarationReference()) {
+                                                                attr =
+                                                                        attr
+                                                                                .getResolvedElementDeclaration();
                                                             }
+                                                            return new NameImpl(
+                                                                    attr.getTargetNamespace(),
+                                                                    attr.getName());
                                                         })
                                                 .collect(Collectors.toSet());
                     }

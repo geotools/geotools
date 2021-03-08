@@ -114,6 +114,7 @@ public abstract class AbstractReferenceSystemTypeImpl extends AbstractReferenceS
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<IdentifierType> getSrsID() {
         if (srsID == null) {
             srsID = new EObjectContainmentEList<>(IdentifierType.class, this, Gml311Package.ABSTRACT_REFERENCE_SYSTEM_TYPE__SRS_ID);
@@ -126,6 +127,7 @@ public abstract class AbstractReferenceSystemTypeImpl extends AbstractReferenceS
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StringOrRefType getRemarks() {
         return remarks;
     }
@@ -150,6 +152,7 @@ public abstract class AbstractReferenceSystemTypeImpl extends AbstractReferenceS
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRemarks(StringOrRefType newRemarks) {
         if (newRemarks != remarks) {
             NotificationChain msgs = null;
@@ -169,6 +172,7 @@ public abstract class AbstractReferenceSystemTypeImpl extends AbstractReferenceS
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ExtentType getValidArea() {
         return validArea;
     }
@@ -193,6 +197,7 @@ public abstract class AbstractReferenceSystemTypeImpl extends AbstractReferenceS
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValidArea(ExtentType newValidArea) {
         if (newValidArea != validArea) {
             NotificationChain msgs = null;
@@ -212,6 +217,7 @@ public abstract class AbstractReferenceSystemTypeImpl extends AbstractReferenceS
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getScope() {
         return scope;
     }
@@ -221,6 +227,7 @@ public abstract class AbstractReferenceSystemTypeImpl extends AbstractReferenceS
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setScope(String newScope) {
         String oldScope = scope;
         scope = newScope;

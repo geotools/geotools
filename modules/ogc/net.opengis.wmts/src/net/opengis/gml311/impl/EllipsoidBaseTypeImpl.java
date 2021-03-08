@@ -62,6 +62,7 @@ public abstract class EllipsoidBaseTypeImpl extends DefinitionTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getEllipsoidName() {
         return ellipsoidName;
     }
@@ -86,6 +87,7 @@ public abstract class EllipsoidBaseTypeImpl extends DefinitionTypeImpl implement
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEllipsoidName(CodeType newEllipsoidName) {
         if (newEllipsoidName != ellipsoidName) {
             NotificationChain msgs = null;

@@ -28,6 +28,7 @@ public class AssociationDescriptorImpl extends PropertyDescriptorImpl
         super(type, name, min, max, isNillable);
     }
 
+    @Override
     public AssociationType getType() {
         return (AssociationType) super.getType();
     }

@@ -153,6 +153,7 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
         return this;
     }
 
+    @Override
     public FeatureTypeStyle build() {
         if (unset) {
             return null;
@@ -179,6 +180,7 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
         return fts;
     }
 
+    @Override
     public FeatureTypeStyleBuilder reset() {
         rules.clear();
         this.name = null;
@@ -193,6 +195,7 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
         return this;
     }
 
+    @Override
     public FeatureTypeStyleBuilder reset(FeatureTypeStyle fts) {
         if (fts == null) {
             return unset();
@@ -217,6 +220,7 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
         return this;
     }
 
+    @Override
     public FeatureTypeStyleBuilder unset() {
         return (FeatureTypeStyleBuilder) super.unset();
     }

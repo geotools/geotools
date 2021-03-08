@@ -272,6 +272,7 @@ public class AbstractDerivedCRS extends AbstractSingleCRS implements GeneralDeri
      *
      * @return The base coordinate reference system.
      */
+    @Override
     public CoordinateReferenceSystem getBaseCRS() {
         return baseCRS;
     }
@@ -281,6 +282,7 @@ public class AbstractDerivedCRS extends AbstractSingleCRS implements GeneralDeri
      *
      * @return The conversion to this CRS.
      */
+    @Override
     public Conversion getConversionFromBase() {
         return conversionFromBase;
     }

@@ -449,6 +449,7 @@ class Utils {
             return envelope;
         }
 
+        @Override
         public int compareTo(MosaicInfo other) {
             // we make an easy comparison against the x resolution, we'll do a sanity
             // check about the y resolution later
@@ -463,6 +464,7 @@ class Utils {
      */
     static class NumericDirectoryFilter implements FileFilter {
 
+        @Override
         public boolean accept(File pathname) {
             if (!pathname.isDirectory()) return false;
             try {

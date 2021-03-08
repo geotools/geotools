@@ -37,6 +37,7 @@ public class FilterFunction_tan extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
 
         Object arg0 = getExpression(0).evaluate(feature);

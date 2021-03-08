@@ -255,6 +255,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AdditionalOperatorsType createAdditionalOperatorsType() {
         AdditionalOperatorsTypeImpl additionalOperatorsType = new AdditionalOperatorsTypeImpl();
         return additionalOperatorsType;
@@ -265,6 +266,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ArgumentsType createArgumentsType() {
         ArgumentsTypeImpl argumentsType = new ArgumentsTypeImpl();
         return argumentsType;
@@ -275,6 +277,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ArgumentType createArgumentType() {
         ArgumentTypeImpl argumentType = new ArgumentTypeImpl();
         return argumentType;
@@ -285,6 +288,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AvailableFunctionsType createAvailableFunctionsType() {
         AvailableFunctionsTypeImpl availableFunctionsType = new AvailableFunctionsTypeImpl();
         return availableFunctionsType;
@@ -295,6 +299,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AvailableFunctionType createAvailableFunctionType() {
         AvailableFunctionTypeImpl availableFunctionType = new AvailableFunctionTypeImpl();
         return availableFunctionType;
@@ -305,6 +310,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BBOXType createBBOXType() {
         BBOXTypeImpl bboxType = new BBOXTypeImpl();
         return bboxType;
@@ -315,6 +321,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinaryComparisonOpType createBinaryComparisonOpType() {
         BinaryComparisonOpTypeImpl binaryComparisonOpType = new BinaryComparisonOpTypeImpl();
         return binaryComparisonOpType;
@@ -325,6 +332,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinaryLogicOpType createBinaryLogicOpType() {
         BinaryLogicOpTypeImpl binaryLogicOpType = new BinaryLogicOpTypeImpl();
         return binaryLogicOpType;
@@ -335,6 +343,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinarySpatialOpType createBinarySpatialOpType() {
         BinarySpatialOpTypeImpl binarySpatialOpType = new BinarySpatialOpTypeImpl();
         return binarySpatialOpType;
@@ -345,6 +354,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BinaryTemporalOpType createBinaryTemporalOpType() {
         BinaryTemporalOpTypeImpl binaryTemporalOpType = new BinaryTemporalOpTypeImpl();
         return binaryTemporalOpType;
@@ -355,6 +365,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ComparisonOperatorsType createComparisonOperatorsType() {
         ComparisonOperatorsTypeImpl comparisonOperatorsType = new ComparisonOperatorsTypeImpl();
         return comparisonOperatorsType;
@@ -365,6 +376,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ComparisonOperatorType createComparisonOperatorType() {
         ComparisonOperatorTypeImpl comparisonOperatorType = new ComparisonOperatorTypeImpl();
         return comparisonOperatorType;
@@ -375,6 +387,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ConformanceType createConformanceType() {
         ConformanceTypeImpl conformanceType = new ConformanceTypeImpl();
         return conformanceType;
@@ -385,6 +398,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DistanceBufferType createDistanceBufferType() {
         DistanceBufferTypeImpl distanceBufferType = new DistanceBufferTypeImpl();
         return distanceBufferType;
@@ -395,6 +409,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DocumentRoot createDocumentRoot() {
         DocumentRootImpl documentRoot = new DocumentRootImpl();
         return documentRoot;
@@ -405,6 +420,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ExtendedCapabilitiesType createExtendedCapabilitiesType() {
         ExtendedCapabilitiesTypeImpl extendedCapabilitiesType = new ExtendedCapabilitiesTypeImpl();
         return extendedCapabilitiesType;
@@ -415,6 +431,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ExtensionOperatorType createExtensionOperatorType() {
         ExtensionOperatorTypeImpl extensionOperatorType = new ExtensionOperatorTypeImpl();
         return extensionOperatorType;
@@ -425,6 +442,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FilterCapabilitiesType createFilterCapabilitiesType() {
         FilterCapabilitiesTypeImpl filterCapabilitiesType = new FilterCapabilitiesTypeImpl();
         return filterCapabilitiesType;
@@ -435,6 +453,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FilterType createFilterType() {
         FilterTypeImpl filterType = new FilterTypeImpl();
         return filterType;
@@ -445,6 +464,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FunctionType createFunctionType() {
         FunctionTypeImpl functionType = new FunctionTypeImpl();
         return functionType;
@@ -455,6 +475,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeometryOperandsType createGeometryOperandsType() {
         GeometryOperandsTypeImpl geometryOperandsType = new GeometryOperandsTypeImpl();
         return geometryOperandsType;
@@ -465,6 +486,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GeometryOperandType createGeometryOperandType() {
         GeometryOperandTypeImpl geometryOperandType = new GeometryOperandTypeImpl();
         return geometryOperandType;
@@ -475,6 +497,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public IdCapabilitiesType createIdCapabilitiesType() {
         IdCapabilitiesTypeImpl idCapabilitiesType = new IdCapabilitiesTypeImpl();
         return idCapabilitiesType;
@@ -485,6 +508,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LiteralType createLiteralType() {
         LiteralTypeImpl literalType = new LiteralTypeImpl();
         return literalType;
@@ -495,6 +519,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LogicalOperatorsType createLogicalOperatorsType() {
         LogicalOperatorsTypeImpl logicalOperatorsType = new LogicalOperatorsTypeImpl();
         return logicalOperatorsType;
@@ -505,6 +530,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LowerBoundaryType createLowerBoundaryType() {
         LowerBoundaryTypeImpl lowerBoundaryType = new LowerBoundaryTypeImpl();
         return lowerBoundaryType;
@@ -515,6 +541,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MeasureType createMeasureType() {
         MeasureTypeImpl measureType = new MeasureTypeImpl();
         return measureType;
@@ -525,6 +552,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PropertyIsBetweenType createPropertyIsBetweenType() {
         PropertyIsBetweenTypeImpl propertyIsBetweenType = new PropertyIsBetweenTypeImpl();
         return propertyIsBetweenType;
@@ -535,6 +563,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PropertyIsLikeType createPropertyIsLikeType() {
         PropertyIsLikeTypeImpl propertyIsLikeType = new PropertyIsLikeTypeImpl();
         return propertyIsLikeType;
@@ -545,6 +574,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PropertyIsNilType createPropertyIsNilType() {
         PropertyIsNilTypeImpl propertyIsNilType = new PropertyIsNilTypeImpl();
         return propertyIsNilType;
@@ -555,6 +585,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public PropertyIsNullType createPropertyIsNullType() {
         PropertyIsNullTypeImpl propertyIsNullType = new PropertyIsNullTypeImpl();
         return propertyIsNullType;
@@ -565,6 +596,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ResourceIdentifierType createResourceIdentifierType() {
         ResourceIdentifierTypeImpl resourceIdentifierType = new ResourceIdentifierTypeImpl();
         return resourceIdentifierType;
@@ -575,6 +607,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ResourceIdType createResourceIdType() {
         ResourceIdTypeImpl resourceIdType = new ResourceIdTypeImpl();
         return resourceIdType;
@@ -585,6 +618,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ScalarCapabilitiesType createScalarCapabilitiesType() {
         ScalarCapabilitiesTypeImpl scalarCapabilitiesType = new ScalarCapabilitiesTypeImpl();
         return scalarCapabilitiesType;
@@ -595,6 +629,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SortByType createSortByType() {
         SortByTypeImpl sortByType = new SortByTypeImpl();
         return sortByType;
@@ -605,6 +640,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SortPropertyType createSortPropertyType() {
         SortPropertyTypeImpl sortPropertyType = new SortPropertyTypeImpl();
         return sortPropertyType;
@@ -615,6 +651,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SpatialCapabilitiesType createSpatialCapabilitiesType() {
         SpatialCapabilitiesTypeImpl spatialCapabilitiesType = new SpatialCapabilitiesTypeImpl();
         return spatialCapabilitiesType;
@@ -625,6 +662,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SpatialOperatorsType createSpatialOperatorsType() {
         SpatialOperatorsTypeImpl spatialOperatorsType = new SpatialOperatorsTypeImpl();
         return spatialOperatorsType;
@@ -635,6 +673,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SpatialOperatorType createSpatialOperatorType() {
         SpatialOperatorTypeImpl spatialOperatorType = new SpatialOperatorTypeImpl();
         return spatialOperatorType;
@@ -645,6 +684,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TemporalCapabilitiesType createTemporalCapabilitiesType() {
         TemporalCapabilitiesTypeImpl temporalCapabilitiesType = new TemporalCapabilitiesTypeImpl();
         return temporalCapabilitiesType;
@@ -655,6 +695,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TemporalOperandsType createTemporalOperandsType() {
         TemporalOperandsTypeImpl temporalOperandsType = new TemporalOperandsTypeImpl();
         return temporalOperandsType;
@@ -665,6 +706,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TemporalOperandType createTemporalOperandType() {
         TemporalOperandTypeImpl temporalOperandType = new TemporalOperandTypeImpl();
         return temporalOperandType;
@@ -675,6 +717,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TemporalOperatorsType createTemporalOperatorsType() {
         TemporalOperatorsTypeImpl temporalOperatorsType = new TemporalOperatorsTypeImpl();
         return temporalOperatorsType;
@@ -685,6 +728,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TemporalOperatorType createTemporalOperatorType() {
         TemporalOperatorTypeImpl temporalOperatorType = new TemporalOperatorTypeImpl();
         return temporalOperatorType;
@@ -695,6 +739,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public UnaryLogicOpType createUnaryLogicOpType() {
         UnaryLogicOpTypeImpl unaryLogicOpType = new UnaryLogicOpTypeImpl();
         return unaryLogicOpType;
@@ -705,6 +750,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public UpperBoundaryType createUpperBoundaryType() {
         UpperBoundaryTypeImpl upperBoundaryType = new UpperBoundaryTypeImpl();
         return upperBoundaryType;
@@ -1491,6 +1537,7 @@ public class Fes20FactoryImpl extends EFactoryImpl implements Fes20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Fes20Package getFes20Package() {
         return (Fes20Package)getEPackage();
     }

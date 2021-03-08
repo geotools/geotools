@@ -57,6 +57,7 @@ public abstract class MathExpressionImpl extends DefaultExpression implements Bi
      *
      * @return the expression on the first side of the comparison.
      */
+    @Override
     public org.opengis.filter.expression.Expression getExpression1() {
         return leftValue;
     }
@@ -75,6 +76,7 @@ public abstract class MathExpressionImpl extends DefaultExpression implements Bi
      *
      * @return the expression on the second side of the comparison.
      */
+    @Override
     public org.opengis.filter.expression.Expression getExpression2() {
         return rightValue;
     }

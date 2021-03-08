@@ -134,6 +134,7 @@ public class DescribeEOCoverageSetTypeImpl extends RequestBaseTypeImpl implement
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList<String> getEoId() {
 		if (eoId == null) {
 			eoId = new EDataTypeEList<>(String.class, this, Wcs20Package.DESCRIBE_EO_COVERAGE_SET_TYPE__EO_ID);
@@ -146,6 +147,7 @@ public class DescribeEOCoverageSetTypeImpl extends RequestBaseTypeImpl implement
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getContainmentType() {
 		return containmentType;
 	}
@@ -155,6 +157,7 @@ public class DescribeEOCoverageSetTypeImpl extends RequestBaseTypeImpl implement
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setContainmentType(String newContainmentType) {
 		String oldContainmentType = containmentType;
 		containmentType = newContainmentType;
@@ -167,6 +170,7 @@ public class DescribeEOCoverageSetTypeImpl extends RequestBaseTypeImpl implement
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Sections getSections() {
 		return sections;
 	}
@@ -191,6 +195,7 @@ public class DescribeEOCoverageSetTypeImpl extends RequestBaseTypeImpl implement
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setSections(Sections newSections) {
 		if (newSections != sections) {
 			NotificationChain msgs = null;
@@ -210,6 +215,7 @@ public class DescribeEOCoverageSetTypeImpl extends RequestBaseTypeImpl implement
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList<DimensionTrimType> getDimensionTrim() {
 		if (dimensionTrim == null) {
 			dimensionTrim = new EObjectResolvingEList<>(DimensionTrimType.class, this, Wcs20Package.DESCRIBE_EO_COVERAGE_SET_TYPE__DIMENSION_TRIM);
@@ -222,6 +228,7 @@ public class DescribeEOCoverageSetTypeImpl extends RequestBaseTypeImpl implement
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public int getCount() {
 		return count;
 	}
@@ -231,6 +238,7 @@ public class DescribeEOCoverageSetTypeImpl extends RequestBaseTypeImpl implement
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setCount(int newCount) {
 		int oldCount = count;
 		count = newCount;

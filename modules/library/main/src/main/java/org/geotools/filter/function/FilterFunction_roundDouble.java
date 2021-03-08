@@ -36,6 +36,7 @@ public class FilterFunction_roundDouble extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         double arg0;
 

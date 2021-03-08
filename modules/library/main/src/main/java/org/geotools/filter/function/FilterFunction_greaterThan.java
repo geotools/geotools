@@ -49,6 +49,7 @@ public class FilterFunction_greaterThan extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Object arg0;
         Object arg1;

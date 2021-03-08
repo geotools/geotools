@@ -81,10 +81,12 @@ public class PointTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.PointType;
     }
 
+    @Override
     public int getExecutionMode() {
         return BEFORE;
     }
@@ -96,6 +98,7 @@ public class PointTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Point.class;
     }
@@ -107,6 +110,7 @@ public class PointTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         if (node.hasChild(DirectPosition.class)) {
             DirectPosition dp = node.getChildValue(DirectPosition.class);
@@ -130,6 +134,7 @@ public class PointTypeBinding extends AbstractComplexBinding {
         return null;
     }
 
+    @Override
     public Object getProperty(Object object, QName name) {
         // hack for xlink stuff
         Geometry geometry = (Geometry) object;

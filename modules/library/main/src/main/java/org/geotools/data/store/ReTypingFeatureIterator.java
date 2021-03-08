@@ -53,10 +53,12 @@ public class ReTypingFeatureIterator implements SimpleFeatureIterator {
         return delegate;
     }
 
+    @Override
     public boolean hasNext() {
         return delegate.hasNext();
     }
 
+    @Override
     public SimpleFeature next() {
         SimpleFeature next = delegate.next();
         String id = next.getID();

@@ -30,6 +30,7 @@ import org.geotools.filter.text.generated.parsers.Token;
  */
 public interface IToken {
 
+    @Override
     public String toString();
 
     public boolean hasNext();

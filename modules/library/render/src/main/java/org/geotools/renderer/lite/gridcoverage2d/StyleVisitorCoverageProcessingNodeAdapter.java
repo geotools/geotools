@@ -88,6 +88,7 @@ public abstract class StyleVisitorCoverageProcessingNodeAdapter extends StyleVis
                 new BaseCoverageProcessingNode(
                         maxSources, hints != null ? hints.clone() : null, name, description) {
 
+                    @Override
                     protected GridCoverage execute() {
                         synchronized (StyleVisitorCoverageProcessingNodeAdapter.this) {
                             return StyleVisitorCoverageProcessingNodeAdapter.this.execute();
@@ -104,6 +105,7 @@ public abstract class StyleVisitorCoverageProcessingNodeAdapter extends StyleVis
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#addSink(org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode)
      */
+    @Override
     public void addSink(CoverageProcessingNode sink) {
         adaptee.addSink(sink);
     }
@@ -113,6 +115,7 @@ public abstract class StyleVisitorCoverageProcessingNodeAdapter extends StyleVis
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#addSource(org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode)
      */
+    @Override
     public boolean addSource(CoverageProcessingNode source) {
         return adaptee.addSource(source);
     }
@@ -122,6 +125,7 @@ public abstract class StyleVisitorCoverageProcessingNodeAdapter extends StyleVis
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getOutput()
      */
+    @Override
     public GridCoverage getOutput() {
         return adaptee.getOutput();
     }
@@ -131,6 +135,7 @@ public abstract class StyleVisitorCoverageProcessingNodeAdapter extends StyleVis
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getSink(int)
      */
+    @Override
     public CoverageProcessingNode getSink(int index) {
         return adaptee.getSink(index);
     }
@@ -140,6 +145,7 @@ public abstract class StyleVisitorCoverageProcessingNodeAdapter extends StyleVis
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getSinks()
      */
+    @Override
     public List<CoverageProcessingNode> getSinks() {
         return adaptee.getSinks();
     }
@@ -149,6 +155,7 @@ public abstract class StyleVisitorCoverageProcessingNodeAdapter extends StyleVis
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getSource(int)
      */
+    @Override
     public CoverageProcessingNode getSource(int index) {
         return adaptee.getSource(index);
     }
@@ -158,6 +165,7 @@ public abstract class StyleVisitorCoverageProcessingNodeAdapter extends StyleVis
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getSources()
      */
+    @Override
     public List<CoverageProcessingNode> getSources() {
         return adaptee.getSources();
     }
@@ -167,6 +175,7 @@ public abstract class StyleVisitorCoverageProcessingNodeAdapter extends StyleVis
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#removeSink(org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode)
      */
+    @Override
     public boolean removeSink(CoverageProcessingNode sink) {
         return adaptee.removeSink(sink);
     }
@@ -176,6 +185,7 @@ public abstract class StyleVisitorCoverageProcessingNodeAdapter extends StyleVis
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#removeSink(int)
      */
+    @Override
     public CoverageProcessingNode removeSink(int index) {
         return adaptee.removeSink(index);
     }
@@ -185,6 +195,7 @@ public abstract class StyleVisitorCoverageProcessingNodeAdapter extends StyleVis
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#removeSource(org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode)
      */
+    @Override
     public boolean removeSource(CoverageProcessingNode source) {
         return adaptee.removeSource(source);
     }
@@ -194,6 +205,7 @@ public abstract class StyleVisitorCoverageProcessingNodeAdapter extends StyleVis
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#removeSource(int)
      */
+    @Override
     public CoverageProcessingNode removeSource(int index) {
         return adaptee.removeSource(index);
     }
@@ -203,6 +215,7 @@ public abstract class StyleVisitorCoverageProcessingNodeAdapter extends StyleVis
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#dispose(boolean)
      */
+    @Override
     public void dispose(boolean force) {
         adaptee.dispose(force);
     }
@@ -212,6 +225,7 @@ public abstract class StyleVisitorCoverageProcessingNodeAdapter extends StyleVis
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getHints()
      */
+    @Override
     public Hints getHints() {
         return adaptee.getHints();
     }
@@ -221,6 +235,7 @@ public abstract class StyleVisitorCoverageProcessingNodeAdapter extends StyleVis
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getNumberOfSinks()
      */
+    @Override
     public int getNumberOfSinks() {
         return adaptee.getNumberOfSinks();
     }
@@ -230,6 +245,7 @@ public abstract class StyleVisitorCoverageProcessingNodeAdapter extends StyleVis
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getNumberOfSources()
      */
+    @Override
     public int getNumberOfSources() {
         return adaptee.getNumberOfSources();
     }
@@ -239,6 +255,7 @@ public abstract class StyleVisitorCoverageProcessingNodeAdapter extends StyleVis
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getDescription()
      */
+    @Override
     public InternationalString getDescription() {
         return adaptee.getDescription();
     }
@@ -248,6 +265,7 @@ public abstract class StyleVisitorCoverageProcessingNodeAdapter extends StyleVis
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getName()
      */
+    @Override
     public InternationalString getName() {
         return adaptee.getName();
     }
@@ -256,6 +274,7 @@ public abstract class StyleVisitorCoverageProcessingNodeAdapter extends StyleVis
      * (non-Javadoc)
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         return adaptee.toString();
     }
@@ -265,6 +284,7 @@ public abstract class StyleVisitorCoverageProcessingNodeAdapter extends StyleVis
      *
      * @see org.geotools.renderer.lite.gridcoverage2d.CoverageProcessingNode#getCoverageFactory()
      */
+    @Override
     public GridCoverageFactory getCoverageFactory() {
         return adaptee.getCoverageFactory();
     }

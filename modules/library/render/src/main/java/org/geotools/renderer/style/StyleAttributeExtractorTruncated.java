@@ -61,12 +61,14 @@ public class StyleAttributeExtractorTruncated extends StyleAttributeExtractor
         return usingVolatileFunctions;
     }
 
+    @Override
     public Object visit(org.opengis.filter.expression.Function expression, Object data) {
         usingVolatileFunctions |= (expression instanceof VolatileFunction);
         return super.visit(expression, data);
     };
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.TextSymbolizer) */
+    @Override
     public void visit(TextSymbolizer text) {
 
         if (text instanceof TextSymbolizer2) {

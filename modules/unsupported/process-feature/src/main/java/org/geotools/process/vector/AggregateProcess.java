@@ -342,6 +342,7 @@ public class AggregateProcess implements VectorProcess {
             this.delegates = delegates;
         }
 
+        @Override
         public CalcResult getResult() {
             final List<CalcResult> results = new ArrayList<>();
             for (FeatureCalc delegate : delegates) {
@@ -356,6 +357,7 @@ public class AggregateProcess implements VectorProcess {
             };
         }
 
+        @Override
         public void visit(Feature feature) {
             for (FeatureCalc delegate : delegates) {
                 delegate.visit(feature);

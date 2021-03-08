@@ -44,6 +44,7 @@ public interface Identifier {
      * @return true if obj is an Identifier with the same getID()
      */
     /// @Override
+    @Override
     public boolean equals(Object obj);
 
     /**
@@ -52,6 +53,7 @@ public interface Identifier {
      * @return hashCode based on getID()
      */
     /// @Override
+    @Override
     public int hashCode();
 
     /**
@@ -59,6 +61,7 @@ public interface Identifier {
      *
      * @return getID().toString()
      */
+    @Override
     /// @Override
     String toString();
 }

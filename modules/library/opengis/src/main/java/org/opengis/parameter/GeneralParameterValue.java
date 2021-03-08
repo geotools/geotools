@@ -38,5 +38,6 @@ public interface GeneralParameterValue extends Cloneable {
      *
      * @return A copy of this parameter value or group.
      */
+    @Override
     GeneralParameterValue clone();
 }

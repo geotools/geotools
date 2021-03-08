@@ -133,6 +133,7 @@ public final class WeakObjectCacheTest {
             this.cache = cache;
         }
 
+        @Override
         public void run() {
             try {
                 cache.writeLock(key1);

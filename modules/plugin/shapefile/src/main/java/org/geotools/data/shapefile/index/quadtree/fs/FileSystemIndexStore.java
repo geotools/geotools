@@ -55,6 +55,7 @@ public class FileSystemIndexStore implements IndexStore {
     /**
      * @see org.geotools.index.quadtree.IndexStore#dataStore(org.geotools.index.quadtree.QuadTree)
      */
+    @Override
     public void store(QuadTree tree) throws StoreException {
         // For efficiency, trim the tree
         tree.trim();
@@ -151,6 +152,7 @@ public class FileSystemIndexStore implements IndexStore {
      *
      * @see org.geotools.index.quadtree.IndexStore#load()
      */
+    @Override
     @SuppressWarnings("PMD.CloseResource") // channel is managed in the returned value
     public QuadTree load(IndexFile indexfile, boolean useMemoryMapping) throws StoreException {
         QuadTree tree = null;
@@ -173,14 +175,17 @@ public class FileSystemIndexStore implements IndexStore {
 
             tree =
                     new QuadTree(buf.getInt(), buf.getInt(), indexfile) {
+                        @Override
                         public void insert(int recno, Envelope bounds) {
                             throw new UnsupportedOperationException("File quadtrees are immutable");
                         }
 
+                        @Override
                         public boolean trim() {
                             return false;
                         }
 
+                        @Override
                         public void close() throws StoreException {
                             super.close();
                             try {

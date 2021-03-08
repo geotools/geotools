@@ -143,6 +143,7 @@ public class MeteosatSG extends MapProjection {
      * @param x The longitude of the coordinate, in <strong>radians</strong>.
      * @param y The latitude of the coordinate, in <strong>radians</strong>.
      */
+    @Override
     protected Point2D transformNormalized(double x, double y, Point2D ptDst)
             throws ProjectionException {
 
@@ -247,6 +248,7 @@ public class MeteosatSG extends MapProjection {
      * Transforms the specified (<var>column</var>,<var>row</var>) coordinates (units in
      * "normalized" pixels) and stores the result in {@code ptDst}.
      */
+    @Override
     protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
             throws ProjectionException {
 
@@ -354,6 +356,7 @@ public class MeteosatSG extends MapProjection {
     }
 
     /** {@inheritDoc} */
+    @Override
     public ParameterDescriptorGroup getParameterDescriptors() {
         return Provider.PARAMETERS;
     }
@@ -409,6 +412,7 @@ public class MeteosatSG extends MapProjection {
          * @return The created math transform.
          * @throws ParameterNotFoundException if a required parameter was not found.
          */
+        @Override
         protected MathTransform createMathTransform(final ParameterValueGroup parameters)
                 throws ParameterNotFoundException, FactoryException {
             if (isSpherical(parameters)) {

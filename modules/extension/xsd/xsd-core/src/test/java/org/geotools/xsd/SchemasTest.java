@@ -23,7 +23,6 @@ import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -147,6 +146,7 @@ public class SchemasTest {
         SchemaLocationResolver resolver1 =
                 new SchemaLocationResolver(XS.getInstance()) {
 
+                    @Override
                     public boolean canHandle(XSDSchema schema, String uri, String location) {
                         if (location.endsWith("import2.xsd")) {
                             return true;
@@ -155,6 +155,7 @@ public class SchemasTest {
                         return false;
                     }
 
+                    @Override
                     public String resolveSchemaLocation(
                             XSDSchema schema, String uri, String location) {
                         return new File(sub, "import2.xsd").getAbsolutePath();
@@ -163,6 +164,7 @@ public class SchemasTest {
         SchemaLocationResolver resolver2 =
                 new SchemaLocationResolver(XS.getInstance()) {
 
+                    @Override
                     public boolean canHandle(XSDSchema schema, String uri, String location) {
                         if (location.endsWith("include2.xsd")) {
                             return true;
@@ -171,6 +173,7 @@ public class SchemasTest {
                         return false;
                     }
 
+                    @Override
                     public String resolveSchemaLocation(
                             XSDSchema schema, String uri, String location) {
                         return new File(sub, "include2.xsd").getAbsolutePath();
@@ -246,13 +249,10 @@ public class SchemasTest {
             try {
                 return executorService.invokeAny(
                         Collections.singletonList(
-                                new Callable<InputStream>() {
-                                    @Override
-                                    public InputStream call() throws Exception {
-                                        synchronized (Schemas.class) {
-                                            return Schemas.class.getResourceAsStream(
-                                                    "remoteSchemaLocation.xsd");
-                                        }
+                                () -> {
+                                    synchronized (Schemas.class) {
+                                        return Schemas.class.getResourceAsStream(
+                                                "remoteSchemaLocation.xsd");
                                     }
                                 }),
                         3,

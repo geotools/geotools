@@ -64,6 +64,7 @@ public abstract class SLDInternationalStringBinding extends AbstractComplexBindi
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -80,6 +81,7 @@ public abstract class SLDInternationalStringBinding extends AbstractComplexBindi
      *
      * @generated modifiable
      */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
@@ -89,6 +91,7 @@ public abstract class SLDInternationalStringBinding extends AbstractComplexBindi
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         @SuppressWarnings("unchecked")
         Map<String, Object> map = (Map<String, Object>) value;

@@ -114,6 +114,7 @@ public final class TypeMap {
     /** The name as an international string. */
     private final InternationalString name =
             new AbstractInternationalString() {
+                @Override
                 public String toString(final Locale locale) {
                     return Vocabulary.getResources(locale)
                             .getString(

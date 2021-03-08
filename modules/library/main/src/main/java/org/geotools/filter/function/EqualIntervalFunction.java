@@ -224,6 +224,7 @@ public class EqualIntervalFunction extends ClassificationFunction {
         return new RangedClassifier(localMin, localMax);
     }
 
+    @Override
     public RangedClassifier evaluate(Object object) {
         if (!(object instanceof FeatureCollection)) {
             return null;

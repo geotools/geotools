@@ -37,6 +37,7 @@ public class ParameterParserDelegate extends CopyingHandler
         return false;
     }
 
+    @Override
     public boolean canHandle(
             QName elementName, Attributes attributes, Handler handler, Handler parent) {
         if (Parameter.equals(elementName)) {
@@ -65,6 +66,7 @@ public class ParameterParserDelegate extends CopyingHandler
         }
     }
 
+    @Override
     public Object getParsedObject() {
         return result;
     }

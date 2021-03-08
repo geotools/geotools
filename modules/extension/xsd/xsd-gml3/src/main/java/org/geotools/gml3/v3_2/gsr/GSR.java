@@ -42,6 +42,7 @@ public final class GSR extends GML.DelegatingXSD {
     /** private constructor */
     private GSR() {}
 
+    @Override
     protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(GCO.getInstance());
     }
@@ -52,11 +53,13 @@ public final class GSR extends GML.DelegatingXSD {
     }
 
     /** Returns 'http://www.isotc211.org/2005/gsr'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'gsr.xsd.'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("gsr.xsd").toString();
     }

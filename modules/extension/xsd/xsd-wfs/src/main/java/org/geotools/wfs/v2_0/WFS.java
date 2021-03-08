@@ -43,17 +43,20 @@ public final class WFS extends XSD {
     /** private constructor */
     private WFS() {}
 
+    @Override
     protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(OWS.getInstance());
         dependencies.add(FES.getInstance());
     }
 
     /** Returns 'http://www.opengis.net/wfs/2.0'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'wfs.xsd.'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("wfs.xsd").toString();
     }

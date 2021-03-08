@@ -35,19 +35,23 @@ final class NullObjectCache<K, V> implements ObjectCache<K, V> {
     private NullObjectCache() {}
 
     /** Do nothing since this map is already empty. */
+    @Override
     public void clear() {}
 
     /** Returns {@code null} since this map is empty. */
+    @Override
     public V get(K key) {
         return null;
     }
 
     /** Returns {@code null} since this map is empty. */
+    @Override
     public V peek(K key) {
         return null;
     }
 
     /** Do nothing since this map does not cache anything. */
+    @Override
     public void put(K key, V object) {}
 
     /** There is no cache, therefore a cache miss is a safe assumption. */
@@ -56,16 +60,20 @@ final class NullObjectCache<K, V> implements ObjectCache<K, V> {
     }
 
     /** Do nothing since there is no write lock. */
+    @Override
     public void writeLock(K key) {}
 
     /** Do nothing since there is no write lock. */
+    @Override
     public void writeUnLock(K key) {}
 
     /** Return an empty set. */
+    @Override
     public Set<K> getKeys() {
         return Collections.emptySet();
     }
 
     /** Do nothing since there is nothing to remove. */
+    @Override
     public void remove(K key) {}
 }

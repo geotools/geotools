@@ -60,6 +60,7 @@ public class FilterFunction_numberFormat extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         String format;
         Double number;

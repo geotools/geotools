@@ -92,10 +92,12 @@ class GeometrySmoother {
      */
     private SmootherControl DEFAULT_CONTROL =
             new SmootherControl() {
+                @Override
                 public double getMinLength() {
                     return 0.0;
                 }
 
+                @Override
                 public int getNumVertices(double length) {
                     return 10;
                 }

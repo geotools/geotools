@@ -222,76 +222,94 @@ class CompositingGroup {
             super.preDispose();
         }
 
+        @Override
         public void draw(Graphics2D graphics, MapContent map, MapViewport viewport) {
             delegate.draw(graphics, map, viewport);
         }
 
+        @Override
         public void preDispose() {
             // do nothing so as not to kill off the layer
             // before the label cache is completed
 
         }
 
+        @Override
         public void setTitle(String title) {
             delegate.setTitle(title);
         }
 
+        @Override
         public boolean isSelected() {
             return delegate.isSelected();
         }
 
+        @Override
         public ReferencedEnvelope getBounds() {
             return delegate.getBounds();
         }
 
+        @Override
         public void addMapLayerListener(MapLayerListener listener) {
             delegate.addMapLayerListener(listener);
         }
 
+        @Override
         public boolean equals(Object arg0) {
             return delegate.equals(arg0);
         }
 
+        @Override
         public String getTitle() {
             return delegate.getTitle();
         }
 
+        @Override
         public boolean isVisible() {
             return delegate.isVisible();
         }
 
+        @Override
         public void setVisible(boolean visible) {
             delegate.setVisible(visible);
         }
 
+        @Override
         public void setSelected(boolean selected) {
             delegate.setSelected(selected);
         }
 
+        @Override
         public Map<String, Object> getUserData() {
             return delegate.getUserData();
         }
 
+        @Override
         public void removeMapLayerListener(MapLayerListener listener) {
             delegate.removeMapLayerListener(listener);
         }
 
+        @Override
         public Style getStyle() {
             return delegate.getStyle();
         }
 
+        @Override
         public FeatureSource<?, ?> getFeatureSource() {
             return delegate.getFeatureSource();
         }
 
+        @Override
         public Query getQuery() {
             return delegate.getQuery();
         }
 
+        @Override
         public int hashCode() {
             return delegate.hashCode();
         }
 
+        @Override
         public String toString() {
             return delegate.toString();
         }

@@ -31,26 +31,32 @@ public class JDBCClosingFeatureWriter implements FeatureWriter<SimpleFeatureType
         this.writer = writer;
     }
 
+    @Override
     public SimpleFeatureType getFeatureType() {
         return (SimpleFeatureType) writer.getFeatureType();
     }
 
+    @Override
     public boolean hasNext() throws IOException {
         return writer.hasNext();
     }
 
+    @Override
     public SimpleFeature next() throws IOException {
         return (SimpleFeature) writer.next();
     }
 
+    @Override
     public void remove() throws IOException {
         writer.remove();
     }
 
+    @Override
     public void write() throws IOException {
         writer.write();
     }
 
+    @Override
     @SuppressWarnings("PMD.CloseResource") // we are actually closing
     public void close() throws IOException {
         FeatureWriter w = writer;

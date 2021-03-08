@@ -78,16 +78,19 @@ final class ImagingParameter<T> extends AbstractParameter implements ParameterVa
     }
 
     /** Returns {@code null} since JAI's parameters have no units. */
+    @Override
     public Unit<?> getUnit() {
         return null;
     }
 
     /** Always throws an exception, since this parameter has no unit. */
+    @Override
     public double doubleValue(final Unit<?> unit) throws InvalidParameterTypeException {
         throw unitlessParameter(descriptor);
     }
 
     /** Returns the numeric value of the coordinate operation parameter. */
+    @Override
     public double doubleValue() throws InvalidParameterTypeException {
         final String name = getName();
         final Class type = getType();
@@ -104,6 +107,7 @@ final class ImagingParameter<T> extends AbstractParameter implements ParameterVa
     }
 
     /** Returns the positive integer value of an operation parameter. */
+    @Override
     public int intValue() throws InvalidParameterTypeException {
         final String name = getName();
         final Class type = getType();
@@ -117,6 +121,7 @@ final class ImagingParameter<T> extends AbstractParameter implements ParameterVa
     }
 
     /** Returns the boolean value of an operation parameter. */
+    @Override
     public boolean booleanValue() throws InvalidParameterTypeException {
         final String name = getName();
         try {
@@ -127,6 +132,7 @@ final class ImagingParameter<T> extends AbstractParameter implements ParameterVa
     }
 
     /** Returns the string value of an operation parameter. */
+    @Override
     public String stringValue() throws InvalidParameterTypeException {
         final String name = getName();
         try {
@@ -139,11 +145,13 @@ final class ImagingParameter<T> extends AbstractParameter implements ParameterVa
     }
 
     /** Always throws an exception, since this parameter has no unit. */
+    @Override
     public double[] doubleValueList(Unit<?> unit) throws InvalidParameterTypeException {
         throw unitlessParameter(descriptor);
     }
 
     /** Returns an ordered sequence of two or more numeric values of an operation parameter list. */
+    @Override
     public double[] doubleValueList() throws InvalidParameterTypeException {
         final String name = getName();
         try {
@@ -154,6 +162,7 @@ final class ImagingParameter<T> extends AbstractParameter implements ParameterVa
     }
 
     /** Returns an ordered sequence of two or more integer values of an operation parameter list. */
+    @Override
     public int[] intValueList() throws InvalidParameterTypeException {
         final String name = getName();
         try {
@@ -168,6 +177,7 @@ final class ImagingParameter<T> extends AbstractParameter implements ParameterVa
      *
      * @todo Add automatic conversions, if it appears usefull for JAI parameters.
      */
+    @Override
     public URI valueFile() throws InvalidParameterTypeException {
         final String name = getName();
         try {
@@ -182,6 +192,7 @@ final class ImagingParameter<T> extends AbstractParameter implements ParameterVa
      * {@link Integer}, {@link Boolean}, {@link String}, {@link URI}, {@code double[]} or {@code
      * int[]}.
      */
+    @Override
     public T getValue() {
         final String name = getName();
         final Object value;
@@ -198,11 +209,13 @@ final class ImagingParameter<T> extends AbstractParameter implements ParameterVa
     }
 
     /** Always throws an exception, since this parameter has no unit. */
+    @Override
     public void setValue(final double value, Unit<?> unit) throws InvalidParameterValueException {
         throw unitlessParameter(descriptor);
     }
 
     /** Set the parameter value as a floating point. */
+    @Override
     public void setValue(final double value) throws InvalidParameterValueException {
         final String name = getName();
         final Class type = getType();
@@ -234,6 +247,7 @@ final class ImagingParameter<T> extends AbstractParameter implements ParameterVa
     }
 
     /** Set the parameter value as an integer. */
+    @Override
     public void setValue(final int value) throws InvalidParameterValueException {
         final String name = getName();
         final Class type = getType();
@@ -253,6 +267,7 @@ final class ImagingParameter<T> extends AbstractParameter implements ParameterVa
     }
 
     /** Set the parameter value as a boolean. */
+    @Override
     public void setValue(final boolean value) throws InvalidParameterValueException {
         final String name = getName();
         try {
@@ -266,6 +281,7 @@ final class ImagingParameter<T> extends AbstractParameter implements ParameterVa
      * Set the parameter value as an object. The object type is typically a {@link Double}, {@link
      * Integer}, {@link Boolean}, {@link String}, {@link URI}, {@code double[]} or {@code int[]}.
      */
+    @Override
     public void setValue(final Object value) throws InvalidParameterValueException {
         final String name = getName();
         try {
@@ -276,6 +292,7 @@ final class ImagingParameter<T> extends AbstractParameter implements ParameterVa
     }
 
     /** Always throws an exception, since this parameter has no unit. */
+    @Override
     public void setValue(double[] values, Unit<?> unit) throws InvalidParameterValueException {
         throw unitlessParameter(descriptor);
     }

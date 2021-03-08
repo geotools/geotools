@@ -264,6 +264,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
     }
 
     /** @see org.opengis.coverage.grid.GridCoverageReader#getFormat() */
+    @Override
     public Format getFormat() {
         return new ImagePyramidFormat();
     }
@@ -433,6 +434,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
     }
 
     /** Retrieve data value for requested metadata */
+    @Override
     public String getMetadataValue(final String name) {
         return getImageMosaicMetadataValue(coverageName, name);
     }
@@ -483,6 +485,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
         return getMetadataNames();
     }
 
+    @Override
     public String[] getMetadataNames() {
         final String[] parentNames = super.getMetadataNames();
         final List<String> metadataNames = new ArrayList<>();

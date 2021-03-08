@@ -38,6 +38,7 @@ public class FilterFunction_touches extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Geometry arg0;
         Geometry arg1;

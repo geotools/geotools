@@ -99,6 +99,7 @@ public class TitleEltTypeImpl extends EObjectImpl implements TitleEltType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     protected EClass eStaticClass() {
         return XlinkPackage.Literals.TITLE_ELT_TYPE;
     }
@@ -108,6 +109,7 @@ public class TitleEltTypeImpl extends EObjectImpl implements TitleEltType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getLang() {
         return lang;
     }
@@ -117,6 +119,7 @@ public class TitleEltTypeImpl extends EObjectImpl implements TitleEltType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLang(String newLang) {
         String oldLang = lang;
         lang = newLang;
@@ -129,6 +132,7 @@ public class TitleEltTypeImpl extends EObjectImpl implements TitleEltType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TypeType getType() {
         return type;
     }
@@ -138,6 +142,7 @@ public class TitleEltTypeImpl extends EObjectImpl implements TitleEltType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setType(TypeType newType) {
         TypeType oldType = type;
         type = newType == null ? TYPE_EDEFAULT : newType;
@@ -152,6 +157,7 @@ public class TitleEltTypeImpl extends EObjectImpl implements TitleEltType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetType() {
         TypeType oldType = type;
         boolean oldTypeESet = typeESet;
@@ -166,6 +172,7 @@ public class TitleEltTypeImpl extends EObjectImpl implements TitleEltType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetType() {
         return typeESet;
     }
@@ -175,6 +182,7 @@ public class TitleEltTypeImpl extends EObjectImpl implements TitleEltType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList getContents() {
         // TODO: implement this method to return the 'Contents' reference list
         // Ensure that you remove @generated or mark it @generated NOT
@@ -188,6 +196,7 @@ public class TitleEltTypeImpl extends EObjectImpl implements TitleEltType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case XlinkPackage.TITLE_ELT_TYPE__LANG:
@@ -205,6 +214,7 @@ public class TitleEltTypeImpl extends EObjectImpl implements TitleEltType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case XlinkPackage.TITLE_ELT_TYPE__LANG:
@@ -222,6 +232,7 @@ public class TitleEltTypeImpl extends EObjectImpl implements TitleEltType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case XlinkPackage.TITLE_ELT_TYPE__LANG:
@@ -239,6 +250,7 @@ public class TitleEltTypeImpl extends EObjectImpl implements TitleEltType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case XlinkPackage.TITLE_ELT_TYPE__LANG:
@@ -256,6 +268,7 @@ public class TitleEltTypeImpl extends EObjectImpl implements TitleEltType {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String toString() {
         if (eIsProxy()) return super.toString();
 

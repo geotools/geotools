@@ -51,20 +51,24 @@ public class OGCSchema implements Schema {
         }
     }
 
+    @Override
     public int getBlockDefault() {
         return 0;
     }
 
+    @Override
     public int getFinalDefault() {
         return 0;
     }
 
+    @Override
     public String getId() {
         return "null";
     }
 
     private static volatile Schema[] imports = null;
 
+    @Override
     public Schema[] getImports() {
         if (imports == null) {
             imports = new Schema[] {GMLSchema.getInstance()};
@@ -72,45 +76,55 @@ public class OGCSchema implements Schema {
         return imports;
     }
 
+    @Override
     public String getPrefix() {
         return "ogc";
     }
 
+    @Override
     public URI getTargetNamespace() {
         return NAMESPACE;
     }
 
+    @Override
     public URI getURI() {
         return NAMESPACE;
     }
 
+    @Override
     public String getVersion() {
         return "null";
     }
 
+    @Override
     public boolean includesURI(URI uri) {
         // // TODO fill me in!
         return false; // // safer
     }
 
+    @Override
     public boolean isAttributeFormDefault() {
         return false;
     }
 
+    @Override
     public boolean isElementFormDefault() {
         return false;
     }
 
+    @Override
     public AttributeGroup[] getAttributeGroups() {
         return null;
     }
 
+    @Override
     public Attribute[] getAttributes() {
         return null;
     }
     /** TODO comment here */
     private static volatile ComplexType[] complexTypes = null;
 
+    @Override
     public ComplexType[] getComplexTypes() {
         if (complexTypes == null) {
             complexTypes = new ComplexType[] {ogcComplexTypes.VendorType.getInstance()};
@@ -124,6 +138,7 @@ public class OGCSchema implements Schema {
     public static final int GET_MAP = 1;
     public static final int GET_FEATURE_INFO = 2;
 
+    @Override
     public Element[] getElements() {
         if (elements == null) {
             synchronized (OGCSchema.class) {
@@ -153,12 +168,14 @@ public class OGCSchema implements Schema {
         return elements;
     }
 
+    @Override
     public Group[] getGroups() {
         return null;
     }
     /** TODO comment here */
     private static volatile SimpleType[] simpleTypes = null;
 
+    @Override
     public SimpleType[] getSimpleTypes() {
         if (simpleTypes == null) {
             simpleTypes =
@@ -173,6 +190,7 @@ public class OGCSchema implements Schema {
     }
 
     /** Returns the implementation hints. The default implementation returns en empty map. */
+    @Override
     public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }

@@ -71,6 +71,7 @@ public abstract class AbstractGeneralOperationParameterTypeImpl extends Definiti
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getMinimumOccurs() {
         return minimumOccurs;
     }
@@ -80,6 +81,7 @@ public abstract class AbstractGeneralOperationParameterTypeImpl extends Definiti
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMinimumOccurs(BigInteger newMinimumOccurs) {
         BigInteger oldMinimumOccurs = minimumOccurs;
         minimumOccurs = newMinimumOccurs;

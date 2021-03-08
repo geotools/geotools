@@ -80,6 +80,7 @@ public enum ShapeType {
      *
      * @return The name.
      */
+    @Override
     public String toString() {
         return name;
     }

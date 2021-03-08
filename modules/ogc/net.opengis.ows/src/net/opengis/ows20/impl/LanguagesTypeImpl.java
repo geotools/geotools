@@ -74,6 +74,7 @@ public class LanguagesTypeImpl extends EObjectImpl implements LanguagesType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getLanguage() {
     return language;
   }
@@ -83,6 +84,7 @@ public class LanguagesTypeImpl extends EObjectImpl implements LanguagesType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setLanguage(String newLanguage) {
     String oldLanguage = language;
     language = newLanguage;

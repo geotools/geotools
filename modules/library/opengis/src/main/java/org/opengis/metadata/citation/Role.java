@@ -106,6 +106,7 @@ public final class Role extends CodeList<Role> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public Role[] family() {
         return values();
     }

@@ -89,6 +89,7 @@ public abstract class AbstractParameterDescriptor extends AbstractIdentifiedObje
      * <b>return</b> new {@linkplain Parameter}(this);
      * </pre>
      */
+    @Override
     public abstract GeneralParameterValue createValue();
 
     /**
@@ -97,6 +98,7 @@ public abstract class AbstractParameterDescriptor extends AbstractIdentifiedObje
      *
      * @see #getMaximumOccurs
      */
+    @Override
     public int getMinimumOccurs() {
         return minimumOccurs;
     }
@@ -108,6 +110,7 @@ public abstract class AbstractParameterDescriptor extends AbstractIdentifiedObje
      *
      * @see #getMinimumOccurs
      */
+    @Override
     public abstract int getMaximumOccurs();
 
     /**

@@ -57,6 +57,7 @@ public class PostTypeImpl extends EObjectImpl implements PostType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.POST_TYPE;
 	}
@@ -66,6 +67,7 @@ public class PostTypeImpl extends EObjectImpl implements PostType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public OnlineResourceType getOnlineResource() {
 		return onlineResource;
 	}
@@ -90,6 +92,7 @@ public class PostTypeImpl extends EObjectImpl implements PostType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setOnlineResource(OnlineResourceType newOnlineResource) {
 		if (newOnlineResource != onlineResource) {
 			NotificationChain msgs = null;
@@ -109,6 +112,7 @@ public class PostTypeImpl extends EObjectImpl implements PostType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.POST_TYPE__ONLINE_RESOURCE:
@@ -122,6 +126,7 @@ public class PostTypeImpl extends EObjectImpl implements PostType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.POST_TYPE__ONLINE_RESOURCE:
@@ -135,6 +140,7 @@ public class PostTypeImpl extends EObjectImpl implements PostType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.POST_TYPE__ONLINE_RESOURCE:
@@ -149,6 +155,7 @@ public class PostTypeImpl extends EObjectImpl implements PostType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.POST_TYPE__ONLINE_RESOURCE:
@@ -163,6 +170,7 @@ public class PostTypeImpl extends EObjectImpl implements PostType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.POST_TYPE__ONLINE_RESOURCE:

@@ -124,6 +124,7 @@ public class ResponseBaseTypeImpl extends EObjectImpl implements ResponseBaseTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.RESPONSE_BASE_TYPE;
   }
@@ -133,6 +134,7 @@ public class ResponseBaseTypeImpl extends EObjectImpl implements ResponseBaseTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getLang() {
     return lang;
   }
@@ -142,6 +144,7 @@ public class ResponseBaseTypeImpl extends EObjectImpl implements ResponseBaseTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setLang(String newLang) {
     String oldLang = lang;
     lang = newLang;
@@ -154,6 +157,7 @@ public class ResponseBaseTypeImpl extends EObjectImpl implements ResponseBaseTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getService() {
     return service;
   }
@@ -163,6 +167,7 @@ public class ResponseBaseTypeImpl extends EObjectImpl implements ResponseBaseTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setService(String newService) {
     String oldService = service;
     service = newService;
@@ -177,6 +182,7 @@ public class ResponseBaseTypeImpl extends EObjectImpl implements ResponseBaseTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetService() {
     String oldService = service;
     boolean oldServiceESet = serviceESet;
@@ -191,6 +197,7 @@ public class ResponseBaseTypeImpl extends EObjectImpl implements ResponseBaseTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetService() {
     return serviceESet;
   }
@@ -200,6 +207,7 @@ public class ResponseBaseTypeImpl extends EObjectImpl implements ResponseBaseTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getVersion() {
     return version;
   }
@@ -209,6 +217,7 @@ public class ResponseBaseTypeImpl extends EObjectImpl implements ResponseBaseTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setVersion(String newVersion) {
     String oldVersion = version;
     version = newVersion;
@@ -223,6 +232,7 @@ public class ResponseBaseTypeImpl extends EObjectImpl implements ResponseBaseTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetVersion() {
     String oldVersion = version;
     boolean oldVersionESet = versionESet;
@@ -237,6 +247,7 @@ public class ResponseBaseTypeImpl extends EObjectImpl implements ResponseBaseTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetVersion() {
     return versionESet;
   }
@@ -246,6 +257,7 @@ public class ResponseBaseTypeImpl extends EObjectImpl implements ResponseBaseTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.RESPONSE_BASE_TYPE__LANG:
@@ -263,6 +275,7 @@ public class ResponseBaseTypeImpl extends EObjectImpl implements ResponseBaseTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.RESPONSE_BASE_TYPE__LANG:
@@ -283,6 +296,7 @@ public class ResponseBaseTypeImpl extends EObjectImpl implements ResponseBaseTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.RESPONSE_BASE_TYPE__LANG:
@@ -303,6 +317,7 @@ public class ResponseBaseTypeImpl extends EObjectImpl implements ResponseBaseTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.RESPONSE_BASE_TYPE__LANG:
@@ -320,6 +335,7 @@ public class ResponseBaseTypeImpl extends EObjectImpl implements ResponseBaseTyp
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String toString() {
     if (eIsProxy()) return super.toString();
 

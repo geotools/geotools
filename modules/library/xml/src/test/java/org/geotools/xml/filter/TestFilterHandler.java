@@ -56,25 +56,31 @@ public class TestFilterHandler implements ContentHandler, FilterHandler {
      */
 
     /** Notes the document locator. */
+    @Override
     public void setDocumentLocator(Locator locator) {}
 
     /** Notes the start of the document. */
+    @Override
     public void startDocument() throws SAXException {
         // _log.info("start of document");
     }
 
     /** Notes the start of the document. */
+    @Override
     public void endDocument() throws SAXException {
         // _log.info( "at end of document");
     }
 
     /** Notes processing instructions. */
+    @Override
     public void processingInstruction(String target, String data) throws SAXException {}
 
     /** Notes start of prefix mappings. */
+    @Override
     public void startPrefixMapping(String prefix, String uri) {}
 
     /** Notes end of prefix mappings. */
+    @Override
     public void endPrefixMapping(String prefix) {}
 
     /**
@@ -85,6 +91,7 @@ public class TestFilterHandler implements ContentHandler, FilterHandler {
      * @param rawName Raw name of element.
      * @param atts Element attributes.
      */
+    @Override
     public void startElement(String namespaceURI, String localName, String rawName, Attributes atts)
             throws SAXException {}
 
@@ -95,6 +102,7 @@ public class TestFilterHandler implements ContentHandler, FilterHandler {
      * @param localName Local name of element.
      * @param rawName Raw name of element.
      */
+    @Override
     public void endElement(String namespaceURI, String localName, String rawName)
             throws SAXException {}
 
@@ -105,6 +113,7 @@ public class TestFilterHandler implements ContentHandler, FilterHandler {
      * @param start Local name of element.
      * @param length Raw name of element.
      */
+    @Override
     public void characters(char[] ch, int start, int length) throws SAXException {}
 
     /**
@@ -114,6 +123,7 @@ public class TestFilterHandler implements ContentHandler, FilterHandler {
      * @param start Local name of element.
      * @param length Raw name of element.
      */
+    @Override
     public void ignorableWhitespace(char[] ch, int start, int length) throws SAXException {}
 
     /**
@@ -121,6 +131,7 @@ public class TestFilterHandler implements ContentHandler, FilterHandler {
      *
      * @param name Name of skipped entity.
      */
+    @Override
     public void skippedEntity(String name) throws SAXException {}
 
     /**
@@ -128,6 +139,7 @@ public class TestFilterHandler implements ContentHandler, FilterHandler {
      *
      * @param filter (OGC WFS) Filter from (SAX) filter..
      */
+    @Override
     public void filter(org.opengis.filter.Filter filter) {
 
         LOGGER.finer("found filter: " + filter.toString());

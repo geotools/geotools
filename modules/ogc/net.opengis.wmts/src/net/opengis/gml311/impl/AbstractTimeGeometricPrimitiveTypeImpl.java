@@ -78,6 +78,7 @@ public abstract class AbstractTimeGeometricPrimitiveTypeImpl extends AbstractTim
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getFrame() {
         return frame;
     }
@@ -87,6 +88,7 @@ public abstract class AbstractTimeGeometricPrimitiveTypeImpl extends AbstractTim
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFrame(String newFrame) {
         String oldFrame = frame;
         frame = newFrame;
@@ -101,6 +103,7 @@ public abstract class AbstractTimeGeometricPrimitiveTypeImpl extends AbstractTim
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetFrame() {
         String oldFrame = frame;
         boolean oldFrameESet = frameESet;
@@ -115,6 +118,7 @@ public abstract class AbstractTimeGeometricPrimitiveTypeImpl extends AbstractTim
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetFrame() {
         return frameESet;
     }

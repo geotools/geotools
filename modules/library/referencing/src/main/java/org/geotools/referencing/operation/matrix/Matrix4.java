@@ -91,6 +91,7 @@ public class Matrix4 extends GeneralMatrix implements XMatrix {
      * Returns the number of rows in this matrix, which is always {@value #SIZE} in this
      * implementation.
      */
+    @Override
     public final int getNumRow() {
         return SIZE;
     }
@@ -99,6 +100,7 @@ public class Matrix4 extends GeneralMatrix implements XMatrix {
      * Returns the number of colmuns in this matrix, which is always {@value #SIZE} in this
      * implementation.
      */
+    @Override
     public final int getNumCol() {
         return SIZE;
     }

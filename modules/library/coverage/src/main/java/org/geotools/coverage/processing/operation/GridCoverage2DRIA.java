@@ -1485,6 +1485,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
          * @param name Property name.
          * @param opNode Operation node.
          */
+        @Override
         public Object getProperty(String name, Object opNode) {
             validate(name, opNode);
 

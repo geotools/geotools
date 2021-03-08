@@ -42,6 +42,7 @@ public class DWithinBinding extends OGCDWithinBinding {
         super(filterFactory, geometryFactory);
     }
 
+    @Override
     public QName getTarget() {
         return FES.DWithin;
     }

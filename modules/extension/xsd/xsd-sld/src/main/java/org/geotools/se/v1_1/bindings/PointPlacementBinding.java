@@ -49,6 +49,7 @@ public class PointPlacementBinding extends SLDPointPlacementBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.PointPlacement;
     }

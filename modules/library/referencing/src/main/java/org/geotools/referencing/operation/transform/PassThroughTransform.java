@@ -202,11 +202,13 @@ public class PassThroughTransform extends AbstractMathTransform implements Seria
     }
 
     /** Gets the dimension of input points. */
+    @Override
     public int getSourceDimensions() {
         return firstAffectedOrdinate + subTransform.getSourceDimensions() + numTrailingOrdinates;
     }
 
     /** Gets the dimension of output points. */
+    @Override
     public int getTargetDimensions() {
         return firstAffectedOrdinate + subTransform.getTargetDimensions() + numTrailingOrdinates;
     }
@@ -254,6 +256,7 @@ public class PassThroughTransform extends AbstractMathTransform implements Seria
     }
 
     /** Transforms a list of coordinate point ordinal values. */
+    @Override
     public void transform(
             final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts)
             throws TransformException {

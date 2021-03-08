@@ -28,6 +28,7 @@ public class GMLFeatureAssociationTypeBindingTest extends AbstractGMLBindingTest
     ElementInstance featureAssociation;
     ElementInstance feature;
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();

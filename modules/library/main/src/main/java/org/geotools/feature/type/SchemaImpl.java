@@ -41,30 +41,37 @@ public class SchemaImpl implements Schema {
         this.contents = new HashMap<>();
     }
 
+    @Override
     public Set<Name> keySet() {
         return contents.keySet();
     }
 
+    @Override
     public int size() {
         return contents.size();
     }
 
+    @Override
     public boolean isEmpty() {
         return contents.isEmpty();
     }
 
+    @Override
     public boolean containsKey(Object key) {
         return contents.containsKey(key);
     }
 
+    @Override
     public boolean containsValue(Object value) {
         return contents.containsValue(value);
     }
 
+    @Override
     public AttributeType get(Object key) {
         return contents.get(key);
     }
 
+    @Override
     public AttributeType put(Name name, AttributeType type) {
         if (!(name instanceof Name)) {
             throw new IllegalArgumentException("Please use a Name");
@@ -81,46 +88,57 @@ public class SchemaImpl implements Schema {
         return contents.put(n, t);
     }
 
+    @Override
     public AttributeType remove(Object key) {
         return contents.remove(key);
     }
 
+    @Override
     public void putAll(Map<? extends Name, ? extends AttributeType> t) {
         contents.putAll(t);
     }
 
+    @Override
     public void clear() {
         contents.clear();
     }
 
+    @Override
     public Collection<AttributeType> values() {
         return contents.values();
     }
 
+    @Override
     public Set<Entry<Name, AttributeType>> entrySet() {
         return contents.entrySet();
     }
 
+    @Override
     public int hashCode() {
         return contents.hashCode();
     }
 
+    @Override
     public boolean equals(Object obj) {
         return contents.equals(obj);
     }
 
+    @Override
     public String toString() {
         return contents.toString();
     }
 
+    @Override
     public String getURI() {
         return uri;
     }
 
+    @Override
     public void add(AttributeType type) {
         put(type.getName(), type);
     }
 
+    @Override
     public Schema profile(Set<Name> profile) {
         return new ProfileImpl(this, profile);
     }

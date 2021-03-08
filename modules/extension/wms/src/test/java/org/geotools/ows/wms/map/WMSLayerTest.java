@@ -69,6 +69,7 @@ public class WMSLayerTest {
         HTTPClient client =
                 new MockHttpClient() {
 
+                    @Override
                     public HTTPResponse get(URL url) throws IOException {
                         if (url.getQuery().contains("GetCapabilities")) {
                             Map<String, String> params = parseParams(url.getQuery());
@@ -132,6 +133,7 @@ public class WMSLayerTest {
         MockHttpClient client =
                 new MockHttpClient() {
 
+                    @Override
                     public HTTPResponse get(URL url) throws IOException {
                         if (url.getQuery().contains("GetCapabilities")) {
                             Map<String, String> params = parseParams(url.getQuery());

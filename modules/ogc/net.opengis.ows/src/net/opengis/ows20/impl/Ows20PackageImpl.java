@@ -691,7 +691,8 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
     EValidator.Registry.INSTANCE.put
       (theOws20Package,
        new EValidator.Descriptor() {
-         public EValidator getEValidator() {
+         @Override
+        public EValidator getEValidator() {
            return Ows20Validator.INSTANCE;
          }
        });
@@ -709,6 +710,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getAbstractReferenceBaseType() {
     return abstractReferenceBaseTypeEClass;
   }
@@ -718,6 +720,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getAbstractReferenceBaseType_Actuate() {
     return (EAttribute)abstractReferenceBaseTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -727,6 +730,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getAbstractReferenceBaseType_Arcrole() {
     return (EAttribute)abstractReferenceBaseTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -736,6 +740,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getAbstractReferenceBaseType_Href() {
     return (EAttribute)abstractReferenceBaseTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -745,6 +750,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getAbstractReferenceBaseType_Role() {
     return (EAttribute)abstractReferenceBaseTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -754,6 +760,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getAbstractReferenceBaseType_Show() {
     return (EAttribute)abstractReferenceBaseTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -763,6 +770,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getAbstractReferenceBaseType_Title() {
     return (EAttribute)abstractReferenceBaseTypeEClass.getEStructuralFeatures().get(5);
   }
@@ -772,6 +780,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getAbstractReferenceBaseType_Type() {
     return (EAttribute)abstractReferenceBaseTypeEClass.getEStructuralFeatures().get(6);
   }
@@ -781,6 +790,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getAcceptFormatsType() {
     return acceptFormatsTypeEClass;
   }
@@ -790,6 +800,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getAcceptFormatsType_OutputFormat() {
     return (EAttribute)acceptFormatsTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -799,6 +810,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getAcceptLanguagesType() {
     return acceptLanguagesTypeEClass;
   }
@@ -808,6 +820,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getAcceptLanguagesType_Language() {
     return (EAttribute)acceptLanguagesTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -817,6 +830,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getAcceptVersionsType() {
     return acceptVersionsTypeEClass;
   }
@@ -826,6 +840,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getAcceptVersionsType_Version() {
     return (EAttribute)acceptVersionsTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -835,6 +850,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getAdditionalParametersBaseType() {
     return additionalParametersBaseTypeEClass;
   }
@@ -844,6 +860,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getAdditionalParametersBaseType_AdditionalParameter() {
     return (EReference)additionalParametersBaseTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -853,6 +870,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getAdditionalParametersType() {
     return additionalParametersTypeEClass;
   }
@@ -862,6 +880,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getAdditionalParametersType_AdditionalParameter1() {
     return (EReference)additionalParametersTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -871,6 +890,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getAdditionalParameterType() {
     return additionalParameterTypeEClass;
   }
@@ -880,6 +900,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getAdditionalParameterType_Name() {
     return (EReference)additionalParameterTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -889,6 +910,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getAdditionalParameterType_Value() {
     return (EReference)additionalParameterTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -898,6 +920,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getAddressType() {
     return addressTypeEClass;
   }
@@ -907,6 +930,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getAddressType_DeliveryPoint() {
     return (EAttribute)addressTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -916,6 +940,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getAddressType_City() {
     return (EAttribute)addressTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -925,6 +950,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getAddressType_AdministrativeArea() {
     return (EAttribute)addressTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -934,6 +960,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getAddressType_PostalCode() {
     return (EAttribute)addressTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -943,6 +970,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getAddressType_Country() {
     return (EAttribute)addressTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -952,6 +980,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getAddressType_ElectronicMailAddress() {
     return (EAttribute)addressTypeEClass.getEStructuralFeatures().get(5);
   }
@@ -961,6 +990,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getAllowedValuesType() {
     return allowedValuesTypeEClass;
   }
@@ -970,6 +1000,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getAllowedValuesType_Group() {
     return (EAttribute)allowedValuesTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -979,6 +1010,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getAllowedValuesType_Value() {
     return (EReference)allowedValuesTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -988,6 +1020,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getAllowedValuesType_Range() {
     return (EReference)allowedValuesTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -997,6 +1030,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getAnyValueType() {
     return anyValueTypeEClass;
   }
@@ -1006,6 +1040,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getBasicIdentificationType() {
     return basicIdentificationTypeEClass;
   }
@@ -1015,6 +1050,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getBasicIdentificationType_Identifier() {
     return (EReference)basicIdentificationTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1024,6 +1060,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getBasicIdentificationType_MetadataGroup() {
     return (EAttribute)basicIdentificationTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1033,6 +1070,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getBasicIdentificationType_Metadata() {
     return (EReference)basicIdentificationTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1042,6 +1080,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getBoundingBoxType() {
     return boundingBoxTypeEClass;
   }
@@ -1051,6 +1090,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getBoundingBoxType_LowerCorner() {
     return (EAttribute)boundingBoxTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1060,6 +1100,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getBoundingBoxType_UpperCorner() {
     return (EAttribute)boundingBoxTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1069,6 +1110,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getBoundingBoxType_Crs() {
     return (EAttribute)boundingBoxTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1078,6 +1120,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getBoundingBoxType_Dimensions() {
     return (EAttribute)boundingBoxTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -1087,6 +1130,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getCapabilitiesBaseType() {
     return capabilitiesBaseTypeEClass;
   }
@@ -1096,6 +1140,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getCapabilitiesBaseType_ServiceIdentification() {
     return (EReference)capabilitiesBaseTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1105,6 +1150,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getCapabilitiesBaseType_ServiceProvider() {
     return (EReference)capabilitiesBaseTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1114,6 +1160,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getCapabilitiesBaseType_OperationsMetadata() {
     return (EReference)capabilitiesBaseTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1123,6 +1170,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getCapabilitiesBaseType_Languages() {
     return (EReference)capabilitiesBaseTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -1132,6 +1180,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getCapabilitiesBaseType_UpdateSequence() {
     return (EAttribute)capabilitiesBaseTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -1141,6 +1190,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getCapabilitiesBaseType_Version() {
     return (EAttribute)capabilitiesBaseTypeEClass.getEStructuralFeatures().get(5);
   }
@@ -1150,6 +1200,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getCodeType() {
     return codeTypeEClass;
   }
@@ -1159,6 +1210,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getCodeType_Value() {
     return (EAttribute)codeTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1168,6 +1220,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getCodeType_CodeSpace() {
     return (EAttribute)codeTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1177,6 +1230,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getContactType() {
     return contactTypeEClass;
   }
@@ -1186,6 +1240,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getContactType_Phone() {
     return (EReference)contactTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1195,6 +1250,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getContactType_Address() {
     return (EReference)contactTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1204,6 +1260,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getContactType_OnlineResource() {
     return (EReference)contactTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1213,6 +1270,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getContactType_HoursOfService() {
     return (EAttribute)contactTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -1222,6 +1280,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getContactType_ContactInstructions() {
     return (EAttribute)contactTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -1231,6 +1290,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getContentsBaseType() {
     return contentsBaseTypeEClass;
   }
@@ -1240,6 +1300,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getContentsBaseType_DatasetDescriptionSummary() {
     return (EReference)contentsBaseTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1249,6 +1310,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getContentsBaseType_OtherSource() {
     return (EReference)contentsBaseTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1258,6 +1320,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getDatasetDescriptionSummaryBaseType() {
     return datasetDescriptionSummaryBaseTypeEClass;
   }
@@ -1267,6 +1330,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDatasetDescriptionSummaryBaseType_WGS84BoundingBox() {
     return (EReference)datasetDescriptionSummaryBaseTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1276,6 +1340,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDatasetDescriptionSummaryBaseType_Identifier() {
     return (EReference)datasetDescriptionSummaryBaseTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1285,6 +1350,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDatasetDescriptionSummaryBaseType_BoundingBoxGroup() {
     return (EAttribute)datasetDescriptionSummaryBaseTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1294,6 +1360,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDatasetDescriptionSummaryBaseType_BoundingBox() {
     return (EReference)datasetDescriptionSummaryBaseTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -1303,6 +1370,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDatasetDescriptionSummaryBaseType_MetadataGroup() {
     return (EAttribute)datasetDescriptionSummaryBaseTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -1312,6 +1380,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDatasetDescriptionSummaryBaseType_Metadata() {
     return (EReference)datasetDescriptionSummaryBaseTypeEClass.getEStructuralFeatures().get(5);
   }
@@ -1321,6 +1390,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDatasetDescriptionSummaryBaseType_DatasetDescriptionSummary() {
     return (EReference)datasetDescriptionSummaryBaseTypeEClass.getEStructuralFeatures().get(6);
   }
@@ -1330,6 +1400,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getDCPType() {
     return dcpTypeEClass;
   }
@@ -1339,6 +1410,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDCPType_HTTP() {
     return (EReference)dcpTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1348,6 +1420,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getDescriptionType() {
     return descriptionTypeEClass;
   }
@@ -1357,6 +1430,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDescriptionType_Title() {
     return (EReference)descriptionTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1366,6 +1440,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDescriptionType_Abstract() {
     return (EReference)descriptionTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1375,6 +1450,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDescriptionType_Keywords() {
     return (EReference)descriptionTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -1384,6 +1460,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getDocumentRoot() {
     return documentRootEClass;
   }
@@ -1393,6 +1470,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDocumentRoot_Mixed() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(0);
   }
@@ -1402,6 +1480,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_XMLNSPrefixMap() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(1);
   }
@@ -1411,6 +1490,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_XSISchemaLocation() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(2);
   }
@@ -1420,6 +1500,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Abstract() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(3);
   }
@@ -1429,6 +1510,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_AbstractMetaData() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(4);
   }
@@ -1438,6 +1520,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_AbstractReferenceBase() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(5);
   }
@@ -1447,6 +1530,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDocumentRoot_AccessConstraints() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(6);
   }
@@ -1456,6 +1540,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_AdditionalParameter() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(7);
   }
@@ -1465,6 +1550,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_AdditionalParameters() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(8);
   }
@@ -1474,6 +1560,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Metadata() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(9);
   }
@@ -1483,6 +1570,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_AllowedValues() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(10);
   }
@@ -1492,6 +1580,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_AnyValue() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(11);
   }
@@ -1501,6 +1590,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDocumentRoot_AvailableCRS() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(12);
   }
@@ -1510,6 +1600,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_BoundingBox() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(13);
   }
@@ -1519,6 +1610,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_ContactInfo() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(14);
   }
@@ -1528,6 +1620,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_DatasetDescriptionSummary() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(15);
   }
@@ -1537,6 +1630,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_DataType() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(16);
   }
@@ -1546,6 +1640,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_DCP() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(17);
   }
@@ -1555,6 +1650,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_DefaultValue() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(18);
   }
@@ -1564,6 +1660,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Exception() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(19);
   }
@@ -1573,6 +1670,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_ExceptionReport() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(20);
   }
@@ -1582,6 +1680,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_ExtendedCapabilities() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(21);
   }
@@ -1591,6 +1690,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDocumentRoot_Fees() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(22);
   }
@@ -1600,6 +1700,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_GetCapabilities() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(23);
   }
@@ -1609,6 +1710,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_GetResourceByID() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(24);
   }
@@ -1618,6 +1720,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_HTTP() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(25);
   }
@@ -1627,6 +1730,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Identifier() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(26);
   }
@@ -1636,6 +1740,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDocumentRoot_IndividualName() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(27);
   }
@@ -1645,6 +1750,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_InputData() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(28);
   }
@@ -1654,6 +1760,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Keywords() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(29);
   }
@@ -1663,6 +1770,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDocumentRoot_Language() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(30);
   }
@@ -1672,6 +1780,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Manifest() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(31);
   }
@@ -1681,6 +1790,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_MaximumValue() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(32);
   }
@@ -1690,6 +1800,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Meaning() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(33);
   }
@@ -1699,6 +1810,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_MinimumValue() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(34);
   }
@@ -1708,6 +1820,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_NilValue() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(35);
   }
@@ -1717,6 +1830,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_NoValues() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(36);
   }
@@ -1726,6 +1840,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Operation() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(37);
   }
@@ -1735,6 +1850,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_OperationResponse() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(38);
   }
@@ -1744,6 +1860,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_OperationsMetadata() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(39);
   }
@@ -1753,6 +1870,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDocumentRoot_OrganisationName() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(40);
   }
@@ -1762,6 +1880,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_OtherSource() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(41);
   }
@@ -1771,6 +1890,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDocumentRoot_OutputFormat() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(42);
   }
@@ -1780,6 +1900,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_PointOfContact() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(43);
   }
@@ -1789,6 +1910,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDocumentRoot_PositionName() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(44);
   }
@@ -1798,6 +1920,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Range() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(45);
   }
@@ -1807,6 +1930,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Reference() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(46);
   }
@@ -1816,6 +1940,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_ReferenceGroup() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(47);
   }
@@ -1825,6 +1950,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_ReferenceSystem() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(48);
   }
@@ -1834,6 +1960,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Resource() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(49);
   }
@@ -1843,6 +1970,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Role() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(50);
   }
@@ -1852,6 +1980,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_ServiceIdentification() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(51);
   }
@@ -1861,6 +1990,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_ServiceProvider() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(52);
   }
@@ -1870,6 +2000,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_ServiceReference() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(53);
   }
@@ -1879,6 +2010,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Spacing() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(54);
   }
@@ -1888,6 +2020,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDocumentRoot_SupportedCRS() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(55);
   }
@@ -1897,6 +2030,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Title() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(56);
   }
@@ -1906,6 +2040,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_UOM() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(57);
   }
@@ -1915,6 +2050,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_Value() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(58);
   }
@@ -1924,6 +2060,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_ValuesReference() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(59);
   }
@@ -1933,6 +2070,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getDocumentRoot_WGS84BoundingBox() {
     return (EReference)documentRootEClass.getEStructuralFeatures().get(60);
   }
@@ -1942,6 +2080,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDocumentRoot_RangeClosure() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(61);
   }
@@ -1951,6 +2090,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDocumentRoot_Reference1() {
     return (EAttribute)documentRootEClass.getEStructuralFeatures().get(62);
   }
@@ -1960,6 +2100,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getDomainMetadataType() {
     return domainMetadataTypeEClass;
   }
@@ -1969,6 +2110,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDomainMetadataType_Value() {
     return (EAttribute)domainMetadataTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -1978,6 +2120,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDomainMetadataType_Reference() {
     return (EAttribute)domainMetadataTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -1987,6 +2130,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getDomainType() {
     return domainTypeEClass;
   }
@@ -1996,6 +2140,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getDomainType_Name() {
     return (EAttribute)domainTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2005,6 +2150,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getExceptionReportType() {
     return exceptionReportTypeEClass;
   }
@@ -2014,6 +2160,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getExceptionReportType_Exception() {
     return (EReference)exceptionReportTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2023,6 +2170,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getExceptionReportType_Lang() {
     return (EAttribute)exceptionReportTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2032,6 +2180,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getExceptionReportType_Version() {
     return (EAttribute)exceptionReportTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2041,6 +2190,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getExceptionType() {
     return exceptionTypeEClass;
   }
@@ -2050,6 +2200,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getExceptionType_ExceptionText() {
     return (EAttribute)exceptionTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2059,6 +2210,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getExceptionType_ExceptionCode() {
     return (EAttribute)exceptionTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2068,6 +2220,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getExceptionType_Locator() {
     return (EAttribute)exceptionTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2077,6 +2230,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getGetCapabilitiesType() {
     return getCapabilitiesTypeEClass;
   }
@@ -2086,6 +2240,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getGetCapabilitiesType_AcceptVersions() {
     return (EReference)getCapabilitiesTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2095,6 +2250,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getGetCapabilitiesType_Sections() {
     return (EReference)getCapabilitiesTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2104,6 +2260,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getGetCapabilitiesType_AcceptFormats() {
     return (EReference)getCapabilitiesTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2113,6 +2270,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getGetCapabilitiesType_AcceptLanguages() {
     return (EReference)getCapabilitiesTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -2122,6 +2280,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetCapabilitiesType_UpdateSequence() {
     return (EAttribute)getCapabilitiesTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -2131,6 +2290,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetCapabilitiesType_BaseUrl() {
     return (EAttribute)getCapabilitiesTypeEClass.getEStructuralFeatures().get(5);
   }
@@ -2140,6 +2300,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getGetResourceByIdType() {
     return getResourceByIdTypeEClass;
   }
@@ -2149,6 +2310,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetResourceByIdType_ResourceID() {
     return (EAttribute)getResourceByIdTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2158,6 +2320,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetResourceByIdType_OutputFormat() {
     return (EAttribute)getResourceByIdTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2167,6 +2330,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetResourceByIdType_Service() {
     return (EAttribute)getResourceByIdTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2176,6 +2340,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getGetResourceByIdType_Version() {
     return (EAttribute)getResourceByIdTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -2185,6 +2350,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getHTTPType() {
     return httpTypeEClass;
   }
@@ -2194,6 +2360,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getHTTPType_Group() {
     return (EAttribute)httpTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2203,6 +2370,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getHTTPType_Get() {
     return (EReference)httpTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2212,6 +2380,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getHTTPType_Post() {
     return (EReference)httpTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2221,6 +2390,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getIdentificationType() {
     return identificationTypeEClass;
   }
@@ -2230,6 +2400,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getIdentificationType_BoundingBoxGroup() {
     return (EAttribute)identificationTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2239,6 +2410,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getIdentificationType_BoundingBox() {
     return (EReference)identificationTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2248,6 +2420,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getIdentificationType_OutputFormat() {
     return (EAttribute)identificationTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2257,6 +2430,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getIdentificationType_AvailableCRSGroup() {
     return (EAttribute)identificationTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -2266,6 +2440,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getIdentificationType_AvailableCRS() {
     return (EAttribute)identificationTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -2275,6 +2450,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getKeywordsType() {
     return keywordsTypeEClass;
   }
@@ -2284,6 +2460,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getKeywordsType_Keyword() {
     return (EReference)keywordsTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2293,6 +2470,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getKeywordsType_Type() {
     return (EReference)keywordsTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2302,6 +2480,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getLanguageStringType() {
     return languageStringTypeEClass;
   }
@@ -2311,6 +2490,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getLanguageStringType_Value() {
     return (EAttribute)languageStringTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2320,6 +2500,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getLanguageStringType_Lang() {
     return (EAttribute)languageStringTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2329,6 +2510,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getLanguagesType() {
     return languagesTypeEClass;
   }
@@ -2338,6 +2520,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getLanguagesType_Language() {
     return (EAttribute)languagesTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2347,6 +2530,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getManifestType() {
     return manifestTypeEClass;
   }
@@ -2356,6 +2540,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getManifestType_ReferenceGroup() {
     return (EReference)manifestTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2365,6 +2550,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getMetadataType() {
     return metadataTypeEClass;
   }
@@ -2374,6 +2560,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMetadataType_AbstractMetaDataGroup() {
     return (EAttribute)metadataTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2383,6 +2570,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getMetadataType_AbstractMetaData() {
     return (EReference)metadataTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2392,6 +2580,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMetadataType_About() {
     return (EAttribute)metadataTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2401,6 +2590,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMetadataType_Actuate() {
     return (EAttribute)metadataTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -2410,6 +2600,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMetadataType_Arcrole() {
     return (EAttribute)metadataTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -2419,6 +2610,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMetadataType_Href() {
     return (EAttribute)metadataTypeEClass.getEStructuralFeatures().get(5);
   }
@@ -2428,6 +2620,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMetadataType_Role() {
     return (EAttribute)metadataTypeEClass.getEStructuralFeatures().get(6);
   }
@@ -2437,6 +2630,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMetadataType_Show() {
     return (EAttribute)metadataTypeEClass.getEStructuralFeatures().get(7);
   }
@@ -2446,6 +2640,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMetadataType_Title() {
     return (EAttribute)metadataTypeEClass.getEStructuralFeatures().get(8);
   }
@@ -2455,6 +2650,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getMetadataType_Type() {
     return (EAttribute)metadataTypeEClass.getEStructuralFeatures().get(9);
   }
@@ -2464,6 +2660,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getNilValueType() {
     return nilValueTypeEClass;
   }
@@ -2473,6 +2670,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getNilValueType_NilReason() {
     return (EAttribute)nilValueTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2482,6 +2680,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getNoValuesType() {
     return noValuesTypeEClass;
   }
@@ -2491,6 +2690,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getOnlineResourceType() {
     return onlineResourceTypeEClass;
   }
@@ -2500,6 +2700,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getOnlineResourceType_Actuate() {
     return (EAttribute)onlineResourceTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2509,6 +2710,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getOnlineResourceType_Arcrole() {
     return (EAttribute)onlineResourceTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2518,6 +2720,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getOnlineResourceType_Href() {
     return (EAttribute)onlineResourceTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2527,6 +2730,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getOnlineResourceType_Role() {
     return (EAttribute)onlineResourceTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -2536,6 +2740,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getOnlineResourceType_Show() {
     return (EAttribute)onlineResourceTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -2545,6 +2750,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getOnlineResourceType_Title() {
     return (EAttribute)onlineResourceTypeEClass.getEStructuralFeatures().get(5);
   }
@@ -2554,6 +2760,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getOnlineResourceType_Type() {
     return (EAttribute)onlineResourceTypeEClass.getEStructuralFeatures().get(6);
   }
@@ -2563,6 +2770,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getOperationsMetadataType() {
     return operationsMetadataTypeEClass;
   }
@@ -2572,6 +2780,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getOperationsMetadataType_Operation() {
     return (EReference)operationsMetadataTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2581,6 +2790,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getOperationsMetadataType_Parameter() {
     return (EReference)operationsMetadataTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2590,6 +2800,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getOperationsMetadataType_Constraint() {
     return (EReference)operationsMetadataTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2599,6 +2810,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getOperationsMetadataType_ExtendedCapabilities() {
     return (EReference)operationsMetadataTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -2608,6 +2820,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getOperationType() {
     return operationTypeEClass;
   }
@@ -2617,6 +2830,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getOperationType_DCP() {
     return (EReference)operationTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2626,6 +2840,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getOperationType_Parameter() {
     return (EReference)operationTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2635,6 +2850,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getOperationType_Constraint() {
     return (EReference)operationTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2644,6 +2860,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getOperationType_MetadataGroup() {
     return (EAttribute)operationTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -2653,6 +2870,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getOperationType_Metadata() {
     return (EReference)operationTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -2662,6 +2880,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getOperationType_Name() {
     return (EAttribute)operationTypeEClass.getEStructuralFeatures().get(5);
   }
@@ -2671,6 +2890,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getRangeType() {
     return rangeTypeEClass;
   }
@@ -2680,6 +2900,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getRangeType_MinimumValue() {
     return (EReference)rangeTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2689,6 +2910,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getRangeType_MaximumValue() {
     return (EReference)rangeTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2698,6 +2920,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getRangeType_Spacing() {
     return (EReference)rangeTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2707,6 +2930,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getRangeType_RangeClosure() {
     return (EAttribute)rangeTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -2716,6 +2940,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getReferenceGroupType() {
     return referenceGroupTypeEClass;
   }
@@ -2725,6 +2950,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getReferenceGroupType_AbstractReferenceBaseGroup() {
     return (EAttribute)referenceGroupTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2734,6 +2960,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getReferenceGroupType_AbstractReferenceBase() {
     return (EReference)referenceGroupTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2743,6 +2970,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getReferenceType() {
     return referenceTypeEClass;
   }
@@ -2752,6 +2980,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getReferenceType_Identifier() {
     return (EReference)referenceTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2761,6 +2990,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getReferenceType_Abstract() {
     return (EReference)referenceTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2770,6 +3000,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getReferenceType_Format() {
     return (EAttribute)referenceTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2779,6 +3010,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getReferenceType_MetadataGroup() {
     return (EAttribute)referenceTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -2788,6 +3020,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getReferenceType_Metadata() {
     return (EReference)referenceTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -2797,6 +3030,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getRequestMethodType() {
     return requestMethodTypeEClass;
   }
@@ -2806,6 +3040,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getRequestMethodType_Constraint() {
     return (EReference)requestMethodTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2815,6 +3050,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getResponsiblePartySubsetType() {
     return responsiblePartySubsetTypeEClass;
   }
@@ -2824,6 +3060,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getResponsiblePartySubsetType_IndividualName() {
     return (EAttribute)responsiblePartySubsetTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2833,6 +3070,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getResponsiblePartySubsetType_PositionName() {
     return (EAttribute)responsiblePartySubsetTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2842,6 +3080,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getResponsiblePartySubsetType_ContactInfo() {
     return (EReference)responsiblePartySubsetTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2851,6 +3090,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getResponsiblePartySubsetType_Role() {
     return (EReference)responsiblePartySubsetTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -2860,6 +3100,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getResponsiblePartyType() {
     return responsiblePartyTypeEClass;
   }
@@ -2869,6 +3110,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getResponsiblePartyType_IndividualName() {
     return (EAttribute)responsiblePartyTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2878,6 +3120,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getResponsiblePartyType_OrganisationName() {
     return (EAttribute)responsiblePartyTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2887,6 +3130,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getResponsiblePartyType_PositionName() {
     return (EAttribute)responsiblePartyTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2896,6 +3140,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getResponsiblePartyType_ContactInfo() {
     return (EReference)responsiblePartyTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -2905,6 +3150,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getResponsiblePartyType_Role() {
     return (EReference)responsiblePartyTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -2914,6 +3160,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getSectionsType() {
     return sectionsTypeEClass;
   }
@@ -2923,6 +3170,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getSectionsType_Section() {
     return (EAttribute)sectionsTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2932,6 +3180,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getServiceIdentificationType() {
     return serviceIdentificationTypeEClass;
   }
@@ -2941,6 +3190,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getServiceIdentificationType_ServiceType() {
     return (EReference)serviceIdentificationTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -2950,6 +3200,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getServiceIdentificationType_ServiceTypeVersion() {
     return (EAttribute)serviceIdentificationTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -2959,6 +3210,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getServiceIdentificationType_Profile() {
     return (EAttribute)serviceIdentificationTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -2968,6 +3220,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getServiceIdentificationType_Fees() {
     return (EAttribute)serviceIdentificationTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -2977,6 +3230,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getServiceIdentificationType_AccessConstraints() {
     return (EAttribute)serviceIdentificationTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -2986,6 +3240,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getServiceProviderType() {
     return serviceProviderTypeEClass;
   }
@@ -2995,6 +3250,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getServiceProviderType_ProviderName() {
     return (EAttribute)serviceProviderTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -3004,6 +3260,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getServiceProviderType_ProviderSite() {
     return (EReference)serviceProviderTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -3013,6 +3270,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getServiceProviderType_ServiceContact() {
     return (EReference)serviceProviderTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -3022,6 +3280,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getServiceReferenceType() {
     return serviceReferenceTypeEClass;
   }
@@ -3031,6 +3290,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getServiceReferenceType_RequestMessage() {
     return (EReference)serviceReferenceTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -3040,6 +3300,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getServiceReferenceType_RequestMessageReference() {
     return (EAttribute)serviceReferenceTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -3049,6 +3310,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getTelephoneType() {
     return telephoneTypeEClass;
   }
@@ -3058,6 +3320,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getTelephoneType_Voice() {
     return (EAttribute)telephoneTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -3067,6 +3330,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getTelephoneType_Facsimile() {
     return (EAttribute)telephoneTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -3076,6 +3340,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getUnNamedDomainType() {
     return unNamedDomainTypeEClass;
   }
@@ -3085,6 +3350,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getUnNamedDomainType_AllowedValues() {
     return (EReference)unNamedDomainTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -3094,6 +3360,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getUnNamedDomainType_AnyValue() {
     return (EReference)unNamedDomainTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -3103,6 +3370,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getUnNamedDomainType_NoValues() {
     return (EReference)unNamedDomainTypeEClass.getEStructuralFeatures().get(2);
   }
@@ -3112,6 +3380,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getUnNamedDomainType_ValuesReference() {
     return (EReference)unNamedDomainTypeEClass.getEStructuralFeatures().get(3);
   }
@@ -3121,6 +3390,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getUnNamedDomainType_DefaultValue() {
     return (EReference)unNamedDomainTypeEClass.getEStructuralFeatures().get(4);
   }
@@ -3130,6 +3400,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getUnNamedDomainType_Meaning() {
     return (EReference)unNamedDomainTypeEClass.getEStructuralFeatures().get(5);
   }
@@ -3139,6 +3410,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getUnNamedDomainType_DataType() {
     return (EReference)unNamedDomainTypeEClass.getEStructuralFeatures().get(6);
   }
@@ -3148,6 +3420,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getUnNamedDomainType_UOM() {
     return (EReference)unNamedDomainTypeEClass.getEStructuralFeatures().get(7);
   }
@@ -3157,6 +3430,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getUnNamedDomainType_ReferenceSystem() {
     return (EReference)unNamedDomainTypeEClass.getEStructuralFeatures().get(8);
   }
@@ -3166,6 +3440,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getUnNamedDomainType_MetadataGroup() {
     return (EAttribute)unNamedDomainTypeEClass.getEStructuralFeatures().get(9);
   }
@@ -3175,6 +3450,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EReference getUnNamedDomainType_Metadata() {
     return (EReference)unNamedDomainTypeEClass.getEStructuralFeatures().get(10);
   }
@@ -3184,6 +3460,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getValuesReferenceType() {
     return valuesReferenceTypeEClass;
   }
@@ -3193,6 +3470,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getValuesReferenceType_Value() {
     return (EAttribute)valuesReferenceTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -3202,6 +3480,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getValuesReferenceType_Reference() {
     return (EAttribute)valuesReferenceTypeEClass.getEStructuralFeatures().get(1);
   }
@@ -3211,6 +3490,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getValueType() {
     return valueTypeEClass;
   }
@@ -3220,6 +3500,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EAttribute getValueType_Value() {
     return (EAttribute)valueTypeEClass.getEStructuralFeatures().get(0);
   }
@@ -3229,6 +3510,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EClass getWGS84BoundingBoxType() {
     return wgs84BoundingBoxTypeEClass;
   }
@@ -3238,6 +3520,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EEnum getRangeClosureType() {
     return rangeClosureTypeEEnum;
   }
@@ -3247,6 +3530,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getMimeType() {
     return mimeTypeEDataType;
   }
@@ -3256,6 +3540,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getPositionType() {
     return positionTypeEDataType;
   }
@@ -3265,6 +3550,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getPositionType2D() {
     return positionType2DEDataType;
   }
@@ -3274,6 +3560,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getRangeClosureTypeObject() {
     return rangeClosureTypeObjectEDataType;
   }
@@ -3283,6 +3570,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getServiceType() {
     return serviceTypeEDataType;
   }
@@ -3292,6 +3580,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getUpdateSequenceType() {
     return updateSequenceTypeEDataType;
   }
@@ -3301,6 +3590,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getVersionType() {
     return versionTypeEDataType;
   }
@@ -3310,6 +3600,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getVersionType1() {
     return versionType1EDataType;
   }
@@ -3319,6 +3610,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getArcroleType() {
     return arcroleTypeEDataType;
   }
@@ -3328,6 +3620,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getHrefType() {
     return hrefTypeEDataType;
   }
@@ -3337,6 +3630,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getRoleType() {
     return roleTypeEDataType;
   }
@@ -3346,6 +3640,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getTitleAttrType() {
     return titleAttrTypeEDataType;
   }
@@ -3355,6 +3650,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getArcroleType_1() {
     return arcroleType_1EDataType;
   }
@@ -3364,6 +3660,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getHrefType_1() {
     return hrefType_1EDataType;
   }
@@ -3373,6 +3670,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getRoleType_1() {
     return roleType_1EDataType;
   }
@@ -3382,6 +3680,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getTitleAttrType_1() {
     return titleAttrType_1EDataType;
   }
@@ -3391,6 +3690,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getArcroleType_2() {
     return arcroleType_2EDataType;
   }
@@ -3400,6 +3700,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getHrefType_2() {
     return hrefType_2EDataType;
   }
@@ -3409,6 +3710,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getRoleType_2() {
     return roleType_2EDataType;
   }
@@ -3418,6 +3720,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getTitleAttrType_2() {
     return titleAttrType_2EDataType;
   }
@@ -3427,6 +3730,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getActuateType() {
     return actuateTypeEDataType;
   }
@@ -3436,6 +3740,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getShowType() {
     return showTypeEDataType;
   }
@@ -3445,6 +3750,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EDataType getTypeType() {
     return typeTypeEDataType;
   }
@@ -3454,6 +3760,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Ows20Factory getOws20Factory() {
     return (Ows20Factory)getEFactoryInstance();
   }

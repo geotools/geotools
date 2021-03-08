@@ -228,12 +228,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         ReadableByteChannel in = null;
         try {
             ByteBuffer buffer = ByteBuffer.allocate(100);
-            FileReader reader =
-                    new FileReader() {
-                        public String id() {
-                            return "Shapefile Datastore's getBounds Method";
-                        }
-                    };
+            FileReader reader = () -> "Shapefile Datastore's getBounds Method";
 
             in = shpFiles.getReadChannel(SHP, reader);
             try {

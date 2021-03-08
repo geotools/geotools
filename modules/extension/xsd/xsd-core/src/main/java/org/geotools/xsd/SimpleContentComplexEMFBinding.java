@@ -38,6 +38,7 @@ public class SimpleContentComplexEMFBinding extends ComplexEMFBinding {
     }
 
     /** Takes <tt>value</tt> and sets its to the object value. */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         EObject object = createEObject(value);
@@ -54,6 +55,7 @@ public class SimpleContentComplexEMFBinding extends ComplexEMFBinding {
     }
 
     /** Calls getValue() and appends the result as child text of <tt>value</tt>. */
+    @Override
     public Element encode(Object object, Document document, Element value) throws Exception {
         EObject eobject = (EObject) object;
         if (EMFUtils.has(eobject, "value")) {

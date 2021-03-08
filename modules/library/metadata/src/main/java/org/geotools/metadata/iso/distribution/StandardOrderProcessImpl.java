@@ -71,6 +71,7 @@ public class StandardOrderProcessImpl extends MetadataEntity implements Standard
      * Returns fees and terms for retrieving the resource. Include monetary units (as specified in
      * ISO 4217).
      */
+    @Override
     public InternationalString getFees() {
         return fees;
     }
@@ -85,6 +86,7 @@ public class StandardOrderProcessImpl extends MetadataEntity implements Standard
     }
 
     /** Returns the date and time when the dataset will be available. */
+    @Override
     public Date getPlannedAvailableDateTime() {
         return (plannedAvailableDateTime != Long.MIN_VALUE)
                 ? new Date(plannedAvailableDateTime)
@@ -98,6 +100,7 @@ public class StandardOrderProcessImpl extends MetadataEntity implements Standard
     }
 
     /** Returns general instructions, terms and services provided by the distributor. */
+    @Override
     public InternationalString getOrderingInstructions() {
         return orderingInstructions;
     }
@@ -109,6 +112,7 @@ public class StandardOrderProcessImpl extends MetadataEntity implements Standard
     }
 
     /** Returns typical turnaround time for the filling of an order. */
+    @Override
     public InternationalString getTurnaround() {
         return turnaround;
     }

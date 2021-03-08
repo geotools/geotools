@@ -64,6 +64,7 @@ public class HTTPTypeImpl extends EObjectImpl implements HTTPType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.HTTP_TYPE;
 	}
@@ -73,6 +74,7 @@ public class HTTPTypeImpl extends EObjectImpl implements HTTPType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public FeatureMap getGroup() {
 		if (group == null) {
 			group = new BasicFeatureMap(this, Wcs10Package.HTTP_TYPE__GROUP);
@@ -85,6 +87,7 @@ public class HTTPTypeImpl extends EObjectImpl implements HTTPType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList getGet() {
 		return getGroup().list(Wcs10Package.Literals.HTTP_TYPE__GET);
 	}
@@ -94,6 +97,7 @@ public class HTTPTypeImpl extends EObjectImpl implements HTTPType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList getPost() {
 		return getGroup().list(Wcs10Package.Literals.HTTP_TYPE__POST);
 	}
@@ -103,6 +107,7 @@ public class HTTPTypeImpl extends EObjectImpl implements HTTPType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.HTTP_TYPE__GROUP:
@@ -120,6 +125,7 @@ public class HTTPTypeImpl extends EObjectImpl implements HTTPType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.HTTP_TYPE__GROUP:
@@ -138,6 +144,7 @@ public class HTTPTypeImpl extends EObjectImpl implements HTTPType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.HTTP_TYPE__GROUP:
@@ -160,6 +167,7 @@ public class HTTPTypeImpl extends EObjectImpl implements HTTPType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.HTTP_TYPE__GROUP:
@@ -180,6 +188,7 @@ public class HTTPTypeImpl extends EObjectImpl implements HTTPType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.HTTP_TYPE__GROUP:
@@ -197,6 +206,7 @@ public class HTTPTypeImpl extends EObjectImpl implements HTTPType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

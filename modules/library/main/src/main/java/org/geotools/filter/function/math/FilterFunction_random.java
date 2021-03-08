@@ -31,6 +31,7 @@ public class FilterFunction_random extends FunctionExpressionImpl implements Vol
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         return Double.valueOf(Math.random());
     }

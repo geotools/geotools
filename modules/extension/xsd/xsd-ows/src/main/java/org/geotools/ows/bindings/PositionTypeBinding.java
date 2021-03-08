@@ -48,6 +48,7 @@ public class PositionTypeBinding extends AbstractSimpleBinding {
     public PositionTypeBinding() {}
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OWS.PositionType;
     }
@@ -59,6 +60,7 @@ public class PositionTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return List.class;
     }
@@ -70,6 +72,7 @@ public class PositionTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         // TODO: implement and remove call to super
         return super.parse(instance, value);

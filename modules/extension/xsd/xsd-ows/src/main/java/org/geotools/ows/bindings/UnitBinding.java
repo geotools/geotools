@@ -30,19 +30,23 @@ import tech.units.indriya.unit.BaseUnit;
 
 public class UnitBinding extends AbstractSimpleBinding {
 
+    @Override
     public QName getTarget() {
         return OWS.UOM;
     }
 
+    @Override
     public Class getType() {
         return Unit.class;
     }
 
+    @Override
     public int getExecutionMode() {
         return OVERRIDE;
     }
 
     /** @override */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         // Object parseObject = UnitFormat.getInstance().parseObject((String) value);
         // Object parseObject = UnitFormat.getAsciiInstance().parseObject((String) value);
@@ -104,6 +108,7 @@ public class UnitBinding extends AbstractSimpleBinding {
      * @return A String representing the object.
      * @override
      */
+    @Override
     public String encode(Object object, String value) throws Exception {
         return object.toString();
     }

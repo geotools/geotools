@@ -63,6 +63,7 @@ public class DCPTypeImpl extends EObjectImpl implements DCPType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public HTTPType getHTTP() {
     return hTTP;
   }
@@ -87,6 +88,7 @@ public class DCPTypeImpl extends EObjectImpl implements DCPType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setHTTP(HTTPType newHTTP) {
     if (newHTTP != hTTP) {
       NotificationChain msgs = null;

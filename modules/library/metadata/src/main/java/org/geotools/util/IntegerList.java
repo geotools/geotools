@@ -141,6 +141,7 @@ public class IntegerList extends AbstractList<Integer>
      *
      * @return The number of values.
      */
+    @Override
     public int size() {
         return size;
     }
@@ -260,6 +261,7 @@ public class IntegerList extends AbstractList<Integer>
      * @return The value at the given index.
      * @throws IndexOutOfBoundsException if the given index is out of bounds.
      */
+    @Override
     public Integer get(final int index) throws IndexOutOfBoundsException {
         return getInteger(index);
     }

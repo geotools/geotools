@@ -51,6 +51,7 @@ public class OracleBlobConverterFactory implements ConverterFactory {
         }
     }
 
+    @Override
     public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {
         // if the jdbc driver is not in the classpath don't bother trying to convert
         if (ORA_BLOB == null) return null;
@@ -67,6 +68,7 @@ public class OracleBlobConverterFactory implements ConverterFactory {
 
     class OracleDateConverter implements Converter {
 
+        @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {
             int length = ((Long) ORA_LENGTH.invoke(source)).intValue();
             return target.cast(ORA_GET_BYTES.invoke(source, 1l, length));

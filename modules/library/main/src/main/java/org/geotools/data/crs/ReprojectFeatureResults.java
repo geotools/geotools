@@ -88,6 +88,7 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
         this.transform = CRS.findMathTransform(originalCs, destinationCS, true);
     }
 
+    @Override
     public Iterator<SimpleFeature> openIterator() {
         return new ReprojectFeatureIterator(results.features(), getSchema(), transform);
     }
@@ -101,6 +102,7 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
         }
     }
 
+    @Override
     public int size() {
         return results.size();
     }
@@ -159,6 +161,7 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
      *
      * @see org.geotools.data.FeatureResults#getBounds()
      */
+    @Override
     public ReferencedEnvelope getBounds() {
         try (SimpleFeatureIterator r = features()) {
             Envelope newBBox = new Envelope();
@@ -184,6 +187,7 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
         return results;
     }
 
+    @Override
     public void accepts(
             org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress)
             throws IOException {

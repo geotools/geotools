@@ -33,14 +33,17 @@ public class GeometryDescriptorImpl extends AttributeDescriptorImpl implements G
         super(type, name, min, max, isNillable, defaultValue);
     }
 
+    @Override
     public GeometryType getType() {
         return (GeometryType) super.getType();
     }
 
+    @Override
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return getType().getCoordinateReferenceSystem();
     }
 
+    @Override
     public String getLocalName() {
         return getName().getLocalPart();
     }

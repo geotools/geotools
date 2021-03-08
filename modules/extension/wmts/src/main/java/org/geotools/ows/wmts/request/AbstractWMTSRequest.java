@@ -33,6 +33,7 @@ public abstract class AbstractWMTSRequest extends AbstractRequest {
         super(onlineResource, properties);
     }
 
+    @Override
     protected void initService() {
         setProperty(SERVICE, "WMTS");
     }

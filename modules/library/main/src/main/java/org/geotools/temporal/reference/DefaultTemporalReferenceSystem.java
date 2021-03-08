@@ -44,30 +44,37 @@ public class DefaultTemporalReferenceSystem implements TemporalReferenceSystem {
         this.domainOfValidity = domainOfValidity;
     }
 
+    @Override
     public ReferenceIdentifier getName() {
         return name;
     }
 
+    @Override
     public Extent getDomainOfValidity() {
         return domainOfValidity;
     }
 
+    @Override
     public InternationalString getScope() {
         return scope;
     }
 
+    @Override
     public Collection<GenericName> getAlias() {
         return null;
     }
 
+    @Override
     public Set<ReferenceIdentifier> getIdentifiers() {
         return null;
     }
 
+    @Override
     public InternationalString getRemarks() {
         return null;
     }
 
+    @Override
     public String toWKT() throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Not supported yet.");
     }

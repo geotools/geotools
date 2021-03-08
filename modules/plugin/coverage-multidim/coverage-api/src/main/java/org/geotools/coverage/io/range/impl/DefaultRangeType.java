@@ -66,10 +66,12 @@ public class DefaultRangeType implements RangeType {
         }
     }
 
+    @Override
     public InternationalString getDescription() {
         return description;
     }
 
+    @Override
     public FieldType getFieldType(String name) {
         for (FieldType fieldType : fieldTypes) {
             final Name ftName = fieldType.getName();
@@ -92,23 +94,28 @@ public class DefaultRangeType implements RangeType {
         return null;
     }
 
+    @Override
     public Set<Name> getFieldTypeNames() {
         return Collections.unmodifiableSet(fieldTypesNames);
     }
 
+    @Override
     public Set<FieldType> getFieldTypes() {
         return Collections.unmodifiableSet(fieldTypes);
     }
 
+    @Override
     public Name getName() {
         return name;
     }
 
+    @Override
     public int getNumFieldTypes() {
         return fieldTypes.size();
     }
 
     /** Simple Implementation of toString method for debugging purpose. */
+    @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         final String lineSeparator = System.getProperty("line.separator", "\n");

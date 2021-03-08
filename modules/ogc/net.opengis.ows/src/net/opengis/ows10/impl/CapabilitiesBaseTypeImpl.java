@@ -133,7 +133,8 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public ServiceIdentificationType getServiceIdentification() {
+	@Override
+    public ServiceIdentificationType getServiceIdentification() {
     return serviceIdentification;
   }
 
@@ -157,7 +158,8 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setServiceIdentification(ServiceIdentificationType newServiceIdentification) {
+	@Override
+    public void setServiceIdentification(ServiceIdentificationType newServiceIdentification) {
     if (newServiceIdentification != serviceIdentification) {
       NotificationChain msgs = null;
       if (serviceIdentification != null)
@@ -176,7 +178,8 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public ServiceProviderType getServiceProvider() {
+	@Override
+    public ServiceProviderType getServiceProvider() {
     return serviceProvider;
   }
 
@@ -200,7 +203,8 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setServiceProvider(ServiceProviderType newServiceProvider) {
+	@Override
+    public void setServiceProvider(ServiceProviderType newServiceProvider) {
     if (newServiceProvider != serviceProvider) {
       NotificationChain msgs = null;
       if (serviceProvider != null)
@@ -219,7 +223,8 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public OperationsMetadataType getOperationsMetadata() {
+	@Override
+    public OperationsMetadataType getOperationsMetadata() {
     return operationsMetadata;
   }
 
@@ -243,7 +248,8 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setOperationsMetadata(OperationsMetadataType newOperationsMetadata) {
+	@Override
+    public void setOperationsMetadata(OperationsMetadataType newOperationsMetadata) {
     if (newOperationsMetadata != operationsMetadata) {
       NotificationChain msgs = null;
       if (operationsMetadata != null)
@@ -262,7 +268,8 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getUpdateSequence() {
+	@Override
+    public String getUpdateSequence() {
     return updateSequence;
   }
 
@@ -271,7 +278,8 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setUpdateSequence(String newUpdateSequence) {
+	@Override
+    public void setUpdateSequence(String newUpdateSequence) {
     String oldUpdateSequence = updateSequence;
     updateSequence = newUpdateSequence;
     if (eNotificationRequired())
@@ -283,7 +291,8 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getVersion() {
+	@Override
+    public String getVersion() {
     return version;
   }
 
@@ -292,7 +301,8 @@ public class CapabilitiesBaseTypeImpl extends EObjectImpl implements Capabilitie
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setVersion(String newVersion) {
+	@Override
+    public void setVersion(String newVersion) {
     String oldVersion = version;
     version = newVersion;
     if (eNotificationRequired())

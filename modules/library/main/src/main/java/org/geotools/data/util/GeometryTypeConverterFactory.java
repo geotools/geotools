@@ -64,6 +64,7 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
 
     static GeometryFactory gFac = new GeometryFactory();
 
+    @Override
     public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {
         // special case for curved geometries
         if (Geometry.class.isAssignableFrom(source)
@@ -158,6 +159,7 @@ public class GeometryTypeConverterFactory implements ConverterFactory {
                     return result;
                 }
 
+                @Override
                 @SuppressWarnings("unchecked")
                 public <T> T convert(Object source, Class<T> target) throws Exception {
                     // hierarchy compatible geometries -> nothing to do

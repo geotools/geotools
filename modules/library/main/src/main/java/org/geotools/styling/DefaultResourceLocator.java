@@ -38,6 +38,7 @@ public class DefaultResourceLocator implements ResourceLocator {
         this.sourceUrl = sourceUrl;
     }
 
+    @Override
     public URL locateResource(String uri) {
         URL url = null;
         try {

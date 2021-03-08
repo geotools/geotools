@@ -38,6 +38,7 @@ public class FilterFunction_centroid extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Geometry arg0;
 

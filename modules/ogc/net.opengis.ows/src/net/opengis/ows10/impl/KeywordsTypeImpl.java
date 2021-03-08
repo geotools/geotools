@@ -79,7 +79,8 @@ public class KeywordsTypeImpl extends EObjectImpl implements KeywordsType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<String> getKeyword() {
+  @Override
+public EList<String> getKeyword() {
     if (keyword == null) {
       keyword = new EDataTypeUniqueEList<>(String.class, this, Ows10Package.KEYWORDS_TYPE__KEYWORD);
     }
@@ -91,7 +92,8 @@ public class KeywordsTypeImpl extends EObjectImpl implements KeywordsType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public CodeType getType() {
+  @Override
+public CodeType getType() {
     return type;
   }
 
@@ -115,7 +117,8 @@ public class KeywordsTypeImpl extends EObjectImpl implements KeywordsType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setType(CodeType newType) {
+  @Override
+public void setType(CodeType newType) {
     if (newType != type) {
       NotificationChain msgs = null;
       if (type != null)

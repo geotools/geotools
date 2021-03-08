@@ -43,6 +43,7 @@ public class VPFFileFactory implements DataStoreFactorySpi {
      *  (non-Javadoc)
      * @see org.geotools.data.DataStoreFactorySpi#createDataStore(java.util.Map)
      */
+    @Override
     public DataStore createDataStore(Map<String, ?> params) throws IOException {
         File file = (File) FILE_PARAM.lookUp(params);
         this.store = new VPFFileStore(file.getPath());
@@ -61,6 +62,7 @@ public class VPFFileFactory implements DataStoreFactorySpi {
     /* (non-Javadoc)
      * @see org.geotools.data.DataStoreFactorySpi#createNewDataStore(java.util.Map)
      */
+    @Override
     public DataStore createNewDataStore(Map<String, ?> params) throws IOException {
         throw new UnsupportedOperationException("Only existing data stores may be created.");
     }
@@ -68,6 +70,7 @@ public class VPFFileFactory implements DataStoreFactorySpi {
     /* (non-Javadoc)
      * @see org.geotools.data.DataStoreFactorySpi#getDisplayName()
      */
+    @Override
     public String getDisplayName() {
         // TODO Auto-generated method stub
         return null;
@@ -76,6 +79,7 @@ public class VPFFileFactory implements DataStoreFactorySpi {
     /* (non-Javadoc)
      * @see org.geotools.data.DataStoreFactorySpi#getDescription()
      */
+    @Override
     public String getDescription() {
         // TODO Auto-generated method stub
         return null;
@@ -92,6 +96,7 @@ public class VPFFileFactory implements DataStoreFactorySpi {
     /* (non-Javadoc)
      * @see org.geotools.data.DataStoreFactorySpi#getParametersInfo()
      */
+    @Override
     public Param[] getParametersInfo() {
         return new Param[] {FILE_PARAM};
     }
@@ -99,6 +104,7 @@ public class VPFFileFactory implements DataStoreFactorySpi {
     /* (non-Javadoc)
      * @see org.geotools.data.DataStoreFactorySpi#canProcess(java.util.Map)
      */
+    @Override
     public boolean canProcess(Map<String, ?> params) {
         try {
             String filePath = (String) FILE_PARAM.lookUp(params);
@@ -114,6 +120,7 @@ public class VPFFileFactory implements DataStoreFactorySpi {
     /* (non-Javadoc)
      * @see org.geotools.data.DataStoreFactorySpi#isAvailable()
      */
+    @Override
     public boolean isAvailable() {
         return true;
     }
@@ -141,6 +148,7 @@ public class VPFFileFactory implements DataStoreFactorySpi {
     }
 
     /** Returns the implementation hints. The default implementation returns en empty map. */
+    @Override
     public Map<RenderingHints.Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }

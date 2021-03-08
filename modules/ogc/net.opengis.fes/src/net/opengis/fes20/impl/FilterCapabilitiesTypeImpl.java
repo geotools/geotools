@@ -139,6 +139,7 @@ public class FilterCapabilitiesTypeImpl extends EObjectImpl implements FilterCap
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ConformanceType getConformance() {
         return conformance;
     }
@@ -163,6 +164,7 @@ public class FilterCapabilitiesTypeImpl extends EObjectImpl implements FilterCap
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setConformance(ConformanceType newConformance) {
         if (newConformance != conformance) {
             NotificationChain msgs = null;
@@ -182,6 +184,7 @@ public class FilterCapabilitiesTypeImpl extends EObjectImpl implements FilterCap
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public IdCapabilitiesType getIdCapabilities() {
         return idCapabilities;
     }
@@ -206,6 +209,7 @@ public class FilterCapabilitiesTypeImpl extends EObjectImpl implements FilterCap
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setIdCapabilities(IdCapabilitiesType newIdCapabilities) {
         if (newIdCapabilities != idCapabilities) {
             NotificationChain msgs = null;
@@ -225,6 +229,7 @@ public class FilterCapabilitiesTypeImpl extends EObjectImpl implements FilterCap
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ScalarCapabilitiesType getScalarCapabilities() {
         return scalarCapabilities;
     }
@@ -249,6 +254,7 @@ public class FilterCapabilitiesTypeImpl extends EObjectImpl implements FilterCap
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setScalarCapabilities(ScalarCapabilitiesType newScalarCapabilities) {
         if (newScalarCapabilities != scalarCapabilities) {
             NotificationChain msgs = null;
@@ -268,6 +274,7 @@ public class FilterCapabilitiesTypeImpl extends EObjectImpl implements FilterCap
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SpatialCapabilitiesType getSpatialCapabilities() {
         return spatialCapabilities;
     }
@@ -292,6 +299,7 @@ public class FilterCapabilitiesTypeImpl extends EObjectImpl implements FilterCap
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSpatialCapabilities(SpatialCapabilitiesType newSpatialCapabilities) {
         if (newSpatialCapabilities != spatialCapabilities) {
             NotificationChain msgs = null;
@@ -311,6 +319,7 @@ public class FilterCapabilitiesTypeImpl extends EObjectImpl implements FilterCap
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TemporalCapabilitiesType getTemporalCapabilities() {
         return temporalCapabilities;
     }
@@ -335,6 +344,7 @@ public class FilterCapabilitiesTypeImpl extends EObjectImpl implements FilterCap
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTemporalCapabilities(TemporalCapabilitiesType newTemporalCapabilities) {
         if (newTemporalCapabilities != temporalCapabilities) {
             NotificationChain msgs = null;
@@ -354,6 +364,7 @@ public class FilterCapabilitiesTypeImpl extends EObjectImpl implements FilterCap
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AvailableFunctionsType getFunctions() {
         return functions;
     }
@@ -378,6 +389,7 @@ public class FilterCapabilitiesTypeImpl extends EObjectImpl implements FilterCap
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setFunctions(AvailableFunctionsType newFunctions) {
         if (newFunctions != functions) {
             NotificationChain msgs = null;
@@ -397,6 +409,7 @@ public class FilterCapabilitiesTypeImpl extends EObjectImpl implements FilterCap
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ExtendedCapabilitiesType getExtendedCapabilities() {
         return extendedCapabilities;
     }
@@ -421,6 +434,7 @@ public class FilterCapabilitiesTypeImpl extends EObjectImpl implements FilterCap
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setExtendedCapabilities(ExtendedCapabilitiesType newExtendedCapabilities) {
         if (newExtendedCapabilities != extendedCapabilities) {
             NotificationChain msgs = null;

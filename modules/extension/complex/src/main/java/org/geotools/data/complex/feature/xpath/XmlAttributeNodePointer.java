@@ -49,26 +49,32 @@ public class XmlAttributeNodePointer extends NodePointer {
         this.feature = feature;
     }
 
+    @Override
     public boolean isLeaf() {
         return true;
     }
 
+    @Override
     public boolean isCollection() {
         return false;
     }
 
+    @Override
     public boolean isAttribute() {
         return true;
     }
 
+    @Override
     public QName getName() {
         return new QName(name.getURI(), name.getLocalPart());
     }
 
+    @Override
     public Object getBaseValue() {
         return null;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Object getImmediateNode() {
 
@@ -96,6 +102,7 @@ public class XmlAttributeNodePointer extends NodePointer {
         }
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public void setValue(Object value) {
         if (!name.getLocalPart().equals("id")) {

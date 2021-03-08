@@ -42,6 +42,7 @@ public class PropertyIsGreaterThanBinding extends OGCPropertyIsGreaterThanBindin
         super(filterfactory);
     }
 
+    @Override
     public QName getTarget() {
         return FES.PropertyIsGreaterThan;
     }

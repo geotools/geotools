@@ -56,6 +56,7 @@ public class JColorIcon implements Icon {
      * @param x x position
      * @param y y position
      */
+    @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
         g.setColor(color);
         g.fillRect(x, y, width, height);
@@ -69,6 +70,7 @@ public class JColorIcon implements Icon {
      *
      * @return width in pixels
      */
+    @Override
     public int getIconWidth() {
         return width;
     }
@@ -78,6 +80,7 @@ public class JColorIcon implements Icon {
      *
      * @return height in pixels
      */
+    @Override
     public int getIconHeight() {
         return height;
     }

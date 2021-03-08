@@ -26,10 +26,12 @@ import org.geotools.jdbc.JDBCTransactionOnlineTest;
  * @author Justin Deoliveira, The Open Planning Project
  */
 public class H2JDBCTransactionTest extends JDBCTransactionOnlineTest {
+    @Override
     protected JDBCTestSetup createTestSetup() {
         return new H2TestSetup();
     }
 
+    @Override
     public void testConcurrentTransactions() throws IOException {
         // JD: h2 does table level locking so this test fails.
     }

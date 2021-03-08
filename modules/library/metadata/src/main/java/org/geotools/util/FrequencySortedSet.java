@@ -104,6 +104,7 @@ public class FrequencySortedSet<E> extends AbstractSet<E>
     }
 
     /** Returns the number of elements in this set. */
+    @Override
     public int size() {
         return count.size();
     }
@@ -188,6 +189,7 @@ public class FrequencySortedSet<E> extends AbstractSet<E>
     }
 
     /** Returns an iterator over the elements in this set in frequency order. */
+    @Override
     public Iterator<E> iterator() {
         ensureSorted();
         return new Iter();
@@ -211,11 +213,13 @@ public class FrequencySortedSet<E> extends AbstractSet<E>
         }
 
         /** Returns {@code true} if there is more elements to return. */
+        @Override
         public boolean hasNext() {
             return index < elements.length;
         }
 
         /** Return the next element. */
+        @Override
         public E next() {
             if (index >= elements.length) {
                 throw new NoSuchElementException();
@@ -224,6 +228,7 @@ public class FrequencySortedSet<E> extends AbstractSet<E>
         }
 
         /** Remove the last elements returned by {@link #next}. */
+        @Override
         public void remove() {
             if (index == 0) {
                 throw new IllegalStateException();
@@ -236,16 +241,19 @@ public class FrequencySortedSet<E> extends AbstractSet<E>
     }
 
     /** @todo Not yet implemented. */
+    @Override
     public SortedSet<E> headSet(E toElement) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /** @todo Not yet implemented. */
+    @Override
     public SortedSet<E> tailSet(E fromElement) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /** @todo Not yet implemented. */
+    @Override
     public SortedSet<E> subSet(E fromElement, E toElement) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -264,6 +272,7 @@ public class FrequencySortedSet<E> extends AbstractSet<E>
      *
      * @throws NoSuchElementException if this set is empty.
      */
+    @Override
     public E first() throws NoSuchElementException {
         ensureSorted();
         if (sorted.length != 0) {
@@ -287,6 +296,7 @@ public class FrequencySortedSet<E> extends AbstractSet<E>
      *
      * @throws NoSuchElementException if this set is empty.
      */
+    @Override
     public E last() throws NoSuchElementException {
         ensureSorted();
         final int length = sorted.length;
@@ -328,11 +338,7 @@ public class FrequencySortedSet<E> extends AbstractSet<E>
      * implementation.
      */
     private static final Comparator<Map.Entry<?, Integer>> COMPARATOR =
-            new Comparator<Map.Entry<?, Integer>>() {
-                public int compare(Map.Entry<?, Integer> o1, Map.Entry<?, Integer> o2) {
-                    return o1.getValue().compareTo(o2.getValue());
-                }
-            };
+            (o1, o2) -> o1.getValue().compareTo(o2.getValue());
 
     /**
      * Returns the comparator used to order the elements in this set. For a {@code
@@ -341,6 +347,7 @@ public class FrequencySortedSet<E> extends AbstractSet<E>
      * <p>This method is final because the {@code FrequencySortedSet} implementation makes
      * assumptions on the comparator that would not hold if this method were overrided.
      */
+    @Override
     public final Comparator<E> comparator() {
         return this;
     }
@@ -355,6 +362,7 @@ public class FrequencySortedSet<E> extends AbstractSet<E>
      * <p>This method is final because the {@code FrequencySortedSet} implementation makes
      * assumptions on the comparator that would not hold if this method were overrided.
      */
+    @Override
     public final int compare(final E o1, final E o2) {
         return signedFrequency(o1) - signedFrequency(o2);
     }

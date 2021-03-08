@@ -63,51 +63,63 @@ public class ReferencedEnvelope extends Envelope
                     null) {
                 private static final long serialVersionUID = -3188702602373537164L;
 
+                @Override
                 public boolean contains(BoundingBox bbox) {
                     return true;
                 }
 
+                @Override
                 public boolean contains(Coordinate p) {
                     return true;
                 }
 
+                @Override
                 public boolean contains(DirectPosition pos) {
                     return true;
                 }
 
+                @Override
                 public boolean contains(double x, double y) {
                     return true;
                 }
 
+                @Override
                 public boolean contains(Envelope other) {
                     return true;
                 }
 
+                @Override
                 public boolean isEmpty() {
                     return false;
                 }
 
+                @Override
                 public boolean isNull() {
                     return true;
                 }
 
+                @Override
                 public double getArea() {
                     // return super.getArea();
                     return Double.POSITIVE_INFINITY;
                 }
 
+                @Override
                 public void setBounds(BoundingBox arg0) {
                     throw new IllegalStateException("Cannot modify ReferencedEnvelope.EVERYTHING");
                 }
 
+                @Override
                 public Coordinate centre() {
                     return new Coordinate();
                 }
 
+                @Override
                 public void setToNull() {
                     // um ignore this as we are already "null"
                 }
 
+                @Override
                 public boolean equals(Object obj) {
                     if (obj == EVERYTHING) {
                         return true;
@@ -125,6 +137,7 @@ public class ReferencedEnvelope extends Envelope
                     return super.equals(obj);
                 }
 
+                @Override
                 public String toString() {
                     return "ReferencedEnvelope.EVERYTHING";
                 }
@@ -344,16 +357,19 @@ public class ReferencedEnvelope extends Envelope
         }
     }
     /** Returns the coordinate reference system associated with this envelope. */
+    @Override
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return crs;
     }
 
     /** Returns the number of dimensions. */
+    @Override
     public int getDimension() {
         return 2;
     }
 
     /** Returns the minimal ordinate along the specified dimension. */
+    @Override
     public double getMinimum(final int dimension) {
         switch (dimension) {
             case 0:
@@ -368,6 +384,7 @@ public class ReferencedEnvelope extends Envelope
     }
 
     /** Returns the maximal ordinate along the specified dimension. */
+    @Override
     public double getMaximum(final int dimension) {
         switch (dimension) {
             case 0:
@@ -382,6 +399,7 @@ public class ReferencedEnvelope extends Envelope
     }
 
     /** Returns the center ordinate along the specified dimension. */
+    @Override
     public double getMedian(final int dimension) {
         switch (dimension) {
             case 0:
@@ -399,6 +417,7 @@ public class ReferencedEnvelope extends Envelope
      * Returns the envelope length along the specified dimension. This length is equals to the
      * maximum ordinate minus the minimal ordinate.
      */
+    @Override
     public double getSpan(final int dimension) {
         switch (dimension) {
             case 0:
@@ -416,6 +435,7 @@ public class ReferencedEnvelope extends Envelope
      * A coordinate position consisting of all the minimal ordinates for each dimension for all
      * points within the {@code Envelope}.
      */
+    @Override
     public DirectPosition getLowerCorner() {
         return new DirectPosition2D(crs, getMinX(), getMinY());
     }
@@ -424,6 +444,7 @@ public class ReferencedEnvelope extends Envelope
      * A coordinate position consisting of all the maximal ordinates for each dimension for all
      * points within the {@code Envelope}.
      */
+    @Override
     public DirectPosition getUpperCorner() {
         return new DirectPosition2D(crs, getMaxX(), getMaxY());
     }
@@ -433,6 +454,7 @@ public class ReferencedEnvelope extends Envelope
      *
      * @since 2.4
      */
+    @Override
     public boolean isEmpty() {
         return super.isNull();
     }
@@ -442,6 +464,7 @@ public class ReferencedEnvelope extends Envelope
      *
      * @since 2.4
      */
+    @Override
     public boolean contains(DirectPosition pos) {
         ensureCompatibleReferenceSystem(pos);
         return super.contains(pos.getOrdinate(0), pos.getOrdinate(1));
@@ -452,6 +475,7 @@ public class ReferencedEnvelope extends Envelope
      *
      * @since 2.4
      */
+    @Override
     public boolean contains(final BoundingBox bbox) {
         ensureCompatibleReferenceSystem(bbox);
 
@@ -463,6 +487,7 @@ public class ReferencedEnvelope extends Envelope
      *
      * @since 2.4
      */
+    @Override
     public boolean intersects(final BoundingBox bbox) {
         ensureCompatibleReferenceSystem(bbox);
 
@@ -483,6 +508,7 @@ public class ReferencedEnvelope extends Envelope
      *
      * @since 2.4
      */
+    @Override
     public void include(final BoundingBox bbox) {
         if (crs == null) {
             this.crs = bbox.getCoordinateReferenceSystem();
@@ -519,6 +545,7 @@ public class ReferencedEnvelope extends Envelope
      *
      * @since 2.4
      */
+    @Override
     public void include(double x, double y) {
         super.expandToInclude(x, y);
     }
@@ -528,6 +555,7 @@ public class ReferencedEnvelope extends Envelope
      *
      * @since 2.4
      */
+    @Override
     public void setBounds(final BoundingBox bbox) {
         ensureCompatibleReferenceSystem(bbox);
         super.init(getJTSEnvelope(bbox));
@@ -539,6 +567,7 @@ public class ReferencedEnvelope extends Envelope
      *
      * @since 2.4
      */
+    @Override
     public BoundingBox toBounds(final CoordinateReferenceSystem targetCRS)
             throws TransformException {
         try {

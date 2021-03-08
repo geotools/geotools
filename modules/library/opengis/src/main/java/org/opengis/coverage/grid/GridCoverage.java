@@ -133,6 +133,7 @@ public interface GridCoverage extends Coverage {
      *
      * @return The sources data for a grid coverage.
      */
+    @Override
     List<GridCoverage> getSources();
 
     /** Returns grid data as a rendered image. */

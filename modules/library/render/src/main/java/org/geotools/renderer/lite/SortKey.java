@@ -31,23 +31,11 @@ class SortKey {
 
     @SuppressWarnings("unchecked")
     private static java.util.Comparator<Comparable> FORWARD_COMPARATOR =
-            new java.util.Comparator<Comparable>() {
-
-                @Override
-                public int compare(Comparable o1, Comparable o2) {
-                    return o1.compareTo(o2);
-                }
-            };
+            (o1, o2) -> o1.compareTo(o2);
 
     @SuppressWarnings("unchecked")
     private static java.util.Comparator<Comparable> REVERSE_COMPARATOR =
-            new java.util.Comparator<Comparable>() {
-
-                @Override
-                public int compare(Comparable o1, Comparable o2) {
-                    return -FORWARD_COMPARATOR.compare(o1, o2);
-                }
-            };
+            (o1, o2) -> -FORWARD_COMPARATOR.compare(o1, o2);
 
     Object[] components;
 

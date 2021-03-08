@@ -33,6 +33,7 @@ public class FilterFunction_isNull extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Object arg0;
 

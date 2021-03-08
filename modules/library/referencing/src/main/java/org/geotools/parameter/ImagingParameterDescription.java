@@ -104,6 +104,7 @@ final class ImagingParameterDescription extends AbstractInternationalString
      * @return The string in the specified locale, or in a default locale.
      * @throws MissingResourceException is the key given to the constructor is invalid.
      */
+    @Override
     public String toString(Locale locale) throws MissingResourceException {
         if (locale == null) {
             locale = Locale.getDefault();

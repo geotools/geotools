@@ -62,6 +62,7 @@ public class GetCoverageType1Impl extends EObjectImpl implements GetCoverageType
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.GET_COVERAGE_TYPE1;
 	}
@@ -71,6 +72,7 @@ public class GetCoverageType1Impl extends EObjectImpl implements GetCoverageType
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList getDCPType() {
 		if (dCPType == null) {
 			dCPType = new EObjectContainmentEList(DCPTypeType.class, this, Wcs10Package.GET_COVERAGE_TYPE1__DCP_TYPE);
@@ -83,6 +85,7 @@ public class GetCoverageType1Impl extends EObjectImpl implements GetCoverageType
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.GET_COVERAGE_TYPE1__DCP_TYPE:
@@ -96,6 +99,7 @@ public class GetCoverageType1Impl extends EObjectImpl implements GetCoverageType
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.GET_COVERAGE_TYPE1__DCP_TYPE:
@@ -109,6 +113,7 @@ public class GetCoverageType1Impl extends EObjectImpl implements GetCoverageType
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.GET_COVERAGE_TYPE1__DCP_TYPE:
@@ -124,6 +129,7 @@ public class GetCoverageType1Impl extends EObjectImpl implements GetCoverageType
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.GET_COVERAGE_TYPE1__DCP_TYPE:
@@ -138,6 +144,7 @@ public class GetCoverageType1Impl extends EObjectImpl implements GetCoverageType
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.GET_COVERAGE_TYPE1__DCP_TYPE:

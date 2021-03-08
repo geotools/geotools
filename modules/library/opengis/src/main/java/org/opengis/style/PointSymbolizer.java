@@ -38,6 +38,7 @@ public interface PointSymbolizer extends Symbolizer {
      *
      * @param visitor the style visitor
      */
+    @Override
     @Extension
     Object accept(StyleVisitor visitor, Object extraData);
 }

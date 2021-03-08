@@ -49,6 +49,7 @@ import org.opengis.feature.simple.SimpleFeature;
  */
 public class FeatureArrayPropertyTypeBinding extends AbstractComplexBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.FeatureArrayPropertyType;
     }
@@ -60,6 +61,7 @@ public class FeatureArrayPropertyTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return FeatureCollection.class;
     }
@@ -71,6 +73,7 @@ public class FeatureArrayPropertyTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         FeatureCollection fc = node.getChildValue(FeatureCollection.class);
@@ -85,6 +88,7 @@ public class FeatureArrayPropertyTypeBinding extends AbstractComplexBinding {
         return fc;
     }
 
+    @Override
     public Object getProperty(Object object, QName name) {
         // passed in should be FeatureCollection, just pass it back
         return object;

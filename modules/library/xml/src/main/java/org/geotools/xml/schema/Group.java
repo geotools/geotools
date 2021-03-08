@@ -38,9 +38,11 @@ public interface Group extends ElementGrouping {
     public String getId();
 
     /** The maximum number of times this group may appear in the instance document. */
+    @Override
     public int getMaxOccurs();
 
     /** The minimum number of times this group may appear in the instance document. */
+    @Override
     public int getMinOccurs();
 
     /** The group's name in the Schema document */

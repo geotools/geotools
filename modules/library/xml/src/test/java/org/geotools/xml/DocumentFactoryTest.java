@@ -34,7 +34,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
@@ -75,14 +74,11 @@ public class DocumentFactoryTest {
         when(mockSaxParserFactory.newSAXParser()).thenReturn(mockSaxParser);
 
         Answer<Void> startDocumentAnswer =
-                new Answer<Void>() {
-                    @Override
-                    public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
-                        XMLSAXHandler xmlSaxHandler =
-                                (XMLSAXHandler) invocationOnMock.getArguments()[1];
-                        xmlSaxHandler.startDocument();
-                        return null;
-                    }
+                invocationOnMock -> {
+                    XMLSAXHandler xmlSaxHandler =
+                            (XMLSAXHandler) invocationOnMock.getArguments()[1];
+                    xmlSaxHandler.startDocument();
+                    return null;
                 };
         doAnswer(startDocumentAnswer)
                 .when(mockSaxParser)

@@ -42,6 +42,7 @@ public final class CSW extends XSD {
     /** private constructor */
     private CSW() {}
 
+    @Override
     protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(OWS.getInstance());
         dependencies.add(OGC.getInstance());
@@ -49,11 +50,13 @@ public final class CSW extends XSD {
     }
 
     /** Returns 'http://www.opengis.net/cat/csw/2.0.2'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'csw.xsd.'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("csw.xsd").toString();
     }

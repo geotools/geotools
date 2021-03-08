@@ -127,6 +127,7 @@ public class CoverageDescriptionTypeImpl extends EObjectImpl implements Coverage
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getCoverageId() {
 		return coverageId;
 	}
@@ -136,6 +137,7 @@ public class CoverageDescriptionTypeImpl extends EObjectImpl implements Coverage
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setCoverageId(String newCoverageId) {
 		String oldCoverageId = coverageId;
 		coverageId = newCoverageId;
@@ -148,6 +150,7 @@ public class CoverageDescriptionTypeImpl extends EObjectImpl implements Coverage
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object getCoverageFunction() {
 		return coverageFunction;
 	}
@@ -172,6 +175,7 @@ public class CoverageDescriptionTypeImpl extends EObjectImpl implements Coverage
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setCoverageFunction(Object newCoverageFunction) {
 		if (newCoverageFunction != coverageFunction) {
 			NotificationChain msgs = null;
@@ -191,6 +195,7 @@ public class CoverageDescriptionTypeImpl extends EObjectImpl implements Coverage
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList<Object> getMetadata() {
 		if (metadata == null) {
 			metadata = new EObjectContainmentEList<>(Object.class, this, Wcs20Package.COVERAGE_DESCRIPTION_TYPE__METADATA);
@@ -203,6 +208,7 @@ public class CoverageDescriptionTypeImpl extends EObjectImpl implements Coverage
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object getDomainSet() {
 		// TODO: implement this method to return the 'Domain Set' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -228,6 +234,7 @@ public class CoverageDescriptionTypeImpl extends EObjectImpl implements Coverage
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setDomainSet(Object newDomainSet) {
 		// TODO: implement this method to set the 'Domain Set' containment reference
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -239,6 +246,7 @@ public class CoverageDescriptionTypeImpl extends EObjectImpl implements Coverage
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object getRangeType() {
 		return rangeType;
 	}
@@ -263,6 +271,7 @@ public class CoverageDescriptionTypeImpl extends EObjectImpl implements Coverage
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setRangeType(Object newRangeType) {
 		if (newRangeType != rangeType) {
 			NotificationChain msgs = null;
@@ -282,6 +291,7 @@ public class CoverageDescriptionTypeImpl extends EObjectImpl implements Coverage
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ServiceParametersType getServiceParameters() {
 		return serviceParameters;
 	}
@@ -306,6 +316,7 @@ public class CoverageDescriptionTypeImpl extends EObjectImpl implements Coverage
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setServiceParameters(ServiceParametersType newServiceParameters) {
 		if (newServiceParameters != serviceParameters) {
 			NotificationChain msgs = null;

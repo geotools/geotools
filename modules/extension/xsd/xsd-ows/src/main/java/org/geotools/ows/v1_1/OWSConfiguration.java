@@ -87,6 +87,7 @@ public class OWSConfiguration extends Configuration {
      *
      * @generated
      */
+    @Override
     protected final void registerBindings(MutablePicoContainer container) {
         // Types
         container.registerComponentImplementation(
@@ -173,6 +174,7 @@ public class OWSConfiguration extends Configuration {
                 org.geotools.xsd.ows.OWS._ServiceProvider, _ServiceProviderBinding.class);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     protected void registerBindings(Map bindings) {
         bindings.put(
@@ -264,6 +266,7 @@ public class OWSConfiguration extends Configuration {
         bindings.put(OWS.RangeType, new RangeBinding(Ows11Factory.eINSTANCE, OWS.RangeType));
     }
 
+    @Override
     protected void configureContext(MutablePicoContainer container) {
         container.registerComponentInstance(Ows11Factory.eINSTANCE);
     }

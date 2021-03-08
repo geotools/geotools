@@ -95,6 +95,7 @@ public class ProjectiveTransformBuilder extends MathTransformBuilder {
      *
      * @return minimum number of points required by this builder, which is 4 by default.
      */
+    @Override
     public int getMinimumPointCount() {
         return 4;
     }
@@ -104,6 +105,7 @@ public class ProjectiveTransformBuilder extends MathTransformBuilder {
      *
      * @return required coordinate system type
      */
+    @Override
     public Class<? extends CartesianCS> getCoordinateSystemType() {
         return CartesianCS.class;
     }
@@ -264,6 +266,7 @@ public class ProjectiveTransformBuilder extends MathTransformBuilder {
         return M;
     }
 
+    @Override
     protected MathTransform computeMathTransform() {
         return ProjectiveTransform.create(getProjectiveMatrix());
     }

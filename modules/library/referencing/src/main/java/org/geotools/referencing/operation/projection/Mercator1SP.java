@@ -52,6 +52,7 @@ public class Mercator1SP extends Mercator {
     }
 
     /** {@inheritDoc} */
+    @Override
     public ParameterDescriptorGroup getParameterDescriptors() {
         return Provider.PARAMETERS;
     }
@@ -79,6 +80,7 @@ public class Mercator1SP extends Mercator {
         }
 
         /** {@inheritDoc} */
+        @Override
         public ParameterDescriptorGroup getParameterDescriptors() {
             return Provider.PARAMETERS;
         }
@@ -149,6 +151,7 @@ public class Mercator1SP extends Mercator {
          * @return The created math transform.
          * @throws ParameterNotFoundException if a required parameter was not found.
          */
+        @Override
         protected MathTransform createMathTransform(final ParameterValueGroup parameters)
                 throws ParameterNotFoundException {
             if (isSpherical(parameters)) {

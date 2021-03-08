@@ -27,18 +27,22 @@ import org.geotools.data.jdbc.datasource.UnWrapper;
  */
 public class LifecycleConnectionUnWrapper implements UnWrapper {
 
+    @Override
     public boolean canUnwrap(Connection conn) {
         return conn instanceof LifecycleConnection;
     }
 
+    @Override
     public boolean canUnwrap(Statement st) {
         return false;
     }
 
+    @Override
     public Connection unwrap(Connection conn) {
         return ((LifecycleConnection) conn).delegate;
     }
 
+    @Override
     public Statement unwrap(Statement statement) {
         throw new UnsupportedOperationException("This un-wrapper cannot operate on statements");
     }

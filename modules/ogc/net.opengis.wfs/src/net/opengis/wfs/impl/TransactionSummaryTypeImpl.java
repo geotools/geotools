@@ -108,7 +108,8 @@ public class TransactionSummaryTypeImpl extends EObjectImpl implements Transacti
 	 * <!-- end-user-doc -->
    * @generated
    */
-	protected EClass eStaticClass() {
+	@Override
+    protected EClass eStaticClass() {
     return WfsPackage.Literals.TRANSACTION_SUMMARY_TYPE;
   }
 
@@ -117,7 +118,8 @@ public class TransactionSummaryTypeImpl extends EObjectImpl implements Transacti
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public BigInteger getTotalInserted() {
+	@Override
+    public BigInteger getTotalInserted() {
     return totalInserted;
   }
 
@@ -126,7 +128,8 @@ public class TransactionSummaryTypeImpl extends EObjectImpl implements Transacti
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setTotalInserted(BigInteger newTotalInserted) {
+	@Override
+    public void setTotalInserted(BigInteger newTotalInserted) {
     BigInteger oldTotalInserted = totalInserted;
     totalInserted = newTotalInserted;
     if (eNotificationRequired())
@@ -138,7 +141,8 @@ public class TransactionSummaryTypeImpl extends EObjectImpl implements Transacti
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public BigInteger getTotalUpdated() {
+	@Override
+    public BigInteger getTotalUpdated() {
     return totalUpdated;
   }
 
@@ -147,7 +151,8 @@ public class TransactionSummaryTypeImpl extends EObjectImpl implements Transacti
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setTotalUpdated(BigInteger newTotalUpdated) {
+	@Override
+    public void setTotalUpdated(BigInteger newTotalUpdated) {
     BigInteger oldTotalUpdated = totalUpdated;
     totalUpdated = newTotalUpdated;
     if (eNotificationRequired())
@@ -159,7 +164,8 @@ public class TransactionSummaryTypeImpl extends EObjectImpl implements Transacti
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public BigInteger getTotalDeleted() {
+	@Override
+    public BigInteger getTotalDeleted() {
     return totalDeleted;
   }
 
@@ -168,7 +174,8 @@ public class TransactionSummaryTypeImpl extends EObjectImpl implements Transacti
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void setTotalDeleted(BigInteger newTotalDeleted) {
+	@Override
+    public void setTotalDeleted(BigInteger newTotalDeleted) {
     BigInteger oldTotalDeleted = totalDeleted;
     totalDeleted = newTotalDeleted;
     if (eNotificationRequired())
@@ -180,7 +187,8 @@ public class TransactionSummaryTypeImpl extends EObjectImpl implements Transacti
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	@Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case WfsPackage.TRANSACTION_SUMMARY_TYPE__TOTAL_INSERTED:
         return getTotalInserted();
@@ -197,7 +205,8 @@ public class TransactionSummaryTypeImpl extends EObjectImpl implements Transacti
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eSet(int featureID, Object newValue) {
+	@Override
+    public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case WfsPackage.TRANSACTION_SUMMARY_TYPE__TOTAL_INSERTED:
         setTotalInserted((BigInteger)newValue);
@@ -217,7 +226,8 @@ public class TransactionSummaryTypeImpl extends EObjectImpl implements Transacti
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public void eUnset(int featureID) {
+	@Override
+    public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.TRANSACTION_SUMMARY_TYPE__TOTAL_INSERTED:
         setTotalInserted(TOTAL_INSERTED_EDEFAULT);
@@ -237,7 +247,8 @@ public class TransactionSummaryTypeImpl extends EObjectImpl implements Transacti
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public boolean eIsSet(int featureID) {
+	@Override
+    public boolean eIsSet(int featureID) {
     switch (featureID) {
       case WfsPackage.TRANSACTION_SUMMARY_TYPE__TOTAL_INSERTED:
         return TOTAL_INSERTED_EDEFAULT == null ? totalInserted != null : !TOTAL_INSERTED_EDEFAULT.equals(totalInserted);
@@ -254,7 +265,8 @@ public class TransactionSummaryTypeImpl extends EObjectImpl implements Transacti
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String toString() {
+	@Override
+    public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

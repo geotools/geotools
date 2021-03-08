@@ -55,6 +55,7 @@ public class PolygonPropertyTypeBinding extends GeometryPropertyTypeBindingBase 
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.PolygonPropertyType;
     }
@@ -66,6 +67,7 @@ public class PolygonPropertyTypeBinding extends GeometryPropertyTypeBindingBase 
      *
      * @generated modifiable
      */
+    @Override
     public Class<? extends Geometry> getGeometryType() {
         return Polygon.class;
     }

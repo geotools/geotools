@@ -139,6 +139,7 @@ public final class GrassBinaryImageMetadataFormat extends IIOMetadataFormatImpl 
         return instance;
     }
 
+    @Override
     public boolean canNodeAppear(String elementName, ImageTypeSpecifier imageType) {
         return true;
     }

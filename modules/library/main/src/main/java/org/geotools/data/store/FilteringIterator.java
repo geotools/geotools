@@ -43,10 +43,12 @@ public class FilteringIterator<F extends Feature> implements Iterator<F> {
         return delegate;
     }
 
+    @Override
     public void remove() {
         delegate.remove();
     }
 
+    @Override
     public boolean hasNext() {
         if (next != null) {
             return true;
@@ -63,6 +65,7 @@ public class FilteringIterator<F extends Feature> implements Iterator<F> {
         return next != null;
     }
 
+    @Override
     public F next() {
         F f = next;
         next = null;

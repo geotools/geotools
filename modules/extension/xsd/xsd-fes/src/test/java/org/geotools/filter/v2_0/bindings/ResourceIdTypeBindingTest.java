@@ -11,7 +11,6 @@ import static org.opengis.filter.identity.Version.Action.PREVIOUS;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import org.geotools.factory.CommonFactoryFinder;
@@ -54,14 +53,7 @@ public class ResourceIdTypeBindingTest extends FESTestSupport {
             assertTrue(id instanceof ResourceId);
             ids.add((ResourceId) id);
         }
-        Collections.sort(
-                ids,
-                new Comparator<ResourceId>() {
-                    @Override
-                    public int compare(ResourceId o1, ResourceId o2) {
-                        return o1.getRid().compareTo(o2.getRid());
-                    }
-                });
+        Collections.sort(ids, (o1, o2) -> o1.getRid().compareTo(o2.getRid()));
 
         final DatatypeConverterImpl dateParser = DatatypeConverterImpl.getInstance();
         final Date date1 = dateParser.parseDateTime("1977-01-17T01:05:40Z").getTime();

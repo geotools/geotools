@@ -37,6 +37,7 @@ public class FilterFunction_boundary extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Geometry arg0;
 

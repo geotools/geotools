@@ -57,6 +57,7 @@ public class LanguagesTypeImpl extends EObjectImpl implements LanguagesType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.LANGUAGES_TYPE;
   }
@@ -66,6 +67,7 @@ public class LanguagesTypeImpl extends EObjectImpl implements LanguagesType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList getLanguage() {
     if (language == null) {
       language = new EDataTypeUniqueEList(String.class, this, Wps10Package.LANGUAGES_TYPE__LANGUAGE);
@@ -78,6 +80,7 @@ public class LanguagesTypeImpl extends EObjectImpl implements LanguagesType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.LANGUAGES_TYPE__LANGUAGE:
@@ -91,6 +94,7 @@ public class LanguagesTypeImpl extends EObjectImpl implements LanguagesType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.LANGUAGES_TYPE__LANGUAGE:
@@ -106,6 +110,7 @@ public class LanguagesTypeImpl extends EObjectImpl implements LanguagesType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.LANGUAGES_TYPE__LANGUAGE:
@@ -120,6 +125,7 @@ public class LanguagesTypeImpl extends EObjectImpl implements LanguagesType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.LANGUAGES_TYPE__LANGUAGE:
@@ -133,6 +139,7 @@ public class LanguagesTypeImpl extends EObjectImpl implements LanguagesType {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String toString() {
     if (eIsProxy()) return super.toString();
 

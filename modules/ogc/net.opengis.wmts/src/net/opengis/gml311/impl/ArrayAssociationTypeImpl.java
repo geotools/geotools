@@ -68,6 +68,7 @@ public class ArrayAssociationTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getObjectGroup() {
         if (objectGroup == null) {
             objectGroup = new BasicFeatureMap(this, Gml311Package.ARRAY_ASSOCIATION_TYPE__OBJECT_GROUP);
@@ -80,6 +81,7 @@ public class ArrayAssociationTypeImpl extends MinimalEObjectImpl.Container imple
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<EObject> getObject() {
         return getObjectGroup().list(Gml311Package.eINSTANCE.getArrayAssociationType_Object());
     }

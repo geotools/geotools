@@ -109,6 +109,7 @@ public class WMSLayerChooser extends JDialog implements ActionListener {
         list.setVisibleRowCount(-1);
         list.addMouseListener(
                 new MouseAdapter() {
+                    @Override
                     public void mouseClicked(MouseEvent e) {
                         if (e.getClickCount() == 2) {
                             setButton.doClick(); // emulate button click
@@ -158,6 +159,7 @@ public class WMSLayerChooser extends JDialog implements ActionListener {
         return list.getSelectedIndex();
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equalsIgnoreCase("cancel")) {
             list.clearSelection();

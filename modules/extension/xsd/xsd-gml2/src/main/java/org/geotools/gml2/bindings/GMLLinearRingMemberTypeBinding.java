@@ -52,6 +52,7 @@ import org.locationtech.jts.geom.LinearRing;
  */
 public class GMLLinearRingMemberTypeBinding extends AbstractComplexBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.LinearRingMemberType;
     }
@@ -63,6 +64,7 @@ public class GMLLinearRingMemberTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -74,6 +76,7 @@ public class GMLLinearRingMemberTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return LinearRing.class;
     }
@@ -85,6 +88,7 @@ public class GMLLinearRingMemberTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return value;
     }

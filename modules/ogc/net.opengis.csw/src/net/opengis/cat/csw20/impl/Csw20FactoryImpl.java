@@ -243,6 +243,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AcknowledgementType createAcknowledgementType() {
         AcknowledgementTypeImpl acknowledgementType = new AcknowledgementTypeImpl();
         return acknowledgementType;
@@ -253,6 +254,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BriefRecordType createBriefRecordType() {
         BriefRecordTypeImpl briefRecordType = new BriefRecordTypeImpl();
         return briefRecordType;
@@ -263,6 +265,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CapabilitiesType createCapabilitiesType() {
         CapabilitiesTypeImpl capabilitiesType = new CapabilitiesTypeImpl();
         return capabilitiesType;
@@ -273,6 +276,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ConceptualSchemeType createConceptualSchemeType() {
         ConceptualSchemeTypeImpl conceptualSchemeType = new ConceptualSchemeTypeImpl();
         return conceptualSchemeType;
@@ -283,6 +287,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DeleteType createDeleteType() {
         DeleteTypeImpl deleteType = new DeleteTypeImpl();
         return deleteType;
@@ -293,6 +298,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DescribeRecordResponseType createDescribeRecordResponseType() {
         DescribeRecordResponseTypeImpl describeRecordResponseType = new DescribeRecordResponseTypeImpl();
         return describeRecordResponseType;
@@ -303,6 +309,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DescribeRecordType createDescribeRecordType() {
         DescribeRecordTypeImpl describeRecordType = new DescribeRecordTypeImpl();
         return describeRecordType;
@@ -313,6 +320,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DistributedSearchType createDistributedSearchType() {
         DistributedSearchTypeImpl distributedSearchType = new DistributedSearchTypeImpl();
         return distributedSearchType;
@@ -323,6 +331,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DomainValuesType createDomainValuesType() {
         DomainValuesTypeImpl domainValuesType = new DomainValuesTypeImpl();
         return domainValuesType;
@@ -333,6 +342,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EchoedRequestType createEchoedRequestType() {
         EchoedRequestTypeImpl echoedRequestType = new EchoedRequestTypeImpl();
         return echoedRequestType;
@@ -343,6 +353,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ElementSetNameType createElementSetNameType() {
         ElementSetNameTypeImpl elementSetNameType = new ElementSetNameTypeImpl();
         return elementSetNameType;
@@ -353,6 +364,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EmptyType createEmptyType() {
         EmptyTypeImpl emptyType = new EmptyTypeImpl();
         return emptyType;
@@ -363,6 +375,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GetCapabilitiesType createGetCapabilitiesType() {
         GetCapabilitiesTypeImpl getCapabilitiesType = new GetCapabilitiesTypeImpl();
         return getCapabilitiesType;
@@ -373,6 +386,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GetDomainResponseType createGetDomainResponseType() {
         GetDomainResponseTypeImpl getDomainResponseType = new GetDomainResponseTypeImpl();
         return getDomainResponseType;
@@ -383,6 +397,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GetDomainType createGetDomainType() {
         GetDomainTypeImpl getDomainType = new GetDomainTypeImpl();
         return getDomainType;
@@ -393,6 +408,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GetRecordByIdType createGetRecordByIdType() {
         GetRecordByIdTypeImpl getRecordByIdType = new GetRecordByIdTypeImpl();
         return getRecordByIdType;
@@ -403,6 +419,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GetRecordsResponseType createGetRecordsResponseType() {
         GetRecordsResponseTypeImpl getRecordsResponseType = new GetRecordsResponseTypeImpl();
         return getRecordsResponseType;
@@ -413,6 +430,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GetRecordsType createGetRecordsType() {
         GetRecordsTypeImpl getRecordsType = new GetRecordsTypeImpl();
         return getRecordsType;
@@ -423,6 +441,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public HarvestResponseType createHarvestResponseType() {
         HarvestResponseTypeImpl harvestResponseType = new HarvestResponseTypeImpl();
         return harvestResponseType;
@@ -433,6 +452,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public HarvestType createHarvestType() {
         HarvestTypeImpl harvestType = new HarvestTypeImpl();
         return harvestType;
@@ -443,6 +463,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public InsertResultType createInsertResultType() {
         InsertResultTypeImpl insertResultType = new InsertResultTypeImpl();
         return insertResultType;
@@ -453,6 +474,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public InsertType createInsertType() {
         InsertTypeImpl insertType = new InsertTypeImpl();
         return insertType;
@@ -463,6 +485,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ListOfValuesType createListOfValuesType() {
         ListOfValuesTypeImpl listOfValuesType = new ListOfValuesTypeImpl();
         return listOfValuesType;
@@ -473,6 +496,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public QueryConstraintType createQueryConstraintType() {
         QueryConstraintTypeImpl queryConstraintType = new QueryConstraintTypeImpl();
         return queryConstraintType;
@@ -483,6 +507,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public QueryType createQueryType() {
         QueryTypeImpl queryType = new QueryTypeImpl();
         return queryType;
@@ -493,6 +518,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RangeOfValuesType createRangeOfValuesType() {
         RangeOfValuesTypeImpl rangeOfValuesType = new RangeOfValuesTypeImpl();
         return rangeOfValuesType;
@@ -503,6 +529,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RecordPropertyType createRecordPropertyType() {
         RecordPropertyTypeImpl recordPropertyType = new RecordPropertyTypeImpl();
         return recordPropertyType;
@@ -513,6 +540,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RequestStatusType createRequestStatusType() {
         RequestStatusTypeImpl requestStatusType = new RequestStatusTypeImpl();
         return requestStatusType;
@@ -523,6 +551,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SchemaComponentType createSchemaComponentType() {
         SchemaComponentTypeImpl schemaComponentType = new SchemaComponentTypeImpl();
         return schemaComponentType;
@@ -533,6 +562,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SearchResultsType createSearchResultsType() {
         SearchResultsTypeImpl searchResultsType = new SearchResultsTypeImpl();
         return searchResultsType;
@@ -543,6 +573,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TransactionResponseType createTransactionResponseType() {
         TransactionResponseTypeImpl transactionResponseType = new TransactionResponseTypeImpl();
         return transactionResponseType;
@@ -553,6 +584,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TransactionSummaryType createTransactionSummaryType() {
         TransactionSummaryTypeImpl transactionSummaryType = new TransactionSummaryTypeImpl();
         return transactionSummaryType;
@@ -563,6 +595,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TransactionType createTransactionType() {
         TransactionTypeImpl transactionType = new TransactionTypeImpl();
         return transactionType;
@@ -573,6 +606,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public UpdateType createUpdateType() {
         UpdateTypeImpl updateType = new UpdateTypeImpl();
         return updateType;
@@ -583,6 +617,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DCMIRecordType createDCMIRecordType() {
         DCMIRecordTypeImpl dcmiRecordType = new DCMIRecordTypeImpl();
         return dcmiRecordType;
@@ -593,6 +628,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RecordType createRecordType() {
         RecordTypeImpl recordType = new RecordTypeImpl();
         return recordType;
@@ -603,6 +639,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SimpleLiteral createSimpleLiteral() {
         SimpleLiteralImpl simpleLiteral = new SimpleLiteralImpl();
         return simpleLiteral;
@@ -613,6 +650,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public SummaryRecordType createSummaryRecordType() {
         SummaryRecordTypeImpl summaryRecordType = new SummaryRecordTypeImpl();
         return summaryRecordType;
@@ -623,6 +661,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public GetRecordByIdResponseType createGetRecordByIdResponseType() {
         GetRecordByIdResponseTypeImpl getRecordByIdResponseType = new GetRecordByIdResponseTypeImpl();
         return getRecordByIdResponseType;
@@ -891,6 +930,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Csw20Package getCsw20Package() {
         return (Csw20Package)getEPackage();
     }

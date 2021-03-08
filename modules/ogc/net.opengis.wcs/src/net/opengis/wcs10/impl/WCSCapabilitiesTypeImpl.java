@@ -132,6 +132,7 @@ public class WCSCapabilitiesTypeImpl extends EObjectImpl implements WCSCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.WCS_CAPABILITIES_TYPE;
 	}
@@ -141,6 +142,7 @@ public class WCSCapabilitiesTypeImpl extends EObjectImpl implements WCSCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ServiceType getService() {
 		return service;
 	}
@@ -165,6 +167,7 @@ public class WCSCapabilitiesTypeImpl extends EObjectImpl implements WCSCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setService(ServiceType newService) {
 		if (newService != service) {
 			NotificationChain msgs = null;
@@ -184,6 +187,7 @@ public class WCSCapabilitiesTypeImpl extends EObjectImpl implements WCSCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public WCSCapabilityType getCapability() {
 		return capability;
 	}
@@ -208,6 +212,7 @@ public class WCSCapabilitiesTypeImpl extends EObjectImpl implements WCSCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setCapability(WCSCapabilityType newCapability) {
 		if (newCapability != capability) {
 			NotificationChain msgs = null;
@@ -227,6 +232,7 @@ public class WCSCapabilitiesTypeImpl extends EObjectImpl implements WCSCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public ContentMetadataType getContentMetadata() {
 		return contentMetadata;
 	}
@@ -251,6 +257,7 @@ public class WCSCapabilitiesTypeImpl extends EObjectImpl implements WCSCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setContentMetadata(ContentMetadataType newContentMetadata) {
 		if (newContentMetadata != contentMetadata) {
 			NotificationChain msgs = null;
@@ -270,6 +277,7 @@ public class WCSCapabilitiesTypeImpl extends EObjectImpl implements WCSCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getUpdateSequence() {
 		return updateSequence;
 	}
@@ -279,6 +287,7 @@ public class WCSCapabilitiesTypeImpl extends EObjectImpl implements WCSCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setUpdateSequence(String newUpdateSequence) {
 		String oldUpdateSequence = updateSequence;
 		updateSequence = newUpdateSequence;
@@ -291,6 +300,7 @@ public class WCSCapabilitiesTypeImpl extends EObjectImpl implements WCSCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getVersion() {
 		return version;
 	}
@@ -300,6 +310,7 @@ public class WCSCapabilitiesTypeImpl extends EObjectImpl implements WCSCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setVersion(String newVersion) {
 		String oldVersion = version;
 		version = newVersion;
@@ -314,6 +325,7 @@ public class WCSCapabilitiesTypeImpl extends EObjectImpl implements WCSCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void unsetVersion() {
 		String oldVersion = version;
 		boolean oldVersionESet = versionESet;
@@ -328,6 +340,7 @@ public class WCSCapabilitiesTypeImpl extends EObjectImpl implements WCSCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean isSetVersion() {
 		return versionESet;
 	}
@@ -337,6 +350,7 @@ public class WCSCapabilitiesTypeImpl extends EObjectImpl implements WCSCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.WCS_CAPABILITIES_TYPE__SERVICE:
@@ -354,6 +368,7 @@ public class WCSCapabilitiesTypeImpl extends EObjectImpl implements WCSCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.WCS_CAPABILITIES_TYPE__SERVICE:
@@ -375,6 +390,7 @@ public class WCSCapabilitiesTypeImpl extends EObjectImpl implements WCSCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.WCS_CAPABILITIES_TYPE__SERVICE:
@@ -401,6 +417,7 @@ public class WCSCapabilitiesTypeImpl extends EObjectImpl implements WCSCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.WCS_CAPABILITIES_TYPE__SERVICE:
@@ -427,6 +444,7 @@ public class WCSCapabilitiesTypeImpl extends EObjectImpl implements WCSCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.WCS_CAPABILITIES_TYPE__SERVICE:
@@ -448,6 +466,7 @@ public class WCSCapabilitiesTypeImpl extends EObjectImpl implements WCSCapabilit
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

@@ -49,10 +49,12 @@ public interface SelectedChannelType extends org.opengis.style.SelectedChannelTy
      *
      * @return Source channel name
      */
+    @Override
     public Expression getChannelName();
 
     public void setContrastEnhancement(org.opengis.style.ContrastEnhancement enhancement);
 
+    @Override
     public ContrastEnhancement getContrastEnhancement();
 
     public void accept(org.geotools.styling.StyleVisitor visitor);

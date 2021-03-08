@@ -701,6 +701,7 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
     }
 
     /** @see org.opengis.coverage.grid.GridCoverageReader#getFormat() */
+    @Override
     public Format getFormat() {
         return new JP2KFormat();
     }
@@ -709,6 +710,7 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
      * @see
      *     org.opengis.coverage.grid.GridCoverageReader#read(org.opengis.parameter.GeneralParameterValue[])
      */
+    @Override
     public GridCoverage2D read(GeneralParameterValue[] params) throws IOException {
 
         if (LOGGER.isLoggable(FINE)) {
@@ -740,7 +742,8 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
      *
      * @return the highest resolution values.
      */
-    double[] getHighestRes() {
+    @Override
+    protected double[] getHighestRes() {
         return super.highestRes;
     }
 

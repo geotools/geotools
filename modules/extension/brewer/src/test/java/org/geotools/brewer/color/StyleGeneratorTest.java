@@ -41,8 +41,6 @@ import org.geotools.filter.function.RangedClassifier;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Rule;
 import org.junit.Test;
-import org.opengis.feature.Feature;
-import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -160,12 +158,9 @@ public class StyleGeneratorTest extends DataTestCase {
         // assign each of the features to one of the bins
         try {
             fc.accepts(
-                    new FeatureVisitor() {
-                        public void visit(Feature feature) {
+                    feature ->
                             binValues2[0].add(
-                                    ((SimpleFeature) feature).getAttribute(attribName).toString());
-                        }
-                    },
+                                    ((SimpleFeature) feature).getAttribute(attribName).toString()),
                     null);
         } catch (IOException e) {
             fail(e.getMessage());
@@ -198,12 +193,9 @@ public class StyleGeneratorTest extends DataTestCase {
         final Filter filter = rules.get(0).getFilter();
         try {
             fc.accepts(
-                    new FeatureVisitor() {
-
-                        public void visit(Feature feature) {
-                            if (!filter.evaluate(feature)) {
-                                fail("Not all features accepted.");
-                            }
+                    feature -> {
+                        if (!filter.evaluate(feature)) {
+                            fail("Not all features accepted.");
                         }
                     },
                     null);

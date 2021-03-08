@@ -38,6 +38,7 @@ public class EmptyFeatureReader<T extends FeatureType, F extends Feature>
     }
 
     /** @see org.geotools.data.FeatureReader#getFeatureType() */
+    @Override
     public T getFeatureType() {
         return featureType;
     }
@@ -48,6 +49,7 @@ public class EmptyFeatureReader<T extends FeatureType, F extends Feature>
      * @return Does not return
      * @see org.geotools.data.FeatureReader#next()
      */
+    @Override
     public F next() throws NoSuchElementException {
         throw new NoSuchElementException("FeatureReader is empty");
     }
@@ -58,6 +60,7 @@ public class EmptyFeatureReader<T extends FeatureType, F extends Feature>
      * @return <code>false</code>
      * @see org.geotools.data.FeatureReader#hasNext()
      */
+    @Override
     public boolean hasNext() {
         return false;
     }
@@ -67,6 +70,7 @@ public class EmptyFeatureReader<T extends FeatureType, F extends Feature>
      *
      * @see org.geotools.data.FeatureReader#close()
      */
+    @Override
     public void close() {
         featureType = null;
     }

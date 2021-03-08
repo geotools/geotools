@@ -49,6 +49,7 @@ import org.picocontainer.MutablePicoContainer;
 public class OGCBinaryComparisonOpTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.BinaryComparisonOpType;
     }
@@ -60,6 +61,7 @@ public class OGCBinaryComparisonOpTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return OVERRIDE;
     }
@@ -71,6 +73,7 @@ public class OGCBinaryComparisonOpTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return BinaryComparisonOperator.class;
     }
@@ -82,6 +85,7 @@ public class OGCBinaryComparisonOpTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
@@ -91,6 +95,7 @@ public class OGCBinaryComparisonOpTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // implemented by comcreate elements;
         return null;
@@ -136,6 +141,7 @@ public class OGCBinaryComparisonOpTypeBinding extends AbstractComplexBinding {
         //        }
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         if (OGC.expression.equals(name)) {
             BinaryComparisonOperator op = (BinaryComparisonOperator) object;

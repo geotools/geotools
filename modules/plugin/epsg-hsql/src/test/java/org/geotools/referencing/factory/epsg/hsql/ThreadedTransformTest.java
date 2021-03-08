@@ -20,7 +20,6 @@ import java.awt.geom.Rectangle2D;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -132,22 +131,16 @@ public class ThreadedTransformTest {
         for (int i = 0; i < 16; i++) {
             Future<Void> f =
                     EXECUTOR.submit(
-                            new Callable<Void>() {
-                                @Override
-                                public Void call() throws Exception {
-                                    retrieve();
-                                    return null;
-                                }
+                            () -> {
+                                retrieve();
+                                return null;
                             });
             futures.add(f);
             f =
                     EXECUTOR.submit(
-                            new Callable<Void>() {
-                                @Override
-                                public Void call() throws Exception {
-                                    transform();
-                                    return null;
-                                }
+                            () -> {
+                                transform();
+                                return null;
                             });
             futures.add(f);
         }

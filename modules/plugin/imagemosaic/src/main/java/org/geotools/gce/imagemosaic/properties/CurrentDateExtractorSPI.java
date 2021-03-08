@@ -24,18 +24,22 @@ import java.util.Map;
 /** Factory for a properties extractor collecting the current date */
 public class CurrentDateExtractorSPI implements PropertiesCollectorSPI {
 
+    @Override
     public String getName() {
         return "CurrentDateExtractorSPI";
     }
 
+    @Override
     public boolean isAvailable() {
         return true;
     }
 
+    @Override
     public Map<Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }
 
+    @Override
     public PropertiesCollector create(final Object o, final List<String> propertyNames) {
         return new CurrentDateExtractor(this, propertyNames);
     }

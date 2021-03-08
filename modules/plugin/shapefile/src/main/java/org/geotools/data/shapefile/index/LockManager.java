@@ -96,6 +96,7 @@ public class LockManager {
         }
 
         /** @see org.geotools.index.Lock#getType() */
+        @Override
         public short getType() {
             return this.type;
         }

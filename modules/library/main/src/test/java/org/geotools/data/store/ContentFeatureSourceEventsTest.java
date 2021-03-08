@@ -62,6 +62,7 @@ public class ContentFeatureSourceEventsTest extends AbstractContentTest {
             this.name = name;
         }
 
+        @Override
         public void changed(FeatureEvent featureEvent) {
             this.events.add(featureEvent);
         }

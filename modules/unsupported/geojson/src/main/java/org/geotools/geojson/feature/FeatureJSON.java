@@ -284,17 +284,15 @@ public class FeatureJSON {
                 if (encodeFeatureCollectionBounds) {
                     obj.put(
                             "bbox",
-                            new JSONStreamAware() {
-                                public void writeJSONString(Writer out) throws IOException {
-                                    JSONArray.writeJSONString(
-                                            Arrays.asList(
-                                                    bounds.getMinX(),
-                                                    bounds.getMinY(),
-                                                    bounds.getMaxX(),
-                                                    bounds.getMaxY()),
-                                            out);
-                                }
-                            });
+                            (JSONStreamAware)
+                                    out ->
+                                            JSONArray.writeJSONString(
+                                                    Arrays.asList(
+                                                            bounds.getMinX(),
+                                                            bounds.getMinY(),
+                                                            bounds.getMaxX(),
+                                                            bounds.getMaxY()),
+                                                    out));
                 }
             }
 
@@ -634,6 +632,7 @@ public class FeatureJSON {
             return sb.toString();
         }
 
+        @Override
         public String toJSONString() {
             return toJSONString(feature);
         }
@@ -649,6 +648,7 @@ public class FeatureJSON {
             this.gjson = gjson;
         }
 
+        @Override
         public void writeJSONString(Writer out) throws IOException {
             FeatureEncoder featureEncoder =
                     new FeatureEncoder((SimpleFeatureType) features.getSchema());
@@ -691,6 +691,7 @@ public class FeatureJSON {
             return handler;
         }
 
+        @Override
         public boolean hasNext() {
             if (next != null) {
                 return true;
@@ -704,6 +705,7 @@ public class FeatureJSON {
             return next != null;
         }
 
+        @Override
         public SimpleFeature next() {
             SimpleFeature feature = next;
             next = null;
@@ -723,6 +725,7 @@ public class FeatureJSON {
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public void close() {
             if (reader != null) {
                 try {

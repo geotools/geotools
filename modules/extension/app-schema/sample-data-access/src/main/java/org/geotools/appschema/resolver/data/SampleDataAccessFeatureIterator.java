@@ -45,11 +45,13 @@ public class SampleDataAccessFeatureIterator implements FeatureIterator<Feature>
     }
 
     /** @see java.util.Iterator#hasNext() */
+    @Override
     public boolean hasNext() {
         return iterator.hasNext();
     }
 
     /** @see java.util.Iterator#next() */
+    @Override
     public Feature next() {
         return iterator.next();
     }
@@ -64,6 +66,7 @@ public class SampleDataAccessFeatureIterator implements FeatureIterator<Feature>
      *
      * @see org.geotools.feature.FeatureIterator#close()
      */
+    @Override
     public void close() {
         // do nothing
     }

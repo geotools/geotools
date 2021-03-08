@@ -62,6 +62,7 @@ public abstract class AbstractCoordinateSystemBaseTypeImpl extends DefinitionTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CodeType getCsName() {
         return csName;
     }
@@ -86,6 +87,7 @@ public abstract class AbstractCoordinateSystemBaseTypeImpl extends DefinitionTyp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCsName(CodeType newCsName) {
         if (newCsName != csName) {
             NotificationChain msgs = null;

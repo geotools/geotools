@@ -57,6 +57,7 @@ import org.opengis.style.Description;
 public class SymbolizerTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.SymbolizerType;
     }
@@ -68,6 +69,7 @@ public class SymbolizerTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Symbolizer.class;
     }
@@ -79,6 +81,7 @@ public class SymbolizerTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         Symbolizer sym = (Symbolizer) value;

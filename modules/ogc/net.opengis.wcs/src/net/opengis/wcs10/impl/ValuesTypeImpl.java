@@ -56,6 +56,7 @@ public class ValuesTypeImpl extends ValueEnumTypeImpl implements ValuesType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.VALUES_TYPE;
 	}
@@ -65,6 +66,7 @@ public class ValuesTypeImpl extends ValueEnumTypeImpl implements ValuesType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public TypedLiteralType getDefault() {
 		return default_;
 	}
@@ -89,6 +91,7 @@ public class ValuesTypeImpl extends ValueEnumTypeImpl implements ValuesType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setDefault(TypedLiteralType newDefault) {
 		if (newDefault != default_) {
 			NotificationChain msgs = null;
@@ -108,6 +111,7 @@ public class ValuesTypeImpl extends ValueEnumTypeImpl implements ValuesType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.VALUES_TYPE__DEFAULT:
@@ -121,6 +125,7 @@ public class ValuesTypeImpl extends ValueEnumTypeImpl implements ValuesType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.VALUES_TYPE__DEFAULT:
@@ -134,6 +139,7 @@ public class ValuesTypeImpl extends ValueEnumTypeImpl implements ValuesType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.VALUES_TYPE__DEFAULT:
@@ -148,6 +154,7 @@ public class ValuesTypeImpl extends ValueEnumTypeImpl implements ValuesType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.VALUES_TYPE__DEFAULT:
@@ -162,6 +169,7 @@ public class ValuesTypeImpl extends ValueEnumTypeImpl implements ValuesType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.VALUES_TYPE__DEFAULT:

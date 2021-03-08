@@ -117,6 +117,7 @@ public class ExtentTypeImpl extends MinimalEObjectImpl.Container implements Exte
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StringOrRefType getDescription() {
         return description;
     }
@@ -141,6 +142,7 @@ public class ExtentTypeImpl extends MinimalEObjectImpl.Container implements Exte
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDescription(StringOrRefType newDescription) {
         if (newDescription != description) {
             NotificationChain msgs = null;
@@ -160,6 +162,7 @@ public class ExtentTypeImpl extends MinimalEObjectImpl.Container implements Exte
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<EnvelopeType> getBoundingBox() {
         if (boundingBox == null) {
             boundingBox = new EObjectContainmentEList<>(EnvelopeType.class, this, Gml311Package.EXTENT_TYPE__BOUNDING_BOX);
@@ -172,6 +175,7 @@ public class ExtentTypeImpl extends MinimalEObjectImpl.Container implements Exte
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<PolygonType> getBoundingPolygon() {
         if (boundingPolygon == null) {
             boundingPolygon = new EObjectContainmentEList<>(PolygonType.class, this, Gml311Package.EXTENT_TYPE__BOUNDING_POLYGON);
@@ -184,6 +188,7 @@ public class ExtentTypeImpl extends MinimalEObjectImpl.Container implements Exte
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<EnvelopeType> getVerticalExtent() {
         if (verticalExtent == null) {
             verticalExtent = new EObjectContainmentEList<>(EnvelopeType.class, this, Gml311Package.EXTENT_TYPE__VERTICAL_EXTENT);
@@ -196,6 +201,7 @@ public class ExtentTypeImpl extends MinimalEObjectImpl.Container implements Exte
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<TimePeriodType> getTemporalExtent() {
         if (temporalExtent == null) {
             temporalExtent = new EObjectContainmentEList<>(TimePeriodType.class, this, Gml311Package.EXTENT_TYPE__TEMPORAL_EXTENT);

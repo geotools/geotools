@@ -38,6 +38,7 @@ public class OracleTransformFeatureStore extends TransformFeatureStore {
         this.datastore = datastore;
     }
 
+    @Override
     public DataAccess<SimpleFeatureType, SimpleFeature> getDataStore() {
         return datastore;
     }

@@ -20,10 +20,12 @@ import org.geotools.jdbc.JDBCDataStoreAPIOnlineTest;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 
 public class H2DataStoreAPITest extends JDBCDataStoreAPIOnlineTest {
+    @Override
     protected JDBCDataStoreAPITestSetup createTestSetup() {
         return new H2DataStoreAPITestSetup();
     }
 
+    @Override
     public void testTransactionIsolation() throws Exception {
         // JD: h2 does table level locking so this test fails.
     }

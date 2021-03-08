@@ -49,6 +49,7 @@ public class CollectionConverterFactory implements ConverterFactory {
     protected static final Converter CollectionToCollection =
             new Converter() {
 
+                @Override
                 public <T> T convert(Object source, Class<T> target) throws Exception {
                     // if source is already an instance nevermind
                     if (target.isInstance(source)) {
@@ -71,6 +72,7 @@ public class CollectionConverterFactory implements ConverterFactory {
     protected static final Converter CollectionToArray =
             new Converter() {
 
+                @Override
                 public <T> T convert(Object source, Class<T> target) throws Exception {
                     Collection s = (Collection) source;
                     Object array = Array.newInstance(target.getComponentType(), s.size());
@@ -95,6 +97,7 @@ public class CollectionConverterFactory implements ConverterFactory {
     protected static final Converter ArrayToCollection =
             new Converter() {
 
+                @Override
                 public <T> T convert(Object source, Class<T> target) throws Exception {
                     Collection<Object> collection = newCollection(target);
                     if (collection != null) {
@@ -112,6 +115,7 @@ public class CollectionConverterFactory implements ConverterFactory {
     protected static final Converter ArrayToArray =
             new Converter() {
 
+                @Override
                 public <T> T convert(Object source, Class<T> target) throws Exception {
                     // get the individual component types
                     Class<?> s = source.getClass().getComponentType();
@@ -157,6 +161,7 @@ public class CollectionConverterFactory implements ConverterFactory {
         }
     }
 
+    @Override
     public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {
         if ((Collection.class.isAssignableFrom(source) || source.isArray())
                 && (Collection.class.isAssignableFrom(target) || target.isArray())) {

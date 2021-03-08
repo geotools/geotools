@@ -116,6 +116,7 @@ public class GeodesicStringTypeImpl extends AbstractCurveSegmentTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectPositionListType getPosList() {
         return posList;
     }
@@ -140,6 +141,7 @@ public class GeodesicStringTypeImpl extends AbstractCurveSegmentTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPosList(DirectPositionListType newPosList) {
         if (newPosList != posList) {
             NotificationChain msgs = null;
@@ -159,6 +161,7 @@ public class GeodesicStringTypeImpl extends AbstractCurveSegmentTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getGeometricPositionGroup() {
         if (geometricPositionGroup == null) {
             geometricPositionGroup = new BasicFeatureMap(this, Gml311Package.GEODESIC_STRING_TYPE__GEOMETRIC_POSITION_GROUP);
@@ -171,6 +174,7 @@ public class GeodesicStringTypeImpl extends AbstractCurveSegmentTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<DirectPositionType> getPos() {
         return getGeometricPositionGroup().list(Gml311Package.eINSTANCE.getGeodesicStringType_Pos());
     }
@@ -180,6 +184,7 @@ public class GeodesicStringTypeImpl extends AbstractCurveSegmentTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<PointPropertyType> getPointProperty() {
         return getGeometricPositionGroup().list(Gml311Package.eINSTANCE.getGeodesicStringType_PointProperty());
     }
@@ -189,6 +194,7 @@ public class GeodesicStringTypeImpl extends AbstractCurveSegmentTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CurveInterpolationType getInterpolation() {
         return interpolation;
     }
@@ -198,6 +204,7 @@ public class GeodesicStringTypeImpl extends AbstractCurveSegmentTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setInterpolation(CurveInterpolationType newInterpolation) {
         CurveInterpolationType oldInterpolation = interpolation;
         interpolation = newInterpolation == null ? INTERPOLATION_EDEFAULT : newInterpolation;
@@ -212,6 +219,7 @@ public class GeodesicStringTypeImpl extends AbstractCurveSegmentTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetInterpolation() {
         CurveInterpolationType oldInterpolation = interpolation;
         boolean oldInterpolationESet = interpolationESet;
@@ -226,6 +234,7 @@ public class GeodesicStringTypeImpl extends AbstractCurveSegmentTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetInterpolation() {
         return interpolationESet;
     }

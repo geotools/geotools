@@ -102,10 +102,12 @@ public class InclusionFeatureCollection implements VectorProcess {
                     this.firstFeatures.getSchema().getGeometryDescriptor().getLocalName();
         }
 
+        @Override
         public void close() {
             delegate.close();
         }
 
+        @Override
         public boolean hasNext() {
             while (next == null && delegate.hasNext()) {
                 SimpleFeature f = delegate.next();
@@ -125,6 +127,7 @@ public class InclusionFeatureCollection implements VectorProcess {
             return next != null;
         }
 
+        @Override
         public SimpleFeature next() throws NoSuchElementException {
             if (!hasNext()) {
                 throw new NoSuchElementException("hasNext() returned false!");

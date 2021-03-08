@@ -35,6 +35,7 @@ public class WFSCapabilitiesConfiguration extends org.geotools.wfs.WFSConfigurat
         addDependency(new org.geotools.filter.v1_0.capabilities.OGCConfiguration());
     }
 
+    @Override
     protected void configureBindings(org.picocontainer.MutablePicoContainer container) {
 
         container.registerComponentImplementation(

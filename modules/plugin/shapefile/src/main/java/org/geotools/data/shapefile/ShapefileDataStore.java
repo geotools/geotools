@@ -145,6 +145,7 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
         return getFeatureSource();
     }
 
+    @Override
     public ContentFeatureSource getFeatureSource() throws IOException {
         ContentEntry entry = ensureEntry(getTypeName());
         if (shpFiles.isWritable()) {
@@ -218,10 +219,12 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
         this.maxDbfSize = maxDbfSize;
     }
 
+    @Override
     public SimpleFeatureType getSchema() throws IOException {
         return getSchema(getTypeName());
     }
 
+    @Override
     public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader() throws IOException {
         return super.getFeatureReader(
                 new Query(getTypeName().getLocalPart()), Transaction.AUTO_COMMIT);
@@ -238,6 +241,7 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
      * @param featureType The desired FeatureType.
      * @throws IOException If the DataStore is remote.
      */
+    @Override
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         if (!shpFiles.isLocal()) {
             throw new IOException("Cannot create FeatureType on remote or in-classpath shapefile");
@@ -499,14 +503,7 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
     public void removeSchema(Name typeName) throws IOException {
         // check file
         ContentEntry entry = ensureEntry(typeName);
-        org.geotools.data.shapefile.files.FileWriter writer =
-                new org.geotools.data.shapefile.files.FileWriter() {
-
-                    @Override
-                    public String id() {
-                        return "TheShapefileRemover";
-                    }
-                };
+        org.geotools.data.shapefile.files.FileWriter writer = () -> "TheShapefileRemover";
         for (ShpFileType type : ShpFileType.values()) {
             File file = shpFiles.acquireWriteFile(type, writer);
             try {

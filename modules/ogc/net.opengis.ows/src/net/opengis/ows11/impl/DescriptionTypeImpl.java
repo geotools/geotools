@@ -81,7 +81,8 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.DESCRIPTION_TYPE;
   }
 
@@ -90,7 +91,8 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList getTitle() {
+  @Override
+public EList getTitle() {
     if (title == null) {
       title = new EObjectContainmentEList(LanguageStringType.class, this, Ows11Package.DESCRIPTION_TYPE__TITLE);
     }
@@ -102,7 +104,8 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList getAbstract() {
+  @Override
+public EList getAbstract() {
     if (abstract_ == null) {
       abstract_ = new EObjectContainmentEList(LanguageStringType.class, this, Ows11Package.DESCRIPTION_TYPE__ABSTRACT);
     }
@@ -114,7 +117,8 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList getKeywords() {
+  @Override
+public EList getKeywords() {
     if (keywords == null) {
       keywords = new EObjectContainmentEList(KeywordsType.class, this, Ows11Package.DESCRIPTION_TYPE__KEYWORDS);
     }
@@ -126,7 +130,8 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+  @Override
+public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Ows11Package.DESCRIPTION_TYPE__TITLE:
         return ((InternalEList)getTitle()).basicRemove(otherEnd, msgs);
@@ -143,7 +148,8 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.DESCRIPTION_TYPE__TITLE:
         return getTitle();
@@ -160,7 +166,8 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.DESCRIPTION_TYPE__TITLE:
         getTitle().clear();
@@ -183,7 +190,8 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.DESCRIPTION_TYPE__TITLE:
         getTitle().clear();
@@ -203,7 +211,8 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.DESCRIPTION_TYPE__TITLE:
         return title != null && !title.isEmpty();

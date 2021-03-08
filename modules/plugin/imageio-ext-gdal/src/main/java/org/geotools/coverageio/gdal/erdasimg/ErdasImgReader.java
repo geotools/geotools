@@ -56,6 +56,7 @@ public final class ErdasImgReader extends BaseGDALGridCoverage2DReader
     }
 
     /** @see org.opengis.coverage.grid.GridCoverageReader#getFormat() */
+    @Override
     public Format getFormat() {
         return new ErdasImgFormat();
     }

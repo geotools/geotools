@@ -26,6 +26,7 @@ public class DB2NoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
         super(new DB2TestSetup());
     }
 
+    @Override
     protected void createLakeTable() throws Exception {
 
         try (Connection con = getDataSource().getConnection()) {

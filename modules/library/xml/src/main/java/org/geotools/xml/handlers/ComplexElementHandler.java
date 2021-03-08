@@ -83,11 +83,13 @@ public class ComplexElementHandler extends XMLElementHandler {
     }
 
     /** @see org.geotools.xml.XMLElementHandler#getElement() */
+    @Override
     public Element getElement() {
         return elem;
     }
 
     /** @see org.geotools.xml.XMLElementHandler#characters(java.lang.String) */
+    @Override
     public void characters(String text1) throws SAXException {
         if (type.isMixed()) {
             if (this.text != null) {
@@ -108,6 +110,7 @@ public class ComplexElementHandler extends XMLElementHandler {
     }
 
     /** */
+    @Override
     public void endElement(URI namespaceURI, String localName, Map<String, Object> hints)
             throws OperationNotSupportedException, SAXException {
         text = (text == null) ? null : text.trim();
@@ -484,6 +487,7 @@ public class ComplexElementHandler extends XMLElementHandler {
      * @see org.geotools.xml.XMLElementHandler#startElement(java.net.URI, java.lang.String,
      *     org.xml.sax.Attributes)
      */
+    @Override
     public void startElement(URI namespaceURI, String localName, Attributes attr1) {
         this.attr = new AttributesImpl(attr1);
     }
@@ -495,6 +499,7 @@ public class ComplexElementHandler extends XMLElementHandler {
      *     java.util.Map)
      * @return XMLElementHandler
      */
+    @Override
     public XMLElementHandler getHandler(
             URI namespaceURI, String localName, Map<String, Object> hints) throws SAXException {
         if (elements == null) {
@@ -550,12 +555,14 @@ public class ComplexElementHandler extends XMLElementHandler {
      * @see org.geotools.xml.XMLElementHandler#getValue()
      * @return Object
      */
+    @Override
     public Object getValue() {
         // endElement sets the value
         return value;
     }
 
     /** @see org.geotools.xml.XMLElementHandler#getName() */
+    @Override
     public String getName() {
         return elem.getName();
     }
@@ -603,6 +610,7 @@ public class ComplexElementHandler extends XMLElementHandler {
          * @see org.geotools.xml.schema.ElementValue#getElement()
          * @return Element
          */
+        @Override
         public Element getElement() {
             return t;
         }
@@ -613,12 +621,14 @@ public class ComplexElementHandler extends XMLElementHandler {
          * @see org.geotools.xml.schema.ElementValue#getValue()
          * @return Object
          */
+        @Override
         public Object getValue() {
             return value;
         }
         /* (non-Javadoc)
          * @see java.lang.Object#toString()
          */
+        @Override
         public String toString() {
             StringBuffer buf = new StringBuffer();
             if (t != null && t.toString() != null) {

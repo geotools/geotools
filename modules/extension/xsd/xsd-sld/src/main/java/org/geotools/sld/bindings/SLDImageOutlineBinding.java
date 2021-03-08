@@ -60,6 +60,7 @@ public class SLDImageOutlineBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SLD.IMAGEOUTLINE;
     }
@@ -71,6 +72,7 @@ public class SLDImageOutlineBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -82,6 +84,7 @@ public class SLDImageOutlineBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return ImageOutline.class;
     }
@@ -93,6 +96,7 @@ public class SLDImageOutlineBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
@@ -102,6 +106,7 @@ public class SLDImageOutlineBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // &lt;xsd:choice&gt;
         //  &lt;xsd:element ref="sld:LineSymbolizer"/&gt;

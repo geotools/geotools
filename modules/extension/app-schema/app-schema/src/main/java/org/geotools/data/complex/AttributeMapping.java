@@ -246,11 +246,13 @@ public class AttributeMapping {
                 && Utilities.equals(parentLabel, other.parentLabel);
     }
 
+    @Override
     public int hashCode() {
         return (37 * identifierExpression.hashCode() + 37 * sourceExpression.hashCode())
                 ^ targetXPath.hashCode();
     }
 
+    @Override
     public String toString() {
         StringBuffer sb = new StringBuffer("AttributeMapping[");
         sb.append("sourceExpression='")

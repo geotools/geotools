@@ -74,6 +74,7 @@ public interface FilterCapabilitiesType extends EObject, FilterCapabilities {
      *        extendedMetaData="kind='element' name='Id_Capabilities' namespace='##targetNamespace'"
      * @generated
      */
+    @Override
     IdCapabilitiesType getIdCapabilities();
 
     /**
@@ -101,6 +102,7 @@ public interface FilterCapabilitiesType extends EObject, FilterCapabilities {
      *        extendedMetaData="kind='element' name='Scalar_Capabilities' namespace='##targetNamespace'"
      * @generated
      */
+    @Override
     ScalarCapabilitiesType getScalarCapabilities();
 
     /**
@@ -128,6 +130,7 @@ public interface FilterCapabilitiesType extends EObject, FilterCapabilities {
      *        extendedMetaData="kind='element' name='Spatial_Capabilities' namespace='##targetNamespace'"
      * @generated
      */
+    @Override
     SpatialCapabilitiesType getSpatialCapabilities();
 
     /**
@@ -155,6 +158,7 @@ public interface FilterCapabilitiesType extends EObject, FilterCapabilities {
      *        extendedMetaData="kind='element' name='Temporal_Capabilities' namespace='##targetNamespace'"
      * @generated
      */
+    @Override
     TemporalCapabilitiesType getTemporalCapabilities();
 
     /**

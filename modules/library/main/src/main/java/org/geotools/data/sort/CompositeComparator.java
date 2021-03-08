@@ -34,6 +34,7 @@ class CompositeComparator implements Comparator<SimpleFeature> {
         this.comparators = comparators;
     }
 
+    @Override
     public int compare(SimpleFeature f1, SimpleFeature f2) {
         for (Comparator<SimpleFeature> comp : comparators) {
             int result = comp.compare(f1, f2);

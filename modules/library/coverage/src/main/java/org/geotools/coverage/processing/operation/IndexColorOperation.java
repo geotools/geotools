@@ -63,6 +63,7 @@ abstract class IndexColorOperation extends Operation2D {
      * @throws IllegalArgumentException if the candidate image do not use an {@link
      *     IndexColorModel}.
      */
+    @Override
     public Coverage doOperation(final ParameterValueGroup parameters, final Hints hints) {
         final GridCoverage2D source = (GridCoverage2D) parameters.parameter("Source").getValue();
         final GridCoverage2D visual = source;

@@ -66,6 +66,7 @@ public class AbstractRingPropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getRingGroup() {
         if (ringGroup == null) {
             ringGroup = new BasicFeatureMap(this, Gml311Package.ABSTRACT_RING_PROPERTY_TYPE__RING_GROUP);
@@ -78,6 +79,7 @@ public class AbstractRingPropertyTypeImpl extends MinimalEObjectImpl.Container i
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public AbstractRingType getRing() {
         return (AbstractRingType)getRingGroup().get(Gml311Package.eINSTANCE.getAbstractRingPropertyType_Ring(), true);
     }

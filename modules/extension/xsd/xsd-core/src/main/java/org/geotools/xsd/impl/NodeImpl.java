@@ -42,18 +42,22 @@ public class NodeImpl implements Node {
         this.value = value;
     }
 
+    @Override
     public InstanceComponent getComponent() {
         return component;
     }
 
+    @Override
     public Object getValue() {
         return value;
     }
 
+    @Override
     public void setValue(Object value) {
         this.value = value;
     }
 
+    @Override
     public boolean hasChild(String name) {
         if (name == null) {
             return false;
@@ -68,6 +72,7 @@ public class NodeImpl implements Node {
         return false;
     }
 
+    @Override
     public boolean hasChild(Class<?> clazz) {
         if (clazz == null) {
             return false;
@@ -94,6 +99,7 @@ public class NodeImpl implements Node {
      *
      * @see Node#getChildren()
      */
+    @Override
     public List<Node> getChildren() {
         return Collections.unmodifiableList(children);
     }
@@ -102,6 +108,7 @@ public class NodeImpl implements Node {
         return children.size();
     }
 
+    @Override
     public List<Node> getChildren(String name) {
         List<Node> matches = new ArrayList<>();
 
@@ -118,6 +125,7 @@ public class NodeImpl implements Node {
         return matches;
     }
 
+    @Override
     public List<Node> getChildren(Class<?> clazz) {
         List<Node> matches = new ArrayList<>();
 
@@ -138,6 +146,7 @@ public class NodeImpl implements Node {
         return matches;
     }
 
+    @Override
     public Node getChild(String name) {
         if (name == null) {
             return null;
@@ -152,6 +161,7 @@ public class NodeImpl implements Node {
         return null;
     }
 
+    @Override
     public Node getChild(Class<?> clazz) {
         if (clazz == null) {
             return null;
@@ -170,6 +180,7 @@ public class NodeImpl implements Node {
         return null;
     }
 
+    @Override
     public boolean hasAttribute(Class<?> clazz) {
         if (clazz == null) {
             return false;
@@ -188,6 +199,7 @@ public class NodeImpl implements Node {
         return false;
     }
 
+    @Override
     public boolean hasAttribute(String name) {
         if (name == null) {
             return false;
@@ -202,10 +214,12 @@ public class NodeImpl implements Node {
         return false;
     }
 
+    @Override
     public List<Node> getAttributes() {
         return new ArrayList<>(attributes);
     }
 
+    @Override
     public List<Node> getAttributes(Class<?> clazz) {
         List<Node> matches = new ArrayList<>();
 
@@ -230,6 +244,7 @@ public class NodeImpl implements Node {
         return attributes.size();
     }
 
+    @Override
     public Node getAttribute(String name) {
         if (name == null) {
             return null;
@@ -244,6 +259,7 @@ public class NodeImpl implements Node {
         return null;
     }
 
+    @Override
     public Node getAttribute(Class<?> clazz) {
         if (clazz == null) {
             return null;
@@ -262,6 +278,7 @@ public class NodeImpl implements Node {
         return null;
     }
 
+    @Override
     public Object getAttributeValue(String name) {
         Node node = getAttribute(name);
 
@@ -272,6 +289,7 @@ public class NodeImpl implements Node {
         return null;
     }
 
+    @Override
     public Object getAttributeValue(Class<?> clazz) {
         if (clazz == null) {
             return null;
@@ -290,6 +308,7 @@ public class NodeImpl implements Node {
         return null;
     }
 
+    @Override
     public List<Object> getAttributeValues(Class<?> clazz) {
         List<Object> matches = new ArrayList<>();
 
@@ -310,14 +329,17 @@ public class NodeImpl implements Node {
         return matches;
     }
 
+    @Override
     public String toString() {
         return getComponent().getName() + "=" + getValue();
     }
 
+    @Override
     public Object getChildValue(int index) {
         return children.get(index).getValue();
     }
 
+    @Override
     public Object getChildValue(String name) {
         Node node = getChild(name);
 
@@ -328,6 +350,7 @@ public class NodeImpl implements Node {
         return null;
     }
 
+    @Override
     public <T> T getChildValue(Class<T> clazz) {
         Node node = getChild(clazz);
 
@@ -338,6 +361,7 @@ public class NodeImpl implements Node {
         return null;
     }
 
+    @Override
     public List<Object> getChildValues(String name) {
         List<Object> matches = new ArrayList<>();
 
@@ -354,6 +378,7 @@ public class NodeImpl implements Node {
         return matches;
     }
 
+    @Override
     public <T> List<T> getChildValues(Class<T> clazz) {
         List<T> matches = new ArrayList<>();
 
@@ -376,6 +401,7 @@ public class NodeImpl implements Node {
         return matches;
     }
 
+    @Override
     public Object getAttributeValue(String name, Object defaultValue) {
         Object o = getAttributeValue(name);
 
@@ -386,6 +412,7 @@ public class NodeImpl implements Node {
         return o;
     }
 
+    @Override
     public Object getAttributeValue(Class clazz, Object defaultValue) {
         Object o = getAttributeValue(clazz);
 
@@ -396,6 +423,7 @@ public class NodeImpl implements Node {
         return o;
     }
 
+    @Override
     public Object getChildValue(String name, Object defaultValue) {
         Object o = getChildValue(name);
 
@@ -406,6 +434,7 @@ public class NodeImpl implements Node {
         return o;
     }
 
+    @Override
     public <T> T getChildValue(Class<T> clazz, T defaultValue) {
         Object o = getChildValue(clazz);
 
@@ -440,10 +469,12 @@ public class NodeImpl implements Node {
         }
     }
 
+    @Override
     public Node getParent() {
         return parent;
     }
 
+    @Override
     public void setParent(Node parent) {
         this.parent = parent;
     }

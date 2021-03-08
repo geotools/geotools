@@ -94,6 +94,7 @@ public class Polyconic {
         }
 
         /** {@inheritDoc} */
+        @Override
         public ParameterDescriptorGroup getParameterDescriptors() {
             return Provider.PARAMETERS;
         }
@@ -145,6 +146,7 @@ public class Polyconic {
          * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates (units in
          * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
          */
+        @Override
         protected Point2D transformNormalized(double lam, double phi, final Point2D ptDst)
                 throws ProjectionException {
             double ms, sp, cp, x, y;
@@ -171,6 +173,7 @@ public class Polyconic {
          * Transforms the specified (<var>x</var>,<var>y</var>) coordinates and stores the result in
          * {@code ptDst}.
          */
+        @Override
         protected Point2D inverseTransformNormalized(double x, double y, final Point2D ptDst)
                 throws ProjectionException {
             double lam, phi;
@@ -347,6 +350,7 @@ public class Polyconic {
          * @return The created math transform.
          * @throws ParameterNotFoundException if a required parameter was not found.
          */
+        @Override
         protected MathTransform createMathTransform(final ParameterValueGroup parameters)
                 throws ParameterNotFoundException {
             if (isSpherical(parameters)) {

@@ -129,15 +129,18 @@ public enum ContrastEnhancementType {
                             RangeFactory.create(minimum, maximum),
                             new MathTransformationAdapter() {
 
+                                @Override
                                 public double derivative(double value) throws TransformException {
                                     throw new UnsupportedOperationException(
                                             Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1));
                                 }
 
+                                @Override
                                 public boolean isIdentity() {
                                     return false;
                                 }
 
+                                @Override
                                 public double transform(double value) {
                                     value =
                                             correctionFactor
@@ -220,15 +223,18 @@ public enum ContrastEnhancementType {
                             RangeFactory.create(minimum, maximum),
                             new MathTransformationAdapter() {
 
+                                @Override
                                 public double derivative(double value) throws TransformException {
                                     throw new UnsupportedOperationException(
                                             Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1));
                                 }
 
+                                @Override
                                 public boolean isIdentity() {
                                     return false;
                                 }
 
+                                @Override
                                 public double transform(double value) {
                                     value =
                                             normalizationFactor
@@ -784,16 +790,19 @@ public enum ContrastEnhancementType {
                         RangeFactory.create(minimum, maximum),
                         new MathTransformationAdapter() {
 
+                            @Override
                             public double derivative(double value) throws TransformException {
 
                                 throw new UnsupportedOperationException(
                                         Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1));
                             }
 
+                            @Override
                             public boolean isIdentity() {
                                 return false;
                             }
 
+                            @Override
                             public double transform(double value) {
                                 value = (value - offset) / scale;
                                 return offset + Math.pow(value, gammaValue) * scale;

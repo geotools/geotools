@@ -36,6 +36,7 @@ public class FilterFunction_geomFromWKT extends FunctionExpressionImpl {
         functionName = NAME;
     }
 
+    @Override
     public Object evaluate(Object feature) {
         String arg0;
 

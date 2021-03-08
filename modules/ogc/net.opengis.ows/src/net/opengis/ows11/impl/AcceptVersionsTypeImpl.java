@@ -53,7 +53,8 @@ public class AcceptVersionsTypeImpl extends EObjectImpl implements AcceptVersion
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.ACCEPT_VERSIONS_TYPE;
   }
 
@@ -62,7 +63,8 @@ public class AcceptVersionsTypeImpl extends EObjectImpl implements AcceptVersion
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList getVersion() {
+  @Override
+public EList getVersion() {
     if (version == null) {
       version = new EDataTypeEList(String.class, this, Ows11Package.ACCEPT_VERSIONS_TYPE__VERSION);
     }
@@ -74,7 +76,8 @@ public class AcceptVersionsTypeImpl extends EObjectImpl implements AcceptVersion
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.ACCEPT_VERSIONS_TYPE__VERSION:
         return getVersion();
@@ -87,7 +90,8 @@ public class AcceptVersionsTypeImpl extends EObjectImpl implements AcceptVersion
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.ACCEPT_VERSIONS_TYPE__VERSION:
         getVersion().clear();
@@ -102,7 +106,8 @@ public class AcceptVersionsTypeImpl extends EObjectImpl implements AcceptVersion
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.ACCEPT_VERSIONS_TYPE__VERSION:
         getVersion().clear();
@@ -116,7 +121,8 @@ public class AcceptVersionsTypeImpl extends EObjectImpl implements AcceptVersion
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.ACCEPT_VERSIONS_TYPE__VERSION:
         return version != null && !version.isEmpty();
@@ -129,7 +135,8 @@ public class AcceptVersionsTypeImpl extends EObjectImpl implements AcceptVersion
    * <!-- end-user-doc -->
    * @generated
    */
-  public String toString() {
+  @Override
+public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

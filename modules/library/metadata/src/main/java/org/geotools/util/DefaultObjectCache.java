@@ -185,6 +185,7 @@ final class DefaultObjectCache<K, V> implements ObjectCache<K, V> {
     }
 
     /** Removes all entries from this map. */
+    @Override
     public void clear() {
         synchronized (cache) {
             cache.clear();
@@ -210,10 +211,12 @@ final class DefaultObjectCache<K, V> implements ObjectCache<K, V> {
      * @param key The authority code.
      * @todo Consider logging a message here to the finer or finest level.
      */
+    @Override
     public V get(final K key) {
         return getEntry(key).getValue();
     }
 
+    @Override
     public V peek(final K key) {
         synchronized (cache) {
             if (!cache.containsKey(key)) {
@@ -224,10 +227,12 @@ final class DefaultObjectCache<K, V> implements ObjectCache<K, V> {
         }
     }
 
+    @Override
     public void writeLock(final K key) {
         getEntry(key).writeLock();
     }
 
+    @Override
     public void writeUnLock(final K key) {
         synchronized (cache) {
             if (!cache.containsKey(key)) {
@@ -238,6 +243,7 @@ final class DefaultObjectCache<K, V> implements ObjectCache<K, V> {
     }
 
     /** Stores a value */
+    @Override
     public void put(final K key, final V object) {
         getEntry(key).setValue(object);
     }
@@ -263,6 +269,7 @@ final class DefaultObjectCache<K, V> implements ObjectCache<K, V> {
      *
      * @return Set of keys
      */
+    @Override
     public Set<K> getKeys() {
         synchronized (cache) {
             return new HashSet<>(cache.keySet());
@@ -270,6 +277,7 @@ final class DefaultObjectCache<K, V> implements ObjectCache<K, V> {
     }
 
     /** Removes this item from the object cache. */
+    @Override
     public void remove(K key) {
         synchronized (cache) {
             cache.remove(key);

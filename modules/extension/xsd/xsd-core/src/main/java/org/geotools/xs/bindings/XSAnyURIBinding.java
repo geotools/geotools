@@ -57,6 +57,7 @@ import org.geotools.xsd.SimpleBinding;
  */
 public class XSAnyURIBinding implements SimpleBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return XS.ANYURI;
     }
@@ -68,6 +69,7 @@ public class XSAnyURIBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return OVERRIDE;
     }
@@ -80,6 +82,7 @@ public class XSAnyURIBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return URI.class;
     }
@@ -92,6 +95,7 @@ public class XSAnyURIBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         return new URI((String) value);
     }
@@ -103,6 +107,7 @@ public class XSAnyURIBinding implements SimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public String encode(Object object, String value) {
         URI uri = (URI) object;
 

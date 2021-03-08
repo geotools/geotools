@@ -140,6 +140,7 @@ public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollec
         return new DelegateFeatureReader<>(getSchema(), features());
     }
 
+    @Override
     public SimpleFeatureIterator features() {
         try {
             return new ReprojectingFeatureIterator(
@@ -149,10 +150,12 @@ public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollec
         }
     }
 
+    @Override
     public SimpleFeatureType getSchema() {
         return this.schema;
     }
 
+    @Override
     public SimpleFeatureCollection subCollection(Filter filter) {
         // reproject the filter to the delegate native crs
         CoordinateReferenceSystem crs = getSchema().getCoordinateReferenceSystem();
@@ -170,15 +173,18 @@ public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollec
         return new ReprojectingFeatureCollection(delegate.subCollection(filter), target);
     }
 
+    @Override
     public SimpleFeatureCollection sort(SortBy order) {
         // return new ReprojectingFeatureList( delegate.sort( order ), target );
         throw new UnsupportedOperationException("Not yet");
     }
 
+    @Override
     public Object[] toArray() {
         return toArray(new Object[size()]);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <T> T[] toArray(T[] a) {
         List<T> list = new ArrayList<>();
@@ -205,6 +211,7 @@ public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollec
      *
      * @see org.geotools.data.FeatureResults#getBounds()
      */
+    @Override
     public ReferencedEnvelope getBounds() {
         try (SimpleFeatureIterator r = features()) {
             Envelope newBBox = new Envelope();

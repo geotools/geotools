@@ -189,6 +189,7 @@ public class AbstractDatum extends AbstractIdentifiedObject implements Datum {
      *       temporal datum carries a separate time origin of type {@link Date}.
      * </ul>
      */
+    @Override
     public InternationalString getAnchorPoint() {
         return anchorPoint;
     }
@@ -201,6 +202,7 @@ public class AbstractDatum extends AbstractIdentifiedObject implements Datum {
      * Alternatively, a datum may be superseded by a later datum, in which case the realization
      * epoch for the new datum defines the upper limit for the validity of the superseded datum.
      */
+    @Override
     public Date getRealizationEpoch() {
         return (realizationEpoch != Long.MIN_VALUE) ? new Date(realizationEpoch) : null;
     }
@@ -210,6 +212,7 @@ public class AbstractDatum extends AbstractIdentifiedObject implements Datum {
      *
      * @since 2.4
      */
+    @Override
     public Extent getDomainOfValidity() {
         return domainOfValidity;
     }
@@ -218,6 +221,7 @@ public class AbstractDatum extends AbstractIdentifiedObject implements Datum {
      * Description of domain of usage, or limitations of usage, for which this datum object is
      * valid.
      */
+    @Override
     public InternationalString getScope() {
         return scope;
     }

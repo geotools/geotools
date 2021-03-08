@@ -53,6 +53,7 @@ public class Scalar_CapabilitiesTypeBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.Scalar_CapabilitiesType;
     }
@@ -64,6 +65,7 @@ public class Scalar_CapabilitiesTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return ScalarCapabilities.class;
     }
@@ -75,6 +77,7 @@ public class Scalar_CapabilitiesTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // &lt;xsd:element ref="ogc:Logical_Operators"/&gt;
         boolean logical =
@@ -89,6 +92,7 @@ public class Scalar_CapabilitiesTypeBinding extends AbstractComplexBinding {
         return factory.scalarCapabilities(comparison, arithmetic, logical);
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         ScalarCapabilities scalar = (ScalarCapabilities) object;
 

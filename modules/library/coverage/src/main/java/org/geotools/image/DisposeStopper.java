@@ -41,86 +41,107 @@ public class DisposeStopper implements RenderedImage {
         this.adaptee = adaptee;
     }
 
+    @Override
     public Vector<RenderedImage> getSources() {
         return adaptee.getSources();
     }
 
+    @Override
     public Object getProperty(String name) {
         return adaptee.getProperty(name);
     }
 
+    @Override
     public String[] getPropertyNames() {
         return adaptee.getPropertyNames();
     }
 
+    @Override
     public ColorModel getColorModel() {
         return adaptee.getColorModel();
     }
 
+    @Override
     public SampleModel getSampleModel() {
         return adaptee.getSampleModel();
     }
 
+    @Override
     public int getWidth() {
         return adaptee.getWidth();
     }
 
+    @Override
     public int getHeight() {
         return adaptee.getHeight();
     }
 
+    @Override
     public int getMinX() {
         return adaptee.getMinX();
     }
 
+    @Override
     public int getMinY() {
         return adaptee.getMinY();
     }
 
+    @Override
     public int getNumXTiles() {
         return adaptee.getNumXTiles();
     }
 
+    @Override
     public int getNumYTiles() {
         return adaptee.getNumYTiles();
     }
 
+    @Override
     public int getMinTileX() {
         return adaptee.getMinTileX();
     }
 
+    @Override
     public int getMinTileY() {
         return adaptee.getMinTileY();
     }
 
+    @Override
     public int getTileWidth() {
         return adaptee.getTileWidth();
     }
 
+    @Override
     public int getTileHeight() {
         return adaptee.getTileHeight();
     }
 
+    @Override
     public int getTileGridXOffset() {
         return adaptee.getTileGridXOffset();
     }
 
+    @Override
     public int getTileGridYOffset() {
         return adaptee.getTileGridYOffset();
     }
 
+    @Override
     public Raster getTile(int tileX, int tileY) {
         return adaptee.getTile(tileX, tileY);
     }
 
+    @Override
     public Raster getData() {
         return adaptee.getData();
     }
 
+    @Override
     public Raster getData(Rectangle rect) {
         return adaptee.getData(rect);
     }
 
+    @Override
     public WritableRaster copyData(WritableRaster raster) {
         return adaptee.copyData(raster);
     }

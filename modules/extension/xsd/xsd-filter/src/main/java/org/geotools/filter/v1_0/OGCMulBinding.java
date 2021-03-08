@@ -46,10 +46,12 @@ public class OGCMulBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return OGC.Mul;
     }
 
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -61,6 +63,7 @@ public class OGCMulBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Multiply.class;
     }
@@ -72,6 +75,7 @@ public class OGCMulBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return filterfactory.multiply(
                 (Expression) node.getChildValue(0), (Expression) node.getChildValue(1));

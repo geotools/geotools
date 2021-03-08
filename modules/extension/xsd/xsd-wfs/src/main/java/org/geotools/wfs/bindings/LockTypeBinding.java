@@ -83,6 +83,7 @@ public class LockTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WFS.LockType;
     }
@@ -94,6 +95,7 @@ public class LockTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return LockType.class;
     }

@@ -87,6 +87,7 @@ public class SchemaHandler extends XSIElementHandler {
     private Map<Object, String> prefixCache; // keys can be both strings and URIs
 
     /** @see java.lang.Object#hashCode() */
+    @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return LOCALNAME.hashCode()
@@ -123,6 +124,7 @@ public class SchemaHandler extends XSIElementHandler {
      * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String,
      *     org.xml.sax.Attributes)
      */
+    @Override
     public void startElement(String namespaceURI1, String localName, Attributes atts)
             throws SAXException {
         // targetNamespace
@@ -206,6 +208,7 @@ public class SchemaHandler extends XSIElementHandler {
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
+    @Override
     public XSIElementHandler getHandler(String namespaceURI1, String localName) {
         // check that we are working with a known namespace
         if (SchemaHandler.namespaceURI.equalsIgnoreCase(namespaceURI1)) {
@@ -327,6 +330,7 @@ public class SchemaHandler extends XSIElementHandler {
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
+    @Override
     public String getLocalName() {
         return LOCALNAME;
     }
@@ -1295,11 +1299,13 @@ public class SchemaHandler extends XSIElementHandler {
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getHandlerType() */
+    @Override
     public int getHandlerType() {
         return DEFAULT;
     }
 
     /** @see org.geotools.xml.XSIElementHandler#endElement(java.lang.String, java.lang.String) */
+    @Override
     public void endElement(String namespaceURI1, String localName) {
         // do nothing
     }
@@ -1330,81 +1336,97 @@ public class SchemaHandler extends XSIElementHandler {
         String prefix;
 
         /** @see org.geotools.xml.xsi.Schema#isAttributeFormDefault() */
+        @Override
         public boolean isAttributeFormDefault() {
             return attributeFormDefault;
         }
 
         /** @see org.geotools.xml.xsi.Schema#getAttributeGroups() */
+        @Override
         public AttributeGroup[] getAttributeGroups() {
             return attributeGroups;
         }
 
         /** @see org.geotools.xml.xsi.Schema#getAttributeDescriptors() */
+        @Override
         public Attribute[] getAttributes() {
             return attributes;
         }
 
         /** @see org.geotools.xml.xsi.Schema#getBlockDefault() */
+        @Override
         public int getBlockDefault() {
             return blockDefault;
         }
 
         /** @see org.geotools.xml.xsi.Schema#getComplexTypes() */
+        @Override
         public ComplexType[] getComplexTypes() {
             return complexTypes;
         }
 
         /** @see org.geotools.xml.xsi.Schema#isElementFormDefault() */
+        @Override
         public boolean isElementFormDefault() {
             return elementFormDefault;
         }
 
         /** @see org.geotools.xml.xsi.Schema#getElements() */
+        @Override
         public Element[] getElements() {
             return elements;
         }
 
         /** @see org.geotools.xml.xsi.Schema#getFinalDefault() */
+        @Override
         public int getFinalDefault() {
             return finalDefault;
         }
 
         /** @see org.geotools.xml.xsi.Schema#getId() */
+        @Override
         public String getId() {
             return id;
         }
 
         /** @see org.geotools.xml.xsi.Schema#getImports() */
+        @Override
         public Schema[] getImports() {
             return imports;
         }
 
         /** @see org.geotools.xml.xsi.Schema#getSimpleTypes() */
+        @Override
         public SimpleType[] getSimpleTypes() {
             return simpleTypes;
         }
 
         /** @see org.geotools.xml.xsi.Schema#getTargetNamespace() */
+        @Override
         public URI getTargetNamespace() {
             return targetNamespace;
         }
 
         /** @see org.geotools.xml.xsi.Schema#getURI() */
+        @Override
         public URI getURI() {
             return uri;
         }
 
         /** @see org.geotools.xml.xsi.Schema#getVersion() */
+        @Override
         public String getVersion() {
             return version;
         }
 
         /** @see org.geotools.xml.xsi.Schema#getGroups() */
+        @Override
         public Group[] getGroups() {
             return groups;
         }
 
         /** @see org.geotools.xml.xsi.Schema#includesURI(java.net.URI) */
+        @Override
         public boolean includesURI(URI uri1) {
             if (this.uri == null) {
                 return false;
@@ -1413,11 +1435,13 @@ public class SchemaHandler extends XSIElementHandler {
         }
 
         /** @see org.geotools.xml.schema.Schema#getPrefix() */
+        @Override
         public String getPrefix() {
             return prefix;
         }
 
         /** Returns the implementation hints. The default implementation returns en empty map. */
+        @Override
         public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
             return Collections.emptyMap();
         }
@@ -1443,6 +1467,7 @@ public class SchemaHandler extends XSIElementHandler {
         /* (non-Javadoc)
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
+        @Override
         public int compare(Object arg0, Object arg1) {
             // attribute
             if (arg0 instanceof Attribute && arg1 instanceof Attribute)

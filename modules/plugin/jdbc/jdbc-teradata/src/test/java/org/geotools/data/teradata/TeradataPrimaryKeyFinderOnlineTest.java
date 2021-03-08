@@ -25,6 +25,7 @@ import org.opengis.feature.simple.SimpleFeature;
 
 public class TeradataPrimaryKeyFinderOnlineTest extends JDBCPrimaryKeyFinderOnlineTest {
 
+    @Override
     protected JDBCPrimaryKeyFinderTestSetup createTestSetup() {
         return new TeradataPrimaryKeyFinderTestSetup(new TeradataTestSetup());
     }

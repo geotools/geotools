@@ -29,31 +29,38 @@ public abstract class InstanceComponentImpl implements InstanceComponent {
     /** text * */
     StringBuffer text;
 
+    @Override
     public XSDNamedComponent getDeclaration() {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public String getNamespace() {
         return namespace;
     }
 
+    @Override
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
+    @Override
     public String getText() {
         return (text != null) ? text.toString() : "";
     }
 
+    @Override
     public void setText(String text) {
         this.text = (text != null) ? new StringBuffer(text) : new StringBuffer();
     }
@@ -75,6 +82,7 @@ public abstract class InstanceComponentImpl implements InstanceComponent {
     }
 
     /** By default indicate the elements name */
+    @Override
     public String toString() {
         StringBuffer buf = new StringBuffer();
         buf.append(name);

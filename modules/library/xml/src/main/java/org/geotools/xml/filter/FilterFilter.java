@@ -123,6 +123,7 @@ public class FilterFilter extends XMLFilterImpl implements GMLHandlerJTS {
      * @param atts The element attributes.
      * @throws SAXException Some parsing error occured while reading filter.
      */
+    @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
             throws SAXException {
         LOGGER.finer("found start element: " + localName);
@@ -249,6 +250,7 @@ public class FilterFilter extends XMLFilterImpl implements GMLHandlerJTS {
      * @param length Length of the character string.
      * @throws SAXException Some parsing error occurred while reading coordinates.
      */
+    @Override
     public void characters(char[] chars, int start, int length) throws SAXException {
         // accumulate partial strings in the instance StringBuffer
         // so we make sure the message is collected as a whole before
@@ -294,6 +296,7 @@ public class FilterFilter extends XMLFilterImpl implements GMLHandlerJTS {
      * @param qName Full name of the element, including namespace prefix.
      * @throws SAXException Parsing error occurred while reading coordinates.
      */
+    @Override
     public void endElement(String namespaceURI, String localName, String qName)
             throws SAXException {
         LOGGER.finer("found end element: " + localName);
@@ -387,6 +390,7 @@ public class FilterFilter extends XMLFilterImpl implements GMLHandlerJTS {
      * @throws RuntimeException if the filterFactory can't handle the geometry
      * @task REVISIT: can we throw another exception?
      */
+    @Override
     public void geometry(Geometry geometry) throws RuntimeException {
         // Sends the geometry to the expression
         try {

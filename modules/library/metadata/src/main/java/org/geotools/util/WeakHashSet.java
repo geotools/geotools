@@ -132,6 +132,7 @@ public class WeakHashSet<E> extends AbstractSet<E> implements CheckedCollection<
      *
      * @since 2.5
      */
+    @Override
     public Class<E> getElementType() {
         return type;
     }
@@ -250,6 +251,7 @@ public class WeakHashSet<E> extends AbstractSet<E> implements CheckedCollection<
     }
 
     /** Returns the count of element in this set. */
+    @Override
     public synchronized int size() {
         assert valid();
         return count;

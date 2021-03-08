@@ -159,6 +159,7 @@ public class ResourceIdTypeImpl extends AbstractIdTypeImpl implements ResourceId
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public XMLGregorianCalendar getEndDate() {
         return endDate;
     }
@@ -168,6 +169,7 @@ public class ResourceIdTypeImpl extends AbstractIdTypeImpl implements ResourceId
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setEndDate(XMLGregorianCalendar newEndDate) {
         XMLGregorianCalendar oldEndDate = endDate;
         endDate = newEndDate;
@@ -180,6 +182,7 @@ public class ResourceIdTypeImpl extends AbstractIdTypeImpl implements ResourceId
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getPreviousRid() {
         return previousRid;
     }
@@ -189,6 +192,7 @@ public class ResourceIdTypeImpl extends AbstractIdTypeImpl implements ResourceId
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPreviousRid(String newPreviousRid) {
         String oldPreviousRid = previousRid;
         previousRid = newPreviousRid;
@@ -201,6 +205,7 @@ public class ResourceIdTypeImpl extends AbstractIdTypeImpl implements ResourceId
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getRid() {
         return rid;
     }
@@ -210,6 +215,7 @@ public class ResourceIdTypeImpl extends AbstractIdTypeImpl implements ResourceId
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRid(String newRid) {
         String oldRid = rid;
         rid = newRid;
@@ -222,6 +228,7 @@ public class ResourceIdTypeImpl extends AbstractIdTypeImpl implements ResourceId
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public XMLGregorianCalendar getStartDate() {
         return startDate;
     }
@@ -231,6 +238,7 @@ public class ResourceIdTypeImpl extends AbstractIdTypeImpl implements ResourceId
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setStartDate(XMLGregorianCalendar newStartDate) {
         XMLGregorianCalendar oldStartDate = startDate;
         startDate = newStartDate;
@@ -243,6 +251,7 @@ public class ResourceIdTypeImpl extends AbstractIdTypeImpl implements ResourceId
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public Object getVersion() {
         return version;
     }
@@ -252,6 +261,7 @@ public class ResourceIdTypeImpl extends AbstractIdTypeImpl implements ResourceId
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setVersion(Object newVersion) {
         Object oldVersion = version;
         version = newVersion;

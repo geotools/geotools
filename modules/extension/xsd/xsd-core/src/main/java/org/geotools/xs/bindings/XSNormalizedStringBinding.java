@@ -44,6 +44,7 @@ import org.geotools.xsd.InstanceComponent;
  */
 public class XSNormalizedStringBinding extends AbstractSimpleBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return XS.NORMALIZEDSTRING;
     }
@@ -55,6 +56,7 @@ public class XSNormalizedStringBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -67,6 +69,7 @@ public class XSNormalizedStringBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return String.class;
     }
@@ -78,6 +81,7 @@ public class XSNormalizedStringBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         // Simply return string value, Whitespace facet is already handled
         return value;

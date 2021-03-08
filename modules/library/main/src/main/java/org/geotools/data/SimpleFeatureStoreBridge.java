@@ -41,23 +41,28 @@ class SimpleFeatureStoreBridge extends SimpleFeatureSourceBridge implements Simp
         return (FeatureStore<SimpleFeatureType, SimpleFeature>) delegate;
     }
 
+    @Override
     public List<FeatureId> addFeatures(
             FeatureCollection<SimpleFeatureType, SimpleFeature> collection) throws IOException {
         return delegate().addFeatures(collection);
     }
 
+    @Override
     public Transaction getTransaction() {
         return delegate().getTransaction();
     }
 
+    @Override
     public void modifyFeatures(Name[] names, Object[] values, Filter filter) throws IOException {
         delegate().modifyFeatures(names, values, filter);
     }
 
+    @Override
     public void modifyFeatures(Name name, Object value, Filter filter) throws IOException {
         delegate().modifyFeatures(name, value, filter);
     }
 
+    @Override
     public void modifyFeatures(String name, Object attributeValue, Filter filter)
             throws IOException {
         if (delegate instanceof SimpleFeatureStore) {
@@ -74,6 +79,7 @@ class SimpleFeatureStoreBridge extends SimpleFeatureSourceBridge implements Simp
         }
     }
 
+    @Override
     public void modifyFeatures(String[] names, Object[] values, Filter filter) throws IOException {
         if (delegate instanceof SimpleFeatureStore) {
             ((SimpleFeatureStore) delegate).modifyFeatures(names, values, filter);
@@ -86,15 +92,18 @@ class SimpleFeatureStoreBridge extends SimpleFeatureSourceBridge implements Simp
         }
     }
 
+    @Override
     public void removeFeatures(Filter filter) throws IOException {
         delegate().removeFeatures(filter);
     }
 
+    @Override
     public void setFeatures(FeatureReader<SimpleFeatureType, SimpleFeature> reader)
             throws IOException {
         delegate().setFeatures(reader);
     }
 
+    @Override
     public void setTransaction(Transaction transaction) {
         delegate().setTransaction(transaction);
     }

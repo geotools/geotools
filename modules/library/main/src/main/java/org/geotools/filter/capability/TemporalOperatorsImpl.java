@@ -36,10 +36,12 @@ public class TemporalOperatorsImpl implements TemporalOperators {
         this.operators.addAll(operators);
     }
 
+    @Override
     public Collection<TemporalOperator> getOperators() {
         return operators;
     }
 
+    @Override
     public TemporalOperator getOperator(String name) {
         for (TemporalOperator op : operators) {
             if (op.getName().equals(name)) {

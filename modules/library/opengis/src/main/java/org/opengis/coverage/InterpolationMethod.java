@@ -214,6 +214,7 @@ public class InterpolationMethod extends CodeList<InterpolationMethod> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public InterpolationMethod[] family() {
         return values();
     }

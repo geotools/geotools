@@ -39,6 +39,7 @@ public final class ObjectCacheEntryTest {
 
         public EntryReaderThread() {}
 
+        @Override
         public void run() {
             try {
                 values = new Object[] {entry.getValue()};
@@ -58,6 +59,7 @@ public final class ObjectCacheEntryTest {
 
         public EntryWriterThread() {}
 
+        @Override
         public void run() {
             try {
                 entry.writeLock();

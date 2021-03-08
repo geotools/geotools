@@ -668,6 +668,7 @@ public class ImageMosaicConfigHandler {
         final GranuleHandler geometryHandler = this.granuleHandler;
         originCollection.accepts(
                 new AbstractFeatureVisitor() {
+                    @Override
                     public void visit(Feature feature) {
                         if (feature instanceof SimpleFeature) {
                             // get the feature

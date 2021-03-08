@@ -145,6 +145,7 @@ public final class UnlimitedInteger extends Number implements Comparable<Unlimit
      *     this {@code UnlimitedInteger} is numerically less than the given value, and {@code +1} if
      *     this {@code UnlimitedInteger} is numerically greater than the given value,
      */
+    @Override
     public int compareTo(final UnlimitedInteger other) {
         if (value < other.value) return -1;
         if (value > other.value) return +1;

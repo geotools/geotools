@@ -94,6 +94,7 @@ public class VPFDate {
      *
      * @return a <code>String</code> value
      */
+    @Override
     public String toString() {
         StringBuffer sb = new StringBuffer(dateBin.length);
 

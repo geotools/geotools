@@ -34,10 +34,12 @@ class TestReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
         this.feature = f;
     }
 
+    @Override
     public SimpleFeatureType getFeatureType() {
         return type;
     }
 
+    @Override
     public SimpleFeature next()
             throws IOException, IllegalAttributeException, NoSuchElementException {
         next = false;
@@ -46,9 +48,11 @@ class TestReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 
     boolean next = true;
 
+    @Override
     public boolean hasNext() throws IOException {
         return next;
     }
 
+    @Override
     public void close() throws IOException {}
 }

@@ -17,7 +17,6 @@
 package org.geotools.coverage.io.netcdf;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
@@ -74,14 +73,9 @@ public final class NetCDFPolyphemusTest extends Assert {
         final File[] files =
                 TestData.file(this, ".")
                         .listFiles(
-                                new FileFilter() {
-
-                                    @Override
-                                    public boolean accept(File pathname) {
-                                        return FilenameUtils.getName(pathname.getAbsolutePath())
-                                                .equalsIgnoreCase("O3-NO2.nc");
-                                    }
-                                });
+                                pathname ->
+                                        FilenameUtils.getName(pathname.getAbsolutePath())
+                                                .equalsIgnoreCase("O3-NO2.nc"));
 
         for (File f : files) {
 

@@ -24,7 +24,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -54,6 +53,7 @@ public class FunctionFactoryTest {
         ffIteratorProvider =
                 new FactoryIteratorProvider() {
 
+                    @Override
                     public <T> Iterator<T> iterator(Class<T> category) {
 
                         if (FunctionFactory.class == category) {
@@ -61,6 +61,7 @@ public class FunctionFactoryTest {
                             l.add(
                                     new FunctionFactory() {
 
+                                        @Override
                                         @SuppressWarnings("unchecked")
                                         public List<FunctionName> getFunctionNames() {
                                             return Arrays.asList(
@@ -68,6 +69,7 @@ public class FunctionFactoryTest {
                                                             "foo", new String[] {"bar", "baz"}));
                                         }
 
+                                        @Override
                                         public Function function(
                                                 String name,
                                                 List<Expression> args,
@@ -75,6 +77,7 @@ public class FunctionFactoryTest {
                                             return function(new NameImpl(name), args, fallback);
                                         }
 
+                                        @Override
                                         public Function function(
                                                 Name name,
                                                 List<Expression> args,
@@ -135,15 +138,12 @@ public class FunctionFactoryTest {
         for (int i = 0; i < 100; i++) {
             Future<Exception> f =
                     es.submit(
-                            new Callable<Exception>() {
-
-                                public Exception call() throws Exception {
-                                    try {
-                                        ff.function("Length", ff.property("."));
-                                        return null;
-                                    } catch (Exception e) {
-                                        return e;
-                                    }
+                            () -> {
+                                try {
+                                    ff.function("Length", ff.property("."));
+                                    return null;
+                                } catch (Exception e) {
+                                    return e;
                                 }
                             });
             tests.add(f);

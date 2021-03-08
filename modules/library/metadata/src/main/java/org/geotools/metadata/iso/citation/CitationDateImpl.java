@@ -63,6 +63,7 @@ public class CitationDateImpl extends MetadataEntity implements CitationDate {
     }
 
     /** Returns the reference date for the cited resource. */
+    @Override
     public Date getDate() {
         return (date != Long.MIN_VALUE) ? new Date(date) : null;
     }
@@ -74,6 +75,7 @@ public class CitationDateImpl extends MetadataEntity implements CitationDate {
     }
 
     /** Returns the event used for reference date. */
+    @Override
     public DateType getDateType() {
         return dateType;
     }

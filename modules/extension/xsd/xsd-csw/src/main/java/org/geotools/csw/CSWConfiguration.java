@@ -59,6 +59,7 @@ public class CSWConfiguration extends Configuration {
      *
      * @generated
      */
+    @Override
     protected void registerBindings(Map<QName, Object> bindings) {
         // generated code, see the main method
         bindings.put(
@@ -215,6 +216,7 @@ public class CSWConfiguration extends Configuration {
          */
     }
 
+    @Override
     protected void configureContext(MutablePicoContainer container) {
         container.registerComponentInstance(Csw20Factory.eINSTANCE);
     }

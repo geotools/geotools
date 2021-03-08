@@ -70,15 +70,18 @@ public class AttributeNodeIterator implements NodeIterator {
         position = children.isEmpty() ? 0 : 1;
     }
 
+    @Override
     public int getPosition() {
         return position;
     }
 
+    @Override
     public boolean setPosition(int position) {
         this.position = position;
         return position <= children.size();
     }
 
+    @Override
     public NodePointer getNodePointer() {
         Attribute attribute = (Attribute) children.get(position - 1);
         Name name = attribute.getDescriptor().getName();

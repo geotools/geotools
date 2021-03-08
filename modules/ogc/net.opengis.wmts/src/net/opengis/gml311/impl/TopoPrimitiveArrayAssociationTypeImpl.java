@@ -69,6 +69,7 @@ public class TopoPrimitiveArrayAssociationTypeImpl extends MinimalEObjectImpl.Co
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getGroup() {
         if (group == null) {
             group = new BasicFeatureMap(this, Gml311Package.TOPO_PRIMITIVE_ARRAY_ASSOCIATION_TYPE__GROUP);
@@ -81,6 +82,7 @@ public class TopoPrimitiveArrayAssociationTypeImpl extends MinimalEObjectImpl.Co
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getTopoPrimitiveGroup() {
         return (FeatureMap)getGroup().<FeatureMap.Entry>list(Gml311Package.eINSTANCE.getTopoPrimitiveArrayAssociationType_TopoPrimitiveGroup());
     }
@@ -90,6 +92,7 @@ public class TopoPrimitiveArrayAssociationTypeImpl extends MinimalEObjectImpl.Co
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<AbstractTopoPrimitiveType> getTopoPrimitive() {
         return getTopoPrimitiveGroup().list(Gml311Package.eINSTANCE.getTopoPrimitiveArrayAssociationType_TopoPrimitive());
     }

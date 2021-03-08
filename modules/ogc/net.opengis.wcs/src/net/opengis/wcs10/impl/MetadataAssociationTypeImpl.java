@@ -37,6 +37,7 @@ public class MetadataAssociationTypeImpl extends MetaDataPropertyTypeImpl implem
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.METADATA_ASSOCIATION_TYPE;
 	}

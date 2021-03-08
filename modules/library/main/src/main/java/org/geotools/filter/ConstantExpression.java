@@ -57,14 +57,17 @@ public class ConstantExpression implements Literal, Cloneable {
         return getValue();
     }
 
+    @Override
     public Object evaluate(Object object) {
         return getValue();
     }
 
+    @Override
     public <T> T evaluate(Object object, Class<T> context) {
         return Converters.convert(getValue(), context);
     }
 
+    @Override
     public Object getValue() {
         return value;
     }
@@ -77,14 +80,17 @@ public class ConstantExpression implements Literal, Cloneable {
         return type;
     }
 
+    @Override
     public Object accept(ExpressionVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
 
+    @Override
     protected Object clone() throws CloneNotSupportedException {
         return new ConstantExpression(value);
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Literal)) {
             return false;
@@ -117,6 +123,7 @@ public class ConstantExpression implements Literal, Cloneable {
         return myString.equals(otherString);
     }
 
+    @Override
     public int hashCode() {
         if (value instanceof Geometry || value instanceof Date) {
             // forms of complex content ...
@@ -126,6 +133,7 @@ public class ConstantExpression implements Literal, Cloneable {
         return (value == null) ? 0 : value.toString().hashCode();
     }
 
+    @Override
     public String toString() {
         if (value instanceof Color) {
             Color color = (Color) value;

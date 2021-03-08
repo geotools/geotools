@@ -76,6 +76,7 @@ public class EqualAreaListVisitor implements FeatureCalc {
         // do nothing
     }
 
+    @Override
     public CalcResult getResult() {
         if (binCount == 0 || count == 0) {
             return CalcResult.NULL_RESULT;
@@ -121,6 +122,7 @@ public class EqualAreaListVisitor implements FeatureCalc {
         }
 
         return new AbstractCalcResult() {
+            @Override
             public Object getValue() {
                 return bins;
             }
@@ -137,6 +139,7 @@ public class EqualAreaListVisitor implements FeatureCalc {
         visit((org.opengis.feature.Feature) feature);
     }
 
+    @Override
     public void visit(org.opengis.feature.Feature feature) {
         Object value = expression.evaluate(feature);
 

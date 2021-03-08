@@ -65,6 +65,7 @@ public class FeatureTypeFactoryImpl implements FeatureTypeFactory {
         this.filterFactory = filterFactory;
     }
 
+    @Override
     public Schema createSchema(String uri) {
         return new SchemaImpl(uri);
     }
@@ -85,12 +86,14 @@ public class FeatureTypeFactoryImpl implements FeatureTypeFactory {
         this.filterFactory = filterFactory;
     }
 
+    @Override
     public AssociationDescriptor createAssociationDescriptor(
             AssociationType type, Name name, int minOccurs, int maxOccurs, boolean isNillable) {
 
         return new AssociationDescriptorImpl(type, name, minOccurs, maxOccurs, isNillable);
     }
 
+    @Override
     public AttributeDescriptor createAttributeDescriptor(
             AttributeType type,
             Name name,
@@ -103,6 +106,7 @@ public class FeatureTypeFactoryImpl implements FeatureTypeFactory {
                 type, name, minOccurs, maxOccurs, isNillable, defaultValue);
     }
 
+    @Override
     public GeometryDescriptor createGeometryDescriptor(
             GeometryType type,
             Name name,
@@ -114,6 +118,7 @@ public class FeatureTypeFactoryImpl implements FeatureTypeFactory {
                 type, name, minOccurs, maxOccurs, isNillable, defaultValue);
     }
 
+    @Override
     public AssociationType createAssociationType(
             Name name,
             AttributeType relatedType,
@@ -126,6 +131,7 @@ public class FeatureTypeFactoryImpl implements FeatureTypeFactory {
                 name, relatedType, isAbstract, restrictions, superType, description);
     }
 
+    @Override
     public AttributeType createAttributeType(
             Name name,
             Class<?> binding,
@@ -139,6 +145,7 @@ public class FeatureTypeFactoryImpl implements FeatureTypeFactory {
                 name, binding, isIdentifiable, isAbstract, restrictions, superType, description);
     }
 
+    @Override
     public ComplexType createComplexType(
             Name name,
             Collection<PropertyDescriptor> schema,
@@ -151,6 +158,7 @@ public class FeatureTypeFactoryImpl implements FeatureTypeFactory {
                 name, schema, isIdentifiable, isAbstract, restrictions, superType, description);
     }
 
+    @Override
     public GeometryType createGeometryType(
             Name name,
             Class<?> binding,
@@ -172,6 +180,7 @@ public class FeatureTypeFactoryImpl implements FeatureTypeFactory {
                 description);
     }
 
+    @Override
     public FeatureType createFeatureType(
             Name name,
             Collection<PropertyDescriptor> schema,
@@ -185,6 +194,7 @@ public class FeatureTypeFactoryImpl implements FeatureTypeFactory {
                 name, schema, defaultGeometry, isAbstract, restrictions, superType, description);
     }
 
+    @Override
     public SimpleFeatureType createSimpleFeatureType(
             Name name,
             List<AttributeDescriptor> schema,

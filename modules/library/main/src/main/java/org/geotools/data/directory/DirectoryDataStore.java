@@ -56,12 +56,14 @@ public class DirectoryDataStore implements DataStore {
         cache = new DirectoryTypeCache(directory, dialect);
     }
 
+    @Override
     public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
             Query query, Transaction transaction) throws IOException {
         String typeName = query.getTypeName();
         return getDataStore(typeName).getFeatureReader(query, transaction);
     }
 
+    @Override
     public SimpleFeatureSource getFeatureSource(String typeName) throws IOException {
         SimpleFeatureSource fs = getDataStore(typeName).getFeatureSource(typeName);
         if (fs instanceof SimpleFeatureLocking) {
@@ -73,21 +75,25 @@ public class DirectoryDataStore implements DataStore {
         }
     }
 
+    @Override
     public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
             String typeName, Filter filter, Transaction transaction) throws IOException {
         return getDataStore(typeName).getFeatureWriter(typeName, filter, transaction);
     }
 
+    @Override
     public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
             String typeName, Transaction transaction) throws IOException {
         return getDataStore(typeName).getFeatureWriter(typeName, transaction);
     }
 
+    @Override
     public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(
             String typeName, Transaction transaction) throws IOException {
         return getDataStore(typeName).getFeatureWriterAppend(typeName, transaction);
     }
 
+    @Override
     public LockingManager getLockingManager() {
         if (lm == null) {
             lm = new DirectoryLockingManager(cache);
@@ -95,19 +101,23 @@ public class DirectoryDataStore implements DataStore {
         return lm;
     }
 
+    @Override
     public SimpleFeatureType getSchema(String typeName) throws IOException {
         return getDataStore(typeName).getSchema(typeName);
     }
 
+    @Override
     public String[] getTypeNames() throws IOException {
         Set<String> typeNames = cache.getTypeNames();
         return typeNames.toArray(new String[typeNames.size()]);
     }
 
+    @Override
     public void updateSchema(String typeName, SimpleFeatureType featureType) throws IOException {
         getDataStore(typeName).updateSchema(typeName, featureType);
     }
 
+    @Override
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         File f = new File(cache.directory, featureType.getTypeName() + ".shp");
 
@@ -130,14 +140,17 @@ public class DirectoryDataStore implements DataStore {
         }
     }
 
+    @Override
     public void dispose() {
         cache.dispose();
     }
 
+    @Override
     public SimpleFeatureSource getFeatureSource(Name typeName) throws IOException {
         return getFeatureSource(typeName.getLocalPart());
     }
 
+    @Override
     public ServiceInfo getInfo() {
         DefaultServiceInfo info = new DefaultServiceInfo();
         info.setDescription("Features from Directory " + cache.directory);
@@ -150,6 +163,7 @@ public class DirectoryDataStore implements DataStore {
         return info;
     }
 
+    @Override
     public List<Name> getNames() throws IOException {
         String[] typeNames = getTypeNames();
         List<Name> names = new ArrayList<>(typeNames.length);
@@ -159,10 +173,12 @@ public class DirectoryDataStore implements DataStore {
         return names;
     }
 
+    @Override
     public SimpleFeatureType getSchema(Name name) throws IOException {
         return getSchema(name.getLocalPart());
     }
 
+    @Override
     public void updateSchema(Name typeName, SimpleFeatureType featureType) throws IOException {
         updateSchema(typeName.getLocalPart(), featureType);
     }

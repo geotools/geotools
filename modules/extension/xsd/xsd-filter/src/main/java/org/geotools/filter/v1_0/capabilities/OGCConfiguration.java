@@ -41,6 +41,7 @@ public class OGCConfiguration extends Configuration {
      *
      * @generated
      */
+    @Override
     protected final void registerBindings(MutablePicoContainer container) {
         // Types
         container.registerComponentImplementation(
@@ -80,6 +81,7 @@ public class OGCConfiguration extends Configuration {
         // container.registerComponentImplementation(OGC._Within,_WithinBinding.class);
     }
 
+    @Override
     protected void configureContext(MutablePicoContainer container) {
         super.configureContext(container);
 

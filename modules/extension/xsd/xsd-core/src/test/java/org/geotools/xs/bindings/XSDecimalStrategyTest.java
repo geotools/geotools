@@ -121,42 +121,53 @@ public class XSDecimalStrategyTest {
             final BigDecimal maxInc,
             final BigDecimal maxExc) {
         return new XSDElementDeclarationImpl() {
+            @Override
             public XSDTypeDefinition getTypeDefinition() {
                 return new XSDSimpleTypeDefinitionImpl() {
+                    @Override
                     public XSDTotalDigitsFacet getTotalDigitsFacet() {
                         return new XSDTotalDigitsFacetImpl() {
+                            @Override
                             public int getValue() {
                                 return digits;
                             }
                         };
                     }
 
+                    @Override
                     public XSDMinInclusiveFacet getMinInclusiveFacet() {
                         return new XSDMinInclusiveFacetImpl() {
+                            @Override
                             public Object getValue() {
                                 return minInc;
                             }
                         };
                     }
 
+                    @Override
                     public XSDMinExclusiveFacet getMinExclusiveFacet() {
                         return new XSDMinExclusiveFacetImpl() {
+                            @Override
                             public Object getValue() {
                                 return minExc;
                             }
                         };
                     }
 
+                    @Override
                     public XSDMaxInclusiveFacet getMaxInclusiveFacet() {
                         return new XSDMaxInclusiveFacetImpl() {
+                            @Override
                             public Object getValue() {
                                 return maxInc;
                             }
                         };
                     }
 
+                    @Override
                     public XSDMaxExclusiveFacet getMaxExclusiveFacet() {
                         return new XSDMaxExclusiveFacetImpl() {
+                            @Override
                             public Object getValue() {
                                 return maxExc;
                             }

@@ -173,6 +173,7 @@ public abstract class AbstractCoordinateOperationTypeImpl extends AbstractCoordi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<IdentifierType> getCoordinateOperationID() {
         if (coordinateOperationID == null) {
             coordinateOperationID = new EObjectContainmentEList<>(IdentifierType.class, this, Gml311Package.ABSTRACT_COORDINATE_OPERATION_TYPE__COORDINATE_OPERATION_ID);
@@ -185,6 +186,7 @@ public abstract class AbstractCoordinateOperationTypeImpl extends AbstractCoordi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public StringOrRefType getRemarks() {
         return remarks;
     }
@@ -209,6 +211,7 @@ public abstract class AbstractCoordinateOperationTypeImpl extends AbstractCoordi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRemarks(StringOrRefType newRemarks) {
         if (newRemarks != remarks) {
             NotificationChain msgs = null;
@@ -228,6 +231,7 @@ public abstract class AbstractCoordinateOperationTypeImpl extends AbstractCoordi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getOperationVersion() {
         return operationVersion;
     }
@@ -237,6 +241,7 @@ public abstract class AbstractCoordinateOperationTypeImpl extends AbstractCoordi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setOperationVersion(String newOperationVersion) {
         String oldOperationVersion = operationVersion;
         operationVersion = newOperationVersion;
@@ -249,6 +254,7 @@ public abstract class AbstractCoordinateOperationTypeImpl extends AbstractCoordi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public ExtentType getValidArea() {
         return validArea;
     }
@@ -273,6 +279,7 @@ public abstract class AbstractCoordinateOperationTypeImpl extends AbstractCoordi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setValidArea(ExtentType newValidArea) {
         if (newValidArea != validArea) {
             NotificationChain msgs = null;
@@ -292,6 +299,7 @@ public abstract class AbstractCoordinateOperationTypeImpl extends AbstractCoordi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getScope() {
         return scope;
     }
@@ -301,6 +309,7 @@ public abstract class AbstractCoordinateOperationTypeImpl extends AbstractCoordi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setScope(String newScope) {
         String oldScope = scope;
         scope = newScope;
@@ -313,6 +322,7 @@ public abstract class AbstractCoordinateOperationTypeImpl extends AbstractCoordi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getPositionalAccuracyGroup() {
         if (positionalAccuracyGroup == null) {
             positionalAccuracyGroup = new BasicFeatureMap(this, Gml311Package.ABSTRACT_COORDINATE_OPERATION_TYPE__POSITIONAL_ACCURACY_GROUP);
@@ -325,6 +335,7 @@ public abstract class AbstractCoordinateOperationTypeImpl extends AbstractCoordi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<AbstractPositionalAccuracyType> getPositionalAccuracy() {
         return getPositionalAccuracyGroup().list(Gml311Package.eINSTANCE.getAbstractCoordinateOperationType_PositionalAccuracy());
     }
@@ -334,6 +345,7 @@ public abstract class AbstractCoordinateOperationTypeImpl extends AbstractCoordi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CRSRefType getSourceCRS() {
         return sourceCRS;
     }
@@ -358,6 +370,7 @@ public abstract class AbstractCoordinateOperationTypeImpl extends AbstractCoordi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSourceCRS(CRSRefType newSourceCRS) {
         if (newSourceCRS != sourceCRS) {
             NotificationChain msgs = null;
@@ -377,6 +390,7 @@ public abstract class AbstractCoordinateOperationTypeImpl extends AbstractCoordi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CRSRefType getTargetCRS() {
         return targetCRS;
     }
@@ -401,6 +415,7 @@ public abstract class AbstractCoordinateOperationTypeImpl extends AbstractCoordi
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTargetCRS(CRSRefType newTargetCRS) {
         if (newTargetCRS != targetCRS) {
             NotificationChain msgs = null;

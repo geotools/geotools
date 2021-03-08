@@ -120,6 +120,7 @@ public class XSConfiguration extends Configuration {
         super(XS.getInstance());
     }
 
+    @Override
     protected final void registerBindings(MutablePicoContainer container) {
         container.registerComponentImplementation(XS.ALL, XSAllBinding.class);
         container.registerComponentImplementation(XS.ALLNNI, XSAllNNIBinding.class);

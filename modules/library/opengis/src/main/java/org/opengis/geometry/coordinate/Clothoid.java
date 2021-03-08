@@ -58,6 +58,7 @@ public interface Clothoid extends CurveSegment {
      * parameter space, and its relation to arc length after use of the placement, and with respect
      * to the coordinate reference system of the curve is not deterministic.
      */
+    @Override
     @UML(identifier = "startParameter", obligation = MANDATORY, specification = ISO_19107)
     double getStartConstructiveParam();
 
@@ -67,6 +68,7 @@ public interface Clothoid extends CurveSegment {
      * in the Fresnel integral and is the constructive parameter of this curve segment at its end
      * point. The end constructive param can be either positive or negative.
      */
+    @Override
     @UML(identifier = "endParameter", obligation = MANDATORY, specification = ISO_19107)
     double getEndConstructiveParam();
 }

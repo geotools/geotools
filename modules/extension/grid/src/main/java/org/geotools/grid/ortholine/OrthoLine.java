@@ -74,11 +74,13 @@ public class OrthoLine implements LineElement {
      * {@inheritDoc} Note that this will be a degenerate rectangle with either 0 width, if the line
      * is vertical, or zero height, if horizontal.
      */
+    @Override
     public ReferencedEnvelope getBounds() {
         return new ReferencedEnvelope(v0.x, v1.x, v0.y, v1.y, crs);
     }
 
     /** {@inheritDoc} These will be the end-points of the line element. */
+    @Override
     public Coordinate[] getVertices() {
         Coordinate[] vertices = new Coordinate[2];
         vertices[0] = v0;
@@ -104,10 +106,12 @@ public class OrthoLine implements LineElement {
         return level;
     }
 
+    @Override
     public Geometry toGeometry() {
         return geomFactory.createLineString(new Coordinate[] {v0, v1});
     }
 
+    @Override
     public Geometry toDenseGeometry(double maxSpacing) {
         if (maxSpacing <= 0.0) {
             throw new IllegalArgumentException("maxSpacing must be a positive value");

@@ -36,6 +36,7 @@ public class FilterFunction_exteriorRing extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Geometry arg0;
 

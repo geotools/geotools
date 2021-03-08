@@ -95,18 +95,21 @@ public abstract class AbstractLazyComplexTypeImpl extends AbstractLazyAttributeT
     }
 
     /** @see org.opengis.feature.type.ComplexType#getDescriptors() */
+    @Override
     public Collection<PropertyDescriptor> getDescriptors() {
         requireDescriptors();
         return descriptors;
     }
 
     /** @see org.opengis.feature.type.ComplexType#getDescriptor(org.opengis.feature.type.Name) */
+    @Override
     public PropertyDescriptor getDescriptor(Name name) {
         requireDescriptors();
         return descriptorMap.get(name);
     }
 
     /** @see org.opengis.feature.type.ComplexType#isInline() */
+    @Override
     public boolean isInline() {
         return false;
     }
@@ -125,6 +128,7 @@ public abstract class AbstractLazyComplexTypeImpl extends AbstractLazyAttributeT
      *
      * @see org.opengis.feature.type.ComplexType#getDescriptor(java.lang.String)
      */
+    @Override
     public PropertyDescriptor getDescriptor(String name) {
         requireDescriptors();
         PropertyDescriptor result = getDescriptor(new NameImpl(name));

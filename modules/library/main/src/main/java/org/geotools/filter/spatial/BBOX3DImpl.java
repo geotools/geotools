@@ -55,14 +55,17 @@ public class BBOX3DImpl implements BBOX3D {
         return property.getPropertyName();
     }
 
+    @Override
     public BoundingBox3D getBounds() {
         return envelope;
     }
 
+    @Override
     public Expression getExpression1() {
         return property;
     }
 
+    @Override
     public Expression getExpression2() {
         //        // in this case, the 3D BBOX falls back to regular 2D bbox behaviour (until there
         // is more
@@ -95,6 +98,7 @@ public class BBOX3DImpl implements BBOX3D {
         return factory.literal(envelope);
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object context) {
         return visitor.visit(this, context);
     }
@@ -109,6 +113,7 @@ public class BBOX3DImpl implements BBOX3D {
         return env;
     }
 
+    @Override
     public boolean evaluate(Object feature) {
 
         Geometry other = Converters.convert(property.evaluate(feature), Geometry.class);
@@ -132,6 +137,7 @@ public class BBOX3DImpl implements BBOX3D {
         return evaluate((Object) feature);
     }
 
+    @Override
     public MatchAction getMatchAction() {
         return MatchAction.ANY;
     }

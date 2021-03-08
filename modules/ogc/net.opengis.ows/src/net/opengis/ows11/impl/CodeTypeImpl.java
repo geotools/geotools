@@ -81,7 +81,8 @@ public class CodeTypeImpl extends EObjectImpl implements CodeType {
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.CODE_TYPE;
   }
 
@@ -90,7 +91,8 @@ public class CodeTypeImpl extends EObjectImpl implements CodeType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getValue() {
+  @Override
+public String getValue() {
     return value;
   }
 
@@ -99,7 +101,8 @@ public class CodeTypeImpl extends EObjectImpl implements CodeType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setValue(String newValue) {
+  @Override
+public void setValue(String newValue) {
     String oldValue = value;
     value = newValue;
     if (eNotificationRequired())
@@ -111,7 +114,8 @@ public class CodeTypeImpl extends EObjectImpl implements CodeType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getCodeSpace() {
+  @Override
+public String getCodeSpace() {
     return codeSpace;
   }
 
@@ -120,7 +124,8 @@ public class CodeTypeImpl extends EObjectImpl implements CodeType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setCodeSpace(String newCodeSpace) {
+  @Override
+public void setCodeSpace(String newCodeSpace) {
     String oldCodeSpace = codeSpace;
     codeSpace = newCodeSpace;
     if (eNotificationRequired())
@@ -132,7 +137,8 @@ public class CodeTypeImpl extends EObjectImpl implements CodeType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.CODE_TYPE__VALUE:
         return getValue();
@@ -147,7 +153,8 @@ public class CodeTypeImpl extends EObjectImpl implements CodeType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.CODE_TYPE__VALUE:
         setValue((String)newValue);
@@ -164,7 +171,8 @@ public class CodeTypeImpl extends EObjectImpl implements CodeType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.CODE_TYPE__VALUE:
         setValue(VALUE_EDEFAULT);
@@ -181,7 +189,8 @@ public class CodeTypeImpl extends EObjectImpl implements CodeType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.CODE_TYPE__VALUE:
         return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
@@ -196,7 +205,8 @@ public class CodeTypeImpl extends EObjectImpl implements CodeType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public String toString() {
+  @Override
+public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

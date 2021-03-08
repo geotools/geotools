@@ -65,6 +65,7 @@ public class SupportedComplexDataInputTypeImpl extends SupportedComplexDataTypeI
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.SUPPORTED_COMPLEX_DATA_INPUT_TYPE;
   }
@@ -74,6 +75,7 @@ public class SupportedComplexDataInputTypeImpl extends SupportedComplexDataTypeI
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public BigInteger getMaximumMegabytes() {
     return maximumMegabytes;
   }
@@ -83,6 +85,7 @@ public class SupportedComplexDataInputTypeImpl extends SupportedComplexDataTypeI
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setMaximumMegabytes(BigInteger newMaximumMegabytes) {
     BigInteger oldMaximumMegabytes = maximumMegabytes;
     maximumMegabytes = newMaximumMegabytes;
@@ -95,6 +98,7 @@ public class SupportedComplexDataInputTypeImpl extends SupportedComplexDataTypeI
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.SUPPORTED_COMPLEX_DATA_INPUT_TYPE__MAXIMUM_MEGABYTES:
@@ -108,6 +112,7 @@ public class SupportedComplexDataInputTypeImpl extends SupportedComplexDataTypeI
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.SUPPORTED_COMPLEX_DATA_INPUT_TYPE__MAXIMUM_MEGABYTES:
@@ -122,6 +127,7 @@ public class SupportedComplexDataInputTypeImpl extends SupportedComplexDataTypeI
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.SUPPORTED_COMPLEX_DATA_INPUT_TYPE__MAXIMUM_MEGABYTES:
@@ -136,6 +142,7 @@ public class SupportedComplexDataInputTypeImpl extends SupportedComplexDataTypeI
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.SUPPORTED_COMPLEX_DATA_INPUT_TYPE__MAXIMUM_MEGABYTES:
@@ -149,6 +156,7 @@ public class SupportedComplexDataInputTypeImpl extends SupportedComplexDataTypeI
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String toString() {
     if (eIsProxy()) return super.toString();
 

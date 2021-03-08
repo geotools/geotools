@@ -351,6 +351,7 @@ public abstract class GeostationarySatellite extends MapProjection {
             super(PARAMETERS);
         }
 
+        @Override
         protected MathTransform createMathTransform(final ParameterValueGroup parameters)
                 throws ParameterNotFoundException {
             if (isSpherical(parameters)) {

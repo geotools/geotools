@@ -74,37 +74,44 @@ public class SimpleTypeGT implements SimpleType {
     }
 
     /** @see org.geotools.xml.xsi.Type#getInstanceType() */
+    @Override
     public Class getInstanceType() {
         // if it's a union ... deal with it i guess
         return parents[0].getInstanceType();
     }
 
     /** @see org.geotools.xml.schema.Type#findChildElement(java.lang.String) */
+    @Override
     public Element findChildElement(String name1) {
         return null; // will never happen
     }
 
     /** @see org.geotools.xml.xsi.SimpleType#getFinal() */
+    @Override
     public int getFinal() {
         return finaL;
     }
 
     /** @see org.geotools.xml.xsi.SimpleType#getId() */
+    @Override
     public String getId() {
         return id;
     }
 
     /** @see org.geotools.xml.xsi.Type#getLocalName() */
+    @Override
     public String getName() {
         return name;
     }
 
     /** @see org.geotools.xml.xsi.Type#getLocalName() */
+    @Override
     public URI getNamespace() {
         return namespace;
     }
 
     /** @see org.geotools.xml.xsi.Type#getParent() */
+    @Override
     public SimpleType[] getParents() {
         return parents;
     }
@@ -114,6 +121,7 @@ public class SimpleTypeGT implements SimpleType {
      *
      * @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes)
      */
+    @Override
     public Object getValue(
             Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
             throws OperationNotSupportedException, SAXException {
@@ -392,11 +400,13 @@ public class SimpleTypeGT implements SimpleType {
     }
 
     /** @see org.geotools.xml.schema.SimpleType#getChildType() */
+    @Override
     public int getChildType() {
         return type;
     }
 
     /** @see org.geotools.xml.schema.SimpleType#getFacets() */
+    @Override
     public Facet[] getFacets() {
         return constraints;
     }
@@ -405,6 +415,7 @@ public class SimpleTypeGT implements SimpleType {
      * @see org.geotools.xml.schema.SimpleType#toAttribute(org.geotools.xml.schema.Attribute,
      *     java.lang.Object, java.util.Map)
      */
+    @Override
     public AttributeValue toAttribute(Attribute attribute, Object value, Map<String, Object> hints)
             throws OperationNotSupportedException {
         if (value == null) {
@@ -450,6 +461,7 @@ public class SimpleTypeGT implements SimpleType {
      *     org.geotools.xml.schema.SimpleType#canCreateAttributes(org.geotools.xml.schema.Attribute,
      *     java.lang.Object, java.util.Map)
      */
+    @Override
     public boolean canCreateAttributes(
             Attribute attribute, Object value, Map<String, Object> hints) {
         if (value == null) {
@@ -480,6 +492,7 @@ public class SimpleTypeGT implements SimpleType {
      * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
      *     java.lang.Object, java.util.Map)
      */
+    @Override
     public boolean canEncode(Element element, Object value, Map<String, Object> hints) {
         if (value == null) {
             return false;
@@ -508,6 +521,7 @@ public class SimpleTypeGT implements SimpleType {
      * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element, java.lang.Object,
      *     org.geotools.xml.PrintHandler, java.util.Map)
      */
+    @Override
     public void encode(
             Element element, Object value, PrintHandler output, Map<String, Object> hints)
             throws IOException, OperationNotSupportedException {

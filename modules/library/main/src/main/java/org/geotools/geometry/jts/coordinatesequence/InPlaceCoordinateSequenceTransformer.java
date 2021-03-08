@@ -54,6 +54,7 @@ public class InPlaceCoordinateSequenceTransformer implements CoordinateSequenceT
      *     org.geotools.geometry.jts.CoordinateSequenceTransformer#transform(org.locationtech.jts.geom.CoordinateSequence,
      *     org.opengis.referencing.operation.MathTransform)
      */
+    @Override
     public CoordinateSequence transform(CoordinateSequence cs, MathTransform transform)
             throws TransformException {
         if (cs instanceof PackedCoordinateSequence) {
@@ -102,11 +103,13 @@ public class InPlaceCoordinateSequenceTransformer implements CoordinateSequenceT
         }
 
         /** @see org.opengis.geometry.coordinate.DirectPosition#getDimension() */
+        @Override
         public int getDimension() {
             return dimension;
         }
 
         /** @see org.opengis.geometry.coordinate.DirectPosition#getCoordinate() */
+        @Override
         public double[] getCoordinate() {
             return new double[] {
                 sequence.getX(offset),
@@ -116,22 +119,26 @@ public class InPlaceCoordinateSequenceTransformer implements CoordinateSequenceT
         }
 
         /** @see org.opengis.geometry.coordinate.DirectPosition#getOrdinate(int) */
+        @Override
         public double getOrdinate(int arg0) throws IndexOutOfBoundsException {
             return sequence.getOrdinate(offset, arg0);
         }
 
         /** @see org.opengis.geometry.coordinate.DirectPosition#setOrdinate(int, double) */
+        @Override
         public void setOrdinate(int arg0, double arg1) throws IndexOutOfBoundsException {
             sequence.setOrdinate(offset, arg0, arg1);
         }
 
         /** @see org.opengis.geometry.coordinate.DirectPosition#getCoordinateReferenceSystem() */
+        @Override
         public CoordinateReferenceSystem getCoordinateReferenceSystem() {
             // TODO implement method body
             throw new UnsupportedOperationException();
         }
 
         /** @see org.opengis.geometry.coordinate.DirectPosition#clone() */
+        @Override
         public FlyWeightDirectPosition clone() {
             throw new UnsupportedOperationException();
         }
@@ -142,6 +149,7 @@ public class InPlaceCoordinateSequenceTransformer implements CoordinateSequenceT
         }
 
         /** @see org.opengis.geometry.coordinate.Position#getDirectPosition() */
+        @Override
         public DirectPosition getDirectPosition() {
             return this;
         }

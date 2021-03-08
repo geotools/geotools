@@ -74,36 +74,44 @@ public abstract class PropertyTypeImpl implements PropertyType {
         this.userData = new HashMap<>();
     }
 
+    @Override
     public Name getName() {
         return name;
     }
 
+    @Override
     public Class<?> getBinding() {
         return binding;
     }
 
+    @Override
     public boolean isAbstract() {
         return isAbstract;
     }
 
+    @Override
     public List<Filter> getRestrictions() {
         return restrictions;
     }
 
+    @Override
     public PropertyType getSuper() {
         return superType;
     }
 
+    @Override
     public InternationalString getDescription() {
         return description;
     }
 
+    @Override
     public int hashCode() {
         return getName().hashCode()
                 ^ getBinding().hashCode()
                 ^ (getDescription() != null ? getDescription().hashCode() : 17);
     }
 
+    @Override
     public boolean equals(Object other) {
         if (this == other) return true;
 
@@ -151,10 +159,12 @@ public abstract class PropertyTypeImpl implements PropertyType {
         return false;
     }
 
+    @Override
     public Map<Object, Object> getUserData() {
         return userData;
     }
 
+    @Override
     public String toString() {
         StringBuffer sb = new StringBuffer(Classes.getShortClassName(this));
         sb.append(" ");

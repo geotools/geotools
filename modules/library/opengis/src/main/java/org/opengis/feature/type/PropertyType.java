@@ -212,6 +212,7 @@ public interface PropertyType {
      *
      * @return <code>true</code> if other is a PropertyType with the same name
      */
+    @Override
     /// @Override
     boolean equals(Object other);
 
@@ -220,6 +221,7 @@ public interface PropertyType {
      *
      * @return getName().hashCode()
      */
+    @Override
     /// @Override
     int hashCode();
 }

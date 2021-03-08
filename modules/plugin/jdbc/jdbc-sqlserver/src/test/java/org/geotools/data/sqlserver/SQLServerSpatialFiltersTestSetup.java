@@ -18,6 +18,7 @@ package org.geotools.data.sqlserver;
 
 public class SQLServerSpatialFiltersTestSetup extends SQLServerDataStoreAPITestSetup {
 
+    @Override
     protected void setUpData() throws Exception {
         runSafe("DROP TABLE ppoint");
 

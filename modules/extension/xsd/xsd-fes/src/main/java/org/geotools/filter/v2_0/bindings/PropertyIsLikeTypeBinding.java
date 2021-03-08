@@ -55,10 +55,12 @@ public class PropertyIsLikeTypeBinding extends OGCPropertyIsLikeTypeBinding {
         this.factory = factory;
     }
 
+    @Override
     public QName getTarget() {
         return FES.PropertyIsLikeType;
     }
 
+    @Override
     public Object getProperty(Object object, QName name) throws Exception {
         PropertyIsLike isLike = (PropertyIsLike) object;
 

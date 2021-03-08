@@ -16,8 +16,10 @@ public class SessionCommandListenerTest {
 
         List<String> commands = new ArrayList<>();
 
+        @Override
         public java.sql.Statement createStatement() throws java.sql.SQLException {
             return new MockStatement(this) {
+                @Override
                 public boolean execute(String sql) throws java.sql.SQLException {
                     commands.add(sql);
                     return false;

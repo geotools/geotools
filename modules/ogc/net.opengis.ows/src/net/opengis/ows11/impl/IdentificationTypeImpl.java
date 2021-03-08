@@ -103,7 +103,8 @@ public class IdentificationTypeImpl extends BasicIdentificationTypeImpl implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.IDENTIFICATION_TYPE;
   }
 
@@ -112,7 +113,8 @@ public class IdentificationTypeImpl extends BasicIdentificationTypeImpl implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public FeatureMap getBoundingBoxGroup() {
+  @Override
+public FeatureMap getBoundingBoxGroup() {
     if (boundingBoxGroup == null) {
       boundingBoxGroup = new BasicFeatureMap(this, Ows11Package.IDENTIFICATION_TYPE__BOUNDING_BOX_GROUP);
     }
@@ -124,7 +126,8 @@ public class IdentificationTypeImpl extends BasicIdentificationTypeImpl implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList getBoundingBox() {
+  @Override
+public EList getBoundingBox() {
     return getBoundingBoxGroup().list(Ows11Package.Literals.IDENTIFICATION_TYPE__BOUNDING_BOX);
   }
 
@@ -133,7 +136,8 @@ public class IdentificationTypeImpl extends BasicIdentificationTypeImpl implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getOutputFormat() {
+  @Override
+public String getOutputFormat() {
     return outputFormat;
   }
 
@@ -142,7 +146,8 @@ public class IdentificationTypeImpl extends BasicIdentificationTypeImpl implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setOutputFormat(String newOutputFormat) {
+  @Override
+public void setOutputFormat(String newOutputFormat) {
     String oldOutputFormat = outputFormat;
     outputFormat = newOutputFormat;
     if (eNotificationRequired())
@@ -154,7 +159,8 @@ public class IdentificationTypeImpl extends BasicIdentificationTypeImpl implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public FeatureMap getAvailableCRSGroup() {
+  @Override
+public FeatureMap getAvailableCRSGroup() {
     if (availableCRSGroup == null) {
       availableCRSGroup = new BasicFeatureMap(this, Ows11Package.IDENTIFICATION_TYPE__AVAILABLE_CRS_GROUP);
     }
@@ -166,7 +172,8 @@ public class IdentificationTypeImpl extends BasicIdentificationTypeImpl implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getAvailableCRS() {
+  @Override
+public String getAvailableCRS() {
     return (String)getAvailableCRSGroup().get(Ows11Package.Literals.IDENTIFICATION_TYPE__AVAILABLE_CRS, true);
   }
 
@@ -175,7 +182,8 @@ public class IdentificationTypeImpl extends BasicIdentificationTypeImpl implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setAvailableCRS(String newAvailableCRS) {
+  @Override
+public void setAvailableCRS(String newAvailableCRS) {
     ((FeatureMap.Internal)getAvailableCRSGroup()).set(Ows11Package.Literals.IDENTIFICATION_TYPE__AVAILABLE_CRS, newAvailableCRS);
   }
 
@@ -184,7 +192,8 @@ public class IdentificationTypeImpl extends BasicIdentificationTypeImpl implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+  @Override
+public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Ows11Package.IDENTIFICATION_TYPE__BOUNDING_BOX_GROUP:
         return ((InternalEList)getBoundingBoxGroup()).basicRemove(otherEnd, msgs);
@@ -201,7 +210,8 @@ public class IdentificationTypeImpl extends BasicIdentificationTypeImpl implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.IDENTIFICATION_TYPE__BOUNDING_BOX_GROUP:
         if (coreType) return getBoundingBoxGroup();
@@ -224,7 +234,8 @@ public class IdentificationTypeImpl extends BasicIdentificationTypeImpl implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.IDENTIFICATION_TYPE__BOUNDING_BOX_GROUP:
         ((FeatureMap.Internal)getBoundingBoxGroup()).set(newValue);
@@ -251,7 +262,8 @@ public class IdentificationTypeImpl extends BasicIdentificationTypeImpl implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.IDENTIFICATION_TYPE__BOUNDING_BOX_GROUP:
         getBoundingBoxGroup().clear();
@@ -277,7 +289,8 @@ public class IdentificationTypeImpl extends BasicIdentificationTypeImpl implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.IDENTIFICATION_TYPE__BOUNDING_BOX_GROUP:
         return boundingBoxGroup != null && !boundingBoxGroup.isEmpty();
@@ -298,7 +311,8 @@ public class IdentificationTypeImpl extends BasicIdentificationTypeImpl implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public String toString() {
+  @Override
+public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

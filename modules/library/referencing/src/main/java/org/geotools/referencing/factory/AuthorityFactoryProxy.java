@@ -281,16 +281,19 @@ abstract class AuthorityFactoryProxy {
         }
 
         /** {@inheritDoc} */
+        @Override
         public Class<? extends IdentifiedObject> getType() {
             return type;
         }
 
         /** {@inheritDoc} */
+        @Override
         public AuthorityFactory getAuthorityFactory() {
             return factory;
         }
 
         /** {@inheritDoc} */
+        @Override
         public IdentifiedObject create(final String code) throws FactoryException {
             try {
                 return (IdentifiedObject) method.invoke(factory, code);
@@ -326,14 +329,17 @@ abstract class AuthorityFactoryProxy {
             this.factory = factory;
         }
 
+        @Override
         public Class<? extends IdentifiedObject> getType() {
             return CoordinateReferenceSystem.class;
         }
 
+        @Override
         public final AuthorityFactory getAuthorityFactory() {
             return factory;
         }
 
+        @Override
         public IdentifiedObject create(final String code) throws FactoryException {
             return factory.createCoordinateReferenceSystem(code);
         }

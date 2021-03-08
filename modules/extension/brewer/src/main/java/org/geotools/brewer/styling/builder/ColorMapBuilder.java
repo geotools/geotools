@@ -62,6 +62,7 @@ public class ColorMapBuilder extends AbstractStyleBuilder<ColorMap> {
         return colorMapEntryBuilder;
     }
 
+    @Override
     public ColorMap build() {
         // force the dump of the last entry builder
         entry();
@@ -81,6 +82,7 @@ public class ColorMapBuilder extends AbstractStyleBuilder<ColorMap> {
         return colorMap;
     }
 
+    @Override
     public ColorMapBuilder reset() {
         type = ColorMap.TYPE_RAMP;
         extended = false;
@@ -89,6 +91,7 @@ public class ColorMapBuilder extends AbstractStyleBuilder<ColorMap> {
         return this;
     }
 
+    @Override
     public ColorMapBuilder reset(ColorMap original) {
         if (original == null) {
             return reset();
@@ -100,6 +103,7 @@ public class ColorMapBuilder extends AbstractStyleBuilder<ColorMap> {
         return this;
     }
 
+    @Override
     public ColorMapBuilder unset() {
         return (ColorMapBuilder) super.unset();
     }

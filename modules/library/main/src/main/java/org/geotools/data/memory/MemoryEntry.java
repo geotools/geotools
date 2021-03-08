@@ -72,6 +72,7 @@ public class MemoryEntry extends ContentEntry {
         return memory;
     }
 
+    @Override
     public String toString() {
         return "MemoryEntry '" + getTypeName() + "': " + getMemory().size() + " features";
     }

@@ -63,6 +63,7 @@ public class DistributionImpl extends MetadataEntity implements Distribution {
     }
 
     /** Provides a description of the format of the data to be distributed. */
+    @Override
     public Collection<Format> getDistributionFormats() {
         return (distributionFormats = nonNullCollection(distributionFormats, Format.class));
     }
@@ -73,6 +74,7 @@ public class DistributionImpl extends MetadataEntity implements Distribution {
     }
 
     /** Provides information about the distributor. */
+    @Override
     public Collection<Distributor> getDistributors() {
         return (distributors = nonNullCollection(distributors, Distributor.class));
     }
@@ -86,6 +88,7 @@ public class DistributionImpl extends MetadataEntity implements Distribution {
      * Provides information about technical means and media by which a resource is obtained from the
      * distributor.
      */
+    @Override
     public Collection<DigitalTransferOptions> getTransferOptions() {
         return (transferOptions = nonNullCollection(transferOptions, DigitalTransferOptions.class));
     }

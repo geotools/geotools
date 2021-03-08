@@ -136,6 +136,7 @@ public class OSMServiceTest extends ServiceTest {
         return tileList;
     }
 
+    @Override
     public List<String> getUrlList(String extentName) {
         return extentNameToUrlList.get(extentName);
     }

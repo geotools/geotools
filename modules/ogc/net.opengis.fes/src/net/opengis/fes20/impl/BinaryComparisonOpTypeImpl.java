@@ -134,6 +134,7 @@ public class BinaryComparisonOpTypeImpl extends ComparisonOpsTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getExpressionGroup() {
         if (expressionGroup == null) {
             expressionGroup = new BasicFeatureMap(this, Fes20Package.BINARY_COMPARISON_OP_TYPE__EXPRESSION_GROUP);
@@ -146,6 +147,7 @@ public class BinaryComparisonOpTypeImpl extends ComparisonOpsTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<EObject> getExpression() {
         return getExpressionGroup().list(Fes20Package.Literals.BINARY_COMPARISON_OP_TYPE__EXPRESSION);
     }
@@ -155,6 +157,7 @@ public class BinaryComparisonOpTypeImpl extends ComparisonOpsTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public MatchActionType getMatchAction() {
         return matchAction;
     }
@@ -164,6 +167,7 @@ public class BinaryComparisonOpTypeImpl extends ComparisonOpsTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMatchAction(MatchActionType newMatchAction) {
         MatchActionType oldMatchAction = matchAction;
         matchAction = newMatchAction == null ? MATCH_ACTION_EDEFAULT : newMatchAction;
@@ -178,6 +182,7 @@ public class BinaryComparisonOpTypeImpl extends ComparisonOpsTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetMatchAction() {
         MatchActionType oldMatchAction = matchAction;
         boolean oldMatchActionESet = matchActionESet;
@@ -192,6 +197,7 @@ public class BinaryComparisonOpTypeImpl extends ComparisonOpsTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetMatchAction() {
         return matchActionESet;
     }
@@ -201,6 +207,7 @@ public class BinaryComparisonOpTypeImpl extends ComparisonOpsTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isMatchCase() {
         return matchCase;
     }
@@ -210,6 +217,7 @@ public class BinaryComparisonOpTypeImpl extends ComparisonOpsTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setMatchCase(boolean newMatchCase) {
         boolean oldMatchCase = matchCase;
         matchCase = newMatchCase;
@@ -224,6 +232,7 @@ public class BinaryComparisonOpTypeImpl extends ComparisonOpsTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetMatchCase() {
         boolean oldMatchCase = matchCase;
         boolean oldMatchCaseESet = matchCaseESet;
@@ -238,6 +247,7 @@ public class BinaryComparisonOpTypeImpl extends ComparisonOpsTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetMatchCase() {
         return matchCaseESet;
     }

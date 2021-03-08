@@ -36,6 +36,7 @@ public class VectorTypeImpl extends DirectPositionTypeImpl implements VectorType
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return GmlPackage.Literals.VECTOR_TYPE;
 	}

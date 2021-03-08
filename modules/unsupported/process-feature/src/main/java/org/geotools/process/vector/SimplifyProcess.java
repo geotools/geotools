@@ -105,14 +105,17 @@ public class SimplifyProcess implements VectorProcess {
             fb = new SimpleFeatureBuilder(schema);
         }
 
+        @Override
         public void close() {
             delegate.close();
         }
 
+        @Override
         public boolean hasNext() {
             return delegate.hasNext();
         }
 
+        @Override
         public SimpleFeature next() throws NoSuchElementException {
             SimpleFeature f = delegate.next();
             for (Object attribute : f.getAttributes()) {

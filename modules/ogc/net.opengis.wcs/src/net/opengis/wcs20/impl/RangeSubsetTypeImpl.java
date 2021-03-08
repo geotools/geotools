@@ -64,6 +64,7 @@ public class RangeSubsetTypeImpl extends EObjectImpl implements RangeSubsetType 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList<RangeItemType> getRangeItems() {
 		if (rangeItems == null) {
 			rangeItems = new EObjectResolvingEList<>(RangeItemType.class, this, Wcs20Package.RANGE_SUBSET_TYPE__RANGE_ITEMS);

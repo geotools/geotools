@@ -96,6 +96,7 @@ public interface Driver extends OptionalFactory, Factory {
      * @return <tt>true</tt> if and only if this factory has all the appropriate dependencies on the
      *     classpath to create DataStores.
      */
+    @Override
     public boolean isAvailable();
 
     public boolean canAccess(DriverCapabilities operation, Map<String, Serializable> params);

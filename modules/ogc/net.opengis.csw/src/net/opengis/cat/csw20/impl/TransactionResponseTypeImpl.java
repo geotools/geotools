@@ -109,6 +109,7 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public TransactionSummaryType getTransactionSummary() {
         return transactionSummary;
     }
@@ -133,6 +134,7 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTransactionSummary(TransactionSummaryType newTransactionSummary) {
         if (newTransactionSummary != transactionSummary) {
             NotificationChain msgs = null;
@@ -152,6 +154,7 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<InsertResultType> getInsertResult() {
         if (insertResult == null) {
             insertResult = new EObjectContainmentEList<>(InsertResultType.class, this, Csw20Package.TRANSACTION_RESPONSE_TYPE__INSERT_RESULT);
@@ -164,6 +167,7 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getVersion() {
         return version;
     }
@@ -173,6 +177,7 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setVersion(String newVersion) {
         String oldVersion = version;
         version = newVersion;

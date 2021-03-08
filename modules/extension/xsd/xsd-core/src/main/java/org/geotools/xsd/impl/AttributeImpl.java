@@ -28,14 +28,17 @@ public class AttributeImpl extends InstanceComponentImpl implements AttributeIns
         this.decl = decl;
     }
 
+    @Override
     public XSDTypeDefinition getTypeDefinition() {
         return decl.getTypeDefinition();
     }
 
+    @Override
     public XSDAttributeDeclaration getAttributeDeclaration() {
         return decl;
     }
 
+    @Override
     public XSDNamedComponent getDeclaration() {
         return getAttributeDeclaration();
     }

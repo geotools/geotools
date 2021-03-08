@@ -90,6 +90,7 @@ public class Wps10Validator extends EObjectValidator {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EPackage getEPackage() {
     return Wps10Package.eINSTANCE;
   }
@@ -100,6 +101,7 @@ public class Wps10Validator extends EObjectValidator {
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected boolean validate(int classifierID, Object value, DiagnosticChain diagnostics, Map context) {
     switch (classifierID) {
       case Wps10Package.BODY_REFERENCE_TYPE:

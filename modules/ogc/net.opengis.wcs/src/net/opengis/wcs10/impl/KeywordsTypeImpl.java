@@ -85,6 +85,7 @@ public class KeywordsTypeImpl extends EObjectImpl implements KeywordsType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs10Package.Literals.KEYWORDS_TYPE;
 	}
@@ -94,6 +95,7 @@ public class KeywordsTypeImpl extends EObjectImpl implements KeywordsType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getKeyword() {
 		return keyword;
 	}
@@ -103,7 +105,8 @@ public class KeywordsTypeImpl extends EObjectImpl implements KeywordsType {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setKeyword(String newKeyword) {
+	@Override
+    public void setKeyword(String newKeyword) {
 		String oldKeyword = keyword;
 		keyword = newKeyword;
 		if (eNotificationRequired())
@@ -115,6 +118,7 @@ public class KeywordsTypeImpl extends EObjectImpl implements KeywordsType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public CodeType getType() {
 		return type;
 	}
@@ -139,6 +143,7 @@ public class KeywordsTypeImpl extends EObjectImpl implements KeywordsType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setType(CodeType newType) {
 		if (newType != type) {
 			NotificationChain msgs = null;
@@ -158,6 +163,7 @@ public class KeywordsTypeImpl extends EObjectImpl implements KeywordsType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs10Package.KEYWORDS_TYPE__TYPE:
@@ -171,6 +177,7 @@ public class KeywordsTypeImpl extends EObjectImpl implements KeywordsType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs10Package.KEYWORDS_TYPE__KEYWORD:
@@ -186,6 +193,7 @@ public class KeywordsTypeImpl extends EObjectImpl implements KeywordsType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs10Package.KEYWORDS_TYPE__KEYWORD:
@@ -203,6 +211,7 @@ public class KeywordsTypeImpl extends EObjectImpl implements KeywordsType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.KEYWORDS_TYPE__KEYWORD:
@@ -220,6 +229,7 @@ public class KeywordsTypeImpl extends EObjectImpl implements KeywordsType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.KEYWORDS_TYPE__KEYWORD:
@@ -235,6 +245,7 @@ public class KeywordsTypeImpl extends EObjectImpl implements KeywordsType {
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

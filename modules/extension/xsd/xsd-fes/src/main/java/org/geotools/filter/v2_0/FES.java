@@ -41,17 +41,20 @@ public final class FES extends XSD {
     /** private constructor */
     private FES() {}
 
+    @Override
     protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(OWS.getInstance());
         dependencies.add(GML.getInstance());
     }
 
     /** Returns 'http://www.opengis.net/fes/2.0'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'filterAll.xsd.'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("filterAll.xsd").toString();
     }

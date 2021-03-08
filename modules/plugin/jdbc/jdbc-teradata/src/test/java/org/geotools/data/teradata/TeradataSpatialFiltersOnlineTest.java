@@ -21,6 +21,7 @@ import org.geotools.jdbc.JDBCSpatialFiltersOnlineTest;
 
 public class TeradataSpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest {
 
+    @Override
     protected JDBCDataStoreAPITestSetup createTestSetup() {
         return new TeradataDataStoreAPITestSetup(new TeradataTestSetup());
     }

@@ -526,6 +526,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         }
     }
 
+    @Override
     public Integer getGeometrySRID(
             String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
@@ -553,6 +554,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         }
     }
 
+    @Override
     public CoordinateReferenceSystem createCRS(int srid, Connection cx) throws SQLException {
         try {
             return GeoPackage.decodeSRID(srid);

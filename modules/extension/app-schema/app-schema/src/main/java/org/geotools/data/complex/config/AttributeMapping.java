@@ -406,6 +406,7 @@ public class AttributeMapping implements Serializable {
      *
      * @return String representation of this config object.
      */
+    @Override
     public String toString() {
         return "AttributeMappingDTO[id > "
                 + identifierExpression

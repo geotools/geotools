@@ -127,6 +127,7 @@ public class LayerTypeImpl extends DatasetDescriptionSummaryBaseTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<StyleType> getStyle() {
         if (style == null) {
             style = new EObjectContainmentEList<>(StyleType.class, this, wmtsv_1Package.LAYER_TYPE__STYLE);
@@ -139,6 +140,7 @@ public class LayerTypeImpl extends DatasetDescriptionSummaryBaseTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<String> getFormat() {
         if (format == null) {
             format = new EDataTypeEList<>(String.class, this, wmtsv_1Package.LAYER_TYPE__FORMAT);
@@ -151,6 +153,7 @@ public class LayerTypeImpl extends DatasetDescriptionSummaryBaseTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<String> getInfoFormat() {
         if (infoFormat == null) {
             infoFormat = new EDataTypeEList<>(String.class, this, wmtsv_1Package.LAYER_TYPE__INFO_FORMAT);
@@ -163,6 +166,7 @@ public class LayerTypeImpl extends DatasetDescriptionSummaryBaseTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<DimensionType> getDimension() {
         if (dimension == null) {
             dimension = new EObjectContainmentEList<>(DimensionType.class, this, wmtsv_1Package.LAYER_TYPE__DIMENSION);
@@ -175,6 +179,7 @@ public class LayerTypeImpl extends DatasetDescriptionSummaryBaseTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<TileMatrixSetLinkType> getTileMatrixSetLink() {
         if (tileMatrixSetLink == null) {
             tileMatrixSetLink = new EObjectContainmentEList<>(TileMatrixSetLinkType.class, this, wmtsv_1Package.LAYER_TYPE__TILE_MATRIX_SET_LINK);
@@ -187,6 +192,7 @@ public class LayerTypeImpl extends DatasetDescriptionSummaryBaseTypeImpl impleme
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<URLTemplateType> getResourceURL() {
         if (resourceURL == null) {
             resourceURL = new EObjectContainmentEList<>(URLTemplateType.class, this, wmtsv_1Package.LAYER_TYPE__RESOURCE_URL);

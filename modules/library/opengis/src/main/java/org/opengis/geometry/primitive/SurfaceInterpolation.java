@@ -118,6 +118,7 @@ public final class SurfaceInterpolation extends CodeList<SurfaceInterpolation> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public SurfaceInterpolation[] family() {
         return values();
     }

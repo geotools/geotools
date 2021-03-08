@@ -119,7 +119,8 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.CONTACT_TYPE;
   }
 
@@ -128,7 +129,8 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public TelephoneType getPhone() {
+  @Override
+public TelephoneType getPhone() {
     return phone;
   }
 
@@ -152,7 +154,8 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setPhone(TelephoneType newPhone) {
+  @Override
+public void setPhone(TelephoneType newPhone) {
     if (newPhone != phone) {
       NotificationChain msgs = null;
       if (phone != null)
@@ -171,7 +174,8 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public AddressType getAddress() {
+  @Override
+public AddressType getAddress() {
     return address;
   }
 
@@ -195,7 +199,8 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setAddress(AddressType newAddress) {
+  @Override
+public void setAddress(AddressType newAddress) {
     if (newAddress != address) {
       NotificationChain msgs = null;
       if (address != null)
@@ -214,7 +219,8 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public OnlineResourceType getOnlineResource() {
+  @Override
+public OnlineResourceType getOnlineResource() {
     return onlineResource;
   }
 
@@ -238,7 +244,8 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setOnlineResource(OnlineResourceType newOnlineResource) {
+  @Override
+public void setOnlineResource(OnlineResourceType newOnlineResource) {
     if (newOnlineResource != onlineResource) {
       NotificationChain msgs = null;
       if (onlineResource != null)
@@ -257,7 +264,8 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getHoursOfService() {
+  @Override
+public String getHoursOfService() {
     return hoursOfService;
   }
 
@@ -266,7 +274,8 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setHoursOfService(String newHoursOfService) {
+  @Override
+public void setHoursOfService(String newHoursOfService) {
     String oldHoursOfService = hoursOfService;
     hoursOfService = newHoursOfService;
     if (eNotificationRequired())
@@ -278,7 +287,8 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getContactInstructions() {
+  @Override
+public String getContactInstructions() {
     return contactInstructions;
   }
 
@@ -287,7 +297,8 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setContactInstructions(String newContactInstructions) {
+  @Override
+public void setContactInstructions(String newContactInstructions) {
     String oldContactInstructions = contactInstructions;
     contactInstructions = newContactInstructions;
     if (eNotificationRequired())
@@ -299,7 +310,8 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+  @Override
+public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Ows11Package.CONTACT_TYPE__PHONE:
         return basicSetPhone(null, msgs);
@@ -316,7 +328,8 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+  @Override
+public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows11Package.CONTACT_TYPE__PHONE:
         return getPhone();
@@ -337,7 +350,8 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eSet(int featureID, Object newValue) {
+  @Override
+public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows11Package.CONTACT_TYPE__PHONE:
         setPhone((TelephoneType)newValue);
@@ -363,7 +377,8 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public void eUnset(int featureID) {
+  @Override
+public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.CONTACT_TYPE__PHONE:
         setPhone((TelephoneType)null);
@@ -389,7 +404,8 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean eIsSet(int featureID) {
+  @Override
+public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows11Package.CONTACT_TYPE__PHONE:
         return phone != null;
@@ -410,7 +426,8 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
    * <!-- end-user-doc -->
    * @generated
    */
-  public String toString() {
+  @Override
+public String toString() {
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());

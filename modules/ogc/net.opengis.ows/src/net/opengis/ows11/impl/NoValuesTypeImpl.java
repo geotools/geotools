@@ -31,7 +31,8 @@ public class NoValuesTypeImpl extends EObjectImpl implements NoValuesType {
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EClass eStaticClass() {
+  @Override
+protected EClass eStaticClass() {
     return Ows11Package.Literals.NO_VALUES_TYPE;
   }
 

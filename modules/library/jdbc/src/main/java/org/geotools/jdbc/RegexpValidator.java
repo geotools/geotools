@@ -35,6 +35,7 @@ public class RegexpValidator implements Validator {
         this.pattern = Pattern.compile(pattern);
     }
 
+    @Override
     public void validate(String value) throws IllegalArgumentException {
         if (!pattern.matcher(value).matches()) {
             throw new IllegalArgumentException(

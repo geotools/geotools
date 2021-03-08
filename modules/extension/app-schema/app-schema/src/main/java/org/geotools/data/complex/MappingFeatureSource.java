@@ -72,10 +72,12 @@ public class MappingFeatureSource implements FeatureSource<FeatureType, Feature>
         this.mapping = mapping;
     }
 
+    @Override
     public void addFeatureListener(FeatureListener listener) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public ReferencedEnvelope getBounds() throws IOException {
         return store.getBounds(namedQuery(Filter.INCLUDE, Integer.MAX_VALUE));
     }
@@ -127,11 +129,13 @@ public class MappingFeatureSource implements FeatureSource<FeatureType, Feature>
         return namedQuery;
     }
 
+    @Override
     public ReferencedEnvelope getBounds(Query query) throws IOException {
         Query namedQuery = namedQuery(query);
         return store.getBounds(namedQuery);
     }
 
+    @Override
     public int getCount(Query query) throws IOException {
         int count = 0;
         Query namedQuery = namedQuery(query);
@@ -163,10 +167,12 @@ public class MappingFeatureSource implements FeatureSource<FeatureType, Feature>
         }
     }
 
+    @Override
     public DataAccess<FeatureType, Feature> getDataStore() {
         return store;
     }
 
+    @Override
     public FeatureType getSchema() {
         return (FeatureType) mapping.getTargetFeature().getType();
     }
@@ -179,10 +185,12 @@ public class MappingFeatureSource implements FeatureSource<FeatureType, Feature>
         return mapping;
     }
 
+    @Override
     public FeatureCollection<FeatureType, Feature> getFeatures(Query query) throws IOException {
         return new MappingFeatureCollection(store, mapping, namedQuery(query));
     }
 
+    @Override
     public FeatureCollection<FeatureType, Feature> getFeatures(Filter filter) throws IOException {
         return new MappingFeatureCollection(store, mapping, namedQuery(filter, Integer.MAX_VALUE));
     }
@@ -193,19 +201,23 @@ public class MappingFeatureSource implements FeatureSource<FeatureType, Feature>
                 store, mapping, namedQuery(filter, Integer.MAX_VALUE, hints));
     }
 
+    @Override
     public FeatureCollection<FeatureType, Feature> getFeatures() throws IOException {
         return new MappingFeatureCollection(
                 store, mapping, namedQuery(Filter.INCLUDE, Integer.MAX_VALUE));
     }
 
+    @Override
     public void removeFeatureListener(FeatureListener listener) {
         throw new UnsupportedOperationException("this is a read only feature source");
     }
 
+    @Override
     public ResourceInfo getInfo() {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public Name getName() {
         Name name = mapping.getTargetFeature().getName();
         return name;
@@ -216,11 +228,13 @@ public class MappingFeatureSource implements FeatureSource<FeatureType, Feature>
      *
      * @see org.geotools.data.FeatureSource#getSupportedHints()
      */
+    @Override
     public Set<RenderingHints.Key> getSupportedHints() {
         return Collections.emptySet();
     }
 
     /** @see org.geotools.data.FeatureSource#getQueryCapabilities() */
+    @Override
     public QueryCapabilities getQueryCapabilities() {
         return mapping.getSource().getQueryCapabilities();
     }

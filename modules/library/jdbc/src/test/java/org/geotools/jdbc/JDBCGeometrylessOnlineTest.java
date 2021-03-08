@@ -43,6 +43,7 @@ public abstract class JDBCGeometrylessOnlineTest extends JDBCTestSupport {
     protected static final String ZIPCODE = "zipcode";
     protected static final String CODE = "code";
 
+    @Override
     protected abstract JDBCGeometrylessTestSetup createTestSetup();
 
     @Override

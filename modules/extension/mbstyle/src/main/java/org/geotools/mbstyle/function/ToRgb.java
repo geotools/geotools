@@ -38,6 +38,7 @@ public class ToRgb extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Integer arg0;
         Integer arg1;

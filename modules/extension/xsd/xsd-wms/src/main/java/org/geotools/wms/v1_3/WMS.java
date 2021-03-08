@@ -39,16 +39,19 @@ public final class WMS extends XSD {
     /** private constructor */
     private WMS() {}
 
+    @Override
     protected void addDependencies(Set dependencies) {
         // TODO: add dependencies here
     }
 
     /** Returns 'http://www.opengis.net/wms'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'capabilities_1_3_0.xsd.'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("capabilities_1_3_0.xsd").toString();
     }

@@ -62,6 +62,7 @@ public abstract class AbstractContinuousCoverageTypeImpl extends AbstractCoverag
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoverageFunctionType getCoverageFunction() {
         return coverageFunction;
     }
@@ -86,6 +87,7 @@ public abstract class AbstractContinuousCoverageTypeImpl extends AbstractCoverag
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCoverageFunction(CoverageFunctionType newCoverageFunction) {
         if (newCoverageFunction != coverageFunction) {
             NotificationChain msgs = null;

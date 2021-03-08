@@ -54,6 +54,7 @@ import org.opengis.feature.simple.SimpleFeature;
  */
 public class GMLAbstractFeatureCollectionTypeBinding extends AbstractComplexBinding {
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.AbstractFeatureCollectionType;
     }
@@ -65,6 +66,7 @@ public class GMLAbstractFeatureCollectionTypeBinding extends AbstractComplexBind
      *
      * @generated modifiable
      */
+    @Override
     public int getExecutionMode() {
         return AFTER;
     }
@@ -76,6 +78,7 @@ public class GMLAbstractFeatureCollectionTypeBinding extends AbstractComplexBind
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return FeatureCollection.class;
     }
@@ -87,6 +90,7 @@ public class GMLAbstractFeatureCollectionTypeBinding extends AbstractComplexBind
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // call "super"
         SimpleFeatureCollection fc = (SimpleFeatureCollection) value;

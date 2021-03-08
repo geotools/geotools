@@ -136,6 +136,7 @@ public class SchemaComponentTypeImpl extends EObjectImpl implements SchemaCompon
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getMixed() {
         if (mixed == null) {
             mixed = new BasicFeatureMap(this, Csw20Package.SCHEMA_COMPONENT_TYPE__MIXED);
@@ -148,6 +149,7 @@ public class SchemaComponentTypeImpl extends EObjectImpl implements SchemaCompon
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getAny() {
         return (FeatureMap)getMixed().<FeatureMap.Entry>list(Csw20Package.Literals.SCHEMA_COMPONENT_TYPE__ANY);
     }
@@ -157,6 +159,7 @@ public class SchemaComponentTypeImpl extends EObjectImpl implements SchemaCompon
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getParentSchema() {
         return parentSchema;
     }
@@ -166,6 +169,7 @@ public class SchemaComponentTypeImpl extends EObjectImpl implements SchemaCompon
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setParentSchema(String newParentSchema) {
         String oldParentSchema = parentSchema;
         parentSchema = newParentSchema;
@@ -178,6 +182,7 @@ public class SchemaComponentTypeImpl extends EObjectImpl implements SchemaCompon
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getSchemaLanguage() {
         return schemaLanguage;
     }
@@ -187,6 +192,7 @@ public class SchemaComponentTypeImpl extends EObjectImpl implements SchemaCompon
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSchemaLanguage(String newSchemaLanguage) {
         String oldSchemaLanguage = schemaLanguage;
         schemaLanguage = newSchemaLanguage;
@@ -199,6 +205,7 @@ public class SchemaComponentTypeImpl extends EObjectImpl implements SchemaCompon
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getTargetNamespace() {
         return targetNamespace;
     }
@@ -208,6 +215,7 @@ public class SchemaComponentTypeImpl extends EObjectImpl implements SchemaCompon
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setTargetNamespace(String newTargetNamespace) {
         String oldTargetNamespace = targetNamespace;
         targetNamespace = newTargetNamespace;

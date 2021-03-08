@@ -197,6 +197,7 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
      *
      * @return The western-most longitude between -180 and +180°.
      */
+    @Override
     public double getWestBoundLongitude() {
         return westBoundLongitude;
     }
@@ -218,6 +219,7 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
      *
      * @return The eastern-most longitude between -180 and +180°.
      */
+    @Override
     public double getEastBoundLongitude() {
         return eastBoundLongitude;
     }
@@ -239,6 +241,7 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
      *
      * @return The southern-most latitude between -90 and +90°.
      */
+    @Override
     public double getSouthBoundLatitude() {
         return southBoundLatitude;
     }
@@ -260,6 +263,7 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
      *
      * @return The northern-most latitude between -90 and +90°.
      */
+    @Override
     public double getNorthBoundLatitude() {
         return northBoundLatitude;
     }

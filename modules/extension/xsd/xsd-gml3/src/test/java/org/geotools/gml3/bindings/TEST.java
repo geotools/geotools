@@ -40,14 +40,17 @@ public final class TEST extends XSD {
         return instance;
     }
 
+    @Override
     protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(GML.getInstance());
     }
 
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("test.xsd").toString();
     }

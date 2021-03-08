@@ -37,11 +37,13 @@ public final class ExcludeFilter implements Filter, Serializable {
     ExcludeFilter() {}
 
     /** Accepts a visitor. */
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
 
     /** Returns {@code false}, content is excluded. */
+    @Override
     public boolean evaluate(Object object) {
         return false;
     }

@@ -92,11 +92,13 @@ public abstract class AbstractLazyAttributeTypeImpl implements AttributeType {
     public abstract AttributeType buildSuper();
 
     /** @see org.opengis.feature.type.AttributeType#isIdentified() */
+    @Override
     public boolean isIdentified() {
         return identified;
     }
 
     /** @see org.opengis.feature.type.AttributeType#getSuper() */
+    @Override
     public AttributeType getSuper() {
         if (superType == null) {
             superType = buildSuper();
@@ -105,31 +107,37 @@ public abstract class AbstractLazyAttributeTypeImpl implements AttributeType {
     }
 
     /** @see org.opengis.feature.type.PropertyType#getName() */
+    @Override
     public Name getName() {
         return name;
     }
 
     /** @see org.opengis.feature.type.PropertyType#getBinding() */
+    @Override
     public Class<?> getBinding() {
         return binding;
     }
 
     /** @see org.opengis.feature.type.PropertyType#isAbstract() */
+    @Override
     public boolean isAbstract() {
         return isAbstract;
     }
 
     /** @see org.opengis.feature.type.PropertyType#getRestrictions() */
+    @Override
     public List<Filter> getRestrictions() {
         return restrictions;
     }
 
     /** @see org.opengis.feature.type.PropertyType#getDescription() */
+    @Override
     public InternationalString getDescription() {
         return description;
     }
 
     /** @see org.opengis.feature.type.PropertyType#getUserData() */
+    @Override
     public Map<Object, Object> getUserData() {
         return userData;
     }
@@ -141,6 +149,7 @@ public abstract class AbstractLazyAttributeTypeImpl implements AttributeType {
      *
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals(Object other) {
         if (!(other instanceof AttributeType)) {
             return false;
@@ -150,6 +159,7 @@ public abstract class AbstractLazyAttributeTypeImpl implements AttributeType {
     }
 
     /** @see java.lang.Object#hashCode() */
+    @Override
     public int hashCode() {
         return name.hashCode();
     }

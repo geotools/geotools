@@ -26,6 +26,7 @@ import org.junit.Test;
 public class GMLNullTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance nul;
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();

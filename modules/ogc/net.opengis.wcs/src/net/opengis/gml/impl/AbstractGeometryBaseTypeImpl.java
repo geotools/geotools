@@ -36,6 +36,7 @@ public abstract class AbstractGeometryBaseTypeImpl extends AbstractGMLTypeImpl i
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return GmlPackage.Literals.ABSTRACT_GEOMETRY_BASE_TYPE;
 	}

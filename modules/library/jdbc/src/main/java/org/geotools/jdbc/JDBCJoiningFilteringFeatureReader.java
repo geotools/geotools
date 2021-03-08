@@ -43,14 +43,17 @@ public class JDBCJoiningFilteringFeatureReader
         this.join = join;
     }
 
+    @Override
     public FeatureReader<SimpleFeatureType, SimpleFeature> getDelegate() {
         return delegate;
     }
 
+    @Override
     public SimpleFeatureType getFeatureType() {
         return delegate.getFeatureType();
     }
 
+    @Override
     public boolean hasNext() throws IOException {
         if (next != null) {
             return true;
@@ -80,6 +83,7 @@ public class JDBCJoiningFilteringFeatureReader
         return next != null;
     }
 
+    @Override
     public SimpleFeature next()
             throws IOException, IllegalArgumentException, NoSuchElementException {
         if (!hasNext()) {
@@ -91,6 +95,7 @@ public class JDBCJoiningFilteringFeatureReader
         return f;
     }
 
+    @Override
     public void close() throws IOException {
         delegate.close();
     }

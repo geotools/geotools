@@ -704,66 +704,79 @@ public class SchemaFactory {
         }
 
         /** @see schema.Schema#getAttributeGroups() */
+        @Override
         public AttributeGroup[] getAttributeGroups() {
             return attributeGroups;
         }
 
         /** @see schema.Schema#getAttributeDescriptors() */
+        @Override
         public Attribute[] getAttributes() {
             return attributes;
         }
 
         /** @see schema.Schema#getBlockDefault() */
+        @Override
         public int getBlockDefault() {
             return block;
         }
 
         /** @see schema.Schema#getComplexTypes() */
+        @Override
         public ComplexType[] getComplexTypes() {
             return complexTypes;
         }
 
         /** @see schema.Schema#getElements() */
+        @Override
         public Element[] getElements() {
             return elements;
         }
 
         /** @see schema.Schema#getFinalDefault() */
+        @Override
         public int getFinalDefault() {
             return finaL;
         }
 
         /** @see schema.Schema#getGroups() */
+        @Override
         public Group[] getGroups() {
             return groups;
         }
 
         /** @see schema.Schema#getId() */
+        @Override
         public String getId() {
             return id;
         }
 
         /** @see schema.Schema#getImports() */
+        @Override
         public Schema[] getImports() {
             return imports;
         }
 
         /** @see schema.Schema#getSimpleTypes() */
+        @Override
         public SimpleType[] getSimpleTypes() {
             return simpleTypes;
         }
 
         /** @see schema.Schema#getTargetNamespace() */
+        @Override
         public URI getTargetNamespace() {
             return targetNamespace;
         }
 
         /** @see schema.Schema#getVersion() */
+        @Override
         public String getVersion() {
             return version;
         }
 
         /** @see schema.Schema#includesURI(java.net.URI) */
+        @Override
         public boolean includesURI(URI uri1) {
             if (uri1 == null || this.uri == null) {
                 return false;
@@ -773,25 +786,30 @@ public class SchemaFactory {
         }
 
         /** @see schema.Schema#isAttributeFormDefault() */
+        @Override
         public boolean isAttributeFormDefault() {
             return aForm;
         }
 
         /** @see schema.Schema#isElementFormDefault() */
+        @Override
         public boolean isElementFormDefault() {
             return eForm;
         }
 
         /** @see schema.Schema#getURIs() */
+        @Override
         public URI getURI() {
             return uri;
         }
 
+        @Override
         public String getPrefix() {
             return prefix;
         }
 
         /** Returns the implementation hints. The default implementation returns en empty map. */
+        @Override
         public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
             return Collections.emptyMap();
         }

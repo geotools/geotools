@@ -94,6 +94,7 @@ public class GetCoverageTypeImpl extends RequestBaseTypeImpl implements GetCover
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return Wcs11Package.Literals.GET_COVERAGE_TYPE;
 	}
@@ -103,6 +104,7 @@ public class GetCoverageTypeImpl extends RequestBaseTypeImpl implements GetCover
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public CodeType getIdentifier() {
 		return identifier;
 	}
@@ -127,6 +129,7 @@ public class GetCoverageTypeImpl extends RequestBaseTypeImpl implements GetCover
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setIdentifier(CodeType newIdentifier) {
 		if (newIdentifier != identifier) {
 			NotificationChain msgs = null;
@@ -146,6 +149,7 @@ public class GetCoverageTypeImpl extends RequestBaseTypeImpl implements GetCover
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public DomainSubsetType getDomainSubset() {
 		return domainSubset;
 	}
@@ -170,6 +174,7 @@ public class GetCoverageTypeImpl extends RequestBaseTypeImpl implements GetCover
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setDomainSubset(DomainSubsetType newDomainSubset) {
 		if (newDomainSubset != domainSubset) {
 			NotificationChain msgs = null;
@@ -189,6 +194,7 @@ public class GetCoverageTypeImpl extends RequestBaseTypeImpl implements GetCover
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public RangeSubsetType getRangeSubset() {
 		return rangeSubset;
 	}
@@ -213,6 +219,7 @@ public class GetCoverageTypeImpl extends RequestBaseTypeImpl implements GetCover
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setRangeSubset(RangeSubsetType newRangeSubset) {
 		if (newRangeSubset != rangeSubset) {
 			NotificationChain msgs = null;
@@ -232,6 +239,7 @@ public class GetCoverageTypeImpl extends RequestBaseTypeImpl implements GetCover
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public OutputType getOutput() {
 		return output;
 	}
@@ -256,6 +264,7 @@ public class GetCoverageTypeImpl extends RequestBaseTypeImpl implements GetCover
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setOutput(OutputType newOutput) {
 		if (newOutput != output) {
 			NotificationChain msgs = null;
@@ -275,6 +284,7 @@ public class GetCoverageTypeImpl extends RequestBaseTypeImpl implements GetCover
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Wcs11Package.GET_COVERAGE_TYPE__IDENTIFIER:
@@ -294,6 +304,7 @@ public class GetCoverageTypeImpl extends RequestBaseTypeImpl implements GetCover
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Wcs11Package.GET_COVERAGE_TYPE__IDENTIFIER:
@@ -313,6 +324,7 @@ public class GetCoverageTypeImpl extends RequestBaseTypeImpl implements GetCover
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case Wcs11Package.GET_COVERAGE_TYPE__IDENTIFIER:
@@ -336,6 +348,7 @@ public class GetCoverageTypeImpl extends RequestBaseTypeImpl implements GetCover
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs11Package.GET_COVERAGE_TYPE__IDENTIFIER:
@@ -359,6 +372,7 @@ public class GetCoverageTypeImpl extends RequestBaseTypeImpl implements GetCover
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case Wcs11Package.GET_COVERAGE_TYPE__IDENTIFIER:

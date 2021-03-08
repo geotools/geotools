@@ -19,11 +19,9 @@ package org.geotools.xml.filter;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import junit.framework.Protectable; // NOPMD
 import junit.framework.Test; // NOPMD
 import junit.framework.TestResult; // NOPMD
 import junit.framework.TestSuite; // NOPMD
@@ -125,13 +123,7 @@ public class DOMParserTestSuite extends TestSuite {
 
             File dir = TestData.file(DOMParserTestSuite.class, "test9.xml").getParentFile();
 
-            File tests[] =
-                    dir.listFiles(
-                            new FileFilter() {
-                                public boolean accept(File pathname) {
-                                    return pathname.toString().endsWith("test20.xml");
-                                }
-                            });
+            File tests[] = dir.listFiles(pathname -> pathname.toString().endsWith("test20.xml"));
             for (File test : tests) {
                 suite.addTest(suite.new DomTestXml(test.getName()));
             }
@@ -152,24 +144,21 @@ public class DOMParserTestSuite extends TestSuite {
             this.document = document;
         }
 
+        @Override
         public String toString() {
             return document;
         }
 
+        @Override
         public int countTestCases() {
             return 1;
         }
 
+        @Override
         public void run(TestResult result) {
             // System.out.println(document);
             result.startTest(this);
-            Protectable p =
-                    new Protectable() {
-                        public void protect() throws Throwable {
-                            DomTestXml.this.runBare();
-                        }
-                    };
-            result.runProtected(this, p);
+            result.runProtected(this, () -> runBare());
             result.endTest(this);
         }
 

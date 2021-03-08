@@ -184,6 +184,7 @@ public class CubicSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getGroup() {
         if (group == null) {
             group = new BasicFeatureMap(this, Gml311Package.CUBIC_SPLINE_TYPE__GROUP);
@@ -196,6 +197,7 @@ public class CubicSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<DirectPositionType> getPos() {
         return getGroup().list(Gml311Package.eINSTANCE.getCubicSplineType_Pos());
     }
@@ -205,6 +207,7 @@ public class CubicSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<PointPropertyType> getPointProperty() {
         return getGroup().list(Gml311Package.eINSTANCE.getCubicSplineType_PointProperty());
     }
@@ -214,6 +217,7 @@ public class CubicSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<PointPropertyType> getPointRep() {
         return getGroup().list(Gml311Package.eINSTANCE.getCubicSplineType_PointRep());
     }
@@ -223,6 +227,7 @@ public class CubicSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public DirectPositionListType getPosList() {
         return posList;
     }
@@ -247,6 +252,7 @@ public class CubicSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setPosList(DirectPositionListType newPosList) {
         if (newPosList != posList) {
             NotificationChain msgs = null;
@@ -266,6 +272,7 @@ public class CubicSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CoordinatesType getCoordinates() {
         return coordinates;
     }
@@ -290,6 +297,7 @@ public class CubicSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setCoordinates(CoordinatesType newCoordinates) {
         if (newCoordinates != coordinates) {
             NotificationChain msgs = null;
@@ -309,6 +317,7 @@ public class CubicSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public VectorType getVectorAtStart() {
         return vectorAtStart;
     }
@@ -333,6 +342,7 @@ public class CubicSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setVectorAtStart(VectorType newVectorAtStart) {
         if (newVectorAtStart != vectorAtStart) {
             NotificationChain msgs = null;
@@ -352,6 +362,7 @@ public class CubicSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public VectorType getVectorAtEnd() {
         return vectorAtEnd;
     }
@@ -376,6 +387,7 @@ public class CubicSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setVectorAtEnd(VectorType newVectorAtEnd) {
         if (newVectorAtEnd != vectorAtEnd) {
             NotificationChain msgs = null;
@@ -395,6 +407,7 @@ public class CubicSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BigInteger getDegree() {
         return degree;
     }
@@ -404,6 +417,7 @@ public class CubicSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDegree(BigInteger newDegree) {
         BigInteger oldDegree = degree;
         degree = newDegree;
@@ -418,6 +432,7 @@ public class CubicSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetDegree() {
         BigInteger oldDegree = degree;
         boolean oldDegreeESet = degreeESet;
@@ -432,6 +447,7 @@ public class CubicSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetDegree() {
         return degreeESet;
     }
@@ -441,6 +457,7 @@ public class CubicSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public CurveInterpolationType getInterpolation() {
         return interpolation;
     }
@@ -450,6 +467,7 @@ public class CubicSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setInterpolation(CurveInterpolationType newInterpolation) {
         CurveInterpolationType oldInterpolation = interpolation;
         interpolation = newInterpolation == null ? INTERPOLATION_EDEFAULT : newInterpolation;
@@ -464,6 +482,7 @@ public class CubicSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetInterpolation() {
         CurveInterpolationType oldInterpolation = interpolation;
         boolean oldInterpolationESet = interpolationESet;
@@ -478,6 +497,7 @@ public class CubicSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetInterpolation() {
         return interpolationESet;
     }

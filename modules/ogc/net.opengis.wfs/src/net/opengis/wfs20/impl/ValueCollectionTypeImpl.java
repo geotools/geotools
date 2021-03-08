@@ -210,6 +210,7 @@ public class ValueCollectionTypeImpl extends EObjectImpl implements ValueCollect
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList<Collection> getMember() {
     if (member == null) {
       member = new EDataTypeUniqueEList<>(Collection.class, this, Wfs20Package.VALUE_COLLECTION_TYPE__MEMBER);
@@ -222,6 +223,7 @@ public class ValueCollectionTypeImpl extends EObjectImpl implements ValueCollect
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AdditionalValuesType getAdditionalValues() {
     return additionalValues;
   }
@@ -246,6 +248,7 @@ public class ValueCollectionTypeImpl extends EObjectImpl implements ValueCollect
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setAdditionalValues(AdditionalValuesType newAdditionalValues) {
     if (newAdditionalValues != additionalValues) {
       NotificationChain msgs = null;
@@ -265,6 +268,7 @@ public class ValueCollectionTypeImpl extends EObjectImpl implements ValueCollect
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public TruncatedResponseType getTruncatedResponse() {
     return truncatedResponse;
   }
@@ -289,6 +293,7 @@ public class ValueCollectionTypeImpl extends EObjectImpl implements ValueCollect
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setTruncatedResponse(TruncatedResponseType newTruncatedResponse) {
     if (newTruncatedResponse != truncatedResponse) {
       NotificationChain msgs = null;
@@ -308,6 +313,7 @@ public class ValueCollectionTypeImpl extends EObjectImpl implements ValueCollect
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getNext() {
     return next;
   }
@@ -317,6 +323,7 @@ public class ValueCollectionTypeImpl extends EObjectImpl implements ValueCollect
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setNext(String newNext) {
     String oldNext = next;
     next = newNext;
@@ -329,6 +336,7 @@ public class ValueCollectionTypeImpl extends EObjectImpl implements ValueCollect
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object getNumberMatched() {
     return numberMatched;
   }
@@ -338,6 +346,7 @@ public class ValueCollectionTypeImpl extends EObjectImpl implements ValueCollect
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setNumberMatched(Object newNumberMatched) {
     Object oldNumberMatched = numberMatched;
     numberMatched = newNumberMatched;
@@ -350,6 +359,7 @@ public class ValueCollectionTypeImpl extends EObjectImpl implements ValueCollect
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public BigInteger getNumberReturned() {
     return numberReturned;
   }
@@ -359,6 +369,7 @@ public class ValueCollectionTypeImpl extends EObjectImpl implements ValueCollect
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setNumberReturned(BigInteger newNumberReturned) {
     BigInteger oldNumberReturned = numberReturned;
     numberReturned = newNumberReturned;
@@ -371,6 +382,7 @@ public class ValueCollectionTypeImpl extends EObjectImpl implements ValueCollect
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getPrevious() {
     return previous;
   }
@@ -380,6 +392,7 @@ public class ValueCollectionTypeImpl extends EObjectImpl implements ValueCollect
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setPrevious(String newPrevious) {
     String oldPrevious = previous;
     previous = newPrevious;
@@ -392,6 +405,7 @@ public class ValueCollectionTypeImpl extends EObjectImpl implements ValueCollect
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Calendar getTimeStamp() {
     return timeStamp;
   }
@@ -401,6 +415,7 @@ public class ValueCollectionTypeImpl extends EObjectImpl implements ValueCollect
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setTimeStamp(Calendar newTimeStamp) {
     Calendar oldTimeStamp = timeStamp;
     timeStamp = newTimeStamp;

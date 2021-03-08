@@ -77,39 +77,47 @@ public abstract class AbstractFeatureFactoryImpl implements FeatureFactory {
         this.geometryFactory = geometryFactory;
     }
 
+    @Override
     public Association createAssociation(Attribute related, AssociationDescriptor descriptor) {
         return new AssociationImpl(related, descriptor);
     }
 
+    @Override
     public Attribute createAttribute(Object value, AttributeDescriptor descriptor, String id) {
         return new AttributeImpl(value, descriptor, id == null ? null : ff.gmlObjectId(id));
     }
 
+    @Override
     public GeometryAttribute createGeometryAttribute(
             Object value, GeometryDescriptor descriptor, String id, CoordinateReferenceSystem crs) {
 
         return new GeometryAttributeImpl(value, descriptor, id == null ? null : ff.gmlObjectId(id));
     }
 
+    @Override
     public ComplexAttribute createComplexAttribute(
             Collection<Property> value, AttributeDescriptor descriptor, String id) {
         return new ComplexAttributeImpl(value, descriptor, id == null ? null : ff.gmlObjectId(id));
     }
 
+    @Override
     public ComplexAttribute createComplexAttribute(
             Collection<Property> value, ComplexType type, String id) {
         return new ComplexAttributeImpl(value, type, id == null ? null : ff.gmlObjectId(id));
     }
 
+    @Override
     public Feature createFeature(
             Collection<Property> value, AttributeDescriptor descriptor, String id) {
         return new FeatureImpl(value, descriptor, ff.featureId(id));
     }
 
+    @Override
     public Feature createFeature(Collection<Property> value, FeatureType type, String id) {
         return new FeatureImpl(value, type, ff.featureId(id));
     }
 
+    @Override
     public SimpleFeature createSimpleFeature(Object[] array, SimpleFeatureType type, String id) {
         if (type.isAbstract()) {
             throw new IllegalArgumentException(
@@ -118,6 +126,7 @@ public abstract class AbstractFeatureFactoryImpl implements FeatureFactory {
         return new SimpleFeatureImpl(array, type, ff.featureId(id), validating);
     }
 
+    @Override
     public SimpleFeature createSimpleFeautre(
             Object[] array, AttributeDescriptor descriptor, String id) {
         return createSimpleFeature(array, (SimpleFeatureType) descriptor, id);

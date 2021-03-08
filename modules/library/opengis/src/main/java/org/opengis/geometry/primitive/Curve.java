@@ -73,6 +73,7 @@ public interface Curve extends OrientableCurve, GenericCurve {
      * @see OrientableCurve#getPrimitive
      * @issue http://jira.codehaus.org/browse/GEO-63
      */
+    @Override
     @Association("Oriented")
     @UML(identifier = "proxy", obligation = MANDATORY, specification = ISO_19107)
     OrientableCurve[] getProxy();

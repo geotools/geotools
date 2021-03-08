@@ -90,59 +90,70 @@ public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
         this.pf = new MockPositionFactory(crs);
     }
 
+    @Override
     public Arc createArc(Position startPoint, Position midPoint, Position endPoint)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return null;
     }
 
+    @Override
     public Arc createArc(Position startPoint, Position endPoint, double bulge, double[] normal)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return null;
     }
 
+    @Override
     public ArcByBulge createArcByBulge(
             Position startPoint, Position endPoint, double bulge, double[] normal)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return null;
     }
 
+    @Override
     public ArcString createArcString(List<Position> points)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return null;
     }
 
+    @Override
     public ArcStringByBulge createArcStringByBulge(
             List<Position> points, double[] bulges, List<double[]> normals)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return null;
     }
 
+    @Override
     public BSplineCurve createBSplineCurve(
             int degree, PointArray points, List<Knot> knots, KnotType knotSpec)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return null;
     }
 
+    @Override
     public BSplineSurface createBSplineSurface(
             List<PointArray> points, int[] degree, List<Knot>[] knots, KnotType knotSpec)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return null;
     }
 
+    @Override
     public Envelope createEnvelope(
             final DirectPosition lowerCorner, final DirectPosition upperCorner)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return new Envelope() {
+            @Override
             public double getMedian(int dimension) {
                 double lower = lowerCorner.getOrdinate(dimension);
                 double upper = upperCorner.getOrdinate(dimension);
                 return (upper + lower) / 2.0;
             }
 
+            @Override
             public CoordinateReferenceSystem getCoordinateReferenceSystem() {
                 return crs;
             }
 
+            @Override
             public int getDimension() {
                 return crs.getCoordinateSystem().getDimension();
             }
@@ -151,165 +162,202 @@ public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
                 return getSpan(dimension);
             }
 
+            @Override
             public double getSpan(int dimension) {
                 double lower = lowerCorner.getOrdinate(dimension);
                 double upper = upperCorner.getOrdinate(dimension);
                 return Math.abs(upper - lower);
             }
 
+            @Override
             public DirectPosition getLowerCorner() {
                 return lowerCorner;
             }
 
+            @Override
             public double getMaximum(int dimension) {
                 return upperCorner.getOrdinate(dimension);
             }
 
+            @Override
             public double getMinimum(int dimension) {
                 return lowerCorner.getOrdinate(dimension);
             }
 
+            @Override
             public DirectPosition getUpperCorner() {
                 return upperCorner;
             }
         };
     }
 
+    @Override
     public Geodesic createGeodesic(Position startPoint, Position endPoint)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public GeodesicString createGeodesicString(List<Position> points)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return null;
     }
 
+    @Override
     public LineSegment createLineSegment(Position startPoint, Position endPoint)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return null;
     }
 
     /** Takes a List<Position> ... */
+    @Override
     public LineString createLineString(List<Position> points)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return new LineString() {
             PointArray points;
 
+            @Override
             public List<LineSegment> asLineSegments() {
                 return null;
             }
 
+            @Override
             public PointArray getControlPoints() {
                 return null;
             }
 
+            @Override
             public CurveBoundary getBoundary() {
                 return null;
             }
 
+            @Override
             public Curve getCurve() {
                 return null;
             }
 
+            @Override
             public CurveInterpolation getInterpolation() {
                 return null;
             }
 
+            @Override
             public int getNumDerivativesAtEnd() {
                 return 0;
             }
 
+            @Override
             public int getNumDerivativesAtStart() {
                 return 0;
             }
 
+            @Override
             public int getNumDerivativesInterior() {
                 return 0;
             }
 
+            @Override
             public PointArray getSamplePoints() {
                 return null;
             }
 
+            @Override
             public CurveSegment reverse() {
                 return null;
             }
 
+            @Override
             public LineString asLineString(double maxSpacing, double maxOffset) {
                 return this;
             }
 
+            @Override
             public DirectPosition forConstructiveParam(double cp) {
                 return null;
             }
 
+            @Override
             public DirectPosition forParam(double s) {
                 return null;
             }
 
+            @Override
             public double getEndConstructiveParam() {
                 return 0;
             }
 
+            @Override
             public double getEndParam() {
                 return 0;
             }
 
+            @Override
             public DirectPosition getEndPoint() {
                 return points.getDirectPosition(points.size() - 1, null);
             }
 
+            @Override
             public ParamForPoint getParamForPoint(DirectPosition p) {
                 return null;
             }
 
+            @Override
             public double getStartConstructiveParam() {
                 return 0;
             }
 
+            @Override
             public double getStartParam() {
                 return 0;
             }
 
+            @Override
             public DirectPosition getStartPoint() {
                 return points.getDirectPosition(0, null);
             }
 
+            @Override
             public double[] getTangent(double s) {
                 return null;
             }
 
+            @Override
             public double length(Position point1, Position point2) {
                 return 0;
             }
 
+            @Override
             public double length(double cparam1, double cparam2) {
                 return 0;
             }
         };
     }
 
+    @Override
     public MultiPrimitive createMultiPrimitive() {
         return null;
     }
 
+    @Override
     public Polygon createPolygon(SurfaceBoundary boundary)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return null;
     }
 
+    @Override
     public Polygon createPolygon(SurfaceBoundary boundary, Surface spanSurface)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return null;
     }
 
+    @Override
     public PolyhedralSurface createPolyhedralSurface(List<Polygon> tiles)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return null;
     }
 
+    @Override
     public Tin createTin(
             Set<Position> post,
             Set<LineString> stopLines,
@@ -319,10 +367,12 @@ public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
         return null;
     }
 
+    @Override
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return null;
     }
 
+    @Override
     public Curve createCurve(final List<CurveSegment> segments)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return new MockCurve(segments);
@@ -335,75 +385,93 @@ public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
             this.segments = segments;
         }
 
+        @Override
         public List<? extends CurveSegment> getSegments() {
             return segments;
         }
 
+        @Override
         public MockCurve clone() {
             return new MockCurve(getSegments());
         }
 
+        @Override
         public CompositeCurve getComposite() {
             return null;
         }
 
+        @Override
         public int getOrientation() {
             return 0;
         }
 
+        @Override
         public MockCurve getPrimitive() {
             return this;
         }
 
+        @Override
         public Set<Complex> getComplexes() {
             return null;
         }
 
+        @Override
         public Set<Primitive> getContainedPrimitives() {
             // TODO Auto-generated method stub
             return null;
         }
 
+        @Override
         public Set<Primitive> getContainingPrimitives() {
             return null;
         }
 
+        @Override
         public OrientableCurve[] getProxy() {
             return null;
         }
 
+        @Override
         public CurveBoundary getBoundary() {
             return null;
         }
 
+        @Override
         public Geometry getBuffer(double distance) {
             return null;
         }
 
+        @Override
         public DirectPosition getCentroid() {
             return null;
         }
 
+        @Override
         public Complex getClosure() {
             return null;
         }
 
+        @Override
         public Geometry getConvexHull() {
             return null;
         }
 
+        @Override
         public int getCoordinateDimension() {
             return crs.getCoordinateSystem().getDimension();
         }
 
+        @Override
         public CoordinateReferenceSystem getCoordinateReferenceSystem() {
             return crs;
         }
 
+        @Override
         public int getDimension(DirectPosition point) {
             return 0;
         }
 
+        @Override
         public double distance(Geometry geometry) {
             return 0;
         }
@@ -412,140 +480,174 @@ public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
             return distance(geometry);
         }
 
+        @Override
         public Envelope getEnvelope() {
             return null;
         }
 
+        @Override
         public Set<? extends Complex> getMaximalComplex() {
             return null;
         }
 
+        @Override
         public Geometry getMbRegion() {
             return null;
         }
 
+        @Override
         public Precision getPrecision() {
             return precision;
         }
 
+        @Override
         public DirectPosition getRepresentativePoint() {
             return null;
         }
 
+        @Override
         public boolean isCycle() {
             return false;
         }
 
+        @Override
         public boolean isMutable() {
             return false;
         }
 
+        @Override
         public boolean isSimple() {
             return false;
         }
 
+        @Override
         public Geometry toImmutable() {
             return this;
         }
 
+        @Override
         public Geometry transform(CoordinateReferenceSystem newCRS) throws TransformException {
             return null;
         }
 
+        @Override
         public Geometry transform(CoordinateReferenceSystem newCRS, MathTransform transform)
                 throws TransformException {
             return null;
         }
 
+        @Override
         public boolean contains(TransfiniteSet pointSet) {
             return false;
         }
 
+        @Override
         public boolean contains(DirectPosition point) {
             return false;
         }
 
+        @Override
         public TransfiniteSet difference(TransfiniteSet pointSet) {
             return null;
         }
 
+        @Override
         public boolean equals(TransfiniteSet pointSet) {
             return false;
         }
 
+        @Override
         public TransfiniteSet intersection(TransfiniteSet pointSet) {
             return null;
         }
 
+        @Override
         public boolean intersects(TransfiniteSet pointSet) {
             return false;
         }
 
+        @Override
         public TransfiniteSet symmetricDifference(TransfiniteSet pointSet) {
             return null;
         }
 
+        @Override
         public TransfiniteSet union(TransfiniteSet pointSet) {
             return null;
         }
 
+        @Override
         public LineString asLineString(double maxSpacing, double maxOffset) {
             return null;
         }
 
+        @Override
         public DirectPosition forConstructiveParam(double cp) {
             return null;
         }
 
+        @Override
         public DirectPosition forParam(double s) {
             return null;
         }
 
+        @Override
         public double getEndConstructiveParam() {
             return 0;
         }
 
+        @Override
         public double getEndParam() {
             return 0;
         }
 
+        @Override
         public DirectPosition getEndPoint() {
             return null;
         }
 
+        @Override
         public ParamForPoint getParamForPoint(DirectPosition p) {
             return null;
         }
 
+        @Override
         public double getStartConstructiveParam() {
             return 0;
         }
 
+        @Override
         public double getStartParam() {
             return 0;
         }
 
+        @Override
         public DirectPosition getStartPoint() {
             return null;
         }
 
+        @Override
         public double[] getTangent(double s) {
             return null;
         }
 
+        @Override
         public double length(Position point1, Position point2) {
             return 0;
         }
 
+        @Override
         public double length(double cparam1, double cparam2) {
             return 0;
         }
     }
 
+    @Override
     public Point createPoint(double[] coordinates) throws MismatchedDimensionException {
         return createPoint(createPoint(coordinates));
     }
 
+    @Override
     public Point createPoint(Position position)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return new MockPoint(position.getDirectPosition());
@@ -558,75 +660,93 @@ public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
             this.position = position;
         }
 
+        @Override
         public MockPoint clone() {
             return new MockPoint(pf.createDirectPosition(position.getCoordinate()));
         }
 
+        @Override
         public Bearing getBearing(Position toPoint) {
             return null;
         }
 
+        @Override
         public DirectPosition getDirectPosition() {
             return position;
         }
 
+        @Override
         public void setDirectPosition(DirectPosition position)
                 throws UnmodifiableGeometryException {
             this.position = position;
         }
 
+        @Override
         public Set<Complex> getComplexes() {
             return null;
         }
 
+        @Override
         public Composite getComposite() {
             return null;
         }
 
+        @Override
         public Set<Primitive> getContainedPrimitives() {
             return null;
         }
 
+        @Override
         public Set<Primitive> getContainingPrimitives() {
             return null;
         }
 
+        @Override
         public OrientablePrimitive[] getProxy() {
             return null;
         }
 
+        @Override
         public PrimitiveBoundary getBoundary() {
             return null;
         }
 
+        @Override
         public Geometry getBuffer(double distance) {
             return null;
         }
 
+        @Override
         public DirectPosition getCentroid() {
             return position;
         }
 
+        @Override
         public Complex getClosure() {
             return null;
         }
 
+        @Override
         public Geometry getConvexHull() {
             return null;
         }
 
+        @Override
         public int getCoordinateDimension() {
             return getCoordinateReferenceSystem().getCoordinateSystem().getDimension();
         }
 
+        @Override
         public CoordinateReferenceSystem getCoordinateReferenceSystem() {
             return crs;
         }
 
+        @Override
         public int getDimension(DirectPosition point) {
             return 0;
         }
 
+        @Override
         public double distance(Geometry geometry) {
             return 0;
         }
@@ -635,114 +755,139 @@ public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
             return distance(geometry);
         }
 
+        @Override
         public Envelope getEnvelope() {
             return null;
         }
 
+        @Override
         public Set<Complex> getMaximalComplex() {
             return null;
         }
 
+        @Override
         public Geometry getMbRegion() {
             return null;
         }
 
+        @Override
         public Precision getPrecision() {
             return precision;
         }
 
+        @Override
         public DirectPosition getRepresentativePoint() {
             return position;
         }
 
+        @Override
         public boolean isCycle() {
             return false;
         }
 
+        @Override
         public boolean isMutable() {
             return true;
         }
 
+        @Override
         public boolean isSimple() {
             return true;
         }
 
+        @Override
         public Geometry toImmutable() {
             return null;
         }
 
+        @Override
         public Geometry transform(CoordinateReferenceSystem newCRS) throws TransformException {
             return null;
         }
 
+        @Override
         public Geometry transform(CoordinateReferenceSystem newCRS, MathTransform transform)
                 throws TransformException {
             return null;
         }
 
+        @Override
         public boolean contains(TransfiniteSet pointSet) {
             return pointSet.contains(position);
         }
 
+        @Override
         public boolean contains(DirectPosition point) {
             return point.equals(position);
         }
 
+        @Override
         public TransfiniteSet difference(TransfiniteSet pointSet) {
             return null;
         }
 
+        @Override
         public boolean equals(TransfiniteSet pointSet) {
             return false;
         }
 
+        @Override
         public TransfiniteSet intersection(TransfiniteSet pointSet) {
             return null;
         }
 
+        @Override
         public boolean intersects(TransfiniteSet pointSet) {
             return false;
         }
 
+        @Override
         public TransfiniteSet symmetricDifference(TransfiniteSet pointSet) {
             return null;
         }
 
+        @Override
         public TransfiniteSet union(TransfiniteSet pointSet) {
             return null;
         }
     }
 
+    @Override
     public Primitive createPrimitive(Envelope envelope)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Ring createRing(List<OrientableCurve> curves)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Solid createSolid(SolidBoundary boundary)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Surface createSurface(List<SurfacePatch> surfaces)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Surface createSurface(SurfaceBoundary boundary)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public SurfaceBoundary createSurfaceBoundary(Ring exterior, List<Ring> interiors)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         // TODO Auto-generated method stub

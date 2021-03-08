@@ -31,7 +31,7 @@ The example code is available
  * Directly from git: StyleLab.java_
  * Included in the demo directory when you download the GeoTools source code
 
-.. _StyleLab.java: http://github.com/geotools/geotools/blob/master/docs/src/main/java/org/geotools/tutorial/style/StyleLab.java
+.. _StyleLab.java: http://github.com/geotools/geotools/blob/main/docs/src/main/java/org/geotools/tutorial/style/StyleLab.java
 
 Main Application
 ----------------
@@ -146,7 +146,7 @@ The example code is available
  * Directly from Source repository: SelectionLab.java_
  * Included in the demo directory when you download the GeoTools source code
 
-.. _SelectionLab.java: http://github.com/geotools/geotools/blob/master/docs/src/main/java/org/geotools/tutorial/style/SelectionLab.java
+.. _SelectionLab.java: http://github.com/geotools/geotools/blob/main/docs/src/main/java/org/geotools/tutorial/style/SelectionLab.java
  
 Main Application
 ----------------

@@ -32,10 +32,12 @@ public class TemporalOperatorImpl implements TemporalOperator {
         operands = new LinkedHashSet<>();
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public Collection<Name> getTemporalOperands() {
         return operands;
     }

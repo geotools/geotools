@@ -27,6 +27,7 @@ public interface FeatureId extends Identifier {
     public static final char VERSION_SEPARATOR = '@';
 
     /** The identifier value, which is a string. */
+    @Override
     @XmlElement("fid")
     String getID();
 
@@ -39,6 +40,7 @@ public interface FeatureId extends Identifier {
      * @param feature The feature to be tested.
      * @return {@code true} if a match, otherwise {@code false}.
      */
+    @Override
     boolean matches(Object feature);
 
     /**

@@ -57,6 +57,7 @@ import org.opengis.temporal.Position;
 public class TimePositionTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.TimePositionType;
     }
@@ -68,6 +69,7 @@ public class TimePositionTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Position.class;
     }
@@ -84,6 +86,7 @@ public class TimePositionTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return value;
     }

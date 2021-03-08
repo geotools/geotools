@@ -82,6 +82,7 @@ public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
         visit((org.opengis.feature.Feature) feature);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public void visit(org.opengis.feature.Feature feature) {
         Object attribValue = expr.evaluate(feature);
@@ -117,6 +118,7 @@ public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
         this.minvalue = Integer.valueOf(0);
     }
 
+    @Override
     public CalcResult getResult() {
         if (!visited) {
             return CalcResult.NULL_RESULT;
@@ -147,12 +149,14 @@ public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
             minValue = newMinValue;
         }
 
+        @Override
         public Object getValue() {
             Comparable min = minValue;
 
             return min;
         }
 
+        @Override
         public boolean isCompatible(CalcResult targetResults) {
             // list each calculation result which can merge with this type of result
             if (targetResults instanceof MinResult || targetResults == CalcResult.NULL_RESULT) {
@@ -162,6 +166,7 @@ public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
             return false;
         }
 
+        @Override
         @SuppressWarnings("unchecked")
         public CalcResult merge(CalcResult resultsToAdd) {
             if (!isCompatible(resultsToAdd)) {

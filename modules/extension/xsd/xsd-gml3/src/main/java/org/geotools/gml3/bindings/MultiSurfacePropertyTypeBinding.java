@@ -55,10 +55,12 @@ public class MultiSurfacePropertyTypeBinding extends GeometryPropertyTypeBinding
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return GML.MultiSurfacePropertyType;
     }
 
+    @Override
     public Class<? extends Geometry> getGeometryType() {
         // return MultiSurface.class;
         return MultiPolygon.class;

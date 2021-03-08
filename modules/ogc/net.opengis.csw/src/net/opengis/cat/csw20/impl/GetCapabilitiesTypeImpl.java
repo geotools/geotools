@@ -84,6 +84,7 @@ public class GetCapabilitiesTypeImpl extends net.opengis.ows10.impl.GetCapabilit
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getService() {
         return service;
     }
@@ -93,6 +94,7 @@ public class GetCapabilitiesTypeImpl extends net.opengis.ows10.impl.GetCapabilit
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setService(String newService) {
         String oldService = service;
         service = newService;
@@ -107,6 +109,7 @@ public class GetCapabilitiesTypeImpl extends net.opengis.ows10.impl.GetCapabilit
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void unsetService() {
         String oldService = service;
         boolean oldServiceESet = serviceESet;
@@ -121,6 +124,7 @@ public class GetCapabilitiesTypeImpl extends net.opengis.ows10.impl.GetCapabilit
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public boolean isSetService() {
         return serviceESet;
     }

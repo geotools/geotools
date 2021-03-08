@@ -85,11 +85,13 @@ public class Add extends BaseMathOperationJAI {
         super(ADD, getOperationDescriptor(JAIExt.getOperationName(ADD)));
     }
 
+    @Override
     public String getName() {
         return ADD;
     }
 
     /** Returns the expected range of values for the resulting image. */
+    @Override
     protected NumberRange<? extends Number> deriveRange(
             final NumberRange<? extends Number>[] ranges, final Parameters parameters) {
 
@@ -109,6 +111,7 @@ public class Add extends BaseMathOperationJAI {
         return null;
     }
 
+    @Override
     protected void handleJAIEXTParams(
             ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
         if (JAIExt.isJAIExtOperation(ALGEBRIC)) {
@@ -122,6 +125,7 @@ public class Add extends BaseMathOperationJAI {
         }
     }
 
+    @Override
     protected Map<String, ?> getProperties(
             RenderedImage data,
             CoordinateReferenceSystem crs,

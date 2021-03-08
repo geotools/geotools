@@ -54,6 +54,7 @@ public class IsNotEqualToImpl extends MultiCompareFilterImpl implements Property
         return !delegate.evaluateInternal(v1, v2);
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

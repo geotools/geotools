@@ -214,6 +214,7 @@ public class InputReferenceTypeImpl extends EObjectImpl implements InputReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.INPUT_REFERENCE_TYPE;
   }
@@ -223,6 +224,7 @@ public class InputReferenceTypeImpl extends EObjectImpl implements InputReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList getHeader() {
     if (header == null) {
       header = new EObjectContainmentEList(HeaderType.class, this, Wps10Package.INPUT_REFERENCE_TYPE__HEADER);
@@ -235,6 +237,7 @@ public class InputReferenceTypeImpl extends EObjectImpl implements InputReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object getBody() {
     return body;
   }
@@ -244,6 +247,7 @@ public class InputReferenceTypeImpl extends EObjectImpl implements InputReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setBody(Object newBody) {
     Object oldBody = body;
     body = newBody;
@@ -256,6 +260,7 @@ public class InputReferenceTypeImpl extends EObjectImpl implements InputReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public BodyReferenceType getBodyReference() {
     return bodyReference;
   }
@@ -280,6 +285,7 @@ public class InputReferenceTypeImpl extends EObjectImpl implements InputReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setBodyReference(BodyReferenceType newBodyReference) {
     if (newBodyReference != bodyReference) {
       NotificationChain msgs = null;
@@ -299,6 +305,7 @@ public class InputReferenceTypeImpl extends EObjectImpl implements InputReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getEncoding() {
     return encoding;
   }
@@ -308,6 +315,7 @@ public class InputReferenceTypeImpl extends EObjectImpl implements InputReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setEncoding(String newEncoding) {
     String oldEncoding = encoding;
     encoding = newEncoding;
@@ -320,6 +328,7 @@ public class InputReferenceTypeImpl extends EObjectImpl implements InputReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getHref() {
     return href;
   }
@@ -329,6 +338,7 @@ public class InputReferenceTypeImpl extends EObjectImpl implements InputReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setHref(String newHref) {
     String oldHref = href;
     href = newHref;
@@ -341,6 +351,7 @@ public class InputReferenceTypeImpl extends EObjectImpl implements InputReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public MethodType getMethod() {
     return method;
   }
@@ -350,6 +361,7 @@ public class InputReferenceTypeImpl extends EObjectImpl implements InputReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setMethod(MethodType newMethod) {
     MethodType oldMethod = method;
     method = newMethod == null ? METHOD_EDEFAULT : newMethod;
@@ -364,6 +376,7 @@ public class InputReferenceTypeImpl extends EObjectImpl implements InputReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void unsetMethod() {
     MethodType oldMethod = method;
     boolean oldMethodESet = methodESet;
@@ -378,6 +391,7 @@ public class InputReferenceTypeImpl extends EObjectImpl implements InputReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean isSetMethod() {
     return methodESet;
   }
@@ -387,6 +401,7 @@ public class InputReferenceTypeImpl extends EObjectImpl implements InputReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getMimeType() {
     return mimeType;
   }
@@ -396,6 +411,7 @@ public class InputReferenceTypeImpl extends EObjectImpl implements InputReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setMimeType(String newMimeType) {
     String oldMimeType = mimeType;
     mimeType = newMimeType;
@@ -408,6 +424,7 @@ public class InputReferenceTypeImpl extends EObjectImpl implements InputReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getSchema() {
     return schema;
   }
@@ -417,6 +434,7 @@ public class InputReferenceTypeImpl extends EObjectImpl implements InputReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setSchema(String newSchema) {
     String oldSchema = schema;
     schema = newSchema;
@@ -429,6 +447,7 @@ public class InputReferenceTypeImpl extends EObjectImpl implements InputReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.INPUT_REFERENCE_TYPE__HEADER:
@@ -444,6 +463,7 @@ public class InputReferenceTypeImpl extends EObjectImpl implements InputReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.INPUT_REFERENCE_TYPE__HEADER:
@@ -471,6 +491,7 @@ public class InputReferenceTypeImpl extends EObjectImpl implements InputReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.INPUT_REFERENCE_TYPE__HEADER:
@@ -507,6 +528,7 @@ public class InputReferenceTypeImpl extends EObjectImpl implements InputReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.INPUT_REFERENCE_TYPE__HEADER:
@@ -542,6 +564,7 @@ public class InputReferenceTypeImpl extends EObjectImpl implements InputReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.INPUT_REFERENCE_TYPE__HEADER:
@@ -569,6 +592,7 @@ public class InputReferenceTypeImpl extends EObjectImpl implements InputReferenc
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String toString() {
     if (eIsProxy()) return super.toString();
 

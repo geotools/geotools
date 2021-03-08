@@ -10,6 +10,7 @@ public class CountingRenderListener implements RenderListener {
     /* (non-Javadoc)
      * @see org.geotools.renderer.lite.RenderListener#featureRenderer(org.geotools.feature.Feature)
      */
+    @Override
     public void featureRenderer(SimpleFeature feature) {
         features++;
     }
@@ -17,6 +18,7 @@ public class CountingRenderListener implements RenderListener {
     /* (non-Javadoc)
      * @see org.geotools.renderer.lite.RenderListener#errorOccurred(java.lang.Exception)
      */
+    @Override
     public void errorOccurred(Exception e) {
         errors++;
     }

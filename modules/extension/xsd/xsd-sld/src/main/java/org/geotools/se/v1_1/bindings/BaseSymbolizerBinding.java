@@ -59,6 +59,7 @@ import org.geotools.xsd.Node;
 public class BaseSymbolizerBinding extends AbstractComplexBinding {
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.BaseSymbolizer;
     }
@@ -70,6 +71,7 @@ public class BaseSymbolizerBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return null;
     }
@@ -81,6 +83,7 @@ public class BaseSymbolizerBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         // TODO: implement and remove call to super

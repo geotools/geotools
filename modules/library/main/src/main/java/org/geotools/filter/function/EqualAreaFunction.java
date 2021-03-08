@@ -64,6 +64,7 @@ public class EqualAreaFunction extends AbstractQuantityClassificationFunction {
         return FF.function("area2", FF.property(""));
     }
 
+    @Override
     protected FeatureCalc getListVisitor() {
         Expression areaFunction = getEqualAreaParameter();
         if (areaFunction == null) {

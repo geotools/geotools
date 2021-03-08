@@ -98,13 +98,7 @@ public class ShpFilesLockingTest implements FileWriter {
         URL url = shpFiles.acquireRead(DBF, this);
         assertEquals("http://somefile.com/shp.dbf", url.toExternalForm());
         assertEquals(1, shpFiles.numberOfLocks());
-        FileWriter testWriter =
-                new FileWriter() {
-
-                    public String id() {
-                        return "Other";
-                    }
-                };
+        FileWriter testWriter = () -> "Other";
 
         // same thread should work
         Result<URL, State> result1 = shpFiles.tryAcquireRead(SHX, testWriter);
@@ -129,13 +123,7 @@ public class ShpFilesLockingTest implements FileWriter {
         URL url = shpFiles.acquireRead(DBF, this);
         assertEquals("http://somefile.com/shp.dbf", url.toExternalForm());
         assertEquals(1, shpFiles.numberOfLocks());
-        FileWriter testWriter =
-                new FileWriter() {
-
-                    public String id() {
-                        return "Other";
-                    }
-                };
+        FileWriter testWriter = () -> "Other";
 
         // same thread should work
         Result<URL, State> result1 = shpFiles.tryAcquireRead(SHX, testWriter);
@@ -163,13 +151,7 @@ public class ShpFilesLockingTest implements FileWriter {
         URL url = shpFiles.acquireWrite(DBF, this);
         assertEquals("http://somefile.com/shp.dbf", url.toExternalForm());
         assertEquals(1, shpFiles.numberOfLocks());
-        FileWriter testWriter =
-                new FileWriter() {
-
-                    public String id() {
-                        return "Other";
-                    }
-                };
+        FileWriter testWriter = () -> "Other";
 
         // same thread should work
         Result<URL, State> result1 = shpFiles.tryAcquireWrite(SHX, testWriter);
@@ -190,6 +172,7 @@ public class ShpFilesLockingTest implements FileWriter {
         shpFiles.dispose();
     }
 
+    @Override
     public String id() {
         return getClass().getName();
     }

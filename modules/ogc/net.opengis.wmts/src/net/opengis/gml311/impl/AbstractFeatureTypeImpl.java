@@ -79,6 +79,7 @@ public abstract class AbstractFeatureTypeImpl extends AbstractGMLTypeImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public BoundingShapeType getBoundedBy() {
         return boundedBy;
     }
@@ -103,6 +104,7 @@ public abstract class AbstractFeatureTypeImpl extends AbstractGMLTypeImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setBoundedBy(BoundingShapeType newBoundedBy) {
         if (newBoundedBy != boundedBy) {
             NotificationChain msgs = null;
@@ -122,6 +124,7 @@ public abstract class AbstractFeatureTypeImpl extends AbstractGMLTypeImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getLocationGroup() {
         if (locationGroup == null) {
             locationGroup = new BasicFeatureMap(this, Gml311Package.ABSTRACT_FEATURE_TYPE__LOCATION_GROUP);
@@ -134,6 +137,7 @@ public abstract class AbstractFeatureTypeImpl extends AbstractGMLTypeImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public LocationPropertyType getLocation() {
         return (LocationPropertyType)getLocationGroup().get(Gml311Package.eINSTANCE.getAbstractFeatureType_Location(), true);
     }
@@ -152,6 +156,7 @@ public abstract class AbstractFeatureTypeImpl extends AbstractGMLTypeImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setLocation(LocationPropertyType newLocation) {
         ((FeatureMap.Internal)getLocationGroup()).set(Gml311Package.eINSTANCE.getAbstractFeatureType_Location(), newLocation);
     }

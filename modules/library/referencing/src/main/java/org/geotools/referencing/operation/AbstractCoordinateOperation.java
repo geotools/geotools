@@ -269,11 +269,13 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
     }
 
     /** Returns the source CRS. */
+    @Override
     public CoordinateReferenceSystem getSourceCRS() {
         return sourceCRS;
     }
 
     /** Returns the target CRS. */
+    @Override
     public CoordinateReferenceSystem getTargetCRS() {
         return targetCRS;
     }
@@ -285,6 +287,7 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
      *
      * @return The coordinate operation version, or {@code null} in none.
      */
+    @Override
     public String getOperationVersion() {
         return operationVersion;
     }
@@ -298,6 +301,7 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
      * @see #getAccuracy()
      * @since 2.4
      */
+    @Override
     public Collection<PositionalAccuracy> getCoordinateOperationAccuracy() {
         if (coordinateOperationAccuracy == null) {
             return Collections.emptySet();
@@ -433,6 +437,7 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
      *
      * @since 2.4
      */
+    @Override
     public Extent getDomainOfValidity() {
         return domainOfValidity;
     }
@@ -440,6 +445,7 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
     /**
      * Description of domain of usage, or limitations of usage, for which this operation is valid.
      */
+    @Override
     public InternationalString getScope() {
         return scope;
     }
@@ -449,6 +455,7 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
      * #getSourceCRS source coordinate reference system} into positions in the {@linkplain
      * #getTargetCRS target coordinate reference system}.
      */
+    @Override
     public MathTransform getMathTransform() {
         return transform;
     }

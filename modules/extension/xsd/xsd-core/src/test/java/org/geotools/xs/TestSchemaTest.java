@@ -108,6 +108,7 @@ public class TestSchemaTest extends TestSchema {
                 element.getElementDeclaration().getType());
     }
 
+    @Override
     protected QName getQName() {
         // TODO Auto-generated method stub
         return null;

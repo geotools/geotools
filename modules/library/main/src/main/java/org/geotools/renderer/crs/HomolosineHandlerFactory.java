@@ -37,6 +37,7 @@ public class HomolosineHandlerFactory implements ProjectionHandlerFactory {
 
     static final double EPS = 0.00001;
 
+    @Override
     public ProjectionHandler getHandler(
             ReferencedEnvelope renderingEnvelope,
             CoordinateReferenceSystem sourceCrs,

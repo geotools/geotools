@@ -69,6 +69,7 @@ public class StringLengthBinding extends AbstractComplexBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return SE.StringLength;
     }
@@ -80,6 +81,7 @@ public class StringLengthBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return Function.class;
     }
@@ -91,6 +93,7 @@ public class StringLengthBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         Expression e = (Expression) node.getChildValue("StringValue");

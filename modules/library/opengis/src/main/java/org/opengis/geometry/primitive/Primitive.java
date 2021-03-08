@@ -53,6 +53,7 @@ public interface Primitive extends Geometry {
      *
      * @return The sets of positions on the boundary.
      */
+    @Override
     @UML(identifier = "boundary", obligation = MANDATORY, specification = ISO_19107)
     PrimitiveBoundary getBoundary();
 

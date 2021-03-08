@@ -85,6 +85,7 @@ public class URLTemplateTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WMTS.URLTemplateType;
     }
@@ -96,6 +97,7 @@ public class URLTemplateTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return URLTemplateType.class;
     }
@@ -107,6 +109,7 @@ public class URLTemplateTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         URLTemplateType template = factory.createURLTemplateType();
         template.setFormat((String) node.getAttributeValue("format"));

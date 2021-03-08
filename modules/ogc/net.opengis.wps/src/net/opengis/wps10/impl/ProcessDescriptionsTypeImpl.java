@@ -60,6 +60,7 @@ public class ProcessDescriptionsTypeImpl extends ResponseBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     protected EClass eStaticClass() {
     return Wps10Package.Literals.PROCESS_DESCRIPTIONS_TYPE;
   }
@@ -69,6 +70,7 @@ public class ProcessDescriptionsTypeImpl extends ResponseBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public EList getProcessDescription() {
     if (processDescription == null) {
       processDescription = new EObjectContainmentEList(ProcessDescriptionType.class, this, Wps10Package.PROCESS_DESCRIPTIONS_TYPE__PROCESS_DESCRIPTION);
@@ -81,6 +83,7 @@ public class ProcessDescriptionsTypeImpl extends ResponseBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Wps10Package.PROCESS_DESCRIPTIONS_TYPE__PROCESS_DESCRIPTION:
@@ -94,6 +97,7 @@ public class ProcessDescriptionsTypeImpl extends ResponseBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Wps10Package.PROCESS_DESCRIPTIONS_TYPE__PROCESS_DESCRIPTION:
@@ -107,6 +111,7 @@ public class ProcessDescriptionsTypeImpl extends ResponseBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wps10Package.PROCESS_DESCRIPTIONS_TYPE__PROCESS_DESCRIPTION:
@@ -122,6 +127,7 @@ public class ProcessDescriptionsTypeImpl extends ResponseBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.PROCESS_DESCRIPTIONS_TYPE__PROCESS_DESCRIPTION:
@@ -136,6 +142,7 @@ public class ProcessDescriptionsTypeImpl extends ResponseBaseTypeImpl implements
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Wps10Package.PROCESS_DESCRIPTIONS_TYPE__PROCESS_DESCRIPTION:

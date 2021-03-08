@@ -24,18 +24,22 @@ import java.util.Map;
 /** @author Niels Charlier */
 public class FSDateExtractorSPI implements PropertiesCollectorSPI {
 
+    @Override
     public String getName() {
         return "FSDateExtractorSPI";
     }
 
+    @Override
     public boolean isAvailable() {
         return true;
     }
 
+    @Override
     public Map<Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }
 
+    @Override
     public PropertiesCollector create(final Object o, final List<String> propertyNames) {
         return new FSDateExtractor(this, propertyNames);
     }

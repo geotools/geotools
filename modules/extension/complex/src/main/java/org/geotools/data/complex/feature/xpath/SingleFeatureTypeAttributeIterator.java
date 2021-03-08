@@ -48,16 +48,19 @@ public class SingleFeatureTypeAttributeIterator implements NodeIterator {
     }
 
     /** Always return 1, only a single property. */
+    @Override
     public int getPosition() {
         return 1;
     }
 
     /** Return true if position == 1. */
+    @Override
     public boolean setPosition(int position) {
         return position < 2;
     }
 
     /** Return a pointer to the property at the set index. */
+    @Override
     public NodePointer getNodePointer() {
         return new FeatureTypeAttributePointer(pointer, featureType, name);
     }

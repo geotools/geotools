@@ -70,6 +70,7 @@ public class LowerBoundaryTypeImpl extends EObjectImpl implements LowerBoundaryT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getExpressionGroup() {
         if (expressionGroup == null) {
             expressionGroup = new BasicFeatureMap(this, Fes20Package.LOWER_BOUNDARY_TYPE__EXPRESSION_GROUP);
@@ -82,6 +83,7 @@ public class LowerBoundaryTypeImpl extends EObjectImpl implements LowerBoundaryT
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EObject getExpression() {
         return (EObject)getExpressionGroup().get(Fes20Package.Literals.LOWER_BOUNDARY_TYPE__EXPRESSION, true);
     }

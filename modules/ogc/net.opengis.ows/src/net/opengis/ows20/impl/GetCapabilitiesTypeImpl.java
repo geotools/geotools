@@ -141,6 +141,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AcceptVersionsType getAcceptVersions() {
     return acceptVersions;
   }
@@ -165,6 +166,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setAcceptVersions(AcceptVersionsType newAcceptVersions) {
     if (newAcceptVersions != acceptVersions) {
       NotificationChain msgs = null;
@@ -184,6 +186,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public SectionsType getSections() {
     return sections;
   }
@@ -208,6 +211,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setSections(SectionsType newSections) {
     if (newSections != sections) {
       NotificationChain msgs = null;
@@ -227,6 +231,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AcceptFormatsType getAcceptFormats() {
     return acceptFormats;
   }
@@ -251,6 +256,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setAcceptFormats(AcceptFormatsType newAcceptFormats) {
     if (newAcceptFormats != acceptFormats) {
       NotificationChain msgs = null;
@@ -270,6 +276,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public AcceptLanguagesType getAcceptLanguages() {
     return acceptLanguages;
   }
@@ -294,6 +301,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setAcceptLanguages(AcceptLanguagesType newAcceptLanguages) {
     if (newAcceptLanguages != acceptLanguages) {
       NotificationChain msgs = null;
@@ -313,6 +321,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getUpdateSequence() {
     return updateSequence;
   }
@@ -322,6 +331,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setUpdateSequence(String newUpdateSequence) {
     String oldUpdateSequence = updateSequence;
     updateSequence = newUpdateSequence;
@@ -334,6 +344,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public String getBaseUrl() {
     return baseUrl;
   }
@@ -343,6 +354,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
    * @generated
    */
+    @Override
     public void setBaseUrl(String newBaseUrl) {
     String oldBaseUrl = baseUrl;
     baseUrl = newBaseUrl;

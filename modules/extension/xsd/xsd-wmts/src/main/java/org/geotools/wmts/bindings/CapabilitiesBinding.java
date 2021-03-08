@@ -107,6 +107,7 @@ public class CapabilitiesBinding extends AbstractComplexEMFBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WMTS.Capabilities;
     }
@@ -118,6 +119,7 @@ public class CapabilitiesBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return net.opengis.wmts.v_1.CapabilitiesType.class;
     }
@@ -129,6 +131,7 @@ public class CapabilitiesBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         CapabilitiesType capabilities = factory.createCapabilitiesType();

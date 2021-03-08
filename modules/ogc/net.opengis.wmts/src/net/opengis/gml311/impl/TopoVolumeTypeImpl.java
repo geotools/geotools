@@ -66,6 +66,7 @@ public class TopoVolumeTypeImpl extends AbstractTopologyTypeImpl implements Topo
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<DirectedTopoSolidPropertyType> getDirectedTopoSolid() {
         if (directedTopoSolid == null) {
             directedTopoSolid = new EObjectContainmentEList<>(DirectedTopoSolidPropertyType.class, this, Gml311Package.TOPO_VOLUME_TYPE__DIRECTED_TOPO_SOLID);

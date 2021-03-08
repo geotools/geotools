@@ -21,7 +21,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,8 +32,6 @@ import javax.swing.JTree;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.event.TreeModelListener;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
@@ -84,10 +81,12 @@ public class ProcessSelectionPage extends JPage {
         selectedFactory = null;
     }
 
+    @Override
     public String getBackPageIdentifier() {
         return null;
     }
 
+    @Override
     public String getNextPageIdentifier() {
         if (selectedFactory == null) {
             return null;
@@ -147,17 +146,14 @@ public class ProcessSelectionPage extends JPage {
         processList
                 .getSelectionModel()
                 .addTreeSelectionListener(
-                        new TreeSelectionListener() {
-                            @Override
-                            public void valueChanged(TreeSelectionEvent e) {
-                                TreePath path = e.getNewLeadSelectionPath();
-                                if (path.getLastPathComponent() instanceof Name) {
-                                    Name name = (Name) path.getLastPathComponent();
-                                    ProcessFactory factory =
-                                            (ProcessFactory)
-                                                    path.getParentPath().getLastPathComponent();
-                                    updateProcessDesc(factory, name);
-                                }
+                        e -> {
+                            TreePath path = e.getNewLeadSelectionPath();
+                            if (path.getLastPathComponent() instanceof Name) {
+                                Name name = (Name) path.getLastPathComponent();
+                                ProcessFactory factory =
+                                        (ProcessFactory)
+                                                path.getParentPath().getLastPathComponent();
+                                updateProcessDesc(factory, name);
                             }
                         });
         c.gridx = 0;
@@ -193,15 +189,11 @@ public class ProcessSelectionPage extends JPage {
         root.addAll(factories);
         Collections.sort(
                 root,
-                new Comparator<ProcessFactory>() {
+                (o1, o2) -> {
+                    String s1 = o1.getTitle().toString();
+                    String s2 = o2.getTitle().toString();
 
-                    @Override
-                    public int compare(ProcessFactory o1, ProcessFactory o2) {
-                        String s1 = o1.getTitle().toString();
-                        String s2 = o2.getTitle().toString();
-
-                        return s1.compareTo(s2);
-                    }
+                    return s1.compareTo(s2);
                 });
         return new TreeModel() {
             @Override
@@ -217,13 +209,10 @@ public class ProcessSelectionPage extends JPage {
                         list.addAll(factory.getNames());
                         Collections.sort(
                                 list,
-                                new Comparator<Name>() {
-                                    @Override
-                                    public int compare(Name o1, Name o2) {
-                                        String s1 = o1.toString();
-                                        String s2 = o2.toString();
-                                        return s1.compareTo(s2);
-                                    }
+                                (o1, o2) -> {
+                                    String s1 = o1.toString();
+                                    String s2 = o2.toString();
+                                    return s1.compareTo(s2);
                                 });
                         branch.put(factory, list);
                     }

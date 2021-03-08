@@ -62,6 +62,7 @@ public class RectifiedGridDomainTypeImpl extends DomainSetTypeImpl implements Re
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public RectifiedGridType getRectifiedGrid() {
         return rectifiedGrid;
     }
@@ -86,6 +87,7 @@ public class RectifiedGridDomainTypeImpl extends DomainSetTypeImpl implements Re
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setRectifiedGrid(RectifiedGridType newRectifiedGrid) {
         if (newRectifiedGrid != rectifiedGrid) {
             NotificationChain msgs = null;

@@ -94,6 +94,7 @@ public class EnvelopeWithTimePeriodTypeImpl extends EnvelopeTypeImpl implements 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     protected EClass eStaticClass() {
 		return GmlPackage.Literals.ENVELOPE_WITH_TIME_PERIOD_TYPE;
 	}
@@ -103,6 +104,7 @@ public class EnvelopeWithTimePeriodTypeImpl extends EnvelopeTypeImpl implements 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public EList getTimePosition() {
 		if (timePosition == null) {
 			timePosition = new EObjectContainmentEList(TimePositionType.class, this, GmlPackage.ENVELOPE_WITH_TIME_PERIOD_TYPE__TIME_POSITION);
@@ -115,6 +117,7 @@ public class EnvelopeWithTimePeriodTypeImpl extends EnvelopeTypeImpl implements 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String getFrame() {
 		return frame;
 	}
@@ -124,6 +127,7 @@ public class EnvelopeWithTimePeriodTypeImpl extends EnvelopeTypeImpl implements 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void setFrame(String newFrame) {
 		String oldFrame = frame;
 		frame = newFrame;
@@ -138,6 +142,7 @@ public class EnvelopeWithTimePeriodTypeImpl extends EnvelopeTypeImpl implements 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void unsetFrame() {
 		String oldFrame = frame;
 		boolean oldFrameESet = frameESet;
@@ -152,6 +157,7 @@ public class EnvelopeWithTimePeriodTypeImpl extends EnvelopeTypeImpl implements 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean isSetFrame() {
 		return frameESet;
 	}
@@ -161,6 +167,7 @@ public class EnvelopeWithTimePeriodTypeImpl extends EnvelopeTypeImpl implements 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case GmlPackage.ENVELOPE_WITH_TIME_PERIOD_TYPE__TIME_POSITION:
@@ -174,6 +181,7 @@ public class EnvelopeWithTimePeriodTypeImpl extends EnvelopeTypeImpl implements 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case GmlPackage.ENVELOPE_WITH_TIME_PERIOD_TYPE__TIME_POSITION:
@@ -189,6 +197,7 @@ public class EnvelopeWithTimePeriodTypeImpl extends EnvelopeTypeImpl implements 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case GmlPackage.ENVELOPE_WITH_TIME_PERIOD_TYPE__TIME_POSITION:
@@ -207,6 +216,7 @@ public class EnvelopeWithTimePeriodTypeImpl extends EnvelopeTypeImpl implements 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case GmlPackage.ENVELOPE_WITH_TIME_PERIOD_TYPE__TIME_POSITION:
@@ -224,6 +234,7 @@ public class EnvelopeWithTimePeriodTypeImpl extends EnvelopeTypeImpl implements 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case GmlPackage.ENVELOPE_WITH_TIME_PERIOD_TYPE__TIME_POSITION:
@@ -239,6 +250,7 @@ public class EnvelopeWithTimePeriodTypeImpl extends EnvelopeTypeImpl implements 
      * <!-- end-user-doc -->
 	 * @generated
 	 */
+    @Override
     public String toString() {
 		if (eIsProxy()) return super.toString();
 

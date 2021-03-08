@@ -125,6 +125,7 @@ public final class Datatype extends CodeList<Datatype> {
     }
 
     /** Returns the list of enumerations of the same kind than this enum. */
+    @Override
     public Datatype[] family() {
         return values();
     }

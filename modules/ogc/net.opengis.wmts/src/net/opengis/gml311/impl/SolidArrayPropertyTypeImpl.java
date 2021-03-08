@@ -69,6 +69,7 @@ public class SolidArrayPropertyTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getGroup() {
         if (group == null) {
             group = new BasicFeatureMap(this, Gml311Package.SOLID_ARRAY_PROPERTY_TYPE__GROUP);
@@ -81,6 +82,7 @@ public class SolidArrayPropertyTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public FeatureMap getSolidGroup() {
         return (FeatureMap)getGroup().<FeatureMap.Entry>list(Gml311Package.eINSTANCE.getSolidArrayPropertyType_SolidGroup());
     }
@@ -90,6 +92,7 @@ public class SolidArrayPropertyTypeImpl extends MinimalEObjectImpl.Container imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EList<AbstractSolidType> getSolid() {
         return getSolidGroup().list(Gml311Package.eINSTANCE.getSolidArrayPropertyType_Solid());
     }

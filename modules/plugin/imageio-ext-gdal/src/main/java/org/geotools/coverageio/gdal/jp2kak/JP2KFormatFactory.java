@@ -41,6 +41,7 @@ public final class JP2KFormatFactory extends BaseGridFormatFactorySPI
      *
      * @return <code>true</code> if the plugin is available, <code>false</code> otherwise.
      */
+    @Override
     public boolean isAvailable() {
         boolean available = true;
 
@@ -74,6 +75,7 @@ public final class JP2KFormatFactory extends BaseGridFormatFactorySPI
      *
      * @return A {@link JP2KFormat}.;
      */
+    @Override
     public JP2KFormat createFormat() {
         return new JP2KFormat();
     }

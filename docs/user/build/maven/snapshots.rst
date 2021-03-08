@@ -15,7 +15,7 @@ To respond to one of these emails include "-u" in your next build.
 
 1. Update (for example from upstream)::
      
-      git pull --rebase upstream master
+      git pull --rebase upstream main
      
 2. Build using the -U option::
       
@@ -35,7 +35,7 @@ build and deploy a snapshot. If you really cannot wait:
 
 1. Update to make sure you are not missing out on anyone’s work::
      
-      git pull --rebase upstream master
+      git pull --rebase upstream main
      
 2. Build with tests to make sure your commit is not fatal::
      
@@ -47,7 +47,7 @@ build and deploy a snapshot. If you really cannot wait:
      
 4. Push the commits back to upstream::
      
-     mvn push upstream master
+     mvn push upstream main
       
 4. Ensure your ``~/.m2/settings.xml`` has your webdav credentials.
    

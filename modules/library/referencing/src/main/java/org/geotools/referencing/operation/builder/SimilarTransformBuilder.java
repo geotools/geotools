@@ -70,6 +70,7 @@ public class SimilarTransformBuilder extends ProjectiveTransformBuilder {
         super.setMappedPositions(vectors);
     }
 
+    @Override
     protected void fillAMatrix() {
         super.A = new GeneralMatrix(2 * getSourcePoints().length, 4);
 
@@ -104,6 +105,7 @@ public class SimilarTransformBuilder extends ProjectiveTransformBuilder {
      *
      * @return Returns the minimum number of points required by this builder, which is 2.
      */
+    @Override
     public int getMinimumPointCount() {
         return 2;
     }
@@ -120,6 +122,7 @@ public class SimilarTransformBuilder extends ProjectiveTransformBuilder {
      *
      * @return Matrix M.
      */
+    @Override
     protected GeneralMatrix getProjectiveMatrix() {
         GeneralMatrix M = new GeneralMatrix(3, 3);
         double[] param = calculateLSM();

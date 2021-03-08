@@ -106,11 +106,13 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     }
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Style) */
+    @Override
     public void visit(org.geotools.styling.Style style) {
         style.featureTypeStyles().forEach(ft -> ft.accept(this));
     }
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Rule) */
+    @Override
     public void visit(Rule rule) {
         Filter filter = rule.getFilter();
 
@@ -122,6 +124,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     }
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.FeatureTypeStyle) */
+    @Override
     public void visit(FeatureTypeStyle fts) {
         for (Rule rule : fts.rules()) {
             rule.accept(this);
@@ -129,6 +132,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     }
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Fill) */
+    @Override
     public void visit(Fill fill) {
         if (fill.getColor() != null) {
             fill.getColor().accept(this, null);
@@ -144,6 +148,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     }
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Stroke) */
+    @Override
     public void visit(Stroke stroke) {
         if (stroke.getColor() != null) {
             stroke.getColor().accept(this, null);
@@ -185,6 +190,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     }
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Symbolizer) */
+    @Override
     public void visit(Symbolizer sym) {
         if (sym instanceof PointSymbolizer) {
             visit((PointSymbolizer) sym);
@@ -207,6 +213,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
         }
     }
 
+    @Override
     public void visit(RasterSymbolizer rs) {
         if (symbolizerGeometriesVisitEnabled) {
             if (rs.getGeometry() != null) {
@@ -224,6 +231,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     }
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PointSymbolizer) */
+    @Override
     public void visit(PointSymbolizer ps) {
         if (symbolizerGeometriesVisitEnabled) {
             if (ps.getGeometry() != null) {
@@ -239,6 +247,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     }
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.LineSymbolizer) */
+    @Override
     public void visit(LineSymbolizer line) {
         if (symbolizerGeometriesVisitEnabled) {
             if (line.getGeometry() != null) {
@@ -258,6 +267,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     }
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PolygonSymbolizer) */
+    @Override
     public void visit(PolygonSymbolizer poly) {
         if (symbolizerGeometriesVisitEnabled) {
             if (poly.getGeometry() != null) {
@@ -277,6 +287,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     }
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.TextSymbolizer) */
+    @Override
     public void visit(TextSymbolizer text) {
         if (symbolizerGeometriesVisitEnabled) {
             if (text.getGeometry() != null) {
@@ -338,6 +349,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     }
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Graphic) */
+    @Override
     public void visit(Graphic gr) {
         for (GraphicalSymbol symbol : gr.graphicalSymbols()) {
             if (symbol instanceof Symbol) {
@@ -365,6 +377,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     }
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Mark) */
+    @Override
     public void visit(Mark mark) {
         if (mark.getFill() != null) {
             mark.getFill().accept(this);
@@ -390,6 +403,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     }
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.ExternalGraphic) */
+    @Override
     public void visit(ExternalGraphic exgr) {
         // add dynamic support for ExternalGrapic format attribute
         visitCqlExpression(exgr.getFormat());
@@ -403,6 +417,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     }
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PointPlacement) */
+    @Override
     public void visit(PointPlacement pp) {
         if (pp.getAnchorPoint() != null) {
             pp.getAnchorPoint().accept(this);
@@ -418,6 +433,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     }
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.AnchorPoint) */
+    @Override
     public void visit(AnchorPoint ap) {
         if (ap.getAnchorPointX() != null) {
             ap.getAnchorPointX().accept(this, null);
@@ -429,6 +445,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     }
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Displacement) */
+    @Override
     public void visit(Displacement dis) {
         if (dis.getDisplacementX() != null) {
             dis.getDisplacementX().accept(this, null);
@@ -440,6 +457,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     }
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.LinePlacement) */
+    @Override
     public void visit(LinePlacement lp) {
         if (lp.getPerpendicularOffset() != null) {
             lp.getPerpendicularOffset().accept(this, null);
@@ -447,6 +465,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     }
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Halo) */
+    @Override
     public void visit(Halo halo) {
         if (halo.getFill() != null) {
             halo.getFill().accept(this);
@@ -457,6 +476,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
         }
     }
 
+    @Override
     public void visit(StyledLayerDescriptor sld) {
         StyledLayer[] layers = sld.getStyledLayers();
 
@@ -469,6 +489,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
         }
     }
 
+    @Override
     public void visit(NamedLayer layer) {
         org.geotools.styling.Style[] styles = layer.getStyles();
 
@@ -477,6 +498,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
         }
     }
 
+    @Override
     public void visit(UserLayer layer) {
         org.geotools.styling.Style[] styles = layer.getUserStyles();
 
@@ -485,10 +507,12 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
         }
     }
 
+    @Override
     public void visit(FeatureTypeConstraint ftc) {
         ftc.accept(this);
     }
 
+    @Override
     public void visit(ColorMap map) {
         ColorMapEntry[] entries = map.getColorMapEntries();
 
@@ -497,30 +521,37 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
         }
     }
 
+    @Override
     public void visit(ColorMapEntry entry) {
         entry.accept(this);
     }
 
+    @Override
     public void visit(ContrastEnhancement contrastEnhancement) {
         contrastEnhancement.accept(this);
     }
 
+    @Override
     public void visit(ImageOutline outline) {
         outline.getSymbolizer().accept(this);
     }
 
+    @Override
     public void visit(ChannelSelection cs) {
         cs.accept(this);
     }
 
+    @Override
     public void visit(OverlapBehavior ob) {
         ob.accept(this);
     }
 
+    @Override
     public void visit(SelectedChannelType sct) {
         sct.accept(this);
     }
 
+    @Override
     public void visit(ShadedRelief sr) {
         sr.accept(this);
     }

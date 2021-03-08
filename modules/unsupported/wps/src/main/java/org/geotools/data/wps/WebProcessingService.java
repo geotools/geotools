@@ -170,6 +170,7 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
     }
 
     /** Sets up the specifications/versions that this server is capable of communicating with. */
+    @Override
     protected void setupSpecifications() {
         specs = new Specification[1];
         specs[0] = new WPS1_0_0();
@@ -186,6 +187,7 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
         return null;
     }
 
+    @Override
     public AbstractWPSGetCapabilitiesResponse issueRequest(GetCapabilitiesRequest request)
             throws IOException, ServiceException {
         return (AbstractWPSGetCapabilitiesResponse) internalIssueRequest(request);
@@ -301,6 +303,7 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
             keywords.add(serverURL.toString());
         }
 
+        @Override
         public String getDescription() {
             String description = null;
             if ((description == null) && (serverURL != null)) {
@@ -310,10 +313,12 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
             return description;
         }
 
+        @Override
         public Set<String> getKeywords() {
             return keywords;
         }
 
+        @Override
         public URI getPublisher() {
             try {
                 return new URI(serverURL.getProtocol() + ":" + serverURL.getHost());
@@ -328,6 +333,7 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
          *
          * @return WPS.getInstance().getNamespaceURI();
          */
+        @Override
         public URI getSchema() {
             return makeURI(WPS.getInstance().getNamespaceURI());
         }
@@ -338,6 +344,7 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
          * <p>We make an effort here to look in the capabilities document provided for the
          * unambiguous capabilities URI.
          */
+        @Override
         public URI getSource() {
             try {
                 URL source = getOperationURL("getcapabilities", capabilities, true);
@@ -353,6 +360,7 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
             }
         }
 
+        @Override
         public String getTitle() {
             if (serverURL == null) {
                 return "Unavailable";

@@ -41,14 +41,17 @@ public class ColorReplacementImpl implements org.geotools.styling.ColorReplaceme
      *
      * @return Implementation of "Recode" function
      */
+    @Override
     public Function getRecoding() {
         return function;
     }
 
+    @Override
     public Object accept(StyleVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
 
+    @Override
     public void setRecoding(Function function) {
         this.function = function;
     }

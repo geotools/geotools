@@ -53,6 +53,7 @@ public class GetFeatureInfoValueTypeBinding extends AbstractSimpleBinding {
     }
 
     /** @generated */
+    @Override
     public QName getTarget() {
         return WMTS.GetFeatureInfoValueType;
     }
@@ -64,6 +65,7 @@ public class GetFeatureInfoValueTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Class getType() {
         return GetFeatureInfoValueType.class;
     }
@@ -75,6 +77,7 @@ public class GetFeatureInfoValueTypeBinding extends AbstractSimpleBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         // TODO: check if this works?
         return GetFeatureInfoValueType.valueOf(value.toString());

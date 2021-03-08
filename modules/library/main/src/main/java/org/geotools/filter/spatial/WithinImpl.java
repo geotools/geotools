@@ -56,6 +56,7 @@ public class WithinImpl extends AbstractPreparedGeometryFilter implements Within
         }
     }
 
+    @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }

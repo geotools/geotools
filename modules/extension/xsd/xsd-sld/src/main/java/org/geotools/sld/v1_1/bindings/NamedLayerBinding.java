@@ -66,6 +66,7 @@ public class NamedLayerBinding extends SLDNamedLayerBinding {
      *
      * @generated modifiable
      */
+    @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         NamedLayer layer = (NamedLayer) super.parse(instance, node, value);
 

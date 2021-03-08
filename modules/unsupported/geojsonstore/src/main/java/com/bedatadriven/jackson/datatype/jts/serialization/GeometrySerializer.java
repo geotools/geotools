@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.Arrays;
+import java.util.Locale;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.LineString;
@@ -51,7 +52,7 @@ import org.locationtech.jts.geom.Polygon;
 public class GeometrySerializer extends JsonSerializer<Geometry> {
 
     private RoundingMode roundingMode = RoundingMode.HALF_UP;
-    NumberFormat format = NumberFormat.getNumberInstance();
+    NumberFormat format = NumberFormat.getNumberInstance(Locale.ENGLISH);
     /** Maximum number of decimal places (see https://xkcd.com/2170/ before changing it) */
     int maximumFractionDigits = 4;
 

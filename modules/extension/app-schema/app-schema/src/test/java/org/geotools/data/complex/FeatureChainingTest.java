@@ -219,64 +219,69 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
             while (mfIterator.hasNext()) {
                 mfFeature = mfIterator.next();
                 String mfId = mfFeature.getIdentifier().toString();
-                String[] guIds = this.mfToGuMap.get(mfId).split(";");
 
-                // make sure we have the right number of nested features
-                nestedGuFeatures = mfFeature.getProperties(NESTED_LINK);
-                assertEquals(guIds.length, nestedGuFeatures.size());
+                if (this.mfToGuMap.get(mfId) != null) {
+                    String[] guIds = this.mfToGuMap.get(mfId).split(";");
 
-                ArrayList<String> nestedGuIds = new ArrayList<>();
+                    // make sure we have the right number of nested features
+                    nestedGuFeatures = (Collection<Property>) mfFeature.getProperties(NESTED_LINK);
+                    assertEquals(guIds.length, nestedGuFeatures.size());
 
-                for (Property property : nestedGuFeatures) {
-                    Object value = property.getValue();
-                    assertNotNull(value);
-                    assertTrue(value instanceof Collection);
-                    assertEquals(1, ((Collection) value).size());
+                    ArrayList<String> nestedGuIds = new ArrayList<>();
 
-                    Feature nestedGuFeature = (Feature) ((Collection) value).iterator().next();
-                    /** Test geological unit */
-                    // make sure each of the nested geologic unit is valid
-                    guId = nestedGuFeature.getIdentifier().toString();
-                    assertTrue(guMap.containsKey(guId));
+                    for (Property property : nestedGuFeatures) {
+                        Object value = property.getValue();
+                        assertNotNull(value);
+                        assertTrue(value instanceof Collection);
+                        assertEquals(1, ((Collection) value).size());
 
-                    nestedGuIds.add(guId);
+                        Feature nestedGuFeature = (Feature) ((Collection) value).iterator().next();
+                        /** Test geological unit */
+                        // make sure each of the nested geologic unit is valid
+                        guId = nestedGuFeature.getIdentifier().toString();
+                        assertTrue(guMap.containsKey(guId));
 
-                    // make sure the nested geologic unit feature has the right properties
-                    guFeature = guMap.get(guId.toString());
-                    Collection<Property> guProperties = guFeature.getProperties();
-                    assertEquals(nestedGuFeature.getProperties(), guProperties);
+                        nestedGuIds.add(guId);
 
-                    /** Test compositional part */
-                    // make sure the right number of nested features are there
-                    String[] cpIds = this.guToCpMap.get(guId).split(";");
-                    nestedCpFeatures = guFeature.getProperties("composition");
-                    assertEquals(cpIds.length, nestedCpFeatures.size());
+                        // make sure the nested geologic unit feature has the right properties
+                        guFeature = guMap.get(guId.toString());
+                        Collection<Property> guProperties = guFeature.getProperties();
+                        assertEquals(nestedGuFeature.getProperties(), guProperties);
 
-                    ArrayList<String> nestedCpIds = new ArrayList<>();
-                    for (Property cpProperty : nestedCpFeatures) {
-                        Object cpPropertyValue = cpProperty.getValue();
-                        assertNotNull(cpPropertyValue);
-                        assertTrue(cpPropertyValue instanceof Collection);
-                        assertEquals(1, ((Collection) cpPropertyValue).size());
+                        /** Test compositional part */
+                        // make sure the right number of nested features are there
+                        String[] cpIds = this.guToCpMap.get(guId).split(";");
+                        nestedCpFeatures =
+                                (Collection<Property>) guFeature.getProperties("composition");
+                        assertEquals(cpIds.length, nestedCpFeatures.size());
 
-                        Feature nestedCpFeature =
-                                (Feature) ((Collection) cpPropertyValue).iterator().next();
-                        // make sure each of the nested compositional part feature is valid
-                        cpId = nestedCpFeature.getIdentifier().toString();
-                        assertTrue(cpMap.containsKey(cpId));
+                        ArrayList<String> nestedCpIds = new ArrayList<>();
+                        for (Property cpProperty : nestedCpFeatures) {
+                            Object cpPropertyValue = cpProperty.getValue();
+                            assertNotNull(cpPropertyValue);
+                            assertTrue(cpPropertyValue instanceof Collection);
+                            assertEquals(1, ((Collection) cpPropertyValue).size());
 
-                        nestedCpIds.add(cpId);
+                            Feature nestedCpFeature =
+                                    (Feature) ((Collection) cpPropertyValue).iterator().next();
+                            // make sure each of the nested compositional part feature is valid
+                            cpId = nestedCpFeature.getIdentifier().toString();
+                            assertTrue(cpMap.containsKey(cpId));
 
-                        // make sure each of the nested compositional part has the right properties
-                        cpFeature = cpMap.get(cpId.toString());
-                        Collection<Property> cpProperties = cpFeature.getProperties();
-                        assertEquals(nestedCpFeature.getProperties(), cpProperties);
+                            nestedCpIds.add(cpId);
+
+                            // make sure each of the nested compositional part has the right
+                            // properties
+                            cpFeature = cpMap.get(cpId.toString());
+                            Collection<Property> cpProperties = cpFeature.getProperties();
+                            assertEquals(nestedCpFeature.getProperties(), cpProperties);
+                        }
+                        // make sure all the nested compositional part features are there
+                        assertTrue(nestedCpIds.containsAll(Arrays.asList(cpIds)));
                     }
-                    // make sure all the nested compositional part features are there
-                    assertTrue(nestedCpIds.containsAll(Arrays.asList(cpIds)));
+                    // make sure all the nested geological unit features are there
+                    assertTrue(nestedGuIds.containsAll(Arrays.asList(guIds)));
                 }
-                // make sure all the nested geological unit features are there
-                assertTrue(nestedGuIds.containsAll(Arrays.asList(guIds)));
             }
         }
     }
@@ -787,7 +792,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
                 DataAccessRegistry.getFeatureSource(CGI_TERM_VALUE).getFeatures();
         // ControlledConcept
         ccFeatures = DataAccessRegistry.getFeatureSource(CONTROLLED_CONCEPT).getFeatures();
-        assertEquals(4, size(mfFeatures));
+        assertEquals(5, size(mfFeatures));
         assertEquals(3, size(guFeatures));
         assertEquals(4, size(cpFeatures));
         assertEquals(6, size(cgiFeatures));

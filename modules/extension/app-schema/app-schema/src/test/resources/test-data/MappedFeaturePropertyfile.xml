@@ -90,6 +90,7 @@
 						<linkElement>myGeologicUnit</linkElement>
 						<linkField>FEATURE_LINK</linkField>
 					</sourceExpression>
+                    <encodeIfEmpty>true</encodeIfEmpty>
 				</AttributeMapping>
 				<AttributeMapping> 
                     <targetAttribute>gsml:observationMethod/gsml:CGI_TermValue/gsml:value</targetAttribute> 

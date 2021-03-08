@@ -159,6 +159,15 @@ public class WFSTestData {
                     "gubs_StatisticalUnit",
                     "EPSG:4269");
 
+    public static final TestDataType ARCGIS_CURVE =
+            new TestDataType(
+                    "ArcGIS/1.1.0",
+                    new QName(
+                            "https://www.arcgis.com/services/lineTestWFS/FeatureServer/WFSServer",
+                            "lineTest"),
+                    "lineTestWFS",
+                    "EPSG:27700");
+
     public static URL url(String resource) {
         URL url = WFSTestData.class.getResource("test-data/" + resource);
         assertNotNull("resource not found: " + resource, url);

@@ -17,6 +17,7 @@
 package org.geotools.data.wfs.online;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -24,6 +25,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Properties;
 import java.util.TreeSet;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.Query;
@@ -49,16 +51,44 @@ public class ArcServerWFSOnlineTest extends OnlineTestSupport {
     @Before
     public void setup() {
         String[] expectedA = {
-            "USGS_TNM_Structures.10",
-            "USGS_TNM_Structures.16",
-            "USGS_TNM_Structures.101",
-            "USGS_TNM_Structures.147",
-            "USGS_TNM_Structures.182",
-            "USGS_TNM_Structures.205",
-            "USGS_TNM_Structures.212",
-            "USGS_TNM_Structures.220",
-            "USGS_TNM_Structures.289",
-            "USGS_TNM_Structures.366"
+            "ARMS.209",
+            "ARMS.755",
+            "ARMS.852",
+            "ARMS.866",
+            "ARMS.1333",
+            "ARMS.1881",
+            "ARMS.1887",
+            "ARMS.3426",
+            "ARMS.2241",
+            "ARMS.6427",
+            "ARMS.6428",
+            "ARMS.8456",
+            "ARMS.9018",
+            "ARMS.10881",
+            "ARMS.15184",
+            "ARMS.13564",
+            "ARMS.15468",
+            "ARMS.17342",
+            "ARMS.19371",
+            "ARMS.18651",
+            "ARMS.20556",
+            "ARMS.20557",
+            "ARMS.21690",
+            "ARMS.22392",
+            "ARMS.25485",
+            "ARMS.26036",
+            "ARMS.27089",
+            "ARMS.27090",
+            "ARMS.26381",
+            "ARMS.29412",
+            "ARMS.29413",
+            "ARMS.28654",
+            "ARMS.28584",
+            "ARMS.28590",
+            "ARMS.31125",
+            "ARMS.31126",
+            "ARMS.34517",
+            "ARMS.34302"
         };
         expected.addAll(Arrays.asList(expectedA));
     }
@@ -96,12 +126,12 @@ public class ArcServerWFSOnlineTest extends OnlineTestSupport {
     private void arcMapTest(String version, boolean get) throws IOException {
 
         String getCapabilities =
-                "http://cartowfs.nationalmap.gov/arcgis/services/structures/MapServer/WFSServer?request=GetCapabilities&service=WFS&version="
+                "https://gis-erd-der.gnb.ca/server/services/OpenData/ARMS/MapServer/WFSServer?service=wfs&request=getcapabilities&version="
                         + version;
         Map<String, Object> connectionParameters = new HashMap<>();
         connectionParameters.put(WFSDataStoreFactory.URL.key, getCapabilities);
         connectionParameters.put(WFSDataStoreFactory.LENIENT.key, Boolean.TRUE);
-        // connectionParameters.put(WFSDataStoreFactory.WFS_STRATEGY.key, "arcgis");
+        connectionParameters.put(WFSDataStoreFactory.WFS_STRATEGY.key, "arcgis");
         connectionParameters.put(WFSDataStoreFactory.TIMEOUT.key, 30);
         //
         if (get) {
@@ -115,7 +145,7 @@ public class ArcServerWFSOnlineTest extends OnlineTestSupport {
         SimpleFeatureSource source = data.getFeatureSource(typeName);
 
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
-        Filter filter = ff.equals(ff.property("STATE"), ff.literal("MO"));
+        Filter filter = ff.like(ff.property("NBAFR"), "YON%", "%", ".", "!");
 
         Query query = new Query();
         query.setTypeName(typeName);
@@ -123,13 +153,14 @@ public class ArcServerWFSOnlineTest extends OnlineTestSupport {
         query.setFilter(filter);
         SimpleFeatureCollection features = source.getFeatures(query);
         int size = features.size();
-
-        assertTrue(size > 10);
+        // System.out.println(size);
+        assertSame("Wrong number of features", size, 79);
         // Iterator through all the features and print them out.
         int count = 0;
         try (SimpleFeatureIterator iterator = features.features()) {
             while (iterator.hasNext() && count < 10) {
                 SimpleFeature feature = iterator.next();
+                // System.out.println(feature.getID());
                 assertTrue(expected.contains(feature.getID()));
                 count++;
             }
@@ -143,6 +174,7 @@ public class ArcServerWFSOnlineTest extends OnlineTestSupport {
         try (SimpleFeatureIterator iterator = features.features()) {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
+
                 assertTrue(expected.contains(feature.getID()));
             }
         }
@@ -151,5 +183,15 @@ public class ArcServerWFSOnlineTest extends OnlineTestSupport {
     @Override
     protected String getFixtureId() {
         return "arcgis-wfs";
+    }
+
+    @Override
+    protected Properties createExampleFixture() {
+        Properties template = new Properties();
+        template.put(WFSDataStoreFactory.URL.key, "this is currently hardcoded in");
+        template.put(WFSDataStoreFactory.LENIENT.key, "true");
+        template.put(WFSDataStoreFactory.TIMEOUT.key, "5");
+
+        return template;
     }
 }

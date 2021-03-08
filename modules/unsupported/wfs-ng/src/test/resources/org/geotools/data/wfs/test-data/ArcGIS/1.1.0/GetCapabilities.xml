@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta name="viewport" content="width=device-width" /><title>https://dservices7.arcgis.com/tTI4gHsuvoSHedcm/arcgis/services/lineTestWFS/WFSServer?service=wfs%26version=1.1.0%26request=getcapabilities</title><link rel="stylesheet" type="text/css" href="resource://content-accessible/viewsource.css" /></head><body id="viewsource" class="wrap highlight" style="-moz-tab-size: 4" contextmenu="actions"><pre id="line1"><span></span><span class="pi">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span><span>
+<span id="line2"></span></span><span>&lt;<span class="start-tag">wfs:WFS_Capabilities</span>
+<span id="line3"></span> <span class="attribute-name">xmlns:wfs</span>="<a class="attribute-value">http://www.opengis.net/wfs</a>"
+<span id="line4"></span> <span class="attribute-name">xmlns:ogc</span>="<a class="attribute-value">http://www.opengis.net/ogc</a>"
+<span id="line5"></span> <span class="attribute-name">xmlns:gml</span>="<a class="attribute-value">http://www.opengis.net/gml</a>"
+<span id="line6"></span> <span class="attribute-name">xmlns:ows</span>="<a class="attribute-value">http://www.opengis.net/ows</a>"
+<span id="line7"></span> <span class="attribute-name">xmlns:lineTestWFS</span>="<a class="attribute-value">https://www.arcgis.com/services/lineTestWFS/FeatureServer/WFSServer</a>"
+<span id="line8"></span> <span class="attribute-name">xmlns:xlink</span>="<a class="attribute-value">http://www.w3.org/1999/xlink</a>"
+<span id="line9"></span> <span class="attribute-name">xmlns:xsi</span>="<a class="attribute-value">http://www.w3.org/2001/XMLSchema-instance</a>"
+<span id="line10"></span> <span class="attribute-name">xsi:schemaLocation</span>="<a class="attribute-value">http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd http://www.opengis.net/ogc http://schemas.opengis.net/filter/1.1.0/filter.xsd http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/gml.xsd http://www.opengis.net/ows http://schemas.opengis.net/ows/1.0.0/owsAll.xsd https://www.arcgis.com/services/lineTestWFS/FeatureServer/WFSServer http://dservices7.arcgis.com/tTI4gHsuvoSHedcm/arcgis/services/tTI4gHsuvoSHedcm/lineTestWFS/MapServer/WFSServer?service=wfs%26version=1.1.0%26request=DescribeFeatureType</a>"
+<span id="line11"></span> <span class="attribute-name">version</span>="<a class="attribute-value">1.1.0</a>"
+<span id="line12"></span>&gt;</span><span>
+<span id="line13"></span></span><span>&lt;<span class="start-tag">ows:ServiceIdentification</span>&gt;</span><span>
+<span id="line14"></span>  </span><span>&lt;<span class="start-tag">ows:Title</span>&gt;</span><span>lineTestWFS</span><span>&lt;/<span class="end-tag">ows:Title</span>&gt;</span><span>
+<span id="line15"></span>  </span><span>&lt;<span class="start-tag">ows:Abstract</span>&gt;</span><span>Added WFS for ease</span><span>&lt;/<span class="end-tag">ows:Abstract</span>&gt;</span><span>
+<span id="line16"></span>  </span><span>&lt;<span class="start-tag">ows:Keywords</span>&gt;</span><span>
+<span id="line17"></span>    </span><span>&lt;<span class="start-tag">ows:Keyword</span>&gt;</span><span>ESRI()</span><span>&lt;/<span class="end-tag">ows:Keyword</span>&gt;</span><span>
+<span id="line18"></span>    </span><span>&lt;<span class="start-tag">ows:Keyword</span>&gt;</span><span>burdgis</span><span>&lt;/<span class="end-tag">ows:Keyword</span>&gt;</span><span>
+<span id="line19"></span>  </span><span>&lt;/<span class="end-tag">ows:Keywords</span>&gt;</span><span>
+<span id="line20"></span>  </span><span>&lt;<span class="start-tag">ows:ServiceType</span>&gt;</span><span>WFS</span><span>&lt;/<span class="end-tag">ows:ServiceType</span>&gt;</span><span>
+<span id="line21"></span>  </span><span>&lt;<span class="start-tag">ows:ServiceTypeVersion</span>&gt;</span><span>1.1.0</span><span>&lt;/<span class="end-tag">ows:ServiceTypeVersion</span>&gt;</span><span>
+<span id="line22"></span>  </span><span>&lt;<span class="start-tag">ows:Fees</span>&gt;</span><span></span><span>&lt;/<span class="end-tag">ows:Fees</span>&gt;</span><span>
+<span id="line23"></span>  </span><span>&lt;<span class="start-tag">ows:AccessConstraints</span>&gt;</span><span></span><span>&lt;/<span class="end-tag">ows:AccessConstraints</span>&gt;</span><span>
+<span id="line24"></span></span><span>&lt;/<span class="end-tag">ows:ServiceIdentification</span>&gt;</span><span>
+<span id="line25"></span></span><span>&lt;<span class="start-tag">ows:ServiceProvider</span>&gt;</span><span>
+<span id="line26"></span>  </span><span>&lt;<span class="start-tag">ows:ProviderName</span>&gt;</span><span></span><span>&lt;/<span class="end-tag">ows:ProviderName</span>&gt;</span><span>
+<span id="line27"></span>  </span><span>&lt;<span class="start-tag">ows:ServiceContact</span>&gt;</span><span>
+<span id="line28"></span>    </span><span>&lt;<span class="start-tag">ows:IndividualName</span>&gt;</span><span></span><span>&lt;/<span class="end-tag">ows:IndividualName</span>&gt;</span><span>
+<span id="line29"></span>    </span><span>&lt;<span class="start-tag">ows:PositionName</span>&gt;</span><span></span><span>&lt;/<span class="end-tag">ows:PositionName</span>&gt;</span><span>
+<span id="line30"></span>    </span><span>&lt;<span class="start-tag">ows:ContactInfo</span>&gt;</span><span>
+<span id="line31"></span>    </span><span>&lt;<span class="start-tag">ows:Phone</span>&gt;</span><span>
+<span id="line32"></span>      </span><span>&lt;<span class="start-tag">ows:Voice</span>&gt;</span><span></span><span>&lt;/<span class="end-tag">ows:Voice</span>&gt;</span><span>
+<span id="line33"></span>      </span><span>&lt;<span class="start-tag">ows:Facsimile</span>&gt;</span><span></span><span>&lt;/<span class="end-tag">ows:Facsimile</span>&gt;</span><span>
+<span id="line34"></span>    </span><span>&lt;/<span class="end-tag">ows:Phone</span>&gt;</span><span>
+<span id="line35"></span>    </span><span>&lt;<span class="start-tag">ows:Address</span>&gt;</span><span>
+<span id="line36"></span>      </span><span>&lt;<span class="start-tag">ows:DeliveryPoint</span>&gt;</span><span></span><span>&lt;/<span class="end-tag">ows:DeliveryPoint</span>&gt;</span><span>
+<span id="line37"></span>      </span><span>&lt;<span class="start-tag">ows:City</span>&gt;</span><span></span><span>&lt;/<span class="end-tag">ows:City</span>&gt;</span><span>
+<span id="line38"></span>      </span><span>&lt;<span class="start-tag">ows:AdministrativeArea</span>&gt;</span><span></span><span>&lt;/<span class="end-tag">ows:AdministrativeArea</span>&gt;</span><span>
+<span id="line39"></span>      </span><span>&lt;<span class="start-tag">ows:PostalCode</span>&gt;</span><span></span><span>&lt;/<span class="end-tag">ows:PostalCode</span>&gt;</span><span>
+<span id="line40"></span>      </span><span>&lt;<span class="start-tag">ows:Country</span>&gt;</span><span></span><span>&lt;/<span class="end-tag">ows:Country</span>&gt;</span><span>
+<span id="line41"></span>      </span><span>&lt;<span class="start-tag">ows:ElectronicMailAddress</span>&gt;</span><span></span><span>&lt;/<span class="end-tag">ows:ElectronicMailAddress</span>&gt;</span><span>
+<span id="line42"></span>    </span><span>&lt;/<span class="end-tag">ows:Address</span>&gt;</span><span>
+<span id="line43"></span>    </span><span>&lt;<span class="start-tag">ows:OnlineResource</span> <span class="attribute-name">xlink:href</span>="<a class="attribute-value" href="view-source:https://dservices7.arcgis.com/arcgis/services/tTI4gHsuvoSHedcm/lineTestWFS/WFSServer">https://dservices7.arcgis.com/arcgis/services/tTI4gHsuvoSHedcm/lineTestWFS/WFSServer</a>"<span>/</span>&gt;</span><span>
+<span id="line44"></span>    </span><span>&lt;<span class="start-tag">ows:HoursOfService</span>&gt;</span><span></span><span>&lt;/<span class="end-tag">ows:HoursOfService</span>&gt;</span><span>
+<span id="line45"></span>    </span><span>&lt;<span class="start-tag">ows:ContactInstructions</span>&gt;</span><span></span><span>&lt;/<span class="end-tag">ows:ContactInstructions</span>&gt;</span><span>
+<span id="line46"></span>    </span><span>&lt;/<span class="end-tag">ows:ContactInfo</span>&gt;</span><span>
+<span id="line47"></span>    </span><span>&lt;<span class="start-tag">ows:Role</span>&gt;</span><span>PointofContact</span><span>&lt;/<span class="end-tag">ows:Role</span>&gt;</span><span>
+<span id="line48"></span>  </span><span>&lt;/<span class="end-tag">ows:ServiceContact</span>&gt;</span><span>
+<span id="line49"></span></span><span>&lt;/<span class="end-tag">ows:ServiceProvider</span>&gt;</span><span>
+<span id="line50"></span></span><span>&lt;<span class="start-tag">ows:OperationsMetadata</span>&gt;</span><span>
+<span id="line51"></span>  </span><span>&lt;<span class="start-tag">ows:Operation</span> <span class="attribute-name">name</span>="<a class="attribute-value">GetCapabilities</a>"&gt;</span><span>
+<span id="line52"></span>    </span><span>&lt;<span class="start-tag">ows:DCP</span>&gt;</span><span>
+<span id="line53"></span>      </span><span>&lt;<span class="start-tag">ows:HTTP</span>&gt;</span><span>
+<span id="line54"></span>        </span><span>&lt;<span class="start-tag">ows:Get</span> <span class="attribute-name">xlink:href</span>="<a class="attribute-value" href="view-source:http://dservices7.arcgis.com/tTI4gHsuvoSHedcm/arcgis/services/tTI4gHsuvoSHedcm/lineTestWFS/MapServer/WFSServer?">http://dservices7.arcgis.com/tTI4gHsuvoSHedcm/arcgis/services/tTI4gHsuvoSHedcm/lineTestWFS/MapServer/WFSServer?</a>"<span>/</span>&gt;</span><span>
+<span id="line55"></span>        </span><span>&lt;<span class="start-tag">ows:Post</span> <span class="attribute-name">xlink:href</span>="<a class="attribute-value" href="view-source:http://dservices7.arcgis.com/tTI4gHsuvoSHedcm/arcgis/services/tTI4gHsuvoSHedcm/lineTestWFS/MapServer/WFSServer">http://dservices7.arcgis.com/tTI4gHsuvoSHedcm/arcgis/services/tTI4gHsuvoSHedcm/lineTestWFS/MapServer/WFSServer</a>"<span>/</span>&gt;</span><span>
+<span id="line56"></span>      </span><span>&lt;/<span class="end-tag">ows:HTTP</span>&gt;</span><span>
+<span id="line57"></span>    </span><span>&lt;/<span class="end-tag">ows:DCP</span>&gt;</span><span>
+<span id="line58"></span>    </span><span>&lt;<span class="start-tag">ows:Parameter</span> <span class="attribute-name">name</span>="<a class="attribute-value">AcceptVersions</a>"&gt;</span><span>
+<span id="line59"></span>      </span><span>&lt;<span class="start-tag">ows:Value</span>&gt;</span><span>1.1.0</span><span>&lt;/<span class="end-tag">ows:Value</span>&gt;</span><span>
+<span id="line60"></span>    </span><span>&lt;/<span class="end-tag">ows:Parameter</span>&gt;</span><span>
+<span id="line61"></span>    </span><span>&lt;<span class="start-tag">ows:Parameter</span> <span class="attribute-name">name</span>="<a class="attribute-value">AcceptFormats</a>"&gt;</span><span>
+<span id="line62"></span>      </span><span>&lt;<span class="start-tag">ows:Value</span>&gt;</span><span>GML3</span><span>&lt;/<span class="end-tag">ows:Value</span>&gt;</span><span>
+<span id="line63"></span>      </span><span>&lt;<span class="start-tag">ows:Value</span>&gt;</span><span>text/xml;subType=gml/3.1.1</span><span>&lt;/<span class="end-tag">ows:Value</span>&gt;</span><span>
+<span id="line64"></span>    </span><span>&lt;/<span class="end-tag">ows:Parameter</span>&gt;</span><span>
+<span id="line65"></span>  </span><span>&lt;/<span class="end-tag">ows:Operation</span>&gt;</span><span>
+<span id="line66"></span>  </span><span>&lt;<span class="start-tag">ows:Operation</span> <span class="attribute-name">name</span>="<a class="attribute-value">DescribeFeatureType</a>"&gt;</span><span>
+<span id="line67"></span>    </span><span>&lt;<span class="start-tag">ows:DCP</span>&gt;</span><span>
+<span id="line68"></span>      </span><span>&lt;<span class="start-tag">ows:HTTP</span>&gt;</span><span>
+<span id="line69"></span>        </span><span>&lt;<span class="start-tag">ows:Get</span> <span class="attribute-name">xlink:href</span>="<a class="attribute-value" href="view-source:http://dservices7.arcgis.com/tTI4gHsuvoSHedcm/arcgis/services/tTI4gHsuvoSHedcm/lineTestWFS/MapServer/WFSServer?">http://dservices7.arcgis.com/tTI4gHsuvoSHedcm/arcgis/services/tTI4gHsuvoSHedcm/lineTestWFS/MapServer/WFSServer?</a>"<span>/</span>&gt;</span><span>
+<span id="line70"></span>        </span><span>&lt;<span class="start-tag">ows:Post</span> <span class="attribute-name">xlink:href</span>="<a class="attribute-value" href="view-source:http://dservices7.arcgis.com/tTI4gHsuvoSHedcm/arcgis/services/tTI4gHsuvoSHedcm/lineTestWFS/MapServer/WFSServer">http://dservices7.arcgis.com/tTI4gHsuvoSHedcm/arcgis/services/tTI4gHsuvoSHedcm/lineTestWFS/MapServer/WFSServer</a>"<span>/</span>&gt;</span><span>
+<span id="line71"></span>      </span><span>&lt;/<span class="end-tag">ows:HTTP</span>&gt;</span><span>
+<span id="line72"></span>    </span><span>&lt;/<span class="end-tag">ows:DCP</span>&gt;</span><span>
+<span id="line73"></span>    </span><span>&lt;<span class="start-tag">ows:Parameter</span> <span class="attribute-name">name</span>="<a class="attribute-value">outputFormat</a>"&gt;</span><span>
+<span id="line74"></span>      </span><span>&lt;<span class="start-tag">ows:Value</span>&gt;</span><span>GML3</span><span>&lt;/<span class="end-tag">ows:Value</span>&gt;</span><span>
+<span id="line75"></span>      </span><span>&lt;<span class="start-tag">ows:Value</span>&gt;</span><span>text/xml;subType=gml/3.1.1</span><span>&lt;/<span class="end-tag">ows:Value</span>&gt;</span><span>
+<span id="line76"></span>    </span><span>&lt;/<span class="end-tag">ows:Parameter</span>&gt;</span><span>
+<span id="line77"></span>  </span><span>&lt;/<span class="end-tag">ows:Operation</span>&gt;</span><span>
+<span id="line78"></span>  </span><span>&lt;<span class="start-tag">ows:Operation</span> <span class="attribute-name">name</span>="<a class="attribute-value">GetFeature</a>"&gt;</span><span>
+<span id="line79"></span>    </span><span>&lt;<span class="start-tag">ows:DCP</span>&gt;</span><span>
+<span id="line80"></span>      </span><span>&lt;<span class="start-tag">ows:HTTP</span>&gt;</span><span>
+<span id="line81"></span>        </span><span>&lt;<span class="start-tag">ows:Get</span> <span class="attribute-name">xlink:href</span>="<a class="attribute-value" href="view-source:http://dservices7.arcgis.com/tTI4gHsuvoSHedcm/arcgis/services/tTI4gHsuvoSHedcm/lineTestWFS/MapServer/WFSServer?">http://dservices7.arcgis.com/tTI4gHsuvoSHedcm/arcgis/services/tTI4gHsuvoSHedcm/lineTestWFS/MapServer/WFSServer?</a>"<span>/</span>&gt;</span><span>
+<span id="line82"></span>        </span><span>&lt;<span class="start-tag">ows:Post</span> <span class="attribute-name">xlink:href</span>="<a class="attribute-value" href="view-source:http://dservices7.arcgis.com/tTI4gHsuvoSHedcm/arcgis/services/tTI4gHsuvoSHedcm/lineTestWFS/MapServer/WFSServer">http://dservices7.arcgis.com/tTI4gHsuvoSHedcm/arcgis/services/tTI4gHsuvoSHedcm/lineTestWFS/MapServer/WFSServer</a>"<span>/</span>&gt;</span><span>
+<span id="line83"></span>      </span><span>&lt;/<span class="end-tag">ows:HTTP</span>&gt;</span><span>
+<span id="line84"></span>    </span><span>&lt;/<span class="end-tag">ows:DCP</span>&gt;</span><span>
+<span id="line85"></span>    </span><span>&lt;<span class="start-tag">ows:Parameter</span> <span class="attribute-name">name</span>="<a class="attribute-value">resultType</a>"&gt;</span><span>
+<span id="line86"></span>      </span><span>&lt;<span class="start-tag">ows:Value</span>&gt;</span><span>results</span><span>&lt;/<span class="end-tag">ows:Value</span>&gt;</span><span>
+<span id="line87"></span>      </span><span>&lt;<span class="start-tag">ows:Value</span>&gt;</span><span>hits</span><span>&lt;/<span class="end-tag">ows:Value</span>&gt;</span><span>
+<span id="line88"></span>    </span><span>&lt;/<span class="end-tag">ows:Parameter</span>&gt;</span><span>
+<span id="line89"></span>    </span><span>&lt;<span class="start-tag">ows:Parameter</span> <span class="attribute-name">name</span>="<a class="attribute-value">outputFormat</a>"&gt;</span><span>
+<span id="line90"></span>      </span><span>&lt;<span class="start-tag">ows:Value</span>&gt;</span><span>GML3</span><span>&lt;/<span class="end-tag">ows:Value</span>&gt;</span><span>
+<span id="line91"></span>      </span><span>&lt;<span class="start-tag">ows:Value</span>&gt;</span><span>text/xml;subType=gml/3.1.1</span><span>&lt;/<span class="end-tag">ows:Value</span>&gt;</span><span>
+<span id="line92"></span>    </span><span>&lt;/<span class="end-tag">ows:Parameter</span>&gt;</span><span>
+<span id="line93"></span>  </span><span>&lt;/<span class="end-tag">ows:Operation</span>&gt;</span><span>
+<span id="line94"></span>  </span><span>&lt;<span class="start-tag">ows:Constraint</span> <span class="attribute-name">name</span>="<a class="attribute-value">DefaultMaxFeatures</a>"&gt;</span><span></span><span>&lt;<span class="start-tag">ows:Value</span>&gt;</span><span>3000</span><span>&lt;/<span class="end-tag">ows:Value</span>&gt;</span><span></span><span>&lt;/<span class="end-tag">ows:Constraint</span>&gt;</span><span>
+<span id="line95"></span></span><span>&lt;/<span class="end-tag">ows:OperationsMetadata</span>&gt;</span><span>
+<span id="line96"></span></span><span>&lt;<span class="start-tag">wfs:FeatureTypeList</span>&gt;</span><span>
+<span id="line97"></span>    </span><span>&lt;<span class="start-tag">wfs:Operations</span>&gt;</span><span>
+<span id="line98"></span>      </span><span>&lt;<span class="start-tag">wfs:Operation</span>&gt;</span><span>Query</span><span>&lt;/<span class="end-tag">wfs:Operation</span>&gt;</span><span>
+<span id="line99"></span>    </span><span>&lt;/<span class="end-tag">wfs:Operations</span>&gt;</span><span>
+<span id="line100"></span>  </span><span>&lt;<span class="start-tag">wfs:FeatureType</span>&gt;</span><span>
+<span id="line101"></span>    </span><span>&lt;<span class="start-tag">wfs:Name</span>&gt;</span><span>lineTestWFS:lineTest</span><span>&lt;/<span class="end-tag">wfs:Name</span>&gt;</span><span>
+<span id="line102"></span>    </span><span>&lt;<span class="start-tag">wfs:Title</span>&gt;</span><span>lineTest</span><span>&lt;/<span class="end-tag">wfs:Title</span>&gt;</span><span>
+<span id="line103"></span>    </span><span>&lt;<span class="start-tag">wfs:DefaultSRS</span>&gt;</span><span>urn:ogc:def:crs:EPSG::27700</span><span>&lt;/<span class="end-tag">wfs:DefaultSRS</span>&gt;</span><span>
+<span id="line104"></span>    </span><span>&lt;<span class="start-tag">wfs:OutputFormats</span>&gt;</span><span>
+<span id="line105"></span>      </span><span>&lt;<span class="start-tag">wfs:Format</span>&gt;</span><span>GML3</span><span>&lt;/<span class="end-tag">wfs:Format</span>&gt;</span><span>
+<span id="line106"></span>      </span><span>&lt;<span class="start-tag">wfs:Format</span>&gt;</span><span>text/xml;subType=gml/3.1.1</span><span>&lt;/<span class="end-tag">wfs:Format</span>&gt;</span><span>
+<span id="line107"></span>    </span><span>&lt;/<span class="end-tag">wfs:OutputFormats</span>&gt;</span><span>
+<span id="line108"></span>    </span><span>&lt;<span class="start-tag">ows:WGS84BoundingBox</span>&gt;</span><span>
+<span id="line109"></span>      </span><span>&lt;<span class="start-tag">ows:LowerCorner</span>&gt;</span><span>-1.26534247 52.36731355</span><span>&lt;/<span class="end-tag">ows:LowerCorner</span>&gt;</span><span>
+<span id="line110"></span>      </span><span>&lt;<span class="start-tag">ows:UpperCorner</span>&gt;</span><span>-0.09932745 52.61696093</span><span>&lt;/<span class="end-tag">ows:UpperCorner</span>&gt;</span><span>
+<span id="line111"></span>    </span><span>&lt;/<span class="end-tag">ows:WGS84BoundingBox</span>&gt;</span><span>
+<span id="line112"></span>  </span><span>&lt;/<span class="end-tag">wfs:FeatureType</span>&gt;</span><span>
+<span id="line113"></span></span><span>&lt;/<span class="end-tag">wfs:FeatureTypeList</span>&gt;</span><span>
+<span id="line114"></span></span><span>&lt;<span class="start-tag">ogc:Filter_Capabilities</span>&gt;</span><span>
+<span id="line115"></span>  </span><span>&lt;<span class="start-tag">ogc:Spatial_Capabilities</span>&gt;</span><span>
+<span id="line116"></span>    </span><span>&lt;<span class="start-tag">ogc:GeometryOperands</span>&gt;</span><span>
+<span id="line117"></span>      </span><span>&lt;<span class="start-tag">ogc:GeometryOperand</span>&gt;</span><span>gml:Envelope</span><span>&lt;/<span class="end-tag">ogc:GeometryOperand</span>&gt;</span><span>
+<span id="line118"></span>      </span><span>&lt;<span class="start-tag">ogc:GeometryOperand</span>&gt;</span><span>gml:Point</span><span>&lt;/<span class="end-tag">ogc:GeometryOperand</span>&gt;</span><span>
+<span id="line119"></span>      </span><span>&lt;<span class="start-tag">ogc:GeometryOperand</span>&gt;</span><span>gml:Polygon</span><span>&lt;/<span class="end-tag">ogc:GeometryOperand</span>&gt;</span><span>
+<span id="line120"></span>      </span><span>&lt;<span class="start-tag">ogc:GeometryOperand</span>&gt;</span><span>gml:LineString</span><span>&lt;/<span class="end-tag">ogc:GeometryOperand</span>&gt;</span><span>
+<span id="line121"></span>    </span><span>&lt;/<span class="end-tag">ogc:GeometryOperands</span>&gt;</span><span>
+<span id="line122"></span>    </span><span>&lt;<span class="start-tag">ogc:SpatialOperators</span>&gt;</span><span>
+<span id="line123"></span>      </span><span>&lt;<span class="start-tag">ogc:SpatialOperator</span> <span class="attribute-name">name</span>="<a class="attribute-value">BBOX</a>"<span>/</span>&gt;</span><span>
+<span id="line124"></span>      </span><span>&lt;<span class="start-tag">ogc:SpatialOperator</span> <span class="attribute-name">name</span>="<a class="attribute-value">Equals</a>"<span>/</span>&gt;</span><span>
+<span id="line125"></span>      </span><span>&lt;<span class="start-tag">ogc:SpatialOperator</span> <span class="attribute-name">name</span>="<a class="attribute-value">Disjoint</a>"<span>/</span>&gt;</span><span>
+<span id="line126"></span>      </span><span>&lt;<span class="start-tag">ogc:SpatialOperator</span> <span class="attribute-name">name</span>="<a class="attribute-value">Intersects</a>"<span>/</span>&gt;</span><span>
+<span id="line127"></span>      </span><span>&lt;<span class="start-tag">ogc:SpatialOperator</span> <span class="attribute-name">name</span>="<a class="attribute-value">Crosses</a>"<span>/</span>&gt;</span><span>
+<span id="line128"></span>      </span><span>&lt;<span class="start-tag">ogc:SpatialOperator</span> <span class="attribute-name">name</span>="<a class="attribute-value">Touches</a>"<span>/</span>&gt;</span><span>
+<span id="line129"></span>      </span><span>&lt;<span class="start-tag">ogc:SpatialOperator</span> <span class="attribute-name">name</span>="<a class="attribute-value">Within</a>"<span>/</span>&gt;</span><span>
+<span id="line130"></span>      </span><span>&lt;<span class="start-tag">ogc:SpatialOperator</span> <span class="attribute-name">name</span>="<a class="attribute-value">Contains</a>"<span>/</span>&gt;</span><span>
+<span id="line131"></span>      </span><span>&lt;<span class="start-tag">ogc:SpatialOperator</span> <span class="attribute-name">name</span>="<a class="attribute-value">Overlaps</a>"<span>/</span>&gt;</span><span>
+<span id="line132"></span>    </span><span>&lt;/<span class="end-tag">ogc:SpatialOperators</span>&gt;</span><span>
+<span id="line133"></span>  </span><span>&lt;/<span class="end-tag">ogc:Spatial_Capabilities</span>&gt;</span><span>
+<span id="line134"></span>  </span><span>&lt;<span class="start-tag">ogc:Scalar_Capabilities</span>&gt;</span><span>
+<span id="line135"></span>    </span><span>&lt;<span class="start-tag">ogc:LogicalOperators</span><span>/</span>&gt;</span><span>
+<span id="line136"></span>    </span><span>&lt;<span class="start-tag">ogc:ComparisonOperators</span>&gt;</span><span>
+<span id="line137"></span>      </span><span>&lt;<span class="start-tag">ogc:ComparisonOperator</span>&gt;</span><span>EqualTo</span><span>&lt;/<span class="end-tag">ogc:ComparisonOperator</span>&gt;</span><span>
+<span id="line138"></span>      </span><span>&lt;<span class="start-tag">ogc:ComparisonOperator</span>&gt;</span><span>NotEqualTo</span><span>&lt;/<span class="end-tag">ogc:ComparisonOperator</span>&gt;</span><span>
+<span id="line139"></span>      </span><span>&lt;<span class="start-tag">ogc:ComparisonOperator</span>&gt;</span><span>LessThan</span><span>&lt;/<span class="end-tag">ogc:ComparisonOperator</span>&gt;</span><span>
+<span id="line140"></span>      </span><span>&lt;<span class="start-tag">ogc:ComparisonOperator</span>&gt;</span><span>GreaterThan</span><span>&lt;/<span class="end-tag">ogc:ComparisonOperator</span>&gt;</span><span>
+<span id="line141"></span>      </span><span>&lt;<span class="start-tag">ogc:ComparisonOperator</span>&gt;</span><span>LessThanEqualTo</span><span>&lt;/<span class="end-tag">ogc:ComparisonOperator</span>&gt;</span><span>
+<span id="line142"></span>      </span><span>&lt;<span class="start-tag">ogc:ComparisonOperator</span>&gt;</span><span>GreaterThanEqualTo</span><span>&lt;/<span class="end-tag">ogc:ComparisonOperator</span>&gt;</span><span>
+<span id="line143"></span>      </span><span>&lt;<span class="start-tag">ogc:ComparisonOperator</span>&gt;</span><span>Like</span><span>&lt;/<span class="end-tag">ogc:ComparisonOperator</span>&gt;</span><span>
+<span id="line144"></span>      </span><span>&lt;<span class="start-tag">ogc:ComparisonOperator</span>&gt;</span><span>Between</span><span>&lt;/<span class="end-tag">ogc:ComparisonOperator</span>&gt;</span><span>
+<span id="line145"></span>      </span><span>&lt;<span class="start-tag">ogc:ComparisonOperator</span>&gt;</span><span>NullCheck</span><span>&lt;/<span class="end-tag">ogc:ComparisonOperator</span>&gt;</span><span>
+<span id="line146"></span>    </span><span>&lt;/<span class="end-tag">ogc:ComparisonOperators</span>&gt;</span><span>
+<span id="line147"></span>  </span><span>&lt;/<span class="end-tag">ogc:Scalar_Capabilities</span>&gt;</span><span>
+<span id="line148"></span>  </span><span>&lt;<span class="start-tag">ogc:Id_Capabilities</span>&gt;</span><span>
+<span id="line149"></span>    </span><span>&lt;<span class="start-tag">ogc:EID</span><span>/</span>&gt;</span><span>
+<span id="line150"></span>    </span><span>&lt;<span class="start-tag">ogc:FID</span><span>/</span>&gt;</span><span>
+<span id="line151"></span>  </span><span>&lt;/<span class="end-tag">ogc:Id_Capabilities</span>&gt;</span><span>
+<span id="line152"></span></span><span>&lt;/<span class="end-tag">ogc:Filter_Capabilities</span>&gt;</span><span>
+<span id="line153"></span></span><span>&lt;/<span class="end-tag">wfs:WFS_Capabilities</span>&gt;</span><span>
+<span id="line154"></span></span></pre><menu type="context" id="actions"><menuitem id="goToLine" label="Go to Line…" accesskey="L"></menuitem><menuitem id="wrapLongLines" label="Wrap Long Lines" type="checkbox" checked="true"></menuitem><menuitem id="highlightSyntax" label="Syntax Highlighting" type="checkbox" checked="true"></menuitem></menu></body></html>

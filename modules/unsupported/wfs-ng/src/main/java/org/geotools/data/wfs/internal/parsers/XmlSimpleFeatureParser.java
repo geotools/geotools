@@ -1,19 +1,18 @@
 /*
- *    GeoTools - The Open Source Java GIS Toolkit
- *    http://geotools.org
+ * GeoTools - The Open Source Java GIS Toolkit
+ * http://geotools.org
  *
- *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
+ * (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
- *    This library is free software; you can redistribute it and/or
- *    modify it under the terms of the GNU Lesser General Public
- *    License as published by the Free Software Foundation;
- *    version 2.1 of the License.
+ * This library is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU Lesser General Public License as published by the Free Software Foundation; version 2.1 of
+ * the License.
  *
- *    This library is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *    Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  */
+
 package org.geotools.data.wfs.internal.parsers;
 
 import static org.xmlpull.v1.XmlPullParser.END_TAG;
@@ -32,6 +31,7 @@ import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.data.wfs.internal.Loggers;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.geometry.jts.MultiCurve;
 import org.geotools.gml3.GML;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -260,6 +260,8 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
             geom = parseMultiPoint(dimension, crs);
         } else if (GML.MultiLineString.equals(startingGeometryTagName)) {
             geom = parseMultiLineString(dimension, crs);
+        } else if (GML.MultiCurve.equals(startingGeometryTagName)) {
+            geom = parseMultiCurve(dimension, crs);
         } else if (GML.MultiSurface.equals(startingGeometryTagName)) {
             geom = parseMultiSurface(dimension, crs);
         } else if (GML.MultiPolygon.equals(startingGeometryTagName)) {
@@ -274,6 +276,47 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
                 startingGeometryTagName.getNamespaceURI(),
                 startingGeometryTagName.getLocalPart());
 
+        return geom;
+    }
+
+    private Geometry parseMultiCurve(int dimension, CoordinateReferenceSystem crs)
+            throws XmlPullParserException, IOException, NoSuchAuthorityCodeException,
+                    FactoryException {
+
+        parser.require(START_TAG, GML.NAMESPACE, GML.MultiCurve.getLocalPart());
+
+        List<LineString> lines = new ArrayList<>(2);
+
+        while (true) {
+            parser.nextTag();
+            if (END_TAG == parser.getEventType()
+                    && GML.MultiCurve.getLocalPart().equals(parser.getName())) {
+                // we're done
+                break;
+            }
+            parser.require(START_TAG, GML.NAMESPACE, GML.curveMember.getLocalPart());
+            parser.nextTag();
+            final QName startingGeometryTagName =
+                    new QName(parser.getNamespace(), parser.getName());
+            if (GML.LineString.equals(startingGeometryTagName)) {
+                lines.add(parseLineString(dimension, crs));
+            } else if (GML.CompositeCurve.equals(startingGeometryTagName)) {
+                throw new UnsupportedOperationException(
+                        GML.CompositeCurve + " is not supported yet");
+            } else if (GML.Curve.equals(startingGeometryTagName)) {
+                throw new UnsupportedOperationException(GML.Curve + " is not supported yet");
+            } else if (GML.OrientableCurve.equals(startingGeometryTagName)) {
+                throw new UnsupportedOperationException(
+                        GML.OrientableCurve + " is not supported yet");
+            }
+
+            parser.nextTag();
+            parser.require(END_TAG, GML.NAMESPACE, GML.curveMember.getLocalPart());
+        }
+
+        parser.require(END_TAG, GML.NAMESPACE, GML.MultiCurve.getLocalPart());
+
+        MultiCurve geom = new MultiCurve(lines, geomFac, 1.0);
         return geom;
     }
 

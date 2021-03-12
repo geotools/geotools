@@ -104,6 +104,7 @@
           <generateTests>true</generateTests>
           <generateTypeBindings>true</generateTypeBindings>
           <generateXsd>true</generateXsd>
+          <relativeSchemaReference>true</relativeSchemaReference>
           <targetPrefix>ows</targetPrefix>
           <includeComplexTypes>true</includeComplexTypes>
           <bindingConstructorArguments>

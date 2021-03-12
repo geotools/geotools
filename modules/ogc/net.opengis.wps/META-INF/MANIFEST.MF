@@ -2,17 +2,36 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: net.opengis.wps;singleton:=true
+Automatic-Module-Name: net.opengis.wps
 Bundle-Version: 1.0.0
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Export-Package: net.opengis.wps10,
  net.opengis.wps10.impl,
- net.opengis.wps10.util
+ net.opengis.wps10.util,
+ net.opengis.wps20,
+ net.opengis.wps20.impl,
+ net.opengis.wps20.util,
+ org.w3._2001.schema,
+ org.w3._2001.schema.impl,
+ org.w3._2001.schema.util,
+ org.w3._2001.impl,
+ org.w3._2001.util,
+ net.opengis.wps.wps20,
+ net.opengis.wps.wps20.impl,
+ net.opengis.wps.wps20.util,
+ schema,
+ schema.impl,
+ schema.util,
+ wps20,
+ wps20.impl,
+ wps20.util
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
+ org.eclipse.emf.ecore.xmi;visibility:=reexport,
  net.opengis.ows;visibility:=reexport,
- org.w3.xlink
+ org.w3.xlink;visibility:=reexport
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy

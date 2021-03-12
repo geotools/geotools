@@ -1,0 +1,101 @@
+package org.geotools.wps.v2_0.bindings;
+
+import javax.xml.namespace.QName;
+import net.opengis.wps20.Wps20Factory;
+import org.geotools.wps.v2_0.WPS;
+import org.geotools.xsd.AbstractComplexEMFBinding;
+
+/**
+ * Binding object for the type http://www.opengis.net/wps/2.0:_LiteralValue.
+ *
+ * <p>
+ *
+ * <pre>
+ *  <code>
+ *  &lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;complexType name="_LiteralValue" xmlns="http://www.w3.org/2001/XMLSchema"&gt;
+ *
+ *  			&lt;annotation&gt;
+ *
+ *  				&lt;documentation&gt;
+ *
+ *  					Representation of a simple literal value (such as an integer, a real number, or a string).
+ *
+ *  				&lt;/documentation&gt;
+ *
+ *  			&lt;/annotation&gt;
+ *
+ *  			&lt;simpleContent&gt;
+ *
+ *  				&lt;extension base="ows:ValueType"&gt;
+ *
+ *  					&lt;annotation&gt;
+ *
+ *  						&lt;documentation&gt;
+ *
+ *  							String representation of the actual value (e.g., "49").
+ *
+ *  						&lt;/documentation&gt;
+ *
+ *  					&lt;/annotation&gt;
+ *
+ *  					&lt;attribute name="dataType" type="anyURI" use="optional"&gt;
+ *
+ *  						&lt;annotation&gt;
+ *
+ *  							&lt;documentation&gt;
+ *
+ *  								The data type of the value.
+ *
+ *  							&lt;/documentation&gt;
+ *
+ *  						&lt;/annotation&gt;
+ *
+ *  					&lt;/attribute&gt;
+ *
+ *  					&lt;attribute name="uom" type="anyURI" use="optional"&gt;
+ *
+ *  						&lt;annotation&gt;
+ *
+ *  							&lt;documentation&gt;
+ *
+ *  								The unit of measurement of the value.
+ *
+ *  							&lt;/documentation&gt;
+ *
+ *  						&lt;/annotation&gt;
+ *
+ *  					&lt;/attribute&gt;
+ *
+ *  				&lt;/extension&gt;
+ *
+ *  			&lt;/simpleContent&gt;
+ *
+ *  		&lt;/complexType&gt;
+ *
+ *   </code>
+ *  </pre>
+ *
+ * @generated
+ */
+public class _LiteralValueBinding extends AbstractComplexEMFBinding {
+
+    public _LiteralValueBinding(Wps20Factory factory) {
+        super(factory);
+    }
+
+    /** @generated */
+    public QName getTarget() {
+        return WPS._LiteralValue;
+    }
+
+    /**
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated modifiable
+     */
+    public Class getType() {
+        return super.getType();
+    }
+}

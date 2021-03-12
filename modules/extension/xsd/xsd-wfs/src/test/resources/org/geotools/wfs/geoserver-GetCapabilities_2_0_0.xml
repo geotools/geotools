@@ -27,6 +27,7 @@
     </ows:ServiceIdentification>
     <ows:ServiceProvider>
         <ows:ProviderName>The ancient geographes INC</ows:ProviderName>
+           <ows:ProviderSite xlink:href="http://www.zoo-project.org"/>
         <ows:ServiceContact>
             <ows:IndividualName>Claudius Ptolomaeus</ows:IndividualName>
             <ows:PositionName>Chief geographer</ows:PositionName>

@@ -1,7 +1,6 @@
 package org.geotools.wps.v2_0;
 
 import java.util.List;
-import junit.framework.TestCase;
 import net.opengis.ows20.AddressType;
 import net.opengis.ows20.ContactType;
 import net.opengis.ows20.DCPType;
@@ -19,16 +18,17 @@ import net.opengis.wps20.ProcessSummaryType;
 import net.opengis.wps20.WPSCapabilitiesType;
 import org.geotools.xsd.Parser;
 import org.junit.Assert;
+import org.junit.Test;
 
-public class GetCapabilitiesTest extends TestCase {
+public class GetCapabilitiesTest extends WPSTestSupport {
 
+    @Test
     public void testParse() throws Exception {
-        WPSConfiguration wps = new WPSConfiguration();
-        Parser parser = new Parser(wps);
+        Parser parser = new Parser(createConfiguration());
 
         Object o =
                 parser.parse(getClass().getResourceAsStream("wpsCapabilitiesDocumentExample.xml"));
-        assertTrue(o instanceof WPSCapabilitiesType);
+        Assert.assertTrue(o instanceof WPSCapabilitiesType);
 
         WPSCapabilitiesType caps = (WPSCapabilitiesType) o;
         assertServiceIdentification(caps.getServiceIdentification());

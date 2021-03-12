@@ -1,26 +1,26 @@
 package org.geotools.wps.v2_0;
 
-import junit.framework.TestCase;
 import net.opengis.wps20.DataOutputType;
 import net.opengis.wps20.GetResultType;
 import net.opengis.wps20.ResultType;
 import org.geotools.xsd.Encoder;
 import org.geotools.xsd.Parser;
 import org.junit.Assert;
+import org.junit.Test;
 
-public class WPSResultTest extends TestCase {
+public class WPSResultTest extends WPSTestSupport {
 
+    @Test
     public void testParseResultRequest() throws Exception {
-        WPSConfiguration wps = new WPSConfiguration();
-        Parser parser = new Parser(wps);
+        Parser parser = new Parser(createConfiguration());
 
         Object o = parser.parse(getClass().getResourceAsStream("wpsResultRequestExample.xml"));
-        assertTrue(o instanceof GetResultType);
+        Assert.assertTrue(o instanceof GetResultType);
 
         GetResultType resultType = (GetResultType) o;
-        assertEquals("FB6DD4B0-A2BB-11E3-A5E2-0800200C9A66", resultType.getJobID());
+        Assert.assertEquals("FB6DD4B0-A2BB-11E3-A5E2-0800200C9A66", resultType.getJobID());
 
-        Encoder encoder = new Encoder(wps);
+        Encoder encoder = new Encoder(createConfiguration());
         String encodedValue = encoder.encodeAsString(o, WPS.GetResult);
 
         Assert.assertTrue(
@@ -28,15 +28,14 @@ public class WPSResultTest extends TestCase {
                         "<wps:JobID>FB6DD4B0-A2BB-11E3-A5E2-0800200C9A66</wps:JobID>"));
     }
 
+    @Test
     public void testParseResultResponse() throws Exception {
-        WPSConfiguration wps = new WPSConfiguration();
-        Parser parser = new Parser(wps);
-
+        Parser parser = new Parser(createConfiguration());
         Object o = parser.parse(getClass().getResourceAsStream("wpsResultResponseExample.xml"));
-        assertTrue(o instanceof ResultType);
+        Assert.assertTrue(o instanceof ResultType);
 
         ResultType resultType = (ResultType) o;
-        assertEquals("FB6DD4B0-A2BB-11E3-A5E2-0800200C9A66", resultType.getJobID());
+        Assert.assertEquals("FB6DD4B0-A2BB-11E3-A5E2-0800200C9A66", resultType.getJobID());
 
         Assert.assertNotNull(resultType.getExpirationDate());
         Assert.assertNotNull(resultType.getOutput());
@@ -50,7 +49,7 @@ public class WPSResultTest extends TestCase {
                 "http://result.data.server/FB6DD4B0-A2BB-11E3-A5E2-0800200C9A66/BUFFERED_GEOMETRY.xml",
                 output.getReference().getHref());
 
-        Encoder encoder = new Encoder(wps);
+        Encoder encoder = new Encoder(createConfiguration());
         String encodedValue = encoder.encodeAsString(o, WPS.Result);
 
         Assert.assertTrue(

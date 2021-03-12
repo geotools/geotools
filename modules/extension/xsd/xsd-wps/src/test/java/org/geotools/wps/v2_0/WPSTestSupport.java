@@ -10,6 +10,7 @@ import org.geotools.xsd.test.XMLTestSupport;
  */
 public class WPSTestSupport extends XMLTestSupport {
 
+    @Override
     protected Configuration createConfiguration() {
         return new WPSConfiguration();
     }

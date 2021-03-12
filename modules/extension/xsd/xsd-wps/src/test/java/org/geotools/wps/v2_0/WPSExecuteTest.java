@@ -1,20 +1,20 @@
 package org.geotools.wps.v2_0;
 
-import junit.framework.TestCase;
 import net.opengis.wps20.DataInputType;
 import net.opengis.wps20.ExecuteRequestType;
 import net.opengis.wps20.OutputDefinitionType;
 import org.geotools.xsd.Parser;
 import org.junit.Assert;
+import org.junit.Test;
 
-public class WPSExecuteTest extends TestCase {
+public class WPSExecuteTest extends WPSTestSupport {
 
+    @Test
     public void testParse() throws Exception {
-        WPSConfiguration wps = new WPSConfiguration();
-        Parser parser = new Parser(wps);
+        Parser parser = new Parser(createConfiguration());
 
         Object o = parser.parse(getClass().getResourceAsStream("wpsExecuteRequestExample.xml"));
-        assertTrue(o instanceof ExecuteRequestType);
+        Assert.assertTrue(o instanceof ExecuteRequestType);
 
         ExecuteRequestType executeRequestType = (ExecuteRequestType) o;
 

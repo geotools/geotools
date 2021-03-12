@@ -2,7 +2,6 @@ package org.geotools.wps.v2_0;
 
 import java.util.Arrays;
 import java.util.List;
-import junit.framework.TestCase;
 import net.opengis.ows20.LanguageStringType;
 import net.opengis.ows20.MetadataType;
 import net.opengis.wps20.ComplexDataType;
@@ -15,15 +14,16 @@ import net.opengis.wps20.ProcessOfferingsType;
 import org.eclipse.emf.common.util.EList;
 import org.geotools.xsd.Parser;
 import org.junit.Assert;
+import org.junit.Test;
 
-public class DescribeProcessTest extends TestCase {
+public class DescribeProcessTest extends WPSTestSupport {
 
+    @Test
     public void testParse() throws Exception {
-        WPSConfiguration wps = new WPSConfiguration();
-        Parser parser = new Parser(wps);
+        Parser parser = new Parser(createConfiguration());
 
         Object o = parser.parse(getClass().getResourceAsStream("wpsProcessOfferingsExample.xml"));
-        assertTrue(o instanceof ProcessOfferingsType);
+        Assert.assertTrue(o instanceof ProcessOfferingsType);
 
         ProcessOfferingsType processOfferings = (ProcessOfferingsType) o;
 

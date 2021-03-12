@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2021, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.wps.v2_0;
 
 import java.util.Set;
@@ -24,16 +40,19 @@ public final class WPS extends XSD {
     /** private constructor */
     private WPS() {}
 
+    @Override
     protected void addDependencies(Set<XSD> dependencies) {
         dependencies.add(OWS.getInstance());
     }
 
     /** Returns 'http://www.opengis.net/wps/2.0'. */
+    @Override
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
     /** Returns the location of 'wps.xsd.'. */
+    @Override
     public String getSchemaLocation() {
         return getClass().getResource("wps.xsd").toString();
     }

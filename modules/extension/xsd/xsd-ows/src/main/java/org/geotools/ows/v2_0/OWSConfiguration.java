@@ -214,6 +214,7 @@ public class OWSConfiguration extends Configuration {
                 new ComplexEMFBinding(Ows20Factory.eINSTANCE, OWS._rangeClosure));
     }
 
+    @Override
     protected final void registerBindings(MutablePicoContainer container) {
         // Types
         container.registerComponentImplementation(

@@ -226,10 +226,9 @@ public class CoverageClassStatsTest {
                 new GridGeometry2D(
                         new GeneralGridEnvelope(img, 2), PixelInCell.CELL_CORNER, tx, crs, null);
 
-        GridSampleDimension[] bands =
-                new GridSampleDimension[] {
-                    new GridSampleDimension(ColorInterpretation.GRAY_INDEX.name())
-                };
+        GridSampleDimension[] bands = {
+            new GridSampleDimension(ColorInterpretation.GRAY_INDEX.name())
+        };
         return factory.create("test", img, gridGeom, bands, null, null);
     }
 }

@@ -305,8 +305,7 @@ public class NetCDFMosaicReaderTest {
             // prepare params
             ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
             time.setValue(Arrays.asList(parseTimeStamp(t1)));
-            GeneralParameterValue[] params =
-                    new GeneralParameterValue[] {NO_DEFERRED_LOADING_PARAM, time};
+            GeneralParameterValue[] params = {NO_DEFERRED_LOADING_PARAM, time};
             // read first
             GridCoverage2D coverage1 = reader.read(params);
             time.setValue(Arrays.asList(parseTimeStamp(t2)));
@@ -952,8 +951,7 @@ public class NetCDFMosaicReaderTest {
                             add(timeD);
                         }
                     });
-            GeneralParameterValue[] params =
-                    new GeneralParameterValue[] {time, NO_DEFERRED_LOADING_PARAM};
+            GeneralParameterValue[] params = {time, NO_DEFERRED_LOADING_PARAM};
             GridCoverage2D coverage1 = reader.read(params);
             assertNotData(coverage1, -999d);
             // Specify a new time (Check if two times returns two different coverages)
@@ -1542,8 +1540,7 @@ public class NetCDFMosaicReaderTest {
         @SuppressWarnings("rawtypes")
         ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
         time.setValue(Arrays.asList(new Date[] {parseTimeStamp(timestamp)}));
-        GeneralParameterValue[] params =
-                new GeneralParameterValue[] {NO_DEFERRED_LOADING_PARAM, time};
+        GeneralParameterValue[] params = {NO_DEFERRED_LOADING_PARAM, time};
         GridCoverage2D coverage = reader.read(coverageName, params);
         assertNotNull(coverage);
         // delta is zero because an exact match is expected

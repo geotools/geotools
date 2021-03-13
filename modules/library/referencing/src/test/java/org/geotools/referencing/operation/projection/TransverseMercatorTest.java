@@ -57,8 +57,8 @@ public class TransverseMercatorTest {
         MathTransform transform = mtFactory.createParameterizedTransform(parameters);
 
         // results as provided by the EPSG guidance
-        final double[] point = new double[] {dmsToDegree(0, 30, 0), dmsToDegree(50, 30, 0)};
-        final double[] expected = new double[] {577274.99, 69740.50};
+        final double[] point = {dmsToDegree(0, 30, 0), dmsToDegree(50, 30, 0)};
+        final double[] expected = {577274.99, 69740.50};
 
         // check forward transform
         final double[] forward = new double[2];

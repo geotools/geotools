@@ -977,12 +977,11 @@ public class Import extends AbstractCmd {
                 currentPos++;
 
                 GeometryFactory factory = new GeometryFactory();
-                Coordinate[] coords =
-                        new Coordinate[] {
-                            new Coordinate(minx, miny), new Coordinate(minx, maxy),
-                            new Coordinate(maxx, maxy), new Coordinate(maxx, miny),
-                            new Coordinate(minx, miny)
-                        };
+                Coordinate[] coords = {
+                    new Coordinate(minx, miny), new Coordinate(minx, maxy),
+                    new Coordinate(maxx, maxy), new Coordinate(maxx, miny),
+                    new Coordinate(minx, miny)
+                };
                 Polygon poly =
                         factory.createPolygon(factory.createLinearRing(coords), new LinearRing[0]);
                 currentGeom = factory.createMultiPolygon(new Polygon[] {poly});
@@ -1058,14 +1057,13 @@ public class Import extends AbstractCmd {
             double miny = uly + height * resy;
             double maxy = uly;
             GeometryFactory factory = new GeometryFactory();
-            Coordinate[] coords =
-                    new Coordinate[] {
-                        new Coordinate(minx, miny),
-                        new Coordinate(minx, maxy),
-                        new Coordinate(maxx, maxy),
-                        new Coordinate(maxx, miny),
-                        new Coordinate(minx, miny)
-                    };
+            Coordinate[] coords = {
+                new Coordinate(minx, miny),
+                new Coordinate(minx, maxy),
+                new Coordinate(maxx, maxy),
+                new Coordinate(maxx, miny),
+                new Coordinate(minx, miny)
+            };
             Polygon poly =
                     factory.createPolygon(factory.createLinearRing(coords), new LinearRing[0]);
             return factory.createMultiPolygon(new Polygon[] {poly});

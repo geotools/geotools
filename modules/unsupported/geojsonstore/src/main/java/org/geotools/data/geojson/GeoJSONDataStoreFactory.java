@@ -36,7 +36,7 @@ import org.geotools.util.URLs;
 
 public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
 
-    private static final String[] EXTENSIONS = new String[] {"geojson", "json", "gjson"};
+    private static final String[] EXTENSIONS = {"geojson", "json", "gjson"};
     private Boolean isAvailable;
 
     /** Parameter description of information required to connect */

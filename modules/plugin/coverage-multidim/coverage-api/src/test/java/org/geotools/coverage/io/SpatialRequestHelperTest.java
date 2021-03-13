@@ -100,11 +100,10 @@ public class SpatialRequestHelperTest {
 
         // Calculate the expected results
         AffineTransform requestedGridToWorld = helper.getRequestedGridToWorld();
-        double[] calculatedResolution =
-                new double[] {
-                    XAffineTransform.getScaleX0(requestedGridToWorld),
-                    XAffineTransform.getScaleY0(requestedGridToWorld)
-                };
+        double[] calculatedResolution = {
+            XAffineTransform.getScaleX0(requestedGridToWorld),
+            XAffineTransform.getScaleY0(requestedGridToWorld)
+        };
         Rectangle calculatedRasterArea = new Rectangle(1024, 1024);
 
         // Ensure the same Coverage properties
@@ -189,11 +188,9 @@ public class SpatialRequestHelperTest {
         final GridToEnvelopeMapper geMapper =
                 new GridToEnvelopeMapper(new GridEnvelope2D(gridRange), temp);
         final AffineTransform tempTransform = geMapper.createAffineTransform();
-        double[] calculatedResolution =
-                new double[] {
-                    XAffineTransform.getScaleX0(tempTransform),
-                    XAffineTransform.getScaleY0(tempTransform)
-                };
+        double[] calculatedResolution = {
+            XAffineTransform.getScaleX0(tempTransform), XAffineTransform.getScaleY0(tempTransform)
+        };
 
         // Ensure is not empty
         assertFalse(helper.isEmpty());

@@ -638,14 +638,13 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
     protected Polygon polyFromEnvelope(GeneralEnvelope env) {
         GeometryFactory factory = new GeometryFactory();
 
-        Coordinate[] coords =
-                new Coordinate[] {
-                    new Coordinate(env.getMinimum(0), env.getMinimum(1)),
-                    new Coordinate(env.getMinimum(0), env.getMaximum(1)),
-                    new Coordinate(env.getMaximum(0), env.getMaximum(1)),
-                    new Coordinate(env.getMaximum(0), env.getMinimum(1)),
-                    new Coordinate(env.getMinimum(0), env.getMinimum(1))
-                };
+        Coordinate[] coords = {
+            new Coordinate(env.getMinimum(0), env.getMinimum(1)),
+            new Coordinate(env.getMinimum(0), env.getMaximum(1)),
+            new Coordinate(env.getMaximum(0), env.getMaximum(1)),
+            new Coordinate(env.getMaximum(0), env.getMinimum(1)),
+            new Coordinate(env.getMinimum(0), env.getMinimum(1))
+        };
 
         return factory.createPolygon(factory.createLinearRing(coords), new LinearRing[0]);
     }

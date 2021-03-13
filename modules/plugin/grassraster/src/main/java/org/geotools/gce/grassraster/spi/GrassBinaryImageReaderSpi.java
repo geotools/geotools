@@ -49,7 +49,7 @@ public class GrassBinaryImageReaderSpi extends ImageReaderSpi {
             "eu.hydrologis.jgrass.grassbinary.imageio.io.GrassBinaryImageReader";
 
     /** the inputTypes that are accepted by the {@link GrassBinaryImageReader}. */
-    private static final Class<?>[] inputTypes = new Class[] {File.class, ImageInputStream.class};
+    private static final Class<?>[] inputTypes = {File.class, ImageInputStream.class};
 
     /** the writerSpiName */
     private static final String[] wSN = {

@@ -248,7 +248,7 @@ class MosaicQueryBuilder {
                         new SortByImpl(
                                 FeatureUtilities.DEFAULT_FILTER_FACTORY.property(crsAttribute),
                                 SortOrder.ASCENDING);
-                SortBy[] sortBy = new SortBy[] {sort};
+                SortBy[] sortBy = {sort};
                 if (catalog.getQueryCapabilities(rasterManager.getTypeName())
                         .supportsSorting(sortBy)) {
                     query.setSortBy(sortBy);

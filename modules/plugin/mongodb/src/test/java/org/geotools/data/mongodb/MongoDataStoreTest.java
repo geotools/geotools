@@ -404,14 +404,13 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
 
     private Intersects getIntersectsFilter(String jsonSelectName) {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-        Coordinate[] coordinates =
-                new Coordinate[] {
-                    new Coordinate(1.0, 1.0),
-                    new Coordinate(2.0, 1.0),
-                    new Coordinate(3.0, 3.0),
-                    new Coordinate(4.0, 4.0),
-                    new Coordinate(1.0, 1.0),
-                };
+        Coordinate[] coordinates = {
+            new Coordinate(1.0, 1.0),
+            new Coordinate(2.0, 1.0),
+            new Coordinate(3.0, 3.0),
+            new Coordinate(4.0, 4.0),
+            new Coordinate(1.0, 1.0),
+        };
         Polygon polygon = new GeometryFactory().createPolygon(coordinates);
         return ff.intersects(
                 ff.function(jsonSelectName, ff.literal("geometry")), ff.literal(polygon));

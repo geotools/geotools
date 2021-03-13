@@ -58,7 +58,7 @@ public final class FilteredSubsampleTest extends GridProcessingTestBase {
         final GridCoverage2D floatCoverage = EXAMPLES.get(4);
 
         // On this one the Subsample average should do an RGB expansion
-        float[] filter = new float[] {1};
+        float[] filter = {1};
         Interpolation interp = Interpolation.getInstance(Interpolation.INTERP_NEAREST);
         filteredSubsample(indexedCoverage, interp, filter);
 

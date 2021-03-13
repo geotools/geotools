@@ -191,7 +191,7 @@ public class StyleExamples {
 
         //
         // define feature type styles used to actually define how features are rendered
-        Rule rules[] = new Rule[] {rule1, rule2};
+        Rule rules[] = {rule1, rule2};
         FeatureTypeStyle featureTypeStyle = builder.createFeatureTypeStyle("Feature", rules);
 
         //

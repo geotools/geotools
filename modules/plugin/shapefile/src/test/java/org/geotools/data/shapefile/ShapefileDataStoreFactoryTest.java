@@ -95,10 +95,9 @@ public class ShapefileDataStoreFactoryTest extends TestCaseSupport {
 
         QueryCapabilities caps = featureSource.getQueryCapabilities();
 
-        SortBy[] sortBy =
-                new SortBy[] {
-                    SortBy.NATURAL_ORDER,
-                };
+        SortBy[] sortBy = {
+            SortBy.NATURAL_ORDER,
+        };
         assertTrue("Natural", caps.supportsSorting(sortBy));
 
         SimpleFeatureType schema = featureSource.getSchema();

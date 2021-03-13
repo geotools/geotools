@@ -300,7 +300,7 @@ public class NADCONTransform extends AbstractMathTransform
             // find the grid the point is in (index is 0 based)
             final double xgrid = (x - grid.getMinX()) / grid.getDx();
             final double ygrid = (y - grid.getMinY()) / grid.getDy();
-            double[] array = new double[] {xgrid, ygrid};
+            double[] array = {xgrid, ygrid};
 
             // use the LocalizationGridTransform2D transform method (bilineal interpolation)
             // returned shift values are in seconds, longitude shift values are + west

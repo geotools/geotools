@@ -40,7 +40,7 @@ public abstract class CodeList<E extends CodeList<E>> implements Comparable<E>, 
             new HashMap<>();
 
     /** The types expected in constructors. */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "PMD.UseShortArrayInitializer"})
     private static final Class<String>[] CONSTRUCTOR_PARAMETERS = new Class[] {String.class};
 
     /** The code value. */

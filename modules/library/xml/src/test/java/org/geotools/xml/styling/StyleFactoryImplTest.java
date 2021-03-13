@@ -242,12 +242,11 @@ public class StyleFactoryImplTest {
     public void testCreateGraphic() {
         LOGGER.finer("testCreateGraphic");
 
-        ExternalGraphic[] externalGraphics =
-                new ExternalGraphic[] {
-                    styleFactory.createExternalGraphic(
-                            "http://www.ccg.leeds.ac.uk/ian/geotools/icons/rail.gif", "image/gif")
-                };
-        Mark[] marks = new Mark[] {styleFactory.getCircleMark()};
+        ExternalGraphic[] externalGraphics = {
+            styleFactory.createExternalGraphic(
+                    "http://www.ccg.leeds.ac.uk/ian/geotools/icons/rail.gif", "image/gif")
+        };
+        Mark[] marks = {styleFactory.getCircleMark()};
         Mark[] symbols = new Mark[0];
         Expression opacity = filterFactory.literal(0.5);
         Expression size = filterFactory.literal(10);

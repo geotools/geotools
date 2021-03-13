@@ -926,7 +926,7 @@ public final class MarchingSquaresVectorizer {
     /** Check if the image is fully covered by only valid values */
     private boolean checkFullyCovered(
             RandomIter iter, final int refValue, final List<Polygon> geometriesList) {
-        int[] yvals = new int[] {imageProperties.minY, imageProperties.maxY};
+        int[] yvals = {imageProperties.minY, imageProperties.maxY};
         for (int y : yvals) {
             for (int x = imageProperties.minX; x <= imageProperties.maxX; x++) {
                 int value = iter.getSample(x, y, 0);
@@ -936,7 +936,7 @@ public final class MarchingSquaresVectorizer {
             }
         }
 
-        int[] xvals = new int[] {imageProperties.minX, imageProperties.maxX};
+        int[] xvals = {imageProperties.minX, imageProperties.maxX};
         for (int x : xvals) {
             for (int y = imageProperties.minY; y <= imageProperties.maxY; y++) {
                 int value = iter.getSample(x, y, 0);

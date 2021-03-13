@@ -14,9 +14,9 @@ public class ColorUtilitiesTest {
 
     @Test
     public void mergeSolidBackgroundSolidPalette() {
-        byte[] r = new byte[] {-1, 0, 0};
-        byte[] g = new byte[] {0, -1, 0};
-        byte[] b = new byte[] {0, 0, -1};
+        byte[] r = {-1, 0, 0};
+        byte[] g = {0, -1, 0};
+        byte[] b = {0, 0, -1};
         IndexColorModel icm = new IndexColorModel(2, 3, r, g, b);
         IndexColorModel merged = ColorUtilities.applyBackgroundColor(icm, Color.WHITE);
         assertFalse(merged.hasAlpha());
@@ -36,10 +36,10 @@ public class ColorUtilitiesTest {
 
     @Test
     public void mergeSolidBackgroundTranslucentPalette() {
-        byte[] r = new byte[] {-1, 0, 0};
-        byte[] g = new byte[] {0, -1, 0};
-        byte[] b = new byte[] {0, 0, -1};
-        byte[] a = new byte[] {-128, -128, -128};
+        byte[] r = {-1, 0, 0};
+        byte[] g = {0, -1, 0};
+        byte[] b = {0, 0, -1};
+        byte[] a = {-128, -128, -128};
         IndexColorModel icm = new IndexColorModel(2, 3, r, g, b, a);
         IndexColorModel merged = ColorUtilities.applyBackgroundColor(icm, Color.WHITE);
         assertFalse(merged.hasAlpha());
@@ -59,10 +59,10 @@ public class ColorUtilitiesTest {
 
     @Test
     public void mergeTranslucentBackgroundTranslucentPalette() {
-        byte[] r = new byte[] {-1, 0, 0};
-        byte[] g = new byte[] {0, -1, 0};
-        byte[] b = new byte[] {0, 0, -1};
-        byte[] a = new byte[] {-128, -128, -128};
+        byte[] r = {-1, 0, 0};
+        byte[] g = {0, -1, 0};
+        byte[] b = {0, 0, -1};
+        byte[] a = {-128, -128, -128};
         IndexColorModel icm = new IndexColorModel(2, 3, r, g, b, a);
         IndexColorModel merged =
                 ColorUtilities.applyBackgroundColor(icm, new Color(255, 255, 255, 128));

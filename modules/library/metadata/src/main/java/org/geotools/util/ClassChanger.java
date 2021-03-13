@@ -39,6 +39,7 @@ import org.geotools.metadata.i18n.Errors;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
+@SuppressWarnings("PMD.UseShortArrayInitializer")
 public abstract class ClassChanger<S extends Comparable<S>, T extends Number> {
     /** Wrapper classes sorted by their wide. */
     @SuppressWarnings("unchecked")

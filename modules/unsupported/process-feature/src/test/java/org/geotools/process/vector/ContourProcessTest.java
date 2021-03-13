@@ -68,16 +68,15 @@ public class ContourProcessTest {
     public void testSimplePointsInterval() {
         ReferencedEnvelope bounds =
                 new ReferencedEnvelope(0, 30, 0, 30, DefaultGeographicCRS.WGS84);
-        Coordinate[] data =
-                new Coordinate[] {
-                    new Coordinate(10, 10, 100),
-                    new Coordinate(10, 20, 20),
-                    new Coordinate(20, 10, 0),
-                    new Coordinate(20, 20, 80)
-                };
+        Coordinate[] data = {
+            new Coordinate(10, 10, 100),
+            new Coordinate(10, 20, 20),
+            new Coordinate(20, 10, 0),
+            new Coordinate(20, 20, 80)
+        };
         SimpleFeatureCollection fc = ProcessTestUtilities.createPoints(data, bounds);
         ContourProcess cp = new ContourProcess();
-        double[] levels = new double[] {};
+        double[] levels = {};
         double interval = 10;
         Boolean simplify = Boolean.TRUE;
         Boolean smooth = Boolean.TRUE;
@@ -97,16 +96,15 @@ public class ContourProcessTest {
     public void testSimplePointsLevel() {
         ReferencedEnvelope bounds =
                 new ReferencedEnvelope(0, 30, 0, 30, DefaultGeographicCRS.WGS84);
-        Coordinate[] data =
-                new Coordinate[] {
-                    new Coordinate(10, 10, 100),
-                    new Coordinate(10, 20, 20),
-                    new Coordinate(20, 10, 0),
-                    new Coordinate(20, 20, 80)
-                };
+        Coordinate[] data = {
+            new Coordinate(10, 10, 100),
+            new Coordinate(10, 20, 20),
+            new Coordinate(20, 10, 0),
+            new Coordinate(20, 20, 80)
+        };
         SimpleFeatureCollection fc = ProcessTestUtilities.createPoints(data, bounds);
         ContourProcess cp = new ContourProcess();
-        double[] levels = new double[] {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
+        double[] levels = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
         double interval = 10;
         Boolean simplify = Boolean.TRUE;
         Boolean smooth = Boolean.TRUE;

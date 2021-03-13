@@ -230,10 +230,8 @@ public final class GeocentricTransformTest extends TransformTestBase {
          */
         for (int i = 0; i < array0.length / 6; i++) {
             final int base = i * 6;
-            final double[] pt1 =
-                    new double[] {array1[base + 0], array1[base + 1], array1[base + 2]};
-            final double[] pt2 =
-                    new double[] {array1[base + 3], array1[base + 4], array1[base + 5]};
+            final double[] pt1 = {array1[base + 0], array1[base + 1], array1[base + 2]};
+            final double[] pt2 = {array1[base + 3], array1[base + 4], array1[base + 5]};
 
             double dX = Math.abs(pt1[0] - pt2[0]);
             double dY = Math.abs(pt1[1] - pt2[1]);

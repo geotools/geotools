@@ -64,9 +64,8 @@ public abstract class AbstractMBExpressionTest {
     protected JSONObject mbstyle;
     protected SimpleFeature[] testFeatures;
     protected final GeometryFactory geometryFactory = new GeometryFactory();
-    protected final int[] intVals = new int[] {4, 90, 20, 43, 29, -61, 8, 12};
-    protected final double[] doubleVals =
-            new double[] {11.11, 22.22, 99.9, 78.654, 0.01, 100.0, -4.2, 44.44};
+    protected final int[] intVals = {4, 90, 20, 43, 29, -61, 8, 12};
+    protected final double[] doubleVals = {11.11, 22.22, 99.9, 78.654, 0.01, 100.0, -4.2, 44.44};
 
     @Before
     public void setUp() throws Exception {

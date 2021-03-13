@@ -62,7 +62,7 @@ public abstract class JDBCMeasuredGeometriesOnlineTest extends JDBCTestSupport {
         // get all the lines
         List<SimpleFeature> features = getFeatures("lines_m", Query.ALL);
         // each line coordinate should have dimension 3 and measures 1
-        double[] ordinates = new double[] {-2, 1, 0.5, 3, 1, -1, 3, 5, 2, -2, 5, 3.5};
+        double[] ordinates = {-2, 1, 0.5, 3, 1, -1, 3, 5, 2, -2, 5, 3.5};
         checkLineCoordinates(findOne(features, "description", "line_m_a"), 3, 1, ordinates);
     }
 
@@ -70,8 +70,7 @@ public abstract class JDBCMeasuredGeometriesOnlineTest extends JDBCTestSupport {
         // get all the lines
         List<SimpleFeature> features = getFeatures("lines_zm", Query.ALL);
         // each line coordinate should should have dimension 4, elevation 1 and measures 1
-        double[] ordinates =
-                new double[] {-2, 1, 10, 0.5, 3, 1, 15, -1, 3, 5, 20, 2, -2, 5, 25, 3.5};
+        double[] ordinates = {-2, 1, 10, 0.5, 3, 1, 15, -1, 3, 5, 20, 2, -2, 5, 25, 3.5};
         checkLineCoordinates(findOne(features, "description", "line_zm_a"), 4, 1, ordinates);
     }
 

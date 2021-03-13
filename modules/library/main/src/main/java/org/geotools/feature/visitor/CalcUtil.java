@@ -254,7 +254,7 @@ public class CalcUtil {
         }
 
         // find most appropriate class
-        Object[] objects = new Object[] {val1, val2};
+        Object[] objects = {val1, val2};
         Class bestClass = bestClass(objects);
 
         if (bestClass != val1.getClass()) {

@@ -47,7 +47,7 @@ import org.geotools.util.logging.Logging;
  */
 public class FactoryCreator extends FactoryRegistry {
     /** The array of classes for searching the one-argument constructor. */
-    private static final Class<?>[] HINTS_ARGUMENT = new Class[] {Hints.class};
+    private static final Class<?>[] HINTS_ARGUMENT = {Hints.class};
 
     /** List of factories already created. Used as a cache. */
     private final Map<Class<?>, List<Reference<?>>> cache = new HashMap<>();

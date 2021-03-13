@@ -389,15 +389,14 @@ public class RasterZonalStatistics implements RasterProcess {
                 ROI roi = new ROIGeometry(simplifiedGeometry, false);
 
                 // run the stats via JAI
-                Statistic[] reqStatsArr =
-                        new Statistic[] {
-                            Statistic.MAX,
-                            Statistic.MIN,
-                            Statistic.RANGE,
-                            Statistic.MEAN,
-                            Statistic.SDEV,
-                            Statistic.SUM
-                        };
+                Statistic[] reqStatsArr = {
+                    Statistic.MAX,
+                    Statistic.MIN,
+                    Statistic.RANGE,
+                    Statistic.MEAN,
+                    Statistic.SDEV,
+                    Statistic.SUM
+                };
                 final ZonalStatsOpImage zsOp =
                         new ZonalStatsOpImage(
                                 cropped.getRenderedImage(),

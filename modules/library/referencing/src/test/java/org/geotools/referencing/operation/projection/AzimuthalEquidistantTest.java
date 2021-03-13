@@ -125,7 +125,7 @@ public class AzimuthalEquidistantTest {
     public void testReprojectAlongDateline() throws FactoryException, TransformException {
         CoordinateReferenceSystem crs = CRS.decode("AUTO:97003,9001,170,-16", true);
         MathTransform mt = CRS.findMathTransform(DefaultGeographicCRS.WGS84, crs);
-        double[] src = new double[] {179.8, -11};
+        double[] src = {179.8, -11};
         double[] dst = new double[2];
         for (int i = 0; i < 40; i++) {
             mt.transform(src, 0, dst, 0, 1);

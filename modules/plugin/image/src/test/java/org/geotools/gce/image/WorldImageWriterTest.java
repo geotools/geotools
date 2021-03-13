@@ -45,8 +45,7 @@ import org.opengis.referencing.operation.TransformException;
  * @author rgould
  */
 public class WorldImageWriterTest extends WorldImageBaseTestCase {
-    private static final String[] supportedFormat =
-            new String[] {"tiff", "gif", "png", "bmp", "jpeg"};
+    private static final String[] supportedFormat = {"tiff", "gif", "png", "bmp", "jpeg"};
 
     private Logger logger = Logging.getLogger(WorldImageWriterTest.class);
 

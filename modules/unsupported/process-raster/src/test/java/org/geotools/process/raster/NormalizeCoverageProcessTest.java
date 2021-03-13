@@ -39,13 +39,12 @@ public class NormalizeCoverageProcessTest {
 
     @Test
     public void test() throws Exception {
-        float[][] grid =
-                new float[][] {
-                    {1, 2, 3, 4},
-                    {5, 6, 8, 9},
-                    {10, 11, 12, 13},
-                    {14, 15, 16, 17},
-                };
+        float[][] grid = {
+            {1, 2, 3, 4},
+            {5, 6, 8, 9},
+            {10, 11, 12, 13},
+            {14, 15, 16, 17},
+        };
 
         GridCoverage2D cov =
                 covFactory.create(
@@ -63,11 +62,10 @@ public class NormalizeCoverageProcessTest {
 
     @Test
     public void testZeroCoverage() throws Exception {
-        float[][] grid =
-                new float[][] {
-                    {0, 0},
-                    {0, 0},
-                };
+        float[][] grid = {
+            {0, 0},
+            {0, 0},
+        };
 
         GridCoverage2D cov =
                 covFactory.create(

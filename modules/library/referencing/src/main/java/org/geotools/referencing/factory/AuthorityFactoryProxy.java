@@ -250,7 +250,7 @@ abstract class AuthorityFactoryProxy {
      */
     private static final class Default extends AuthorityFactoryProxy {
         /** The argument types of {@code createFoo} methods. */
-        private static final Class[] PARAMETERS = new Class[] {String.class};
+        private static final Class[] PARAMETERS = {String.class};
 
         /** The authority factory on which to delegates. */
         private final AuthorityFactory factory;

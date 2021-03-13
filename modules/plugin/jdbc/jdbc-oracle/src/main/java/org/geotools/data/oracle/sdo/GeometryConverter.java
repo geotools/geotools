@@ -160,7 +160,7 @@ public class GeometryConverter {
                 // rectangle optimization. Actually, more than an optimization. A few operators
                 // do not work properly if they don't get rectangular geoms encoded as rectangles
                 // SDO_FILTER is an example of this silly situation
-                int elemInfo[] = new int[] {1, 1003, 3};
+                int elemInfo[] = {1, 1003, 3};
                 double ordinates[];
                 if (SDO.D(geom) == 2)
                     ordinates =
@@ -185,16 +185,14 @@ public class GeometryConverter {
                 SDO_ORDINATES = toARRAY(ordinates, "MDSYS.SDO_ORDINATE_ARRAY");
             }
         } else { // Point Optimization
-            Datum data[] =
-                    new Datum[] {
-                        toNUMBER(point[0]), toNUMBER(point[1]), toNUMBER(point[2]),
-                    };
+            Datum data[] = {
+                toNUMBER(point[0]), toNUMBER(point[1]), toNUMBER(point[2]),
+            };
             SDO_POINT = toSTRUCT(data, "MDSYS.SDO_POINT_TYPE");
             SDO_ELEM_INFO = null;
             SDO_ORDINATES = null;
         }
-        Object attributes[] =
-                new Object[] {SDO_GTYPE, SDO_SRID, SDO_POINT, SDO_ELEM_INFO, SDO_ORDINATES};
+        Object attributes[] = {SDO_GTYPE, SDO_SRID, SDO_POINT, SDO_ELEM_INFO, SDO_ORDINATES};
         return toSTRUCT(attributes, DATATYPE);
     }
 

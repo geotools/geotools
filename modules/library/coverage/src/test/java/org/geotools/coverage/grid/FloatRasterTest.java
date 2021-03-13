@@ -71,7 +71,7 @@ public final class FloatRasterTest extends GridCoverageTestBase {
          * arguments to null (as in this example) lets GridCoverage computes automatically a
          * default value.
          */
-        Color[] colors = new Color[] {Color.BLUE, Color.CYAN, Color.WHITE, Color.YELLOW, Color.RED};
+        Color[] colors = {Color.BLUE, Color.CYAN, Color.WHITE, Color.YELLOW, Color.RED};
         gc =
                 factory.create(
                         "My colored coverage",

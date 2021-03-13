@@ -289,7 +289,7 @@ public class GeometryBuilder {
      * @return a 2D Polygon
      */
     public Polygon box(double x1, double y1, double x2, double y2) {
-        double[] ord = new double[] {x1, y1, x1, y2, x2, y2, x2, y1, x1, y1};
+        double[] ord = {x1, y1, x1, y2, x2, y2, x2, y1, x1, y1};
         return polygon(ord);
     }
 
@@ -304,7 +304,7 @@ public class GeometryBuilder {
      * @return a 3D Polygon
      */
     public Polygon boxZ(double x1, double y1, double x2, double y2, double z) {
-        double[] ord = new double[] {x1, y1, z, x1, y2, z, x2, y2, z, x2, y1, z, x1, y1, z};
+        double[] ord = {x1, y1, z, x1, y2, z, x2, y2, z, x2, y1, z, x1, y1, z};
         return polygonZ(ord);
     }
 

@@ -41,21 +41,16 @@ public class WMSDescribeLayerTypes {
             return instance;
         }
 
-        private static Element[] elems =
-                new Element[] {
-                    new WMSSchema.WMSElement(
-                            "LayerDescription",
-                            _LayerDescription.getInstance(),
-                            0,
-                            Integer.MAX_VALUE)
-                };
+        private static Element[] elems = {
+            new WMSSchema.WMSElement(
+                    "LayerDescription", _LayerDescription.getInstance(), 0, Integer.MAX_VALUE)
+        };
 
         private static Sequence seq = new SequenceGT(elems);
 
-        private static Attribute[] attrs =
-                new Attribute[] {
-                    new WMSSchema.WMSAttribute("version", XSISimpleTypes.String.getInstance())
-                };
+        private static Attribute[] attrs = {
+            new WMSSchema.WMSAttribute("version", XSISimpleTypes.String.getInstance())
+        };
 
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
@@ -137,28 +132,26 @@ public class WMSDescribeLayerTypes {
             return instance;
         }
 
-        private static Element[] elems =
-                new Element[] {
-                    new WMSSchema.WMSElement("Query", _Query.getInstance(), 0, Integer.MAX_VALUE)
-                };
+        private static Element[] elems = {
+            new WMSSchema.WMSElement("Query", _Query.getInstance(), 0, Integer.MAX_VALUE)
+        };
 
         private static Sequence seq = new SequenceGT(elems);
 
-        private static Attribute[] attrs =
-                new Attribute[] {
-                    new WMSSchema.WMSAttribute(
-                            null,
-                            "name",
-                            WMSSchema.NAMESPACE,
-                            XSISimpleTypes.String.getInstance(),
-                            Attribute.REQUIRED,
-                            null,
-                            null,
-                            false),
-                    new WMSSchema.WMSAttribute("wfs", XSISimpleTypes.String.getInstance()),
-                    new WMSSchema.WMSAttribute("owsType", XSISimpleTypes.String.getInstance()),
-                    new WMSSchema.WMSAttribute("owsURL", XSISimpleTypes.String.getInstance())
-                };
+        private static Attribute[] attrs = {
+            new WMSSchema.WMSAttribute(
+                    null,
+                    "name",
+                    WMSSchema.NAMESPACE,
+                    XSISimpleTypes.String.getInstance(),
+                    Attribute.REQUIRED,
+                    null,
+                    null,
+                    false),
+            new WMSSchema.WMSAttribute("wfs", XSISimpleTypes.String.getInstance()),
+            new WMSSchema.WMSAttribute("owsType", XSISimpleTypes.String.getInstance()),
+            new WMSSchema.WMSAttribute("owsURL", XSISimpleTypes.String.getInstance())
+        };
 
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
@@ -262,18 +255,17 @@ public class WMSDescribeLayerTypes {
             return instance;
         }
 
-        public static Attribute[] attrs =
-                new Attribute[] {
-                    new WMSSchema.WMSAttribute(
-                            null,
-                            "typeName",
-                            WMSSchema.NAMESPACE,
-                            XSISimpleTypes.String.getInstance(),
-                            Attribute.REQUIRED,
-                            null,
-                            null,
-                            false)
-                };
+        public static Attribute[] attrs = {
+            new WMSSchema.WMSAttribute(
+                    null,
+                    "typeName",
+                    WMSSchema.NAMESPACE,
+                    XSISimpleTypes.String.getInstance(),
+                    Attribute.REQUIRED,
+                    null,
+                    null,
+                    false)
+        };
         /* (non-Javadoc)
          * @see org.geotools.xml.schema.ComplexType#getAttributes()
          */

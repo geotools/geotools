@@ -226,7 +226,7 @@ class DDLGenerator extends AbstractCmd {
         for (int i = 0; i <= pyramids; i++) {
             String stn = getTableName(spatialTNPrefix, i);
             String ttn = (tileTNPrefix == null) ? stn : getTableName(tileTNPrefix, i);
-            Object[] args = new Object[] {config.getCoverageName(), ttn, stn};
+            Object[] args = {config.getCoverageName(), ttn, stn};
             w.printf(statmentString, args);
             w.println(statementDelim);
         }
@@ -248,7 +248,7 @@ class DDLGenerator extends AbstractCmd {
         for (int i = 0; i <= pyramids; i++) {
             String stn = getTableName(spatialTNPrefix, i);
             String ttn = (tileTNPrefix == null) ? stn : getTableName(tileTNPrefix, i);
-            Object[] args = new Object[] {config.getCoverageName(), ttn, stn};
+            Object[] args = {config.getCoverageName(), ttn, stn};
             w.printf(statmentString, args);
             w.println(statementDelim);
         }

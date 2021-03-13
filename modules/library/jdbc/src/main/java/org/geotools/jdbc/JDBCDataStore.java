@@ -2326,8 +2326,8 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * search feature type looking for suitable unique column for primary key.
      */
     protected String findPrimaryKeyColumnName(SimpleFeatureType featureType) {
-        String[] suffix = new String[] {"", "_1", "_2"};
-        String[] base = new String[] {"fid", "id", "gt_id", "ogc_fid"};
+        String[] suffix = {"", "_1", "_2"};
+        String[] base = {"fid", "id", "gt_id", "ogc_fid"};
 
         for (String b : base) {
             O:
@@ -2571,7 +2571,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      */
     protected String createRelationshipTableSQL(Connection cx) throws SQLException {
         String[] sqlTypeNames = getSQLTypeNames(descriptors(String.class, String.class), cx);
-        String[] columnNames = new String[] {"table", "col"};
+        String[] columnNames = {"table", "col"};
 
         return createTableSQL(
                 FEATURE_RELATIONSHIP_TABLE, columnNames, sqlTypeNames, null, null, null);
@@ -2586,7 +2586,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         String[] sqlTypeNames =
                 getSQLTypeNames(
                         descriptors(String.class, String.class, String.class, String.class), cx);
-        String[] columnNames = new String[] {"fid", "rtable", "rcol", "rfid"};
+        String[] columnNames = {"fid", "rtable", "rcol", "rfid"};
 
         return createTableSQL(
                 FEATURE_ASSOCIATION_TABLE, columnNames, sqlTypeNames, null, null, null);
@@ -2607,7 +2607,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                                 String.class,
                                 Geometry.class),
                         cx);
-        String[] columnNames = new String[] {"id", "name", "description", "type", "geometry"};
+        String[] columnNames = {"id", "name", "description", "type", "geometry"};
 
         return createTableSQL(GEOMETRY_TABLE, columnNames, sqlTypeNames, null, null, null);
     }
@@ -2620,7 +2620,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     protected String createMultiGeometryTableSQL(Connection cx) throws SQLException {
         String[] sqlTypeNames =
                 getSQLTypeNames(descriptors(String.class, String.class, Boolean.class), cx);
-        String[] columnNames = new String[] {"id", "mgid", "ref"};
+        String[] columnNames = {"id", "mgid", "ref"};
 
         return createTableSQL(MULTI_GEOMETRY_TABLE, columnNames, sqlTypeNames, null, null, null);
     }
@@ -2959,7 +2959,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         String[] sqlTypeNames =
                 getSQLTypeNames(
                         descriptors(String.class, String.class, String.class, Boolean.class), cx);
-        String[] columnNames = new String[] {"fid", "gname", "gid", "ref"};
+        String[] columnNames = {"fid", "gname", "gid", "ref"};
 
         return createTableSQL(
                 GEOMETRY_ASSOCIATION_TABLE, columnNames, sqlTypeNames, null, null, null);

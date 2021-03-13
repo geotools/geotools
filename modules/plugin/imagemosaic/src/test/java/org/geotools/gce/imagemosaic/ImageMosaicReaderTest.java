@@ -1104,8 +1104,7 @@ public class ImageMosaicReaderTest {
         assertNotNull(dateValue);
 
         // Test the output coverage
-        GeneralParameterValue[] values =
-                new GeneralParameterValue[] {useJai, time, dateValue, depthValue};
+        GeneralParameterValue[] values = {useJai, time, dateValue, depthValue};
         final GridCoverage2D coverage = TestUtils.getCoverage(reader, values, true);
         final String fileSource =
                 (String) coverage.getProperty(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY);
@@ -1218,8 +1217,7 @@ public class ImageMosaicReaderTest {
             assertNotNull(dateValue);
 
             // Test the output coverage
-            GeneralParameterValue[] values =
-                    new GeneralParameterValue[] {useJai, dateValue, time, waveLength, elevation};
+            GeneralParameterValue[] values = {useJai, dateValue, time, waveLength, elevation};
             final GridCoverage2D coverage = TestUtils.getCoverage(reader, values, true);
             final String fileSource =
                     (String)
@@ -1545,8 +1543,7 @@ public class ImageMosaicReaderTest {
         assertNotNull(clazz);
 
         // Test the output coverage
-        GeneralParameterValue[] values =
-                new GeneralParameterValue[] {useJai, dateValue, time, waveLength, elevation};
+        GeneralParameterValue[] values = {useJai, dateValue, time, waveLength, elevation};
         final GridCoverage2D coverage = TestUtils.getCoverage(reader, values, true);
         final String fileSource =
                 (String) coverage.getProperty(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY);
@@ -1721,8 +1718,7 @@ public class ImageMosaicReaderTest {
         }
         assertNotNull(waveLength);
 
-        GeneralParameterValue[] values =
-                new GeneralParameterValue[] {useJai, time, waveLength, elevation};
+        GeneralParameterValue[] values = {useJai, time, waveLength, elevation};
         return TestUtils.getCoverage(reader, values, false);
     }
 
@@ -1775,8 +1771,7 @@ public class ImageMosaicReaderTest {
         sort.setValue("depth A");
 
         // Test the output coverage
-        GeneralParameterValue[] values =
-                new GeneralParameterValue[] {useJai, tileSize, time, mergeStack, sort};
+        GeneralParameterValue[] values = {useJai, tileSize, time, mergeStack, sort};
         final GridCoverage2D coverage = TestUtils.getCoverage(reader, values, false);
         assertNotNull(coverage);
 
@@ -2349,10 +2344,9 @@ public class ImageMosaicReaderTest {
             assertNotNull(coverage);
             assertTrue(coverage.getEnvelope2D().contains((Rectangle2D) env));
 
-            int[] pixel =
-                    new int[] {
-                        Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE
-                    };
+            int[] pixel = {
+                Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE
+            };
             coverage.evaluate(new Point2D.Double(20, 45), pixel);
             assertEquals(0, pixel[0]);
             assertEquals(0, pixel[1]);
@@ -2527,8 +2521,7 @@ public class ImageMosaicReaderTest {
         assertNotNull(depthValue);
         assertNotNull(dateValue);
         // Test the output coverage
-        GeneralParameterValue[] values =
-                new GeneralParameterValue[] {useJai, time, dateValue, depthValue};
+        GeneralParameterValue[] values = {useJai, time, dateValue, depthValue};
         final GridCoverage2D coverage = TestUtils.getCoverage(reader, values, false);
         assertNull(coverage);
 
@@ -2597,8 +2590,7 @@ public class ImageMosaicReaderTest {
         sort.setValue("polarization A");
 
         // Test the output coverage
-        GeneralParameterValue[] values =
-                new GeneralParameterValue[] {useJai, tileSize, time, polariz, paramStacked, sort};
+        GeneralParameterValue[] values = {useJai, tileSize, time, polariz, paramStacked, sort};
         final GridCoverage2D coverage = TestUtils.getCoverage(reader, values, false);
         assertNotNull(coverage);
 
@@ -4463,7 +4455,7 @@ public class ImageMosaicReaderTest {
         tileSize.setValue("128,128");
 
         // Test the output coverage
-        GeneralParameterValue[] values = new GeneralParameterValue[] {gg, useJai, tileSize};
+        GeneralParameterValue[] values = {gg, useJai, tileSize};
         final GridCoverage2D coverage =
                 TestUtils.checkCoverage(reader, values, "external overviews test");
 
@@ -4672,8 +4664,8 @@ public class ImageMosaicReaderTest {
         assertNotNull(coverageNames);
         int coverageCount = coverageNames.length;
         assertEquals(2, coverageCount);
-        String[] expectedNames = new String[] {"gray", "rgb"};
-        int[] expectedTypes = new int[] {ColorSpace.TYPE_GRAY, ColorSpace.TYPE_RGB};
+        String[] expectedNames = {"gray", "rgb"};
+        int[] expectedTypes = {ColorSpace.TYPE_GRAY, ColorSpace.TYPE_RGB};
         for (int i = 0; i < coverageCount; i++) {
             String coverageName = coverageNames[i];
             assertEquals(expectedNames[i], coverageName);

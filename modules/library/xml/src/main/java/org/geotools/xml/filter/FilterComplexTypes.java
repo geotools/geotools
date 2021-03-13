@@ -338,10 +338,9 @@ public class FilterComplexTypes {
 
     public static class Function_NamesType extends FilterComplexType {
         private static final ComplexType instance = new Function_NamesType();
-        private static Element[] elements =
-                new Element[] {
-                    new FilterElement("Function_Name", Function_NameType.getInstance()),
-                };
+        private static Element[] elements = {
+            new FilterElement("Function_Name", Function_NameType.getInstance()),
+        };
         private static Sequence seq =
                 new SequenceGT(elements) {
                     @Override
@@ -420,10 +419,9 @@ public class FilterComplexTypes {
 
     public static class FunctionsType extends FilterComplexType {
         private static final ComplexType instance = new FunctionsType();
-        private static Element[] elements =
-                new Element[] {
-                    new FilterElement("Function_Names", Function_NamesType.getInstance()),
-                };
+        private static Element[] elements = {
+            new FilterElement("Function_Names", Function_NamesType.getInstance()),
+        };
         private static Sequence seq = new SequenceGT(elements);
 
         public static ComplexType getInstance() {
@@ -498,12 +496,10 @@ public class FilterComplexTypes {
 
     public static class Filter_CapabilitiesType extends FilterComplexType {
         private static final ComplexType instance = new Filter_CapabilitiesType();
-        private static Element[] elements =
-                new Element[] {
-                    new FilterElement(
-                            "Spatial_Capabilities", Spatial_CapabilitiesType.getInstance()),
-                    new FilterElement("Scalar_Capabilities", Scalar_CapabilitiesType.getInstance())
-                };
+        private static Element[] elements = {
+            new FilterElement("Spatial_Capabilities", Spatial_CapabilitiesType.getInstance()),
+            new FilterElement("Scalar_Capabilities", Scalar_CapabilitiesType.getInstance())
+        };
         private static Sequence seq = new SequenceGT(elements);
 
         public static ComplexType getInstance() {
@@ -1089,20 +1085,19 @@ public class FilterComplexTypes {
         //          </xsd:extension>
         //        </xsd:complexContent>
         //      </xsd:complexType>
-        private static Element[] elems =
-                new Element[] {
-                    new FilterElement("expression", ExpressionType.getInstance()) {
-                        @Override
-                        public int getMinOccurs() {
-                            return 2;
-                        }
+        private static Element[] elems = {
+            new FilterElement("expression", ExpressionType.getInstance()) {
+                @Override
+                public int getMinOccurs() {
+                    return 2;
+                }
 
-                        @Override
-                        public int getMaxOccurs() {
-                            return 2;
-                        }
-                    },
-                };
+                @Override
+                public int getMaxOccurs() {
+                    return 2;
+                }
+            },
+        };
         private static Sequence seq = new SequenceGT(elems);
 
         public static ComplexType getInstance() {
@@ -1206,26 +1201,23 @@ public class FilterComplexTypes {
         //            </xsd:extension>
         //          </xsd:complexContent>
         //        </xsd:complexType>
-        private static Element[] elems =
-                new Element[] {
-                    new FilterElement("expression", ExpressionType.getInstance()) {
-                        @Override
-                        public int getMinOccurs() {
-                            return 0;
-                        }
+        private static Element[] elems = {
+            new FilterElement("expression", ExpressionType.getInstance()) {
+                @Override
+                public int getMinOccurs() {
+                    return 0;
+                }
 
-                        @Override
-                        public int getMaxOccurs() {
-                            return Integer.MAX_VALUE;
-                        }
-                    },
-                };
+                @Override
+                public int getMaxOccurs() {
+                    return Integer.MAX_VALUE;
+                }
+            },
+        };
         private static Sequence seq = new SequenceGT(elems);
-        private static Attribute[] attrs =
-                new Attribute[] {
-                    new FilterAttribute(
-                            "name", XSISimpleTypes.String.getInstance(), Attribute.REQUIRED),
-                };
+        private static Attribute[] attrs = {
+            new FilterAttribute("name", XSISimpleTypes.String.getInstance(), Attribute.REQUIRED),
+        };
 
         public static ComplexType getInstance() {
             return instance;
@@ -1620,11 +1612,10 @@ public class FilterComplexTypes {
         //           </xsd:extension>
         //        </xsd:simpleContent>
         //     </xsd:complexType>
-        private static Attribute[] attrs =
-                new Attribute[] {
-                    new FilterAttribute("code", XSISimpleTypes.String.getInstance()),
-                    new FilterAttribute("locator", XSISimpleTypes.String.getInstance()),
-                };
+        private static Attribute[] attrs = {
+            new FilterAttribute("code", XSISimpleTypes.String.getInstance()),
+            new FilterAttribute("locator", XSISimpleTypes.String.getInstance()),
+        };
 
         public static ComplexType getInstance() {
             return instance;
@@ -1755,31 +1746,24 @@ public class FilterComplexTypes {
         //           </xsd:sequence>
         //           <xsd:attribute name="version" type="xsd:string" fixed="1.2.0"/>
         //        </xsd:complexType>
-        private static Element[] elems =
-                new Element[] {
-                    new FilterElement("ServiceException", ServiceExceptionType.getInstance()) {
-                        @Override
-                        public int getMinOccurs() {
-                            return 0;
-                        }
+        private static Element[] elems = {
+            new FilterElement("ServiceException", ServiceExceptionType.getInstance()) {
+                @Override
+                public int getMinOccurs() {
+                    return 0;
+                }
 
-                        @Override
-                        public int getMaxOccurs() {
-                            return Integer.MAX_VALUE;
-                        }
-                    },
-                };
+                @Override
+                public int getMaxOccurs() {
+                    return Integer.MAX_VALUE;
+                }
+            },
+        };
         private static Sequence seq = new SequenceGT(elems);
-        private static Attribute[] attrs =
-                new Attribute[] {
-                    new FilterAttribute(
-                            "version",
-                            XSISimpleTypes.String.getInstance(),
-                            0,
-                            null,
-                            "1.2.0",
-                            false),
-                };
+        private static Attribute[] attrs = {
+            new FilterAttribute(
+                    "version", XSISimpleTypes.String.getInstance(), 0, null, "1.2.0", false),
+        };
 
         public static ComplexType getInstance() {
             return instance;
@@ -1960,16 +1944,15 @@ public class FilterComplexTypes {
         }
 
         private static Sequence seq = new SequenceGT(elems);
-        private static Attribute[] attrs =
-                new Attribute[] {
-                    new FilterAttribute(
-                            "sortOrder",
-                            SortOrderType.getInstance(),
-                            Attribute.OPTIONAL,
-                            "DESC",
-                            null,
-                            false)
-                };
+        private static Attribute[] attrs = {
+            new FilterAttribute(
+                    "sortOrder",
+                    SortOrderType.getInstance(),
+                    Attribute.OPTIONAL,
+                    "DESC",
+                    null,
+                    false)
+        };
         /** @see org.geotools.xml.schema.ComplexType#getChild() */
         @Override
         public ElementGrouping getChild() {
@@ -2128,8 +2111,7 @@ public class FilterComplexTypes {
             return parents;
         }
 
-        private static SimpleType[] parents =
-                new SimpleType[] {XSISimpleTypes.String.getInstance()};
+        private static SimpleType[] parents = {XSISimpleTypes.String.getInstance()};
         /**
          * TODO summary sentence for getFacets ...
          *
@@ -2140,10 +2122,9 @@ public class FilterComplexTypes {
             return facets;
         }
 
-        private static Facet[] facets =
-                new Facet[] {
-                    new FacetGT(Facet.ENUMERATION, "DESC"), new FacetGT(Facet.ENUMERATION, "ASC")
-                };
+        private static Facet[] facets = {
+            new FacetGT(Facet.ENUMERATION, "DESC"), new FacetGT(Facet.ENUMERATION, "ASC")
+        };
         /**
          * TODO summary sentence for getValue ...
          *

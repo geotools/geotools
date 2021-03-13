@@ -93,7 +93,7 @@ public class RegionTypeBinding extends AbstractComplexBinding {
         Coordinate topLeft = new Coordinate(e.getMinX(), e.getMaxY());
         Coordinate topRight = new Coordinate(e.getMaxX(), e.getMaxY());
         Coordinate bottomRight = new Coordinate(e.getMaxX(), e.getMinY());
-        Coordinate[] cs = new Coordinate[] {bottomLeft, topLeft, topRight, bottomRight, bottomLeft};
+        Coordinate[] cs = {bottomLeft, topLeft, topRight, bottomRight, bottomLeft};
         LinearRing linearRing = geometryFactory.createLinearRing(cs);
         return linearRing;
     }

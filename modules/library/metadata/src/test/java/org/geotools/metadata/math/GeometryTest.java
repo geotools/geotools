@@ -97,25 +97,22 @@ public final class GeometryTest {
     public void testPlaneFit() {
         final Random rd = new Random(457821698762354L);
         final Plane plan = new Plane();
-        final double[] P1 =
-                new double[] {
-                    100 * rd.nextDouble() + 25,
-                    100 * rd.nextDouble() + 25,
-                    Math.rint(100 * rd.nextDouble() + 40)
-                };
-        final double[] P2 =
-                new double[] {
-                    100 * rd.nextDouble() + 25,
-                    100 * rd.nextDouble() + 25,
-                    Math.rint(100 * rd.nextDouble() + 40)
-                };
-        final double[] P3 =
-                new double[] {
-                    100 * rd.nextDouble() + 25,
-                    100 * rd.nextDouble() + 25,
-                    Math.rint(100 * rd.nextDouble() + 40)
-                };
-        double points[][] = new double[][] {P1, P2, P3};
+        final double[] P1 = {
+            100 * rd.nextDouble() + 25,
+            100 * rd.nextDouble() + 25,
+            Math.rint(100 * rd.nextDouble() + 40)
+        };
+        final double[] P2 = {
+            100 * rd.nextDouble() + 25,
+            100 * rd.nextDouble() + 25,
+            Math.rint(100 * rd.nextDouble() + 40)
+        };
+        final double[] P3 = {
+            100 * rd.nextDouble() + 25,
+            100 * rd.nextDouble() + 25,
+            Math.rint(100 * rd.nextDouble() + 40)
+        };
+        double points[][] = {P1, P2, P3};
 
         plan.setPlane(new double[][] {P1, P2, P3});
 

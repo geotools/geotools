@@ -33,8 +33,8 @@ public final class SimilarityTransformProviderTest {
 
         // Data from EPSG::9621 example
         final double precision = 1E-3; // dstPoints have 3 decimal units
-        final double[] srcPoints = new double[] {300000, 4500000};
-        final double[] dstPoints = new double[] {299905.060, 4499796.515};
+        final double[] srcPoints = {300000, 4500000};
+        final double[] dstPoints = {299905.060, 4499796.515};
         final double[] calculatedPoints = new double[srcPoints.length];
 
         // Direct transform test

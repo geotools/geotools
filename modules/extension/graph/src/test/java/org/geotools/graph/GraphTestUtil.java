@@ -177,7 +177,7 @@ public class GraphTestUtil {
         builder.addNode(n);
         builder.addEdge(e);
 
-        Node[] bifends = new Node[] {ends[0], ends[1], (Node) bif.get(0)};
+        Node[] bifends = {ends[0], ends[1], (Node) bif.get(0)};
         return (bifends);
     }
 

@@ -130,8 +130,8 @@ public class DialogUtilsTest extends GraphicsTestBase {
         }
 
         // Search for the red-ish start dot
-        int[] lower = new int[] {200, 0, 0};
-        int[] upper = new int[] {255, 80, 80};
+        int[] lower = {200, 0, 0};
+        int[] upper = {255, 80, 80};
         Rectangle bounds = new Rectangle(img.getMinX(), img.getMinY(), 20, 20);
         assertTrue(findColorInRange(img, bounds, lower, upper));
 

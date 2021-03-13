@@ -71,10 +71,10 @@ public class SupportFilesCollector {
     static {
         // Improve that, to be pluggable in future versions
         COLLECTORS = new HashMap<>();
-        String[] PNG_ = new String[] {WLD_, PRJ_, PGW_, WLD, PGW, PRJ};
-        String[] JPG_ = new String[] {WLD_, PRJ_, JGW_, WLD, JGW, PRJ};
-        String[] GIF_ = new String[] {WLD_, PRJ_, WLD, PRJ};
-        String[] TIF_ = new String[] {TFW_, PRJ_, WLD_, OVR_, MSK_, TFW, WLD, PRJ, OVR, MSK};
+        String[] PNG_ = {WLD_, PRJ_, PGW_, WLD, PGW, PRJ};
+        String[] JPG_ = {WLD_, PRJ_, JGW_, WLD, JGW, PRJ};
+        String[] GIF_ = {WLD_, PRJ_, WLD, PRJ};
+        String[] TIF_ = {TFW_, PRJ_, WLD_, OVR_, MSK_, TFW, WLD, PRJ, OVR, MSK};
         SupportFilesCollector PNG = new SupportFilesCollector(PNG_);
         SupportFilesCollector JPG = new SupportFilesCollector(JPG_);
         SupportFilesCollector TIF = new SupportFilesCollector(TIF_);

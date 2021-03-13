@@ -489,7 +489,7 @@ public final class DirectCreationTest {
         params.parameter("false_easting").setValue(0);
         params.parameter("false_northing").setValue(0);
         transform = mtFactory.createParameterizedTransform(params);
-        final double[] tolerance = new double[] {0.1, 0.1};
+        final double[] tolerance = {0.1, 0.1};
         doTransform(
                 new DirectPosition2D(10, -85),
                 new DirectPosition2D(94393.99, 535334.89),

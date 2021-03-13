@@ -96,13 +96,12 @@ import org.opengis.util.InternationalString;
  */
 public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements OptionalFactory {
     /** List of hint keys related to authority factories. */
-    private static final Hints.Key[] TYPES =
-            new Hints.Key[] {
-                Hints.CRS_AUTHORITY_FACTORY,
-                Hints.CS_AUTHORITY_FACTORY,
-                Hints.DATUM_AUTHORITY_FACTORY,
-                Hints.COORDINATE_OPERATION_AUTHORITY_FACTORY
-            };
+    private static final Hints.Key[] TYPES = {
+        Hints.CRS_AUTHORITY_FACTORY,
+        Hints.CS_AUTHORITY_FACTORY,
+        Hints.DATUM_AUTHORITY_FACTORY,
+        Hints.COORDINATE_OPERATION_AUTHORITY_FACTORY
+    };
 
     /** The underlying {@linkplain Datum datum} authority factory, or {@code null} if none. */
     final DatumAuthorityFactory datumFactory;
@@ -1256,7 +1255,7 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
 
     /** Returns {@code true} if the {@link #toBackingFactoryCode} method is overriden. */
     final boolean isCodeMethodOverriden() {
-        final Class<?>[] arguments = new Class[] {String.class};
+        final Class<?>[] arguments = {String.class};
         for (Class<?> type = getClass();
                 !AuthorityFactoryAdapter.class.equals(type);
                 type = type.getSuperclass()) {

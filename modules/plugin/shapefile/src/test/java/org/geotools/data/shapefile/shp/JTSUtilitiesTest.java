@@ -25,13 +25,9 @@ public class JTSUtilitiesTest {
 
     @Test
     public void testReverseRing() {
-        Coordinate[] coordinates =
-                new Coordinate[] {
-                    new Coordinate(0, 0),
-                    new Coordinate(1, 1),
-                    new Coordinate(0, 2),
-                    new Coordinate(0, 0)
-                };
+        Coordinate[] coordinates = {
+            new Coordinate(0, 0), new Coordinate(1, 1), new Coordinate(0, 2), new Coordinate(0, 0)
+        };
         LinearRing before = geomFactory.createLinearRing(coordinates);
         assertEquals(before.getCoordinateN(0), coordinates[0]);
         assertEquals(before.getCoordinateN(1), coordinates[1]);

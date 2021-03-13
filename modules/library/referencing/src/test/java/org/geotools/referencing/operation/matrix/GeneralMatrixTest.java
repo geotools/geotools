@@ -40,96 +40,83 @@ public class GeneralMatrixTest {
 
     private static double EPSILON_TOLERANCE = 0.000001;
 
-    private static double[][] zero2 =
-            new double[][] {
-                {0.0, 0.0},
-                {0.0, 0.0}
-            };
+    private static double[][] zero2 = {
+        {0.0, 0.0},
+        {0.0, 0.0}
+    };
 
-    private static double[][] id2 =
-            new double[][] {
-                {1.0, 0.0},
-                {0.0, 1.0}
-            };
+    private static double[][] id2 = {
+        {1.0, 0.0},
+        {0.0, 1.0}
+    };
 
-    private static double[][] id4 =
-            new double[][] {
-                {1.0, 0.0, 0.0, 0.0},
-                {0.0, 1.0, 0.0, 0.0},
-                {0.0, 0.0, 1.0, 0.0},
-                {0.0, 0.0, 0.0, 1.0}
-            };
+    private static double[][] id4 = {
+        {1.0, 0.0, 0.0, 0.0},
+        {0.0, 1.0, 0.0, 0.0},
+        {0.0, 0.0, 1.0, 0.0},
+        {0.0, 0.0, 0.0, 1.0}
+    };
 
-    private static double[][] id23 =
-            new double[][] {
-                {1.0, 0.0, 0.0},
-                {0.0, 1.0, 0.0}
-            };
+    private static double[][] id23 = {
+        {1.0, 0.0, 0.0},
+        {0.0, 1.0, 0.0}
+    };
 
-    private static double[][] id32 =
-            new double[][] {
-                {1.0, 0.0},
-                {0.0, 1.0},
-                {0.0, 0.0}
-            };
+    private static double[][] id32 = {
+        {1.0, 0.0},
+        {0.0, 1.0},
+        {0.0, 0.0}
+    };
 
-    private static double[][] array1 =
-            new double[][] {
-                {1.2, -3.4},
-                {-5.6, 7.8},
-                {9.0, -1.0}
-            };
+    private static double[][] array1 = {
+        {1.2, -3.4},
+        {-5.6, 7.8},
+        {9.0, -1.0}
+    };
 
-    private static double[][] negativeArray1 =
-            new double[][] {
-                {-1.2, 3.4},
-                {5.6, -7.8},
-                {-9.0, 1.0}
-            };
+    private static double[][] negativeArray1 = {
+        {-1.2, 3.4},
+        {5.6, -7.8},
+        {-9.0, 1.0}
+    };
 
-    private static double[] array1flatten = new double[] {1.2, -3.4, -5.6, 7.8, 9.0, -1.0};
+    private static double[] array1flatten = {1.2, -3.4, -5.6, 7.8, 9.0, -1.0};
 
     private static AffineTransform affineTransform =
             new AffineTransform(1.2, 3.4, 5.6, 7.8, 9.0, 1.0);
 
-    private static double[][] affineMatrix =
-            new double[][] {
-                {1.2, 5.6, 9.0},
-                {3.4, 7.8, 1.0},
-                {0.0, 0.0, 1.0}
-            };
+    private static double[][] affineMatrix = {
+        {1.2, 5.6, 9.0},
+        {3.4, 7.8, 1.0},
+        {0.0, 0.0, 1.0}
+    };
 
-    private static double[][] matrix33 =
-            new double[][] {
-                {1.2, 5.6, 9.0},
-                {3.4, 7.8, 1.0},
-                {-2.3, 4.6, 1.0}
-            };
+    private static double[][] matrix33 = {
+        {1.2, 5.6, 9.0},
+        {3.4, 7.8, 1.0},
+        {-2.3, 4.6, 1.0}
+    };
 
-    private static double[][] sub32 =
-            new double[][] {
-                {1.2, 5.6},
-                {3.4, 7.8},
-                {-2.3, 4.6}
-            };
+    private static double[][] sub32 = {
+        {1.2, 5.6},
+        {3.4, 7.8},
+        {-2.3, 4.6}
+    };
 
-    private static double[][] sub22 =
-            new double[][] {
-                {1.2, 5.6},
-                {3.4, 7.8}
-            };
+    private static double[][] sub22 = {
+        {1.2, 5.6},
+        {3.4, 7.8}
+    };
 
-    private static double[][] arrayA =
-            new double[][] {
-                {2, 6},
-                {4, 7}
-            };
+    private static double[][] arrayA = {
+        {2, 6},
+        {4, 7}
+    };
 
-    private static double[][] arrayAInverse =
-            new double[][] {
-                {-0.7, 0.6},
-                {0.4, -0.2}
-            };
+    private static double[][] arrayAInverse = {
+        {-0.7, 0.6},
+        {0.4, -0.2}
+    };
 
     private static GeneralMatrix generalAffineMatrix = new GeneralMatrix(affineMatrix);
     private static GeneralMatrix matrix1 = new GeneralMatrix(array1);

@@ -97,7 +97,7 @@ public class QuantileFunctionTest extends FunctionTestSupport {
         // create a feature collection with five features values 1-5
         SimpleFeatureType dataType =
                 DataUtilities.createType("classification.test1", "id:0,value:int");
-        int iVal[] = new int[] {1, 2, 3, 4, 5};
+        int iVal[] = {1, 2, 3, 4, 5};
         SimpleFeature[] myfeatures = new SimpleFeature[iVal.length];
         for (int i = 0; i < iVal.length; i++) {
             myfeatures[i] =
@@ -136,7 +136,7 @@ public class QuantileFunctionTest extends FunctionTestSupport {
         // create a feature collection with five features values 1-5
         SimpleFeatureType dataType =
                 DataUtilities.createType("classification.test1", "id:0,value:int");
-        int iVal[] = new int[] {1, 2, 3, 4, 5, 6};
+        int iVal[] = {1, 2, 3, 4, 5, 6};
         SimpleFeature[] myfeatures = new SimpleFeature[iVal.length];
         for (int i = 0; i < iVal.length; i++) {
             myfeatures[i] =
@@ -174,30 +174,28 @@ public class QuantileFunctionTest extends FunctionTestSupport {
         // create a feature collection
         SimpleFeatureType ft =
                 DataUtilities.createType("classification.nullnan", "id:0,foo:int,bar:double");
-        Integer iVal[] =
-                new Integer[] {
-                    Integer.valueOf(0),
-                    Integer.valueOf(0),
-                    Integer.valueOf(0),
-                    Integer.valueOf(13),
-                    Integer.valueOf(13),
-                    Integer.valueOf(13),
-                    null,
-                    null,
-                    null
-                };
-        Double dVal[] =
-                new Double[] {
-                    Double.valueOf(0.0),
-                    Double.valueOf(50.01),
-                    null,
-                    Double.valueOf(0.0),
-                    Double.valueOf(50.01),
-                    null,
-                    Double.valueOf(0.0),
-                    Double.valueOf(50.01),
-                    null
-                };
+        Integer iVal[] = {
+            Integer.valueOf(0),
+            Integer.valueOf(0),
+            Integer.valueOf(0),
+            Integer.valueOf(13),
+            Integer.valueOf(13),
+            Integer.valueOf(13),
+            null,
+            null,
+            null
+        };
+        Double dVal[] = {
+            Double.valueOf(0.0),
+            Double.valueOf(50.01),
+            null,
+            Double.valueOf(0.0),
+            Double.valueOf(50.01),
+            null,
+            Double.valueOf(0.0),
+            Double.valueOf(50.01),
+            null
+        };
 
         SimpleFeature[] testFeatures = new SimpleFeature[iVal.length];
 
@@ -262,7 +260,7 @@ public class QuantileFunctionTest extends FunctionTestSupport {
     public void testEvaluateNotNumericalWithPercentages() throws SchemaException {
         SimpleFeatureType dataType =
                 DataUtilities.createType("classification.test1", "id:0,value:String");
-        String sVal[] = new String[] {"a", "b", "c", "d", "e", "f"};
+        String sVal[] = {"a", "b", "c", "d", "e", "f"};
         SimpleFeature[] myfeatures = new SimpleFeature[sVal.length];
         for (int i = 0; i < sVal.length; i++) {
             myfeatures[i] =
@@ -290,7 +288,7 @@ public class QuantileFunctionTest extends FunctionTestSupport {
 
         SimpleFeatureType dataType =
                 DataUtilities.createType("classification.test1", "id:0,value:int");
-        int iVal[] = new int[] {1, 1, 2, 3, 4, 5};
+        int iVal[] = {1, 1, 2, 3, 4, 5};
         SimpleFeature[] myfeatures = new SimpleFeature[iVal.length];
         for (int i = 0; i < iVal.length; i++) {
             myfeatures[i] =

@@ -344,7 +344,7 @@ public class ShapefileDumperTest {
                             + Arrays.asList(dumperFolder.listFiles()));
         }
         // check all the sidecar files are there
-        final String[] extensions = new String[] {".shx", ".dbf", ".prj", ".cst"};
+        final String[] extensions = {".shx", ".dbf", ".prj", ".cst"};
         for (String extension : extensions) {
             File f = new File(dumperFolder, typeName + extension);
             if (!f.exists()) {

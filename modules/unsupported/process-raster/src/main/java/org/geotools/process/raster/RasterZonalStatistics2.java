@@ -65,15 +65,14 @@ public class RasterZonalStatistics2 implements RasterProcess {
     private static final CoverageProcessor PROCESSOR = CoverageProcessor.getInstance();
 
     /** Default statistics to calculate. */
-    private static final StatsType[] DEFAULT_STATISTICS =
-            new StatsType[] {
-                StatsType.MEAN,
-                StatsType.MAX,
-                StatsType.MIN,
-                StatsType.EXTREMA,
-                StatsType.VARIANCE,
-                StatsType.DEV_STD
-            };
+    private static final StatsType[] DEFAULT_STATISTICS = {
+        StatsType.MEAN,
+        StatsType.MAX,
+        StatsType.MIN,
+        StatsType.EXTREMA,
+        StatsType.VARIANCE,
+        StatsType.DEV_STD
+    };
 
     @DescribeResult(
         name = "zonal statistics",
@@ -160,7 +159,7 @@ public class RasterZonalStatistics2 implements RasterProcess {
                     boolean localStats) {
 
         // If no band is indicated, then the first band is taken
-        int[] ibands = new int[] {0};
+        int[] ibands = {0};
         if (bands == null) {
             bands = ibands;
         }

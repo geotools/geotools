@@ -151,7 +151,7 @@ public class FootprintExtractionProcessTest {
 
                 // Creating the feature
                 final SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(featureType);
-                final Object[] values = new Object[] {geometry, 0};
+                final Object[] values = {geometry, 0};
                 featureBuilder.addAll(values);
                 final SimpleFeature feature = featureBuilder.buildFeature(typeName + '.' + 0);
 

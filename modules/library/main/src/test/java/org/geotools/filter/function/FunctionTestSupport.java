@@ -50,8 +50,8 @@ public abstract class FunctionTestSupport {
                 DataUtilities.createType(
                         "classification.test1", "id:0,foo:int,bar:double,geom:Point,group:String");
 
-        int iVal[] = new int[] {4, 90, 20, 43, 29, 61, 8, 12};
-        double dVal[] = new double[] {2.5, 80.433, 24.5, 9.75, 18, 53, 43.2, 16};
+        int iVal[] = {4, 90, 20, 43, 29, 61, 8, 12};
+        double dVal[] = {2.5, 80.433, 24.5, 9.75, 18, 53, 43.2, 16};
         testFeatures = new SimpleFeature[iVal.length];
 
         featureCollection = new ListFeatureCollection(dataType);
@@ -110,7 +110,7 @@ public abstract class FunctionTestSupport {
                 DataUtilities.createType(
                         "classification.stddev", "id:0,foo:int,geom:Point,group:String");
 
-        int iVal2[] = new int[] {4, 39, 20, 43, 29, 200, 8, 12, 500, -500};
+        int iVal2[] = {4, 39, 20, 43, 29, 200, 8, 12, 500, -500};
 
         stddevCollection = new ListFeatureCollection(stddevType);
 

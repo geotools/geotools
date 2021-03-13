@@ -1469,9 +1469,9 @@ public class ProjectionHandlerTest {
 
         final double negativeMinX = -2380;
         final double negativeMaxX = -2170;
-        final double[] negatives = new double[] {negativeMinX, negativeMaxX};
-        final double[] positives = new double[] {positiveMinX, positiveMaxX};
-        final double[][] sets = new double[][] {negatives, positives};
+        final double[] negatives = {negativeMinX, negativeMaxX};
+        final double[] positives = {positiveMinX, positiveMaxX};
+        final double[][] sets = {negatives, positives};
 
         boolean negative = true;
         for (double[] set : sets) {

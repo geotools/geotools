@@ -266,8 +266,7 @@ public class UtilitiesTest extends Assert {
                         new GridEnvelope2D(bounds), raster2Model, spatialReferenceSystem2D);
 
         GeneralEnvelope coverageEnvelope2D = new GeneralEnvelope(gg2D.getEnvelope());
-        GridSampleDimension[] sampleDimensions =
-                new GridSampleDimension[] {new GridSampleDimension("testDim")};
+        GridSampleDimension[] sampleDimensions = {new GridSampleDimension("testDim")};
         // Creation of the Coverage
         GridCoverage2D coverage1 =
                 (GridCoverage2D)

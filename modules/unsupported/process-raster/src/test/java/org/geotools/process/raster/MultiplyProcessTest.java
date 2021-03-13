@@ -29,13 +29,12 @@ public class MultiplyProcessTest {
 
     private void doTestMultiply() {
 
-        float[][] grid =
-                new float[][] {
-                    {1, 2, 3, 4},
-                    {5, 6, 8, 9},
-                    {10, 11, 12, 13},
-                    {14, 15, 16, 17},
-                };
+        float[][] grid = {
+            {1, 2, 3, 4},
+            {5, 6, 8, 9},
+            {10, 11, 12, 13},
+            {14, 15, 16, 17},
+        };
 
         Map<String, Object> properties = new HashMap<>();
         CoverageUtilities.setNoDataProperty(properties, new NoDataContainer(2));

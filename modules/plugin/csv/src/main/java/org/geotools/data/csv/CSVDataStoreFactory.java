@@ -57,7 +57,7 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
 
     private static final String FILE_TYPE = "csv";
 
-    public static final String[] EXTENSIONS = new String[] {"." + FILE_TYPE};
+    public static final String[] EXTENSIONS = {"." + FILE_TYPE};
 
     public static final Param FILE_PARAM =
             new Param("file", File.class, FILE_TYPE + " file", false);
@@ -145,20 +145,19 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
                     false,
                     false,
                     new KVP(Param.LEVEL, "advanced"));
-    public static final Param[] parametersInfo =
-            new Param[] {
-                FILE_PARAM,
-                NAMESPACEP,
-                STRATEGYP,
-                LATFIELDP,
-                LnGFIELDP,
-                WKTP,
-                WRITEPRJ,
-                QUOTEALL,
-                QUOTECHAR,
-                SEPERATORCHAR,
-                LINESEPSTRING
-            };
+    public static final Param[] parametersInfo = {
+        FILE_PARAM,
+        NAMESPACEP,
+        STRATEGYP,
+        LATFIELDP,
+        LnGFIELDP,
+        WKTP,
+        WRITEPRJ,
+        QUOTEALL,
+        QUOTECHAR,
+        SEPERATORCHAR,
+        LINESEPSTRING
+    };
 
     @Override
     public String getDisplayName() {

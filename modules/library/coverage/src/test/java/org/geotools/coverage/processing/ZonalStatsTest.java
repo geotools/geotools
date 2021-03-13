@@ -341,7 +341,7 @@ public class ZonalStatsTest {
         statsSet.add(Statistic.RANGE);
 
         // select the bands to work on
-        Integer[] bands = new Integer[] {0};
+        Integer[] bands = {0};
         List<Range<Double>> inclusionRanges = new ArrayList<>();
         inclusionRanges.add(new Range<>(Double.valueOf(0), false, Double.valueOf(1300), true));
         inclusionRanges.add(new Range<>(Double.valueOf(1370), true, Double.valueOf(1600), true));
@@ -465,7 +465,7 @@ public class ZonalStatsTest {
         statsSet.add(Statistic.RANGE);
 
         // select the bands to work on
-        Integer[] bands = new Integer[] {0};
+        Integer[] bands = {0};
         List<Range<Double>> inclusionRanges = new ArrayList<>();
         inclusionRanges.add(new Range<>(Double.valueOf(0), false, Double.valueOf(1300), true));
         inclusionRanges.add(new Range<>(Double.valueOf(1370), true, Double.valueOf(1600), true));

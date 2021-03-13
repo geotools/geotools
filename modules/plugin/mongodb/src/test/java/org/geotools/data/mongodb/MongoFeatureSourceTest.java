@@ -303,10 +303,9 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
 
     public void testSingleSortBy() throws Exception {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-        SortBy[] sorts =
-                new SortBy[] {
-                    ff.sort("properties.doubleProperty", SortOrder.DESCENDING),
-                };
+        SortBy[] sorts = {
+            ff.sort("properties.doubleProperty", SortOrder.DESCENDING),
+        };
 
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
         assertTrue(source.getQueryCapabilities().supportsSorting(sorts));
@@ -334,11 +333,10 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         // sort before desc on string value a,b,b obtaining b,b,a
         // then asc on date 2015-01-01T00:00, 2015-01-01T16:30, 2015-01-01T21:30
         // obtaining second, third, one
-        SortBy[] sorts =
-                new SortBy[] {
-                    ff.sort("properties.stringProperty2", SortOrder.DESCENDING),
-                    ff.sort("properties.dateProperty", SortOrder.ASCENDING),
-                };
+        SortBy[] sorts = {
+            ff.sort("properties.stringProperty2", SortOrder.DESCENDING),
+            ff.sort("properties.dateProperty", SortOrder.ASCENDING),
+        };
 
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
         assertTrue(source.getQueryCapabilities().supportsSorting(sorts));
@@ -369,11 +367,10 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
     public void testTwoSortByWithNullableAttribute() throws Exception {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         // sort before on nullable so that second sort overcome
-        SortBy[] sorts =
-                new SortBy[] {
-                    ff.sort("properties.nullableAttribute", SortOrder.DESCENDING),
-                    ff.sort("properties.dateProperty", SortOrder.ASCENDING),
-                };
+        SortBy[] sorts = {
+            ff.sort("properties.nullableAttribute", SortOrder.DESCENDING),
+            ff.sort("properties.dateProperty", SortOrder.ASCENDING),
+        };
 
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
         assertTrue(source.getQueryCapabilities().supportsSorting(sorts));
@@ -397,7 +394,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
     }
 
     public void testNullSortBy() throws Exception {
-        SortBy[] sorts = new SortBy[] {SortBy.NATURAL_ORDER};
+        SortBy[] sorts = {SortBy.NATURAL_ORDER};
 
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
         Query q = new Query("ft1", Filter.INCLUDE);

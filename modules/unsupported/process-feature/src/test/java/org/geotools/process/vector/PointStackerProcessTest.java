@@ -57,13 +57,12 @@ public class PointStackerProcessTest {
                 new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
 
         // Simple dataset with some coincident points
-        Coordinate[] data =
-                new Coordinate[] {
-                    new Coordinate(4, 4),
-                    new Coordinate(4.1, 4.1),
-                    new Coordinate(4.1, 4.1),
-                    new Coordinate(8, 8)
-                };
+        Coordinate[] data = {
+            new Coordinate(4, 4),
+            new Coordinate(4.1, 4.1),
+            new Coordinate(4.1, 4.1),
+            new Coordinate(8, 8)
+        };
 
         SimpleFeatureCollection fc = createPoints(data, bounds);
         ProgressListener monitor = null;
@@ -92,13 +91,12 @@ public class PointStackerProcessTest {
                 new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
 
         // Simple dataset with some coincident points
-        Coordinate[] data =
-                new Coordinate[] {
-                    new Coordinate(4, 4),
-                    new Coordinate(4.1, 4.1),
-                    new Coordinate(4.1, 4.1),
-                    new Coordinate(8, 8)
-                };
+        Coordinate[] data = {
+            new Coordinate(4, 4),
+            new Coordinate(4.1, 4.1),
+            new Coordinate(4.1, 4.1),
+            new Coordinate(8, 8)
+        };
 
         SimpleFeatureCollection fc = createPoints(data, bounds);
         ProgressListener monitor = null;
@@ -127,14 +125,13 @@ public class PointStackerProcessTest {
                 new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
 
         // Simple dataset with some coincident points
-        Coordinate[] data =
-                new Coordinate[] {
-                    new Coordinate(4, 4),
-                    new Coordinate(6.5, 6.5),
-                    new Coordinate(6.5, 6.5),
-                    new Coordinate(8, 8),
-                    new Coordinate(8.3, 8.3)
-                };
+        Coordinate[] data = {
+            new Coordinate(4, 4),
+            new Coordinate(6.5, 6.5),
+            new Coordinate(6.5, 6.5),
+            new Coordinate(8, 8),
+            new Coordinate(8.3, 8.3)
+        };
 
         SimpleFeatureCollection fc = createPoints(data, bounds);
         ProgressListener monitor = null;
@@ -165,14 +162,13 @@ public class PointStackerProcessTest {
                 new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
 
         // Simple dataset with some coincident points
-        Coordinate[] data =
-                new Coordinate[] {
-                    new Coordinate(4, 4),
-                    new Coordinate(6.5, 6.5),
-                    new Coordinate(6.5, 6.5),
-                    new Coordinate(8, 8),
-                    new Coordinate(8.3, 8.3)
-                };
+        Coordinate[] data = {
+            new Coordinate(4, 4),
+            new Coordinate(6.5, 6.5),
+            new Coordinate(6.5, 6.5),
+            new Coordinate(8, 8),
+            new Coordinate(8.3, 8.3)
+        };
 
         SimpleFeatureCollection fc = createPoints(data, bounds);
         ProgressListener monitor = null;
@@ -223,10 +219,9 @@ public class PointStackerProcessTest {
 
         // Dataset with some points located in appropriate area
         // points are close enough to create a single cluster
-        Coordinate[] data =
-                new Coordinate[] {
-                    new Coordinate(-121.813201, 48.777343), new Coordinate(-121.813, 48.777)
-                };
+        Coordinate[] data = {
+            new Coordinate(-121.813201, 48.777343), new Coordinate(-121.813, 48.777)
+        };
 
         SimpleFeatureCollection fc = createPoints(data, inBounds);
         ProgressListener monitor = null;
@@ -272,10 +267,9 @@ public class PointStackerProcessTest {
 
         // Dataset with some points located in appropriate area
         // points are close enough to create a single cluster
-        Coordinate[] data =
-                new Coordinate[] {
-                    new Coordinate(-121.813201, 48.777343), new Coordinate(-121.813, 48.777)
-                };
+        Coordinate[] data = {
+            new Coordinate(-121.813201, 48.777343), new Coordinate(-121.813, 48.777)
+        };
 
         SimpleFeatureCollection fc = createPoints(data, inBounds);
         ProgressListener monitor = null;

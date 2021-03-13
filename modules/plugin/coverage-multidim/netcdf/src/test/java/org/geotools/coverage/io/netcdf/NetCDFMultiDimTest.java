@@ -719,7 +719,7 @@ public class NetCDFMultiDimTest {
                     new DefaultParameterDescriptor<>("ELEVATION", List.class, null, null)
                             .createValue();
 
-            GeneralParameterValue[] values = new GeneralParameterValue[] {gg, time, elevation};
+            GeneralParameterValue[] values = {gg, time, elevation};
 
             // Read with 1st date / 1st elevation
             time.setValue(

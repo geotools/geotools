@@ -934,17 +934,15 @@ public class SLDStyleTest {
         ColorMap cMap = rs.getColorMap();
         Assert.assertEquals(20, cMap.getColorMapEntries().length);
         ColorMapEntry[] centeries = cMap.getColorMapEntries();
-        String[] colors =
-                new String[] {
-                    "#00ff00", "#00fa00", "#14f500", "#28f502", "#3cf505", "#50f50a", "#64f014",
-                    "#7deb32", "#78c818", "#38840c", "#2c4b04", "#ffff00", "#dcdc00", "#b47800",
-                    "#c85000", "#be4100", "#963000", "#3c0200", "#ffffff", "#ffffff"
-                };
-        int[] values =
-                new int[] {
-                    -500, -417, -333, -250, -167, -83, -1, 0, 30, 105, 300, 400, 700, 1200, 1400,
-                    1600, 2000, 3000, 5000, 13000
-                };
+        String[] colors = {
+            "#00ff00", "#00fa00", "#14f500", "#28f502", "#3cf505", "#50f50a", "#64f014",
+            "#7deb32", "#78c818", "#38840c", "#2c4b04", "#ffff00", "#dcdc00", "#b47800",
+            "#c85000", "#be4100", "#963000", "#3c0200", "#ffffff", "#ffffff"
+        };
+        int[] values = {
+            -500, -417, -333, -250, -167, -83, -1, 0, 30, 105, 300, 400, 700, 1200, 1400, 1600,
+            2000, 3000, 5000, 13000
+        };
         for (int i = 0; i < centeries.length; i++) {
             ColorMapEntry entry = centeries[i];
             String c = (String) entry.getColor().evaluate(null);

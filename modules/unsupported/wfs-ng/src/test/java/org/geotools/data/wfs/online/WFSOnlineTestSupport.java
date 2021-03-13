@@ -118,7 +118,7 @@ public class WFSOnlineTestSupport {
         SimpleFeatureType ft = wfs.getSchema(typeName);
         // take atleast attributeType 3 to avoid the undeclared one .. inherited optional attrs
 
-        String[] props = new String[] {ft.getGeometryDescriptor().getLocalName()};
+        String[] props = {ft.getGeometryDescriptor().getLocalName()};
 
         Query query = new Query(ft.getTypeName());
         query.setPropertyNames(props);

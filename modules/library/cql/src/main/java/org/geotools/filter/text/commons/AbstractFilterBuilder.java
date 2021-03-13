@@ -699,7 +699,7 @@ public abstract class AbstractFilterBuilder {
         PropertyName property = this.resultStack.popPropertyName();
 
         FilterFactory2 ff = (FilterFactory2) filterFactory;
-        Expression[] args = new Expression[] {property, geometry, pattern};
+        Expression[] args = {property, geometry, pattern};
 
         Function function = filterFactory.function("relatePattern", args);
 

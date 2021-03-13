@@ -148,12 +148,11 @@ public class Polynom implements Serializable {
         if (d >= 0) {
             final double theta = Math.acos(R / Math.sqrt(Qcubed)) / 3;
             final double scale = -2 * Math.sqrt(Q);
-            final double[] roots =
-                    new double[] {
-                        scale * Math.cos(theta) - c2,
-                        scale * Math.cos(theta + Math.PI * 2 / 3) - c2,
-                        scale * Math.cos(theta + Math.PI * 4 / 3) - c2
-                    };
+            final double[] roots = {
+                scale * Math.cos(theta) - c2,
+                scale * Math.cos(theta + Math.PI * 2 / 3) - c2,
+                scale * Math.cos(theta + Math.PI * 4 / 3) - c2
+            };
             assert Math.abs(roots[0] * roots[1] * roots[2] + c0) < 1E-6;
             assert Math.abs(roots[0] + roots[1] + roots[2] + c2 * 3) < 1E-6;
             assert Math.abs(roots[0] * roots[1] + roots[0] * roots[2] + roots[1] * roots[2] - c1)

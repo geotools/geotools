@@ -48,7 +48,7 @@ public class ZeroImageNode extends BaseCoverageProcessingNode {
         final CoverageProcessingNode source = getSource(0);
         final GridCoverage2D sourceCoverage = (GridCoverage2D) source.getOutput();
         final RenderedImage sourceImage = sourceCoverage.getRenderedImage();
-        final Number[] bandValues = new Byte[] {(byte) 0};
+        final Byte[] bandValues = {(byte) 0};
 
         Hints hints = new Hints(getHints());
         final ImageLayout layout = new ImageLayout(sourceImage);

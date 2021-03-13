@@ -489,7 +489,7 @@ public class GranuleDescriptor {
                 final int height = baseOverviewLevelDescriptor.getHeight();
                 final double resX = AffineTransform2D.getScaleX0(baseG2W);
                 final double resY = AffineTransform2D.getScaleY0(baseG2W);
-                final double[] highestRes = new double[] {resX, resY};
+                final double[] highestRes = {resX, resY};
 
                 // Populating overviews and initializing overviewsController
                 final double[][] overviewsResolution =

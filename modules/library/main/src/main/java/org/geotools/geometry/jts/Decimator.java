@@ -181,7 +181,7 @@ public final class Decimator {
     /** Computes the real world distance of a one pixel segment centered in the specified point */
     static double[] getGeneralizationSpans(double x, double y, MathTransform transform)
             throws TransformException {
-        double[] original = new double[] {x - 0.5, y - 0.5, x + 0.5, y + 0.5};
+        double[] original = {x - 0.5, y - 0.5, x + 0.5, y + 0.5};
         double[] transformed = new double[4];
         transform.transform(original, 0, transformed, 0, 2);
         double[] spans = new double[2];

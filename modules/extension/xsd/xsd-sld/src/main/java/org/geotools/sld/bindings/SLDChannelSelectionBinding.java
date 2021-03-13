@@ -118,12 +118,11 @@ public class SLDChannelSelectionBinding extends AbstractComplexBinding {
         if (node.hasChild("GrayChannel")) {
             cs.setGrayChannel((SelectedChannelType) node.getChildValue("GrayChannel"));
         } else {
-            SelectedChannelType[] rgb =
-                    new SelectedChannelType[] {
-                        (SelectedChannelType) node.getChildValue("RedChannel"),
-                        (SelectedChannelType) node.getChildValue("GreenChannel"),
-                        (SelectedChannelType) node.getChildValue("BlueChannel")
-                    };
+            SelectedChannelType[] rgb = {
+                (SelectedChannelType) node.getChildValue("RedChannel"),
+                (SelectedChannelType) node.getChildValue("GreenChannel"),
+                (SelectedChannelType) node.getChildValue("BlueChannel")
+            };
             cs.setRGBChannels(rgb);
         }
 

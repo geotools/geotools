@@ -174,7 +174,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
         if ((dim = getTargetDimensions()) != 2) {
             throw new MismatchedDimensionException(constructMessage("ptDst", 2, dim));
         }
-        final double[] ord = new double[] {ptSrc.getX(), ptSrc.getY()};
+        final double[] ord = {ptSrc.getX(), ptSrc.getY()};
         this.transform(ord, 0, ord, 0, 1);
         if (ptDst != null) {
             ptDst.setLocation(ord[0], ord[1]);

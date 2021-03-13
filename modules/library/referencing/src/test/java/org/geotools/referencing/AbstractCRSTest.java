@@ -325,7 +325,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         assertNotNull(crs);
 
         MathTransform mt = CRS.findMathTransform(DefaultGeographicCRS.WGS84, crs);
-        double[] source = new double[] {-20, 35};
+        double[] source = {-20, 35};
         double[] dest = new double[2];
         mt.transform(source, 0, dest, 0, 1);
 
@@ -418,7 +418,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         CoordinateReferenceSystem ng39 = CRS.decode("EPSG:25831", true);
 
         // forward
-        double[] src = new double[] {300000, 4500000};
+        double[] src = {300000, 4500000};
         double[] dst = new double[2];
         MathTransform mt = CRS.findMathTransform(tombak, ng39);
         mt.transform(src, 0, dst, 0, 1);
@@ -459,8 +459,8 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
 
         assertTrue(mt.toWKT().contains("NADCON"));
 
-        double[] src = new double[] {56.575, -169.625};
-        double[] expected = new double[] {56.576034, -169.62744};
+        double[] src = {56.575, -169.625};
+        double[] expected = {56.576034, -169.62744};
         double[] p = new double[2];
         mt.transform(src, 0, p, 0, 1);
         assertEquals(expected[0], p[0], 1e-6);

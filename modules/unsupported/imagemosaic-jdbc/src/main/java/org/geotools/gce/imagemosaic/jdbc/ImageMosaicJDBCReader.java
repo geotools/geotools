@@ -412,12 +412,12 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
         // pad one more pixel for a better interpolation
         double xminXt = (Math.floor((xminRe - xminLv) / xresLv) - 1) * xresLv + xminLv;
         double yminXt = (Math.floor((yminRe - yminLv) / yresLv) - 1) * yresLv + yminLv;
-        double[] minXY = new double[] {xminXt, yminXt};
+        double[] minXY = {xminXt, yminXt};
 
         // pad one more pixel for a better interpolation
         double xmaxXt = (Math.ceil((xmaxRe - xminLv) / xresLv) + 1) * xresLv + xminLv;
         double ymaxXt = (Math.ceil((ymaxRe - yminLv) / yresLv) + 1) * yresLv + yminLv;
-        double[] maxXY = new double[] {xmaxXt, ymaxXt};
+        double[] maxXY = {xmaxXt, ymaxXt};
 
         GeneralEnvelope expanded = new GeneralEnvelope(minXY, maxXY);
         expanded.setCoordinateReferenceSystem(ret.getCoordinateReferenceSystem());

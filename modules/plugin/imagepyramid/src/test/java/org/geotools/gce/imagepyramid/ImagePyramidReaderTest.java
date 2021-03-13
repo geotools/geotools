@@ -160,14 +160,13 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
         FileUtils.copyDirectory(sourceDir, targetDir);
 
         // remove the files we want to recreate
-        File[] dirs =
-                new File[] {
-                    targetDir,
-                    new File(targetDir, "0"),
-                    new File(targetDir, "2"),
-                    new File(targetDir, "4"),
-                    new File(targetDir, "8")
-                };
+        File[] dirs = {
+            targetDir,
+            new File(targetDir, "0"),
+            new File(targetDir, "2"),
+            new File(targetDir, "4"),
+            new File(targetDir, "8")
+        };
         FileFilter metadataFilter = FileFilterUtils.prefixFileFilter("pyramid.");
         for (File dir : dirs) {
             for (File file : dir.listFiles(metadataFilter)) {

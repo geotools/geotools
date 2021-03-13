@@ -160,7 +160,7 @@ public class StreamingRendererTest {
     }
 
     private SimpleFeature createLine(double x1, double y1, double x2, double y2) {
-        Coordinate[] coords = new Coordinate[] {new Coordinate(x1, y1), new Coordinate(x2, y2)};
+        Coordinate[] coords = {new Coordinate(x1, y1), new Coordinate(x2, y2)};
         return SimpleFeatureBuilder.build(
                 testLineFeatureType, new Object[] {gf.createLineString(coords)}, null);
     }

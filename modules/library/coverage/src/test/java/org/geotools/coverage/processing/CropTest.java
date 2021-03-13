@@ -768,7 +768,7 @@ public final class CropTest extends GridProcessingTestBase {
         /*
          * Create a simple Red image
          */
-        Byte[] red = new Byte[] {(byte) 255, 0, 0};
+        Byte[] red = {(byte) 255, 0, 0};
         RenderedOp image =
                 ConstantDescriptor.create(Float.valueOf(40), Float.valueOf(37), red, null);
         final Envelope envelope =

@@ -40,13 +40,12 @@ public class BarnesSurfaceProcessTest {
 
         ReferencedEnvelope bounds =
                 new ReferencedEnvelope(0, 30, 0, 30, DefaultGeographicCRS.WGS84);
-        Coordinate[] data =
-                new Coordinate[] {
-                    new Coordinate(10, 10, 100),
-                    new Coordinate(10, 20, 20),
-                    new Coordinate(20, 10, 0),
-                    new Coordinate(20, 20, 80)
-                };
+        Coordinate[] data = {
+            new Coordinate(10, 10, 100),
+            new Coordinate(10, 20, 20),
+            new Coordinate(20, 10, 0),
+            new Coordinate(20, 20, 80)
+        };
         SimpleFeatureCollection fc = ProcessTestUtilities.createPoints(data, bounds);
 
         ProgressListener monitor = null;

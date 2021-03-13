@@ -253,19 +253,20 @@ public class GeoSpatialImageReaderTest {
 
     public static class TestGeospatialImageReaderSpi extends ImageReaderSpi {
 
-        public static final Class<?>[] STANDARD_INPUT_TYPES =
-                new Class[] {ImageInputStream.class, File.class, URL.class, URI.class};
+        public static final Class<?>[] STANDARD_INPUT_TYPES = {
+            ImageInputStream.class, File.class, URL.class, URI.class
+        };
 
         public static final String VENDOR_NAME = "GeoTools";
 
         /** Default Logger * */
         private static final Logger LOGGER = Logging.getLogger(TestGeospatialImageReaderSpi.class);
 
-        static final String[] suffixes = new String[] {".tiff", ".tif"};
+        static final String[] suffixes = {".tiff", ".tif"};
 
-        static final String[] formatNames = new String[] {"TIFF", "TIF"};
+        static final String[] formatNames = {"TIFF", "TIF"};
 
-        static final String[] MIMETypes = new String[] {"image/tiff", "image/geotiff"};
+        static final String[] MIMETypes = {"image/tiff", "image/geotiff"};
 
         static final String version = "1.0";
 

@@ -30,19 +30,16 @@ public class ogcSimpleTypes {
             return instance;
         }
 
-        private static SimpleType[] parents =
-                new SimpleType[] {
-                    org.geotools.xml.xsi.XSISimpleTypes.String
-                            .getInstance() /* simpleType name is string */
-                };
-        private static Facet[] facets =
-                new Facet[] {
-                    new FacetGT(Facet.ENUMERATION, GetCapabilitiesRequest.SECTION_ALL),
-                    new FacetGT(Facet.ENUMERATION, GetCapabilitiesRequest.SECTION_SERVICE),
-                    new FacetGT(Facet.ENUMERATION, GetCapabilitiesRequest.SECTION_OPERATIONS),
-                    new FacetGT(Facet.ENUMERATION, GetCapabilitiesRequest.SECTION_CONTENT),
-                    new FacetGT(Facet.ENUMERATION, GetCapabilitiesRequest.SECTION_COMMON)
-                };
+        private static SimpleType[] parents = {
+            org.geotools.xml.xsi.XSISimpleTypes.String.getInstance() /* simpleType name is string */
+        };
+        private static Facet[] facets = {
+            new FacetGT(Facet.ENUMERATION, GetCapabilitiesRequest.SECTION_ALL),
+            new FacetGT(Facet.ENUMERATION, GetCapabilitiesRequest.SECTION_SERVICE),
+            new FacetGT(Facet.ENUMERATION, GetCapabilitiesRequest.SECTION_OPERATIONS),
+            new FacetGT(Facet.ENUMERATION, GetCapabilitiesRequest.SECTION_CONTENT),
+            new FacetGT(Facet.ENUMERATION, GetCapabilitiesRequest.SECTION_COMMON)
+        };
 
         private CapabilitiesSectionType() {
             super("ogc:CapabilitiesSectionType", 4, parents, facets);
@@ -56,17 +53,14 @@ public class ogcSimpleTypes {
             return instance;
         }
 
-        private static SimpleType[] parents =
-                new SimpleType[] {
-                    org.geotools.xml.xsi.XSISimpleTypes.String
-                            .getInstance() /* simpleType name is string */
-                };
-        private static Facet[] facets =
-                new Facet[] {
-                    new FacetGT(Facet.ENUMERATION, "image/gif"),
-                    new FacetGT(Facet.ENUMERATION, "image/jpg"),
-                    new FacetGT(Facet.ENUMERATION, "image/png")
-                };
+        private static SimpleType[] parents = {
+            org.geotools.xml.xsi.XSISimpleTypes.String.getInstance() /* simpleType name is string */
+        };
+        private static Facet[] facets = {
+            new FacetGT(Facet.ENUMERATION, "image/gif"),
+            new FacetGT(Facet.ENUMERATION, "image/jpg"),
+            new FacetGT(Facet.ENUMERATION, "image/png")
+        };
 
         private FormatType() {
             super("FormatType", 4, parents, facets);
@@ -80,12 +74,10 @@ public class ogcSimpleTypes {
             return instance;
         }
 
-        private static SimpleType[] parents =
-                new SimpleType[] {
-                    org.geotools.xml.xsi.XSISimpleTypes.String
-                            .getInstance() /* simpleType name is string */
-                };
-        private static Facet[] facets = new Facet[] {new FacetGT(Facet.ENUMERATION, "WMS")};
+        private static SimpleType[] parents = {
+            org.geotools.xml.xsi.XSISimpleTypes.String.getInstance() /* simpleType name is string */
+        };
+        private static Facet[] facets = {new FacetGT(Facet.ENUMERATION, "WMS")};
 
         private OWSType() {
             super("OWSType", 4, parents, facets);
@@ -99,16 +91,13 @@ public class ogcSimpleTypes {
             return instance;
         }
 
-        private static SimpleType[] parents =
-                new SimpleType[] {
-                    org.geotools.xml.xsi.XSISimpleTypes.String
-                            .getInstance() /* simpleType name is string */
-                };
-        private static Facet[] facets =
-                new Facet[] {
-                    new FacetGT(Facet.ENUMERATION, "application/vnd.ogc.se+inimage"),
-                    new FacetGT(Facet.ENUMERATION, "application/vnd.ogc.se+xml")
-                };
+        private static SimpleType[] parents = {
+            org.geotools.xml.xsi.XSISimpleTypes.String.getInstance() /* simpleType name is string */
+        };
+        private static Facet[] facets = {
+            new FacetGT(Facet.ENUMERATION, "application/vnd.ogc.se+inimage"),
+            new FacetGT(Facet.ENUMERATION, "application/vnd.ogc.se+xml")
+        };
 
         private ExceptionsType() {
             super("ExceptionsType", 4, parents, facets);

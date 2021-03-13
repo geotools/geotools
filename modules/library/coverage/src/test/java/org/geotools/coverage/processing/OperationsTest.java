@@ -72,7 +72,7 @@ public final class OperationsTest extends GridProcessingTestBase {
      */
     @Test
     public void testSubtract() {
-        double[] constants = new double[] {18};
+        double[] constants = {18};
         GridCoverage sourceCoverage = SST;
         GridCoverage targetCoverage = (GridCoverage) processor.subtract(sourceCoverage, constants);
         RenderedImage sourceImage =

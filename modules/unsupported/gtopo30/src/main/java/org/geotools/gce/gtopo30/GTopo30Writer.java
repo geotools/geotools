@@ -841,12 +841,11 @@ public final class GTopo30Writer extends AbstractGridCoverageWriter implements G
         // we need to evaluate stats first using jai
         //
         // /////////////////////////////////////////////////////////////////////
-        final double[] Max =
-                new double[] {
-                    Short.MAX_VALUE
-                }; // we should encode more than the maximum short anyway
-        final double[] Min = new double[] {Short.MIN_VALUE}; // we should avoid No Data values TODO
-        final int[] bins = new int[] {(int) (Max[0] - Min[0] + 1)};
+        final double[] Max = {
+            Short.MAX_VALUE
+        }; // we should encode more than the maximum short anyway
+        final double[] Min = {Short.MIN_VALUE}; // we should avoid No Data values TODO
+        final int[] bins = {(int) (Max[0] - Min[0] + 1)};
         // histogram
         ImageWorker w = new ImageWorker(image);
         w.setRenderingHint(JAI.KEY_TILE_CACHE, null);

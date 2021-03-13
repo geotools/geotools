@@ -178,7 +178,7 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
     public void testSortFeaturesWithSelect() throws Exception {
         SimpleFeatureSource transformed = transformWithSelection();
 
-        SortBy[] sortBy = new SortBy[] {FF.sort("state_name", SortOrder.DESCENDING)};
+        SortBy[] sortBy = {FF.sort("state_name", SortOrder.DESCENDING)};
 
         // check we can sort
         assertTrue(transformed.getQueryCapabilities().supportsSorting(sortBy));
@@ -278,7 +278,7 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
     public void testSortFeaturesWithRename() throws Exception {
         SimpleFeatureSource transformed = transformWithRename();
 
-        SortBy[] sortBy = new SortBy[] {FF.sort("name", SortOrder.DESCENDING)};
+        SortBy[] sortBy = {FF.sort("name", SortOrder.DESCENDING)};
 
         // check we can sort
         assertTrue(transformed.getQueryCapabilities().supportsSorting(sortBy));
@@ -409,7 +409,7 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
     public void testSortFeaturesWithTransform() throws Exception {
         SimpleFeatureSource transformed = transformWithExpressions();
 
-        SortBy[] sortBy = new SortBy[] {FF.sort("total", SortOrder.DESCENDING)};
+        SortBy[] sortBy = {FF.sort("total", SortOrder.DESCENDING)};
 
         // check we can sort
         assertTrue(transformed.getQueryCapabilities().supportsSorting(sortBy));

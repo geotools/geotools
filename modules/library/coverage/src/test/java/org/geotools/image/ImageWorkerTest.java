@@ -1605,7 +1605,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     @Test
     public void testWarpAffinePreserveBackgorund() throws Exception {
         // pick a RGB image, do warp and then affine
-        double[] background = new double[] {1, 2, 3};
+        double[] background = {1, 2, 3};
         GridCoverage2D warped =
                 project(
                         EXAMPLES.get(0),
@@ -1755,7 +1755,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     public void testBandMergeWithNodata() throws FileNotFoundException, IOException {
         double noDataValue = -10000d;
         Range nodata = RangeFactory.create(noDataValue, noDataValue);
-        double[] background = new double[] {noDataValue};
+        double[] background = {noDataValue};
 
         PlanarImage pi = PlanarImage.wrapRenderedImage(imageWithNodata2);
         pi.setProperty("GC_NODATA", new NoDataContainer(nodata));
@@ -1973,7 +1973,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         final int specialPixelsOriginY = h / 4;
 
         // Setting the top left quarter of the image to all zeros
-        int[] zero = new int[] {0, 0, 0};
+        int[] zero = {0, 0, 0};
         WritableRaster raster = red.getRaster();
         for (int i = 0; i < specialPixelsOriginX; i++) {
             for (int j = 0; j < specialPixelsOriginY; j++) {
@@ -2195,8 +2195,8 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         final int specialPixelsOriginY = h / 2;
 
         // Setting the top left quarter of the image to all zeros
-        int[] zero = new int[] {0, 0, 0};
-        int[] redValues = new int[] {255, 0, 0};
+        int[] zero = {0, 0, 0};
+        int[] redValues = {255, 0, 0};
         WritableRaster raster = red.getRaster();
         WritableRaster alphaRaster = alphaChannel.getRaster();
         for (int i = 0; i < specialPixelsOriginX; i++) {

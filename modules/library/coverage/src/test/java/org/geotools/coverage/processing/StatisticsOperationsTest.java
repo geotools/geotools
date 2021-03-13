@@ -93,14 +93,13 @@ public final class StatisticsOperationsTest extends GridProcessingTestBase {
         final double minY = envelope.getMinY();
         final double maxX = envelope.getCenterX();
         final double maxY = envelope.getCenterY();
-        final Coordinate[] corners =
-                new Coordinate[] {
-                    new Coordinate(minX, minY),
-                    new Coordinate(maxX, minY),
-                    new Coordinate(maxX, maxY),
-                    new Coordinate(minX, maxY),
-                    new Coordinate(minX, minY)
-                };
+        final Coordinate[] corners = {
+            new Coordinate(minX, minY),
+            new Coordinate(maxX, minY),
+            new Coordinate(maxX, maxY),
+            new Coordinate(minX, maxY),
+            new Coordinate(minX, minY)
+        };
         final LinearRing ring = gf.createLinearRing(corners);
         final Polygon roi = new Polygon(ring, null, gf);
         /*
@@ -160,14 +159,13 @@ public final class StatisticsOperationsTest extends GridProcessingTestBase {
         final double maxY = envelope.getMaxY();
         final double minY = maxY - envelope.getHeight() / 16;
         final double maxX = minX + envelope.getWidth() / 16;
-        final Coordinate[] coord =
-                new Coordinate[] {
-                    new Coordinate(minX, maxY),
-                    new Coordinate(maxX, maxY),
-                    new Coordinate(maxX, minY),
-                    new Coordinate(minX, minY),
-                    new Coordinate(minX, maxY)
-                };
+        final Coordinate[] coord = {
+            new Coordinate(minX, maxY),
+            new Coordinate(maxX, maxY),
+            new Coordinate(maxX, minY),
+            new Coordinate(minX, minY),
+            new Coordinate(minX, maxY)
+        };
         final LinearRing ring = gf.createLinearRing(coord);
         final Polygon roi = new Polygon(ring, null, gf);
         /*

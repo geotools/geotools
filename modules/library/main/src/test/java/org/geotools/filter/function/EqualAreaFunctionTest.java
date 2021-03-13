@@ -105,7 +105,7 @@ public class EqualAreaFunctionTest {
             // create a feature collection with five features values 1-5
             SimpleFeatureType dataType =
                     DataUtilities.createType("singleBin", "id:0,value:int,geom:Polygon");
-            int iVal[] = new int[] {1, 2, 3, 4, 5};
+            int iVal[] = {1, 2, 3, 4, 5};
             SimpleFeature[] myfeatures = new SimpleFeature[iVal.length];
             Polygon polygon = (Polygon) new WKTReader().read("POLYGON((0 0, 0 1, 1 1, 1 0, 0 0))");
             for (int i = 0; i < iVal.length; i++) {
@@ -144,7 +144,7 @@ public class EqualAreaFunctionTest {
             // create a feature collection with five features values 1-5
             SimpleFeatureType dataType =
                     DataUtilities.createType("singleBin", "id:0,value:int,geom:Polygon");
-            int iVal[] = new int[] {1, 1, 1, 1, 1};
+            int iVal[] = {1, 1, 1, 1, 1};
             SimpleFeature[] myfeatures = new SimpleFeature[iVal.length];
             Polygon polygon = (Polygon) new WKTReader().read("POLYGON((0 0, 0 1, 1 1, 1 0, 0 0))");
             for (int i = 0; i < iVal.length; i++) {

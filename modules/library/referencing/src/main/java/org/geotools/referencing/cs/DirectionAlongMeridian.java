@@ -51,10 +51,9 @@ public final class DirectionAlongMeridian
      * The base directions we are interested in. Any direction not in this group will be rejected by
      * our parser.
      */
-    private static final AxisDirection[] BASE_DIRECTIONS =
-            new AxisDirection[] {
-                AxisDirection.NORTH, AxisDirection.SOUTH, AxisDirection.EAST, AxisDirection.WEST
-            };
+    private static final AxisDirection[] BASE_DIRECTIONS = {
+        AxisDirection.NORTH, AxisDirection.SOUTH, AxisDirection.EAST, AxisDirection.WEST
+    };
 
     /**
      * The direction. Will be created only when first needed.

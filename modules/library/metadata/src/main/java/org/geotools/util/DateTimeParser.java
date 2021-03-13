@@ -87,47 +87,45 @@ public class DateTimeParser {
 
     private static final String SIMPLIFIED_FORMAT_YEAR = "yyyy";
 
-    public static final String[] LENIENT_FORMATS_MILLISECOND =
-            new String[] {
-                "yyyyMMdd'T'HHmmssSSS'Z'",
-                "yyyy-MM-dd'T'HHmmssSSS'Z'",
-                "yyyy-MM-dd'T'HHmmssSSS",
-                "yyyy-MM-dd'T'HH:mm:ss.SSS",
-                "yyyyMMdd'T'HH:mm:ss.SSS'Z'",
-                "yyyyMMdd'T'HH:mm:ss.SSS",
-                SIMPLIFIED_FORMAT_MILLISECOND
-            };
+    public static final String[] LENIENT_FORMATS_MILLISECOND = {
+        "yyyyMMdd'T'HHmmssSSS'Z'",
+        "yyyy-MM-dd'T'HHmmssSSS'Z'",
+        "yyyy-MM-dd'T'HHmmssSSS",
+        "yyyy-MM-dd'T'HH:mm:ss.SSS",
+        "yyyyMMdd'T'HH:mm:ss.SSS'Z'",
+        "yyyyMMdd'T'HH:mm:ss.SSS",
+        SIMPLIFIED_FORMAT_MILLISECOND
+    };
 
-    public static final String[] LENIENT_FORMATS_SECOND =
-            new String[] {
-                "yyyy-MM-dd'T'HH:mm:ss",
-                "yyyy-MM-dd'T'HHmmss'Z'",
-                "yyyyMMdd'T'HH:mm:ss'Z'",
-                "yyyyMMdd'T'HHmmss'Z'",
-                "yyyyMMdd'T'HH:mm:ss",
-                "yyyy-MM-dd'T'HHmmss",
-                SIMPLIFIED_FORMAT_SECOND
-            };
+    public static final String[] LENIENT_FORMATS_SECOND = {
+        "yyyy-MM-dd'T'HH:mm:ss",
+        "yyyy-MM-dd'T'HHmmss'Z'",
+        "yyyyMMdd'T'HH:mm:ss'Z'",
+        "yyyyMMdd'T'HHmmss'Z'",
+        "yyyyMMdd'T'HH:mm:ss",
+        "yyyy-MM-dd'T'HHmmss",
+        SIMPLIFIED_FORMAT_SECOND
+    };
 
-    public static final String[] LENIENT_FORMATS_MINUTE =
-            new String[] {
-                "yyyy-MM-dd'T'HH:mm",
-                "yyyy-MM-dd'T'HHmm'Z'",
-                "yyyyMMdd'T'HH:mm'Z'",
-                "yyyyMMdd'T'HHmm'Z'",
-                "yyyy-MM-dd'T'HHmm",
-                "yyyyMMdd'T'HH:mm",
-                SIMPLIFIED_FORMAT_MINUTE
-            };
+    public static final String[] LENIENT_FORMATS_MINUTE = {
+        "yyyy-MM-dd'T'HH:mm",
+        "yyyy-MM-dd'T'HHmm'Z'",
+        "yyyyMMdd'T'HH:mm'Z'",
+        "yyyyMMdd'T'HHmm'Z'",
+        "yyyy-MM-dd'T'HHmm",
+        "yyyyMMdd'T'HH:mm",
+        SIMPLIFIED_FORMAT_MINUTE
+    };
 
-    public static final String[] LENIENT_FORMATS_HOUR =
-            new String[] {"yyyyMMdd'T'HH'Z'", "yyyy-MM-dd'T'HH", SIMPLIFIED_FORMAT_HOUR};
+    public static final String[] LENIENT_FORMATS_HOUR = {
+        "yyyyMMdd'T'HH'Z'", "yyyy-MM-dd'T'HH", SIMPLIFIED_FORMAT_HOUR
+    };
 
-    public static final String[] LENIENT_FORMATS_DAY = new String[] {SIMPLIFIED_FORMAT_DAY};
+    public static final String[] LENIENT_FORMATS_DAY = {SIMPLIFIED_FORMAT_DAY};
 
-    public static final String[] LENIENT_FORMATS_MONTH = new String[] {SIMPLIFIED_FORMAT_MONTH};
+    public static final String[] LENIENT_FORMATS_MONTH = {SIMPLIFIED_FORMAT_MONTH};
 
-    public static final String[] LENIENT_FORMATS_YEAR = new String[] {}; // Intentionally empty
+    public static final String[] LENIENT_FORMATS_YEAR = {}; // Intentionally empty
 
     private static final String ISO8601_CHARS_REGEX =
             "([^(yyyy)|^(MM)|^(dd)|^(HH)|^(mm)|^(ss)|^(SSS)|^('T')])|('Z')";

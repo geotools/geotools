@@ -49,7 +49,7 @@ public class GrassBinaryImageWriterSpi extends ImageWriterSpi {
             "eu.hydrologis.jgrass.grassbinary.imageio.io.GrassBinaryImageWriter";
 
     /** the outputTypes handled by the {@link GrassBinaryImageWriter}. */
-    private static final Class<?>[] outputTypes = new Class[] {File.class};
+    private static final Class<?>[] outputTypes = {File.class};
 
     /** the readerSpiName */
     private static final String[] rSN = {

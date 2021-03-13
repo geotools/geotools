@@ -35,7 +35,7 @@ public class WMSChooser {
         JComboBox<String> combo = new JComboBox<>(servers.toArray(new String[servers.size()]));
         combo.setEditable(true);
 
-        Object message[] = new Object[] {"Choose a WMS Server", combo};
+        Object message[] = {"Choose a WMS Server", combo};
         do {
             int done =
                     JOptionPane.showConfirmDialog(

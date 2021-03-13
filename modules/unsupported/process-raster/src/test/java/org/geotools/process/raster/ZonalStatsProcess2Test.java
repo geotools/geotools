@@ -169,14 +169,9 @@ public class ZonalStatsProcess2Test extends Assert {
 
             // Statistics definition
 
-            StatsType[] def =
-                    new StatsType[] {
-                        StatsType.MIN,
-                        StatsType.MAX,
-                        StatsType.SUM,
-                        StatsType.MEAN,
-                        StatsType.DEV_STD
-                    };
+            StatsType[] def = {
+                StatsType.MIN, StatsType.MAX, StatsType.SUM, StatsType.MEAN, StatsType.DEV_STD
+            };
 
             // invoke the process
             List<ZoneGeometry> zoneListStart =

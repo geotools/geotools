@@ -39,7 +39,7 @@ final class URN_Parser extends URI_Parser {
      * to, but do not include, the type part ({@code "crs"}, {@code "cs"}, {@code "datum"},
      * <cite>etc.</cite>). They must include a trailing (@value #URN_SEPARATOR} character.
      */
-    private static final String[] URN_BASES = new String[] {"urn:ogc:def:", "urn:x-ogc:def:"};
+    private static final String[] URN_BASES = {"urn:ogc:def:", "urn:x-ogc:def:"};
 
     /** The parts separator in the URN. */
     private static final char URN_SEPARATOR = ':';

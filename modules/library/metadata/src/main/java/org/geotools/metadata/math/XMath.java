@@ -42,7 +42,7 @@ public final class XMath {
      * The sequence of prime numbers computed so far. Will be expanded as needed. We limit ourself
      * to 16 bits numbers because they are suffisient for computing divisors of any 32 bits number.
      */
-    private static short[] primes = new short[] {2, 3};
+    private static short[] primes = {2, 3};
 
     /**
      * Maximum length allowed for the {@link #primes} array. This is the index of the first prime

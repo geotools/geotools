@@ -149,7 +149,7 @@ public abstract class JDBCPrimaryKeyOnlineTest extends JDBCTestSupport {
                 count,
                 features.features(),
                 new SimpleFeatureAssertion() {
-                    String[] xyz = new String[] {"x", "y", "z"};
+                    String[] xyz = {"x", "y", "z"};
 
                     @Override
                     public int toIndex(SimpleFeature feature) {

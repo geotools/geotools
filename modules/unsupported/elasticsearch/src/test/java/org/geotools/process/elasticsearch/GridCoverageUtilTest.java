@@ -34,7 +34,7 @@ public class GridCoverageUtilTest {
 
     @Test
     public void testExactUpScale() {
-        float[][] grid = new float[][] {{1, 2}, {3, 4}};
+        float[][] grid = {{1, 2}, {3, 4}};
         final GridCoverageFactory coverageFactory =
                 CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
         final GridCoverage2D coverage =
@@ -44,7 +44,7 @@ public class GridCoverageUtilTest {
         final RenderedImage renderedImage = scaled.getRenderedImage();
         assertEquals(4, renderedImage.getWidth());
         assertEquals(4, renderedImage.getHeight());
-        float[][] expected = new float[][] {{1, 1, 2, 2}, {1, 1, 2, 2}, {3, 3, 4, 4}, {3, 3, 4, 4}};
+        float[][] expected = {{1, 1, 2, 2}, {1, 1, 2, 2}, {3, 3, 4, 4}, {3, 3, 4, 4}};
         IntStream.range(0, 4)
                 .forEach(
                         i ->
@@ -62,7 +62,7 @@ public class GridCoverageUtilTest {
 
     @Test
     public void testExactDownScale() {
-        float[][] grid = new float[][] {{1, 1, 2, 2}, {1, 1, 2, 2}, {3, 3, 4, 4}, {3, 3, 4, 4}};
+        float[][] grid = {{1, 1, 2, 2}, {1, 1, 2, 2}, {3, 3, 4, 4}, {3, 3, 4, 4}};
         final GridCoverageFactory coverageFactory =
                 CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
         final GridCoverage2D coverage =
@@ -72,7 +72,7 @@ public class GridCoverageUtilTest {
         final RenderedImage renderedImage = scaled.getRenderedImage();
         assertEquals(2, renderedImage.getWidth());
         assertEquals(2, renderedImage.getHeight());
-        float[][] expected = new float[][] {{1, 2}, {3, 4}};
+        float[][] expected = {{1, 2}, {3, 4}};
         IntStream.range(0, 2)
                 .forEach(
                         i ->
@@ -90,7 +90,7 @@ public class GridCoverageUtilTest {
 
     @Test
     public void testInexactScale() {
-        float[][] grid = new float[][] {{1, 2}, {3, 4}};
+        float[][] grid = {{1, 2}, {3, 4}};
         final GridCoverageFactory coverageFactory =
                 CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
         final GridCoverage2D coverage =
@@ -132,7 +132,7 @@ public class GridCoverageUtilTest {
 
     @Test
     public void testCrop() throws MismatchedDimensionException {
-        float[][] grid = new float[][] {{3, 4}, {1, 2}};
+        float[][] grid = {{3, 4}, {1, 2}};
         final GridCoverageFactory coverageFactory =
                 CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
         final GridCoverage2D coverage =

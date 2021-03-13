@@ -389,7 +389,7 @@ public class SchemaGenerator extends AbstractGenerator {
             gtSchema.put(gtType.getName(), gtType);
         }
 
-        Object[] input = new Object[] {
+        Object[] input = {
                 gtSchema, Schemas.getTargetPrefix(schema), this
             };
         String result = execute(getSchemaClassTemplateName(), input);

@@ -58,8 +58,8 @@ public final class GridGeometryTest extends GridCoverageTestBase {
     /** Tests the construction with an identity transform. */
     @Test
     public void testIdentity() {
-        final int[] lower = new int[] {0, 0, 2};
-        final int[] upper = new int[] {100, 200, 4};
+        final int[] lower = {0, 0, 2};
+        final int[] upper = {100, 200, 4};
         final MathTransform identity = IdentityTransform.create(3);
         GridGeometry2D gg;
         try {
@@ -97,10 +97,10 @@ public final class GridGeometryTest extends GridCoverageTestBase {
     public void testEnvelope()
             throws InvalidGridGeometryException, NoninvertibleTransformException,
                     TransformException {
-        final int[] lower = new int[] {0, 0, 4};
-        final int[] upper = new int[] {90, 45, 5};
-        final double[] minimum = new double[] {-180, -90, 9};
-        final double[] maximum = new double[] {+180, +90, 10};
+        final int[] lower = {0, 0, 4};
+        final int[] upper = {90, 45, 5};
+        final double[] minimum = {-180, -90, 9};
+        final double[] maximum = {+180, +90, 10};
         final GridGeometry2D gg =
                 new GridGeometry2D(
                         new GeneralGridEnvelope(lower, upper, false),
@@ -133,8 +133,8 @@ public final class GridGeometryTest extends GridCoverageTestBase {
     @Test
     public void testPixelInCell() {
         final MathTransform identity = IdentityTransform.create(4);
-        final int[] lower = new int[] {100, 300, 3, 6};
-        final int[] upper = new int[] {200, 400, 4, 7};
+        final int[] lower = {100, 300, 3, 6};
+        final int[] upper = {200, 400, 4, 7};
         final GeneralGridEnvelope range = new GeneralGridEnvelope(lower, upper, false);
         GridGeometry2D gg =
                 new GridGeometry2D(range, PixelInCell.CELL_CORNER, identity, null, null);

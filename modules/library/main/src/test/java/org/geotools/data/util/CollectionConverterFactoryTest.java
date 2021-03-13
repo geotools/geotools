@@ -55,7 +55,7 @@ public class CollectionConverterFactoryTest {
 
     @Test
     public void testArrayToCollection() throws Exception {
-        Integer[] source = new Integer[] {1, 2};
+        Integer[] source = {1, 2};
 
         Object converted = CollectionConverterFactory.ArrayToCollection.convert(source, List.class);
         Assert.assertTrue(converted instanceof List);
@@ -66,7 +66,7 @@ public class CollectionConverterFactoryTest {
 
     @Test
     public void testArrayToArray() throws Exception {
-        Integer[] source = new Integer[] {1, 2};
+        Integer[] source = {1, 2};
 
         Object converted = CollectionConverterFactory.ArrayToArray.convert(source, Number[].class);
         Assert.assertTrue(converted instanceof Number[]);

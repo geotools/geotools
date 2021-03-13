@@ -340,11 +340,9 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
 
         ListFeatureCollection collection = new ListFeatureCollection(type);
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
-        Object[] values =
-                new Object[] {
-                    new GeometryFactory().createPoint(new Coordinate(10, 10)),
-                    new CustomTypeClass(20)
-                };
+        Object[] values = {
+            new GeometryFactory().createPoint(new Coordinate(10, 10)), new CustomTypeClass(20)
+        };
         builder.addAll(values);
 
         SimpleFeature feature = builder.buildFeature(type.getTypeName() + '.' + 0);
@@ -1316,7 +1314,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     @Test
     public void testGeometriesWriting() throws Exception {
 
-        String[] wktResources = new String[] {"line", "multiline", "polygon", "multipolygon"};
+        String[] wktResources = {"line", "multiline", "polygon", "multipolygon"};
 
         for (String wktResource : wktResources) {
             Geometry geom = readGeometry(wktResource);

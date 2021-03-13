@@ -186,9 +186,9 @@ public class ImageWorker {
         IDENTITY_SHORT = data;
     }
 
-    private static final double[] ROI_BACKGROUND = new double[] {0};
+    private static final double[] ROI_BACKGROUND = {0};
 
-    private static final double[][] ROI_THRESHOLDS = new double[][] {{1.0}};
+    private static final double[][] ROI_THRESHOLDS = {{1.0}};
 
     private static final String OPERATION_CONST_OP_NAME = "operationConst";
 
@@ -1103,7 +1103,7 @@ public class ImageWorker {
             ParameterBlock pb = new ParameterBlock();
             pb.setSource(image, 0);
             if (JAIExt.isJAIExtOperation("Stats")) {
-                StatsType[] stats = new StatsType[] {StatsType.EXTREMA};
+                StatsType[] stats = {StatsType.EXTREMA};
                 // Band definition
                 int numBands = getNumBands();
                 int[] bands = new int[numBands];
@@ -1167,7 +1167,7 @@ public class ImageWorker {
         ParameterBlock pb = new ParameterBlock();
         pb.setSource(image, 0);
         if (JAIExt.isJAIExtOperation("Stats")) {
-            StatsType[] stats = new StatsType[] {StatsType.HISTOGRAM};
+            StatsType[] stats = {StatsType.HISTOGRAM};
             // Band definition
             int numBands = getNumBands();
             int[] bands = new int[numBands];
@@ -1243,7 +1243,7 @@ public class ImageWorker {
             ParameterBlock pb = new ParameterBlock();
             pb.setSource(image, 0);
             if (JAIExt.isJAIExtOperation("Stats")) {
-                StatsType[] stats = new StatsType[] {StatsType.MEAN};
+                StatsType[] stats = {StatsType.MEAN};
                 // Band definition
                 int numBands = getNumBands();
                 int[] bands = new int[numBands];
@@ -4547,19 +4547,17 @@ public class ImageWorker {
                 // layout
                 Hints localHints = new Hints(getRenderingHints());
                 localHints.remove(JAI.KEY_IMAGE_LAYOUT);
-                double[] scalingParams =
-                        new double[] {
-                            1.0, 1.0, Math.round(tx.getTranslateX()), Math.round(tx.getTranslateY())
-                        };
+                double[] scalingParams = {
+                    1.0, 1.0, Math.round(tx.getTranslateX()), Math.round(tx.getTranslateY())
+                };
                 scale(pb, scalingParams, interpolation, localHints);
                 updateNoData(background, image);
                 updateROI(false, SCALE_OP_NAME);
             } else {
                 // generic scale
-                double[] scalingParams =
-                        new double[] {
-                            tx.getScaleX(), tx.getScaleY(), tx.getTranslateX(), tx.getTranslateY()
-                        };
+                double[] scalingParams = {
+                    tx.getScaleX(), tx.getScaleY(), tx.getTranslateX(), tx.getTranslateY()
+                };
                 scale(pb, scalingParams, interpolation, getRenderingHints());
                 updateNoData(background, image);
                 updateROI(false, SCALE_OP_NAME);
@@ -5149,7 +5147,7 @@ public class ImageWorker {
             double xScale, double yScale, double xTrans, double yTrans, Interpolation interp) {
         ParameterBlock pb = new ParameterBlock();
         pb.setSource(image, 0); // The source image.
-        double[] scalingParams = new double[] {xScale, yScale, xTrans, yTrans};
+        double[] scalingParams = {xScale, yScale, xTrans, yTrans};
         scale(pb, scalingParams, interp, getRenderingHints());
 
         // getting the new ROI property
@@ -5501,13 +5499,12 @@ public class ImageWorker {
 
         // If we need to add a collar use mosaic or if we need to blend/apply a bkg color
         ImageWorker iw = new ImageWorker(image);
-        ROI[] rois = new ROI[] {roi};
+        ROI[] rois = {roi};
 
         // build the transparency thresholds
-        double[][] thresholds =
-                new double[][] {
-                    {ColorUtilities.getThreshold(image.getSampleModel().getDataType())}
-                };
+        double[][] thresholds = {
+            {ColorUtilities.getThreshold(image.getSampleModel().getDataType())}
+        };
         // apply the mosaic
         iw.setBackground(bgValues);
         iw.mosaic(

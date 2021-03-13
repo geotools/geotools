@@ -575,7 +575,7 @@ public class GMLSchema implements Schema {
         return null;
     }
 
-    private static Schema[] imports = new Schema[] {XLinkSchema.getInstance()};
+    private static Schema[] imports = {XLinkSchema.getInstance()};
     /** @see schema.Schema#getImports() */
     @Override
     public Schema[] getImports() {

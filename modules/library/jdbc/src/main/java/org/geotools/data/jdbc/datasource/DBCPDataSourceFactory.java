@@ -77,8 +77,9 @@ public class DBCPDataSourceFactory extends AbstractDataSourceFactorySpi {
                     "The maximum number of idle connections in the pool",
                     true);
 
-    private static final Param[] PARAMS =
-            new Param[] {DSTYPE, DRIVERCLASS, JDBC_URL, USERNAME, PASSWORD, MAXACTIVE, MAXIDLE};
+    private static final Param[] PARAMS = {
+        DSTYPE, DRIVERCLASS, JDBC_URL, USERNAME, PASSWORD, MAXACTIVE, MAXIDLE
+    };
 
     @Override
     public DataSource createDataSource(Map<String, ?> params) throws IOException {

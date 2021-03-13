@@ -224,16 +224,15 @@ public class ThreadedHsqlEpsgFactoryTest {
         MathTransform t2 = CRS.findMathTransform(epsg4326, epsg900913);
 
         // check the two equate each other, we know the above 900913 definition works
-        double[][] points =
-                new double[][] {
-                    {0, 0},
-                    {30.0, 30.0},
-                    {-45.0, 45.0},
-                    {-20, -20},
-                    {80, -80},
-                    {85, 180},
-                    {-85, -180}
-                };
+        double[][] points = {
+            {0, 0},
+            {30.0, 30.0},
+            {-45.0, 45.0},
+            {-20, -20},
+            {80, -80},
+            {85, 180},
+            {-85, -180}
+        };
         double[][] points2 = new double[points.length][2];
         double[] tp1 = new double[2];
         double[] tp2 = new double[2];

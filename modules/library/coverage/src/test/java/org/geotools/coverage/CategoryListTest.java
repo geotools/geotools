@@ -85,13 +85,12 @@ public final class CategoryListTest {
     /** Tests the {@link CategoryList} constructor. */
     @Test
     public void testArgumentChecks() {
-        Category[] categories =
-                new Category[] {
-                    new Category("No data", null, 0),
-                    new Category("Land", null, 10),
-                    new Category("Clouds", null, 2),
-                    new Category("Land again", null, 10) // Range overlaps.
-                };
+        Category[] categories = {
+            new Category("No data", null, 0),
+            new Category("Land", null, 10),
+            new Category("Clouds", null, 2),
+            new Category("Land again", null, 10) // Range overlaps.
+        };
         try {
             new CategoryList(categories, null);
             fail("Argument check");
@@ -117,14 +116,13 @@ public final class CategoryListTest {
      */
     @Test
     public void testGetCategory() throws TransformException {
-        final Category[] categories =
-                new Category[] {
-                    /*[0]*/ new Category("No data", null, 0),
-                    /*[1]*/ new Category("Land", null, 7),
-                    /*[2]*/ new Category("Clouds", null, 3),
-                    /*[3]*/ new Category("Temperature", null, 10, 100),
-                    /*[4]*/ new Category("Foo", null, 100, 120)
-                };
+        final Category[] categories = {
+            /*[0]*/ new Category("No data", null, 0),
+            /*[1]*/ new Category("Land", null, 7),
+            /*[2]*/ new Category("Clouds", null, 3),
+            /*[3]*/ new Category("Temperature", null, 10, 100),
+            /*[4]*/ new Category("Foo", null, 100, 120)
+        };
         CategoryList list;
         boolean searchNearest = false;
         do {

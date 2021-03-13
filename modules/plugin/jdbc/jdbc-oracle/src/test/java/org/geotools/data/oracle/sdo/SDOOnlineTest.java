@@ -220,11 +220,10 @@ public class SDOOnlineTest extends JDBCTestSupport {
                 elemInfo);
 
         double[] ords = SDO.ordinates(g);
-        double[] expt =
-                new double[] {
-                    2, 4, 4, 3, 10, 3, 13, 5, 13, 9, 11, 13, 5, 13, 2, 11, 2, 4, // ring
-                    7, 5, 7, 10, 10, 10, 10, 5, 7, 5
-                }; // hole
+        double[] expt = {
+            2, 4, 4, 3, 10, 3, 13, 5, 13, 9, 11, 13, 5, 13, 2, 11, 2, 4, // ring
+            7, 5, 7, 10, 10, 10, 10, 5, 7, 5
+        }; // hole
         assertEquals("ords", expt, ords);
         Geometry geom = converter.asGeometry(datum);
 

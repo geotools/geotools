@@ -164,8 +164,7 @@ public class JGrassConstants {
     public static final String ESRI_HEADER_NOVALUE = "nodata_value";
 
     /** Array of supported types for csv imports. */
-    public static final String[] CSVTYPESARRAY =
-            new String[] {"X", "Y", "Z", "String", "Double", "Integer"};
+    public static final String[] CSVTYPESARRAY = {"X", "Y", "Z", "String", "Double", "Integer"};
     /** {@link Map} of classes for csv types. */
     public static final Map<String, Class<?>> CSVTYPESCLASSESMAP = new HashMap<>();
 

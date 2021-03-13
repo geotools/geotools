@@ -45,7 +45,7 @@ public class CompressesRasterWriter {
 
     private boolean jump = false;
 
-    private double[] range = new double[] {Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY};
+    private double[] range = {Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY};
 
     private long pointerInFilePosition = 0;
 

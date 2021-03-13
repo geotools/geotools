@@ -240,7 +240,7 @@ public class ElasticDatastoreFactoryTest {
     @Test
     public void testCreateClientbuilder() {
         ElasticDataStoreFactory factory = new ElasticDataStoreFactory();
-        HttpHost[] hosts = new HttpHost[] {new HttpHost("localhost", 9200)};
+        HttpHost[] hosts = {new HttpHost("localhost", 9200)};
         assertNotNull(factory.createClientBuilder(hosts));
     }
 

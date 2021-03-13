@@ -1394,8 +1394,7 @@ public class RasterManager implements Cloneable {
                 FeatureUtilities.DEFAULT_FILTER_FACTORY.property(attribute);
         query.setPropertyNames(Arrays.asList(attribute, secondAttribute));
 
-        final SortByImpl[] sb =
-                new SortByImpl[] {new SortByImpl(propertyName, SortOrder.ASCENDING)};
+        final SortByImpl[] sb = {new SortByImpl(propertyName, SortOrder.ASCENDING)};
         // Checking whether it supports sorting capabilities
         if (granuleCatalog.getQueryCapabilities(typeName).supportsSorting(sb)) {
             query.setSortBy(sb);
@@ -1617,8 +1616,7 @@ public class RasterManager implements Cloneable {
         // original gridrange (estimated). I am using the floor here in order to make sure
         // we always stays inside the real area that we have for the granule
         OverviewLevel highResOvLevel = overviewsController.resolutionsLevels.get(0);
-        final double highestRes[] =
-                new double[] {highResOvLevel.resolutionX, highResOvLevel.resolutionY};
+        final double highestRes[] = {highResOvLevel.resolutionX, highResOvLevel.resolutionY};
         GridEnvelope2D originalGridRange =
                 new GridEnvelope2D(
                         new Rectangle(
@@ -1844,7 +1842,7 @@ public class RasterManager implements Cloneable {
         OverviewLevel level = templateDescriptor.getOverviewsController().getLevel(0);
         // original gridrange (estimated). I am using the floor here in order to make sure
         // we always stays inside the real area that we have for the granule
-        final double highestRes[] = new double[] {level.resolutionX, level.resolutionY};
+        final double highestRes[] = {level.resolutionX, level.resolutionY};
         GridEnvelope2D originalGridRange =
                 new GridEnvelope2D(
                         new Rectangle(

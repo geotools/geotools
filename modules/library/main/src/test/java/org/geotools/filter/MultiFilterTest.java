@@ -613,34 +613,31 @@ public class MultiFilterTest {
         };
         Polygon geom1 = gf.createPolygon(gf.createLinearRing(coords1), new LinearRing[0]);
 
-        Coordinate[] coords2 =
-                new Coordinate[] {
-                    new Coordinate(2, 2),
-                    new Coordinate(6, 0),
-                    new Coordinate(6, 7),
-                    new Coordinate(0, 7),
-                    new Coordinate(2, 2)
-                };
+        Coordinate[] coords2 = {
+            new Coordinate(2, 2),
+            new Coordinate(6, 0),
+            new Coordinate(6, 7),
+            new Coordinate(0, 7),
+            new Coordinate(2, 2)
+        };
         Polygon geom2 = gf.createPolygon(gf.createLinearRing(coords2), new LinearRing[0]);
 
-        Coordinate[] coords3 =
-                new Coordinate[] {
-                    new Coordinate(2, 2),
-                    new Coordinate(6, 0),
-                    new Coordinate(11, 12),
-                    new Coordinate(0, 7),
-                    new Coordinate(2, 2)
-                };
+        Coordinate[] coords3 = {
+            new Coordinate(2, 2),
+            new Coordinate(6, 0),
+            new Coordinate(11, 12),
+            new Coordinate(0, 7),
+            new Coordinate(2, 2)
+        };
         Polygon geom3 = gf.createPolygon(gf.createLinearRing(coords3), new LinearRing[0]);
 
-        Coordinate[] coords4 =
-                new Coordinate[] {
-                    new Coordinate(20, 20),
-                    new Coordinate(60, 30),
-                    new Coordinate(110, 120),
-                    new Coordinate(30, 70),
-                    new Coordinate(20, 20)
-                };
+        Coordinate[] coords4 = {
+            new Coordinate(20, 20),
+            new Coordinate(60, 30),
+            new Coordinate(110, 120),
+            new Coordinate(30, 70),
+            new Coordinate(20, 20)
+        };
         Polygon geom4 = gf.createPolygon(gf.createLinearRing(coords4), new LinearRing[0]);
 
         List<Geometry> list = new ArrayList<>();
@@ -702,34 +699,31 @@ public class MultiFilterTest {
         };
         Polygon geom1 = gf.createPolygon(gf.createLinearRing(coords1), new LinearRing[0]);
 
-        Coordinate[] coords2 =
-                new Coordinate[] {
-                    new Coordinate(2, 2),
-                    new Coordinate(6, 0),
-                    new Coordinate(6, 7),
-                    new Coordinate(0, 7),
-                    new Coordinate(2, 2)
-                };
+        Coordinate[] coords2 = {
+            new Coordinate(2, 2),
+            new Coordinate(6, 0),
+            new Coordinate(6, 7),
+            new Coordinate(0, 7),
+            new Coordinate(2, 2)
+        };
         Polygon geom2 = gf.createPolygon(gf.createLinearRing(coords2), new LinearRing[0]);
 
-        Coordinate[] coords3 =
-                new Coordinate[] {
-                    new Coordinate(2, 2),
-                    new Coordinate(6, 0),
-                    new Coordinate(11, 12),
-                    new Coordinate(0, 7),
-                    new Coordinate(2, 2)
-                };
+        Coordinate[] coords3 = {
+            new Coordinate(2, 2),
+            new Coordinate(6, 0),
+            new Coordinate(11, 12),
+            new Coordinate(0, 7),
+            new Coordinate(2, 2)
+        };
         Polygon geom3 = gf.createPolygon(gf.createLinearRing(coords3), new LinearRing[0]);
 
-        Coordinate[] coords4 =
-                new Coordinate[] {
-                    new Coordinate(20, 20),
-                    new Coordinate(60, 30),
-                    new Coordinate(110, 120),
-                    new Coordinate(30, 70),
-                    new Coordinate(20, 20)
-                };
+        Coordinate[] coords4 = {
+            new Coordinate(20, 20),
+            new Coordinate(60, 30),
+            new Coordinate(110, 120),
+            new Coordinate(30, 70),
+            new Coordinate(20, 20)
+        };
         Polygon geom4 = gf.createPolygon(gf.createLinearRing(coords4), new LinearRing[0]);
 
         List<Geometry> list = new ArrayList<>();
@@ -822,34 +816,31 @@ public class MultiFilterTest {
         };
         Polygon geom1 = gf.createPolygon(gf.createLinearRing(coords1), new LinearRing[0]);
 
-        Coordinate[] coords2 =
-                new Coordinate[] {
-                    new Coordinate(2, 2),
-                    new Coordinate(6, 0),
-                    new Coordinate(6, 7),
-                    new Coordinate(0, 7),
-                    new Coordinate(2, 2)
-                };
+        Coordinate[] coords2 = {
+            new Coordinate(2, 2),
+            new Coordinate(6, 0),
+            new Coordinate(6, 7),
+            new Coordinate(0, 7),
+            new Coordinate(2, 2)
+        };
         Polygon geom2 = gf.createPolygon(gf.createLinearRing(coords2), new LinearRing[0]);
 
-        Coordinate[] coords3 =
-                new Coordinate[] {
-                    new Coordinate(2, 2),
-                    new Coordinate(6, 0),
-                    new Coordinate(11, 12),
-                    new Coordinate(0, 7),
-                    new Coordinate(2, 2)
-                };
+        Coordinate[] coords3 = {
+            new Coordinate(2, 2),
+            new Coordinate(6, 0),
+            new Coordinate(11, 12),
+            new Coordinate(0, 7),
+            new Coordinate(2, 2)
+        };
         Polygon geom3 = gf.createPolygon(gf.createLinearRing(coords3), new LinearRing[0]);
 
-        Coordinate[] coords4 =
-                new Coordinate[] {
-                    new Coordinate(20, 20),
-                    new Coordinate(60, 30),
-                    new Coordinate(110, 120),
-                    new Coordinate(30, 70),
-                    new Coordinate(20, 20)
-                };
+        Coordinate[] coords4 = {
+            new Coordinate(20, 20),
+            new Coordinate(60, 30),
+            new Coordinate(110, 120),
+            new Coordinate(30, 70),
+            new Coordinate(20, 20)
+        };
         Polygon geom4 = gf.createPolygon(gf.createLinearRing(coords4), new LinearRing[0]);
 
         List<Geometry> list = new ArrayList<>();

@@ -111,11 +111,10 @@ public class SpatialRequestHelperTest extends Assert {
                 new GridToEnvelopeMapper(
                         new GridEnvelope2D(coverageProperties.rasterArea), sourceBBox);
         gridToEnvelopeMapper.setPixelAnchor(PixelInCell.CELL_CORNER);
-        double[] expectedResolution =
-                new double[] {
-                    XAffineTransform.getScaleX0(gridToEnvelopeMapper.createAffineTransform()),
-                    XAffineTransform.getScaleY0(gridToEnvelopeMapper.createAffineTransform())
-                };
+        double[] expectedResolution = {
+            XAffineTransform.getScaleX0(gridToEnvelopeMapper.createAffineTransform()),
+            XAffineTransform.getScaleY0(gridToEnvelopeMapper.createAffineTransform())
+        };
         assertNotNull(computedResolution);
         assertEquals(expectedResolution[0], computedResolution[0], 1E-6);
         assertEquals(expectedResolution[1], computedResolution[1], 1E-6);
@@ -213,11 +212,10 @@ public class SpatialRequestHelperTest extends Assert {
         GridToEnvelopeMapper gridToEnvelopeMapper =
                 new GridToEnvelopeMapper(new GridEnvelope2D(requestedRasterArea), requestedBBox);
         gridToEnvelopeMapper.setPixelAnchor(PixelInCell.CELL_CORNER);
-        double[] expectedResolution =
-                new double[] {
-                    XAffineTransform.getScaleX0(gridToEnvelopeMapper.createAffineTransform()),
-                    XAffineTransform.getScaleY0(gridToEnvelopeMapper.createAffineTransform())
-                };
+        double[] expectedResolution = {
+            XAffineTransform.getScaleX0(gridToEnvelopeMapper.createAffineTransform()),
+            XAffineTransform.getScaleY0(gridToEnvelopeMapper.createAffineTransform())
+        };
         assertNotNull(computedResolution);
         assertEquals(expectedResolution[0], computedResolution[0], 1E-6);
         assertEquals(expectedResolution[1], computedResolution[1], 1E-6);
@@ -297,11 +295,10 @@ public class SpatialRequestHelperTest extends Assert {
         AffineTransform computedG2W = spatialRequestHelper.getComputedGridToWorld();
         assertNotNull(computedG2W);
         double[] computedResolution = spatialRequestHelper.getComputedResolution();
-        double[] expectedResolution =
-                new double[] {
-                    XAffineTransform.getScaleX0(gridToEnvelopeMapper.createAffineTransform()),
-                    XAffineTransform.getScaleY0(gridToEnvelopeMapper.createAffineTransform())
-                };
+        double[] expectedResolution = {
+            XAffineTransform.getScaleX0(gridToEnvelopeMapper.createAffineTransform()),
+            XAffineTransform.getScaleY0(gridToEnvelopeMapper.createAffineTransform())
+        };
         assertNotNull(computedResolution);
         assertEquals(expectedResolution[0], computedResolution[0], 1E-6);
         assertEquals(expectedResolution[1], computedResolution[1], 1E-6);
@@ -456,11 +453,10 @@ public class SpatialRequestHelperTest extends Assert {
         GridToEnvelopeMapper gridToEnvelopeMapper =
                 new GridToEnvelopeMapper(new GridEnvelope2D(requestedRasterArea), sourceBBox);
         gridToEnvelopeMapper.setPixelAnchor(PixelInCell.CELL_CORNER);
-        double[] expectedResolution =
-                new double[] {
-                    XAffineTransform.getScaleX0(gridToEnvelopeMapper.createAffineTransform()),
-                    XAffineTransform.getScaleY0(gridToEnvelopeMapper.createAffineTransform())
-                };
+        double[] expectedResolution = {
+            XAffineTransform.getScaleX0(gridToEnvelopeMapper.createAffineTransform()),
+            XAffineTransform.getScaleY0(gridToEnvelopeMapper.createAffineTransform())
+        };
         assertNotNull(computedResolution);
         assertEquals(expectedResolution[0], computedResolution[0], 1E-6);
         assertEquals(expectedResolution[1], computedResolution[1], 1E-6);
@@ -555,11 +551,10 @@ public class SpatialRequestHelperTest extends Assert {
         GridToEnvelopeMapper gridToEnvelopeMapper =
                 new GridToEnvelopeMapper(new GridEnvelope2D(requestedRasterArea), requestedBBox_);
         gridToEnvelopeMapper.setPixelAnchor(PixelInCell.CELL_CORNER);
-        double[] expectedResolution =
-                new double[] {
-                    XAffineTransform.getScaleX0(gridToEnvelopeMapper.createAffineTransform()),
-                    XAffineTransform.getScaleY0(gridToEnvelopeMapper.createAffineTransform())
-                };
+        double[] expectedResolution = {
+            XAffineTransform.getScaleX0(gridToEnvelopeMapper.createAffineTransform()),
+            XAffineTransform.getScaleY0(gridToEnvelopeMapper.createAffineTransform())
+        };
         assertNotNull(computedResolution);
         assertEquals(expectedResolution[0], computedResolution[0], 1E-6);
         assertEquals(expectedResolution[1], computedResolution[1], 1E-6);
@@ -658,11 +653,10 @@ public class SpatialRequestHelperTest extends Assert {
                 new GridToEnvelopeMapper(
                         new GridEnvelope2D(computedRasterArea), finalReferencedEnvelope);
         gridToEnvelopeMapper.setPixelAnchor(PixelInCell.CELL_CORNER);
-        double[] expectedResolution =
-                new double[] {
-                    XAffineTransform.getScaleX0(gridToEnvelopeMapper.createAffineTransform()),
-                    XAffineTransform.getScaleY0(gridToEnvelopeMapper.createAffineTransform())
-                };
+        double[] expectedResolution = {
+            XAffineTransform.getScaleX0(gridToEnvelopeMapper.createAffineTransform()),
+            XAffineTransform.getScaleY0(gridToEnvelopeMapper.createAffineTransform())
+        };
         assertNotNull(computedResolution);
         assertEquals(expectedResolution[0], computedResolution[0], 1E-6);
         assertEquals(expectedResolution[1], computedResolution[1], 1E-6);
@@ -745,11 +739,10 @@ public class SpatialRequestHelperTest extends Assert {
         GridToEnvelopeMapper gridToEnvelopeMapper =
                 new GridToEnvelopeMapper(new GridEnvelope2D(requestedRasterArea), sourceBBox);
         gridToEnvelopeMapper.setPixelAnchor(PixelInCell.CELL_CORNER);
-        double[] expectedResolution =
-                new double[] {
-                    XAffineTransform.getScaleX0(gridToEnvelopeMapper.createAffineTransform()),
-                    XAffineTransform.getScaleY0(gridToEnvelopeMapper.createAffineTransform())
-                };
+        double[] expectedResolution = {
+            XAffineTransform.getScaleX0(gridToEnvelopeMapper.createAffineTransform()),
+            XAffineTransform.getScaleY0(gridToEnvelopeMapper.createAffineTransform())
+        };
         assertNotNull(computedResolution);
         assertEquals(expectedResolution[0], computedResolution[0], 1E-6);
         assertEquals(expectedResolution[1], computedResolution[1], 1E-6);

@@ -72,8 +72,8 @@ public class StandardDeviationFunction extends ClassificationFunction {
             }
 
             // figure out the min and max values
-            Double min[] = new Double[classNum];
-            Double max[] = new Double[classNum];
+            Double[] min = new Double[classNum];
+            Double[] max = new Double[classNum];
             for (int i = 0; i < classNum; i++) {
                 min[i] = getMin(i, classNum, sdVisit.getMean(), standardDeviation);
                 max[i] = getMax(i, classNum, sdVisit.getMean(), standardDeviation);

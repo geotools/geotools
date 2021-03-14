@@ -715,7 +715,7 @@ public class RasterManager implements Cloneable {
                 propertyName = extractAttributes(propertyName);
 
                 // Getting 2 attributes for this domain
-                String properties[] = propertyName.split(Utils.RANGE_SPLITTER_CHAR);
+                String[] properties = propertyName.split(Utils.RANGE_SPLITTER_CHAR);
                 if (properties == null || properties.length != 2) {
                     throw new IllegalArgumentException(
                             "Malformed domain with ranges: it should contain 2 attributes");
@@ -1622,7 +1622,7 @@ public class RasterManager implements Cloneable {
         // original gridrange (estimated). I am using the floor here in order to make sure
         // we always stays inside the real area that we have for the granule
         OverviewLevel highResOvLevel = overviewsController.resolutionsLevels.get(0);
-        final double highestRes[] = {highResOvLevel.resolutionX, highResOvLevel.resolutionY};
+        final double[] highestRes = {highResOvLevel.resolutionX, highResOvLevel.resolutionY};
         GridEnvelope2D originalGridRange =
                 new GridEnvelope2D(
                         new Rectangle(
@@ -1848,7 +1848,7 @@ public class RasterManager implements Cloneable {
         OverviewLevel level = templateDescriptor.getOverviewsController().getLevel(0);
         // original gridrange (estimated). I am using the floor here in order to make sure
         // we always stays inside the real area that we have for the granule
-        final double highestRes[] = {level.resolutionX, level.resolutionY};
+        final double[] highestRes = {level.resolutionX, level.resolutionY};
         GridEnvelope2D originalGridRange =
                 new GridEnvelope2D(
                         new Rectangle(

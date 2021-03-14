@@ -1543,7 +1543,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
             throw new SQLException("no data inside the specified column");
         }
 
-        Object data[] = (Object[]) returnArray.getArray();
+        Object[] data = (Object[]) returnArray.getArray();
         if (data.length < 2) {
             throw new SQLException("too little dimension information found in sdo_geom_metadata");
         }

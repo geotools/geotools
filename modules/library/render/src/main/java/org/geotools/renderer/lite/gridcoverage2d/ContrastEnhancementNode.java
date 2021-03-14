@@ -470,7 +470,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
                                     props);
                 } else {
                     // replicate input bands
-                    final GridSampleDimension sd[] = new GridSampleDimension[numActualBands];
+                    final GridSampleDimension[] sd = new GridSampleDimension[numActualBands];
                     for (int i = 0; i < numActualBands; i++) sd[i] = source.getSampleDimension(0);
                     output =
                             factory.create(

@@ -48,7 +48,7 @@ import org.opengis.util.InternationalString;
 @SuppressFBWarnings("DLS_DEAD_LOCAL_STORE")
 public class MetadataExamples {
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         MetadataExamples examples = new MetadataExamples();
 
         examples.exampleRange();

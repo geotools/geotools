@@ -55,7 +55,7 @@ public class S3ImageInputStreamImpl extends ImageInputStreamImpl {
         this.connector = new S3Connector(input);
         this.url = input;
         String urlWithoutQueryString = input.split("\\?")[0];
-        String parts[] = urlWithoutQueryString.split("/");
+        String[] parts = urlWithoutQueryString.split("/");
         if (input.startsWith("http")) {
             this.bucket = parts[parts.length - 2];
             this.key = parts[parts.length - 1];
@@ -126,7 +126,7 @@ public class S3ImageInputStreamImpl extends ImageInputStreamImpl {
     }
 
     @Override
-    public int read(byte targetBuffer[], int off, int len) throws IOException {
+    public int read(byte[] targetBuffer, int off, int len) throws IOException {
 
         int readRemaining = len;
         ByteBuffer readBuffer = ByteBuffer.allocate(len);

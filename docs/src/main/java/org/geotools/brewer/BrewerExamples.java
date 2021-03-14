@@ -121,8 +121,8 @@ public class BrewerExamples {
 
     public void rangedClassifierExample() {
         // rangedClassifierExample start
-        Comparable min[] = new Comparable[25];
-        Comparable max[] = new Comparable[25];
+        Comparable[] min = new Comparable[25];
+        Comparable[] max = new Comparable[25];
         for (int i = 0; i < 25; i++) {
             min[i] = (char) ('A' + i);
             max[i] = (char) ('B' + i);

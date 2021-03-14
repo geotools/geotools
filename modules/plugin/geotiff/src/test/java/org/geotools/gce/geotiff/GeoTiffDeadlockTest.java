@@ -21,7 +21,7 @@ public class GeoTiffDeadlockTest {
     public void testForDeadlock() throws Exception {
         // grab all the test data files (but not those that contain known errors)
         final File dir = TestData.file(GeoTiffReaderTest.class, "");
-        final File files[] =
+        final File[] files =
                 dir.listFiles(
                         file -> {
                             String name = file.getName();

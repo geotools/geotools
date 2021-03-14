@@ -51,7 +51,7 @@ public enum Band {
         public void setTo(
                 org.geotools.styling.ChannelSelection sel,
                 org.geotools.styling.SelectedChannelType chan) {
-            org.geotools.styling.SelectedChannelType channels[] = sel.getRGBChannels();
+            org.geotools.styling.SelectedChannelType[] channels = sel.getRGBChannels();
             channels[0] = chan;
             sel.setRGBChannels(channels);
         }
@@ -66,7 +66,7 @@ public enum Band {
         public void setTo(
                 org.geotools.styling.ChannelSelection sel,
                 org.geotools.styling.SelectedChannelType chan) {
-            org.geotools.styling.SelectedChannelType channels[] = sel.getRGBChannels();
+            org.geotools.styling.SelectedChannelType[] channels = sel.getRGBChannels();
             channels[1] = chan;
             sel.setRGBChannels(channels);
         }
@@ -81,7 +81,7 @@ public enum Band {
         public void setTo(
                 org.geotools.styling.ChannelSelection sel,
                 org.geotools.styling.SelectedChannelType chan) {
-            org.geotools.styling.SelectedChannelType channels[] = sel.getRGBChannels();
+            org.geotools.styling.SelectedChannelType[] channels = sel.getRGBChannels();
             channels[2] = chan;
             sel.setRGBChannels(channels);
         }

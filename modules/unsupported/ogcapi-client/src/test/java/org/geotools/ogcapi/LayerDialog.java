@@ -56,7 +56,7 @@ public class LayerDialog extends JDialog {
     private String style = "";
     private Map<String, CollectionType> collections;
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException

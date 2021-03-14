@@ -97,7 +97,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
         WMSInfo() {
             keywords = new HashSet<>();
             if (capabilities.getService() != null) {
-                String array[] = capabilities.getService().getKeywordList();
+                String[] array = capabilities.getService().getKeywordList();
                 if (array != null) {
                     keywords.addAll(Arrays.asList(array));
                 }

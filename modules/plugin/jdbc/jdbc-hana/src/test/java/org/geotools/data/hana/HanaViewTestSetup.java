@@ -37,7 +37,7 @@ public class HanaViewTestSetup extends JDBCViewTestSetup {
             HanaTestUtil htu = new HanaTestUtil(conn);
             htu.createTestSchema();
 
-            String cols[][] = {
+            String[][] cols = {
                 {"fid", "INT PRIMARY KEY"},
                 {"id", "INT"},
                 {"geom", "ST_Geometry(1000004326)"},

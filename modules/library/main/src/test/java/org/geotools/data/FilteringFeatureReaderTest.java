@@ -101,7 +101,7 @@ public class FilteringFeatureReaderTest extends DataTestCase {
     }
 
     void assertContents(
-            SimpleFeature expected[], FeatureReader<SimpleFeatureType, SimpleFeature> reader)
+            SimpleFeature[] expected, FeatureReader<SimpleFeatureType, SimpleFeature> reader)
             throws IOException {
         assertNotNull(reader);
         assertNotNull(expected);

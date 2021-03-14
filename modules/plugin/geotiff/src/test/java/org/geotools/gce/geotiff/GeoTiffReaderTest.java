@@ -272,7 +272,7 @@ public class GeoTiffReaderTest {
         final File writeDirectory =
                 new File(baseDirectory, Long.toString(System.currentTimeMillis()));
         writeDirectory.mkdir();
-        final File files[] = baseDirectory.listFiles();
+        final File[] files = baseDirectory.listFiles();
         final int numFiles = files.length;
         final AbstractGridFormat format = new GeoTiffFormat();
         for (int i = 0; i < numFiles; i++) {
@@ -417,7 +417,7 @@ public class GeoTiffReaderTest {
         Callable<Void> callable =
                 () -> {
                     final File baseDirectory = TestData.file(GeoTiffReaderTest.class, ".");
-                    final File files[] =
+                    final File[] files =
                             baseDirectory.listFiles(
                                     (dir, name) -> {
                                         String lcName = name.toLowerCase();

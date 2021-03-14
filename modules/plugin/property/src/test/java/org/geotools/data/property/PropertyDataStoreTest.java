@@ -167,7 +167,7 @@ public class PropertyDataStoreTest {
         }
 
         File dir = new File("propertyTestData");
-        File list[] = dir.listFiles();
+        File[] list = dir.listFiles();
         for (File file : list) {
             file.delete();
         }
@@ -176,7 +176,7 @@ public class PropertyDataStoreTest {
 
     @Test
     public void testGetNames() throws IOException {
-        String names[] = store.getTypeNames();
+        String[] names = store.getTypeNames();
         Arrays.sort(names);
         Assert.assertEquals(4, names.length);
         Assert.assertEquals("dots.in.name", names[0]);

@@ -331,7 +331,7 @@ public abstract class AbstractWfsDataStoreOnlineTest {
 
         assertTrue(wfs instanceof WFSDataStore);
 
-        String types[] = wfs.getTypeNames();
+        String[] types = wfs.getTypeNames();
         List<String> typeNames = Arrays.asList(types);
         assertTrue(typeNames.contains(testType.FEATURETYPENAME));
 

@@ -89,14 +89,14 @@ public class TestMaps {
         {800.0, 980.0, 1150.0, 1250.0, 1450.0}
     };
 
-    static double matrixLess[][] = {
+    static double[][] matrixLess = {
         {700.0, 750.0, 800.0, 850.0, 900.0, 1000.0},
         {650.0, 700.0, 750.0, 800.0, 850.0, 800.0},
         {430.0, 500.0, 600.0, 700.0, 800.0, 800.0},
         {700.0, 750.0, 760.0, 770.0, 850.0, 1000.0}
     };
 
-    static double differentRegion1[][] = {
+    static double[][] differentRegion1 = {
         {NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN},
         {NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN},
         {1000.0, 1000.0, 1200.0, 1250.0, 1300.0, 1350.0, 1450.0, 1500.0, NaN, NaN},
@@ -107,7 +107,7 @@ public class TestMaps {
         {700.0, 750.0, 760.0, 770.0, 850.0, 1000.0, 1150.0, 1500.0, NaN, NaN}
     };
 
-    static double differentRegion2[][] = {
+    static double[][] differentRegion2 = {
         {NaN, NaN, 500.0, 550.0, 700.0, 750.0, 800.0, 850.0, 900.0, 1000.0},
         {NaN, NaN, 400.0, 410.0, 650.0, 700.0, 750.0, 800.0, 850.0, 800.0},
         {NaN, NaN, 450.0, 550.0, 430.0, 500.0, 600.0, 700.0, 800.0, 800.0},
@@ -118,7 +118,7 @@ public class TestMaps {
         {NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN},
     };
 
-    static double differentRegion3[][] = {
+    static double[][] differentRegion3 = {
         {700.0, 750.0, 800.0, 850.0, 900.0, 1000.0, 1100.0, 1500.0, NaN, NaN},
         {650.0, 700.0, 750.0, 800.0, 850.0, 800.0, 800.0, 1500.0, NaN, NaN},
         {430.0, 500.0, 600.0, 700.0, 800.0, 800.0, 800.0, 1500.0, NaN, NaN},
@@ -129,7 +129,7 @@ public class TestMaps {
         {NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN},
     };
 
-    static double differentRegion4[][] = {
+    static double[][] differentRegion4 = {
         {NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN},
         {NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN},
         {NaN, NaN, 800.0, 900.0, 1000.0, 1000.0, 1200.0, 1250.0, 1300.0, 1350.0},

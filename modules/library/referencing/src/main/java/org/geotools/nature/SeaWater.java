@@ -54,112 +54,138 @@ public final class SeaWater {
      * Coéfficients de l'équation d'état EOS-80. La densité calculée par ces coéfficients est la
      * densité Sigma-T.
      */
-    private static final double
-            EOS80_A
-            [] = {-28.263737E+0, 6.793952E-2, -9.095290E-3, 1.001685E-4, -1.120083E-6, 6.536332E-9},
-            EOS80_B[] = {8.24493E-1, -4.0899E-3, 7.6438E-5, -8.2467E-7, 5.3875E-9},
-            EOS80_C[] = {-5.72466E-3, 1.0227E-4, -1.6546E-6},
-            EOS80_D = 4.8314E-4,
-            EOS80_E[] = {-1930.06E+0, 148.4206E+0, -2.327105E+0, 1.360477E-2, -5.155288E-5},
-            EOS80_F[] = {54.6746E+0, -6.03459E-1, 1.09987E-2, -6.1670E-5},
-            EOS80_G[] = {7.944E-2, 1.6483E-2, -5.3009E-4},
-            EOS80_H[] = {-1.194975E-1, 1.43713E-3, 1.16092E-4, -5.77905E-7},
-            EOS80_I[] = {2.2838E-3, -1.0981E-5, -1.6078E-6},
-            EOS80_J = 1.91075E-4,
-            EOS80_K[] = {3.47718E-5, -6.12293E-6, 5.2787E-8},
-            EOS80_M[] = {-9.9348E-7, 2.0816E-8, 9.1697E-10},
-            EOS80_N[] = {21582.27, 3.359406, 5.03217E-5},
-            RHO_35_0_0 = 1028.1063,
-            DR_35_0_0 = 28.106331;
+    private static final double[] EOS80_A = {
+        -28.263737E+0, 6.793952E-2, -9.095290E-3, 1.001685E-4, -1.120083E-6, 6.536332E-9
+    };
+
+    private static final double[] EOS80_B = {
+        8.24493E-1, -4.0899E-3, 7.6438E-5, -8.2467E-7, 5.3875E-9
+    };
+    private static final double[] EOS80_C = {-5.72466E-3, 1.0227E-4, -1.6546E-6};
+    private static final double EOS80_D = 4.8314E-4;
+    private static final double[] EOS80_E = {
+        -1930.06E+0, 148.4206E+0, -2.327105E+0, 1.360477E-2, -5.155288E-5
+    };
+    private static final double[] EOS80_F = {54.6746E+0, -6.03459E-1, 1.09987E-2, -6.1670E-5};
+    private static final double[] EOS80_G = {7.944E-2, 1.6483E-2, -5.3009E-4};
+    private static final double[] EOS80_H = {-1.194975E-1, 1.43713E-3, 1.16092E-4, -5.77905E-7};
+    private static final double[] EOS80_I = {2.2838E-3, -1.0981E-5, -1.6078E-6};
+    private static final double EOS80_J = 1.91075E-4;
+    private static final double[] EOS80_K = {3.47718E-5, -6.12293E-6, 5.2787E-8};
+    private static final double[] EOS80_M = {-9.9348E-7, 2.0816E-8, 9.1697E-10};
+    private static final double[] EOS80_N = {21582.27, 3.359406, 5.03217E-5};
+    private static final double RHO_35_0_0 = 1028.1063;
+    private static final double DR_35_0_0 = 28.106331;
 
     /**
      * Coéfficients de l'équation d'état EOS-80. La densité calculée par ces coéfficients est la
      * densité "vrai".
      */
-    private static final double
-            EOS80_At
-            [] = {999.842594, 6.793952E-2, -9.095290E-3, 1.001685E-4, -1.120083E-6, 6.536332E-9},
-            EOS80_Et[] = {19652.21, 148.4206, -2.327105, 1.360477E-2, -5.155288E-5},
-            EOS80_Ht[] = {3.239908, 1.43713E-3, 1.16092E-4, -5.77905E-7},
-            EOS80_Kt[] = {8.50935E-5, -6.12293E-6, 5.2787E-8};
+    private static final double[]
+            EOS80_At =
+                    {999.842594, 6.793952E-2, -9.095290E-3, 1.001685E-4, -1.120083E-6, 6.536332E-9},
+            EOS80_Et = {19652.21, 148.4206, -2.327105, 1.360477E-2, -5.155288E-5},
+            EOS80_Ht = {3.239908, 1.43713E-3, 1.16092E-4, -5.77905E-7},
+            EOS80_Kt = {8.50935E-5, -6.12293E-6, 5.2787E-8};
 
     /** Coéfficients de l'équation de la salinité PSS-78. */
-    private static final double PSS78_A[] = {0.0080, -0.1692, 25.3851, 14.0941, -7.0261, 2.7081},
-            PSS78_B[] = {0.0005, -0.0056, -0.0066, -0.0375, 0.0636, -0.0144},
-            PSS78_C[] = {0.6766097, 2.00564E-2, 1.104259E-4, -6.9698E-7, 1.0031E-9},
-            PSS78_D[] = {3.426E-2, 4.464E-4, 4.215E-1, -3.107E-3},
-            PSS78_E[] = {2.070E-5, -6.370E-10, 3.989E-15},
-            PSS78_G[] = {-0.1692, 50.7702, 42.2823, -28.1044, 13.5405},
-            PSS78_H[] = {-0.0056 - 0.0132, -0.1125, 0.2544, -0.0720},
-            PSS78_K = 0.0162;
+    private static final double[] PSS78_A = {0.0080, -0.1692, 25.3851, 14.0941, -7.0261, 2.7081};
+
+    private static final double[] PSS78_B = {0.0005, -0.0056, -0.0066, -0.0375, 0.0636, -0.0144};
+    private static final double[] PSS78_C = {
+        0.6766097, 2.00564E-2, 1.104259E-4, -6.9698E-7, 1.0031E-9
+    };
+    private static final double[] PSS78_D = {3.426E-2, 4.464E-4, 4.215E-1, -3.107E-3};
+    private static final double[] PSS78_E = {2.070E-5, -6.370E-10, 3.989E-15};
+    private static final double[] PSS78_G = {-0.1692, 50.7702, 42.2823, -28.1044, 13.5405};
+    private static final double[] PSS78_H = {-0.0056 - 0.0132, -0.1125, 0.2544, -0.0720};
+    private static final double PSS78_K = 0.0162;
 
     /** Coéfficients pour les salinités élevées, */
-    private static final double PSS78_AR[] = {7.737, -9.819, 8.663, -2.625},
-            PSS78_AT[] = {3.473E-2, 3.188E-3, -4.655E-5},
-            PSS78_CR[] = {-10.01E-2, 4.82E-2, -6.682E-4};
+    private static final double[] PSS78_AR = {7.737, -9.819, 8.663, -2.625},
+            PSS78_AT = {3.473E-2, 3.188E-3, -4.655E-5},
+            PSS78_CR = {-10.01E-2, 4.82E-2, -6.682E-4};
 
     /**
      * Constantes nécessaires au calcul de la chaleur spécifique.
      *
      * @see #specificHeat
      */
-    private static final double HEAT_AA[] = {-7.643575, 0.1072763, -1.38385E-3},
-            HEAT_BB[] = {0.1770383, -4.07718E-3, 5.148E-5},
-            HEAT_CC[] = {4217.4, -3.720283, 0.1412855, -2.654387E-3, 2.093236E-5},
-            HEAT_A[] = {-4.9592E-1, 1.45747E-2, -3.13885E-4, 2.0357E-6, 1.7168E-8},
-            HEAT_B[] = {2.4931E-4, -1.08645E-5, 2.87533E-7, -4.0027E-9, 2.2956E-11},
-            HEAT_C[] = {-5.422E-8, 2.6380E-9, -6.5637E-11, 6.136E-13},
-            HEAT_D[] = {4.9247E-3, -1.28315E-4, 9.802E-7, 2.5941E-8, -2.9179E-10},
-            HEAT_E[] = {-1.2331E-4, -1.517E-6, 3.122E-8},
-            HEAT_F[] = {-2.9558E-6, 1.17054E-7, -2.3905E-9, 1.8448E-11},
-            HEAT_G = 9.971E-8,
-            HEAT_H[] = {5.540E-10, -1.7682E-11, 3.513E-13},
-            HEAT_J = -1.4300E-12;
+    private static final double[] HEAT_AA = {-7.643575, 0.1072763, -1.38385E-3};
+
+    private static final double[] HEAT_BB = {0.1770383, -4.07718E-3, 5.148E-5};
+    private static final double[] HEAT_CC = {
+        4217.4, -3.720283, 0.1412855, -2.654387E-3, 2.093236E-5
+    };
+    private static final double[] HEAT_A = {
+        -4.9592E-1, 1.45747E-2, -3.13885E-4, 2.0357E-6, 1.7168E-8
+    };
+    private static final double[] HEAT_B = {
+        2.4931E-4, -1.08645E-5, 2.87533E-7, -4.0027E-9, 2.2956E-11
+    };
+    private static final double[] HEAT_C = {-5.422E-8, 2.6380E-9, -6.5637E-11, 6.136E-13};
+    private static final double[] HEAT_D = {
+        4.9247E-3, -1.28315E-4, 9.802E-7, 2.5941E-8, -2.9179E-10
+    };
+    private static final double[] HEAT_E = {-1.2331E-4, -1.517E-6, 3.122E-8};
+    private static final double[] HEAT_F = {-2.9558E-6, 1.17054E-7, -2.3905E-9, 1.8448E-11};
+    private static final double HEAT_G = 9.971E-8;
+    private static final double[] HEAT_H = {5.540E-10, -1.7682E-11, 3.513E-13};
+    private static final double HEAT_J = -1.4300E-12;
 
     /**
      * Constantes nécessaires au calcul de la température adiabétique.
      *
      * @see #adiabeticTemperatureGradient
      */
-    private static final double GRAD_A[] = {3.5803E-05, 8.5258E-06, -6.8360E-08, 6.6228E-10},
-            GRAD_B[] = {1.8932E-06, -4.2393E-08},
-            GRAD_C[] = {1.8741E-08, -6.7795E-10, 8.7330E-12, -5.4481E-14},
-            GRAD_D[] = {-1.1351E-10, 2.7759E-12},
-            GRAD_E[] = {-4.6206E-13, 1.8676E-14, -2.1687E-16};
+    private static final double[] GRAD_A = {3.5803E-05, 8.5258E-06, -6.8360E-08, 6.6228E-10},
+            GRAD_B = {1.8932E-06, -4.2393E-08},
+            GRAD_C = {1.8741E-08, -6.7795E-10, 8.7330E-12, -5.4481E-14},
+            GRAD_D = {-1.1351E-10, 2.7759E-12},
+            GRAD_E = {-4.6206E-13, 1.8676E-14, -2.1687E-16};
 
     /**
      * Constantes nécessaires au calcul de la profondeur.
      *
      * @see #depth
      */
-    private static final double DEPTH_C[] = {9.72659, -2.2512E-5, 2.279E-10, -1.82E-15};
+    private static final double[] DEPTH_C = {9.72659, -2.2512E-5, 2.279E-10, -1.82E-15};
 
     /**
      * Constantes nécessaires au calcul de la vitesse du son.
      *
      * @see #soundVelocity
      */
-    private static final double SOUND_A0[] = {1.389, -1.262E-2, 7.164E-5, 2.006E-6, -3.21E-8},
-            SOUND_A1[] = {9.4742E-5, -1.2580E-5, -6.4885E-8, 1.0507E-8, -2.0122E-10},
-            SOUND_A2[] = {-3.9064E-7, 9.1041E-9, -1.6002E-10, 7.988E-12},
-            SOUND_A3[] = {1.100E-10, 6.649E-12, -3.389E-13},
-            SOUND_B0[] = {-1.922E-2, -4.42E-5},
-            SOUND_B1[] = {7.3637E-5, 1.7945E-7},
-            SOUND_C0[] = {1402.388, 5.03711, -5.80852E-2, 3.3420E-4, -1.47800E-6, 3.1464E-9},
-            SOUND_C1[] = {0.153563, 6.8982E-4, -8.1788E-6, 1.3621E-7, -6.1185E-10},
-            SOUND_C2[] = {3.1260E-5, -1.7107E-6, 2.5974E-8, -2.5335E-10, 1.0405E-12},
-            SOUND_C3[] = {-9.7729E-9, 3.8504E-10, -2.3643E-12},
-            SOUND_D0 = 1.727E-3,
-            SOUND_D1 = -7.9836E-6;
+    private static final double[] SOUND_A0 = {1.389, -1.262E-2, 7.164E-5, 2.006E-6, -3.21E-8};
+
+    private static final double[] SOUND_A1 = {
+        9.4742E-5, -1.2580E-5, -6.4885E-8, 1.0507E-8, -2.0122E-10
+    };
+    private static final double[] SOUND_A2 = {-3.9064E-7, 9.1041E-9, -1.6002E-10, 7.988E-12};
+    private static final double[] SOUND_A3 = {1.100E-10, 6.649E-12, -3.389E-13};
+    private static final double[] SOUND_B0 = {-1.922E-2, -4.42E-5};
+    private static final double[] SOUND_B1 = {7.3637E-5, 1.7945E-7};
+    private static final double[] SOUND_C0 = {
+        1402.388, 5.03711, -5.80852E-2, 3.3420E-4, -1.47800E-6, 3.1464E-9
+    };
+    private static final double[] SOUND_C1 = {
+        0.153563, 6.8982E-4, -8.1788E-6, 1.3621E-7, -6.1185E-10
+    };
+    private static final double[] SOUND_C2 = {
+        3.1260E-5, -1.7107E-6, 2.5974E-8, -2.5335E-10, 1.0405E-12
+    };
+    private static final double[] SOUND_C3 = {-9.7729E-9, 3.8504E-10, -2.3643E-12};
+    private static final double SOUND_D0 = 1.727E-3;
+    private static final double SOUND_D1 = -7.9836E-6;
 
     /**
      * Constantes nécessaires au calcul de la saturation en oxygène dissous.
      *
      * @see #saturationO2
      */
-    private static final double
-            O2_AT[] = {-135.29996, 1.572288E+5, -6.637149E+7, 1.243678E+10, -8.621061E+11},
-            O2_AS[] = {0.020573, -12.142, 2363, 1};
+    private static final double[]
+            O2_AT = {-135.29996, 1.572288E+5, -6.637149E+7, 1.243678E+10, -8.621061E+11},
+            O2_AS = {0.020573, -12.142, 2363, 1};
 
     /** Do not allow instantiation of this class. */
     private SeaWater() {}
@@ -531,7 +557,7 @@ public final class SeaWater {
      * @return La valeur du polynôme au x spécifié.
      * @see #poly_inv(double,double[])
      */
-    private static double polynome(final double x, final double c[]) {
+    private static double polynome(final double x, final double[] c) {
         int n = c.length - 1;
         double y = c[n];
         while (n > 0) {
@@ -559,7 +585,7 @@ public final class SeaWater {
      * @return La valeur du polynôme au x spécifié.
      * @see #polynome(double,double[])
      */
-    private static double polynome_neg(final double x, final double c[]) {
+    private static double polynome_neg(final double x, final double[] c) {
         int n = c.length - 1;
         double y = c[n];
         while (n > 0) {

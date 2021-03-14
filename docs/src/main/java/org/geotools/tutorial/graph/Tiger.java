@@ -37,7 +37,7 @@ public class Tiger extends JMapFrame {
 
     public Tiger() {}
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         Tiger tiger = new Tiger();
 
         tiger.setVisible(true);

@@ -228,7 +228,7 @@ public class GradientColorMapGenerator {
                 final int rampTypeIndex = colorValues.indexOf(":");
                 colorValues = colorValues.substring(0, rampTypeIndex);
             }
-            String colors[] = colorValues.split(";");
+            String[] colors = colorValues.split(";");
             final int numEntries = colors.length;
             LinearGradientEntry[] entries = new LinearGradientEntry[numEntries];
             final double step = 1d / (numEntries - 1);
@@ -290,12 +290,12 @@ public class GradientColorMapGenerator {
     private static Color createColor(String color) {
         if (color.startsWith(RGB_INLINEVALUE_MARKER)) {
             String colorString = color.substring(4, color.length() - 1);
-            String rgb[] = colorString.split("\\s*,\\s*");
+            String[] rgb = colorString.split("\\s*,\\s*");
             return new Color(
                     Integer.parseInt(rgb[0]), Integer.parseInt(rgb[1]), Integer.parseInt(rgb[2]));
         } else if (color.startsWith(RGBA_INLINEVALUE_MARKER)) {
             String colorString = color.substring(5, color.length() - 1);
-            String rgba[] = colorString.split("\\s*,\\s*");
+            String[] rgba = colorString.split("\\s*,\\s*");
             return new Color(
                     Integer.parseInt(rgba[0]),
                     Integer.parseInt(rgba[1]),
@@ -312,7 +312,7 @@ public class GradientColorMapGenerator {
     private static float getOpacity(String color) {
         if (color.startsWith(RGBA_INLINEVALUE_MARKER)) {
             String colorString = color.substring(5, color.length() - 1);
-            String rgba[] = colorString.split("\\s*,\\s*");
+            String[] rgba = colorString.split("\\s*,\\s*");
             return Float.parseFloat(rgba[3]);
         } else {
             return 1f;

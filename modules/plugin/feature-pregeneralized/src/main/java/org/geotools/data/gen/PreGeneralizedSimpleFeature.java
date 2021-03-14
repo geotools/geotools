@@ -64,7 +64,7 @@ public class PreGeneralizedSimpleFeature implements SimpleFeature {
     public PreGeneralizedSimpleFeature(
             SimpleFeatureType featureTyp,
             SimpleFeatureType returnedFeatureType,
-            int indexMapping[],
+            int[] indexMapping,
             SimpleFeature feature,
             String geomPropertyName,
             String backendGeomPropertyName) {

@@ -339,7 +339,7 @@ public class ComplexElementHandler extends XMLElementHandler {
         int end = index;
         int t = index;
         int count = 0;
-        int t2[] = null;
+        int[] t2 = null;
         while (i < eg.length && end < elements.size()) {
             t2 = valid(eg[i], t);
             if (t2[1] == 0 && t2[0] == t) { // nothing, next
@@ -441,7 +441,7 @@ public class ComplexElementHandler extends XMLElementHandler {
         int t = 0; // top of child list
 
         int count = 0; // used for n-ary at a single spot
-        int i2[] = new int[2];
+        int[] i2 = new int[2];
         while (t < eg.length && tIndex < elements.size()) {
             i2 = valid(eg[t], tIndex); // new top element
             if (i2[1] == 1) { // they matched

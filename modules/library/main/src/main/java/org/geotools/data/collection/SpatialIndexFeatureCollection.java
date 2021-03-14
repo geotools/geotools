@@ -184,7 +184,7 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
         final ProgressListener progress = listener != null ? listener : new NullProgressListener();
         progress.started();
         final float size = (float) size();
-        final IOException problem[] = new IOException[1];
+        final IOException[] problem = new IOException[1];
         index.query(
                 everything,
                 new ItemVisitor() {

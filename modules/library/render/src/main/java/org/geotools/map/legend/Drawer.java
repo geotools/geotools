@@ -694,7 +694,7 @@ public class Drawer {
      * @param holes Holes in polygon or null.
      * @return Polygon
      */
-    public Polygon polygon(int[] xy, int[] holes[]) {
+    public Polygon polygon(int[] xy, int[][] holes) {
         if (holes == null || holes.length == 0) {
             return polygon(xy);
         }

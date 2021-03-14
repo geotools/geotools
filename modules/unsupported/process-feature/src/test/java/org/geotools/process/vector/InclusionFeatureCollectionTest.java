@@ -53,7 +53,7 @@ public class InclusionFeatureCollectionTest {
         DefaultFeatureCollection secondFeatures =
                 new DefaultFeatureCollection(null, b.getFeatureType());
 
-        Coordinate firstArray[] = new Coordinate[5];
+        Coordinate[] firstArray = new Coordinate[5];
         for (int numFeatures = 0; numFeatures < 1; numFeatures++) {
             firstArray[0] = new Coordinate(0, 0);
             firstArray[1] = new Coordinate(1, 0);
@@ -67,7 +67,7 @@ public class InclusionFeatureCollectionTest {
             features.add(b.buildFeature(numFeatures + ""));
         }
         for (int numFeatures = 0; numFeatures < 1; numFeatures++) {
-            Coordinate array[] = new Coordinate[5];
+            Coordinate[] array = new Coordinate[5];
             array[0] = new Coordinate(firstArray[0].x - 1, firstArray[0].y - 1);
             array[1] = new Coordinate(firstArray[1].x + 1, firstArray[1].y - 1);
             array[2] = new Coordinate(firstArray[2].x + 1, firstArray[2].y + 1);
@@ -103,7 +103,7 @@ public class InclusionFeatureCollectionTest {
         DefaultFeatureCollection secondFeatures =
                 new DefaultFeatureCollection(null, b.getFeatureType());
 
-        Coordinate firstArray[] = new Coordinate[5];
+        Coordinate[] firstArray = new Coordinate[5];
         for (int numFeatures = 0; numFeatures < 1; numFeatures++) {
             firstArray[0] = new Coordinate(0, 0);
             firstArray[1] = new Coordinate(1, 0);

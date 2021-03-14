@@ -30,11 +30,11 @@ public class GeometryUtil {
     private static GeometryFactory geomFactory;
     private static PrecisionModel precModel;
 
-    public static boolean isEqual(Coordinate[] c1, Coordinate c2[]) {
+    public static boolean isEqual(Coordinate[] c1, Coordinate[] c2) {
         return (isEqual(c1, c2, false));
     }
 
-    public static boolean isEqual(Coordinate[] c1, Coordinate c2[], boolean reverse) {
+    public static boolean isEqual(Coordinate[] c1, Coordinate[] c2, boolean reverse) {
         if (c1.length != c2.length) return (false);
 
         if (!reverse) {

@@ -62,7 +62,7 @@ public abstract class AbstractQuantityClassificationFunction extends Classificat
 
         // generate the min and max values, and round off if applicable/necessary
         Comparable globalMin = (Comparable) bin[0].toArray()[0];
-        Object lastBin[] = bin[bin.length - 1].toArray();
+        Object[] lastBin = bin[bin.length - 1].toArray();
         if (lastBin.length == 0) {
             return null;
         }

@@ -40,7 +40,7 @@ public class ColorReplacementBuilder extends AbstractStyleBuilder<ColorReplaceme
         if (unset) {
             return null;
         }
-        Expression array[] = mapping.toArray(new Expression[mapping.size()]);
+        Expression[] array = mapping.toArray(new Expression[mapping.size()]);
         ColorReplacement replacement = sf.colorReplacement(propertyName, array);
         if (parent == null) {
             reset();

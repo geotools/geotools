@@ -141,7 +141,7 @@ class TWKBAttributeIO {
     /** @see org.geotools.data.jdbc.attributeio.AttributeIO#read(ResultSet, int) */
     public Object read(ResultSet rs, String columnName) throws IOException {
         try {
-            byte bytes[] = rs.getBytes(columnName);
+            byte[] bytes = rs.getBytes(columnName);
             if (bytes == null) // ie. its a null column -> return a null geometry!
             return null;
             if (base64EncodingEnabled) {
@@ -156,7 +156,7 @@ class TWKBAttributeIO {
     /** @see org.geotools.data.jdbc.attributeio.AttributeIO#read(ResultSet, int) */
     public Object read(ResultSet rs, int columnIndex, Class<?> binding) throws IOException {
         try {
-            byte bytes[] = rs.getBytes(columnIndex);
+            byte[] bytes = rs.getBytes(columnIndex);
             if (bytes == null) // ie. its a null column -> return a null geometry!
             return null;
 
@@ -178,7 +178,7 @@ class TWKBAttributeIO {
     /** @see org.geotools.data.jdbc.attributeio.AttributeIO#read(ResultSet, int) */
     public Object read(ResultSet rs, String columnName, Class<?> binding) throws IOException {
         try {
-            byte bytes[] = rs.getBytes(columnName);
+            byte[] bytes = rs.getBytes(columnName);
             if (bytes == null) // ie. its a null column -> return a null geometry!
             return null;
 

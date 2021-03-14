@@ -98,7 +98,7 @@ class FootprintUtils {
 
             final WKTReader geometryReader = new WKTReader();
             while ((footprint = bReader.readLine()) != null) {
-                String fpt[] = footprint.split("=");
+                String[] fpt = footprint.split("=");
                 if (fpt.length == 2) {
                     // parse the geometry
                     footprintsIDGeometryMap.put(fpt[0], geometryReader.read(fpt[1]));

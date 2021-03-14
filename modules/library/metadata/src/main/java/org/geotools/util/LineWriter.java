@@ -235,7 +235,7 @@ public class LineWriter extends FilterWriter {
      * @throws IOException If an I/O error occurs.
      */
     @Override
-    public void write(final char cbuf[], int offset, int length) throws IOException {
+    public void write(final char[] cbuf, int offset, int length) throws IOException {
         if (offset < 0 || length < 0 || (offset + length) > cbuf.length) {
             throw new IndexOutOfBoundsException();
         }

@@ -144,7 +144,7 @@ public class JExampleWizard extends JWizard {
     };
     // page2 end
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         // use wizard start
         JExampleWizard wizard = new JExampleWizard();
 

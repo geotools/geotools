@@ -77,8 +77,8 @@ public class ReadParamsController {
             useVirtual = true;
         }
 
-        double selectedRes[] = new double[2];
-        double requestedRes[] = new double[2];
+        double[] selectedRes = new double[2];
+        double[] requestedRes = new double[2];
         final OverviewLevel level = overviewsController.resolutionsLevels.get(levelIndex);
         selectedRes[0] = level.resolutionX;
         selectedRes[1] = level.resolutionY;

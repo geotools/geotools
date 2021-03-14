@@ -93,7 +93,7 @@ public class PropertyDataStore3DTest {
 
     @Test
     public void testRead3D() throws Exception {
-        String names[] = store.getTypeNames();
+        String[] names = store.getTypeNames();
         assertEquals(1, names.length);
         assertEquals("full3d", names[0]);
         SimpleFeature poly = getOneFeature("full3d.poly");

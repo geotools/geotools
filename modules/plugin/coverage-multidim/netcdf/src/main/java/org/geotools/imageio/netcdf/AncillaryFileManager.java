@@ -667,7 +667,7 @@ public class AncillaryFileManager implements FileSetManager {
                     }
 
                     // property names
-                    final String propertyNames[] = {mapped != null ? mapped : COVERAGE_NAME};
+                    final String[] propertyNames = {mapped != null ? mapped : COVERAGE_NAME};
 
                     // create the PropertiesCollector
                     final PropertiesCollector pc =

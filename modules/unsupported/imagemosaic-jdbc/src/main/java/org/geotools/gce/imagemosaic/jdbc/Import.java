@@ -166,7 +166,7 @@ public class Import extends AbstractCmd {
 
     private SimpleFeatureCollection featureColl;
 
-    private File imageFiles[];
+    private File[] imageFiles;
 
     private Logger logger;
 

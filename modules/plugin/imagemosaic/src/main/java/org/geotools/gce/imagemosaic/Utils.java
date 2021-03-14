@@ -184,7 +184,7 @@ public class Utils {
     }
 
     /** RGB to GRAY coefficients (for Luminance computation) */
-    public static final double RGB_TO_GRAY_MATRIX[][] = {{0.114, 0.587, 0.299, 0}};
+    public static final double[][] RGB_TO_GRAY_MATRIX = {{0.114, 0.587, 0.299, 0}};
 
     /**
      * Flag indicating whether to compute optimized crop ops (instead of standard mosaicking op)
@@ -634,7 +634,7 @@ public class Utils {
         }
 
         String[] pairs = null;
-        String pair[] = null;
+        String[] pair = null;
 
         //
         // imposed bbox is optional

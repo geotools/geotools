@@ -183,7 +183,7 @@ public class TableWriter extends FilterWriter {
      * Maximum width for each columns. This array's length must be equals to the number of columns
      * in this table.
      */
-    private int width[] = new int[0];
+    private int[] width = new int[0];
 
     /** The column separator. */
     private final String separator;
@@ -573,7 +573,7 @@ public class TableWriter extends FilterWriter {
      * @param cbuf Array of characters to be written.
      */
     @Override
-    public void write(final char cbuf[]) {
+    public void write(final char[] cbuf) {
         write(cbuf, 0, cbuf.length);
     }
 
@@ -586,7 +586,7 @@ public class TableWriter extends FilterWriter {
      * @param length Number of characters to write.
      */
     @Override
-    public void write(final char cbuf[], int offset, int length) {
+    public void write(final char[] cbuf, int offset, int length) {
         if (offset < 0 || length < 0 || (offset + length) > cbuf.length) {
             throw new IndexOutOfBoundsException();
         }

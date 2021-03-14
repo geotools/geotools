@@ -117,7 +117,7 @@ public class PropertyDataStore2Test {
     @After
     public void tearDown() throws Exception {
         File dir = new File(TARGET_DIR, "propertyTestData");
-        File list[] = dir.listFiles();
+        File[] list = dir.listFiles();
         for (File item : list) {
             item.delete();
         }

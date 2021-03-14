@@ -1033,7 +1033,7 @@ public class YsldParseTest {
 
     @SuppressWarnings("unchecked")
     private void doTestForGoogleMercator(StyledLayerDescriptor sld) throws IOException {
-        double scaleDenominators[] = new double[GOOGLE_MERCATOR_PIXEL_SIZES.length];
+        double[] scaleDenominators = new double[GOOGLE_MERCATOR_PIXEL_SIZES.length];
         for (int i = 0; i < GOOGLE_MERCATOR_PIXEL_SIZES.length; i++) {
             scaleDenominators[i] = OGC_DPI * INCHES_PER_METRE * GOOGLE_MERCATOR_PIXEL_SIZES[i];
         }

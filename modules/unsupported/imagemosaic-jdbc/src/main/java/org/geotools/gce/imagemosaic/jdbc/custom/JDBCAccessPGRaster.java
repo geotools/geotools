@@ -536,7 +536,7 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
                                 + li.getTileTableName()
                                 + " LIMIT 1";
 
-                double resolutions[] = null;
+                double[] resolutions = null;
                 try (PreparedStatement ps = con.prepareStatement(select);
                         ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {

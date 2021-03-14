@@ -43,7 +43,7 @@ public class PreGeneralizedFeatureIterator implements SimpleFeatureIterator {
             SimpleFeatureIterator backendIterator,
             SimpleFeatureType featureTyp,
             SimpleFeatureType returnedFeatureType,
-            int indexMapping[],
+            int[] indexMapping,
             String geomPropertyName,
             String backendGeomPropertyName) {
         super();

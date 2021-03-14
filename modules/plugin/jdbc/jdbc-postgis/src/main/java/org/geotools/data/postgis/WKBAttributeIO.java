@@ -92,7 +92,7 @@ public class WKBAttributeIO {
     /** @see org.geotools.data.jdbc.attributeio.AttributeIO#read(java.sql.ResultSet, int) */
     public Object read(ResultSet rs, String columnName) throws IOException {
         try {
-            byte bytes[] = rs.getBytes(columnName);
+            byte[] bytes = rs.getBytes(columnName);
             if (bytes == null) // ie. its a null column -> return a null geometry!
             return null;
             if (base64EncodingEnabled) {
@@ -107,7 +107,7 @@ public class WKBAttributeIO {
     /** @see org.geotools.data.jdbc.attributeio.AttributeIO#read(java.sql.ResultSet, int) */
     public Object read(ResultSet rs, int columnIndex) throws IOException {
         try {
-            byte bytes[] = rs.getBytes(columnIndex);
+            byte[] bytes = rs.getBytes(columnIndex);
             if (bytes == null) // ie. its a null column -> return a null geometry!
             return null;
             if (base64EncodingEnabled) {

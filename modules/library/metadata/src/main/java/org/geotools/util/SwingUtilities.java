@@ -181,7 +181,7 @@ public final class SwingUtilities {
             final ActionListener reset) {
         // Delegates to Swing thread if this method is invoked from an other thread.
         if (!EventQueue.isDispatchThread()) {
-            final boolean result[] = new boolean[1];
+            final boolean[] result = new boolean[1];
             invokeAndWait(() -> result[0] = showOptionDialog(owner, dialog, title, reset));
             return result[0];
         }
@@ -283,7 +283,7 @@ public final class SwingUtilities {
     public static boolean showConfirmDialog(
             final Component owner, final Object message, final String title, final int type) {
         if (!EventQueue.isDispatchThread()) {
-            final boolean result[] = new boolean[1];
+            final boolean[] result = new boolean[1];
             invokeAndWait(() -> result[0] = showConfirmDialog(owner, message, title, type));
             return result[0];
         }

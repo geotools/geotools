@@ -186,7 +186,7 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter
             //
             // /////////////////////////////////////////////////////////////////////
             if (candidateNoDataValues != null && candidateNoDataValues.length > 0) {
-                final LinearColorMapElement noDataCategories[] =
+                final LinearColorMapElement[] noDataCategories =
                         new LinearColorMapElement[candidateNoDataValues.length];
                 for (int i = 0; i < noDataCategories.length; i++) {
                     builder.addValueToPreserve(candidateNoDataValues[i]);

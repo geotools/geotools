@@ -316,7 +316,7 @@ public class MongoUtil {
                             new BufferedInputStream(zip.getInputStream(entry))) {
                         int currentByte;
                         // establish buffer for writing file
-                        byte data[] = new byte[BUFFER];
+                        byte[] data = new byte[BUFFER];
 
                         // write the current file to disk
                         FileOutputStream fos = new FileOutputStream(destFile);

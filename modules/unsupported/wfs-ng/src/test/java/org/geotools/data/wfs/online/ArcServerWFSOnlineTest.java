@@ -140,7 +140,7 @@ public class ArcServerWFSOnlineTest extends OnlineTestSupport {
         // Attempt to connect to the datastore.
         WFSDataStore data = (WFSDataStore) DataStoreFinder.getDataStore(connectionParameters);
         assertEquals(version, data.getInfo().getVersion());
-        String typeNames[] = data.getTypeNames();
+        String[] typeNames = data.getTypeNames();
         String typeName = typeNames[0];
         SimpleFeatureSource source = data.getFeatureSource(typeName);
 

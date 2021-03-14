@@ -1532,7 +1532,7 @@ public abstract class AbstractIntegrationTest {
     }
 
     protected static SimpleFeature[] grabArray(SimpleFeatureCollection features) {
-        SimpleFeature array[] = new SimpleFeature[features.size()];
+        SimpleFeature[] array = new SimpleFeature[features.size()];
         array = features.toArray(array);
         assertNotNull(array);
 

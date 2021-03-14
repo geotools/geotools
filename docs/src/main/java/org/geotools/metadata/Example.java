@@ -24,7 +24,7 @@ public class Example {
 
     private Object field1;
     private int field2;
-    private double array[];
+    private double[] array;
 
     @Override
     public int hashCode() {

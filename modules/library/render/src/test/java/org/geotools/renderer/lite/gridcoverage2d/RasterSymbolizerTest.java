@@ -415,8 +415,8 @@ public class RasterSymbolizerTest extends org.junit.Assert {
 
         GridCoverage2D output = (GridCoverage2D) rsh_SLD.getOutput();
         ImageWorker worker = new ImageWorker(output.getRenderedImage());
-        double min[] = worker.getMinimums();
-        double max[] = worker.getMaximums();
+        double[] min = worker.getMinimums();
+        double[] max = worker.getMaximums();
 
         // Stretch to Minimum Maximum does a linear stretch to
         // Byte data range [0 - 255]
@@ -2355,7 +2355,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         Assert.assertEquals(3, mapSize);
 
         // get colors
-        final int rgb[] = new int[mapSize];
+        final int[] rgb = new int[mapSize];
         rgb[0] = 0xFFFFFF & icm.getRGB(0);
         rgb[1] = 0xFFFFFF & icm.getRGB(1);
         rgb[2] = 0xFFFFFF & icm.getRGB(2);

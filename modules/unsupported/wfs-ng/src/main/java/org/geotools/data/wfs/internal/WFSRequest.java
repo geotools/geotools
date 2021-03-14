@@ -200,7 +200,7 @@ public abstract class WFSRequest extends AbstractRequest implements Request {
             Loggers.MODULE.log(Level.WARNING, fnf.getMessage());
             try {
                 if (contentType != null && contentType.startsWith("text")) {
-                    byte buff[] = new byte[1024];
+                    byte[] buff = new byte[1024];
                     response.getResponseStream().read(buff);
                     Loggers.MODULE.info("Failed response snippet: " + new String(buff));
                 }

@@ -378,7 +378,7 @@ public class ColorConverterFactory implements ConverterFactory {
                             return target.cast(CSS_COLORS.get(key));
                         } else if (text.startsWith("rgb(")) {
                             String colorString = text.substring(4, text.length() - 1);
-                            String rgb[] = colorString.split("\\s*,\\s*");
+                            String[] rgb = colorString.split("\\s*,\\s*");
                             Color c =
                                     new Color(
                                             Integer.parseInt(rgb[0]),
@@ -388,7 +388,7 @@ public class ColorConverterFactory implements ConverterFactory {
                             return target.cast(c);
                         } else if (text.startsWith("rgba(")) {
                             String colorString = text.substring(5, text.length() - 1);
-                            String rgba[] = colorString.split("\\s*,\\s*");
+                            String[] rgba = colorString.split("\\s*,\\s*");
                             float opacity = Float.parseFloat(rgba[3]);
 
                             Color c =
@@ -404,14 +404,14 @@ public class ColorConverterFactory implements ConverterFactory {
                             return target.cast(c);
                         } else if (text.startsWith("hsl(")) {
                             String colorString = text.substring(4, text.length() - 1);
-                            String hsl[] = colorString.split("\\s*,\\s*");
+                            String[] hsl = colorString.split("\\s*,\\s*");
                             double hue = Double.parseDouble(hsl[0]);
                             double saturation = parsePercentage(hsl[1]);
                             double lightness = parsePercentage(hsl[2]);
                             return target.cast(new HSLColor(hue, saturation, lightness).toRGB());
                         } else if (text.startsWith("hsla(")) {
                             String colorString = text.substring(5, text.length() - 1);
-                            String hsla[] = colorString.split("\\s*,\\s*");
+                            String[] hsla = colorString.split("\\s*,\\s*");
                             double hue = Double.parseDouble(hsla[0]);
                             double saturation = parsePercentage(hsla[1]);
                             double lightness = parsePercentage(hsla[2]);

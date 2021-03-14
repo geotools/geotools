@@ -82,7 +82,7 @@ public class GeoJSONDataStoreFactoryTest {
     @Test
     public void testGetTypeNames() throws IOException {
 
-        String names[] = store.getTypeNames();
+        String[] names = store.getTypeNames();
         // System.out.println("typenames: " + names.length);
         assertEquals("wrong number of types", 1, names.length);
         // System.out.println("typename[0]: " + names[0]);
@@ -91,14 +91,14 @@ public class GeoJSONDataStoreFactoryTest {
 
     @Test
     public void testGetSchema() throws IOException {
-        String names[] = store.getTypeNames();
+        String[] names = store.getTypeNames();
         SimpleFeatureType schema = store.getSchema(names[0]);
         assertNotNull("no schema found", schema);
     }
 
     @Test
     public void testGetFeatureReader() throws IOException {
-        String names[] = store.getTypeNames();
+        String[] names = store.getTypeNames();
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 store.getFeatureReader(new Query(names[0], Filter.INCLUDE), null)) {
             assertNotNull("failed to get FeatureReader", reader);

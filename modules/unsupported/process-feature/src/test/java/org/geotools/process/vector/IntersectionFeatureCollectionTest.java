@@ -253,7 +253,7 @@ public class IntersectionFeatureCollectionTest {
         Polygon[] firstArrayGeometry = new Polygon[1];
         Polygon[] secondArrayGeometry = new Polygon[1];
         for (int numFeatures = 0; numFeatures < 1; numFeatures++) {
-            Coordinate array[] = new Coordinate[5];
+            Coordinate[] array = new Coordinate[5];
             array[0] = new Coordinate(0, 0);
             array[1] = new Coordinate(1, 0);
             array[2] = new Coordinate(1, 1);
@@ -266,7 +266,7 @@ public class IntersectionFeatureCollectionTest {
             features.add(b.buildFeature(numFeatures + ""));
         }
         for (int numFeatures = 0; numFeatures < 1; numFeatures++) {
-            Coordinate array[] = new Coordinate[5];
+            Coordinate[] array = new Coordinate[5];
             Coordinate centre =
                     ((Polygon) features.features().next().getDefaultGeometry())
                             .getCentroid()

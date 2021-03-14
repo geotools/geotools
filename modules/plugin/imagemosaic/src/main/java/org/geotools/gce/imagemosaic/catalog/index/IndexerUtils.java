@@ -124,7 +124,7 @@ public class IndexerUtils {
                 }
 
                 // property names
-                final String propertyNames[] = pcDef.substring(roundLPos + 1, roundRPos).split(",");
+                final String[] propertyNames = pcDef.substring(roundLPos + 1, roundRPos).split(",");
                 Collector collector = Utils.OBJECT_FACTORY.createIndexerCollectorsCollector();
                 collector.setSpi(spi);
 
@@ -175,7 +175,7 @@ public class IndexerUtils {
      */
     public static void setAttributes(DomainType domain, String values) {
         if (values.contains(";")) {
-            String properties[] = values.split(";");
+            String[] properties = values.split(";");
             for (String prop : properties) {
                 addAttribute(domain, prop);
             }

@@ -141,12 +141,12 @@ public class CRSTest {
         DirectPosition pt2 = math.transform(pt1, null);
         Assert.assertNotNull(pt2);
 
-        double pts[] = {
+        double[] pts = {
             1187128, 395268, 1187128, 396027,
             1188245, 396027, 1188245, 395268,
             1187128, 395268
         };
-        double tst[] = new double[pts.length];
+        double[] tst = new double[pts.length];
         math.transform(pts, 0, new double[pts.length], 0, pts.length / 2);
         for (int i = 0; i < pts.length; i++) Assert.assertTrue("pts[" + i + "]", pts[i] != tst[i]);
     }

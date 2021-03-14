@@ -92,7 +92,7 @@ public class CSVWriteOptionsTest {
 
     @After
     public void removeTemporaryLocations() throws IOException {
-        File list[] = tmp.listFiles();
+        File[] list = tmp.listFiles();
         if (list != null) {
             for (File file : list) {
                 file.delete();
@@ -103,7 +103,7 @@ public class CSVWriteOptionsTest {
 
     // Make sure any temp files were cleaned up.
     public boolean cleanedup() {
-        File list[] = tmp.listFiles((dir, name) -> name.endsWith(".csv"));
+        File[] list = tmp.listFiles((dir, name) -> name.endsWith(".csv"));
         if (list != null) {
             for (File file : list) {
                 if (file.getName().equalsIgnoreCase("locations.csv")) {

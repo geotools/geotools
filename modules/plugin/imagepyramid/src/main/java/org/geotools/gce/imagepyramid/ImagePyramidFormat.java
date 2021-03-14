@@ -181,8 +181,8 @@ public final class ImagePyramidFormat extends AbstractGridFormat implements Form
                 return false;
             }
             String[] pairs = envelope.split(" ");
-            final double cornersV[][] = new double[2][2];
-            String pair[];
+            final double[][] cornersV = new double[2][2];
+            String[] pair;
             for (int i = 0; i < 2; i++) {
                 pair = pairs[i].split(",");
                 cornersV[i][0] = Double.parseDouble(pair[0]);

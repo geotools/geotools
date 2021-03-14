@@ -31,7 +31,7 @@ import java.util.AbstractList;
  * @version CVS Version
  */
 public class OrdinateList extends AbstractList {
-    final double ARRAY[];
+    final double[] ARRAY;
     final int OFFSET;
     final int LEN; // number of things in stuff
     final int SIZE; // number of "elements"
@@ -39,15 +39,15 @@ public class OrdinateList extends AbstractList {
     final int END;
     final int STEP;
 
-    public OrdinateList(double array[]) {
+    public OrdinateList(double[] array) {
         this(array, 0, 1);
     }
 
-    public OrdinateList(double array[], int offset, int len) {
+    public OrdinateList(double[] array, int offset, int len) {
         this(array, offset, len, 0, array.length);
     }
 
-    public OrdinateList(double array[], int offset, int len, int start, int end) {
+    public OrdinateList(double[] array, int offset, int len, int start, int end) {
         START = start;
         END = end;
         ARRAY = array;
@@ -83,7 +83,7 @@ public class OrdinateList extends AbstractList {
     }
 
     public double[] toDoubleArray() {
-        double array[] = new double[size()];
+        double[] array = new double[size()];
         for (int i = 0; i < size(); i++) {
             array[i] = getDouble(i);
         }

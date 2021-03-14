@@ -712,7 +712,7 @@ public class CQLCompiler extends CQLParser implements ICompiler {
      *
      * @deprecate use CQL.main()
      */
-    public static void main(String args[]) throws ParseException {
+    public static void main(String[] args) throws ParseException {
         CQL.main(args);
     }
 }

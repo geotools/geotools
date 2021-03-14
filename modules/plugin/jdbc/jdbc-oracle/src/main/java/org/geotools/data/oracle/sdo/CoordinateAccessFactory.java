@@ -45,7 +45,7 @@ public interface CoordinateAccessFactory extends CoordinateSequenceFactory {
      * @param attributes an array of Objects which can be null. Column major measure arrays where
      *     attributes.length == getNumAttributes()
      */
-    public CoordinateAccess create(double[] xyz[], Object[] attributes);
+    public CoordinateAccess create(double[][] xyz, Object[] attributes);
 
     /** Number of spatial ordinates() */
     public int getDimension();

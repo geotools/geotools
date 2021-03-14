@@ -196,9 +196,9 @@ public class WMTSTileFactory4326Test {
     @Test
     public void testGetExtentFromTileName() throws Exception {
 
-        WMTSTileService services[] = {createRESTService(), createKVPService()};
+        WMTSTileService[] services = {createRESTService(), createKVPService()};
 
-        ReferencedEnvelope expectedEnv[] = {
+        ReferencedEnvelope[] expectedEnv = {
             new ReferencedEnvelope(
                     1102848.0, 2151424.0, -951424.0, 97152.0, CRS.decode("EPSG:31287")),
             new ReferencedEnvelope(

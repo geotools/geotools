@@ -63,7 +63,7 @@ public class HsqlDialectEpsgMediatorStressTest {
         if (!TestData.isExtensiveTest()) {
             return;
         }
-        TestRunnable runners[] = new TestRunnable[RUNNER_COUNT];
+        TestRunnable[] runners = new TestRunnable[RUNNER_COUNT];
         for (int i = 0; i < RUNNER_COUNT; i++) {
             ClientThread thread = new ClientThread(i, mediator);
             thread.iterations = ITERATIONS;

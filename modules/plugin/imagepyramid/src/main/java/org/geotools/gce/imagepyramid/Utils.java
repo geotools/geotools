@@ -344,7 +344,7 @@ class Utils {
                         resolutionLevels = reader.getResolutionLevels(coverageName);
                         continue;
                     }
-                    double compareLevels[][] = reader.getResolutionLevels(coverageName);
+                    double[][] compareLevels = reader.getResolutionLevels(coverageName);
                     boolean homogeneous =
                             org.geotools.gce.imagemosaic.Utils.homogeneousCheck(
                                     resolutionLevels.length, resolutionLevels, compareLevels);

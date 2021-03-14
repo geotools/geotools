@@ -429,7 +429,7 @@ public class Glyph {
      * @return Icon representing a palette
      *
      */
-    public static BufferedImage palette(Color c[]) {
+    public static BufferedImage palette(Color[] c) {
         BufferedImage bi =
                 new BufferedImage(DEFAULT_WIDTH, DEFAULT_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 

@@ -48,7 +48,7 @@ public abstract class SubHandler {
      */
     protected int getSRID() {
         if (srs == null) return 0;
-        String split[] = srs.split("\\:");
+        String[] split = srs.split("\\:");
         try {
             return Integer.parseInt(split[split.length - 1]);
         } catch (NumberFormatException ignore) {

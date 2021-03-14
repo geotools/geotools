@@ -252,7 +252,7 @@ public class OverviewsControllerTest extends Assert {
         final GridToEnvelopeMapper geMapper = new GridToEnvelopeMapper(range, envelope);
         geMapper.setPixelAnchor(PixelInCell.CELL_CENTER);
         final AffineTransform gridToWorld = geMapper.createAffineTransform();
-        final double requestedResolution[] = {
+        final double[] requestedResolution = {
             XAffineTransform.getScaleX0(gridToWorld), XAffineTransform.getScaleY0(gridToWorld)
         };
 

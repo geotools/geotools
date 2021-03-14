@@ -200,9 +200,9 @@ class NetCDFGeoreferenceManager {
             public ReferencedEnvelope computeEnvelope(
                     String coordinates, CoordinateReferenceSystem crs) {
                 Utilities.ensureNonNull("coordinates", coordinates);
-                String coords[] = coordinates.split(" ");
-                double xLon[] = null;
-                double yLat[] = null;
+                String[] coords = coordinates.split(" ");
+                double[] xLon = null;
+                double[] yLat = null;
                 // Get the previously computed coordinates
                 for (String coord : coords) {
                     if (xLonCoords.containsKey(coord)) {
@@ -549,7 +549,7 @@ class NetCDFGeoreferenceManager {
             return coordinatesVariables.values();
         } else {
             String coordinates = getCoordinatesForVariable(shortName);
-            String coords[] = coordinates.split(" ");
+            String[] coords = coordinates.split(" ");
             List<CoordinateVariable<?>> coordVar = new ArrayList<>();
             for (String coord : coords) {
                 coordVar.add(coordinatesVariables.get(coord));

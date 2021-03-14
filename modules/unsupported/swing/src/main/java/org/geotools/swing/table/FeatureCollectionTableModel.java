@@ -164,7 +164,7 @@ public class FeatureCollectionTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         if (rowIndex < cache.size()) {
-            Object row[] = cache.get(rowIndex);
+            Object[] row = cache.get(rowIndex);
             return row[columnIndex];
         }
         return null;

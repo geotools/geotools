@@ -77,7 +77,7 @@ public class PropertyExamples {
             e.printStackTrace();
         } finally {
             if (tmp != null) {
-                File list[] = tmp.listFiles();
+                File[] list = tmp.listFiles();
                 if (list != null) {
                     for (File file : list) {
                         file.delete();

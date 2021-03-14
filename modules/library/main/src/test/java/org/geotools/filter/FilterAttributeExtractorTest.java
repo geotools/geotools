@@ -86,7 +86,7 @@ public class FilterAttributeExtractorTest {
         expression2.accept(extract, names);
         filter.accept(extract, names);
 
-        String array[] = extract.getAttributeNames();
+        String[] array = extract.getAttributeNames();
         Set<String> attributes = extract.getAttributeNameSet();
         Set<PropertyName> properties = extract.getPropertyNameSet();
 

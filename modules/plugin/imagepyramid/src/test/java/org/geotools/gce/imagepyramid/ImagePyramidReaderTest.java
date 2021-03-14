@@ -836,7 +836,7 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
         assertNotNull(reader);
         assertEquals(2, reader.getGridCoverageCount());
 
-        String coverageNames[] = reader.getGridCoverageNames();
+        String[] coverageNames = reader.getGridCoverageNames();
         Arrays.sort(coverageNames);
         assertEquals("gray", coverageNames[0]);
         assertEquals("rgb", coverageNames[1]);

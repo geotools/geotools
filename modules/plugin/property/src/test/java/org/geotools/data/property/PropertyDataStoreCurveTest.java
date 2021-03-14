@@ -81,7 +81,7 @@ public class PropertyDataStoreCurveTest {
     @After
     public void tearDown() throws Exception {
         File dir = new File("propertyCurveTestData");
-        File list[] = dir.listFiles();
+        File[] list = dir.listFiles();
         for (File file : list) {
             file.delete();
         }
@@ -90,7 +90,7 @@ public class PropertyDataStoreCurveTest {
 
     @Test
     public void testReadCurves() throws Exception {
-        String names[] = store.getTypeNames();
+        String[] names = store.getTypeNames();
         Assert.assertEquals(1, names.length);
         Assert.assertEquals("curvelines", names[0]);
         Query query = new Query("curvelines");
@@ -151,7 +151,7 @@ public class PropertyDataStoreCurveTest {
 
     @Test
     public void testReadCurvesWithTolerance() throws Exception {
-        String names[] = store.getTypeNames();
+        String[] names = store.getTypeNames();
         Assert.assertEquals(1, names.length);
         Assert.assertEquals("curvelines", names[0]);
         Query query = new Query("curvelines");

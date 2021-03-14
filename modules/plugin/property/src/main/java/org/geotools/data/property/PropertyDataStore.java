@@ -111,7 +111,7 @@ public class PropertyDataStore extends ContentDataStore {
 
     @Override
     protected java.util.List<Name> createTypeNames() throws IOException {
-        String list[] = dir.list((dir, name) -> name.endsWith(".properties"));
+        String[] list = dir.list((dir, name) -> name.endsWith(".properties"));
         List<Name> typeNames = new ArrayList<>();
         if (list != null) {
             for (String s : list) {

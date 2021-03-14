@@ -421,7 +421,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     protected float[] copy(float[] array) {
         if (array == null) return null;
 
-        float copy[] = new float[array.length];
+        float[] copy = new float[array.length];
         System.arraycopy(array, 0, copy, 0, array.length);
         return copy;
     }

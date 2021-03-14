@@ -94,7 +94,7 @@ public class JSimpleStyleDialog extends JDialog {
      *
      * @todo these must be defined somewhere else ?
      */
-    private static final String WELL_KNOWN_SYMBOL_NAMES[] = {
+    private static final String[] WELL_KNOWN_SYMBOL_NAMES = {
         "Circle", "Square", "Cross", "X", "Triangle", "Star"
     };
 

@@ -63,7 +63,7 @@ public class JProcessWizard extends JWizard {
     }
 
     @SuppressWarnings("PMD.SystemPrintln")
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         JProcessWizard wizard = new JProcessWizard("Test Input Parameter UI");
         int result = wizard.showModalDialog();
 

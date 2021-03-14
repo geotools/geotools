@@ -654,7 +654,7 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
             if (value instanceof Object[]) {
                 // handle the case the implementor used a positional array for
                 // returning multiple outputs
-                Object values[] = (Object[]) value;
+                Object[] values = (Object[]) value;
                 Map<String, Object> result = new LinkedHashMap<>();
                 int i = 0;
                 for (Annotation annotation : method.getAnnotations()) {
@@ -729,7 +729,7 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
             // build the array of arguments we'll use to invoke the method
             Class<?>[] paramTypes = getMethodParamTypes(method);
             Annotation[][] annotations = method.getParameterAnnotations();
-            Object args[] = new Object[paramTypes.length];
+            Object[] args = new Object[paramTypes.length];
             for (int i = 0; i < args.length; i++) {
                 if (ProgressListener.class.equals(paramTypes[i])) {
                     // pass in the monitor

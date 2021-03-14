@@ -112,7 +112,7 @@ public final class GeometryTest {
             100 * rd.nextDouble() + 25,
             Math.rint(100 * rd.nextDouble() + 40)
         };
-        double points[][] = {P1, P2, P3};
+        double[][] points = {P1, P2, P3};
 
         plan.setPlane(new double[][] {P1, P2, P3});
 

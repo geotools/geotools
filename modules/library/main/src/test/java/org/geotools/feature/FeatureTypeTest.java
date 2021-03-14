@@ -207,10 +207,10 @@ public class FeatureTypeTest extends DataTestCase {
         assertSame("Double", d, DataUtilities.duplicate(d));
 
         // collections
-        Object objs[] = {
+        Object[] objs = {
             str, i, f, d,
         };
-        int ints[] = {
+        int[] ints = {
             1, 2, 3, 4,
         };
         List<Object> list = new ArrayList<>();

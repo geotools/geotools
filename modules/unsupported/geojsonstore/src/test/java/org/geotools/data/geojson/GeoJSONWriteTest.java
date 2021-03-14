@@ -146,7 +146,7 @@ public class GeoJSONWriteTest {
     @After
     public void removeTemporaryLocations() throws IOException {
 
-        File list[] = tmp.listFiles();
+        File[] list = tmp.listFiles();
         if (list == null) {
             throw new IOException("no directory " + tmp);
         }

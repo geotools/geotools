@@ -323,9 +323,9 @@ public abstract class TransformTestBase {
     @Test
     public void testAssertPointsEqual() {
         String name = "self test";
-        double a[] = {10, 10};
-        double b[] = {10.1, 10.1};
-        double delta[] = {0.2, 0.2};
+        double[] a = {10, 10};
+        double[] b = {10.1, 10.1};
+        double[] delta = {0.2, 0.2};
         assertPointsEqual(name, a, b, delta);
     }
 }

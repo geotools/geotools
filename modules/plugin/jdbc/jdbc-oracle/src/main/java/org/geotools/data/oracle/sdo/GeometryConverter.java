@@ -107,12 +107,12 @@ public class GeometryConverter {
         // Note Returning null for null Datum
         if (sdoGeometry == null) return null;
 
-        Object data[] = sdoGeometry.getAttributes();
+        Object[] data = sdoGeometry.getAttributes();
         final int GTYPE = asInteger((Number) data[0], 0);
         final int SRID = asInteger((Number) data[1], SDO.SRID_NULL);
-        final double POINT[] = asDoubleArray((OracleStruct) data[2], Double.NaN);
-        final int ELEMINFO[] = asIntArray((OracleArray) data[3], 0);
-        final double ORDINATES[] = asDoubleArray((OracleArray) data[4], Double.NaN);
+        final double[] POINT = asDoubleArray((OracleStruct) data[2], Double.NaN);
+        final int[] ELEMINFO = asIntArray((OracleArray) data[3], 0);
+        final double[] ORDINATES = asDoubleArray((OracleArray) data[4], Double.NaN);
 
         return SDO.create(geometryFactory, GTYPE, SRID, POINT, ELEMINFO, ORDINATES);
     }
@@ -160,8 +160,8 @@ public class GeometryConverter {
                 // rectangle optimization. Actually, more than an optimization. A few operators
                 // do not work properly if they don't get rectangular geoms encoded as rectangles
                 // SDO_FILTER is an example of this silly situation
-                int elemInfo[] = {1, 1003, 3};
-                double ordinates[];
+                int[] elemInfo = {1, 1003, 3};
+                double[] ordinates;
                 if (SDO.D(geom) == 2)
                     ordinates =
                             new double[] {
@@ -177,22 +177,22 @@ public class GeometryConverter {
                 SDO_ELEM_INFO = toARRAY(elemInfo, "MDSYS.SDO_ELEM_INFO_ARRAY");
                 SDO_ORDINATES = toARRAY(ordinates, "MDSYS.SDO_ORDINATE_ARRAY");
             } else {
-                int elemInfo[] = SDO.elemInfo(geom);
-                double ordinates[] = SDO.ordinates(geom);
+                int[] elemInfo = SDO.elemInfo(geom);
+                double[] ordinates = SDO.ordinates(geom);
 
                 SDO_POINT = null;
                 SDO_ELEM_INFO = toARRAY(elemInfo, "MDSYS.SDO_ELEM_INFO_ARRAY");
                 SDO_ORDINATES = toARRAY(ordinates, "MDSYS.SDO_ORDINATE_ARRAY");
             }
         } else { // Point Optimization
-            Datum data[] = {
+            Datum[] data = {
                 toNUMBER(point[0]), toNUMBER(point[1]), toNUMBER(point[2]),
             };
             SDO_POINT = toSTRUCT(data, "MDSYS.SDO_POINT_TYPE");
             SDO_ELEM_INFO = null;
             SDO_ORDINATES = null;
         }
-        Object attributes[] = {SDO_GTYPE, SDO_SRID, SDO_POINT, SDO_ELEM_INFO, SDO_ORDINATES};
+        Object[] attributes = {SDO_GTYPE, SDO_SRID, SDO_POINT, SDO_ELEM_INFO, SDO_ORDINATES};
         return toSTRUCT(attributes, DATATYPE);
     }
 
@@ -206,7 +206,7 @@ public class GeometryConverter {
     }
 
     /** Convenience method for OracleStruct construction. */
-    protected final OracleStruct toSTRUCT(Datum attributes[], String dataType) throws SQLException {
+    protected final OracleStruct toSTRUCT(Datum[] attributes, String dataType) throws SQLException {
         if (dataType.startsWith("*.")) {
             dataType = "DRA." + dataType.substring(2); // TODO here
         }
@@ -214,7 +214,7 @@ public class GeometryConverter {
     }
 
     /** Convenience method for OracleStruct construction. */
-    private OracleStruct toSTRUCT(Object attributes[], String dataType) throws SQLException {
+    private OracleStruct toSTRUCT(Object[] attributes, String dataType) throws SQLException {
         if (dataType.startsWith("*.")) {
             dataType = "DRA." + dataType.substring(2); // TODO here
         }
@@ -226,7 +226,7 @@ public class GeometryConverter {
      *
      * <p>Compare and contrast with toORDINATE - which treats {@code Double.NaN} as {@code NULL}
      */
-    protected final OracleArray toARRAY(double doubles[], String dataType) throws SQLException {
+    protected final OracleArray toARRAY(double[] doubles, String dataType) throws SQLException {
         return connection.createARRAY(dataType, doubles);
     }
 
@@ -264,12 +264,12 @@ public class GeometryConverter {
      * @param measures Per Coordinate Measures, {@code null} if not required
      * @param D Dimension of Coordinates (limited to 2d, 3d)
      */
-    protected final OracleArray toORDINATE(CoordinateList list, double measures[][], final int D)
+    protected final OracleArray toORDINATE(CoordinateList list, double[][] measures, final int D)
             throws SQLException {
 
         final int LENGTH = measures != null ? measures.length : 0;
         final int LEN = D + LENGTH;
-        Datum data[] = new Datum[list.size() * LEN];
+        Datum[] data = new Datum[list.size() * LEN];
         int offset = 0;
         int index = 0;
 
@@ -286,10 +286,10 @@ public class GeometryConverter {
         return connection.createARRAY("MDSYS.SDO_ORDINATE_ARRAY", data);
     }
 
-    protected final OracleArray toORDINATE(double ords[]) throws SQLException {
+    protected final OracleArray toORDINATE(double[] ords) throws SQLException {
         final int LENGTH = ords.length;
 
-        Datum data[] = new Datum[LENGTH];
+        Datum[] data = new Datum[LENGTH];
 
         for (int i = 0; i < LENGTH; i++) {
             data[i] = toNUMBER(ords[i]);
@@ -297,10 +297,10 @@ public class GeometryConverter {
         return connection.createARRAY("MDSYS.SDO_ORDINATE_ARRAY", data);
     }
 
-    protected final OracleArray toATTRIBUTE(double ords[], String desc) throws SQLException {
+    protected final OracleArray toATTRIBUTE(double[] ords, String desc) throws SQLException {
         final int LENGTH = ords.length;
 
-        Datum data[] = new Datum[LENGTH];
+        Datum[] data = new Datum[LENGTH];
 
         for (int i = 0; i < LENGTH; i++) {
             data[i] = toNUMBER(ords[i]);
@@ -321,7 +321,7 @@ public class GeometryConverter {
     }
 
     /** Convenience method for OracleArray construction. */
-    protected final OracleArray toARRAY(int ints[], String dataType) throws SQLException {
+    protected final OracleArray toARRAY(int[] ints, String dataType) throws SQLException {
         return connection.createARRAY(dataType, ints);
     }
 
@@ -398,9 +398,9 @@ public class GeometryConverter {
     }
 
     /** Presents Datum[] as a double[] */
-    protected double[] asDoubleArray(Datum data[], final double DEFAULT) throws SQLException {
+    protected double[] asDoubleArray(Datum[] data, final double DEFAULT) throws SQLException {
         if (data == null) return null;
-        double array[] = new double[data.length];
+        double[] array = new double[data.length];
         for (int i = 0; i < data.length; i++) {
             array[i] = asDouble(data[i], DEFAULT);
         }
@@ -410,9 +410,9 @@ public class GeometryConverter {
      * Presents Number[] as a double[] with optional default value in case an {@code data[n]}
      * argument is {@code null}.
      */
-    private double[] asDoubleArray(Number data[], final double DEFAULT) throws SQLException {
+    private double[] asDoubleArray(Number[] data, final double DEFAULT) throws SQLException {
         if (data == null) return null;
-        double array[] = new double[data.length];
+        double[] array = new double[data.length];
         for (int i = 0; i < data.length; i++) {
             array[i] = asDouble(data[i], DEFAULT);
         }
@@ -427,9 +427,9 @@ public class GeometryConverter {
     }
 
     /** Presents Datum[] as a int[] */
-    protected int[] asIntArray(Datum data[], final int DEFAULT) throws SQLException {
+    protected int[] asIntArray(Datum[] data, final int DEFAULT) throws SQLException {
         if (data == null) return null;
-        int array[] = new int[data.length];
+        int[] array = new int[data.length];
         for (int i = 0; i < data.length; i++) {
             array[i] = asInteger(data[i], DEFAULT);
         }

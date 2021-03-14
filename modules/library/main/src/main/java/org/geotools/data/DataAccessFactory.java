@@ -179,7 +179,7 @@ public interface DataAccessFactory extends Factory {
         if (params == null) {
             return false;
         }
-        Param arrayParameters[] = getParametersInfo();
+        Param[] arrayParameters = getParametersInfo();
         for (Param param : arrayParameters) {
             Object value;
             if (!params.containsKey(param.key)) {

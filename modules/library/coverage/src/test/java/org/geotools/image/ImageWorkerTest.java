@@ -250,7 +250,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
 
     /** Creates a test paletted image with translucency. */
     private static BufferedImage getSyntheticTranslucentIndexed() {
-        final byte bb[] = new byte[256];
+        final byte[] bb = new byte[256];
         for (int i = 0; i < 256; i++) bb[i] = (byte) i;
         final IndexColorModel icm = new IndexColorModel(8, 256, bb, bb, bb, bb);
         final WritableRaster raster =
@@ -265,7 +265,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     /** Creates a test paletted image with nodata and no transparency */
     private static RenderedImage getIndexedRGBNodata() {
         // a palette with just the first 200 entries filled, the others are all zero (but present!)
-        final byte bb[] = new byte[256];
+        final byte[] bb = new byte[256];
         for (int i = 0; i < 256; i++) {
             if (i < 200) {
                 bb[i] = (byte) i;
@@ -296,7 +296,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
 
     /** Creates a test paletted image with a given number of entries in the map */
     private static BufferedImage getSyntheticGrayIndexed(int entries) {
-        final byte bb[] = new byte[entries];
+        final byte[] bb = new byte[entries];
         for (int i = 0; i < entries; i++) bb[i] = (byte) i;
         final IndexColorModel icm = new IndexColorModel(8, entries, bb, bb, bb, bb);
         final WritableRaster raster =
@@ -1983,7 +1983,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
 
         // setting some special pixels to colors with up to 2 bands equal to zero.
         final int specialPixels = 9;
-        final int specialPixelsValues[][] = new int[specialPixels][];
+        final int[][] specialPixelsValues = new int[specialPixels][];
 
         specialPixelsValues[0] = new int[] {0, 0, 255};
         specialPixelsValues[1] = new int[] {0, 255, 0};
@@ -2168,7 +2168,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
                         DataBuffer.TYPE_BYTE);
         final BufferedImage image = new BufferedImage(cm, raster, false, null);
         ImageWorker worker = new ImageWorker(image);
-        double maxs[] = worker.getMaximums();
+        double[] maxs = worker.getMaximums();
         assertEquals(width + height - 2, (int) maxs[0]);
 
         worker = worker.crop(0, 0, width / 2, height / 2);

@@ -112,7 +112,7 @@ public class Csv2Shape {
 
             for (line = reader.readLine(); line != null; line = reader.readLine()) {
                 if (line.trim().length() > 0) { // skip blank lines
-                    String tokens[] = line.split("\\,");
+                    String[] tokens = line.split("\\,");
 
                     double latitude = Double.parseDouble(tokens[0]);
                     double longitude = Double.parseDouble(tokens[1]);

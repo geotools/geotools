@@ -50,7 +50,7 @@ public class QueryTest {
         Query query = new Query();
         Assert.assertNull(query.getPropertyNames());
         query.setPropertyNames("foo", "bar");
-        String names[] = query.getPropertyNames();
+        String[] names = query.getPropertyNames();
         Assert.assertNotNull(names);
         Assert.assertEquals("foo", names[0]);
         List<String> list = Arrays.asList(names);

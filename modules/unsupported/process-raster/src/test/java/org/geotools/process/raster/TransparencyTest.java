@@ -56,7 +56,7 @@ public class TransparencyTest {
             // Ensure the top left area is fully transparent
             worker = worker.crop(0, 0, 39, 19).retainLastBand();
             mins = worker.getMinimums();
-            double maxs[] = worker.getMaximums();
+            double[] maxs = worker.getMaximums();
             assertEquals(0, mins[0], 1E-6);
             assertEquals(0, maxs[0], 1E-6);
 

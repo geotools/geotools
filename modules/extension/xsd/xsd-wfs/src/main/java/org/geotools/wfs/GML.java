@@ -799,7 +799,7 @@ public class GML {
         }
         if (obj instanceof Map<?, ?>) {
             Map<?, ?> map = (Map<?, ?>) obj;
-            Object values[] = new Object[schema.getAttributeCount()];
+            Object[] values = new Object[schema.getAttributeCount()];
             for (int i = 0; i < schema.getAttributeCount(); i++) {
                 AttributeDescriptor descriptor = schema.getDescriptor(i);
                 String key = descriptor.getLocalName();

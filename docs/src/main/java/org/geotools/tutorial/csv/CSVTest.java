@@ -77,7 +77,7 @@ public class CSVTest {
 
         DataStore store = DataStoreFinder.getDataStore(params);
 
-        String names[] = store.getTypeNames();
+        String[] names = store.getTypeNames();
         System.out.println("typenames: " + names.length);
         System.out.println("typename[0]: " + names[0]);
         // example1 end

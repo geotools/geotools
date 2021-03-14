@@ -227,8 +227,8 @@ public class CoordinateWriterTest {
         public void startPrefixMapping(String prefix, String uri) throws SAXException {}
     };
 
-    Coordinate[] coords2D(int array[]) {
-        Coordinate coords[] = new Coordinate[array.length / 2];
+    Coordinate[] coords2D(int[] array) {
+        Coordinate[] coords = new Coordinate[array.length / 2];
         for (int i = 0; i < coords.length; i++) {
             int offset = i * 2;
             coords[i] = new Coordinate(array[offset + 0], array[offset + 1]);
@@ -236,8 +236,8 @@ public class CoordinateWriterTest {
         return coords;
     }
 
-    Coordinate[] coords3D(int array[]) {
-        Coordinate coords[] = new Coordinate[array.length / 3];
+    Coordinate[] coords3D(int[] array) {
+        Coordinate[] coords = new Coordinate[array.length / 3];
         for (int i = 0; i < coords.length; i++) {
             int offset = i * 3;
             coords[i] = new Coordinate(array[offset + 0], array[offset + 1], array[offset + 2]);
@@ -245,8 +245,8 @@ public class CoordinateWriterTest {
         return coords;
     }
 
-    Coordinate[] coords3DDouble(double array[]) {
-        Coordinate coords[] = new Coordinate[array.length / 3];
+    Coordinate[] coords3DDouble(double[] array) {
+        Coordinate[] coords = new Coordinate[array.length / 3];
         for (int i = 0; i < coords.length; i++) {
             int offset = i * 3;
             coords[i] = new Coordinate(array[offset + 0], array[offset + 1], array[offset + 2]);

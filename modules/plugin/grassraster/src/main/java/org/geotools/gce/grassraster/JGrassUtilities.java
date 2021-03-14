@@ -396,7 +396,7 @@ public class JGrassUtilities {
      * @return the array of strings containing the full path to the involved files
      */
     public static String[] filesOfRasterMap(String mapsetPath, String mapname) {
-        String filesOfRaster[] = {
+        String[] filesOfRaster = {
             mapsetPath + File.separator + JGrassConstants.FCELL + File.separator + mapname,
             mapsetPath + File.separator + JGrassConstants.CELL + File.separator + mapname,
             mapsetPath + File.separator + JGrassConstants.CATS + File.separator + mapname,

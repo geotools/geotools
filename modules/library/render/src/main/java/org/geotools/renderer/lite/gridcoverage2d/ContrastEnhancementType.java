@@ -100,7 +100,7 @@ public enum ContrastEnhancementType {
 
         @Override
         LookupTable createByteLookupTable(Map<String, Object> params) {
-            final byte lut[] = new byte[256];
+            final byte[] lut = new byte[256];
             final double normalizationFactor = 255.0;
             final double correctionFactor = 255.0 / (Math.E - 1);
             for (int i = 1; i < lut.length; i++) {
@@ -192,7 +192,7 @@ public enum ContrastEnhancementType {
 
         @Override
         LookupTable createByteLookupTable(Map<String, Object> params) {
-            final byte lut[] = new byte[256];
+            final byte[] lut = new byte[256];
             final double normalizationFactor = 255.0;
             final double correctionFactor = 100.0;
             for (int i = 1; i < lut.length; i++) {

@@ -417,7 +417,7 @@ public final class Decimator {
             throws TransformException {
         // decimates before XFORM
         int ncoords = seq.size();
-        double coords[] = null;
+        double[] coords = null;
         int sourceDimensions = 2;
         if (transform != null) {
             sourceDimensions = transform.getSourceDimensions();

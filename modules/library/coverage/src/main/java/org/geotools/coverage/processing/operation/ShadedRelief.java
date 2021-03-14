@@ -145,7 +145,7 @@ public class ShadedRelief extends OperationJAI {
     public static final String PARAM_AZIMUTH = "azimuth";
     public static final String PARAM_ALGORITHM = "algorithm";
 
-    public static final String CUSTOMIZABLE_PARAMS[] = {
+    public static final String[] CUSTOMIZABLE_PARAMS = {
         PARAM_ALTITUDE, PARAM_AZIMUTH, PARAM_ALGORITHM
     };
 

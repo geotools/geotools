@@ -171,11 +171,10 @@ class CategoryList extends AbstractList<Category> implements Comparator<Category
                     // Formats an error message.
                     final NumberRange range1 = categories[i - 1].getRange();
                     final NumberRange range2 = categories[i - 0].getRange();
-                    final Comparable[] args =
-                            new Comparable[] {
-                                range1.getMinValue(), range1.getMaxValue(),
-                                range2.getMinValue(), range2.getMaxValue()
-                            };
+                    final Comparable[] args = {
+                        range1.getMinValue(), range1.getMaxValue(),
+                        range2.getMinValue(), range2.getMaxValue()
+                    };
                     for (int j = 0; j < args.length; j++) {
                         if (args[j] instanceof Number) {
                             final float value = ((Number) args[j]).floatValue();

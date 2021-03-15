@@ -302,13 +302,12 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
     private ReferencedEnvelope computeSubmosaicBoundingBox(
             MathTransform2D tx, RenderedImage image, CoordinateReferenceSystem crs)
             throws FactoryException {
-        double[] mosaicked =
-                new double[] {
-                    image.getMinX(),
-                    image.getMinY(),
-                    image.getMinX() + image.getWidth(),
-                    image.getMinY() + image.getHeight()
-                };
+        double[] mosaicked = {
+            image.getMinX(),
+            image.getMinY(),
+            image.getMinX() + image.getWidth(),
+            image.getMinY() + image.getHeight()
+        };
         try {
             tx.transform(mosaicked, 0, mosaicked, 0, 2);
         } catch (TransformException e) {

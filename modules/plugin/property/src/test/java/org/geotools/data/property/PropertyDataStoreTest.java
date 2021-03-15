@@ -781,7 +781,7 @@ public class PropertyDataStoreTest {
         q.setSortBy(ff.sort("id", SortOrder.DESCENDING));
 
         ContentFeatureCollection fc = fs.getFeatures(q);
-        String[] expectedNames = new String[] {"", "justin", "dave", "brent", "jody"};
+        String[] expectedNames = {"", "justin", "dave", "brent", "jody"};
         try (SimpleFeatureIterator fi = fc.features()) {
             int i = 0;
             while (fi.hasNext()) {

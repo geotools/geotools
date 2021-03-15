@@ -202,7 +202,7 @@ public class NetCDFReaderTest extends Assert {
         File file = TestData.file(this, "o3_no2_so.nc");
         NetCDFReader reader = new NetCDFReader(file, null);
         String coverageName = "NO2";
-        GeneralParameterValue[] values = new GeneralParameterValue[] {};
+        GeneralParameterValue[] values = {};
         GridCoverage2D coverage = reader.read(coverageName, values);
 
         float[] result =
@@ -230,7 +230,7 @@ public class NetCDFReaderTest extends Assert {
         File file = TestData.file(this, "20130101.METOPA.GOME2.NO2.DUMMY_3.nc");
         final NetCDFReader reader = new NetCDFReader(file, null);
         String coverageName = "z";
-        GeneralParameterValue[] values = new GeneralParameterValue[] {};
+        GeneralParameterValue[] values = {};
         GridCoverage2D coverage = reader.read(coverageName, values);
         GridSampleDimension sampleDimension = coverage.getSampleDimension(0);
         double min = sampleDimension.getMinimumValue();
@@ -365,7 +365,7 @@ public class NetCDFReaderTest extends Assert {
                             }
                         });
 
-                GeneralParameterValue[] values = new GeneralParameterValue[] {gg, time, elevation};
+                GeneralParameterValue[] values = {gg, time, elevation};
                 GridCoverage2D coverage = reader.read(coverageName, values);
                 assertNotNull(coverage);
                 if (TestData.isInteractiveTest()) {
@@ -473,7 +473,7 @@ public class NetCDFReaderTest extends Assert {
                 Filter filter = FF.equals(FF.property("z"), FF.literal(450.0));
                 filterParam.setValue(filter);
 
-                GeneralParameterValue[] values = new GeneralParameterValue[] {filterParam};
+                GeneralParameterValue[] values = {filterParam};
                 GridCoverage2D coverage = reader.read(coverageName, values);
                 assertNotNull(coverage);
                 if (TestData.isInteractiveTest()) {
@@ -868,7 +868,7 @@ public class NetCDFReaderTest extends Assert {
                     }
                 }
 
-                GeneralParameterValue[] values = new GeneralParameterValue[] {gg, sigmaValue};
+                GeneralParameterValue[] values = {gg, sigmaValue};
                 GridCoverage2D coverage = reader.read(coverageName, values);
                 assertNotNull(coverage);
                 if (TestData.isInteractiveTest()) {
@@ -1052,7 +1052,7 @@ public class NetCDFReaderTest extends Assert {
                     new GridGeometry2D(
                             new GridEnvelope2D(new Rectangle(0, 0, 30, 30)), projectedEnvelope));
 
-            GeneralParameterValue[] values = new GeneralParameterValue[] {gg};
+            GeneralParameterValue[] values = {gg};
             GridCoverage2D coverage = reader.read(coverageName, values);
 
             // reader doesn't perform reprojection. It simply transforms reprojected envelope
@@ -1218,7 +1218,7 @@ public class NetCDFReaderTest extends Assert {
                             }
                         });
 
-                GeneralParameterValue[] values = new GeneralParameterValue[] {time, elevation};
+                GeneralParameterValue[] values = {time, elevation};
                 GridCoverage2D coverage = reader.read(coverageName, values);
                 assertNotNull(coverage);
                 if (TestData.isInteractiveTest()) {
@@ -1374,7 +1374,7 @@ public class NetCDFReaderTest extends Assert {
                 }
             }
 
-            GeneralParameterValue[] values = new GeneralParameterValue[] {gg, new_};
+            GeneralParameterValue[] values = {gg, new_};
             GridCoverage2D coverage = reader.read(coverageName, values);
             assertNotNull(coverage);
             if (TestData.isInteractiveTest()) {

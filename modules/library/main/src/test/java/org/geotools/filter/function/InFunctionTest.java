@@ -110,10 +110,9 @@ public class InFunctionTest extends FunctionTestSupport {
     @Test
     public void testMixedType() {
         PropertyName exp = ff.property("group");
-        Expression[] args =
-                new Expression[] {
-                    exp, ff.literal(1), ff.literal(2.5), ff.literal("Group1"), ff.literal(4)
-                };
+        Expression[] args = {
+            exp, ff.literal(1), ff.literal(2.5), ff.literal("Group1"), ff.literal(4)
+        };
         Function func = ff.function(FUNCTION_NAME, args);
         Object result = func.evaluate(feature);
         assertEquals(false, result);

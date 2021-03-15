@@ -252,11 +252,9 @@ public class OverviewsControllerTest extends Assert {
         final GridToEnvelopeMapper geMapper = new GridToEnvelopeMapper(range, envelope);
         geMapper.setPixelAnchor(PixelInCell.CELL_CENTER);
         final AffineTransform gridToWorld = geMapper.createAffineTransform();
-        final double requestedResolution[] =
-                new double[] {
-                    XAffineTransform.getScaleX0(gridToWorld),
-                    XAffineTransform.getScaleY0(gridToWorld)
-                };
+        final double requestedResolution[] = {
+            XAffineTransform.getScaleX0(gridToWorld), XAffineTransform.getScaleY0(gridToWorld)
+        };
 
         TestSet at = null;
         if (nOv == 4 && Math.abs(hRes[0][0] - 0.833333333333) <= THRESHOLD) {
@@ -272,13 +270,12 @@ public class OverviewsControllerTest extends Assert {
         // Starting OverviewsController tests
         //
         // //
-        final OverviewPolicy[] ovPolicies =
-                new OverviewPolicy[] {
-                    OverviewPolicy.QUALITY,
-                    OverviewPolicy.SPEED,
-                    OverviewPolicy.NEAREST,
-                    OverviewPolicy.IGNORE
-                };
+        final OverviewPolicy[] ovPolicies = {
+            OverviewPolicy.QUALITY,
+            OverviewPolicy.SPEED,
+            OverviewPolicy.NEAREST,
+            OverviewPolicy.IGNORE
+        };
         for (int i = 0; i < ovPolicies.length; i++) {
             OverviewPolicy ovPolicy = ovPolicies[i];
             LOGGER.info("Testing with OverviewPolicy = " + ovPolicy.toString());

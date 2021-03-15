@@ -212,7 +212,7 @@ public class CurvedGeometryTest {
 
     @Test
     public void testCompoundCurve() {
-        double[] halfCircle = new double[] {10, 10, 0, 20, -10, 10};
+        double[] halfCircle = {10, 10, 0, 20, -10, 10};
         CircularString cs = new CircularString(halfCircle, GEOMETRY_FACTORY, Double.MAX_VALUE);
         LineString ls =
                 new LineString(
@@ -256,7 +256,7 @@ public class CurvedGeometryTest {
 
     @Test
     public void testCompoundRing() {
-        double[] halfCircle = new double[] {10, 10, 0, 20, -10, 10};
+        double[] halfCircle = {10, 10, 0, 20, -10, 10};
         CircularString cs = new CircularString(halfCircle, GEOMETRY_FACTORY, Double.MAX_VALUE);
         LineString ls =
                 new LineString(
@@ -385,7 +385,7 @@ public class CurvedGeometryTest {
 
     @Test
     public void testNormalize() {
-        double[] circleControlPoints = new double[] {0, 0, 0, 10, 0, 0};
+        double[] circleControlPoints = {0, 0, 0, 10, 0, 0};
         CircularRing circle = new CircularRing(circleControlPoints, GEOMETRY_FACTORY, 1e-6);
 
         CircularRing normalized = circle.normalizeRing();
@@ -397,7 +397,7 @@ public class CurvedGeometryTest {
     }
 
     private CurvePolygon buildCurvePolygon() {
-        double[] circleControlPoints = new double[] {-10, 0, 0, 10, 10, 0, 0, -10, -10, 0};
+        double[] circleControlPoints = {-10, 0, 0, 10, 10, 0, 0, -10, -10, 0};
         CircularRing shell =
                 new CircularRing(circleControlPoints, GEOMETRY_FACTORY, Double.MAX_VALUE);
 

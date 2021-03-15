@@ -62,7 +62,7 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
     private static final File SOURCE_DIRECTORY = new File("./src/main");
 
     /** The resources to process. */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "PMD.UseShortArrayInitializer"})
     private static final Class<? extends IndexedResourceBundle>[] RESOURCES_TO_PROCESS =
             new Class[] {
                 org.geotools.metadata.i18n.Descriptions.class,

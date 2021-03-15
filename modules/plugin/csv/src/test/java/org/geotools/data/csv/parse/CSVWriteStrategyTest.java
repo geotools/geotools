@@ -51,7 +51,7 @@ public class CSVWriteStrategyTest {
         SimpleFeature feature =
                 SimpleFeatureBuilder.build(
                         featureType, new Object[] {"Trento", 140, 2002}, "TEST-fid1");
-        String[] csvRecord = new String[] {"Trento", "140", "2002"};
+        String[] csvRecord = {"Trento", "140", "2002"};
         SimpleFeature parsed = strategy.decode("fid1", csvRecord);
         assertEquals(feature, parsed);
 
@@ -87,7 +87,7 @@ public class CSVWriteStrategyTest {
         SimpleFeature feature =
                 SimpleFeatureBuilder.build(
                         featureType, new Object[] {trento, "Trento", 140, 2002}, "TEST-fid1");
-        String[] csvRecord = new String[] {"46.066667", "11.116667", "Trento", "140", "2002"};
+        String[] csvRecord = {"46.066667", "11.116667", "Trento", "140", "2002"};
         SimpleFeature parsed = strategy.decode("fid1", csvRecord);
         assertEquals(feature, parsed);
     }
@@ -114,7 +114,7 @@ public class CSVWriteStrategyTest {
         SimpleFeature feature =
                 SimpleFeatureBuilder.build(
                         featureType, new Object[] {trento, "Trento", 140, 2002}, "TEST-fid1");
-        String[] csvRecord = new String[] {"46.066667", "11.116667", "Trento", "140", "2002"};
+        String[] csvRecord = {"46.066667", "11.116667", "Trento", "140", "2002"};
         SimpleFeature parsed = strategy.decode("fid1", csvRecord);
         assertEquals(feature, parsed);
 
@@ -142,7 +142,7 @@ public class CSVWriteStrategyTest {
         SimpleFeature feature =
                 SimpleFeatureBuilder.build(
                         featureType, new Object[] {geom, "Trento", 140, 2002}, "TEST-fid1");
-        String[] csvRecord = new String[] {"POINT (1 1)", "Trento", "140", "2002"};
+        String[] csvRecord = {"POINT (1 1)", "Trento", "140", "2002"};
         SimpleFeature parsed = strategy.decode("fid1", csvRecord);
         assertEquals(feature, parsed);
 

@@ -82,7 +82,7 @@ public class XXEProtectionTest {
             // custom check, the XMLInputFactory shall have external entities disabled
             final String msg = e.getMessage();
             assertNotNull(msg);
-            assertTrue(msg.contains("The entity \"xxe\" was referenced, but not declared"));
+            assertTrue(msg.contains("\"xxe\""));
         }
     }
 

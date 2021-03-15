@@ -529,7 +529,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
     protected void visitBinarySpatialOperator(BinarySpatialOperator filter) {
         if (original == null) original = filter;
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings({"unchecked", "PMD.UseShortArrayInitializer"})
         Class<? extends Filter>[] spatialOps =
                 new Class[] {
                     Beyond.class,

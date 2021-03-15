@@ -118,39 +118,38 @@ public class TableWriter extends FilterWriter {
      * Drawing-box characters. The last two characters are horizontal and vertical line
      * respectively.
      */
-    private static final char[][] BOX =
-            new char[][] {
-                { // [0000]: single horizontal, single vertical
-                    '\u250C', '\u252C', '\u2510',
-                    '\u251C', '\u253C', '\u2524',
-                    '\u2514', '\u2534', '\u2518',
-                    '\u2500', '\u2502'
-                },
-                { // [0001]: single horizontal, double vertical
-                    '\u2553', '\u2565', '\u2556',
-                    '\u255F', '\u256B', '\u2562',
-                    '\u2559', '\u2568', '\u255C',
-                    '\u2500', '\u2551'
-                },
-                { // [0010]: double horizontal, single vertical
-                    '\u2552', '\u2564', '\u2555',
-                    '\u255E', '\u256A', '\u2561',
-                    '\u2558', '\u2567', '\u255B',
-                    '\u2550', '\u2502'
-                },
-                { // [0011]: double horizontal, double vertical
-                    '\u2554', '\u2566', '\u2557',
-                    '\u2560', '\u256C', '\u2563',
-                    '\u255A', '\u2569', '\u255D',
-                    '\u2550', '\u2551'
-                },
-                { // [0100]: ASCII characters only
-                    '+', '+', '+',
-                    '+', '+', '+',
-                    '+', '+', '+',
-                    '-', '|'
-                }
-            };
+    private static final char[][] BOX = {
+        { // [0000]: single horizontal, single vertical
+            '\u250C', '\u252C', '\u2510',
+            '\u251C', '\u253C', '\u2524',
+            '\u2514', '\u2534', '\u2518',
+            '\u2500', '\u2502'
+        },
+        { // [0001]: single horizontal, double vertical
+            '\u2553', '\u2565', '\u2556',
+            '\u255F', '\u256B', '\u2562',
+            '\u2559', '\u2568', '\u255C',
+            '\u2500', '\u2551'
+        },
+        { // [0010]: double horizontal, single vertical
+            '\u2552', '\u2564', '\u2555',
+            '\u255E', '\u256A', '\u2561',
+            '\u2558', '\u2567', '\u255B',
+            '\u2550', '\u2502'
+        },
+        { // [0011]: double horizontal, double vertical
+            '\u2554', '\u2566', '\u2557',
+            '\u2560', '\u256C', '\u2563',
+            '\u255A', '\u2569', '\u255D',
+            '\u2550', '\u2551'
+        },
+        { // [0100]: ASCII characters only
+            '+', '+', '+',
+            '+', '+', '+',
+            '+', '+', '+',
+            '-', '|'
+        }
+    };
 
     /** Default character for space. */
     private static final char SPACE = ' ';

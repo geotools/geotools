@@ -74,8 +74,7 @@ public class GrassBinaryRasterWriteHandler implements Closeable {
     private long pointerInFilePosition = 0l;
 
     /** the range of the raster map as an array of minimum value and maximum value. */
-    private final double[] range =
-            new double[] {Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY};
+    private final double[] range = {Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY};
 
     /**
      * the data type for the output map.

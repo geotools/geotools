@@ -166,20 +166,19 @@ public class CSVLatLonStrategyTest {
                     getBindingName(featureType, "stringval"));
 
             // iterate through values and verify
-            Object[][] expValues =
-                    new Object[][] {
-                        new Object[] {3.8, 7, "foo", 73.28, -14.39},
-                        new Object[] {9.12, -38, "bar", 0, 29},
-                        new Object[] {-37.0, 0, "baz", 49, 0}
-                    };
-            Object[] expTypes = new Object[] {Double.class, Integer.class, String.class};
+            Object[][] expValues = {
+                new Object[] {3.8, 7, "foo", 73.28, -14.39},
+                new Object[] {9.12, -38, "bar", 0, 29},
+                new Object[] {-37.0, 0, "baz", 49, 0}
+            };
+            Object[] expTypes = {Double.class, Integer.class, String.class};
             List<SimpleFeature> features = new ArrayList<>(3);
             while (iterator.hasNext()) {
                 features.add(iterator.next());
             }
             assertEquals("Invalid number of features", 3, features.size());
 
-            String[] attrNames = new String[] {"doubleval", "intval", "stringval"};
+            String[] attrNames = {"doubleval", "intval", "stringval"};
             int i = 0;
             for (SimpleFeature feature : features) {
                 Object[] expVals = expValues[i];
@@ -288,9 +287,9 @@ public class CSVLatLonStrategyTest {
                 "Invalid attribute type", "java.lang.Double", getBindingName(featureType, "foo"));
         assertNull("Unexpected geometry", featureType.getGeometryDescriptor());
         try (CSVIterator iterator = strategy.iterator()) {
-            String[] expLats = new String[] {"-72.3829", "12", "foo"};
-            Double[] expLons = new Double[] {42.29, -13.21, 2.5};
-            Double[] expFoos = new Double[] {38.0, 9.0, 7.8};
+            String[] expLats = {"-72.3829", "12", "foo"};
+            Double[] expLons = {42.29, -13.21, 2.5};
+            Double[] expFoos = {38.0, 9.0, 7.8};
             int i = 0;
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();

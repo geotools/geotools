@@ -941,7 +941,7 @@ public class ProjectionHandler {
         try {
             CoordinateReferenceSystem targetCRS = renderingEnvelope.getCoordinateReferenceSystem();
             MathTransform mt = CRS.findMathTransform(WGS84, targetCRS, true);
-            double[] src = new double[] {centralMeridian, 0, 180 + centralMeridian, 0};
+            double[] src = {centralMeridian, 0, 180 + centralMeridian, 0};
             double[] dst = new double[4];
             mt.transform(src, 0, dst, 0, 2);
 
@@ -966,7 +966,7 @@ public class ProjectionHandler {
     protected void computeDatelineX() {
         // compute the x of the dateline in the rendering CRS
         try {
-            double[] ordinates = new double[] {180, -80, 180, 80};
+            double[] ordinates = {180, -80, 180, 80};
             MathTransform mt =
                     CRS.findMathTransform(
                             DefaultGeographicCRS.WGS84,

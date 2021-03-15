@@ -54,7 +54,7 @@ public class StyleImpl implements org.geotools.styling.Style, Cloneable {
     }
 
     public FeatureTypeStyle[] getFeatureTypeStyles() {
-        FeatureTypeStyle[] ret = new FeatureTypeStyleImpl[] {new FeatureTypeStyleImpl()};
+        FeatureTypeStyle[] ret = {new FeatureTypeStyleImpl()};
 
         if ((featureTypeStyles != null) && (!featureTypeStyles.isEmpty())) {
             if (LOGGER.isLoggable(Level.FINE))

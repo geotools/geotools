@@ -127,7 +127,7 @@ public class DatabaseCreationScript {
         System.out.println("Creating the zipped database");
         byte[] buf = new byte[1024];
         try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile))) {
-            File[] files = new File[] {databaseFile, propertyFile, scriptFile};
+            File[] files = {databaseFile, propertyFile, scriptFile};
             for (File file : files) {
                 try (FileInputStream in = new FileInputStream(file)) {
 

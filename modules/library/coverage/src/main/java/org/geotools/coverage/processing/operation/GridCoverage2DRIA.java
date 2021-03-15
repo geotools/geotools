@@ -338,7 +338,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
             throw new IndexOutOfBoundsException("Bad src"); // JaiI18N.getString("Generic1"));
         }
 
-        double[] coords = new double[] {srcPt.getX(), srcPt.getY()};
+        double[] coords = {srcPt.getX(), srcPt.getY()};
 
         try {
             mapSrcPoint(coords);
@@ -432,7 +432,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
             throw new IndexOutOfBoundsException("Bad src"); // JaiI18N.getString("Generic1"));
         }
 
-        double[] coords = new double[] {destPt.getX(), destPt.getY()};
+        double[] coords = {destPt.getX(), destPt.getY()};
 
         try {
             mapDestPoint(coords);

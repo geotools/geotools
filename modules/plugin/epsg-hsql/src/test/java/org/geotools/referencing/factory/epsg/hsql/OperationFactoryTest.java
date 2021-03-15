@@ -433,8 +433,7 @@ public class OperationFactoryTest {
         properties.put(
                 IdentifiedObject.NAME_KEY,
                 new NamedIdentifier(Citations.fromName("TEST"), "Compound 28530+5783"));
-        CoordinateReferenceSystem[] elements =
-                new CoordinateReferenceSystem[] {sourceHorizontalCRS, sourceVerticalCRS};
+        CoordinateReferenceSystem[] elements = {sourceHorizontalCRS, sourceVerticalCRS};
         sourceCRS = crsFactory.createCompoundCRS(properties, elements);
 
         // direct order

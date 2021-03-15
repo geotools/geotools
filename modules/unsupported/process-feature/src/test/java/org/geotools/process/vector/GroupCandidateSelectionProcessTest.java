@@ -60,10 +60,9 @@ public class GroupCandidateSelectionProcessTest {
         SimpleFeatureSource source = store.getFeatureSource("featuresToGroup");
         Query query = new Query();
         query.setFilter(Filter.INCLUDE);
-        SortBy[] sorts =
-                new SortBy[] {
-                    ff.sort("group", SortOrder.ASCENDING), ff.sort("group", SortOrder.ASCENDING)
-                };
+        SortBy[] sorts = {
+            ff.sort("group", SortOrder.ASCENDING), ff.sort("group", SortOrder.ASCENDING)
+        };
         query.setSortBy(sorts);
         FeatureCollection<SimpleFeatureType, SimpleFeature> collection = source.getFeatures(query);
         int size = collection.size();
@@ -92,10 +91,9 @@ public class GroupCandidateSelectionProcessTest {
         SimpleFeatureSource source = store.getFeatureSource("featuresToGroup");
         Query query = new Query();
         query.setFilter(Filter.INCLUDE);
-        SortBy[] sorts =
-                new SortBy[] {
-                    ff.sort("group", SortOrder.ASCENDING), ff.sort("group", SortOrder.ASCENDING)
-                };
+        SortBy[] sorts = {
+            ff.sort("group", SortOrder.ASCENDING), ff.sort("group", SortOrder.ASCENDING)
+        };
         query.setSortBy(sorts);
         FeatureCollection<SimpleFeatureType, SimpleFeature> collection = source.getFeatures(query);
         int size = collection.size();
@@ -124,10 +122,9 @@ public class GroupCandidateSelectionProcessTest {
         SimpleFeatureSource source = store.getFeatureSource("featuresToGroupWithNullValues");
         Query query = new Query();
         query.setFilter(Filter.INCLUDE);
-        SortBy[] sorts =
-                new SortBy[] {
-                    ff.sort("group", SortOrder.ASCENDING), ff.sort("group", SortOrder.ASCENDING)
-                };
+        SortBy[] sorts = {
+            ff.sort("group", SortOrder.ASCENDING), ff.sort("group", SortOrder.ASCENDING)
+        };
         query.setSortBy(sorts);
         SimpleFeatureCollection collection = source.getFeatures(query);
         int size = collection.size();
@@ -156,10 +153,9 @@ public class GroupCandidateSelectionProcessTest {
         SimpleFeatureSource source = store.getFeatureSource("featuresToGroupWithGroupAllNull");
         Query query = new Query();
         query.setFilter(Filter.INCLUDE);
-        SortBy[] sorts =
-                new SortBy[] {
-                    ff.sort("group", SortOrder.ASCENDING), ff.sort("group", SortOrder.ASCENDING)
-                };
+        SortBy[] sorts = {
+            ff.sort("group", SortOrder.ASCENDING), ff.sort("group", SortOrder.ASCENDING)
+        };
         query.setSortBy(sorts);
         SimpleFeatureCollection collection = source.getFeatures(query);
         int size = collection.size();

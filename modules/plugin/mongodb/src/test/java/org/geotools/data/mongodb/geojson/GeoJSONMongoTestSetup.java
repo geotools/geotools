@@ -28,12 +28,11 @@ import org.geotools.data.mongodb.MongoTestSetup;
 
 public class GeoJSONMongoTestSetup extends MongoTestSetup {
 
-    static Date[] dateValues =
-            new Date[] {
-                parseDate("2015-01-01T00:00:00.000Z"),
-                parseDate("2015-01-01T16:30:00.000Z"),
-                parseDate("2015-01-01T21:30:00.000Z")
-            };
+    static Date[] dateValues = {
+        parseDate("2015-01-01T00:00:00.000Z"),
+        parseDate("2015-01-01T16:30:00.000Z"),
+        parseDate("2015-01-01T21:30:00.000Z")
+    };
     static final String NULLABLE_ATTRIBUTE = "nullableAttribute";
 
     @Override

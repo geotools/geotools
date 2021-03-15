@@ -414,14 +414,13 @@ public class FilterToMongoTest {
     }
 
     private Literal getGeometryParameter() {
-        Coordinate[] coordinates =
-                new Coordinate[] {
-                    new Coordinate(10.0, 10.0),
-                    new Coordinate(20.0, 10.0),
-                    new Coordinate(20.0, 20.0),
-                    new Coordinate(10.0, 20.0),
-                    new Coordinate(10.0, 10.0),
-                };
+        Coordinate[] coordinates = {
+            new Coordinate(10.0, 10.0),
+            new Coordinate(20.0, 10.0),
+            new Coordinate(20.0, 20.0),
+            new Coordinate(10.0, 20.0),
+            new Coordinate(10.0, 10.0),
+        };
         return ff.literal(new GeometryFactory().createPolygon(coordinates));
     }
 

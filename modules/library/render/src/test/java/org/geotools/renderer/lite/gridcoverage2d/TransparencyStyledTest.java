@@ -88,8 +88,7 @@ public class TransparencyStyledTest {
                 AbstractGridFormat.INPUT_TRANSPARENT_COLOR.createValue();
         inputTransparentColor.setValue(transparentColor);
 
-        GeneralParameterValue[] readParams =
-                new GeneralParameterValue[] {footprintBehaviorParam, inputTransparentColor};
+        GeneralParameterValue[] readParams = {footprintBehaviorParam, inputTransparentColor};
         GridCoverage2D coverage = reader.read(readParams);
 
         reader.dispose();

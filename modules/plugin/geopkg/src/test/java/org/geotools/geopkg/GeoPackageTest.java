@@ -934,7 +934,7 @@ public class GeoPackageTest {
         d.delete();
         d.mkdirs();
 
-        String[] exts = new String[] {"shp", "shx", "dbf", "prj"};
+        String[] exts = {"shp", "shx", "dbf", "prj"};
         for (String ext : exts) {
             if ("prj".equals(ext)) {
                 String wkt = CRS.decode("EPSG:26713", true).toWKT();
@@ -953,7 +953,7 @@ public class GeoPackageTest {
         d.delete();
         d.mkdirs();
 
-        String[] exts = new String[] {"shp", "shx", "dbf", "prj"};
+        String[] exts = {"shp", "shx", "dbf", "prj"};
         for (String ext : exts) {
             if ("prj".equals(ext)) {
                 String wkt = CRS.decode("EPSG:4326", true).toWKT();

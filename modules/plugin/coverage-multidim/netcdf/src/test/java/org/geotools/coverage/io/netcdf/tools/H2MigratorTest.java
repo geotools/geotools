@@ -408,8 +408,7 @@ public class H2MigratorTest {
             throws Exception {
         ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
         time.setValue(Arrays.asList(new Date[] {parseTimeStamp(timestamp)}));
-        GeneralParameterValue[] params =
-                new GeneralParameterValue[] {NO_DEFERRED_LOADING_PARAM, time};
+        GeneralParameterValue[] params = {NO_DEFERRED_LOADING_PARAM, time};
         GridCoverage2D coverage = reader.read(coverageName, params);
         assertNotNull(coverage);
         // delta is zero because an exact match is expected

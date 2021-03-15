@@ -90,10 +90,9 @@ public class FilterToSolr implements FilterVisitor {
     private static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FilterToSolr.class);
 
     /* Lucene characters to escape on filter expressions */
-    private static final String[] LUCENE_SPECIAL_CHARACTERS =
-            new String[] {
-                "+", "-", "&&", "||", "!", "(", ")", "{", "}", "[", "]", "^", "\"", "~", ":"
-            };
+    private static final String[] LUCENE_SPECIAL_CHARACTERS = {
+        "+", "-", "&&", "||", "!", "(", ")", "{", "}", "[", "]", "^", "\"", "~", ":"
+    };
 
     /** Filter factory */
     protected static FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);

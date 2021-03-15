@@ -56,23 +56,22 @@ public class ogcComplexTypes {
         }
 
         private static Attribute[] attrs = null;
-        private static Element[] elems =
-                new Element[] {
-                    new ogcElement(
-                            "Width",
-                            org.geotools.xml.xsi.XSISimpleTypes.PositiveInteger
-                                    .getInstance() /* simpleType name is positiveInteger */,
-                            null,
-                            1,
-                            1),
-                    new ogcElement(
-                            "Height",
-                            org.geotools.xml.xsi.XSISimpleTypes.PositiveInteger
-                                    .getInstance() /* simpleType name is positiveInteger */,
-                            null,
-                            1,
-                            1)
-                };
+        private static Element[] elems = {
+            new ogcElement(
+                    "Width",
+                    org.geotools.xml.xsi.XSISimpleTypes.PositiveInteger
+                            .getInstance() /* simpleType name is positiveInteger */,
+                    null,
+                    1,
+                    1),
+            new ogcElement(
+                    "Height",
+                    org.geotools.xml.xsi.XSISimpleTypes.PositiveInteger
+                            .getInstance() /* simpleType name is positiveInteger */,
+                    null,
+                    1,
+                    1)
+        };
 
         private static ElementGrouping child =
                 new SequenceGT(
@@ -109,23 +108,22 @@ public class ogcComplexTypes {
         }
 
         private static Attribute[] attrs = null;
-        private static Element[] elems =
-                new Element[] {
-                    new ogcElement("Format", ogcSimpleTypes.FormatType.getInstance(), null, 1, 1),
-                    new ogcElement(
-                            "Transparent",
-                            org.geotools.xml.xsi.XSISimpleTypes.Boolean.getInstance(),
-                            null,
-                            0,
-                            1),
-                    new ogcElement(
-                            "BGcolor",
-                            org.geotools.xml.xsi.XSISimpleTypes.String.getInstance(),
-                            null,
-                            0,
-                            1),
-                    new ogcElement("Size", ogcComplexTypes._Size.getInstance(), null, 1, 1)
-                };
+        private static Element[] elems = {
+            new ogcElement("Format", ogcSimpleTypes.FormatType.getInstance(), null, 1, 1),
+            new ogcElement(
+                    "Transparent",
+                    org.geotools.xml.xsi.XSISimpleTypes.Boolean.getInstance(),
+                    null,
+                    0,
+                    1),
+            new ogcElement(
+                    "BGcolor",
+                    org.geotools.xml.xsi.XSISimpleTypes.String.getInstance(),
+                    null,
+                    0,
+                    1),
+            new ogcElement("Size", _Size.getInstance(), null, 1, 1)
+        };
 
         private static ElementGrouping child = new SequenceGT(elems);
 
@@ -141,43 +139,39 @@ public class ogcComplexTypes {
             return instance;
         }
 
-        private static Attribute[] attrs =
-                new Attribute[] {
-                    new AttributeGT(
-                            null,
-                            "version",
-                            OGCSchema.NAMESPACE,
-                            org.geotools.xml.xsi.XSISimpleTypes.String.getInstance(),
-                            Attribute.REQUIRED,
-                            null,
-                            null,
-                            false),
-                    new AttributeGT(
-                            null,
-                            "service",
-                            OGCSchema.NAMESPACE,
-                            ogcSimpleTypes.OWSType.getInstance(),
-                            Attribute.REQUIRED,
-                            ogcSimpleTypes.OWSType.getInstance().getFacets()[0].getValue(),
-                            ogcSimpleTypes.OWSType.getInstance().getFacets()[0].getValue(),
-                            false)
-                };
+        private static Attribute[] attrs = {
+            new AttributeGT(
+                    null,
+                    "version",
+                    OGCSchema.NAMESPACE,
+                    org.geotools.xml.xsi.XSISimpleTypes.String.getInstance(),
+                    Attribute.REQUIRED,
+                    null,
+                    null,
+                    false),
+            new AttributeGT(
+                    null,
+                    "service",
+                    OGCSchema.NAMESPACE,
+                    ogcSimpleTypes.OWSType.getInstance(),
+                    Attribute.REQUIRED,
+                    ogcSimpleTypes.OWSType.getInstance().getFacets()[0].getValue(),
+                    ogcSimpleTypes.OWSType.getInstance().getFacets()[0].getValue(),
+                    false)
+        };
 
-        private static Element[] elems =
-                new Element[] {
-                    new ogcElement(
-                            "StyledLayerDescriptor", new sldSchema().getSLDType(), null, 1, 1),
-                    new ogcElement(
-                            "BoundingBox",
-                            org.geotools.xml.gml.GMLComplexTypes.BoxType.getInstance(),
-                            null,
-                            1,
-                            1),
-                    new ogcElement("Output", ogcComplexTypes._Output.getInstance(), null, 1, 1),
-                    new ogcElement(
-                            "Exceptions", ogcSimpleTypes.ExceptionsType.getInstance(), null, 0, 1),
-                    new ogcElement("Vendor", ogcComplexTypes.VendorType.getInstance(), null, 0, 1)
-                };
+        private static Element[] elems = {
+            new ogcElement("StyledLayerDescriptor", new sldSchema().getSLDType(), null, 1, 1),
+            new ogcElement(
+                    "BoundingBox",
+                    org.geotools.xml.gml.GMLComplexTypes.BoxType.getInstance(),
+                    null,
+                    1,
+                    1),
+            new ogcElement("Output", _Output.getInstance(), null, 1, 1),
+            new ogcElement("Exceptions", ogcSimpleTypes.ExceptionsType.getInstance(), null, 0, 1),
+            new ogcElement("Vendor", VendorType.getInstance(), null, 0, 1)
+        };
 
         private static ElementGrouping child = new SequenceGT(elems);
 
@@ -194,8 +188,7 @@ public class ogcComplexTypes {
         }
 
         private static Attribute[] attrs = null;
-        private static Element[] elems =
-                new Element[] {new ogcElement("FeatureCount", null, null, 1, 1)};
+        private static Element[] elems = {new ogcElement("FeatureCount", null, null, 1, 1)};
 
         private static ElementGrouping child =
                 new SequenceGT(
@@ -217,17 +210,11 @@ public class ogcComplexTypes {
         }
 
         private static Attribute[] attrs = null;
-        private static Element[] elems =
-                new Element[] {
-                    new ogcElement(
-                            "Format",
-                            org.geotools.xml.xsi.XSISimpleTypes.String.getInstance(),
-                            null,
-                            1,
-                            1),
-                    new ogcElement(
-                            "Size", ogcComplexTypes._FeatureInfoSize.getInstance(), null, 1, 1)
-                };
+        private static Element[] elems = {
+            new ogcElement(
+                    "Format", org.geotools.xml.xsi.XSISimpleTypes.String.getInstance(), null, 1, 1),
+            new ogcElement("Size", _FeatureInfoSize.getInstance(), null, 1, 1)
+        };
 
         private static ElementGrouping child =
                 new SequenceGT(
@@ -261,63 +248,60 @@ public class ogcComplexTypes {
             return instance;
         }
 
-        private static Attribute[] attrs =
-                new Attribute[] {
-                    new AttributeGT(
-                            null,
-                            "version",
-                            OGCSchema.NAMESPACE,
-                            org.geotools.xml.xsi.XSISimpleTypes.String.getInstance(),
-                            Attribute.REQUIRED,
-                            null,
-                            null,
-                            false),
-                    new AttributeGT(
-                            null,
-                            "service",
-                            OGCSchema.NAMESPACE,
-                            ogcSimpleTypes.OWSType.getInstance(),
-                            Attribute.REQUIRED,
-                            ogcSimpleTypes.OWSType.getInstance().getFacets()[0].getValue(),
-                            ogcSimpleTypes.OWSType.getInstance().getFacets()[0].getValue(),
-                            false)
-                };
+        private static Attribute[] attrs = {
+            new AttributeGT(
+                    null,
+                    "version",
+                    OGCSchema.NAMESPACE,
+                    org.geotools.xml.xsi.XSISimpleTypes.String.getInstance(),
+                    Attribute.REQUIRED,
+                    null,
+                    null,
+                    false),
+            new AttributeGT(
+                    null,
+                    "service",
+                    OGCSchema.NAMESPACE,
+                    ogcSimpleTypes.OWSType.getInstance(),
+                    Attribute.REQUIRED,
+                    ogcSimpleTypes.OWSType.getInstance().getFacets()[0].getValue(),
+                    ogcSimpleTypes.OWSType.getInstance().getFacets()[0].getValue(),
+                    false)
+        };
 
-        private static Element[] elems =
-                new Element[] {
-                    new ogcElement("ogc:GetMap", null, null, 1, 1),
-                    new ogcElement(
-                            "QueryLayer",
-                            org.geotools.xml.xsi.XSISimpleTypes.String
-                                    .getInstance() /* simpleType name is string */,
-                            null,
-                            1,
-                            2147483647),
-                    new ogcElement(
-                            "X",
-                            org.geotools.xml.xsi.XSISimpleTypes.NonNegativeInteger
-                                    .getInstance() /* simpleType name is nonNegativeInteger */,
-                            null,
-                            1,
-                            1),
-                    new ogcElement(
-                            "Y",
-                            org.geotools.xml.xsi.XSISimpleTypes.NonNegativeInteger
-                                    .getInstance() /* simpleType name is nonNegativeInteger */,
-                            null,
-                            1,
-                            1),
-                    new ogcElement(
-                            "Output", ogcComplexTypes._FeatureInfoOutput.getInstance(), null, 1, 1),
-                    new ogcElement(
-                            "Exceptions",
-                            org.geotools.xml.xsi.XSISimpleTypes.String
-                                    .getInstance() /* simpleType name is string */,
-                            null,
-                            0,
-                            1),
-                    new ogcElement("Vendor", null, null, 0, 1)
-                };
+        private static Element[] elems = {
+            new ogcElement("ogc:GetMap", null, null, 1, 1),
+            new ogcElement(
+                    "QueryLayer",
+                    org.geotools.xml.xsi.XSISimpleTypes.String
+                            .getInstance() /* simpleType name is string */,
+                    null,
+                    1,
+                    2147483647),
+            new ogcElement(
+                    "X",
+                    org.geotools.xml.xsi.XSISimpleTypes.NonNegativeInteger
+                            .getInstance() /* simpleType name is nonNegativeInteger */,
+                    null,
+                    1,
+                    1),
+            new ogcElement(
+                    "Y",
+                    org.geotools.xml.xsi.XSISimpleTypes.NonNegativeInteger
+                            .getInstance() /* simpleType name is nonNegativeInteger */,
+                    null,
+                    1,
+                    1),
+            new ogcElement("Output", _FeatureInfoOutput.getInstance(), null, 1, 1),
+            new ogcElement(
+                    "Exceptions",
+                    org.geotools.xml.xsi.XSISimpleTypes.String
+                            .getInstance() /* simpleType name is string */,
+                    null,
+                    0,
+                    1),
+            new ogcElement("Vendor", null, null, 0, 1)
+        };
 
         private static ElementGrouping child = new SequenceGT(elems);
 
@@ -333,46 +317,40 @@ public class ogcComplexTypes {
             return instance;
         }
 
-        private static Attribute[] attrs =
-                new Attribute[] {
-                    new AttributeGT(
-                            null,
-                            "service",
-                            OGCSchema.NAMESPACE,
-                            ogcSimpleTypes.OWSType.getInstance(),
-                            Attribute.REQUIRED,
-                            null,
-                            null,
-                            false),
-                    new AttributeGT(
-                            null,
-                            "version",
-                            OGCSchema.NAMESPACE,
-                            org.geotools.xml.xsi.XSISimpleTypes.String.getInstance(),
-                            Attribute.REQUIRED,
-                            null,
-                            null,
-                            false),
-                    new AttributeGT(
-                            null,
-                            "updateSequence",
-                            OGCSchema.NAMESPACE,
-                            org.geotools.xml.xsi.XSISimpleTypes.String.getInstance(),
-                            Attribute.OPTIONAL,
-                            null,
-                            null,
-                            false)
-                };
+        private static Attribute[] attrs = {
+            new AttributeGT(
+                    null,
+                    "service",
+                    OGCSchema.NAMESPACE,
+                    ogcSimpleTypes.OWSType.getInstance(),
+                    Attribute.REQUIRED,
+                    null,
+                    null,
+                    false),
+            new AttributeGT(
+                    null,
+                    "version",
+                    OGCSchema.NAMESPACE,
+                    org.geotools.xml.xsi.XSISimpleTypes.String.getInstance(),
+                    Attribute.REQUIRED,
+                    null,
+                    null,
+                    false),
+            new AttributeGT(
+                    null,
+                    "updateSequence",
+                    OGCSchema.NAMESPACE,
+                    org.geotools.xml.xsi.XSISimpleTypes.String.getInstance(),
+                    Attribute.OPTIONAL,
+                    null,
+                    null,
+                    false)
+        };
 
-        private static Element[] elems =
-                new Element[] {
-                    new ogcElement(
-                            "Section",
-                            ogcSimpleTypes.CapabilitiesSectionType.getInstance(),
-                            null,
-                            0,
-                            1)
-                };
+        private static Element[] elems = {
+            new ogcElement(
+                    "Section", ogcSimpleTypes.CapabilitiesSectionType.getInstance(), null, 0, 1)
+        };
 
         private static ElementGrouping child =
                 new SequenceGT(

@@ -158,7 +158,7 @@ public class GrowableInternationalString extends AbstractInternationalString
         }
         int position = prefix.length();
         final int length = key.length();
-        final String[] parts = new String[] {"", "", ""};
+        final String[] parts = {"", "", ""};
         for (int i = 0; /*break condition inside*/ ; i++) {
             if (position == length) {
                 final Locale locale =

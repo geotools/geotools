@@ -171,7 +171,7 @@ public class DataUtilsTest implements DataTypesDefinition {
      */
     @Test
     public void testDecodeData13740087263052374() {
-        byte[] testData = new byte[] {0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1};
+        byte[] testData = {0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1};
         for (int i = 0; i < TEST_TYPES.length; i++) {
             Object result = DataUtils.decodeData(testData, TEST_TYPES[i]);
             if (i < TEST_TYPES.length - 2) {

@@ -480,17 +480,15 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
                             "Optimized average results cannot be merged.");
                 }
 
-                Number[] sums =
-                        new Number[] {
-                            (Number) averageStrategy.getSum(),
-                            (Number) moreResults.averageStrategy.getSum()
-                        };
+                Number[] sums = {
+                    (Number) averageStrategy.getSum(), (Number) moreResults.averageStrategy.getSum()
+                };
                 Number newSum = CalcUtil.sum(sums);
                 Number newCount =
                         Integer.valueOf(
                                 averageStrategy.getCount()
                                         + moreResults.averageStrategy.getCount());
-                Number[] params = new Number[] {newSum, newCount};
+                Number[] params = {newSum, newCount};
                 Object newAverage = CalcUtil.getObject(params);
                 AverageStrategy newAverageObj = createStrategy(newAverage.getClass());
                 newAverageObj.set(newCount.intValue(), newSum);

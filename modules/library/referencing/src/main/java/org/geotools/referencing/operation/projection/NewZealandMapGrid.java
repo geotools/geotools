@@ -72,33 +72,31 @@ public class NewZealandMapGrid extends MapProjection {
     };
 
     /** Coefficients for inverse projection. */
-    private static final double[] TPHI =
-            new double[] {
-                1.5627014243,
-                0.5185406398,
-                -0.03333098,
-                -0.1052906,
-                -0.0368594,
-                0.007317,
-                0.01220,
-                0.00394,
-                -0.0013
-            };
+    private static final double[] TPHI = {
+        1.5627014243,
+        0.5185406398,
+        -0.03333098,
+        -0.1052906,
+        -0.0368594,
+        0.007317,
+        0.01220,
+        0.00394,
+        -0.0013
+    };
 
     /** Coefficients for forward projection. */
-    private static final double[] TPSI =
-            new double[] {
-                0.6399175073,
-                -0.1358797613,
-                0.063294409,
-                -0.02526853,
-                0.0117879,
-                -0.0055161,
-                0.0026906,
-                -0.001333,
-                0.00067,
-                -0.00034
-            };
+    private static final double[] TPSI = {
+        0.6399175073,
+        -0.1358797613,
+        0.063294409,
+        -0.02526853,
+        0.0117879,
+        -0.0055161,
+        0.0026906,
+        -0.001333,
+        0.00067,
+        -0.00034
+    };
 
     /** Constructs a new map projection with default parameter values. */
     protected NewZealandMapGrid() {

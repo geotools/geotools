@@ -698,10 +698,9 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
     }
 
     /** Java primitives types supported by MongoDB. */
-    private static final Class[] SUPPORTED_PRIMITIVES_TYPES =
-            new Class[] {
-                Boolean.class, Double.class, Integer.class, Long.class, String.class,
-            };
+    private static final Class[] SUPPORTED_PRIMITIVES_TYPES = {
+        Boolean.class, Double.class, Integer.class, Long.class, String.class,
+    };
 
     /**
      * Helper method that tries to convert a literal to the expected type. If the target type is not

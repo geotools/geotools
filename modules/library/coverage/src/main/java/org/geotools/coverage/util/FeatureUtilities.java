@@ -110,14 +110,13 @@ public final class FeatureUtilities {
     public static Polygon getPolygon(final Rectangle2D rect, final int srid) {
         final PrecisionModel pm = new PrecisionModel();
         final GeometryFactory gf = new GeometryFactory(pm, srid);
-        final Coordinate[] coord =
-                new Coordinate[] {
-                    new Coordinate(rect.getMinX(), rect.getMinY()),
-                    new Coordinate(rect.getMaxX(), rect.getMinY()),
-                    new Coordinate(rect.getMaxX(), rect.getMaxY()),
-                    new Coordinate(rect.getMinX(), rect.getMaxY()),
-                    new Coordinate(rect.getMinX(), rect.getMinY())
-                };
+        final Coordinate[] coord = {
+            new Coordinate(rect.getMinX(), rect.getMinY()),
+            new Coordinate(rect.getMaxX(), rect.getMinY()),
+            new Coordinate(rect.getMaxX(), rect.getMaxY()),
+            new Coordinate(rect.getMinX(), rect.getMaxY()),
+            new Coordinate(rect.getMinX(), rect.getMinY())
+        };
         final LinearRing ring = gf.createLinearRing(coord);
         return new Polygon(ring, null, gf);
     }
@@ -309,14 +308,13 @@ public final class FeatureUtilities {
     public static Polygon getPolygon(final GeneralEnvelope env, final GeometryFactory gf)
             throws IllegalStateException, MismatchedDimensionException {
         final Rectangle2D rect = env.toRectangle2D();
-        final Coordinate[] coord =
-                new Coordinate[] {
-                    new Coordinate(rect.getMinX(), rect.getMinY()),
-                    new Coordinate(rect.getMinX(), rect.getMaxY()),
-                    new Coordinate(rect.getMaxX(), rect.getMaxY()),
-                    new Coordinate(rect.getMaxX(), rect.getMinY()),
-                    new Coordinate(rect.getMinX(), rect.getMinY())
-                };
+        final Coordinate[] coord = {
+            new Coordinate(rect.getMinX(), rect.getMinY()),
+            new Coordinate(rect.getMinX(), rect.getMaxY()),
+            new Coordinate(rect.getMaxX(), rect.getMaxY()),
+            new Coordinate(rect.getMaxX(), rect.getMinY()),
+            new Coordinate(rect.getMinX(), rect.getMinY())
+        };
         final LinearRing ring = gf.createLinearRing(coord);
         final Polygon modelSpaceROI = new Polygon(ring, null, gf);
         // check that we have the same thing here

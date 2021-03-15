@@ -48,7 +48,7 @@ public class JNDIDataSourceFactory extends AbstractDataSourceFactorySpi {
                     "The path where the connection pool must be located",
                     true);
 
-    private static final Param[] PARAMS = new Param[] {DSTYPE, JNDI_REFNAME};
+    private static final Param[] PARAMS = {DSTYPE, JNDI_REFNAME};
 
     @Override
     public DataSource createDataSource(Map<String, ?> params) throws IOException {

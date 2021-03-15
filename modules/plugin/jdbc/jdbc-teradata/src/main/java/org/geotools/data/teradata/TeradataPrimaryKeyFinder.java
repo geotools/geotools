@@ -76,10 +76,7 @@ class TeradataPrimaryKeyFinder extends PrimaryKeyFinder {
             if (result.next()) {
                 String createViewSql = result.getString("RequestText");
                 int as = createViewSql.toLowerCase().indexOf("as");
-                String[] parts =
-                        new String[] {
-                            createViewSql.substring(0, as), createViewSql.substring(as + 2)
-                        };
+                String[] parts = {createViewSql.substring(0, as), createViewSql.substring(as + 2)};
                 /*
                          String viewID = parts[0];
                          String[] viewColumnNames = null;

@@ -274,7 +274,7 @@ public class GribTest extends Assert {
             GridEnvelope gridRange = reader.getOriginalGridRange(coverageName);
             gg.setValue(new GridGeometry2D(gridRange, newEnvelope));
 
-            GeneralParameterValue[] values = new GeneralParameterValue[] {gg};
+            GeneralParameterValue[] values = {gg};
             // Read with the larger BBOX
             GridCoverage2D grid = reader.read(coverageName, values);
             // Check if the result is not null
@@ -338,7 +338,7 @@ public class GribTest extends Assert {
                             .createValue();
             height.setValue(new ArrayList<>(Collections.singletonList(10.0)));
 
-            GeneralParameterValue[] values = new GeneralParameterValue[] {gg, time, height};
+            GeneralParameterValue[] values = {gg, time, height};
 
             // Read with 0th date
             GridCoverage2D grid = reader.read(coverageName, values);

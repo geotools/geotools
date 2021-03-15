@@ -622,8 +622,8 @@ public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
         assertEquals(3, features.size());
 
         try (SimpleFeatureIterator it = features.features()) {
-            String[] ft1StringProp = new String[] {"zero", "one", "two"};
-            String[] ftjoin2StringProp = new String[] {"2nd zero", "2nd one", "2nd two"};
+            String[] ft1StringProp = {"zero", "one", "two"};
+            String[] ftjoin2StringProp = {"2nd zero", "2nd one", "2nd two"};
 
             while (it.hasNext()) {
                 SimpleFeature f = it.next();

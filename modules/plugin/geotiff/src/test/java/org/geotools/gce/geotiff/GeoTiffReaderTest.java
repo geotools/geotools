@@ -1267,7 +1267,7 @@ public class GeoTiffReaderTest {
         GridCoverage2DReader reader =
                 new GeoTiffReader(TestData.file(GeoTiffReaderTest.class, "float32_nodata.tif"));
         GridCoverage2D coverage = null;
-        double[] redBackground = new double[] {255, 0, 0};
+        double[] redBackground = {255, 0, 0};
         try {
             coverage = reader.read(null);
             ImageWorker iw = new ImageWorker(coverage.getRenderedImage());

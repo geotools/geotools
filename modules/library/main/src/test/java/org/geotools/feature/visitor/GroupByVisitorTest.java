@@ -60,116 +60,90 @@ public class GroupByVisitorTest {
                         "id:Integer,building_id:String,"
                                 + "building_type:String,energy_type:String,energy_consumption:Double,geo:Geometry");
         // the building features that will be used during the tests
-        SimpleFeature[] buildingFeatures =
-                new SimpleFeature[] {
-                    SimpleFeatureBuilder.build(
-                            buildingType,
-                            new Object[] {
-                                1,
-                                "SCHOOL_A",
-                                "SCHOOL",
-                                "FLOWING_WATER",
-                                50.0,
-                                wktParser.read("POINT(-5 -5)")
-                            },
-                            null),
-                    SimpleFeatureBuilder.build(
-                            buildingType,
-                            new Object[] {
-                                2,
-                                "SCHOOL_A",
-                                "SCHOOL",
-                                "NUCLEAR",
-                                10.0,
-                                wktParser.read("POINT(-5 -5)")
-                            },
-                            null),
-                    SimpleFeatureBuilder.build(
-                            buildingType,
-                            new Object[] {
-                                3,
-                                "SCHOOL_A",
-                                "SCHOOL",
-                                "WIND",
-                                20.0,
-                                wktParser.read("POINT(-5 -5)")
-                            },
-                            null),
-                    SimpleFeatureBuilder.build(
-                            buildingType,
-                            new Object[] {
-                                4, "SCHOOL_B", "SCHOOL", "SOLAR", 30.0, wktParser.read("POINT(5 5)")
-                            },
-                            null),
-                    SimpleFeatureBuilder.build(
-                            buildingType,
-                            new Object[] {
-                                5, "SCHOOL_B", "SCHOOL", "FUEL", 60.0, wktParser.read("POINT(5 5)")
-                            },
-                            null),
-                    SimpleFeatureBuilder.build(
-                            buildingType,
-                            new Object[] {
-                                6,
-                                "SCHOOL_B",
-                                "SCHOOL",
-                                "NUCLEAR",
-                                10.0,
-                                wktParser.read("POINT(5 5)")
-                            },
-                            null),
-                    SimpleFeatureBuilder.build(
-                            buildingType,
-                            new Object[] {
-                                7,
-                                "FABRIC_A",
-                                "FABRIC",
-                                "FLOWING_WATER",
-                                500.0,
-                                wktParser.read("POINT(-5 5)")
-                            },
-                            null),
-                    SimpleFeatureBuilder.build(
-                            buildingType,
-                            new Object[] {
-                                8,
-                                "FABRIC_A",
-                                "FABRIC",
-                                "NUCLEAR",
-                                150.0,
-                                wktParser.read("POINT(-5 5)")
-                            },
-                            null),
-                    SimpleFeatureBuilder.build(
-                            buildingType,
-                            new Object[] {
-                                9, "FABRIC_B", "FABRIC", "WIND", 20.0, wktParser.read("POINT(5 -5)")
-                            },
-                            null),
-                    SimpleFeatureBuilder.build(
-                            buildingType,
-                            new Object[] {
-                                10,
-                                "FABRIC_B",
-                                "FABRIC",
-                                "SOLAR",
-                                30.0,
-                                wktParser.read("POINT(5 -5)")
-                            },
-                            null),
-                    SimpleFeatureBuilder.build(
-                            buildingType,
-                            new Object[] {
-                                11, "HOUSE_A", "HOUSE", "FUEL", 6.0, wktParser.read("POINT(0 0)")
-                            },
-                            null),
-                    SimpleFeatureBuilder.build(
-                            buildingType,
-                            new Object[] {
-                                12, "HOUSE_B", "HOUSE", "NUCLEAR", 4.0, wktParser.read("POINT(0 0)")
-                            },
-                            null),
-                };
+        SimpleFeature[] buildingFeatures = {
+            SimpleFeatureBuilder.build(
+                    buildingType,
+                    new Object[] {
+                        1,
+                        "SCHOOL_A",
+                        "SCHOOL",
+                        "FLOWING_WATER",
+                        50.0,
+                        wktParser.read("POINT(-5 -5)")
+                    },
+                    null),
+            SimpleFeatureBuilder.build(
+                    buildingType,
+                    new Object[] {
+                        2, "SCHOOL_A", "SCHOOL", "NUCLEAR", 10.0, wktParser.read("POINT(-5 -5)")
+                    },
+                    null),
+            SimpleFeatureBuilder.build(
+                    buildingType,
+                    new Object[] {
+                        3, "SCHOOL_A", "SCHOOL", "WIND", 20.0, wktParser.read("POINT(-5 -5)")
+                    },
+                    null),
+            SimpleFeatureBuilder.build(
+                    buildingType,
+                    new Object[] {
+                        4, "SCHOOL_B", "SCHOOL", "SOLAR", 30.0, wktParser.read("POINT(5 5)")
+                    },
+                    null),
+            SimpleFeatureBuilder.build(
+                    buildingType,
+                    new Object[] {
+                        5, "SCHOOL_B", "SCHOOL", "FUEL", 60.0, wktParser.read("POINT(5 5)")
+                    },
+                    null),
+            SimpleFeatureBuilder.build(
+                    buildingType,
+                    new Object[] {
+                        6, "SCHOOL_B", "SCHOOL", "NUCLEAR", 10.0, wktParser.read("POINT(5 5)")
+                    },
+                    null),
+            SimpleFeatureBuilder.build(
+                    buildingType,
+                    new Object[] {
+                        7,
+                        "FABRIC_A",
+                        "FABRIC",
+                        "FLOWING_WATER",
+                        500.0,
+                        wktParser.read("POINT(-5 5)")
+                    },
+                    null),
+            SimpleFeatureBuilder.build(
+                    buildingType,
+                    new Object[] {
+                        8, "FABRIC_A", "FABRIC", "NUCLEAR", 150.0, wktParser.read("POINT(-5 5)")
+                    },
+                    null),
+            SimpleFeatureBuilder.build(
+                    buildingType,
+                    new Object[] {
+                        9, "FABRIC_B", "FABRIC", "WIND", 20.0, wktParser.read("POINT(5 -5)")
+                    },
+                    null),
+            SimpleFeatureBuilder.build(
+                    buildingType,
+                    new Object[] {
+                        10, "FABRIC_B", "FABRIC", "SOLAR", 30.0, wktParser.read("POINT(5 -5)")
+                    },
+                    null),
+            SimpleFeatureBuilder.build(
+                    buildingType,
+                    new Object[] {
+                        11, "HOUSE_A", "HOUSE", "FUEL", 6.0, wktParser.read("POINT(0 0)")
+                    },
+                    null),
+            SimpleFeatureBuilder.build(
+                    buildingType,
+                    new Object[] {
+                        12, "HOUSE_B", "HOUSE", "NUCLEAR", 4.0, wktParser.read("POINT(0 0)")
+                    },
+                    null),
+        };
         // creating the bulding featrue collection
         featureCollection = DataUtilities.collection(buildingFeatures);
     }

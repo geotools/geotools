@@ -45,15 +45,14 @@ public class PolygonWithHolesTest extends BaseJtsModuleTest<Polygon> {
                             new Coordinate(103.0, 3.0), new Coordinate(102.0, 3.0),
                             new Coordinate(102.0, 2.0)
                         });
-        LinearRing[] holes =
-                new LinearRing[] {
-                    gf.createLinearRing(
-                            new Coordinate[] {
-                                new Coordinate(100.2, 0.2), new Coordinate(100.8, 0.2),
-                                new Coordinate(100.8, 0.8), new Coordinate(100.2, 0.8),
-                                new Coordinate(100.2, 0.2)
-                            })
-                };
+        LinearRing[] holes = {
+            gf.createLinearRing(
+                    new Coordinate[] {
+                        new Coordinate(100.2, 0.2), new Coordinate(100.8, 0.2),
+                        new Coordinate(100.8, 0.8), new Coordinate(100.2, 0.8),
+                        new Coordinate(100.2, 0.2)
+                    })
+        };
         return gf.createPolygon(shell, holes);
     }
 }

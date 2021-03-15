@@ -1501,8 +1501,7 @@ public class GridCoverageRendererTest {
         final SelectedChannelType chTypeBlue = new SelectedChannelTypeImpl();
         final SelectedChannelType chTypeGreen = new SelectedChannelTypeImpl();
 
-        SelectedChannelType[] channels =
-                new SelectedChannelType[] {chTypeRed, chTypeGreen, chTypeBlue};
+        SelectedChannelType[] channels = {chTypeRed, chTypeGreen, chTypeBlue};
 
         // Assign a different contrast method for each channel
         // by offsetting min and max of 20 on each channel

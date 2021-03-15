@@ -83,7 +83,7 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest {
             SimpleFeatureSource fs = ds.getFeatureSource("GenStreams");
             Assert.assertTrue(fs.getSupportedHints().contains(Hints.GEOMETRY_DISTANCE));
 
-            double[] distances = new double[] {1, 5, 10, 20, 25};
+            double[] distances = {1, 5, 10, 20, 25};
 
             for (double distance : distances) {
                 // System.out.println(distance);

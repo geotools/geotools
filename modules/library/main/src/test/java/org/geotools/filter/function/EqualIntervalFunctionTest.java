@@ -169,7 +169,7 @@ public class EqualIntervalFunctionTest extends FunctionTestSupport {
         SimpleFeatureType dataType =
                 DataUtilities.createType("classification.test1", "id:0,foo:int,geom:Point");
 
-        int iVal[] = new int[] {1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16};
+        int iVal[] = {1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16};
         FeatureCollection featureCollection = new ListFeatureCollection(dataType);
         GeometryFactory fac = new GeometryFactory();
         featureCollection = new ListFeatureCollection(dataType);

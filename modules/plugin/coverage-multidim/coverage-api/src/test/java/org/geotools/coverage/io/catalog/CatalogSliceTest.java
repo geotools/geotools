@@ -159,7 +159,7 @@ public class CatalogSliceTest extends Assert {
 
             // Get the CoverageSlices
             List<CoverageSlice> slices = sliceCat.getGranules(q);
-            double[] news = new double[] {3.22, 1.12, 1.32};
+            double[] news = {3.22, 1.12, 1.32};
             for (int i = 0; i < news.length; i++) {
                 CoverageSlice slice = slices.get(i);
                 assertTrue(slice.getGranuleBBOX().contains(referencedEnvelope));
@@ -252,7 +252,7 @@ public class CatalogSliceTest extends Assert {
             // read back with property names filtering
             Query q = new Query();
             q.setTypeName(typeNames[0]);
-            String[] propertyNames = new String[] {"cloud_formations"};
+            String[] propertyNames = {"cloud_formations"};
             q.setPropertyNames(propertyNames);
             List<CoverageSlice> granules = sliceCat.getGranules(q);
 

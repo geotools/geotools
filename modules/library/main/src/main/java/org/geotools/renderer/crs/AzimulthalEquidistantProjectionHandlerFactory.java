@@ -151,7 +151,7 @@ public class AzimulthalEquidistantProjectionHandlerFactory implements Projection
 
         private Point getAzeqPosition(MathTransform mt, double lon, double lat)
                 throws TransformException {
-            double[] source = new double[] {lon, lat};
+            double[] source = {lon, lat};
             double[] target = new double[2];
             try {
                 mt.transform(source, 0, target, 0, 1);
@@ -169,21 +169,20 @@ public class AzimulthalEquidistantProjectionHandlerFactory implements Projection
             double eps = 1e-3;
             double x = center.x > 0 ? (-180 + center.x) : (180 + center.x);
             double y = -center.y;
-            final double[] line =
-                    new double[] {
-                        center.x,
-                        center.y, //
-                        x,
-                        y, //
-                        rollLongitude(x - eps),
-                        validLat(y - eps), //
-                        rollLongitude(x - eps),
-                        validLat(y + eps), //
-                        rollLongitude(x + eps),
-                        validLat(y - eps), //
-                        rollLongitude(x + eps),
-                        validLat(y + eps)
-                    };
+            final double[] line = {
+                center.x,
+                center.y, //
+                x,
+                y, //
+                rollLongitude(x - eps),
+                validLat(y - eps), //
+                rollLongitude(x - eps),
+                validLat(y + eps), //
+                rollLongitude(x + eps),
+                validLat(y - eps), //
+                rollLongitude(x + eps),
+                validLat(y + eps)
+            };
             CRS.findMathTransform(DefaultGeographicCRS.WGS84, crs).transform(line, 0, line, 0, 6);
             double radius = 0;
             for (int i = 1; i <= 5; i++) {

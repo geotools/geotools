@@ -64,24 +64,18 @@ public class MapInfoFileReader {
     private static Map<String, String> UNITS = new HashMap<>();
 
     /** List of parameters */
-    private static final String[] PARAMETERS1 =
-            new String[] {
-                "central_meridian",
-                "latitude_of_origin",
-                "standard_parallel_1",
-                "standard_parallel_2",
-                "false_easting",
-                "false_northing"
-            };
+    private static final String[] PARAMETERS1 = {
+        "central_meridian",
+        "latitude_of_origin",
+        "standard_parallel_1",
+        "standard_parallel_2",
+        "false_easting",
+        "false_northing"
+    };
 
-    private static final String[] PARAMETERS2 =
-            new String[] {
-                "central_meridian",
-                "latitude_of_origin",
-                "scale_factor",
-                "false_easting",
-                "false_northing"
-            };
+    private static final String[] PARAMETERS2 = {
+        "central_meridian", "latitude_of_origin", "scale_factor", "false_easting", "false_northing"
+    };
 
     static {
         PROJECTIONS.put(2, "Cylindrical_Equal_Area");

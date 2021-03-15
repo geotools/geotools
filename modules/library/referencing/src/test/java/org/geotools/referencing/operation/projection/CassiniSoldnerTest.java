@@ -39,8 +39,8 @@ public class CassiniSoldnerTest {
         MathTransform transform = mtFactory.createParameterizedTransform(parameters);
 
         // results as provided by the EPSG guidance
-        final double[] point = new double[] {-62, 10};
-        final double[] expected = new double[] {66644.94 * linkToMeter, 82536.22 * linkToMeter};
+        final double[] point = {-62, 10};
+        final double[] expected = {66644.94 * linkToMeter, 82536.22 * linkToMeter};
 
         // check forward transform
         final double[] forward = new double[2];

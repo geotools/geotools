@@ -229,7 +229,7 @@ public class ReadResolutionCalculator {
         }
 
         // reprojection can turn a segment into a zero length one
-        double fullRes[] = new double[] {fullResolution[0], fullResolution[1]};
+        double fullRes[] = {fullResolution[0], fullResolution[1]};
         if (isReprojected && isFullResolutionInRequestedCRS) {
             // Create a full resolution's one pixel bbox and reproject it to
             // retrieve full resolution in read CRS

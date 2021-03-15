@@ -287,8 +287,8 @@ public class Glyph {
         Stroke stroke = new BasicStroke(w);
         gc.setStroke(stroke);
 
-        int[] xs = new int[] {1, 3, 4, 6, 9, 14, 14};
-        int[] ys = new int[] {14, 9, 6, 4, 3, 1, 14};
+        int[] xs = {1, 3, 4, 6, 9, 14, 14};
+        int[] ys = {14, 9, 6, 4, 3, 1, 14};
         int nb = 7;
 
         gc.setColor(c);

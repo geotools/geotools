@@ -627,7 +627,7 @@ public class GeoTiffWriterTest extends Assert {
     //    @Ignore
     public void testWriteBigTiff() throws Exception {
 
-        String files[] = new String[] {"geo.tiff", "no_crs_no_envelope.tif"};
+        String files[] = {"geo.tiff", "no_crs_no_envelope.tif"};
 
         int i = 0;
         for (String file : files) {

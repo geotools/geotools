@@ -43,10 +43,9 @@ import org.geotools.util.logging.Logging;
  */
 public class NetCDFImageReaderSpi extends ImageReaderSpi {
 
-    public static final Class<?>[] STANDARD_INPUT_TYPES =
-            new Class[] {
-                AccessibleStream.class, ImageInputStream.class, File.class, URL.class, URI.class
-            };
+    public static final Class<?>[] STANDARD_INPUT_TYPES = {
+        AccessibleStream.class, ImageInputStream.class, File.class, URL.class, URI.class
+    };
 
     public static final String VENDOR_NAME = "GeoTools";
 

@@ -536,19 +536,18 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
     private void visitBinarySpatialOperator(BinarySpatialOperator filter) {
         if (original == null) original = filter;
 
-        Class[] spatialOps =
-                new Class[] {
-                    Beyond.class,
-                    Contains.class,
-                    Crosses.class,
-                    Disjoint.class,
-                    DWithin.class,
-                    Equals.class,
-                    Intersects.class,
-                    Overlaps.class,
-                    Touches.class,
-                    Within.class
-                };
+        Class[] spatialOps = {
+            Beyond.class,
+            Contains.class,
+            Crosses.class,
+            Disjoint.class,
+            DWithin.class,
+            Equals.class,
+            Intersects.class,
+            Overlaps.class,
+            Touches.class,
+            Within.class
+        };
 
         for (Class spatialOp : spatialOps) {
             if (spatialOp.isAssignableFrom(filter.getClass())) {

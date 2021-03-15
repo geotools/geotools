@@ -255,13 +255,12 @@ public class CSVWriteOptionsTest {
             String localName = geometryDescriptor.getLocalName();
             assertEquals("Invalid geometry name", "location", localName);
             // iterate through values and verify
-            Object[][] expValues =
-                    new Object[][] {
-                        new Object[] {3.8, 7, "f'oo", 73.28, -14.39},
-                        new Object[] {9.12, -38, "bar", 0, 29},
-                        new Object[] {-37.0, 0, "baz", 49, 0}
-                    };
-            Object[] expTypes = new Object[] {Double.class, Integer.class, String.class};
+            Object[][] expValues = {
+                new Object[] {3.8, 7, "f'oo", 73.28, -14.39},
+                new Object[] {9.12, -38, "bar", 0, 29},
+                new Object[] {-37.0, 0, "baz", 49, 0}
+            };
+            Object[] expTypes = {Double.class, Integer.class, String.class};
             List<SimpleFeature> features = new ArrayList<>(3);
             while (iterator.hasNext()) {
                 features.add(iterator.next());
@@ -269,7 +268,7 @@ public class CSVWriteOptionsTest {
 
             assertEquals("Invalid number of features", 3, features.size());
 
-            String[] attrNames = new String[] {"doubleval", "int'val", "stringval"};
+            String[] attrNames = {"doubleval", "int'val", "stringval"};
             int i = 0;
             for (SimpleFeature feature : features) {
                 Object[] expVals = expValues[i];

@@ -95,47 +95,46 @@ public class FilterSchema implements Schema {
         return CommonFactoryFinder.getFilterFactory2(hints);
     }
 
-    private static final ComplexType[] complexTypes =
-            new ComplexType[] {
+    private static final ComplexType[] complexTypes = {
 
-                // filterCapabilities
-                Comparison_OperatorsType.getInstance(),
-                Function_NameType.getInstance(),
-                Function_NamesType.getInstance(),
-                FunctionsType.getInstance(),
-                Scalar_CapabilitiesType.getInstance(),
-                Spatial_CapabilitiesType.getInstance(),
-                Spatial_OperatorsType.getInstance(),
+        // filterCapabilities
+        Comparison_OperatorsType.getInstance(),
+        Function_NameType.getInstance(),
+        Function_NamesType.getInstance(),
+        FunctionsType.getInstance(),
+        Scalar_CapabilitiesType.getInstance(),
+        Spatial_CapabilitiesType.getInstance(),
+        Spatial_OperatorsType.getInstance(),
 
-                // filter
-                ComparisonOpsType.getInstance(),
-                SpatialOpsType.getInstance(),
-                LogicOpsType.getInstance(),
-                FilterType.getInstance(),
-                FeatureIdType.getInstance(),
-                BinaryComparisonOpType.getInstance(),
-                PropertyIsLikeType.getInstance(),
-                PropertyIsNullType.getInstance(),
-                PropertyIsBetweenType.getInstance(),
-                LowerBoundaryType.getInstance(),
-                UpperBoundaryType.getInstance(),
-                BinarySpatialOpType.getInstance(),
-                BBOXType.getInstance(),
-                DistanceBufferType.getInstance(),
-                DistanceType.getInstance(),
-                BinaryLogicOpType.getInstance(),
-                UnaryLogicOpType.getInstance(),
+        // filter
+        ComparisonOpsType.getInstance(),
+        SpatialOpsType.getInstance(),
+        LogicOpsType.getInstance(),
+        FilterType.getInstance(),
+        FeatureIdType.getInstance(),
+        BinaryComparisonOpType.getInstance(),
+        PropertyIsLikeType.getInstance(),
+        PropertyIsNullType.getInstance(),
+        PropertyIsBetweenType.getInstance(),
+        LowerBoundaryType.getInstance(),
+        UpperBoundaryType.getInstance(),
+        BinarySpatialOpType.getInstance(),
+        BBOXType.getInstance(),
+        DistanceBufferType.getInstance(),
+        DistanceType.getInstance(),
+        BinaryLogicOpType.getInstance(),
+        UnaryLogicOpType.getInstance(),
 
-                // expr
-                ExpressionType.getInstance(),
-                BinaryOperatorType.getInstance(),
-                FunctionType.getInstance(),
-                LiteralType.getInstance(),
-                PropertyNameType.getInstance(),
+        // expr
+        ExpressionType.getInstance(),
+        BinaryOperatorType.getInstance(),
+        FunctionType.getInstance(),
+        LiteralType.getInstance(),
+        PropertyNameType.getInstance(),
 
-                // exception
-                ServiceExceptionType.getInstance()
-            };
+        // exception
+        ServiceExceptionType.getInstance()
+    };
 
     // convinience method to deal with the URISyntaxException
     private static URI makeURI(String s) {

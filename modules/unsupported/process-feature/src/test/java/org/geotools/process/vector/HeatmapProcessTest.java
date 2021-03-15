@@ -51,14 +51,13 @@ public class HeatmapProcessTest {
 
         ReferencedEnvelope bounds =
                 new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
-        Coordinate[] data =
-                new Coordinate[] {
-                    new Coordinate(4, 4),
-                    new Coordinate(4, 6),
-                    // include a coordinate outside the heatmap buffer bounds, to ensure it is
-                    // filtered correctly
-                    new Coordinate(100, 100)
-                };
+        Coordinate[] data = {
+            new Coordinate(4, 4),
+            new Coordinate(4, 6),
+            // include a coordinate outside the heatmap buffer bounds, to ensure it is
+            // filtered correctly
+            new Coordinate(100, 100)
+        };
         SimpleFeatureCollection fc = createPoints(data, bounds);
 
         ProgressListener monitor = null;

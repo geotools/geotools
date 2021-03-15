@@ -607,7 +607,7 @@ public class ImageMosaicFootprintsTest {
 
             // Background Values
             ParameterValue<double[]> bg = ImageMosaicFormat.BACKGROUND_VALUES.createValue();
-            double[] bgValues = new double[] {0, 255, 0};
+            double[] bgValues = {0, 255, 0};
             bg.setValue(bgValues);
             paramList.add(bg);
 
@@ -1537,8 +1537,7 @@ public class ImageMosaicFootprintsTest {
                 new ReferencedEnvelope(989960, 990800, 217380, 219200, coordinateReferenceSystem);
         GridGeometry2D readGeometry = new GridGeometry2D(gridRange, requestEnvelope);
         readGeom.setValue(readGeometry);
-        GeneralParameterValue[] readParams =
-                new GeneralParameterValue[] {footprintBehaviorParam, readGeom};
+        GeneralParameterValue[] readParams = {footprintBehaviorParam, readGeom};
         GridCoverage2D coverage = reader.read(readParams);
 
         int numComponents = coverage.getRenderedImage().getColorModel().getNumComponents();

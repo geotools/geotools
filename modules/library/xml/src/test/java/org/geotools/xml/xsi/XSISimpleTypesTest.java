@@ -49,7 +49,7 @@ public class XSISimpleTypesTest {
         Map<String, Object> hints = null;
 
         String sval = "2012-02-14";
-        ElementValue[] value = new ElementValue[] {new ElementValueGT(null, sval)};
+        ElementValue[] value = {new ElementValueGT(null, sval)};
         Object actual = dateBinding.getValue(element, value, attrs, hints);
         Assert.assertNotNull(actual);
         Date expected = Converters.convert(sval, Date.class);
@@ -122,7 +122,7 @@ public class XSISimpleTypesTest {
         Map<String, Object> hints = null;
 
         String sval = "2012-02-14";
-        ElementValue[] value = new ElementValue[] {new ElementValueGT(null, sval)};
+        ElementValue[] value = {new ElementValueGT(null, sval)};
         Object actual = dateTimeBinding.getValue(element, value, attrs, hints);
         Assert.assertNotNull(actual);
         java.util.Date expected = Converters.convert(sval, java.sql.Timestamp.class);
@@ -212,7 +212,7 @@ public class XSISimpleTypesTest {
         Map<String, Object> hints = null;
 
         String sval = "10:53:24Z";
-        ElementValue[] value = new ElementValue[] {new ElementValueGT(null, sval)};
+        ElementValue[] value = {new ElementValueGT(null, sval)};
         Object actual = timeBinding.getValue(element, value, attrs, hints);
         Assert.assertNotNull(actual);
         java.util.Date expected = Converters.convert(sval, java.sql.Time.class);
@@ -285,7 +285,7 @@ public class XSISimpleTypesTest {
         Attributes attrs = null;
         String sval = "";
 
-        ElementValue[] value = new ElementValue[] {new ElementValueGT(null, sval)};
+        ElementValue[] value = {new ElementValueGT(null, sval)};
         Object actual = durationBinding.getValue(element, value, attrs, hints);
         Assert.assertNull(actual);
     }

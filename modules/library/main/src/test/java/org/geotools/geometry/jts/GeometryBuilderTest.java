@@ -109,7 +109,7 @@ public class GeometryBuilderTest {
 
     @Test
     public void lineStringFromOrdinates() throws Exception {
-        double[] ordinates = new double[] {1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1, 0};
+        double[] ordinates = {1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1, 0};
         LineString line = builder.lineString(ordinates);
 
         Coordinate[] coords = line.getCoordinates();
@@ -118,7 +118,7 @@ public class GeometryBuilderTest {
 
     @Test
     public void lineStringZFromOrdinates() throws Exception {
-        double[] ordinates = new double[] {1, 2, -3, 4, 5, -6, 7, 8, -9};
+        double[] ordinates = {1, 2, -3, 4, 5, -6, 7, 8, -9};
         LineString line = builder.lineStringZ(ordinates);
 
         Coordinate[] coords = line.getCoordinates();
@@ -141,7 +141,7 @@ public class GeometryBuilderTest {
 
     @Test
     public void linearRingFromOrdinates() throws Exception {
-        double[] closedOrdinates = new double[] {1, 1, 1, 2, 2, 2, 2, 1, 1, 1};
+        double[] closedOrdinates = {1, 1, 1, 2, 2, 2, 2, 1, 1, 1};
         double[] openOrdinates = Arrays.copyOf(closedOrdinates, closedOrdinates.length - 2);
 
         LinearRing ring = builder.linearRing(openOrdinates);
@@ -154,14 +154,13 @@ public class GeometryBuilderTest {
 
     @Test
     public void linearRingZFromOrdinates() throws Exception {
-        double[] closedOrdinates =
-                new double[] {
-                    1, 1, -1,
-                    1, 2, -2,
-                    2, 2, -2,
-                    2, 1, -1,
-                    1, 1, -1
-                };
+        double[] closedOrdinates = {
+            1, 1, -1,
+            1, 2, -2,
+            2, 2, -2,
+            2, 1, -1,
+            1, 1, -1
+        };
 
         double[] openOrdinates = Arrays.copyOf(closedOrdinates, closedOrdinates.length - 3);
 

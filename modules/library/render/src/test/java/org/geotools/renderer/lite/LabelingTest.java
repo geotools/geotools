@@ -407,13 +407,12 @@ public class LabelingTest {
             CoordinateReferenceSystem crs,
             GeometryFactory geomFac)
             throws Exception {
-        Coordinate[] c =
-                new Coordinate[] {
-                    new Coordinate(startx, starty),
-                    new Coordinate(startx + width, starty),
-                    new Coordinate(startx + width, starty + height),
-                    new Coordinate(startx, starty),
-                };
+        Coordinate[] c = {
+            new Coordinate(startx, starty),
+            new Coordinate(startx + width, starty),
+            new Coordinate(startx + width, starty + height),
+            new Coordinate(startx, starty),
+        };
         LinearRing line = geomFac.createLinearRing(c);
         Polygon poly = geomFac.createPolygon(line, null);
 

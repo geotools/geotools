@@ -53,7 +53,7 @@ final class PredefinedCS implements Comparator<CoordinateSystem> {
     private static Comparator<CoordinateSystem> csComparator;
 
     /** Our ordering for coordinate system objects. */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "PMD.UseShortArrayInitializer"})
     private final Class<? extends CoordinateSystem>[] types =
             new Class[] {
                 CartesianCS.class,

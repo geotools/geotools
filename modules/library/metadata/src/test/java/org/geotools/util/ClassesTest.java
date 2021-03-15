@@ -85,7 +85,7 @@ public final class ClassesTest {
     public void testBoundOfParameterizedAttribute()
             throws NoSuchFieldException, NoSuchMethodException {
         final Class<?>[] g = null;
-        final Class<?>[] s = new Class[] {Set.class};
+        final Class<?>[] s = {Set.class};
         final Class<ClassesTest> c = ClassesTest.class;
         assertNull(Classes.boundOfParameterizedAttribute(c.getMethod("getter0", g)));
         assertNull(Classes.boundOfParameterizedAttribute(c.getMethod("setter0", s)));

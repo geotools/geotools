@@ -122,19 +122,18 @@ public final class MathTransformTest {
                         1394.4593259871676);
         MathTransform mt = factory.createAffineTransform(new GeneralMatrix(at));
 
-        final double[] points =
-                new double[] {
-                    -129.992589135802,
-                    55.9226692948365,
-                    -129.987254340541,
-                    55.9249676996729,
-                    -129.982715772093,
-                    55.9308988434656,
-                    -129.989772198265,
-                    55.9289277997662,
-                    -129.992589135802,
-                    55.9226692948365
-                };
+        final double[] points = {
+            -129.992589135802,
+            55.9226692948365,
+            -129.987254340541,
+            55.9249676996729,
+            -129.982715772093,
+            55.9308988434656,
+            -129.989772198265,
+            55.9289277997662,
+            -129.992589135802,
+            55.9226692948365
+        };
         final double[] transformedPoints = new double[points.length];
         mt.transform(points, 0, transformedPoints, 0, points.length / 2);
         at.transform(points, 0, points, 0, points.length / 2);

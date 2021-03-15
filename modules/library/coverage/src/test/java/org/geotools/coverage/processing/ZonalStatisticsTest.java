@@ -278,7 +278,7 @@ public class ZonalStatisticsTest {
         includedRanges.add(RangeFactory.create(1370f, true, 1600f, true, false));
 
         // select the bands to work on
-        int[] bands = new int[] {0};
+        int[] bands = {0};
 
         // create the proper instance
         StatisticsTool statisticsTool =
@@ -396,7 +396,7 @@ public class ZonalStatisticsTest {
         includedRanges.add(RangeFactory.create(1370f, true, 1600f, true, false));
 
         // select the bands to work on
-        int[] bands = new int[] {0};
+        int[] bands = {0};
 
         // create the proper instance
         StatisticsTool statisticsTool =

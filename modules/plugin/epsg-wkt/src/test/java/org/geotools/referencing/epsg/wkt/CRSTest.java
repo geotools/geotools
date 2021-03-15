@@ -87,21 +87,19 @@ public class CRSTest {
          * 489101   31935.2867  391557.3350   51° 29' 58.46250''   3° 36' 53.15985''
          *                                    51.4995729167        3.614766625
          */
-        double[] srcCoords =
-                new double[] {
-                    /* Id: 250317 */ 121784.6113, 487036.9695,
-                    /* Id: 610306 */ 176135.0779, 317654.5066,
-                    /* Id: 079342 */ 233473.7307, 581727.0264,
-                    /* Id: 489101 */ 31935.2867, 391557.3350
-                };
+        double[] srcCoords = {
+            /* Id: 250317 */ 121784.6113, 487036.9695,
+            /* Id: 610306 */ 176135.0779, 317654.5066,
+            /* Id: 079342 */ 233473.7307, 581727.0264,
+            /* Id: 489101 */ 31935.2867, 391557.3350
+        };
 
-        double[] expectedTransformedCoords =
-                new double[] {
-                    /* Id: 250317 */ 4.899486675, 52.370206575,
-                    /* Id: 610306 */ 5.68728731944, 50.8483381889,
-                    /* Id: 079342 */ 6.56198793056, 53.2164043639,
-                    /* Id: 489101 */ 3.614766625, 51.4995729167,
-                };
+        double[] expectedTransformedCoords = {
+            /* Id: 250317 */ 4.899486675, 52.370206575,
+            /* Id: 610306 */ 5.68728731944, 50.8483381889,
+            /* Id: 079342 */ 6.56198793056, 53.2164043639,
+            /* Id: 489101 */ 3.614766625, 51.4995729167,
+        };
 
         double[] transformedCoords = new double[8];
 
@@ -143,12 +141,11 @@ public class CRSTest {
         DirectPosition pt2 = math.transform(pt1, null);
         Assert.assertNotNull(pt2);
 
-        double pts[] =
-                new double[] {
-                    1187128, 395268, 1187128, 396027,
-                    1188245, 396027, 1188245, 395268,
-                    1187128, 395268
-                };
+        double pts[] = {
+            1187128, 395268, 1187128, 396027,
+            1188245, 396027, 1188245, 395268,
+            1187128, 395268
+        };
         double tst[] = new double[pts.length];
         math.transform(pts, 0, new double[pts.length], 0, pts.length / 2);
         for (int i = 0; i < pts.length; i++) Assert.assertTrue("pts[" + i + "]", pts[i] != tst[i]);
@@ -162,8 +159,9 @@ public class CRSTest {
         // ReferencedEnvelope[-0.24291497975705742 : 0.24291497975711265, -0.5056179775280899 :
         // -0.0]
         CoordinateReferenceSystem EPSG4326 = CRS.decode("EPSG:4326");
-        double[] pixelBounds =
-                new double[] {-0.24291497975705742, 0.24291497975711265, -0.5056179775280899, 0.0};
+        double[] pixelBounds = {
+            -0.24291497975705742, 0.24291497975711265, -0.5056179775280899, 0.0
+        };
         CoordinateReferenceSystem WGS84 = DefaultGeographicCRS.WGS84;
         MathTransform mt = CRS.findMathTransform(EPSG4326, WGS84, true);
         double[] result = new double[4];
@@ -174,22 +172,20 @@ public class CRSTest {
     @Test
     public void testReprojection() throws Exception {
         // origional bc alberts
-        double[] poly1 =
-                new double[] {
-                    1187128, 395268, 1187128, 396027,
-                    1188245, 396027, 1188245, 395268,
-                    1187128, 395268
-                };
+        double[] poly1 = {
+            1187128, 395268, 1187128, 396027,
+            1188245, 396027, 1188245, 395268,
+            1187128, 395268
+        };
 
         // transformed
-        double[] poly3 =
-                new double[] {
-                    -123.47009555832284, 48.543261561072285,
-                    -123.46972894676578, 48.55009592117936,
-                    -123.45463828850829, 48.54973520267304,
-                    -123.4550070827961, 48.54290089070186,
-                    -123.47009555832284, 48.543261561072285
-                };
+        double[] poly3 = {
+            -123.47009555832284, 48.543261561072285,
+            -123.46972894676578, 48.55009592117936,
+            -123.45463828850829, 48.54973520267304,
+            -123.4550070827961, 48.54290089070186,
+            -123.47009555832284, 48.543261561072285
+        };
 
         CoordinateReferenceSystem WGS84 = CRS.decode("EPSG:4326"); // latlong
         CoordinateReferenceSystem BC_ALBERS = CRS.decode("EPSG:42102");
@@ -205,22 +201,20 @@ public class CRSTest {
     @Test
     public void testReprojectionDefault() throws Exception {
         // origional bc alberts
-        double[] poly1 =
-                new double[] {
-                    1187128, 395268, 1187128, 396027,
-                    1188245, 396027, 1188245, 395268,
-                    1187128, 395268
-                };
+        double[] poly1 = {
+            1187128, 395268, 1187128, 396027,
+            1188245, 396027, 1188245, 395268,
+            1187128, 395268
+        };
 
         // transformed
-        double[] poly3 =
-                new double[] {
-                    -123.47009555832284, 48.543261561072285,
-                    -123.46972894676578, 48.55009592117936,
-                    -123.45463828850829, 48.54973520267304,
-                    -123.4550070827961, 48.54290089070186,
-                    -123.47009555832284, 48.543261561072285
-                };
+        double[] poly3 = {
+            -123.47009555832284, 48.543261561072285,
+            -123.46972894676578, 48.55009592117936,
+            -123.45463828850829, 48.54973520267304,
+            -123.4550070827961, 48.54290089070186,
+            -123.47009555832284, 48.543261561072285
+        };
 
         CoordinateReferenceSystem WGS84 = DefaultGeographicCRS.WGS84;
         CoordinateReferenceSystem BC_ALBERS = CRS.decode("EPSG:42102");

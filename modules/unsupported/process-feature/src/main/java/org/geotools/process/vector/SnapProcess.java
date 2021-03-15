@@ -140,14 +140,12 @@ public class SnapProcess implements VectorProcess {
                             new DistanceOp(
                                     point, (Geometry) f.getDefaultGeometryProperty().getValue());
                     Coordinate[] co = op.nearestPoints();
-                    double[] co0 =
-                            new double[] {
-                                co[0].x, co[0].y,
-                            };
-                    double[] co1 =
-                            new double[] {
-                                co[1].x, co[1].y,
-                            };
+                    double[] co0 = {
+                        co[0].x, co[0].y,
+                    };
+                    double[] co1 = {
+                        co[1].x, co[1].y,
+                    };
                     double[] geo0 = new double[2];
                     double[] geo1 = new double[2];
                     crsTransform.transform(co0, 0, geo0, 0, 1);

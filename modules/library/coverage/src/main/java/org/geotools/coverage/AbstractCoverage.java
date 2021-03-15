@@ -830,10 +830,9 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
             final GeneralEnvelope dstEnvelope = new GeneralEnvelope(gridBounds);
             if (crs != null) {
                 final CoordinateSystem cs = crs.getCoordinateSystem();
-                final AxisDirection[] axis =
-                        new AxisDirection[] {
-                            cs.getAxis(xAxis).getDirection(), cs.getAxis(yAxis).getDirection()
-                        };
+                final AxisDirection[] axis = {
+                    cs.getAxis(xAxis).getDirection(), cs.getAxis(yAxis).getDirection()
+                };
                 final AxisDirection[] normalized = axis.clone();
                 normalized[1] = normalized[1].opposite(); // Image's Y axis is downward.
                 matrix = new GeneralMatrix(srcEnvelope, axis, dstEnvelope, normalized);

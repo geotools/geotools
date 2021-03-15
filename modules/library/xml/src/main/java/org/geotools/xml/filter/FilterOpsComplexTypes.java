@@ -836,18 +836,17 @@ public class FilterOpsComplexTypes {
         //			<xsd:element ref="ogc:FeatureId" maxOccurs="unbounded"/>
         //		</xsd:choice>
         //		</xsd:complexType>
-        static final Element[] elems =
-                new Element[] {
-                    new FilterElement("spatialOps", SpatialOpsType.getInstance()),
-                    new FilterElement("comparisonOps", ComparisonOpsType.getInstance()),
-                    new FilterElement("logicOps", LogicOpsType.getInstance()),
-                    new FilterElement("FeatureId", FeatureIdType.getInstance()) {
-                        @Override
-                        public int getMaxOccurs() {
-                            return Integer.MAX_VALUE;
-                        }
-                    },
-                };
+        static final Element[] elems = {
+            new FilterElement("spatialOps", SpatialOpsType.getInstance()),
+            new FilterElement("comparisonOps", ComparisonOpsType.getInstance()),
+            new FilterElement("logicOps", LogicOpsType.getInstance()),
+            new FilterElement("FeatureId", FeatureIdType.getInstance()) {
+                @Override
+                public int getMaxOccurs() {
+                    return Integer.MAX_VALUE;
+                }
+            },
+        };
         private static Choice choice = new ChoiceGT(elems);
         private static final ComplexType instance = new FilterType();
 
@@ -1012,11 +1011,9 @@ public class FilterOpsComplexTypes {
         //    		<xsd:attribute name="fid" type="xsd:anyURI" use="required"/>
         //    	</xsd:complexType>
         private static final ComplexType instance = new FeatureIdType();
-        private static Attribute[] attrs =
-                new Attribute[] {
-                    new FilterAttribute(
-                            "fid", XSISimpleTypes.AnyURI.getInstance(), Attribute.REQUIRED),
-                };
+        private static Attribute[] attrs = {
+            new FilterAttribute("fid", XSISimpleTypes.AnyURI.getInstance(), Attribute.REQUIRED),
+        };
 
         public static ComplexType getInstance() {
             return instance;
@@ -1150,22 +1147,21 @@ public class FilterOpsComplexTypes {
         //			</xsd:extension>
         //		</xsd:complexContent>
         //		</xsd:complexType>
-        private static Element[] elems =
-                new Element[] {
-                    new FilterElement("expression", ExpressionType.getInstance()) {
-                        /** @see org.geotools.xml.schema.Element#getMaxOccurs() */
-                        @Override
-                        public int getMaxOccurs() {
-                            return 2;
-                        }
+        private static Element[] elems = {
+            new FilterElement("expression", ExpressionType.getInstance()) {
+                /** @see Element#getMaxOccurs() */
+                @Override
+                public int getMaxOccurs() {
+                    return 2;
+                }
 
-                        /** @see org.geotools.xml.schema.Element#getMinOccurs() */
-                        @Override
-                        public int getMinOccurs() {
-                            return 2;
-                        }
-                    },
-                };
+                /** @see Element#getMinOccurs() */
+                @Override
+                public int getMinOccurs() {
+                    return 2;
+                }
+            },
+        };
         private static Sequence seq = new SequenceGT(elems);
 
         public static ComplexType getInstance() {
@@ -1296,21 +1292,18 @@ public class FilterOpsComplexTypes {
 
     public static class PropertyIsLikeType extends FilterComplexType {
         private static final ComplexType instance = new PropertyIsLikeType();
-        private static Element[] elems =
-                new Element[] {
-                    new FilterElement("PropertyName", PropertyNameType.getInstance()),
-                    new FilterElement("Literal", LiteralType.getInstance()),
-                };
+        private static Element[] elems = {
+            new FilterElement("PropertyName", PropertyNameType.getInstance()),
+            new FilterElement("Literal", LiteralType.getInstance()),
+        };
         private static Sequence seq = new SequenceGT(elems);
-        private static Attribute[] attr =
-                new Attribute[] {
-                    new FilterAttribute(
-                            "wildCard", XSISimpleTypes.String.getInstance(), Attribute.REQUIRED),
-                    new FilterAttribute(
-                            "singleChar", XSISimpleTypes.String.getInstance(), Attribute.REQUIRED),
-                    new FilterAttribute(
-                            "escape", XSISimpleTypes.String.getInstance(), Attribute.REQUIRED),
-                };
+        private static Attribute[] attr = {
+            new FilterAttribute(
+                    "wildCard", XSISimpleTypes.String.getInstance(), Attribute.REQUIRED),
+            new FilterAttribute(
+                    "singleChar", XSISimpleTypes.String.getInstance(), Attribute.REQUIRED),
+            new FilterAttribute("escape", XSISimpleTypes.String.getInstance(), Attribute.REQUIRED),
+        };
 
         public static ComplexType getInstance() {
             return instance;
@@ -1456,11 +1449,10 @@ public class FilterOpsComplexTypes {
 
     public static class PropertyIsNullType extends FilterComplexType {
         private static final ComplexType instance = new PropertyIsNullType();
-        private static Element[] elems =
-                new Element[] {
-                    new FilterElement("PropertyName", PropertyNameType.getInstance()),
-                    new FilterElement("Literal", LiteralType.getInstance()),
-                };
+        private static Element[] elems = {
+            new FilterElement("PropertyName", PropertyNameType.getInstance()),
+            new FilterElement("Literal", LiteralType.getInstance()),
+        };
         private static Choice seq = new ChoiceGT(elems);
 
         public static ComplexType getInstance() {
@@ -1571,12 +1563,11 @@ public class FilterOpsComplexTypes {
 
     public static class PropertyIsBetweenType extends FilterComplexType {
         private static final ComplexType instance = new PropertyIsBetweenType();
-        private static Element[] elems =
-                new Element[] {
-                    new FilterElement("expression", ExpressionType.getInstance()),
-                    new FilterElement("LowerBoundary", LowerBoundaryType.getInstance()),
-                    new FilterElement("UpperBoundary", UpperBoundaryType.getInstance()),
-                };
+        private static Element[] elems = {
+            new FilterElement("expression", ExpressionType.getInstance()),
+            new FilterElement("LowerBoundary", LowerBoundaryType.getInstance()),
+            new FilterElement("UpperBoundary", UpperBoundaryType.getInstance()),
+        };
         private static Sequence seq = new SequenceGT(elems);
 
         public static ComplexType getInstance() {
@@ -1698,10 +1689,9 @@ public class FilterOpsComplexTypes {
         //			<xsd:element ref="ogc:expression"/>
         //		</xsd:choice>
         //		</xsd:complexType>
-        private static Element[] elems =
-                new Element[] {
-                    new FilterElement("expression", ExpressionType.getInstance()),
-                };
+        private static Element[] elems = {
+            new FilterElement("expression", ExpressionType.getInstance()),
+        };
         private static Choice choice = new ChoiceGT(elems);
 
         public static ComplexType getInstance() {
@@ -1788,10 +1778,9 @@ public class FilterOpsComplexTypes {
         //    			<xsd:element ref="ogc:expression"/>
         //    		</xsd:sequence>
         //    	</xsd:complexType>
-        private static Element[] elems =
-                new Element[] {
-                    new FilterElement("expression", ExpressionType.getInstance()),
-                };
+        private static Element[] elems = {
+            new FilterElement("expression", ExpressionType.getInstance()),
+        };
         private static Sequence choice = new SequenceGT(elems);
 
         public static ComplexType getInstance() {
@@ -1886,12 +1875,11 @@ public class FilterOpsComplexTypes {
         //    			</xsd:extension>
         //    		</xsd:complexContent>
         //    	</xsd:complexType>
-        private static Element[] elems =
-                new Element[] {
-                    new FilterElement("PropertyName", PropertyNameType.getInstance()),
-                    GMLSchema.getInstance().getElements()[29], // _Geometry
-                    GMLSchema.getInstance().getElements()[41]
-                };
+        private static Element[] elems = {
+            new FilterElement("PropertyName", PropertyNameType.getInstance()),
+            GMLSchema.getInstance().getElements()[29], // _Geometry
+            GMLSchema.getInstance().getElements()[41]
+        };
         private static Sequence child =
                 new SequenceGT(
                         new ElementGrouping[] {
@@ -2100,7 +2088,7 @@ public class FilterOpsComplexTypes {
                 new FilterElement("PropertyName", PropertyNameType.getInstance());
         private static final Element GML_BOX = GMLSchema.getInstance().getElements()[GMLSchema.BOX];
 
-        private static Element[] elems = new Element[] {OGC_PROPERTY_NAME, GML_BOX};
+        private static Element[] elems = {OGC_PROPERTY_NAME, GML_BOX};
 
         private Sequence seq = new SequenceGT(elems);
 
@@ -2250,12 +2238,11 @@ public class FilterOpsComplexTypes {
         //    			</xsd:extension>
         //    		</xsd:complexContent>
         //    	</xsd:complexType>
-        private static Element[] elems =
-                new Element[] {
-                    new FilterElement("PropertyName", PropertyNameType.getInstance()),
-                    GMLSchema.getInstance().getElements()[29], // _Geometry
-                    new FilterElement("Distance", DistanceType.getInstance())
-                };
+        private static Element[] elems = {
+            new FilterElement("PropertyName", PropertyNameType.getInstance()),
+            GMLSchema.getInstance().getElements()[29], // _Geometry
+            new FilterElement("Distance", DistanceType.getInstance())
+        };
         private Sequence seq = new SequenceGT(elems);
 
         public static ComplexType getInstance() {
@@ -2386,11 +2373,9 @@ public class FilterOpsComplexTypes {
         //    	<xsd:complexType name="DistanceType" mixed="true">
         //    		<xsd:attribute name="units" type="xsd:string" use="required"/>
         //    	</xsd:complexType>
-        private static Attribute[] attrs =
-                new Attribute[] {
-                    new FilterAttribute(
-                            "units", XSISimpleTypes.String.getInstance(), Attribute.REQUIRED),
-                };
+        private static Attribute[] attrs = {
+            new FilterAttribute("units", XSISimpleTypes.String.getInstance(), Attribute.REQUIRED),
+        };
 
         public static ComplexType getInstance() {
             return instance;
@@ -2526,12 +2511,11 @@ public class FilterOpsComplexTypes {
         //    			</xsd:extension>
         //    		</xsd:complexContent>
         //    	</xsd:complexType>
-        private static Element[] elems =
-                new Element[] {
-                    new FilterElement("comparisonOps", ComparisonOpsType.getInstance()),
-                    new FilterElement("spatialOps", SpatialOpsType.getInstance()),
-                    new FilterElement("logicOps", LogicOpsType.getInstance())
-                };
+        private static Element[] elems = {
+            new FilterElement("comparisonOps", ComparisonOpsType.getInstance()),
+            new FilterElement("spatialOps", SpatialOpsType.getInstance()),
+            new FilterElement("logicOps", LogicOpsType.getInstance())
+        };
         private static Choice choice = new ChoiceGT(null, 2, Integer.MAX_VALUE, elems);
 
         public static ComplexType getInstance() {
@@ -2677,12 +2661,11 @@ public class FilterOpsComplexTypes {
         //    			</xsd:extension>
         //    		</xsd:complexContent>
         //    	</xsd:complexType>
-        private static Element[] elems =
-                new Element[] {
-                    new FilterElement("comparisonOps", ComparisonOpsType.getInstance()),
-                    new FilterElement("spatialOps", SpatialOpsType.getInstance()),
-                    new FilterElement("logicOps", LogicOpsType.getInstance())
-                };
+        private static Element[] elems = {
+            new FilterElement("comparisonOps", ComparisonOpsType.getInstance()),
+            new FilterElement("spatialOps", SpatialOpsType.getInstance()),
+            new FilterElement("logicOps", LogicOpsType.getInstance())
+        };
         private static Choice choice = new ChoiceGT(elems);
 
         public static ComplexType getInstance() {

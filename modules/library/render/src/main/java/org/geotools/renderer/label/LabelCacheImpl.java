@@ -172,8 +172,7 @@ public class LabelCacheImpl implements LabelCache {
     public double DEFAULT_PRIORITY = 1000.0;
 
     // list of displacement angles to be used for polys
-    public static final int[] DEFAULT_DISPLACEMENT_ANGLES =
-            new int[] {0, 45, 90, 135, 180, 225, 270, 315};
+    public static final int[] DEFAULT_DISPLACEMENT_ANGLES = {0, 45, 90, 135, 180, 225, 270, 315};
 
     /** The angle delta at which we switch from curved rendering to straight rendering */
     public static double MIN_CURVED_DELTA = Math.PI / 60;
@@ -188,20 +187,20 @@ public class LabelCacheImpl implements LabelCache {
     private List<Rectangle2D> reserved = new ArrayList<>();
 
     // Anchor candidate values used when looping to find a point label that can be drawn
-    static final double[] RIGHT_ANCHOR_CANDIDATES = new double[] {0, 0.5, 0, 0, 0, 1};
-    static final double[] MID_ANCHOR_CANDIDATES = new double[] {0.5, 0.5, 0, 0.5, 1, 0.5};
-    static final double[] LEFT_ANCHOR_CANDIDATES = new double[] {1, 0.5, 1, 0, 1, 1};
+    static final double[] RIGHT_ANCHOR_CANDIDATES = {0, 0.5, 0, 0, 0, 1};
+    static final double[] MID_ANCHOR_CANDIDATES = {0.5, 0.5, 0, 0.5, 1, 0.5};
+    static final double[] LEFT_ANCHOR_CANDIDATES = {1, 0.5, 1, 0, 1, 1};
 
     // Anchor candidate values used when looping to find a point label that can be drawn
     // applicable only in case displacementMode is set
-    static final double[] RIGHT_UP_ANCHOR_CANDIDATES = new double[] {0, 0, 0, 0.5};
-    static final double[] RIGHT_DOWN_ANCHOR_CANDIDATES = new double[] {0, 1, 0, 0.5};
-    static final double[] VERTICAL_UP_ANCHOR_CANDIDATES = new double[] {0.5, 0.5, 0.5, 0.0};
-    static final double[] VERTICAL_DOWN_ANCHOR_CANDIDATES = new double[] {0.5, 0.5, 0.5, 1};
-    static final double[] HORIZONTAL_LEFT_ANCHOR_CANDIDATES = new double[] {0.5, 0.5, 1.0, 0.5};
-    static final double[] HORIZONTAL_RIGHT_ANCHOR_CANDIDATES = new double[] {0.5, 0.5, 0, 0.5};
-    static final double[] LEFT_UP_ANCHOR_CANDIDATES = new double[] {1, 0, 1, 0.5};
-    static final double[] LEFT_DOWN_ANCHOR_CANDIDATES = new double[] {1, 1, 1, 0.5};
+    static final double[] RIGHT_UP_ANCHOR_CANDIDATES = {0, 0, 0, 0.5};
+    static final double[] RIGHT_DOWN_ANCHOR_CANDIDATES = {0, 1, 0, 0.5};
+    static final double[] VERTICAL_UP_ANCHOR_CANDIDATES = {0.5, 0.5, 0.5, 0.0};
+    static final double[] VERTICAL_DOWN_ANCHOR_CANDIDATES = {0.5, 0.5, 0.5, 1};
+    static final double[] HORIZONTAL_LEFT_ANCHOR_CANDIDATES = {0.5, 0.5, 1.0, 0.5};
+    static final double[] HORIZONTAL_RIGHT_ANCHOR_CANDIDATES = {0.5, 0.5, 0, 0.5};
+    static final double[] LEFT_UP_ANCHOR_CANDIDATES = {1, 0, 1, 0.5};
+    static final double[] LEFT_DOWN_ANCHOR_CANDIDATES = {1, 1, 1, 0.5};
 
     protected LabelRenderingMode labelRenderingMode = LabelRenderingMode.STRING;
 
@@ -1406,7 +1405,7 @@ public class LabelCacheImpl implements LabelCache {
                     double dx = radius * Math.cos(Math.toRadians(angle));
                     double dy = radius * Math.sin(Math.toRadians(angle));
 
-                    double[] anchorPointCandidates = new double[] {0.5, 0.5};
+                    double[] anchorPointCandidates = {0.5, 0.5};
                     if (angle == DisplacementMode.NE.getAngle()) {
                         anchorPointCandidates = RIGHT_UP_ANCHOR_CANDIDATES;
                     } else if (angle == DisplacementMode.SE.getAngle()) {

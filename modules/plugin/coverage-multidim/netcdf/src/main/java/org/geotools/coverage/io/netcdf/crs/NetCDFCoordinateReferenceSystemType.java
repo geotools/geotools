@@ -364,14 +364,11 @@ public enum NetCDFCoordinateReferenceSystemType {
             this.units = that.getUnits();
         }
 
-        public static final NetCDFCoordinate[] LATLON_COORDS =
-                new NetCDFCoordinate[] {LAT_COORDINATE, LON_COORDINATE};
+        public static final NetCDFCoordinate[] LATLON_COORDS = {LAT_COORDINATE, LON_COORDINATE};
 
-        public static final NetCDFCoordinate[] RLATLON_COORDS =
-                new NetCDFCoordinate[] {RLAT_COORDINATE, RLON_COORDINATE};
+        public static final NetCDFCoordinate[] RLATLON_COORDS = {RLAT_COORDINATE, RLON_COORDINATE};
 
-        public static final NetCDFCoordinate[] YX_COORDS =
-                new NetCDFCoordinate[] {Y_COORDINATE, X_COORDINATE};
+        public static final NetCDFCoordinate[] YX_COORDS = {Y_COORDINATE, X_COORDINATE};
 
         /** short name. (as an instance: x) */
         private String shortName;

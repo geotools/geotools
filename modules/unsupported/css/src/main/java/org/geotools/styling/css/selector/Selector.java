@@ -51,10 +51,9 @@ public abstract class Selector implements Comparable<Selector> {
     private static List<AndCombiner> AND_COMBINERS;
 
     static {
-        Class<?>[] baseClasses =
-                new Class[] {
-                    TypeName.class, ScaleRange.class, Id.class, Data.class, PseudoClass.class
-                };
+        Class<?>[] baseClasses = {
+            TypeName.class, ScaleRange.class, Id.class, Data.class, PseudoClass.class
+        };
         AND_COMBINERS = new ArrayList<>();
         for (Class<?> baseClass : baseClasses) {
             try {

@@ -140,12 +140,11 @@ public class JiffleProcessTest {
         GridCoverage2D result = (GridCoverage2D) output.get(JiffleProcess.OUT_RESULT);
         float[][] resultData = data(result, 0);
 
-        float[][] expected =
-                new float[][] {
-                    {2, 0, 0},
-                    {0, 2, 0},
-                    {0, 0, 2},
-                };
+        float[][] expected = {
+            {2, 0, 0},
+            {0, 2, 0},
+            {0, 0, 2},
+        };
         assertArrayEquals(expected, resultData);
 
         // the two coverages have the same grid geometry, no need to resample them via

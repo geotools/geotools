@@ -35,8 +35,7 @@ public abstract class WorldImageBaseTestCase {
         private Set<String> extensions = new HashSet<>();
 
         public MyFileFilter() {
-            String[] extensions =
-                    new String[] {".gif", ".jpg", ".jpeg", ".tif", ".tiff", ".png", ".bmp"};
+            String[] extensions = {".gif", ".jpg", ".jpeg", ".tif", ".tiff", ".png", ".bmp"};
             this.setExtensions(extensions);
         }
 

@@ -147,8 +147,7 @@ public class StorageFileTest implements FileReader {
             assertNotEquals(0, storagePRJ1.compareTo(storageSHP1));
             assertNotEquals(0, storagePRJ1.compareTo(storagePRJ2));
 
-            StorageFile[] array =
-                    new StorageFile[] {storagePRJ1, storagePRJ2, storageSHP1, storageSHP2};
+            StorageFile[] array = {storagePRJ1, storagePRJ2, storageSHP1, storageSHP2};
 
             Arrays.sort(array);
 

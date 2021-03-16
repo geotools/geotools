@@ -33,6 +33,8 @@ import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.artifact.MavenMetadataSource;
 import org.eclipse.xsd.XSDSchema;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.AbstractSimpleBinding;
@@ -52,49 +54,43 @@ public class BindingGeneratorMojo extends AbstractGeneratorMojo {
 
 	/**
      * Flag controlling whether a parser configuration ( {@link Configuration} )
-     * the default is true.
-     * 
-     * @parameter expression="true"
+     * the default is {@code true}.
      */
+	@Parameter(defaultValue = "true")
     boolean generateConfiguration;
     
     /**
      * Flag controlling whether an xsd ({@link XSD} subclass should be generated.
-     * 
-     * @parameter expression="true"
      */
+    @Parameter(defaultValue = "true")
     boolean generateXsd;
     
     /**
      * Flag controlling whether bindings for attributes should be generated, default is
-     * false.
-     * 
-     * @parameter expression="false"
+     * {@code false}.
      */
+    @Parameter(defaultValue = "false")
     boolean generateAttributeBindings;
     
     /**
      * Flag controlling whether bindings for elements should be generated, default is
-     * false.
-     * 
-     * @parameter expression="false"
+     * {@code false}.
      */
+    @Parameter(defaultValue = "false")
     boolean generateElementBindings;
     
     /**
      * Flag controlling whether bindings for types should be generated, default is
-     * true.
-     * 
-     * @parameter expression="true"
+     * {@code true}.
      */
+    @Parameter(defaultValue = "true")
     boolean generateTypeBindings;
 	
     /**
      * Flag controlling whether test for bindings should be generated, default is
      * false.
-     * 
-     * @parameter expression="false"
      */
+    @Parameter(defaultValue = "false")
     boolean generateTests;
     
     /**
@@ -104,26 +100,23 @@ public class BindingGeneratorMojo extends AbstractGeneratorMojo {
      * "member", or "parent". If set to "member" the argument will be set to a 
      * member of the binding. If set to "parent" the argument will passed through
      * to the call to the super constructor. The default is "member"
-     * 
-     * @parameter
+     *
      */
+    @Parameter
     BindingConstructorArgument[] bindingConstructorArguments;
     
     /**
      * The base class for complex bindings. If unspecified {@link AbstractComplexBinding}
      * is used.
-     * 
-     * @parameter expression="org.geotools.xsd.AbstractComplexBinding"
-     * 
      */
+    @Parameter(defaultValue = "org.geotools.xsd.AbstractComplexBinding")
     String complexBindingBaseClass;
     
     /**
      * The base class for simple bindings. If unspecified {@link AbstractSimpleBinding}
      * is used.
-     * 
-     * @parameter expression="org.geotools.xsd.AbstractSimpleBinding"
      */
+    @Parameter(defaultValue = "org.geotools.xsd.AbstractSimpleBinding")
     String simpleBindingBaseClass;
     
     @Override

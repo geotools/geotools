@@ -29,10 +29,14 @@ import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.repository.RepositorySystem;
+import org.eclipse.aether.RepositorySystemSession;
+import org.eclipse.aether.resolution.ArtifactRequest;
 import org.eclipse.xsd.XSDSchema;
 import org.opengis.feature.type.Schema;
-
 
 /**
  * Generates an instance of {@link org.opengis.feature.type.Schema } from an xml schema.
@@ -45,50 +49,49 @@ public class SchemaGeneratorMojo extends AbstractGeneratorMojo {
 
 	/**
 	 * Flag controlling whether complex types from the schema should be included.
-	 * @parameter expression="true"
 	 */
+	@Parameter(defaultValue = "true")
 	boolean includeComplexTypes;
 	/**
 	 * Flag controlling whether simple types from the schema should be included.
-	 * @parameter expression="true"
 	 */
+	@Parameter(defaultValue = "true")
 	boolean includeSimpleTypes;
 	/**
 	 * Flag controlling whether complex types should be composed of geotools 
 	 * attribute descriptors which mirror the xml schema particles.
-	 * @parameter expression="true"
 	 */
+	@Parameter(defaultValue = "true")
 	boolean followComplexTypes;
 	/**
 	 * List of schema classes to use as imports
-	 * @parameter
 	 */
+	@Parameter
 	String[] imports;
 	/**
-         * Flag controlling whether paths are printed out as the generator recurses 
-         * through the schema.
-         * @parameter expression="false"
-         */
+	 * Flag controlling whether paths are printed out as the generator recurses
+	 * through the schema.
+	 */
+	@Parameter(defaultValue = "false")
 	boolean printRecursionPaths;
 	/**
 	 * Controls how far the generator will recurse into the schema.
-	 * @parameter
 	 */
+	@Parameter
 	int maxRecursionDepth;
 	/**
 	 * List of explicit bindings from XSD type to fully-qualified class name.
 	 * Namespace defaults to the target schema namespace.
-	 * @parameter
 	 */
+	@Parameter
 	private TypeBinding[] typeBindings;
 	
 	/**
 	 * Support types that are cyclically defined, such as gmd:CI_CitationType from GML 3.2. Types in
 	 * generated Schema file will be defined using AbstractLazyAttributeType and
 	 * AbstractLazyComplexType.
-	 * 
-	 * @parameter expression="false"
 	 */
+	@Parameter(defaultValue = "false")
 	boolean cyclicTypeSupport;
 	
 	@Override
@@ -152,7 +155,7 @@ public class SchemaGeneratorMojo extends AbstractGeneratorMojo {
                 try {
                     schemaClass = ext.loadClass(schemaClassName);
                 } catch (ClassNotFoundException e) {
-                    getLog().error("Could note load class: " + schemaClassName);
+                    getLog().error("Could not load class: " + schemaClassName);
                     return;
                 }
 

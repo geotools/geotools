@@ -33,10 +33,13 @@ import java.util.List;
 import java.util.Set;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
-import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
+import org.apache.maven.artifact.factory.DefaultArtifactFactory;
+import org.apache.maven.repository.legacy.metadata.ArtifactMetadataSource;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.eclipse.aether.impl.ArtifactResolver;
 import org.eclipse.xsd.XSDSchema;
@@ -56,128 +59,110 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
 
 	/**
 	 * The .xsd file defining the schema to generate bindings for.
-	 * 
-	 * @parameter 
-	 * @required
 	 */
+	@Parameter(required = true)
 	protected File schemaLocation;
 	
 	/**
 	 * Directory containing xml schemas, default is ${basedir}/src/main/xsd.
-	 *
-	 * @parameter expression="${basedir}/src/main/xsd"
 	 */
+	@Parameter(defaultValue = "${basedir}/src/main/xsd")
 	protected File schemaSourceDirectory;
 	
 	/**
 	 * Additional directories used to locate included and imported schemas.
-	 * 
-	 * @parameter
 	 */
+	@Parameter
 	protected File[] schemaLookupDirectories;
 	
 	/**
 	 * The destination package of the generated source files in the standard dot-seperated 
 	 * naming format.
-	 * 
-	 * @parameter
 	 */
+	@Parameter
 	protected String destinationPackage;
 	
 	/**
-	 * Directory to output generated files to. Default is ${project.build.sourceDirectory}
-	 * <p>
-	 * {@link Deprecated}, use one of {@link #sourceOutputDirectory} or {@link #testOutputDirectory}
-	 * </p>
-	 * @parameter expression="${project.build.sourceDirectory}"
+	 * Directory to output generated files to. Default is {@code ${project.build.sourceDirectory}}
+	 *
+	 * @eprecated use one of {@link #sourceOutputDirectory} or {@link #testOutputDirectory}
 	 */
+	@Deprecated
+	@Parameter(defaultValue = "${project.build.sourceDirectory}")
 	protected File outputDirectory;
 	
 	/**
-     * Directory to output generated source files to. Default is 
-     * ${project.build.sourceDirectory}
-     * 
-     * @parameter expression="${project.build.sourceDirectory}"
-     */
+	 * Directory to output generated source files to. Default is
+	 * {@code ${project.build.sourceDirectory}}
+	 */
+	@Parameter(defaultValue = "${project.build.sourceDirectory}")
 	protected File sourceOutputDirectory;
 	/**
      * Directory to output generated test files to. Default is 
-     * ${project.build.testDirectory}
-     * 
-     * @parameter expression="${project.build.testSourceDirectory}"
+     * {@code ${project.build.testDirectory}}
+     *
      */
+	@Parameter(defaultValue = "${project.build.testSourceDirectory}")
 	protected File testOutputDirectory;
 	/**
 	 * Flag controlling whether files should override files that already
 	 * exist with the same name. False by default.
-	 * 
-	 * @param expression="false"
 	 */
+	@Parameter(defaultValue = "false")
 	protected boolean overwriteExistingFiles;
 	
 	/**
      * List of names of attributes, elements, and types to include, if unset all will
      * be generated.
-     * 
-     * @parameter
      */
+	@Parameter
     protected String[] includes;
     /**
      * The prefix to use for the targetNamespace.
-     * 
-     * @parameter
+     *
      */
+		@Parameter
     protected String targetPrefix;
 	
 	/**
-     * The currently executing project
-     * 
-     * @parameter expression="${project}"
+     * The currently executing project.
      */
+	@Parameter(defaultValue = "${project}", required = true, readonly = true)
     MavenProject project;
     
     /**
-     * The local maven repository
-     * 
-     * @parameter expression="${localRepository}" 
+     * The local maven repository.
      */
+		@Parameter(defaultValue = "${localRepository}", required = true, readonly = true)
     ArtifactRepository localRepository;
     
     /**
-     * Remote maven repositories
-     *  
-     * @parameter expression="${project.remoteArtifactRepositories}" 
+     * Remote maven repositories.
      */
+		@Parameter(defaultValue = "${project.remoteArtifactRepositories}", required = true, readonly = true)
     List remoteRepositories;
     
-    /** 
-     * @component 
-     */
-    ArtifactFactory artifactFactory;
+
+		@Component(role=ArtifactFactory.class)
+		DefaultArtifactFactory artifactFactory;
     
-    /**
-     * @component
-     */
-    ArtifactResolver artifactResolver;
-    
-    /**
-     * @component
-     */
+
+    @Component
+		ArtifactResolver artifactResolver;
+
+	@Component
     ArtifactMetadataSource artifactMetadataSource;
     
     /**
      * The classpath elements of the project.
-     *
-     * @parameter expression="${project.runtimeClasspathElements}"
-     * @required
-     * @readonly
      */
+    @Parameter(required = true, readonly = true, defaultValue = "${project.runtimeClasspathElements}")
     List classpathElements;
     
     /**
      * Flag to control whether to include GML libraries on classpath when running.
-     * @parameter expression="true"
      */
+		@Parameter(defaultValue = "true")
     boolean includeGML;
     
     /**
@@ -186,9 +171,9 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
      * schemaLookupDirectories. This requires all included/imported schemas to be present in the
      * expected relative filesystem location. The main advantage of this approach is that it
      * supports schema files that have cyclic dependencies (e.g. GML 3.2).
-     * 
-     * @parameter expression="false"
+     *
      */
+		@Parameter(defaultValue = "false")
     boolean relativeSchemaReference;
     
     protected XSDSchema schema() {
@@ -241,11 +226,12 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
         for (Artifact artifact : artifacts) {
             getLog().debug("Attempting to dynamically resolve: " + artifact);
             try {
-                Set resolvedArtifacts = project.createArtifacts(artifactFactory, null, null);
+                Set<Artifact> resolvedArtifacts = project.createArtifacts(artifactFactory, null, null);
                 //artifactResolver.resolve( artifact, remoteRepositories, localRepository );
                 ArtifactResolutionResult result =
                         artifactResolver.resolveTransitively(resolvedArtifacts, artifact,
                                 remoteRepositories, localRepository, artifactMetadataSource);
+
                 resolvedArtifacts = result.getArtifacts();
 
                 for (Object o : resolvedArtifacts) {

@@ -46,6 +46,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.compiler.util.scan.InclusionScanException;
 import org.codehaus.plexus.compiler.util.scan.SourceInclusionScanner;
@@ -89,37 +90,26 @@ import org.javacc.parser.Main;
  */
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class JJTreeJavaCC extends AbstractMojo {
-    /**
-     * The package to generate the node classes into.
-     *
-     * @parameter expression=""
-     * @required
-     */
+    /** The package to generate the node classes into. */
+    @Parameter(required = true)
     private String nodePackage;
 
     /**
      * Directory where user-specified <code>Node.java</code> and <code>SimpleNode.java</code> files
      * are located. If no node exist, JJTree will create ones.
-     *
-     * @parameter expression="${basedir}/src/main/jjtree"
-     * @required
      */
+    @Parameter(required = true, defaultValue = "${basedir}/src/main/jjtree")
     private String nodeDirectory;
 
-    /**
-     * Directory where the JJT file(s) are located.
-     *
-     * @parameter expression="${basedir}/src/main/jjtree"
-     * @required
-     */
+    /** Directory where the JJT file(s) are located. */
+    @Parameter(required = true, defaultValue = "${basedir}/src/main/jjtree")
     private String sourceDirectory;
 
-    /**
-     * Directory where the output Java files will be located.
-     *
-     * @parameter expression="${project.build.directory}/generated-sources/jjtree-javacc"
-     * @required
-     */
+    /** Directory where the output Java files will be located. */
+    @Parameter(
+        required = true,
+        defaultValue = "${project.build.directory}/generated-sources/jjtree-javacc"
+    )
     private String outputDirectory;
 
     /**
@@ -127,27 +117,19 @@ public class JJTreeJavaCC extends AbstractMojo {
      */
     private File outputPackageDirectory;
 
-    /**
-     * The directory to store the processed <code>.jjt</code> files.
-     *
-     * @parameter expression="${project.build.directory}/timestamp"
-     */
+    /** The directory to store the processed <code>.jjt</code> files. */
+    @Parameter(defaultValue = "${project.build.directory}/timestamp")
     private String timestampDirectory;
 
     /**
      * The granularity in milliseconds of the last modification date for testing whether a source
      * needs recompilation
-     *
-     * @parameter expression="${lastModGranularityMs}" default-value="0"
      */
+    @Parameter(defaultValue = "${lastModGranularityMs}")
     private int staleMillis;
 
-    /**
-     * The Maven project running this plugin.
-     *
-     * @parameter expression="${project}"
-     * @required
-     */
+    /** The Maven project running this plugin. */
+    @Parameter(required = true, defaultValue = "${project}", readonly = true)
     private MavenProject project;
 
     /**
@@ -158,7 +140,6 @@ public class JJTreeJavaCC extends AbstractMojo {
      * @throws MojoExecutionException if the plugin execution failed.
      */
     @Override
-    @SuppressWarnings("PMD.SystemPrintln")
     public void execute() throws MojoExecutionException, MojoFailureException {
         // if not windows, don't rewrite file
         final boolean windowsOs = System.getProperty("os.name").indexOf("Windows") != -1;
@@ -239,7 +220,7 @@ public class JJTreeJavaCC extends AbstractMojo {
                 String[] files =
                         FileUtils.getFilesFromExtension(outputDirectory, new String[] {"java"});
                 for (String file : files) {
-                    System.out.println("Fixing " + file);
+                    getLog().info("Fixing " + file);
                     fixHeader(new File(file));
                 }
             } catch (IOException e) {

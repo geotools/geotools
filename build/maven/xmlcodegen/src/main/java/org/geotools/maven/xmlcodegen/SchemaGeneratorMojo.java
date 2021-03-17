@@ -24,7 +24,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -32,9 +31,12 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.repository.RepositorySystem;
+import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.RepositorySystemSession;
+import org.eclipse.aether.artifact.Artifact;
+import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.resolution.ArtifactRequest;
+import org.eclipse.aether.resolution.ArtifactResult;
 import org.eclipse.xsd.XSDSchema;
 import org.opengis.feature.type.Schema;
 
@@ -93,7 +95,19 @@ public class SchemaGeneratorMojo extends AbstractGeneratorMojo {
 	 */
 	@Parameter(defaultValue = "false")
 	boolean cyclicTypeSupport;
-	
+
+	/**
+	 * The entry point to Maven Artifact Resolver, i.e. the component doing all the work.
+	 */
+	@Component
+	private RepositorySystem repoSystem;
+
+	/**
+	 * The current repository/network configuration of Maven.
+	 */
+	@Parameter(defaultValue = "${repositorySystemSession}", readonly = true)
+	private RepositorySystemSession repoSession;
+
 	@Override
     public void execute() throws MojoExecutionException, MojoFailureException {
     	XSDSchema schema = schema();
@@ -123,17 +137,18 @@ public class SchemaGeneratorMojo extends AbstractGeneratorMojo {
 		if (imports != null) {
 		    //build a url classload from dependencies
 		    List<URL> urls = new ArrayList<>();
-            for (Object o : project.getDependencies()) {
-                Dependency dep = (Dependency) o;
+            for (Dependency dep : project.getDependencies()) {
 
-                Artifact artifact = artifactFactory.createArtifact(
-                        dep.getGroupId(), dep.getArtifactId(), dep.getVersion(), null, dep.getType()
-                );
+									Artifact artifact = new DefaultArtifact(
+											dep.getGroupId(), dep.getArtifactId(), null, dep.getVersion(), dep.getType());
+									ArtifactRequest request = new ArtifactRequest();
+									request.setArtifact(artifact);
+									request.setRepositories(remoteRepositories);
                 try {
-                    artifactResolver.resolve(artifact, remoteRepositories, localRepository);
-                    urls.add(artifact.getFile().toURI().toURL());
+										ArtifactResult result = repoSystem.resolveArtifact( repoSession, request );
+										urls.add(result.getArtifact().getFile().toURI().toURL());
                 } catch (Exception e) {
-                    getLog().error("Unable to resolve " + artifact.getId());
+                    getLog().error("Unable to resolve " + artifact.getArtifactId());
                 }
             }
 	        

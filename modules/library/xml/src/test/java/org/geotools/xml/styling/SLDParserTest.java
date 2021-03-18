@@ -40,6 +40,7 @@ import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Mark;
 import org.geotools.styling.PointSymbolizer;
+import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.ResourceLocator;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Stroke;
@@ -367,6 +368,34 @@ public class SLDParserTest {
                     + "					   <VendorOption name=\"NullVendor\"/>  \n"
                     + "					   <VendorOption name=\"OkVendor\">TEST_OK</VendorOption>  \n"
                     + "                </PointSymbolizer>\n"
+                    + "            </Rule>\n"
+                    + "        </FeatureTypeStyle>\n"
+                    + "    </UserStyle>\n"
+                    + "</StyledLayerDescriptor>";
+
+    static String SLD_RASTER_SYMBOLIZER_WITH_VENDOR_OPTIONS =
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                    + "<StyledLayerDescriptor version=\"1.0.0\" \n"
+                    + "        xsi:schemaLocation=\"http://www.opengis.net/sld StyledLayerDescriptor.xsd\" \n"
+                    + "        xmlns=\"http://www.opengis.net/sld\" xmlns:ogc=\"http://www.opengis.net/ogc\" \n"
+                    + "        xmlns:xlink=\"http://www.w3.org/1999/xlink\" \n"
+                    + "        xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n"
+                    + "    <UserStyle>\n"
+                    + "        <Name>Default Styler</Name>\n"
+                    + "        <Title>Default Styler</Title>\n"
+                    + "        <Abstract></Abstract>\n"
+                    + "        <FeatureTypeStyle>\n"
+                    + "            <Rule>\n"
+                    + "                <RasterSymbolizer>\n"
+                    + "                    <ColorMap>\n"
+                    + "                     <ColorMapEntry color=\"#FF0000\" quantity=\"0\" />\n"
+                    + "                     <ColorMapEntry color=\"#FFFFFF\" quantity=\"100\"/>\n"
+                    + "                     <ColorMapEntry color=\"#00FF00\" quantity=\"2000\"/>\n"
+                    + "                     <ColorMapEntry color=\"#0000FF\" quantity=\"5000\"/>\n"
+                    + "                    </ColorMap>\n"
+                    + "					   <VendorOption name=\"FirstVendorOption\">FIRST_VENDOR_OPTION</VendorOption>\n"
+                    + "					   <VendorOption name=\"SecondVendorOption\">SECOND_VENDOR_OPTION</VendorOption>\n"
+                    + "                </RasterSymbolizer>\n"
                     + "            </Rule>\n"
                     + "        </FeatureTypeStyle>\n"
                     + "    </UserStyle>\n"
@@ -783,6 +812,26 @@ public class SLDParserTest {
 
         assertEquals(1, ps.getOptions().size());
         assertTrue(ps.getOptions().containsKey(OK_KEY));
+    }
+
+    @Test
+    public void testVendorOptionsInRasterSymbolizer() throws Exception {
+        // tests that VendorOptions placed under a RasterSymbolizer
+        // are correctly parsed
+        SLDParser parser =
+                new SLDParser(styleFactory, input(SLD_RASTER_SYMBOLIZER_WITH_VENDOR_OPTIONS));
+        Style[] styles = parser.readXML();
+        List<FeatureTypeStyle> fts = styles[0].featureTypeStyles();
+        List<Rule> rules = fts.get(0).rules();
+        List<Symbolizer> symbolizers = rules.get(0).symbolizers();
+
+        RasterSymbolizer ps = (RasterSymbolizer) symbolizers.get(0);
+
+        assertEquals(2, ps.getOptions().size());
+        assertTrue(ps.getOptions().containsKey("FirstVendorOption"));
+        assertTrue(ps.getOptions().containsKey("SecondVendorOption"));
+        assertEquals("FIRST_VENDOR_OPTION", ps.getOptions().get("FirstVendorOption"));
+        assertEquals("SECOND_VENDOR_OPTION", ps.getOptions().get("SecondVendorOption"));
     }
 
     void assertStyles(Style[] styles) {

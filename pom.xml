@@ -501,7 +501,7 @@
   <groupId>org.geotools</groupId>
   <artifactId>geotools</artifactId>
   <packaging>pom</packaging>
-  <version>25-SNAPSHOT</version>
+  <version>25.0</version>
   <name>GeoTools</name>
 
   <scm>

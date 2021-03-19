@@ -27,6 +27,8 @@ jobs:
       run: |
         docker container prune --force
         docker image prune -a --force
+        sudo rm -rf /usr/local/lib/android
+        sudo rm -rf /usr/share/dotnet 
         df -h
     - name: Setup test environment for Oracle XE 
       run: |

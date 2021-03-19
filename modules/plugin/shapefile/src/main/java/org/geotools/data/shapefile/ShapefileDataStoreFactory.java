@@ -243,7 +243,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
             store.setBufferCachingEnabled(cacheMemoryMaps);
             store.setCharset(dbfCharset);
             if (!hasParam(DBFCHARSET, params)) {
-                store.tryCpgFile = true;
+                store.setTryCpgFile(true);
             }
             store.setTimeZone(dbfTimeZone);
             store.setIndexed(enableIndex);

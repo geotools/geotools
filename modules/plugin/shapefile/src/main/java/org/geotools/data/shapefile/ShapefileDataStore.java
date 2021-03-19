@@ -117,7 +117,7 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
 
     long maxDbfSize = ShapefileFeatureWriter.DEFAULT_MAX_DBF_SIZE;
 
-    boolean tryCpgFile = false;
+    private boolean tryCpgFile = false;
 
     public ShapefileDataStore(URL url) {
         shpFiles = new ShpFiles(url);

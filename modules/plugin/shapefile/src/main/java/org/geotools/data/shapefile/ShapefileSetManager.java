@@ -16,6 +16,7 @@
  */
 package org.geotools.data.shapefile;
 
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static org.geotools.data.shapefile.files.ShpFileType.CPG;
 import static org.geotools.data.shapefile.files.ShpFileType.DBF;
 import static org.geotools.data.shapefile.files.ShpFileType.PRJ;
@@ -99,7 +100,7 @@ class ShapefileSetManager implements FileReader {
             try (BufferedReader br =
                     new BufferedReader(
                             new InputStreamReader(
-                                    shpFiles.getInputStream(CPG, this), "ISO-8859-1"))) {
+                                    shpFiles.getInputStream(CPG, this), ISO_8859_1))) {
                 String charsetName;
                 if ((charsetName = br.readLine()) != null) {
                     try {

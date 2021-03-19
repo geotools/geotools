@@ -38,6 +38,9 @@ public class MBTilesMetadata {
             Pattern.compile(
                     " *(\\-?[0-9\\.]*) *, *(\\-?[0-9\\.]*) *, *(\\-?[0-9\\.]*) *, *(\\-?[0-9\\.]*) *");
 
+    protected static Pattern patternCenter =
+            Pattern.compile(" *(\\-?[0-9\\.]*) *, *(\\-?[0-9\\.]*) *, *(\\-?[0-9\\.]*) *");
+
     public enum t_type {
         OVERLAY("overlay"),
         BASE_LAYER("baselayer");
@@ -88,6 +91,8 @@ public class MBTilesMetadata {
 
     protected String json;
 
+    protected double[] center;
+
     public String getName() {
         return name;
     }
@@ -134,6 +139,14 @@ public class MBTilesMetadata {
 
     public void setBounds(Envelope bounds) {
         this.bounds = bounds;
+    }
+
+    public double[] getCenter() {
+        return center;
+    }
+
+    public void setCenter(double[] center) {
+        this.center = center;
     }
 
     public String getAttribution() {
@@ -190,6 +203,14 @@ public class MBTilesMetadata {
         }
     }
 
+    public String getCenterStr() {
+        if (center == null) {
+            return null;
+        } else {
+            return center[0] + "," + center[1] + "," + center[2];
+        }
+    }
+
     public void setTypeStr(final String typeStr) {
         if (typeStr == null) {
             setType(null);
@@ -236,6 +257,22 @@ public class MBTilesMetadata {
             } catch (FactoryException e) {
                 LOGGER.log(Level.SEVERE, e.getMessage(), e);
             }
+        }
+    }
+
+    public void setCenterStr(String centerStr) {
+        if (centerStr == null) {
+            setCenter(null);
+        } else {
+            Matcher matcherCenter = patternCenter.matcher(centerStr);
+            if (!matcherCenter.matches()) {
+                throw new IllegalArgumentException(
+                        "Center not in correct format: longitude,latitude,zoom level");
+            }
+            double lon = Double.parseDouble(matcherCenter.group(1));
+            double lat = Double.parseDouble(matcherCenter.group(2));
+            double zoomLevel = Double.parseDouble(matcherCenter.group(3));
+            setCenter(new double[] {lon, lat, zoomLevel});
         }
     }
 

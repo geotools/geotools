@@ -134,6 +134,8 @@ public class MBTilesFile implements AutoCloseable {
 
     protected final String MD_BOUNDS = "bounds";
 
+    protected final String MD_CENTER = "center";
+
     protected final String MD_ATTRIBUTION = "attribution";
 
     protected final String MD_MINZOOM = "minzoom";
@@ -234,6 +236,7 @@ public class MBTilesFile implements AutoCloseable {
                 saveMetaDataEntry(MD_TYPE, metaData.getTypeStr(), cx);
                 saveMetaDataEntry(MD_FORMAT, metaData.getFormatStr(), cx);
                 saveMetaDataEntry(MD_BOUNDS, metaData.getBoundsStr(), cx);
+                saveMetaDataEntry(MD_CENTER, metaData.getCenterStr(), cx);
                 saveMetaDataEntry(MD_MINZOOM, String.valueOf(metaData.getMinZoom()), cx);
                 saveMetaDataEntry(MD_MAXZOOM, String.valueOf(metaData.getMaxZoom()), cx);
                 saveMetaDataEntry(MD_JSON, String.valueOf(metaData.getJson()), cx);
@@ -396,6 +399,7 @@ public class MBTilesFile implements AutoCloseable {
                 metaData.setAttribution(loadMetaDataEntry(MD_ATTRIBUTION, cx));
                 metaData.setTypeStr(loadMetaDataEntry(MD_TYPE, cx));
                 metaData.setFormatStr(loadMetaDataEntry(MD_FORMAT, cx));
+                metaData.setCenterStr(loadMetaDataEntry(MD_CENTER, cx));
                 metaData.setBoundsStr(loadMetaDataEntry(MD_BOUNDS, cx));
                 metaData.setMinZoomStr(loadMetaDataEntry(MD_MINZOOM, cx));
                 metaData.setMaxZoomStr(loadMetaDataEntry(MD_MAXZOOM, cx));

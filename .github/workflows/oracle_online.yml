@@ -5,7 +5,7 @@ on: [pull_request]
 jobs:
   build:
     name: Java ${{ matrix.java }}
-    runs-on: [ubuntu-latest]
+    runs-on: [ubuntu-18.04]
     strategy:
       matrix:
         java: [11]
@@ -23,6 +23,13 @@ jobs:
         key: oracle-${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           oracle-${{ runner.os }}-maven-
+    - name: Free up diskspace
+      run: |
+        docker container prune --force
+        docker image prune -a --force
+        sudo rm -rf /usr/local/lib/android
+        sudo rm -rf /usr/share/dotnet 
+        df -h
     - name: Setup test environment for Oracle XE 
       run: |
         ./build/ci/oracle/start-oracle.sh

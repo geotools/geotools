@@ -316,7 +316,13 @@ public class SLDMockData {
         contrastEnhancement(document, rasterSymbolizer);
         shadedRelief(document, rasterSymbolizer);
         imageOutline(document, rasterSymbolizer);
+        return rasterSymbolizer;
+    }
 
+    static Element rasterSymbolizerWithVendorOptions(Document document, Node parent) {
+        Element rasterSymbolizer = rasterSymbolizer(document, parent);
+        vendorOption(document, rasterSymbolizer, "name", "value");
+        vendorOption(document, rasterSymbolizer, "name2", "value2");
         return rasterSymbolizer;
     }
 

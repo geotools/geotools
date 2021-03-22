@@ -30,7 +30,6 @@ import java.util.Map;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.feature.NameImpl;
 import org.junit.Before;
-import org.junit.Test;
 import org.opengis.feature.type.Name;
 
 public class HiddenDataAccessDisposalPolymorphicTest extends AbstractHiddenDataAccessDisposalTest {
@@ -63,14 +62,5 @@ public class HiddenDataAccessDisposalPolymorphicTest extends AbstractHiddenDataA
 
         // 2 accessible data accesses + 4 hidden data accesses = 6
         assertEquals(6, DataAccessRegistry.getInstance().registry.size());
-    }
-
-    @Test
-    public void testAutomaticDisposalDisabledIfPolymorphic() {
-        guDataAccess.dispose();
-
-        // no automatic disposal should have occurred, because of
-        // polymorphic feature chaining configuration in artifact mapping file
-        assertEquals(5, DataAccessRegistry.getInstance().registry.size());
     }
 }

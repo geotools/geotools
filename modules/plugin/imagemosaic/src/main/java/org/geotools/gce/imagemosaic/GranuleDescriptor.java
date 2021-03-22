@@ -128,6 +128,7 @@ public class GranuleDescriptor {
             return pathType.resolvePath(parentLocation, granuleLocation);
         }
     }
+
     /** Logger. */
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(GranuleDescriptor.class);
@@ -456,9 +457,8 @@ public class GranuleDescriptor {
             GridToEnvelopeMapper geMapper =
                     new GridToEnvelopeMapper(
                             new GridEnvelope2D(originalDimension), this.granuleBBOX);
-            geMapper.setPixelAnchor(
-                    PixelInCell
-                            .CELL_CENTER); // this is the default behavior but it is nice to write
+            geMapper.setPixelAnchor(PixelInCell.CELL_CENTER); // this is the default behavior but it
+            // is nice to write
             // it down anyway
             this.baseGridToWorld = geMapper.createAffineTransform();
 
@@ -939,6 +939,70 @@ public class GranuleDescriptor {
         return granuleBBox;
     }
 
+    private static class RequestParams {
+        final ImageReadParam imageReadParameters;
+        final int index;
+        final ReferencedEnvelope cropBBox;
+        final MathTransform2D mosaicWorldToGrid;
+        final RasterLayerRequest request;
+        final Hints hints;
+        final Geometry inclusionGeometry;
+        final ReferencedEnvelope intersection;
+
+        public RequestParams(
+                ImageReadParam imageReadParameters,
+                int index,
+                ReferencedEnvelope cropBBox,
+                MathTransform2D mosaicWorldToGrid,
+                RasterLayerRequest request,
+                Hints hints,
+                Geometry inclusionGeometry,
+                ReferencedEnvelope intersection) {
+            this.imageReadParameters = imageReadParameters;
+            this.index = index;
+            this.cropBBox = cropBBox;
+            this.mosaicWorldToGrid = mosaicWorldToGrid;
+            this.request = request;
+            this.hints = hints;
+            this.inclusionGeometry = inclusionGeometry;
+            this.intersection = intersection;
+        }
+    }
+
+    private static class ReaderState {
+        boolean proceed;
+        boolean cleanup;
+
+        ImageInputStream inStream;
+        ImageReader reader;
+        int imageIndex;
+        ImageReadParam readParameters;
+        URL granuleURL;
+        GranuleOverviewLevelDescriptor selectedlevel;
+        Rectangle sourceArea;
+        int ovrIndex;
+
+        public void dispose() throws IOException {
+            if (cleanup) {
+                try {
+                    if (inStream != null) {
+                        inStream.close();
+                    }
+                } finally {
+                    if (reader != null) {
+                        reader.dispose();
+                    }
+                }
+            }
+        }
+    }
+
+    private static class RasterState {
+        boolean proceed;
+        RenderedImage raster;
+        AffineTransform finalRaster2Model;
+    }
+
     /**
      * Load a specified a raster as a portion of the granule describe by this {@link
      * GranuleDescriptor}.
@@ -962,362 +1026,270 @@ public class GranuleDescriptor {
             final Hints hints)
             throws IOException {
 
-        if (LOGGER.isLoggable(java.util.logging.Level.FINER)) {
-            final String name = Thread.currentThread().getName();
-            LOGGER.finer(
-                    "Thread:"
-                            + name
-                            + " Loading raster data for granuleDescriptor "
-                            + this.toString());
-        }
-        ImageReadParam readParameters = null;
-        int imageIndex;
-        final double[] virtualNativeResolution = request.getVirtualNativeResolution();
-        final boolean useFootprint =
-                roiProvider != null && request.getFootprintBehavior() != FootprintBehavior.None;
-        Geometry inclusionGeometry = useFootprint ? roiProvider.getFootprint() : null;
-        final ReferencedEnvelope bbox =
-                useFootprint
-                        ? new ReferencedEnvelope(
-                                granuleBBOX.intersection(inclusionGeometry.getEnvelopeInternal()),
-                                granuleBBOX.getCoordinateReferenceSystem())
-                        : granuleBBOX;
-        boolean doFiltering = false;
-        if (filterMe && useFootprint) {
-            doFiltering = Utils.areaIsDifferent(inclusionGeometry, baseGridToWorld, granuleBBOX);
-        }
+        final RequestParams requestParams =
+                prepareRequest(
+                        imageReadParameters, index, cropBBox, mosaicWorldToGrid, request, hints);
 
-        // intersection of this tile bound with the current crop bbox
-        final ReferencedEnvelope intersection =
-                new ReferencedEnvelope(
-                        bbox.intersection(cropBBox), cropBBox.getCoordinateReferenceSystem());
-        if (intersection.isEmpty()) {
-            if (LOGGER.isLoggable(java.util.logging.Level.FINE)) {
-                LOGGER.fine(
-                        new StringBuilder("Got empty intersection for granule ")
-                                .append(this.toString())
-                                .append(" with request ")
-                                .append(request.toString())
-                                .append(" Resulting in no granule loaded: Empty result")
-                                .toString());
-            }
+        if (!boundsOverlap(requestParams)) {
             return null;
         }
 
-        // check if the requested bbox intersects or overlaps the requested area
-        if (useFootprint
-                && inclusionGeometry != null
-                && !JTS.toGeometry(cropBBox).intersects(inclusionGeometry)) {
-            if (LOGGER.isLoggable(java.util.logging.Level.FINE)) {
-                LOGGER.fine(
-                        new StringBuilder("Got empty intersection for granule ")
-                                .append(this.toString())
-                                .append(" with request ")
-                                .append(request.toString())
-                                .append(" Resulting in no granule loaded: Empty result")
-                                .toString());
-            }
-            return null;
-        }
+        GranuleLoadingResult result = null;
 
         // eventually gets closed in finally block, if possible (not deferred loading)
-        @SuppressWarnings("PMD.CloseResource")
-        ImageInputStream inStream = null;
-        ImageReader reader = null;
-        boolean cleanupInFinally = request.getReadType() != ReadType.JAI_IMAGEREAD;
-        try { // NOPMD for UseTryWithResources, closure is conditional
-            //
-            // get info about the raster we have to read
-            //
+        final ReaderState readerState = prepareReader(requestParams);
+        try {
+            if (readerState.proceed) {
+                final RasterState rasterState = loadAndPrepareRaster(requestParams, readerState);
+                if (rasterState.proceed) {
+                    result = createGranuleLoadingResult(requestParams, readerState, rasterState);
+                }
+            }
+        } catch (RuntimeException e) {
+            warnLoadRaster(e, request);
+        } finally {
+            readerState.dispose();
+        }
+        return result;
+    }
 
-            // Checking for heterogeneous granules and if the mosaic is not multidimensional
-            if (request.isHeterogeneousGranules()
-                    && (originator == null || originator.getAttribute("imageindex") == null)) {
-                // create read parameters
-                readParameters = new ImageReadParam();
+    private GranuleLoadingResult createGranuleLoadingResult(
+            final RequestParams requestParams,
+            ReaderState readerState,
+            final RasterState rasterState) {
 
-                // override the overviews controller for the base layer
-                imageIndex =
-                        ReadParamsController.setReadParams(
-                                request.spatialRequestHelper.getComputedResolution(),
-                                request.getOverviewPolicy(),
-                                request.getDecimationPolicy(),
-                                readParameters,
-                                request.rasterManager,
-                                overviewsController,
-                                virtualNativeResolution);
+        final URL granuleURL = readerState.granuleURL;
+
+        final boolean doFiltering = shallDoFiltering(requestParams.inclusionGeometry);
+
+        // apply the affine transform conserving indexed color model
+        final AffineTransform finalRaster2Model = rasterState.finalRaster2Model;
+        if (finalRaster2ModelIsIdentity(finalRaster2Model)) {
+            RenderedImage raster = rasterState.raster;
+            return createIdentityLoadingResult(raster, granuleURL, doFiltering);
+        }
+
+        RenderedImage finalRenderedImage = buildRenderedImage(requestParams, rasterState);
+        if (finalRenderedImage == null) {
+            return null;
+        }
+
+        return new GranuleLoadingResult(
+                finalRenderedImage, null, granuleURL, doFiltering, pamDataset, this);
+    }
+
+    private RequestParams prepareRequest(
+            ImageReadParam imageReadParameters,
+            int index,
+            ReferencedEnvelope cropBBox,
+            MathTransform2D mosaicWorldToGrid,
+            RasterLayerRequest request,
+            Hints hints) {
+
+        if (LOGGER.isLoggable(Level.FINER))
+            LOGGER.finer(
+                    String.format(
+                            "Thread: %s Loading raster data for granuleDescriptor %s",
+                            Thread.currentThread().getName(), this));
+
+        final Geometry inclusionGeometry = resolveInclusionGeometry(request);
+
+        // intersection of this tile bound with the current crop bbox
+        final ReferencedEnvelope intersection = cropBBoxIntersection(inclusionGeometry, cropBBox);
+
+        return new RequestParams(
+                imageReadParameters,
+                index,
+                cropBBox,
+                mosaicWorldToGrid,
+                request,
+                hints,
+                inclusionGeometry,
+                intersection);
+    }
+
+    private void warnLoadRaster(final Exception e, final RasterLayerRequest request) {
+        final String msg =
+                "Unable to load raster for granuleDescriptor %s with request %s Resulting in no granule loaded: Empty result";
+        LOGGER.log(Level.WARNING, e, () -> String.format(msg, this, request));
+    }
+
+    private void warnLoadReader(final Exception e, final RasterLayerRequest request) {
+        if (LOGGER.isLoggable(Level.WARNING)) {
+            final String msg =
+                    "Unable to get reader for granuleDescriptor %s with request %s Resulting in no granule loaded: Empty result";
+            if (e == null) {
+                LOGGER.log(Level.WARNING, () -> String.format(msg, this, request));
             } else {
-                imageIndex = index;
-                readParameters = imageReadParameters;
+                LOGGER.log(Level.WARNING, e, () -> String.format(msg, this, request));
             }
-            // Defining an Overview Index value
-            int ovrIndex = imageIndex;
-            boolean isExternal = ovrProvider.isExternalOverview(imageIndex);
-            // Define a new URL to use (it may change if using external overviews)
-            URL granuleURLUpdated = granuleUrl;
-            // If the file is external we must update the Granule elements
-            if (isExternal) {
-                granuleURLUpdated = ovrProvider.getOvrURL();
-                assert ovrProvider.getExternalOverviewInputStreamSpi() != null
-                        : "no cachedStreamSPI available for external overview!";
-                SourceSPIProvider sourceSpiProvider =
-                        ovrProvider
-                                .getSourceSpiProvider()
-                                .getCompatibleSourceProvider(granuleURLUpdated);
-                inStream = sourceSpiProvider.getStream();
-                // get a reader and try to cache the relevant SPI
-                reader = sourceSpiProvider.getReader();
-                if (reader == null) {
-                    if (LOGGER.isLoggable(java.util.logging.Level.WARNING)) {
-                        LOGGER.warning(
-                                new StringBuilder("Unable to get s reader for granuleDescriptor ")
-                                        .append(this.toString())
-                                        .append(" with request ")
-                                        .append(request.toString())
-                                        .append(" Resulting in no granule loaded: Empty result")
-                                        .toString());
-                    }
-                    return null;
-                }
-                // set input
-                boolean ignoreMetadata = false;
-                if (reader instanceof InitializingReader) {
-                    ignoreMetadata = ((InitializingReader) reader).init(hints);
-                }
-                reader.setInput(inStream, false, ignoreMetadata);
-                // External Overview index
-                ovrIndex = ovrProvider.getOverviewIndex(imageIndex);
+        }
+    }
 
-            } else {
-                ovrIndex = ovrProvider.getOverviewIndex(imageIndex);
+    private ReaderState prepareReader(final RequestParams params) throws IOException {
 
-                // get a stream from the granuleAccessProvider
-                assert cachedStreamSPI != null : "no cachedStreamSPI available!";
-                inStream = granuleAccessProvider.getImageInputStream();
+        final RasterLayerRequest request = params.request;
 
-                if (inStream == null) return null;
+        ReaderState state = new ReaderState();
+        state.proceed = false;
+        state.cleanup = request.getReadType() != ReadType.JAI_IMAGEREAD;
+        state.imageIndex = params.index;
+        state.readParameters = params.imageReadParameters;
+        // Define a new URL to use (it may change if using external overviews)
+        state.granuleURL = granuleUrl;
 
-                // get a reader and try to cache the relevant SPI
-                if (cachedReaderSPI == null) {
-                    reader = ImageIOExt.getImageioReader(inStream);
-                    if (reader != null) cachedReaderSPI = reader.getOriginatingProvider();
-                } else {
-                    reader = granuleAccessProvider.getImageReader();
-                }
-                if (reader == null) {
-                    if (LOGGER.isLoggable(java.util.logging.Level.WARNING)) {
-                        LOGGER.warning(
-                                new StringBuilder("Unable to get a reader for granuleDescriptor ")
-                                        .append(this.toString())
-                                        .append(" with request ")
-                                        .append(request.toString())
-                                        .append(" Resulting in no granule loaded: Empty result")
-                                        .toString());
-                    }
-                    return null;
-                }
+        // Checking for heterogeneous granules and if the mosaic is not multidimensional
+        if (request.isHeterogeneousGranules() && !mosaicIsMultidimensional()) {
+            state.readParameters = new ImageReadParam();
+            try {
+                state.imageIndex = overrideOverviewsForBaseLayer(request, state.readParameters);
+            } catch (RuntimeException | TransformException e) {
+                warnLoadReader(e, request);
+                return state;
             }
-            // set input
-            if (reader instanceof InitializingReader) {
-                ((InitializingReader) reader).init(hints);
-            }
-            reader.setInput(inStream);
+        }
 
-            // check if the reader wants to be aware of the current request
-            if (MethodUtils.getAccessibleMethod(
-                            reader.getClass(), "setRasterLayerRequest", RasterLayerRequest.class)
-                    != null) {
-                try {
-                    MethodUtils.invokeMethod(reader, "setRasterLayerRequest", request);
-                } catch (Exception exception) {
-                    throw new RuntimeException(
-                            "Error setting raster layer request on reader.", exception);
-                }
-            }
+        final boolean isExternal = ovrProvider.isExternalOverview(state.imageIndex);
+        if (isExternal) {
+            prepareExternalReader(request, state);
+        } else {
+            prepareReader(request, state);
+        }
+        if (state.inStream == null || state.reader == null) {
+            warnLoadReader(null, request);
+            return state;
+        }
+        // set input
+        setReaderInput(state.reader, state.inStream, hints);
 
-            // get selected level and base level dimensions
-            final GranuleOverviewLevelDescriptor selectedlevel =
-                    getLevel(ovrIndex, reader, imageIndex, isExternal);
+        // check if the reader wants to be aware of the current request
+        setRasterLayerRequest(state.reader, request);
 
-            // now create the crop grid to world which can be used to decide
-            // which source area we need to crop in the selected level taking
-            // into account the scale factors imposed by the selection of this
-            // level together with the base level grid to world transformation
-            AffineTransform2D cropGridToWorld =
-                    new AffineTransform2D(selectedlevel.gridToWorldTransformCorner);
-            AffineTransform2D cropWorldToGrid = (AffineTransform2D) cropGridToWorld.inverse();
-            // computing the crop source area which lives into the
-            // selected level raster space, NOTICE that at the end we need to
-            // take into account the fact that we might also decimate therefore
-            // we cannot just use the crop grid to world but we need to correct
-            // it.
-            Rectangle2D r2d = CRS.transform(cropWorldToGrid, intersection).toRectangle2D();
-            // if we are reading basically nothing, bail out immediately
-            if (r2d.getWidth() < READ_THRESHOLD || r2d.getHeight() < READ_THRESHOLD) {
-                cleanupInFinally = true;
-                return null;
-            }
-            final Rectangle sourceArea = r2d.getBounds();
-            // gutter
-            if (selectedlevel.baseToLevelTransform.isIdentity()) {
-                sourceArea.grow(2, 2);
-            }
-            XRectangle2D.intersect(
-                    sourceArea,
-                    selectedlevel.rasterDimensions,
-                    sourceArea); // make sure roundings don't bother us
-            // is it empty??
-            if (sourceArea.isEmpty()) {
-                if (LOGGER.isLoggable(java.util.logging.Level.FINE)) {
-                    LOGGER.fine(
-                            "Got empty area for granuleDescriptor "
-                                    + this.toString()
-                                    + " with request "
-                                    + request.toString()
-                                    + " Resulting in no granule loaded: Empty result");
-                }
-                return null;
+        // Defining an Overview Index value
+        state.ovrIndex = ovrProvider.getOverviewIndex(state.imageIndex);
 
-            } else if (LOGGER.isLoggable(java.util.logging.Level.FINER)) {
-                LOGGER.finer(
-                        "Loading level "
-                                + imageIndex
-                                + " with source region: "
-                                + sourceArea
-                                + " subsampling: "
-                                + readParameters.getSourceXSubsampling()
-                                + ","
-                                + readParameters.getSourceYSubsampling()
-                                + " for granule:"
-                                + granuleUrl);
-            }
+        // get selected level and base level dimensions
+        state.selectedlevel = getLevel(state.ovrIndex, state.reader, state.imageIndex);
+        try {
+            state.sourceArea =
+                    calcSourceArea(
+                            request,
+                            params.intersection,
+                            state.imageIndex,
+                            state.readParameters,
+                            state.selectedlevel);
+        } catch (TransformException e) {
+            warnLoadRaster(e, request);
+            return state;
+        }
+        if (state.sourceArea == null || state.sourceArea.isEmpty()) {
+            state.cleanup = state.sourceArea == null;
+        } else {
+            // set the source region
+            state.readParameters.setSourceRegion(state.sourceArea);
 
             // Setting subsampling
-            int newSubSamplingFactor = 0;
-            final String pluginName = cachedReaderSPI.getPluginClassName();
-            if (pluginName != null && pluginName.equals(ImageUtilities.DIRECT_KAKADU_PLUGIN)) {
-                final int ssx = readParameters.getSourceXSubsampling();
-                final int ssy = readParameters.getSourceYSubsampling();
-                newSubSamplingFactor = ImageIOUtilities.getSubSamplingFactor2(ssx, ssy);
-                if (newSubSamplingFactor != 0) {
-                    if (newSubSamplingFactor > maxDecimationFactor && maxDecimationFactor != -1) {
-                        newSubSamplingFactor = maxDecimationFactor;
-                    }
-                    readParameters.setSourceSubsampling(
-                            newSubSamplingFactor, newSubSamplingFactor, 0, 0);
-                }
+            setSourceSubsamplingFactors(state.readParameters);
+
+            if (ignoreBands(request, state.reader, state.ovrIndex, state.readParameters)) {
+                ((EnhancedImageReadParam) state.readParameters).setBands(null);
             }
+            state.proceed = true;
+        }
 
-            // set the source region
-            readParameters.setSourceRegion(sourceArea);
+        return state;
+    }
 
-            // don't pass down the band selection if the original color model is indexed and
-            // color expansion is enabled
-            final boolean expandToRGB = request.getRasterManager().isExpandMe();
-            if (expandToRGB
-                    && getRawColorModel(reader, ovrIndex) instanceof IndexColorModel
-                    && readParameters instanceof EnhancedImageReadParam) {
-                EnhancedImageReadParam erp = (EnhancedImageReadParam) readParameters;
-                erp.setBands(null);
+    private void prepareReader(final RasterLayerRequest request, ReaderState state)
+            throws IOException {
+        // get a stream from the granuleAccessProvider
+        assert cachedStreamSPI != null : "no cachedStreamSPI available!";
+        state.inStream = granuleAccessProvider.getImageInputStream();
+        if (state.inStream != null) {
+            // get a reader and try to cache the relevant SPI
+            if (cachedReaderSPI == null) {
+                state.reader = ImageIOExt.getImageioReader(state.inStream);
+                if (state.reader != null) cachedReaderSPI = state.reader.getOriginatingProvider();
+            } else {
+                state.reader = granuleAccessProvider.getImageReader();
             }
+        }
+    }
 
-            RenderedImage raster;
-            try {
-                // read
-                raster =
-                        request.getReadType()
-                                .read(
-                                        readParameters,
-                                        ovrIndex,
-                                        granuleURLUpdated,
-                                        selectedlevel.rasterDimensions,
-                                        reader,
-                                        hints,
-                                        false);
-
-            } catch (Throwable e) {
-                if (LOGGER.isLoggable(java.util.logging.Level.FINE)) {
-                    LOGGER.log(
-                            java.util.logging.Level.FINE,
-                            "Unable to load raster for granuleDescriptor "
-                                    + this.toString()
-                                    + " with request "
-                                    + request.toString()
-                                    + " Resulting in no granule loaded: Empty result",
-                            e);
-                }
-                return null;
+    private void prepareExternalReader(final RasterLayerRequest request, ReaderState state)
+            throws IOException {
+        // If the file is external we must update the Granule elements
+        state.granuleURL = ovrProvider.getOvrURL();
+        assert ovrProvider.getExternalOverviewInputStreamSpi() != null
+                : "no cachedStreamSPI available for external overview!";
+        SourceSPIProvider sourceSpiProvider =
+                ovrProvider.getSourceSpiProvider().getCompatibleSourceProvider(state.granuleURL);
+        state.inStream = sourceSpiProvider.getStream();
+        // get a reader and try to cache the relevant SPI
+        state.reader = sourceSpiProvider.getReader();
+        if (state.reader != null) {
+            // set input
+            boolean ignoreMetadata = false;
+            if (state.reader instanceof InitializingReader) {
+                ignoreMetadata = ((InitializingReader) state.reader).init(hints);
             }
+            state.reader.setInput(state.inStream, false, ignoreMetadata);
+        }
+    }
 
-            // perform band selection if necessary, so far netcdf is the only low level reader that
-            // handles bands selection, if more readers start to support it a decent approach should
-            // be used to know if the low level reader already performed the bands selection or if
-            // image mosaic is responsible for do it
-            int[] bands = request.getBands();
-            if (bands != null && !reader.getFormatName().equalsIgnoreCase("netcdf")) {
-                // if we are expanding the color model, do so before selecting the bands
-                if (raster.getColorModel() instanceof IndexColorModel && expandToRGB) {
-                    raster = new ImageWorker(raster).forceComponentColorModel().getRenderedImage();
-                }
+    // don't pass down the band selection if the original color model is indexed and
+    // color expansion is enabled
+    private boolean ignoreBands(
+            RasterLayerRequest request,
+            ImageReader reader,
+            int ovrIndex,
+            ImageReadParam readParameters) {
+        final boolean expandToRGB = request.getRasterManager().isExpandMe();
+        if (expandToRGB
+                && getRawColorModel(reader, ovrIndex) instanceof IndexColorModel
+                && readParameters instanceof EnhancedImageReadParam) {
+            return true;
+        }
+        return false;
+    }
 
-                // delegate the band selection operation on JAI BandSelect operation
-                raster = new ImageWorker(raster).retainBands(bands).getRenderedImage();
-                ColorModel colorModel = raster.getColorModel();
-                if (colorModel == null) {
-                    ImageLayout layout = (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT);
-                    if (layout == null) {
-                        layout = new ImageLayout();
-                    }
-                    ColorModel newColorModel =
-                            ImageIOUtilities.createColorModel(raster.getSampleModel());
-                    if (newColorModel != null) {
-                        layout.setColorModel(newColorModel);
-                        raster =
-                                new ImageWorker(raster)
-                                        .setRenderingHints(hints)
-                                        .format(raster.getSampleModel().getDataType())
-                                        .getRenderedImage();
-                    }
-                }
-            }
+    //
+    // setting new coefficients to define a new affineTransformation
+    // to be applied to the grid to world transformation
+    // -----------------------------------------------------------------------------------
+    //
+    // With respect to the original envelope, the obtained planarImage
+    // needs to be rescaled. The scaling factors are computed as the
+    // ratio between the cropped source region sizes and the read
+    // image sizes.
+    //
+    // place it in the mosaic using the coords created above;
+    private RenderedImage applyVirtualNativeResolution(
+            final RasterLayerRequest request,
+            RenderedImage raster,
+            final Hints hints,
+            final GranuleOverviewLevelDescriptor selectedlevel) {
+        final double[] virtualNativeResolution = request.getVirtualNativeResolution();
+        if (virtualNativeResolution != null
+                && !Double.isNaN(virtualNativeResolution[0])
+                && !Double.isNaN(virtualNativeResolution[1])) {
+            // Note that virtualNativeResolution may have been set to NaN by
+            // overviewController
+            raster =
+                    forceVirtualNativeResolution(
+                            raster, request, virtualNativeResolution, selectedlevel, hints);
+        }
+        return raster;
+    }
 
-            // apply rescaling
-            if (request.isRescalingEnabled()) {
-                if (noData != null && request.getReadType() == ReadType.JAI_IMAGEREAD) {
-                    // Force nodata settings since JAI ImageRead may lost that
-                    // We have to make sure that noData pixels won't be rescaled
-                    PlanarImage t = PlanarImage.wrapRenderedImage(raster);
-                    t.setProperty(NoDataContainer.GC_NODATA, noData);
-                    raster = t;
-                }
-
-                raster = rescale(raster, hints, bands);
-            }
-
-            // use fixed source area
-            sourceArea.setRect(readParameters.getSourceRegion());
-
-            //
-            // setting new coefficients to define a new affineTransformation
-            // to be applied to the grid to world transformation
-            // -----------------------------------------------------------------------------------
-            //
-            // With respect to the original envelope, the obtained planarImage
-            // needs to be rescaled. The scaling factors are computed as the
-            // ratio between the cropped source region sizes and the read
-            // image sizes.
-            //
-            // place it in the mosaic using the coords created above;
-            if (virtualNativeResolution != null
-                    && !Double.isNaN(virtualNativeResolution[0])
-                    && !Double.isNaN(virtualNativeResolution[1])) {
-                // Note that virtualNativeResolution may have been set to NaN by overviewController
-                raster =
-                        forceVirtualNativeResolution(
-                                raster, request, virtualNativeResolution, selectedlevel, hints);
-            }
-            double decimationScaleX = ((1.0 * sourceArea.width) / raster.getWidth());
-            double decimationScaleY = ((1.0 * sourceArea.height) / raster.getHeight());
+    private AffineTransform computeFinalRasterToModel(
+            RenderedImage raster,
+            final GranuleOverviewLevelDescriptor selectedlevel,
+            final Rectangle sourceArea) {
+        final AffineTransform finalRaster2Model;
+        {
+            final double decimationScaleX = ((1.0 * sourceArea.width) / raster.getWidth());
+            final double decimationScaleY = ((1.0 * sourceArea.height) / raster.getHeight());
             final AffineTransform decimationScaleTranform =
                     XAffineTransform.getScaleInstance(decimationScaleX, decimationScaleY);
 
@@ -1330,7 +1302,7 @@ public class GranuleDescriptor {
                     selectedlevel.baseToLevelTransform;
 
             // now create the overall transform
-            final AffineTransform finalRaster2Model = new AffineTransform(baseGridToWorld);
+            finalRaster2Model = new AffineTransform(baseGridToWorld);
             finalRaster2Model.concatenate(CoverageUtilities.CENTER_TO_CORNER);
 
             if (!XAffineTransform.isIdentity(
@@ -1342,214 +1314,519 @@ public class GranuleDescriptor {
             if (!XAffineTransform.isIdentity(
                     decimationScaleTranform, CoverageUtilities.AFFINE_IDENTITY_EPS))
                 finalRaster2Model.concatenate(decimationScaleTranform);
+        }
+        return finalRaster2Model;
+    }
 
-            // adjust roi
-            if (useFootprint) {
+    private int overrideOverviewsForBaseLayer(
+            final RasterLayerRequest request, ImageReadParam readParameters)
+            throws IOException, TransformException {
+        int imageIndex;
+        final double[] virtualNativeResolution = request.getVirtualNativeResolution();
 
-                ROI transformed;
-                try {
-                    // Getting Image Bounds
-                    Rectangle imgBounds =
-                            new Rectangle(
-                                    raster.getMinX(),
-                                    raster.getMinY(),
-                                    raster.getWidth(),
-                                    raster.getHeight());
-                    // Getting Transformed ROI
-                    transformed =
-                            roiProvider.getTransformedROI(
-                                    finalRaster2Model.createInverse(),
-                                    imageIndex,
-                                    imgBounds,
-                                    readParameters,
-                                    request.getReadType());
-                    // Check for vectorial ROI
-                    if (transformed instanceof ROIGeometry
-                            && ((ROIGeometry) transformed).getAsGeometry().isEmpty()) {
-                        // inset might have killed the geometry fully
-                        return null;
-                    }
-                    // Check for Raster ROI
-                    if (transformed == null || transformed.getBounds().isEmpty()) {
-                        // ROI is less than a pixel big, it happens when zooming out
-                        if (LOGGER.isLoggable(java.util.logging.Level.FINE))
-                            LOGGER.fine(
-                                    "Unable to create a granuleDescriptor "
-                                            + this.toString()
-                                            + " due to a problem when managing the ROI");
-                        return null;
-                    }
+        // override the overviews controller for the base layer
+        imageIndex =
+                ReadParamsController.setReadParams(
+                        request.spatialRequestHelper.getComputedResolution(),
+                        request.getOverviewPolicy(),
+                        request.getDecimationPolicy(),
+                        readParameters,
+                        request.rasterManager,
+                        overviewsController,
+                        virtualNativeResolution);
+        return imageIndex;
+    }
 
-                    PlanarImage pi = PlanarImage.wrapRenderedImage(raster);
-                    if (!transformed.intersects(pi.getBounds())) {
-                        return null;
-                    }
-                    pi.setProperty("ROI", transformed);
-                    if (pi instanceof RenderedOp) {
-                        // For some reason the "ROI" property is sometime lost
-                        // when getting the rendering
-                        PlanarImage theImage = ((RenderedOp) pi).getRendering();
-                        theImage.setProperty("ROI", transformed);
-                    }
-                    raster = pi;
+    private boolean mosaicIsMultidimensional() {
+        return originator != null && originator.getAttribute("imageindex") != null;
+    }
 
-                } catch (NoninvertibleTransformException e) {
-                    if (LOGGER.isLoggable(java.util.logging.Level.INFO))
-                        LOGGER.info(
-                                "Unable to create a granuleDescriptor "
-                                        + this.toString()
-                                        + " due to a problem when managing the ROI");
-                    return null;
+    /**
+     * Perform band selection if necessary, so far netcdf is the only low level reader that handles
+     * bands selection, if more readers start to support it a decent approach should be used to know
+     * if the low level reader already performed the bands selection or if image mosaic is
+     * responsible for do it
+     *
+     * @param request
+     */
+    private RenderedImage performBandSelection(
+            RasterLayerRequest request, final Hints hints, RenderedImage raster, ImageReader reader)
+            throws IOException {
+
+        final int[] bands = request.getBands();
+        final boolean expandToRGB = request.getRasterManager().isExpandMe();
+        if (bands != null && !reader.getFormatName().equalsIgnoreCase("netcdf")) {
+            // if we are expanding the color model, do so before selecting the bands
+            if (raster.getColorModel() instanceof IndexColorModel && expandToRGB) {
+                raster = new ImageWorker(raster).forceComponentColorModel().getRenderedImage();
+            }
+
+            // delegate the band selection operation on JAI BandSelect operation
+            raster = new ImageWorker(raster).retainBands(bands).getRenderedImage();
+            ColorModel colorModel = raster.getColorModel();
+            if (colorModel == null) {
+                ImageLayout layout = (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT);
+                if (layout == null) {
+                    layout = new ImageLayout();
+                }
+                ColorModel newColorModel =
+                        ImageIOUtilities.createColorModel(raster.getSampleModel());
+                if (newColorModel != null) {
+                    layout.setColorModel(newColorModel);
+                    raster =
+                            new ImageWorker(raster)
+                                    .setRenderingHints(hints)
+                                    .format(raster.getSampleModel().getDataType())
+                                    .getRenderedImage();
                 }
             }
-            // keep into account translation factors to place this tile
-            finalRaster2Model.preConcatenate((AffineTransform) mosaicWorldToGrid);
-            final Interpolation interpolation = request.getInterpolation();
+        }
+        return raster;
+    }
 
-            // paranoiac check to avoid that JAI freaks out when computing its internal layouT on
-            // images that are too small
-            Rectangle2D finalLayout =
-                    ImageUtilities.layoutHelper(
-                            raster,
-                            (float) finalRaster2Model.getScaleX(),
-                            (float) finalRaster2Model.getScaleY(),
-                            (float) finalRaster2Model.getTranslateX(),
-                            (float) finalRaster2Model.getTranslateY(),
-                            interpolation);
-            if (finalLayout.isEmpty()) {
+    private RenderedImage applyRescaling(
+            final RasterLayerRequest request, final Hints hints, RenderedImage raster) {
+        if (request.isRescalingEnabled()) {
+            if (noData != null && request.getReadType() == ReadType.JAI_IMAGEREAD) {
+                // Force nodata settings since JAI ImageRead may lost that
+                // We have to make sure that noData pixels won't be rescaled
+                PlanarImage t = PlanarImage.wrapRenderedImage(raster);
+                t.setProperty(NoDataContainer.GC_NODATA, noData);
+                raster = t;
+            }
+            final int[] bands = request.getBands();
+            raster = rescale(raster, hints, bands);
+        }
+        return raster;
+    }
+
+    private RasterState loadAndPrepareRaster(
+            final RequestParams params, final ReaderState readerState) throws IOException {
+
+        final RasterLayerRequest request = params.request;
+
+        RasterState state = new RasterState();
+        state.proceed = false;
+
+        final ImageReadParam readParameters = readerState.readParameters;
+        final int ovrIndex = readerState.ovrIndex;
+        final URL granuleURLUpdated = readerState.granuleURL;
+        final GranuleOverviewLevelDescriptor selectedlevel = readerState.selectedlevel;
+        final ImageReader reader = readerState.reader;
+        final boolean closeElements = false;
+        // read
+        final ReadType readType = request.getReadType();
+        state.raster =
+                readType.read(
+                        readParameters,
+                        ovrIndex,
+                        granuleURLUpdated,
+                        selectedlevel.rasterDimensions,
+                        reader,
+                        hints,
+                        closeElements);
+
+        state.raster = performBandSelection(request, hints, state.raster, readerState.reader);
+
+        // apply rescaling
+        state.raster = applyRescaling(request, hints, state.raster);
+
+        // use fixed source area
+        readerState.sourceArea.setRect(readerState.readParameters.getSourceRegion());
+
+        state.raster =
+                applyVirtualNativeResolution(
+                        request, state.raster, hints, readerState.selectedlevel);
+        state.finalRaster2Model =
+                computeFinalRasterToModel(
+                        state.raster, readerState.selectedlevel, readerState.sourceArea);
+        // adjust roi
+        final boolean useFootprint = null != params.inclusionGeometry;
+        if (useFootprint) {
+            state.raster =
+                    adjustROI(
+                            request,
+                            readerState.imageIndex,
+                            readerState.readParameters,
+                            state.raster,
+                            state.finalRaster2Model);
+            if (state.raster == null) {
+                return state;
+            }
+        }
+        // keep into account translation factors to place this tile
+        state.finalRaster2Model.preConcatenate((AffineTransform) params.mosaicWorldToGrid);
+        final Interpolation interpolation = request.getInterpolation();
+
+        // paranoic check to avoid that JAI freaks out when computing its internal layout on
+        // images that are too small
+        final Rectangle2D finalLayout =
+                finalLayout(state.finalRaster2Model, state.raster, interpolation);
+        if (!finalLayout.isEmpty()) {
+            state.proceed = true;
+        }
+
+        return state;
+    }
+
+    private RenderedImage adjustROI(
+            final RasterLayerRequest request,
+            final int imageIndex,
+            final ImageReadParam readParameters,
+            RenderedImage raster,
+            final AffineTransform finalRaster2Model) {
+        ROI transformed;
+        try {
+            // Getting Image Bounds
+            Rectangle imgBounds =
+                    new Rectangle(
+                            raster.getMinX(),
+                            raster.getMinY(),
+                            raster.getWidth(),
+                            raster.getHeight());
+            // Getting Transformed ROI
+            transformed =
+                    roiProvider.getTransformedROI(
+                            finalRaster2Model.createInverse(),
+                            imageIndex,
+                            imgBounds,
+                            readParameters,
+                            request.getReadType());
+            // Check for vectorial ROI
+            if (transformed instanceof ROIGeometry
+                    && ((ROIGeometry) transformed).getAsGeometry().isEmpty()) {
+                // inset might have killed the geometry fully
+                return null;
+            }
+            // Check for Raster ROI
+            if (transformed == null || transformed.getBounds().isEmpty()) {
+                // ROI is less than a pixel big, it happens when zooming out
                 if (LOGGER.isLoggable(java.util.logging.Level.FINE))
                     LOGGER.fine(
-                            "Unable to create a granuleDescriptor "
-                                    + this.toString()
-                                    + " due to jai scale bug creating a null source area");
+                            String.format(
+                                    "Unable to create a granuleDescriptor %s due to a problem when managing the ROI",
+                                    this));
                 return null;
             }
 
-            // apply the affine transform conserving indexed color model
+            PlanarImage pi = PlanarImage.wrapRenderedImage(raster);
+            if (!transformed.intersects(pi.getBounds())) {
+                return null;
+            }
+            pi.setProperty("ROI", transformed);
+            if (pi instanceof RenderedOp) {
+                // For some reason the "ROI" property is sometime lost
+                // when getting the rendering
+                PlanarImage theImage = ((RenderedOp) pi).getRendering();
+                theImage.setProperty("ROI", transformed);
+            }
+            raster = pi;
+
+        } catch (NoninvertibleTransformException e) {
+            if (LOGGER.isLoggable(java.util.logging.Level.INFO))
+                LOGGER.info(
+                        String.format(
+                                "Unable to create a granuleDescriptor %s due to a problem when managing the ROI",
+                                this));
+            return null;
+        }
+        return raster;
+    }
+
+    private Rectangle2D finalLayout(
+            AffineTransform finalRaster2Model, RenderedImage raster, Interpolation interpolation) {
+        final Rectangle2D finalLayout =
+                ImageUtilities.layoutHelper(
+                        raster,
+                        (float) finalRaster2Model.getScaleX(),
+                        (float) finalRaster2Model.getScaleY(),
+                        (float) finalRaster2Model.getTranslateX(),
+                        (float) finalRaster2Model.getTranslateY(),
+                        interpolation);
+        if (finalLayout.isEmpty()) {
+            if (LOGGER.isLoggable(java.util.logging.Level.FINE))
+                LOGGER.fine(
+                        String.format(
+                                "Unable to create a granuleDescriptor %s due to jai scale bug creating a null source area",
+                                this));
+        }
+        return finalLayout;
+    }
+
+    private void setRasterLayerRequest(ImageReader reader, final RasterLayerRequest request) {
+        if (MethodUtils.getAccessibleMethod(
+                        reader.getClass(), "setRasterLayerRequest", RasterLayerRequest.class)
+                != null) {
+            try {
+                MethodUtils.invokeMethod(reader, "setRasterLayerRequest", request);
+            } catch (Exception exception) {
+                throw new RuntimeException(
+                        "Error setting raster layer request on reader.", exception);
+            }
+        }
+    }
+
+    private void setReaderInput(ImageReader reader, ImageInputStream inStream, final Hints hints) {
+        if (reader instanceof InitializingReader) {
+            ((InitializingReader) reader).init(hints);
+        }
+        reader.setInput(inStream);
+    }
+
+    private Rectangle calcSourceArea(
+            final RasterLayerRequest request,
+            final ReferencedEnvelope intersection,
+            final int imageIndex,
+            final ImageReadParam readParameters,
+            final GranuleOverviewLevelDescriptor selectedlevel)
+            throws org.opengis.referencing.operation.NoninvertibleTransformException,
+                    TransformException {
+        final Rectangle sourceArea;
+        // now create the crop grid to world which can be used to decide
+        // which source area we need to crop in the selected level taking
+        // into account the scale factors imposed by the selection of this
+        // level together with the base level grid to world transformation
+        AffineTransform2D cropGridToWorld =
+                new AffineTransform2D(selectedlevel.gridToWorldTransformCorner);
+        AffineTransform2D cropWorldToGrid = (AffineTransform2D) cropGridToWorld.inverse();
+        // computing the crop source area which lives into the
+        // selected level raster space, NOTICE that at the end we need to
+        // take into account the fact that we might also decimate therefore
+        // we cannot just use the crop grid to world but we need to correct
+        // it.
+        Rectangle2D r2d = CRS.transform(cropWorldToGrid, intersection).toRectangle2D();
+        // if we are reading basically nothing, bail out immediately
+        if (r2d.getWidth() < READ_THRESHOLD || r2d.getHeight() < READ_THRESHOLD) {
+            return null;
+        }
+        sourceArea = r2d.getBounds();
+        // gutter
+        if (selectedlevel.baseToLevelTransform.isIdentity()) {
+            sourceArea.grow(2, 2);
+        }
+        XRectangle2D.intersect(
+                sourceArea, // src1
+                selectedlevel.rasterDimensions, // src2
+                sourceArea); // dest. make sure roundings don't bother us
+        // is it empty??
+        if (sourceArea.isEmpty()) {
+            if (LOGGER.isLoggable(java.util.logging.Level.FINE)) {
+                LOGGER.fine(
+                        String.format(
+                                "Got empty area for granuleDescriptor %s with request %s Resulting in no granule loaded: Empty result",
+                                this, request));
+            }
+        } else if (LOGGER.isLoggable(java.util.logging.Level.FINER)) {
+            LOGGER.finer(
+                    String.format(
+                            "Loading level %d with source region: %s subsampling: %d,%d for granule: %s",
+                            imageIndex,
+                            sourceArea,
+                            readParameters.getSourceXSubsampling(),
+                            readParameters.getSourceYSubsampling(),
+                            granuleUrl));
+        }
+        return sourceArea;
+    }
+
+    private void setSourceSubsamplingFactors(final ImageReadParam readParameters) {
+        int newSubSamplingFactor = 0;
+        final String pluginName = cachedReaderSPI.getPluginClassName();
+        if (pluginName != null && pluginName.equals(ImageUtilities.DIRECT_KAKADU_PLUGIN)) {
+            final int ssx = readParameters.getSourceXSubsampling();
+            final int ssy = readParameters.getSourceYSubsampling();
+            newSubSamplingFactor = ImageIOUtilities.getSubSamplingFactor2(ssx, ssy);
+            if (newSubSamplingFactor != 0) {
+                if (newSubSamplingFactor > maxDecimationFactor && maxDecimationFactor != -1) {
+                    newSubSamplingFactor = maxDecimationFactor;
+                }
+                readParameters.setSourceSubsampling(
+                        newSubSamplingFactor, newSubSamplingFactor, 0, 0);
+            }
+        }
+    }
+
+    private RenderedImage buildRenderedImage(RequestParams params, RasterState rasterState) {
+
+        final RasterLayerRequest request = params.request;
+        final Interpolation interpolation = request.getInterpolation();
+        final double[] virtualNativeResolution = request.getVirtualNativeResolution();
+        final Hints hints = params.hints;
+        final RenderedImage raster = rasterState.raster;
+        final AffineTransform finalRaster2Model = rasterState.finalRaster2Model;
+        final boolean useFootprint = null != params.inclusionGeometry;
+
+        ImageWorker iw =
+                prepareImageWorker(
+                        request,
+                        hints,
+                        raster,
+                        virtualNativeResolution,
+                        finalRaster2Model,
+                        interpolation);
+        RenderedImage renderedImage = iw.getRenderedImage();
+        if (useFootprint && roiIsEmpty(renderedImage)) {
+            // JAI not only transforms the ROI, but may also apply clipping to the image
+            // boundary. this results in an empty ROI in some edge cases
+            return null;
+        }
+        // Propagate NoData
+        if (iw.getNoData() != null) {
+            PlanarImage t = PlanarImage.wrapRenderedImage(renderedImage);
+            t.setProperty(NoDataContainer.GC_NODATA, new NoDataContainer(iw.getNoData()));
+            renderedImage = t;
+        } else if (this.noData != null) {
+            // on deferred loading we cannot get the noData from the image, but we might
+            // have read it
+            // at the beginning
+            PlanarImage t = PlanarImage.wrapRenderedImage(renderedImage);
+            t.setProperty(NoDataContainer.GC_NODATA, noData);
+            renderedImage = t;
+        }
+        return renderedImage;
+    }
+
+    private boolean roiIsEmpty(RenderedImage renderedImage) {
+        Object roi = renderedImage.getProperty("ROI");
+        return (roi instanceof ROIGeometry && ((ROIGeometry) roi).getAsGeometry().isEmpty())
+                || (roi instanceof ROI && ((ROI) roi).getBounds().isEmpty());
+    }
+
+    private ImageWorker prepareImageWorker(
+            final RasterLayerRequest request,
+            final Hints hints,
+            RenderedImage raster,
+            final double[] virtualNativeResolution,
+            final AffineTransform finalRaster2Model,
+            final Interpolation interpolation) {
+        ImageWorker iw;
+        {
             final RenderingHints localHints =
                     new RenderingHints(
                             JAI.KEY_REPLACE_INDEX_COLOR_MODEL,
                             interpolation instanceof InterpolationNearest
                                     ? Boolean.FALSE
                                     : Boolean.TRUE);
-            if (XAffineTransform.isIdentity(
-                    finalRaster2Model, CoverageUtilities.AFFINE_IDENTITY_EPS)) {
-                if (noData != null) {
-                    PlanarImage t = PlanarImage.wrapRenderedImage(raster);
-                    t.setProperty(NoDataContainer.GC_NODATA, noData);
-                    raster = t;
-                }
-                return new GranuleLoadingResult(
-                        raster, null, granuleURLUpdated, doFiltering, pamDataset, this);
+            //
+            // In case we are asked to use certain tile dimensions we tile
+            // also at this stage in case the read type is Direct since
+            // buffered images comes up untiled and this can affect the
+            // performances of the subsequent affine operation.
+            //
+            final Dimension tileDimensions = request.getTileDimensions();
+            if (tileDimensions != null && request.getReadType().equals(ReadType.DIRECT_READ)) {
+                final ImageLayout layout = new ImageLayout();
+                layout.setTileHeight(tileDimensions.width).setTileWidth(tileDimensions.height);
+                localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
             } else {
-                //
-                // In case we are asked to use certain tile dimensions we tile
-                // also at this stage in case the read type is Direct since
-                // buffered images comes up untiled and this can affect the
-                // performances of the subsequent affine operation.
-                //
-                final Dimension tileDimensions = request.getTileDimensions();
-                if (tileDimensions != null && request.getReadType().equals(ReadType.DIRECT_READ)) {
-                    final ImageLayout layout = new ImageLayout();
-                    layout.setTileHeight(tileDimensions.width).setTileWidth(tileDimensions.height);
-                    localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
-                } else {
-                    ImageLayout layout = Utils.getImageLayoutHint(hints);
-                    if (layout != null) {
-                        localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout.clone()));
-                    }
+                ImageLayout layout = Utils.getImageLayoutHint(hints);
+                if (layout != null) {
+                    localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout.clone()));
                 }
-                final TileCache cache = Utils.getTileCacheHint(hints);
-                if (cache != null) {
-                    localHints.add(new RenderingHints(JAI.KEY_TILE_CACHE, cache));
-                }
-                final TileScheduler scheduler = Utils.getTileSchedulerHint(hints);
-                if (scheduler != null) {
-                    localHints.add(new RenderingHints(JAI.KEY_TILE_SCHEDULER, scheduler));
-                }
-
-                final BorderExtender extender = Utils.getBorderExtenderHint(hints);
-                if (extender != null) {
-                    localHints.add(new RenderingHints(JAI.KEY_BORDER_EXTENDER, extender));
-                } else {
-                    localHints.add(ImageUtilities.BORDER_EXTENDER_HINTS);
-                }
-
-                ImageWorker iw = new ImageWorker(raster);
-                if (virtualNativeResolution != null
-                        && !Double.isNaN(virtualNativeResolution[0])
-                        && !Double.isNaN(virtualNativeResolution[1])) {
-                    localHints.add(new RenderingHints(ImageWorker.PRESERVE_CHAINED_AFFINES, true));
-                }
-                iw.setRenderingHints(localHints);
-                if (iw.getNoData() == null && this.noData != null) {
-                    iw.setNoData(this.noData.getAsRange());
-                }
-                iw.affine(finalRaster2Model, interpolation, request.getBackgroundValues());
-                RenderedImage renderedImage = iw.getRenderedImage();
-                Object roi = renderedImage.getProperty("ROI");
-                if (useFootprint
-                                && (roi instanceof ROIGeometry
-                                        && ((ROIGeometry) roi).getAsGeometry().isEmpty())
-                        || (roi instanceof ROI && ((ROI) roi).getBounds().isEmpty())) {
-                    // JAI not only transforms the ROI, but may also apply clipping to the image
-                    // boundary.  this results in an empty ROI in some edge cases
-                    return null;
-                }
-                // Propagate NoData
-                if (iw.getNoData() != null) {
-                    PlanarImage t = PlanarImage.wrapRenderedImage(renderedImage);
-                    t.setProperty(NoDataContainer.GC_NODATA, new NoDataContainer(iw.getNoData()));
-                    renderedImage = t;
-                } else if (this.noData != null) {
-                    // on deferred loading we cannot get the noData from the image, but we might
-                    // have read it
-                    // at the beginning
-                    PlanarImage t = PlanarImage.wrapRenderedImage(renderedImage);
-                    t.setProperty(NoDataContainer.GC_NODATA, noData);
-                    renderedImage = t;
-                }
-                return new GranuleLoadingResult(
-                        renderedImage, null, granuleURLUpdated, doFiltering, pamDataset, this);
+            }
+            final TileCache cache = Utils.getTileCacheHint(hints);
+            if (cache != null) {
+                localHints.add(new RenderingHints(JAI.KEY_TILE_CACHE, cache));
+            }
+            final TileScheduler scheduler = Utils.getTileSchedulerHint(hints);
+            if (scheduler != null) {
+                localHints.add(new RenderingHints(JAI.KEY_TILE_SCHEDULER, scheduler));
             }
 
-        } catch (org.opengis.referencing.operation.NoninvertibleTransformException e) {
-            if (LOGGER.isLoggable(java.util.logging.Level.WARNING)) {
-                LOGGER.log(
-                        java.util.logging.Level.WARNING,
-                        new StringBuilder("Unable to load raster for granuleDescriptor ")
-                                .append(this.toString())
-                                .append(" with request ")
-                                .append(request.toString())
-                                .append(" Resulting in no granule loaded: Empty result")
-                                .toString(),
-                        e);
+            final BorderExtender extender = Utils.getBorderExtenderHint(hints);
+            if (extender != null) {
+                localHints.add(new RenderingHints(JAI.KEY_BORDER_EXTENDER, extender));
+            } else {
+                localHints.add(ImageUtilities.BORDER_EXTENDER_HINTS);
             }
-            return null;
-        } catch (IllegalStateException | TransformException e) {
-            if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.log(
-                        Level.WARNING,
-                        new StringBuilder("Unable to load raster for granuleDescriptor ")
-                                .append(this.toString())
-                                .append(" with request ")
-                                .append(request.toString())
-                                .append(" Resulting in no granule loaded: Empty result")
-                                .toString(),
-                        e);
+            iw = new ImageWorker(raster);
+            if (virtualNativeResolution != null
+                    && !Double.isNaN(virtualNativeResolution[0])
+                    && !Double.isNaN(virtualNativeResolution[1])) {
+                localHints.add(new RenderingHints(ImageWorker.PRESERVE_CHAINED_AFFINES, true));
             }
-            return null;
-        } finally {
-            try {
-                if (cleanupInFinally && inStream != null) {
-                    inStream.close();
-                }
-            } finally {
-                if (cleanupInFinally && reader != null) {
-                    reader.dispose();
-                }
+
+            iw.setRenderingHints(localHints);
+            if (iw.getNoData() == null && this.noData != null) {
+                iw.setNoData(this.noData.getAsRange());
             }
+            iw.affine(finalRaster2Model, interpolation, request.getBackgroundValues());
         }
+        return iw;
+    }
+
+    private boolean boundsOverlap(RequestParams params) {
+
+        final boolean thisTileIntersectsCropBBox = !params.intersection.isEmpty();
+        if (!thisTileIntersectsCropBBox) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine(
+                        String.format(
+                                "Got empty intersection for granule %s with request %s Resulting in no granule loaded: Empty result",
+                                this, params.request));
+            }
+            return false;
+        }
+        // check if the requested bbox intersects or overlaps the requested area
+        final boolean useFootprint = params.inclusionGeometry != null;
+        final boolean requestedBboxOverlapsRequestedArea =
+                !(useFootprint
+                        && params.inclusionGeometry != null
+                        && !JTS.toGeometry(params.cropBBox).intersects(params.inclusionGeometry));
+        if (!requestedBboxOverlapsRequestedArea) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine(
+                        String.format(
+                                "Got empty intersection for granule %s with request %s Resulting in no granule loaded: Empty result",
+                                this, params.request));
+            }
+            return false;
+        }
+        return true;
+    }
+
+    private ReferencedEnvelope cropBBoxIntersection(
+            final Geometry inclusionGeometry, final ReferencedEnvelope cropBBox) {
+
+        final ReferencedEnvelope bbox =
+                inclusionGeometry == null
+                        ? granuleBBOX
+                        : new ReferencedEnvelope(
+                                granuleBBOX.intersection(inclusionGeometry.getEnvelopeInternal()),
+                                granuleBBOX.getCoordinateReferenceSystem());
+
+        ReferencedEnvelope cropIntersection = bbox.intersection(cropBBox);
+        CoordinateReferenceSystem cropCrs = cropBBox.getCoordinateReferenceSystem();
+        return new ReferencedEnvelope(cropIntersection, cropCrs);
+    }
+
+    private Geometry resolveInclusionGeometry(final RasterLayerRequest request) {
+        final boolean useFootprint =
+                roiProvider != null && request.getFootprintBehavior() != FootprintBehavior.None;
+        return useFootprint ? roiProvider.getFootprint() : null;
+    }
+
+    private boolean finalRaster2ModelIsIdentity(AffineTransform finalRaster2Model) {
+        return XAffineTransform.isIdentity(
+                finalRaster2Model, CoverageUtilities.AFFINE_IDENTITY_EPS);
+    }
+
+    private GranuleLoadingResult createIdentityLoadingResult(
+            RenderedImage raster, URL granuleURLUpdated, final boolean doFiltering) {
+        if (noData != null) {
+            PlanarImage t = PlanarImage.wrapRenderedImage(raster);
+            t.setProperty(NoDataContainer.GC_NODATA, noData);
+            raster = t;
+        }
+        return new GranuleLoadingResult(
+                raster, null, granuleURLUpdated, doFiltering, pamDataset, this);
+    }
+
+    private boolean shallDoFiltering(Geometry inclusionGeometry) {
+        boolean useFootprint = inclusionGeometry != null;
+        if (filterMe && useFootprint)
+            return Utils.areaIsDifferent(inclusionGeometry, baseGridToWorld, granuleBBOX);
+        return false;
     }
 
     private RenderedImage rescale(RenderedImage raster, Hints hints, int[] bands) {
@@ -1634,6 +1911,13 @@ public class GranuleDescriptor {
         }
 
         return null;
+    }
+
+    private GranuleOverviewLevelDescriptor getLevel(
+            final int index, final ImageReader reader, final int imageIndex) {
+
+        final boolean isExternal = ovrProvider.isExternalOverview(imageIndex);
+        return getLevel(index, reader, imageIndex, isExternal);
     }
 
     private GranuleOverviewLevelDescriptor getLevel(

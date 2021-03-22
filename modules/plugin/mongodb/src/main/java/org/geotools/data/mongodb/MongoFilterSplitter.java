@@ -58,6 +58,8 @@ public class MongoFilterSplitter extends PostPreProcessFilterSplittingVisitor {
                         || expression2 instanceof JsonSelectAllFunction)
                 && expression1 instanceof Literal) {
             preStack.push(filter);
+        } else {
+            postStack.push(filter);
         }
     }
 
@@ -65,11 +67,6 @@ public class MongoFilterSplitter extends PostPreProcessFilterSplittingVisitor {
     public Object visit(PropertyIsLike filter, Object notUsed) {
         if (original == null) original = filter;
 
-        if (!fcs.supports(PropertyIsLike.class)) {
-            // MongoDB can only encode like expressions using propertyName
-            postStack.push(filter);
-            return null;
-        }
         if (!(filter.getExpression() instanceof PropertyName)) {
             // MongoDB can only encode like expressions using propertyName
             postStack.push(filter);

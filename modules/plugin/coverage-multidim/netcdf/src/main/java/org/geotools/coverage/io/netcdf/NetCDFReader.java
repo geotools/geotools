@@ -77,6 +77,7 @@ import org.geotools.data.ResourceInfo;
 import org.geotools.feature.NameImpl;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.imageio.netcdf.NetCDFImageReader;
 import org.geotools.imageio.netcdf.VariableAdapter;
 import org.geotools.imageio.netcdf.VariableAdapter.UnidataSpatialDomain;
@@ -533,7 +534,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
             if (value == null) return;
             final GridGeometry2D gg = (GridGeometry2D) value;
             request.setDomainSubset(
-                    gg.getGridRange2D(), gg.getGridToCRS2D(), gg.getCoordinateReferenceSystem());
+                    gg.getGridRange2D(), new ReferencedEnvelope(gg.getEnvelope2D()));
             return;
         }
 

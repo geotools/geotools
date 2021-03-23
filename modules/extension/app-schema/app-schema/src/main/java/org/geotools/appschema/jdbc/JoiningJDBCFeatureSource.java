@@ -1180,7 +1180,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                         ab.setBinding(String.class);
                         builder.add(
                                 ab.buildDescriptor(
-                                        new NameImpl(FOREIGN_ID) + "_" + i + "_" + 0,
+                                        new NameImpl(FOREIGN_ID) + "_" + i + "_" + j,
                                         ab.buildType()));
                     }
                 }

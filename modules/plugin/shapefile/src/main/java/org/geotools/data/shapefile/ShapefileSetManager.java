@@ -94,7 +94,7 @@ class ShapefileSetManager implements FileReader {
 
         Charset charset = store.getCharset();
 
-        if (store.isTryCpgFile()
+        if (store.isTryCPGFile()
                 && shpFiles.get(CPG) != null
                 && (!shpFiles.isLocal() || (shpFiles.isLocal() && shpFiles.exists(CPG)))) {
             try (BufferedReader br =
@@ -107,8 +107,8 @@ class ShapefileSetManager implements FileReader {
                         charset = Charset.forName(charsetName.trim());
                         store.setCharset(charset);
                     } catch (Exception e) {
-                        if (LOGGER.isLoggable(Level.WARNING)) {
-                            LOGGER.warning(
+                        if (LOGGER.isLoggable(Level.FINER)) {
+                            LOGGER.finer(
                                     "Can't figure out charset from CPG file. Will use provided by the store.");
                         }
                     }

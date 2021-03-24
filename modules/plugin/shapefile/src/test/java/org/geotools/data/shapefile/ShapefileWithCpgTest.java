@@ -55,7 +55,7 @@ public class ShapefileWithCpgTest extends TestCaseSupport {
     public void testShapefileDataStoreFeatureIterator() throws Exception {
         URL url = TestData.url(this, RUSSIAN);
         ShapefileDataStore dataStore = new ShapefileDataStore(url);
-        dataStore.setTryCpgFile(true);
+        dataStore.setTryCPGFile(true);
         try {
             String typeName = dataStore.getTypeNames()[0];
             FeatureSource<SimpleFeatureType, SimpleFeature> source =
@@ -98,7 +98,7 @@ public class ShapefileWithCpgTest extends TestCaseSupport {
     public void testShapefileDataStoreFeatureReader() throws Exception {
         URL url = TestData.url(this, RUSSIAN);
         ShapefileDataStore dataStore = new ShapefileDataStore(url);
-        dataStore.setTryCpgFile(true);
+        dataStore.setTryCPGFile(true);
         try {
             Query q = new Query(dataStore.getTypeNames()[0]);
             try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
@@ -117,7 +117,7 @@ public class ShapefileWithCpgTest extends TestCaseSupport {
     public void testShapefileDataStoreFeatureWriter() throws Exception {
         URL url = TestData.url(this, RUSSIAN);
         ShapefileDataStore dataStore = new ShapefileDataStore(url);
-        dataStore.setTryCpgFile(true);
+        dataStore.setTryCPGFile(true);
         int counter = 0;
         try {
             try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =

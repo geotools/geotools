@@ -28,6 +28,14 @@ But first to upgrade - change your dependency geotools.version to |release| (or 
         ....
     </dependencies>
 
+GeoTools 26.x
+-------------
+
+Shapefile
+^^^^^^^^^
+
+If no explicit charset parameter passed to ``ShapefileDataStoreFactory``, it will now instruct created ``ShapefileDataStore`` to try to figure out DBF file charset from CPG file. If the store fails to read CPG it uses the default charset specified by ``ShapefileDataStoreFactory.DBFCHARSET`` constant, which is usual behavior.
+
 GeoTools 25.x
 -------------
 

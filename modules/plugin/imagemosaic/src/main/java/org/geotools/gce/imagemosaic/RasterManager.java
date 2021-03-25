@@ -63,6 +63,7 @@ import org.geotools.coverage.grid.io.RenamingGranuleSource;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.coverage.util.FeatureUtilities;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -102,6 +103,7 @@ import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridEnvelope;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
@@ -1070,27 +1072,31 @@ public class RasterManager implements Cloneable {
             // it would be useful to cache the result of a query for
             // a specific EPSG code on the index, so that a DB access won't be
             // repeated while the info is in cache.
+            CacheLoader<Integer, Boolean> loader =
+                    new CacheLoader<Integer, Boolean>() {
 
+                        @Override
+                        public Boolean load(Integer epsgCode) throws Exception {
+                            Query query = new Query(typeName);
+                            String crsAttribute = getCrsAttribute();
+                            query.setPropertyNames(Arrays.asList(crsAttribute));
+                            FilterFactory2 ff = FeatureUtilities.DEFAULT_FILTER_FACTORY;
+                            query.setFilter(
+                                    ff.equals(
+                                            ff.property(crsAttribute),
+                                            ff.literal("EPSG:" + epsgCode)));
+                            query.setMaxFeatures(1);
+                            SimpleFeature first =
+                                    DataUtilities.first(granuleCatalog.getGranules(query));
+                            return first != null;
+                        }
+                    };
             alternativeCRSCache =
                     CacheBuilder.newBuilder()
                             .maximumSize(ALTERNATIVE_CRS_CACHE_SIZE)
                             .expireAfterWrite(
                                     ALTERNATIVE_CRS_CACHE_EXPIRATION_SECONDS, TimeUnit.SECONDS)
-                            .build(
-                                    new CacheLoader<Integer, Boolean>() {
-
-                                        @Override
-                                        public Boolean load(Integer epsgCode) throws Exception {
-                                            Query query = new Query(typeName);
-                                            String crsAttribute = getCrsAttribute();
-                                            query.setPropertyNames(Arrays.asList(crsAttribute));
-                                            final UniqueVisitor visitor =
-                                                    new UniqueVisitor(crsAttribute);
-                                            granuleCatalog.computeAggregateFunction(query, visitor);
-                                            Set set = visitor.getUnique();
-                                            return set != null && set.contains("EPSG:" + epsgCode);
-                                        }
-                                    });
+                            .build(loader);
         }
     }
 

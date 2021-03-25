@@ -1063,9 +1063,9 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                             query.getRootMapping(), typeName, getDataStore(), topIds);
                     // apply filter
                     if (filter != null) {
-                        filterToSQL.setFieldEncoder(
-                                new JoiningFieldEncoder(typeName, getDataStore()));
                         if (NestedFilterToSQL.isNestedFilter(filter)) {
+                            filterToSQL.setFieldEncoder(
+                                    new JoiningFieldEncoder(typeName, getDataStore()));
                             topIds.append(" WHERE ")
                                     .append(createNestedFilter(filter, query, filterToSQL));
                         } else {

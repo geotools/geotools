@@ -114,22 +114,18 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
     }
 
     /** helper method to clone the property collection. */
-    private static Collection cloneProperties(Collection original) {
+    private static <T> Collection<T> cloneProperties(Collection<T> original) {
         if (original == null) {
             return null;
         }
 
-        Collection clone = null;
-        try {
-            clone = original.getClass().getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            clone = new ArrayList();
-        }
+        Collection<T> clone = new ArrayList<>();
 
         clone.addAll(original);
         return clone;
     }
-    //    public List/* <Property> */get(Name name) {
+
+    //    public List<Property>get(Name name) {
     //        // JD: this is a farily lenient check, should we be stricter about
     //        // matching up the namespace
     //        List/* <Property> */childs = new LinkedList/* <Property> */();

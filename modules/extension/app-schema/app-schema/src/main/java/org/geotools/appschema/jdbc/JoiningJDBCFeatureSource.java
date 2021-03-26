@@ -55,6 +55,7 @@ import org.geotools.jdbc.JDBCFeatureReader;
 import org.geotools.jdbc.JDBCFeatureSource;
 import org.geotools.jdbc.JDBCFeatureStore;
 import org.geotools.jdbc.JoinInfo.JoinQualifier;
+import org.geotools.jdbc.JoinPropertyName;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
 import org.geotools.jdbc.PrimaryKey;
@@ -69,6 +70,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.Filter;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
@@ -1140,7 +1142,22 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             split[1] = splitter.getFilterPost();
         }
 
-        SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
+        SimplifyingFilterVisitor visitor =
+                new SimplifyingFilterVisitor() {
+
+                    @Override
+                    public Object visit(PropertyName propertyName, Object extraData) {
+                        // preserve the JoinPropertyName
+                        if (propertyName instanceof JoinPropertyName) {
+                            JoinPropertyName joinPropertyName = (JoinPropertyName) propertyName;
+                            return new JoinPropertyName(
+                                    joinPropertyName.getFeatureType(),
+                                    joinPropertyName.getAlias(),
+                                    joinPropertyName.getPropertyName());
+                        }
+                        return super.visit(propertyName, extraData);
+                    }
+                };
         visitor.setFIDValidator(new PrimaryKeyFIDValidator(this));
         split[0] = (Filter) split[0].accept(visitor, null);
         split[1] = (Filter) split[1].accept(visitor, null);

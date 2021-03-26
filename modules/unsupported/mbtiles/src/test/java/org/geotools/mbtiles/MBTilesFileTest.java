@@ -18,6 +18,8 @@ import org.junit.Test;
 
 public class MBTilesFileTest {
 
+    private final double DELTA = 1E-6;
+
     private static final Logger LOGGER = Logging.getLogger(MBTilesFileTest.class);
 
     @Test
@@ -31,6 +33,7 @@ public class MBTilesFileTest {
             metadata.setDescription("dummy description");
             metadata.setVersion("dummy version");
             metadata.setBoundsStr("0,0,100,100");
+            metadata.setCenterStr("10,10,2");
             metadata.setFormatStr("png");
             metadata.setTypeStr("overlay");
             metadata.setMinZoomStr("0");
@@ -46,6 +49,7 @@ public class MBTilesFileTest {
             assertEquals(metadata.getType(), metadata2.getType());
             assertEquals(metadata.getMinZoom(), metadata2.getMinZoom());
             assertEquals(metadata.getMaxZoom(), metadata2.getMaxZoom());
+            assertArrayEquals(metadata.getCenter(), metadata2.getCenter(), DELTA);
         }
     }
 
@@ -207,6 +211,19 @@ public class MBTilesFileTest {
             assertEquals(127, boundsFull.getMaxX());
             assertEquals(0, boundsFull.getMinY());
             assertEquals(127, boundsFull.getMaxY());
+        }
+    }
+
+    @Test
+    public void testMBTilesMetadataCenter() throws IOException, SQLException {
+        try (MBTilesFile mbTilesFile =
+                new MBTilesFile(
+                        new File("./src/test/resources/org/geotools/mbtiles/madagascar.mbtiles"))) {
+            MBTilesMetadata metadata = mbTilesFile.loadMetaData();
+            double[] center = metadata.getCenter();
+            assertEquals(-12.2168, center[0], DELTA);
+            assertEquals(28.6135, center[1], DELTA);
+            assertEquals(4, center[2], DELTA);
         }
     }
 

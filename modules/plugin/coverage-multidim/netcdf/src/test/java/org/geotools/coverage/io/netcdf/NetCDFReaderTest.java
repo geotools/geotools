@@ -944,6 +944,52 @@ public class NetCDFReaderTest extends Assert {
     }
 
     @Test
+    @SuppressWarnings("PMD.UseShortArrayInitializer")
+    public void NetCDFTinyRead() throws FactoryException, IOException {
+        File dir = new File(TestData.file(this, "."), "2DLatLonCoverageTiny");
+        if (dir.exists()) {
+            FileUtils.deleteDirectory(dir);
+        }
+        assertTrue(dir.mkdirs());
+        File file = TestData.file(this, "2DLatLonCoverage.nc");
+        FileUtils.copyFileToDirectory(file, dir);
+        file = new File(dir, "2DLatLonCoverage.nc");
+
+        final Hints hints =
+                new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
+        final AbstractGridFormat format = GridFormatFinder.findFormat(file.toURI().toURL(), hints);
+        final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
+
+        assertNotNull(format);
+        try {
+            String[] names = reader.getGridCoverageNames();
+            String coverageName = names[0];
+            final ParameterValue<GridGeometry2D> gg =
+                    AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+            final GeneralEnvelope reducedEnvelope =
+                    new GeneralEnvelope(new double[] {7.1, 54}, new double[] {12.1, 63});
+            reducedEnvelope.setCoordinateReferenceSystem(
+                    reader.getCoordinateReferenceSystem(coverageName));
+            final Rectangle rasterArea = new Rectangle(0, 3, 1, 1);
+            final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
+            gg.setValue(new GridGeometry2D(range, reducedEnvelope));
+            GeneralParameterValue[] params = new GeneralParameterValue[] {gg};
+            GridCoverage2D gridCoverage = reader.read(names[0], params);
+            assertNotNull(gridCoverage);
+        } catch (Throwable t) {
+            throw new RuntimeException(t);
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Throwable t) {
+                    // Does nothing
+                }
+            }
+        }
+    }
+
+    @Test
     public void testFileInfo()
             throws NoSuchAuthorityCodeException, FactoryException, IOException, ParseException {
         File nc2 = new File(TestData.file(this, "."), "nc2");

@@ -17,6 +17,7 @@
 package org.geotools.sld.bindings;
 
 import javax.xml.namespace.QName;
+import org.geotools.sld.CssParameter;
 import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.ContrastEnhancement;
@@ -172,6 +173,12 @@ public class SLDRasterSymbolizerBinding extends AbstractComplexBinding {
         if (node.hasChild("ImageOutline")) {
             ImageOutline imageOutput = (ImageOutline) node.getChildValue("ImageOutline");
             rs.setImageOutline(imageOutput.getSymbolizer());
+        }
+
+        // &lt;xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded"/&gt;
+        for (CssParameter param : node.getChildValues(CssParameter.class)) {
+            rs.getOptions()
+                    .put(param.getName(), param.getExpression().evaluate(null, String.class));
         }
 
         return rs;

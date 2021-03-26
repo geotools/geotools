@@ -131,20 +131,9 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
             return null;
         }
 
-        Collection<T> clone = newCollection(original.getClass());
+        Collection<T> clone = new ArrayList<>();
 
         clone.addAll(original);
-        return clone;
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T> Collection<T> newCollection(Class<? extends Collection> collectionClass) {
-        Collection<T> clone = null;
-        try {
-            clone = collectionClass.getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            clone = new ArrayList<>();
-        }
         return clone;
     }
 

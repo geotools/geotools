@@ -4,8 +4,10 @@ Automatic Quality Assurance checks
 The GeoTools builds on Travis and `https://build.geoserver.org/ <https://build.geoserver.org/>`_ apply a handful of tools
 to statically check code quality and fail the build in case of rule violation:
 
-* `PMD <https://pmd.github.io/>`_, 
-* `Error Prone <https://errorprone.info/>`_, 
+* `Google Java style guidelines <https://google.github.io/styleguide/javaguide.html>`_
+* `POM formatting <https://github.com/Ekryd/sortpom>`_
+* `PMD <https://pmd.github.io/>`_
+* `Error Prone <https://errorprone.info/>`_
 * `Spotbugs <https://spotbugs.github.io/>`_
 * `CheckStyle <http://checkstyle.sourceforge.net/>`_ on build servers .
 * ``javac`` own linting abilities, in particular, checking calls to deprecated APIs and unchecked warnings.
@@ -20,6 +22,22 @@ In case you want to just run the build with the full checks locally, use the fol
 
 Add extra parameters as you see fit, like ``-T1C -nsu`` to speed up the build, or ``-Dfmt.skip=true -DskipTests``
 to avoid running tests and code formatting.
+
+Formatting
+^^^^^^^^^^
+
+Source code is automatically formatted during a Maven build using the `fmt-maven-plugin <https://github.com/coveooss/fmt-maven-plugin>`_
+Maven plugin. In particular, the `Google Java style guidelines <https://google.github.io/styleguide/javaguide.html>`_
+are automatically enforced, in their AOSP variant (using 4 spaces for indent, instead of 2).
+Plugins that enforce the same formatting are available for the major IDEs.
+
+POM files are automatically formatted during a Maven build using the `sortpom <https://github.com/Ekryd/sortpom>`_
+Maven plugin, ensuring proper indentation and consistent ordering of the pom file sections.
+At the time of writing, no IDE plugin is available to apply the same formatting.
+
+For both source code and pom files, the right formatting is automatically applied while doing
+a Maven build, which is a strongly recommended practice, before preparing a GIT commit, 
+and more importantly, before preparing a pull request).
 
 PMD checks
 ^^^^^^^^^^

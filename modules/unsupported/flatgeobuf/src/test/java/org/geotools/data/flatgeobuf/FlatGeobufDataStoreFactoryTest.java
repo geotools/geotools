@@ -24,6 +24,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import org.geotools.data.DataAccessFactory;
@@ -32,39 +33,41 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-public class FlatgeobufDataStoreFactoryTest {
+public class FlatGeobufDataStoreFactoryTest {
 
     @Rule public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
     @Test
     public void metadata() {
-        FlatgeobufDataStoreFactory dataStoreFactory = new FlatgeobufDataStoreFactory();
-        assertEquals("Flatgeobuf", dataStoreFactory.getDisplayName());
+        FlatGeobufDataStoreFactory dataStoreFactory = new FlatGeobufDataStoreFactory();
+        assertEquals("FlatGeobuf", dataStoreFactory.getDisplayName());
         assertEquals(
-                "A DataStore for reading and writing Flatgeobuf files",
+                "A DataStore for reading and writing FlatGeobuf files",
                 dataStoreFactory.getDescription());
         assertTrue(dataStoreFactory.isAvailable());
         assertNull(dataStoreFactory.getImplementationHints());
         DataAccessFactory.Param[] params = dataStoreFactory.getParametersInfo();
-        assertEquals(1, params.length);
-        assertEquals(FlatgeobufDataStoreFactory.FILE_PARAM, params[0]);
+        assertEquals(2, params.length);
+        assertEquals(FlatGeobufDataStoreFactory.URL_PARAM, params[0]);
     }
 
     @Test
     public void canProcess() throws IOException {
         File file = temporaryFolder.newFile("points.fgb");
+        URL url = file.toURI().toURL();
         Map<String, Serializable> params = new HashMap<>();
-        params.put("flatgeobuf-file", file);
-        FlatgeobufDataStoreFactory dataStoreFactory = new FlatgeobufDataStoreFactory();
+        params.put("url", url);
+        FlatGeobufDataStoreFactory dataStoreFactory = new FlatGeobufDataStoreFactory();
         assertTrue(dataStoreFactory.canProcess(params));
     }
 
     @Test
     public void cantProcess() throws IOException {
         File file = temporaryFolder.newFile("points.shp");
+        URL url = file.toURI().toURL();
         Map<String, Serializable> params = new HashMap<>();
-        params.put("flatgeobuf-file", file);
-        FlatgeobufDataStoreFactory dataStoreFactory = new FlatgeobufDataStoreFactory();
+        params.put("url", url);
+        FlatGeobufDataStoreFactory dataStoreFactory = new FlatGeobufDataStoreFactory();
         assertFalse(dataStoreFactory.canProcess(params));
     }
 
@@ -73,7 +76,7 @@ public class FlatgeobufDataStoreFactoryTest {
         File file = temporaryFolder.newFile("points.shp");
         Map<String, Serializable> params = new HashMap<>();
         params.put("wrong name", file);
-        FlatgeobufDataStoreFactory dataStoreFactory = new FlatgeobufDataStoreFactory();
+        FlatGeobufDataStoreFactory dataStoreFactory = new FlatGeobufDataStoreFactory();
         assertFalse(dataStoreFactory.canProcess(params));
     }
 
@@ -81,39 +84,43 @@ public class FlatgeobufDataStoreFactoryTest {
     public void createDataStoreFromFile() throws IOException {
         File file = temporaryFolder.newFile("points.fgb");
         Map<String, Serializable> params = new HashMap<>();
-        params.put("flatgeobuf-file", file);
-        FlatgeobufDataStoreFactory dataStoreFactory = new FlatgeobufDataStoreFactory();
+        URL url = file.toURI().toURL();
+        params.put("url", url);
+        FlatGeobufDataStoreFactory dataStoreFactory = new FlatGeobufDataStoreFactory();
         DataStore dataStore = dataStoreFactory.createDataStore(params);
-        assertTrue(dataStore instanceof FlatgeobufDataStore);
+        assertTrue(dataStore instanceof FlatGeobufDataStore);
     }
 
     @Test
     public void createDataStoreFromDirectory() throws IOException {
         File file = temporaryFolder.newFolder("layers");
+        URL url = file.toURI().toURL();
         Map<String, Serializable> params = new HashMap<>();
-        params.put("flatgeobuf-file", file);
-        FlatgeobufDataStoreFactory dataStoreFactory = new FlatgeobufDataStoreFactory();
+        params.put("url", url);
+        FlatGeobufDataStoreFactory dataStoreFactory = new FlatGeobufDataStoreFactory();
         DataStore dataStore = dataStoreFactory.createDataStore(params);
-        assertTrue(dataStore instanceof FlatgeobufDirectoryDataStore);
+        assertTrue(dataStore instanceof FlatGeobufDirectoryDataStore);
     }
 
     @Test
     public void createNewDataStoreFromFile() throws IOException {
         File file = temporaryFolder.newFile("points.fgb");
+        URL url = file.toURI().toURL();
         Map<String, Serializable> params = new HashMap<>();
-        params.put("flatgeobuf-file", file);
-        FlatgeobufDataStoreFactory dataStoreFactory = new FlatgeobufDataStoreFactory();
+        params.put("url", url);
+        FlatGeobufDataStoreFactory dataStoreFactory = new FlatGeobufDataStoreFactory();
         DataStore dataStore = dataStoreFactory.createNewDataStore(params);
-        assertTrue(dataStore instanceof FlatgeobufDataStore);
+        assertTrue(dataStore instanceof FlatGeobufDataStore);
     }
 
     @Test
     public void createNewDataStoreFromDirectory() throws IOException {
         File file = temporaryFolder.newFolder("layers");
+        URL url = file.toURI().toURL();
         Map<String, Serializable> params = new HashMap<>();
-        params.put("flatgeobuf-file", file);
-        FlatgeobufDataStoreFactory dataStoreFactory = new FlatgeobufDataStoreFactory();
+        params.put("url", url);
+        FlatGeobufDataStoreFactory dataStoreFactory = new FlatGeobufDataStoreFactory();
         DataStore dataStore = dataStoreFactory.createNewDataStore(params);
-        assertTrue(dataStore instanceof FlatgeobufDirectoryDataStore);
+        assertTrue(dataStore instanceof FlatGeobufDirectoryDataStore);
     }
 }

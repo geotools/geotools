@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================
+        Maven Project Configuration File
+
+        The Geotools Project
+            http://www.geotools.org/
+
+        Version: $Id$
+     ======================================================================= -->
+  <project xmlns="http://maven.apache.org/POM/4.0.0"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>plugin</artifactId>
+    <version>26-SNAPSHOT</version>
+  </parent>
+
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools</groupId>
+  <artifactId>gt-flatgeobuf</artifactId>
+  <packaging>jar</packaging>
+  <name>FlatGeobuf module</name>
+
+
+
+  <description>
+    DataStore supporting the FlatGeobuf format.
+  </description>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+  <developers>
+    <developer>
+      <name>Björn Harrtell</name>
+      <id>bjornharrtell</id>
+      <email>bjorn@wololo.org</email>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <contributors>
+  </contributors>
+
+
+  <!-- =========================================================== -->
+  <!--     Dependency Management                                   -->
+  <!-- =========================================================== -->
+  <dependencies>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-main</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.wololo</groupId>
+      <artifactId>flatgeobuf</artifactId>
+      <version>3.13.0</version>
+    </dependency>
+  </dependencies>
+
+</project>

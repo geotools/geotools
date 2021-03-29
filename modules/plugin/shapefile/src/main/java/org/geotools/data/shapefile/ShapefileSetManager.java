@@ -16,11 +16,18 @@
  */
 package org.geotools.data.shapefile;
 
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
+import static org.geotools.data.shapefile.files.ShpFileType.CPG;
 import static org.geotools.data.shapefile.files.ShpFileType.DBF;
 import static org.geotools.data.shapefile.files.ShpFileType.PRJ;
 import static org.geotools.data.shapefile.files.ShpFileType.SHX;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.PrjFileReader;
 import org.geotools.data.shapefile.dbf.DbaseFileReader;
@@ -31,6 +38,7 @@ import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.shapefile.shp.IndexFile;
 import org.geotools.data.shapefile.shp.ShapefileException;
 import org.geotools.data.shapefile.shp.ShapefileReader;
+import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.referencing.FactoryException;
 
@@ -40,6 +48,8 @@ import org.opengis.referencing.FactoryException;
  * @author Andrea Aime - GeoSolutions
  */
 class ShapefileSetManager implements FileReader {
+
+    private static final Logger LOGGER = Logging.getLogger(ShapefileSetManager.class);
 
     ShpFiles shpFiles;
 
@@ -82,13 +92,39 @@ class ShapefileSetManager implements FileReader {
             return null;
         }
 
+        Charset charset = store.getCharset();
+
+        if (store.isTryCPGFile()
+                && shpFiles.get(CPG) != null
+                && (!shpFiles.isLocal() || (shpFiles.isLocal() && shpFiles.exists(CPG)))) {
+            try (BufferedReader br =
+                    new BufferedReader(
+                            new InputStreamReader(
+                                    shpFiles.getInputStream(CPG, this), ISO_8859_1))) {
+                String charsetName;
+                if ((charsetName = br.readLine()) != null) {
+                    try {
+                        charset = Charset.forName(charsetName.trim());
+                        store.setCharset(charset);
+                    } catch (Exception e) {
+                        if (LOGGER.isLoggable(Level.FINER)) {
+                            LOGGER.finer(
+                                    "Can't figure out charset from CPG file. Will use provided by the store.");
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                // could happen if cpg file does not exist remotely
+            }
+        }
+
         try {
             if (indexed) {
                 return new IndexedDbaseFileReader(
-                        shpFiles, store.isMemoryMapped(), store.getCharset(), store.getTimeZone());
+                        shpFiles, store.isMemoryMapped(), charset, store.getTimeZone());
             } else {
                 return new DbaseFileReader(
-                        shpFiles, store.isMemoryMapped(), store.getCharset(), store.getTimeZone());
+                        shpFiles, store.isMemoryMapped(), charset, store.getTimeZone());
             }
         } catch (IOException e) {
             // could happen if dbf file does not exist

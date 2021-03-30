@@ -125,8 +125,12 @@ public class MongoUtil {
     }
 
     public static Set<String> findIndexedFields(DBCollection dbc, String type) {
-        Set<String> fields = new LinkedHashSet<>();
         List<DBObject> indices = dbc.getIndexInfo();
+        return findIndexedFields(indices, type);
+    }
+
+    public static Set<String> findIndexedFields(List<DBObject> indices, String type) {
+        Set<String> fields = new LinkedHashSet<>();
         for (DBObject index : indices) {
             Object key = index.get("key");
             if (key instanceof DBObject) {

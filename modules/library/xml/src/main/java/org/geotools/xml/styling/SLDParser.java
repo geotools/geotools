@@ -1316,6 +1316,8 @@ public class SLDParser {
                 symbol.setShadedRelief(parseShadedRelief(child));
             } else if (childName.equalsIgnoreCase(imageOutlineString)) {
                 symbol.setImageOutline(parseLineSymbolizer(child));
+            } else if (childName.equalsIgnoreCase(VendorOptionString)) {
+                parseVendorOption(symbol.getOptions(), child);
             }
         }
 

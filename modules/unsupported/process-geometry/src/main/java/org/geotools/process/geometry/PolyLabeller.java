@@ -24,7 +24,7 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 
 /**
- * Based on Vladimir Agafonkin's Algorithm https://www.mapbox.com/blog/polygon-center/
+ * Formerly, based on Vladimir Agafonkin's Algorithm https://www.mapbox.com/blog/polygon-center/
  *
  * @author Ian Turton
  * @author Casper Børgesen
@@ -34,7 +34,9 @@ public class PolyLabeller {
     static GeometryBuilder GB = new GeometryBuilder();
 
     static Geometry getPolylabel(Geometry polygon, double precision) {
-
+        if (polygon == null) {
+            return null;
+        }
         MultiPolygon multiPolygon;
         if (polygon instanceof Polygon) {
             multiPolygon = GB.multiPolygon((Polygon) polygon);
@@ -45,7 +47,7 @@ public class PolyLabeller {
         }
 
         if (polygon.isEmpty() || polygon.getArea() <= 0.0) {
-            throw new IllegalStateException("Can not label empty geometries");
+            return null;
         }
 
         return MaximumInscribedCircle.getCenter(multiPolygon, precision);

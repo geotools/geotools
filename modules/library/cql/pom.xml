@@ -7,10 +7,7 @@
 
         Version: $Id$
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -18,7 +15,6 @@
     <artifactId>library</artifactId>
     <version>24-SNAPSHOT</version>
   </parent>
-
 
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
@@ -28,14 +24,8 @@
   <packaging>jar</packaging>
   <name>OGC CQL to Filter parser</name>
 
-  <description>
-    A parser that takes a Constraint Query Language input string and produces
-    an equivalent org.opengis.filter.Filter.
-  </description>
-
-  <properties>
-    <moduleIdentifier>org.geotools.text.cql</moduleIdentifier>
-  </properties>
+  <description>A parser that takes a Constraint Query Language input string and produces
+    an equivalent org.opengis.filter.Filter.</description>
 
   <licenses>
     <license>
@@ -45,21 +35,20 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Ian Schneider</name>
       <id>ians</id>
+      <name>Ian Schneider</name>
       <roles>
         <role>Original Developer</role>
       </roles>
     </developer>
     <developer>
-      <name>Mauricio Pazos</name>
       <id>mauricio.pazos</id>
+      <name>Mauricio Pazos</name>
       <email>mauricio.pazos@axios.es</email>
       <organization>Axios</organization>
       <roles>
@@ -68,8 +57,8 @@
       </roles>
     </developer>
     <developer>
-      <name>Gabriel Roldan</name>
       <id>groldan</id>
+      <name>Gabriel Roldan</name>
       <email>groldan@users.sourceforge.net</email>
       <roles>
         <role>Java Developer</role>
@@ -77,6 +66,9 @@
     </developer>
   </developers>
 
+  <properties>
+    <moduleIdentifier>org.geotools.text.cql</moduleIdentifier>
+  </properties>
 
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
@@ -102,23 +94,16 @@
     </dependency>
   </dependencies>
 
-
   <!-- ==================================================== -->
   <!--     Compilation (including non-standard plugins)     -->
   <!-- ==================================================== -->
   <build>
     <plugins>
- 
+
       <plugin>
         <groupId>org.geotools.maven</groupId>
         <artifactId>jjtree-javacc</artifactId>
         <version>${project.version}</version>
-			
-    		<configuration>
-         		<nodePackage>org.geotools.filter.text.generated.parsers</nodePackage>
-     			<nodeDirectory>${basedir}/modified-src</nodeDirectory>
-     			<sourceDirectory>${basedir}/src/main/jjtree</sourceDirectory>
-    		</configuration>
 
         <executions>
           <execution>
@@ -127,50 +112,56 @@
             </goals>
 
           </execution>
-          
+
         </executions>
 
+        <configuration>
+          <nodePackage>org.geotools.filter.text.generated.parsers</nodePackage>
+          <nodeDirectory>${basedir}/modified-src</nodeDirectory>
+          <sourceDirectory>${basedir}/src/main/jjtree</sourceDirectory>
+        </configuration>
+
       </plugin>
-	    <plugin>
-	        <groupId>org.codehaus.mojo</groupId>
-	        <artifactId>build-helper-maven-plugin</artifactId>
-	        <executions>
-	            <execution>
-	                <id>add-source</id>
-	                <phase>generate-sources</phase>
-	                <goals>
-	                    <goal>add-source</goal>
-	                </goals>
-	                <configuration>
-	                    <sources>
-	                        <source>${project.build.directory}/generated-sources/jjtree-javacc</source>
-	                    </sources>
-	                </configuration>
-	            </execution>
-	        </executions>
-        </plugin>      
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>add-source</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${project.build.directory}/generated-sources/jjtree-javacc</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
 
   </build>
 
-    <profiles>
-        <profile>
-            <id>errorprone</id>
-            <activation>
-                <property>
-                    <name>qa</name>
-                </property>
-                <jdk>(1.8,)</jdk>
-            </activation>
-            <properties>
-                <!-- 
+  <profiles>
+    <profile>
+      <id>errorprone</id>
+      <activation>
+        <jdk>(1.8,)</jdk>
+        <property>
+          <name>qa</name>
+        </property>
+      </activation>
+      <properties>
+        <!-- 
                   tried hard to have exclude generated sources based on the following but could not succeed.
                   https://stackoverflow.com/questions/39994647/maven-3-how-to-exclude-generated-sources-from-xlint-check
                   Disabling linting for java 11 in this module instead
                 -->
-                <lint>none</lint>
-            </properties>
-        </profile>
-    </profiles>
+        <lint>none</lint>
+      </properties>
+    </profile>
+  </profiles>
 
 </project>

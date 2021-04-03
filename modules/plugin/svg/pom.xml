@@ -7,10 +7,7 @@
   
   Version: $Id: pom.xml 30851 2008-07-03 15:04:12Z cedricbr $              
   ======================================================================= -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -19,7 +16,6 @@
     <version>24-SNAPSHOT</version>
   </parent>
 
-
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
@@ -27,19 +23,15 @@
   <artifactId>gt-svg</artifactId>
   <packaging>jar</packaging>
   <name>Dynamic symbolizers for SVG symbols</name>
-  
 
+  <description>Plugin allowing gt-render to draw scalar vector graphic symbols.</description>
 
-  <description>
-    Plugin allowing gt-render to draw scalar vector graphic symbols.
-  </description>
+  <inceptionYear>1996</inceptionYear>
 
   <organization>
     <name>Geotools</name>
     <url>http://www.geotools.org</url>
   </organization>
-
-  <inceptionYear>1996</inceptionYear>
 
   <licenses>
     <license>
@@ -49,14 +41,13 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Andrea Aime</name>
       <id>aaime</id>
+      <name>Andrea Aime</name>
       <email>aaime@users.sourceforge.net</email>
       <organization>OpenGeo</organization>
       <roles>
@@ -64,7 +55,6 @@
       </roles>
     </developer>
   </developers>
-
 
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
@@ -112,11 +102,10 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-    	<groupId>org.apache.xmlgraphics</groupId>
-    	<artifactId>batik-codec</artifactId>
-    	<scope>test</scope>
+      <groupId>org.apache.xmlgraphics</groupId>
+      <artifactId>batik-codec</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
 </project>
-

@@ -7,15 +7,13 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>unsupported</artifactId>
     <version>24-SNAPSHOT</version>
   </parent>
-
 
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
@@ -24,7 +22,7 @@
   <artifactId>arcsde-plugin</artifactId>
   <packaging>pom</packaging>
   <name>ArcSDE plugin</name>
-  <description> Root project for arcsde plugin. </description>
+  <description>Root project for arcsde plugin.</description>
   <licenses>
     <license>
       <name>Lesser General Public License (LGPL)</name>
@@ -33,14 +31,13 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Gabriel Roldan</name>
       <id>groldan</id>
+      <name>Gabriel Roldan</name>
       <email>groldan@users.sourceforge.net</email>
       <organization>OpenGeo</organization>
       <organizationUrl>http://opengeo.org</organizationUrl>
@@ -50,8 +47,8 @@
       </roles>
     </developer>
     <developer>
-      <name>Jody Garnett</name>
       <id>jgarnett</id>
+      <name>Jody Garnett</name>
       <email>jody.garnett@gmail.com</email>
       <organization>LISAsoft</organization>
       <organizationUrl>http://www.lisasoft.com</organizationUrl>
@@ -86,15 +83,6 @@
     </contributor>
   </contributors>
 
-  <properties>
-    <!-- default SDE version is 9.2.
-       if you want to use newer ESRI ArcSDE Java API jars, provided that you
-       installed them through mvn install:install-file in your local repo, just
-       run maven with mvn -Parcsde -Dsde.version={desired version} -->
-    <sde.version>9.2</sde.version>
-  </properties>
-
-
   <!-- =========================================================== -->
   <!--     Modules included in the build                           -->
   <!-- =========================================================== -->
@@ -102,6 +90,14 @@
     <module>common</module>
     <module>datastore</module>
   </modules>
+
+  <properties>
+    <!-- default SDE version is 9.2.
+       if you want to use newer ESRI ArcSDE Java API jars, provided that you
+       installed them through mvn install:install-file in your local repo, just
+       run maven with mvn -Parcsde -Dsde.version={desired version} -->
+    <sde.version>9.2</sde.version>
+  </properties>
 
   <profiles>
     <profile>

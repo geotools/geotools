@@ -16,7 +16,6 @@
     <version>24-SNAPSHOT</version>
   </parent>
 
-
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
@@ -33,14 +32,13 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Jody Garnett</name>
       <id>jive</id>
+      <name>Jody Garnett</name>
       <email>jgarnett@gmail.com</email>
       <organization>Open Source Geospatial Foundation</organization>
       <roles>
@@ -49,6 +47,9 @@
     </developer>
   </developers>
 
+  <properties>
+    <target>full</target>
+  </properties>
 
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
@@ -191,7 +192,7 @@
     <dependency>
       <groupId>org.apache.xmlgraphics</groupId>
       <artifactId>batik-codec</artifactId>
-      <!-- The version number is specified in the parent POM. --> 
+      <!-- The version number is specified in the parent POM. -->
     </dependency>
     <dependency>
       <groupId>org.apache.xmlgraphics</groupId>
@@ -199,9 +200,9 @@
       <!-- The version number is specified in the parent POM. -->
     </dependency>
     <dependency>
-        <groupId>net.sourceforge.javacsv</groupId>
-        <artifactId>javacsv</artifactId>
-        <version>2.0</version>
+      <groupId>net.sourceforge.javacsv</groupId>
+      <artifactId>javacsv</artifactId>
+      <version>2.0</version>
     </dependency>
     <dependency>
       <groupId>javax.xml.bind</groupId>
@@ -214,22 +215,38 @@
       <!-- The version number is specified in the parent POM. -->
     </dependency>
     <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <scope>provided</scope>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
-        <groupId>com.opencsv</groupId>
-        <artifactId>opencsv</artifactId>
-        <version>5.0</version>
+      <groupId>com.opencsv</groupId>
+      <artifactId>opencsv</artifactId>
+      <version>5.0</version>
     </dependency>
   </dependencies>
-
 
   <build>
     <plugins>
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>sphinx</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <tasks>
+                <ant antfile="build.xml" dir="${basedir}" target="${target}">
+                  <property name="build.directory" value="${project.build.directory}"></property>
+                  <property name="project.version" value="${project.version}"></property>
+                </ant>
+              </tasks>
+            </configuration>
+          </execution>
+        </executions>
         <dependencies>
           <dependency>
             <groupId>ant</groupId>
@@ -242,42 +259,19 @@
             <version>1.0b3</version>
           </dependency>
         </dependencies>
-        <executions>
-          <execution>
-            <id>sphinx</id>
-            <phase>compile</phase>
-            <configuration>
-              <tasks>
-                <ant antfile="build.xml" dir="${basedir}" target="${target}">
-                  <property name="build.directory" value="${project.build.directory}"/>
-                  <property name="project.version" value="${project.version}"/>
-                </ant>
-              </tasks>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
       <plugin>
         <!-- Disable PMD in this module, the code is a set of examples, too many System.out -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
         <executions>
-            <execution>
-                <phase>none</phase>
-            </execution>
+          <execution>
+            <phase>none</phase>
+          </execution>
         </executions>
-    </plugin>
+      </plugin>
     </plugins>
   </build>
-
-
-  <properties>
-     <target>full</target>
-  </properties>
-
 
   <profiles>
     <profile>

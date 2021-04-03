@@ -21,9 +21,7 @@
   <artifactId>gt-mbstyle</artifactId>
   <packaging>jar</packaging>
   <name>MBStyle Extension</name>
-  <description>
-    Extension providing parsing support and helper functions for Mapbox Style.
-  </description>
+  <description>Extension providing parsing support and helper functions for Mapbox Style.</description>
   <licenses>
     <license>
       <name>Lesser General Public License (LGPL)</name>
@@ -36,8 +34,8 @@
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Torben Barsballe</name>
       <id>tbarsballe</id>
+      <name>Torben Barsballe</name>
       <email>tbarsballe@planet.com</email>
       <organization>Planet</organization>
       <roles>
@@ -45,22 +43,22 @@
       </roles>
     </developer>
     <developer>
-      <name>Reggie Beckwith</name>
       <id>jrbeckwith</id>
+      <name>Reggie Beckwith</name>
       <roles>
         <role>Java Developer</role>
       </roles>
     </developer>
     <developer>
-      <name>Matt Kruszewksi</name>
       <id>mattkrusz</id>
+      <name>Matt Kruszewksi</name>
       <roles>
         <role>Java Developer</role>
       </roles>
     </developer>
     <developer>
-      <name>David Vick</name>
       <id>vickdw</id>
+      <name>David Vick</name>
       <email>dvick@federal.planet.com</email>
       <organization>Planet Federal</organization>
       <roles>
@@ -68,8 +66,8 @@
       </roles>
     </developer>
     <developer>
-      <name>Jody Garnett</name>
       <id>jodygarnett</id>
+      <name>Jody Garnett</name>
       <email>jody.garnett@gmail.com</email>
       <organization>GetoCat</organization>
       <roles>
@@ -77,7 +75,7 @@
       </roles>
     </developer>
   </developers>
-  
+
   <dependencies>
     <!--   GeoTools modules   -->
     <dependency>
@@ -98,16 +96,16 @@
 
     <!--   Test dependencies -->
     <dependency>
-        <groupId>commons-io</groupId>
-        <artifactId>commons-io</artifactId>
-        <scope>test</scope>
-    </dependency>   
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-sample-data</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>      
-    </dependency> 
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-property</artifactId>
@@ -117,23 +115,23 @@
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-main</artifactId>
-      <scope>test</scope>
-      <classifier>tests</classifier>
       <version>${project.version}</version>
+      <classifier>tests</classifier>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-render</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>
       <classifier>tests</classifier>
-    </dependency>        
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-epsg-hsql</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
-    </dependency>    
+    </dependency>
     <dependency>
       <groupId>org.geotools.xsd</groupId>
       <artifactId>gt-xsd-sld</artifactId>

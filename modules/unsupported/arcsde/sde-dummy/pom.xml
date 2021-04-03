@@ -7,10 +7,7 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -19,7 +16,6 @@
     <version>24-SNAPSHOT</version>
   </parent>
 
-
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
@@ -27,12 +23,8 @@
   <artifactId>gt-sde-dummy</artifactId>
   <packaging>jar</packaging>
   <name>ArcSDE dummy api</name>
-  
 
-
-  <description>
-    ArcSDE dummy api.
-  </description>
+  <description>ArcSDE dummy api.</description>
 
   <licenses>
     <license>
@@ -42,14 +34,13 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Gabriel Roldan</name>
       <id>groldan</id>
+      <name>Gabriel Roldan</name>
       <email>groldan@users.sourceforge.net</email>
       <organization>OpenGeo</organization>
       <organizationUrl>http://opengeo.org</organizationUrl>
@@ -59,8 +50,8 @@
       </roles>
     </developer>
     <developer>
-      <name>Jody Garnett</name>
       <id>jgarnett</id>
+      <name>Jody Garnett</name>
       <email>jody.garnett@gmail.com</email>
       <organization>LISAsoft</organization>
       <organizationUrl>http://www.lisasoft.com</organizationUrl>

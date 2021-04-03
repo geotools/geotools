@@ -7,10 +7,7 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -18,7 +15,6 @@
     <artifactId>extension</artifactId>
     <version>24-SNAPSHOT</version>
   </parent>
-  
 
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
@@ -27,14 +23,10 @@
   <artifactId>gt-validation</artifactId>
   <packaging>jar</packaging>
   <name>Validation Processor and Framework</name>
-  
 
-
-  <description>
-    Validation module (and validator batch tool) for use with geotools2.
+  <description>Validation module (and validator batch tool) for use with geotools2.
     This library has been ported to geotools2 as part of the VWFS project
-    sponcered by Geo Innovations.
-  </description>
+    sponcered by Geo Innovations.</description>
 
   <licenses>
     <license>
@@ -44,14 +36,13 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Jody Garnett</name>
       <id>jive</id>
+      <name>Jody Garnett</name>
       <email>jive@users.sourceforge.net</email>
       <organization>Refractions Research</organization>
       <roles>
@@ -60,8 +51,8 @@
       </roles>
     </developer>
     <developer>
-      <name>David Zwiers</name>
       <id>dmzwiers</id>
+      <name>David Zwiers</name>
       <email>dzwiers@refractions.net</email>
       <organization>Refractions Research Inc.</organization>
       <roles>
@@ -69,17 +60,16 @@
       </roles>
     </developer>
     <developer>
-      <name>Brent Owens</name>
       <id>sploreg</id>
+      <name>Brent Owens</name>
       <email>sploreg@users.sourceforge.net</email>
       <organization>Refractions Research</organization>
       <roles>
         <role>Java Developer</role>
         <role>Module Maintainer</role>
       </roles>
-    </developer>    
+    </developer>
   </developers>
-
 
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
@@ -110,7 +100,8 @@
       <groupId>org.geotools</groupId>
       <artifactId>gt-sample-data</artifactId>
       <version>${project.version}</version>
-      <scope>provided</scope> <!-- Should be "test", but this dependencies appears in the main directory! -->
+      <scope>provided</scope>
+      <!-- Should be "test", but this dependencies appears in the main directory! -->
     </dependency>
 
     <!-- Adding J-Unit back in due to conflict-->
@@ -135,11 +126,10 @@
                  org.geotools.data.DataSourceException: Connection failed -->
             <exclude>**/MemoryLeakOnlineTest.java</exclude>
             <exclude>**/GazetteerNameValidationOnlineTest.java</exclude>
-          </excludes>          
+          </excludes>
         </configuration>
       </plugin>
     </plugins>
   </build>
-
 
 </project>

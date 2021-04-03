@@ -269,7 +269,7 @@ public class GeoPkgSchemaExtension extends GeoPkgExtension {
             NumberRange range = rangeConstraint.getRange();
             try (PreparedStatement ps = cx.prepareStatement(sql)) {
                 ps.setString(1, constraintName);
-                ps.setString(2, "glob");
+                ps.setString(2, "range");
                 ps.setString(3, null);
                 ps.setDouble(4, range.getMinimum());
                 ps.setBoolean(5, range.isMinIncluded());

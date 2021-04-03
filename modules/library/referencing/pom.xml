@@ -7,10 +7,7 @@
 
         Version: $Id$
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -18,7 +15,6 @@
     <artifactId>library</artifactId>
     <version>26-SNAPSHOT</version>
   </parent>
-
 
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
@@ -28,14 +24,8 @@
   <packaging>jar</packaging>
   <name>Referencing services</name>
 
-  <description>
-    Contains implementations of Coordinate Reference Systems (CRS),
-    conversion and transformation services.
-  </description>
-
-  <properties>
-    <moduleIdentifier>org.geotools.referencing</moduleIdentifier>
-  </properties>
+  <description>Contains implementations of Coordinate Reference Systems (CRS),
+    conversion and transformation services.</description>
 
   <licenses>
     <license>
@@ -45,26 +35,25 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Martin Desruisseaux</name>
       <id>desruisseaux</id>
+      <name>Martin Desruisseaux</name>
       <email>desruisseaux@users.sourceforge.net</email>
       <organization>Geomatys</organization>
       <organizationUrl>http://www.geomatys.fr/</organizationUrl>
-      <timezone>+1</timezone>
       <roles>
         <role>Retired Module Maintainer</role>
         <role>Retired Java Developer</role>
       </roles>
+      <timezone>+1</timezone>
     </developer>
     <developer>
-      <name>Rueben Schulz</name>
       <id>rschulz</id>
+      <name>Rueben Schulz</name>
       <organization>University of British Columbia</organization>
       <roles>
         <role>Java developer</role>
@@ -72,15 +61,15 @@
       </roles>
     </developer>
     <developer>
-      <name>Jan Jezek</name>
       <id>jezekjan</id>
+      <name>Jan Jezek</name>
       <roles>
         <role>Java Developer</role>
       </roles>
     </developer>
     <developer>
-      <name>Jody Garnett</name>
       <id>jive</id>
+      <name>Jody Garnett</name>
       <email>jive@users.sourceforge.net</email>
       <organization>Refractions Research</organization>
       <roles>
@@ -88,8 +77,8 @@
       </roles>
     </developer>
     <developer>
-      <name>Simone Giannecchini</name>
       <id>simboss</id>
+      <name>Simone Giannecchini</name>
       <email>simone.giannecchini@geo-solutions.it</email>
       <organization>GeoSolutions S.A.S.</organization>
       <organizationUrl>http://www.geo-solutions.it</organizationUrl>
@@ -98,10 +87,10 @@
         <role>Documentation</role>
         <role>Module Maintainer</role>
       </roles>
-    </developer> 
+    </developer>
     <developer>
-      <name>Andrea Aime</name>
       <id>aaime</id>
+      <name>Andrea Aime</name>
       <email>aaime@users.sourceforge.net</email>
       <roles>
         <role>Java Developer</role>
@@ -113,9 +102,7 @@
   <contributors>
     <contributor>
       <name>Rémi Eve</name>
-      <organization>
-        Institut de Recherche pour le Développement (IRD)
-      </organization>
+      <organization>Institut de Recherche pour le Développement (IRD)</organization>
       <roles>
         <role>Java developper</role>
       </roles>
@@ -149,12 +136,10 @@
     </contributor>
     <contributor>
       <name>Beate Stollberg</name>
+      <organization>Institute for Environment and Sustainability</organization>
       <roles>
         <role>Java developper</role>
       </roles>
-      <organization>
-        Institute for Environment and Sustainability
-      </organization>
     </contributor>
     <contributor>
       <name>Tara Athan</name>
@@ -164,6 +149,9 @@
     </contributor>
   </contributors>
 
+  <properties>
+    <moduleIdentifier>org.geotools.referencing</moduleIdentifier>
+  </properties>
 
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
@@ -190,12 +178,11 @@
       <artifactId>jgridshift-core</artifactId>
       <version>1.3</version>
     </dependency>
-   <dependency>
-     <groupId>net.sf.geographiclib</groupId>
-     <artifactId>GeographicLib-Java</artifactId>
-     <version>1.49</version>
-   </dependency>
-
+    <dependency>
+      <groupId>net.sf.geographiclib</groupId>
+      <artifactId>GeographicLib-Java</artifactId>
+      <version>1.49</version>
+    </dependency>
 
     <!-- Test dependencies -->
     <dependency>
@@ -218,7 +205,7 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  
+
   <build>
     <plugins>
       <plugin>
@@ -240,11 +227,11 @@
       <id>mac</id>
       <activation>
         <os>
-         <family>mac</family>
+          <family>mac</family>
         </os>
       </activation>
       <properties>
-        <test.exclude.pattern>**/WarpTransformTest.*</test.exclude.pattern> 
+        <test.exclude.pattern>**/WarpTransformTest.*</test.exclude.pattern>
       </properties>
     </profile>
   </profiles>

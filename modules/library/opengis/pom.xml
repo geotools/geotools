@@ -7,10 +7,7 @@
 
         Version: $Id$
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -18,7 +15,6 @@
     <artifactId>library</artifactId>
     <version>26-SNAPSHOT</version>
   </parent>
-
 
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
@@ -28,13 +24,7 @@
   <packaging>jar</packaging>
   <name>Open GIS Interfaces</name>
 
-  <description>
-    Standard interfaces implemented throughout the library.
-  </description>
-
-  <properties>
-    <moduleIdentifier>org.geotools.opengis</moduleIdentifier>
-  </properties>
+  <description>Standard interfaces implemented throughout the library.</description>
 
   <licenses>
     <license>
@@ -49,14 +39,13 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Jody Garnett</name>
       <id>jive</id>
+      <name>Jody Garnett</name>
       <email>jive@users.sourceforge.net</email>
       <organization>Refractions Research</organization>
       <roles>
@@ -64,8 +53,8 @@
       </roles>
     </developer>
     <developer>
-      <name>Andrea Aime</name>
       <id>aaime</id>
+      <name>Andrea Aime</name>
       <email>aaime@users.sourceforge.net</email>
       <roles>
         <role>Java Developer</role>
@@ -80,11 +69,11 @@
       <email>desruisseaux@users.sourceforge.net</email>
       <organization>Geomatys</organization>
       <organizationUrl>http://www.geomatys.fr/</organizationUrl>
-      <timezone>+1</timezone>
       <roles>
         <role>Retired Module Maintainer</role>
         <role>Retired Java Developer</role>
       </roles>
+      <timezone>+1</timezone>
     </contributor>
     <contributor>
       <name>Rueben Schulz</name>
@@ -110,12 +99,10 @@
         <role>Documentation</role>
         <role>Module Maintainer</role>
       </roles>
-    </contributor> 
+    </contributor>
     <contributor>
       <name>Rémi Eve</name>
-      <organization>
-        Institut de Recherche pour le Développement (IRD)
-      </organization>
+      <organization>Institut de Recherche pour le Développement (IRD)</organization>
       <roles>
         <role>Java developper</role>
       </roles>
@@ -149,12 +136,10 @@
     </contributor>
     <contributor>
       <name>Beate Stollberg</name>
+      <organization>Institute for Environment and Sustainability</organization>
       <roles>
         <role>Java developper</role>
       </roles>
-      <organization>
-        Institute for Environment and Sustainability
-      </organization>
     </contributor>
     <contributor>
       <name>Tara Athan</name>
@@ -164,22 +149,26 @@
     </contributor>
   </contributors>
 
+  <properties>
+    <moduleIdentifier>org.geotools.opengis</moduleIdentifier>
+  </properties>
+
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
   <!-- =========================================================== -->
   <dependencies>
-  
+
     <dependency>
       <groupId>commons-pool</groupId>
       <artifactId>commons-pool</artifactId>
       <!-- The version number is specified in the parent POM. -->
     </dependency>
-    
+
     <dependency>
       <groupId>systems.uom</groupId>
       <artifactId>systems-common</artifactId>
     </dependency>
-    
+
     <!-- Test dependencies -->
     <dependency>
       <!-- Required for ImageParameterDescriptor test. -->
@@ -188,7 +177,7 @@
       <!-- The version number is specified in the parent POM. -->
       <scope>test</scope>
     </dependency>
-    
+
   </dependencies>
 
 </project>

@@ -7,18 +7,14 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  
+
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>extension</artifactId>
     <version>26-SNAPSHOT</version>
   </parent>
-
 
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
@@ -27,18 +23,14 @@
   <artifactId>gt-graph</artifactId>
   <packaging>jar</packaging>
   <name>Feature Based Graphs and Networks</name>
-  
 
-
-  <description>
-    Graph classes that builds and walk networks based on Feature relationships.
+  <description>Graph classes that builds and walk networks based on Feature relationships.
     The original graph package has been developed using the JUMP Feature API.
     Its intension is to be able to aid automated skeletonization of water bodies
     by computing directionality of generated skeletons. The work for the 
     original JUMP based library has been funded by the BC Proventional 
     Government department of BMGS. This library has been ported to geotools2 as 
-    part of the VWFS project sponcered by Geo Innovations.
-  </description>
+    part of the VWFS project sponcered by Geo Innovations.</description>
 
   <licenses>
     <license>
@@ -48,14 +40,13 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Jody Garnett</name>
       <id>jive</id>
+      <name>Jody Garnett</name>
       <email>jive@users.sourceforge.net</email>
       <organization>Refractions Research</organization>
       <roles>
@@ -64,8 +55,8 @@
       </roles>
     </developer>
     <developer>
-      <name>Justin Deoliveira</name>
       <id>jdeolive</id>
+      <name>Justin Deoliveira</name>
       <email>jdeolive@users.sourceforge.net</email>
       <organization>Refractions Research</organization>
       <roles>
@@ -74,8 +65,8 @@
       </roles>
     </developer>
     <developer>
-      <name>Ian Turton</name>
       <id>ianturton</id>
+      <name>Ian Turton</name>
       <email>ianturton@users.sourceforge.net</email>
       <organization>Astun Technology</organization>
       <roles>
@@ -84,8 +75,6 @@
       </roles>
     </developer>
   </developers>
-
-
 
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->

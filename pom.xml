@@ -7,12 +7,393 @@
 
         Version: $Id$
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <!-- =========================================================== -->
+  <!--     Project Description                                     -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools</groupId>
+  <artifactId>geotools</artifactId>
+  <version>26-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>GeoTools</name>
+
+  <description>Welcome to the homepage of the GeoTools build process
+    In the left side bar you should see a list of active modules,
+    visit each for more details on the status of each module.</description>
+  <inceptionYear>1996</inceptionYear>
+
+  <organization>
+    <name>Geotools</name>
+    <url>http://www.geotools.org</url>
+  </organization>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!--       TODO: Change this to the PMC list                     -->
+  <!-- =========================================================== -->
+  <developers>
+    <developer>
+      <id>jmacgill</id>
+      <name>James Macgill</name>
+      <email>jmacgill@users.sourceforge.net</email>
+      <organization>Google</organization>
+      <roles>
+        <role>Exhalted Leader</role>
+        <role>Java Developer</role>
+        <role>Project Management Committee (PMC) Member</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>ianturton</id>
+      <name>Ian Turton</name>
+      <email>ianturton@users.sourceforge.net</email>
+      <organization>Astun Technology</organization>
+      <roles>
+        <role>Java Developer</role>
+        <role>Project Management Committee (PMC) Member</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>robhranac</id>
+      <name>Rob Hranac</name>
+      <email>robhranac@users.sourceforge.net</email>
+      <organization>VFNY</organization>
+      <roles>
+        <role>Java Developer</role>
+        <role>Project Management Committee (PMC) Member</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>camerons</id>
+      <name>Cameron Shorter</name>
+      <email>cameronsl@users.sourceforge.net</email>
+      <roles>
+        <role>Java Developer</role>
+        <role>Project Management Committee (PMC) Member</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>cholmesny</id>
+      <name>Chris Holmes</name>
+      <email>cholmesny@users.sourceforge.net</email>
+      <organization>TOPP</organization>
+      <roles>
+        <role>Java Developer</role>
+        <role>Project Management Committee (PMC) Member</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>desruisseaux</id>
+      <name>Martin Desruisseaux</name>
+      <email>desruisseaux@users.sourceforge.net</email>
+      <organization>Geomatys</organization>
+      <organizationUrl>http://www.geomatys.fr/</organizationUrl>
+      <roles>
+        <role>Java Developer</role>
+        <role>Project Management Committee (PMC) Member</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <id>ianschne</id>
+      <name>Ian Schneider</name>
+      <email>ianschne@users.sourceforge.net</email>
+      <organization>USDA ARS</organization>
+      <roles>
+        <role>Java Developer</role>
+        <role>Project Management Committee (PMC) Member</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>aaime</id>
+      <name>Andrea Aime</name>
+      <email>aaime@users.sourceforge.net</email>
+      <organization>University of Modena and Reggio Emilia</organization>
+      <roles>
+        <role>Java Developer</role>
+        <role>Project Management Committee (PMC) Member</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>kobit</id>
+      <name>Artur Hefczyc</name>
+      <email>kobit@users.sourceforge.net</email>
+      <roles>
+        <role>Java Developer</role>
+        <role>Project Management Committee (PMC) Member</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>jodygarnett</id>
+      <name>Jody Garnett</name>
+      <email>jody.garnett@gmail.com</email>
+      <organization>GeoCat B.V.</organization>
+      <organizationUrl>https://www.geocat.net</organizationUrl>
+      <roles>
+        <role>Java Developer</role>
+        <role>Module Maintainer</role>
+        <role>Project Management Committee (PMC) Member</role>
+      </roles>
+      <!-- America/Vancouver -->
+      <timezone>-8</timezone>
+    </developer>
+    <developer>
+      <id>jdeolive</id>
+      <name>Justin Deoliveira</name>
+      <email>jdeolive@users.sourceforge.net</email>
+      <organization>Refractions Research</organization>
+      <roles>
+        <role>Java Developer</role>
+        <role>Module Maintainer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>rgould</id>
+      <name>Richard Gould</name>
+      <email>rgould@refractions.net</email>
+      <organization>Refractions Research, Inc.</organization>
+      <roles>
+        <role>Java Developer</role>
+        <role>Module Maintainer</role>
+        <role>Project Management Committee (PMC) Member</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>mauricio.pazos</id>
+      <name>Mauricio Pazos</name>
+      <email>mauricio.pazos@axios.es</email>
+      <organization>Axios</organization>
+      <roles>
+        <role>Java Developer</role>
+        <role>Module Maintainer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>ckl</id>
+      <name>Christiaan ten Klooster</name>
+      <email>ckl@dacelo.nl</email>
+      <organization>Dacelo</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>groldan</id>
+      <name>Gabriel Roldan</name>
+      <email>groldan@users.sourceforge.net</email>
+      <organization>TOPP</organization>
+      <roles>
+        <role>Java Developer</role>
+        <role>Module Maintainer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>seangeo</id>
+      <name>Sean Geoghegan</name>
+      <email>sean.geoghegan@dsto.defence.gov.au</email>
+      <organization>Defence Science and Technology Organisation</organization>
+      <roles>
+        <role>Java Developer</role>
+        <role>Module Maintainer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>jjray</id>
+      <name>Julian Ray</name>
+      <email>jjray@users.sourceforge.net</email>
+      <roles>
+        <role>Module Maintainer</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>dledmonds</id>
+      <name>Darren Edmonds</name>
+      <email>dledmonds@users.sourceforge.net</email>
+      <roles>
+        <role>Module Maintainer</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>omyar</id>
+      <name>Ray Gallagher</name>
+      <email>omyar@users.sourceforge.net</email>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Jianhui Jin</name>
+      <organization>CCG</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>shepshep</id>
+      <name>Gary Sheppard</name>
+      <email>garysheppard@psu.edu</email>
+      <organization>Penn State GeoVISTA Center</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Simon Rass</name>
+      <roles>
+        <role>Bug Fixer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>dmzwiers</id>
+      <name>David Zwiers</name>
+      <email>dzwiers@refractions.net</email>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>sploreg</id>
+      <name>Brent Owens</name>
+      <email>sploreg@users.sourceforge.net</email>
+      <roles>
+        <role>Java Developer</role>
+        <role>Module Maintainer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>rschulz</id>
+      <name>Rueben Schulz</name>
+      <organization>University of British Columbia</organization>
+      <roles>
+        <role>Tester</role>
+        <role>Documentation</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>simboss</id>
+      <name>Simone Giannecchini</name>
+      <email>simboss1@gmail.com</email>
+      <organization></organization>
+      <roles>
+        <role>Java Developer</role>
+        <role>Documentation</role>
+        <role>Module Maintainer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>lpercich</id>
+      <name>Luca Sigfrido Percich</name>
+      <email>luca.percich@ama-mi.it</email>
+      <organization>AMA-MI</organization>
+      <roles>
+        <role>Java Developer</role>
+        <role>Module Maintainer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>lmoran</id>
+      <name>Luca Morandini</name>
+      <email>lmorandini@ieee.org</email>
+      <organization></organization>
+      <roles>
+        <role>Java Developer</role>
+        <role>Module Maintainer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>mprins</id>
+      <name>Mark Prins</name>
+      <email>mprins@users.sf.net</email>
+      <organization>B3Partners BV</organization>
+      <organizationUrl>https://b3partners.nl/</organizationUrl>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
+
+  </developers>
+
+  <contributors></contributors>
+
+  <mailingLists>
+    <mailingList>
+      <name>geotools-gt2-users</name>
+      <subscribe>http://lists.sourceforge.net/lists/listinfo/geotools-gt2-users</subscribe>
+      <post>geotools-geotools-gt2-users@lists.sourceforge.net</post>
+      <archive>http://sourceforge.net/p/geotools/mailman/geotools-gt2-users/</archive>
+    </mailingList>
+    <mailingList>
+      <name>geotools-devel</name>
+      <subscribe>http://lists.sourceforge.net/lists/listinfo/geotools-devel</subscribe>
+      <post>geotools-devel@lists.sourceforge.net</post>
+      <archive>http://sourceforge.net/p/geotools/mailman/geotools-devel/</archive>
+    </mailingList>
+    <mailingList>
+      <name>geotools-gt2-commits</name>
+      <subscribe>https://lists.sourceforge.net/lists/listinfo/geotools-commits</subscribe>
+      <post>geotools-geotools-gt2-commits@lists.sourceforge.net</post>
+      <archive>http://sourceforge.net/p/geotools/mailman/geotools-commits/</archive>
+    </mailingList>
+  </mailingLists>
+
+  <!-- =========================================================== -->
+  <!--     Modules for the build in approximate dependency order   -->
+  <!-- =========================================================== -->
+  <modules>
+    <module>build</module>
+    <module>modules</module>
+  </modules>
+
+  <scm>
+    <connection>scm:git:git://github.com/geotools/geotools.git</connection>
+    <developerConnection>scm:git:[fetch=]git://github.com/geotools/geotools.git[push=]git@github.com:geotools/geotools.git</developerConnection>
+    <url>https://github.com/geotools/geotools</url>
+  </scm>
+
+  <!-- =========================================================== -->
+  <!--     Issue managements and mailing lists.                    -->
+  <!-- =========================================================== -->
+  <issueManagement>
+    <system>JIRA</system>
+    <url>https://osgeo-org.atlassian.net/projects/GEOT</url>
+  </issueManagement>
+
+  <!-- =========================================================== -->
+  <!--    Continuous Integration                                   -->
+  <!-- =========================================================== -->
+  <ciManagement>
+    <system>jenkins</system>
+    <url>http://ares.opengeo.org/jenkins/view/geotools/</url>
+  </ciManagement>
+
+  <distributionManagement>
+    <repository>
+      <uniqueVersion>false</uniqueVersion>
+      <id>nexus</id>
+      <name>OSGeo Release Repository</name>
+      <url>https://repo.osgeo.org/repository/geotools-releases/</url>
+    </repository>
+    <snapshotRepository>
+      <uniqueVersion>false</uniqueVersion>
+      <id>nexus</id>
+      <name>OSGeo Snapshot Repository</name>
+      <url>https://repo.osgeo.org/repository/geotools-snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
 
   <!-- =========================================================== -->
   <!--   Properties and Profiles                                   -->
@@ -143,746 +524,6 @@
     <lint>deprecation,unchecked</lint>
   </properties>
 
-  <!-- Profiles set on the command-line overwrite default properties. -->
-  <profiles>
-    <profile>
-      <id>docs</id>
-      <activation>
-         <property><name>all</name></property>
-       </activation>
-      <modules>
-        <module>docs</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>extensive.tests</id>
-      <properties>
-        <extensive.tests>true</extensive.tests>
-      </properties>
-    </profile>
-    <profile>
-      <id>skip.image.tests</id>
-      <properties>
-        <skip.image.tests>true</skip.image.tests>
-      </properties>
-    </profile>
-    <profile>
-      <id>interactive.tests</id>
-      <properties>
-        <interactive.tests>true</interactive.tests>
-        <java.awt.headless>false</java.awt.headless>
-      </properties>
-    </profile>
-    <profile>
-      <id>interactive.image</id>
-      <properties>
-        <interactive.image>true</interactive.image>
-        <java.awt.headless>false</java.awt.headless>
-      </properties>
-    </profile>
-    <profile>
-      <id>site.build</id>
-      <properties>
-        <allow.test.skip>false</allow.test.skip>
-        <allow.test.failure.ignore>true</allow.test.failure.ignore>
-        <extensive.tests>true</extensive.tests>
-      </properties>
-    </profile>
-     <profile>
-      <id>online</id>
-      <properties>
-        <online.skip.pattern>disabled</online.skip.pattern>
-      </properties>
-    </profile>
-    <profile>
-      <id>stress</id>
-      <properties>
-        <stress.skip.pattern>disabled</stress.skip.pattern>
-      </properties>
-    </profile>
-    <profile>
-      <id>jdk11test</id>
-      <properties>
-        <jdk11test.skip.pattern>disabled</jdk11test.skip.pattern>
-      </properties>
-    </profile>
-    <profile>
-      <id>site.local</id>
-      <distributionManagement>
-        <site>
-          <id>local</id>
-          <name>Web site for Maven reports</name>
-          <url>file:///${java.io.tmpdir}/gtsite</url>
-        </site>
-      </distributionManagement>
-    </profile>
-
-    <!-- Dependency version checks -->
-    <profile>
-      <id>dependencycheck</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.owasp</groupId>
-            <artifactId>dependency-check-maven</artifactId>
-            <version>6.1.1</version>
-            <configuration>
-              <failBuildOnCVSS>8</failBuildOnCVSS>
-              <suppressionFile>${geotoolsBaseDir}/build/qa/dependency-check-suppression.xml</suppressionFile>
-              <format>ALL</format>
-            </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>aggregate</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    
-    <profile>
-      <id>pmd</id>
-      <activation>
-        <property>
-          <name>qa</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-pmd-plugin</artifactId>
-            <version>${maven.pmd.plugin.version}</version>
-            <dependencies>
-              <dependency>
-                <groupId>net.sourceforge.pmd</groupId>
-                <artifactId>pmd-core</artifactId>
-                <version>${pmd.version}</version>
-              </dependency>
-              <dependency>
-                <groupId>net.sourceforge.pmd</groupId>
-                <artifactId>pmd-java</artifactId>
-                <version>${pmd.version}</version>
-              </dependency>
-              <dependency>
-                <groupId>net.sourceforge.pmd</groupId>
-                <artifactId>pmd-javascript</artifactId>
-                <version>${pmd.version}</version>
-              </dependency>
-              <dependency>
-                <groupId>net.sourceforge.pmd</groupId>
-                <artifactId>pmd-jsp</artifactId>
-                <version>${pmd.version}</version>
-              </dependency>
-            </dependencies>
-            <configuration>
-              <skip>${pmd.skip}</skip>
-              <rulesets>
-                <ruleset>${geotoolsBaseDir}/build/qa/pmd-ruleset.xml</ruleset>
-                <ruleset>${geotoolsBaseDir}/build/qa/pmd-junit-ruleset.xml</ruleset>
-              </rulesets>
-              <failurePriority>3</failurePriority>
-              <minimumPriority>3</minimumPriority>
-              <verbose>true</verbose>
-              <printFailingErrors>true</printFailingErrors>
-              <includeTests>true</includeTests>
-              <excludeRoots>
-                <excludeRoot>target/generated-sources</excludeRoot>
-              </excludeRoots>
-              <excludes>
-                <exclude>**/*JDK11Test.java</exclude>
-              </excludes>
-            </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>check</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    
-    <!-- for those using JDK 11 -->
-    <profile>
-      <id>errorprone</id>
-      <activation>
-        <property>
-          <name>qa</name>
-        </property>
-        <jdk>(1.8,)</jdk>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.8.0</version>
-            <configuration>
-              <compilerArgs>
-                <arg>-XDcompilePolicy=simple</arg>
-                <arg>-Xplugin:ErrorProne -XepExcludedPaths:${project.build.directory}/generated-sources/.* ${errorProneFlags}</arg>
-                <arg>-Xlint:${lint}</arg>
-                <arg>-Werror</arg>
-                <arg>-Xmaxwarns</arg>
-                <arg>1000</arg>
-              </compilerArgs>
-              <annotationProcessorPaths>
-                <path>
-                  <groupId>com.google.errorprone</groupId>
-                  <artifactId>error_prone_core</artifactId>
-                  <version>${errorProne.version}</version>
-                </path>
-              </annotationProcessorPaths>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    
-    <!-- using github.com/google/error-prone-javac is required when running on JDK 8 -->
-    <profile>
-      <id>errorprone8</id>
-      <activation>
-        <property>
-          <name>qa</name>
-        </property>
-        <jdk>1.8</jdk>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.8.0</version>
-            <configuration>
-              <fork>true</fork>
-              <compilerArgs combine.children="append">
-                <arg>-XDcompilePolicy=simple</arg>
-                <arg>-Xplugin:ErrorProne -XepExcludedPaths:${project.build.directory}/generated-sources/.* ${errorProneFlags}</arg>
-                <arg>-J-Xbootclasspath/p:${settings.localRepository}/com/google/errorprone/javac/${javac.version}/javac-${javac.version}.jar</arg>
-                <arg>-Xlint:${lint}</arg>
-                <arg>-Werror</arg>
-                <arg>-Xmaxwarns</arg>
-                <arg>1000</arg>
-              </compilerArgs>
-              <annotationProcessorPaths>
-                <path>
-                  <groupId>com.google.errorprone</groupId>
-                  <artifactId>error_prone_core</artifactId>
-		  <version>${errorProne.version}</version>
-                </path>
-              </annotationProcessorPaths>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>spotbugs</id>
-      <activation>
-        <property>
-          <name>qa</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>com.github.spotbugs</groupId>
-            <artifactId>spotbugs-maven-plugin</artifactId>
-            <version>4.0.0</version>
-            <configuration>
-              <effort>More</effort>
-              <!-- threshold>High</threshold -->
-              <xmlOutput>true</xmlOutput>
-              <maxRank>15</maxRank>
-              <skip>${spotbugs.skip}</skip>
-              <excludeFilterFile>${geotoolsBaseDir}/build/qa/spotbugs-exclude.xml</excludeFilterFile>
-              <jvmArgs>-XX:+TieredCompilation -XX:TieredStopAtLevel=1</jvmArgs>
-              <compilerArgs combine.children="append">
-                <arg>-Xlint:${lint}</arg>
-              </compilerArgs>
-            </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>check</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    
-    <profile>
-      <id>checkstyle</id>
-      <activation>
-        <property>
-          <name>qa</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-           <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-checkstyle-plugin</artifactId>
-              <dependencies>
-                <dependency>
-                  <groupId>com.puppycrawl.tools</groupId>
-                  <artifactId>checkstyle</artifactId>
-                  <version>8.29</version>
-                </dependency>
-               </dependencies>
-              <configuration>
-                    <logViolationsToConsole>true</logViolationsToConsole>
-                    <!-- ignore generated classes, e.g., javacc ones -->
-                    <excludes>**/generated/**/*</excludes>
-                    <skip>${checkstyle.skip}</skip>
-                    <configLocation>${geotoolsBaseDir}/build/qa/checkstyle.xml</configLocation>
-                  </configuration>
-              <executions>
-                <execution>
-                  <goals>
-                    <goal>check</goal>
-                  </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>  
-    </profile>
-    <profile>
-      <id>enforcer</id>
-      <activation>
-        <property>
-          <name>qa</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-enforcer-plugin</artifactId>
-            <version>3.0.0-M3</version>
-            <executions>
-              <execution>
-                <id>enforce</id>
-                <goals>
-                  <goal>enforce</goal>
-                </goals>
-                <configuration>
-                  <rules>
-                    <banDuplicatePomDependencyVersions />
-                    <requirePluginVersions>
-                      <message>Best Practice is to always define plugin versions</message>
-                      <phases>clean,deploy,install</phases>
-                      <!-- ignore these for version check as they are part of the build -->
-                      <unCheckedPluginList>org.geotools.maven:jjtree-javacc, org.geotools.maven:xmlcodegen, org.geotools.maven:jar-collector</unCheckedPluginList>
-                    </requirePluginVersions>
-                  </rules>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-</profiles>
-
-
-  <!-- =========================================================== -->
-  <!--     Project Description                                     -->
-  <!-- =========================================================== -->
-  <groupId>org.geotools</groupId>
-  <artifactId>geotools</artifactId>
-  <packaging>pom</packaging>
-  <version>26-SNAPSHOT</version>
-  <name>GeoTools</name>
-
-  <scm>
-    <connection>scm:git:git://github.com/geotools/geotools.git</connection>
-    <developerConnection>scm:git:[fetch=]git://github.com/geotools/geotools.git[push=]git@github.com:geotools/geotools.git</developerConnection>
-    <url>https://github.com/geotools/geotools</url>
-  </scm>
-
-  <description>
-    Welcome to the homepage of the GeoTools build process
-    In the left side bar you should see a list of active modules,
-    visit each for more details on the status of each module.
-  </description>
-
-  <organization>
-    <name>Geotools</name>
-    <url>http://www.geotools.org</url>
-  </organization>
-  <inceptionYear>1996</inceptionYear>
-
-  <licenses>
-    <license>
-      <name>Lesser General Public License (LGPL)</name>
-      <url>http://www.gnu.org/copyleft/lesser.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-
-
-  <!-- =========================================================== -->
-  <!--     Issue managements and mailing lists.                    -->
-  <!-- =========================================================== -->
-  <issueManagement>
-    <system>JIRA</system>
-    <url>https://osgeo-org.atlassian.net/projects/GEOT</url>
-  </issueManagement>
-
-  <!-- =========================================================== -->
-  <!--    Continuous Integration                                   -->
-  <!-- =========================================================== -->
-  <ciManagement>
-    <system>jenkins</system>
-    <url>http://ares.opengeo.org/jenkins/view/geotools/</url>
-  </ciManagement>
-
-  <mailingLists>
-    <mailingList>
-      <name>geotools-gt2-users</name>
-      <subscribe>
-        http://lists.sourceforge.net/lists/listinfo/geotools-gt2-users
-      </subscribe>
-      <post>
-        geotools-geotools-gt2-users@lists.sourceforge.net
-      </post>
-      <archive>
-        http://sourceforge.net/p/geotools/mailman/geotools-gt2-users/
-      </archive>
-    </mailingList>
-    <mailingList>
-      <name>geotools-devel</name>
-      <subscribe>
-        http://lists.sourceforge.net/lists/listinfo/geotools-devel
-      </subscribe>
-      <post>
-        geotools-devel@lists.sourceforge.net
-      </post>
-      <archive>
-        http://sourceforge.net/p/geotools/mailman/geotools-devel/
-      </archive>
-    </mailingList>
-    <mailingList>
-      <name>geotools-gt2-commits</name>
-      <subscribe>
-        https://lists.sourceforge.net/lists/listinfo/geotools-commits
-      </subscribe>
-      <post>
-        geotools-geotools-gt2-commits@lists.sourceforge.net
-      </post>
-      <archive>
-        http://sourceforge.net/p/geotools/mailman/geotools-commits/
-      </archive>
-    </mailingList>
-  </mailingLists>
-
-
-  <!-- =========================================================== -->
-  <!--     Developers and Contributors                             -->
-  <!--       TODO: Change this to the PMC list                     -->
-  <!-- =========================================================== -->
-  <developers>
-    <developer>
-      <name>James Macgill</name>
-      <id>jmacgill</id>
-      <email>jmacgill@users.sourceforge.net</email>
-      <organization>Google</organization>
-      <roles>
-        <role>Exhalted Leader</role>
-        <role>Java Developer</role>
-        <role>Project Management Committee (PMC) Member</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Ian Turton</name>
-      <id>ianturton</id>
-      <email>ianturton@users.sourceforge.net</email>
-      <organization>Astun Technology</organization>
-      <roles>
-        <role>Java Developer</role>
-        <role>Project Management Committee (PMC) Member</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Rob Hranac</name>
-      <id>robhranac</id>
-      <email>robhranac@users.sourceforge.net</email>
-      <organization>VFNY</organization>
-      <roles>
-        <role>Java Developer</role>
-        <role>Project Management Committee (PMC) Member</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Cameron Shorter</name>
-      <id>camerons</id>
-      <email>cameronsl@users.sourceforge.net</email>
-      <roles>
-        <role>Java Developer</role>
-        <role>Project Management Committee (PMC) Member</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Chris Holmes</name>
-      <id>cholmesny</id>
-      <email>cholmesny@users.sourceforge.net</email>
-      <organization>TOPP</organization>
-      <roles>
-        <role>Java Developer</role>
-        <role>Project Management Committee (PMC) Member</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Martin Desruisseaux</name>
-      <id>desruisseaux</id>
-      <email>desruisseaux@users.sourceforge.net</email>
-      <organization>Geomatys</organization>
-      <organizationUrl>http://www.geomatys.fr/</organizationUrl>
-      <timezone>+1</timezone>
-      <roles>
-        <role>Java Developer</role>
-        <role>Project Management Committee (PMC) Member</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Ian Schneider</name>
-      <id>ianschne</id>
-      <email>ianschne@users.sourceforge.net</email>
-      <organization>USDA ARS</organization>
-      <roles>
-        <role>Java Developer</role>
-        <role>Project Management Committee (PMC) Member</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Andrea Aime</name>
-      <id>aaime</id>
-      <email>aaime@users.sourceforge.net</email>
-      <organization>University of Modena and Reggio Emilia</organization>
-      <roles>
-        <role>Java Developer</role>
-        <role>Project Management Committee (PMC) Member</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Artur Hefczyc</name>
-      <id>kobit</id>
-      <email>kobit@users.sourceforge.net</email>
-      <roles>
-        <role>Java Developer</role>
-        <role>Project Management Committee (PMC) Member</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Jody Garnett</name>
-      <id>jodygarnett</id>
-      <organization>GeoCat B.V.</organization>
-      <organizationUrl>https://www.geocat.net</organizationUrl>
-      <email>jody.garnett@gmail.com</email>
-      <roles>
-        <role>Java Developer</role>
-        <role>Module Maintainer</role>
-        <role>Project Management Committee (PMC) Member</role>
-      </roles>
-      <!-- America/Vancouver -->
-      <timezone>-8</timezone>
-    </developer>
-    <developer>
-      <name>Justin Deoliveira</name>
-      <id>jdeolive</id>
-      <email>jdeolive@users.sourceforge.net</email>
-      <organization>Refractions Research</organization>
-      <roles>
-        <role>Java Developer</role>
-        <role>Module Maintainer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Richard Gould</name>
-      <id>rgould</id>
-      <email>rgould@refractions.net</email>
-      <organization>Refractions Research, Inc.</organization>
-      <roles>
-        <role>Java Developer</role>
-        <role>Module Maintainer</role>
-        <role>Project Management Committee (PMC) Member</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Mauricio Pazos</name>
-      <id>mauricio.pazos</id>
-      <email>mauricio.pazos@axios.es</email>
-      <organization>Axios</organization>
-      <roles>
-        <role>Java Developer</role>
-        <role>Module Maintainer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Christiaan ten Klooster</name>
-      <id>ckl</id>
-      <email>ckl@dacelo.nl</email>
-      <organization>Dacelo</organization>
-      <roles>
-        <role>Java Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Gabriel Roldan</name>
-      <id>groldan</id>
-      <email>groldan@users.sourceforge.net</email>
-      <organization>TOPP</organization>
-      <roles>
-        <role>Java Developer</role>
-        <role>Module Maintainer</role>
-      </roles>
-    </developer>
-      <developer>
-      <name>Sean Geoghegan</name>
-      <id>seangeo</id>
-      <email>sean.geoghegan@dsto.defence.gov.au</email>
-      <organization>Defence Science and Technology Organisation</organization>
-      <roles>
-        <role>Java Developer</role>
-        <role>Module Maintainer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Julian Ray</name>
-      <id>jjray</id>
-      <email>jjray@users.sourceforge.net</email>
-      <roles>
-        <role>Module Maintainer</role>
-        <role>Java Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Darren Edmonds</name>
-      <id>dledmonds</id>
-      <email>dledmonds@users.sourceforge.net</email>
-      <roles>
-        <role>Module Maintainer</role>
-        <role>Java Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Ray Gallagher</name>
-      <id>omyar</id>
-      <email>omyar@users.sourceforge.net</email>
-      <roles>
-        <role>Java Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Jianhui Jin</name>
-      <organization>CCG</organization>
-      <roles>
-        <role>Java Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Gary Sheppard</name>
-      <id>shepshep</id>
-      <email>garysheppard@psu.edu</email>
-      <organization>Penn State GeoVISTA Center</organization>
-      <roles>
-        <role>Java Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Simon Rass</name>
-      <roles>
-        <role>Bug Fixer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>David Zwiers</name>
-      <id>dmzwiers</id>
-      <email>dzwiers@refractions.net</email>
-      <roles>
-        <role>Java Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Brent Owens</name>
-      <id>sploreg</id>
-      <email>sploreg@users.sourceforge.net</email>
-      <roles>
-        <role>Java Developer</role>
-        <role>Module Maintainer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Rueben Schulz</name>
-      <id>rschulz</id>
-      <organization>University of British Columbia</organization>
-      <roles>
-        <role>Tester</role>
-        <role>Documentation</role>
-        <role>Java Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Simone Giannecchini</name>
-      <id>simboss</id>
-      <email>simboss1@gmail.com</email>
-      <organization></organization>
-      <roles>
-        <role>Java Developer</role>
-        <role>Documentation</role>
-        <role>Module Maintainer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Luca Sigfrido Percich</name>
-      <id>lpercich</id>
-      <email>luca.percich@ama-mi.it</email>
-      <organization>AMA-MI</organization>
-      <roles>
-        <role>Java Developer</role>
-        <role>Module Maintainer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Luca Morandini</name>
-      <id>lmoran</id>
-      <email>lmorandini@ieee.org</email>
-      <organization></organization>
-      <roles>
-        <role>Java Developer</role>
-        <role>Module Maintainer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Mark Prins</name>
-      <id>mprins</id>
-      <email>mprins@users.sf.net</email>
-      <organization>B3Partners BV</organization>
-      <timezone>+1</timezone>
-      <organizationUrl>https://b3partners.nl/</organizationUrl>
-      <roles>
-        <role>Java Developer</role>
-      </roles>
-    </developer>
-
-  </developers>
-
-  <contributors>
-  </contributors>
-
-
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
   <!--     If a POM declares one of those dependencies, then it    -->
@@ -892,11 +533,11 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-          <groupId>systems.uom</groupId>
-          <artifactId>systems-common</artifactId>
-          <version>2.0.1</version>
+        <groupId>systems.uom</groupId>
+        <artifactId>systems-common</artifactId>
+        <version>2.0.1</version>
       </dependency>
-    
+
       <!-- Java Advanced Imaging (JAI) -->
       <dependency>
         <groupId>javax.media</groupId>
@@ -913,7 +554,7 @@
         <artifactId>jai_imageio</artifactId>
         <version>1.1</version>
       </dependency>
-      
+
       <!-- ImageIO-Ext -->
       <dependency>
         <groupId>it.geosolutions.imageio-ext</groupId>
@@ -925,7 +566,7 @@
         <artifactId>imageio-ext-arcgrid</artifactId>
         <version>${imageio.ext.version}</version>
       </dependency>
-        <dependency>
+      <dependency>
         <groupId>it.geosolutions.imageio-ext</groupId>
         <artifactId>imageio-ext-gdalarcbinarygrid</artifactId>
         <version>${imageio.ext.version}</version>
@@ -949,12 +590,12 @@
         <groupId>it.geosolutions.imageio-ext</groupId>
         <artifactId>imageio-ext-gdalkakadujp2</artifactId>
         <version>${imageio.ext.version}</version>
-      </dependency>     
+      </dependency>
       <dependency>
         <groupId>it.geosolutions.imageio-ext</groupId>
         <artifactId>imageio-ext-gdalidrisi</artifactId>
         <version>${imageio.ext.version}</version>
-      </dependency>           
+      </dependency>
       <dependency>
         <groupId>it.geosolutions.imageio-ext</groupId>
         <artifactId>imageio-ext-gdalmrsidjp2</artifactId>
@@ -1019,7 +660,7 @@
         <groupId>it.geosolutions.imageio-ext</groupId>
         <artifactId>imageio-ext-streams</artifactId>
         <version>${imageio.ext.version}</version>
-      </dependency>      
+      </dependency>
       <dependency>
         <groupId>it.geosolutions.imageio-ext</groupId>
         <artifactId>imageio-ext-netcdf</artifactId>
@@ -1029,28 +670,28 @@
         <groupId>it.geosolutions.imageio-ext</groupId>
         <artifactId>imageio-ext-geocore</artifactId>
         <version>${imageio.ext.version}</version>
-      </dependency> 
+      </dependency>
       <dependency>
         <groupId>it.geosolutions.imageio-ext</groupId>
         <artifactId>imageio-ext-hdf4</artifactId>
         <version>${imageio.ext.version}</version>
-      </dependency>   
+      </dependency>
       <dependency>
         <groupId>it.geosolutions.imageio-ext</groupId>
         <artifactId>imageio-ext-grib1</artifactId>
         <version>${imageio.ext.version}</version>
-      </dependency>   
+      </dependency>
       <dependency>
         <groupId>it.geosolutions.imageio-ext</groupId>
         <artifactId>imageio-ext-png</artifactId>
         <version>${imageio.ext.version}</version>
       </dependency>
-	  <dependency>
+      <dependency>
         <groupId>it.geosolutions.imageio-ext</groupId>
         <artifactId>imageio-ext-cog-reader</artifactId>
         <version>${imageio.ext.version}</version>
       </dependency>
-	  <dependency>
+      <dependency>
         <groupId>it.geosolutions.imageio-ext</groupId>
         <artifactId>imageio-ext-cog-streams</artifactId>
         <version>${imageio.ext.version}</version>
@@ -1066,7 +707,7 @@
         <groupId>org.jaitools</groupId>
         <artifactId>jt-vectorbinarize</artifactId>
         <version>${jt.version}</version>
-      </dependency> 
+      </dependency>
       <dependency>
         <groupId>org.jaitools</groupId>
         <artifactId>jt-zonalstats</artifactId>
@@ -1201,7 +842,7 @@
         <artifactId>eastwood</artifactId>
         <version>1.1.1-20090908</version>
       </dependency>
-    
+
       <!-- XML -->
       <dependency>
         <groupId>org.jdom</groupId>
@@ -1228,7 +869,8 @@
       <dependency>
         <groupId>commons-collections</groupId>
         <artifactId>commons-collections</artifactId>
-        <version>3.2.2</version>  <!-- Updated for security (CVE-2015-8103) binary compatible with 3.1 -->
+        <version>3.2.2</version>
+        <!-- Updated for security (CVE-2015-8103) binary compatible with 3.1 -->
       </dependency>
       <dependency>
         <groupId>org.apache.commons</groupId>
@@ -1249,8 +891,8 @@
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
         <version>2.6</version>
-     </dependency>
-     <dependency>
+      </dependency>
+      <dependency>
         <groupId>commons-cli</groupId>
         <artifactId>commons-cli</artifactId>
         <version>1.4</version>
@@ -1258,7 +900,8 @@
       <dependency>
         <groupId>log4j</groupId>
         <artifactId>log4j</artifactId>
-        <version>1.2.12</version>  <!-- Same as the dependency in commons-logging -->
+        <version>1.2.12</version>
+        <!-- Same as the dependency in commons-logging -->
       </dependency>
       <dependency>
         <groupId>commons-beanutils</groupId>
@@ -1315,22 +958,22 @@
 
       <!-- ORACLE -->
       <dependency>
-        <artifactId>ojdbc8</artifactId>
         <groupId>com.oracle.database.jdbc</groupId>
+        <artifactId>ojdbc8</artifactId>
         <version>${ojdbc8.version}</version>
       </dependency>
       <!-- Older version required by imagemosaic -->
       <dependency>
-        <artifactId>ojdbc14</artifactId>
         <groupId>com.oracle</groupId>
+        <artifactId>ojdbc14</artifactId>
         <version>10.2.0.3.0</version>
       </dependency>
       <dependency>
-        <artifactId>sdoapi</artifactId>
         <groupId>com.oracle</groupId>
+        <artifactId>sdoapi</artifactId>
         <version>10.2.0</version>
       </dependency>
-      
+
       <dependency>
         <groupId>net.sourceforge.jtds</groupId>
         <artifactId>jtds</artifactId>
@@ -1348,30 +991,31 @@
       </dependency>
       <!-- H2 -->
       <dependency>
-        <artifactId>h2</artifactId>
         <groupId>com.h2database</groupId>
+        <artifactId>h2</artifactId>
         <version>1.1.119</version>
       </dependency>
 
       <!-- Grid data formats -->
       <dependency>
         <groupId>edu.ucar</groupId>
-        <artifactId>cdm</artifactId> 
+        <artifactId>cdm</artifactId>
         <version>${netcdf.version}</version>
       </dependency>
       <dependency>
         <groupId>edu.ucar</groupId>
-        <artifactId>netcdf4</artifactId> 
+        <artifactId>netcdf4</artifactId>
         <version>${netcdf.version}</version>
       </dependency>
       <dependency>
         <groupId>edu.ucar</groupId>
-        <artifactId>bufr</artifactId> 
+        <artifactId>bufr</artifactId>
         <version>${netcdf.version}</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-jdk14</artifactId> <!-- Logging system used by NetCDF. -->
+        <artifactId>slf4j-jdk14</artifactId>
+        <!-- Logging system used by NetCDF. -->
         <version>1.4.0</version>
       </dependency>
 
@@ -1392,9 +1036,9 @@
         <version>${eclipse.emf.version}</version>
       </dependency>
       <dependency>
-          <groupId>org.eclipse.xsd</groupId>
-          <artifactId>org.eclipse.xsd</artifactId>
-          <version>2.12.0</version>
+        <groupId>org.eclipse.xsd</groupId>
+        <artifactId>org.eclipse.xsd</artifactId>
+        <version>2.12.0</version>
       </dependency>
 
       <!-- Other random non test dependencies -->
@@ -1461,10 +1105,10 @@
         <version>2.0.1</version>
         <scope>test</scope>
         <exclusions>
-      	  <exclusion>
-      	    <groupId>xerces</groupId>
-      	    <artifactId>xercesImpl</artifactId>
-      	  </exclusion>
+          <exclusion>
+            <artifactId>xercesImpl</artifactId>
+            <groupId>xerces</groupId>
+          </exclusion>
         </exclusions>
       </dependency>
       <dependency>
@@ -1486,7 +1130,7 @@
         <scope>test</scope>
       </dependency>
 
-     <!-- JAIExt -->
+      <!-- JAIExt -->
       <dependency>
         <groupId>it.geosolutions.jaiext.affine</groupId>
         <artifactId>jt-affine</artifactId>
@@ -1521,13 +1165,13 @@
         <groupId>it.geosolutions.jaiext.buffer</groupId>
         <artifactId>jt-buffer</artifactId>
         <version>${jaiext.version}</version>
-      </dependency>	 
+      </dependency>
       <dependency>
         <groupId>it.geosolutions.jaiext.crop</groupId>
         <artifactId>jt-crop</artifactId>
         <version>${jaiext.version}</version>
-      </dependency>	
-     <dependency>
+      </dependency>
+      <dependency>
         <groupId>it.geosolutions.jaiext.iterators</groupId>
         <artifactId>jt-iterators</artifactId>
         <version>${jaiext.version}</version>
@@ -1536,22 +1180,22 @@
         <groupId>it.geosolutions.jaiext.lookup</groupId>
         <artifactId>jt-lookup</artifactId>
         <version>${jaiext.version}</version>
-      </dependency>	
+      </dependency>
       <dependency>
         <groupId>it.geosolutions.jaiext.mosaic</groupId>
         <artifactId>jt-mosaic</artifactId>
         <version>${jaiext.version}</version>
-      </dependency>	
+      </dependency>
       <dependency>
         <groupId>it.geosolutions.jaiext.nullop</groupId>
         <artifactId>jt-nullop</artifactId>
         <version>${jaiext.version}</version>
-      </dependency>	
+      </dependency>
       <dependency>
         <groupId>it.geosolutions.jaiext.rescale</groupId>
         <artifactId>jt-rescale</artifactId>
         <version>${jaiext.version}</version>
-      </dependency>	
+      </dependency>
       <dependency>
         <groupId>it.geosolutions.jaiext.scale</groupId>
         <artifactId>jt-scale</artifactId>
@@ -1566,7 +1210,7 @@
         <groupId>it.geosolutions.jaiext.stats</groupId>
         <artifactId>jt-stats</artifactId>
         <version>${jaiext.version}</version>
-      </dependency>	
+      </dependency>
       <dependency>
         <groupId>it.geosolutions.jaiext.translate</groupId>
         <artifactId>jt-translate</artifactId>
@@ -1581,73 +1225,73 @@
         <groupId>it.geosolutions.jaiext.warp</groupId>
         <artifactId>jt-warp</artifactId>
         <version>${jaiext.version}</version>
-      </dependency>	
+      </dependency>
       <dependency>
         <groupId>it.geosolutions.jaiext.zonal</groupId>
         <artifactId>jt-zonal</artifactId>
         <version>${jaiext.version}</version>
-      </dependency>	
+      </dependency>
       <dependency>
         <groupId>it.geosolutions.jaiext.binarize</groupId>
         <artifactId>jt-binarize</artifactId>
         <version>${jaiext.version}</version>
-      </dependency>	
+      </dependency>
       <dependency>
         <groupId>it.geosolutions.jaiext.format</groupId>
         <artifactId>jt-format</artifactId>
         <version>${jaiext.version}</version>
-      </dependency>	
+      </dependency>
       <dependency>
         <groupId>it.geosolutions.jaiext.colorconvert</groupId>
         <artifactId>jt-colorconvert</artifactId>
         <version>${jaiext.version}</version>
-      </dependency>	
+      </dependency>
       <dependency>
         <groupId>it.geosolutions.jaiext.errordiffusion</groupId>
         <artifactId>jt-errordiffusion</artifactId>
         <version>${jaiext.version}</version>
-      </dependency>	
+      </dependency>
       <dependency>
         <groupId>it.geosolutions.jaiext.orderdither</groupId>
         <artifactId>jt-orderdither</artifactId>
         <version>${jaiext.version}</version>
-      </dependency>	
+      </dependency>
       <dependency>
         <groupId>it.geosolutions.jaiext.colorindexer</groupId>
         <artifactId>jt-colorindexer</artifactId>
         <version>${jaiext.version}</version>
-      </dependency>	
+      </dependency>
       <dependency>
         <groupId>it.geosolutions.jaiext.imagefunction</groupId>
         <artifactId>jt-imagefunction</artifactId>
         <version>${jaiext.version}</version>
-      </dependency>	
+      </dependency>
       <dependency>
         <groupId>it.geosolutions.jaiext.piecewise</groupId>
         <artifactId>jt-piecewise</artifactId>
         <version>${jaiext.version}</version>
-      </dependency>	
+      </dependency>
       <dependency>
         <groupId>it.geosolutions.jaiext.classifier</groupId>
         <artifactId>jt-classifier</artifactId>
         <version>${jaiext.version}</version>
       </dependency>
- 	  <dependency>
-		<groupId>it.geosolutions.jaiext.rlookup</groupId>
-		<artifactId>jt-rlookup</artifactId>
-		<version>${jaiext.version}</version>
-	  </dependency>
-	  <dependency>
-		<groupId>it.geosolutions.jaiext.vectorbin</groupId>
-		<artifactId>jt-vectorbin</artifactId>
-		<version>${jaiext.version}</version>
-	  </dependency>
+      <dependency>
+        <groupId>it.geosolutions.jaiext.rlookup</groupId>
+        <artifactId>jt-rlookup</artifactId>
+        <version>${jaiext.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>it.geosolutions.jaiext.vectorbin</groupId>
+        <artifactId>jt-vectorbin</artifactId>
+        <version>${jaiext.version}</version>
+      </dependency>
       <dependency>
         <groupId>it.geosolutions.jaiext.shadedrelief</groupId>
         <artifactId>jt-shadedrelief</artifactId>
         <version>${jaiext.version}</version>
       </dependency>
-      
+
       <!-- Third-party -->
       <dependency>
         <groupId>com.googlecode.json-simple</groupId>
@@ -1665,19 +1309,19 @@
         <version>${solrj.version}</version>
         <exclusions>
           <exclusion>
-            <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
+            <groupId>org.slf4j</groupId>
           </exclusion>
         </exclusions>
       </dependency>
       <dependency>
-          <groupId>org.elasticsearch.client</groupId>
-          <artifactId>elasticsearch-rest-client</artifactId>
-          <version>${elasticsearch.version}</version>
+        <groupId>org.elasticsearch.client</groupId>
+        <artifactId>elasticsearch-rest-client</artifactId>
+        <version>${elasticsearch.version}</version>
       </dependency>
       <dependency>
-       <groupId>com.fasterxml.jackson.core</groupId>
-       <artifactId>jackson-core</artifactId>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-core</artifactId>
         <version>${jackson2.version}</version>
       </dependency>
       <dependency>
@@ -1698,7 +1342,6 @@
     </dependencies>
   </dependencyManagement>
 
-
   <!-- =========================================================== -->
   <!--     Dependencies to be inherited by all modules.            -->
   <!-- =========================================================== -->
@@ -1709,13 +1352,90 @@
       <!-- The version number is specified above. -->
       <scope>test</scope>
     </dependency>
-   </dependencies>
+  </dependencies>
 
+  <!-- ================================================================== -->
+  <!--     Repositories. This is where Maven looks for dependencies. The  -->
+  <!--     Maven repository is implicit and doesn't need to be specified. -->
+  <!-- ================================================================== -->
+  <repositories>
+
+    <!-- Maven Central is assumed -->
+
+    <repository>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <!-- contains release (including third-party-dependences)                            -->
+      <!-- ucar (https://artifacts.unidata.ucar.edu/content/repositories/unidata-releases) -->
+      <!-- geosolutions (http://maven.geo-solutions.it/)                                   -->
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>osgeo</id>
+      <name>OSGeo Nexus Release Repository</name>
+      <url>https://repo.osgeo.org/repository/release/</url>
+    </repository>
+
+    <repository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>osgeo-snapshot</id>
+      <name>OSGeo Nexus Snapshot Repository</name>
+      <url>https://repo.osgeo.org/repository/snapshot/</url>
+    </repository>
+  </repositories>
+
+  <!-- =========================================================== -->
+  <!--     Plugin repositories.                                    -->
+  <!--     This is where Maven looks for plugin dependencies.      -->
+  <!-- =========================================================== -->
+  <pluginRepositories>
+
+    <!-- Maven Central is assumed -->
+
+    <pluginRepository>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>osgeo</id>
+      <name>OSGeo Nexus Maven Repository</name>
+      <url>https://repo.osgeo.org/repository/release/</url>
+    </pluginRepository>
+
+    <pluginRepository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>osgeo-snapshot</id>
+      <name>OSGeo Nexus Maven Repository</name>
+      <url>https://repo.osgeo.org/repository/snapshot/</url>
+    </pluginRepository>
+
+  </pluginRepositories>
 
   <!-- =========================================================== -->
   <!--     Build Configuration                                     -->
   <!-- =========================================================== -->
   <build>
+
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-webdav</artifactId>
+        <version>1.0-beta-2</version>
+      </extension>
+    </extensions>
 
     <!-- ========================================================= -->
     <!--   Maven plugins dependencies management.                  -->
@@ -1757,8 +1477,8 @@
         </plugin>
         <plugin>
           <groupId>com.coveo</groupId>
-            <artifactId>fmt-maven-plugin</artifactId>
-            <version>2.4.0</version>
+          <artifactId>fmt-maven-plugin</artifactId>
+          <version>2.4.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -1795,18 +1515,9 @@
       </plugins>
     </pluginManagement>
 
-    <extensions>
-      <extension>
-        <groupId>org.apache.maven.wagon</groupId>
-        <artifactId>wagon-webdav</artifactId>
-        <version>1.0-beta-2</version>
-      </extension>
-    </extensions>
-    
-   
     <plugins>
-    
-     <plugin>
+
+      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
         <version>3.0.0</version>
@@ -1839,7 +1550,7 @@
           </execution>
         </executions>
       </plugin>
-    
+
       <plugin>
         <groupId>org.commonjava.maven.plugins</groupId>
         <artifactId>directory-maven-plugin</artifactId>
@@ -1847,17 +1558,17 @@
         <executions>
           <execution>
             <id>directories</id>
+            <phase>initialize</phase>
             <goals>
               <goal>highest-basedir</goal>
             </goals>
-            <phase>initialize</phase>
             <configuration>
               <property>geotoolsBaseDir</property>
             </configuration>
           </execution>
         </executions>
-      </plugin>    
-    
+      </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
@@ -1879,17 +1590,21 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.0</version>
         <configuration>
-          <source>1.8</source>  <!-- The -source argument for the Java compiler. -->
-          <target>1.8</target>  <!-- The -target argument for the Java compiler. -->
-          <debug>true</debug>   <!-- Whether to include debugging information.   -->
-          <encoding>UTF-8</encoding> <!-- The -encoding argument for the Java compiler. -->
+          <source>1.8</source>
+          <!-- The -source argument for the Java compiler. -->
+          <target>1.8</target>
+          <!-- The -target argument for the Java compiler. -->
+          <debug>true</debug>
+          <!-- Whether to include debugging information.   -->
+          <encoding>UTF-8</encoding>
+          <!-- The -encoding argument for the Java compiler. -->
           <fork>${fork.javac}</fork>
           <maxmem>${javac.maxHeapSize}</maxmem>
-	<compilerArgs>
-	<arg>-Xlint:${lint}</arg>
-        </compilerArgs>
+          <compilerArgs>
+            <arg>-Xlint:${lint}</arg>
+          </compilerArgs>
         </configuration>
-</plugin>
+      </plugin>
 
       <!-- ======================================================= -->
       <!--     Resources.                                          -->
@@ -1898,16 +1613,16 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
         <version>3.1.0</version>
-        <inherited>false</inherited>
         <executions>
           <execution>
-             <id>copy-resources</id>
-             <phase>install</phase>
-             <goals>
-               <goal>copy-resources</goal>
-             </goals>
-           </execution>
+            <id>copy-resources</id>
+            <phase>install</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+          </execution>
         </executions>
+        <inherited>false</inherited>
         <configuration>
           <encoding>UTF-8</encoding>
           <outputDirectory>${basedir}/target</outputDirectory>
@@ -1918,8 +1633,8 @@
               <includes>
                 <include>VERSION.txt</include>
               </includes>
-           </resource>
-         </resources>
+            </resource>
+          </resources>
         </configuration>
       </plugin>
 
@@ -1941,13 +1656,11 @@
             <exclude>${test.exclude.pattern}</exclude>
             <exclude>${jdk11test.skip.pattern}</exclude>
           </excludes>
-	  <argLine>-Xmx${test.maxHeapSize} ${jvm.opts} -Dfile.encoding=UTF-8 -Dorg.geotools.test.extensive=${extensive.tests} -Dorg.geotools.test.interactive=${interactive.tests} -Dorg.geotools.image.test.skip=${skip.image.tests} -Dorg.geotools.image.test.interactive=${interactive.image} -Djava.awt.headless=${java.awt.headless} -Dsun.java2d.d3d=${sun.java2d.d3d} -Djava.io.tmpdir="${java.io.tmpdir}" -Djava.library.path="${java.library.path}" ${test.args}  -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:+IgnoreUnrecognizedVMOptions -Djava.util.logging.config.file="${geotoolsBaseDir}"/${logging-profile}.properties --illegal-access=debug</argLine>
+          <argLine>-Xmx${test.maxHeapSize} ${jvm.opts} -Dfile.encoding=UTF-8 -Dorg.geotools.test.extensive=${extensive.tests} -Dorg.geotools.test.interactive=${interactive.tests} -Dorg.geotools.image.test.skip=${skip.image.tests} -Dorg.geotools.image.test.interactive=${interactive.image} -Djava.awt.headless=${java.awt.headless} -Dsun.java2d.d3d=${sun.java2d.d3d} -Djava.io.tmpdir="${java.io.tmpdir}" -Djava.library.path="${java.library.path}" ${test.args}  -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:+IgnoreUnrecognizedVMOptions -Djava.util.logging.config.file="${geotoolsBaseDir}"/${logging-profile}.properties --illegal-access=debug</argLine>
           <!-- Ignores test failure only if we are generating a       -->
           <!-- report for publication on the web site. See the        -->
           <!-- profiles section at the beginning of this pom.xml file. -->
-          <testFailureIgnore>
-            ${allow.test.failure.ignore}
-          </testFailureIgnore>
+          <testFailureIgnore>${allow.test.failure.ignore}</testFailureIgnore>
 
           <!-- The two following options have the opposite value of what we would
                like. They are that way because they don't seem to work as expected
@@ -1990,10 +1703,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
         <version>3.0.1</version>
-        <inherited>true</inherited>
-        <configuration>
-          <attach>true</attach>
-        </configuration>
         <executions>
           <execution>
             <id>attach-sources</id>
@@ -2002,6 +1711,10 @@
             </goals>
           </execution>
         </executions>
+        <inherited>true</inherited>
+        <configuration>
+          <attach>true</attach>
+        </configuration>
       </plugin>
 
       <!-- ======================================================= -->
@@ -2047,7 +1760,7 @@
           <useNativeGit>${git.commit.useNative}</useNativeGit>
         </configuration>
       </plugin>
-      
+
       <!-- ======================================================= -->
       <!--     Javadoc generation.                                 -->
       <!--                                                         -->
@@ -2065,24 +1778,22 @@
 
         <configuration>
           <source>1.8</source>
-            <!-- Specifies whether or not the version text is included.-->
+          <!-- Specifies whether or not the version text is included.-->
           <version>false</version>
-            <!-- Omit qualifying package name before class names in output.-->
+          <!-- Omit qualifying package name before class names in output.-->
           <noqualifier>all</noqualifier>
-            <!-- Shuts off non-error and non-warning messages.-->
+          <!-- Shuts off non-error and non-warning messages.-->
           <quiet>true</quiet>
-            <!-- The maximum Java heap size to be used to run javadoc. -->
+          <!-- The maximum Java heap size to be used to run javadoc. -->
           <maxmemory>${javadoc.maxHeapSize}</maxmemory>
-            <!-- Specifies the encoding name of the source files.-->
+          <!-- Specifies the encoding name of the source files.-->
           <encoding>UTF-8</encoding>
-            <!-- Set an additional parameter for the command line. -->
+          <!-- Set an additional parameter for the command line. -->
           <additionalparam>-keywords -Xdoclint:none</additionalparam>
           <additionalJOption>-Xdoclint:none</additionalJOption>
 
           <breakiterator>true</breakiterator>
-          <excludePackageNames>
-            org.geotools.resources:org.geotools.maven:com:net.opengis:org.w3:javax:it.geosolutions
-          </excludePackageNames>
+          <excludePackageNames>org.geotools.resources:org.geotools.maven:com:net.opengis:org.w3:javax:it.geosolutions</excludePackageNames>
 
           <!-- Enables the Javadoc tool to interpret a simple, one-argument -->
           <!-- custom block tag tagname in doc comments. Note: <placement/> -->
@@ -2147,27 +1858,19 @@
           <groups>
             <group>
               <title>Spatial Referencing by Coordinates</title>
-              <packages>
-                org.geotools.referencing*:org.geotools.parameter*:org.geotools.axis*
-              </packages>
+              <packages>org.geotools.referencing*:org.geotools.parameter*:org.geotools.axis*</packages>
             </group>
             <group>
               <title>Geometries</title>
-              <packages>
-                org.geotools.geometry*:org.geotools.topology*:org.geotools.measure*
-              </packages>
+              <packages>org.geotools.geometry*:org.geotools.topology*:org.geotools.measure*</packages>
             </group>
             <group>
               <title>Images and Grid Coverage</title>
-              <packages>
-                org.geotools.coverage*:org.geotools.gce*:org.geotools.image*
-              </packages>
+              <packages>org.geotools.coverage*:org.geotools.gce*:org.geotools.image*</packages>
             </group>
             <group>
               <title>Features, Filters and Styling</title>
-              <packages>
-                org.geotools.feature*:org.geotools.filter*:org.geotools.styling*
-              </packages>
+              <packages>org.geotools.feature*:org.geotools.filter*:org.geotools.styling*</packages>
             </group>
             <group>
               <title>Data stores</title>
@@ -2175,9 +1878,7 @@
             </group>
             <group>
               <title>XML and derivatives (GML, SVG)</title>
-              <packages>
-                org.geotools.xsd*:org.geotools.gml*:org.geotools.svg*
-              </packages>
+              <packages>org.geotools.xsd*:org.geotools.gml*:org.geotools.svg*</packages>
             </group>
             <group>
               <title>Catalog Services</title>
@@ -2193,9 +1894,7 @@
             </group>
             <group>
               <title>Renderer and Display Objects</title>
-              <packages>
-                org.geotools.display*:org.geotools.renderer*:org.geotools.renderer.shape*:org.geotools.map*
-              </packages>
+              <packages>org.geotools.display*:org.geotools.renderer*:org.geotools.renderer.shape*:org.geotools.map*</packages>
             </group>
             <group>
               <title>Graphic User Interfaces</title>
@@ -2203,29 +1902,27 @@
             </group>
             <group>
               <title>Miscellaneous utilities</title>
-              <packages>
-                org.geotools.factory*:org.geotools.io*:org.geotools.util*:org.geotools.math*:org.geotools.nature*:org.geotools.event*:org.geotools.index*
-              </packages>
+              <packages>org.geotools.factory*:org.geotools.io*:org.geotools.util*:org.geotools.math*:org.geotools.nature*:org.geotools.event*:org.geotools.index*</packages>
             </group>
           </groups>
         </configuration>
       </plugin>
       <plugin>
         <groupId>com.coveo</groupId>
-            <artifactId>fmt-maven-plugin</artifactId>
-            <configuration>
-                <verbose>false</verbose>
-                <filesNamePattern>.*\.java</filesNamePattern>
-                <skip>${fmt.skip}</skip>
-                <style>aosp</style>
-            </configuration>
-            <executions>
-                <execution>
-                    <goals>
-                        <goal>${fmt.action}</goal>
-                    </goals>
-                </execution>
-            </executions>
+        <artifactId>fmt-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>${fmt.action}</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <verbose>false</verbose>
+          <filesNamePattern>.*\.java</filesNamePattern>
+          <skip>${fmt.skip}</skip>
+          <style>aosp</style>
+        </configuration>
       </plugin>
 
       <plugin>
@@ -2251,9 +1948,8 @@
     </plugins>
   </build>
 
-
   <reporting>
-   <plugins>
+    <plugins>
       <!-- ======================================================= -->
       <!--     Web site generation.                                -->
       <!-- ======================================================= -->
@@ -2281,22 +1977,20 @@
 
         <configuration>
           <source>1.8</source>
-            <!-- Specifies whether or not the version text is included.-->
+          <!-- Specifies whether or not the version text is included.-->
           <version>false</version>
-            <!-- Omit qualifying package name before class names in output.-->
+          <!-- Omit qualifying package name before class names in output.-->
           <noqualifier>all</noqualifier>
-            <!-- Shuts off non-error and non-warning messages.-->
+          <!-- Shuts off non-error and non-warning messages.-->
           <quiet>true</quiet>
-            <!-- The maximum Java heap size to be used to run javadoc. -->
+          <!-- The maximum Java heap size to be used to run javadoc. -->
           <maxmemory>${javadoc.maxHeapSize}</maxmemory>
-            <!-- Specifies the encoding name of the source files.-->
+          <!-- Specifies the encoding name of the source files.-->
           <encoding>UTF-8</encoding>
-            <!-- Set an additional parameter for the command line. -->
+          <!-- Set an additional parameter for the command line. -->
           <additionalparam>-keywords</additionalparam>
           <breakiterator>true</breakiterator>
-          <excludePackageNames>
-            org.geotools.resources:org.geotools.maven:com:net.opengis:org.w3:javax:it.geosolutions
-          </excludePackageNames>
+          <excludePackageNames>org.geotools.resources:org.geotools.maven:com:net.opengis:org.w3:javax:it.geosolutions</excludePackageNames>
 
           <!-- Enables the Javadoc tool to interpret a simple, one-argument -->
           <!-- custom block tag tagname in doc comments. Note: <placement/> -->
@@ -2357,7 +2051,7 @@
           </links>
         </configuration>
       </plugin>
-    
+
       <!-- ======================================================= -->
       <!--     Reports configuration for the web site.             -->
       <!-- ======================================================= -->
@@ -2421,81 +2115,358 @@
     </plugins>
   </reporting>
 
-  <distributionManagement>
-    <repository>
-      <id>nexus</id>
-      <name>OSGeo Release Repository</name>
-      <url>https://repo.osgeo.org/repository/geotools-releases/</url>
-      <uniqueVersion>false</uniqueVersion>
-    </repository>
-    <snapshotRepository>
-      <id>nexus</id>
-      <uniqueVersion>false</uniqueVersion>
-      <name>OSGeo Snapshot Repository</name>
-      <url>https://repo.osgeo.org/repository/geotools-snapshots/</url>
-    </snapshotRepository>
-  </distributionManagement>
+  <!-- Profiles set on the command-line overwrite default properties. -->
+  <profiles>
+    <profile>
+      <id>docs</id>
+      <activation>
+        <property>
+          <name>all</name>
+        </property>
+      </activation>
+      <modules>
+        <module>docs</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>extensive.tests</id>
+      <properties>
+        <extensive.tests>true</extensive.tests>
+      </properties>
+    </profile>
+    <profile>
+      <id>skip.image.tests</id>
+      <properties>
+        <skip.image.tests>true</skip.image.tests>
+      </properties>
+    </profile>
+    <profile>
+      <id>interactive.tests</id>
+      <properties>
+        <interactive.tests>true</interactive.tests>
+        <java.awt.headless>false</java.awt.headless>
+      </properties>
+    </profile>
+    <profile>
+      <id>interactive.image</id>
+      <properties>
+        <interactive.image>true</interactive.image>
+        <java.awt.headless>false</java.awt.headless>
+      </properties>
+    </profile>
+    <profile>
+      <id>site.build</id>
+      <properties>
+        <allow.test.skip>false</allow.test.skip>
+        <allow.test.failure.ignore>true</allow.test.failure.ignore>
+        <extensive.tests>true</extensive.tests>
+      </properties>
+    </profile>
+    <profile>
+      <id>online</id>
+      <properties>
+        <online.skip.pattern>disabled</online.skip.pattern>
+      </properties>
+    </profile>
+    <profile>
+      <id>stress</id>
+      <properties>
+        <stress.skip.pattern>disabled</stress.skip.pattern>
+      </properties>
+    </profile>
+    <profile>
+      <id>jdk11test</id>
+      <properties>
+        <jdk11test.skip.pattern>disabled</jdk11test.skip.pattern>
+      </properties>
+    </profile>
+    <profile>
+      <id>site.local</id>
+      <distributionManagement>
+        <site>
+          <id>local</id>
+          <name>Web site for Maven reports</name>
+          <url>file:///${java.io.tmpdir}/gtsite</url>
+        </site>
+      </distributionManagement>
+    </profile>
 
-  <!-- ================================================================== -->
-  <!--     Repositories. This is where Maven looks for dependencies. The  -->
-  <!--     Maven repository is implicit and doesn't need to be specified. -->
-  <!-- ================================================================== -->
-  <repositories>
+    <!-- Dependency version checks -->
+    <profile>
+      <id>dependencycheck</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.owasp</groupId>
+            <artifactId>dependency-check-maven</artifactId>
+            <version>6.1.1</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>aggregate</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <failBuildOnCVSS>8</failBuildOnCVSS>
+              <suppressionFile>${geotoolsBaseDir}/build/qa/dependency-check-suppression.xml</suppressionFile>
+              <format>ALL</format>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
 
-    <!-- Maven Central is assumed -->
-  
-    <repository>
-      <id>osgeo</id>
-      <name>OSGeo Nexus Release Repository</name>
-      <url>https://repo.osgeo.org/repository/release/</url>
-      <!-- contains release (including third-party-dependences)                            -->
-      <!-- ucar (https://artifacts.unidata.ucar.edu/content/repositories/unidata-releases) -->
-      <!-- geosolutions (http://maven.geo-solutions.it/)                                   -->
-      <snapshots><enabled>false</enabled></snapshots>
-      <releases><enabled>true</enabled></releases>
-    </repository>
+    <profile>
+      <id>pmd</id>
+      <activation>
+        <property>
+          <name>qa</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-pmd-plugin</artifactId>
+            <version>${maven.pmd.plugin.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>net.sourceforge.pmd</groupId>
+                <artifactId>pmd-core</artifactId>
+                <version>${pmd.version}</version>
+              </dependency>
+              <dependency>
+                <groupId>net.sourceforge.pmd</groupId>
+                <artifactId>pmd-java</artifactId>
+                <version>${pmd.version}</version>
+              </dependency>
+              <dependency>
+                <groupId>net.sourceforge.pmd</groupId>
+                <artifactId>pmd-javascript</artifactId>
+                <version>${pmd.version}</version>
+              </dependency>
+              <dependency>
+                <groupId>net.sourceforge.pmd</groupId>
+                <artifactId>pmd-jsp</artifactId>
+                <version>${pmd.version}</version>
+              </dependency>
+            </dependencies>
+            <configuration>
+              <skip>${pmd.skip}</skip>
+              <rulesets>
+                <ruleset>${geotoolsBaseDir}/build/qa/pmd-ruleset.xml</ruleset>
+                <ruleset>${geotoolsBaseDir}/build/qa/pmd-junit-ruleset.xml</ruleset>
+              </rulesets>
+              <failurePriority>3</failurePriority>
+              <minimumPriority>3</minimumPriority>
+              <verbose>true</verbose>
+              <printFailingErrors>true</printFailingErrors>
+              <includeTests>true</includeTests>
+              <excludeRoots>
+                <excludeRoot>target/generated-sources</excludeRoot>
+              </excludeRoots>
+              <excludes>
+                <exclude>**/*JDK11Test.java</exclude>
+              </excludes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
 
-    <repository>
-      <id>osgeo-snapshot</id>
-      <name>OSGeo Nexus Snapshot Repository</name>
-      <url>https://repo.osgeo.org/repository/snapshot/</url>
-      <snapshots><enabled>true</enabled></snapshots>
-      <releases><enabled>false</enabled></releases>
-    </repository>
-  </repositories>
+    <!-- for those using JDK 11 -->
+    <profile>
+      <id>errorprone</id>
+      <activation>
+        <jdk>(1.8,)</jdk>
+        <property>
+          <name>qa</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.0</version>
+            <configuration>
+              <compilerArgs>
+                <arg>-XDcompilePolicy=simple</arg>
+                <arg>-Xplugin:ErrorProne -XepExcludedPaths:${project.build.directory}/generated-sources/.* ${errorProneFlags}</arg>
+                <arg>-Xlint:${lint}</arg>
+                <arg>-Werror</arg>
+                <arg>-Xmaxwarns</arg>
+                <arg>1000</arg>
+              </compilerArgs>
+              <annotationProcessorPaths>
+                <path>
+                  <groupId>com.google.errorprone</groupId>
+                  <artifactId>error_prone_core</artifactId>
+                  <version>${errorProne.version}</version>
+                </path>
+              </annotationProcessorPaths>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
 
-  <!-- =========================================================== -->
-  <!--     Plugin repositories.                                    -->
-  <!--     This is where Maven looks for plugin dependencies.      -->
-  <!-- =========================================================== -->
-  <pluginRepositories>
+    <!-- using github.com/google/error-prone-javac is required when running on JDK 8 -->
+    <profile>
+      <id>errorprone8</id>
+      <activation>
+        <jdk>1.8</jdk>
+        <property>
+          <name>qa</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.0</version>
+            <configuration>
+              <fork>true</fork>
+              <compilerArgs combine.children="append">
+                <arg>-XDcompilePolicy=simple</arg>
+                <arg>-Xplugin:ErrorProne -XepExcludedPaths:${project.build.directory}/generated-sources/.* ${errorProneFlags}</arg>
+                <arg>-J-Xbootclasspath/p:${settings.localRepository}/com/google/errorprone/javac/${javac.version}/javac-${javac.version}.jar</arg>
+                <arg>-Xlint:${lint}</arg>
+                <arg>-Werror</arg>
+                <arg>-Xmaxwarns</arg>
+                <arg>1000</arg>
+              </compilerArgs>
+              <annotationProcessorPaths>
+                <path>
+                  <groupId>com.google.errorprone</groupId>
+                  <artifactId>error_prone_core</artifactId>
+                  <version>${errorProne.version}</version>
+                </path>
+              </annotationProcessorPaths>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
 
-    <!-- Maven Central is assumed -->
+    <profile>
+      <id>spotbugs</id>
+      <activation>
+        <property>
+          <name>qa</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-maven-plugin</artifactId>
+            <version>4.0.0</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <effort>More</effort>
+              <!-- threshold>High</threshold -->
+              <xmlOutput>true</xmlOutput>
+              <maxRank>15</maxRank>
+              <skip>${spotbugs.skip}</skip>
+              <excludeFilterFile>${geotoolsBaseDir}/build/qa/spotbugs-exclude.xml</excludeFilterFile>
+              <jvmArgs>-XX:+TieredCompilation -XX:TieredStopAtLevel=1</jvmArgs>
+              <compilerArgs combine.children="append">
+                <arg>-Xlint:${lint}</arg>
+              </compilerArgs>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
 
-    <pluginRepository>
-      <id>osgeo</id>
-      <name>OSGeo Nexus Maven Repository</name>
-      <url>https://repo.osgeo.org/repository/release/</url>
-      <snapshots><enabled>false</enabled></snapshots>
-      <releases><enabled>true</enabled></releases>
-    </pluginRepository> 
-
-    <pluginRepository>
-      <id>osgeo-snapshot</id>
-      <name>OSGeo Nexus Maven Repository</name>
-      <url>https://repo.osgeo.org/repository/snapshot/</url>
-      <snapshots><enabled>true</enabled></snapshots>
-      <releases><enabled>false</enabled></releases>
-    </pluginRepository> 
-    
-  </pluginRepositories>
-
-
-  <!-- =========================================================== -->
-  <!--     Modules for the build in approximate dependency order   -->
-  <!-- =========================================================== -->
-  <modules>
-    <module>build</module>
-    <module>modules</module>
-  </modules>
+    <profile>
+      <id>checkstyle</id>
+      <activation>
+        <property>
+          <name>qa</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>com.puppycrawl.tools</groupId>
+                <artifactId>checkstyle</artifactId>
+                <version>8.29</version>
+              </dependency>
+            </dependencies>
+            <configuration>
+              <logViolationsToConsole>true</logViolationsToConsole>
+              <!-- ignore generated classes, e.g., javacc ones -->
+              <excludes>**/generated/**/*</excludes>
+              <skip>${checkstyle.skip}</skip>
+              <configLocation>${geotoolsBaseDir}/build/qa/checkstyle.xml</configLocation>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>enforcer</id>
+      <activation>
+        <property>
+          <name>qa</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <version>3.0.0-M3</version>
+            <executions>
+              <execution>
+                <id>enforce</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <configuration>
+                  <rules>
+                    <banDuplicatePomDependencyVersions></banDuplicatePomDependencyVersions>
+                    <requirePluginVersions>
+                      <message>Best Practice is to always define plugin versions</message>
+                      <phases>clean,deploy,install</phases>
+                      <!-- ignore these for version check as they are part of the build -->
+                      <unCheckedPluginList>org.geotools.maven:jjtree-javacc, org.geotools.maven:xmlcodegen, org.geotools.maven:jar-collector</unCheckedPluginList>
+                    </requirePluginVersions>
+                  </rules>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

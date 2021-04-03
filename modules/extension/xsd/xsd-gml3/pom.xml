@@ -7,10 +7,7 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -19,7 +16,6 @@
     <version>24-SNAPSHOT</version>
   </parent>
 
-
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
@@ -27,12 +23,8 @@
   <artifactId>gt-xsd-gml3</artifactId>
   <packaging>jar</packaging>
   <name>GML3 XML Support</name>
-  
 
-
-  <description>
-    GML3 XML support for Geotools.
-  </description>
+  <description>GML3 XML support for Geotools.</description>
 
   <licenses>
     <license>
@@ -42,14 +34,13 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Justin Deoliveira</name>
       <id>jdeolive</id>
+      <name>Justin Deoliveira</name>
       <email>jdeolive@openplans.org</email>
       <organization>The Open Planning Project</organization>
       <roles>
@@ -71,23 +62,23 @@
       <groupId>org.geotools</groupId>
       <artifactId>gt-main</artifactId>
       <version>${project.version}</version>
-    </dependency>    
+    </dependency>
     <dependency>
       <groupId>org.geotools.xsd</groupId>
       <artifactId>gt-xsd-core</artifactId>
       <version>${project.version}</version>
-    </dependency>   
+    </dependency>
     <dependency>
       <groupId>org.geotools.xsd</groupId>
       <artifactId>gt-xsd-gml2</artifactId>
       <version>${project.version}</version>
-    </dependency>    
+    </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-epsg-hsql</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
-    </dependency>    
+    </dependency>
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
@@ -96,22 +87,21 @@
     <dependency>
       <groupId>org.geotools.xsd</groupId>
       <artifactId>gt-xsd-core</artifactId>
-      <classifier>tests</classifier>
       <version>${project.version}</version>
+      <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
-    </dependency>    
+    </dependency>
     <dependency>
       <groupId>xmlunit</groupId>
       <artifactId>xmlunit</artifactId>
       <scope>test</scope>
-    </dependency>    
+    </dependency>
   </dependencies>
-
 
   <!-- =========================================================== -->
   <!--     Build Configuration                                     -->
@@ -166,112 +156,112 @@
 	      <include>AbstractFeatureType</include>
 	      <include>AbstractFeatureCollectionType</include>
           </includes-->
-            <typeBindings>
-                <typeBinding>
-                    <name>AbstractGeometryType</name>
-                    <binding>org.locationtech.jts.jts.geom.Geometry</binding>
-                </typeBinding>
-                <typeBinding>
-                    <name>CurvePropertyType</name>
-                    <binding>org.locationtech.jts.jts.geom.MultiLineString</binding>
-                </typeBinding>
-                <typeBinding>
-                    <name>CurveType</name>
-                    <binding>org.locationtech.jts.jts.geom.MultiLineString</binding>
-                </typeBinding>
-                <typeBinding>
-                    <name>GeometryPropertyType</name>
-                    <binding>org.locationtech.jts.jts.geom.Geometry</binding>
-                </typeBinding>
-                <typeBinding>
-                    <name>LineStringPropertyType</name>
-                    <binding>org.locationtech.jts.jts.geom.LineString</binding>
-                </typeBinding>
-                <typeBinding>
-                    <name>LineStringType</name>
-                    <binding>org.locationtech.jts.jts.geom.LineString</binding>
-                </typeBinding>
-                <typeBinding>
-                    <name>LinearRingPropertyType</name>
-                    <binding>org.locationtech.jts.jts.geom.LinearRing</binding>
-                </typeBinding>
-                <typeBinding>
-                    <name>LinearRingType</name>
-                    <binding>org.locationtech.jts.jts.geom.LinearRing</binding>
-                </typeBinding>
-                <typeBinding>
-                    <name>MultiCurvePropertyType</name>
-                    <binding>org.locationtech.jts.jts.geom.MultiLineString[]</binding>
-                </typeBinding>
-                <typeBinding>
-                    <name>MultiCurveType</name>
-                    <binding>org.locationtech.jts.jts.geom.MultiLineString[]</binding>
-                </typeBinding>
-                <typeBinding>
-                    <name>MultiGeometryPropertyType</name>
-                    <binding>org.locationtech.jts.jts.geom.GeometryCollection</binding>
-                </typeBinding>
-                <typeBinding>
-                    <name>MultiGeometryType</name>
-                    <binding>org.locationtech.jts.jts.geom.GeometryCollection</binding>
-                </typeBinding>
-                <typeBinding>
-                    <name>MultiLineStringPropertyType</name>
-                    <binding>org.locationtech.jts.jts.geom.MultiLineString</binding>
-                </typeBinding>
-                <typeBinding>
-                    <name>MultiLineStringType</name>
-                    <binding>org.locationtech.jts.jts.geom.MultiLineString</binding>
-                </typeBinding>
-                <typeBinding>
-                    <name>MultiPointPropertyType</name>
-                    <binding>org.locationtech.jts.jts.geom.MultiPoint</binding>
-                </typeBinding>
-                <typeBinding>
-                    <name>MultiPointType</name>
-                    <binding>org.locationtech.jts.jts.geom.MultiPoint</binding>
-                </typeBinding>
-                <typeBinding>
-                    <name>MultiPolygonPropertyType</name>
-                    <binding>org.locationtech.jts.jts.geom.MultiPolygon</binding>
-                </typeBinding>
-                <typeBinding>
-                    <name>MultiPolygonType</name>
-                    <binding>org.locationtech.jts.jts.geom.MultiPolygon</binding>
-                </typeBinding>
-                <typeBinding>
-                    <name>MultiSurfacePropertyType</name>
-                    <binding>org.locationtech.jts.jts.geom.MultiPolygon</binding>
-                </typeBinding>
-                <typeBinding>
-                    <name>MultiSurfaceType</name>
-                    <binding>org.locationtech.jts.jts.geom.MultiPolygon</binding>
-                </typeBinding>
-                <typeBinding>
-                    <name>PointPropertyType</name>
-                    <binding>org.locationtech.jts.jts.geom.Point</binding>
-                </typeBinding>
-                <typeBinding>
-                    <name>PointType</name>
-                    <binding>org.locationtech.jts.jts.geom.Point</binding>
-                </typeBinding>
-                <typeBinding>
-                    <name>PolygonPropertyType</name>
-                    <binding>org.locationtech.jts.jts.geom.Polygon</binding>
-                </typeBinding>
-                <typeBinding>
-                    <name>PolygonType</name>
-                    <binding>org.locationtech.jts.jts.geom.Polygon</binding>
-                </typeBinding>
-                <typeBinding>
-                    <name>SurfacePropertyType</name>
-                    <binding>org.locationtech.jts.jts.geom.Polygon</binding>
-                </typeBinding>
-                <typeBinding>
-                    <name>SurfaceType</name>
-                    <binding>org.locationtech.jts.jts.geom.Polygon</binding>
-                </typeBinding>
-            </typeBindings>
+          <typeBindings>
+            <typeBinding>
+              <name>AbstractGeometryType</name>
+              <binding>org.locationtech.jts.jts.geom.Geometry</binding>
+            </typeBinding>
+            <typeBinding>
+              <name>CurvePropertyType</name>
+              <binding>org.locationtech.jts.jts.geom.MultiLineString</binding>
+            </typeBinding>
+            <typeBinding>
+              <name>CurveType</name>
+              <binding>org.locationtech.jts.jts.geom.MultiLineString</binding>
+            </typeBinding>
+            <typeBinding>
+              <name>GeometryPropertyType</name>
+              <binding>org.locationtech.jts.jts.geom.Geometry</binding>
+            </typeBinding>
+            <typeBinding>
+              <name>LineStringPropertyType</name>
+              <binding>org.locationtech.jts.jts.geom.LineString</binding>
+            </typeBinding>
+            <typeBinding>
+              <name>LineStringType</name>
+              <binding>org.locationtech.jts.jts.geom.LineString</binding>
+            </typeBinding>
+            <typeBinding>
+              <name>LinearRingPropertyType</name>
+              <binding>org.locationtech.jts.jts.geom.LinearRing</binding>
+            </typeBinding>
+            <typeBinding>
+              <name>LinearRingType</name>
+              <binding>org.locationtech.jts.jts.geom.LinearRing</binding>
+            </typeBinding>
+            <typeBinding>
+              <name>MultiCurvePropertyType</name>
+              <binding>org.locationtech.jts.jts.geom.MultiLineString[]</binding>
+            </typeBinding>
+            <typeBinding>
+              <name>MultiCurveType</name>
+              <binding>org.locationtech.jts.jts.geom.MultiLineString[]</binding>
+            </typeBinding>
+            <typeBinding>
+              <name>MultiGeometryPropertyType</name>
+              <binding>org.locationtech.jts.jts.geom.GeometryCollection</binding>
+            </typeBinding>
+            <typeBinding>
+              <name>MultiGeometryType</name>
+              <binding>org.locationtech.jts.jts.geom.GeometryCollection</binding>
+            </typeBinding>
+            <typeBinding>
+              <name>MultiLineStringPropertyType</name>
+              <binding>org.locationtech.jts.jts.geom.MultiLineString</binding>
+            </typeBinding>
+            <typeBinding>
+              <name>MultiLineStringType</name>
+              <binding>org.locationtech.jts.jts.geom.MultiLineString</binding>
+            </typeBinding>
+            <typeBinding>
+              <name>MultiPointPropertyType</name>
+              <binding>org.locationtech.jts.jts.geom.MultiPoint</binding>
+            </typeBinding>
+            <typeBinding>
+              <name>MultiPointType</name>
+              <binding>org.locationtech.jts.jts.geom.MultiPoint</binding>
+            </typeBinding>
+            <typeBinding>
+              <name>MultiPolygonPropertyType</name>
+              <binding>org.locationtech.jts.jts.geom.MultiPolygon</binding>
+            </typeBinding>
+            <typeBinding>
+              <name>MultiPolygonType</name>
+              <binding>org.locationtech.jts.jts.geom.MultiPolygon</binding>
+            </typeBinding>
+            <typeBinding>
+              <name>MultiSurfacePropertyType</name>
+              <binding>org.locationtech.jts.jts.geom.MultiPolygon</binding>
+            </typeBinding>
+            <typeBinding>
+              <name>MultiSurfaceType</name>
+              <binding>org.locationtech.jts.jts.geom.MultiPolygon</binding>
+            </typeBinding>
+            <typeBinding>
+              <name>PointPropertyType</name>
+              <binding>org.locationtech.jts.jts.geom.Point</binding>
+            </typeBinding>
+            <typeBinding>
+              <name>PointType</name>
+              <binding>org.locationtech.jts.jts.geom.Point</binding>
+            </typeBinding>
+            <typeBinding>
+              <name>PolygonPropertyType</name>
+              <binding>org.locationtech.jts.jts.geom.Polygon</binding>
+            </typeBinding>
+            <typeBinding>
+              <name>PolygonType</name>
+              <binding>org.locationtech.jts.jts.geom.Polygon</binding>
+            </typeBinding>
+            <typeBinding>
+              <name>SurfacePropertyType</name>
+              <binding>org.locationtech.jts.jts.geom.Polygon</binding>
+            </typeBinding>
+            <typeBinding>
+              <name>SurfaceType</name>
+              <binding>org.locationtech.jts.jts.geom.Polygon</binding>
+            </typeBinding>
+          </typeBindings>
         </configuration>
       </plugin>
       <!-- build test jar so that tests in GeoServer can use classes in GeoTools xsd-gml3
@@ -280,12 +270,12 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
         <executions>
-            <execution>
-                <phase>package</phase>
-                <goals>
-                     <goal>test-jar</goal>
-                 </goals>
-            </execution>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
         </executions>
       </plugin>
 
@@ -293,18 +283,16 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <executions>
-            <execution>
-                <phase>package</phase>
-                <goals>
-                     <goal>test-jar</goal>
-                </goals>
-            </execution>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
         </executions>
       </plugin>
 
     </plugins>
   </build>
 
-
 </project>
-

@@ -7,10 +7,7 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -18,7 +15,6 @@
     <artifactId>extension</artifactId>
     <version>24-SNAPSHOT</version>
   </parent>
-  
 
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
@@ -27,12 +23,8 @@
   <artifactId>gt-brewer</artifactId>
   <packaging>jar</packaging>
   <name>Brewer module</name>
-  
 
-
-  <description>
-    Brewer module, which contains ColorBrewer, etc.
-  </description>
+  <description>Brewer module, which contains ColorBrewer, etc.</description>
 
   <licenses>
     <license>
@@ -41,7 +33,6 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-
 
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
@@ -66,8 +57,8 @@
       </roles>
     </developer>
     <developer>
-      <name>Ian Turton</name>
       <id>ianturton</id>
+      <name>Ian Turton</name>
       <email>ianturton@users.sourceforge.net</email>
       <organization>CCG</organization>
       <roles>
@@ -76,7 +67,6 @@
       </roles>
     </developer>
   </developers>
-
 
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->

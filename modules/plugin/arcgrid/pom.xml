@@ -7,10 +7,7 @@
 
         Version: $Id$
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -19,7 +16,6 @@
     <version>24-SNAPSHOT</version>
   </parent>
 
-
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
@@ -27,13 +23,9 @@
   <artifactId>gt-arcgrid</artifactId>
   <packaging>jar</packaging>
   <name>ArcGrid datasource module</name>
-  
 
-
-  <description>
-    Datasource created to read ArcGrid raster format. Currently Serving
-    as a prototype for the GridCoverageExchange API.
-  </description>
+  <description>Datasource created to read ArcGrid raster format. Currently Serving
+    as a prototype for the GridCoverageExchange API.</description>
 
   <licenses>
     <license>
@@ -43,14 +35,13 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Simone Giannecchini</name>
       <id>simboss</id>
+      <name>Simone Giannecchini</name>
       <email>simone.giannecchini@geo-solutions.it</email>
       <organization>GeoSolutions S.A.S.</organization>
       <organizationUrl>http://www.geo-solutions.it</organizationUrl>
@@ -59,9 +50,8 @@
         <role>Documentation</role>
         <role>Module Maintainer</role>
       </roles>
-    </developer> 
+    </developer>
   </developers>
-
 
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
@@ -72,7 +62,7 @@
       <artifactId>gt-main</artifactId>
       <version>${project.version}</version>
     </dependency>
-        <dependency>
+    <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-coverage</artifactId>
       <version>${project.version}</version>
@@ -85,8 +75,8 @@
     </dependency>
     <dependency>
       <groupId>it.geosolutions.imageio-ext</groupId>
-  	  <artifactId>imageio-ext-arcgrid</artifactId>
-  	  <!-- The version number is specified in the parent POM. -->
+      <artifactId>imageio-ext-arcgrid</artifactId>
+      <!-- The version number is specified in the parent POM. -->
     </dependency>
 
     <!-- Test dependencies -->
@@ -109,6 +99,5 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
 
 </project>

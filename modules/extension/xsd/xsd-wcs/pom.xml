@@ -7,10 +7,7 @@
                                                                                 
         Version: $Id: pom.xml 30851 2008-07-03 15:04:12Z cedricbr $              
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -18,7 +15,7 @@
     <artifactId>xsd</artifactId>
     <version>24-SNAPSHOT</version>
   </parent>
-  
+
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
@@ -26,12 +23,9 @@
   <artifactId>gt-xsd-wcs</artifactId>
   <packaging>jar</packaging>
   <name>WCS XML Support</name>
+
+  <description>WCS 1.0.0 Bindings.</description>
   <url>http://maven.geotools.fr/reports/modules/extension/xsd/xsd-wcs/</url>
-
-
-  <description>
-    WCS 1.0.0 Bindings.
-  </description>
 
   <licenses>
     <license>
@@ -41,14 +35,13 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Alessio Fabiani</name>
       <id>afabiani</id>
+      <name>Alessio Fabiani</name>
       <email>alessio.fabiani@geo-solutions.it</email>
       <organization>GeoSolutions</organization>
       <roles>
@@ -57,45 +50,44 @@
     </developer>
   </developers>
 
-
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
   <!-- =========================================================== -->
   <dependencies>
-   	<dependency>
-	 		<groupId>org.geotools.xsd</groupId>
-	 		<artifactId>gt-xsd-core</artifactId>
-   	 	<version>${project.version}</version>
-   	</dependency>
-   	<dependency>
-	 		<groupId>org.geotools.xsd</groupId>
-	 		<artifactId>gt-xsd-ows</artifactId>
-   	 	<version>${project.version}</version>
-   	</dependency>
-		<dependency>
+    <dependency>
+      <groupId>org.geotools.xsd</groupId>
+      <artifactId>gt-xsd-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools.xsd</groupId>
+      <artifactId>gt-xsd-ows</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.geotools.ogc</groupId>
       <artifactId>net.opengis.ows</artifactId>
-   	 	<version>${project.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.geotools.ogc</groupId>
-  	  <artifactId>org.w3.xlink</artifactId>
-   	 	<version>${project.version}</version>
+      <artifactId>org.w3.xlink</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
-  	  <artifactId>gt-metadata</artifactId>
-   	 	<version>${project.version}</version>
+      <artifactId>gt-metadata</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
-  	  <artifactId>gt-referencing</artifactId>
-   	 	<version>${project.version}</version>
+      <artifactId>gt-referencing</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
-  	  <artifactId>gt-epsg-hsql</artifactId>
-   	 	<version>${project.version}</version>
+      <artifactId>gt-epsg-hsql</artifactId>
+      <version>${project.version}</version>
     </dependency>
 
     <dependency>

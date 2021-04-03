@@ -7,10 +7,7 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -19,7 +16,6 @@
     <version>24-SNAPSHOT</version>
   </parent>
 
-
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
@@ -27,12 +23,8 @@
   <artifactId>gt-geotiff</artifactId>
   <packaging>jar</packaging>
   <name>GeoTIFF grid coverage exchange module</name>
-  
 
-
-  <description>
-    Datasource created to read GeoTIFF raster format.
-  </description>
+  <description>Datasource created to read GeoTIFF raster format.</description>
 
   <licenses>
     <license>
@@ -42,14 +34,13 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Bryce Nordgren</name>
       <id>bnordgren</id>
+      <name>Bryce Nordgren</name>
       <email>bnordgren@fs.fed.us</email>
       <organization>USDA Forest Service</organization>
       <roles>
@@ -58,39 +49,38 @@
       </roles>
     </developer>
     <developer>
-      <name>Simone Giannecchini</name>
       <id>simboss</id>
+      <name>Simone Giannecchini</name>
       <email>simboss1@gmail.com</email>
       <roles>
         <role>Java Developer</role>
       </roles>
     </developer>
     <developer>
-      <name>Alessio Fabiani</name>
       <id>alfa</id>
+      <name>Alessio Fabiani</name>
       <email>alessio.fabiani@gmail.com</email>
       <roles>
         <role>Java Developer</role>
       </roles>
     </developer>
     <developer>
-      <name>Daniele Romagnoli</name>
       <id>danieler</id>
+      <name>Daniele Romagnoli</name>
       <email>daniele.romagnoli@geo-solutions.it</email>
       <roles>
         <role>Java Developer</role>
       </roles>
     </developer>
     <developer>
-      <name>Mike Gelbin</name>
       <id>mgelbin</id>
+      <name>Mike Gelbin</name>
       <email>schmeldog@gelbin.org</email>
       <roles>
         <role>Java Developer</role>
       </roles>
     </developer>
   </developers>
-
 
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
@@ -117,13 +107,13 @@
     </dependency>
     <dependency>
       <groupId>it.geosolutions.imageio-ext</groupId>
-  	  <artifactId>imageio-ext-tiff</artifactId>
-      <!-- The version number is specified in the parent POM. -->      
+      <artifactId>imageio-ext-tiff</artifactId>
+      <!-- The version number is specified in the parent POM. -->
     </dependency>
     <dependency>
-       <groupId>it.geosolutions.imageio-ext</groupId>
-       <artifactId>imageio-ext-cog-reader</artifactId>
-       <version>${imageio.ext.version}</version>
+      <groupId>it.geosolutions.imageio-ext</groupId>
+      <artifactId>imageio-ext-cog-reader</artifactId>
+      <version>${imageio.ext.version}</version>
     </dependency>
     <!-- Test dependencies -->
     <dependency>

@@ -1,26 +1,17 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- ===========================================================================
          Project configuration file for the Geotools 2 project
          http://www.geotools.org/
 
          Version: $Id$
      =========================================================================== -->
-
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>unsupported</artifactId>
     <version>24-SNAPSHOT</version>
   </parent>
-
-  <properties>
-    <allow.test.skip>true</allow.test.skip>
-    <allow.test.failure.ignore>true</allow.test.failure.ignore>
-    <maven.test.skip>true</maven.test.skip>
-  </properties>
-
 
   <!-- ==================================================== -->
   <!--     Module description                               -->
@@ -29,23 +20,18 @@
   <artifactId>gt-jts-wrapper</artifactId>
   <packaging>jar</packaging>
   <name>ISO 19107 implementation using JTS</name>
-  
 
-
-  <description>
-     This is a basic 2D ISO 19107 implementation which uses 
-     JTS for the computational geometry.
-  </description>
-
+  <description>This is a basic 2D ISO 19107 implementation which uses 
+     JTS for the computational geometry.</description>
 
   <!-- ==================================================== -->
   <!--     Developers and contributors                      -->
   <!-- ==================================================== -->
   <developers>
-   <!-- Figure out who to credit inside SYS Technologies -->
+    <!-- Figure out who to credit inside SYS Technologies -->
     <developer>
-      <name>Bryce Nordgren</name>
       <id>bnordgren</id>
+      <name>Bryce Nordgren</name>
       <email>bnordgren@fs.fed.us</email>
       <organization>USDA Forest Service</organization>
       <roles>
@@ -64,6 +50,11 @@
     </contributor>
   </contributors>
 
+  <properties>
+    <allow.test.skip>true</allow.test.skip>
+    <allow.test.failure.ignore>true</allow.test.failure.ignore>
+    <maven.test.skip>true</maven.test.skip>
+  </properties>
 
   <!-- ==================================================== -->
   <!--     Dependencies                                     -->
@@ -94,14 +85,12 @@
       <artifactId>picocontainer</artifactId>
       <version>3</version>
       <scope>test</scope>
-    </dependency> 
+    </dependency>
   </dependencies>
-
 
   <!-- ==================================================== -->
   <!--     Compilation (including non-standard plugins)     -->
   <!-- ==================================================== -->
-  <build>
-  </build>
+  <build></build>
 
 </project>

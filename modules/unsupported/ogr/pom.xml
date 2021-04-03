@@ -7,10 +7,7 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -19,7 +16,6 @@
     <version>24-SNAPSHOT</version>
   </parent>
 
-
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
@@ -27,11 +23,8 @@
   <artifactId>gt-ogr</artifactId>
   <packaging>pom</packaging>
   <name>OGR DataStore Module</name>
-  
 
-  <description>
-    A datastore leveraging OGR for reading/writing a slew of data formats
-  </description>
+  <description>A datastore leveraging OGR for reading/writing a slew of data formats</description>
 
   <licenses>
     <license>
@@ -40,14 +33,14 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-  
+
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Andrea Aime</name>
       <id>aaime</id>
+      <name>Andrea Aime</name>
       <email>aaime@users.sourceforge.net</email>
       <organization>University of Modena and Reggio Emilia</organization>
       <roles>
@@ -57,6 +50,10 @@
     </developer>
   </developers>
 
+  <modules>
+    <module>ogr-core</module>
+    <module>ogr-jni</module>
+  </modules>
 
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
@@ -86,11 +83,6 @@
       <artifactId>gt-shapefile</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
-    </dependency>  
+    </dependency>
   </dependencies>
-  
-  <modules>
-    <module>ogr-core</module>
-    <module>ogr-jni</module>
-  </modules>
 </project>

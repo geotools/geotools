@@ -7,10 +7,7 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -18,7 +15,6 @@
     <artifactId>unsupported</artifactId>
     <version>24-SNAPSHOT</version>
   </parent>
-
 
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
@@ -28,10 +24,7 @@
   <packaging>jar</packaging>
   <name>Geometries</name>
 
-
-  <description>
-    Implementations of ISO 19107 (Spatial Schema).
-  </description>
+  <description>Implementations of ISO 19107 (Spatial Schema).</description>
 
   <licenses>
     <license>
@@ -41,22 +34,21 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Sanjay Jena</name>
       <id>sanjayjena</id>
+      <name>Sanjay Jena</name>
       <email>sanjayjena@users.sourceforge.net</email>
       <organization>Fachhochschule Koeln</organization>
       <organizationUrl>www.fh-koeln.de</organizationUrl>
-      <timezone>(todo)</timezone>
       <roles>
         <role>Module Maintainer</role>
         <role>Java Developer</role>
       </roles>
+      <timezone>(todo)</timezone>
     </developer>
     <developer>
       <name>Jackson Roehrig</name>
@@ -66,7 +58,7 @@
         <role>Java developper</role>
       </roles>
     </developer>
-     <developer>
+    <developer>
       <name>Graham Davis</name>
       <organization>Refractions Research</organization>
       <organizationUrl>www.refractions.net</organizationUrl>
@@ -76,25 +68,6 @@
     </developer>
   </developers>
 
-
-  <!-- ======================================================= -->
-  <!--     Compilation.                                        -->
-  <!-- ======================================================= -->
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <excludes>
-            <exclude>**/RunStoredTest.java</exclude>
-          </excludes>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-
-
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
   <!-- =========================================================== -->
@@ -102,7 +75,7 @@
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-main</artifactId>
-      <version>${project.version}</version>  
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
@@ -121,12 +94,29 @@
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
-	<dependency>
-	    <groupId>picocontainer</groupId>
-	    <artifactId>picocontainer</artifactId>
-	    <version>3</version>
-	    <scope>test</scope>
-	</dependency>       
+    <dependency>
+      <groupId>picocontainer</groupId>
+      <artifactId>picocontainer</artifactId>
+      <version>3</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
+
+  <!-- ======================================================= -->
+  <!--     Compilation.                                        -->
+  <!-- ======================================================= -->
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>**/RunStoredTest.java</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

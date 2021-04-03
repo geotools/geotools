@@ -2,9 +2,7 @@
 <!-- ======================================================================= 
   Maven Project Configuration File The Geotools Project http://www.geotools.org/ 
   Version: $Id: pom.xml 33582 2009-07-17 04:40:35Z mbedward $ ======================================================================= -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -21,9 +19,7 @@
   <packaging>jar</packaging>
   <name>Cartographic CSS parser</name>
 
-  <description>
-      Parses a cartographic oriented CSS variant and offers translation tools to SLDles
-    </description>
+  <description>Parses a cartographic oriented CSS variant and offers translation tools to SLDles</description>
 
   <licenses>
     <license>
@@ -33,14 +29,13 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!-- Developers and Contributors -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Andrea Aime</name>
       <id>aaime</id>
+      <name>Andrea Aime</name>
       <email>andrea.aime@geo-solutions.it</email>
       <organization>GeoSolutions</organization>
       <roles>

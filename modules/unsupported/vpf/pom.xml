@@ -7,10 +7,7 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -19,7 +16,6 @@
     <version>24-SNAPSHOT</version>
   </parent>
 
-
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
@@ -27,12 +23,8 @@
   <artifactId>gt-vpf</artifactId>
   <packaging>jar</packaging>
   <name>VPF Plugin</name>
-  
 
-
-  <description>
-    DataStore plugin for VPF format.
-  </description>
+  <description>DataStore plugin for VPF format.</description>
 
   <licenses>
     <license>
@@ -42,14 +34,13 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Jeff Yutzler</name>
       <id>jyutzler</id>
+      <name>Jeff Yutzler</name>
       <email>jeff@ionicenterprise.com</email>
       <organization>IONIC Enterprise Inc.</organization>
       <roles>
@@ -58,8 +49,8 @@
       </roles>
     </developer>
     <developer>
-      <name>Knut-Erik Johnsen</name>
       <id>knutejoh</id>
+      <name>Knut-Erik Johnsen</name>
       <email>knuterik@onemap.org</email>
       <organization>Project OneMap</organization>
       <roles>
@@ -67,8 +58,8 @@
       </roles>
     </developer>
     <developer>
-      <name>Artur Hefczyc</name>
       <id>kobit</id>
+      <name>Artur Hefczyc</name>
       <email>kobit@users.sourceforge.net</email>
       <organization>CCG</organization>
       <roles>
@@ -76,8 +67,8 @@
       </roles>
     </developer>
     <developer>
-      <name>John Meagher</name>
       <id></id>
+      <name>John Meagher</name>
       <email>john.meagher@solipsys.com</email>
       <organization>Solipsys</organization>
       <roles>
@@ -85,7 +76,6 @@
       </roles>
     </developer>
   </developers>
-
 
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->

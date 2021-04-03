@@ -7,10 +7,7 @@
 
         Version: $Id$
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -18,7 +15,6 @@
     <artifactId>library</artifactId>
     <version>24-SNAPSHOT</version>
   </parent>
-
 
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
@@ -28,13 +24,8 @@
   <packaging>jar</packaging>
 
   <name>Metadata</name>
-  <description>
-    Contains implementations of metadata and some core utilities classes.
-  </description>
-  <properties>
-    <moduleIdentifier>org.geotools.metadata</moduleIdentifier>
-  </properties>
-  
+  <description>Contains implementations of metadata and some core utilities classes.</description>
+
   <licenses>
     <license>
       <name>Lesser General Public License (LGPL)</name>
@@ -43,14 +34,13 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Jody Garnett</name>
       <id>jive</id>
+      <name>Jody Garnett</name>
       <email>jive@users.sourceforge.net</email>
       <organization>Refractions Research</organization>
       <roles>
@@ -63,9 +53,7 @@
   <contributors>
     <contributor>
       <name>Touraïvane</name>
-      <organization>
-        Institut de Recherche pour le Développement (IRD)
-      </organization>
+      <organization>Institut de Recherche pour le Développement (IRD)</organization>
       <roles>
         <role>Java developper</role>
       </roles>
@@ -75,22 +63,25 @@
       <email>desruisseaux@users.sourceforge.net</email>
       <organization>Geomatys</organization>
       <organizationUrl>http://www.geomatys.fr/</organizationUrl>
-      <timezone>+1</timezone>
       <roles>
         <role>Retired Module Maintainer</role>
         <role>Retired Java Developer</role>
       </roles>
+      <timezone>+1</timezone>
     </contributor>
     <contributor>
       <name>Cédric Briançon</name>
       <email>cedric.briancon@geomatys.fr</email>
       <organization>Geomatys</organization>
-      <timezone>+1</timezone>
       <roles>
         <role>Java developper</role>
       </roles>
+      <timezone>+1</timezone>
     </contributor>
   </contributors>
+  <properties>
+    <moduleIdentifier>org.geotools.metadata</moduleIdentifier>
+  </properties>
 
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
@@ -99,7 +90,7 @@
     <!-- NOTE: The metadata module does not depend on JTS. -->
     <dependency>
       <groupId>org.geotools</groupId>
-        <artifactId>gt-opengis</artifactId>
+      <artifactId>gt-opengis</artifactId>
       <version>${project.version}</version>
     </dependency>
     <!--
@@ -116,7 +107,8 @@
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
       <!-- The version number is specified in the parent POM. -->
-      <scope>provided</scope>  <!-- Not required for default execution. -->
+      <scope>provided</scope>
+      <!-- Not required for default execution. -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -128,19 +120,20 @@
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
-      <scope>provided</scope>  <!-- Not required for default execution. -->
+      <scope>provided</scope>
+      <!-- Not required for default execution. -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
     </dependency>
-      <dependency>
-          <groupId>org.geotools.ogc</groupId>
-          <artifactId>net.opengis.ows</artifactId>
-          <version>${project.version}</version>
-          <scope>compile</scope>
-      </dependency>
+    <dependency>
+      <groupId>org.geotools.ogc</groupId>
+      <artifactId>net.opengis.ows</artifactId>
+      <version>${project.version}</version>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -149,8 +142,8 @@
         <directory>${basedir}/src/main/resources</directory>
       </resource>
       <resource>
-        <directory>${basedir}/src/main/properties</directory>
         <filtering>true</filtering>
+        <directory>${basedir}/src/main/properties</directory>
       </resource>
     </resources>
   </build>

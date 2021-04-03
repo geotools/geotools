@@ -9,11 +9,11 @@
      ======================================================================= -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-   <parent>
+  <parent>
     <groupId>org.geotools</groupId>
     <artifactId>gt-coverage-multidim</artifactId>
     <version>24-SNAPSHOT</version>
-   </parent>
+  </parent>
 
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
@@ -23,9 +23,7 @@
   <packaging>jar</packaging>
   <name>NetCDF gridcoverage module</name>
 
-  <description>
-    Datasource created to read NetCDF format. 
-  </description>
+  <description>Datasource created to read NetCDF format.</description>
 
   <licenses>
     <license>
@@ -35,14 +33,13 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Daniele Romagnoli</name>
       <id>danieler</id>
+      <name>Daniele Romagnoli</name>
       <email>dany.geotools@gmail.com</email>
       <organization>GeoSolutions</organization>
       <roles>
@@ -51,8 +48,8 @@
       </roles>
     </developer>
     <developer>
-      <name>Simone Giannecchini</name>
       <id>simboss</id>
+      <name>Simone Giannecchini</name>
       <email>simboss1@gmail.com</email>
       <organization>GeoSolutions</organization>
       <roles>
@@ -61,7 +58,6 @@
       </roles>
     </developer>
   </developers>
-
 
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
@@ -89,17 +85,17 @@
     </dependency>
     <dependency>
       <groupId>edu.ucar</groupId>
-      <artifactId>cdm</artifactId> 
+      <artifactId>cdm</artifactId>
       <version>${netcdf.version}</version>
     </dependency>
     <dependency>
       <groupId>edu.ucar</groupId>
-      <artifactId>netcdf4</artifactId> 
+      <artifactId>netcdf4</artifactId>
       <version>${netcdf.version}</version>
     </dependency>
     <dependency>
       <groupId>edu.ucar</groupId>
-      <artifactId>bufr</artifactId> 
+      <artifactId>bufr</artifactId>
       <version>${netcdf.version}</version>
     </dependency>
     <dependency>
@@ -126,7 +122,7 @@
       <groupId>org.jdom</groupId>
       <artifactId>jdom2</artifactId>
     </dependency>
-            
+
     <!-- Test dependencies -->
     <dependency>
       <groupId>org.geotools</groupId>
@@ -134,7 +130,7 @@
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
-     <dependency>
+    <dependency>
       <groupId>org.geotools.jdbc</groupId>
       <artifactId>gt-jdbc-postgis</artifactId>
       <version>${project.version}</version>
@@ -182,20 +178,17 @@
                   <goal>shade</goal>
                 </goals>
                 <configuration>
-                  <outputFile>target/${project.artifactId}-migrate-${project.version}.jar
-                  </outputFile>
+                  <outputFile>target/${project.artifactId}-migrate-${project.version}.jar</outputFile>
                   <transformers>
                     <!-- This bit sets the main class for the executable jar as you otherwise -->
                     <!-- would with the assembly plugin                                       -->
-                    <transformer
-                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                    <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                       <manifestEntries>
                         <Main-Class>org.geotools.coverage.io.netcdf.tools.H2Migrate</Main-Class>
                       </manifestEntries>
                     </transformer>
                     <!-- This bit merges the various GeoTools META-INF/services files         -->
-                    <transformer
-                        implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                    <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"></transformer>
                   </transformers>
                 </configuration>
               </execution>
@@ -205,6 +198,5 @@
       </build>
     </profile>
   </profiles>
-  
- </project>
- 
+
+</project>

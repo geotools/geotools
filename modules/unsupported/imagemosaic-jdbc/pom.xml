@@ -7,10 +7,7 @@
 
         Version: $Id$
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -19,7 +16,6 @@
     <version>24-SNAPSHOT</version>
   </parent>
 
-
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
@@ -27,12 +23,8 @@
   <artifactId>gt-imagemosaic-jdbc</artifactId>
   <packaging>jar</packaging>
   <name>imagemosaic-jdbc module</name>
-  
 
-
-  <description>
-	Plugin for reading tiled images from a JDBC Data Source
-  </description>
+  <description>Plugin for reading tiled images from a JDBC Data Source</description>
 
   <licenses>
     <license>
@@ -42,14 +34,12 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <!-- This module in un-maintained, feel free to volunteer -->
- </developers>
-
+  </developers>
 
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
@@ -118,24 +108,24 @@
       <groupId>org.geotools</groupId>
       <artifactId>gt-metadata</artifactId>
       <version>${project.version}</version>
-    </dependency> 	
+    </dependency>
 
     <!-- Test dependencies -->
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <scope>test</scope>      
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <scope>test</scope>      
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
       <!-- The version number is specified in the parent POM. -->
-      <scope>test</scope>            
+      <scope>test</scope>
     </dependency>
     <!-- The IBM DB2 JDBC driver.                                  -->
     <!--                                                           -->
@@ -152,9 +142,9 @@
       <scope>provided</scope>
     </dependency>-->
 
-  </dependencies>  
+  </dependencies>
 
-   <!-- =========================================================== -->
+  <!-- =========================================================== -->
   <!--     Build Configuration                                     -->
   <!-- =========================================================== -->
   <build>

@@ -7,10 +7,7 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -18,7 +15,6 @@
     <artifactId>gt-jdbc</artifactId>
     <version>25-SNAPSHOT</version>
   </parent>
-
 
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
@@ -28,10 +24,7 @@
   <packaging>jar</packaging>
   <name>H2 DataStore</name>
 
-
-  <description>
-	DataStore for H2 Database.
-  </description>
+  <description>DataStore for H2 Database.</description>
 
   <licenses>
     <license>
@@ -41,14 +34,13 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Justin Deoliveira</name>
       <id>jdeolive</id>
+      <name>Justin Deoliveira</name>
       <email>jdeolive@users.sourceforge.net</email>
       <organization>TOPP</organization>
       <roles>
@@ -65,12 +57,12 @@
       <version>0.9</version>
       <exclusions>
         <exclusion>
-          <groupId>com.h2database</groupId>
           <artifactId>h2</artifactId>
+          <groupId>com.h2database</groupId>
         </exclusion>
         <exclusion>
-           <groupId>org.locationtech.jts</groupId>
-           <artifactId>jts-core</artifactId>
+          <artifactId>jts-core</artifactId>
+          <groupId>org.locationtech.jts</groupId>
         </exclusion>
       </exclusions>
     </dependency>

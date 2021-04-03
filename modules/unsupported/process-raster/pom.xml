@@ -7,200 +7,191 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-             xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                                 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                  http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.geotools</groupId>
-        <artifactId>unsupported</artifactId>
-        <version>25-SNAPSHOT</version>
-    </parent>
-
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>unsupported</artifactId>
+    <version>25-SNAPSHOT</version>
+  </parent>
 
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
-    <groupId>org.geotools</groupId>
-    <artifactId>gt-process-raster</artifactId>
-    <packaging>jar</packaging>
-    <name>Process Raster</name>
+  <groupId>org.geotools</groupId>
+  <artifactId>gt-process-raster</artifactId>
+  <packaging>jar</packaging>
+  <name>Process Raster</name>
 
+  <description>Processes for handling of raster information; often wrapping up jai-tools
+      functionality.</description>
 
-    <description>
-      Processes for handling of raster information; often wrapping up jai-tools
-      functionality.
-    </description>
-  
-    <licenses>
-        <license>
-            <name>Lesser General Public License (LGPL)</name>
-            <url>http://www.gnu.org/copyleft/lesser.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
-    <developers>
-        <developer>
-            <id>jive</id>
-            <name>Jody Garnett</name>
-            <email>jody.garnett@lisasoft.com</email>
-            <organization>LISAsoft</organization>
-            <organizationUrl>http://lisasoft.com</organizationUrl>
-            <timezone>+10</timezone>
-            <roles>
-                <role>Module Maintainer</role>
-                <role>Java Developer</role>
-            </roles>
-        </developer>
-        <developer>
-            <id>mbedward</id>
-            <name>Michael Bedward</name>
-            <email>michael.bedward@gmail.com</email>
-            <timezone>+10</timezone>
-            <roles>
-                <role>Java Developer</role>
-                <role>Module Maintainer</role>
-            </roles>
-        </developer>
-    </developers>
-
+  <developers>
+    <developer>
+      <id>jive</id>
+      <name>Jody Garnett</name>
+      <email>jody.garnett@lisasoft.com</email>
+      <organization>LISAsoft</organization>
+      <organizationUrl>http://lisasoft.com</organizationUrl>
+      <roles>
+        <role>Module Maintainer</role>
+        <role>Java Developer</role>
+      </roles>
+      <timezone>+10</timezone>
+    </developer>
+    <developer>
+      <id>mbedward</id>
+      <name>Michael Bedward</name>
+      <email>michael.bedward@gmail.com</email>
+      <roles>
+        <role>Java Developer</role>
+        <role>Module Maintainer</role>
+      </roles>
+      <timezone>+10</timezone>
+    </developer>
+  </developers>
 
   <!-- =========================================================== -->
   <!--     Dependency Mangement                                    -->
   <!-- =========================================================== -->
-    <dependencies>
-        <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-process</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-render</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+  <dependencies>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-process</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-render</artifactId>
+      <version>${project.version}</version>
+    </dependency>
 
-        <dependency>
-          <groupId>org.jaitools</groupId>
-          <artifactId>jt-zonalstats</artifactId>
-          <version>${jt.version}</version>
-          <exclusions>
-            <exclusion>
-               <groupId>org.locationtech.jts</groupId>
-               <artifactId>jts</artifactId>
-            </exclusion>
-          </exclusions>
-        </dependency>
-        <dependency>
-          <groupId>org.jaitools</groupId>
-          <artifactId>jt-rangelookup</artifactId>
-          <version>${jt.version}</version>
-          <exclusions>
-            <exclusion>
-               <groupId>org.locationtech.jts</groupId>
-               <artifactId>jts</artifactId>
-            </exclusion>
-          </exclusions>
-        </dependency>
-        <dependency>
-          <groupId>org.jaitools</groupId>
-          <artifactId>jt-contour</artifactId>
-          <version>${jt.version}</version>
-          <exclusions>
-            <exclusion>
-               <groupId>org.locationtech.jts</groupId>
-               <artifactId>jts</artifactId>
-            </exclusion>
-          </exclusions>
-        </dependency>
-        <dependency>
-          <groupId>org.jaitools</groupId>
-          <artifactId>jt-vectorize</artifactId>
-          <version>${jt.version}</version>
-          <exclusions>
-            <exclusion>
-               <groupId>org.locationtech.jts</groupId>
-               <artifactId>jts</artifactId>
-            </exclusion>
-          </exclusions>
-        </dependency>
-        <dependency>
-          <groupId>org.jaitools</groupId>
-          <artifactId>jt-utils</artifactId>
-          <version>${jt.version}</version>
-          <exclusions>
-            <exclusion>
-               <groupId>org.locationtech.jts</groupId>
-               <artifactId>jts</artifactId>
-            </exclusion>
-          </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>it.geosolutions.jaiext.jiffle</groupId>
-            <artifactId>jt-jiffle-op</artifactId>
-            <version>${jaiext.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.vividsolutions</groupId>
-                    <artifactId>jts</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>it.geosolutions.jaiext.classbreaks</groupId>
-            <artifactId>jt-classbreaks</artifactId>
-            <version>${jaiext.version}</version>
-        </dependency>
-        
-        <!-- Test dependencies -->
-        <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-sample-data</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-shapefile</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-	        <groupId>org.geotools</groupId>
-	        <artifactId>gt-property</artifactId>
-	        <version>${project.version}</version>
-	        <scope>test</scope>
-        </dependency>
-        <dependency>
-	        <groupId>org.geotools</groupId>
-	        <artifactId>gt-geotiff</artifactId>
-	        <version>${project.version}</version>
-	        <scope>test</scope>
-        </dependency>
-        <dependency>
-	        <groupId>org.geotools</groupId>
-	        <artifactId>gt-epsg-hsql</artifactId>
-	        <version>${project.version}</version>
-	        <scope>test</scope>
-        </dependency>
-	    <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-xml</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+    <dependency>
+      <groupId>org.jaitools</groupId>
+      <artifactId>jt-zonalstats</artifactId>
+      <version>${jt.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>jts</artifactId>
+          <groupId>org.locationtech.jts</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.jaitools</groupId>
+      <artifactId>jt-rangelookup</artifactId>
+      <version>${jt.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>jts</artifactId>
+          <groupId>org.locationtech.jts</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.jaitools</groupId>
+      <artifactId>jt-contour</artifactId>
+      <version>${jt.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>jts</artifactId>
+          <groupId>org.locationtech.jts</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.jaitools</groupId>
+      <artifactId>jt-vectorize</artifactId>
+      <version>${jt.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>jts</artifactId>
+          <groupId>org.locationtech.jts</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.jaitools</groupId>
+      <artifactId>jt-utils</artifactId>
+      <version>${jt.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>jts</artifactId>
+          <groupId>org.locationtech.jts</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>it.geosolutions.jaiext.jiffle</groupId>
+      <artifactId>jt-jiffle-op</artifactId>
+      <version>${jaiext.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>jts</artifactId>
+          <groupId>com.vividsolutions</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>it.geosolutions.jaiext.classbreaks</groupId>
+      <artifactId>jt-classbreaks</artifactId>
+      <version>${jaiext.version}</version>
+    </dependency>
+
+    <!-- Test dependencies -->
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-sample-data</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-shapefile</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-property</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-geotiff</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-epsg-hsql</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-xml</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
 </project>

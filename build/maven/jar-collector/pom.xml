@@ -7,10 +7,7 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -18,7 +15,6 @@
     <artifactId>maven</artifactId>
     <version>25-SNAPSHOT</version>
   </parent>
-  
 
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
@@ -27,10 +23,8 @@
   <artifactId>jar-collector</artifactId>
   <packaging>maven-plugin</packaging>
   <name>JAR files collector</name>
-  <description>
-    Copy all JAR files (including dependencies) in the target directory
-    of the parent project descriptor.
-  </description>
+  <description>Copy all JAR files (including dependencies) in the target directory
+    of the parent project descriptor.</description>
 
   <licenses>
     <license>
@@ -40,24 +34,22 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Martin Desruisseaux</name>
       <id>desruisseaux</id>
+      <name>Martin Desruisseaux</name>
       <email>desruisseaux@users.sourceforge.net</email>
       <organization>Geomatys</organization>
       <organizationUrl>http://www.geomatys.fr/</organizationUrl>
-      <timezone>+1</timezone>
       <roles>
         <role>Java Developer</role>
         <role>Project Management Committee (PMC) Member</role>
       </roles>
+      <timezone>+1</timezone>
     </developer>
   </developers>
-
 
 </project>

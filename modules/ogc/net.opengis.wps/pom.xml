@@ -1,5 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -13,8 +13,6 @@
   <packaging>jar</packaging>
 
   <name>Web Processing Service Model</name>
-  
-
 
   <description>Web Processing Service Schema EMF Model</description>
 
@@ -24,9 +22,9 @@
       <artifactId>net.opengis.ows</artifactId>
       <version>${project.version}</version>
     </dependency>
-     <dependency>
-       <groupId>systems.uom</groupId>
-       <artifactId>systems-common</artifactId>
+    <dependency>
+      <groupId>systems.uom</groupId>
+      <artifactId>systems-common</artifactId>
     </dependency>
   </dependencies>
 

@@ -7,10 +7,7 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -19,7 +16,6 @@
     <version>25-SNAPSHOT</version>
   </parent>
 
-
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
@@ -27,13 +23,11 @@
   <artifactId>jjtree-javacc</artifactId>
   <packaging>maven-plugin</packaging>
   <name>JJTree and JavaCC compilers plugin</name>
-  <description>
-    This Maven plugin run 'jjtree' on a set of .jjt files found in the source
+  <description>This Maven plugin run 'jjtree' on a set of .jjt files found in the source
     directory, which generates a set of .jj files. Next, this plugin executes
     'javacc' on those .jj files in order to generate the .java files. All
     generated files are stored in a 'target/generated-sources' directory and
-    are part of the compilation phase.
-  </description>
+    are part of the compilation phase.</description>
 
   <licenses>
     <license>
@@ -43,25 +37,23 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Martin Desruisseaux</name>
       <id>desruisseaux</id>
+      <name>Martin Desruisseaux</name>
       <email>desruisseaux@users.sourceforge.net</email>
       <organization>Geomatys</organization>
       <organizationUrl>http://www.geomatys.fr/</organizationUrl>
-      <timezone>+1</timezone>
       <roles>
         <role>Java Developer</role>
         <role>Project Management Committee (PMC) Member</role>
       </roles>
+      <timezone>+1</timezone>
     </developer>
   </developers>
-
 
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->

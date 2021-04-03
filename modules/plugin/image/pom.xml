@@ -7,10 +7,7 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -19,7 +16,6 @@
     <version>25-SNAPSHOT</version>
   </parent>
 
-
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
@@ -27,14 +23,10 @@
   <artifactId>gt-image</artifactId>
   <packaging>jar</packaging>
   <name>WorldImage datasource module</name>
-  
 
-
-  <description>
-    Grid coverage reader for image georeferenced by a world file.
+  <description>Grid coverage reader for image georeferenced by a world file.
     File format consists of consisting of a plain image and a "sidecar" world file to georeference
-    the image, a and projection file file to indicate the coordinate reference system used.
-  </description>
+    the image, a and projection file file to indicate the coordinate reference system used.</description>
 
   <licenses>
     <license>
@@ -44,14 +36,13 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Simone Giannecchini</name>
       <id>simboss</id>
+      <name>Simone Giannecchini</name>
       <email>simone.giannecchini@geo-solutions.it</email>
       <organization>GeoSolutions S.A.S.</organization>
       <organizationUrl>http://www.geo-solutions.it</organizationUrl>
@@ -60,17 +51,16 @@
         <role>Documentation</role>
         <role>Module Maintainer</role>
       </roles>
-    </developer> 
-   <developer>
-     <name>Alessio Fabiani</name>
-     <id>alfa</id>
-     <email>alessio.fabiani@gmail.com</email>
-     <roles>
-       <role>Java Developer</role>
-     </roles>
+    </developer>
+    <developer>
+      <id>alfa</id>
+      <name>Alessio Fabiani</name>
+      <email>alessio.fabiani@gmail.com</email>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
     </developer>
   </developers>
-
 
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->

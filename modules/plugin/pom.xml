@@ -7,10 +7,7 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -26,10 +23,8 @@
   <artifactId>plugin</artifactId>
   <packaging>pom</packaging>
   <name>Geotools plugins</name>
-  <description>
-    GeoTools plug-ins provide additional services to the core library
-    using ServiceLocator.
-  </description>
+  <description>GeoTools plug-ins provide additional services to the core library
+    using ServiceLocator.</description>
 
   <licenses>
     <license>
@@ -39,10 +34,9 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Modules included in the build                           -->
-  <!-- =========================================================== --> 
+  <!-- =========================================================== -->
   <modules>
     <module>arcgrid</module>
     <module>charts</module>

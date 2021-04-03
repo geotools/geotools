@@ -7,10 +7,7 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -19,7 +16,6 @@
     <version>25-SNAPSHOT</version>
   </parent>
 
-
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
@@ -27,13 +23,9 @@
   <artifactId>gt-epsg-postgresql</artifactId>
   <packaging>jar</packaging>
   <name>EPSG Authority Service using PostgreSQL database</name>
-  
 
-
-  <description>
-    Connection to an EPSG postgreSQL database.
-    This database should be built by the user from the SQL scripts delivered by EPSG.
-  </description>
+  <description>Connection to an EPSG postgreSQL database.
+    This database should be built by the user from the SQL scripts delivered by EPSG.</description>
 
   <licenses>
     <license>
@@ -46,22 +38,19 @@
       <name>BSD License for PostgreSQL JDBC driver</name>
       <url>https://github.com/geotools/geotools/blob/master/licenses/PostgreSQL.html</url>
       <distribution>repo</distribution>
-      <comments>
-        This Geotools module requires the PostgreSQL JDBC driver, which is
+      <comments>This Geotools module requires the PostgreSQL JDBC driver, which is
         bundled with the binary distribution only (there is no PostgreSQL 
-        derived work in the Java source code).
-      </comments>
+        derived work in the Java source code).</comments>
     </license>
   </licenses>
-
 
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Andrea Aime</name>
       <id>aaime</id>
+      <name>Andrea Aime</name>
       <email>aaime@users.sourceforge.net</email>
       <roles>
         <role>Java Developer</role>
@@ -77,19 +66,18 @@
       </roles>
     </developer>
     <developer>
-      <name>Martin Desruisseaux</name>
       <id>desruisseaux</id>
+      <name>Martin Desruisseaux</name>
       <email>desruisseaux@users.sourceforge.net</email>
       <organization>Geomatys</organization>
       <organizationUrl>http://www.geomatys.fr/</organizationUrl>
-      <timezone>+1</timezone>
       <roles>
         <role>Retired Module Maintainer</role>
         <role>Retired Java Developer</role>
       </roles>
+      <timezone>+1</timezone>
     </developer>
   </developers>
-
 
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->

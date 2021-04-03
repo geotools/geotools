@@ -7,10 +7,7 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -18,7 +15,6 @@
     <artifactId>gt-jdbc</artifactId>
     <version>25-SNAPSHOT</version>
   </parent>
-
 
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
@@ -28,10 +24,7 @@
   <packaging>jar</packaging>
   <name>Db2 DataStore</name>
 
-
-  <description>
-	DataStore for Db2 Database.
-  </description>
+  <description>DataStore for Db2 Database.</description>
 
   <licenses>
     <license>
@@ -46,30 +39,24 @@
       <comments>You can use the IBM Db2 JDBC driver for Java applications that access the Db2 LUW database server</comments>
     </license>
   </licenses>
-  <dependencies>
-    <dependency>
-        <groupId>com.ibm.db2</groupId>
-        <artifactId>jcc</artifactId>
-    </dependency>
-  </dependencies>
 
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>David Adler</name>
       <id>dadler@adtechgeospatial.com</id>
+      <name>David Adler</name>
       <email>dadler@adtechgeospatial.com</email>
       <organization>Adtech GeoSpatial</organization>
       <roles>
         <role>Module Maintainer</role>
         <role>Java Developer</role>
       </roles>
-    </developer>  
+    </developer>
     <developer>
-      <name>Christian Mueller</name>
       <id>christian.mueller@nvoe.at</id>
+      <name>Christian Mueller</name>
       <email>christian.mueller@nvoe.at</email>
       <organization>TOPP</organization>
       <roles>
@@ -78,5 +65,11 @@
       </roles>
     </developer>
   </developers>
+  <dependencies>
+    <dependency>
+      <groupId>com.ibm.db2</groupId>
+      <artifactId>jcc</artifactId>
+    </dependency>
+  </dependencies>
 
 </project>

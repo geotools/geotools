@@ -7,17 +7,13 @@
 
         Version: $Id: pom.xml 4347 2009-02-17 10:32:48Z simboss $
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>plugin</artifactId>
     <version>26-SNAPSHOT</version>
   </parent>
-
 
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
@@ -27,10 +23,8 @@
   <packaging>jar</packaging>
   <name>JP2K based grid coverage readers</name>
 
-  <description>
-    Extension of the of Grid Coverage plugins, leveraging on the JP2K raster data access
-    capabilities.
-  </description>
+  <description>Extension of the of Grid Coverage plugins, leveraging on the JP2K raster data access
+    capabilities.</description>
 
   <licenses>
     <license>
@@ -40,14 +34,13 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
-   <developer>
-      <name>Simone Giannecchini</name>
+    <developer>
       <id>simboss</id>
+      <name>Simone Giannecchini</name>
       <email>simone.giannecchini@geo-solutions.it</email>
       <organization>GeoSolutions</organization>
       <roles>
@@ -56,8 +49,8 @@
       </roles>
     </developer>
     <developer>
-      <name>Daniele Romagnoli</name>
       <id>danieler</id>
+      <name>Daniele Romagnoli</name>
       <email>daniele.romagnoli@geo-solutions.it</email>
       <organization>GeoSolutions</organization>
       <roles>
@@ -65,7 +58,6 @@
       </roles>
     </developer>
   </developers>
-
 
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
@@ -85,11 +77,11 @@
       <groupId>it.geosolutions.imageio-ext</groupId>
       <artifactId>imageio-ext-kakadu</artifactId>
     </dependency>
-     <dependency>
+    <dependency>
       <groupId>it.geosolutions.imageio-ext</groupId>
       <artifactId>imageio-ext-utilities</artifactId>
     </dependency>
-   
+
     <!-- Test dependencies -->
     <dependency>
       <groupId>org.geotools</groupId>
@@ -107,9 +99,9 @@
       <artifactId>jai_imageio</artifactId>
       <!-- The version number is specified in the parent POM. -->
     </dependency>
-     <dependency>
+    <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-    </dependency>    
+    </dependency>
   </dependencies>
 </project>

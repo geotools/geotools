@@ -1,69 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.geotools</groupId>
-        <artifactId>extension</artifactId>
-        <version>26-SNAPSHOT</version>
-    </parent>
-
+  <parent>
     <groupId>org.geotools</groupId>
-    <artifactId>app-schema</artifactId>
-    <packaging>pom</packaging>
-    <name>Application Schema Support</name>
+    <artifactId>extension</artifactId>
+    <version>26-SNAPSHOT</version>
+  </parent>
 
-    <description>Modules to support creation of complex feature types defined in a GML application schema</description>
+  <groupId>org.geotools</groupId>
+  <artifactId>app-schema</artifactId>
+  <packaging>pom</packaging>
+  <name>Application Schema Support</name>
 
-    <developers>
-        <developer>
-            <name>Nuno Oliveira</name>
-            <id>nmco</id>
-            <email>nuno.oliveira@geo-solutions.it</email>
-            <organization>GeoSolutions</organization>
-            <roles>
-                <role>Module Maintainer</role>
-                <role>Java Developer</role>
-            </roles>
-        </developer>
-        <developer>
-            <name>Fernando Mino</name>
-            <id>fernandor777</id>
-            <email>fernando.mino@geo-solutions.it</email>
-            <organization>GeoSolutions</organization>
-            <roles>
-                <role>Module Maintainer</role>
-                <role>Java Developer</role>
-            </roles>
-        </developer>
-        <developer>
-            <name>Ben Caradoc-Davies</name>
-            <id>bencaradocdavies</id>
-            <email>ben@transient.nz</email>
-            <organization>Transient Software Limited</organization>
-            <roles>
-                <role>Java Developer</role>
-            </roles>
-            <timezone>Pacific/Auckland</timezone>
-        </developer>
-        <developer>
-            <name>Rini Angreani</name>
-            <id>ang05a</id>
-            <email>Rini.Angreani@csiro.au</email>
-            <organization>CSIRO Earth Science and Resource Engineering</organization>
-            <roles>
-                <role>Java Developer</role>
-            </roles>
-            <timezone>8</timezone>
-        </developer>
-    </developers>
+  <description>Modules to support creation of complex feature types defined in a GML application schema</description>
 
-    <modules>
-        <module>app-schema</module>
-        <module>app-schema-resolver</module>
-        <module>sample-data-access</module>
-    </modules>
+  <developers>
+    <developer>
+      <id>nmco</id>
+      <name>Nuno Oliveira</name>
+      <email>nuno.oliveira@geo-solutions.it</email>
+      <organization>GeoSolutions</organization>
+      <roles>
+        <role>Module Maintainer</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>fernandor777</id>
+      <name>Fernando Mino</name>
+      <email>fernando.mino@geo-solutions.it</email>
+      <organization>GeoSolutions</organization>
+      <roles>
+        <role>Module Maintainer</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>bencaradocdavies</id>
+      <name>Ben Caradoc-Davies</name>
+      <email>ben@transient.nz</email>
+      <organization>Transient Software Limited</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+      <timezone>Pacific/Auckland</timezone>
+    </developer>
+    <developer>
+      <id>ang05a</id>
+      <name>Rini Angreani</name>
+      <email>Rini.Angreani@csiro.au</email>
+      <organization>CSIRO Earth Science and Resource Engineering</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+      <timezone>8</timezone>
+    </developer>
+  </developers>
+
+  <modules>
+    <module>app-schema</module>
+    <module>app-schema-resolver</module>
+    <module>sample-data-access</module>
+  </modules>
 
 </project>

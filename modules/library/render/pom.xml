@@ -7,11 +7,8 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
-                               
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -19,7 +16,6 @@
     <artifactId>library</artifactId>
     <version>26-SNAPSHOT</version>
   </parent>
-  
 
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
@@ -28,15 +24,11 @@
   <artifactId>gt-render</artifactId>
   <packaging>jar</packaging>
   <name>Render</name>
-  
 
-
-  <description>
-    The render module contains a renderer built around the interface in
+  <description>The render module contains a renderer built around the interface in
     api and main. This is a first class geotools module as creating a
     visual representation of features is considered key to most geospatial
-    applications.
-  </description>
+    applications.</description>
 
   <licenses>
     <license>
@@ -46,14 +38,13 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Jesse Eichar</name>
       <id>jeichar</id>
+      <name>Jesse Eichar</name>
       <email>jeichar@users.sourceforge.net</email>
       <organization>CampToCamp</organization>
       <roles>
@@ -61,8 +52,8 @@
       </roles>
     </developer>
     <developer>
-      <name>Andrea Aime</name>
       <id>aaime</id>
+      <name>Andrea Aime</name>
       <email>aaime@users.sourceforge.net</email>
       <roles>
         <role>Java Developer</role>
@@ -70,8 +61,8 @@
       </roles>
     </developer>
     <developer>
-      <name>Simone Giannecchini</name>
       <id>simboss</id>
+      <name>Simone Giannecchini</name>
       <email>simone.giannecchini@geo-solutions.it</email>
       <organization>GeoSolutions S.A.S.</organization>
       <organizationUrl>http://www.geo-solutions.it</organizationUrl>
@@ -79,9 +70,8 @@
         <role>Java Developer</role>
         <role>Documentation</role>
       </roles>
-    </developer> 
+    </developer>
   </developers>
-
 
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
@@ -107,7 +97,7 @@
       <artifactId>disruptor</artifactId>
       <version>1.2.13</version>
     </dependency>
-    
+
     <!-- Test dependencies -->
     <dependency>
       <groupId>org.geotools</groupId>
@@ -181,15 +171,15 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-         <groupId>org.mockito</groupId>
-         <artifactId>mockito-core</artifactId>
-         <scope>test</scope>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
-        <groupId>org.geotools</groupId>
-        <artifactId>gt-image</artifactId>
-        <version>${project.version}</version>
-        <scope>test</scope>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-image</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.hamcrest</groupId>
@@ -197,8 +187,8 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  
-   <build>
+
+  <build>
     <plugins>
       <!-- build test jar so that tests can be shared with rendering plugins -->
       <plugin>

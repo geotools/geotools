@@ -7,10 +7,7 @@
 
         Version: $Id$
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -26,13 +23,9 @@
   <artifactId>gt-imageio-ext-gdal</artifactId>
   <packaging>jar</packaging>
   <name>ImageI/O-Ext based grid coverage readers</name>
-  
 
-
-  <description>
-    Extension of the of Grid Coverage plugins, leveraging on the GDAL raster data access
-    capabilities by means of the ImageIO-Ext Project.
-  </description>
+  <description>Extension of the of Grid Coverage plugins, leveraging on the GDAL raster data access
+    capabilities by means of the ImageIO-Ext Project.</description>
 
   <licenses>
     <license>
@@ -42,14 +35,13 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Simone Giannecchini</name>
       <id>simboss</id>
+      <name>Simone Giannecchini</name>
       <email>simone.giannecchini@geo-solutions.it</email>
       <organization>GeoSolutions S.A.S.</organization>
       <organizationUrl>http://www.geo-solutions.it</organizationUrl>
@@ -58,10 +50,10 @@
         <role>Documentation</role>
         <role>Module Maintainer</role>
       </roles>
-    </developer>   
-      <developer>
-      <name>Daniele Romagnoli</name>
+    </developer>
+    <developer>
       <id>danieler</id>
+      <name>Daniele Romagnoli</name>
       <email>daniele.romagnoli@geo-solutions.it</email>
       <organization>GeoSolutions</organization>
       <roles>
@@ -70,7 +62,6 @@
       </roles>
     </developer>
   </developers>
-
 
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
@@ -136,12 +127,12 @@
       <artifactId>imageio-ext-gdalnitf</artifactId>
       <!-- The version number is specified in the parent POM. -->
     </dependency>
-	<dependency>
+    <dependency>
       <groupId>it.geosolutions.imageio-ext</groupId>
       <artifactId>imageio-ext-gdalrpftoc</artifactId>
       <!-- The version number is specified in the parent POM. -->
     </dependency>
-	<dependency>
+    <dependency>
       <groupId>it.geosolutions.imageio-ext</groupId>
       <artifactId>imageio-ext-gdalidrisi</artifactId>
       <!-- The version number is specified in the parent POM. -->
@@ -152,8 +143,8 @@
       <!-- The version number is specified in the parent POM. -->
       <exclusions>
         <exclusion>
-          <groupId>it.geosolutions.imageio-ext</groupId>
           <artifactId>imageio-ext-gdalgeotiff</artifactId>
+          <groupId>it.geosolutions.imageio-ext</groupId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -171,7 +162,7 @@
       <artifactId>gt-epsg-hsql</artifactId>
       <version>${project.version}</version>
     </dependency>
-   
+
     <!-- Test dependencies -->
     <dependency>
       <groupId>org.geotools</groupId>
@@ -189,7 +180,8 @@
       <groupId>javax.media</groupId>
       <artifactId>jai_imageio</artifactId>
       <!-- The version number is specified in the parent POM. -->
-      <scope>test</scope>  <!-- Users should execute JAI installer. -->
+      <scope>test</scope>
+      <!-- Users should execute JAI installer. -->
     </dependency>
   </dependencies>
 

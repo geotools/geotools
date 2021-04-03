@@ -7,10 +7,7 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -19,7 +16,6 @@
     <version>26-SNAPSHOT</version>
   </parent>
 
-
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
@@ -27,9 +23,7 @@
   <artifactId>xsd</artifactId>
   <packaging>pom</packaging>
   <name>XML Parsing</name>
-  <description>
-  Parent module for xml modules.
-  </description>
+  <description>Parent module for xml modules.</description>
 
   <licenses>
     <license>
@@ -44,8 +38,8 @@
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Jody Garnett</name>
       <id>jive</id>
+      <name>Jody Garnett</name>
       <email>jive@users.sourceforge.net</email>
       <organization>Refractions Research</organization>
       <roles>
@@ -54,8 +48,8 @@
       </roles>
     </developer>
     <developer>
-      <name>Justin Deoliveira</name>
       <id>jdeolive</id>
+      <name>Justin Deoliveira</name>
       <email>jdeolive@users.sourceforge.net</email>
       <organization>The Open Planning Project</organization>
       <roles>
@@ -64,6 +58,23 @@
       </roles>
     </developer>
   </developers>
+
+  <modules>
+    <module>xsd-core</module>
+    <module>xsd-gml2</module>
+    <module>xsd-gml3</module>
+    <module>xsd-filter</module>
+    <module>xsd-fes</module>
+    <module>xsd-sld</module>
+    <module>xsd-kml</module>
+    <module>xsd-ows</module>
+    <module>xsd-wfs</module>
+    <module>xsd-wcs</module>
+    <module>xsd-wps</module>
+    <module>xsd-wms</module>
+    <module>xsd-csw</module>
+    <module>xsd-wmts</module>
+  </modules>
 
   <!--build>
     <plugins>
@@ -84,36 +95,18 @@
   <profiles>
     <profile>
       <id>saxon</id>
-      <dependencies>
-         <dependency>
-           <groupId>net.sf.saxon</groupId>
-           <artifactId>Saxon-HE</artifactId>
-           <version>9.6.0-6</version>
-           <scope>test</scope>
-         </dependency>
-      </dependencies>
       <properties>
         <test.args>-Djavax.xml.transform.TransformerFactory=net.sf.saxon.jaxp.SaxonTransformerFactory</test.args>
       </properties>
+      <dependencies>
+        <dependency>
+          <groupId>net.sf.saxon</groupId>
+          <artifactId>Saxon-HE</artifactId>
+          <version>9.6.0-6</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
     </profile>
   </profiles>
 
-  <modules>
-    <module>xsd-core</module>
-    <module>xsd-gml2</module>
-    <module>xsd-gml3</module>
-    <module>xsd-filter</module>
-    <module>xsd-fes</module>
-    <module>xsd-sld</module>
-    <module>xsd-kml</module>
-    <module>xsd-ows</module>
-    <module>xsd-wfs</module>
-    <module>xsd-wcs</module>
-    <module>xsd-wps</module>
-    <module>xsd-wms</module>
-    <module>xsd-csw</module>
-    <module>xsd-wmts</module>
-  </modules>
-
 </project>
-

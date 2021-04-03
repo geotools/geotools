@@ -7,10 +7,7 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -26,19 +23,16 @@
   <artifactId>gt-wps</artifactId>
   <packaging>jar</packaging>
   <name>Web Processing Service</name>
-  
-  
-  <description>
-    Web Processing Service implementation.
-  </description>
-  
+
+  <description>Web Processing Service implementation.</description>
+
+  <!-- for your project. -->
+  <inceptionYear></inceptionYear>
+
   <organization>
     <name></name>
     <url></url>
   </organization>
-  
-  <!-- for your project. -->
-  <inceptionYear></inceptionYear>
 
   <!-- Pick your license. -->
   <!--
@@ -50,7 +44,6 @@
     </license>
   </licenses>
   -->
-
 
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
@@ -95,12 +88,12 @@
       <groupId>org.geotools.xsd</groupId>
       <artifactId>gt-xsd-ows</artifactId>
       <version>${project.version}</version>
-    </dependency>   
+    </dependency>
     <dependency>
       <groupId>org.geotools.xsd</groupId>
       <artifactId>gt-xsd-wps</artifactId>
       <version>${project.version}</version>
-    </dependency> 
+    </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-process</artifactId>
@@ -108,29 +101,29 @@
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
-			<artifactId>gt-xml</artifactId>
-			<version>${project.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.geotools</groupId>
-					<artifactId>gt-wfs</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.geotools.xsd</groupId>
-					<artifactId>gt-xsd-wfs</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.geotools.ogc</groupId>
-					<artifactId>net.opengis.wfs</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.geotools</groupId>
+      <artifactId>gt-xml</artifactId>
+      <version>${project.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>gt-wfs</artifactId>
+          <groupId>org.geotools</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>gt-xsd-wfs</artifactId>
+          <groupId>org.geotools.xsd</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>net.opengis.wfs</artifactId>
+          <groupId>org.geotools.ogc</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
       <artifactId>gt-sample-data</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
-    </dependency>    
+    </dependency>
   </dependencies>
 
 </project>

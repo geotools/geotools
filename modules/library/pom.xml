@@ -7,10 +7,7 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -18,7 +15,6 @@
     <artifactId>modules</artifactId>
     <version>25-SNAPSHOT</version>
   </parent>
-  
 
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
@@ -27,9 +23,7 @@
   <artifactId>library</artifactId>
   <packaging>pom</packaging>
   <name>Geotools libraries</name>
-  <description>
-    Geotools core modules.
-  </description>
+  <description>Geotools core modules.</description>
 
   <licenses>
     <license>
@@ -38,8 +32,7 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-  
-  
+
   <!-- =========================================================== -->
   <!--     Modules included in the build                           -->
   <!-- =========================================================== -->

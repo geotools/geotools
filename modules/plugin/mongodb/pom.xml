@@ -7,8 +7,7 @@
 
         Version: $Id: pom.xml 2014-03-21 13:32:49Z tkunicki $
      ======================================================================= -->
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -83,80 +82,80 @@
       <email>amangan@data-tactics.com</email>
       <organization>Data Tactics Corp.</organization>
       <organizationUrl>http://www.data-tactics-corp.com</organizationUrl>
-      <timezone>GMT-5</timezone>
       <roles>
         <role>Initial Author</role>
       </roles>
+      <timezone>GMT-5</timezone>
     </contributor>
   </contributors>
 
-    <dependencies>
-        <!--   GeoTools modules   -->
-        <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-main</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-	      <groupId>org.geotools</groupId>
-	      <artifactId>gt-http</artifactId>
-	      <version>${project.version}</version>
-	    </dependency>
-        <!--   Third-party dependencies   -->
-        <!--   version number defined here as this is a community module -->
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongodb-driver-legacy</artifactId>
-            <version>4.0.2</version>
-            <type>jar</type>
-            <optional>false</optional>
-        </dependency>
-        <!--   Test dependencies   -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-sample-data</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-shapefile</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-epsg-hsql</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.2.4</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-library</artifactId>
-            <version>1.3</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.geotools</groupId>
-          <artifactId>gt-app-schema</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-    </dependencies>
+  <dependencies>
+    <!--   GeoTools modules   -->
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-main</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-http</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!--   Third-party dependencies   -->
+    <!--   version number defined here as this is a community module -->
+    <dependency>
+      <groupId>org.mongodb</groupId>
+      <artifactId>mongodb-driver-legacy</artifactId>
+      <version>4.0.2</version>
+      <type>jar</type>
+      <optional>false</optional>
+    </dependency>
+    <!--   Test dependencies   -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-sample-data</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-shapefile</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-epsg-hsql</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.2.4</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-library</artifactId>
+      <version>1.3</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-app-schema</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
 
   <build>
     <plugins>
-     <plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.17</version>
@@ -194,7 +193,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>${maven.pmd.plugin.version}</version>       
+        <version>${maven.pmd.plugin.version}</version>
         <configuration>
           <!-- Disable JUnit specific rules, this module tests extends JUnit3 based OnlineTest -->
           <rulesets>

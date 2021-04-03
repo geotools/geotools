@@ -2,9 +2,7 @@
 <!-- ======================================================================= 
   Maven Project Configuration File The Geotools Project http://www.geotools.org/ 
   Version: $Id$ ======================================================================= -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -12,7 +10,6 @@
     <artifactId>extension</artifactId>
     <version>25-SNAPSHOT</version>
   </parent>
-
 
   <!-- =========================================================== -->
   <!-- Module Description -->
@@ -22,11 +19,7 @@
   <packaging>jar</packaging>
   <name>Feature transforming feature source wrapper</name>
 
-
-
-  <description>
-    A FeatureSource/FeatureStore wrapper that can rename attributes, hide others, and create new ones by applying expressions on the wrapped ones
-  </description>
+  <description>A FeatureSource/FeatureStore wrapper that can rename attributes, hide others, and create new ones by applying expressions on the wrapped ones</description>
 
   <licenses>
     <license>
@@ -36,14 +29,13 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!-- Developers and Contributors -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Andrea Aime</name>
       <id>aaime</id>
+      <name>Andrea Aime</name>
       <email>aaime@users.sourceforge.net</email>
       <organization>GeoSolutions</organization>
       <roles>
@@ -52,7 +44,6 @@
       </roles>
     </developer>
   </developers>
-
 
   <!-- =========================================================== -->
   <!-- Dependency Management -->
@@ -77,7 +68,6 @@
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
-
 
     <dependency>
       <groupId>org.geotools</groupId>

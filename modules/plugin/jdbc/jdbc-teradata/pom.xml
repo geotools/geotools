@@ -7,10 +7,7 @@
 
         Version: $Id$
      ======================================================================= -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -18,7 +15,6 @@
     <artifactId>gt-jdbc</artifactId>
     <version>25-SNAPSHOT</version>
   </parent>
-
 
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
@@ -28,10 +24,7 @@
   <packaging>jar</packaging>
   <name>Teradata DataStore</name>
 
-
-  <description>
-    DataStore for Teradata Database.
-  </description>
+  <description>DataStore for Teradata Database.</description>
 
   <licenses>
     <license>
@@ -46,8 +39,8 @@
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Jesse Eichar</name>
       <id>jeichar</id>
+      <name>Jesse Eichar</name>
       <email>jesse.eichar@camptocamp.com</email>
       <organization>Camptocamp</organization>
       <roles>
@@ -56,8 +49,8 @@
       </roles>
     </developer>
     <developer>
-      <name>Stéphane Brunner</name>
       <id>stephane.brunner</id>
+      <name>Stéphane Brunner</name>
       <email>stephane.brunner@camptocamp.com</email>
       <organization>Camptocamp</organization>
       <roles>
@@ -66,14 +59,17 @@
       </roles>
     </developer>
   </developers>
+  <properties>
+    <td.version>13.00.00.27</td.version>
+  </properties>
 
   <profiles>
-	<profile>
-	  <id>teradata-jdbc.true</id>
+    <profile>
+      <id>teradata-jdbc.true</id>
       <activation>
-         <property>
-            <name>teradata</name>
-         </property>
+        <property>
+          <name>teradata</name>
+        </property>
       </activation>
       <dependencies>
         <dependency>
@@ -89,7 +85,4 @@
       </dependencies>
     </profile>
   </profiles>
-  <properties>
-    <td.version>13.00.00.27</td.version>
-  </properties>
 </project>

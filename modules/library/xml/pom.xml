@@ -7,10 +7,7 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -18,7 +15,6 @@
     <artifactId>library</artifactId>
     <version>25-SNAPSHOT</version>
   </parent>
-  
 
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
@@ -28,9 +24,7 @@
   <packaging>jar</packaging>
   <name>XML Parsing Support</name>
 
-  <description>
-    GTXML Schema Driven Parser
-  </description>
+  <description>GTXML Schema Driven Parser</description>
 
   <licenses>
     <license>
@@ -39,7 +33,6 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-
 
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
@@ -65,12 +58,11 @@
     </developer>
   </developers>
 
-
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
   <!-- =========================================================== -->
   <dependencies>
-	
+
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-main</artifactId>
@@ -80,20 +72,20 @@
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-collections4</artifactId>
     </dependency>
-	
-	<!--  xml schema resolver dependencies -->
-	<dependency>
-		<groupId>org.apache.xml</groupId>
-		<artifactId>xml-commons-resolver</artifactId>
-		<version>1.2</version>
-	</dependency>
-	<dependency>
-		<groupId>org.geotools.schemas</groupId>
-		<artifactId>geosciml-2.0</artifactId>
-		<version>2.0.2-4</version>
-		<scope>test</scope>
-	</dependency>
-    
+
+    <!--  xml schema resolver dependencies -->
+    <dependency>
+      <groupId>org.apache.xml</groupId>
+      <artifactId>xml-commons-resolver</artifactId>
+      <version>1.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools.schemas</groupId>
+      <artifactId>geosciml-2.0</artifactId>
+      <version>2.0.2-4</version>
+      <scope>test</scope>
+    </dependency>
+
     <!--  test dependencies -->
     <dependency>
       <groupId>org.geotools</groupId>
@@ -113,9 +105,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-        <groupId>org.mockito</groupId>
-        <artifactId>mockito-core</artifactId>
-        <scope>test</scope>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>xmlunit</groupId>
@@ -130,6 +122,5 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
 
 </project>

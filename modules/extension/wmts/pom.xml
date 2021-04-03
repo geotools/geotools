@@ -7,121 +7,118 @@
 
         Version: $Id$
      ======================================================================= -->
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                               http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.geotools</groupId>
-        <artifactId>extension</artifactId>
-        <version>25-SNAPSHOT</version>
-    </parent>
-
-    <!-- =========================================================== -->
-    <!--     Module Description                                      -->
-    <!-- =========================================================== -->
-
+  <parent>
     <groupId>org.geotools</groupId>
-    <artifactId>gt-wmts</artifactId>
-    <packaging>jar</packaging>
+    <artifactId>extension</artifactId>
+    <version>25-SNAPSHOT</version>
+  </parent>
 
-    <name>Web Map Tile Service Client</name>
-    <url>http://maven.apache.org</url>
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
 
-    <licenses>
-        <license>
-            <name>Lesser General Public License (LGPL)</name>
-            <url>http://www.gnu.org/copyleft/lesser.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
+  <groupId>org.geotools</groupId>
+  <artifactId>gt-wmts</artifactId>
+  <packaging>jar</packaging>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+  <name>Web Map Tile Service Client</name>
+  <url>http://maven.apache.org</url>
 
-    <!-- =========================================================== -->
-    <!--     Developers and Contributors                             -->
-    <!-- =========================================================== -->
-    <developers>
-        <developer>
-            <name>Emanuele Tajariol</name>
-            <id>etj</id>
-            <email>etj@geo-solutions.it</email>
-            <organization>GeoSolutions</organization>
-            <roles>
-                <role>Java Developer</role>
-                <role>Module Maintainer</role>
-            </roles>
-        </developer>
-        <developer>
-            <name>Ian Turton</name>
-            <id>etj</id>
-            <roles>
-                <role>Java Developer</role>
-                <role>Project Management Committee (PMC) Member</role>
-            </roles>
-        </developer>
-    </developers>
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
-    <!-- =========================================================== -->
-    <!--     Dependency Management                                   -->
-    <!-- =========================================================== -->
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+  <developers>
+    <developer>
+      <id>etj</id>
+      <name>Emanuele Tajariol</name>
+      <email>etj@geo-solutions.it</email>
+      <organization>GeoSolutions</organization>
+      <roles>
+        <role>Java Developer</role>
+        <role>Module Maintainer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>etj</id>
+      <name>Ian Turton</name>
+      <roles>
+        <role>Java Developer</role>
+        <role>Project Management Committee (PMC) Member</role>
+      </roles>
+    </developer>
+  </developers>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-main</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-tile-client</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-wms</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.geotools.xsd</groupId>
-            <artifactId>gt-xsd-wmts</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-epsg-hsql</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-sample-data</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-	      <groupId>org.geotools</groupId>
-	      <artifactId>gt-main</artifactId>
-	      <scope>test</scope>
-	      <classifier>tests</classifier>
-	      <version>${project.version}</version>
-	    </dependency>
-        <dependency>
-	      <groupId>org.geotools</groupId>
-	      <artifactId>gt-http</artifactId>
-	      <scope>test</scope>
-	      <classifier>tests</classifier>
-	      <version>${project.version}</version>
-	    </dependency>
-        <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-swing</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <!-- =========================================================== -->
+  <!--     Dependency Management                                   -->
+  <!-- =========================================================== -->
+
+  <dependencies>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-main</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-tile-client</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-wms</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools.xsd</groupId>
+      <artifactId>gt-xsd-wmts</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-epsg-hsql</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-sample-data</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-main</artifactId>
+      <version>${project.version}</version>
+      <classifier>tests</classifier>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-http</artifactId>
+      <version>${project.version}</version>
+      <classifier>tests</classifier>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-swing</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 </project>

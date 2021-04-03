@@ -1,5 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -22,9 +22,29 @@
       <roles>
         <role>Java Developer</role>
         <role>Module Maintainer</role>
-     </roles>
+      </roles>
     </developer>
   </developers>
+
+  <modules>
+    <module>org.w3.xlink</module>
+    <module>net.opengis.ows</module>
+    <module>net.opengis.fes</module>
+    <module>net.opengis.wfs</module>
+    <module>net.opengis.wps</module>
+    <module>net.opengis.wcs</module>
+    <module>net.opengis.csw</module>
+    <module>net.opengis.wmts</module>
+  </modules>
+
+  <!-- disable pmd and errorprone in these modules, their code is generated -->
+  <properties>
+    <errorProneFlags>-XepDisableAllChecks</errorProneFlags>
+    <pmd.skip>true</pmd.skip>
+    <spotbugs.skip>true</spotbugs.skip>
+    <checkstyle.skip>true</checkstyle.skip>
+    <lint>none</lint>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -36,9 +56,9 @@
       <artifactId>org.eclipse.emf.ecore</artifactId>
     </dependency>
     <dependency>
-        <groupId>org.eclipse.emf</groupId>
-        <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
-      </dependency>
+      <groupId>org.eclipse.emf</groupId>
+      <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
+    </dependency>
   </dependencies>
 
   <build>
@@ -55,37 +75,16 @@
           <additionalProjectnatures>
             <projectnature>org.eclipse.pde.PluginNature</projectnature>
           </additionalProjectnatures>
-       </configuration>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>com.coveo</groupId>
         <artifactId>fmt-maven-plugin</artifactId>
         <configuration>
-            <skip>true</skip>
+          <skip>true</skip>
         </configuration>
       </plugin>
     </plugins>
   </build>
-  
-  <!-- disable pmd and errorprone in these modules, their code is generated -->
-  <properties>
-    <errorProneFlags>-XepDisableAllChecks</errorProneFlags>
-    <pmd.skip>true</pmd.skip>
-    <spotbugs.skip>true</spotbugs.skip>
-    <checkstyle.skip>true</checkstyle.skip>
-	<lint>none</lint>
-  </properties>
-
-
-  <modules>
-    <module>org.w3.xlink</module>
-    <module>net.opengis.ows</module>
-    <module>net.opengis.fes</module>
-    <module>net.opengis.wfs</module>
-    <module>net.opengis.wps</module>
-    <module>net.opengis.wcs</module>
-    <module>net.opengis.csw</module>
-    <module>net.opengis.wmts</module>
-  </modules>
 
 </project>

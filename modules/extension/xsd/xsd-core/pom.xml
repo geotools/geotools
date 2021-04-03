@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- =======================================================================    
       Maven Project Configuration File                                        
                                                                               
@@ -7,8 +7,7 @@
                                                                               
       Version: $Id$              
    ======================================================================= -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.geotools.xsd</groupId>
@@ -22,11 +21,9 @@
   <artifactId>gt-xsd-core</artifactId>
   <packaging>jar</packaging>
   <name>XML Parsing</name>
-  <description>
-  Schema based xml parsing. This module contains tools for creating 
+  <description>Schema based xml parsing. This module contains tools for creating 
   bindings from xml types to java types. Schema modelling is based 
-  on Eclipse XSD. 
-  </description>
+  on Eclipse XSD.</description>
   <licenses>
     <license>
       <name>Lesser General Public License (LGPL)</name>
@@ -39,8 +36,8 @@
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Jody Garnett</name>
       <id>jive</id>
+      <name>Jody Garnett</name>
       <email>jive@users.sourceforge.net</email>
       <organization>Refractions Research</organization>
       <roles>
@@ -49,8 +46,8 @@
       </roles>
     </developer>
     <developer>
-      <name>Justin Deoliveira</name>
       <id>jdeolive</id>
+      <name>Justin Deoliveira</name>
       <email>jdeolive@users.sourceforge.net</email>
       <organization>The Open Planning Project</organization>
       <roles>
@@ -79,8 +76,8 @@
       <version>1.2</version>
       <exclusions>
         <exclusion>
-          <groupId>xml-apis</groupId>
           <artifactId>xml-apis</artifactId>
+          <groupId>xml-apis</groupId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -90,16 +87,16 @@
       <version>1.3</version>
       <exclusions>
         <exclusion>
-          <groupId>xerces</groupId>
           <artifactId>xerces</artifactId>
+          <groupId>xerces</groupId>
         </exclusion>
         <exclusion>
-          <groupId>servletapi</groupId>
           <artifactId>servletapi</artifactId>
+          <groupId>servletapi</groupId>
         </exclusion>
         <exclusion>
-          <groupId>junit</groupId>
           <artifactId>junit</artifactId>
+          <groupId>junit</groupId>
         </exclusion>
       </exclusions>
     </dependency>

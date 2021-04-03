@@ -7,10 +7,7 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -18,7 +15,6 @@
     <artifactId>geotools</artifactId>
     <version>25-SNAPSHOT</version>
   </parent>
-  
 
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
@@ -27,9 +23,7 @@
   <artifactId>modules</artifactId>
   <packaging>pom</packaging>
   <name>Geotools modules</name>
-  <description>
-    Geotools libraries.
-  </description>
+  <description>Geotools libraries.</description>
 
   <licenses>
     <license>
@@ -39,6 +33,16 @@
     </license>
   </licenses>
 
+  <!-- =========================================================== -->
+  <!--     Modules included in the build                           -->
+  <!-- =========================================================== -->
+  <modules>
+    <module>library</module>
+    <module>ogc</module>
+    <module>plugin</module>
+    <module>extension</module>
+    <module>unsupported</module>
+  </modules>
 
   <!-- =========================================================== -->
   <!--     Dependencies to be inherited by all modules.            -->
@@ -50,19 +54,6 @@
       <!-- The version number is specified in the parent POM. -->
     </dependency>
   </dependencies>
-
-
-  <!-- =========================================================== -->
-  <!--     Modules included in the build                           -->
-  <!-- =========================================================== -->
-  <modules>
-    <module>library</module>
-    <module>ogc</module>    
-    <module>plugin</module>
-    <module>extension</module>
-    <module>unsupported</module>
-  </modules>
-
 
   <!-- =========================================================== -->
   <!--     Build Configuration                                     -->

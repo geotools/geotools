@@ -7,10 +7,7 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -18,7 +15,6 @@
     <artifactId>library</artifactId>
     <version>25-SNAPSHOT</version>
   </parent>
-  
 
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
@@ -27,12 +23,8 @@
   <artifactId>gt-sample-data</artifactId>
   <packaging>jar</packaging>
   <name>Sample data module</name>
-  
 
-
-  <description>
-    Contains sample data for testing purpose.
-  </description>
+  <description>Contains sample data for testing purpose.</description>
 
   <licenses>
     <license>
@@ -42,14 +34,13 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>James Macgill</name>
       <id>jmacgill</id>
+      <name>James Macgill</name>
       <email>jmacgill@users.sourceforge.net</email>
       <organization>PennState</organization>
       <roles>
@@ -58,7 +49,6 @@
       </roles>
     </developer>
   </developers>
-
 
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
@@ -70,6 +60,5 @@
       <scope>provided</scope>
     </dependency>
   </dependencies>
-
 
 </project>

@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- ======================================================================= 
 	Maven Project Configuration File The Geotools Project http://www.geotools.org/ 
 	Version: $Id$ ======================================================================= -->
@@ -16,9 +16,7 @@
   <artifactId>unsupported</artifactId>
   <packaging>pom</packaging>
   <name>Geotools unsupported</name>
-  <description>
-  Unsupported modules for GeoTools.
-</description>
+  <description>Unsupported modules for GeoTools.</description>
   <licenses>
     <license>
       <name>Lesser General Public License (LGPL)</name>
@@ -26,6 +24,25 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+  <!-- Modules included in a normal build -->
+  <modules>
+    <module>vpf</module>
+    <module>swing</module>
+    <module>process</module>
+    <module>process-geometry</module>
+    <module>process-raster</module>
+    <module>process-feature</module>
+    <module>geojsonstore</module>
+    <module>geojson</module>
+    <module>mbtiles</module>
+    <module>wfs-ng</module>
+    <module>ogr</module>
+    <module>postgis-raster</module>
+    <module>ogcapi-client</module>
+    <module>tpk</module>
+    <module>imagemosaic-jdbc</module>
+    <module>cql-json</module>
+  </modules>
   <profiles>
     <!-- ================================================== -->
     <!-- Unsupported Modules -->
@@ -205,24 +222,4 @@
       </modules>
     </profile>
   </profiles>
-  <!-- Modules included in a normal build -->
-  <modules>
-    <module>vpf</module>
-    <module>swing</module>
-    <module>process</module>
-    <module>process-geometry</module>
-    <module>process-raster</module>
-    <module>process-feature</module>
-    <module>geojsonstore</module>
-    <module>geojson</module>
-    <module>mbtiles</module>
-    <module>wfs-ng</module>
-    <module>ogr</module>
-    <module>postgis-raster</module>
-    <module>ogcapi-client</module>
-    <module>tpk</module>
-    <module>imagemosaic-jdbc</module>
-      <module>cql-json</module>
-  </modules>
 </project>
-

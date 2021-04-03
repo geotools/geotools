@@ -7,10 +7,7 @@
 
         Version: $Id
      ======================================================================= -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -22,67 +19,64 @@
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
-    <groupId>org.geotools</groupId>
-    <artifactId>gt-http-commons</artifactId>
-    <packaging>jar</packaging>
-    <name>HTTP Client based on Apache Commons HttpClient</name>
+  <groupId>org.geotools</groupId>
+  <artifactId>gt-http-commons</artifactId>
+  <packaging>jar</packaging>
+  <name>HTTP Client based on Apache Commons HttpClient</name>
 
-    <description>
-    Provides HTTPClient with support for Multithreading.
-    </description>
+  <description>Provides HTTPClient with support for Multithreading.</description>
 
-    <licenses>
-        <license>
-            <name>Lesser General Public License (LGPL)</name>
-            <url>http://www.gnu.org/copyleft/lesser.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
-    <developers>
-        <developer>
-        <name>Roar Br&#230;nden</name>
-        <email>roar.brenden.no@gmail.com</email>
-            <roles>
-                <role>Module Maintainer</role>
-                <role>Java Developer</role>
-            </roles>
-        </developer>
-    </developers>
+  <developers>
+    <developer>
+      <name>Roar Brænden</name>
+      <email>roar.brenden.no@gmail.com</email>
+      <roles>
+        <role>Module Maintainer</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+  </developers>
 
-    <dependencies>
-        <dependency>
-          <groupId>org.geotools</groupId>
-          <artifactId>gt-main</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-	      <dependency>
-          <groupId>org.geotools</groupId>
-          <artifactId>gt-http</artifactId>
-          <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-httpclient</groupId>
-            <artifactId>commons-httpclient</artifactId>
-        </dependency>
+  <dependencies>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-main</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-http</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-httpclient</groupId>
+      <artifactId>commons-httpclient</artifactId>
+    </dependency>
 
-        <dependency>
-          <groupId>com.github.tomakehurst</groupId>
-          <artifactId>wiremock-standalone</artifactId>
-          <version>2.18.0</version>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-    
+    <dependency>
+      <groupId>com.github.tomakehurst</groupId>
+      <artifactId>wiremock-standalone</artifactId>
+      <version>2.18.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
   <!-- =========================================================== -->
   <!--     Build Configuration                                     -->
   <!-- =========================================================== -->

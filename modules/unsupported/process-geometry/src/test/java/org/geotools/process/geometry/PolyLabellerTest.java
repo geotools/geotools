@@ -100,17 +100,15 @@ public class PolyLabellerTest {
 
         GeometryBuilder gb = new GeometryBuilder();
         Polygon p = gb.polygon();
-        
-            Geometry res = PolyLabeller.getPolylabel(p, 1);
-            Assert.assertNull("failed to process empty polygon", res);
-        
-        
-            p = gb.polygon(0, 0, 0, 0, 0, 0, 0, 0);
-            res = PolyLabeller.getPolylabel(p, 1);
-            Assert.assertNull("processed invalid polygon", res);
-            
-            res = PolyLabeller.getPolylabel(null, 1);
-            Assert.assertNull("failed to handle null input", res);
-        
+
+        Geometry res = PolyLabeller.getPolylabel(p, 1);
+        Assert.assertNull("failed to process empty polygon", res);
+
+        p = gb.polygon(0, 0, 0, 0, 0, 0, 0, 0);
+        res = PolyLabeller.getPolylabel(p, 1);
+        Assert.assertNull("processed invalid polygon", res);
+
+        res = PolyLabeller.getPolylabel(null, 1);
+        Assert.assertNull("failed to handle null input", res);
     }
 }

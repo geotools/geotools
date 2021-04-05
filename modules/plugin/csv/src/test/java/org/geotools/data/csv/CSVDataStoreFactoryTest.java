@@ -61,6 +61,17 @@ public class CSVDataStoreFactoryTest {
         fileParams.put("file", file);
         FileDataStore dataStore = csvDataStoreFactory.createDataStore(fileParams);
         assertNotNull("Could not create datastore from file params", dataStore);
+        assertNotNull(dataStore.getSchema());
+    }
+
+    @Test
+    public void testCreateDataStoreFileParamsWithURL() throws Exception {
+        Map<String, Serializable> fileParams = new HashMap<>(1);
+        String f = "file://" + file.getAbsolutePath();
+        fileParams.put("file", new File(f));
+        FileDataStore dataStore = csvDataStoreFactory.createDataStore(fileParams);
+        assertNotNull("Could not create datastore from file params", dataStore);
+        assertNotNull(dataStore.getSchema());
     }
 
     @Test
@@ -69,6 +80,7 @@ public class CSVDataStoreFactoryTest {
         urlParams.put("url", locationsResource);
         FileDataStore dataStore = csvDataStoreFactory.createDataStore(urlParams);
         assertNotNull("Could not create datastore from url params", dataStore);
+        assertNotNull(dataStore.getSchema());
     }
 
     @Test
@@ -108,6 +120,7 @@ public class CSVDataStoreFactoryTest {
             assertTrue(true);
             return;
         } catch (Exception e) {
+
         }
         fail("Did not throw illegal argument exception for null file");
     }

@@ -16,51 +16,23 @@
  */
 package org.geotools.wps.v2_0;
 
+import java.util.Map;
+import javax.xml.namespace.QName;
 import net.opengis.wps20.Wps20Factory;
 import org.geotools.filter.v1_1.FilterParserDelegate;
 import org.geotools.filter.v2_0.FESParserDelegate;
 import org.geotools.gml3.GMLParserDelegate;
 import org.geotools.ows.v2_0.OWSConfiguration;
 import org.geotools.wfs.WFSParserDelegate;
-import org.geotools.wps.v2_0.bindings.ComplexDataTypeBinding;
-import org.geotools.wps.v2_0.bindings.DataDescriptionTypeBinding;
-import org.geotools.wps.v2_0.bindings.DataInputTypeBinding;
-import org.geotools.wps.v2_0.bindings.DataOutputTypeBinding;
 import org.geotools.wps.v2_0.bindings.DataTransmissionModeTypeBinding;
-import org.geotools.wps.v2_0.bindings.DescriptionTypeBinding;
 import org.geotools.wps.v2_0.bindings.ExecuteRequestTypeBinding;
-import org.geotools.wps.v2_0.bindings.GenericInputTypeBinding;
-import org.geotools.wps.v2_0.bindings.GenericOutputTypeBinding;
-import org.geotools.wps.v2_0.bindings.GenericProcessTypeBinding;
-import org.geotools.wps.v2_0.bindings.GetCapabilitiesTypeBinding;
 import org.geotools.wps.v2_0.bindings.InputDescriptionTypeBinding;
 import org.geotools.wps.v2_0.bindings.JobControlOptionsTypeBinding;
-import org.geotools.wps.v2_0.bindings.LiteralDataDomainTypeBinding;
-import org.geotools.wps.v2_0.bindings.LiteralDataTypeBinding;
 import org.geotools.wps.v2_0.bindings.LiteralDataType_LiteralDataDomainBinding;
 import org.geotools.wps.v2_0.bindings.OutputDefinitionTypeBinding;
 import org.geotools.wps.v2_0.bindings.OutputDescriptionTypeBinding;
-import org.geotools.wps.v2_0.bindings.ProcessDescriptionTypeBinding;
-import org.geotools.wps.v2_0.bindings.ProcessSummaryTypeBinding;
-import org.geotools.wps.v2_0.bindings.ReferenceTypeBinding;
-import org.geotools.wps.v2_0.bindings.ReferenceType_BodyReferenceBinding;
-import org.geotools.wps.v2_0.bindings.RequestBaseTypeBinding;
-import org.geotools.wps.v2_0.bindings.WPSCapabilitiesTypeBinding;
-import org.geotools.wps.v2_0.bindings.WPSCapabilitiesType_ExtensionBinding;
-import org.geotools.wps.v2_0.bindings._BoundingBoxDataBinding;
-import org.geotools.wps.v2_0.bindings._ContentsBinding;
 import org.geotools.wps.v2_0.bindings._DataBinding;
-import org.geotools.wps.v2_0.bindings._DescribeProcessBinding;
-import org.geotools.wps.v2_0.bindings._DismissBinding;
-import org.geotools.wps.v2_0.bindings._FormatBinding;
-import org.geotools.wps.v2_0.bindings._GetResultBinding;
-import org.geotools.wps.v2_0.bindings._GetStatusBinding;
-import org.geotools.wps.v2_0.bindings._LiteralValueBinding;
-import org.geotools.wps.v2_0.bindings._ProcessOfferingBinding;
-import org.geotools.wps.v2_0.bindings._ProcessOfferingsBinding;
-import org.geotools.wps.v2_0.bindings._ResultBinding;
-import org.geotools.wps.v2_0.bindings._StatusInfoBinding;
-import org.geotools.wps.v2_0.bindings._SupportedCRSBinding;
+import org.geotools.xsd.ComplexEMFBinding;
 import org.geotools.xsd.Configuration;
 import org.picocontainer.MutablePicoContainer;
 
@@ -81,80 +53,100 @@ public class WPSConfiguration extends Configuration {
         addDependency(new OWSConfiguration());
     }
 
-    /**
-     * Registers the bindings for the configuration.
-     *
-     * @generated
-     */
+    @SuppressWarnings("unchecked")
     @Override
-    protected final void registerBindings(MutablePicoContainer container) {
-        // Types
-        container.registerComponentImplementation(
-                WPS.ComplexDataType, ComplexDataTypeBinding.class);
-        container.registerComponentImplementation(
-                WPS.DataDescriptionType, DataDescriptionTypeBinding.class);
-        container.registerComponentImplementation(WPS.DataInputType, DataInputTypeBinding.class);
-        container.registerComponentImplementation(WPS.DataOutputType, DataOutputTypeBinding.class);
-        container.registerComponentImplementation(
-                WPS.DataTransmissionModeType, DataTransmissionModeTypeBinding.class);
-        container.registerComponentImplementation(
-                WPS.DescriptionType, DescriptionTypeBinding.class);
-        container.registerComponentImplementation(
-                WPS.ExecuteRequestType, ExecuteRequestTypeBinding.class);
-        container.registerComponentImplementation(
-                WPS.GenericInputType, GenericInputTypeBinding.class);
-        container.registerComponentImplementation(
-                WPS.GenericOutputType, GenericOutputTypeBinding.class);
-        container.registerComponentImplementation(
-                WPS.GenericProcessType, GenericProcessTypeBinding.class);
-        container.registerComponentImplementation(
-                WPS.GetCapabilitiesType, GetCapabilitiesTypeBinding.class);
-        container.registerComponentImplementation(
-                WPS.InputDescriptionType, InputDescriptionTypeBinding.class);
-        container.registerComponentImplementation(
-                WPS.JobControlOptionsType, JobControlOptionsTypeBinding.class);
-        container.registerComponentImplementation(
-                WPS.LiteralDataDomainType, LiteralDataDomainTypeBinding.class);
-        container.registerComponentImplementation(
-                WPS.LiteralDataType, LiteralDataTypeBinding.class);
-        container.registerComponentImplementation(
-                WPS.OutputDefinitionType, OutputDefinitionTypeBinding.class);
-        container.registerComponentImplementation(
-                WPS.OutputDescriptionType, OutputDescriptionTypeBinding.class);
-        container.registerComponentImplementation(
-                WPS.ProcessDescriptionType, ProcessDescriptionTypeBinding.class);
-        container.registerComponentImplementation(
-                WPS.ProcessSummaryType, ProcessSummaryTypeBinding.class);
-        container.registerComponentImplementation(WPS.ReferenceType, ReferenceTypeBinding.class);
-        container.registerComponentImplementation(
-                WPS.RequestBaseType, RequestBaseTypeBinding.class);
-        container.registerComponentImplementation(
-                WPS.WPSCapabilitiesType, WPSCapabilitiesTypeBinding.class);
-        container.registerComponentImplementation(
-                WPS._BoundingBoxData, _BoundingBoxDataBinding.class);
-        container.registerComponentImplementation(WPS._Contents, _ContentsBinding.class);
-        container.registerComponentImplementation(WPS._Data, _DataBinding.class);
-        container.registerComponentImplementation(
-                WPS._DescribeProcess, _DescribeProcessBinding.class);
-        container.registerComponentImplementation(WPS._Dismiss, _DismissBinding.class);
-        container.registerComponentImplementation(WPS._Format, _FormatBinding.class);
-        container.registerComponentImplementation(WPS._GetResult, _GetResultBinding.class);
-        container.registerComponentImplementation(WPS._GetStatus, _GetStatusBinding.class);
-        container.registerComponentImplementation(WPS._LiteralValue, _LiteralValueBinding.class);
-        container.registerComponentImplementation(
-                WPS._ProcessOffering, _ProcessOfferingBinding.class);
-        container.registerComponentImplementation(
-                WPS._ProcessOfferings, _ProcessOfferingsBinding.class);
-        container.registerComponentImplementation(WPS._Result, _ResultBinding.class);
-        container.registerComponentImplementation(WPS._StatusInfo, _StatusInfoBinding.class);
-        container.registerComponentImplementation(WPS._SupportedCRS, _SupportedCRSBinding.class);
-        container.registerComponentImplementation(
+    protected void registerBindings(Map<QName, Object> bindings) {
+
+        bindings.put(WPS.ExecuteRequestType, ExecuteRequestTypeBinding.class);
+        bindings.put(WPS.InputDescriptionType, InputDescriptionTypeBinding.class);
+        bindings.put(WPS.DataTransmissionModeType, DataTransmissionModeTypeBinding.class);
+        bindings.put(WPS.JobControlOptionsType, JobControlOptionsTypeBinding.class);
+        bindings.put(WPS.OutputDefinitionType, OutputDefinitionTypeBinding.class);
+        bindings.put(WPS.OutputDescriptionType, OutputDescriptionTypeBinding.class);
+        bindings.put(WPS._Data, _DataBinding.class);
+        bindings.put(
                 WPS.LiteralDataType_LiteralDataDomain,
                 LiteralDataType_LiteralDataDomainBinding.class);
-        container.registerComponentImplementation(
-                WPS.ReferenceType_BodyReference, ReferenceType_BodyReferenceBinding.class);
-        container.registerComponentImplementation(
-                WPS.WPSCapabilitiesType_Extension, WPSCapabilitiesType_ExtensionBinding.class);
+
+        //
+        //		//Complex Content
+        bindings.put(
+                WPS.ComplexDataType,
+                new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS.ComplexDataType));
+        bindings.put(
+                WPS.DataDescriptionType,
+                new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS.DataDescriptionType));
+        bindings.put(
+                WPS.DataInputType,
+                new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS.DataInputType));
+        bindings.put(
+                WPS.DataOutputType,
+                new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS.DataOutputType));
+        bindings.put(
+                WPS.DescriptionType,
+                new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS.DescriptionType));
+        bindings.put(
+                WPS.GenericInputType,
+                new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS.GenericInputType));
+        bindings.put(
+                WPS.GenericOutputType,
+                new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS.GenericOutputType));
+        bindings.put(
+                WPS.GenericProcessType,
+                new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS.GenericProcessType));
+        bindings.put(
+                WPS.GetCapabilitiesType,
+                new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS.GetCapabilitiesType));
+        bindings.put(
+                WPS.LiteralDataType,
+                new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS.LiteralDataType));
+        bindings.put(
+                WPS.ProcessDescriptionType,
+                new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS.ProcessDescriptionType));
+        bindings.put(
+                WPS.ProcessSummaryType,
+                new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS.ProcessSummaryType));
+        bindings.put(
+                WPS.ReferenceType,
+                new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS.ReferenceType));
+        bindings.put(
+                WPS.RequestBaseType,
+                new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS.RequestBaseType));
+        bindings.put(
+                WPS.WPSCapabilitiesType,
+                new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS.WPSCapabilitiesType));
+        bindings.put(
+                WPS._BoundingBoxData,
+                new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS._BoundingBoxData));
+        bindings.put(WPS._Contents, new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS._Contents));
+        bindings.put(
+                WPS._DescribeProcess,
+                new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS._DescribeProcess));
+        bindings.put(WPS._Dismiss, new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS._Dismiss));
+        bindings.put(WPS._Format, new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS._Format));
+        bindings.put(WPS._GetResult, new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS._GetResult));
+        bindings.put(WPS._GetStatus, new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS._GetStatus));
+        bindings.put(
+                WPS._LiteralValue,
+                new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS._LiteralValue));
+        bindings.put(
+                WPS._ProcessOffering,
+                new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS._ProcessOffering));
+        bindings.put(
+                WPS._ProcessOfferings,
+                new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS._ProcessOfferings));
+        bindings.put(WPS._Result, new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS._Result));
+        bindings.put(
+                WPS._StatusInfo, new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS._StatusInfo));
+        bindings.put(
+                WPS._SupportedCRS,
+                new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS._SupportedCRS));
+        bindings.put(
+                WPS.ReferenceType_BodyReference,
+                new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS.ReferenceType_BodyReference));
+        bindings.put(
+                WPS.WPSCapabilitiesType_Extension,
+                new ComplexEMFBinding(Wps20Factory.eINSTANCE, WPS.WPSCapabilitiesType_Extension));
     }
 
     @Override

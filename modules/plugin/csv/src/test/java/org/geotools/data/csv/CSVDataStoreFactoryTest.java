@@ -63,15 +63,17 @@ public class CSVDataStoreFactoryTest {
         assertNotNull("Could not create datastore from file params", dataStore);
         assertNotNull(dataStore.getSchema());
     }
+
     @Test
     public void testCreateDataStoreFileParamsWithURL() throws Exception {
         Map<String, Serializable> fileParams = new HashMap<>(1);
-        String f = "file://"+file.getAbsolutePath();
+        String f = "file://" + file.getAbsolutePath();
         fileParams.put("file", new File(f));
         FileDataStore dataStore = csvDataStoreFactory.createDataStore(fileParams);
         assertNotNull("Could not create datastore from file params", dataStore);
         assertNotNull(dataStore.getSchema());
     }
+
     @Test
     public void testCreateDataStoreURLParams() throws Exception {
         Map<String, Serializable> urlParams = new HashMap<>(1);

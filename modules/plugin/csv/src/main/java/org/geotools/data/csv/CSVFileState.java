@@ -139,6 +139,7 @@ public class CSVFileState {
         Reader reader = null;
 
         if (file != null) {
+            LOGGER.fine("opening file: " + file + " exists? " + file.exists());
             reader = new BufferedReader(new FileReader(file));
         } else {
             reader = new StringReader(dataInput);

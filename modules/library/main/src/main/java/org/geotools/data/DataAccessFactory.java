@@ -490,7 +490,8 @@ public interface DataAccessFactory extends Factory {
          *
          * <ul>
          *   <li>null: If text is null
-         *   <li>origional text: if type == String.class
+         *   <li>original text: if type == String.class
+         *   <li>first character of original text: if type == Character.class
          *   <li>null: if type != String.class and text.getLength == 0
          *   <li>parse( text ): if type != String.class
          * </ul>
@@ -506,7 +507,9 @@ public interface DataAccessFactory extends Factory {
             if (type == String.class) {
                 return text;
             }
-
+            if (type == Character.class) {
+                return text.charAt(0);
+            }
             if (text.length() == 0) {
                 return null;
             }

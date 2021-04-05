@@ -302,7 +302,7 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
         }
 
         Character quoteChar = (Character) QUOTECHAR.lookUp(params);
-        ;
+
         if (quoteChar != null) {
             csvStrategy.setQuotechar(quoteChar.charValue());
         }

@@ -120,7 +120,7 @@ public class CSVDataStoreFactoryTest {
             assertTrue(true);
             return;
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
         fail("Did not throw illegal argument exception for null file");
     }

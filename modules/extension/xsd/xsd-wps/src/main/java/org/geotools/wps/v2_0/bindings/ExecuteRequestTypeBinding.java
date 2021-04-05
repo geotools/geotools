@@ -246,13 +246,13 @@ public class ExecuteRequestTypeBinding extends AbstractComplexEMFBinding {
 
     @Override
     protected void setProperty(EObject eObject, String property, Object value, boolean lax) {
-        Object overridedValue = value;
+        Object overridenValue = value;
         if ("response".equals(property)) {
-            overridedValue = ResponseType.getByName(String.valueOf(value));
+        	overridenValue = ResponseType.getByName(String.valueOf(value));
         }
         if ("mode".equals(property)) {
-            overridedValue = ModeType.getByName(String.valueOf(value));
+        	overridenValue = ModeType.getByName(String.valueOf(value));
         }
-        super.setProperty(eObject, property, overridedValue, lax);
+        super.setProperty(eObject, property, overridenValue, lax);
     }
 }

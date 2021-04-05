@@ -905,33 +905,36 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
     }
 
     /** @see org.geotools.filter.FilterVisitor#visit(org.geotools.filter.FunctionExpression) */
-    public Object visit(Function expression, Object notUsed) {
-        if (!fcs.fullySupports(expression)) {
-            postStack.push(expression);
+    public Object visit(Function function, Object notUsed) {
+        if (!fcs.fullySupports(function)) {
+            postStack.push(function);
             return null;
         }
 
-        if (expression.getName() == null) {
-            postStack.push(expression);
+        if (function.getName() == null) {
+            postStack.push(function);
             return null;
         }
 
-        int i = postStack.size();
-        int j = preStack.size();
+        final int postSize = postStack.size();
+        final int preSize = preStack.size();
 
-        for (int k = 0; k < expression.getParameters().size(); k++) {
-            expression.getParameters().get(i).accept(this, null);
+        final List<Expression> parameters = function.getParameters();
+        for (Expression param : parameters) {
+            param.accept(this, null);
 
-            if (i < postStack.size()) {
-                while (j < preStack.size()) preStack.pop();
+            if (postSize < postStack.size()) {
+                while (preSize < preStack.size()) {
+                    preStack.pop();
+                }
                 postStack.pop();
-                postStack.push(expression);
+                postStack.push(function);
 
                 return null;
             }
         }
-        while (j < preStack.size()) preStack.pop();
-        preStack.push(expression);
+        while (preSize < preStack.size()) preStack.pop();
+        preStack.push(function);
         return null;
     }
 

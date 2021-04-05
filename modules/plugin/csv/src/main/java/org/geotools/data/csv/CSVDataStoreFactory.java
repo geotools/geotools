@@ -247,8 +247,8 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
                     "Could not find file from params to create csv data store");
         }
         String path = file.getPath();
-        if(path.startsWith("file:")) {
-            file=new File(path.replace("file:", ""));
+        if (path.startsWith("file:")) {
+            file = new File(path.replace("file:", ""));
         }
 
         URI namespace = (URI) NAMESPACEP.lookUp(params);

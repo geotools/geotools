@@ -53,6 +53,7 @@ import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.jdbc.*;
 import org.geotools.jdbc.JoinInfo.JoinQualifier;
+import org.geotools.jdbc.JoinPropertyName;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
 import org.geotools.jdbc.PrimaryKey;
@@ -1053,9 +1054,9 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                             query.getRootMapping(), typeName, getDataStore(), topIds);
                     // apply filter
                     if (filter != null) {
-                        filterToSQL.setFieldEncoder(
-                                new JoiningFieldEncoder(typeName, getDataStore()));
                         if (NestedFilterToSQL.isNestedFilter(filter)) {
+                            filterToSQL.setFieldEncoder(
+                                    new JoiningFieldEncoder(typeName, getDataStore()));
                             topIds.append(" WHERE ")
                                     .append(createNestedFilter(filter, query, filterToSQL));
                         } else {
@@ -1129,7 +1130,22 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             split[1] = splitter.getFilterPost();
         }
 
-        SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
+        SimplifyingFilterVisitor visitor =
+                new SimplifyingFilterVisitor() {
+
+                    @Override
+                    public Object visit(PropertyName propertyName, Object extraData) {
+                        // preserve the JoinPropertyName
+                        if (propertyName instanceof JoinPropertyName) {
+                            JoinPropertyName joinPropertyName = (JoinPropertyName) propertyName;
+                            return new JoinPropertyName(
+                                    joinPropertyName.getFeatureType(),
+                                    joinPropertyName.getAlias(),
+                                    joinPropertyName.getPropertyName());
+                        }
+                        return super.visit(propertyName, extraData);
+                    }
+                };
         visitor.setFIDValidator(new PrimaryKeyFIDValidator(this));
         split[0] = (Filter) split[0].accept(visitor, null);
         split[1] = (Filter) split[1].accept(visitor, null);

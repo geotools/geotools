@@ -1,0 +1,1716 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="wps20" nsURI="http://www.opengis.net/wps/2.0" nsPrefix="wps20">
+  <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+    <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;WPS is an OGC Standard.&#xA;&#x9;&#x9;&#x9;Copyright (c) 2015 Open Geospatial Consortium.&#xA;&#x9;&#x9;&#x9;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.&#xA;&#x9;&#x9;&#xD;&#xA;&#xA;&#x9;&#x9;&#x9;WPS is an OGC Standard.&#xA;&#x9;&#x9;&#x9;Copyright (c) 2015 Open Geospatial Consortium.&#xA;&#x9;&#x9;&#x9;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.&#xA;&#x9;&#x9;&#xD;&#xA;&#xA;&#x9;&#x9;&#x9;WPS is an OGC Standard.&#xA;&#x9;&#x9;&#x9;Copyright (c) 2015 Open Geospatial Consortium.&#xA;&#x9;&#x9;&#x9;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.&#xA;&#x9;&#x9;&#xD;&#xA;This XML Schema Document includes and imports, directly or&#xA;      indirectly, all the XML Schemas defined by the OWS Common Implemetation&#xA;      Specification.&#xA;      &#xA;      OWS is an OGC Standard.&#xA;      Copyright (c) 2009 Open Geospatial Consortium.&#xA;      To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;    &#xD;&#xA;This XML Schema Document encodes the GetResourceByID&#xA;    operation request message. This typical operation is specified as a base&#xA;    for profiling in specific OWS specifications. For information on the&#xA;    allowed changes and limitations in such profiling, see Subclause 9.4.1 of&#xA;    the OWS Common specification.&#xA;    &#xA;    OWS is an OGC Standard.&#xA;    Copyright (c) 2009 Open Geospatial Consortium.&#xA;    To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;    &#xD;&#xA;This XML Schema Document encodes the Exception Report&#xA;    response to all OWS operations.&#xA;&#x9;&#xA;    OWS is an OGC Standard.&#xA;    Copyright (c) 2009 Open Geospatial Consortium.&#xA;    To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;    &#xD;&#xA;This XML Schema Document encodes the allowed values (or&#xA;    domain) of a quantity, often for an input or output parameter to an OWS.&#xA;    Such a parameter is sometimes called a variable, quantity, literal, or&#xA;    typed literal. Such a parameter can use one of many data types, including&#xA;    double, integer, boolean, string, or URI. The allowed values can also be&#xA;    encoded for a quantity that is not explicit or not transferred, but is&#xA;    constrained by a server implementation.&#xA;    &#xA;    OWS is an OGC Standard.&#xA;    Copyright (c) 2009 Open Geospatial Consortium.&#xA;    To obtain additional rights of use, visit http://www.opengeospatial.org/legal/&#xA;    &#xD;&#xA;This XML Schema Document encodes the typical Contents&#xA;    section of an OWS service metadata (Capabilities) document. This Schema&#xA;    can be built upon to define the Contents section for a specific OWS. If&#xA;    the ContentsBaseType in this XML Schema cannot be restricted and extended&#xA;    to define the Contents section for a specific OWS, all other relevant&#xA;    parts defined in owsContents.xsd shall be used by the &quot;ContentsType&quot; in&#xA;    the wxsContents.xsd prepared for the specific OWS.&#xA;    &#xA;    OWS is an OGC Standard.&#xA;    Copyright (c) 2009 Open Geospatial Consortium.&#xA;    To obtain additional rights of use, visit http://www.opengeospatial.org/legal/&#xA;    &#xD;&#xA;This XML Schema Document specifies types and elements for&#xA;    input and output of operation data, allowing including multiple data items&#xA;    with each data item either included or referenced. The contents of each&#xA;    type and element specified here can be restricted and/or extended for each&#xA;    use in a specific OWS specification.&#xA;&#x9;&#x9;&#xA;    OWS is an OGC Standard.&#xA;    Copyright (c) 2009 Open Geospatial Consortium.&#xA;    To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;    &#xD;&#xA;This XML Schema Document encodes a new AdditionalParameters&#xA;    element that contains one or more AdditionalParameter elements, which each&#xA;    contain a specific parameter name and one or more values of that parameter.&#xA;    This AdditionalParameters element is substitutable for ows:Metadata,&#xA;    anywhere that element is allowed. The document also encodes a new nilValue&#xA;    element of a newly defined NilValue type that allows the specification of&#xA;    a nilReason attribute.&#xA;&#xA;   OWS is an OGC Standard.&#xA;   Copyright (c) 2009 Open Geospatial Consortium.&#xA;   To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;    &#xD;&#xA;This XML Schema Document encodes various parameters and&#xA;    parameter types that can be used in OWS operation requests and responses.&#xA;    &#xA;    OWS is an OGC Standard.&#xA;    Copyright (c) 2009 Open Geospatial Consortium.&#xA;    To obtain additional rights of use, visit http://www.opengeospatial.org/legal/&#xA;    &#xD;&#xA;This schema document provides attribute declarations and&#xA;attribute group, complex type and simple type definitions which can be used in&#xA;the construction of user schemas to define the structure of particular linking&#xA;constructs, e.g.&#xA;&#xA;&lt;xs:schema xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot;&#xA;           xmlns:xl=&quot;http://www.w3.org/1999/xlink&quot;>&#xA;&#xA; &lt;xs:import namespace=&quot;http://www.w3.org/1999/xlink&quot;&#xA;            location=&quot;http://www.w3.org/1999/xlink.xsd&quot;>&#xA;&#xA; &lt;xs:element name=&quot;mySimple&quot;>&#xA;  &lt;xs:complexType>&#xA;   ...&#xA;   &lt;xs:attributeGroup ref=&quot;xl:simpleAttrs&quot;/>&#xA;   ...&#xA;  &lt;/xs:complexType>&#xA; &lt;/xs:element>&#xA; ...&#xA;&lt;/xs:schema>&#xD;&#xA;&#xD;&#xA;     &#xD;&#xA;  &lt;div xmlns=&quot;http://www.w3.org/1999/xhtml&quot;>&#xD;&#xA;        &#xD;&#xA;    &lt;h1>About the XML namespace&lt;/h1>&#xD;&#xA;        &#xD;&#xA;    &lt;div class=&quot;bodytext&quot;>&#xD;&#xA;           &#xD;&#xA;      &lt;p>&#xD;&#xA;      This schema document describes the XML namespace, in a form&#xD;&#xA;      suitable for import by other schema documents.&#xD;&#xA;     &lt;/p>&#xD;&#xA;           &#xD;&#xA;      &lt;p>&#xD;&#xA;              See &#xD;&#xA;        &lt;a href=&quot;http://www.w3.org/XML/1998/namespace.html&quot;>&#xD;&#xA;      http://www.w3.org/XML/1998/namespace.html&lt;/a>&#xD;&#xA;         and&#xD;&#xA;      &#xD;&#xA;        &lt;a href=&quot;http://www.w3.org/TR/REC-xml&quot;>&#xD;&#xA;      http://www.w3.org/TR/REC-xml&lt;/a>&#xD;&#xA;         for information &#xD;&#xA;      about this namespace.&#xD;&#xA;     &#xD;&#xA;      &lt;/p>&#xD;&#xA;           &#xD;&#xA;      &lt;p>&#xD;&#xA;      Note that local names in this namespace are intended to be&#xD;&#xA;      defined only by the World Wide Web Consortium or its subgroups.&#xD;&#xA;      The names currently defined in this namespace are listed below.&#xD;&#xA;      They should not be used with conflicting semantics by any Working&#xD;&#xA;      Group, specification, or document instance.&#xD;&#xA;     &lt;/p>&#xD;&#xA;           &#xD;&#xA;      &lt;p>&#xD;&#xA;           &#xD;&#xA;      See further below in this document for more information about &#xD;&#xA;        &lt;a href=&quot;#usage&quot;>how to refer to this schema document from your own&#xD;&#xA;      XSD schema documents&lt;/a>&#xD;&#xA;         and about &#xD;&#xA;        &lt;a href=&quot;#nsversioning&quot;>the&#xD;&#xA;      namespace-versioning policy governing this schema document&lt;/a>&#xD;&#xA;        .&#xD;&#xA;     &#xD;&#xA;      &lt;/p>&#xD;&#xA;          &#xD;&#xA;    &lt;/div>&#xD;&#xA;       &#xD;&#xA;  &lt;/div>&#xD;&#xA;    &#xD;&#xA;&#xD;&#xA;&#xD;&#xA;     &#xD;&#xA;  &lt;div xmlns=&quot;http://www.w3.org/1999/xhtml&quot;>&#xD;&#xA;       &#xD;&#xA;    &#xD;&#xA;    &lt;h3>Father (in any context at all)&lt;/h3>&#xD;&#xA;     &#xD;&#xA;&#xD;&#xA;    &#xD;&#xA;    &lt;div class=&quot;bodytext&quot;>&#xD;&#xA;           &#xD;&#xA;      &lt;p>&#xD;&#xA;      denotes Jon Bosak, the chair of &#xD;&#xA;      the original XML Working Group.  This name is reserved by &#xD;&#xA;      the following decision of the W3C XML Plenary and &#xD;&#xA;      XML Coordination groups:&#xD;&#xA;     &lt;/p>&#xD;&#xA;           &#xD;&#xA;      &lt;blockquote>&#xD;&#xA;               &#xD;&#xA;        &lt;p>&#xD;&#xA;&#x9;In appreciation for his vision, leadership and&#xD;&#xA;&#x9;dedication the W3C XML Plenary on this 10th day of&#xD;&#xA;&#x9;February, 2000, reserves for Jon Bosak in perpetuity&#xD;&#xA;&#x9;the XML name &quot;xml:Father&quot;.&#xD;&#xA;       &lt;/p>&#xD;&#xA;             &#xD;&#xA;      &lt;/blockquote>&#xD;&#xA;          &#xD;&#xA;    &lt;/div>&#xD;&#xA;       &#xD;&#xA;  &lt;/div>&#xD;&#xA;    &#xD;&#xA;&#xD;&#xA;&#xD;&#xA;     &#xD;&#xA;  &lt;div id=&quot;usage&quot; xml:id=&quot;usage&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;>&#xD;&#xA;        &#xD;&#xA;    &lt;h2>&#xD;&#xA;      &lt;a name=&quot;usage&quot;>About this schema document&lt;/a>&#xD;&#xA;    &lt;/h2>&#xD;&#xA;        &#xD;&#xA;    &lt;div class=&quot;bodytext&quot;>&#xD;&#xA;           &#xD;&#xA;      &lt;p>&#xD;&#xA;              This schema defines attributes and an attribute group suitable&#xD;&#xA;      for use by schemas wishing to allow &#xD;&#xA;        &lt;code>xml:base&lt;/code>&#xD;&#xA;        ,&#xD;&#xA;      &#xD;&#xA;        &lt;code>xml:lang&lt;/code>&#xD;&#xA;        , &#xD;&#xA;        &lt;code>xml:space&lt;/code>&#xD;&#xA;         or&#xD;&#xA;      &#xD;&#xA;        &lt;code>xml:id&lt;/code>&#xD;&#xA;         attributes on elements they define.&#xD;&#xA;     &#xD;&#xA;      &lt;/p>&#xD;&#xA;           &#xD;&#xA;      &lt;p>&#xD;&#xA;      To enable this, such a schema must import this schema for&#xD;&#xA;      the XML namespace, e.g. as follows:&#xD;&#xA;     &lt;/p>&#xD;&#xA;           &#xD;&#xA;      &lt;pre>&#xD;&#xA;          &amp;lt;schema . . .&amp;gt;&#xD;&#xA;           . . .&#xD;&#xA;           &amp;lt;import namespace=&quot;http://www.w3.org/XML/1998/namespace&quot;&#xD;&#xA;                      schemaLocation=&quot;http://www.w3.org/2001/xml.xsd&quot;/&amp;gt;&#xD;&#xA;     &lt;/pre>&#xD;&#xA;           &#xD;&#xA;      &lt;p>&#xD;&#xA;      or&#xD;&#xA;     &lt;/p>&#xD;&#xA;           &#xD;&#xA;      &lt;pre>&#xD;&#xA;           &amp;lt;import namespace=&quot;http://www.w3.org/XML/1998/namespace&quot;&#xD;&#xA;                      schemaLocation=&quot;http://www.w3.org/2009/01/xml.xsd&quot;/&amp;gt;&#xD;&#xA;     &lt;/pre>&#xD;&#xA;           &#xD;&#xA;      &lt;p>&#xD;&#xA;      Subsequently, qualified reference to any of the attributes or the&#xD;&#xA;      group defined below will have the desired effect, e.g.&#xD;&#xA;     &lt;/p>&#xD;&#xA;           &#xD;&#xA;      &lt;pre>&#xD;&#xA;          &amp;lt;type . . .&amp;gt;&#xD;&#xA;           . . .&#xD;&#xA;           &amp;lt;attributeGroup ref=&quot;xml:specialAttrs&quot;/&amp;gt;&#xD;&#xA;     &lt;/pre>&#xD;&#xA;           &#xD;&#xA;      &lt;p>&#xD;&#xA;      will define a type which will schema-validate an instance element&#xD;&#xA;      with any of those attributes.&#xD;&#xA;     &lt;/p>&#xD;&#xA;          &#xD;&#xA;    &lt;/div>&#xD;&#xA;       &#xD;&#xA;  &lt;/div>&#xD;&#xA;    &#xD;&#xA;&#xD;&#xA;&#xD;&#xA;     &#xD;&#xA;  &lt;div id=&quot;nsversioning&quot; xml:id=&quot;nsversioning&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;>&#xD;&#xA;        &#xD;&#xA;    &lt;h2>&#xD;&#xA;      &lt;a name=&quot;nsversioning&quot;>Versioning policy for this schema document&lt;/a>&#xD;&#xA;    &lt;/h2>&#xD;&#xA;        &#xD;&#xA;    &lt;div class=&quot;bodytext&quot;>&#xD;&#xA;           &#xD;&#xA;      &lt;p>&#xD;&#xA;              In keeping with the XML Schema WG's standard versioning&#xD;&#xA;      policy, this schema document will persist at&#xD;&#xA;      &#xD;&#xA;        &lt;a href=&quot;http://www.w3.org/2009/01/xml.xsd&quot;>&#xD;&#xA;       http://www.w3.org/2009/01/xml.xsd&lt;/a>&#xD;&#xA;        .&#xD;&#xA;     &#xD;&#xA;      &lt;/p>&#xD;&#xA;           &#xD;&#xA;      &lt;p>&#xD;&#xA;              At the date of issue it can also be found at&#xD;&#xA;      &#xD;&#xA;        &lt;a href=&quot;http://www.w3.org/2001/xml.xsd&quot;>&#xD;&#xA;       http://www.w3.org/2001/xml.xsd&lt;/a>&#xD;&#xA;        .&#xD;&#xA;     &#xD;&#xA;      &lt;/p>&#xD;&#xA;           &#xD;&#xA;      &lt;p>&#xD;&#xA;              The schema document at that URI may however change in the future,&#xD;&#xA;      in order to remain compatible with the latest version of XML&#xD;&#xA;      Schema itself, or with the XML namespace itself.  In other words,&#xD;&#xA;      if the XML Schema or XML namespaces change, the version of this&#xD;&#xA;      document at &#xD;&#xA;        &lt;a href=&quot;http://www.w3.org/2001/xml.xsd&quot;>&#xD;&#xA;       http://www.w3.org/2001/xml.xsd &#xD;&#xA;      &lt;/a>&#xD;&#xA;         &#xD;&#xA;      will change accordingly; the version at &#xD;&#xA;      &#xD;&#xA;        &lt;a href=&quot;http://www.w3.org/2009/01/xml.xsd&quot;>&#xD;&#xA;       http://www.w3.org/2009/01/xml.xsd &#xD;&#xA;      &lt;/a>&#xD;&#xA;         &#xD;&#xA;      will not change.&#xD;&#xA;     &#xD;&#xA;      &lt;/p>&#xD;&#xA;           &#xD;&#xA;      &lt;p>&#xD;&#xA;      Previous dated (and unchanging) versions of this schema &#xD;&#xA;      document are at:&#xD;&#xA;     &lt;/p>&#xD;&#xA;           &#xD;&#xA;      &lt;ul>&#xD;&#xA;              &#xD;&#xA;        &lt;li>&#xD;&#xA;          &lt;a href=&quot;http://www.w3.org/2009/01/xml.xsd&quot;>&#xD;&#xA;&#x9;http://www.w3.org/2009/01/xml.xsd&lt;/a>&#xD;&#xA;        &lt;/li>&#xD;&#xA;              &#xD;&#xA;        &lt;li>&#xD;&#xA;          &lt;a href=&quot;http://www.w3.org/2007/08/xml.xsd&quot;>&#xD;&#xA;&#x9;http://www.w3.org/2007/08/xml.xsd&lt;/a>&#xD;&#xA;        &lt;/li>&#xD;&#xA;              &#xD;&#xA;        &lt;li>&#xD;&#xA;          &lt;a href=&quot;http://www.w3.org/2004/10/xml.xsd&quot;>&#xD;&#xA;&#x9;http://www.w3.org/2004/10/xml.xsd&lt;/a>&#xD;&#xA;        &lt;/li>&#xD;&#xA;              &#xD;&#xA;        &lt;li>&#xD;&#xA;          &lt;a href=&quot;http://www.w3.org/2001/03/xml.xsd&quot;>&#xD;&#xA;&#x9;http://www.w3.org/2001/03/xml.xsd&lt;/a>&#xD;&#xA;        &lt;/li>&#xD;&#xA;             &#xD;&#xA;      &lt;/ul>&#xD;&#xA;          &#xD;&#xA;    &lt;/div>&#xD;&#xA;       &#xD;&#xA;  &lt;/div>&#xD;&#xA;    &#xD;&#xA;&#xD;&#xA;This XML Schema Document encodes the parts of ISO 19115 used&#xA;    by the common &quot;ServiceIdentification&quot; and &quot;ServiceProvider&quot; sections of the&#xA;    GetCapabilities operation response, known as the service metadata XML&#xA;    document. The parts encoded here are the MD_Keywords, CI_ResponsibleParty,&#xA;    and related classes. The UML package prefixes were omitted from XML names,&#xA;    and the XML element names were all capitalized, for consistency with other&#xA;    OWS Schemas. This document also provides a simple coding of text in&#xA;    multiple languages, simplified from Annex J of ISO 19115.&#xA;&#x9;&#x9;&#xA;    OWS is an OGC Standard.&#xA;    Copyright (c) 2009 Open Geospatial Consortium.&#xA;    To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;    &#xD;&#xA;This XML Schema Document specifies types and elements for&#xA;    document or resource references and for package manifests that contain&#xA;    multiple references. The contents of each type and element specified here&#xA;    can be restricted and/or extended for each use in a specific OWS&#xA;    specification.&#xA;&#xA;    OWS is an OGC Standard.&#xA;    Copyright (c) 2009 Open Geospatial Consortium.&#xA;    To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;    &#xD;&#xA;This XML Schema Document encodes the parts of the&#xA;    MD_DataIdentification class of ISO 19115 (OGC Abstract Specification Topic&#xA;    11) which are expected to be used for most datasets. This Schema also&#xA;    encodes the parts of this class that are expected to be useful for other&#xA;    metadata. Both may be used within the Contents section of OWS service&#xA;    metadata (Capabilities) documents.&#xA;    &#xA;    OWS is an OGC Standard.&#xA;    Copyright (c) 2009 Open Geospatial Consortium.&#xA;    To obtain additional rights of use, visit http://www.opengeospatial.org/legal/&#xA;    &#xD;&#xA;This XML Schema Document defines the GetCapabilities&#xA;    operation request and response XML elements and types, which are common to&#xA;    all OWSs. This XML Schema shall be edited by each OWS, for example, to&#xA;    specify a specific value for the &quot;service&quot; attribute.&#xA;    &#xA;    OWS is an OGC Standard.&#xA;    Copyright (c) 2009 Open Geospatial Consortium.&#xA;    To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;    &#xD;&#xA;This XML Schema Document encodes the common&#xA;    &quot;ServiceIdentification&quot; section of the GetCapabilities operation response,&#xA;    known as the Capabilities XML document. This section encodes the&#xA;    SV_ServiceIdentification class of ISO 19119 (OGC Abstract Specification&#xA;    Topic 12). &#xA;&#xA;    OWS is an OGC Standard.&#xA;    Copyright (c) 2009 Open Geospatial Consortium.&#xA;    To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;    &#xD;&#xA;This XML Schema Document encodes the common&#xA;    &quot;ServiceProvider&quot; section of the GetCapabilities operation response, known&#xA;    as the Capabilities XML document. This section encodes the&#xA;    SV_ServiceProvider class of ISO 19119 (OGC Abstract Specification Topic 12). &#xA;&#xA;    OWS is an OGC Standard.&#xA;    Copyright (c) 2009 Open Geospatial Consortium.&#xA;    To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;    &#xD;&#xA;This XML Schema Document encodes the basic contents of the&#xA;    &quot;OperationsMetadata&quot; section of the GetCapabilities operation response,&#xA;    also known as the Capabilities XML document.&#xA;&#xA;    OWS is an OGC Standard.&#xA;    Copyright (c) 2009 Open Geospatial Consortium.&#xA;    To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;    &#xD;&#xA;&#xA;    Part 1 version: Id: structures.xsd,v 1.2 2004/01/15 11:34:25 ht Exp &#xA;    Part 2 version: Id: datatypes.xsd,v 1.3 2004/01/23 18:11:13 ht Exp &#xA;  &#xD;&#xA;&#xA;   The schema corresponding to this document is normative,&#xA;   with respect to the syntactic constraints it expresses in the&#xA;   XML Schema language.  The documentation (within &lt;documentation> elements)&#xA;   below, is not normative, but rather highlights important aspects of&#xA;   the W3C Recommendation of which this is a part&#xD;&#xA;&#xA;   The simpleType element and all of its members are defined&#xA;      towards the end of this schema document&#xD;&#xA;&#xA;   simple type for the value of the 'namespace' attr of&#xA;   'any' and 'anyAttribute'&#xD;&#xA;&#xA;   Value is&#xA;              ##any      - - any non-conflicting WFXML/attribute at all&#xA;&#xA;              ##other    - - any non-conflicting WFXML/attribute from&#xA;                              namespace other than targetNS&#xA;&#xA;              ##local    - - any unqualified non-conflicting WFXML/attribute &#xA;&#xA;              one or     - - any non-conflicting WFXML/attribute from&#xA;              more URI        the listed namespaces&#xA;              references&#xA;              (space separated)&#xA;&#xA;    ##targetNamespace or ##local may appear in the above list, to&#xA;        refer to the targetNamespace of the enclosing&#xA;        schema or an absent targetNamespace respectively&#xD;&#xA;&#xA;   notations for use within XML Schema schemas&#xD;&#xA;&#xA;      First the built-in primitive datatypes.  These definitions are for&#xA;      information only, the real built-in definitions are magic.&#xA;    &#xD;&#xA;&#xA;      For each built-in datatype in this schema (both primitive and&#xA;      derived) can be uniquely addressed via a URI constructed&#xA;      as follows:&#xA;        1) the base URI is the URI of the XML Schema namespace&#xA;        2) the fragment identifier is the name of the datatype&#xA;&#xA;      For example, to address the int datatype, the URI is:&#xA;&#xA;        http://www.w3.org/2001/XMLSchema#int&#xA;&#xA;      Additionally, each facet definition element can be uniquely&#xA;      addressed via a URI constructed as follows:&#xA;        1) the base URI is the URI of the XML Schema namespace&#xA;        2) the fragment identifier is the name of the facet&#xA;&#xA;      For example, to address the maxInclusive facet, the URI is:&#xA;&#xA;        http://www.w3.org/2001/XMLSchema#maxInclusive&#xA;&#xA;      Additionally, each facet usage in a built-in datatype definition&#xA;      can be uniquely addressed via a URI constructed as follows:&#xA;        1) the base URI is the URI of the XML Schema namespace&#xA;        2) the fragment identifier is the name of the datatype, followed&#xA;           by a period (&quot;.&quot;) followed by the name of the facet&#xA;&#xA;      For example, to address the usage of the maxInclusive facet in&#xA;      the definition of int, the URI is:&#xA;&#xA;        http://www.w3.org/2001/XMLSchema#int.maxInclusive&#xA;&#xA;    &#xD;&#xA;&#xA;      Now the derived primitive types&#xA;    "/>
+  </eAnnotations>
+  <eAnnotations>
+    <details key="appinfo" value="owsAll.xsd&#xD;&#xA;owsGetResourceByID.xsd&#xD;&#xA;owsExceptionReport.xsd&#xD;&#xA;owsDomainType.xsd&#xD;&#xA;owsContents.xsd&#xD;&#xA;owsInputOutputData.xsd&#xD;&#xA;owsAdditionalParameters.xsd&#xD;&#xA;owsCommon.xsd&#xD;&#xA;ows19115subset.xsd&#xD;&#xA;owsManifest.xsd&#xD;&#xA;owsDataIdentification.xsd&#xD;&#xA;owsGetCapabilities.xsd&#xD;&#xA;owsServiceIdentification.xsd&#xD;&#xA;owsServiceProvider.xsd&#xD;&#xA;owsOperationsMetadata.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="http://www.w3.org/XML/1998/namespace">
+    <details key="lang" value="en"/>
+  </eAnnotations>
+  <eClassifiers xsi:type="ecore:EClass" name="BodyReferenceType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="BodyReference_._type"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="href" lowerBound="1" eType="ecore:EDataType ../org.w3.xlink/xlink.ecore#//HrefType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;HTTP URI that points to the remote resource where the request body may be retrieved.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="href"/>
+        <details key="namespace" value="http://www.w3.org/1999/xlink"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BoundingBoxDataType" eSuperTypes="#//DataDescriptionType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="BoundingBoxData_._type"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="supportedCRS" lowerBound="1"
+        upperBound="-1" eType="#//SupportedCRSType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;Supported CRS supported for this Input/Output. &quot;default&quot; shall be used&#xA;&#x9;&#x9;&#x9;&#x9;on only one element. This default element identifies the default CRS.&#xA;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="SupportedCRS"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ComplexDataType" eSuperTypes="#//DataDescriptionType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ComplexDataType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="any" unique="false" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFeatureMapEntry">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="elementWildcard"/>
+        <details key="wildcards" value="##other"/>
+        <details key="name" value=":1"/>
+        <details key="processing" value="lax"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ContentsType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="Contents_._type"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="processSummary" lowerBound="1"
+        upperBound="-1" eType="#//ProcessSummaryType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Unordered list of one or more brief descriptions of all the processes offered by this WPS server. "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="ProcessSummary"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DataDescriptionType" abstract="true">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Description type for process or input/output data items."/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="DataDescriptionType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="format" lowerBound="1"
+        upperBound="-1" eType="#//FormatType" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Format"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DataInputType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;This structure contains information elements to supply input data for process execution.&#xA;&#x9;&#x9;&#x9;"/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="DataInputType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="data" eType="#//DataType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Data"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="reference" eType="#//ReferenceType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;This element is used for web accessible references to a data set or value.&#xA;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Reference"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="input" upperBound="-1"
+        eType="#//DataInputType" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Input"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnyURI">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Identifier of this input.&#xA;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="id"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DataOutputType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;This type describes a process output in the execute response.&#xA;&#x9;&#x9;&#x9;"/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="DataOutputType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="data" eType="#//DataType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Data"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="reference" eType="#//ReferenceType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;This element is used for web accessible references to a data set or value.&#xA;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Reference"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="output" eType="#//DataOutputType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Output"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnyURI">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Identifier of this output.&#xA;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="id"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="DataTransmissionModeType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;This attribute type is used to specify data transmission modes for process outputs.&#xA;&#x9;&#x9;&#x9;"/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="DataTransmissionModeType"/>
+    </eAnnotations>
+    <eLiterals name="value"/>
+    <eLiterals name="reference" value="1"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="DataTransmissionModeTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="DataTransmissionModeType:Object"/>
+      <details key="baseType" value="DataTransmissionModeType"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DataType" eSuperTypes="http://www.eclipse.org/emf/2003/XMLType#//AnyType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;This element is used to embed the data in a WPS request or response.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;The content can be XML data, plain character data, or specially encoded binary data (i.e. base64).&#xA;&#x9;&#x9;&#x9;&#x9;"/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="Data_._type"/>
+      <details key="kind" value="mixed"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="encoding" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnyURI">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Encoding procedure or character set used (e.g. raw, base64, or UTF-8).&#xA;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="encoding"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mimeType" eType="ecore:EDataType ../net.opengis.ows/ows20.ecore#//MimeType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Media type of the data.&#xA;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="mimeType"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="schema" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnyURI">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Identification of the data schema.&#xA;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="schema"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DescribeProcessType" eSuperTypes="#//RequestBaseType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="DescribeProcess_._type"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="identifier" lowerBound="1"
+        upperBound="-1" eType="ecore:EClass ../net.opengis.ows/ows20.ecore#//CodeType" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;One or more identifiers for which the process description shall be obtained.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&quot;ALL&quot;&quot; is reserved to retrieve the  descriptions for all available process offerings.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Identifier"/>
+        <details key="namespace" value="http://www.opengis.net/ows/2.0"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lang" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/XMLNamespace.ecore#//LangType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;RFC 4646 language code of the human-readable text (e.g. &quot;en-CA&quot;) in the process description.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="lang"/>
+        <details key="namespace" value="http://www.w3.org/XML/1998/namespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DescriptionType" eSuperTypes="../net.opengis.ows/ows20.ecore#//BasicIdentificationType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;Description type for process or input/output data items.&#xA;&#x9;&#x9;&#x9;"/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="DescriptionType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DismissType" eSuperTypes="#//RequestBaseType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="Dismiss_._type"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="jobID" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;A JobID is a unique identifier for a process execution, i.e. a process instance.&#xA;&#x9;&#x9;&#x9;&#x9;Particularly suitable JobIDs are UUIDs or monotonic identifiers such as unique timestamps.&#xA;&#x9;&#x9;&#x9;&#x9;If the privacy of a Processing Job is imperative, the JobID should be non-guessable.&#xA;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="JobID"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DocumentRoot">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value=""/>
+      <details key="kind" value="mixed"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mixed" unique="false" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFeatureMapEntry">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="elementWildcard"/>
+        <details key="name" value=":mixed"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="xMLNSPrefixMap" upperBound="-1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStringToStringMapEntry"
+        transient="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="xmlns:prefix"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="xSISchemaLocation" upperBound="-1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStringToStringMapEntry"
+        transient="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="xsi:schemaLocation"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="boundingBoxData" upperBound="-2"
+        eType="#//BoundingBoxDataType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;Indicates that this Input shall be a BoundingBox data&#xA;&#x9;&#x9;&#x9;&#x9;structure that is embedded in the execute request, and provides a&#xA;&#x9;&#x9;&#x9;&#x9;list of the Coordinate Reference System support for this Bounding&#xA;&#x9;&#x9;&#x9;&#x9;Box.&#xA;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="BoundingBoxData"/>
+        <details key="namespace" value="##targetNamespace"/>
+        <details key="affiliation" value="DataDescription"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dataDescription" upperBound="-2"
+        eType="#//DataDescriptionType" changeable="false" volatile="true" transient="true"
+        derived="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="DataDescription"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="capabilities" upperBound="-2"
+        eType="#//WPSCapabilitiesType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="WPS GetCapabilities operation response. This document provides clients with service metadata about a specific service instance, including metadata about the processes that can be executed. Since the server does not implement the updateSequence and Sections parameters, the server shall always return the complete Capabilities document, without the updateSequence parameter. "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Capabilities"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="complexData" upperBound="-2"
+        eType="#//ComplexDataType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;Indicates that this input/output shall be a complex data structure&#xA;&#x9;&#x9;&#x9;&#x9;(such as a GML document or a GeoTiff image that comply with a particular format definition).&#xA;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="ComplexData"/>
+        <details key="namespace" value="##targetNamespace"/>
+        <details key="affiliation" value="DataDescription"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contents" upperBound="-2"
+        eType="#//ContentsType" volatile="true" transient="true" derived="true" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="List of brief descriptions of the processes offered by this WPS server. "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Contents"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="data" upperBound="-2" eType="#//DataType"
+        volatile="true" transient="true" derived="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Data"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="describeProcess" upperBound="-2"
+        eType="#//DescribeProcessType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="WPS DescribeProcess operation request. "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="DescribeProcess"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dismiss" upperBound="-2"
+        eType="#//DismissType" volatile="true" transient="true" derived="true" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;WPS GetStatus operation request. This operation is used to query status information of executed processes.&#xA;&#x9;&#x9;&#x9;&#x9;The response to a GetStatus operation is a StatusInfo document or an exception.&#xA;&#x9;&#x9;&#x9;&#x9;Depending on the implementation, a WPS may &quot;forget&quot; old process executions sooner or later.&#xA;&#x9;&#x9;&#x9;&#x9;In this case, there is no status information available and an exception shall be returned instead of a StatusInfo response. &#xA;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Dismiss"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="execute" upperBound="-2"
+        eType="#//ExecuteRequestType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Execute"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="expirationDate" unique="false"
+        upperBound="-2" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//DateTime"
+        volatile="true" transient="true" derived="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;Date and time by which the job and its results will be removed from the server. Use if appropriate.&#xA;&#x9;&#x9;&#x9;&#x9;In some situations the expiration date may not be known from the start. In this case, it is recommended&#xA;&#x9;&#x9;&#x9;&#x9;to specify a timestamp for NextPoll.&#xA;&#x9;&#x9;&#x9;&#x9;A typical example is a long running process for which the results are stored 48 hours after completion. While the&#xA;&#x9;&#x9;&#x9;&#x9;process is running, clients are provided with updated timestamps for NextPoll. As soon as the process has completed&#xA;&#x9;&#x9;&#x9;&#x9;the ExpirationDate is determined.&#xA;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="ExpirationDate"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="format" upperBound="-2"
+        eType="#//FormatType" volatile="true" transient="true" derived="true" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Format"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="genericProcess" upperBound="-2"
+        eType="#//GenericProcessType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="GenericProcess"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="getCapabilities" upperBound="-2"
+        eType="#//GetCapabilitiesType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Request to a WPS server to perform the GetCapabilities operation. This operation allows a client to retrieve a Capabilities XML document providing metadata for the specific WPS server. "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="GetCapabilities"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="getResult" upperBound="-2"
+        eType="#//GetResultType" volatile="true" transient="true" derived="true" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;WPS GetResult operation request. This operation is used to query the results of asynchrously&#xA;&#x9;&#x9;&#x9;&#x9;executed processes. The response to a GetResult operation is a wps:ProcessingResult, a raw data response, or an exception.&#xA;&#x9;&#x9;&#x9;&#x9;Depending on the implementation, a WPS may &quot;forget&quot; old process executions sooner or later.&#xA;&#x9;&#x9;&#x9;&#x9;In this case, there is no result information available and an exception shall be returned. &#xA;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="GetResult"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="getStatus" upperBound="-2"
+        eType="#//GetStatusType" volatile="true" transient="true" derived="true" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;WPS GetStatus operation request. This operation is used to query status information of executed processes.&#xA;&#x9;&#x9;&#x9;&#x9;The response to a GetStatus operation is a StatusInfo document or an exception.&#xA;&#x9;&#x9;&#x9;&#x9;Depending on the implementation, a WPS may &quot;forget&quot; old process executions sooner or later.&#xA;&#x9;&#x9;&#x9;&#x9;In this case, there is no status information available and an exception shall be returned instead of a StatusInfo response. &#xA;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="GetStatus"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="jobID" unique="false" upperBound="-2"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String" volatile="true"
+        transient="true" derived="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;A JobID is a unique identifier for a process execution, i.e. a process instance.&#xA;&#x9;&#x9;&#x9;&#x9;Particularly suitable JobIDs are UUIDs or monotonic identifiers such as unique timestamps.&#xA;&#x9;&#x9;&#x9;&#x9;If the privacy of a Processing Job is imperative, the JobID should be non-guessable.&#xA;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="JobID"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="literalData" upperBound="-2"
+        eType="#//LiteralDataType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="LiteralData"/>
+        <details key="namespace" value="##targetNamespace"/>
+        <details key="affiliation" value="DataDescription"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="literalValue" upperBound="-2"
+        eType="#//LiteralValueType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="LiteralValue"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="process" upperBound="-2"
+        eType="#//ProcessDescriptionType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;The description of a single process, including the input and output items.&#xA;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Process"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="processOffering" upperBound="-2"
+        eType="#//ProcessOfferingType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;A process offering is a process description. It has additional attributes that provide additional&#xA;&#x9;&#x9;&#x9;&#x9;information on how this process can be executed on a particular service instance (execution modes,&#xA;&#x9;&#x9;&#x9;&#x9;data transmission modes, informative process version.)&#xA;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="ProcessOffering"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="processOfferings" upperBound="-2"
+        eType="#//ProcessOfferingsType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;List structure that is returned by the WPS DescribeProcess operation.&#xA;&#x9;&#x9;&#x9;&#x9;Contains XML descriptions for the queried process identifiers.&#xA;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="ProcessOfferings"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="reference" upperBound="-2"
+        eType="#//ReferenceType" volatile="true" transient="true" derived="true" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;This element is used for web accessible references to a data set or value.&#xA;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Reference"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="result" upperBound="-2"
+        eType="#//ResultType" volatile="true" transient="true" derived="true" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;A Result document is a structure that contains the results of a process execution.&#xA;&#x9;&#x9;&#x9;&#x9;It is a shared element between the Execute and GetResult operations.&#xA;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Result"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="statusInfo" upperBound="-2"
+        eType="#//StatusInfoType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;StatusInfo document containing information about executed processes.&#xA;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="StatusInfo"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="supportedCRS" upperBound="-2"
+        eType="#//SupportedCRSType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;Supported CRS supported for this Input/Output. &quot;default&quot; shall be used&#xA;&#x9;&#x9;&#x9;&#x9;on only one element. This default element identifies the default CRS.&#xA;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="SupportedCRS"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExecuteRequestType" eSuperTypes="#//RequestBaseType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;Schema for a WPS Execute operation request, to execute&#xA;&#x9;&#x9;&#x9;&#x9;one identified process with the given data and provide the requested&#xA;&#x9;&#x9;&#x9;&#x9;output data.&#xA;&#x9;&#x9;&#x9;"/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ExecuteRequestType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="identifier" lowerBound="1"
+        eType="ecore:EClass ../net.opengis.ows/ows20.ecore#//CodeType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Identifier of the process to be executed. All valid process identifiers are&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;listed in the wps:Contents section of the Capabilities document.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Identifier"/>
+        <details key="namespace" value="http://www.opengis.net/ows/2.0"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="input" upperBound="-1"
+        eType="#//DataInputType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;One or more input items to be used for process execution, including referenced or inline data.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Input"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="output" lowerBound="1"
+        upperBound="-1" eType="#//OutputDefinitionType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Defines one or more output items to be delivered by the process execution.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Output"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mode" lowerBound="1" eType="#//ModeType"
+        unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Desired execution mode.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="mode"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="response" lowerBound="1"
+        eType="#//ResponseType" unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="response"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExtensionType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="Extension_._type"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="any" unique="false" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFeatureMapEntry">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="elementWildcard"/>
+        <details key="wildcards" value="##other"/>
+        <details key="name" value=":0"/>
+        <details key="processing" value="lax"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FormatType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="References the XML schema, format, and encoding of a complex value. "/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="Format_._type"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="default" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"
+        unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="default"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="encoding" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnyURI">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Encoding procedure or character set of the data (e.g. raw or base64).&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="encoding"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maximumMegabytes" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//PositiveInteger">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;The maximum size of the input data, in megabytes.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;If the input exceeds this size, the server may return an error&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;instead of processing the inputs.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="maximumMegabytes"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mimeType" eType="ecore:EDataType ../net.opengis.ows/ows20.ecore#//MimeType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Media type of the data.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="mimeType"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="schema" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnyURI">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Identification of the data schema.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="schema"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenericInputType" eSuperTypes="#//DescriptionType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Description of an input to a process. &#xD;&#xA;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;In this use, the DescriptionType shall describe a process input.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="GenericInputType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="input" upperBound="-1"
+        eType="#//GenericInputType" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Input"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxOccurs" eType="ecore:EDataType schema.ecore#//AllNNI"
+        defaultValueLiteral="1" unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="maxOccurs"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="minOccurs" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//NonNegativeInteger"
+        defaultValueLiteral="1" unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="minOccurs"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenericOutputType" eSuperTypes="#//DescriptionType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Description of a process Output. &#xD;&#xA;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;In this use, the DescriptionType shall describe a process output.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="GenericOutputType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="output" upperBound="-1"
+        eType="#//GenericOutputType" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Output"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GenericProcessType" eSuperTypes="#//DescriptionType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;In this use, the DescriptionType shall describe process properties.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="GenericProcessType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="input" upperBound="-1"
+        eType="#//GenericInputType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;A process can have zero or more inputs.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Input"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="output" lowerBound="1"
+        upperBound="-1" eType="#//GenericOutputType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;A process can have one or more outputs.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Output"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GetCapabilitiesType" eSuperTypes="../net.opengis.ows/ows20.ecore#//GetCapabilitiesType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="GetCapabilitiesType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="service" lowerBound="1"
+        eType="ecore:EDataType ../net.opengis.ows/ows20.ecore#//ServiceType" defaultValueLiteral="WPS"
+        unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="service type identifier"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="service"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GetResultType" eSuperTypes="#//RequestBaseType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="GetResult_._type"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="jobID" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;A JobID is a unique identifier for a process execution, i.e. a process instance.&#xA;&#x9;&#x9;&#x9;&#x9;Particularly suitable JobIDs are UUIDs or monotonic identifiers such as unique timestamps.&#xA;&#x9;&#x9;&#x9;&#x9;If the privacy of a Processing Job is imperative, the JobID should be non-guessable.&#xA;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="JobID"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GetStatusType" eSuperTypes="#//RequestBaseType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="GetStatus_._type"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="jobID" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;A JobID is a unique identifier for a process execution, i.e. a process instance.&#xA;&#x9;&#x9;&#x9;&#x9;Particularly suitable JobIDs are UUIDs or monotonic identifiers such as unique timestamps.&#xA;&#x9;&#x9;&#x9;&#x9;If the privacy of a Processing Job is imperative, the JobID should be non-guessable.&#xA;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="JobID"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="InputDescriptionType" eSuperTypes="#//DescriptionType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Description of an input to a process. &#xD;&#xA;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;In this use, the DescriptionType shall describe a process input.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="InputDescriptionType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dataDescriptionGroup" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFeatureMapEntry">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="group"/>
+        <details key="name" value="DataDescription:group"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dataDescription" eType="#//DataDescriptionType"
+        changeable="false" volatile="true" transient="true" derived="true" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="DataDescription"/>
+        <details key="namespace" value="##targetNamespace"/>
+        <details key="group" value="DataDescription:group"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="input" upperBound="-1"
+        eType="#//InputDescriptionType" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Input"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxOccurs" eType="ecore:EDataType schema.ecore#//AllNNI"
+        defaultValueLiteral="1" unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="maxOccurs"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="minOccurs" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//NonNegativeInteger"
+        defaultValueLiteral="1" unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="minOccurs"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="JobControlOptionsType" instanceClassName="java.lang.Object">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;This attribute type is used to specify process control options. &#xA;&#x9;&#x9;&#x9;&#x9;The WPS specification only defines &quot;execute-sync&quot; and &quot;execute-async&quot;,&#xA;&#x9;&#x9;&#x9;&#x9;each with an associated execution protocol.&#xA;&#x9;&#x9;&#x9;&#x9;Extensions may specify additional control options, such as &quot;dimiss&quot; which is&#xA;&#x9;&#x9;&#x9;&#x9;defined in the WPS dismiss extension.&#xA;&#x9;&#x9;&#x9;"/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="JobControlOptionsType"/>
+      <details key="memberTypes" value="JobControlOptionsType_._member_._0 JobControlOptionsType_._member_._1"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="JobControlOptionsType1" instanceClassName="java.util.List">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Allowed execution modes are expressed in an XML list.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="jobControlOptions_._type"/>
+      <details key="itemType" value="JobControlOptionsType"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="JobControlOptionsTypeMember0">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="JobControlOptionsType_._member_._0"/>
+    </eAnnotations>
+    <eLiterals name="syncExecute" literal="sync-execute"/>
+    <eLiterals name="asyncExecute" value="1" literal="async-execute"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="JobControlOptionsTypeMember0Object"
+      instanceClassName="org.eclipse.emf.common.util.Enumerator">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="JobControlOptionsType_._member_._0:Object"/>
+      <details key="baseType" value="JobControlOptionsType_._member_._0"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="JobControlOptionsTypeMember1" instanceClassName="java.lang.String">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="JobControlOptionsType_._member_._1"/>
+      <details key="baseType" value="http://www.eclipse.org/emf/2003/XMLType#string"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LiteralDataDomainType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;A literal data domain consists of a value type and range,&#xA;&#x9;&#x9;&#x9;&#x9;and optionally a unit of measurement and a default value.&#xA;&#x9;&#x9;&#x9;"/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="LiteralDataDomainType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="allowedValues" eType="ecore:EClass ../net.opengis.ows/ows20.ecore#//AllowedValuesType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="List of all the valid values and/or ranges of values for&#xA;      this quantity. For numeric quantities, signed values should be ordered&#xA;      from negative infinity to positive infinity."/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="AllowedValues"/>
+        <details key="namespace" value="http://www.opengis.net/ows/2.0"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="anyValue" eType="ecore:EClass ../net.opengis.ows/ows20.ecore#//AnyValueType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Specifies that any value is allowed for this&#xA;      parameter."/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="AnyValue"/>
+        <details key="namespace" value="http://www.opengis.net/ows/2.0"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="valuesReference" eType="ecore:EClass ../net.opengis.ows/ows20.ecore#//ValuesReferenceType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Reference to externally specified list of all the valid&#xA;      values and/or ranges of values for this quantity. (Informative: This&#xA;      element was simplified from the metaDataProperty element in GML&#xA;      3.0.)"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="ValuesReference"/>
+        <details key="namespace" value="http://www.opengis.net/ows/2.0"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dataType" eType="ecore:EClass ../net.opengis.ows/ows20.ecore#//DomainMetadataType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Definition of the data type of this set of values. In&#xA;      this case, the xlink:href attribute can reference a URN for a well-known&#xA;      data type. For example, such a URN could be a data type identification&#xA;      URN defined in the &quot;ogc&quot; URN namespace."/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="DataType"/>
+        <details key="namespace" value="http://www.opengis.net/ows/2.0"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="uOM" eType="ecore:EClass ../net.opengis.ows/ows20.ecore#//DomainMetadataType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Definition of the unit of measure of this set of values.&#xA;      In this case, the xlink:href attribute can reference a URN for a&#xA;      well-known unit of measure (uom). For example, such a URN could be a UOM&#xA;      identification URN defined in the &quot;ogc&quot; URN namespace."/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="UOM"/>
+        <details key="namespace" value="http://www.opengis.net/ows/2.0"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="defaultValue" eType="ecore:EClass ../net.opengis.ows/ows20.ecore#//ValueType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The default value for a quantity for which multiple&#xA;      values are allowed."/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="DefaultValue"/>
+        <details key="namespace" value="http://www.opengis.net/ows/2.0"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LiteralDataDomainType1" eSuperTypes="#//LiteralDataDomainType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="LiteralDataDomain_._type"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="default" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"
+        unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Indicates that this LiteralDataDomain is the default domain.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="default"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LiteralDataType" eSuperTypes="#//DataDescriptionType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="LiteralDataType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="literalDataDomain" lowerBound="1"
+        upperBound="-1" eType="#//LiteralDataDomainType1" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Literal Data inputs and outputs may be specified for several domains, e.g. distance units in meters,&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;kilometers and feet. One of these must be the default domain.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="LiteralDataDomain"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LiteralValueType" eSuperTypes="../net.opengis.ows/ows20.ecore#//ValueType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Representation of a simple literal value (such as an integer, a real number, or a string).&#xA;&#x9;&#x9;&#x9;&#x9;"/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="LiteralValue_._type"/>
+      <details key="kind" value="simple"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dataType" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnyURI">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;The data type of the value.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="dataType"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="uom" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnyURI">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;The unit of measurement of the value.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="uom"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="ModeType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="mode_._type"/>
+    </eAnnotations>
+    <eLiterals name="sync">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&quot;sync&quot; triggers the synchronous execution protocol&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="async" value="1">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&quot;async&quot; triggers the asynchronous execution protocol&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="auto" value="2">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&quot;auto&quot; delegates the choice of execution mode to the server.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+    </eLiterals>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="ModeTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="mode_._type:Object"/>
+      <details key="baseType" value="mode_._type"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OutputDefinitionType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;This structure contains information elements that describe the format and transmission mode&#xA;&#x9;&#x9;&#x9;&#x9;of the output data that is delivered by a process execution&#xA;&#x9;&#x9;&#x9;"/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="OutputDefinitionType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="output" eType="#//OutputDefinitionType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Output"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="encoding" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnyURI">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Encoding procedure or character set used (e.g. raw, base64, or UTF-8).&#xA;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="encoding"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnyURI">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Identifier of this output.&#xA;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="id"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mimeType" eType="ecore:EDataType ../net.opengis.ows/ows20.ecore#//MimeType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Media type of the data.&#xA;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="mimeType"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="schema" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnyURI">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Identification of the data schema.&#xA;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="schema"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="transmission" eType="#//DataTransmissionModeType"
+        unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;The desired transmission mode for this output&#xA;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="transmission"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OutputDescriptionType" eSuperTypes="#//DescriptionType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Description of a process Output. &#xD;&#xA;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;In this use, the DescriptionType shall describe a process output.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="OutputDescriptionType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dataDescriptionGroup" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFeatureMapEntry">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="group"/>
+        <details key="name" value="DataDescription:group"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dataDescription" eType="#//DataDescriptionType"
+        changeable="false" volatile="true" transient="true" derived="true" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="DataDescription"/>
+        <details key="namespace" value="##targetNamespace"/>
+        <details key="group" value="DataDescription:group"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="output" upperBound="-1"
+        eType="#//OutputDescriptionType" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Output"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="OutputTransmissionType" instanceClassName="java.util.List">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Allowed data transmission modes are expressed in an XML list.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="outputTransmission_._type"/>
+      <details key="itemType" value="DataTransmissionModeType"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="PercentCompletedType" instanceClassName="java.math.BigInteger">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="PercentCompleted_._type"/>
+      <details key="baseType" value="http://www.eclipse.org/emf/2003/XMLType#integer"/>
+      <details key="minInclusive" value="0"/>
+      <details key="maxInclusive" value="100"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ProcessDescriptionType" eSuperTypes="#//DescriptionType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Full description of a process. &#xD;&#xA;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;In this use, the DescriptionType shall describe process properties.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ProcessDescriptionType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="input" upperBound="-1"
+        eType="#//InputDescriptionType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;A process can have zero or more inputs.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Input"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="output" lowerBound="1"
+        upperBound="-1" eType="#//OutputDescriptionType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;A process can have one or more outputs.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Output"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lang" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/XMLNamespace.ecore#//LangType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Identifier of a language used by the data(set) contents.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;This language identifier shall be as specified in IETF RFC 4646. The&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;language tags shall be either complete 5 character codes (e.g. &quot;en-CA&quot;),&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;or abbreviated 2 character codes (e.g. &quot;en&quot;). In addition to the RFC&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;4646 codes, the server shall support the single special value &quot;*&quot; which&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;is used to indicate &quot;any language&quot;.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="lang"/>
+        <details key="namespace" value="http://www.w3.org/XML/1998/namespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ProcessOfferingsType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ProcessOfferings_._type"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="processOffering" lowerBound="1"
+        upperBound="-1" eType="#//ProcessOfferingType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Ordered list of one or more full Process&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;descriptions, listed in the order in which they were requested&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;in the DescribeProcess operation request.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="ProcessOffering"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ProcessOfferingType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ProcessOffering_._type"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="process" eType="#//ProcessDescriptionType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;The description of a single process, including the input and output items.&#xA;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Process"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="any" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFeatureMapEntry">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="elementWildcard"/>
+        <details key="wildcards" value="##other"/>
+        <details key="name" value=":1"/>
+        <details key="processing" value="lax"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="jobControlOptions" lowerBound="1"
+        eType="#//JobControlOptionsType1">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Defines the valid execution modes for a particular process offering.&#xA;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="jobControlOptions"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="outputTransmission" eType="#//OutputTransmissionType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Indicates whether data outputs from this process can be stored by the WPS server as web-accessible resources.&#xA;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="outputTransmission"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="processModel" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"
+        defaultValueLiteral="native" unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Type of the process model. Include when using a different process model than the native process model. This is an&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;extension hook to support processes that have been specified in other OGC Standards, such as SensorML. For those&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;process models, compliance with the abstract process model has to be ensured compatibility with the WPS protocol.&#xA;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="processModel"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="processVersion" eType="ecore:EDataType ../net.opengis.ows/ows20.ecore#//VersionType1">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;The process version is an informative element in a process offering. It is not intended for version negotiation&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;but can rather be used to communicate updated or changed process implementations on a particular service instance. &#xA;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="processVersion"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ProcessSummaryType" eSuperTypes="#//DescriptionType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;The process summary consists of descriptive elements at the process level,&#xA;&#x9;&#x9;&#x9;&#x9;the process profiles and the service-specific properties.&#xA;&#x9;&#x9;&#x9;&#x9;The process summary is not specific about process inputs and outputs.&#xA;&#x9;&#x9;&#x9;"/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ProcessSummaryType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="jobControlOptions" lowerBound="1"
+        eType="#//JobControlOptionsType1">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Defines the valid execution modes for a particular process offering.&#xA;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="jobControlOptions"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="outputTransmission" eType="#//OutputTransmissionType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Indicates whether data outputs from this process can be stored by the WPS server as web-accessible resources.&#xA;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="outputTransmission"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="processModel" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"
+        defaultValueLiteral="native" unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Type of the process model. Include when using a different process model than the native process model. This is an&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;extension hook to support processes that have been specified in other OGC Standards, such as SensorML. For those&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;process models, compliance with the abstract process model has to be ensured compatibility with the WPS protocol.&#xA;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="processModel"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="processVersion" eType="ecore:EDataType ../net.opengis.ows/ows20.ecore#//VersionType1">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;The process version is an informative element in a process offering. It is not intended for version negotiation&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;but can rather be used to communicate updated or changed process implementations on a particular service instance. &#xA;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="processVersion"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ReferenceType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;Reference to an input (output) value that is a web accessible resource.&#xA;&#x9;&#x9;&#x9;"/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ReferenceType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;The contents of this element to be used as the body of the HTTP request&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;message to be sent to the service identified in ../Reference/@href. &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;For example, it could be an XML encoded WFS request using HTTP/POST.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Body"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bodyReference" eType="#//BodyReferenceType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Reference to a remote document to be used as the body of the an HTTP/POST request message&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;to the service identified in the href element in the Reference structure.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="BodyReference"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="encoding" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnyURI">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Encoding procedure or character set used (e.g. raw, base64, or UTF-8).&#xA;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="encoding"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="href" lowerBound="1" eType="ecore:EDataType ../org.w3.xlink/xlink.ecore#//HrefType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;HTTP URI that points to the remote resource where the data may be retrieved.&#xA;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="href"/>
+        <details key="namespace" value="http://www.w3.org/1999/xlink"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mimeType" eType="ecore:EDataType ../net.opengis.ows/ows20.ecore#//MimeType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Media type of the data.&#xA;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="mimeType"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="schema" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnyURI">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Identification of the data schema.&#xA;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="schema"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RequestBaseType" abstract="true">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;WPS operation request base, for all WPS operations, except GetCapabilities.&#xA;&#x9;&#x9;&#x9;&#x9;In this XML encoding, no &quot;request&quot; parameter is included, since the element&#xA;&#x9;&#x9;&#x9;&#x9;name specifies the specific operation.&#xA;&#x9;&#x9;&#x9;&#x9;An 'Extension' element provides a placeholder for extra request parameters&#xA;&#x9;&#x9;&#x9;&#x9;that might be defined by WPS extension standards.&#xA;&#x9;&#x9;&#x9;"/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="RequestBaseType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="extension" upperBound="-1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Any ancillary information to be sent from client to server.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Placeholder for further request parameters defined by WPS extension standards.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Extension"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="service" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String" defaultValueLiteral="WPS"
+        unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Service type identifier (WPS)&#xA;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="service"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" lowerBound="1"
+        eType="ecore:EDataType ../net.opengis.ows/ows20.ecore#//VersionType1" defaultValueLiteral="2.0.0"
+        unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Version of the WPS interface specification implemented by the server (2.0.0)&#xA;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="version"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="ResponseType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="response_._type"/>
+    </eAnnotations>
+    <eLiterals name="raw">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;The desired response type is raw data. Raw data output can only be used for single outputs, i.e. the process execution must yield only one output item.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;If the request requests more than one output, the server shall return an Exception &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="document" value="1">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;The desired response type is a response document.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+    </eLiterals>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="ResponseTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="response_._type:Object"/>
+      <details key="baseType" value="response_._type"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ResultType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="Result_._type"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="jobID" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Include if required. A JobId is usually required for&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;a) asynchronous execution&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;b) the Dismiss operation extension, where the client is allowed to&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;   actively free server-side resources&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="JobID"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="expirationDate" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//DateTime">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Identifier of the Process that was executed.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;This Process identifier shall be as listed in the ProcessOfferings&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;section of the WPS Capabilities document. "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="ExpirationDate"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="output" lowerBound="1"
+        upperBound="-1" eType="#//DataOutputType" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Output"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="StatusInfoType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="StatusInfo_._type"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="jobID" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;A JobID is a unique identifier for a process execution, i.e. a process instance.&#xA;&#x9;&#x9;&#x9;&#x9;Particularly suitable JobIDs are UUIDs or monotonic identifiers such as unique timestamps.&#xA;&#x9;&#x9;&#x9;&#x9;If the privacy of a Processing Job is imperative, the JobID should be non-guessable.&#xA;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="JobID"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="status" lowerBound="1"
+        eType="#//StatusType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;This element is used to communicate basic status information about executed processes.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Status"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="expirationDate" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//DateTime">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;Date and time by which the job and its results will be removed from the server. Use if appropriate.&#xA;&#x9;&#x9;&#x9;&#x9;In some situations the expiration date may not be known from the start. In this case, it is recommended&#xA;&#x9;&#x9;&#x9;&#x9;to specify a timestamp for NextPoll.&#xA;&#x9;&#x9;&#x9;&#x9;A typical example is a long running process for which the results are stored 48 hours after completion. While the&#xA;&#x9;&#x9;&#x9;&#x9;process is running, clients are provided with updated timestamps for NextPoll. As soon as the process has completed&#xA;&#x9;&#x9;&#x9;&#x9;the ExpirationDate is determined.&#xA;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="ExpirationDate"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="estimatedCompletion" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//DateTime">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Estimated date and time by which the job will be completed. Use if available.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;The time of estimated completion lies significantly before the expiration date of this job.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="EstimatedCompletion"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="nextPoll" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//DateTime">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Suggested date and time for the next status poll (GetStatus) for this job. Use if appropriate.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;The time of the next poll shall lie significantly before the expiration date of this job.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;If this element is provided but an expiration date for the job is not given, clients are expected to check&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;the job status on time to eventually receive an update on the expiration date and avoid missing the results.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="NextPoll"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="percentCompleted" eType="#//PercentCompletedType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Use as a progress indicator if appropriate. Like most progress bars the value is an estimate without accuracy guarantees.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="PercentCompleted"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="StatusType" instanceClassName="java.lang.Object">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Basic status set to communicate the status of a server-side job to the client.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Extensions of this specification may introduce additional states for fine-grained&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;monitoring or domain-specific purposes.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="Status_._type"/>
+      <details key="memberTypes" value="Status_._type_._member_._0 Status_._type_._member_._1"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="StatusTypeMember0">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="Status_._type_._member_._0"/>
+    </eAnnotations>
+    <eLiterals name="Succeeded">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;The job has finished with no errors.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="Failed" value="1">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;The job has finished with errors.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="Accepted" value="2">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;The job is queued for execution. &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="Running" value="3">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;The job is running.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;"/>
+      </eAnnotations>
+    </eLiterals>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="StatusTypeMember0Object" instanceClassName="org.eclipse.emf.common.util.Enumerator">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="Status_._type_._member_._0:Object"/>
+      <details key="baseType" value="Status_._type_._member_._0"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="StatusTypeMember1" instanceClassName="java.lang.String">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="Status_._type_._member_._1"/>
+      <details key="baseType" value="http://www.eclipse.org/emf/2003/XMLType#string"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SupportedCRSType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="SupportedCRS_._type"/>
+      <details key="kind" value="simple"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnyURI">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="name" value=":0"/>
+        <details key="kind" value="simple"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="default" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"
+        unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="default"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="WPSCapabilitiesType" eSuperTypes="../net.opengis.ows/ows20.ecore#//CapabilitiesBaseType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="WPSCapabilitiesType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contents" lowerBound="1"
+        eType="#//ContentsType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="List of brief descriptions of the processes offered by this WPS server. "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Contents"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="extension" eType="#//ExtensionType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="container for elements defined by extension specifications"/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Extension"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="service" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnySimpleType"
+        defaultValueLiteral="WPS" unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="service"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+</ecore:EPackage>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wps:Execute xmlns:wps="http://www.opengis.net/wps/2.0"
+	xmlns:ows="http://www.opengis.net/ows/2.0"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.opengis.net/wps/2.0 ../wps.xsd"
+
+	service="WPS" version="2.0.0" response="document" mode="async">
+
+	<ows:Identifier>http://my.wps.server/processes/proximity/Planar-Buffer
+	</ows:Identifier>
+	<wps:Input id="INPUT_GEOMETRY">
+		<wps:Reference
+			xlink:href="http://some.data.server/mygmldata.xml" />
+	</wps:Input>
+	<wps:Input id="DISTANCE">
+		<wps:Data>10.0</wps:Data>
+	</wps:Input>
+
+	<!-- Query the default output format for the the result "BUFFERED_GEOMETRY" -->
+	<!-- The result "BUFFERED_GEOMETRY" shall be delivered by reference in its 
+		default format -->
+	<wps:Output id="BUFFERED_GEOMETRY" transmission="reference" />
+
+</wps:Execute>

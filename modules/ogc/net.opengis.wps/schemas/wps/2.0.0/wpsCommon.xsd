@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema
+	xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:ows="http://www.opengis.net/ows/2.0"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	xmlns:wps="http://www.opengis.net/wps/2.0"
+	targetNamespace="http://www.opengis.net/wps/2.0"
+	elementFormDefault="qualified"
+	xml:lang="en"
+	version="2.0.0">
+	
+	<annotation>
+		<documentation>
+			WPS is an OGC Standard.
+			Copyright (c) 2015 Open Geospatial Consortium.
+			To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.
+		</documentation>
+	</annotation>
+	
+	<!-- all-components document include (OGC 06-135r11 s#14) -->
+	<include schemaLocation="wps.xsd"/>
+	
+	<!-- === IMPORTS === -->
+	<import namespace="http://www.opengis.net/ows/2.0" schemaLocation="http://schemas.opengis.net/ows/2.0/owsAll.xsd"/>
+	<import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
+	<import namespace="http://www.w3.org/1999/xlink" schemaLocation="http://www.w3.org/1999/xlink.xsd"/>
+	
+	<!-- === INCLUDES === -->
+	<include schemaLocation="dataTypes.xsd"/>
+	<include schemaLocation="processDescription.xsd"/>
+	
+	
+	<!-- =========================================================== -->
+	<!-- Definition of basic WPS request elements and types -->
+	<!-- =========================================================== -->
+	<complexType name="RequestBaseType" abstract="true">
+		<annotation>
+			<documentation>
+				WPS operation request base, for all WPS operations, except GetCapabilities.
+				In this XML encoding, no "request" parameter is included, since the element
+				name specifies the specific operation.
+				An 'Extension' element provides a placeholder for extra request parameters
+				that might be defined by WPS extension standards.
+			</documentation>
+		</annotation>
+		<sequence>
+			<element name="Extension" type="anyType" minOccurs="0" maxOccurs="unbounded">
+				<annotation>
+					<documentation>
+						Any ancillary information to be sent from client to server.
+						Placeholder for further request parameters defined by WPS extension standards.
+					</documentation>
+				</annotation>
+			</element>
+		</sequence>
+		<attribute name="service" type="string" fixed="WPS" use="required" >
+			<annotation>
+				<documentation>
+					Service type identifier (WPS)
+				</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="version" type="ows:VersionType" fixed="2.0.0" use="required">
+			<annotation>
+				<documentation>
+					Version of the WPS interface specification implemented by the server (2.0.0)
+				</documentation>
+			</annotation>
+		</attribute>
+	</complexType>
+	
+	
+	<!-- =========================================================== -->
+	<!-- Data transmission elements and types -->
+	<!-- =========================================================== -->
+	<element name="Reference" type="wps:ReferenceType">
+		<annotation>
+			<documentation>
+				This element is used for web accessible references to a data set or value.
+			</documentation>
+		</annotation>
+	</element>
+	<!-- =========================================================== -->
+	<complexType name="ReferenceType">
+		<annotation>
+			<documentation>
+				Reference to an input (output) value that is a web accessible resource.
+			</documentation>
+		</annotation>
+		<choice minOccurs="0">
+			<element name="Body" type="anyType">
+				<annotation>
+					<documentation>
+						The contents of this element to be used as the body of the HTTP request
+						message to be sent to the service identified in ../Reference/@href. 
+						For example, it could be an XML encoded WFS request using HTTP/POST.
+					</documentation>
+				</annotation>
+			</element>
+			<element name="BodyReference">
+				<annotation>
+					<documentation>
+						Reference to a remote document to be used as the body of the an HTTP/POST request message
+						to the service identified in the href element in the Reference structure.
+					</documentation>
+				</annotation>
+				<complexType>
+					<attribute ref="xlink:href" use="required">
+						<annotation>
+							<documentation>
+								HTTP URI that points to the remote resource where the request body may be retrieved.
+							</documentation>
+						</annotation>
+					</attribute>
+				</complexType>
+			</element>
+		</choice>
+		<attribute ref="xlink:href" use="required">
+			<annotation>
+				<documentation>
+					HTTP URI that points to the remote resource where the data may be retrieved.
+				</documentation>
+			</annotation>
+		</attribute>
+		<attributeGroup ref="wps:dataEncodingAttributes"/>
+	</complexType>
+	<!-- =========================================================== -->
+	<element name="Data">
+		<complexType mixed="true">
+			<annotation>
+				<documentation>
+					This element is used to embed the data in a WPS request or response.
+					The content can be XML data, plain character data, or specially encoded binary data (i.e. base64).
+				</documentation>
+			</annotation>
+			<complexContent mixed="true">
+				<extension base="anyType">
+					<attributeGroup ref="wps:dataEncodingAttributes"/>
+				</extension>
+			</complexContent>
+		</complexType>	
+	</element>
+	<!-- =========================================================== -->
+	<attributeGroup name="dataEncodingAttributes">
+		<attribute name="mimeType" type="ows:MimeType" use="optional">
+			<annotation>
+				<documentation>
+					Media type of the data.
+				</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="encoding" type="anyURI" use="optional">
+			<annotation>
+				<documentation>
+					Encoding procedure or character set used (e.g. raw, base64, or UTF-8).
+				</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="schema" type="anyURI" use="optional">
+			<annotation>
+				<documentation>
+					Identification of the data schema.
+				</documentation>
+			</annotation>
+		</attribute>
+	</attributeGroup>
+	
+	<!-- =========================================================== -->
+	<simpleType name="DataTransmissionModeType">
+		<annotation>
+			<documentation>
+				This attribute type is used to specify data transmission modes for process outputs.
+			</documentation>
+		</annotation>
+		<restriction base="string">
+			<enumeration value="value"/>
+			<enumeration value="reference"/>
+		</restriction>
+	</simpleType>
+
+	<!-- =========================================================== -->
+	<!-- Job related information elements and types -->
+	<!-- =========================================================== -->
+	<element name="JobID" type="string">
+		<annotation>
+			<documentation>
+				A JobID is a unique identifier for a process execution, i.e. a process instance.
+				Particularly suitable JobIDs are UUIDs or monotonic identifiers such as unique timestamps.
+				If the privacy of a Processing Job is imperative, the JobID should be non-guessable.
+			</documentation>
+		</annotation>
+	</element>
+	<!-- =========================================================== -->
+	<simpleType name="JobControlOptionsType">
+		<annotation>
+			<documentation>
+				This attribute type is used to specify process control options. 
+				The WPS specification only defines "execute-sync" and "execute-async",
+				each with an associated execution protocol.
+				Extensions may specify additional control options, such as "dimiss" which is
+				defined in the WPS dismiss extension.
+			</documentation>
+		</annotation>
+		<union>
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="sync-execute"/>
+					<enumeration value="async-execute"/>
+				</restriction>
+			</simpleType>
+ 			<simpleType>
+				<restriction base="string"/>
+			</simpleType>
+		</union>
+	</simpleType>
+	<!-- =========================================================== -->
+	
+	<!-- =========================================================== -->
+	<!-- Result document elements and types -->
+	<!-- =========================================================== -->
+	<element name="Result">
+		<annotation>
+			<documentation>
+				A Result document is a structure that contains the results of a process execution.
+				It is a shared element between the Execute and GetResult operations.
+			</documentation>
+		</annotation>
+		<complexType>
+			<sequence>
+				<element ref="wps:JobID" minOccurs="0">
+					<annotation>
+						<documentation>
+							Include if required. A JobId is usually required for
+							a) asynchronous execution
+							b) the Dismiss operation extension, where the client is allowed to
+							   actively free server-side resources
+						</documentation>
+					</annotation>
+				</element>
+				<element ref="wps:ExpirationDate" minOccurs="0">
+					<annotation>
+						<documentation>
+							Identifier of the Process that was executed.
+							This Process identifier shall be as listed in the ProcessOfferings
+							section of the WPS Capabilities document. </documentation>
+					</annotation>
+				</element>
+				<element name="Output" type="wps:DataOutputType" maxOccurs="unbounded"/>
+			</sequence>
+		</complexType>
+	</element>
+	<!-- =========================================================== -->
+	<complexType name="DataOutputType">
+		<annotation>
+			<documentation>
+				This type describes a process output in the execute response.
+			</documentation>
+		</annotation>
+		<sequence>
+			<choice>
+				<element ref="wps:Data"/>
+				<element ref="wps:Reference"/>
+				<element name="Output" type="wps:DataOutputType"/>
+			</choice>
+		</sequence>
+		<attribute name="id" type="anyURI" use="required">
+			<annotation>
+				<documentation>
+					Identifier of this output.
+				</documentation>
+			</annotation>
+		</attribute>
+	</complexType>
+	
+	<!-- =========================================================== -->
+	<!-- StatusInfo elements and types -->
+	<!-- =========================================================== -->
+	<element name="StatusInfo">
+		<annotation>
+			<documentation>
+				StatusInfo document containing information about executed processes.
+			</documentation>
+		</annotation>
+		<complexType>
+			<sequence>
+				<!-- reference to JobID -->
+				<element ref="wps:JobID"/>
+				<!-- definition of Status element -->
+				<element name="Status">
+					<annotation>
+						<documentation>
+							This element is used to communicate basic status information about executed processes.
+						</documentation>
+					</annotation>
+					<simpleType>
+						<annotation>
+							<documentation>
+								Basic status set to communicate the status of a server-side job to the client.
+								Extensions of this specification may introduce additional states for fine-grained
+								monitoring or domain-specific purposes.
+							</documentation>
+						</annotation>
+						<union>
+							<simpleType>
+								<restriction base="string">
+									<enumeration value="Succeeded">
+										<annotation>
+											<documentation>
+												The job has finished with no errors.
+											</documentation>
+										</annotation>
+									</enumeration>
+									<enumeration value="Failed">
+										<annotation>
+											<documentation>
+												The job has finished with errors.
+											</documentation>
+										</annotation>
+									</enumeration>
+									<enumeration value="Accepted">
+										<annotation>
+											<documentation>
+												The job is queued for execution. 
+											</documentation>
+										</annotation>
+									</enumeration>
+									<enumeration value="Running">
+										<annotation>
+											<documentation>
+												The job is running.
+											</documentation>
+										</annotation>
+									</enumeration>
+								</restriction>
+							</simpleType>
+							<simpleType>
+								<restriction base="string"/>
+							</simpleType>
+						</union>
+					</simpleType>
+				</element>
+				<!-- reference to job expiration date -->
+				<element ref="wps:ExpirationDate" minOccurs="0"/>
+				<element name="EstimatedCompletion" type="dateTime" minOccurs="0">
+					<annotation>
+						<documentation>
+							Estimated date and time by which the job will be completed. Use if available.
+							The time of estimated completion lies significantly before the expiration date of this job.
+						</documentation>
+					</annotation>
+				</element>
+				<element name="NextPoll" type="dateTime" minOccurs="0">
+					<annotation>
+						<documentation>
+							Suggested date and time for the next status poll (GetStatus) for this job. Use if appropriate.
+							The time of the next poll shall lie significantly before the expiration date of this job.
+							If this element is provided but an expiration date for the job is not given, clients are expected to check
+							the job status on time to eventually receive an update on the expiration date and avoid missing the results.
+						</documentation>
+					</annotation>
+				</element>
+				<element name="PercentCompleted" minOccurs="0">
+					<annotation>
+						<documentation>
+							Use as a progress indicator if appropriate. Like most progress bars the value is an estimate without accuracy guarantees.
+						</documentation>
+					</annotation>
+					<simpleType>
+						<restriction base="integer">
+							<minInclusive value="0"/>
+							<maxInclusive value="100"/>
+						</restriction>
+					</simpleType>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+	<!-- =========================================================== -->
+	<element name="ExpirationDate" type="dateTime">
+		<annotation>
+			<documentation>
+				Date and time by which the job and its results will be removed from the server. Use if appropriate.
+				In some situations the expiration date may not be known from the start. In this case, it is recommended
+				to specify a timestamp for NextPoll.
+				A typical example is a long running process for which the results are stored 48 hours after completion. While the
+				process is running, clients are provided with updated timestamps for NextPoll. As soon as the process has completed
+				the ExpirationDate is determined.
+			</documentation>
+		</annotation>
+	</element>
+	
+</schema>

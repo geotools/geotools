@@ -24,6 +24,8 @@ import net.opengis.ows20.Ows20Factory;
 import org.geotools.ows.bindings.BoundingBoxTypeBinding;
 import org.geotools.ows.bindings.UnitBinding;
 import org.geotools.ows.bindings.WGS84BoundingBoxTypeBinding;
+import org.geotools.ows.v2_0.bindings.CapabilitiesBaseType_LanguagesBinding;
+import org.geotools.ows.v2_0.bindings.MetadataTypeBinding;
 import org.geotools.xlink.XLINKConfiguration;
 import org.geotools.xsd.ComplexEMFBinding;
 import org.geotools.xsd.Configuration;
@@ -132,10 +134,10 @@ public class OWSConfiguration extends Configuration {
                 OWS.KeywordsType, new ComplexEMFBinding(Ows20Factory.eINSTANCE, OWS.KeywordsType));
         bindings.put(
                 OWS.ManifestType, new ComplexEMFBinding(Ows20Factory.eINSTANCE, OWS.ManifestType));
-        bindings.put(
-                OWS.MetadataType, new ComplexEMFBinding(Ows20Factory.eINSTANCE, OWS.MetadataType));
+
         bindings.put(
                 OWS.NilValueType, new ComplexEMFBinding(Ows20Factory.eINSTANCE, OWS.NilValueType));
+
         bindings.put(
                 OWS.OnlineResourceType,
                 new ComplexEMFBinding(Ows20Factory.eINSTANCE, OWS.OnlineResourceType));
@@ -206,9 +208,18 @@ public class OWSConfiguration extends Configuration {
         bindings.put(
                 OWS._rangeClosure,
                 new ComplexEMFBinding(Ows20Factory.eINSTANCE, OWS._rangeClosure));
+
         bindings.put(
-                OWS.CapabilitiesBaseType_Languages,
-                new ComplexEMFBinding(Ows20Factory.eINSTANCE, OWS.CapabilitiesBaseType_Languages));
+                OWS._rangeClosure,
+                new ComplexEMFBinding(Ows20Factory.eINSTANCE, OWS._rangeClosure));
+    }
+
+    @Override
+    protected final void registerBindings(MutablePicoContainer container) {
+        // Types
+        container.registerComponentImplementation(
+                OWS.CapabilitiesBaseType_Languages, CapabilitiesBaseType_LanguagesBinding.class);
+        container.registerComponentImplementation(OWS.MetadataType, MetadataTypeBinding.class);
     }
 
     @Override

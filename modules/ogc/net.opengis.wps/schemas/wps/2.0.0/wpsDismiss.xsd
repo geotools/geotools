@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema
+	xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:wps="http://www.opengis.net/wps/2.0"
+	targetNamespace="http://www.opengis.net/wps/2.0"
+	elementFormDefault="qualified"
+	xml:lang="en"
+	version="2.0.0">
+	
+	<annotation>
+		<documentation>
+			WPS is an OGC Standard.
+			Copyright (c) 2015 Open Geospatial Consortium.
+			To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.
+		</documentation>
+	</annotation>
+	
+	<!-- all-components document include (OGC 06-135r11 s#14) -->
+	<include schemaLocation="wps.xsd"/>
+	
+	<!-- === INCLUDES === -->
+	<include schemaLocation="wpsCommon.xsd"/>
+	
+	<!-- =========================================================== -->
+	<!-- Delete request elements and types -->
+	<!-- =========================================================== -->
+	<element name="Dismiss">
+		<annotation>
+			<documentation>
+				WPS GetStatus operation request. This operation is used to query status information of executed processes.
+				The response to a GetStatus operation is a StatusInfo document or an exception.
+				Depending on the implementation, a WPS may "forget" old process executions sooner or later.
+				In this case, there is no status information available and an exception shall be returned instead of a StatusInfo response. 
+			</documentation>
+		</annotation>
+		<complexType>
+			<complexContent>
+				<extension base="wps:RequestBaseType">
+					<sequence>
+						<element ref="wps:JobID"/>
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+	
+</schema>

@@ -26,11 +26,11 @@ public enum StarStringType implements Enumerator {
    * The '<em><b></b></em>' literal object.
    * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-   * @see #__VALUE
+   * @see #STAR_VALUE
    * @generated
    * @ordered
    */
-    _(0, "_", "*");
+    STAR(0, "star", "*");
 
     /**
    * The '<em><b></b></em>' literal value.
@@ -40,12 +40,12 @@ public enum StarStringType implements Enumerator {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-   * @see #_
+   * @see #STAR
    * @model literal="*"
    * @generated
    * @ordered
    */
-    public static final int __VALUE = 0;
+    public static final int STAR_VALUE = 0;
 
     /**
    * An array of all the '<em><b>Star String Type</b></em>' enumerators.
@@ -55,7 +55,7 @@ public enum StarStringType implements Enumerator {
    */
     private static final StarStringType[] VALUES_ARRAY =
         new StarStringType[] {
-      _,
+      STAR,
     };
 
     /**
@@ -112,7 +112,7 @@ public enum StarStringType implements Enumerator {
    */
     public static StarStringType get(int value) {
     switch (value) {
-      case __VALUE: return _;
+      case STAR_VALUE: return STAR;
     }
     return null;
   }

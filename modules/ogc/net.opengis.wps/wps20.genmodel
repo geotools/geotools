@@ -1,0 +1,666 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/net.opengis.wps/src" modelPluginID="net.opengis.wps"
+    modelName="Wps20" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
+    usedGenPackages="../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore ../net.opengis.ows/ows20.genmodel#//ows20 ../org.w3.xlink/xlink.genmodel#//xlink ../org.eclipse.emf.ecore/model/XMLNamespace.genmodel#//namespace ../org.eclipse.emf.ecore/model/XMLType.genmodel#//type"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>wps20.ecore</foreignModel>
+  <genPackages prefix="Wps20" resource="XML" disposableProviderFactory="true" ecorePackage="wps20.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="wps20.ecore#//DataTransmissionModeType">
+      <genEnumLiterals ecoreEnumLiteral="wps20.ecore#//DataTransmissionModeType/value"/>
+      <genEnumLiterals ecoreEnumLiteral="wps20.ecore#//DataTransmissionModeType/reference"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="wps20.ecore#//JobControlOptionsTypeMember0">
+      <genEnumLiterals ecoreEnumLiteral="wps20.ecore#//JobControlOptionsTypeMember0/syncExecute"/>
+      <genEnumLiterals ecoreEnumLiteral="wps20.ecore#//JobControlOptionsTypeMember0/asyncExecute"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="wps20.ecore#//ModeType">
+      <genEnumLiterals ecoreEnumLiteral="wps20.ecore#//ModeType/sync"/>
+      <genEnumLiterals ecoreEnumLiteral="wps20.ecore#//ModeType/async"/>
+      <genEnumLiterals ecoreEnumLiteral="wps20.ecore#//ModeType/auto"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="wps20.ecore#//ResponseType">
+      <genEnumLiterals ecoreEnumLiteral="wps20.ecore#//ResponseType/raw"/>
+      <genEnumLiterals ecoreEnumLiteral="wps20.ecore#//ResponseType/document"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="wps20.ecore#//StatusTypeMember0">
+      <genEnumLiterals ecoreEnumLiteral="wps20.ecore#//StatusTypeMember0/Succeeded"/>
+      <genEnumLiterals ecoreEnumLiteral="wps20.ecore#//StatusTypeMember0/Failed"/>
+      <genEnumLiterals ecoreEnumLiteral="wps20.ecore#//StatusTypeMember0/Accepted"/>
+      <genEnumLiterals ecoreEnumLiteral="wps20.ecore#//StatusTypeMember0/Running"/>
+    </genEnums>
+    <genDataTypes ecoreDataType="wps20.ecore#//DataTransmissionModeTypeObject"/>
+    <genDataTypes ecoreDataType="wps20.ecore#//JobControlOptionsType"/>
+    <genDataTypes ecoreDataType="wps20.ecore#//JobControlOptionsType1"/>
+    <genDataTypes ecoreDataType="wps20.ecore#//JobControlOptionsTypeMember0Object"/>
+    <genDataTypes ecoreDataType="wps20.ecore#//JobControlOptionsTypeMember1"/>
+    <genDataTypes ecoreDataType="wps20.ecore#//ModeTypeObject"/>
+    <genDataTypes ecoreDataType="wps20.ecore#//OutputTransmissionType"/>
+    <genDataTypes ecoreDataType="wps20.ecore#//PercentCompletedType"/>
+    <genDataTypes ecoreDataType="wps20.ecore#//ResponseTypeObject"/>
+    <genDataTypes ecoreDataType="wps20.ecore#//StatusType"/>
+    <genDataTypes ecoreDataType="wps20.ecore#//StatusTypeMember0Object"/>
+    <genDataTypes ecoreDataType="wps20.ecore#//StatusTypeMember1"/>
+    <genClasses ecoreClass="wps20.ecore#//BodyReferenceType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//BodyReferenceType/href"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//BoundingBoxDataType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//BoundingBoxDataType/supportedCRS"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//ComplexDataType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wps20.ecore#//ComplexDataType/any"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//ContentsType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//ContentsType/processSummary"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="wps20.ecore#//DataDescriptionType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DataDescriptionType/format"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//DataInputType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DataInputType/data"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DataInputType/reference"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DataInputType/input"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//DataInputType/id"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//DataOutputType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DataOutputType/data"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DataOutputType/reference"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DataOutputType/output"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//DataOutputType/id"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//DataType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//DataType/encoding"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//DataType/mimeType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//DataType/schema"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//DescribeProcessType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DescribeProcessType/identifier"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//DescribeProcessType/lang"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//DescriptionType"/>
+    <genClasses ecoreClass="wps20.ecore#//DismissType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//DismissType/jobID"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//DocumentRoot">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//DocumentRoot/mixed"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wps20.ecore#//DocumentRoot/xMLNSPrefixMap"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wps20.ecore#//DocumentRoot/xSISchemaLocation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DocumentRoot/boundingBoxData"/>
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference wps20.ecore#//DocumentRoot/dataDescription"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DocumentRoot/capabilities"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DocumentRoot/complexData"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DocumentRoot/contents"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DocumentRoot/data"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DocumentRoot/describeProcess"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DocumentRoot/dismiss"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DocumentRoot/execute"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//DocumentRoot/expirationDate"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DocumentRoot/format"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DocumentRoot/genericProcess"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DocumentRoot/getCapabilities"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DocumentRoot/getResult"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DocumentRoot/getStatus"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//DocumentRoot/jobID"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DocumentRoot/literalData"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DocumentRoot/literalValue"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DocumentRoot/process"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DocumentRoot/processOffering"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DocumentRoot/processOfferings"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DocumentRoot/reference"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DocumentRoot/result"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DocumentRoot/statusInfo"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//DocumentRoot/supportedCRS"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//ExecuteRequestType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//ExecuteRequestType/identifier"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//ExecuteRequestType/input"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//ExecuteRequestType/output"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//ExecuteRequestType/mode"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//ExecuteRequestType/response"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//ExtensionType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wps20.ecore#//ExtensionType/any"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//FormatType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//FormatType/default"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//FormatType/encoding"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//FormatType/maximumMegabytes"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//FormatType/mimeType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//FormatType/schema"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//GenericInputType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//GenericInputType/input"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//GenericInputType/maxOccurs"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//GenericInputType/minOccurs"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//GenericOutputType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//GenericOutputType/output"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//GenericProcessType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//GenericProcessType/input"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//GenericProcessType/output"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//GetCapabilitiesType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//GetCapabilitiesType/service"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//GetResultType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//GetResultType/jobID"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//GetStatusType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//GetStatusType/jobID"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//InputDescriptionType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wps20.ecore#//InputDescriptionType/dataDescriptionGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wps20.ecore#//InputDescriptionType/dataDescription"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//InputDescriptionType/input"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//InputDescriptionType/maxOccurs"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//InputDescriptionType/minOccurs"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//LiteralDataDomainType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//LiteralDataDomainType/allowedValues"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//LiteralDataDomainType/anyValue"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//LiteralDataDomainType/valuesReference"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//LiteralDataDomainType/dataType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//LiteralDataDomainType/uOM"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//LiteralDataDomainType/defaultValue"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//LiteralDataDomainType1">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//LiteralDataDomainType1/default"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//LiteralDataType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//LiteralDataType/literalDataDomain"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//LiteralValueType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//LiteralValueType/dataType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//LiteralValueType/uom"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//OutputDefinitionType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//OutputDefinitionType/output"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//OutputDefinitionType/encoding"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//OutputDefinitionType/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//OutputDefinitionType/mimeType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//OutputDefinitionType/schema"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//OutputDefinitionType/transmission"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//OutputDescriptionType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wps20.ecore#//OutputDescriptionType/dataDescriptionGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wps20.ecore#//OutputDescriptionType/dataDescription"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//OutputDescriptionType/output"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//ProcessDescriptionType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//ProcessDescriptionType/input"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//ProcessDescriptionType/output"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//ProcessDescriptionType/lang"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//ProcessOfferingsType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//ProcessOfferingsType/processOffering"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//ProcessOfferingType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//ProcessOfferingType/process"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wps20.ecore#//ProcessOfferingType/any"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//ProcessOfferingType/jobControlOptions"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//ProcessOfferingType/outputTransmission"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//ProcessOfferingType/processModel"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//ProcessOfferingType/processVersion"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//ProcessSummaryType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//ProcessSummaryType/jobControlOptions"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//ProcessSummaryType/outputTransmission"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//ProcessSummaryType/processModel"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//ProcessSummaryType/processVersion"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//ReferenceType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//ReferenceType/body"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//ReferenceType/bodyReference"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//ReferenceType/encoding"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//ReferenceType/href"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//ReferenceType/mimeType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//ReferenceType/schema"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="wps20.ecore#//RequestBaseType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//RequestBaseType/extension"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//RequestBaseType/service"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//RequestBaseType/version"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//ResultType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//ResultType/jobID"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//ResultType/expirationDate"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//ResultType/output"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//StatusInfoType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//StatusInfoType/jobID"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//StatusInfoType/status"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//StatusInfoType/expirationDate"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//StatusInfoType/estimatedCompletion"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//StatusInfoType/nextPoll"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//StatusInfoType/percentCompleted"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//SupportedCRSType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//SupportedCRSType/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//SupportedCRSType/default"/>
+    </genClasses>
+    <genClasses ecoreClass="wps20.ecore#//WPSCapabilitiesType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//WPSCapabilitiesType/contents"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps20.ecore#//WPSCapabilitiesType/extension"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps20.ecore#//WPSCapabilitiesType/service"/>
+    </genClasses>
+  </genPackages>
+  <genPackages prefix="Schema" resource="XML" disposableProviderFactory="true" ecorePackage="schema.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="schema.ecore#//AllNNIMember1">
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//AllNNIMember1/unbounded"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="schema.ecore#//BlockSetMember0">
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//BlockSetMember0/all"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="schema.ecore#//BlockSetMember1Item">
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//BlockSetMember1Item/extension"/>
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//BlockSetMember1Item/restriction"/>
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//BlockSetMember1Item/substitution"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="schema.ecore#//DerivationControl">
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//DerivationControl/substitution"/>
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//DerivationControl/extension"/>
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//DerivationControl/restriction"/>
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//DerivationControl/list"/>
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//DerivationControl/union"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="schema.ecore#//DerivationSetMember0">
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//DerivationSetMember0/all"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="schema.ecore#//FormChoice">
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//FormChoice/qualified"/>
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//FormChoice/unqualified"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="schema.ecore#//FullDerivationSetMember0">
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//FullDerivationSetMember0/all"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="schema.ecore#//NamespaceListMember0">
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//NamespaceListMember0/any"/>
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//NamespaceListMember0/other"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="schema.ecore#//NamespaceListMember1ItemMember1">
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//NamespaceListMember1ItemMember1/targetNamespace"/>
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//NamespaceListMember1ItemMember1/local"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="schema.ecore#//ProcessContentsType">
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//ProcessContentsType/skip"/>
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//ProcessContentsType/lax"/>
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//ProcessContentsType/strict"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="schema.ecore#//ReducedDerivationControl">
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//ReducedDerivationControl/extension"/>
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//ReducedDerivationControl/restriction"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="schema.ecore#//SimpleDerivationSetMember0">
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//SimpleDerivationSetMember0/all"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="schema.ecore#//SimpleDerivationSetMember1Item">
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//SimpleDerivationSetMember1Item/list"/>
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//SimpleDerivationSetMember1Item/union"/>
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//SimpleDerivationSetMember1Item/restriction"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="schema.ecore#//TypeDerivationControl">
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//TypeDerivationControl/extension"/>
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//TypeDerivationControl/restriction"/>
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//TypeDerivationControl/list"/>
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//TypeDerivationControl/union"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="schema.ecore#//UseType">
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//UseType/prohibited"/>
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//UseType/optional"/>
+      <genEnumLiterals ecoreEnumLiteral="schema.ecore#//UseType/required"/>
+    </genEnums>
+    <genDataTypes ecoreDataType="schema.ecore#//AllNNI"/>
+    <genDataTypes ecoreDataType="schema.ecore#//AllNNIMember1Object"/>
+    <genDataTypes ecoreDataType="schema.ecore#//BlockSet"/>
+    <genDataTypes ecoreDataType="schema.ecore#//BlockSetMember0Object"/>
+    <genDataTypes ecoreDataType="schema.ecore#//BlockSetMember1"/>
+    <genDataTypes ecoreDataType="schema.ecore#//BlockSetMember1ItemObject"/>
+    <genDataTypes ecoreDataType="schema.ecore#//DerivationControlObject"/>
+    <genDataTypes ecoreDataType="schema.ecore#//DerivationSet"/>
+    <genDataTypes ecoreDataType="schema.ecore#//DerivationSetMember0Object"/>
+    <genDataTypes ecoreDataType="schema.ecore#//DerivationSetMember1"/>
+    <genDataTypes ecoreDataType="schema.ecore#//FormChoiceObject"/>
+    <genDataTypes ecoreDataType="schema.ecore#//FullDerivationSet"/>
+    <genDataTypes ecoreDataType="schema.ecore#//FullDerivationSetMember0Object"/>
+    <genDataTypes ecoreDataType="schema.ecore#//FullDerivationSetMember1"/>
+    <genDataTypes ecoreDataType="schema.ecore#//MemberTypesType"/>
+    <genDataTypes ecoreDataType="schema.ecore#//NamespaceList"/>
+    <genDataTypes ecoreDataType="schema.ecore#//NamespaceListMember0Object"/>
+    <genDataTypes ecoreDataType="schema.ecore#//NamespaceListMember1"/>
+    <genDataTypes ecoreDataType="schema.ecore#//NamespaceListMember1Item"/>
+    <genDataTypes ecoreDataType="schema.ecore#//NamespaceListMember1ItemMember1Object"/>
+    <genDataTypes ecoreDataType="schema.ecore#//ProcessContentsTypeObject"/>
+    <genDataTypes ecoreDataType="schema.ecore#//Public"/>
+    <genDataTypes ecoreDataType="schema.ecore#//ReducedDerivationControlObject"/>
+    <genDataTypes ecoreDataType="schema.ecore#//SimpleDerivationSet"/>
+    <genDataTypes ecoreDataType="schema.ecore#//SimpleDerivationSetMember0Object"/>
+    <genDataTypes ecoreDataType="schema.ecore#//SimpleDerivationSetMember1"/>
+    <genDataTypes ecoreDataType="schema.ecore#//SimpleDerivationSetMember1ItemObject"/>
+    <genDataTypes ecoreDataType="schema.ecore#//TypeDerivationControlObject"/>
+    <genDataTypes ecoreDataType="schema.ecore#//UseTypeObject"/>
+    <genDataTypes ecoreDataType="schema.ecore#//XpathType"/>
+    <genDataTypes ecoreDataType="schema.ecore#//XpathType1"/>
+    <genClasses ecoreClass="schema.ecore#//All"/>
+    <genClasses ecoreClass="schema.ecore#//Annotated">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//Annotated/annotation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Annotated/id"/>
+    </genClasses>
+    <genClasses ecoreClass="schema.ecore#//AnnotationType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute schema.ecore#//AnnotationType/group"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//AnnotationType/appinfo"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//AnnotationType/documentation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//AnnotationType/id"/>
+    </genClasses>
+    <genClasses ecoreClass="schema.ecore#//AnyType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//AnyType/maxOccurs"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//AnyType/minOccurs"/>
+    </genClasses>
+    <genClasses ecoreClass="schema.ecore#//AppinfoType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute schema.ecore#//AppinfoType/mixed"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//AppinfoType/group"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//AppinfoType/any"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//AppinfoType/source"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute schema.ecore#//AppinfoType/anyAttribute"/>
+    </genClasses>
+    <genClasses ecoreClass="schema.ecore#//Attribute">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//Attribute/simpleType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Attribute/default"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Attribute/fixed"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Attribute/form"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Attribute/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Attribute/ref"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Attribute/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Attribute/use"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="schema.ecore#//AttributeGroup">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute schema.ecore#//AttributeGroup/group"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//AttributeGroup/attribute"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//AttributeGroup/attributeGroup"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//AttributeGroup/anyAttribute1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//AttributeGroup/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//AttributeGroup/ref"/>
+    </genClasses>
+    <genClasses ecoreClass="schema.ecore#//AttributeGroupRef"/>
+    <genClasses ecoreClass="schema.ecore#//ComplexContentType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//ComplexContentType/restriction"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//ComplexContentType/extension"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//ComplexContentType/mixed"/>
+    </genClasses>
+    <genClasses ecoreClass="schema.ecore#//ComplexRestrictionType"/>
+    <genClasses image="false" ecoreClass="schema.ecore#//ComplexType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//ComplexType/simpleContent"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//ComplexType/complexContent"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//ComplexType/group"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//ComplexType/all"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//ComplexType/choice"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//ComplexType/sequence"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute schema.ecore#//ComplexType/group1"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//ComplexType/attribute"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//ComplexType/attributeGroup"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//ComplexType/anyAttribute1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//ComplexType/abstract"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//ComplexType/block"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//ComplexType/final"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//ComplexType/mixed"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//ComplexType/name"/>
+    </genClasses>
+    <genClasses ecoreClass="schema.ecore#//DocumentationType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute schema.ecore#//DocumentationType/mixed"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//DocumentationType/group"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//DocumentationType/any"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//DocumentationType/lang"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//DocumentationType/source"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute schema.ecore#//DocumentationType/anyAttribute"/>
+    </genClasses>
+    <genClasses ecoreClass="schema.ecore#//DocumentRoot">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//DocumentRoot/mixed"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/xMLNSPrefixMap"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/xSISchemaLocation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/all"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/annotation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/any"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/anyAttribute"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/appinfo"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/attribute"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/attributeGroup"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/choice"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/complexContent"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/complexType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/documentation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/element"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/enumeration"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/field"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/fractionDigits"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/group"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/import"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/include"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/key"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/keyref"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/length"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/list"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/maxExclusive"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/maxInclusive"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/maxLength"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/minExclusive"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/minInclusive"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/minLength"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/notation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/pattern"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/redefine"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/restriction"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/schema"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/selector"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/sequence"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/simpleContent"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/simpleType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/totalDigits"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/union"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/unique"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//DocumentRoot/whiteSpace"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="schema.ecore#//Element">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//Element/simpleType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//Element/complexType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute schema.ecore#//Element/identityConstraint"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//Element/unique"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//Element/key"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//Element/keyref"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Element/abstract"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Element/block"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Element/default"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Element/final"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Element/fixed"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Element/form"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Element/maxOccurs"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Element/minOccurs"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Element/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Element/nillable"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Element/ref"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Element/substitutionGroup"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Element/type"/>
+    </genClasses>
+    <genClasses ecoreClass="schema.ecore#//ExplicitGroup"/>
+    <genClasses ecoreClass="schema.ecore#//ExtensionType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//ExtensionType/group"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//ExtensionType/all"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//ExtensionType/choice"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//ExtensionType/sequence"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute schema.ecore#//ExtensionType/group1"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//ExtensionType/attribute"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//ExtensionType/attributeGroup"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//ExtensionType/anyAttribute1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//ExtensionType/base"/>
+    </genClasses>
+    <genClasses ecoreClass="schema.ecore#//Facet">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Facet/fixed"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Facet/value"/>
+    </genClasses>
+    <genClasses ecoreClass="schema.ecore#//FieldType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//FieldType/xpath"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="schema.ecore#//Group">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute schema.ecore#//Group/particle"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//Group/element"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//Group/group"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//Group/all"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//Group/choice"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//Group/sequence"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//Group/any"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Group/maxOccurs"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Group/minOccurs"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Group/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Group/ref"/>
+    </genClasses>
+    <genClasses ecoreClass="schema.ecore#//GroupRef"/>
+    <genClasses ecoreClass="schema.ecore#//ImportType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//ImportType/namespace"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//ImportType/schemaLocation"/>
+    </genClasses>
+    <genClasses ecoreClass="schema.ecore#//IncludeType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//IncludeType/schemaLocation"/>
+    </genClasses>
+    <genClasses ecoreClass="schema.ecore#//Keybase">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//Keybase/selector"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//Keybase/field"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Keybase/name"/>
+    </genClasses>
+    <genClasses ecoreClass="schema.ecore#//KeyrefType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//KeyrefType/refer"/>
+    </genClasses>
+    <genClasses ecoreClass="schema.ecore#//ListType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//ListType/simpleType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//ListType/itemType"/>
+    </genClasses>
+    <genClasses ecoreClass="schema.ecore#//LocalComplexType"/>
+    <genClasses ecoreClass="schema.ecore#//LocalElement"/>
+    <genClasses ecoreClass="schema.ecore#//LocalSimpleType"/>
+    <genClasses ecoreClass="schema.ecore#//NamedAttributeGroup"/>
+    <genClasses ecoreClass="schema.ecore#//NamedGroup"/>
+    <genClasses ecoreClass="schema.ecore#//NarrowMaxMin"/>
+    <genClasses ecoreClass="schema.ecore#//NoFixedFacet"/>
+    <genClasses ecoreClass="schema.ecore#//NotationType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//NotationType/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//NotationType/public"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//NotationType/system"/>
+    </genClasses>
+    <genClasses ecoreClass="schema.ecore#//NumFacet"/>
+    <genClasses ecoreClass="schema.ecore#//OpenAttrs">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute schema.ecore#//OpenAttrs/anyAttribute"/>
+    </genClasses>
+    <genClasses ecoreClass="schema.ecore#//PatternType"/>
+    <genClasses ecoreClass="schema.ecore#//RealGroup">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//RealGroup/all1"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//RealGroup/choice1"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//RealGroup/sequence1"/>
+    </genClasses>
+    <genClasses ecoreClass="schema.ecore#//RedefineType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute schema.ecore#//RedefineType/group"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RedefineType/annotation"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RedefineType/simpleType"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RedefineType/complexType"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RedefineType/group1"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RedefineType/attributeGroup"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//RedefineType/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//RedefineType/schemaLocation"/>
+    </genClasses>
+    <genClasses ecoreClass="schema.ecore#//RestrictionType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType/group"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType/all"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType/choice"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType/sequence"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType/simpleType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute schema.ecore#//RestrictionType/facets"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType/minExclusive"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType/minInclusive"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType/maxExclusive"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType/maxInclusive"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType/totalDigits"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType/fractionDigits"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType/length"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType/minLength"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType/maxLength"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType/enumeration"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType/whiteSpace"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType/pattern"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute schema.ecore#//RestrictionType/group1"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType/attribute"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType/attributeGroup"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType/anyAttribute1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//RestrictionType/base"/>
+    </genClasses>
+    <genClasses ecoreClass="schema.ecore#//RestrictionType1">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType1/simpleType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute schema.ecore#//RestrictionType1/facets"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType1/minExclusive"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType1/minInclusive"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType1/maxExclusive"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType1/maxInclusive"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType1/totalDigits"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType1/fractionDigits"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType1/length"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType1/minLength"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType1/maxLength"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType1/enumeration"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType1/whiteSpace"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//RestrictionType1/pattern"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//RestrictionType1/base"/>
+    </genClasses>
+    <genClasses ecoreClass="schema.ecore#//SchemaType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute schema.ecore#//SchemaType/group"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//SchemaType/include"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//SchemaType/import"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//SchemaType/redefine"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//SchemaType/annotation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute schema.ecore#//SchemaType/group1"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//SchemaType/simpleType"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//SchemaType/complexType"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//SchemaType/group2"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//SchemaType/attributeGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//SchemaType/element"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//SchemaType/attribute"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//SchemaType/notation"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference schema.ecore#//SchemaType/annotation1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//SchemaType/attributeFormDefault"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//SchemaType/blockDefault"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//SchemaType/elementFormDefault"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//SchemaType/finalDefault"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//SchemaType/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//SchemaType/lang"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//SchemaType/targetNamespace"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//SchemaType/version"/>
+    </genClasses>
+    <genClasses ecoreClass="schema.ecore#//SelectorType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//SelectorType/xpath"/>
+    </genClasses>
+    <genClasses ecoreClass="schema.ecore#//SimpleContentType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//SimpleContentType/restriction"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//SimpleContentType/extension"/>
+    </genClasses>
+    <genClasses ecoreClass="schema.ecore#//SimpleExplicitGroup"/>
+    <genClasses ecoreClass="schema.ecore#//SimpleExtensionType"/>
+    <genClasses ecoreClass="schema.ecore#//SimpleRestrictionType"/>
+    <genClasses image="false" ecoreClass="schema.ecore#//SimpleType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//SimpleType/restriction"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//SimpleType/list"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//SimpleType/union"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//SimpleType/final"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//SimpleType/name"/>
+    </genClasses>
+    <genClasses ecoreClass="schema.ecore#//TopLevelAttribute"/>
+    <genClasses ecoreClass="schema.ecore#//TopLevelComplexType"/>
+    <genClasses ecoreClass="schema.ecore#//TopLevelElement"/>
+    <genClasses ecoreClass="schema.ecore#//TopLevelSimpleType"/>
+    <genClasses ecoreClass="schema.ecore#//TotalDigitsType"/>
+    <genClasses ecoreClass="schema.ecore#//UnionType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference schema.ecore#//UnionType/simpleType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//UnionType/memberTypes"/>
+    </genClasses>
+    <genClasses ecoreClass="schema.ecore#//WhiteSpaceType"/>
+    <genClasses ecoreClass="schema.ecore#//Wildcard">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Wildcard/namespace"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute schema.ecore#//Wildcard/processContents"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

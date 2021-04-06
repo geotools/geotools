@@ -7,18 +7,14 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>unsupported</artifactId>
     <version>26-SNAPSHOT</version>
-  </parent> 
-
+  </parent>
 
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
@@ -27,12 +23,8 @@
   <artifactId>gt-gtopo30</artifactId>
   <packaging>jar</packaging>
   <name>GTopo30 datasource module</name>
-  
 
-
-  <description>
-    This datasource reads the GTOPO30 DEM format.
-  </description>
+  <description>This datasource reads the GTOPO30 DEM format.</description>
 
   <licenses>
     <license>
@@ -42,14 +34,13 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Simone Giannecchini</name>
       <id>simboss</id>
+      <name>Simone Giannecchini</name>
       <email>simone.giannecchini@geo-solutions.it</email>
       <organization>GeoSolutions S.A.S.</organization>
       <organizationUrl>http://www.geo-solutions.it</organizationUrl>
@@ -58,10 +49,10 @@
         <role>Documentation</role>
         <role>Module Maintainer</role>
       </roles>
-    </developer>   
+    </developer>
     <developer>
-      <name>Andrea Aime</name>
       <id>iant</id>
+      <name>Andrea Aime</name>
       <email>aaime@users.sourceforge.net</email>
       <organization>University of Modena and Reggio Emilia</organization>
       <roles>
@@ -69,7 +60,6 @@
       </roles>
     </developer>
   </developers>
-
 
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema
+	xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:ows="http://www.opengis.net/ows/2.0"
+	xmlns:wps="http://www.opengis.net/wps/2.0"
+	targetNamespace="http://www.opengis.net/wps/2.0"
+	elementFormDefault="qualified"
+	xml:lang="en"
+	version="2.0.0">
+	
+	<annotation>
+		<documentation>
+			WPS is an OGC Standard.
+			Copyright (c) 2015 Open Geospatial Consortium.
+			To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.
+		</documentation>
+	</annotation>
+	
+	<!-- all-components document include (OGC 06-135r11 s#14) -->
+	<include schemaLocation="wps.xsd"/>
+	
+	<!-- === IMPORTS === -->
+	<import namespace="http://www.opengis.net/ows/2.0" schemaLocation="http://schemas.opengis.net/ows/2.0/owsAll.xsd" />
+	
+	<!-- === INCLUDES === -->
+	<include schemaLocation="wpsCommon.xsd"/>
+	
+	<!-- =========================================================== -->
+	<!-- Execute Request elements and types -->
+	<!-- =========================================================== -->
+	<element name="Execute" type="wps:ExecuteRequestType"/>
+	<!-- =========================================================== -->
+	<complexType name="ExecuteRequestType">
+		<annotation>
+			<documentation>
+				Schema for a WPS Execute operation request, to execute
+				one identified process with the given data and provide the requested
+				output data.
+			</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="wps:RequestBaseType">
+				<sequence>
+					<element ref="ows:Identifier">
+						<annotation>
+							<documentation>
+								Identifier of the process to be executed. All valid process identifiers are
+								listed in the wps:Contents section of the Capabilities document.
+							</documentation>
+						</annotation>
+					</element>
+					<element name="Input" type="wps:DataInputType" minOccurs="0" maxOccurs="unbounded">
+						<annotation>
+							<documentation>
+								One or more input items to be used for process execution, including referenced or inline data.
+							</documentation>
+						</annotation>
+					</element>
+					<element name="Output" type="wps:OutputDefinitionType" maxOccurs="unbounded">
+						<annotation>
+							<documentation>
+								Defines one or more output items to be delivered by the process execution.
+							</documentation>
+						</annotation>
+					</element>
+				</sequence>
+				
+				<attribute name="mode" use="required">
+					<annotation>
+						<documentation>
+							Desired execution mode.
+						</documentation>
+					</annotation>
+					<simpleType>
+						<restriction base="string">
+							<enumeration value="sync">
+								<annotation>
+									<documentation>
+										"sync" triggers the synchronous execution protocol
+									</documentation>
+								</annotation>
+							</enumeration>
+							<enumeration value="async">
+								<annotation>
+									<documentation>
+										"async" triggers the asynchronous execution protocol
+									</documentation>
+								</annotation>
+							</enumeration>
+							<enumeration value="auto">
+								<annotation>
+									<documentation>
+										"auto" delegates the choice of execution mode to the server.
+									</documentation>
+								</annotation>
+							</enumeration>
+						</restriction>
+					</simpleType>
+				</attribute>
+				
+				<attribute name="response" use="required">
+					<simpleType>
+						<restriction base="string">
+							<enumeration value="raw">
+								<annotation>
+									<documentation>
+										The desired response type is raw data. Raw data output can only be used for single outputs, i.e. the process execution must yield only one output item.
+										If the request requests more than one output, the server shall return an Exception 
+									</documentation>
+								</annotation>
+							</enumeration>
+							<enumeration value="document">
+								<annotation>
+									<documentation>
+										The desired response type is a response document.
+									</documentation>
+								</annotation>
+							</enumeration>
+						</restriction>
+					</simpleType>
+				</attribute>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- =========================================================== -->
+	<complexType name="DataInputType">
+		<annotation>
+			<documentation>
+				This structure contains information elements to supply input data for process execution.
+			</documentation>
+		</annotation>
+		<sequence>
+			<choice>
+				<element ref="wps:Data"/>
+				<element ref="wps:Reference"/>
+				<element name="Input" type="wps:DataInputType" maxOccurs="unbounded"/>
+			</choice>
+		</sequence>
+		<attribute name="id" type="anyURI" use="required">
+			<annotation>
+				<documentation>
+					Identifier of this input.
+				</documentation>
+			</annotation>
+		</attribute>
+	</complexType>
+	<!-- =========================================================== -->
+	<complexType name="OutputDefinitionType">
+		<annotation>
+			<documentation>
+				This structure contains information elements that describe the format and transmission mode
+				of the output data that is delivered by a process execution
+			</documentation>
+		</annotation>
+		<sequence>
+			<element name="Output" type="wps:OutputDefinitionType" minOccurs="0"/>
+		</sequence>
+		<attribute name="id" type="anyURI" use="required">
+			<annotation>
+				<documentation>
+					Identifier of this output.
+				</documentation>
+			</annotation>
+		</attribute>
+		<attributeGroup ref="wps:dataEncodingAttributes"/>
+		<attribute name="transmission" type="wps:DataTransmissionModeType">
+			<annotation>
+				<documentation>
+					The desired transmission mode for this output
+				</documentation>
+			</annotation>
+		</attribute>
+	</complexType>
+	<!-- =========================================================== -->
+	
+
+</schema>

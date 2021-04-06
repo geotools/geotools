@@ -21,6 +21,7 @@ package org.geotools.process.geometry;
 import org.geotools.geometry.jts.GeometryBuilder;
 import org.junit.Assert;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
@@ -99,18 +100,15 @@ public class PolyLabellerTest {
 
         GeometryBuilder gb = new GeometryBuilder();
         Polygon p = gb.polygon();
-        try {
-            PolyLabeller.getPolylabel(p, 1);
-            Assert.fail("processed empty polygon");
-        } catch (IllegalStateException e) {
-            // this is good!
-        }
-        try {
-            p = gb.polygon(0, 0, 0, 0, 0, 0, 0, 0);
-            PolyLabeller.getPolylabel(p, 1);
-            Assert.fail("processed invalid polygon");
-        } catch (IllegalStateException e) {
-            // this is good.
-        }
+
+        Geometry res = PolyLabeller.getPolylabel(p, 1);
+        Assert.assertNull("failed to process empty polygon", res);
+
+        p = gb.polygon(0, 0, 0, 0, 0, 0, 0, 0);
+        res = PolyLabeller.getPolylabel(p, 1);
+        Assert.assertNull("processed invalid polygon", res);
+
+        res = PolyLabeller.getPolylabel(null, 1);
+        Assert.assertNull("failed to handle null input", res);
     }
 }

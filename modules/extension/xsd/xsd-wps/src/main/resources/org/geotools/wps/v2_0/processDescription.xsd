@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema
+	xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:ows="http://www.opengis.net/ows/2.0"
+	xmlns:wps="http://www.opengis.net/wps/2.0"
+	targetNamespace="http://www.opengis.net/wps/2.0"
+	elementFormDefault="qualified"
+	xml:lang="en"
+	version="2.0.0">
+	
+	<annotation>
+		<documentation>
+			WPS is an OGC Standard.
+			Copyright (c) 2015 Open Geospatial Consortium.
+			To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.
+		</documentation>
+	</annotation>
+	
+	<!-- all-components document include (OGC 06-135r11 s#14) -->
+	<include schemaLocation="wps.xsd"/>
+	
+	<!-- === IMPORTS === -->
+	<import namespace="http://www.opengis.net/ows/2.0" schemaLocation="http://schemas.opengis.net/ows/2.0/owsAll.xsd" />
+	<import namespace="http://www.w3.org/2001/XMLSchema" schemaLocation="http://www.w3.org/2001/XMLSchema.xsd" />
+	<import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
+	
+	<!-- =========================================================== -->
+	<!-- Description Type for elements in the process Description    -->
+	<!-- =========================================================== -->
+	<complexType name="DescriptionType">
+		<annotation>
+			<documentation>
+				Description type for process or input/output data items.
+			</documentation>
+		</annotation>
+		<complexContent>
+			<restriction base="ows:BasicIdentificationType">
+				<sequence>
+					<element ref="ows:Title">
+						<annotation>
+							<documentation>
+								Title of a process/input/output, normally available for display to a human.
+							</documentation>
+						</annotation>
+					</element>
+					<element ref="ows:Abstract" minOccurs="0">
+						<annotation>
+							<documentation>
+								Brief narrative description of a process or
+								data item, normally available for display to a human.
+							</documentation>
+						</annotation>
+					</element>
+					<element ref="ows:Keywords" minOccurs="0" maxOccurs="unbounded">
+						<annotation>
+							<documentation>
+								Keywords that characterize a process, its inputs, and outputs.
+							</documentation>
+						</annotation>
+					</element>
+					<element ref="ows:Identifier">
+						<annotation>
+							<documentation>
+								Unambiguous identifier of a process, input, and output.
+								Value is a plain URI or HTTP-URI. Use of additional attributes such as
+								code space and version attributes in the Identifier element are not allowed.
+							</documentation>
+						</annotation>
+					</element>
+					<element ref="ows:Metadata" minOccurs="0" maxOccurs="unbounded">
+						<annotation>
+							<documentation>
+								Reference to additional metadata about this item.
+							</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</restriction>
+		</complexContent>
+	</complexType>
+	<!-- =========================================================== -->
+	
+	<!-- =========================================================== -->
+	<!-- Process description elements, groups and types definitions -->
+	<!-- =========================================================== -->
+	<element name="Process" type="wps:ProcessDescriptionType">
+		<annotation>
+			<documentation>
+				The description of a single process, including the input and output items.
+			</documentation>
+		</annotation>
+	</element>
+	<!-- =========================================================== -->
+	<complexType name="ProcessDescriptionType">
+		<annotation>
+			<documentation>Full description of a process. </documentation>
+		</annotation>
+		<complexContent>
+			<extension base="wps:DescriptionType">
+				<annotation>
+					<documentation>
+						In this use, the DescriptionType shall describe process properties.
+					</documentation>
+				</annotation>
+				<sequence>
+					<element name="Input" type="wps:InputDescriptionType" minOccurs="0" maxOccurs="unbounded">
+						<annotation>
+							<documentation>
+								A process can have zero or more inputs.
+							</documentation>
+						</annotation>
+					</element>
+					<element name="Output" type="wps:OutputDescriptionType" minOccurs="1" maxOccurs="unbounded">
+						<annotation>
+							<documentation>
+								A process can have one or more outputs.
+							</documentation>
+						</annotation>
+					</element>
+				</sequence>
+				<attribute ref="xml:lang">
+					<!-- (Definition adopted from OWS Common 2.0) -->
+					<annotation>
+						<documentation>
+							Identifier of a language used by the data(set) contents.
+							This language identifier shall be as specified in IETF RFC 4646. The
+							language tags shall be either complete 5 character codes (e.g. "en-CA"),
+							or abbreviated 2 character codes (e.g. "en"). In addition to the RFC
+							4646 codes, the server shall support the single special value "*" which
+							is used to indicate "any language".
+						</documentation>
+					</annotation>
+				</attribute>
+			</extension>
+		</complexContent>
+	</complexType>
+	
+	
+	<!-- =========================================================== -->
+	<!-- Input and output elements and types definitions -->
+	<!-- =========================================================== -->
+	<complexType name="InputDescriptionType">
+		<annotation>
+			<documentation>Description of an input to a process. </documentation>
+		</annotation>
+		<complexContent>
+			<extension base="wps:DescriptionType">
+				<annotation>
+					<documentation>
+						In this use, the DescriptionType shall describe a process input.
+					</documentation>
+				</annotation>
+				<choice>
+					<annotation>
+						<documentation>
+							An input item is either a concrete argument to a process or serves as a grouping
+							element for sub-inputs.
+						</documentation>
+					</annotation>
+					<!-- data input -->
+					<element ref="wps:DataDescription"/>
+					<!-- nested input -->
+					<element name="Input" type="wps:InputDescriptionType" minOccurs="1" maxOccurs="unbounded"/>
+				</choice>
+				<attributeGroup ref="occurs">
+					<annotation>
+						<documentation>
+							This attribute defines the cardinality of a particular input.
+						</documentation>
+					</annotation>
+				</attributeGroup>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- =========================================================== -->
+	<complexType name="OutputDescriptionType">
+		<annotation>
+			<documentation>Description of a process Output. </documentation>
+		</annotation>
+		<complexContent>
+			<extension base="wps:DescriptionType">
+				<annotation>
+					<documentation>
+						In this use, the DescriptionType shall describe a process output.
+					</documentation>
+				</annotation>
+				<choice>
+					<element ref="wps:DataDescription"/>
+					<!-- Nested output -->
+					<element name="Output" type="wps:OutputDescriptionType" minOccurs="1" maxOccurs="unbounded"/>
+				</choice>
+			</extension>
+		</complexContent>
+	</complexType>
+	
+	
+	<!-- =========================================================== -->
+	<!-- Basic descriptive elements and types for IO Data -->
+	<!-- =========================================================== -->
+	<element name="DataDescription" abstract="true" type="wps:DataDescriptionType"/>
+	<!-- =========================================================== -->
+	<complexType name="DataDescriptionType" abstract="true">
+		<annotation>
+			<documentation>Description type for process or input/output data items.</documentation>
+		</annotation>
+		<sequence>
+			<element ref="wps:Format" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+	<!-- =========================================================== -->
+	<element name="Format">
+		<complexType>
+			<annotation>
+				<documentation>References the XML schema, format, and encoding of a complex value. </documentation>
+			</annotation>
+			<attribute name="mimeType" type="ows:MimeType" use="optional">
+				<annotation>
+					<documentation>
+						Media type of the data.
+					</documentation>
+				</annotation>
+			</attribute>
+			<attribute name="encoding" type="anyURI" use="optional">
+				<annotation>
+					<documentation>
+						Encoding procedure or character set of the data (e.g. raw or base64).
+					</documentation>
+				</annotation>
+			</attribute>
+			<attribute name="schema" type="anyURI" use="optional">
+				<annotation>
+					<documentation>
+						Identification of the data schema.
+					</documentation>
+				</annotation>
+			</attribute>
+			<attribute name="maximumMegabytes" type="positiveInteger" use="optional">
+					<annotation>
+						<documentation>
+							The maximum size of the input data, in megabytes.
+							If the input exceeds this size, the server may return an error
+							instead of processing the inputs.
+						</documentation>
+					</annotation>
+				</attribute>
+			<attribute name="default" type="boolean" use="optional"/>
+		</complexType>
+	</element>
+	<!-- =========================================================== -->
+	
+</schema>

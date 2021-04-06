@@ -32,6 +32,7 @@ import java.awt.geom.Point2D;
 import java.util.Collection;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.opengis.parameter.GeneralParameterDescriptor;
@@ -124,6 +125,9 @@ public class Krovak extends MapProjection {
      */
     protected final double azimuth;
 
+    /** The descriptor group, stored as a field as there are different providers */
+    protected final ParameterDescriptorGroup descriptors;
+
     /** Parameter used by ESRI - scale for X Axis */
     protected double x_scale;
 
@@ -150,49 +154,45 @@ public class Krovak extends MapProjection {
      * Constructs a new map projection from the supplied parameters.
      *
      * @param parameters The parameter values in standard units.
-     * @throws ParameterNotFoundException if a mandatory parameter is missing.
-     */
-    protected Krovak(final ParameterValueGroup parameters) throws ParameterNotFoundException {
-        this(parameters, true);
-    }
-    /**
-     * Constructs a new map projection from the supplied parameters.
-     *
-     * @param parameters The parameter values in standard units.
      * @param esriDefinition true if ESRI parameters are specified.
      * @throws ParameterNotFoundException if a mandatory parameter is missing.
      */
-    protected Krovak(final ParameterValueGroup parameters, boolean esriDefinition)
+    protected Krovak(
+            final ParameterValueGroup parameters,
+            final ParameterDescriptorGroup descriptors,
+            boolean esriDefinition)
             throws ParameterNotFoundException {
-        super(parameters);
-        this.esriDefinition = true; // esriDefinition;
+        super(parameters, descriptors.descriptors());
+        this.descriptors = descriptors;
+        this.esriDefinition = esriDefinition;
         final Collection<GeneralParameterDescriptor> expected =
                 getParameterDescriptors().descriptors();
         // Fetch parameters from user input.
-        latitudeOfOrigin = doubleValue(expected, Provider.LATITUDE_OF_CENTER, parameters);
-        centralMeridian = doubleValue(expected, Provider.LONGITUDE_OF_CENTER, parameters);
-        azimuth = doubleValue(expected, Provider.AZIMUTH, parameters);
+        latitudeOfOrigin = doubleValue(expected, BaseProvider.LATITUDE_OF_CENTER, parameters);
+        centralMeridian = doubleValue(expected, BaseProvider.LONGITUDE_OF_CENTER, parameters);
+        azimuth = doubleValue(expected, BaseProvider.AZIMUTH, parameters);
         pseudoStandardParallel =
-                doubleValue(expected, Provider.PSEUDO_STANDARD_PARALLEL, parameters);
-        scaleFactor = doubleValue(expected, Provider.SCALE_FACTOR, parameters);
-        x_scale = doubleValue(expected, Provider.X_SCALE, parameters);
-        y_scale = doubleValue(expected, Provider.Y_SCALE, parameters);
-        xy_plane_rotation = doubleValue(expected, Provider.XY_PLANE_ROTATION, parameters);
+                doubleValue(expected, BaseProvider.PSEUDO_STANDARD_PARALLEL, parameters);
+        scaleFactor = doubleValue(expected, BaseProvider.SCALE_FACTOR, parameters);
+        x_scale = doubleValue(expected, BaseProvider.X_SCALE, parameters);
+        y_scale = doubleValue(expected, BaseProvider.Y_SCALE, parameters);
+        xy_plane_rotation = doubleValue(expected, BaseProvider.XY_PLANE_ROTATION, parameters);
 
         /**
          * Check if there are parameters for axis swapping used by ESRI - if so then set variable so
          * the proper ParameterDescriptorGroup will be returned by getParameterDescriptors()
          */
-        if (Double.isNaN(doubleValue(expected, Provider.X_SCALE, parameters))
-                && Double.isNaN(doubleValue(expected, Provider.Y_SCALE, parameters))
-                && Double.isNaN(doubleValue(expected, Provider.XY_PLANE_ROTATION, parameters))) {
+        if (Double.isNaN(doubleValue(expected, BaseProvider.X_SCALE, parameters))
+                && Double.isNaN(doubleValue(expected, BaseProvider.Y_SCALE, parameters))
+                && Double.isNaN(
+                        doubleValue(expected, BaseProvider.XY_PLANE_ROTATION, parameters))) {
             this.esriDefinition = false;
 
         } else {
             axisTransform = createAffineTransform(x_scale, y_scale, xy_plane_rotation);
         }
-        ensureLatitudeInRange(Provider.LATITUDE_OF_CENTER, latitudeOfOrigin, false);
-        ensureLongitudeInRange(Provider.LONGITUDE_OF_CENTER, centralMeridian, false);
+        ensureLatitudeInRange(BaseProvider.LATITUDE_OF_CENTER, latitudeOfOrigin, false);
+        ensureLongitudeInRange(BaseProvider.LONGITUDE_OF_CENTER, centralMeridian, false);
 
         // Calculates useful constants.
         sinAzim = sin(azimuth);
@@ -220,6 +220,11 @@ public class Krovak extends MapProjection {
         rop = ro0 * pow(tanS2, n);
     }
 
+    @Override
+    public ParameterDescriptorGroup getParameterDescriptors() {
+        return this.descriptors;
+    }
+
     private MathTransform createAffineTransform(
             double x_scale, double y_scale, double xy_plane_rotation) {
         /** calculates matrix coefficients form geometric coefficients */
@@ -231,12 +236,6 @@ public class Krovak extends MapProjection {
         MathTransform theAffineTransform = new AffineTransform2D(at);
         return theAffineTransform;
     }
-    /** {@inheritDoc} */
-    @Override
-    public ParameterDescriptorGroup getParameterDescriptors() {
-        return (esriDefinition) ? Provider.PARAMETERS_ESRI : Provider.PARAMETERS;
-        //	return Provider.PARAMETERSESRI;
-    }
 
     /** {@inheritDoc} */
     @Override
@@ -244,15 +243,17 @@ public class Krovak extends MapProjection {
         final Collection<GeneralParameterDescriptor> expected =
                 getParameterDescriptors().descriptors();
         final ParameterValueGroup values = super.getParameterValues();
-        set(expected, Provider.LATITUDE_OF_CENTER, values, latitudeOfOrigin);
-        set(expected, Provider.LONGITUDE_OF_CENTER, values, centralMeridian);
-        set(expected, Provider.AZIMUTH, values, azimuth);
-        set(expected, Provider.PSEUDO_STANDARD_PARALLEL, values, pseudoStandardParallel);
-        set(expected, Provider.SCALE_FACTOR, values, scaleFactor);
+        set(expected, BaseProvider.LATITUDE_OF_CENTER, values, latitudeOfOrigin);
+        set(expected, BaseProvider.LONGITUDE_OF_CENTER, values, centralMeridian);
+        set(expected, BaseProvider.AZIMUTH, values, azimuth);
+        set(expected, BaseProvider.PSEUDO_STANDARD_PARALLEL, values, pseudoStandardParallel);
+        set(expected, BaseProvider.SCALE_FACTOR, values, scaleFactor);
 
-        set(expected, Provider.X_SCALE, values, x_scale);
-        set(expected, Provider.Y_SCALE, values, y_scale);
-        set(expected, Provider.XY_PLANE_ROTATION, values, xy_plane_rotation);
+        if (esriDefinition) {
+            set(expected, BaseProvider.X_SCALE, values, x_scale);
+            set(expected, BaseProvider.Y_SCALE, values, y_scale);
+            set(expected, BaseProvider.XY_PLANE_ROTATION, values, xy_plane_rotation);
+        }
         return values;
     }
 
@@ -360,7 +361,7 @@ public class Krovak extends MapProjection {
      * @author Jan Jezek
      * @see org.geotools.referencing.operation.DefaultMathTransformFactory
      */
-    public static class Provider extends AbstractProvider {
+    private abstract static class BaseProvider extends AbstractProvider {
         /** For cross-version compatibility. */
         private static final long serialVersionUID = -278392856661204734L;
 
@@ -406,9 +407,9 @@ public class Krovak extends MapProjection {
         public static final ParameterDescriptor AZIMUTH =
                 createDescriptor(
                         new NamedIdentifier[] {
+                            new NamedIdentifier(Citations.EPSG, "Co-latitude of cone axis"),
                             new NamedIdentifier(Citations.OGC, "azimuth"),
                             new NamedIdentifier(Citations.EPSG, "Azimuth of initial line"),
-                            new NamedIdentifier(Citations.EPSG, "Co-latitude of cone axis"),
                             new NamedIdentifier(Citations.GEOTIFF, "AzimuthAngle"),
                             new NamedIdentifier(Citations.ESRI, "Azimuth"),
                         },
@@ -483,8 +484,45 @@ public class Krovak extends MapProjection {
                         360,
                         NonSI.DEGREE_ANGLE);
 
+        /** Constructs a new provider. */
+        public BaseProvider(final ParameterDescriptorGroup params) {
+            super(params);
+        }
+
+        /** Returns the operation type for this map projection. */
+        @Override
+        public Class<ConicProjection> getOperationType() {
+            return ConicProjection.class;
+        }
+    }
+
+    public static class Provider extends BaseProvider {
+
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS_ESRI =
+        static final ParameterDescriptorGroup PARAMETERS =
+                createDescriptorGroup(
+                        new NamedIdentifier[] {
+                            new NamedIdentifier(Citations.OGC, "Krovak"),
+                            new NamedIdentifier(Citations.GEOTIFF, "Krovak"),
+                            new NamedIdentifier(Citations.EPSG, "Krovak Oblique Conformal Conic"),
+                            new NamedIdentifier(Citations.EPSG, "Krovak Oblique Conic Conformal"),
+                            new NamedIdentifier(Citations.EPSG, "9819"),
+                            new NamedIdentifier(Citations.ESRI, "Krovak"),
+                        },
+                        new ParameterDescriptor[] {
+                            SEMI_MAJOR,
+                            SEMI_MINOR,
+                            LATITUDE_OF_CENTER,
+                            LONGITUDE_OF_CENTER,
+                            AZIMUTH,
+                            PSEUDO_STANDARD_PARALLEL,
+                            SCALE_FACTOR,
+                            FALSE_EASTING,
+                            FALSE_NORTHING
+                        });
+
+        /** The parameters group. */
+        static final ParameterDescriptorGroup ESRI_PARAMETERS =
                 createDescriptorGroup(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "Krovak"),
@@ -508,16 +546,51 @@ public class Krovak extends MapProjection {
                             Y_SCALE,
                             XY_PLANE_ROTATION
                         });
+
+        public Provider() {
+            super(ESRI_PARAMETERS);
+        }
+
+        @Override
+        public MathTransform createMathTransform(final ParameterValueGroup parameters)
+                throws ParameterNotFoundException {
+            boolean esriDefinition = isESRIDefinition(parameters);
+
+            if (esriDefinition) {
+                return new Krovak(parameters, ESRI_PARAMETERS, true);
+            } else {
+                return new Krovak(parameters, PARAMETERS, false);
+            }
+        }
+
+        private boolean isESRIDefinition(ParameterValueGroup parameters) {
+            for (final GeneralParameterDescriptor descriptor :
+                    parameters.getDescriptor().descriptors()) {
+                if (descriptor instanceof ParameterDescriptor) {
+                    if (AbstractIdentifiedObject.nameMatches(descriptor, X_SCALE)
+                            || AbstractIdentifiedObject.nameMatches(descriptor, Y_SCALE)
+                            || AbstractIdentifiedObject.nameMatches(
+                                    descriptor, XY_PLANE_ROTATION)) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+    }
+
+    public static class NorthProvider extends BaseProvider {
+
         /** The parameters group. */
         static final ParameterDescriptorGroup PARAMETERS =
                 createDescriptorGroup(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "Krovak"),
                             new NamedIdentifier(Citations.GEOTIFF, "Krovak"),
-                            new NamedIdentifier(Citations.EPSG, "Krovak Oblique Conformal Conic"),
-                            new NamedIdentifier(Citations.EPSG, "Krovak Oblique Conic Conformal"),
-                            new NamedIdentifier(Citations.EPSG, "9819"),
-                            new NamedIdentifier(Citations.ESRI, "Krovak"),
+                            new NamedIdentifier(Citations.OGC, "Krovak (North Orientated)"),
+                            new NamedIdentifier(Citations.EPSG, "Krovak (North Orientated)"),
+                            new NamedIdentifier(Citations.EPSG, "1041"),
                         },
                         new ParameterDescriptor[] {
                             SEMI_MAJOR,
@@ -528,36 +601,19 @@ public class Krovak extends MapProjection {
                             PSEUDO_STANDARD_PARALLEL,
                             SCALE_FACTOR,
                             FALSE_EASTING,
-                            FALSE_NORTHING,
+                            FALSE_NORTHING
                         });
 
-        /** Constructs a new provider. */
-        public Provider() {
-            super(PARAMETERS_ESRI);
+        public NorthProvider() {
+            super(PARAMETERS);
         }
 
-        /** Constructs a new provider. */
-        public Provider(final ParameterDescriptorGroup params) {
-            super(params);
-        }
-
-        /** Returns the operation type for this map projection. */
-        @Override
-        public Class<ConicProjection> getOperationType() {
-            return ConicProjection.class;
-        }
-
-        /**
-         * Creates a transform from the specified group of parameter values.
-         *
-         * @param parameters The group of parameter values.
-         * @return The created math transform.
-         * @throws ParameterNotFoundException if a required parameter was not found.
-         */
         @Override
         public MathTransform createMathTransform(final ParameterValueGroup parameters)
                 throws ParameterNotFoundException {
-            return new Krovak(parameters, false);
+            // same as the south orientated provider, the axis flip is added around
+            // the transformation by the factories, but need to match the citations correctly
+            return new Krovak(parameters, PARAMETERS, false);
         }
     }
 

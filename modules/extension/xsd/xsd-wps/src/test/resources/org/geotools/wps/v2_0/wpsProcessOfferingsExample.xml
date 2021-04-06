@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wps:ProcessOfferings
+	xmlns:wps="http://www.opengis.net/wps/2.0"
+	xmlns:ows="http://www.opengis.net/ows/2.0"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.opengis.net/wps/2.0 ../wps.xsd">
+	
+	<wps:ProcessOffering jobControlOptions="sync-execute async-execute dismiss" outputTransmission="value reference">
+		<wps:Process> 			
+			<ows:Title>Planar Buffer operation for Simple Features</ows:Title>
+			<ows:Abstract>Create a buffer around Simple Feature geometries. Accepts any valid simple features input in GML or GeoJson and computes their joint buffer geometry.</ows:Abstract>
+			<ows:Identifier>http://my.wps.server/processes/proximity/Planar-Buffer</ows:Identifier>
+			<ows:Metadata xlink:role="http://www.opengis.net/spec/wps/2.0/def/process-profile/concept" xlink:href="http://some.host/profileregistry/concept/buffer"/>
+			<ows:Metadata xlink:role="http://www.opengis.net/spec/wps/2.0/def/process-profile/concept" xlink:href="http://some.host/profileregistry/concept/planarbuffer"/>
+			<ows:Metadata xlink:role="http://www.opengis.net/spec/wps/2.0/def/process-profile/generic" xlink:href="http://some.host/profileregistry/generic/SF-Buffer"/>
+			<ows:Metadata xlink:role="http://www.opengis.net/spec/wps/2.0/def/process/description/documentation" xlink:href="http://some.host/profileregistry/implementation/Planar-GML-Buffer.html"/>
+			<wps:Input>
+				<ows:Title>Geometry to be buffered</ows:Title>
+				<ows:Abstract>Simple Features geometry input in GML or GeoJson</ows:Abstract>
+				<ows:Identifier>INPUT_GEOMETRY</ows:Identifier>
+				<ows:Metadata xlink:role="http://www.opengis.net/spec/wps/2.0/def/process/description/documentation" xlink:href="http://my.wps.server/processes/proximity/Planar-Buffer.html#input_geometry"/>
+				<wps:ComplexData>
+					<wps:Format mimeType="text/xml" encoding="UTF-8" schema="http://schemas.opengis.net/gml/3.2.1/feature.xsd" default="true"/>
+					<wps:Format mimeType="application/json" encoding="UTF-8"/>
+				</wps:ComplexData>
+			</wps:Input>
+			<wps:Input minOccurs="0">
+				<ows:Title>Distance</ows:Title>
+				<ows:Abstract>Distance to be used to calculate buffer.</ows:Abstract>
+				<ows:Identifier>DISTANCE</ows:Identifier>
+				<ows:Metadata xlink:role="http://www.opengis.net/spec/wps/2.0/def/process/description/documentation" xlink:href="http://my.wps.server/processes/proximity/Planar-Buffer.html#distance"/>
+				<wps:LiteralData>
+					<wps:Format mimeType="text/plain" default="true"/>
+					<wps:Format mimeType="text/xml"/>
+					<LiteralDataDomain default="true">
+						<ows:AllowedValues>
+							<ows:Range>
+								<ows:MinimumValue>-INF</ows:MinimumValue>
+								<ows:MaximumValue>INF</ows:MaximumValue>
+							</ows:Range>
+						</ows:AllowedValues>
+						<ows:DataType ows:reference="http://www.w3.org/2001/XMLSchema#double">Double</ows:DataType>
+					</LiteralDataDomain>
+				</wps:LiteralData>
+			</wps:Input>
+			<wps:Output>
+				<ows:Title>Buffered Geometry</ows:Title>
+				<ows:Abstract>Output Geometry in GML or GeoJson</ows:Abstract>
+				<ows:Identifier>BUFFERED_GEOMETRY</ows:Identifier>
+				<ows:Metadata xlink:role="http://www.opengis.net/spec/wps/2.0/def/process/description/documentation" xlink:href="http://my.wps.server/processes/proximity/Planar-Buffer.html#buffered_geometry"/>
+				<wps:ComplexData>
+					<wps:Format mimeType="text/xml" encoding="UTF-8" schema="http://schemas.opengis.net/gml/3.2.1/feature.xsd" default="true"/>
+					<wps:Format mimeType="application/json" encoding="UTF-8"/>
+				</wps:ComplexData>
+			</wps:Output>
+		</wps:Process>
+	</wps:ProcessOffering>
+	
+</wps:ProcessOfferings>

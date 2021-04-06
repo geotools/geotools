@@ -7,17 +7,14 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>unsupported</artifactId>
     <version>26-SNAPSHOT</version>
-  </parent> 
+  </parent>
 
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
@@ -26,10 +23,8 @@
   <artifactId>gt-mbtiles</artifactId>
   <packaging>jar</packaging>
   <name>MBTiles Module</name>
-  <description>
-    MBTiles support for GeoTools.
-  </description>
-  
+  <description>MBTiles support for GeoTools.</description>
+
   <licenses>
     <license>
       <name>Lesser General Public License (LGPL)</name>
@@ -37,7 +32,6 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-
 
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
@@ -54,7 +48,6 @@
       </roles>
     </developer>
   </developers>
-
 
   <!-- =========================================================== -->
   <!--     Dependency Mangement                                    -->
@@ -80,11 +73,11 @@
       <artifactId>gt-epsg-hsql</artifactId>
       <version>${project.version}</version>
     </dependency>
-    
+
     <!--   Third-party dependencies   -->
     <dependency>
-        <groupId>org.xerial</groupId>
-        <artifactId>sqlite-jdbc</artifactId>
+      <groupId>org.xerial</groupId>
+      <artifactId>sqlite-jdbc</artifactId>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -98,7 +91,7 @@
       <groupId>no.ecc.vectortile</groupId>
       <artifactId>java-vector-tile</artifactId>
     </dependency>
-    
+
     <!-- test depedencies -->
     <dependency>
       <groupId>org.hamcrest</groupId>

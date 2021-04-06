@@ -7,10 +7,7 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -19,7 +16,6 @@
     <version>26-SNAPSHOT</version>
   </parent>
 
-
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
@@ -27,18 +23,14 @@
   <artifactId>gt-epsg-wkt</artifactId>
   <packaging>jar</packaging>
   <name>EPSG Authority Service using WKT file</name>
-  
 
-
-  <description>
-    EPSG and AUTO authority factories are defined for data.crs.CRSService.
+  <description>EPSG and AUTO authority factories are defined for data.crs.CRSService.
     These codes are used to provide CoordinateRegerenceSystem for GCE and
     DataStore implementations that do not define their own native definition.
   
     Contains a Property file based CoordinateSystemAuthority (the property file 
     is too large to be included in the main geotools release). This class will 
-    need to be ported to the new GeoAPI CoordinateReferenceSystem interfaces.
-  </description>
+    need to be ported to the new GeoAPI CoordinateReferenceSystem interfaces.</description>
 
   <licenses>
     <license>
@@ -48,14 +40,13 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Jody Garnett</name>
       <id>jive</id>
+      <name>Jody Garnett</name>
       <email>jive@users.sourceforge.net</email>
       <organization>Refractions Research</organization>
       <roles>
@@ -64,7 +55,6 @@
       </roles>
     </developer>
   </developers>
-
 
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->

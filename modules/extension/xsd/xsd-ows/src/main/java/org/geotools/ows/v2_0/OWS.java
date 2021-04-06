@@ -228,7 +228,7 @@ public final class OWS extends XSD {
             new QName("http://www.opengis.net/ows/2.0", "_rangeClosure");
     /** @generated */
     public static final QName CapabilitiesBaseType_Languages =
-            new QName("http://www.opengis.net/ows/2.0", "CapabilitiesBaseType_Languages");
+            new QName("http://www.opengis.net/ows/2.0", "Languages");
     /** @generated */
     public static final QName GetCapabilitiesType_AcceptLanguages =
             new QName("http://www.opengis.net/ows/2.0", "GetCapabilitiesType_AcceptLanguages");

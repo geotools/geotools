@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema
+	xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:wps="http://www.opengis.net/wps/2.0"
+	targetNamespace="http://www.opengis.net/wps/2.0"
+	elementFormDefault="qualified"
+	xml:lang="en"
+	version="2.0.0">
+	
+	<annotation>
+		<documentation>
+			WPS is an OGC Standard.
+			Copyright (c) 2015 Open Geospatial Consortium.
+			To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.
+		</documentation>
+	</annotation>
+	
+	<!-- all-components document include (OGC 06-135r11 s#14) -->
+	<include schemaLocation="wps.xsd"/>
+	
+	<!-- === IMPORTS === -->
+	<import namespace="http://www.w3.org/2001/XMLSchema" schemaLocation="http://www.w3.org/2001/XMLSchema.xsd" />
+	
+	<!-- === INCLUDES === -->
+	<include schemaLocation="processDescription.xsd"/>
+	
+	<!-- =========================================================== -->
+	<element name="GenericProcess" type="wps:GenericProcessType"/>
+	<!-- =========================================================== -->
+	<complexType name="GenericProcessType">
+		<complexContent>
+			<extension base="wps:DescriptionType">
+				<annotation>
+					<documentation>
+						In this use, the DescriptionType shall describe process properties.
+					</documentation>
+				</annotation>
+				<sequence>
+					<element name="Input" type="wps:GenericInputType" minOccurs="0" maxOccurs="unbounded">
+						<annotation>
+							<documentation>
+								A process can have zero or more inputs.
+							</documentation>
+						</annotation>
+					</element>
+					<element name="Output" type="wps:GenericOutputType" minOccurs="1" maxOccurs="unbounded">
+						<annotation>
+							<documentation>
+								A process can have one or more outputs.
+							</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- =========================================================== -->
+	<complexType name="GenericInputType">
+		<annotation>
+			<documentation>Description of an input to a process. </documentation>
+		</annotation>
+		<complexContent>
+			<extension base="wps:DescriptionType">
+				<annotation>
+					<documentation>
+						In this use, the DescriptionType shall describe a process input.
+					</documentation>
+				</annotation>
+				<sequence>
+					<element name="Input" type="wps:GenericInputType" minOccurs="0" maxOccurs="unbounded"/>
+				</sequence>
+				<attributeGroup ref="occurs">
+					<annotation>
+						<documentation>
+							This attribute defines the cardinality of a particular input.
+						</documentation>
+					</annotation>
+				</attributeGroup>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- =========================================================== -->
+	<complexType name="GenericOutputType">
+		<annotation>
+			<documentation>Description of a process Output. </documentation>
+		</annotation>
+		<complexContent>
+			<extension base="wps:DescriptionType">
+				<annotation>
+					<documentation>
+						In this use, the DescriptionType shall describe a process output.
+					</documentation>
+				</annotation>
+				<sequence>
+					<element name="Output" type="wps:GenericOutputType" minOccurs="0" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	
+</schema>

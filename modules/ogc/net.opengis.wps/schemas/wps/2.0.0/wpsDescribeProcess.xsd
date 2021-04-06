@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema
+	xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:ows="http://www.opengis.net/ows/2.0"
+	xmlns:wps="http://www.opengis.net/wps/2.0"
+	targetNamespace="http://www.opengis.net/wps/2.0"
+	elementFormDefault="qualified"
+	xml:lang="en"
+	version="2.0.0">
+	<annotation>
+		<documentation>
+			WPS is an OGC Standard.
+			Copyright (c) 2015 Open Geospatial Consortium.
+			To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.
+		</documentation>
+	</annotation>
+	
+	<!-- all-components document include (OGC 06-135r11 s#14) -->
+	<include schemaLocation="wps.xsd"/>
+	
+	<!-- === IMPORTS === -->
+	<import namespace="http://www.opengis.net/ows/2.0" schemaLocation="http://schemas.opengis.net/ows/2.0/owsAll.xsd"/>
+	<import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
+	
+	<!-- === INCLUDES === -->
+	<include schemaLocation="wpsCommon.xsd"/>
+	<include schemaLocation="processDescription.xsd"/>
+	
+	<!-- =========================================================== -->
+	<!-- DescribeProcess request elements and types -->
+	<!-- =========================================================== -->
+	<element name="DescribeProcess">
+		<annotation>
+			<documentation>WPS DescribeProcess operation request. </documentation>
+		</annotation>
+		<complexType>
+			<complexContent>
+				<extension base="wps:RequestBaseType">
+					<sequence>
+						<element ref="ows:Identifier" maxOccurs="unbounded">
+							<annotation>
+								<documentation>
+									One or more identifiers for which the process description shall be obtained.
+									"ALL"" is reserved to retrieve the  descriptions for all available process offerings.
+								</documentation>
+							</annotation>
+						</element>
+					</sequence>
+					<attribute ref="xml:lang" use="optional">
+						<annotation>
+							<documentation>
+								RFC 4646 language code of the human-readable text (e.g. "en-CA") in the process description.
+							</documentation>
+						</annotation>
+					</attribute>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+	
+	<!-- =========================================================== -->
+	<!-- DescribeProcess response elements and types -->
+	<!-- =========================================================== -->
+	<element name="ProcessOfferings">
+		<annotation>
+			<documentation>
+				List structure that is returned by the WPS DescribeProcess operation.
+				Contains XML descriptions for the queried process identifiers.
+			</documentation>
+		</annotation>
+		<complexType>
+			<sequence>
+				<element ref="wps:ProcessOffering" maxOccurs="unbounded">
+					<annotation>
+						<documentation>
+							Ordered list of one or more full Process
+							descriptions, listed in the order in which they were requested
+							in the DescribeProcess operation request.
+						</documentation>
+					</annotation>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+	<!-- =========================================================== -->
+	<element name="ProcessOffering">
+		<annotation>
+			<documentation>
+				A process offering is a process description. It has additional attributes that provide additional
+				information on how this process can be executed on a particular service instance (execution modes,
+				data transmission modes, informative process version.)
+			</documentation>
+		</annotation>
+		<complexType>
+			<sequence>
+				<choice>
+					<element ref="wps:Process"/>
+					<any namespace="##other" processContents="lax"/>
+				</choice>
+				
+			</sequence>
+			<attributeGroup ref="wps:processPropertiesAttributes"/>
+					
+		</complexType>
+	</element>
+	<!-- =========================================================== -->
+	<attributeGroup name="processPropertiesAttributes">
+		<attribute name="jobControlOptions" use="required">
+			<annotation>
+				<documentation>
+					Defines the valid execution modes for a particular process offering.
+				</documentation>
+			</annotation>
+			<simpleType>
+				<list itemType="wps:JobControlOptionsType">
+					<annotation>
+						<documentation>
+							Allowed execution modes are expressed in an XML list.
+						</documentation>
+					</annotation>
+				</list>
+			</simpleType>
+		</attribute>
+		<attribute name="outputTransmission">
+			<annotation>
+				<documentation>
+					Indicates whether data outputs from this process can be stored by the WPS server as web-accessible resources.
+				</documentation>
+			</annotation>
+			<simpleType>
+				<list itemType="wps:DataTransmissionModeType">
+					<annotation>
+						<documentation>
+							Allowed data transmission modes are expressed in an XML list.
+						</documentation>
+					</annotation>
+				</list>
+			</simpleType>
+		</attribute>
+		<attribute name="processVersion" use="optional" type="ows:VersionType">
+			<annotation>
+				<documentation>
+					The process version is an informative element in a process offering. It is not intended for version negotiation
+					but can rather be used to communicate updated or changed process implementations on a particular service instance. 
+				</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="processModel" use="optional" default="native" type="string">
+			<annotation>
+				<documentation>
+					Type of the process model. Include when using a different process model than the native process model. This is an
+					extension hook to support processes that have been specified in other OGC Standards, such as SensorML. For those
+					process models, compliance with the abstract process model has to be ensured compatibility with the WPS protocol.
+				</documentation>
+			</annotation>
+		</attribute>
+		
+	</attributeGroup>
+	
+</schema>

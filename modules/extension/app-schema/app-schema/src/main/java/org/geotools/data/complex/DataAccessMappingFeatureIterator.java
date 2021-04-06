@@ -1562,10 +1562,6 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
             Collection collection = (Collection) property.getValue();
 
-            if (this.getClientProperties(property).containsKey(XLINK_HREF_NAME)) {
-                return true;
-            }
-
             List<Property> values = new ArrayList<>();
             for (Object o : collection) {
                 if (o instanceof Property) {
@@ -1585,6 +1581,9 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                 }
             }
             property.setValue(values);
+            if (this.getClientProperties(property).containsKey(XLINK_HREF_NAME)) {
+                return true;
+            }
         } else if (property.getName().equals(ComplexFeatureConstants.FEATURE_CHAINING_LINK_NAME)) {
             // ignore fake attribute FEATURE_LINK
             result = false;

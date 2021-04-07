@@ -525,7 +525,7 @@ class FilterToSqlHelper {
             // extract epoch returns seconds, DateDifference is defined in ms instead
             out.write("(extract(epoch from ");
             d1.accept(delegate, java.util.Date.class);
-            out.write(" - ");
+            out.write("::timestamp - ");
             d2.accept(delegate, java.util.Date.class);
             out.write(") * 1000)");
         } else if (function instanceof FilterFunction_area) {

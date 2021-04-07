@@ -68,4 +68,8 @@ public class PostgisGroupByVisitorOnlineTest extends JDBCGroupByVisitorOnlineTes
         checkValueContains(value, "FAB", "500.0");
         checkValueContains(value, "SCH", "60.0");
     }
+
+    public void testTimestampHistogramDate() throws Exception {
+        testTimestampHistogram("last_update_date");
+    }
 }

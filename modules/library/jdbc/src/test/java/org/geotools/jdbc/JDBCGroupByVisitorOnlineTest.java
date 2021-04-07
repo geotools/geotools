@@ -17,6 +17,7 @@
 package org.geotools.jdbc;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -147,10 +148,15 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
     }
 
     public void testTimestampHistogram() throws Exception {
+        testTimestampHistogram("last_update");
+    }
+
+    protected void testTimestampHistogram(String temporalColumnName)
+            throws ParseException, IOException {
         // buckets with a size of one day, the function returns an integer from 0 onwards, which
         // is a zero based bucket number in the bucket sequence
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyName pn = ff.property(aname("last_update"));
+        PropertyName pn = ff.property(aname(temporalColumnName));
         Date baseDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2016-06-03 00:00:00");
         Expression difference = ff.function("dateDifference", pn, ff.literal(baseDate));
         int dayInMs = 1000 * 60 * 60 * 24;

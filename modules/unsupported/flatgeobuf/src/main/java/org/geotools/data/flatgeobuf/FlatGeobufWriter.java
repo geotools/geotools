@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2021, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -21,19 +21,17 @@ import java.io.IOException;
 import java.io.OutputStream;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.wololo.flatgeobuf.geotools.FeatureConversions;
-import org.wololo.flatgeobuf.geotools.FeatureTypeConversions;
-import org.wololo.flatgeobuf.geotools.HeaderMeta;
+import org.wololo.flatgeobuf.Constants;
+import org.wololo.flatgeobuf.HeaderMeta;
 
-public class FlatgeobufWriter {
+public class FlatGeobufWriter {
 
     private final OutputStream outputStream;
+    private final FlatBufferBuilder builder;
 
     private HeaderMeta headerMeta;
 
-    private FlatBufferBuilder builder;
-
-    public FlatgeobufWriter(OutputStream outputStream, FlatBufferBuilder builder) {
+    public FlatGeobufWriter(OutputStream outputStream, FlatBufferBuilder builder) {
         this.outputStream = outputStream;
         this.builder = builder;
     }
@@ -43,7 +41,8 @@ public class FlatgeobufWriter {
     }
 
     public void writeFeatureType(SimpleFeatureType featureType) throws IOException {
-        this.headerMeta =
-                FeatureTypeConversions.serialize(featureType, 0, this.outputStream, this.builder);
+        outputStream.write(Constants.MAGIC_BYTES);
+        headerMeta = HeaderMetaUtil.fromFeatureType(featureType, 0);
+        HeaderMeta.write(headerMeta, outputStream, builder);
     }
 }

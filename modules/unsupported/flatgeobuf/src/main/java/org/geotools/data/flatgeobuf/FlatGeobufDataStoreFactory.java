@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2021, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -19,72 +19,83 @@ package org.geotools.data.flatgeobuf;
 import java.awt.RenderingHints;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
 import java.util.Map;
-import java.util.logging.Logger;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
+import org.geotools.data.store.ContentDataStore;
 import org.geotools.util.KVP;
-import org.geotools.util.logging.Logging;
 
-public class FlatgeobufDataStoreFactory implements DataStoreFactorySpi {
+public class FlatGeobufDataStoreFactory implements DataStoreFactorySpi {
 
-    private static final Logger LOGGER = Logging.getLogger(FlatgeobufDataStoreFactory.class);
-
-    public static final Param FILE_PARAM =
+    public static final Param URL_PARAM =
             new Param(
-                    "flatgeobuf-file",
-                    File.class,
-                    "The Flatgeobuf file or directory",
+                    "url",
+                    URL.class,
+                    "The FlatGeobuf file or directory",
                     true,
                     null,
                     new KVP(Param.EXT, "fgb"));
 
-    public FlatgeobufDataStoreFactory() {}
+    public static final Param NAMESPACE_PARAM =
+            new Param(
+                    "namespace",
+                    URI.class,
+                    "uri to a the namespace",
+                    false,
+                    null, // not required
+                    new KVP(Param.LEVEL, "advanced"));
+
+    public FlatGeobufDataStoreFactory() {}
 
     @Override
     public DataStore createDataStore(Map<String, ?> map) throws IOException {
-        File file = (File) FILE_PARAM.lookUp(map);
-        if (file.isDirectory()) {
-            return new FlatgeobufDirectoryDataStore(file);
+        URL url = (URL) URL_PARAM.lookUp(map);
+        URI namespace = (URI) NAMESPACE_PARAM.lookUp(map);
+        File file = FlatGeobufDataStore.getFile(url);
+
+        ContentDataStore store;
+        if (file != null && file.isDirectory()) {
+            store = new FlatGeobufDirectoryDataStore(file);
         } else {
-            return new FlatgeobufDataStore(file);
+            store = new FlatGeobufDataStore(url);
         }
+        if (namespace != null) {
+            store.setNamespaceURI(namespace.toString());
+        }
+        return store;
     }
 
     @Override
     public DataStore createNewDataStore(Map<String, ?> map) throws IOException {
-        File file = (File) FILE_PARAM.lookUp(map);
-        if (file.isDirectory()) {
-            return new FlatgeobufDirectoryDataStore(file);
-        } else {
-            if (file.exists()) {
-                LOGGER.warning("File already exists: " + file);
-            }
-            return new FlatgeobufDataStore(file);
-        }
+        return createDataStore(map);
     }
 
     @Override
     public String getDisplayName() {
-        return "Flatgeobuf";
+        return "FlatGeobuf";
     }
 
     @Override
     public String getDescription() {
-        return "A DataStore for reading and writing Flatgeobuf files";
+        return "A DataStore for reading and writing FlatGeobuf files";
     }
 
     @Override
     public Param[] getParametersInfo() {
-        return new Param[] {FILE_PARAM};
+        return new Param[] {URL_PARAM, NAMESPACE_PARAM};
     }
 
     @Override
     public boolean canProcess(Map<String, ?> map) {
         try {
-            File file = (File) FILE_PARAM.lookUp(map);
+            URL url = (URL) URL_PARAM.lookUp(map);
+            File file = FlatGeobufDataStore.getFile(url);
             if (file != null) {
                 return file.isDirectory() || file.getPath().toLowerCase().endsWith(".fgb");
+            } else {
+                return url.toString().endsWith(".fgb");
             }
         } catch (IOException e) {
             // ignore as we are expected to return true or false

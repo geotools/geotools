@@ -23,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.Serializable;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -48,7 +49,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-public class FlatgeobufDirectoryDataStoreTest {
+public class FlatGeobufDirectoryDataStoreTest {
 
     @Rule public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
@@ -74,7 +75,8 @@ public class FlatgeobufDirectoryDataStoreTest {
 
         // Get a DataStore
         Map<String, Serializable> params = new HashMap<>();
-        params.put("flatgeobuf-file", directory);
+        URL url = directory.toURI().toURL();
+        params.put("url", url);
         DataStore store = DataStoreFinder.getDataStore(params);
 
         // Get layers
@@ -126,7 +128,8 @@ public class FlatgeobufDirectoryDataStoreTest {
         File file1 = Files.createFile(Paths.get(dir.getAbsolutePath(), "points.fgb")).toFile();
         File file2 = Files.createFile(Paths.get(dir.getAbsolutePath(), "lines.fgb")).toFile();
         Map<String, Serializable> params = new HashMap<>();
-        params.put("flatgeobuf-file", dir);
+        URL url = dir.toURI().toURL();
+        params.put("url", url);
         DataStore store = DataStoreFinder.getDataStore(params);
         // File 1
         assertTrue(file1.exists());

@@ -23,41 +23,46 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
-import org.geotools.util.URLs;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory2;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-public class FlatgeobufDataStoreTest {
+public class FlatGeobufDataStoreTest {
 
     @Rule public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
     @Test
     public void readPoints() throws Exception {
-        File file =
-                URLs.urlToFile(
-                        getClass()
-                                .getClassLoader()
-                                .getResource("org/geotools/data/flatgeobuf/points.fgb"));
+        URL url =
+                getClass().getClassLoader().getResource("org/geotools/data/flatgeobuf/points.fgb");
         Map<String, Serializable> params = new HashMap<>();
-        params.put("flatgeobuf-file", file);
+        params.put("url", url);
         DataStore store = DataStoreFinder.getDataStore(params);
         assertEquals(1, store.getTypeNames().length);
         assertEquals("points", store.getTypeNames()[0]);
@@ -93,8 +98,10 @@ public class FlatgeobufDataStoreTest {
     @Test
     public void writePoints() throws Exception {
         File file = temporaryFolder.newFile("points.fgb");
+        file.delete();
         Map<String, Serializable> params = new HashMap<>();
-        params.put("flatgeobuf-file", file);
+        URL url = file.toURI().toURL();
+        params.put("url", url);
         DataStore store = DataStoreFinder.getDataStore(params);
 
         // Write
@@ -152,13 +159,9 @@ public class FlatgeobufDataStoreTest {
 
     @Test
     public void readLineStrings() throws Exception {
-        File file =
-                URLs.urlToFile(
-                        getClass()
-                                .getClassLoader()
-                                .getResource("org/geotools/data/flatgeobuf/lines.fgb"));
+        URL url = getClass().getClassLoader().getResource("org/geotools/data/flatgeobuf/lines.fgb");
         Map<String, Serializable> params = new HashMap<>();
-        params.put("flatgeobuf-file", file);
+        params.put("url", url);
         DataStore store = DataStoreFinder.getDataStore(params);
         assertEquals(1, store.getTypeNames().length);
         assertEquals("lines", store.getTypeNames()[0]);
@@ -193,8 +196,10 @@ public class FlatgeobufDataStoreTest {
     @Test
     public void writeLineStrings() throws Exception {
         File file = temporaryFolder.newFile("lines.fgb");
+        file.delete();
         Map<String, Serializable> params = new HashMap<>();
-        params.put("flatgeobuf-file", file);
+        URL url = file.toURI().toURL();
+        params.put("url", url);
         DataStore store = DataStoreFinder.getDataStore(params);
 
         // Write
@@ -257,13 +262,12 @@ public class FlatgeobufDataStoreTest {
 
     @Test
     public void readPolygons() throws Exception {
-        File file =
-                URLs.urlToFile(
-                        getClass()
-                                .getClassLoader()
-                                .getResource("org/geotools/data/flatgeobuf/polygons.fgb"));
+        URL url =
+                getClass()
+                        .getClassLoader()
+                        .getResource("org/geotools/data/flatgeobuf/polygons.fgb");
         Map<String, Serializable> params = new HashMap<>();
-        params.put("flatgeobuf-file", file);
+        params.put("url", url);
         DataStore store = DataStoreFinder.getDataStore(params);
         assertEquals(1, store.getTypeNames().length);
         assertEquals("polygons", store.getTypeNames()[0]);
@@ -321,8 +325,10 @@ public class FlatgeobufDataStoreTest {
     @Test
     public void writePolygons() throws Exception {
         File file = temporaryFolder.newFile("polygons.fgb");
+        file.delete();
         Map<String, Serializable> params = new HashMap<>();
-        params.put("flatgeobuf-file", file);
+        URL url = file.toURI().toURL();
+        params.put("url", url);
         DataStore store = DataStoreFinder.getDataStore(params);
 
         // Write
@@ -430,13 +436,12 @@ public class FlatgeobufDataStoreTest {
 
     @Test
     public void readMultiPoints() throws Exception {
-        File file =
-                URLs.urlToFile(
-                        getClass()
-                                .getClassLoader()
-                                .getResource("org/geotools/data/flatgeobuf/multipoints.fgb"));
+        URL url =
+                getClass()
+                        .getClassLoader()
+                        .getResource("org/geotools/data/flatgeobuf/multipoints.fgb");
         Map<String, Serializable> params = new HashMap<>();
-        params.put("flatgeobuf-file", file);
+        params.put("url", url);
         DataStore store = DataStoreFinder.getDataStore(params);
         assertEquals(1, store.getTypeNames().length);
         assertEquals("multipoints", store.getTypeNames()[0]);
@@ -472,8 +477,10 @@ public class FlatgeobufDataStoreTest {
     @Test
     public void writeMultiPoints() throws Exception {
         File file = temporaryFolder.newFile("multipoints.fgb");
+        file.delete();
         Map<String, Serializable> params = new HashMap<>();
-        params.put("flatgeobuf-file", file);
+        URL url = file.toURI().toURL();
+        params.put("url", url);
         DataStore store = DataStoreFinder.getDataStore(params);
 
         // Write
@@ -529,13 +536,12 @@ public class FlatgeobufDataStoreTest {
 
     @Test
     public void readMultiLineStrings() throws Exception {
-        File file =
-                URLs.urlToFile(
-                        getClass()
-                                .getClassLoader()
-                                .getResource("org/geotools/data/flatgeobuf/multilinestrings.fgb"));
+        URL url =
+                getClass()
+                        .getClassLoader()
+                        .getResource("org/geotools/data/flatgeobuf/multilinestrings.fgb");
         Map<String, Serializable> params = new HashMap<>();
-        params.put("flatgeobuf-file", file);
+        params.put("url", url);
         DataStore store = DataStoreFinder.getDataStore(params);
         assertEquals(1, store.getTypeNames().length);
         assertEquals("multilinestrings", store.getTypeNames()[0]);
@@ -572,8 +578,10 @@ public class FlatgeobufDataStoreTest {
     @Test
     public void writeMultiLineStrings() throws Exception {
         File file = temporaryFolder.newFile("multilinestrings.fgb");
+        file.delete();
         Map<String, Serializable> params = new HashMap<>();
-        params.put("flatgeobuf-file", file);
+        URL url = file.toURI().toURL();
+        params.put("url", url);
         DataStore store = DataStoreFinder.getDataStore(params);
 
         // Write
@@ -634,13 +642,12 @@ public class FlatgeobufDataStoreTest {
 
     @Test
     public void readMultiPolygons() throws Exception {
-        File file =
-                URLs.urlToFile(
-                        getClass()
-                                .getClassLoader()
-                                .getResource("org/geotools/data/flatgeobuf/multipolygons.fgb"));
+        URL url =
+                getClass()
+                        .getClassLoader()
+                        .getResource("org/geotools/data/flatgeobuf/multipolygons.fgb");
         Map<String, Serializable> params = new HashMap<>();
-        params.put("flatgeobuf-file", file);
+        params.put("url", url);
         DataStore store = DataStoreFinder.getDataStore(params);
         assertEquals(1, store.getTypeNames().length);
         assertEquals("multipolygons", store.getTypeNames()[0]);
@@ -692,8 +699,10 @@ public class FlatgeobufDataStoreTest {
     @Test
     public void writeMultiPolygons() throws Exception {
         File file = temporaryFolder.newFile("multipolygons.fgb");
+        file.delete();
         Map<String, Serializable> params = new HashMap<>();
-        params.put("flatgeobuf-file", file);
+        URL url = file.toURI().toURL();
+        params.put("url", url);
         DataStore store = DataStoreFinder.getDataStore(params);
 
         // Write
@@ -790,10 +799,83 @@ public class FlatgeobufDataStoreTest {
     }
 
     @Test
+    public void readCountries() throws IOException {
+        URL url =
+                getClass()
+                        .getClassLoader()
+                        .getResource("org/geotools/data/flatgeobuf/countries.fgb");
+        Map<String, Serializable> params = new HashMap<>();
+        params.put("url", url);
+        DataStore store = DataStoreFinder.getDataStore(params);
+        SimpleFeatureSource featureSource = store.getFeatureSource("countries");
+        SimpleFeatureCollection featureCollection = featureSource.getFeatures();
+        try (SimpleFeatureIterator it = featureCollection.features()) {
+            int count = 0;
+            while (it.hasNext()) {
+                it.next();
+                count++;
+            }
+            assertEquals(179, count);
+        }
+    }
+
+    @Test
+    @Ignore("Depends on external data")
+    public void readCountriesFromWeb() throws IOException {
+        URL url =
+                new URL(
+                        "https://github.com/flatgeobuf/flatgeobuf/raw/master/test/data/countries.fgb");
+        Map<String, Serializable> params = new HashMap<>();
+        params.put("url", url);
+        DataStore store = DataStoreFinder.getDataStore(params);
+        SimpleFeatureSource featureSource = store.getFeatureSource("countries");
+        SimpleFeatureCollection featureCollection = featureSource.getFeatures();
+        try (SimpleFeatureIterator it = featureCollection.features()) {
+            int count = 0;
+            while (it.hasNext()) {
+                it.next();
+                count++;
+            }
+            assertEquals(179, count);
+        }
+    }
+
+    @Test
+    public void readCountriesBbox() throws IOException {
+        URL url =
+                getClass()
+                        .getClassLoader()
+                        .getResource("org/geotools/data/flatgeobuf/countries.fgb");
+        Map<String, Serializable> params = new HashMap<>();
+        params.put("url", url);
+        DataStore store = DataStoreFinder.getDataStore(params);
+        SimpleFeatureSource featureSource = store.getFeatureSource("countries");
+        SimpleFeatureType schema = featureSource.getSchema();
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        String geometryPropertyName = schema.getGeometryDescriptor().getLocalName();
+        CoordinateReferenceSystem targetCRS =
+                schema.getGeometryDescriptor().getCoordinateReferenceSystem();
+        Envelope env = new Envelope(12, 13, 56, 57);
+        ReferencedEnvelope bbox = new ReferencedEnvelope(env, targetCRS);
+        Filter filter = ff.bbox(ff.property(geometryPropertyName), bbox);
+        Query query = new Query(schema.getTypeName(), filter);
+        SimpleFeatureCollection featureCollection = featureSource.getFeatures(query);
+        try (SimpleFeatureIterator it = featureCollection.features()) {
+            int count = 0;
+            while (it.hasNext()) {
+                it.next();
+                count++;
+            }
+            assertEquals(2, count);
+        }
+    }
+
+    @Test
     public void removeSchema() throws Exception {
         File file = temporaryFolder.newFile("points.fgb");
         Map<String, Serializable> params = new HashMap<>();
-        params.put("flatgeobuf-file", file);
+        URL url = file.toURI().toURL();
+        params.put("url", url);
         DataStore store = DataStoreFinder.getDataStore(params);
         assertTrue(file.exists());
         store.removeSchema(new NameImpl("points"));
@@ -804,7 +886,8 @@ public class FlatgeobufDataStoreTest {
     public void removeSchemaWhenFileDoesNotExist() throws Exception {
         File file = temporaryFolder.newFile("points.fgb");
         Map<String, Serializable> params = new HashMap<>();
-        params.put("flatgeobuf-file", file);
+        URL url = file.toURI().toURL();
+        params.put("url", url);
         DataStore store = DataStoreFinder.getDataStore(params);
         file.delete();
         store.removeSchema(new NameImpl("points"));

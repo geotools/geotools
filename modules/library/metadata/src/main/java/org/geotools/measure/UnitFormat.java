@@ -14,12 +14,13 @@ import javax.measure.format.MeasurementParseException;
  */
 public interface UnitFormat {
 
-  Appendable format(Unit<?> unit, Appendable appendable) throws IOException;
+    Appendable format(Unit<?> unit, Appendable appendable) throws IOException;
 
-  String format(Unit<?> unit);
+    String format(Unit<?> unit);
 
-  Unit<?> parse(CharSequence csq, ParsePosition pos) throws IllegalArgumentException, MeasurementParseException;
+    Unit<?> parse(CharSequence csq, ParsePosition pos)
+            throws IllegalArgumentException, MeasurementParseException;
 
-  Unit<?> parse(CharSequence csq) throws MeasurementParseException;
+    Unit<?> parse(CharSequence csq) throws MeasurementParseException;
 
 }

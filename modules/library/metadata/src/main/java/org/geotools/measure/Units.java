@@ -141,7 +141,7 @@ public final class Units {
         format.label(Units.PPM, "ppm");
 
         format.label(NonSI.DEGREE_ANGLE, "°");
-        format.label(NonSI.DEGREE_ANGLE, "rad");
+        format.alias(NonSI.DEGREE_ANGLE, "rad");
 
         format.label(Units.PIXEL, "pixel");
 
@@ -150,8 +150,8 @@ public final class Units {
     }
 
     /**
-     * Unit name, willing to use {@link SimpleUnitFormat} to look up appropriate label if a name has
-     * not been not defined.
+     * Unit name, willing to use {@link org.geotools.measure.BaseUnitFormatFactory} to look up
+     * appropriate label if a name has not been not defined.
      *
      * <p>This allows us to format units like {@link Units#PIXEL}.
      */
@@ -159,17 +159,17 @@ public final class Units {
         if (unit.getName() != null) {
             return unit.getName();
         }
-        SimpleUnitFormat format = SimpleUnitFormat.getInstance();
+        UnitFormat format = BaseUnitFormatFactory.getInstance();
         return format.format(unit);
     }
     /**
-     * Unit symbol, willing to use {@link SimpleUnitFormat} to look up appropriate label if
-     * required.
+     * Unit symbol, willing to use {@link org.geotools.measure.BaseUnitFormatFactory} to look up
+     * appropriate label if required.
      *
      * <p>This allows us to format units like {@link Units#PIXEL}.
      */
     public static String toSymbol(Unit<?> unit) {
-        SimpleUnitFormat format = SimpleUnitFormat.getInstance();
+        UnitFormat format = BaseUnitFormatFactory.getInstance();
         return format.format(unit);
     }
 
@@ -182,7 +182,7 @@ public final class Units {
     @SuppressWarnings("unchecked")
     public static <Q extends Quantity<Q>> Unit<Q> autoCorrect(Unit<Q> unit) {
         return ((WktUnitFormatFactory.WktUnitFormat) WktUnitFormatFactory.getInstance())
-            .getEquivalentUnit(unit);
+                .getEquivalentUnit(unit);
     }
 
     /**

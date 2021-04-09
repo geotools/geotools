@@ -35,7 +35,7 @@ import org.geotools.util.factory.Hints;
 /**
  * Convert String to common scalar values.
  *
- * <p>Formally this class made use of the apache commons {@link
+ * <p>Formerly this class made use of the apache commons {@link
  * org.apache.commons.beanutils.Converter} interface.
  *
  * @author Justin Deoliveira, The Open Planning Project

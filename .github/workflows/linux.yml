@@ -27,6 +27,9 @@ jobs:
         packages: |
           sphinx
           requests
+    - name: Disable checksum offloading
+      # See: https://github.com/actions/virtual-environments/issues/1187#issuecomment-686735760
+      run: sudo ethtool -K eth0 tx off rx off
     - name: Build with Maven
       run: |
         mvn -B clean install -Dfmt.skip=true -Dall -T2 --file pom.xml
@@ -55,6 +58,9 @@ jobs:
         packages: |
           sphinx
           requests
+    - name: Disable checksum offloading
+      # See: https://github.com/actions/virtual-environments/issues/1187#issuecomment-686735760
+      run: sudo ethtool -K eth0 tx off rx off
     - name: Build with Maven
       run: |
         mvn -B clean install -Dfmt.skip=true -Dall -T2 -Pjdk11test --file pom.xml
@@ -77,6 +83,9 @@ jobs:
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           ${{ runner.os }}-maven-
+    - name: Disable checksum offloading
+      # See: https://github.com/actions/virtual-environments/issues/1187#issuecomment-686735760
+      run: sudo ethtool -K eth0 tx off rx off
     - name: Build with Maven
       run: |
         mvn -B -fae clean install -Dall -Dfmt.action=check -Dpom.fmt.action=verify -Dqa=true -DskipTests=true --file pom.xml

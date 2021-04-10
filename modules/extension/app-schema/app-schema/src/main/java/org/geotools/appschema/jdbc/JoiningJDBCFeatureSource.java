@@ -40,6 +40,7 @@ import org.geotools.data.complex.AttributeMapping;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.JdbcMultipleValue;
+import org.geotools.data.complex.filter.MultipleValueExtractor;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.jdbc.FilterToSQLException;
 import org.geotools.data.joining.JoiningQuery;
@@ -47,7 +48,6 @@ import org.geotools.data.joining.JoiningQuery.QueryJoin;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.jdbc.JDBCDataStore;
@@ -431,11 +431,6 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
 
                 joinClause.append(" INNER JOIN ");
 
-                // for count query the table joined might be different from
-                // the lastTypeName (last table joining)
-                if (isCount && join.getJoinedTypeName() != null)
-                    lastTypeName = join.getJoinedTypeName();
-
                 FilterToSQL toSQL1 =
                         createFilterToSQL(getDataStore().getSchema(lastTypeName), toSQLref != null);
                 FilterToSQL toSQL2 =
@@ -470,10 +465,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                 }
 
                 joinClause.append(" = ");
-                String fromTypeName;
-                if (isCount && join.getJoinedTypeName() != null)
-                    fromTypeName = join.getJoinedTypeName();
-                else fromTypeName = curTypeName;
+                String fromTypeName = curTypeName;
                 toSQL1.setFieldEncoder(new JoiningFieldEncoder(fromTypeName, getDataStore()));
                 joinClause.append(toSQL1.encodeToString(join.getJoiningKeyName()));
                 joinClause.append(") ");
@@ -645,9 +637,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                                     ids,
                                     aliases);
 
-                if (lastSortBy != null
-                        && (lastSortBy.length > 0 || !lastPkColumnNames.isEmpty())
-                        && !isCount) {
+                if (lastSortBy != null && (lastSortBy.length > 0 || !lastPkColumnNames.isEmpty())) {
                     buildFilter(
                             query,
                             sql,
@@ -660,8 +650,8 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                             ids,
                             curTypeName);
                 } else if (!pagingApplied) {
-                    toSQL.setFieldEncoder(new JoiningFieldEncoder(curTypeName, getDataStore()));
                     if (NestedFilterToSQL.isNestedFilter(filter)) {
+                        toSQL.setFieldEncoder(new JoiningFieldEncoder(curTypeName, getDataStore()));
                         sql.append(" WHERE ").append(createNestedFilter(filter, query, toSQL));
                     } else {
                         sql.append(" ").append(toSQL.encodeToString(filter));
@@ -812,9 +802,9 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                             .encodeAliasedTableName(
                                     lastTableName, sortBySQL, query.getHints(), lastTableAlias);
                 else getDataStore().encodeTableName(lastTableName, sortBySQL, query.getHints());
-                toSQL.setFieldEncoder(new JoiningFieldEncoder(curTypeName, getDataStore()));
                 String sqlFilter;
                 if (NestedFilterToSQL.isNestedFilter(filter)) {
+                    toSQL.setFieldEncoder(new JoiningFieldEncoder(curTypeName, getDataStore()));
                     sortBySQL.append(" WHERE ");
                     sqlFilter = createNestedFilter(filter, query, toSQL).toString();
                 } else {
@@ -1458,21 +1448,32 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         // the primaryKey from the wrapped JDBCSource
         String idColumnName = getIdColumnName(getSchema());
         JoiningQuery jQuery = (JoiningQuery) query;
-        FilterAttributeExtractor extractor = new FilterAttributeExtractor();
+
+        // Checks if the filter is based on root property
+        // and we can go with the root JdbcSource to count
+        // or we need a Join query.
+        // Uses a MultipleValueExtractor to detect
+        // if there are MultipleValues
+        MultipleValueExtractor extractor = new MultipleValueExtractor();
         jQuery.getRootMapping().getFeatureIdExpression().accept(extractor, null);
         String[] attributes = extractor.getAttributeNames();
         // the id from the app-schema configuration
         String idMapping = attributes.length > 0 ? extractor.getAttributeNames()[0] : null;
         boolean idsColumnEquals = idColumnName.equals(idMapping);
-        boolean isJoining = jQuery.getQueryJoins().size() > 0;
+        jQuery.getFilter().accept(extractor, null);
+        boolean isNestedFilter =
+                NestedFilterToSQL.isNestedFilter(jQuery.getFilter())
+                        || !extractor.getMultipleValues().isEmpty()
+                        || extractor
+                                .getPropertyNameSet()
+                                .stream()
+                                .anyMatch(p -> p instanceof JoinPropertyName);
         // they are equals we can delegate the count to the underlying JDBCFeatureSource
-        if (idsColumnEquals && !isJoining) return super.getCountInternal(query);
+        if (idsColumnEquals && !isNestedFilter) return super.getCountInternal(query);
 
         // not equals the count should be over the actually used
         // field for the ComplexFeature's id
         if (!idsColumnEquals && idMapping != null) idColumnName = idMapping;
-
-        // rebuild a new query with the same params, but just the pre-filter
 
         // Build the feature type returned by this query. Also build an eventual extra feature type
         // containing the attributes we might need in order to evaluate the post filter
@@ -1490,7 +1491,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             if (dialect instanceof PreparedStatementSQLDialect) {
                 AtomicReference<PreparedFilterToSQL> toSQLref = new AtomicReference<>();
                 String sql =
-                        !isJoining
+                        !isNestedFilter
                                 ? createCountQuery(dialect, querySchema, jQuery, idColumnName)
                                 : createJoiningCountQuery(
                                         dialect, querySchema, jQuery, idColumnName, toSQLref);
@@ -1501,7 +1502,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                 rs = ((PreparedStatement) st).executeQuery();
             } else {
                 String sql =
-                        !isJoining
+                        !isNestedFilter
                                 ? createCountQuery(dialect, querySchema, jQuery, idColumnName)
                                 : createJoiningCountQuery(
                                         dialect, querySchema, jQuery, idColumnName, null);

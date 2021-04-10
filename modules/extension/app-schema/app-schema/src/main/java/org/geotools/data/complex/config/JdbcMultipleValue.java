@@ -28,6 +28,7 @@ import org.geotools.appschema.filter.FilterFactoryImplReportInvalidProperty;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.complex.AttributeMapping;
 import org.geotools.data.complex.FeatureTypeMapping;
+import org.geotools.data.complex.filter.MultipleValueExtractor;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.visitor.CapabilitiesFilterSplitter;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
@@ -155,7 +156,8 @@ public final class JdbcMultipleValue extends AttributeExpressionImpl implements 
     @Override
     public Object accept(ExpressionVisitor visitor, Object extraData) {
         if (visitor instanceof PostPreProcessFilterSplittingVisitor
-                || visitor instanceof CapabilitiesFilterSplitter) {
+                || visitor instanceof CapabilitiesFilterSplitter
+                || visitor instanceof MultipleValueExtractor) {
             return visitor.visit(this, null);
         }
         return targetValue.accept(visitor, extraData);

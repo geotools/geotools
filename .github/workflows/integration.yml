@@ -24,6 +24,9 @@ jobs:
         key: integration-${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           integration-${{ runner.os }}-maven-
+    - name: Disable checksum offloading
+      # See: https://github.com/actions/virtual-environments/issues/1187#issuecomment-686735760
+      run: sudo ethtool -K eth0 tx off rx off
     - name: Build GeoTools (no tests, prepare fresh artifacts)
       run: mvn -B clean install -T2 -Dall --file pom.xml -DskipTests
     - name: Checkout GeoWebCache and GeoServer

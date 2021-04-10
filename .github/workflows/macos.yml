@@ -20,6 +20,11 @@ jobs:
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           ${{ runner.os }}-maven-
+    - name: Disable network offloading
+      # See: https://github.com/actions/virtual-environments/issues/1187#issuecomment-686735760
+      run: |
+          sudo sysctl -w net.link.generic.system.hwcksum_tx=0
+          sudo sysctl -w net.link.generic.system.hwcksum_rx=0
     - name: Build with Maven
       run: mvn -B clean install -T2 -Dall --file pom.xml 
     - name: Remove SNAPSHOT jars from repository

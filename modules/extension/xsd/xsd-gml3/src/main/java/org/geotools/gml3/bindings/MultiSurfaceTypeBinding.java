@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.gml3.GML;
+import org.geotools.gml3.MultiSurface;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
@@ -79,7 +80,7 @@ public class MultiSurfaceTypeBinding extends AbstractComplexBinding {
      */
     @Override
     public Class getType() {
-        return MultiPolygon.class;
+        return MultiSurface.class;
     }
 
     @Override
@@ -105,7 +106,7 @@ public class MultiSurfaceTypeBinding extends AbstractComplexBinding {
             surfaces.addAll(Arrays.asList(node.getChildValue(Polygon[].class)));
         }
 
-        return gf.createMultiPolygon(surfaces.toArray(new Polygon[surfaces.size()]));
+        return new MultiSurface(surfaces.toArray(new Polygon[surfaces.size()]), gf);
     }
 
     @Override

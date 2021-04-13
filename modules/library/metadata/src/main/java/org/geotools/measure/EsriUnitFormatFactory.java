@@ -36,7 +36,7 @@ public final class EsriUnitFormatFactory {
         format.label(NonSI.DEGREE_ANGLE, "Degree");
         format.label(SI.METRE, "Meter");
         format.label(SI.METRE.multiply(0.3047997101815088), "Foot_Gold_Coast");
-        format.label(USCustomary.FOOT, "Foot");
+        format.alias(USCustomary.FOOT, "Foot");
         format.label(USCustomary.FOOT_SURVEY, "Foot_US");
     }
 

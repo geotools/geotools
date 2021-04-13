@@ -115,8 +115,8 @@ public final class Units {
 
     /**
      * Gets an instance of the default system-wide Unit format. Use this method instead of
-     * SimpleUnitFormat.getInstance(), since custom Geotools units might not get registered if
-     * SimpleUnitFormat.getInstance() is directly accessed.
+     * {@code SimpleUnitFormat.getInstance()}, since custom Geotools units are not known to
+     * {@code SimpleUnitFormat.getInstance()}.
      *
      * @see BaseUnitFormatFactory#getInstance()
      */
@@ -140,13 +140,18 @@ public final class Units {
 
         format.label(Units.PPM, "ppm");
 
-        format.label(NonSI.DEGREE_ANGLE, "°");
+        // does not fix MeasureConverterTest.testMeasureToString
+        format.label(NonSI.DEGREE_ANGLE, "deg");
+        format.alias(NonSI.DEGREE_ANGLE, "°");
         format.alias(NonSI.DEGREE_ANGLE, "rad");
 
         format.label(Units.PIXEL, "pixel");
 
         format.label(USCustomary.GRADE, "grad");
         format.alias(USCustomary.GRADE, "grade");
+
+        // fixes MeasureConverterTest.testToMeasure
+        format.label(USCustomary.FOOT, "ft");
     }
 
     /**

@@ -16,7 +16,9 @@
  */
 package org.geotools.styling;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.opengis.filter.Filter;
 import org.opengis.metadata.citation.OnLineResource;
 import org.opengis.style.GraphicLegend;
@@ -169,6 +171,21 @@ public interface Rule extends org.opengis.style.Rule {
 
     /** @param resource Indicates where this style is defined */
     void setOnlineResource(OnLineResource resource);
+
+    /** Determines if a vendor option with the specific key has been set on this Rule. */
+    default boolean hasOption(String key) {
+        return false;
+    }
+
+    /**
+     * Map of vendor options for the Rule.
+     *
+     * <p>Client code looking for the existence of a single option should use {@link
+     * #hasOption(String)}
+     */
+    default Map<String, String> getOptions() {
+        return new HashMap<>();
+    }
 
     /** Used to traverse the style data structure. */
     void accept(org.geotools.styling.StyleVisitor visitor);

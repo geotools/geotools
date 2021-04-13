@@ -58,6 +58,7 @@ import org.geotools.feature.NameImpl;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.util.XRectangle2D;
+import org.geotools.measure.BaseUnitFormatFactory;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.NamedIdentifier;
@@ -278,7 +279,7 @@ public class Utilities {
                 unit = SI.CELSIUS;
             else {
                 try {
-                    unit = SimpleUnitFormat.getInstance().parse(uom);
+                    unit = BaseUnitFormatFactory.getInstance().parse(uom);
                 } catch (IllegalArgumentException iae) {
                     if (LOGGER.isLoggable(Level.FINE)) {
                         LOGGER.log(Level.FINE, "Unable to parse the provided unit " + uom);

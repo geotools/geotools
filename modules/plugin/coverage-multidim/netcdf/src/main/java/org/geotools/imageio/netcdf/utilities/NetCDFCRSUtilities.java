@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 import javax.measure.Unit;
 import javax.measure.format.UnitFormat;
 import org.geotools.imageio.Identification;
+import org.geotools.measure.BaseUnitFormatFactory;
 import org.geotools.metadata.sql.MetadataException;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -152,7 +153,7 @@ public class NetCDFCRSUtilities {
     }
 
     /** The object to use for parsing and formatting units. */
-    private static final UnitFormat UNIT_FORMAT = SimpleUnitFormat.getInstance();
+    private static final UnitFormat UNIT_FORMAT = BaseUnitFormatFactory.create();
 
     /** Adds a mapping between UCAR type and ISO direction. */
     private static void add(final AxisType type, final String direction, final String opposite) {

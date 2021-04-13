@@ -28,13 +28,14 @@ import java.util.Locale;
 import java.util.TimeZone;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
-import javax.measure.format.UnitFormat;
 import javax.measure.quantity.Time;
 
 import org.geotools.measure.Angle;
 import org.geotools.measure.AngleFormat;
+import org.geotools.measure.BaseUnitFormatFactory;
 import org.geotools.measure.Latitude;
 import org.geotools.measure.Longitude;
+import org.geotools.measure.UnitFormat;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -449,7 +450,7 @@ public class CoordinateFormat extends Format {
                 final Unit<?> unit = cs.getAxis(i).getUnit();
                 if (unit != null) {
                     if (unitFormat == null) {
-                        unitFormat = SimpleUnitFormat.getInstance();
+                        unitFormat = BaseUnitFormatFactory.getInstance();
                     }
                     final String asText = unitFormat.format(unit);
                     if (asText.length() != 0) {

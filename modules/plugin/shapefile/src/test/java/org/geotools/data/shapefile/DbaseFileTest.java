@@ -25,6 +25,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import org.geotools.TestData;
 import org.geotools.data.shapefile.dbf.DbaseFileHeader;
 import org.geotools.data.shapefile.dbf.DbaseFileReader;
@@ -186,31 +188,77 @@ public class DbaseFileTest extends TestCaseSupport {
     public void testFieldFormatter() throws Exception {
         DbaseFileWriter.FieldFormatter formatter =
                 new DbaseFileWriter.FieldFormatter(
-                        Charset.defaultCharset(), TimeZone.getDefault(), false);
+                        StandardCharsets.UTF_8, TimeZone.getDefault(), false);
 
-        String stringWithInternationChars = "hello " + '\u20ac';
-        // if (verbose) {
-        // System.out.println(stringWithInternationChars);
-        // }
-        String formattedString = formatter.getFieldString(10, stringWithInternationChars);
+        int sizeInBytes = 8;
 
-        assertEquals("          ".getBytes().length, formattedString.getBytes().length);
+        // A null string should result in padding
+        String formattedString = formatter.getFieldString(sizeInBytes, null);
+        assertEquals(sizeInBytes, formattedString.getBytes().length);
+        assertEquals("        ", formattedString);
 
-        // test when the string is too big.
-        stringWithInternationChars = '\u20ac' + "1234567890";
-        formattedString = formatter.getFieldString(10, stringWithInternationChars);
+        // A short string will be padded
+        formattedString = formatter.getFieldString(sizeInBytes, "cat");
+        assertEquals(sizeInBytes, formattedString.getBytes().length);
+        assertEquals("cat     ", formattedString);
 
-        assertEquals("          ".getBytes().length, formattedString.getBytes().length);
+        // A string that has the right number of bytes needs no padding
+        formattedString = formatter.getFieldString(sizeInBytes, "12345678");
+        assertEquals(sizeInBytes, formattedString.getBytes().length);
+        assertEquals("12345678", formattedString);
+
+        // larger strings get trucated
+        formattedString = formatter.getFieldString(sizeInBytes, "12345678910");
+        assertEquals(sizeInBytes, formattedString.getBytes().length);
+        assertEquals("12345678", formattedString);
     }
 
     @Test
     public void testUTF8Chars() throws Exception {
-        // looks like "A, B, C" in an editor, but the B and C are actually weird UTF-8 entities
         DbaseFileWriter.FieldFormatter formatter =
                 new DbaseFileWriter.FieldFormatter(
                         StandardCharsets.UTF_8, TimeZone.getDefault(), false);
-        String test = "A, \u0412, \u0421";
+
+        int sizeInBytes = 4;
+
+        // a short string will be padded
+        String formattedString = formatter.getFieldString(sizeInBytes, "\u0412");
+        assertEquals(sizeInBytes, formattedString.getBytes().length);
+        assertEquals("\u0412  ", formattedString);
+
+        // a string of size btyes need no padding
+        formattedString = formatter.getFieldString(sizeInBytes, "\u0412\u0412");
+        assertEquals(sizeInBytes, formattedString.getBytes().length);
+        assertEquals("\u0412\u0412", formattedString);
+
+        // large strings get trucated
+        formattedString = formatter.getFieldString(sizeInBytes, "\u0412\u0412\u0412");
+        assertEquals(sizeInBytes, formattedString.getBytes().length);
+        assertEquals("\u0412\u0412", formattedString);
+
+        // if a multi-byte character is the last to be removed then padding may be required to
+        formattedString = formatter.getFieldString(sizeInBytes, "\u0412A\u0412\u0412");
+        assertEquals(sizeInBytes, formattedString.getBytes().length);
+        assertEquals("\u0412A ", formattedString);
+    }
+
+    @Test
+    public void testVeryLongStrings() throws Exception {
+        // formatter.setFieldString will truncate input to the desired size. But it should do this
+        // in a reasonably performant manner.
+        DbaseFileWriter.FieldFormatter formatter =
+                new DbaseFileWriter.FieldFormatter(
+                        StandardCharsets.UTF_8, TimeZone.getDefault(), false);
+
+        // build up a very large input string. The test string is also formed so that the 8th char
+        // is also multibyte
+        String test =
+                IntStream.range(0, 100000)
+                        .mapToObj(i -> "\u0412A cat\u0412jumped over the dog")
+                        .collect(Collectors.joining(","));
+
         String formattedString = formatter.getFieldString(8, test);
-        assertEquals("        ".getBytes().length, formattedString.getBytes().length);
+        assertEquals("\u0412A cat ", formattedString);
+        assertEquals(8, formattedString.getBytes().length);
     }
 }

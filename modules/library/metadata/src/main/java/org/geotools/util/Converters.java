@@ -137,9 +137,7 @@ public final class Converters {
 
         // handle case of source being an instance of target up front
         final Class<?> sourceClass = source.getClass();
-        if (sourceClass == target
-                || sourceClass.equals(target)
-                || target.isAssignableFrom(sourceClass)) {
+        if (sourceClass == target || target.isAssignableFrom(sourceClass)) {
             return target.cast(source);
         }
 

@@ -143,7 +143,6 @@ public final class Units {
         // does not fix MeasureConverterTest.testMeasureToString
         format.label(NonSI.DEGREE_ANGLE, "deg");
         format.alias(NonSI.DEGREE_ANGLE, "°");
-        format.alias(NonSI.DEGREE_ANGLE, "rad");
 
         format.label(Units.PIXEL, "pixel");
 

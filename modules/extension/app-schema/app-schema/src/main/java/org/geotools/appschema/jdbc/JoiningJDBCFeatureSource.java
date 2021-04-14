@@ -40,6 +40,7 @@ import org.geotools.data.complex.AttributeMapping;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.JdbcMultipleValue;
+import org.geotools.data.complex.config.MultipleValue;
 import org.geotools.data.complex.filter.MultipleValueExtractor;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.jdbc.FilterToSQLException;
@@ -1460,15 +1461,16 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         // the id from the app-schema configuration
         String idMapping = attributes.length > 0 ? extractor.getAttributeNames()[0] : null;
         boolean idsColumnEquals = idColumnName.equals(idMapping);
-        jQuery.getFilter().accept(extractor, null);
+        Filter filter = jQuery.getFilter();
+        filter.accept(extractor, null);
+
+        // check if the filter is nested, if not we might delegate to the root JDBCFeatureSource
         boolean isNestedFilter =
-                NestedFilterToSQL.isNestedFilter(jQuery.getFilter())
-                        || !extractor.getMultipleValues().isEmpty()
-                        || extractor
-                                .getPropertyNameSet()
-                                .stream()
-                                .anyMatch(p -> p instanceof JoinPropertyName);
-        // they are equals we can delegate the count to the underlying JDBCFeatureSource
+                isJoinRequired(
+                        filter, extractor.getMultipleValues(), extractor.getPropertyNameSet());
+
+        // ids are equals and the filter doesn't have nested filters
+        // we can delegate the count to the underlying JDBCFeatureSource
         if (idsColumnEquals && !isNestedFilter) return super.getCountInternal(query);
 
         // not equals the count should be over the actually used
@@ -1585,5 +1587,15 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             pkColumnNames.add(col.getName());
         }
         return pkColumnNames;
+    }
+
+    // check if the filter requires a query with joins by looking at the presence of nested
+    // PropertyNames
+    // or of JDBCMultipleValues or of JoinPorpertyName
+    private boolean isJoinRequired(
+            Filter filter, List<MultipleValue> multipleValues, Set<PropertyName> propertyNameSet) {
+        return NestedFilterToSQL.isNestedFilter(filter)
+                || !multipleValues.isEmpty()
+                || propertyNameSet.stream().anyMatch(p -> p instanceof JoinPropertyName);
     }
 }

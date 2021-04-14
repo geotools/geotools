@@ -76,6 +76,7 @@
 			<xsd:element ref="se:MinScaleDenominator" minOccurs="0"/>
 			<xsd:element ref="se:MaxScaleDenominator" minOccurs="0"/>
 			<xsd:element ref="se:Symbolizer" maxOccurs="unbounded"/>
+			<xsd:element ref="se:VendorOption" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:element name="LegendGraphic" type="se:LegendGraphicType"/>

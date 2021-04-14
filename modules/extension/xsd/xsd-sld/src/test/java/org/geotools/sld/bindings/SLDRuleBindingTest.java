@@ -17,6 +17,7 @@
 package org.geotools.sld.bindings;
 
 import java.util.Locale;
+import java.util.Map;
 import org.geotools.styling.Rule;
 
 public class SLDRuleBindingTest extends SLDTestSupport {
@@ -50,5 +51,17 @@ public class SLDRuleBindingTest extends SLDTestSupport {
         assertEquals("theTitle", rule.getDescription().getTitle().toString());
         assertEquals("english", rule.getDescription().getTitle().toString(Locale.ENGLISH));
         assertEquals("italian", rule.getDescription().getTitle().toString(Locale.ITALIAN));
+    }
+
+    public void testVendorOptions() throws Exception {
+        SLDMockData.ruleWithVendorOptions(document, document);
+        Rule rule = (Rule) parse();
+
+        assertNotNull(rule);
+
+        Map<String, String> options = rule.getOptions();
+        assertEquals(2, options.size());
+        assertEquals("value", options.get("name"));
+        assertEquals("value2", options.get("name2"));
     }
 }

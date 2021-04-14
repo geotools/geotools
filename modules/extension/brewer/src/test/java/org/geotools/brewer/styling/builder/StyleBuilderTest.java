@@ -8,6 +8,7 @@ import static org.junit.Assert.assertNull;
 
 import java.awt.Color;
 import java.util.Arrays;
+import java.util.Map;
 import org.geotools.brewer.styling.filter.expression.ExpressionBuilder;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.AnchorPoint;
@@ -15,6 +16,7 @@ import org.geotools.styling.Description;
 import org.geotools.styling.FeatureTypeConstraint;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
+import org.geotools.styling.Rule;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
@@ -450,6 +452,20 @@ public class StyleBuilderTest {
         Fill background = style.getBackground();
         assertNotNull(background);
         assertEquals(Color.RED, background.getColor().evaluate(null, Color.class));
+    }
+
+    @Test
+    public void testRuleOptions() {
+        StyleBuilder sb = new StyleBuilder();
+        RuleBuilder ruleBuilder =
+                sb.featureTypeStyle()
+                        .rule()
+                        .option("RuleOption", "RuleOptionValue")
+                        .option("RuleOption2", "RuleOptionValue2");
+        Rule rule = ruleBuilder.build();
+        Map<String, String> options = rule.getOptions();
+        assertEquals("RuleOptionValue", options.get("RuleOption"));
+        assertEquals("RuleOptionValue2", options.get("RuleOption2"));
     }
 
     /*

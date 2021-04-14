@@ -973,6 +973,8 @@ public class SLDParser {
                 symbolizers.add(parseTextSymbolizer(child));
             } else if (childName.equalsIgnoreCase("RasterSymbolizer")) {
                 symbolizers.add(parseRasterSymbolizer(child));
+            } else if (childName.equalsIgnoreCase(VendorOptionString)) {
+                parseVendorOption(rule.getOptions(), child);
             }
         }
 

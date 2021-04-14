@@ -467,6 +467,13 @@ public class SLDMockData {
         return rule;
     }
 
+    static Element ruleWithVendorOptions(Document document, Node parent) {
+        Element rule = rule(document, parent);
+        vendorOption(document, rule, "name", "value");
+        vendorOption(document, rule, "name2", "value2");
+        return rule;
+    }
+
     static Element featureTypeStyle(Document document, Node parent) {
         Element featureTypeStyle = element(SLD.FEATURETYPESTYLE, document, parent);
         element(SLD.NAME, document, featureTypeStyle, "theName");

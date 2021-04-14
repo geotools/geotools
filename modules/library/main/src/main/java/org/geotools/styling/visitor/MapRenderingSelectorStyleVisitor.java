@@ -17,12 +17,14 @@
 
 package org.geotools.styling.visitor;
 
+import static org.geotools.styling.FeatureTypeStyle.RenderingSelectionOptions.MAPONLY;
+
 /** RenderingSelectorStyleVisitor implementation meant to be used when rendering maps * */
 public class MapRenderingSelectorStyleVisitor extends RenderingSelectorStyleVisitor {
 
     @Override
     protected boolean canRenderInternal(String value) {
-        if (value.equalsIgnoreCase(RenderingSelectionOptions.MAPONLY.name())) return true;
+        if (value.equalsIgnoreCase(MAPONLY.name())) return true;
         return false;
     }
 }

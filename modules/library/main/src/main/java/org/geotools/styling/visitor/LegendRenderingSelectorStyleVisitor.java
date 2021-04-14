@@ -16,11 +16,13 @@
  */
 package org.geotools.styling.visitor;
 
+import static org.geotools.styling.FeatureTypeStyle.RenderingSelectionOptions.LEGENDONLY;
+
 /** RenderingSelectorStyleVisitor implementation meant to be used when rendering legends * */
 public class LegendRenderingSelectorStyleVisitor extends RenderingSelectorStyleVisitor {
     @Override
     protected boolean canRenderInternal(String value) {
-        if (value.equalsIgnoreCase(RenderingSelectionOptions.LEGENDONLY.name())) return true;
+        if (value.equalsIgnoreCase(LEGENDONLY.name())) return true;
         return false;
     }
 }

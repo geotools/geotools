@@ -143,6 +143,22 @@ public interface FeatureTypeStyle extends org.opengis.style.FeatureTypeStyle {
      */
     public static final String VENDOR_OPTION_INCLUSION = "inclusion";
 
+    enum RenderingSelectionOptions {
+        NORMAL("normal"),
+        LEGENDONLY("legendOnly"),
+        MAPONLY("mapOnly");
+
+        private String option;
+
+        RenderingSelectionOptions(String option) {
+            this.option = option;
+        }
+
+        public String getOption() {
+            return option;
+        }
+    }
+
     void setName(String name);
 
     /**

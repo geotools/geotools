@@ -17,6 +17,8 @@
 
 package org.geotools.styling.visitor;
 
+import static org.geotools.styling.FeatureTypeStyle.RenderingSelectionOptions.NORMAL;
+
 import java.util.Map;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.LineSymbolizer;
@@ -96,8 +98,7 @@ public abstract class RenderingSelectorStyleVisitor extends DuplicatingStyleVisi
                         ? vendorOptions.get(FeatureTypeStyle.VENDOR_OPTION_INCLUSION)
                         : null;
         if (value == null) canRenderer = true;
-        else if (value.equalsIgnoreCase(RenderingSelectionOptions.NORMAL.name()))
-            canRenderer = true;
+        else if (value.equalsIgnoreCase(NORMAL.name())) canRenderer = true;
         else {
             canRenderer = canRenderInternal(value);
         }
@@ -113,10 +114,4 @@ public abstract class RenderingSelectorStyleVisitor extends DuplicatingStyleVisi
      * @return true if the element should be included in the copy, false otherwise.
      */
     protected abstract boolean canRenderInternal(String value);
-
-    enum RenderingSelectionOptions {
-        NORMAL,
-        LEGENDONLY,
-        MAPONLY
-    }
 }

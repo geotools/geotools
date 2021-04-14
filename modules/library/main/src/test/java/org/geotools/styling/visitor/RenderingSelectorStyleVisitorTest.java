@@ -1,5 +1,8 @@
 package org.geotools.styling.visitor;
 
+import static org.geotools.styling.FeatureTypeStyle.RenderingSelectionOptions.LEGENDONLY;
+import static org.geotools.styling.FeatureTypeStyle.RenderingSelectionOptions.MAPONLY;
+import static org.geotools.styling.FeatureTypeStyle.RenderingSelectionOptions.NORMAL;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
@@ -40,20 +43,20 @@ public class RenderingSelectorStyleVisitorTest {
         selectorStyleVisitor.visit(noOption);
         assertEquals(noOption, selectorStyleVisitor.getCopy());
 
-        Style normal = buildStyleWithInclusionOption("normal");
+        Style normal = buildStyleWithInclusionOption(NORMAL.getOption());
 
         selectorStyleVisitor = new LegendRenderingSelectorStyleVisitor();
         selectorStyleVisitor.visit(normal);
         assertEquals(normal, selectorStyleVisitor.getCopy());
 
-        Style legendOnly = buildStyleWithInclusionOption("legendOnly");
+        Style legendOnly = buildStyleWithInclusionOption(LEGENDONLY.getOption());
 
         selectorStyleVisitor = new LegendRenderingSelectorStyleVisitor();
 
         selectorStyleVisitor.visit(legendOnly);
         assertEquals(legendOnly, selectorStyleVisitor.getCopy());
 
-        Style mapOnly = buildStyleWithInclusionOption("mapOnly");
+        Style mapOnly = buildStyleWithInclusionOption(MAPONLY.getOption());
 
         selectorStyleVisitor = new LegendRenderingSelectorStyleVisitor();
 
@@ -85,20 +88,20 @@ public class RenderingSelectorStyleVisitorTest {
         selectorStyleVisitor.visit(noOption);
         assertEquals(noOption, selectorStyleVisitor.getCopy());
 
-        Style normal = buildStyleWithInclusionOption("normal");
+        Style normal = buildStyleWithInclusionOption(NORMAL.getOption());
 
         selectorStyleVisitor = new MapRenderingSelectorStyleVisitor();
         selectorStyleVisitor.visit(normal);
         assertEquals(normal, selectorStyleVisitor.getCopy());
 
-        Style mapOnly = buildStyleWithInclusionOption("mapOnly");
+        Style mapOnly = buildStyleWithInclusionOption(MAPONLY.getOption());
 
         selectorStyleVisitor = new MapRenderingSelectorStyleVisitor();
 
         selectorStyleVisitor.visit(mapOnly);
         assertEquals(mapOnly, selectorStyleVisitor.getCopy());
 
-        Style legendOnly = buildStyleWithInclusionOption("legendOnly");
+        Style legendOnly = buildStyleWithInclusionOption(LEGENDONLY.getOption());
         selectorStyleVisitor = new MapRenderingSelectorStyleVisitor();
 
         selectorStyleVisitor.visit(legendOnly);

@@ -305,6 +305,7 @@
         <xsd:element ref="sld:MinScaleDenominator" minOccurs="0"/>
         <xsd:element ref="sld:MaxScaleDenominator" minOccurs="0"/>
         <xsd:element ref="sld:Symbolizer" maxOccurs="unbounded"/>
+        <xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded" />
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>

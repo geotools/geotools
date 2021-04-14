@@ -17,7 +17,9 @@
 package org.geotools.brewer.styling.builder;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.geotools.styling.GraphicLegend;
 import org.geotools.styling.Rule;
@@ -42,6 +44,8 @@ public class RuleBuilder extends AbstractStyleBuilder<Rule> {
     boolean elseFilter;
 
     String title;
+
+    protected Map<String, String> options = new LinkedHashMap<>();
 
     private GraphicLegendBuilder legend = new GraphicLegendBuilder(this).unset();
 
@@ -183,7 +187,7 @@ public class RuleBuilder extends AbstractStyleBuilder<Rule> {
         if (gl != null) {
             rule.setLegend(gl);
         }
-
+        rule.getOptions().putAll(options);
         if (parent == null) {
             reset();
         }
@@ -205,6 +209,7 @@ public class RuleBuilder extends AbstractStyleBuilder<Rule> {
         symbolizers.clear();
         legend.unset();
         unset = false;
+        this.options.clear();
         return this;
     }
 
@@ -232,10 +237,16 @@ public class RuleBuilder extends AbstractStyleBuilder<Rule> {
         symbolizerBuilder = null;
         unset = false;
         legend.reset(rule.getLegend());
+        options.putAll(rule.getOptions());
         return this;
     }
 
     protected void buildStyleInternal(StyleBuilder sb) {
         sb.featureTypeStyle().rule().init(this);
+    }
+
+    public RuleBuilder option(String name, String value) {
+        options.put(name, value);
+        return this;
     }
 }

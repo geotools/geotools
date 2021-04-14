@@ -136,6 +136,13 @@ public interface FeatureTypeStyle extends org.opengis.style.FeatureTypeStyle {
      */
     public static String SORT_BY_GROUP = "sortByGroup";
 
+    /**
+     * String value allowing to control whether an SLD element should be included when applying the
+     * style to render maps or a legends. The option can be used also on Rule and all the
+     * Symbolizers. Possible values are normal, legendOnly, mapOnly.
+     */
+    public static final String VENDOR_OPTION_INCLUSION = "inclusion";
+
     void setName(String name);
 
     /**

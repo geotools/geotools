@@ -250,7 +250,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         for (FeatureTypeStyle fts : style.featureTypeStyles()) {
             if (fts != null) {
                 fts.accept(this);
-                ftsCopy.add((FeatureTypeStyle) pages.pop());
+                if (!pages.empty()) ftsCopy.add((FeatureTypeStyle) pages.pop());
             }
         }
 
@@ -278,7 +278,11 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         }
 
         List<Symbolizer> symsCopy =
-                rule.symbolizers().stream().map(s -> copy(s)).collect(Collectors.toList());
+                rule.symbolizers()
+                        .stream()
+                        .map(s -> copy(s))
+                        .filter(s -> s != null)
+                        .collect(Collectors.toList());
 
         Graphic legendCopy = copy((Graphic) rule.getLegend());
 
@@ -294,7 +298,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         copy.setElseFilter(rule.isElseFilter());
         copy.setMaxScaleDenominator(rule.getMaxScaleDenominator());
         copy.setMinScaleDenominator(rule.getMinScaleDenominator());
-
+        copy.getOptions().putAll(rule.getOptions());
         if (STRICT && !copy.equals(rule)) {
             throw new IllegalStateException("Was unable to duplicate provided Rule:" + rule);
         }
@@ -321,8 +325,9 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
                         .map(
                                 r -> {
                                     r.accept(this);
-                                    return (Rule) pages.pop();
+                                    return !pages.isEmpty() ? (Rule) pages.pop() : null;
                                 })
+                        .filter(r -> r != null)
                         .collect(Collectors.toList());
 
         //
@@ -507,7 +512,8 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         if (symbolizer == null) return null;
 
         symbolizer.accept(this);
-        return (Symbolizer) pages.pop();
+        Symbolizer result = pages.empty() ? null : (Symbolizer) pages.pop();
+        return result;
     }
 
     protected OverlapBehavior copy(OverlapBehavior ob) {

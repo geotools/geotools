@@ -1264,7 +1264,7 @@ public class Ows20FactoryImpl extends EFactoryImpl implements Ows20Factory {
    * @generated
    */
     public TypeType createTypeTypeFromString(EDataType eDataType, String initialValue) {
-    return (TypeType)super.createFromString(eDataType, initialValue);
+    return TypeType.get(initialValue);
   }
 
     /**

@@ -219,7 +219,7 @@ public class CollectionFeatureSource implements SimpleFeatureSource {
         }
         // step two sort! (note this makes a sorted copy)
         if (query.getSortBy() != null && query.getSortBy().length != 0) {
-            SimpleFeature array[] = features.toArray(new SimpleFeature[features.size()]);
+            SimpleFeature[] array = features.toArray(new SimpleFeature[features.size()]);
             // Arrays sort is stable (not resorting equal elements)
             for (SortBy sortBy : query.getSortBy()) {
                 Comparator<SimpleFeature> comparator = DataUtilities.sortComparator(sortBy);

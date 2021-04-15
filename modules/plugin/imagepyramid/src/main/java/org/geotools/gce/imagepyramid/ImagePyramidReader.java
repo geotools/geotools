@@ -209,8 +209,8 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
             // load the envelope
             final String envelope = properties.getProperty("Envelope2D");
             String[] pairs = envelope.split(" ");
-            final double cornersV[][] = new double[2][2];
-            String pair[];
+            final double[][] cornersV = new double[2][2];
+            String[] pair;
             for (int i = 0; i < 2; i++) {
                 pair = pairs[i].split(",");
                 cornersV[i][0] = Double.parseDouble(pair[0]);

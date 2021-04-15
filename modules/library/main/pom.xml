@@ -7,10 +7,7 @@
 
         Version: $Id$
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -18,7 +15,6 @@
     <artifactId>library</artifactId>
     <version>26-SNAPSHOT</version>
   </parent>
-
 
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
@@ -28,8 +24,7 @@
   <packaging>jar</packaging>
   <name>Main module</name>
 
-  <description>
-    The main module contains the GeoTools public interfaces that are used by
+  <description>The main module contains the GeoTools public interfaces that are used by
     other GeoTools modules (and GeoTools applications). Where possible we make
     use industry standard terms as provided by OGC and ISO standards.
     
@@ -45,13 +40,8 @@
     
     If you find yourself using implementation specific classes chances are you doing it wrong:
       
-       Expression expr = new AddImpl( expression1, expressiom2 );
-    
-  </description>
-  <properties>
-    <moduleIdentifier>org.geotools.main</moduleIdentifier>
-  </properties>
-  
+       Expression expr = new AddImpl( expression1, expressiom2 );</description>
+
   <licenses>
     <license>
       <name>Lesser General Public License (LGPL)</name>
@@ -60,14 +50,13 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Jody Garnett</name>
       <id>jive</id>
+      <name>Jody Garnett</name>
       <email>jody.garnett@gmail.com</email>
       <organization>BoundlessSpatial.xa Solutions, Inc.</organization>
       <roles>
@@ -77,8 +66,8 @@
       </roles>
     </developer>
     <developer>
-      <name>James Macgill</name>
       <id>jmacgill</id>
+      <name>James Macgill</name>
       <email>jmacgill@users.sourceforge.net</email>
       <organization>CCG</organization>
       <roles>
@@ -86,8 +75,8 @@
       </roles>
     </developer>
     <developer>
-      <name>Ian Turton</name>
       <id>ianturton</id>
+      <name>Ian Turton</name>
       <email>ianturton@users.sourceforge.net</email>
       <organization>CCG</organization>
       <roles>
@@ -95,8 +84,8 @@
       </roles>
     </developer>
     <developer>
-      <name>Linda Oxnard</name>
       <id>loxnard</id>
+      <name>Linda Oxnard</name>
       <email>loxnard@users.sourceforge.net</email>
       <organization>None</organization>
       <roles>
@@ -104,16 +93,16 @@
       </roles>
     </developer>
     <developer>
-      <name>Cameron Shorter</name>
       <id>camerons</id>
+      <name>Cameron Shorter</name>
       <email>camerons@users.sourceforge.net</email>
       <roles>
         <role>Java Developer</role>
       </roles>
     </developer>
     <developer>
-      <name>Chris Holmes</name>
       <id>cholmesny</id>
+      <name>Chris Holmes</name>
       <email>cholmesny@users.sourceforge.net</email>
       <organization>TOPP</organization>
       <roles>
@@ -121,19 +110,19 @@
       </roles>
     </developer>
     <developer>
-      <name>Martin Desruisseaux</name>
       <id>desruisseaux</id>
+      <name>Martin Desruisseaux</name>
       <email>desruisseaux@users.sourceforge.net</email>
       <organization>Geomatys</organization>
       <organizationUrl>http://www.geomatys.fr/</organizationUrl>
-      <timezone>+1</timezone>
       <roles>
         <role>Java Developer</role>
       </roles>
+      <timezone>+1</timezone>
     </developer>
     <developer>
-      <name>Ian Schneider</name>
       <id>ianschneider</id>
+      <name>Ian Schneider</name>
       <email>ianschneider@users.sourceforge.net</email>
       <organization>USDA ARS</organization>
       <roles>
@@ -141,8 +130,8 @@
       </roles>
     </developer>
     <developer>
-      <name>Sean Geoghegan</name>
       <id>seangeo</id>
+      <name>Sean Geoghegan</name>
       <email>sean.geoghegan@dsto.defence.gov.au</email>
       <organization>Defence Science and Technology Organisation</organization>
       <roles>
@@ -150,8 +139,8 @@
       </roles>
     </developer>
     <developer>
-      <name>David Zwiers</name>
       <id>dzwiers</id>
+      <name>David Zwiers</name>
       <email>dzwiers@refractions.net</email>
       <organization>Refractions Research</organization>
       <roles>
@@ -159,8 +148,8 @@
       </roles>
     </developer>
     <developer>
-      <name>Jesse Eichar</name>
       <id>jeichar</id>
+      <name>Jesse Eichar</name>
       <email>jeichar@refractions.net</email>
       <organization>Refractions Research</organization>
       <roles>
@@ -175,8 +164,8 @@
       </roles>
     </developer>
     <developer>
-      <name>Simone Giannecchini</name>
       <id>simboss</id>
+      <name>Simone Giannecchini</name>
       <email>simboss1@gmail.com</email>
       <organization></organization>
       <roles>
@@ -185,14 +174,17 @@
       </roles>
     </developer>
     <developer>
-      <name>Cory Horner</name>
       <id>chorner</id>
+      <name>Cory Horner</name>
       <email>cory.horner@gmail.com</email>
       <roles>
         <role>Java Developer</role>
       </roles>
     </developer>
   </developers>
+  <properties>
+    <moduleIdentifier>org.geotools.main</moduleIdentifier>
+  </properties>
 
   <!--
   <contributors>
@@ -205,7 +197,6 @@
     </contributor>
   </contributors>
   -->
-
 
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
@@ -225,30 +216,30 @@
       <groupId>org.geotools</groupId>
       <artifactId>gt-sample-data</artifactId>
       <version>${project.version}</version>
-     <scope>test</scope>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.locationtech.jts</groupId>
       <artifactId>jts-core</artifactId>
       <!-- The version number is specified in the parent POM. -->
     </dependency>
-	<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
-	<dependency>
-		<groupId>org.apache.commons</groupId>
-		<artifactId>commons-text</artifactId>
-		<version>1.6</version>
-	</dependency>
+    <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
+      <version>1.6</version>
+    </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
     </dependency>
 
-
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <!-- The version number is specified in the parent POM. -->
-      <scope>provided</scope> <!-- Really provided, not test -->
+      <scope>provided</scope>
+      <!-- Really provided, not test -->
     </dependency>
     <dependency>
       <groupId>org.easymock</groupId>
@@ -256,10 +247,10 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-        <groupId>org.geotools</groupId>
-        <artifactId>gt-epsg-hsql</artifactId>
-        <version>${project.version}</version>
-        <scope>test</scope>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-epsg-hsql</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.github.tomakehurst</groupId>
@@ -273,7 +264,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
 
   <!-- =========================================================== -->
   <!--     Build Configuration                                     -->
@@ -294,6 +284,5 @@
       </plugin>
     </plugins>
   </build>
-
 
 </project>

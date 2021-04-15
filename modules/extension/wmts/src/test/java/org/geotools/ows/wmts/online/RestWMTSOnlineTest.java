@@ -195,7 +195,7 @@ public class RestWMTSOnlineTest extends OnlineTestCase {
         ReferencedEnvelope env =
                 new ReferencedEnvelope(-80, 80, -180.0, 180.0, DefaultGeographicCRS.WGS84);
         int million = (int) 1e6;
-        int scales[] = {100 * million, 25 * million, 10 * million, million, 500000};
+        int[] scales = {100 * million, 25 * million, 10 * million, million, 500000};
         for (int scale : scales) {
             Set<Tile> tiles = service.findTilesInExtent(env, scale, true, 100);
             assertFalse("findTilesInExtent shouldn't return empty sets.", tiles.isEmpty());

@@ -345,27 +345,30 @@ public class DbaseFileWriter implements Closeable {
         }
 
         public String getFieldString(int size, String s) {
-            buffer.replace(0, size, emptyString);
-            buffer.setLength(size);
             // international characters must be accounted for so size != length.
-            if (s != null) {
-                int maxBytes = Math.min(size, s.length());
-                buffer.replace(0, maxBytes, s);
-                int currentBytes = buffer.toString().getBytes(charset).length;
-                if (currentBytes > size) {
-                    while (currentBytes > size) {
-                        int index = buffer.length() - 1;
-                        buffer.deleteCharAt(index);
-                        currentBytes = buffer.toString().getBytes(charset).length;
-                    }
+            if (s == null) {
+                buffer.replace(0, size, emptyString);
+                buffer.setLength(size);
+            } else {
+                buffer.setLength(0);
+
+                // every character is at least one byte. So we start by only adding at most size
+                // characters to the buffer. This is so we don't have too many excess characters
+                // to remove later.
+                int maxChars = Math.min(size, s.length());
+                buffer.insert(0, s, 0, maxChars);
+
+                // we remove characters from the buffer until it contains at most size bytes.
+                while (size < buffer.toString().getBytes(charset).length) {
+                    int index = buffer.length() - 1;
+                    buffer.deleteCharAt(index);
                 }
-                // in sequence to the above step, rather than as an alternative, as the step above
-                // might have removed a last char that was multi-byte, making the buffer short
-                if (currentBytes < size) {
-                    int diff = size - currentBytes;
-                    for (int i = 0; i < diff; i++) {
-                        buffer.append(' ');
-                    }
+
+                // Now we ensure that the buffer is padded with spaces if it is smaller than size.
+                // This could be because the input string isn't as big as size, or that it contains
+                // multi-byte characters that have been removed.
+                while (size > buffer.toString().getBytes(charset).length) {
+                    buffer.append(' ');
                 }
             }
 

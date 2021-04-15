@@ -84,7 +84,7 @@ class SimpleFeatureStoreBridge extends SimpleFeatureSourceBridge implements Simp
         if (delegate instanceof SimpleFeatureStore) {
             ((SimpleFeatureStore) delegate).modifyFeatures(names, values, filter);
         } else {
-            Name attributeNames[] = new Name[names.length];
+            Name[] attributeNames = new Name[names.length];
             for (int i = 0; i < names.length; i++) {
                 attributeNames[i] = new NameImpl(names[i]);
             }

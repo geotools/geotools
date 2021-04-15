@@ -55,7 +55,7 @@ public class UnionFeatureCollectionTest {
         Geometry[] firstArrayGeometry = new Geometry[5];
         Geometry[] secondArrayGeometry = new Geometry[5];
         for (int numFeatures = 0; numFeatures < 5; numFeatures++) {
-            Coordinate firstArray[] = new Coordinate[5];
+            Coordinate[] firstArray = new Coordinate[5];
             for (int j = 0; j < 4; j++) {
                 firstArray[j] = new Coordinate(j + numFeatures, j + numFeatures);
             }
@@ -67,7 +67,7 @@ public class UnionFeatureCollectionTest {
             features.add(b.buildFeature(numFeatures + ""));
         }
         for (int numFeatures = 0; numFeatures < 5; numFeatures++) {
-            Coordinate array[] = new Coordinate[5];
+            Coordinate[] array = new Coordinate[5];
             for (int j = 0; j < 4; j++) {
                 array[j] = new Coordinate(j + numFeatures + 50, j + numFeatures + 50);
             }

@@ -94,7 +94,7 @@ public class AttributeList extends AbstractList {
     }
 
     public double[] toDoubleArray() {
-        double array[] = new double[size()];
+        double[] array = new double[size()];
         for (int i = 0; i < size(); i++) {
             array[i] = getDouble(i);
         }
@@ -102,7 +102,7 @@ public class AttributeList extends AbstractList {
     }
 
     public Object[] toObjectArray() {
-        Object array[] = new Object[size()];
+        Object[] array = new Object[size()];
         for (int i = 0; i < size(); i++) {
             array[i] = get(i);
         }

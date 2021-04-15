@@ -74,8 +74,8 @@ public class PolygonExtractionProcessTest {
     public void simpleSmallCoverage() throws Exception {
         GridCoverage2D cov = buildSmallCoverage();
 
-        final int perimeters[] = {4, 16, 4};
-        final int areas[] = {1, 7, 1};
+        final int[] perimeters = {4, 16, 4};
+        final int[] areas = {1, 7, 1};
 
         SimpleFeatureCollection fc = process.execute(cov, 0, Boolean.TRUE, null, null, null, null);
         assertEquals(3, fc.size());

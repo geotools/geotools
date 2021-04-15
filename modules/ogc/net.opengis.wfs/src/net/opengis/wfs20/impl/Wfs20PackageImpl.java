@@ -4737,7 +4737,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
     addEEnumLiteral(resultTypeTypeEEnum, ResultTypeType.HITS);
 
     initEEnum(starStringTypeEEnum, StarStringType.class, "StarStringType");
-    addEEnumLiteral(starStringTypeEEnum, StarStringType._);
+    addEEnumLiteral(starStringTypeEEnum, StarStringType.STAR);
 
     initEEnum(stateValueTypeMember0EEnum, StateValueTypeMember0.class, "StateValueTypeMember0");
     addEEnumLiteral(stateValueTypeMember0EEnum, StateValueTypeMember0.VALID);

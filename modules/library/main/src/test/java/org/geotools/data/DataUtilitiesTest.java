@@ -176,7 +176,7 @@ public class DataUtilitiesTest extends DataTestCase {
                     File target = new File(dir, name);
                     return target.isFile() && target.canRead();
                 };
-        File readable[] = home.listFiles(findFilter);
+        File[] readable = home.listFiles(findFilter);
         if (readable.length > 0) {
             File test = readable[0];
             assertTrue(test.toString(), DataUtilities.checkFileReadable(test, null));

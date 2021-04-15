@@ -233,7 +233,7 @@ class RasterManager {
                 return;
             }
 
-            double selectedRes[] = new double[2];
+            double[] selectedRes = new double[2];
             final OverviewLevel level = overviewsController.resolutionsLevels.get(imageIndex);
             selectedRes[0] = level.resolutionX;
             selectedRes[1] = level.resolutionY;

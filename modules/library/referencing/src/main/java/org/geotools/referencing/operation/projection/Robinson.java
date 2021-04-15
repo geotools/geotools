@@ -78,7 +78,7 @@ public class Robinson extends MapProjection {
     }
 
     /** X translation table */
-    private static final Coeff X[] = {
+    private static final Coeff[] X = {
         new Coeff(1, -5.67239e-12, -7.15511e-05, 3.11028e-06),
         new Coeff(0.9986, -0.000482241, -2.4897e-05, -1.33094e-06),
         new Coeff(0.9954, -0.000831031, -4.4861e-05, -9.86588e-07),
@@ -101,7 +101,7 @@ public class Robinson extends MapProjection {
     };
 
     /** Y translation table */
-    private static final Coeff Y[] = {
+    private static final Coeff[] Y = {
         new Coeff(0, 0.0124, 3.72529e-10, 1.15484e-09),
         new Coeff(0.062, 0.0124001, 1.76951e-08, -5.92321e-09),
         new Coeff(0.124, 0.0123998, -7.09668e-08, 2.25753e-08),

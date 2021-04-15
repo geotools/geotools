@@ -27,21 +27,21 @@ public enum SignType implements Enumerator {
      * The '<em><b></b></em>' literal object.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #__VALUE
+     * @see #MINUS_VALUE
      * @generated
      * @ordered
      */
-    _(0, "_", "-"),
+    MINUS(0, "minus", "-"),
 
     /**
      * The '<em><b>1</b></em>' literal object.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #_1_VALUE
+     * @see #PLUS_VALUE
      * @generated
      * @ordered
      */
-    _1(1, "_1", "+");
+    PLUS(1, "plus", "+");
 
     /**
      * The '<em><b></b></em>' literal value.
@@ -51,12 +51,12 @@ public enum SignType implements Enumerator {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @see #_
+     * @see #MINUS
      * @model literal="-"
      * @generated
      * @ordered
      */
-    public static final int __VALUE = 0;
+    public static final int MINUS_VALUE = 0;
 
     /**
      * The '<em><b>1</b></em>' literal value.
@@ -66,12 +66,12 @@ public enum SignType implements Enumerator {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @see #_1
+     * @see #PLUS
      * @model literal="+"
      * @generated
      * @ordered
      */
-    public static final int _1_VALUE = 1;
+    public static final int PLUS_VALUE = 1;
 
     /**
      * An array of all the '<em><b>Sign Type</b></em>' enumerators.
@@ -81,8 +81,8 @@ public enum SignType implements Enumerator {
      */
     private static final SignType[] VALUES_ARRAY =
         new SignType[] {
-            _,
-            _1,
+            MINUS,
+            PLUS,
         };
 
     /**
@@ -139,8 +139,8 @@ public enum SignType implements Enumerator {
      */
     public static SignType get(int value) {
         switch (value) {
-            case __VALUE: return _;
-            case _1_VALUE: return _1;
+            case MINUS_VALUE: return MINUS;
+            case PLUS_VALUE: return PLUS;
         }
         return null;
     }

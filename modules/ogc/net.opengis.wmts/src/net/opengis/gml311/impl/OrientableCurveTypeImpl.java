@@ -48,7 +48,7 @@ public class OrientableCurveTypeImpl extends AbstractCurveTypeImpl implements Or
      * @generated
      * @ordered
      */
-    protected static final SignType ORIENTATION_EDEFAULT = SignType._1;
+    protected static final SignType ORIENTATION_EDEFAULT = SignType.PLUS;
 
     /**
      * The cached value of the '{@link #getOrientation() <em>Orientation</em>}' attribute.

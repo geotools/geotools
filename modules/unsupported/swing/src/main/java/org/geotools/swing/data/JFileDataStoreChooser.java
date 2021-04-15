@@ -326,7 +326,7 @@ public class JFileDataStoreChooser extends JFileChooser {
      *
      * @param arg ignored
      */
-    public static void main(String arg[]) {
+    public static void main(String[] arg) {
         File file = JFileDataStoreChooser.showOpenFile("shp", null);
         if (file != null) {
             JOptionPane.showMessageDialog(null, "Selected " + file.getPath());

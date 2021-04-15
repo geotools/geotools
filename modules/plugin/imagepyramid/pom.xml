@@ -7,10 +7,7 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -22,7 +19,7 @@
   <!--properties>
      <maven.test.skip>true</maven.test.skip>
   </properties-->
-  
+
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
@@ -30,13 +27,9 @@
   <artifactId>gt-imagepyramid</artifactId>
   <packaging>jar</packaging>
   <name>imagepyramid datasource module</name>
-  
 
-
-  <description>
-    Datasource created to read a pyramid of georeferenced images or geotiff 
-    (and in future also JPEG2K).
-  </description>
+  <description>Datasource created to read a pyramid of georeferenced images or geotiff 
+    (and in future also JPEG2K).</description>
 
   <licenses>
     <license>
@@ -46,14 +39,13 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Simone Giannecchini</name>
       <id>simboss</id>
+      <name>Simone Giannecchini</name>
       <email>simone.giannecchini@geo-solutions.it</email>
       <organization>GeoSolutions S.A.S.</organization>
       <organizationUrl>http://www.geo-solutions.it</organizationUrl>
@@ -62,24 +54,22 @@
         <role>Documentation</role>
         <role>Module Maintainer</role>
       </roles>
-    </developer> 
+    </developer>
   </developers>
-
 
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
   <!-- =========================================================== -->
   <dependencies>
     <dependency>
-        <groupId>org.geotools</groupId>
-        <artifactId>gt-imagemosaic</artifactId>
-        <version>${project.version}</version>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-imagemosaic</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-    </dependency>    
-    
+    </dependency>
 
     <!-- Test dependencies -->
     <dependency>
@@ -88,7 +78,7 @@
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
-     <dependency>
+    <dependency>
       <groupId>org.geotools.jdbc</groupId>
       <artifactId>gt-jdbc-h2</artifactId>
       <version>${project.version}</version>

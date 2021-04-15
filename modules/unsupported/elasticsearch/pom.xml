@@ -13,10 +13,16 @@
   <artifactId>gt-elasticsearch</artifactId>
   <packaging>jar</packaging>
   <name>Elasticsearch plugin</name>
-  <description>
-        DataStore supporting the Elasticsearch
-  </description>
-  
+  <description>DataStore supporting the Elasticsearch</description>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
@@ -31,14 +37,6 @@
       </roles>
     </developer>
   </developers>
-  
-  <licenses>
-    <license>
-      <name>Lesser General Public License (LGPL)</name>
-      <url>http://www.gnu.org/copyleft/lesser.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
   <properties>
     <elastic.test.version>${elasticsearch.version}</elastic.test.version>
   </properties>
@@ -47,15 +45,15 @@
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-core</artifactId>
       <version>5.1.13.RELEASE</version>
+      <scope>provided</scope>
       <exclusions>
         <exclusion>
-          <groupId>aopalliance</groupId>
           <artifactId>aopalliance</artifactId>
+          <groupId>aopalliance</groupId>
         </exclusion>
       </exclusions>
-      <scope>provided</scope>
     </dependency>
-   <dependency>
+    <dependency>
       <groupId>org.elasticsearch.client</groupId>
       <artifactId>elasticsearch-rest-client</artifactId>
     </dependency>
@@ -154,15 +152,15 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-        <groupId>org.testcontainers</groupId>
-        <artifactId>elasticsearch</artifactId>
-        <version>1.15.1</version>
-        <scope>test</scope>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>elasticsearch</artifactId>
+      <version>1.15.1</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
-    	<groupId>org.geotools</groupId>
-    	<artifactId>gt-geojsondatastore</artifactId>
-    	<version>${project.version}</version>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-geojsondatastore</artifactId>
+      <version>${project.version}</version>
     </dependency>
   </dependencies>
   <build>
@@ -213,7 +211,7 @@
           </execution>
         </executions>
       </plugin>
-     <plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <configuration>
@@ -222,7 +220,7 @@
             <sourceDirectory>${project.build.testSourceDirectory}</sourceDirectory>
           </sourceDirectories>
         </configuration>
-     </plugin>
+      </plugin>
     </plugins>
   </build>
   <profiles>
@@ -232,13 +230,6 @@
         <plugins>
           <plugin>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <configuration>
-              <argLine>-Djava.util.logging.config.file=${project.build.directory}/test-classes/test-classes/logging.properties</argLine>
-              <skipTests>${skipOnlineTests}</skipTests>
-              <systemPropertyVariables>
-                <elastic.test.version>${elastic.test.version}</elastic.test.version>
-              </systemPropertyVariables>
-            </configuration>
             <executions>
               <execution>
                 <goals>
@@ -247,6 +238,13 @@
                 </goals>
               </execution>
             </executions>
+            <configuration>
+              <argLine>-Djava.util.logging.config.file=${project.build.directory}/test-classes/test-classes/logging.properties</argLine>
+              <skipTests>${skipOnlineTests}</skipTests>
+              <systemPropertyVariables>
+                <elastic.test.version>${elastic.test.version}</elastic.test.version>
+              </systemPropertyVariables>
+            </configuration>
           </plugin>
         </plugins>
       </build>

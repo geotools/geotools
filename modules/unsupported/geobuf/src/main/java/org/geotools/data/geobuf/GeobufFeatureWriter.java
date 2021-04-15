@@ -97,7 +97,7 @@ public class GeobufFeatureWriter implements FeatureWriter<SimpleFeatureType, Sim
             }
             SimpleFeatureType featureType = state.getFeatureType();
             String fid = featureType.getTypeName() + "." + nextRow;
-            Object values[] = DataUtilities.defaultValues(featureType);
+            Object[] values = DataUtilities.defaultValues(featureType);
             this.currentFeature = SimpleFeatureBuilder.build(featureType, values, fid);
             return this.currentFeature;
         } catch (IllegalArgumentException invalid) {

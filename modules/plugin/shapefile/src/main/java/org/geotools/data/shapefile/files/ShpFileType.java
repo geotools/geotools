@@ -45,7 +45,9 @@ public enum ShpFileType {
      */
     FIX("fix"),
     /** the .shp.xml file, it contains the metadata about the shapefile */
-    SHP_XML("shp.xml");
+    SHP_XML("shp.xml"),
+    /** the .cpg file is used to specify the code page */
+    CPG("cpg");
 
     public final String extension;
     public final String extensionWithPeriod;

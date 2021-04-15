@@ -87,7 +87,7 @@ public class TimestampFileNameExtractorSPI implements PropertiesCollectorSPI {
 
                 // parameters can be in any order
                 // look for the first parameter
-                int indexesOf[] = new int[3];
+                int[] indexesOf = new int[3];
                 indexesOf[0] = value.indexOf("," + FORMAT_PREFIX);
                 indexesOf[1] = value.indexOf("," + FULL_PATH_PREFIX);
                 indexesOf[2] = value.indexOf("," + USE_HIGH_TIME_PREFIX);

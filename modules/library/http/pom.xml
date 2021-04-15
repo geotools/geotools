@@ -7,19 +7,17 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>library</artifactId>
-        <groupId>org.geotools</groupId>
-        <version>26-SNAPSHOT</version>
-    </parent>
-    <modelVersion>4.0.0</modelVersion>
-    <artifactId>gt-http</artifactId>
-    <name>HTTP Clients</name>
-    <description>A set of Http clients created by a factory method.</description>
-    
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>library</artifactId>
+    <version>26-SNAPSHOT</version>
+  </parent>
+  <artifactId>gt-http</artifactId>
+  <name>HTTP Clients</name>
+  <description>A set of Http clients created by a factory method.</description>
+
   <licenses>
     <license>
       <name>Lesser General Public License (LGPL)</name>
@@ -27,14 +25,13 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-  
-  
+
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Roar Br&#230;nden</name>
+      <name>Roar Brænden</name>
       <email>roar.brenden.no@gmail.com</email>
       <roles>
         <role>Java Developer</role>
@@ -43,29 +40,28 @@
     </developer>
   </developers>
 
-
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
   <!-- =========================================================== -->
-    <dependencies>
-      <dependency>
-        <groupId>org.geotools</groupId>
-        <artifactId>gt-metadata</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.github.tomakehurst</groupId>
-        <artifactId>wiremock-standalone</artifactId>
-        <version>2.18.0</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-   	    <groupId>org.hamcrest</groupId>
-   	    <artifactId>hamcrest-library</artifactId>
-   	    <scope>test</scope>
-  	  </dependency>
-    </dependencies>
-    
+  <dependencies>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-metadata</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.tomakehurst</groupId>
+      <artifactId>wiremock-standalone</artifactId>
+      <version>2.18.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-library</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
   <!-- =========================================================== -->
   <!--     Build Configuration                                     -->
   <!-- =========================================================== -->

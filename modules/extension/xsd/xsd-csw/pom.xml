@@ -7,18 +7,15 @@
                                                                                 
         Version: $Id$              
      ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
- <parent>
+  <parent>
     <groupId>org.geotools.xsd</groupId>
     <artifactId>xsd</artifactId>
     <version>26-SNAPSHOT</version>
   </parent>
-  
+
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
@@ -26,12 +23,8 @@
   <artifactId>gt-xsd-csw</artifactId>
   <packaging>jar</packaging>
   <name>CSW XML Support</name>
-  
 
-
-  <description>
-    Coverage Services for the Web XML support for Geotools.
-  </description>
+  <description>Coverage Services for the Web XML support for Geotools.</description>
 
   <licenses>
     <license>
@@ -41,14 +34,13 @@
     </license>
   </licenses>
 
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Andrea Aime</name>
       <id>aaime</id>
+      <name>Andrea Aime</name>
       <email>andrea.aime@geo-solutions.it</email>
       <organization>GeoSolutions</organization>
       <roles>
@@ -56,7 +48,6 @@
       </roles>
     </developer>
   </developers>
-
 
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->

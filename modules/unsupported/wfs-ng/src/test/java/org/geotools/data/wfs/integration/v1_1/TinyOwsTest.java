@@ -75,7 +75,7 @@ public class TinyOwsTest {
     @Test
     public void testGetCapabilities() throws Exception {
         WFSDataStore wfs = getWFSDataStore(new TinyOwsMockHttpClient());
-        String types[] = wfs.getTypeNames();
+        String[] types = wfs.getTypeNames();
         assertEquals(1, types.length);
         assertEquals(typeName.getLocalPart(), types[0]);
     }

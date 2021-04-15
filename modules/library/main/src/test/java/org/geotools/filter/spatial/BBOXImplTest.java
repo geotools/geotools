@@ -33,7 +33,7 @@ public class BBOXImplTest {
     public void testBbox() {
 
         GeometryFactory gf = new GeometryFactory(new PrecisionModel());
-        Coordinate coords[] = new Coordinate[6];
+        Coordinate[] coords = new Coordinate[6];
         coords[0] = new Coordinate(0, 1.5);
         coords[1] = new Coordinate(0, 2.5);
         coords[2] = new Coordinate(1.5, 3);

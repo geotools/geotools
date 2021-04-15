@@ -339,7 +339,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource
 
     public void modifyFeatures(AttributeDescriptor[] type, Object[] value, Filter filter)
             throws IOException {
-        Name attributeNames[] = new Name[type.length];
+        Name[] attributeNames = new Name[type.length];
         for (int i = 0; i < type.length; i++) {
             attributeNames[i] = type[i].getName();
         }
@@ -394,7 +394,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource
     @Override
     public final void modifyFeatures(String[] names, Object[] values, Filter filter)
             throws IOException {
-        Name attributeNames[] = new Name[names.length];
+        Name[] attributeNames = new Name[names.length];
         for (int i = 0; i < names.length; i++) {
             attributeNames[i] = new NameImpl(names[i]);
         }

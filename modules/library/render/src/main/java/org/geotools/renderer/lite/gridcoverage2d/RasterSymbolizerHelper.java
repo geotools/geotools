@@ -96,7 +96,7 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
         final SampleModel outputImageSampleModel = outputImage.getSampleModel();
         int numBands = outputImageSampleModel.getNumBands();
         final int dataType = outputImageSampleModel.getDataType();
-        GridSampleDimension sd[];
+        GridSampleDimension[] sd;
         if (numBands > 4) {
             // get the visible band
             final int visibleBand = CoverageUtilities.getVisibleBand(outputImage);

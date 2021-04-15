@@ -30,5 +30,35 @@
             class="net.opengis.wps10.Wps10Package"
             genModel="wps10.genmodel"/>
    </extension>
+   
+   
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated wps20 -->
+      <package
+            uri="http://www.opengis.net/wps/2.0"
+            class="net.opengis.wps20.Wps20Package"
+            genModel="wps20.genmodel"/>
+   </extension>
 
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated wps20 -->
+      <parser
+            type="net.opengis.wps20"
+            class="wps20.util.Wps20ResourceFactoryImpl"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated wps20 -->
+      <package
+            uri="http://www.w3.org/2001/XMLSchema"
+            class="org.w3._2001.schema.SchemaPackage"
+            genModel="wps20.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated wps20 -->
+      <parser
+            type="org.w3._2001.schema"
+            class="schema.util.SchemaResourceFactoryImpl"/>
+   </extension>
 </plugin>

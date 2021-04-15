@@ -35,14 +35,14 @@ public class PreGeneralizedFeatureReader
 
     protected FeatureReader<SimpleFeatureType, SimpleFeature> backendReader;
 
-    protected int indexMapping[];
+    protected int[] indexMapping;
 
     protected String geomPropertyName, backendGeomPropertyName;
 
     public PreGeneralizedFeatureReader(
             SimpleFeatureType featureTyp,
             SimpleFeatureType returnedFeatureType,
-            int indexMapping[],
+            int[] indexMapping,
             FeatureReader<SimpleFeatureType, SimpleFeature> backendReader,
             String geomPropertyName,
             String backendGeomPropertyName) {

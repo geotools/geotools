@@ -797,7 +797,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      * @return true of the ordinates indicate an empty envelope
      * @see #isEmpty()
      */
-    private static boolean isEmptyOrdinates(double ordinates[]) {
+    private static boolean isEmptyOrdinates(double[] ordinates) {
         final int dimension = ordinates.length / 2;
         if (dimension == 0) {
             return true;

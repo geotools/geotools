@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wps:Result
+	xmlns:wps="http://www.opengis.net/wps/2.0"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.opengis.net/wps/2.0 ../wps.xsd ">
+	
+	<wps:JobID>FB6DD4B0-A2BB-11E3-A5E2-0800200C9A66</wps:JobID>
+	<wps:ExpirationDate>2014-12-24T24:00:00Z</wps:ExpirationDate>
+	<wps:Output id="BUFFERED_GEOMETRY">
+		<wps:Reference xlink:href="http://result.data.server/FB6DD4B0-A2BB-11E3-A5E2-0800200C9A66/BUFFERED_GEOMETRY.xml"/>
+	</wps:Output>
+	
+</wps:Result>

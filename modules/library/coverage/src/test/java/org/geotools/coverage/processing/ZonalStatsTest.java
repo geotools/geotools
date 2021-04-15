@@ -265,7 +265,7 @@ public class ZonalStatsTest {
                 throws TransformException {
             final boolean isIdentity = worldToGridTransform.isIdentity();
             final java.awt.Polygon retValue = new java.awt.Polygon();
-            final double coords[] = new double[2];
+            final double[] coords = new double[2];
             final LineString exteriorRing = roiInput.getExteriorRing();
             final CoordinateSequence exteriorRingCS = exteriorRing.getCoordinateSequence();
             final int numCoords = exteriorRingCS.size();

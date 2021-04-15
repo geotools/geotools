@@ -35,7 +35,7 @@ public class ExampleFinder extends FactoryFinder {
     private static FactoryRegistry getServiceRegistry() {
         assert Thread.holdsLock(ExampleFinder.class);
         if (registry == null) {
-            Class<?> categories[] = new Class<?>[] {FunctionFactory.class};
+            Class<?>[] categories = new Class<?>[] {FunctionFactory.class};
             registry = new FactoryCreator(categories);
         }
         return registry;

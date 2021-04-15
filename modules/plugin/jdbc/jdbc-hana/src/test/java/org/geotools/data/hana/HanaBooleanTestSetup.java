@@ -36,7 +36,7 @@ public class HanaBooleanTestSetup extends JDBCBooleanTestSetup {
             HanaTestUtil htu = new HanaTestUtil(conn);
             htu.createTestSchema();
 
-            String cols[][] = {{"id", "INT PRIMARY KEY"}, {"boolProperty", "BOOLEAN"}};
+            String[][] cols = {{"id", "INT PRIMARY KEY"}, {"boolProperty", "BOOLEAN"}};
             htu.createRegisteredTestTable(TABLE, cols);
 
             htu.insertIntoTestTable(TABLE, htu.nextTestSequenceValueForColumn(TABLE, "id"), false);

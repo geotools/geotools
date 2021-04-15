@@ -238,7 +238,7 @@ class ShadedReliefNode extends StyleVisitorCoverageProcessingNodeAdapter
                 props.put("GC_ROI", worker.getROI());
             }
 
-            final GridSampleDimension sd[];
+            final GridSampleDimension[] sd;
             if (numActualBands == numSourceBands) {
                 sd = source.getSampleDimensions();
             } else {

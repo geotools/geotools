@@ -53,12 +53,12 @@ public class BilinearInterpolatorTest {
 
         // check monotonicity in X direction
         for (int j = 0; j < grid[0].length; j++) {
-            float slice[] = sliceX(grid, j);
+            float[] slice = sliceX(grid, j);
             if (!isMonotonicSequence(slice, noDataValue)) return false;
         }
         // check monotonicity in Y direction
         for (int x = 0; x < grid[0].length; x++) {
-            float slice[] = sliceY(grid, x);
+            float[] slice = sliceY(grid, x);
             if (!isMonotonicSequence(slice, noDataValue)) return false;
         }
         return true;

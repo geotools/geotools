@@ -119,7 +119,7 @@ public final class GridCoverageRendererUtilities {
             CoordinateReferenceSystem crs,
             final Interpolation interpolation,
             final GeneralEnvelope destinationEnvelope,
-            final double bkgValues[],
+            final double[] bkgValues,
             final Hints hints)
             throws FactoryException {
         // paranoiac check
@@ -145,7 +145,7 @@ public final class GridCoverageRendererUtilities {
             CoordinateReferenceSystem destinationCRS,
             final Interpolation interpolation,
             final GeneralEnvelope destinationEnvelope,
-            final double bkgValues[],
+            final double[] bkgValues,
             GridCoverageFactory gridCoverageFactory,
             final Hints hints)
             throws FactoryException {
@@ -181,7 +181,7 @@ public final class GridCoverageRendererUtilities {
             CoordinateReferenceSystem destinationCRS,
             final Interpolation interpolation,
             final GeneralEnvelope destinationEnvelope,
-            final double bkgValues[],
+            final double[] bkgValues,
             GridCoverageFactory gridCoverageFactory,
             final Hints hints)
             throws FactoryException {

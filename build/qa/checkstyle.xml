@@ -15,6 +15,7 @@
       <property name="allowMissingParamTags" value="true"/>
       <property name="allowMissingReturnTag" value="true"/>
     </module>
+    <module name="ArrayTypeStyle"/>
   </module>
   <module name="RegexpHeader">
     <!-- This checks the beginning of the header as we have multiple header styles with a common start -->

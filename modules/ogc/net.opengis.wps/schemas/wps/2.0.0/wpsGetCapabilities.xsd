@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema
+	xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:ows="http://www.opengis.net/ows/2.0"
+	xmlns:wps="http://www.opengis.net/wps/2.0"
+	targetNamespace="http://www.opengis.net/wps/2.0"
+	elementFormDefault="qualified"
+	xml:lang="en"
+	version="2.0.0">
+	
+	<annotation>
+		<documentation>
+			WPS is an OGC Standard.
+			Copyright (c) 2015 Open Geospatial Consortium.
+			To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.
+		</documentation>
+	</annotation>
+	
+	<!-- all-components document include (OGC 06-135r11 s#14) -->
+	<include schemaLocation="wps.xsd"/>
+	
+	<!-- === IMPORTS === -->
+	<import namespace="http://www.opengis.net/ows/2.0" schemaLocation="http://schemas.opengis.net/ows/2.0/owsAll.xsd" />
+	
+	<!-- === INCLUDES === -->
+	<include schemaLocation="wpsCommon.xsd"/>
+	<include schemaLocation="wpsDescribeProcess.xsd"/>
+	
+	<!-- =========================================================== -->
+	<!-- GetCapabilities request elements and types -->
+	<!-- =========================================================== -->
+	<element name="GetCapabilities" type="wps:GetCapabilitiesType">
+		<annotation>
+            <documentation>Request to a WPS server to perform the GetCapabilities operation. This operation allows a client to retrieve a Capabilities XML document providing metadata for the specific WPS server. </documentation>
+        </annotation>
+	</element>
+	<complexType name="GetCapabilitiesType">
+		<complexContent>
+			<extension base="ows:GetCapabilitiesType">
+				<attribute name="service" type="ows:ServiceType" use="required" fixed="WPS">
+					<annotation>
+						<documentation>service type identifier</documentation>
+					</annotation>
+				</attribute>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- =========================================================== -->
+	
+	<!-- =========================================================== -->
+	<!-- GetCapabilities response elements and types -->
+	<!-- =========================================================== -->
+	<element name="Capabilities" type="wps:WPSCapabilitiesType">
+		<annotation>
+			<documentation>WPS GetCapabilities operation response. This document provides clients with service metadata about a specific service instance, including metadata about the processes that can be executed. Since the server does not implement the updateSequence and Sections parameters, the server shall always return the complete Capabilities document, without the updateSequence parameter. </documentation>
+		</annotation>
+	</element>
+	<!-- =========================================================== -->
+	<complexType name="WPSCapabilitiesType">
+		<complexContent>
+			<extension base="ows:CapabilitiesBaseType">
+				<sequence>
+					<element ref="wps:Contents"/>
+					<element name="Extension" minOccurs="0">
+						<annotation>
+							<documentation>container for elements defined by extension specifications</documentation>
+						</annotation>
+						<complexType>
+							<sequence>
+								<any minOccurs="0" maxOccurs="unbounded" processContents="lax" namespace="##other"/>
+							</sequence>
+						</complexType>
+					</element>
+				</sequence>
+				<attribute name="service" use="required" fixed="WPS"/>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- =========================================================== -->
+	<element name="Contents">
+		<annotation>
+			<documentation>List of brief descriptions of the processes offered by this WPS server. </documentation>
+		</annotation>
+		<complexType>
+			<sequence>
+				<element name="ProcessSummary" type="wps:ProcessSummaryType" maxOccurs="unbounded">
+					<annotation>
+						<documentation>Unordered list of one or more brief descriptions of all the processes offered by this WPS server. </documentation>
+					</annotation>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+	<!-- =========================================================== -->
+	<complexType name="ProcessSummaryType">
+		<annotation>
+			<documentation>
+				The process summary consists of descriptive elements at the process level,
+				the process profiles and the service-specific properties.
+				The process summary is not specific about process inputs and outputs.
+			</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="wps:DescriptionType">
+				<attributeGroup ref="wps:processPropertiesAttributes"/>
+			</extension>
+		</complexContent>
+	</complexType>
+	
+</schema>

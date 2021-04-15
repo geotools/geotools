@@ -101,7 +101,7 @@ public class MockPositionFactory implements PositionFactory {
 
         @Override
         public double[] getCoordinate() {
-            double copy[] = new double[crs.getCoordinateSystem().getDimension()];
+            double[] copy = new double[crs.getCoordinateSystem().getDimension()];
             System.arraycopy(coordinates, 0, copy, 0, getDimension());
             return copy;
         }

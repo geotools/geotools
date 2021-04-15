@@ -18,7 +18,9 @@ package org.geotools.styling;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.util.Utilities;
@@ -47,6 +49,7 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
     private double maxScaleDenominator = Double.POSITIVE_INFINITY;
     private double minScaleDenominator = 0.0;
     private OnLineResource online = null;
+    protected Map<String, String> options;
 
     /** Creates a new instance of DefaultRule */
     protected RuleImpl() {}
@@ -244,6 +247,7 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
 
             clone.maxScaleDenominator = maxScaleDenominator;
             clone.minScaleDenominator = minScaleDenominator;
+            clone.options = options;
 
             return clone;
         } catch (CloneNotSupportedException e) {
@@ -277,6 +281,10 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
 
         if (filter != null) {
             result = (PRIME * result) + filter.hashCode();
+        }
+
+        if (options != null) {
+            result = (PRIME * result) + options.hashCode();
         }
 
         result = (PRIME * result) + (hasElseFilter ? 1 : 0);
@@ -320,7 +328,8 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
                     && (Double.doubleToLongBits(maxScaleDenominator)
                             == Double.doubleToLongBits(other.maxScaleDenominator))
                     && (Double.doubleToLongBits(minScaleDenominator)
-                            == Double.doubleToLongBits(other.minScaleDenominator));
+                            == Double.doubleToLongBits(other.minScaleDenominator))
+                    && getOptions().equals(other.getOptions());
         }
 
         return false;
@@ -344,6 +353,7 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
                 buf.append("\n");
             }
         }
+        buf.append(getOptions());
         return buf.toString();
     }
 
@@ -366,5 +376,18 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
             RuleImpl copy = new RuleImpl(rule); // replace with casting ...
             return copy;
         }
+    }
+
+    @Override
+    public boolean hasOption(String key) {
+        return options != null && options.containsKey(key);
+    }
+
+    @Override
+    public Map<String, String> getOptions() {
+        if (options == null) {
+            options = new LinkedHashMap<>();
+        }
+        return options;
     }
 }

@@ -119,7 +119,7 @@ public class JenksFunctionTest extends FunctionTestSupport {
         // create a feature collection with five features values 1-5
         SimpleFeatureType dataType =
                 DataUtilities.createType("classification.test1", "id:0,value:int");
-        int iVal[] = {1, 2, 3, 4, 5};
+        int[] iVal = {1, 2, 3, 4, 5};
         SimpleFeature[] myfeatures = new SimpleFeature[iVal.length];
         for (int i = 0; i < iVal.length; i++) {
             myfeatures[i] =
@@ -160,7 +160,7 @@ public class JenksFunctionTest extends FunctionTestSupport {
         // create a feature collection with five features values 1-5
         SimpleFeatureType dataType =
                 DataUtilities.createType("classification.test1", "id:0,value:int");
-        int iVal[] = {1, 2, 3, 4, 5, 6};
+        int[] iVal = {1, 2, 3, 4, 5, 6};
         SimpleFeature[] myfeatures = new SimpleFeature[iVal.length];
         for (int i = 0; i < iVal.length; i++) {
             myfeatures[i] =
@@ -184,7 +184,7 @@ public class JenksFunctionTest extends FunctionTestSupport {
         // create a feature collection
         SimpleFeatureType ft =
                 DataUtilities.createType("classification.nullnan", "id:0,foo:int,bar:double");
-        Integer iVal[] = {
+        Integer[] iVal = {
             Integer.valueOf(0),
             Integer.valueOf(0),
             Integer.valueOf(0),
@@ -195,7 +195,7 @@ public class JenksFunctionTest extends FunctionTestSupport {
             null,
             null
         };
-        Double dVal[] = {
+        Double[] dVal = {
             Double.valueOf(0.0),
             Double.valueOf(50.01),
             null,

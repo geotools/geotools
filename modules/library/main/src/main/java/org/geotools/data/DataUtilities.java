@@ -1999,7 +1999,7 @@ public class DataUtilities {
             fid = line.substring(0, fidSplit);
         }
         String data = line.substring(fidSplit + 1);
-        String text[] = splitIntoText(data, featureType);
+        String[] text = splitIntoText(data, featureType);
         Object[] values = new Object[text.length];
         for (int i = 0; i < text.length; i++) {
             AttributeDescriptor descriptor = featureType.getDescriptor(i);
@@ -2032,7 +2032,7 @@ public class DataUtilities {
         // return data.split("|", -1); // use -1 as a limit to include empty trailing spaces
         // return data.split("[.-^\\\\]\\|",-1); //use -1 as limit to include empty trailing spaces
 
-        String text[] = new String[type.getAttributeCount()];
+        String[] text = new String[type.getAttributeCount()];
         int i = 0;
         StringBuilder item = new StringBuilder();
         for (String str : data.split("\\|", -1)) {

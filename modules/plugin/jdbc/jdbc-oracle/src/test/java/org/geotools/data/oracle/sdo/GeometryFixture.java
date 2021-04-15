@@ -645,13 +645,13 @@ public class GeometryFixture {
     //
     // Utility Methods
     //
-    protected LinearRing ring(double coords[]) {
+    protected LinearRing ring(double[] coords) {
         CoordinateSequence seq = coords(coords);
         return gf.createLinearRing(seq);
     }
 
-    protected CoordinateSequence coords(double coords[]) {
-        Coordinate array[] = new Coordinate[coords.length / 2];
+    protected CoordinateSequence coords(double[] coords) {
+        Coordinate[] array = new Coordinate[coords.length / 2];
         for (int i = 0; i < array.length; i++) {
             array[i] = new Coordinate(coords[i * 2], coords[i * 2 + 1]);
         }

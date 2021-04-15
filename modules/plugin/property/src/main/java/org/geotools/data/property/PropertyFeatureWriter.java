@@ -178,7 +178,7 @@ public class PropertyFeatureWriter implements FeatureWriter<SimpleFeatureType, S
                 delegate.next(); // grab next line
 
                 fid = delegate.fid;
-                Object values[] = new Object[type.getAttributeCount()];
+                Object[] values = new Object[type.getAttributeCount()];
                 for (int i = 0; i < type.getAttributeCount(); i++) {
                     values[i] = delegate.read(i);
                 }
@@ -188,7 +188,7 @@ public class PropertyFeatureWriter implements FeatureWriter<SimpleFeatureType, S
                 return live;
             } else {
                 fid = type.getTypeName() + "." + System.currentTimeMillis();
-                Object values[] = DataUtilities.defaultValues(type);
+                Object[] values = DataUtilities.defaultValues(type);
 
                 origional = null;
                 live = SimpleFeatureBuilder.build(type, values, fid);

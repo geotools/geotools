@@ -123,7 +123,7 @@ public class DOMParserTestSuite extends TestSuite {
 
             File dir = TestData.file(DOMParserTestSuite.class, "test9.xml").getParentFile();
 
-            File tests[] = dir.listFiles(pathname -> pathname.toString().endsWith("test20.xml"));
+            File[] tests = dir.listFiles(pathname -> pathname.toString().endsWith("test20.xml"));
             for (File test : tests) {
                 suite.addTest(suite.new DomTestXml(test.getName()));
             }

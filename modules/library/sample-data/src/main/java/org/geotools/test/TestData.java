@@ -139,13 +139,13 @@ public class TestData implements Runnable {
                                             () -> {
                                                 try {
                                                     // get the method
-                                                    final Class params[] = {};
+                                                    final Class[] params = {};
                                                     Method method =
                                                             mImage.getDeclaredMethod(
                                                                     "isAvailable", params);
 
                                                     // invoke
-                                                    final Object paramsObj[] = {};
+                                                    final Object[] paramsObj = {};
 
                                                     final Object o =
                                                             mImage.getDeclaredConstructor()

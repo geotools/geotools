@@ -437,23 +437,23 @@ public class TransparencyFillOpImage extends AreaOpImage {
         int dheight = dst.getHeight();
         int numBands = dst.getNumBands();
 
-        int dstOffsetsForBands[] = dst.getOffsetsForBands();
-        int dstBandOffsets[] = dst.getBandOffsets();
+        int[] dstOffsetsForBands = dst.getOffsetsForBands();
+        int[] dstBandOffsets = dst.getBandOffsets();
         int dstPixelStride = dst.getPixelStride();
         int dstScanlineStride = dst.getScanlineStride();
 
-        int srcOffsetsForBands[] = src.getOffsetsForBands();
-        int srcBandOffsets[] = src.getBandOffsets();
+        int[] srcOffsetsForBands = src.getOffsetsForBands();
+        int[] srcBandOffsets = src.getBandOffsets();
         int srcPixelStride = src.getPixelStride();
         int srcScanlineStride = src.getScanlineStride();
 
-        byte dstDataArrays[][] = dst.getByteDataArrays();
-        byte srcDataArrays[][] = src.getByteDataArrays();
-        byte srcData[] = srcDataArrays[numBands - 1];
+        byte[][] dstDataArrays = dst.getByteDataArrays();
+        byte[][] srcDataArrays = src.getByteDataArrays();
+        byte[] srcData = srcDataArrays[numBands - 1];
 
         int srcScanlineOffset = srcBandOffsets[numBands - 1];
         int srcScanlineDataOffset = srcBandOffsets[srcOffsetsForBands[0]];
-        int dstScanlineOffset[] = new int[numBands];
+        int[] dstScanlineOffset = new int[numBands];
 
         byte transparentValue = noData.byteValue();
         for (int i = 0; i < numBands; i++) {
@@ -583,23 +583,23 @@ public class TransparencyFillOpImage extends AreaOpImage {
         int dheight = dst.getHeight();
         int numBands = dst.getNumBands();
 
-        int dstOffsetsForBands[] = dst.getOffsetsForBands();
-        int dstBandOffsets[] = dst.getBandOffsets();
+        int[] dstOffsetsForBands = dst.getOffsetsForBands();
+        int[] dstBandOffsets = dst.getBandOffsets();
         int dstPixelStride = dst.getPixelStride();
         int dstScanlineStride = dst.getScanlineStride();
 
-        int srcOffsetsForBands[] = src.getOffsetsForBands();
-        int srcBandOffsets[] = src.getBandOffsets();
+        int[] srcOffsetsForBands = src.getOffsetsForBands();
+        int[] srcBandOffsets = src.getBandOffsets();
         int srcPixelStride = src.getPixelStride();
         int srcScanlineStride = src.getScanlineStride();
 
-        int dstDataArrays[][] = dst.getIntDataArrays();
-        int srcDataArrays[][] = src.getIntDataArrays();
-        int srcData[] = srcDataArrays[numBands - 1];
+        int[][] dstDataArrays = dst.getIntDataArrays();
+        int[][] srcDataArrays = src.getIntDataArrays();
+        int[] srcData = srcDataArrays[numBands - 1];
 
         int srcScanlineOffset = srcBandOffsets[numBands - 1];
         int srcScanlineDataOffset = srcBandOffsets[srcOffsetsForBands[0]];
-        int dstScanlineOffset[] = new int[numBands];
+        int[] dstScanlineOffset = new int[numBands];
 
         int transparentValue = noData.intValue();
         for (int i = 0; i < numBands; i++) {
@@ -729,23 +729,23 @@ public class TransparencyFillOpImage extends AreaOpImage {
         int dheight = dst.getHeight();
         int numBands = dst.getNumBands();
 
-        int dstOffsetsForBands[] = dst.getOffsetsForBands();
-        int dstBandOffsets[] = dst.getBandOffsets();
+        int[] dstOffsetsForBands = dst.getOffsetsForBands();
+        int[] dstBandOffsets = dst.getBandOffsets();
         int dstPixelStride = dst.getPixelStride();
         int dstScanlineStride = dst.getScanlineStride();
 
-        int srcOffsetsForBands[] = src.getOffsetsForBands();
-        int srcBandOffsets[] = src.getBandOffsets();
+        int[] srcOffsetsForBands = src.getOffsetsForBands();
+        int[] srcBandOffsets = src.getBandOffsets();
         int srcPixelStride = src.getPixelStride();
         int srcScanlineStride = src.getScanlineStride();
 
-        short dstDataArrays[][] = dst.getShortDataArrays();
-        short srcDataArrays[][] = src.getShortDataArrays();
-        short srcData[] = srcDataArrays[numBands - 1];
+        short[][] dstDataArrays = dst.getShortDataArrays();
+        short[][] srcDataArrays = src.getShortDataArrays();
+        short[] srcData = srcDataArrays[numBands - 1];
 
         int srcScanlineOffset = srcBandOffsets[numBands - 1];
         int srcScanlineDataOffset = srcBandOffsets[srcOffsetsForBands[0]];
-        int dstScanlineOffset[] = new int[numBands];
+        int[] dstScanlineOffset = new int[numBands];
 
         short transparentValue = noData.shortValue();
         for (int i = 0; i < numBands; i++) {
@@ -875,23 +875,23 @@ public class TransparencyFillOpImage extends AreaOpImage {
         int dheight = dst.getHeight();
         int numBands = dst.getNumBands();
 
-        int dstOffsetsForBands[] = dst.getOffsetsForBands();
-        int dstBandOffsets[] = dst.getBandOffsets();
+        int[] dstOffsetsForBands = dst.getOffsetsForBands();
+        int[] dstBandOffsets = dst.getBandOffsets();
         int dstPixelStride = dst.getPixelStride();
         int dstScanlineStride = dst.getScanlineStride();
 
-        int srcOffsetsForBands[] = src.getOffsetsForBands();
-        int srcBandOffsets[] = src.getBandOffsets();
+        int[] srcOffsetsForBands = src.getOffsetsForBands();
+        int[] srcBandOffsets = src.getBandOffsets();
         int srcPixelStride = src.getPixelStride();
         int srcScanlineStride = src.getScanlineStride();
 
-        short dstDataArrays[][] = dst.getShortDataArrays();
-        short srcDataArrays[][] = src.getShortDataArrays();
-        short srcData[] = srcDataArrays[numBands - 1];
+        short[][] dstDataArrays = dst.getShortDataArrays();
+        short[][] srcDataArrays = src.getShortDataArrays();
+        short[] srcData = srcDataArrays[numBands - 1];
 
         int srcScanlineOffset = srcBandOffsets[numBands - 1];
         int srcScanlineDataOffset = srcBandOffsets[srcOffsetsForBands[0]];
-        int dstScanlineOffset[] = new int[numBands];
+        int[] dstScanlineOffset = new int[numBands];
 
         short transparentValue = noData.shortValue();
         for (int i = 0; i < numBands; i++) {
@@ -1021,23 +1021,23 @@ public class TransparencyFillOpImage extends AreaOpImage {
         int dheight = dst.getHeight();
         int numBands = dst.getNumBands();
 
-        int dstOffsetsForBands[] = dst.getOffsetsForBands();
-        int dstBandOffsets[] = dst.getBandOffsets();
+        int[] dstOffsetsForBands = dst.getOffsetsForBands();
+        int[] dstBandOffsets = dst.getBandOffsets();
         int dstPixelStride = dst.getPixelStride();
         int dstScanlineStride = dst.getScanlineStride();
 
-        int srcOffsetsForBands[] = src.getOffsetsForBands();
-        int srcBandOffsets[] = src.getBandOffsets();
+        int[] srcOffsetsForBands = src.getOffsetsForBands();
+        int[] srcBandOffsets = src.getBandOffsets();
         int srcPixelStride = src.getPixelStride();
         int srcScanlineStride = src.getScanlineStride();
 
-        float dstDataArrays[][] = dst.getFloatDataArrays();
-        float srcDataArrays[][] = src.getFloatDataArrays();
-        float srcData[] = srcDataArrays[numBands - 1];
+        float[][] dstDataArrays = dst.getFloatDataArrays();
+        float[][] srcDataArrays = src.getFloatDataArrays();
+        float[] srcData = srcDataArrays[numBands - 1];
 
         int srcScanlineOffset = srcBandOffsets[numBands - 1];
         int srcScanlineDataOffset = srcBandOffsets[srcOffsetsForBands[0]];
-        int dstScanlineOffset[] = new int[numBands];
+        int[] dstScanlineOffset = new int[numBands];
 
         float transparentValue = noData.floatValue();
         for (int i = 0; i < numBands; i++) {
@@ -1167,23 +1167,23 @@ public class TransparencyFillOpImage extends AreaOpImage {
         int dheight = dst.getHeight();
         int numBands = dst.getNumBands();
 
-        int dstOffsetsForBands[] = dst.getOffsetsForBands();
-        int dstBandOffsets[] = dst.getBandOffsets();
+        int[] dstOffsetsForBands = dst.getOffsetsForBands();
+        int[] dstBandOffsets = dst.getBandOffsets();
         int dstPixelStride = dst.getPixelStride();
         int dstScanlineStride = dst.getScanlineStride();
 
-        int srcOffsetsForBands[] = src.getOffsetsForBands();
-        int srcBandOffsets[] = src.getBandOffsets();
+        int[] srcOffsetsForBands = src.getOffsetsForBands();
+        int[] srcBandOffsets = src.getBandOffsets();
         int srcPixelStride = src.getPixelStride();
         int srcScanlineStride = src.getScanlineStride();
 
-        double dstDataArrays[][] = dst.getDoubleDataArrays();
-        double srcDataArrays[][] = src.getDoubleDataArrays();
-        double srcData[] = srcDataArrays[numBands - 1];
+        double[][] dstDataArrays = dst.getDoubleDataArrays();
+        double[][] srcDataArrays = src.getDoubleDataArrays();
+        double[] srcData = srcDataArrays[numBands - 1];
 
         int srcScanlineOffset = srcBandOffsets[numBands - 1];
         int srcScanlineDataOffset = srcBandOffsets[srcOffsetsForBands[0]];
-        int dstScanlineOffset[] = new int[numBands];
+        int[] dstScanlineOffset = new int[numBands];
 
         double transparentValue = noData.doubleValue();
         for (int i = 0; i < numBands; i++) {

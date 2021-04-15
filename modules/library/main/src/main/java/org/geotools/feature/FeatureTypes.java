@@ -688,18 +688,18 @@ public class FeatureTypes {
     }
 
     public static boolean equals(
-            AttributeDescriptor attributesA[], AttributeDescriptor attributesB[]) {
+            AttributeDescriptor[] attributesA, AttributeDescriptor[] attributesB) {
         return equals(attributesA, attributesB, false);
     }
 
     public static boolean equalsExact(
-            AttributeDescriptor attributesA[], AttributeDescriptor attributesB[]) {
+            AttributeDescriptor[] attributesA, AttributeDescriptor[] attributesB) {
         return equals(attributesA, attributesB, true);
     }
 
     static boolean equals(
-            AttributeDescriptor attributesA[],
-            AttributeDescriptor attributesB[],
+            AttributeDescriptor[] attributesA,
+            AttributeDescriptor[] attributesB,
             boolean compareUserMaps) {
         if (attributesA.length != attributesB.length) return false;
 

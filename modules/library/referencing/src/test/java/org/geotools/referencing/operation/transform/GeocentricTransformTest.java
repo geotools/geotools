@@ -152,8 +152,8 @@ public final class GeocentricTransformTest extends TransformTestBase {
          * Construct an array of 850 random points. The first 8 points
          * are initialized to know values. Other points are left random.
          */
-        final double cartesianDistance[] = new double[4];
-        final double orthodromicDistance[] = new double[4];
+        final double[] cartesianDistance = new double[4];
+        final double[] orthodromicDistance = new double[4];
         final double[] array0 = new double[900]; // Must be divisible by 3.
         for (int i = 0; i < array0.length; i++) {
             final int range;

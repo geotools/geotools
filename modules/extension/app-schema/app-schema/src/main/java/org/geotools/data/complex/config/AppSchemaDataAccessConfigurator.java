@@ -76,8 +76,10 @@ import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
+import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.jdbc.JDBCFeatureSource;
 import org.geotools.jdbc.JDBCFeatureStore;
+import org.geotools.jdbc.JoinPropertyName;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.geotools.xml.resolver.SchemaCache;
@@ -96,6 +98,7 @@ import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.helpers.NamespaceSupport;
 
@@ -743,15 +746,46 @@ public class AppSchemaDataAccessConfigurator {
                 String name = (String) entry.getKey();
                 Name qName = Types.degloseName(name, namespaces);
                 String cqlExpression = (String) entry.getValue();
-                final Expression expression = parseOgcCqlExpression(cqlExpression);
-                clientProperties.put(qName, expression);
+                Expression expression = parseOgcCqlExpression(cqlExpression);
+                Expression fixedExpr =
+                        fixClientPropertyIfJDBCMultipleValueIsPresent(dto, expression);
+                clientProperties.put(qName, fixedExpr);
             }
         }
-
         // add anonymous attributes
         addAnonymousAttributes(dto, clientProperties);
 
         return clientProperties;
+    }
+
+    // fix the PropertyName of a ClientProperty specified for an AttributeMapping
+    // that has JDBCMultipleValueDirective
+    private Expression fixClientPropertyIfJDBCMultipleValueIsPresent(
+            org.geotools.data.complex.config.AttributeMapping dto, Expression clientPropertyExpr) {
+        MultipleValue multipleValue = dto.getMultipleValue();
+        if (multipleValue instanceof JdbcMultipleValue) {
+            JdbcMultipleValue jdbcMultipleValue = (JdbcMultipleValue) multipleValue;
+            DuplicatingFilterVisitor duplicatingFilterVisitor =
+                    new DuplicatingFilterVisitor() {
+                        @Override
+                        public Object visit(PropertyName propertyName, Object extraData) {
+                            // create a JoinPropertyName out of the PropertyName
+                            // using the JDBCMultipleValue id as an alias.
+                            // the same alias is being used by the JoiningJDBCFeatureSource
+                            // when joining the targetTable
+                            JoinPropertyName joinPn =
+                                    new JoinPropertyName(
+                                            null,
+                                            jdbcMultipleValue.getId(),
+                                            propertyName.getPropertyName());
+                            joinPn.namespaceSupport = propertyName.getNamespaceContext();
+                            return joinPn;
+                        }
+                    };
+            clientPropertyExpr =
+                    (Expression) clientPropertyExpr.accept(duplicatingFilterVisitor, null);
+        }
+        return clientPropertyExpr;
     }
 
     private void addAnonymousAttributes(

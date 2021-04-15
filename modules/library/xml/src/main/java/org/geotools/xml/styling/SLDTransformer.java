@@ -873,6 +873,10 @@ public class SLDTransformer extends TransformerBase {
                 symbolizer.accept(this);
             }
 
+            if (rule.getOptions() != null) {
+                encodeVendorOptions(rule.getOptions());
+            }
+
             end("Rule");
         }
 

@@ -34,6 +34,7 @@ import org.geotools.data.complex.AppSchemaDataAccess;
 import org.geotools.feature.NameImpl;
 import org.geotools.xml.resolver.SchemaCache;
 import org.junit.AfterClass;
+import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.feature.Feature;
@@ -50,9 +51,14 @@ public final class HttpConfigTest {
 
     private static final File APP_SCHEMA_CACHE_DIR =
             new File(FileUtils.getTempDirectory(), "app-schema-cache");
+    private static final boolean LINUX_GITHUB_BUILD = Boolean.getBoolean("linux-github-build");
 
     @BeforeClass
     public static void setup() {
+        // will fail on GitHub linux build, due to TCP port opening. Tests depending on it
+        // will have to be skipped with the same variable
+        if (LINUX_GITHUB_BUILD) return;
+
         // setup schemas cache
         System.setProperty(SchemaCache.PROVIDED_CACHE_LOCATION_KEY, APP_SCHEMA_CACHE_DIR.getPath());
         // start HTTP static server and load the necessary resources
@@ -81,12 +87,14 @@ public final class HttpConfigTest {
 
     @Test
     public void testHttpIncludes() throws Exception {
+        Assume.assumeFalse(LINUX_GITHUB_BUILD);
         // included types are specified with a full HTTP URL
         testHttpMapping("stations_http_includes.xml");
     }
 
     @Test
     public void testRelativeIncludes() throws Exception {
+        Assume.assumeFalse(LINUX_GITHUB_BUILD);
         // included types are specified relatively
         testHttpMapping("stations_relative_includes.xml");
     }

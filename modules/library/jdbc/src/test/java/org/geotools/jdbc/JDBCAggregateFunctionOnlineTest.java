@@ -34,6 +34,7 @@ import org.geotools.feature.visitor.NearestVisitor;
 import org.geotools.feature.visitor.StandardDeviationVisitor;
 import org.geotools.feature.visitor.SumAreaVisitor;
 import org.geotools.feature.visitor.SumVisitor;
+import org.geotools.feature.visitor.UniqueCountVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.SortByImpl;
@@ -621,5 +622,42 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
 
         assertFalse(visited);
         assertEquals(0.55, v.getResult().toDouble(), 0.01);
+    }
+
+    public void testUniqueCount() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyName p = ff.property(aname("stringProperty"));
+
+        UniqueVisitor v = new UniqueCountVisitor(p);
+        dataStore.getFeatureSource(tname("ft1")).accepts(Query.ALL, v, null);
+        int result = v.getResult().toInt();
+        assertEquals(0, v.getUnique().size());
+        assertEquals(3, result);
+    }
+
+    public void testUniqueCountWithFilter() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyName p = ff.property(aname("stringProperty"));
+
+        UniqueCountVisitor v = new UniqueCountVisitor(p);
+        Filter f = ff.greater(ff.property(aname("doubleProperty")), ff.literal(1));
+        Query q = new Query(tname("ft1"), f);
+        dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
+        assertFalse(visited);
+        Set result = v.getUnique();
+        assertEquals(0, result.size());
+        assertEquals(2, v.getResult().toInt());
+    }
+
+    public void testUniqueCountWithLimit() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyName p = ff.property(aname("stringProperty"));
+
+        UniqueVisitor v = new UniqueCountVisitor(p);
+        v.setMaxFeatures(2);
+        dataStore.getFeatureSource(tname("ft1")).accepts(Query.ALL, v, null);
+        int result = v.getResult().toInt();
+        assertEquals(0, v.getUnique().size());
+        assertEquals(2, result);
     }
 }

@@ -18,7 +18,10 @@
 package org.geotools.xml.resolver;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URI;
+import java.net.URL;
 import org.geotools.test.OnlineTestSupport;
 import org.geotools.util.URLs;
 import org.junit.After;
@@ -104,11 +107,7 @@ public class SchemaCacheOnlineTest extends OnlineTestSupport {
         // the test server renegotiates to TLSv1.2?
         System.setProperty(HTTPS_PROTOCOLS, "TLSv1.2");
         // test HTTPS download
-        check(
-                SchemaCache.download(
-                        new URI(
-                                "https://www.seegrid.csiro.au"
-                                        + "/subversion/GeoSciML/tags/2.0.0/schema/GeoSciML/geosciml.xsd")));
+        check(SchemaCache.download(new URI("https://geosciml.org/geosciml/2.0/xsd/geosciml.xsd")));
         // restore original system property
         if (httpsProtocols == null) {
             System.clearProperty(HTTPS_PROTOCOLS);
@@ -168,5 +167,17 @@ public class SchemaCacheOnlineTest extends OnlineTestSupport {
                             .toURI()
                             .toString());
         }
+    }
+
+    @Test
+    public void downloadWithRedirect() throws IOException {
+        URL url = new URL("http://inspire.ec.europa.eu/schemas/common/1.0");
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        // this url has the header with a redirect
+        Assert.assertNotNull(conn.getHeaderField("Location"));
+        byte[] responseBody =
+                SchemaCache.download("http://inspire.ec.europa.eu/schemas/common/1.0");
+        Assert.assertNotNull(responseBody);
+        Assert.assertTrue(responseBody.length > 0);
     }
 }

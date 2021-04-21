@@ -246,7 +246,9 @@ public class SchemaCache {
             connection.setReadTimeout(downloadTimeout);
             connection.setUseCaches(false);
             connection.connect();
-            if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+            int responseCode = connection.getResponseCode();
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                if (hasRedirect(responseCode)) return followRedirect(connection, blockSize);
                 LOGGER.warning(
                         String.format(
                                 "Unexpected response \"%d %s\" while downloading %s",
@@ -255,8 +257,8 @@ public class SchemaCache {
                                 location.toString()));
                 return null;
             }
-            // read all the blocks into a list
             InputStream input = null;
+            // read all the blocks into a list
             List<byte[]> blocks = new LinkedList<>();
             try {
                 input = connection.getInputStream();
@@ -462,5 +464,30 @@ public class SchemaCache {
         File defaultXmlFile = new File(workspacesDir, "default.xml");
         if (!defaultXmlFile.exists()) return false;
         return true;
+    }
+
+    private static boolean hasRedirect(int responseCode) {
+        return responseCode == HttpURLConnection.HTTP_SEE_OTHER
+                || responseCode == HttpURLConnection.HTTP_MOVED_PERM
+                || responseCode == HttpURLConnection.HTTP_MOVED_TEMP;
+    }
+
+    private static byte[] followRedirect(HttpURLConnection connection, int blockSize) {
+        String redirect = connection.getHeaderField("Location");
+        byte[] result = null;
+        if (redirect == null) {
+            LOGGER.warning("Tried to follow redirect but no url was provided in Location header");
+        } else {
+            try {
+                URI redirectURL = new URI(redirect);
+                LOGGER.info("Following redirect to " + redirect);
+                result = download(redirectURL, blockSize);
+            } catch (URISyntaxException uri) {
+                LOGGER.warning(
+                        "Tried to follow redirect but invalid url was provided in Location header: "
+                                + redirect);
+            }
+        }
+        return result;
     }
 }

@@ -94,8 +94,7 @@ public class UniqueIntervalFunction extends ClassificationFunction {
                 // resize values array
                 values = new Set[classNum];
                 // calculate number of items to put in each of the larger bins
-                int binPop =
-                        Double.valueOf(Math.ceil((double) results.length / classNum)).intValue();
+                int binPop = (int) Math.ceil((double) results.length / classNum);
                 // determine index of bin where the next bin has one less item
                 int lastBigBin = results.length % classNum;
                 if (lastBigBin == 0) lastBigBin = classNum;

@@ -126,7 +126,7 @@ public class TypeMapping implements Serializable {
     }
 
     public void setXmlDataStore(String isXmlDataStore) {
-        this.isXmlDataStore = Boolean.valueOf(isXmlDataStore).booleanValue();
+        this.isXmlDataStore = Boolean.parseBoolean(isXmlDataStore);
     }
 
     public boolean isXmlDataStore() {
@@ -146,7 +146,7 @@ public class TypeMapping implements Serializable {
 
     public void setIsDenormalised(String isDenormalised) {
         this.isDenormalisedSet = true;
-        this.isDenormalised = Boolean.valueOf(isDenormalised).booleanValue();
+        this.isDenormalised = Boolean.parseBoolean(isDenormalised);
     }
 
     public void setMappingName(final String mappingName) {

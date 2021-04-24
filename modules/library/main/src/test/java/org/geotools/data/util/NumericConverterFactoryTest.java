@@ -91,13 +91,11 @@ public class NumericConverterFactoryTest {
 
         // to double
         Assert.assertEquals(
-                Double.valueOf(127.127).doubleValue(),
+                127.127,
                 ((Double) convert(Float.valueOf(127.127f), Double.class)).doubleValue(),
                 1e-10);
-        Assert.assertEquals(
-                Double.valueOf(127.127), convert(Double.valueOf(127.127), Double.class));
-        Assert.assertEquals(
-                Double.valueOf(127.127), convert(BigDecimal.valueOf(127.127), Double.class));
+        Assert.assertEquals(127.127, convert(Double.valueOf(127.127), Double.class));
+        Assert.assertEquals(127.127, convert(BigDecimal.valueOf(127.127), Double.class));
 
         // to big decimal
         Assert.assertEquals(

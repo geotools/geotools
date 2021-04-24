@@ -358,7 +358,7 @@ public class AttributeMapping implements Serializable {
      *     otherwise.
      */
     public void setEncodeIfEmpty(String encodeIfEmpty) {
-        this.encodeIfEmpty = Boolean.valueOf(encodeIfEmpty).booleanValue();
+        this.encodeIfEmpty = Boolean.parseBoolean(encodeIfEmpty);
     }
 
     /**
@@ -377,7 +377,7 @@ public class AttributeMapping implements Serializable {
      * @see #setList(boolean)
      */
     public void setList(String list) {
-        boolean isList = Boolean.valueOf(list).booleanValue();
+        boolean isList = Boolean.parseBoolean(list);
         setList(isList);
     }
 
@@ -397,7 +397,7 @@ public class AttributeMapping implements Serializable {
      * @see #setMultiple(boolean)
      */
     public void setMultiple(String isMultiple) {
-        boolean multiple = Boolean.valueOf(isMultiple).booleanValue();
+        boolean multiple = Boolean.parseBoolean(isMultiple);
         setMultiple(multiple);
     }
 

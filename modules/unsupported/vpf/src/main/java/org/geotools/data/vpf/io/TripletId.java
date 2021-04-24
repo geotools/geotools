@@ -57,15 +57,15 @@ public class TripletId extends Number {
 
         try {
             if (getIdLength() > 0) {
-                result = Integer.valueOf(getId()).toString();
+                result = String.valueOf(getId());
             }
 
             if (getTileIdLength() > 0) {
-                result = result.concat("%").concat(Integer.valueOf(getTileId()).toString()).trim();
+                result = result.concat("%").concat(String.valueOf(getTileId())).trim();
             }
 
             if (getNextIdLength() > 0) {
-                result = result.concat("%").concat(Integer.valueOf(getNextId()).toString()).trim();
+                result = result.concat("%").concat(String.valueOf(getNextId())).trim();
             }
         } catch (RuntimeException exp) {
             throw new VPFDataFormatException("This triplet is invalid.", exp);
@@ -249,7 +249,7 @@ public class TripletId extends Number {
      */
     @Override
     public double doubleValue() {
-        return Integer.valueOf(getId()).doubleValue();
+        return getId();
     }
 
     /* (non-Javadoc)
@@ -257,7 +257,7 @@ public class TripletId extends Number {
      */
     @Override
     public float floatValue() {
-        return Integer.valueOf(getId()).floatValue();
+        return getId();
     }
 
     /* (non-Javadoc)
@@ -273,7 +273,7 @@ public class TripletId extends Number {
      */
     @Override
     public long longValue() {
-        return Integer.valueOf(getId()).longValue();
+        return getId();
     }
 
     /* (non-Javadoc)
@@ -281,7 +281,7 @@ public class TripletId extends Number {
      */
     @Override
     public byte byteValue() {
-        return Integer.valueOf(getId()).byteValue();
+        return (byte) getId();
     }
 
     /* (non-Javadoc)
@@ -289,6 +289,6 @@ public class TripletId extends Number {
      */
     @Override
     public short shortValue() {
-        return Integer.valueOf(getId()).shortValue();
+        return (short) getId();
     }
 }

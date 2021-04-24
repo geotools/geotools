@@ -256,7 +256,7 @@ public class StyleGenerator {
 
     /** Generates a quick name for each rule with a leading zero. */
     private static String getRuleName(int count) {
-        String strVal = Integer.valueOf(count).toString();
+        String strVal = String.valueOf(count);
 
         if (strVal.length() == 1) {
             return "rule0" + strVal;

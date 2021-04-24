@@ -537,7 +537,7 @@ public class GrassBinaryRasterReadHandler implements Closeable {
             }
 
             if (!readerFileHeaderMap.get("format").equals("")) {
-                readerMapType = Integer.valueOf(readerFileHeaderMap.get("format")).intValue();
+                readerMapType = Integer.parseInt(readerFileHeaderMap.get("format"));
                 if (readerMapType > -1) {
                     readerMapType++;
                     /*

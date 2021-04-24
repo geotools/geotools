@@ -890,9 +890,9 @@ public final class GTopo30Writer extends AbstractGridCoverageWriter implements G
             // writing world file
             outZ.write("1".getBytes());
             outZ.write(" ".getBytes());
-            outZ.write(Integer.valueOf((int) Min[0]).toString().getBytes());
+            outZ.write(String.valueOf((int) Min[0]).getBytes());
             outZ.write(" ".getBytes());
-            outZ.write(Integer.valueOf((int) Max[0]).toString().getBytes());
+            outZ.write(String.valueOf((int) Max[0]).getBytes());
             outZ.write(" ".getBytes());
             outZ.write(String.valueOf(hist.getMean()[0]).getBytes());
             outZ.write(" ".getBytes());

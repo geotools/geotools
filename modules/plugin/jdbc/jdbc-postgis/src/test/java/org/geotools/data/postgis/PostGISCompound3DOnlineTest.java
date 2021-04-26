@@ -32,8 +32,6 @@ public class PostGISCompound3DOnlineTest extends JDBCCompound3DOnlineTest {
     /** Make sure we can properly retrieve the bounds of 3d layers */
     @Override
     public void testBounds() throws Exception {
-        ((PostGISDialect) dataStore.getSQLDialect()).setEstimatedExtentsEnabled(true);
-
         ReferencedEnvelope env = dataStore.getFeatureSource(tname(getLine3d())).getBounds();
 
         // check we got the right 2d component

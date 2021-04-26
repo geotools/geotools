@@ -1317,9 +1317,14 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * condition that allows to use spatial index statistics to compute the table bounds)
      */
     private boolean isFullBoundsQuery(Query query, SimpleFeatureType schema) {
-
         if (query == null) {
             return true;
+        }
+        if (!query.isMaxFeaturesUnlimited()) {
+            return false; // there is a limit
+        }
+        if (query.getStartIndex() != null && query.getStartIndex() > 0) {
+            return false; // there is an offset
         }
         if (!Filter.INCLUDE.equals(query.getFilter())) {
             return false;

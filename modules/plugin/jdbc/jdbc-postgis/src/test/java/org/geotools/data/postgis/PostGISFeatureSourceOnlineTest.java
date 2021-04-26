@@ -75,37 +75,12 @@ public class PostGISFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest 
         assertTrue(areCRSEqual(CRS.decode("EPSG:4326"), bounds.getCoordinateReferenceSystem()));
     }
 
-    public void testEstimatedBounds() throws Exception {
-        // enable fast bbox
-        ((PostGISDialect) dataStore.getSQLDialect()).setEstimatedExtentsEnabled(true);
+    // Exercise the getBounds code path where getOptimizedBounds is disabled
+    public void testNonEstimatedBounds() throws Exception {
+        // disabled fast bbox
+        ((PostGISDialect) dataStore.getSQLDialect()).setEstimatedExtentsEnabled(false);
 
-        ReferencedEnvelope bounds = dataStore.getFeatureSource(tname("ft1")).getBounds();
-        assertEquals(0l, Math.round(bounds.getMinX()));
-        assertEquals(0l, Math.round(bounds.getMinY()));
-        assertEquals(2l, Math.round(bounds.getMaxX()));
-        assertEquals(2l, Math.round(bounds.getMaxY()));
-
-        assertTrue(areCRSEqual(CRS.decode("EPSG:4326"), bounds.getCoordinateReferenceSystem()));
-    }
-
-    public void testEstimatedBoundsWithQuery() throws Exception {
-        // enable fast bbox
-        ((PostGISDialect) dataStore.getSQLDialect()).setEstimatedExtentsEnabled(true);
-
-        FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo filter =
-                ff.equals(ff.property(aname("stringProperty")), ff.literal("one"));
-
-        Query query = new Query();
-        query.setFilter(filter);
-
-        ReferencedEnvelope bounds = dataStore.getFeatureSource(tname("ft1")).getBounds(query);
-        assertEquals(1l, Math.round(bounds.getMinX()));
-        assertEquals(1l, Math.round(bounds.getMinY()));
-        assertEquals(1l, Math.round(bounds.getMaxX()));
-        assertEquals(1l, Math.round(bounds.getMaxY()));
-
-        assertTrue(areCRSEqual(CRS.decode("EPSG:4326"), bounds.getCoordinateReferenceSystem()));
+        super.testBounds();
     }
 
     public void testSridFirstGeometry() throws Exception {

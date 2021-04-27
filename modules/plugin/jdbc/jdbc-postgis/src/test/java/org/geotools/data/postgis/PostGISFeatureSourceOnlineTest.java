@@ -108,6 +108,16 @@ public class PostGISFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest 
         assertTrue(areCRSEqual(CRS.decode("EPSG:4326"), bounds.getCoordinateReferenceSystem()));
     }
 
+    public void testEstimatedBoundsWithLimit() throws Exception {
+        ((PostGISDialect) dataStore.getSQLDialect()).setEstimatedExtentsEnabled(true);
+        super.testBoundsWithLimit();
+    }
+
+    public void testEstimatedBoundsWithOffset() throws Exception {
+        ((PostGISDialect) dataStore.getSQLDialect()).setEstimatedExtentsEnabled(true);
+        super.testBoundsWithOffset();
+    }
+
     public void testSridFirstGeometry() throws Exception {
         SimpleFeatureType schema = dataStore.getSchema(tname("ft3"));
         GeometryDescriptor gd = schema.getGeometryDescriptor();

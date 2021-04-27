@@ -54,8 +54,8 @@ public class PostGISTestSetup extends JDBCTestSetup {
         // the unit tests assume a non loose behaviour
         ((PostGISDialect) dataStore.getSQLDialect()).setLooseBBOXEnabled(false);
 
-        // go for the default behaviour for estimated extents, which is on
-        ((PostGISDialect) dataStore.getSQLDialect()).setEstimatedExtentsEnabled(true);
+        // the tests assume non estimated extents
+        ((PostGISDialect) dataStore.getSQLDialect()).setEstimatedExtentsEnabled(false);
 
         // let's work with the most common schema please
         dataStore.setDatabaseSchema("public");

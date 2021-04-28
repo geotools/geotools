@@ -55,8 +55,6 @@ public class PostGISTestSetup extends JDBCTestSetup {
         ((PostGISDialect) dataStore.getSQLDialect()).setLooseBBOXEnabled(false);
 
         // the tests assume non estimated extents
-        // Note: this was due to GEOT-6876, and the tests will now also pass with estimated extents
-        // enabled
         ((PostGISDialect) dataStore.getSQLDialect()).setEstimatedExtentsEnabled(false);
 
         // let's work with the most common schema please

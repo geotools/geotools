@@ -26,15 +26,24 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.project.artifact.MavenMetadataSource;
+import org.eclipse.aether.RepositorySystem;
+import org.eclipse.aether.RepositorySystemSession;
+import org.eclipse.aether.artifact.Artifact;
+import org.eclipse.aether.artifact.DefaultArtifact;
+import org.eclipse.aether.collection.CollectRequest;
+import org.eclipse.aether.graph.DependencyFilter;
+import org.eclipse.aether.resolution.ArtifactRequest;
+import org.eclipse.aether.resolution.ArtifactResult;
+import org.eclipse.aether.resolution.DependencyRequest;
+import org.eclipse.aether.util.artifact.JavaScopes;
+import org.eclipse.aether.util.filter.DependencyFilterUtils;
 import org.eclipse.xsd.XSDSchema;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.AbstractSimpleBinding;
@@ -118,7 +127,19 @@ public class BindingGeneratorMojo extends AbstractGeneratorMojo {
      */
     @Parameter(defaultValue = "org.geotools.xsd.AbstractSimpleBinding")
     String simpleBindingBaseClass;
-    
+
+    /**
+     * The entry point to Maven Artifact Resolver, i.e. the component doing all the work.
+     */
+    @Component
+    private RepositorySystem repoSystem;
+
+    /**
+     * The current repository/network configuration of Maven.
+     */
+    @Parameter(defaultValue = "${repositorySystemSession}", readonly = true)
+    private RepositorySystemSession repoSession;
+
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
 		
@@ -171,7 +192,7 @@ public class BindingGeneratorMojo extends AbstractGeneratorMojo {
 		
 		try {
 		    //get the ones from the project
-			List l = project.getCompileClasspathElements();
+			List<String> l = project.getCompileClasspathElements();
             for (Object item : l) {
                 String element = (String) item;
                 File d = new File(element);
@@ -180,24 +201,20 @@ public class BindingGeneratorMojo extends AbstractGeneratorMojo {
                     urls.add(d.toURI().toURL());
                 }
             }
-			
-			//get the ones from project dependencies
-			List d = project.getDependencies();
 
-            for (Object value : d) {
-                Dependency dep = (Dependency) value;
+            //get the ones from project dependencies
+            for (Dependency dep : project.getDependencies()) {
                 if ("jar".equals(dep.getType())) {
-                    Artifact artifact = artifactFactory.createArtifact(
-                            dep.getGroupId(), dep.getArtifactId(), dep.getVersion(),
-                            dep.getScope(), dep.getType()
-                    );
-                    Set artifacts = project.createArtifacts(artifactFactory, null, null);
-                    ArtifactResolutionResult result =
-                            artifactResolver.resolveTransitively(artifacts, artifact,
-                                    remoteRepositories, localRepository, artifactMetadataSource);
-                    artifacts = result.getArtifacts();
-                    for (Object o : artifacts) {
-                        Artifact dartifact = (Artifact) o;
+                    Artifact artifact = new DefaultArtifact(dep.getGroupId(), dep.getArtifactId(), null, dep.getVersion(), dep.getType());
+                    CollectRequest collectRequest = new CollectRequest();
+                    collectRequest.setRoot(new org.eclipse.aether.graph.Dependency(artifact, JavaScopes.COMPILE));
+
+                    DependencyFilter scopeFilter = DependencyFilterUtils.classpathFilter(JavaScopes.COMPILE);
+                    DependencyRequest dependencyRequest = new DependencyRequest(collectRequest, scopeFilter);
+
+                    List<ArtifactResult> artifactResults = repoSystem.resolveDependencies(repoSession, dependencyRequest).getArtifactResults();
+                    for (ArtifactResult o : artifactResults) {
+                        Artifact dartifact = (Artifact) o.getArtifact();
                         urls.add(dartifact.getFile().toURI().toURL());
                     }
 

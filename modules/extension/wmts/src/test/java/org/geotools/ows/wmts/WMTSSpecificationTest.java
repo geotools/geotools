@@ -21,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+
 import org.geotools.ows.wmts.WMTSSpecification.GetCapsRequest;
 import org.junit.Test;
 
@@ -41,7 +42,11 @@ public class WMTSSpecificationTest {
             String obs = WMTSSpecification.processKey(keys[i]);
             assertEquals(expected[i], obs);
         }
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> 97ac9ebb0a... fix keyword case issue
         URL url = new URL("http://test.example.com/geoserver/wms?tk=42");
         WMTSSpecification.GetCapsRequest caps = new GetCapsRequest(url);
         URL out = caps.getFinalURL();

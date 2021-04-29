@@ -28,6 +28,7 @@ import java.net.InetAddress;
 import javax.imageio.ImageReadParam;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -73,6 +74,8 @@ public final class GridCoverageTest extends GridCoverageTestBase {
      */
     @Test
     public void testSerialization() throws IOException, ClassNotFoundException {
+        // will fail on GitHub linux build, due to TCP port opening by SerializableRenderedImage
+        Assume.assumeFalse(Boolean.getBoolean("linux-github-build"));
         if (hostnameDefined) {
             GridCoverage2D coverage = EXAMPLES.get(0);
             GridCoverage2D serial = serialize(coverage);

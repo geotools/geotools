@@ -132,6 +132,8 @@ import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.visitor.DpiRescaleStyleVisitor;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
+import org.geotools.styling.visitor.MapRenderingSelectorStyleVisitor;
+import org.geotools.styling.visitor.RenderingSelectorStyleVisitor;
 import org.geotools.styling.visitor.UomRescaleStyleVisitor;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
@@ -1991,7 +1993,15 @@ public class StreamingRenderer implements GTRenderer {
 
         LiteFeatureTypeStyle lfts;
         boolean foundComposite = false;
-        for (FeatureTypeStyle fts : layer.getStyle().featureTypeStyles()) {
+
+        // check if any <VendorOption name="renderingMap">false</VendorOption>
+        // is present in the style removing style's elements not meant to be applied
+        // to the data
+        RenderingSelectorStyleVisitor selectorStyleVisitor = new MapRenderingSelectorStyleVisitor();
+        layer.getStyle().accept(selectorStyleVisitor);
+        Style style = (Style) selectorStyleVisitor.getCopy();
+
+        for (FeatureTypeStyle fts : style.featureTypeStyles()) {
             if (isFeatureTypeStyleActive(layer.getFeatureSource().getSchema(), fts)) {
                 // DJB: this FTS is compatible with this FT.
 
@@ -2006,7 +2016,6 @@ public class StreamingRenderer implements GTRenderer {
                 // get the fts level composition, if any
                 Composite composite = styleFactory.getComposite(fts.getOptions());
                 foundComposite |= composite != null;
-
                 // we can optimize this one and draw directly on the graphics, assuming
                 // there is no composition
                 if (!foundComposite && (result.isEmpty() || !optimizedFTSRendering)) {

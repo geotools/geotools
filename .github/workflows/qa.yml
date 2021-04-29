@@ -1,0 +1,33 @@
+name: Linux QA GitHub CI
+
+on: [pull_request]
+
+env:
+  MAVEN_OPTS: -Dmaven.wagon.httpconnectionManager.ttlSeconds=25 -Dmaven.wagon.http.retryHandler.count=3
+
+jobs:
+  build:
+    runs-on: [ubuntu-20.04]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'adopt'
+        java-version: 11
+    - name: Maven repository caching
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+    - name: Disable checksum offloading
+      # See: https://github.com/actions/virtual-environments/issues/1187#issuecomment-686735760
+      run: sudo ethtool -K eth0 tx off rx off
+    - name: Build with Maven
+      run: |
+        mvn -B -fae clean install -Dall -Dfmt.action=check -Dpom.fmt.action=verify -Dqa=true -DskipTests=true --file pom.xml
+    - name: Remove SNAPSHOT jars from repository
+      run: |
+        find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {} 

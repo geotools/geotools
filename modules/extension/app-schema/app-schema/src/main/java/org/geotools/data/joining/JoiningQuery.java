@@ -35,7 +35,6 @@ public class JoiningQuery extends Query {
 
     public static class QueryJoin extends JoiningQuery {
         protected String joiningTypeName;
-        protected String joinedTypeName;
         protected Expression foreignKeyName;
         protected Expression joiningKeyName;
         protected SortBy[] sortBy;
@@ -46,14 +45,6 @@ public class JoiningQuery extends Query {
 
         public void setJoiningTypeName(String joiningTypeName) {
             this.joiningTypeName = joiningTypeName;
-        }
-
-        public String getJoinedTypeName() {
-            return joinedTypeName;
-        }
-
-        public void setJoinedTypeName(String joinedTypeName) {
-            this.joinedTypeName = joinedTypeName;
         }
 
         public Expression getForeignKeyName() {

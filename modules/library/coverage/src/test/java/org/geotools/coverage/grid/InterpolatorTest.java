@@ -38,6 +38,7 @@ import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.util.factory.Hints;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridEnvelope;
@@ -222,6 +223,8 @@ public final class InterpolatorTest extends GridCoverageTestBase {
      */
     @Test
     public void testSerialization() throws IOException, ClassNotFoundException {
+        // will fail on GitHub linux build, due to TCP port opening by SerializableRenderedImage
+        Assume.assumeFalse(Boolean.getBoolean("linux-github-build"));
         if (hostnameDefined) {
             GridCoverage2D coverage = EXAMPLES.get(0);
             coverage = Interpolator2D.create(coverage, interpolations);

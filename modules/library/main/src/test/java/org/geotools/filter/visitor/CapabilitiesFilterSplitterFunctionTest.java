@@ -17,10 +17,14 @@
 package org.geotools.filter.visitor;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.opengis.filter.Filter.EXCLUDE;
+import static org.opengis.filter.Filter.INCLUDE;
 
 import java.util.Arrays;
 import org.geotools.filter.Capabilities;
 import org.geotools.filter.function.math.FilterFunction_abs;
+import org.geotools.filter.function.math.FilterFunction_max;
 import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.opengis.filter.PropertyIsEqualTo;
@@ -89,5 +93,29 @@ public class CapabilitiesFilterSplitterFunctionTest
 
         assertEquals(filter1, visitor.getFilterPre());
         assertEquals(filter2, visitor.getFilterPost());
+    }
+
+    @Test
+    public void testFunctionParameters() throws Exception {
+
+        FilterFunction_max filterFunction_max = new FilterFunction_max();
+        filterFunction_max.setParameters(Arrays.asList(ff.property("name"), ff.literal(1.0)));
+        PropertyIsEqualTo filter1 = ff.equals(ff.property("name"), filterFunction_max);
+
+        Capabilities filterCapabilitiesMask = new Capabilities();
+        filterCapabilitiesMask.addAll(Capabilities.SIMPLE_COMPARISONS_OPENGIS);
+        filterCapabilitiesMask.addAll(Capabilities.LOGICAL_OPENGIS);
+        filterCapabilitiesMask.addName(filterFunction_max.getName());
+        visitor = newVisitor(filterCapabilitiesMask);
+
+        // pre-flight to ensure post stack size is bigger than params size at visit(Function,...)
+        assertFalse(filterCapabilitiesMask.supports(Filter.EXCLUDE));
+        // Produces "IndexOutOfBoundsException: Index: 3, Size: 2" as of GEOT-6717
+        Filter filter = ff.or(Arrays.asList(EXCLUDE, EXCLUDE, EXCLUDE, filter1));
+
+        filter.accept(visitor, null);
+
+        assertEquals(INCLUDE, visitor.getFilterPre());
+        assertEquals(filter, visitor.getFilterPost());
     }
 }

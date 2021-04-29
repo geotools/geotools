@@ -54,8 +54,11 @@ public class GetCapabilitiesRequestTest {
         while (tokenizer.hasMoreTokens()) {
             String token = tokenizer.nextToken();
             String[] param = token.split("=");
-
-            Assert.assertEquals(map.get(param[0]), param[1]);
+            if (param[0].equalsIgnoreCase("map")) {
+                Assert.assertEquals(map.get(param[0].toUpperCase()), param[1]);
+            } else {
+                Assert.assertEquals(map.get(param[0]), param[1]);
+            }
         }
     }
 

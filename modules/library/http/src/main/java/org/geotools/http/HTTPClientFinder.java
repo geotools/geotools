@@ -64,8 +64,7 @@ public class HTTPClientFinder extends FactoryFinder {
     @SafeVarargs
     public static HTTPClient createClient(Class<? extends HTTPBehavior>... behaviors) {
         final Hints hints = GeoTools.getDefaultHints();
-        final List<Class<? extends HTTPBehavior>> list =
-                new ArrayList<Class<? extends HTTPBehavior>>();
+        final List<Class<? extends HTTPBehavior>> list = new ArrayList<>();
         for (Class<? extends HTTPBehavior> behavior : behaviors) {
             list.add(behavior);
         }
@@ -82,7 +81,7 @@ public class HTTPClientFinder extends FactoryFinder {
      */
     public static HTTPClient createClient(Hints hints) {
         final Hints merged = mergeSystemHints(hints);
-        return lookupClient(merged, new LinkedList<Class<? extends HTTPBehavior>>());
+        return lookupClient(merged, new LinkedList<>());
     }
 
     private static synchronized HTTPClient lookupClient(

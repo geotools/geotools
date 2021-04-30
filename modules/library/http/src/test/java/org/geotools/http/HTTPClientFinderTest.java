@@ -106,4 +106,26 @@ public class HTTPClientFinderTest {
                     ex.getMessage());
         }
     }
+
+    /**
+     * Test that a HTTPProxy behavior is added when http.proxyhost is set. And that it ends with a
+     * HTTPFactoryException, because SimpleHttpClient doesn't support it. In support of GEOT-6850.
+     */
+    @Test
+    public void createClientWithSystemProxyHost() throws Exception {
+        final boolean nullInitially = System.getProperty("http.proxyHost") == null;
+        if (nullInitially) {
+            System.setProperty("http.proxyHost", "http://proxy.dummy/");
+        }
+        try {
+            HTTPClientFinder.createClient(HTTPProxy.class);
+            Assert.fail("Should throw HTTPFactoryException exception.");
+        } catch (HTTPFactoryException e) {
+            // Check message?
+        } finally {
+            if (nullInitially) {
+                System.clearProperty("http.proxyHost");
+            }
+        }
+    }
 }

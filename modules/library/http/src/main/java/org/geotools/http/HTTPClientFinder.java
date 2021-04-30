@@ -17,6 +17,7 @@
  */
 package org.geotools.http;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -63,7 +64,11 @@ public class HTTPClientFinder extends FactoryFinder {
     @SafeVarargs
     public static HTTPClient createClient(Class<? extends HTTPBehavior>... behaviors) {
         final Hints hints = GeoTools.getDefaultHints();
-        return lookupClient(hints, Arrays.asList(behaviors));
+        final List<Class<? extends HTTPBehavior>> list = new ArrayList<>();
+        for (Class<? extends HTTPBehavior> behavior : behaviors) {
+            list.add(behavior);
+        }
+        return lookupClient(hints, list);
     }
 
     /**
@@ -76,11 +81,11 @@ public class HTTPClientFinder extends FactoryFinder {
      */
     public static HTTPClient createClient(Hints hints) {
         final Hints merged = mergeSystemHints(hints);
-        return lookupClient(merged, new LinkedList<Class<? extends HTTPBehavior>>());
+        return lookupClient(merged, new LinkedList<>());
     }
 
     private static synchronized HTTPClient lookupClient(
-            Hints hints, List<Class<? extends HTTPBehavior>> behaviors) {
+            Hints hints, final List<Class<? extends HTTPBehavior>> behaviors) {
         if (hints == null) {
             throw new IllegalArgumentException("hints can't be null.");
         }

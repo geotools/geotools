@@ -193,14 +193,16 @@ class ZGroupLayer extends Layer {
                 // but we'd have to delay opening the MarkFeatureIterator to recognize the
                 // situation
                 int maxFeatures = SortedFeatureReader.getMaxFeaturesInMemory(layer.getQuery());
-                try (MarkFeatureIterator fi =
-                        MarkFeatureIterator.create(features, maxFeatures, cancellationListener)) {
-                    if (fi.hasNext()) {
-                        @SuppressWarnings("PMD.CloseResource") // returned
-                        ZGroupLayerPainter painter =
-                                new ZGroupLayerPainter(fi, lfts, renderer, layerId);
-                        painters.add(painter);
-                    }
+
+                @SuppressWarnings("PMD.CloseResource")
+                // iterator will be closed after drawing when painter is closed
+                MarkFeatureIterator fi =
+                        MarkFeatureIterator.create(features, maxFeatures, cancellationListener);
+                if (fi.hasNext()) {
+                    @SuppressWarnings("PMD.CloseResource") // returned
+                    ZGroupLayerPainter painter =
+                            new ZGroupLayerPainter(fi, lfts, renderer, layerId);
+                    painters.add(painter);
                 }
             }
 

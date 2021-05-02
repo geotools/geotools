@@ -182,17 +182,17 @@ public class WPS1_0_0 extends WPSSpecification {
 
         @Override
         protected void initVersion() {
-            properties.setProperty(VERSION, "1.0.0");
+            properties.setProperty(processKey(VERSION), "1.0.0");
         }
 
         @Override
         protected void initRequest() {
-            setProperty("REQUEST", "GetCapabilities");
+            setProperty(processKey("REQUEST"), "GetCapabilities");
         }
 
         @Override
         protected void initService() {
-            setProperty("SERVICE", "WPS");
+            setProperty(processKey("SERVICE"), "WPS");
         }
 
         @Override
@@ -216,7 +216,7 @@ public class WPS1_0_0 extends WPSSpecification {
 
         @Override
         protected void initVersion() {
-            setProperty(VERSION, "1.0.0");
+            setProperty(processKey(VERSION), "1.0.0");
         }
 
         @Override
@@ -235,7 +235,7 @@ public class WPS1_0_0 extends WPSSpecification {
 
         @Override
         protected void initVersion() {
-            setProperty(VERSION, "1.0.0");
+            setProperty(processKey(VERSION), "1.0.0");
         }
 
         @Override

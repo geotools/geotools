@@ -27,6 +27,6 @@ public abstract class AbstractWPSRequest extends AbstractRequest {
 
     @Override
     protected void initService() {
-        setProperty(SERVICE, "WPS");
+        setProperty(processKey(SERVICE), "WPS");
     }
 }

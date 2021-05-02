@@ -75,12 +75,12 @@ public class GetCapabilitiesRequestTest {
          */
         @Override
         protected void initVersion() {
-            setProperty("VERSION", "1.1.1");
+            setProperty(processKey("VERSION"), "1.1.1");
         }
 
         @Override
         protected void initService() {
-            setProperty("SERVICE", "WMS");
+            setProperty(processKey("SERVICE"), "WMS");
         }
 
         @Override

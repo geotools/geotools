@@ -33,7 +33,7 @@ public abstract class AbstractGetLegendGraphicRequest extends AbstractWMSRequest
 
     @Override
     protected void initRequest() {
-        setProperty(REQUEST, "GetLegendGraphic");
+        setProperty(processKey(REQUEST), "GetLegendGraphic");
     }
 
     @Override
@@ -125,5 +125,10 @@ public abstract class AbstractGetLegendGraphicRequest extends AbstractWMSRequest
     @Override
     public void setExceptions(String exceptions) {
         setProperty(EXCEPTIONS, exceptions);
+    }
+
+    @Override
+    public String processKey(String key) {
+        return key.toUpperCase();
     }
 }

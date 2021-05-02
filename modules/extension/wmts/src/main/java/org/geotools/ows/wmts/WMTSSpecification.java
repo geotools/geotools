@@ -130,12 +130,12 @@ public class WMTSSpecification extends Specification {
 
         @Override
         protected void initService() {
-            setProperty(SERVICE, "WMTS");
+            setProperty(processKey(SERVICE), "WMTS");
         }
 
         @Override
         protected void initVersion() {
-            setProperty(VERSION, WMTS_VERSION); // $NON-NLS-1$ //$NON-NLS-2$
+            setProperty(processKey(VERSION), WMTS_VERSION); // $NON-NLS-1$ //$NON-NLS-2$
         }
 
         @Override

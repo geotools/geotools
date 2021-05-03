@@ -107,6 +107,32 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         assertTrue(areCRSEqual(getWGS84(), bounds.getCoordinateReferenceSystem()));
     }
 
+    public void testBoundsWithLimit() throws Exception {
+        Query query = new Query(featureSource.getSchema().getTypeName());
+        query.setMaxFeatures(2);
+        ReferencedEnvelope bounds = featureSource.getBounds(query);
+
+        assertEquals(0l, Math.round(bounds.getMinX()));
+        assertEquals(0l, Math.round(bounds.getMinY()));
+        assertEquals(1l, Math.round(bounds.getMaxX()));
+        assertEquals(1l, Math.round(bounds.getMaxY()));
+
+        assertTrue(areCRSEqual(getWGS84(), bounds.getCoordinateReferenceSystem()));
+    }
+
+    public void testBoundsWithOffset() throws Exception {
+        Query query = new Query(featureSource.getSchema().getTypeName());
+        query.setStartIndex(2);
+        ReferencedEnvelope bounds = featureSource.getBounds(query);
+
+        assertEquals(2l, Math.round(bounds.getMinX()));
+        assertEquals(2l, Math.round(bounds.getMinY()));
+        assertEquals(2l, Math.round(bounds.getMaxX()));
+        assertEquals(2l, Math.round(bounds.getMaxY()));
+
+        assertTrue(areCRSEqual(getWGS84(), bounds.getCoordinateReferenceSystem()));
+    }
+
     /** Allows subclasses to use a axis order specific version of it */
     protected CoordinateReferenceSystem getWGS84() throws FactoryException {
         return CRS.decode("EPSG:4326");

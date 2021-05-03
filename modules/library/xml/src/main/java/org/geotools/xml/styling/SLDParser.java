@@ -818,7 +818,7 @@ public class SLDParser {
                 if ("1".equals(firstChildValue)) {
                     style.setDefault(true);
                 } else {
-                    style.setDefault(Boolean.valueOf(firstChildValue).booleanValue());
+                    style.setDefault(Boolean.parseBoolean(firstChildValue));
                 }
             } else if (childName.equalsIgnoreCase("FeatureTypeStyle")) {
                 style.featureTypeStyles().add(parseFeatureTypeStyle(child));

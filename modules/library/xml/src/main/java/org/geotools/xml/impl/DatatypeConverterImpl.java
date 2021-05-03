@@ -93,7 +93,7 @@ public class DatatypeConverterImpl implements DatatypeConverterInterface {
 
     @Override
     public boolean parseBoolean(String arg0) {
-        return Boolean.valueOf(arg0).booleanValue();
+        return Boolean.parseBoolean(arg0);
     }
 
     @Override

@@ -27,6 +27,6 @@ public abstract class AbstractWMSRequest extends AbstractRequest {
 
     @Override
     protected void initService() {
-        setProperty(SERVICE, "WMS");
+        setProperty(processKey(SERVICE), "WMS");
     }
 }

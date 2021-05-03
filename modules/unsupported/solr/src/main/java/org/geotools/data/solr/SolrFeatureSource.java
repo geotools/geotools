@@ -163,9 +163,7 @@ public class SolrFeatureSource extends ContentFeatureSource {
                 @SuppressWarnings("PMD.CloseResource") // not managed here
                 HttpSolrClient server = store.getSolrServer();
                 QueryResponse rsp = server.query(q);
-                count =
-                        Long.valueOf(rsp.getResults().getNumFound() - rsp.getResults().getStart())
-                                .intValue();
+                count = (int) (rsp.getResults().getNumFound() - rsp.getResults().getStart());
                 // Manage max manually
                 if (query.getMaxFeatures() > 0 && query.getMaxFeatures() < Integer.MAX_VALUE) {
                     if (count > query.getMaxFeatures()) {

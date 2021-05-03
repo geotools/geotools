@@ -108,7 +108,7 @@ public abstract class AbstractRequest implements Request {
                             }
                         } else {
                             value = param[1];
-                            setProperty(key.toUpperCase(), value);
+                            setProperty(processKey(key), value);
                         }
                     }
                 }

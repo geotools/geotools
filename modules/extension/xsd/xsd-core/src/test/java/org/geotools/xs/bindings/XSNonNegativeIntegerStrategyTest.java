@@ -44,7 +44,7 @@ public class XSNonNegativeIntegerStrategyTest extends TestSchema {
     }
 
     public Number number(String number) {
-        return BigInteger.valueOf(Integer.valueOf(number).longValue());
+        return BigInteger.valueOf(Long.parseLong(number));
     }
 
     /*

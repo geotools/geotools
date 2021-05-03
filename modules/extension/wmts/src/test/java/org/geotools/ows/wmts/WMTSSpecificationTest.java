@@ -17,15 +17,23 @@
 package org.geotools.ows.wmts;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import org.geotools.ows.wmts.WMTSSpecification.GetCapsRequest;
 import org.junit.Test;
 
 /** @author ian */
 public class WMTSSpecificationTest {
 
-    /** Test for GEOT-6677 * */
+    /**
+     * Test for GEOT-6677 *
+     *
+     * @throws MalformedURLException
+     */
     @Test
-    public void testProcessKey() {
+    public void testProcessKey() throws MalformedURLException {
 
         String[] keys = {"api-key", "request"};
         String[] expected = {"api-key", "REQUEST"};
@@ -33,5 +41,10 @@ public class WMTSSpecificationTest {
             String obs = WMTSSpecification.processKey(keys[i]);
             assertEquals(expected[i], obs);
         }
+
+        URL url = new URL("http://test.example.com/geoserver/wms?tk=42");
+        WMTSSpecification.GetCapsRequest caps = new GetCapsRequest(url);
+        URL out = caps.getFinalURL();
+        assertTrue(out.toString().contains("tk"));
     }
 }

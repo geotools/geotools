@@ -261,7 +261,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
         if ((abstracT1 == null) || "".equals(abstracT1)) {
             this.abstracT = false;
         } else {
-            this.abstracT = Boolean.valueOf(abstracT1).booleanValue();
+            this.abstracT = Boolean.parseBoolean(abstracT1);
         }
 
         String block1 = atts.getValue("", "block");

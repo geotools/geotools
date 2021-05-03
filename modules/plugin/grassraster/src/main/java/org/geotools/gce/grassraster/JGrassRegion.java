@@ -789,18 +789,14 @@ public class JGrassRegion {
              * Now overwrite the window region entries using the values in the
              * supplied window object.
              */
-            store.put("north", Double.valueOf(region.getNorth()).toString()); // $NON-NLS-1$
-            store.put("south", Double.valueOf(region.getSouth()).toString()); // $NON-NLS-1$
-            store.put("east", Double.valueOf(region.getEast()).toString()); // $NON-NLS-1$
-            store.put("west", Double.valueOf(region.getWest()).toString()); // $NON-NLS-1$
-            store.put(
-                    "n-s resol",
-                    Double.valueOf(region.getNSResolution()).toString()); // $NON-NLS-1$
-            store.put(
-                    "e-w resol",
-                    Double.valueOf(region.getWEResolution()).toString()); // $NON-NLS-1$
-            store.put("cols", Integer.valueOf(region.getCols()).toString()); // $NON-NLS-1$
-            store.put("rows", Integer.valueOf(region.getRows()).toString()); // $NON-NLS-1$
+            store.put("north", String.valueOf(region.getNorth())); // $NON-NLS-1$
+            store.put("south", String.valueOf(region.getSouth())); // $NON-NLS-1$
+            store.put("east", String.valueOf(region.getEast())); // $NON-NLS-1$
+            store.put("west", String.valueOf(region.getWest())); // $NON-NLS-1$
+            store.put("n-s resol", String.valueOf(region.getNSResolution())); // $NON-NLS-1$
+            store.put("e-w resol", String.valueOf(region.getWEResolution())); // $NON-NLS-1$
+            store.put("cols", String.valueOf(region.getCols())); // $NON-NLS-1$
+            store.put("rows", String.valueOf(region.getRows())); // $NON-NLS-1$
         }
 
         /* Now write the data back to the file */

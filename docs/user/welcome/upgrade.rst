@@ -31,6 +31,19 @@ But first to upgrade - change your dependency geotools.version to |release| (or 
 GeoTools 25.x
 -------------
 
+Shapefile
+^^^^^^^^^
+
+``ShapefileDataStore`` can autodetect DBF charset from CPG sidecar file. This feature must be enabled explicitly 
+by setting ``org.geotools.shapefile.enableCPG`` system property to "true". The name of the property stored in 
+``ShapefileDataStoreFactory.ENABLE_CPG_SWITCH`` constant. After setting the property the following rules apply:
+
+* if no explicit charset parameter passed to ``ShapefileDataStoreFactory``, it will instruct created ``ShapefileDataStore``
+  to try and figure out DBF file charset from CPG file. In this case, CPG files must contain correct charset name, otherwise, 
+  these files should be removed, or updated properly. 
+* if the store fails to read CPG, it uses the default charset specified by ``ShapefileDataStoreFactory.DBFCHARSET`` constant, 
+  which is usual behavior.
+
 More variable arguments support in core classes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

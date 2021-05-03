@@ -44,6 +44,11 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
 
     static final Logger LOGGER = Logging.getLogger(ShapefileDataStoreFactory.class);
 
+    /**
+     * This system property will enable "DBF charset autodetection from CPG sidecar file" feature.
+     */
+    public static final String ENABLE_CPG_SWITCH = "org.geotools.shapefile.enableCPG";
+
     /** url to the .shp file. */
     public static final Param URLP =
             new Param(
@@ -99,7 +104,13 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
                     true,
                     new KVP(Param.LEVEL, "advanced"));
 
-    /** Optional - character used to decode strings from the DBF file */
+    /**
+     * Optional - character used to decode strings from the DBF file. If none is provided, the
+     * factory will instruct {@link ShapefileDataStore} to try to guess a charset from CPG file,
+     * before using a default value.
+     *
+     * @see ShapefileDataStore#setTryCPGFile(boolean)
+     */
     public static final Param DBFCHARSET =
             new Param(
                     "charset",
@@ -232,6 +243,11 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
             store.setMemoryMapped(useMemoryMappedBuffer);
             store.setBufferCachingEnabled(cacheMemoryMaps);
             store.setCharset(dbfCharset);
+            // CPG sidecar file disabled by default
+            boolean enableCPG = Boolean.valueOf(System.getProperty(ENABLE_CPG_SWITCH, "false"));
+            if (enableCPG && !hasParam(DBFCHARSET, params)) {
+                store.setTryCPGFile(true);
+            }
             store.setTimeZone(dbfTimeZone);
             store.setIndexed(enableIndex);
             store.setIndexCreationEnabled(createIndex);
@@ -255,6 +271,10 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
             result = target.cast(param.getDefaultValue());
         }
         return result;
+    }
+
+    private boolean hasParam(Param param, Map<String, ?> params) {
+        return params.containsKey(param.key);
     }
 
     @Override

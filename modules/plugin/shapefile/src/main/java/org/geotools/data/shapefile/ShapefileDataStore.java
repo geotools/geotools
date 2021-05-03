@@ -117,6 +117,8 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
 
     long maxDbfSize = ShapefileFeatureWriter.DEFAULT_MAX_DBF_SIZE;
 
+    private boolean tryCPGFile = false;
+
     public ShapefileDataStore(URL url) {
         shpFiles = new ShpFiles(url);
         if (TRACE_ENABLED) {
@@ -218,6 +220,20 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
         this.maxDbfSize = maxDbfSize;
     }
 
+    /** Returns true, if the store tries to guess DBF file charset from CPG file */
+    public boolean isTryCPGFile() {
+        return tryCPGFile;
+    }
+
+    /**
+     * Makes the store try to figure out DBF file charset from CPG file. If succeeds, the {@link
+     * #charset} property will be rewritten by guessed value.
+     */
+    public void setTryCPGFile(boolean tryCPGFile) {
+        this.tryCPGFile = tryCPGFile;
+    }
+
+    @Override
     public SimpleFeatureType getSchema() throws IOException {
         return getSchema(getTypeName());
     }

@@ -486,6 +486,44 @@ public class DateTimeParserTest extends Assert {
         assertEquals(1318241472000l + (3600 * 1000 * 48), getTime(time, 1));
     }
 
+    @Test
+    public void testInfiniteLoopZeroInterval() throws ParseException {
+        String value = "1970-01-01T00:00:00.000Z/1970-01-01T00:00:00.000Z/P0D";
+        try {
+            new DateTimeParser(100).parse(value);
+            Assert.fail("expected RuntimeException here");
+        } catch (RuntimeException e) {
+            Assert.assertEquals(
+                    "Exceeded 100 iterations parsing times, bailing out.", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testInfiniteLoopIntegerOverflow() throws ParseException {
+        String value =
+                "1970-01-01T00:00:00.000Z/292278994-08-17T07:12:55.807Z/PT4611686018427387.903S";
+        try {
+            new DateTimeParser(100).parse(value);
+            Assert.fail("expected RuntimeException here");
+        } catch (RuntimeException e) {
+            Assert.assertEquals(
+                    "Exceeded 100 iterations parsing times, bailing out.", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testInfiniteLoopIntegerUnderflow() throws ParseException {
+        String value =
+                "1970-01-01T00:00:00.000Z/292278994-08-17T07:12:55.807Z/PT-4611686018427387.904S";
+        try {
+            new DateTimeParser(100).parse(value);
+            Assert.fail("expected RuntimeException here");
+        } catch (RuntimeException e) {
+            Assert.assertEquals(
+                    "Exceeded 100 iterations parsing times, bailing out.", e.getMessage());
+        }
+    }
+
     private static long getTime(Collection time, int i) {
         Object date = null;
         if (i <= 0) {

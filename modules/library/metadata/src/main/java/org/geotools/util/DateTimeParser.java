@@ -337,7 +337,13 @@ public class DateTimeParser {
                     while ((time = j * millisIncrement + startTime) <= endTime) {
                         final Calendar calendar = new GregorianCalendar(UTC_TZ);
                         calendar.setTimeInMillis(time);
-                        addDate(result, calendar.getTime());
+                        if (!addDate(result, calendar.getTime()) && j >= maxValues) {
+                            // prevent infinite loops
+                            throw new RuntimeException(
+                                    "Exceeded "
+                                            + maxValues
+                                            + " iterations parsing times, bailing out.");
+                        }
                         j++;
                         checkMaxTimes(result, maxValues);
                     }
@@ -468,16 +474,16 @@ public class DateTimeParser {
         result.add(newRange);
     }
 
-    private static void addDate(Collection result, Date newDate) {
+    private static boolean addDate(Collection<Object> result, Date newDate) {
         for (Iterator<?> it = result.iterator(); it.hasNext(); ) {
             final Object element = it.next();
             if (element instanceof Date) {
-                if (newDate.equals(element)) return;
+                if (newDate.equals(element)) return false;
             } else if (((DateRange) element).contains(newDate)) {
-                return;
+                return false;
             }
         }
-        result.add(newDate);
+        return result.add(newDate);
     }
 
     /**

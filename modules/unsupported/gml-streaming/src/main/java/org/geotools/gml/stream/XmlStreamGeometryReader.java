@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import org.geotools.geometry.jts.MultiCurve;
@@ -34,6 +35,8 @@ public class XmlStreamGeometryReader {
 
     private final XMLStreamReader reader;
 
+    private boolean unsafeXMLAllowed = false;
+
     private final CRS.AxisOrder axisOrder;
 
     private AxisOrderInversionChecker axisOrderInversionChecker = null;
@@ -47,8 +50,46 @@ public class XmlStreamGeometryReader {
         this.axisOrder = axisOrder;
     }
 
+    public boolean isUnsafeXMLAllowed() {
+        return unsafeXMLAllowed;
+    }
+
+    /**
+     * @param unsafeXMLAllowed true if you want to parse from an XMLStreamReader not configured for safe XML parsing
+     *                         (XMLInputFactory.SUPPORT_DTD is true)
+     */
+    public void setUnsafeXMLAllowed(boolean unsafeXMLAllowed) {
+        this.unsafeXMLAllowed = unsafeXMLAllowed;
+    }
+
     public void setAxisOrderInversionChecker(AxisOrderInversionChecker axisOrderInversionChecker) {
         this.axisOrderInversionChecker = axisOrderInversionChecker;
+    }
+
+    /**
+     * @throws IllegalStateException when the reader is configured for unsafe XML and this is not
+     *     explicitly allowed by {@link #setUnsafeXMLAllowed(boolean) setUnsafeXMLAllowed}.
+     */
+    private void checkUnsafeXML() throws IllegalStateException {
+        if (!this.unsafeXMLAllowed) {
+            // Only check whether DTDs are enabled because when DTDs are not supported, XXE and XML
+            // bombs are not possible. Even if DTDs are enabled but external entities are disabled,
+            // XML entity expansion and thus XML bombs are still possible.
+
+            // StAX does not define properties to limit entity expansion or enable secure processing
+            // such as JAXP.
+            // A StAX implementation like Woodstox provides its' own properties to set limits, such
+            // as P_MAX_ENTITY_DEPTH and others, which allows limited use of these XML features.
+            // Call setUnsafeXMLAllowed(true) after making sure the XML you are parsing is safe or
+            // the StAX parser is configured with appropriate limits if you really need DTD support.
+
+            if (Boolean.TRUE.equals(reader.getProperty(XMLInputFactory.SUPPORT_DTD))) {
+                throw new IllegalStateException(
+                        "XMLStreamReader allows DTDs but "
+                                + this.getClass().getSimpleName()
+                                + " is not configured to allow unsafe XML");
+            }
+        }
     }
 
     /**
@@ -59,6 +100,8 @@ public class XmlStreamGeometryReader {
      */
     public Geometry readGeometry()
             throws NoSuchAuthorityCodeException, FactoryException, XMLStreamException, IOException {
+
+        checkUnsafeXML();
 
         final QName startingGeometryTagName = reader.getName();
         int dimension = crsDimension(2);

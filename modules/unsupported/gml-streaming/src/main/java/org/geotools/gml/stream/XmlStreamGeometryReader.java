@@ -42,7 +42,8 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
- * Parse GML from a StAX XMLStreamReader. Code migrated from the XmlSimpleFeatureParser class from wfs-ng.
+ * Parse GML from a StAX XMLStreamReader. Code migrated from the XmlSimpleFeatureParser class from
+ * wfs-ng.
  */
 public class XmlStreamGeometryReader {
 
@@ -70,8 +71,8 @@ public class XmlStreamGeometryReader {
     }
 
     /**
-     * @param unsafeXMLAllowed true if you want to parse from an XMLStreamReader not configured for safe XML parsing
-     *                         (XMLInputFactory.SUPPORT_DTD is true)
+     * @param unsafeXMLAllowed true if you want to parse from an XMLStreamReader not configured for
+     *     safe XML parsing (XMLInputFactory.SUPPORT_DTD is true)
      */
     public void setUnsafeXMLAllowed(boolean unsafeXMLAllowed) {
         this.unsafeXMLAllowed = unsafeXMLAllowed;

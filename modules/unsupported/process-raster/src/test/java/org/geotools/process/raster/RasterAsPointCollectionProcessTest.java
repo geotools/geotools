@@ -110,6 +110,10 @@ public class RasterAsPointCollectionProcessTest {
 
     private static final String NORTH = "N";
 
+    private static final String SOUTH = "S";
+
+    private static CoverageProcessor processor;
+
     private static GridCoverage2D coverage;
 
     private static GridCoverage2D inputCoverage;
@@ -131,8 +135,7 @@ public class RasterAsPointCollectionProcessTest {
         // Read the input Coverage
         inputCoverage = (GridCoverage2D) reader.read(null);
         // Reproject to the default WGS84 CRS
-        final CoverageProcessor processor =
-                CoverageProcessor.getInstance(GeoTools.getDefaultHints());
+        processor = CoverageProcessor.getInstance(GeoTools.getDefaultHints());
         final ParameterValueGroup param = processor.getOperation("Resample").getParameters();
         param.parameter("Source").setValue(inputCoverage);
         param.parameter("CoordinateReferenceSystem").setValue(DefaultGeographicCRS.WGS84);
@@ -309,6 +312,114 @@ public class RasterAsPointCollectionProcessTest {
         Assert.assertEquals((int) (pixelNumber * scaleFactor * scaleFactor), collection.size());
         // Check if each Point Attribute contains the same values of the Input coverage
         checkCollectionPoints(collection, hemisphere, scaleFactor, targetCRS);
+    }
+
+    @Test
+    public void testCoverageInNorthEastCoordinates() throws Exception {
+        // Read the global coverage in LonLat coordinates
+        GeoTiffReader reader = new GeoTiffReader(TestData.file(this, "current.tif"));
+        GridCoverage2D myCoverage = reader.read(null);
+        reader.dispose();
+        // Crop the global coverage to the northern and southern hemispheres
+        CoordinateReferenceSystem crs = myCoverage.getCoordinateReferenceSystem();
+        ParameterValueGroup param = processor.getOperation("CoverageCrop").getParameters();
+        param.parameter("Source").setValue(myCoverage);
+        param.parameter("Envelope").setValue(new ReferencedEnvelope(-180, 180, 0, 90, crs));
+        GridCoverage2D coverage1 = (GridCoverage2D) processor.doOperation(param);
+        param = processor.getOperation("CoverageCrop").getParameters();
+        param.parameter("Source").setValue(myCoverage);
+        param.parameter("Envelope").setValue(new ReferencedEnvelope(-180, 180, -90, -1, crs));
+        GridCoverage2D coverage2 = (GridCoverage2D) processor.doOperation(param);
+        // Resample the coverages to LatLon coordinates
+        String wkt =
+                "GEOGCS[\"WGS 84\","
+                        + "DATUM[\"World Geodetic System 1984\","
+                        + "SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]],"
+                        + "AUTHORITY[\"EPSG\",\"6326\"]],"
+                        + "PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],"
+                        + "UNIT[\"degree\", 0.017453292519943295],"
+                        + "AXIS[\"Geodetic latitude\", NORTH],"
+                        + "AXIS[\"Geodetic longitude\", EAST],"
+                        + "AUTHORITY[\"EPSG\",\"4326\"]]";
+        crs = CRS.parseWKT(wkt);
+        param = processor.getOperation("Resample").getParameters();
+        param.parameter("Source").setValue(coverage1);
+        param.parameter("CoordinateReferenceSystem").setValue(crs);
+        coverage1 = (GridCoverage2D) processor.doOperation(param);
+        param = processor.getOperation("Resample").getParameters();
+        param.parameter("Source").setValue(coverage2);
+        param.parameter("CoordinateReferenceSystem").setValue(crs);
+        coverage2 = (GridCoverage2D) processor.doOperation(param);
+        // Execution of the RasterAsPointCollectionProcess setting hemisphere
+        SimpleFeatureCollection collection1 = process.execute(coverage1, null, null, null, true);
+        SimpleFeatureCollection collection2 = process.execute(coverage2, null, null, null, true);
+        // Check if the points are exactly as the number of pixel number
+        int pixelNumber1 =
+                coverage1.getRenderedImage().getHeight() * coverage1.getRenderedImage().getWidth();
+        Assert.assertEquals(pixelNumber1, collection1.size());
+        int pixelNumber2 =
+                coverage2.getRenderedImage().getHeight() * coverage2.getRenderedImage().getWidth();
+        Assert.assertEquals(pixelNumber2, collection2.size());
+        // Check if each point is in the correct hemisphere
+        try (SimpleFeatureIterator it = collection1.features()) {
+            while (it.hasNext()) {
+                Assert.assertEquals(NORTH, it.next().getAttribute("emisphere"));
+            }
+        }
+        try (SimpleFeatureIterator it = collection2.features()) {
+            while (it.hasNext()) {
+                Assert.assertEquals(SOUTH, it.next().getAttribute("emisphere"));
+            }
+        }
+    }
+
+    @Test
+    public void testCoverageInPolarStereographicProjections() throws Exception {
+        // Read the global coverage in LonLat coordinates
+        GeoTiffReader reader = new GeoTiffReader(TestData.file(this, "current.tif"));
+        GridCoverage2D myCoverage = reader.read(null);
+        reader.dispose();
+        // Crop the global coverage to the northern and southern hemisphere
+        // polar stereographic projection areas of validity
+        CoordinateReferenceSystem crs = myCoverage.getCoordinateReferenceSystem();
+        ParameterValueGroup param = processor.getOperation("CoverageCrop").getParameters();
+        param.parameter("Source").setValue(myCoverage);
+        param.parameter("Envelope").setValue(new ReferencedEnvelope(-180, 180, 60, 90, crs));
+        GridCoverage2D coverage1 = (GridCoverage2D) processor.doOperation(param);
+        param = processor.getOperation("CoverageCrop").getParameters();
+        param.parameter("Source").setValue(myCoverage);
+        param.parameter("Envelope").setValue(new ReferencedEnvelope(-180, 180, -90, -60, crs));
+        GridCoverage2D coverage2 = (GridCoverage2D) processor.doOperation(param);
+        // Reproject the coverages to a polar stereographic projection
+        param = processor.getOperation("Resample").getParameters();
+        param.parameter("Source").setValue(coverage1);
+        param.parameter("CoordinateReferenceSystem").setValue(CRS.decode("EPSG:5041"));
+        coverage1 = (GridCoverage2D) processor.doOperation(param);
+        param = processor.getOperation("Resample").getParameters();
+        param.parameter("Source").setValue(coverage2);
+        param.parameter("CoordinateReferenceSystem").setValue(CRS.decode("EPSG:5042"));
+        coverage2 = (GridCoverage2D) processor.doOperation(param);
+        // Execution of the RasterAsPointCollectionProcess setting hemisphere
+        SimpleFeatureCollection collection1 = process.execute(coverage1, null, null, null, true);
+        SimpleFeatureCollection collection2 = process.execute(coverage2, null, null, null, true);
+        // Check if the points are exactly as the number of pixel number
+        int pixelNumber1 =
+                coverage1.getRenderedImage().getHeight() * coverage1.getRenderedImage().getWidth();
+        Assert.assertEquals(pixelNumber1, collection1.size());
+        int pixelNumber2 =
+                coverage2.getRenderedImage().getHeight() * coverage2.getRenderedImage().getWidth();
+        Assert.assertEquals(pixelNumber2, collection2.size());
+        // Check if each point is in the correct hemisphere
+        try (SimpleFeatureIterator it = collection1.features()) {
+            while (it.hasNext()) {
+                Assert.assertEquals(NORTH, it.next().getAttribute("emisphere"));
+            }
+        }
+        try (SimpleFeatureIterator it = collection2.features()) {
+            while (it.hasNext()) {
+                Assert.assertEquals(SOUTH, it.next().getAttribute("emisphere"));
+            }
+        }
     }
 
     private void checkCollectionPoints(

@@ -17,10 +17,15 @@
 package org.geotools.data.geojson;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeType;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -32,6 +37,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -52,10 +58,12 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.data.store.EmptyFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.URLs;
@@ -634,5 +642,172 @@ public class GeoJSONWriteTest {
                 out.toString().contains("\"bbox\":[-7.556,49.7687,-7.5536,49.7724]"));
         out.close();
         writer.close();
+    }
+
+    @Test
+    public void testWriteEmptyCollection() throws Exception {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        SimpleFeatureType type = DataUtilities.createType("test", "the_geom:Polygon:srid=27700");
+        try (GeoJSONWriter writer = new GeoJSONWriter(out)) {
+            writer.writeFeatureCollection(new EmptyFeatureCollection(type));
+        }
+        String json = new String(out.toByteArray(), StandardCharsets.UTF_8);
+        assertEquals("{\"type\":\"FeatureCollection\",\"features\":[]}", json);
+    }
+
+    @Test
+    public void testPrettyPrint() throws Exception {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try (GeoJSONWriter writer = new GeoJSONWriter(out)) {
+            writer.setPrettyPrinting(true);
+            SimpleFeatureType type =
+                    DataUtilities.createType("test", "the_geom:Polygon:srid=27700");
+            writer.writeFeatureCollection(new EmptyFeatureCollection(type));
+        }
+        String json = new String(out.toByteArray(), StandardCharsets.UTF_8);
+        String expected =
+                "{\n" //
+                        + "  \"type\" : \"FeatureCollection\",\n" //
+                        + "  \"features\" : [ ]\n" //
+                        + "}";
+        assertEquals(expected, json);
+    }
+
+    @Test
+    public void testSingleFeature() throws Exception {
+        // test feature
+        SimpleFeatureType type = DataUtilities.createType("test", "the_geom:Point:srid=4326");
+        SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
+        builder.add(new GeometryFactory().createPoint(new Coordinate(1.23456789, 0.123456789)));
+        SimpleFeature feature = builder.buildFeature(null);
+
+        String json = writeSingleFeature(feature);
+        JsonNode root = new ObjectMapper().readTree(json);
+        assertEquals("Feature", root.get("type").textValue());
+    }
+
+    @Test
+    public void testWriteDate() throws Exception {
+        // test feature
+        SimpleFeatureType type =
+                DataUtilities.createType("test", "the_geom:Point:srid=4326,date:java.util.Date");
+        SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
+        builder.add(new GeometryFactory().createPoint(new Coordinate(1, 2)));
+        builder.add(new Date());
+        SimpleFeature feature = builder.buildFeature(null);
+
+        String json = writeSingleFeature(feature);
+        JsonNode root = new ObjectMapper().readTree(json);
+        String isoDatePattern =
+                "(\\d{4})-(\\d{2})-(\\d{2})T(\\d{2})\\:(\\d{2})\\:(\\d{2})\\.(\\d{3})\\+(\\d{4})";
+        assertTrue(root.get("properties").get("date").textValue().matches(isoDatePattern));
+    }
+
+    @Test
+    public void testWriteBooleans() throws Exception {
+        // test feature
+        SimpleFeatureType type =
+                DataUtilities.createType(
+                        "test", "the_geom:Point:srid=4326,boolTrue:Boolean,boolFalse:Boolean");
+        SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
+        builder.add(new GeometryFactory().createPoint(new Coordinate(1, 2)));
+        builder.add(Boolean.TRUE);
+        builder.add(Boolean.FALSE);
+        SimpleFeature feature = builder.buildFeature(null);
+
+        String json = writeSingleFeature(feature);
+        JsonNode root = new ObjectMapper().readTree(json);
+        assertTrue(root.get("properties").get("boolTrue").isBoolean());
+        assertTrue(root.get("properties").get("boolTrue").booleanValue());
+        assertTrue(root.get("properties").get("boolFalse").isBoolean());
+        assertFalse(root.get("properties").get("boolFalse").booleanValue());
+    }
+
+    @Test
+    public void testWriteArray() throws Exception {
+        // test feature
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        tb.setName("test");
+        tb.add("the_geom", Point.class, 4326);
+        tb.add("array", Integer[].class);
+        SimpleFeatureType type = tb.buildFeatureType();
+        SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
+        builder.add(new GeometryFactory().createPoint(new Coordinate(1, 2)));
+        builder.add(new int[] {1, 2, 3});
+        SimpleFeature feature = builder.buildFeature(null);
+
+        String json = writeSingleFeature(feature);
+        JsonNode root = new ObjectMapper().readTree(json);
+        assertTrue(root.get("properties").get("array").isArray());
+        ArrayNode array = (ArrayNode) root.get("properties").get("array");
+        assertEquals(JsonNodeType.NUMBER, array.get(0).getNodeType());
+        assertEquals(1, array.get(0).intValue());
+        assertEquals(JsonNodeType.NUMBER, array.get(1).getNodeType());
+        assertEquals(2, array.get(1).intValue());
+        assertEquals(JsonNodeType.NUMBER, array.get(2).getNodeType());
+        assertEquals(3, array.get(2).intValue());
+    }
+
+    @Test
+    public void testWriteList() throws Exception {
+        // test feature
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        tb.setName("test");
+        tb.add("the_geom", Point.class, 4326);
+        tb.add("list", List.class);
+        SimpleFeatureType type = tb.buildFeatureType();
+        SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
+        builder.add(new GeometryFactory().createPoint(new Coordinate(1, 2)));
+        builder.add(Arrays.asList(1, "two", null));
+        SimpleFeature feature = builder.buildFeature(null);
+
+        String json = writeSingleFeature(feature);
+        JsonNode root = new ObjectMapper().readTree(json);
+        assertTrue(root.get("properties").get("list").isArray());
+        ArrayNode array = (ArrayNode) root.get("properties").get("list");
+        assertEquals(JsonNodeType.NUMBER, array.get(0).getNodeType());
+        assertEquals(1, array.get(0).intValue());
+        assertEquals(JsonNodeType.STRING, array.get(1).getNodeType());
+        assertEquals("two", array.get(1).textValue());
+        assertEquals(JsonNodeType.NULL, array.get(2).getNodeType());
+    }
+
+    private String writeSingleFeature(SimpleFeature feature) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try (GeoJSONWriter writer = new GeoJSONWriter(out)) {
+            writer.setPrettyPrinting(true);
+            writer.setSingleFeature(true);
+            writer.write(feature);
+        }
+
+        return new String(out.toByteArray(), StandardCharsets.UTF_8);
+    }
+
+    @Test
+    public void testRoundTripNestedObject() throws Exception {
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        tb.setName("test");
+        tb.add("the_geom", Point.class, 4326);
+        tb.add("object", Object.class);
+        SimpleFeatureType type = tb.buildFeatureType();
+        SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node = mapper.readTree("{\"a\": 10, \"b\": \"foo\"}");
+        builder.add(new GeometryFactory().createPoint(new Coordinate(1, 2)));
+        builder.add(node);
+        SimpleFeature feature = builder.buildFeature(null);
+
+        // write and check
+        String json = writeSingleFeature(feature);
+        JsonNode root = mapper.readTree(json);
+        JsonNode object = root.get("properties").get("object");
+        assertEquals(JsonNodeType.NUMBER, object.get("a").getNodeType());
+        assertEquals(10, object.get("a").intValue());
+        assertEquals(JsonNodeType.STRING, object.get("b").getNodeType());
+        assertEquals("foo", object.get("b").textValue());
+
+        // parse back and check object is retained
+        SimpleFeature parsedFeature = GeoJSONReader.parseFeature(json);
+        assertEquals(feature.getAttribute("object"), parsedFeature.getAttribute("object"));
     }
 }

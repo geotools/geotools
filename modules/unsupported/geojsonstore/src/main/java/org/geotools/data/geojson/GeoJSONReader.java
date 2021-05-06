@@ -25,6 +25,8 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.DoubleNode;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -38,6 +40,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FilenameUtils;
@@ -209,6 +212,10 @@ public class GeoJSONReader implements AutoCloseable {
     /** */
     private SimpleFeature getNextFeature(ObjectNode node) throws IOException {
         JsonNode type = node.get("type");
+        if (type == null) {
+            throw new RuntimeException(
+                    "Missing object type in GeoJSON Parsing, expected type=Feature here");
+        }
         if (!"Feature".equalsIgnoreCase(type.asText())) {
             throw new RuntimeException(
                     "Unexpected object type in GeoJSON Parsing, expected Feature got '"
@@ -246,6 +253,37 @@ public class GeoJSONReader implements AutoCloseable {
                     builder.set(n.getKey(), n.getValue().asDouble());
                 } else if (binding == String.class) {
                     builder.set(n.getKey(), n.getValue().textValue());
+                } else if (binding == Boolean.class) {
+                    builder.set(n.getKey(), n.getValue().booleanValue());
+                } else if (binding == Object.class) {
+                    builder.set(n.getKey(), n.getValue());
+                } else if (binding == List.class) {
+                    ArrayNode array = (ArrayNode) n.getValue();
+                    List<Object> list = new ArrayList<>();
+                    for (int i = 0; i < array.size(); i++) {
+                        JsonNode item = array.get(i);
+                        Object vc;
+                        switch (item.getNodeType()) {
+                            case BOOLEAN:
+                                vc = item.asBoolean();
+                                break;
+                            case NUMBER:
+                                vc = item.asDouble();
+                                break;
+                            case STRING:
+                                vc = item.asText();
+                                break;
+                            case NULL:
+                                vc = null;
+                                break;
+                            default:
+                                throw new IllegalArgumentException(
+                                        "Cannot handle arrays with values of type "
+                                                + item.getNodeType());
+                        }
+                        list.add(vc);
+                    }
+                    builder.set(n.getKey(), list);
                 } else if (binding.isAssignableFrom(Geometry.class)) {
                     GeometryParser<Geometry> gParser = new GenericGeometryParser(gFac);
                     Geometry g = gParser.geometryFromJson(n.getValue());
@@ -303,12 +341,20 @@ public class GeoJSONReader implements AutoCloseable {
                 typeBuilder.add(n.getKey(), Integer.class);
             } else if (value instanceof DoubleNode) {
                 typeBuilder.add(n.getKey(), Double.class);
+            } else if (value instanceof BooleanNode) {
+                typeBuilder.add(n.getKey(), Boolean.class);
             } else if (value instanceof ObjectNode) {
-                String type = value.get("type").asText();
-                Geometries namedType = Geometries.getForName(type);
-                if (namedType != null) {
+                if (Optional.ofNullable(value.get("type"))
+                        .map(t -> t.asText())
+                        .map(t -> Geometries.getForName(t))
+                        .isPresent()) {
                     typeBuilder.add(n.getKey(), Geometry.class, DefaultGeographicCRS.WGS84);
+                } else {
+                    // a complex object, we don't know what it is going to be
+                    typeBuilder.add(n.getKey(), Object.class);
                 }
+            } else if (value instanceof ArrayNode) {
+                typeBuilder.add(n.getKey(), List.class);
             } else {
                 typeBuilder.defaultValue("");
                 typeBuilder.add(n.getKey(), String.class);

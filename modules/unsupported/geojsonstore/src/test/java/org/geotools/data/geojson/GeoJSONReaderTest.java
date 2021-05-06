@@ -19,11 +19,15 @@ package org.geotools.data.geojson;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.DataUtilities;
@@ -278,5 +282,85 @@ public class GeoJSONReaderTest {
         WKTReader wkt = new WKTReader();
         assertEquals(wkt.read("POINT (0.1 0.1)"), f.getDefaultGeometry());
         assertEquals(wkt.read("LINESTRING (1.1 1.2, 1.3 1.4)"), f.getAttribute("otherGeometry"));
+    }
+
+    @Test
+    public void testNotGeoJSON() throws IOException {
+        String json = "{ \"foo\": \"bar\"}";
+        try {
+            GeoJSONReader.parseFeature(json);
+            fail("Should have failed, not a GeoJSON");
+        } catch (RuntimeException e) {
+            assertEquals(
+                    "Missing object type in GeoJSON Parsing, expected type=Feature here",
+                    e.getMessage());
+        }
+    }
+
+    @Test
+    public void testReadBoolean() throws Exception {
+        String geojson =
+                "{"
+                        + "  'type': 'Feature',"
+                        + "  'id': 'feature.0',"
+                        + "  'properties': {"
+                        + "    'boolTrue': true,"
+                        + "    'boolFalse': false"
+                        + "   },"
+                        + "  'geometry': {"
+                        + "    'type': 'Point',"
+                        + "    'coordinates': [0.1, 0.1]"
+                        + "  }"
+                        + "}";
+        geojson = geojson.replace('\'', '"');
+        SimpleFeature feature = GeoJSONReader.parseFeature(geojson);
+        assertEquals(true, feature.getAttribute("boolTrue"));
+        assertEquals(false, feature.getAttribute("boolFalse"));
+    }
+
+    @Test
+    public void testReadNestedObject() throws Exception {
+        String geojson =
+                "{"
+                        + "  'type': 'Feature',"
+                        + "  'id': 'feature.0',"
+                        + "  'properties': {"
+                        + "    'object': {"
+                        + "       'a': 10,"
+                        + "       'b': 'foo'"
+                        + "    }"
+                        + "   },"
+                        + "  'geometry': {"
+                        + "    'type': 'Point',"
+                        + "    'coordinates': [0.1, 0.1]"
+                        + "  }"
+                        + "}";
+        geojson = geojson.replace('\'', '"');
+        SimpleFeature feature = GeoJSONReader.parseFeature(geojson);
+        ObjectNode object = (ObjectNode) feature.getAttribute("object");
+        assertEquals(10, object.get("a").intValue());
+        assertEquals("foo", object.get("b").textValue());
+    }
+
+    @Test
+    public void testReadNestedArray() throws Exception {
+        String geojson =
+                "{"
+                        + "  'type': 'Feature',"
+                        + "  'id': 'feature.0',"
+                        + "  'properties': {"
+                        + "    'array': [10, 'abc', null]"
+                        + "   },"
+                        + "  'geometry': {"
+                        + "    'type': 'Point',"
+                        + "    'coordinates': [0.1, 0.1]"
+                        + "  }"
+                        + "}";
+        geojson = geojson.replace('\'', '"');
+        SimpleFeature feature = GeoJSONReader.parseFeature(geojson);
+        List array = (List) feature.getAttribute("array");
+        assertEquals(10, (double) array.get(0), 0d);
+        assertEquals("abc", array.get(1));
+        assertNull(array.get(2));
     }
 }

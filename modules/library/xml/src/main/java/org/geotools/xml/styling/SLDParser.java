@@ -124,7 +124,10 @@ import org.xml.sax.SAXException;
  */
 public class SLDParser {
 
-    private static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    /** filter factory */
+    private static final class FilterFactoryHolder {
+        static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    }
 
     /** HISTOGRAM */
     private static final String HISTOGRAM = "histogram";
@@ -200,8 +203,6 @@ public class SLDParser {
     private EntityResolver entityResolver;
 
     private boolean disposeInputSource;
-
-    private ExpressionDOMParser expressionDOMParser = new ExpressionDOMParser(FF);
 
     /**
      * Create a Stylereader - use if you already have a dom to parse.
@@ -872,8 +873,7 @@ public class SLDParser {
             } else if (childName.equalsIgnoreCase("Rule")) {
                 rules.add(parseRule(child));
             } else if (childName.equalsIgnoreCase("Transformation")) {
-                ExpressionDOMParser parser =
-                        new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory2(null));
+                ExpressionDOMParser parser = new ExpressionDOMParser(FilterFactoryHolder.FF);
                 Expression tx = parser.expression(getFirstNonTextChild(child));
                 ft.setTransformation(tx);
             } else if (childName.equalsIgnoreCase(VendorOptionString)) {
@@ -1340,7 +1340,11 @@ public class SLDParser {
      * values.
      */
     Expression parseParameterValueExpression(Node root, boolean mixedText) {
-        ExpressionDOMParser parser = new ExpressionDOMParser((FilterFactory2) ff);
+        /* TODO Review : why casting from filterFactory internal field ff on one hand while
+         * using internal FilterFactory on the other hand?
+         * was here : ExpressionDOMParser parser = new ExpressionDOMParser((FilterFactory2) ff);
+         */
+        ExpressionDOMParser parser = new ExpressionDOMParser(FilterFactoryHolder.FF);
         Expression expr = parser.expression(root); // try the provided node first
         if (expr != null) return expr;
         NodeList children = root.getChildNodes();
@@ -2096,6 +2100,7 @@ public class SLDParser {
     }
 
     private void handleDashArrayNode(Node child, List<Expression> expressions) {
+        ExpressionDOMParser expressionDOMParser = new ExpressionDOMParser(FilterFactoryHolder.FF);
         Expression expression = expressionDOMParser.expression(child);
         if (expression instanceof Literal) {
             handleDashArrayLiteral((Literal) expression, expressions);
@@ -2265,6 +2270,7 @@ public class SLDParser {
                     LOGGER.finest("about to parse " + child.getLocalName());
                 }
                 // add the element node as an expression
+                ExpressionDOMParser expressionDOMParser = new ExpressionDOMParser(FilterFactoryHolder.FF);
                 expressions.add(expressionDOMParser.expression(child));
                 cdatas.add(false);
             } else if (child.getNodeType() == Node.CDATA_SECTION_NODE) {

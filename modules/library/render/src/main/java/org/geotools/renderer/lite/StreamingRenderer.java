@@ -232,7 +232,10 @@ public class StreamingRenderer implements GTRenderer {
     protected static final FilterFactory2 filterFactory =
             CommonFactoryFinder.getFilterFactory2(null);
 
-    protected static final StyleFactory STYLE_FACTORY = CommonFactoryFinder.getStyleFactory();
+    /** filter factory */
+    private static final class StyleFactoryHolder {
+        static final StyleFactory STYLE_FACTORY = CommonFactoryFinder.getStyleFactory();
+    }
 
     private static final PropertyName gridPropertyName = filterFactory.property("grid");
 
@@ -2272,7 +2275,7 @@ public class StreamingRenderer implements GTRenderer {
                         Rule rule = fts.ruleList[i];
                         DuplicatingStyleVisitor optimizingStyleVisitor =
                                 new DuplicatingStyleVisitor(
-                                        STYLE_FACTORY, filterFactory, filterOptimizer);
+                                        StyleFactoryHolder.STYLE_FACTORY, filterFactory, filterOptimizer);
                         rule.accept(optimizingStyleVisitor);
                         fts.ruleList[i] = (Rule) optimizingStyleVisitor.getCopy();
                     }

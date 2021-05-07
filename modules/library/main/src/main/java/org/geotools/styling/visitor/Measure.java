@@ -33,13 +33,18 @@ import systems.uom.common.USCustomary;
 
 /**
  * Helper class that parses a measure with eventual local unit of measure and helps the {@link
- * RescalingMode} enumeration to perfom its scaling job
+ * RescalingMode} enumeration to perform its scaling job
  *
  * @author Andrea Aime - GeoSolutions
  */
 class Measure {
 
-    static final FilterFactory ff = CommonFactoryFinder.getFilterFactory();
+    /** filter factory */
+    static final class FilterFactoryHolder {
+        private FilterFactoryHolder() {}
+
+        static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
+    }
 
     Expression expression;
 
@@ -62,7 +67,7 @@ class Measure {
             processLiteralExpression((Literal) unscaled, defaultUnit);
         } else {
             // see if we can still optimize
-            PropertyIsNull test = ff.isNull(unscaled);
+            PropertyIsNull test = FilterFactoryHolder.FF.isNull(unscaled);
             Filter simplified = (Filter) test.accept(new SimplifyingFilterVisitor(), null);
             if (simplified == Filter.INCLUDE) {
                 // special case, the expression was nil to start with
@@ -120,7 +125,7 @@ class Measure {
                             + value
                             + "', was expecting a number, eventually followed by px, m or ft");
         }
-        this.expression = ff.literal(value);
+        this.expression = FilterFactoryHolder.FF.literal(value);
         this.value = measure;
         this.uom = uom;
     }

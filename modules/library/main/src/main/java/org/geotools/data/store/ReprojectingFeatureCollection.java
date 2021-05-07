@@ -60,7 +60,11 @@ import org.opengis.referencing.operation.MathTransform;
  * @author Justin
  */
 public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollection {
-    static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2(null);
+
+    /** filter factory */
+    private static final class FilterFactoryHolder {
+        static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2(null);
+    }
 
     /** The transform to the target coordinate reference system */
     MathTransform transform;
@@ -161,11 +165,12 @@ public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollec
         CoordinateReferenceSystem crs = getSchema().getCoordinateReferenceSystem();
         CoordinateReferenceSystem crsDelegate = delegate.getSchema().getCoordinateReferenceSystem();
         if (crs != null) {
-            DefaultCRSFilterVisitor defaulter = new DefaultCRSFilterVisitor(FF, crs);
+            DefaultCRSFilterVisitor defaulter =
+                    new DefaultCRSFilterVisitor(FilterFactoryHolder.FF, crs);
             filter = (Filter) filter.accept(defaulter, null);
             if (crsDelegate != null && !CRS.equalsIgnoreMetadata(crs, crsDelegate)) {
                 ReprojectingFilterVisitor reprojector =
-                        new ReprojectingFilterVisitor(FF, delegate.getSchema());
+                        new ReprojectingFilterVisitor(FilterFactoryHolder.FF, delegate.getSchema());
                 filter = (Filter) filter.accept(reprojector, null);
             }
         }

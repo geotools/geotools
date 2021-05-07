@@ -41,7 +41,10 @@ import org.opengis.filter.expression.Expression;
  */
 public class GraphicsAwareDpiRescaleStyleVisitor extends DpiRescaleStyleVisitor {
 
-    static final StyleFactory sf = CommonFactoryFinder.getStyleFactory();
+    /** style factory */
+    private static final class StyleFactoryHolder {
+        static final StyleFactory SF = CommonFactoryFinder.getStyleFactory();
+    }
     static final Range<Double> INFINITE_RANGE =
             new Range<>(Double.class, 0d, Double.POSITIVE_INFINITY);
     SLDStyleFactory ssf = new SLDStyleFactory();
@@ -54,7 +57,7 @@ public class GraphicsAwareDpiRescaleStyleVisitor extends DpiRescaleStyleVisitor 
     protected Expression rescaleGraphicSize(Graphic gr) {
         Expression size = gr.getSize();
         if (size == null || size == Expression.NIL) {
-            PointSymbolizer symbolizer = sf.createPointSymbolizer(gr, null);
+            PointSymbolizer symbolizer = StyleFactoryHolder.SF.createPointSymbolizer(gr, null);
             Style2D style = ssf.createStyle(null, symbolizer, INFINITE_RANGE);
             if (style instanceof IconStyle2D) {
                 IconStyle2D is = (IconStyle2D) style;

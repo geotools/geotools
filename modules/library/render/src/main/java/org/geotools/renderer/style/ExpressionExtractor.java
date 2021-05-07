@@ -53,7 +53,11 @@ import org.opengis.filter.expression.Expression;
  * @author Andrea Aime - TOPP
  */
 public class ExpressionExtractor {
-    static final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+
+    /** filter factory */
+    private static final class FilterFactoryHolder {
+        static final FilterFactory FILTER_FACTORY = CommonFactoryFinder.getFilterFactory(null);
+    }
 
     /**
      * Parses the original string and returns an array or parsed expressions, in particular, the
@@ -88,7 +92,7 @@ public class ExpressionExtractor {
 
                 // if we extracted a literal in between two expressions, add it to the result
                 if (sb.length() > 0) {
-                    result.add(ff.literal(sb.toString()));
+                    result.add(FilterFactoryHolder.FILTER_FACTORY.literal(sb.toString()));
                     sb.setLength(0);
                 }
 
@@ -120,7 +124,7 @@ public class ExpressionExtractor {
         if (inCqlExpression) {
             throw new IllegalArgumentException("Unclosed CQL expression '" + sb + "'");
         } else if (sb.length() > 0) {
-            result.add(ff.literal(sb.toString()));
+            result.add(FilterFactoryHolder.FILTER_FACTORY.literal(sb.toString()));
         }
         return result;
     }
@@ -134,7 +138,7 @@ public class ExpressionExtractor {
         if (expressions.size() == 1) {
             return expressions.get(0);
         } else {
-            return ff.function("Concatenate", expressions.toArray(new Expression[] {}));
+            return FilterFactoryHolder.FILTER_FACTORY.function("Concatenate", expressions.toArray(new Expression[] {}));
         }
     }
 

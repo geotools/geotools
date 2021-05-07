@@ -18,11 +18,9 @@ package org.geotools.filter.function;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.visitor.EqualAreaListVisitor;
 import org.geotools.feature.visitor.FeatureCalc;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
@@ -35,8 +33,6 @@ import org.opengis.filter.expression.Literal;
  * @author Andrea Aime - GeoSolutions
  */
 public class EqualAreaFunction extends AbstractQuantityClassificationFunction {
-
-    private static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
 
     public static FunctionName NAME =
             new FunctionNameImpl(
@@ -61,7 +57,7 @@ public class EqualAreaFunction extends AbstractQuantityClassificationFunction {
     public static Function getCartesianAreaFunction() {
         // Would have loved to keep this as static, but cannot be done since the equal area
         // function class is created while the function lookup is being initialized
-        return FF.function("area2", FF.property(""));
+        return FilterFactoryHolder.FF.function("area2", FilterFactoryHolder.FF.property(""));
     }
 
     @Override

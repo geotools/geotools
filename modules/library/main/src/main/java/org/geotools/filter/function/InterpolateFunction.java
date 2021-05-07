@@ -81,7 +81,11 @@ public class InterpolateFunction implements Function {
 
     private static final Logger LOGGER = Logger.getLogger(InterpolateFunction.class.getName());
 
-    private static final FilterFactory2 ff2 = CommonFactoryFinder.getFilterFactory2(null);
+    /** filter factory */
+    private static final class FilterFactoryHolder {
+        static final FilterFactory2 FF2 = CommonFactoryFinder.getFilterFactory2(null);
+    }
+
     private static final double EPS = 1.0e-8;
 
     /** Use as a literal value to indicate interpolation mode */
@@ -514,13 +518,18 @@ public class InterpolateFunction implements Function {
             double data0 = workingPoints.get(0).getData(object);
             double data1 = workingPoints.get(1).getData(object);
             Expression firstValue = parameters.get(2);
-            workingPoints.add(0, buildInterpPoint(ff2.literal(2 * data0 - data1), firstValue));
+            workingPoints.add(
+                    0,
+                    buildInterpPoint(
+                            FilterFactoryHolder.FF2.literal(2 * data0 - data1), firstValue));
             segment++;
         } else if (segment == interpPoints.size() - 1) {
             double data0 = workingPoints.get(segment).getData(object);
             double data1 = workingPoints.get(segment - 1).getData(object);
             Expression lastValue = parameters.get(1 + interpPoints.size() * 2);
-            workingPoints.add(buildInterpPoint(ff2.literal(2 * data0 - data1), lastValue));
+            workingPoints.add(
+                    buildInterpPoint(
+                            FilterFactoryHolder.FF2.literal(2 * data0 - data1), lastValue));
         }
 
         for (int i = segment - 2, k = 0; k < 4; i++, k++) {

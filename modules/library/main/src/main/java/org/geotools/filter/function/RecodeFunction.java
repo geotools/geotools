@@ -53,7 +53,10 @@ import org.opengis.filter.expression.Literal;
  */
 public class RecodeFunction implements Function {
 
-    private static final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    /** filter factory */
+    private static final class FilterFactoryHolder {
+        static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2(null);
+    }
 
     private final List<Expression> parameters;
 
@@ -169,7 +172,8 @@ public class RecodeFunction implements Function {
             // we are going to test our propertyNameExpression against the keyExpression
             // if they are equal we will return the valueExpression
             //
-            org.opengis.filter.Filter compareFilter = ff.equal(lookupExp, keyExpr, false);
+            org.opengis.filter.Filter compareFilter =
+                    FilterFactoryHolder.FF.equal(lookupExp, keyExpr, false);
 
             if (compareFilter.evaluate(object)) {
                 return valueExpr.evaluate(object, context);

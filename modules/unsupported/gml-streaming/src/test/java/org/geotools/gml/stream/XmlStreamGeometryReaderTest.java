@@ -43,7 +43,7 @@ public class XmlStreamGeometryReaderTest {
         f.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.TRUE);
         XMLStreamReader r = f.createXMLStreamReader(new StringReader("<root></root>"));
         XmlStreamGeometryReader geometryReader =
-                new XmlStreamGeometryReader(new GeometryFactory(), r, null);
+                new XmlStreamGeometryReader(r, new GeometryFactory());
         r.nextTag();
         Exception exception =
                 assertThrows(IllegalStateException.class, geometryReader::readGeometry);
@@ -86,7 +86,7 @@ public class XmlStreamGeometryReaderTest {
             f.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
             XMLStreamReader r = f.createXMLStreamReader(input);
             XmlStreamGeometryReader geometryReader =
-                    new XmlStreamGeometryReader(new GeometryFactory(), r, null);
+                    new XmlStreamGeometryReader(r, new GeometryFactory());
             r.nextTag();
             r.require(XMLStreamConstants.START_ELEMENT, GML.NAMESPACE, element);
             tester.apply(geometryReader);

@@ -166,16 +166,11 @@ public class DrawSVGTest {
         LOGGER.finest("rendering map");
         renderer.paint(g2d, outputArea, dataArea);
         LOGGER.finest("writing to file");
-        OutputStreamWriter osw = null;
-        // File outfile = File.createTempFile(styleName, "svg");
         String output = null;
-        try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            osw = new OutputStreamWriter(out, "UTF-8");
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try (OutputStreamWriter osw = new OutputStreamWriter(out, "UTF-8")) {
             g2d.stream(osw);
             output = new String(out.toByteArray(), "UTF-8");
-        } finally {
-            if (osw != null) osw.close();
         }
         assertNotNull(output);
 
@@ -216,16 +211,12 @@ public class DrawSVGTest {
         LOGGER.finest("rendering map");
         renderer.paint(g2d, outputArea, dataArea);
         LOGGER.finest("writing to file");
-        OutputStreamWriter osw = null;
-        // File outfile = File.createTempFile(styleName, "svg");
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
         String output = null;
-        try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            osw = new OutputStreamWriter(out, "UTF-8");
+        try (OutputStreamWriter osw = new OutputStreamWriter(out, "UTF-8")) {
             g2d.stream(osw);
             output = new String(out.toByteArray(), "UTF-8");
-        } finally {
-            if (osw != null) osw.close();
         }
         assertNotNull(output);
         assertTrue(output.contains("path"));
@@ -264,16 +255,11 @@ public class DrawSVGTest {
         LOGGER.finest("rendering map");
         renderer.paint(g2d, outputArea, dataArea);
         LOGGER.finest("writing to file");
-        OutputStreamWriter osw = null;
-        // File outfile = File.createTempFile(styleName, "svg");
         String output = null;
-        try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            osw = new OutputStreamWriter(out, "UTF-8");
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try (OutputStreamWriter osw = new OutputStreamWriter(out, "UTF-8")) {
             g2d.stream(osw);
             output = new String(out.toByteArray(), "UTF-8");
-        } finally {
-            if (osw != null) osw.close();
         }
         assertNotNull(output);
 

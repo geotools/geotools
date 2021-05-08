@@ -119,9 +119,8 @@ public class TeradataDialectOnlineTest extends JDBCTestSupport {
         SimpleFeatureSource featureSource = dataStore.getFeatureSource("ft3");
         Query q = new Query();
         q.setFilter(f);
-        SimpleFeatureIterator features = featureSource.getFeatures(q).features();
         Geometry g = null;
-        try {
+        try (SimpleFeatureIterator features = featureSource.getFeatures(q).features()) {
             while (features.hasNext()) {
                 SimpleFeature next = features.next();
                 if (next.getID().equals(fid)) {
@@ -129,8 +128,6 @@ public class TeradataDialectOnlineTest extends JDBCTestSupport {
                     break;
                 }
             }
-        } finally {
-            features.close();
         }
         assertNotNull("could not locate " + fid, g);
         assertEquals(size, g.getCoordinates().length);

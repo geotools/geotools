@@ -80,7 +80,10 @@ class TransformFeatureCollection extends AbstractFeatureCollection {
     }
 
     @Override
-    @SuppressWarnings("PMD.CloseResource") // convoluted logic, but "fi" is closed or returned
+    @SuppressWarnings({
+        "PMD.CloseResource",
+        "PMD.UseTryWithResources"
+    }) // convoluted logic, but "fi" is closed or returned
     protected Iterator<SimpleFeature> openIterator() {
         SimpleFeatureIterator fi = null;
         Iterator<SimpleFeature> result = null;
@@ -146,20 +149,14 @@ class TransformFeatureCollection extends AbstractFeatureCollection {
             }
 
             // sigh, fall back to brute force computation
-            SimpleFeatureIterator fi = null;
-            try {
+            try (SimpleFeatureIterator fi = source.getFeatures(query).features()) {
                 size = 0;
-                fi = source.getFeatures(query).features();
                 while (fi.hasNext()) {
                     fi.next();
                     size++;
                 }
 
                 return size;
-            } finally {
-                if (fi != null) {
-                    fi.close();
-                }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

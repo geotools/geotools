@@ -33,7 +33,7 @@ import org.geotools.util.NIOUtilities;
  *
  * @author Jesse
  */
-public class IndexedFidWriter implements FileWriter {
+public class IndexedFidWriter implements FileWriter, AutoCloseable {
     public static final int HEADER_SIZE = 13;
     public static final int RECORD_SIZE = 12;
     private FileChannel channel;
@@ -156,13 +156,14 @@ public class IndexedFidWriter implements FileWriter {
         return fidIndex;
     }
 
+    @SuppressWarnings("PMD.UseTryWithResources")
+    @Override
     public void close() throws IOException {
         if (closed) {
             return;
         }
 
         try {
-
             finishLastWrite();
         } finally {
             try {

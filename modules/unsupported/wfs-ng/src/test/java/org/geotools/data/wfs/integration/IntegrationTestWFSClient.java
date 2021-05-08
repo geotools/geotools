@@ -252,17 +252,14 @@ public class IntegrationTestWFSClient extends WFSClient {
                                 if (!originalFeatures.isEmpty()) {
                                     all = DataUtilities.reader(originalFeatures);
                                 }
-                                final DiffFeatureReader<SimpleFeatureType, SimpleFeature>
-                                        serverFiltered = new DiffFeatureReader<>(all, diff);
-                                try {
+                                try (DiffFeatureReader<SimpleFeatureType, SimpleFeature>
+                                        serverFiltered = new DiffFeatureReader<>(all, diff)) {
                                     int count = 0;
                                     while (serverFiltered.hasNext()) {
                                         serverFiltered.next();
                                         count++;
                                     }
                                     return count;
-                                } finally {
-                                    serverFiltered.close();
                                 }
                             } catch (Exception e) {
                                 java.util.logging.Logger.getGlobal()

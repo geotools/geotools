@@ -91,6 +91,7 @@ public final class GeoTools {
         PROPS = loadProperites("GeoTools.properties");
     }
 
+    @SuppressWarnings("PMD.UseTryWithResources") // stream may be null
     private static Properties loadProperites(String resource) {
         Properties props = new Properties();
         InputStream stream = GeoTools.class.getResourceAsStream(resource);

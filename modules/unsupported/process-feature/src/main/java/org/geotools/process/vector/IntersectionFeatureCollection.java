@@ -536,6 +536,7 @@ public class IntersectionFeatureCollection implements VectorProcess {
         }
 
         @Override
+        @SuppressWarnings("PMD.UseTryWithResources") // complex resource management
         public boolean hasNext() {
             //   logger.info("qui");
             logger.finer("HAS NEXT");

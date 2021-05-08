@@ -56,8 +56,6 @@ class ImageMosaicDatastoreWalker extends ImageMosaicWalker implements Runnable {
     /** run the walker on the store */
     @Override
     public void run() {
-
-        SimpleFeatureIterator it = null;
         GranuleCatalog catalog = null;
         try {
 
@@ -113,15 +111,15 @@ class ImageMosaicDatastoreWalker extends ImageMosaicWalker implements Runnable {
                     }
 
                     // create an iterator
-                    it = coll.features();
-                    // TODO setup index name
-
-                    while (it.hasNext()) {
-                        // get next element
-                        final SimpleFeature feature = it.next();
-                        consumer.handleElement(feature, this);
-                        if (getStop()) {
-                            break;
+                    try (SimpleFeatureIterator it = coll.features()) {
+                        // TODO setup index name
+                        while (it.hasNext()) {
+                            // get next element
+                            final SimpleFeature feature = it.next();
+                            consumer.handleElement(feature, this);
+                            if (getStop()) {
+                                break;
+                            }
                         }
                     }
                 } // next table
@@ -143,14 +141,6 @@ class ImageMosaicDatastoreWalker extends ImageMosaicWalker implements Runnable {
                 throw new IllegalStateException(e1);
             }
         } finally {
-            // close read iterator
-            if (it != null) {
-                try {
-                    it.close();
-                } catch (Exception e) {
-                    LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
-                }
-            }
             // close transaction
             try {
                 closeTransaction();

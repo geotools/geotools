@@ -71,15 +71,12 @@ public class Gsml30MappedFeatureTest extends AppSchemaTestSupport {
             FeatureSource<FeatureType, Feature> source =
                     dataAccess.getFeatureSource(MAPPED_FEATURE);
             FeatureCollection<FeatureType, Feature> features = source.getFeatures();
-            FeatureIterator<Feature> iterator = features.features();
             Map<String, Feature> featureMap = new LinkedHashMap<>();
-            try {
+            try (FeatureIterator<Feature> iterator = features.features()) {
                 while (iterator.hasNext()) {
                     Feature f = iterator.next();
                     featureMap.put(f.getIdentifier().getID(), f);
                 }
-            } finally {
-                iterator.close();
             }
             Assert.assertEquals(2, featureMap.size());
             // test gml:name

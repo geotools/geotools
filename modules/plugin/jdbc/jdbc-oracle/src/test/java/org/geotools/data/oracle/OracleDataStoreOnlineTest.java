@@ -99,6 +99,7 @@ public class OracleDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
         dataStore.createSchema(featureType);
     }
 
+    @SuppressWarnings("PMD.UseTryWithResources") // need transaction in catch for rollback
     public void testCreateLongVarChar() throws Exception {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName(tname("longvar"));
@@ -122,7 +123,8 @@ public class OracleDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
         fBuilder.add(vBuffer.toString());
         SimpleFeature f = fBuilder.buildFeature(null);
         // used to fail here
-        @SuppressWarnings("PMD.CloseResource") // need it available for rollback in the catch
+        // need the transaction available for rollback in the catch
+        @SuppressWarnings({"PMD.CloseResource", "PMD.UseTryWithResources"})
         Transaction transaction = new DefaultTransaction("create");
         SimpleFeatureSource featureSource =
                 dataStore.getFeatureSource(featureType.getName().getLocalPart());

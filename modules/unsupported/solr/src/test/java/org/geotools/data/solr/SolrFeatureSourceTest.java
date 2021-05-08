@@ -247,31 +247,25 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
         SimpleFeatureCollection features = featureSource.getFeatures(query);
         assertEquals(13, features.size());
 
-        SimpleFeatureIterator iterator = features.features();
-        SimpleFeature f;
-        try {
+        try (SimpleFeatureIterator iterator = features.features()) {
             for (int i = 0; i < 3; i++) {
                 assertTrue(iterator.hasNext());
-                f = iterator.next();
+                SimpleFeature f = iterator.next();
                 assertEquals("Asus", f.getAttribute("vendor_s"));
             }
             assertTrue(iterator.hasNext());
-            f = iterator.next();
+            SimpleFeature f = iterator.next();
             assertEquals("Cisco", f.getAttribute("vendor_s"));
             assertTrue(iterator.hasNext());
             f = iterator.next();
             assertEquals("Cisco", f.getAttribute("vendor_s"));
-        } finally {
-            iterator.close();
         }
 
         sort = ff.sort("vendor_s", SortOrder.DESCENDING);
         query.setSortBy(sort);
-        features = featureSource.getFeatures(query);
-        iterator = features.features();
-        try {
+        try (SimpleFeatureIterator iterator = featureSource.getFeatures(query).features()) {
             assertTrue(iterator.hasNext());
-            f = iterator.next();
+            SimpleFeature f = iterator.next();
             assertEquals("TP-Link", f.getAttribute("vendor_s"));
             assertTrue(iterator.hasNext());
             f = iterator.next();
@@ -279,8 +273,6 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
             assertTrue(iterator.hasNext());
             f = iterator.next();
             assertEquals("Linksys", f.getAttribute("vendor_s"));
-        } finally {
-            iterator.close();
         }
     }
 

@@ -18,19 +18,14 @@ public class OracleLobTestSetup extends JDBCLobTestSetup {
         run("CREATE SEQUENCE testlob_fid_seq START WITH 0 MINVALUE 0");
 
         // insert data. We need to use prepared statements in order to insert blobs
-        Connection conn = getConnection();
-        PreparedStatement ps = null;
-        try {
-            String sql =
-                    "INSERT INTO testlob(fid, blob_field, clob_field, raw_field) VALUES(testlob_fid_seq.nextval, ?, ?, ?)";
-            ps = conn.prepareStatement(sql);
+        String sql =
+                "INSERT INTO testlob(fid, blob_field, clob_field, raw_field) VALUES(testlob_fid_seq.nextval, ?, ?, ?)";
+        try (Connection conn = getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setBytes(1, new byte[] {1, 2, 3, 4, 5});
             ps.setString(2, "small clob");
             ps.setBytes(3, new byte[] {6, 7, 8, 9, 10});
             ps.execute();
-        } finally {
-            if (ps != null) ps.close();
-            conn.close();
         }
     }
 

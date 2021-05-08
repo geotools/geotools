@@ -71,15 +71,12 @@ public class TeradataViewOnlineTest extends JDBCViewOnlineTest {
         SimpleFeatureSource featureSource = dataStore.getFeatureSource("lakesview2");
         Query q = new Query();
         q.setFilter(f);
-        SimpleFeatureIterator features = featureSource.getFeatures(q).features();
         int r = 0;
-        try {
+        try (SimpleFeatureIterator features = featureSource.getFeatures(q).features()) {
             while (features.hasNext()) {
                 features.next();
                 r++;
             }
-        } finally {
-            features.close();
         }
         return r;
     }

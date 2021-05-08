@@ -447,18 +447,8 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
                 // For logging use the internals of HTTPClientFactory
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 request.performPostOutput(out);
-                InputStream in;
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    byte[] byteArray = out.toByteArray();
-                    LOGGER.fine(new String(byteArray));
-                    in = new ByteArrayInputStream(byteArray);
-                } else {
-                    in = new ByteArrayInputStream(out.toByteArray());
-                }
-                try {
+                try (InputStream in = getStream(out)) {
                     httpResponse = httpClient.post(finalURL, in, postContentType);
-                } finally {
-                    in.close();
                 }
             } else {
                 if (headers == null) {
@@ -480,6 +470,18 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
                 LOGGER.log(Level.SEVERE, "Failed to execute request " + finalURL);
             }
         }
+    }
+
+    private InputStream getStream(ByteArrayOutputStream out) {
+        InputStream in;
+        if (LOGGER.isLoggable(Level.FINE)) {
+            byte[] byteArray = out.toByteArray();
+            LOGGER.fine(new String(byteArray));
+            in = new ByteArrayInputStream(byteArray);
+        } else {
+            in = new ByteArrayInputStream(out.toByteArray());
+        }
+        return in;
     }
 
     public GetCapabilitiesResponse issueRequest(GetCapabilitiesRequest request)

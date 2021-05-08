@@ -66,7 +66,7 @@ class ResolutionExtractor extends PropertiesCollector {
 
     Double getResolution() {
         // get the the match and convert it to double
-        String resolutionStr = getMatches().size() > 0 ? getMatches().get(0) : null;
+        String resolutionStr = !getMatches().isEmpty() ? getMatches().get(0) : null;
         if (resolutionStr != null) {
             try {
                 return Double.parseDouble(resolutionStr);

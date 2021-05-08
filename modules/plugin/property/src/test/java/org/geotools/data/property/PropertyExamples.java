@@ -212,6 +212,7 @@ public class PropertyExamples {
         System.out.println("\ntransactionExample end\n");
     }
 
+    @SuppressWarnings("PMD.UseTryWithResources") // neet in catch for rollback
     private static void removeAllExample() throws Exception {
         System.out.println("removeAllExample start\n");
         // removeAllExample start
@@ -221,7 +222,6 @@ public class PropertyExamples {
 
         Transaction t = new DefaultTransaction("transaction");
         try {
-
             try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
                     store.getFeatureWriter("example", Filter.INCLUDE, t)) {
                 SimpleFeature feature;

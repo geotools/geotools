@@ -35,6 +35,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
@@ -186,13 +187,11 @@ public class GeoSciMLTest extends AppSchemaTestSupport {
             FeatureType boreholeType = mappingDataStore.getSchema(typeName);
             assertNotNull(boreholeType);
 
-            FeatureSource fSource = mappingDataStore.getFeatureSource(typeName);
-
             final int EXPECTED_RESULT_COUNT = 2;
+            FeatureCollection<?, ?> features =
+                    mappingDataStore.getFeatureSource(typeName).getFeatures();
 
-            FeatureCollection features = fSource.getFeatures();
-
-            int resultCount = getCount(features);
+            int resultCount = DataUtilities.count(features);
             assertEquals(EXPECTED_RESULT_COUNT, resultCount);
 
             int count = 0;
@@ -220,7 +219,7 @@ public class GeoSciMLTest extends AppSchemaTestSupport {
         query.setTypeName(typeName.getLocalPart());
         FeatureCollection<FeatureType, Feature> features = source.getFeatures(query);
         assertNotNull(features);
-        assertEquals(2, size(features));
+        assertEquals(2, DataUtilities.count(features));
     }
 
     /**
@@ -261,29 +260,5 @@ public class GeoSciMLTest extends AppSchemaTestSupport {
                 "http://www.w3.org/XML/1998/namespace",
                 "http://www.opengis.net/gml",
                 "http://www.cgi-iugs.org/xml/GeoSciML/2");
-    }
-
-    private int size(FeatureCollection<FeatureType, Feature> features) {
-        int size = 0;
-        try (FeatureIterator<Feature> i = features.features()) {
-            for (; i.hasNext(); i.next()) {
-                size++;
-            }
-        }
-        return size;
-    }
-
-    private int getCount(FeatureCollection features) {
-        FeatureIterator iterator = features.features();
-        int count = 0;
-        try {
-            while (iterator.hasNext()) {
-                iterator.next();
-                count++;
-            }
-        } finally {
-            iterator.close();
-        }
-        return count;
     }
 }

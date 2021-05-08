@@ -193,6 +193,7 @@ public class ShapefileDumper {
      * @param fc The input feature collection
      * @return True if at least one feature got written, false otherwise
      */
+    @SuppressWarnings("PMD.UseTryWithResources")
     public boolean dump(String fileName, SimpleFeatureCollection fc) throws IOException {
         // make sure we are not trying to write out a geometryless data set
         if (fc.getSchema().getGeometryDescriptor() == null) {

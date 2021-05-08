@@ -2630,8 +2630,7 @@ public class DataUtilities {
         if (iterator != null) {
             try {
                 while (iterator.hasNext()) {
-                    @SuppressWarnings("unused")
-                    Feature feature = iterator.next();
+                    iterator.next();
                     count++;
                 }
                 return count;
@@ -2735,15 +2734,14 @@ public class DataUtilities {
     public static void visit(
             FeatureCollection<?, ?> collection, FeatureVisitor visitor, ProgressListener progress)
             throws IOException {
-        FeatureIterator<?> iterator = null;
+
         float size = progress != null ? collection.size() : 0;
         if (progress == null) {
             progress = new NullProgressListener();
         }
-        try {
-            float position = 0;
-            progress.started();
-            iterator = collection.features();
+        float position = 0;
+        progress.started();
+        try (FeatureIterator<?> iterator = collection.features()) {
             while (!progress.isCanceled() && iterator.hasNext()) {
                 Feature feature = null;
                 try {
@@ -2762,9 +2760,6 @@ public class DataUtilities {
             }
         } finally {
             progress.complete();
-            if (iterator != null) {
-                iterator.close();
-            }
         }
     }
 

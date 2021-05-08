@@ -155,16 +155,13 @@ public class SimpleHttpClient implements HTTPClient {
 
         connection.connect();
 
-        OutputStream outputStream = connection.getOutputStream();
-        try {
+        try (OutputStream outputStream = connection.getOutputStream()) {
             byte[] buff = new byte[512];
             int count;
             while ((count = postContent.read(buff)) > -1) {
                 outputStream.write(buff, 0, count);
             }
-        } finally {
             outputStream.flush();
-            outputStream.close();
         }
 
         return new SimpleHTTPResponse(connection);

@@ -36,6 +36,7 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
@@ -114,13 +115,7 @@ public class ContourProcessTest {
         // Should be a single contour
         assertEquals(1, fc.size());
 
-        SimpleFeatureIterator iter = fc.features();
-        SimpleFeature feature = null;
-        try {
-            feature = iter.next();
-        } finally {
-            iter.close();
-        }
+        SimpleFeature feature = DataUtilities.first(fc);
 
         // Check contour value
         Double value = (Double) feature.getAttribute("value");

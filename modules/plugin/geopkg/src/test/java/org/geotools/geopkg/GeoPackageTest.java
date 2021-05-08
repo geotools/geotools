@@ -166,15 +166,11 @@ public class GeoPackageTest {
     }
 
     void assertTableExists(String table) throws Exception {
-        Connection cx = geopkg.getDataSource().getConnection();
-        Statement st = cx.createStatement();
-        try {
+        try (Connection cx = geopkg.getDataSource().getConnection();
+                Statement st = cx.createStatement()) {
             st.execute(String.format("SELECT count(*) FROM %s;", table));
         } catch (Exception e) {
             fail(e.getMessage());
-        } finally {
-            st.close();
-            cx.close();
         }
     }
 

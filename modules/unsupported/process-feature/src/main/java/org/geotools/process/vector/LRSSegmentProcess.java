@@ -106,12 +106,11 @@ public class LRSSegmentProcess implements VectorProcess {
                 return results;
             }
 
-            FeatureIterator<? extends Feature> featureIterator = null;
             Feature firstFeature = null;
-            try {
-                LineMerger lineMerger = new LineMerger();
-                if (toMeasure.doubleValue() > fromMeasure.doubleValue()) {
-                    featureIterator = featureCollection.features();
+            LineMerger lineMerger = new LineMerger();
+            if (toMeasure.doubleValue() > fromMeasure.doubleValue()) {
+                try (FeatureIterator<? extends Feature> featureIterator =
+                        featureCollection.features()) {
                     while (featureIterator.hasNext()) {
                         Feature feature = featureIterator.next();
                         if (firstFeature == null) firstFeature = feature;
@@ -214,19 +213,18 @@ public class LRSSegmentProcess implements VectorProcess {
                             }
                         }
                     }
-                    @SuppressWarnings("unchecked")
-                    List<LineString> merged = (List<LineString>) lineMerger.getMergedLineStrings();
-                    results.add(
-                            createTargetFeature(
-                                    firstFeature,
-                                    (SimpleFeatureType) firstFeature.getType(),
-                                    new MultiLineString(
-                                            merged.toArray(new LineString[merged.size()]),
-                                            geometryFactory)));
                 }
-            } finally {
-                if (featureIterator != null) featureIterator.close();
+                @SuppressWarnings("unchecked")
+                List<LineString> merged = (List<LineString>) lineMerger.getMergedLineStrings();
+                results.add(
+                        createTargetFeature(
+                                firstFeature,
+                                (SimpleFeatureType) firstFeature.getType(),
+                                new MultiLineString(
+                                        merged.toArray(new LineString[merged.size()]),
+                                        geometryFactory)));
             }
+
             return results;
         } catch (ProcessException e) {
             throw e;

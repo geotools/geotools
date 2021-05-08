@@ -226,7 +226,6 @@ class FootprintUtils {
 
         if (footprintsLocationGeometryMap.isEmpty()) return;
 
-        FeatureIterator<SimpleFeature> it = null;
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(footprintSummaryFile))) {
             final String[] typeNames = store.getTypeNames();
             if (typeNames.length <= 0) {
@@ -248,51 +247,43 @@ class FootprintUtils {
             }
 
             // load the feature from the shapefile
-            it = features.features();
-            if (!it.hasNext())
-                throw new IllegalArgumentException(
-                        "The provided FeatureCollection<SimpleFeatureType, SimpleFeature>  or empty, it's impossible to create an index!");
+            try (FeatureIterator<SimpleFeature> it = features.features()) {
+                if (!it.hasNext())
+                    throw new IllegalArgumentException(
+                            "The provided FeatureCollection<SimpleFeatureType, SimpleFeature>  or empty, it's impossible to create an index!");
 
-            final WKTWriter geometryWriter = new WKTWriter();
+                final WKTWriter geometryWriter = new WKTWriter();
 
-            // Scan the index shapefile to get granules location
-            while (it.hasNext()) {
-                final SimpleFeature feature = it.next();
-                final String location = (String) feature.getAttribute("location");
-                if (location != null && location.trim().length() > 0) {
-                    final String locationKey = location;
+                // Scan the index shapefile to get granules location
+                while (it.hasNext()) {
+                    final SimpleFeature feature = it.next();
+                    final String location = (String) feature.getAttribute("location");
+                    if (location != null && location.trim().length() > 0) {
+                        final String locationKey = location;
 
-                    // Check if a footprint exist in the map for this granule
-                    if (footprintsLocationGeometryMap.containsKey(locationKey)) {
+                        // Check if a footprint exist in the map for this granule
+                        if (footprintsLocationGeometryMap.containsKey(locationKey)) {
 
-                        // Build a featureID=Geometry pair and write it in
-                        // the Footprint summary file
-                        final String idGeometryPair =
-                                FootprintUtils.buildIDGeometryPair(
-                                        footprintsLocationGeometryMap,
-                                        feature.getID(),
-                                        locationKey,
-                                        geometryWriter);
-                        writer.write(idGeometryPair);
+                            // Build a featureID=Geometry pair and write it in
+                            // the Footprint summary file
+                            final String idGeometryPair =
+                                    FootprintUtils.buildIDGeometryPair(
+                                            footprintsLocationGeometryMap,
+                                            feature.getID(),
+                                            locationKey,
+                                            geometryWriter);
+                            writer.write(idGeometryPair);
+                        }
                     }
                 }
+                writer.flush();
+                writer.close();
             }
-            writer.flush();
-            writer.close();
         } catch (Throwable e) {
             // ignore exception
             if (LOGGER.isLoggable(Level.FINEST))
                 LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
         } finally {
-            try {
-                if (it != null) {
-                    it.close();
-                }
-            } catch (Throwable e) {
-                if (LOGGER.isLoggable(Level.FINEST))
-                    LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
-            }
-
             try {
                 store.dispose();
             } catch (Throwable e) {

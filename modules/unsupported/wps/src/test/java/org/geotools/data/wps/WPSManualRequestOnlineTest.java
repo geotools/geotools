@@ -173,39 +173,23 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
         request.addInput("input Gliders KMZ file", Arrays.asList(kmzFileReference));
 
-        ByteArrayOutputStream out = null;
-        InputStream in = null;
-        BufferedReader reader = null;
-        try {
-            out = new ByteArrayOutputStream();
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             request.performPostOutput(out);
 
-            in = new ByteArrayInputStream(out.toByteArray());
-            reader = new BufferedReader(new InputStreamReader(in));
+            try (InputStream in = new ByteArrayInputStream(out.toByteArray());
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
+                StringBuilder postText = new StringBuilder();
 
-            StringBuilder postText = new StringBuilder();
+                char[] cbuf = new char[1024];
+                int charsRead;
+                while ((charsRead = reader.read(cbuf)) != -1) {
+                    postText = postText.append(cbuf, 0, charsRead);
+                }
 
-            char[] cbuf = new char[1024];
-            int charsRead;
-            while ((charsRead = reader.read(cbuf)) != -1) {
-                postText = postText.append(cbuf, 0, charsRead);
+                assertTrue(postText.toString().contains("wps:Reference"));
             }
-
-            assertTrue(postText.toString().contains("wps:Reference"));
         } catch (Exception e) {
             fail();
-        } finally {
-            if (reader != null) {
-                reader.close();
-            }
-
-            if (out != null) {
-                out.close();
-            }
-
-            if (in != null) {
-                in.close();
-            }
         }
     }
 

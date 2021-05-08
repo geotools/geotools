@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.geotools.data.FeatureReader;
@@ -109,31 +110,34 @@ public class SolrFeatureSource extends ContentFeatureSource {
         if (getDataStore().getLogger().isLoggable(Level.FINE)) {
             getDataStore().getLogger().log(Level.FINE, q.toString());
         }
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
-        try {
-            reader =
-                    new SolrFeatureReader(
-                            getSchema(), store.getSolrServer(), q, this.getDataStore());
-            // if post filter, wrap it
-            if (postFilter != null && postFilter != Filter.INCLUDE) {
-                reader = new FilteringFeatureReader<>(reader, postFilter);
-            }
-            try {
-                if (reader.hasNext()) {
-                    SimpleFeature f = reader.next();
-                    bounds.init(f.getBounds());
-                    while (reader.hasNext()) {
-                        f = reader.next();
-                        bounds.include(f.getBounds());
-                    }
+
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                getReader(store, postFilter, q)) {
+            if (reader.hasNext()) {
+                SimpleFeature f = reader.next();
+                bounds.init(f.getBounds());
+                while (reader.hasNext()) {
+                    f = reader.next();
+                    bounds.include(f.getBounds());
                 }
-            } finally {
-                reader.close();
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
         return bounds;
+    }
+
+    @SuppressWarnings("PMD.CloseResource") // returned and closed there
+    private FeatureReader<SimpleFeatureType, SimpleFeature> getReader(
+            SolrDataStore store, Filter postFilter, SolrQuery q)
+            throws SolrServerException, IOException {
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                new SolrFeatureReader(getSchema(), store.getSolrServer(), q, this.getDataStore());
+        // if post filter, wrap it
+        if (postFilter != null && postFilter != Filter.INCLUDE) {
+            reader = new FilteringFeatureReader<>(reader, postFilter);
+        }
+        return reader;
     }
 
     @Override

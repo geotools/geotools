@@ -190,6 +190,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
      * a compare equals filter over the station_no attribute of wq_ir_results simple type.
      */
     @Test
+    @SuppressWarnings("unchecked")
     public void testUnrollFidMappedToAttribute() throws Exception {
         String fid = "station_no.1";
         Id fidFilter = ff.id(Collections.singleton(ff.featureId(fid)));
@@ -198,7 +199,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         assertNotNull(unrolled);
 
         FeatureCollection results = mapping.getSource().getFeatures(unrolled);
-        assertEquals(1, getCount(results));
+        assertEquals(1, DataUtilities.count(results));
 
         try (FeatureIterator features = results.features()) {
             Feature unmappedFeature = features.next();
@@ -230,8 +231,8 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
             assertTrue(f instanceof IsEqualsToImpl);
         }
 
-        FeatureCollection results = mapping.getSource().getFeatures(unrolled);
-        assertEquals(1, getCount(results));
+        FeatureCollection<?, ?> results = mapping.getSource().getFeatures(unrolled);
+        assertEquals(1, DataUtilities.count(results));
 
         try (FeatureIterator features = results.features()) {
             Feature unmappedFeature = features.next();
@@ -240,20 +241,6 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
             Object object = unmappedFeature.getProperty("station_no").getValue();
             assertEquals(fid1, object);
         }
-    }
-
-    private int getCount(FeatureCollection<?, ?> features) {
-        FeatureIterator<?> iterator = features.features();
-        int count = 0;
-        try {
-            while (iterator.hasNext()) {
-                iterator.next();
-                count++;
-            }
-        } finally {
-            iterator.close();
-        }
-        return count;
     }
 
     /**
@@ -307,7 +294,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
 
         FeatureCollection<? extends FeatureType, ? extends Feature> results =
                 mapping.getSource().getFeatures(unrolled);
-        assertEquals(1, getCount(results));
+        assertEquals(1, DataUtilities.count(results));
 
         Feature unmappedFeature = DataUtilities.first(results);
 

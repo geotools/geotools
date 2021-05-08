@@ -139,7 +139,10 @@ public class Toolbox {
         shapeDS.dispose();
     }
 
-    @SuppressWarnings("PMD.CloseResource") // writers are actually closed
+    @SuppressWarnings({
+        "PMD.CloseResource",
+        "PMD.UseTryWithResources"
+    }) // writers are actually closed
     protected void generalizeShapeFile(
             File shapeFile, DataStore shapeDS, File targetDir, Double[] distanceArray)
             throws IOException {

@@ -309,6 +309,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
     }
 
     /** Index Initialization. store indexing information. */
+    @SuppressWarnings("PMD.UseTryWithResources") // transaction needed in catch
     protected int initIndex() throws InvalidRangeException, IOException {
         DefaultTransaction transaction =
                 new DefaultTransaction("indexTransaction" + System.nanoTime());

@@ -402,6 +402,7 @@ public class Base64 {
      * @see Base64#DONT_BREAK_LINES
      * @since 2.0
      */
+    @SuppressWarnings("PMD.UseTryWithResources") // works fully in memory
     public static String encodeObject(java.io.Serializable serializableObject, int options) {
         // Streams
         java.io.ByteArrayOutputStream baos = null;
@@ -529,6 +530,7 @@ public class Base64 {
      * @see Base64#DONT_BREAK_LINES
      * @since 2.0
      */
+    @SuppressWarnings("PMD.UseTryWithResources") // works fully in memory
     public static String encodeBytes(byte[] source, int off, int len, int options) {
         // Isolate options
         int dontBreakLines = (options & DONT_BREAK_LINES);
@@ -897,6 +899,7 @@ public class Base64 {
      * @return The decoded and deserialized object
      * @since 1.5
      */
+    @SuppressWarnings("PMD.UseTryWithResources") // works fully in memory
     public static Object decodeToObject(String encodedObject) {
         // Decode and gunzip if necessary
         byte[] objBytes = decode(encodedObject);
@@ -982,7 +985,6 @@ public class Base64 {
      */
     public static byte[] decodeFromFile(String filename) {
         byte[] decodedData = null;
-        Base64.InputStream bis = null;
         try {
             // Set up some useful variables
             java.io.File file = new java.io.File(filename);
@@ -1000,28 +1002,23 @@ public class Base64 {
             byte[] buffer = new byte[(int) file.length()];
 
             // Open a stream
-            bis =
+            try (Base64.InputStream bis =
                     new Base64.InputStream(
                             new java.io.BufferedInputStream(new java.io.FileInputStream(file)),
-                            Base64.DECODE);
+                            Base64.DECODE)) {
 
-            // Read until done
-            while ((numBytes = bis.read(buffer, length, 4096)) >= 0) length += numBytes;
+                // Read until done
+                while ((numBytes = bis.read(buffer, length, 4096)) >= 0) length += numBytes;
 
-            // Save in a variable to return
-            decodedData = new byte[length];
-            System.arraycopy(buffer, 0, decodedData, 0, length);
+                // Save in a variable to return
+                decodedData = new byte[length];
+                System.arraycopy(buffer, 0, decodedData, 0, length);
+            }
 
         } // end try
         catch (java.io.IOException e) {
             // System.err.println("Error decoding from file " + filename);
-        } // end catch: IOException
-        finally {
-            try {
-                bis.close();
-            } catch (Exception e) {
-            }
-        } // end finally
+        }
 
         return decodedData;
     } // end decodeFromFile
@@ -1035,7 +1032,6 @@ public class Base64 {
      */
     public static String encodeFromFile(String filename) {
         String encodedData = null;
-        Base64.InputStream bis = null;
         try {
             // Set up some useful variables
             java.io.File file = new java.io.File(filename);
@@ -1044,27 +1040,20 @@ public class Base64 {
             int numBytes = 0;
 
             // Open a stream
-            bis =
+            try (Base64.InputStream bis =
                     new Base64.InputStream(
                             new java.io.BufferedInputStream(new java.io.FileInputStream(file)),
-                            Base64.ENCODE);
+                            Base64.ENCODE)) {
+                // Read until done
+                while ((numBytes = bis.read(buffer, length, 4096)) >= 0) length += numBytes;
 
-            // Read until done
-            while ((numBytes = bis.read(buffer, length, 4096)) >= 0) length += numBytes;
-
-            // Save in a variable to return
-            encodedData = new String(buffer, 0, length, Base64.PREFERRED_ENCODING);
-
+                // Save in a variable to return
+                encodedData = new String(buffer, 0, length, Base64.PREFERRED_ENCODING);
+            }
         } // end try
         catch (java.io.IOException e) {
             // System.err.println("Error encoding from file " + filename);
-        } // end catch: IOException
-        finally {
-            try {
-                bis.close();
-            } catch (Exception e) {
-            }
-        } // end finally
+        }
 
         return encodedData;
     } // end encodeFromFile

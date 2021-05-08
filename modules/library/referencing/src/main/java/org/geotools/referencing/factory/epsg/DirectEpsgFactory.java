@@ -2735,7 +2735,6 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
             throws FactoryException {
         ensureNonNull("code", code);
         CoordinateOperation returnValue = null;
-        ResultSet result = null;
         try {
             final String primaryKey =
                     toPrimaryKey(
@@ -2761,264 +2760,264 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                                     + " FROM [Coordinate_Operation]"
                                     + " WHERE COORD_OP_CODE = ?");
             stmt.setInt(1, Integer.parseInt(primaryKey));
-            result = stmt.executeQuery();
-            while (hasNext(result)) {
-                final String epsg = getString(result, 1, code);
-                final String name = getString(result, 2, code);
-                final String type = getString(result, 3, code).trim().toLowerCase();
-                final boolean isTransformation = type.equals("transformation");
-                final boolean isConversion = type.equals("conversion");
-                final boolean isConcatenated = type.equals("concatenated operation");
-                final String sourceCode, targetCode, methodCode;
-                if (isConversion) {
-                    // Optional for conversions, mandatory for all others.
-                    sourceCode = result.getString(4);
-                    targetCode = result.getString(5);
-                } else {
-                    sourceCode = getString(result, 4, code);
-                    targetCode = getString(result, 5, code);
-                }
-                if (isConcatenated) {
-                    // Not applicable to concatenated operation, mandatory for all others.
-                    methodCode = result.getString(6);
-                } else {
-                    methodCode = getString(result, 6, code);
-                }
-                String version = result.getString(7);
-                double accuracy = result.getDouble(8);
-                if (result.wasNull()) accuracy = Double.NaN;
-                String area = result.getString(9);
-                String scope = result.getString(10);
-                String remarks = result.getString(11);
-                /*
-                 * Gets the source and target CRS. They are mandatory for transformations (it
-                 * was checked above in this method) and optional for conversions. Conversions
-                 * are usually "defining conversions" and don't define source and target CRS.
-                 * In EPSG database 6.7, all defining conversions are projections and their
-                 * dimensions are always 2. However, this is not generalizable to other kind
-                 * of operation methods. For example the "Geocentric translation" operation
-                 * method has 3-dimensional source and target.
-                 */
-                final int sourceDimensions, targetDimensions;
-                final CoordinateReferenceSystem sourceCRS, targetCRS;
-                if (sourceCode != null) {
-                    sourceCRS = buffered.createCoordinateReferenceSystem(sourceCode);
-                    sourceDimensions = sourceCRS.getCoordinateSystem().getDimension();
-                } else {
-                    sourceCRS = null;
-                    sourceDimensions = 2; // Acceptable default for projections only.
-                }
-                if (targetCode != null) {
-                    targetCRS = buffered.createCoordinateReferenceSystem(targetCode);
-                    targetDimensions = targetCRS.getCoordinateSystem().getDimension();
-                } else {
-                    targetCRS = null;
-                    targetDimensions = 2; // Acceptable default for projections only.
-                }
-                /*
-                 * Gets the operation method. This is mandatory for conversions and transformations
-                 * (it was checked above in this method) but optional for concatenated operations.
-                 * Fetching parameter values is part of this block.
-                 */
-                final boolean isBursaWolf;
-                OperationMethod method;
-                final ParameterValueGroup parameters;
-                if (methodCode == null) {
-                    isBursaWolf = false;
-                    method = null;
-                    parameters = null;
-                } else {
-                    final int num;
-                    try {
-                        num = Integer.parseInt(methodCode);
-                    } catch (NumberFormatException exception) {
-                        throw new FactoryException(exception);
-                    }
-                    isBursaWolf = (num >= BURSA_WOLF_MIN_CODE && num <= BURSA_WOLF_MAX_CODE);
-                    // Reminder: The source and target dimensions MUST be computed when
-                    //           the information is available. Dimension is not always 2!!
-                    method = buffered.createOperationMethod(methodCode);
-                    if (method.getSourceDimensions() != sourceDimensions
-                            || method.getTargetDimensions() != targetDimensions) {
-                        method =
-                                new DefaultOperationMethod(
-                                        method, sourceDimensions, targetDimensions);
-                    }
-                    /*
-                     * Note that some parameters required for MathTransform creation are implicit in
-                     * the EPSG database (e.g. semi-major and semi-minor axis length in the case of
-                     * map projections). We ask the parameter value group straight from the math
-                     * transform factory instead of from the operation method in order to get all
-                     * required parameter descriptors, including implicit ones.
-                     */
-                    final String classe = method.getName().getCode();
-                    parameters = factories.getMathTransformFactory().getDefaultParameters(classe);
-                    fillParameterValues(methodCode, epsg, parameters);
-                }
-                /*
-                 * Creates common properties. The 'version' and 'accuracy' are usually defined
-                 * for transformations only. However, we check them for all kind of operations
-                 * (including conversions) and copy the information inconditionnaly if present.
-                 *
-                 * NOTE: This block must be executed last before object creations below, because
-                 *       methods like createCoordinateReferenceSystem and createOperationMethod
-                 *       overwrite the properties map.
-                 */
-                final Map<String, Object> properties =
-                        createProperties(name, epsg, area, scope, remarks);
-                if (version != null && (version = version.trim()).length() != 0) {
-                    properties.put(CoordinateOperation.OPERATION_VERSION_KEY, version);
-                }
-                if (!Double.isNaN(accuracy)) {
-                    final QuantitativeResultImpl accuracyResult =
-                            new QuantitativeResultImpl(new double[] {accuracy});
-                    // TODO: Need to invoke something equivalent to:
-                    // accuracyResult.setValueType(Float.class);
-                    // This is the type declared in the MS-Access database.
-                    accuracyResult.setValueUnit(
-                            SI.METRE); // In meters by definition in the EPSG database.
-                    final AbsoluteExternalPositionalAccuracyImpl accuracyElement =
-                            new AbsoluteExternalPositionalAccuracyImpl(accuracyResult);
-                    accuracyElement.setMeasureDescription(TRANSFORMATION_ACCURACY);
-                    accuracyElement.setEvaluationMethodType(EvaluationMethodType.DIRECT_EXTERNAL);
-                    properties.put(
-                            CoordinateOperation.COORDINATE_OPERATION_ACCURACY_KEY,
-                            new PositionalAccuracy[] {
-                                (PositionalAccuracy) accuracyElement.unmodifiable()
-                            });
-                }
-                /*
-                 * Creates the operation. Conversions should be the only operations allowed to
-                 * have null source and target CRS. In such case, the operation is a defining
-                 * conversion (usually to be used later as part of a ProjectedCRS creation),
-                 * and always a projection in the specific case of the EPSG database (which
-                 * allowed us to assume 2-dimensional operation method in the code above for
-                 * this specific case - not to be generalized to the whole EPSG database).
-                 */
-                final CoordinateOperation operation;
-                if (isConversion && (sourceCRS == null || targetCRS == null)) {
-                    // Note: we usually can't resolve sourceCRS and targetCRS because there
-                    // is many of them for the same coordinate operation (projection) code.
-                    operation = new DefiningConversion(properties, method, parameters);
-                } else if (isConcatenated) {
-                    /*
-                     * Concatenated operation: we need to close the current result set, because
-                     * we are going to invoke this method recursively in the following lines.
-                     *
-                     * Note: we instantiate directly the Geotools's implementation of
-                     * ConcatenatedOperation instead of using CoordinateOperationFactory in order
-                     * to avoid loading the quite large Geotools's implementation of this factory,
-                     * and also because it is not part of FactoryGroup anyway.
-                     */
-                    result = null;
-                    final PreparedStatement cstmt =
-                            prepareStatement(
-                                    "ConcatenatedOperation",
-                                    "SELECT SINGLE_OPERATION_CODE"
-                                            + " FROM [Coordinate_Operation Path]"
-                                            + " WHERE (CONCAT_OPERATION_CODE = ?)"
-                                            + " ORDER BY OP_PATH_STEP");
-                    cstmt.setString(1, epsg);
-                    final List<String> codes = new ArrayList<>();
-                    try (ResultSet cr = cstmt.executeQuery()) {
-                        while (cr.next()) {
-                            codes.add(cr.getString(1));
-                        }
-                    }
-                    final CoordinateOperation[] operations = new CoordinateOperation[codes.size()];
-                    if (!safetyGuard.add(epsg)) {
-                        throw recursiveCall(ConcatenatedOperation.class, epsg);
-                    }
-                    try {
-                        for (int i = 0; i < operations.length; i++) {
-                            operations[i] = buffered.createCoordinateOperation(codes.get(i));
-                        }
-                    } finally {
-                        safetyGuard.remove(epsg);
-                    }
-                    try {
-                        return new DefaultConcatenatedOperation(properties, operations);
-                    } catch (IllegalArgumentException exception) {
-                        // May happen if there is less than 2 operations to concatenate.
-                        // It happen for some deprecated CRS like 8658 for example.
-                        throw new FactoryException(exception);
-                    }
-                } else {
-                    /*
-                     * Needs to create a math transform. A special processing is performed for
-                     * datum shift methods, since the conversion from ellipsoid to geocentric
-                     * for "geocentric translations" is implicit in the EPSG database. Even in
-                     * the case of Molodenski transforms, the axis length to set are the same.
-                     */
-                    if (isBursaWolf)
-                        try {
-                            Ellipsoid ellipsoid = CRSUtilities.getHeadGeoEllipsoid(sourceCRS);
-                            if (ellipsoid != null) {
-                                final Unit axisUnit = ellipsoid.getAxisUnit();
-                                parameters
-                                        .parameter("src_semi_major")
-                                        .setValue(ellipsoid.getSemiMajorAxis(), axisUnit);
-                                parameters
-                                        .parameter("src_semi_minor")
-                                        .setValue(ellipsoid.getSemiMinorAxis(), axisUnit);
-                                parameters
-                                        .parameter("src_dim")
-                                        .setValue(sourceCRS.getCoordinateSystem().getDimension());
-                            }
-                            ellipsoid = CRSUtilities.getHeadGeoEllipsoid(targetCRS);
-                            if (ellipsoid != null) {
-                                final Unit axisUnit = ellipsoid.getAxisUnit();
-                                parameters
-                                        .parameter("tgt_semi_major")
-                                        .setValue(ellipsoid.getSemiMajorAxis(), axisUnit);
-                                parameters
-                                        .parameter("tgt_semi_minor")
-                                        .setValue(ellipsoid.getSemiMinorAxis(), axisUnit);
-                                parameters
-                                        .parameter("tgt_dim")
-                                        .setValue(targetCRS.getCoordinateSystem().getDimension());
-                            }
-                        } catch (ParameterNotFoundException exception) {
-                            throw new FactoryException(
-                                    Errors.format(
-                                            ErrorKeys.GEOTOOLS_EXTENSION_REQUIRED_$1,
-                                            method.getName().getCode(),
-                                            exception));
-                        }
-                    /*
-                     * At this stage, the parameters are ready for use. Creates the math transform
-                     * and wraps it in the final operation (a Conversion or a Transformation).
-                     */
-                    final Class<? extends Operation> expected;
-                    if (isTransformation) {
-                        expected = Transformation.class;
-                    } else if (isConversion) {
-                        expected = Conversion.class;
+            try (ResultSet result = stmt.executeQuery()) {
+                while (hasNext(result)) {
+                    final String epsg = getString(result, 1, code);
+                    final String name = getString(result, 2, code);
+                    final String type = getString(result, 3, code).trim().toLowerCase();
+                    final boolean isTransformation = type.equals("transformation");
+                    final boolean isConversion = type.equals("conversion");
+                    final boolean isConcatenated = type.equals("concatenated operation");
+                    final String sourceCode, targetCode, methodCode;
+                    if (isConversion) {
+                        // Optional for conversions, mandatory for all others.
+                        sourceCode = result.getString(4);
+                        targetCode = result.getString(5);
                     } else {
-                        throw new FactoryException(Errors.format(ErrorKeys.UNKNOW_TYPE_$1, type));
+                        sourceCode = getString(result, 4, code);
+                        targetCode = getString(result, 5, code);
                     }
-                    final MathTransform mt =
-                            factories
-                                    .getMathTransformFactory()
-                                    .createBaseToDerived(
-                                            sourceCRS, parameters, targetCRS.getCoordinateSystem());
-                    // TODO: uses GeoAPI factory method once available.
-                    operation =
-                            DefaultOperation.create(
-                                    properties, sourceCRS, targetCRS, mt, method, expected);
+                    if (isConcatenated) {
+                        // Not applicable to concatenated operation, mandatory for all others.
+                        methodCode = result.getString(6);
+                    } else {
+                        methodCode = getString(result, 6, code);
+                    }
+                    String version = result.getString(7);
+                    double accuracy = result.getDouble(8);
+                    if (result.wasNull()) accuracy = Double.NaN;
+                    String area = result.getString(9);
+                    String scope = result.getString(10);
+                    String remarks = result.getString(11);
+                    /*
+                     * Gets the source and target CRS. They are mandatory for transformations (it
+                     * was checked above in this method) and optional for conversions. Conversions
+                     * are usually "defining conversions" and don't define source and target CRS.
+                     * In EPSG database 6.7, all defining conversions are projections and their
+                     * dimensions are always 2. However, this is not generalizable to other kind
+                     * of operation methods. For example the "Geocentric translation" operation
+                     * method has 3-dimensional source and target.
+                     */
+                    final int sourceDimensions, targetDimensions;
+                    final CoordinateReferenceSystem sourceCRS, targetCRS;
+                    if (sourceCode != null) {
+                        sourceCRS = buffered.createCoordinateReferenceSystem(sourceCode);
+                        sourceDimensions = sourceCRS.getCoordinateSystem().getDimension();
+                    } else {
+                        sourceCRS = null;
+                        sourceDimensions = 2; // Acceptable default for projections only.
+                    }
+                    if (targetCode != null) {
+                        targetCRS = buffered.createCoordinateReferenceSystem(targetCode);
+                        targetDimensions = targetCRS.getCoordinateSystem().getDimension();
+                    } else {
+                        targetCRS = null;
+                        targetDimensions = 2; // Acceptable default for projections only.
+                    }
+                    /*
+                     * Gets the operation method. This is mandatory for conversions and transformations
+                     * (it was checked above in this method) but optional for concatenated operations.
+                     * Fetching parameter values is part of this block.
+                     */
+                    final boolean isBursaWolf;
+                    OperationMethod method;
+                    final ParameterValueGroup parameters;
+                    if (methodCode == null) {
+                        isBursaWolf = false;
+                        method = null;
+                        parameters = null;
+                    } else {
+                        final int num;
+                        try {
+                            num = Integer.parseInt(methodCode);
+                        } catch (NumberFormatException exception) {
+                            throw new FactoryException(exception);
+                        }
+                        isBursaWolf = (num >= BURSA_WOLF_MIN_CODE && num <= BURSA_WOLF_MAX_CODE);
+                        // Reminder: The source and target dimensions MUST be computed when
+                        //           the information is available. Dimension is not always 2!!
+                        method = buffered.createOperationMethod(methodCode);
+                        if (method.getSourceDimensions() != sourceDimensions
+                                || method.getTargetDimensions() != targetDimensions) {
+                            method =
+                                    new DefaultOperationMethod(
+                                            method, sourceDimensions, targetDimensions);
+                        }
+                        /*
+                         * Note that some parameters required for MathTransform creation are implicit in
+                         * the EPSG database (e.g. semi-major and semi-minor axis length in the case of
+                         * map projections). We ask the parameter value group straight from the math
+                         * transform factory instead of from the operation method in order to get all
+                         * required parameter descriptors, including implicit ones.
+                         */
+                        final String classe = method.getName().getCode();
+                        parameters =
+                                factories.getMathTransformFactory().getDefaultParameters(classe);
+                        fillParameterValues(methodCode, epsg, parameters);
+                    }
+                    /*
+                     * Creates common properties. The 'version' and 'accuracy' are usually defined
+                     * for transformations only. However, we check them for all kind of operations
+                     * (including conversions) and copy the information inconditionnaly if present.
+                     *
+                     * NOTE: This block must be executed last before object creations below, because
+                     *       methods like createCoordinateReferenceSystem and createOperationMethod
+                     *       overwrite the properties map.
+                     */
+                    final Map<String, Object> properties =
+                            createProperties(name, epsg, area, scope, remarks);
+                    if (version != null && (version = version.trim()).length() != 0) {
+                        properties.put(CoordinateOperation.OPERATION_VERSION_KEY, version);
+                    }
+                    if (!Double.isNaN(accuracy)) {
+                        final QuantitativeResultImpl accuracyResult =
+                                new QuantitativeResultImpl(new double[] {accuracy});
+                        // TODO: Need to invoke something equivalent to:
+                        // accuracyResult.setValueType(Float.class);
+                        // This is the type declared in the MS-Access database.
+                        accuracyResult.setValueUnit(
+                                SI.METRE); // In meters by definition in the EPSG database.
+                        final AbsoluteExternalPositionalAccuracyImpl accuracyElement =
+                                new AbsoluteExternalPositionalAccuracyImpl(accuracyResult);
+                        accuracyElement.setMeasureDescription(TRANSFORMATION_ACCURACY);
+                        accuracyElement.setEvaluationMethodType(
+                                EvaluationMethodType.DIRECT_EXTERNAL);
+                        properties.put(
+                                CoordinateOperation.COORDINATE_OPERATION_ACCURACY_KEY,
+                                new PositionalAccuracy[] {
+                                    (PositionalAccuracy) accuracyElement.unmodifiable()
+                                });
+                    }
+                    /*
+                     * Creates the operation. Conversions should be the only operations allowed to
+                     * have null source and target CRS. In such case, the operation is a defining
+                     * conversion (usually to be used later as part of a ProjectedCRS creation),
+                     * and always a projection in the specific case of the EPSG database (which
+                     * allowed us to assume 2-dimensional operation method in the code above for
+                     * this specific case - not to be generalized to the whole EPSG database).
+                     */
+                    final CoordinateOperation operation;
+                    if (isConversion && (sourceCRS == null || targetCRS == null)) {
+                        // Note: we usually can't resolve sourceCRS and targetCRS because there
+                        // is many of them for the same coordinate operation (projection) code.
+                        operation = new DefiningConversion(properties, method, parameters);
+                    } else if (isConcatenated) {
+                        /*
+                         * Concatenated operation: we need to close the current result set, because
+                         * we are going to invoke this method recursively in the following lines.
+                         *
+                         * Note: we instantiate directly the Geotools's implementation of
+                         * ConcatenatedOperation instead of using CoordinateOperationFactory in order
+                         * to avoid loading the quite large Geotools's implementation of this factory,
+                         * and also because it is not part of FactoryGroup anyway.
+                         */
+                        final PreparedStatement cstmt =
+                                prepareStatement(
+                                        "ConcatenatedOperation",
+                                        "SELECT SINGLE_OPERATION_CODE"
+                                                + " FROM [Coordinate_Operation Path]"
+                                                + " WHERE (CONCAT_OPERATION_CODE = ?)"
+                                                + " ORDER BY OP_PATH_STEP");
+                        cstmt.setString(1, epsg);
+                        final List<String> codes = new ArrayList<>();
+                        try (ResultSet cr = cstmt.executeQuery()) {
+                            while (cr.next()) {
+                                codes.add(cr.getString(1));
+                            }
+                        }
+                        final CoordinateOperation[] operations =
+                                new CoordinateOperation[codes.size()];
+                        if (!safetyGuard.add(epsg)) {
+                            throw recursiveCall(ConcatenatedOperation.class, epsg);
+                        }
+                        try {
+                            for (int i = 0; i < operations.length; i++) {
+                                operations[i] = buffered.createCoordinateOperation(codes.get(i));
+                            }
+                        } finally {
+                            safetyGuard.remove(epsg);
+                        }
+                        try {
+                            return new DefaultConcatenatedOperation(properties, operations);
+                        } catch (IllegalArgumentException exception) {
+                            // May happen if there is less than 2 operations to concatenate.
+                            // It happen for some deprecated CRS like 8658 for example.
+                            throw new FactoryException(exception);
+                        }
+                    } else {
+                        /*
+                         * Needs to create a math transform. A special processing is performed for
+                         * datum shift methods, since the conversion from ellipsoid to geocentric
+                         * for "geocentric translations" is implicit in the EPSG database. Even in
+                         * the case of Molodenski transforms, the axis length to set are the same.
+                         */
+                        if (isBursaWolf)
+                            try {
+                                Ellipsoid ellipsoid = CRSUtilities.getHeadGeoEllipsoid(sourceCRS);
+                                if (ellipsoid != null) {
+                                    final Unit axisUnit = ellipsoid.getAxisUnit();
+                                    parameters
+                                            .parameter("src_semi_major")
+                                            .setValue(ellipsoid.getSemiMajorAxis(), axisUnit);
+                                    parameters
+                                            .parameter("src_semi_minor")
+                                            .setValue(ellipsoid.getSemiMinorAxis(), axisUnit);
+                                    parameters
+                                            .parameter("src_dim")
+                                            .setValue(
+                                                    sourceCRS.getCoordinateSystem().getDimension());
+                                }
+                                ellipsoid = CRSUtilities.getHeadGeoEllipsoid(targetCRS);
+                                if (ellipsoid != null) {
+                                    final Unit axisUnit = ellipsoid.getAxisUnit();
+                                    parameters
+                                            .parameter("tgt_semi_major")
+                                            .setValue(ellipsoid.getSemiMajorAxis(), axisUnit);
+                                    parameters
+                                            .parameter("tgt_semi_minor")
+                                            .setValue(ellipsoid.getSemiMinorAxis(), axisUnit);
+                                    parameters
+                                            .parameter("tgt_dim")
+                                            .setValue(
+                                                    targetCRS.getCoordinateSystem().getDimension());
+                                }
+                            } catch (ParameterNotFoundException exception) {
+                                throw new FactoryException(
+                                        Errors.format(
+                                                ErrorKeys.GEOTOOLS_EXTENSION_REQUIRED_$1,
+                                                method.getName().getCode(),
+                                                exception));
+                            }
+                        /*
+                         * At this stage, the parameters are ready for use. Creates the math transform
+                         * and wraps it in the final operation (a Conversion or a Transformation).
+                         */
+                        final Class<? extends Operation> expected;
+                        if (isTransformation) {
+                            expected = Transformation.class;
+                        } else if (isConversion) {
+                            expected = Conversion.class;
+                        } else {
+                            throw new FactoryException(
+                                    Errors.format(ErrorKeys.UNKNOW_TYPE_$1, type));
+                        }
+                        final MathTransform mt =
+                                factories
+                                        .getMathTransformFactory()
+                                        .createBaseToDerived(
+                                                sourceCRS,
+                                                parameters,
+                                                targetCRS.getCoordinateSystem());
+                        // TODO: uses GeoAPI factory method once available.
+                        operation =
+                                DefaultOperation.create(
+                                        properties, sourceCRS, targetCRS, mt, method, expected);
+                    }
+                    returnValue = ensureSingleton(operation, returnValue, code);
                 }
-                returnValue = ensureSingleton(operation, returnValue, code);
             }
         } catch (SQLException exception) {
             throw databaseFailure(CoordinateOperation.class, code, exception);
-        } finally {
-            if (result != null) {
-                try {
-                    result.close();
-                } catch (Exception e) {
-                    // fine, we tried
-                }
-            }
         }
         if (returnValue == null) {
             throw noSuchAuthorityCode(CoordinateOperation.class, code);
@@ -3549,19 +3548,10 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
     protected boolean isConnectionValid(Connection conn) {
         if (validationQuery == null) return true;
 
-        Statement st = null;
-        try {
-            st = conn.createStatement();
+        try (Statement st = conn.createStatement()) {
             st.execute(validationQuery);
         } catch (SQLException e) {
             return false;
-        } finally {
-            if (st != null)
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    // we tried our best ...
-                }
         }
         return true;
     }

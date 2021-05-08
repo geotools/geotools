@@ -72,6 +72,7 @@ class OGRDirectFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
     }
 
     @Override
+    @SuppressWarnings("PMD.UseTryWithResources") // closing field
     public void close() throws IOException {
         if (reader != null) {
             try {

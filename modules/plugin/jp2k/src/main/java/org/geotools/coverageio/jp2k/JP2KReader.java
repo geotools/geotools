@@ -554,20 +554,18 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
 
     /** Get the degenerate GeoTIFF to obtain the related CoordinateReferenceSystem tags */
     private void getGeoJP2(final UUIDBoxMetadataNode uuid) throws IOException {
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(uuid.getData())) {
+            final TIFFImageReader tiffreader =
+                    (TIFFImageReader) new TIFFImageReaderSpi().createReaderInstance();
+            tiffreader.setInput(ImageIO.createImageInputStream(inputStream));
+            final IIOMetadata tiffmetadata = tiffreader.getImageMetadata(0);
 
-        CoordinateReferenceSystem coordinateReferenceSystem = null;
-        final ByteArrayInputStream inputStream = new ByteArrayInputStream(uuid.getData());
-        final TIFFImageReader tiffreader =
-                (TIFFImageReader) new TIFFImageReaderSpi().createReaderInstance();
-        tiffreader.setInput(ImageIO.createImageInputStream(inputStream));
-        final IIOMetadata tiffmetadata = tiffreader.getImageMetadata(0);
-        try {
             final GeoTiffIIOMetadataDecoder metadataDecoder =
                     new GeoTiffIIOMetadataDecoder(tiffmetadata);
             final GeoTiffMetadata2CRSAdapter adapter = new GeoTiffMetadata2CRSAdapter(hints);
-            coordinateReferenceSystem = adapter.createCoordinateSystem(metadataDecoder);
-            if (coordinateReferenceSystem != null) {
-                if (this.crs == null) this.crs = coordinateReferenceSystem;
+            CoordinateReferenceSystem crs = adapter.createCoordinateSystem(metadataDecoder);
+            if (crs != null) {
+                if (this.crs == null) this.crs = crs;
             }
             if (this.raster2Model == null) {
                 this.raster2Model = GeoTiffMetadata2CRSAdapter.getRasterToModel(metadataDecoder);
@@ -576,18 +574,9 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
                 tempTransform.translate(-0.5, -0.5);
                 setEnvelopeFromTransform(tempTransform);
             }
-
         } catch (Exception e) {
             if (LOGGER.isLoggable(FINE))
                 LOGGER.log(FINE, "Unable to parse CRS from underlying TIFF", e);
-            coordinateReferenceSystem = null;
-        } finally {
-            if (inputStream != null)
-                try {
-                    inputStream.close();
-                } catch (IOException ioe) {
-                    // Eat exception.
-                }
         }
     }
 

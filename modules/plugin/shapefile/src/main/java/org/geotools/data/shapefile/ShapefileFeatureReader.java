@@ -294,6 +294,7 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
     }
 
     @Override
+    @SuppressWarnings("PMD.UseTryWithResources") // resources are fields
     public void close() throws IOException {
         try {
             if (shp != null) {

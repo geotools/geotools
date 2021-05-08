@@ -529,10 +529,7 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
      */
     @SuppressWarnings("deprecation")
     private CoordinateReferenceSystem initCRS() {
-        BufferedReader reader = null;
-        try {
-            // getting a reader
-            reader = new BufferedReader(new FileReader(URLs.urlToFile(prjURL)));
+        try (BufferedReader reader = new BufferedReader(new FileReader(URLs.urlToFile(prjURL)))) {
 
             // reading the first line to see if I need to read it all
             final StringBuilder buffer = new StringBuilder(reader.readLine());
@@ -598,16 +595,6 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
         } catch (IOException | FactoryException e) {
             // do nothing and return a default CRS but write down a message
             LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-
-        } finally {
-            if (reader != null)
-                try {
-                    // freeing
-                    reader.close();
-                } catch (Exception e1) {
-                    if (LOGGER.isLoggable(Level.FINE))
-                        LOGGER.log(Level.FINE, e1.getLocalizedMessage(), e1);
-                }
         }
         final CoordinateReferenceSystem crs = AbstractGridFormat.getDefaultCRS();
         LOGGER.info("PRJ file not found, proceeding with default crs");

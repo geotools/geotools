@@ -239,9 +239,8 @@ public class PolygonExtractionProcessTest {
                 process.execute(cov, 0, Boolean.TRUE, null, noDataValues, null, null);
 
         // validate geometries and sum areas
-        SimpleFeatureIterator iter = fc.features();
         Map<Integer, Double> areas = new HashMap<>();
-        try {
+        try (SimpleFeatureIterator iter = fc.features()) {
             while (iter.hasNext()) {
                 SimpleFeature feature = iter.next();
                 Geometry geom = (Geometry) feature.getDefaultGeometry();
@@ -257,8 +256,6 @@ public class PolygonExtractionProcessTest {
                     areas.put(value, sum);
                 }
             }
-        } finally {
-            iter.close();
         }
 
         // compare summed areas to image data

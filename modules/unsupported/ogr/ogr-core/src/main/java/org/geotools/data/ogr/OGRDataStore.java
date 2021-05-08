@@ -361,6 +361,7 @@ public class OGRDataStore extends ContentDataStore {
     }
 
     @Override
+    @SuppressWarnings("PMD.UseTryWithResources") // closing field
     public void dispose() {
         try {
             super.dispose();

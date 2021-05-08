@@ -24,6 +24,7 @@ import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.Set;
 import org.geotools.data.DataAccess;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureListener;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
@@ -31,7 +32,6 @@ import org.geotools.data.QueryCapabilities;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.joining.JoiningQuery;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCFeatureSource;
 import org.geotools.jdbc.JDBCFeatureStore;
@@ -150,20 +150,7 @@ public class MappingFeatureSource implements FeatureSource<FeatureType, Feature>
         } else {
             // count < 0 indicates broken a datastore, such as PropertyDataStore.
             // If the data store cannot count its own features, we have to do it.
-            int featureCount = 0;
-            FeatureIterator<Feature> features = null;
-            try {
-                for (features = getFeatures(namedQuery).features();
-                        features.hasNext();
-                        features.next()) {
-                    featureCount++;
-                }
-            } finally {
-                if (features != null) {
-                    features.close();
-                }
-            }
-            return featureCount;
+            return DataUtilities.count(getFeatures(namedQuery).features());
         }
     }
 

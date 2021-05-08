@@ -376,6 +376,7 @@ public class ShapefileReader implements FileReader, Closeable {
      * @throws IOException If errors occur while closing the channel.
      */
     @Override
+    @SuppressWarnings("PMD.UseTryWithResources") // closing fields
     public void close() throws IOException {
         // don't throw NPE on double close
         if (channel == null) return;

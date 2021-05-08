@@ -100,10 +100,8 @@ public class XMLConfigDigester {
         }
 
         // read mapping file into configString and interpolate properties
-        InputStream configStream = null;
         String configString = null;
-        try {
-            configStream = dataStoreConfigUrl.openStream();
+        try (InputStream configStream = dataStoreConfigUrl.openStream()) {
             if (configStream == null) {
                 throw new IOException("Can't open datastore config file " + dataStoreConfigUrl);
             } else {
@@ -119,10 +117,6 @@ public class XMLConfigDigester {
                     }
                 }
                 configString = props.interpolate(InterpolationProperties.readAll(configStream));
-            }
-        } finally {
-            if (configStream != null) {
-                configStream.close();
             }
         }
 

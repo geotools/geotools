@@ -64,6 +64,7 @@ public class MemoryFeatureCollectionTest extends DataTestCase {
     }
 
     @Test
+    @SuppressWarnings("PMD.UseTryWithResources") // tests behavior post closing
     public void testResources() {
         Object[] array = roads.toArray();
         assertEquals(roads.size(), array.length);

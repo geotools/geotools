@@ -130,6 +130,7 @@ public class NetCDFDriver extends DefaultFileDriver implements FileDriver, Drive
     }
 
     @Override
+    @SuppressWarnings("PMD.UseTryWithResources") // complex management in close
     protected boolean canConnect(URL url, Map<String, Serializable> params) {
 
         if (url == null) {

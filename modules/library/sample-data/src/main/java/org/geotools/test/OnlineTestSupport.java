@@ -40,6 +40,7 @@ import org.junit.Before;
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
  * @see OnlineTestCase
  */
+@SuppressWarnings("PMD.DisallowJunit3")
 public abstract class OnlineTestSupport {
 
     /** The delegate {@link OnlineTestCase} instance. */

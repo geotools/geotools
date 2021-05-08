@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.geotools.TestData;
 import org.geotools.data.DataStore;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -230,15 +231,8 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
 
         FeatureId featureId = ff.featureId("streams.84");
         Id filter = ff.id(Collections.singleton(featureId));
-        SimpleFeatureCollection features = ds.getFeatureSource().getFeatures(filter);
-
-        SimpleFeatureIterator iter = features.features();
-        ReferencedEnvelope bounds;
-        try {
-            bounds = new ReferencedEnvelope(iter.next().getBounds());
-        } finally {
-            iter.close();
-        }
+        SimpleFeature first = DataUtilities.first(ds.getFeatureSource().getFeatures(filter));
+        ReferencedEnvelope bounds = ReferencedEnvelope.reference(first.getBounds());
 
         FeatureId id = featureId;
         filter = ff.id(Collections.singleton(id));

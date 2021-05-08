@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TimeZone;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -146,7 +145,6 @@ public final class PostGisIndexTest extends OnlineTestCase {
             hints.add(new Hints(Utils.AUXILIARY_DATASTORE_PATH, datastoreFile.getCanonicalPath()));
             NetCDFReader gtReader = new NetCDFReader(destFile, hints);
             String coverageName = gtReader.getGridCoverageNames()[1];
-            CloseableIterator<FileGroup> files = null;
             try {
                 final String[] metadataNames = gtReader.getMetadataNames(coverageName);
                 assertNotNull(metadataNames);
@@ -155,15 +153,15 @@ public final class PostGisIndexTest extends OnlineTestCase {
                 ResourceInfo info = gtReader.getInfo(coverageName);
                 assertTrue(info instanceof FileResourceInfo);
                 FileResourceInfo fileInfo = (FileResourceInfo) info;
-                files = fileInfo.getFiles(null);
-
-                int fileGroups = 0;
                 FileGroup fg = null;
-                while (files.hasNext()) {
-                    fg = files.next();
-                    fileGroups++;
+                try (CloseableIterator<FileGroup> files = fileInfo.getFiles(null)) {
+                    int fileGroups = 0;
+                    while (files.hasNext()) {
+                        fg = files.next();
+                        fileGroups++;
+                    }
+                    assertEquals(1, fileGroups);
                 }
-                assertEquals(1, fileGroups);
                 File mainFile = fg.getMainFile();
                 assertEquals("O3-NO2", FilenameUtils.getBaseName(mainFile.getAbsolutePath()));
                 Map<String, Object> metadata = fg.getMetadata();
@@ -189,9 +187,6 @@ public final class PostGisIndexTest extends OnlineTestCase {
             } catch (Throwable t) {
                 throw new RuntimeException(t);
             } finally {
-                if (files != null) {
-                    files.close();
-                }
                 if (reader != null) {
                     try {
                         reader.dispose();
@@ -326,7 +321,6 @@ public final class PostGisIndexTest extends OnlineTestCase {
         // have the reader harvest it
         ImageMosaicFormat format = new ImageMosaicFormat();
         ImageMosaicReader reader = format.getReader(mosaic);
-        SimpleFeatureIterator it = null;
         assertNotNull(reader);
         try {
             String[] names = reader.getGridCoverageNames();
@@ -340,22 +334,22 @@ public final class PostGisIndexTest extends OnlineTestCase {
             q.setSortBy(ff.sort("time", SortOrder.ASCENDING));
             SimpleFeatureCollection granules = source.getGranules(q);
             assertEquals(2, granules.size());
-            it = granules.features();
-            assertTrue(it.hasNext());
-            SimpleFeature f = it.next();
-            assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
-            assertEquals(0, f.getAttribute("imageindex"));
-            assertEquals(
-                    "2013-03-01T00:00:00.000Z",
-                    ConvertersHack.convert(f.getAttribute("time"), String.class));
-            assertTrue(it.hasNext());
-            f = it.next();
-            assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
-            assertEquals(1, f.getAttribute("imageindex"));
-            assertEquals(
-                    "2013-03-01T01:00:00.000Z",
-                    ConvertersHack.convert(f.getAttribute("time"), String.class));
-            it.close();
+            try (SimpleFeatureIterator it = granules.features()) {
+                assertTrue(it.hasNext());
+                SimpleFeature f = it.next();
+                assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
+                assertEquals(0, f.getAttribute("imageindex"));
+                assertEquals(
+                        "2013-03-01T00:00:00.000Z",
+                        ConvertersHack.convert(f.getAttribute("time"), String.class));
+                assertTrue(it.hasNext());
+                f = it.next();
+                assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
+                assertEquals(1, f.getAttribute("imageindex"));
+                assertEquals(
+                        "2013-03-01T01:00:00.000Z",
+                        ConvertersHack.convert(f.getAttribute("time"), String.class));
+            }
 
             // close the reader and re-open it
             reader.dispose();
@@ -384,9 +378,6 @@ public final class PostGisIndexTest extends OnlineTestCase {
 
             assertNotNull(reader.read("O3", null));
         } finally {
-            if (it != null) {
-                it.close();
-            }
             reader.dispose();
         }
     }
@@ -435,41 +426,21 @@ public final class PostGisIndexTest extends OnlineTestCase {
     private void removeTables(String[] tables, String database) throws Exception {
         // delete tables
         Class.forName("org.postgresql.Driver");
-        Connection connection = null;
-        Statement st = null;
-        try {
-            connection =
-                    DriverManager.getConnection(
-                            "jdbc:postgresql://"
-                                    + fixture.getProperty("host")
-                                    + ":"
-                                    + fixture.getProperty("port")
-                                    + "/"
-                                    + (database != null
-                                            ? database
-                                            : fixture.getProperty("database")),
-                            fixture.getProperty("user"),
-                            fixture.getProperty("passwd"));
-            st = connection.createStatement();
+        try (Connection connection =
+                        DriverManager.getConnection(
+                                "jdbc:postgresql://"
+                                        + fixture.getProperty("host")
+                                        + ":"
+                                        + fixture.getProperty("port")
+                                        + "/"
+                                        + (database != null
+                                                ? database
+                                                : fixture.getProperty("database")),
+                                fixture.getProperty("user"),
+                                fixture.getProperty("passwd"));
+                Statement st = connection.createStatement()) {
             for (String table : tables) {
                 st.execute("DROP TABLE IF EXISTS \"" + table + "\"");
-            }
-        } finally {
-
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (Exception e) {
-                    LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-                }
-            }
-
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (Exception e) {
-                    LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-                }
             }
         }
     }

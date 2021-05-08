@@ -62,33 +62,26 @@ public class ParsingTest {
      */
     @Test
     public void testDescribeProcessParsing() throws Exception {
-
         if (DISABLE) {
             return;
         }
 
-        Object object;
-        BufferedReader in = null;
-        try {
-            Configuration config = new WPSConfiguration();
+        URL url;
+        if (ONLINE) {
+            url =
+                    new URL(
+                            "http://schemas.opengis.net/wps/1.0.0/examples/40_wpsDescribeProcess_response.xml");
+        } else {
+            url = TestData.url(this, "referenceProcessDescriptions.xml");
+        }
 
-            URL url;
-            if (ONLINE) {
-                url =
-                        new URL(
-                                "http://schemas.opengis.net/wps/1.0.0/examples/40_wpsDescribeProcess_response.xml");
-            } else {
-                url = TestData.url(this, "referenceProcessDescriptions.xml");
-            }
-
-            Parser parser = new Parser(config);
-            in = new BufferedReader(new InputStreamReader(url.openStream()));
-            object = parser.parse(in);
+        Configuration config = new WPSConfiguration();
+        Parser parser = new Parser(config);
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()))) {
+            Object object = parser.parse(in);
 
             ProcessDescriptionsType processDesc = (ProcessDescriptionsType) object;
             assertNotNull(processDesc);
-        } finally {
-            in.close();
         }
     }
 
@@ -98,24 +91,17 @@ public class ParsingTest {
             return;
         }
 
-        Object object;
-        BufferedReader in = null;
-        try {
-            Configuration config = new WPSConfiguration();
+        URL url = TestData.url(this, "deegree3Capabilities.xml");
 
-            URL url = TestData.url(this, "deegree3Capabilities.xml");
-
-            Parser parser = new Parser(config);
-            in = new BufferedReader(new InputStreamReader(url.openStream()));
-            object = parser.parse(in);
+        Configuration config = new WPSConfiguration();
+        Parser parser = new Parser(config);
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()))) {
+            Object object = parser.parse(in);
 
             assertNotNull("parsed", object);
 
             WPSCapabilitiesType capabiliites = (WPSCapabilitiesType) object;
             assertEquals("1.0.0", capabiliites.getVersion());
-
-        } finally {
-            in.close();
         }
     }
 
@@ -125,24 +111,17 @@ public class ParsingTest {
             return;
         }
 
-        Object object;
-        BufferedReader in = null;
-        try {
-            Configuration config = new WPSConfiguration();
+        URL url = TestData.url(this, "geoserverCapabilities.xml");
 
-            URL url = TestData.url(this, "geoserverCapabilities.xml");
-
-            Parser parser = new Parser(config);
-            in = new BufferedReader(new InputStreamReader(url.openStream()));
-            object = parser.parse(in);
+        Configuration config = new WPSConfiguration();
+        Parser parser = new Parser(config);
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()))) {
+            Object object = parser.parse(in);
 
             assertNotNull("parsed", object);
 
             WPSCapabilitiesType capabiliites = (WPSCapabilitiesType) object;
             assertEquals("1.0.0", capabiliites.getVersion());
-
-        } finally {
-            in.close();
         }
     }
 
@@ -152,21 +131,15 @@ public class ParsingTest {
             return;
         }
 
-        Object object;
-        BufferedReader in = null;
-        try {
-            Configuration config = new WPSConfiguration();
+        URL url = TestData.url(this, "deegree3ProcessDescriptions.xml");
 
-            URL url = TestData.url(this, "deegree3ProcessDescriptions.xml");
-
-            Parser parser = new Parser(config);
-            in = new BufferedReader(new InputStreamReader(url.openStream()));
-            object = parser.parse(in);
+        Configuration config = new WPSConfiguration();
+        Parser parser = new Parser(config);
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()))) {
+            Object object = parser.parse(in);
 
             ProcessDescriptionsType processDesc = (ProcessDescriptionsType) object;
             assertNotNull(processDesc);
-        } finally {
-            in.close();
         }
     }
 

@@ -20,9 +20,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.m2/repository
-          key: oracle-${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          key: gt-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
-            oracle-${{ runner.os }}-maven-
+            gt-maven-
       - name: Setup test environment for IBM Db2
         run: |
           ./build/ci/db2/start-db2.sh

@@ -17,9 +17,9 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        key: gt-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
-          ${{ runner.os }}-maven-
+          gt-maven-
     - name: Disable network offloading
       # See: https://github.com/actions/virtual-environments/issues/1187#issuecomment-686735760
       run: Disable-NetAdapterChecksumOffload -Name * -TcpIPv4 -UdpIPv4 -TcpIPv6 -UdpIPv6

@@ -17,9 +17,9 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ~/.m2/repository
-        key: geopkg-${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        key: gt-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
-          geopkg-${{ runner.os }}-maven-
+          gt-maven-
     - name: Build GeoTools dependent modules (no tests, prepare fresh artifacts)
       run: mvn -B clean install -T2 -Dall --file pom.xml -DskipTests -pl modules/plugin/geopkg -am
     - name: Build GeoPackage module with online tests

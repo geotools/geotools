@@ -69,12 +69,13 @@ public class GeoJSONWriter implements AutoCloseable {
     static Logger LOGGER = Logging.getLogger("org.geotools.data.geojson");
 
     /** Date format (ISO 8601) */
-    public static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+    public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSX";
 
-    public static final TimeZone TIME_ZONE = TimeZone.getTimeZone("GMT");
+    /** Default time zone, GMT */
+    public static final TimeZone DEFAULT_TIME_ZONE = TimeZone.getTimeZone("GMT");
 
-    public static final FastDateFormat dateFormatter =
-            FastDateFormat.getInstance(DATE_FORMAT, TIME_ZONE);
+    public static final FastDateFormat DEFAULT_DATE_FORMATTER =
+            FastDateFormat.getInstance(DEFAULT_DATE_FORMAT, DEFAULT_TIME_ZONE);
 
     private int maxDecimals = 4;
 
@@ -103,6 +104,7 @@ public class GeoJSONWriter implements AutoCloseable {
     private NumberFormat formatter = NumberFormat.getNumberInstance(Locale.ENGLISH);
     private boolean notWritenBbox = true;
     private boolean singleFeature = false;
+    private FastDateFormat dateFormatter = DEFAULT_DATE_FORMATTER;
 
     public GeoJSONWriter(OutputStream outputStream) throws IOException {
         // force the output CRS to be long, lat as required by spec
@@ -244,7 +246,7 @@ public class GeoJSONWriter implements AutoCloseable {
         } else if (binding == Boolean.class) {
             g.writeBoolean((boolean) value);
         } else if (Date.class.isAssignableFrom(binding)) {
-            g.writeString(dateFormatter.format(value));
+            g.writeString(DEFAULT_DATE_FORMATTER.format(value));
         } else if (Object.class.isAssignableFrom(binding) && value instanceof JsonNode) {
             ((JsonNode) value)
                     .serialize(
@@ -287,8 +289,11 @@ public class GeoJSONWriter implements AutoCloseable {
         if (transform == null || inCRS != lastCRS) {
             lastCRS = inCRS;
             try {
-                if (inCRS == null) transform = IdentityTransform.create(2);
-                else transform = CRS.findMathTransform(inCRS, outCRS, true);
+                if (inCRS == null) {
+                    transform = IdentityTransform.create(2);
+                } else {
+                    transform = CRS.findMathTransform(inCRS, outCRS, true);
+                }
             } catch (FactoryException e) {
                 throw new RuntimeException(e);
             }
@@ -442,20 +447,56 @@ public class GeoJSONWriter implements AutoCloseable {
         bounds = bbox;
     }
 
+    /** Returns true if the JSON is going to be pretty-printed, false otherwise */
     public boolean isSingleFeature() {
         return singleFeature;
     }
 
+    /**
+     * Turns on and off the single feature mode. In single feature mode the feature collection
+     * wrapper elements won't be emitted. Defaults to false.
+     *
+     * @param singleFeature
+     */
     public void setSingleFeature(boolean singleFeature) {
         this.singleFeature = singleFeature;
     }
 
+    /** Enables/disables pretty printing. */
     public void setPrettyPrinting(boolean prettyPrint) {
         if (prettyPrint) generator.setPrettyPrinter(new DefaultPrettyPrinter());
         else generator.setPrettyPrinter(null);
     }
 
+    /** Returns true if pretty printing is enabled, false otherwise. */
     public boolean isPrettyPrinting() {
         return generator.getPrettyPrinter() != null;
+    }
+
+    /**
+     * Sets the Timezone used to format the date fields. <code>null</code> is a valid value, the JVM
+     * local timezone will be used in that case.
+     */
+    public void setTimeZone(TimeZone tz) {
+        this.dateFormatter = FastDateFormat.getInstance(dateFormatter.getPattern(), tz);
+    }
+
+    /** Returns the timezone used to format dates. Defaults to GMT. */
+    public TimeZone getTimeZone(TimeZone tz) {
+        return dateFormatter.getTimeZone();
+    }
+
+    /**
+     * Sets the date format for time encoding
+     *
+     * @param pattern {@link java.text.SimpleDateFormat} compatible * pattern
+     */
+    public void setDatePattern(String pattern) {
+        this.dateFormatter = FastDateFormat.getInstance(pattern, dateFormatter.getTimeZone());
+    }
+
+    /** Returns the date formatter pattern. Defaults to DEFAULT_DATE_FORMAT */
+    public String getDatePattern() {
+        return this.dateFormatter.getPattern();
     }
 }

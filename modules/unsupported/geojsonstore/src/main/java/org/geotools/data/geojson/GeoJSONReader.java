@@ -30,11 +30,13 @@ import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.DoubleNode;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -77,8 +79,6 @@ public class GeoJSONReader implements AutoCloseable {
 
     private SimpleFeatureType schema;
 
-    SimpleFeatureTypeBuilder typeBuilder = null;
-
     private SimpleFeatureBuilder builder;
 
     private int nextID = 0;
@@ -91,6 +91,11 @@ public class GeoJSONReader implements AutoCloseable {
 
     private URL url;
 
+    private boolean guessingDates = true;
+
+    /** For reading be a bit more lenient regarding what we parse */
+    private DateParser dateParser = new DateParser();
+
     public GeoJSONReader(URL url) throws IOException {
         this.url = url;
         parser = factory.createParser(url);
@@ -99,6 +104,19 @@ public class GeoJSONReader implements AutoCloseable {
 
     public GeoJSONReader(InputStream is) throws IOException {
         parser = factory.createParser(is);
+    }
+
+    /**
+     * Returns true if the parser is trying to convert string formatted as dates into
+     * java.util.Date, false otherwise. Defaults to true.
+     */
+    public boolean isGuessingDates() {
+        return guessingDates;
+    }
+
+    /** Enables/Disables guessing strings formatted as dates into java.util.Date. */
+    public void setGuessingDates(boolean guessingDates) {
+        this.guessingDates = guessingDates;
     }
 
     public boolean isConnected() {
@@ -137,7 +155,6 @@ public class GeoJSONReader implements AutoCloseable {
      * @return
      */
     public static SimpleFeatureCollection parseFeatureCollection(String jsonString) {
-
         try (GeoJSONReader reader =
                 new GeoJSONReader(new ByteArrayInputStream(jsonString.getBytes()))) {
             SimpleFeatureCollection features = (SimpleFeatureCollection) reader.getFeatures();
@@ -194,7 +211,6 @@ public class GeoJSONReader implements AutoCloseable {
         }
         if (isSchemaChanged()) {
             // retype the features if the schema changes
-
             List<SimpleFeature> nFeatures = new ArrayList<>(features.size());
             for (SimpleFeature feature : features) {
                 if (feature.getFeatureType() != schema) {
@@ -284,13 +300,25 @@ public class GeoJSONReader implements AutoCloseable {
                         list.add(vc);
                     }
                     builder.set(n.getKey(), list);
-                } else if (binding.isAssignableFrom(Geometry.class)) {
+                } else if (Geometry.class.isAssignableFrom(binding)) {
                     GeometryParser<Geometry> gParser = new GenericGeometryParser(gFac);
                     Geometry g = gParser.geometryFromJson(n.getValue());
                     builder.set(n.getKey(), g);
+                } else if (Date.class.isAssignableFrom(binding)) {
+                    String text = n.getValue().asText();
+                    Date date = dateParser.parse(text);
+                    if (date != null) {
+                        builder.set(n.getKey(), date);
+                    } else {
+                        // will go through the Converter machinery which, depending on the
+                        // classpath, might try out a larger set of conversions, or end up
+                        // with a null value
+                        builder.set(n.getKey(), n.getValue().asText());
+                    }
+
                 } else {
                     LOGGER.warning("Unable to parse object of type " + binding);
-                    builder.set(n.getKey(), n.getValue().toString());
+                    builder.set(n.getKey(), n.getValue().asText());
                 }
             }
             JsonNode geom = node.get("geometry");
@@ -307,7 +335,7 @@ public class GeoJSONReader implements AutoCloseable {
     /** Create a simpleFeatureBuilder for the current schema + these new properties. */
     private SimpleFeatureBuilder getBuilder(JsonNode props) {
 
-        typeBuilder = new SimpleFeatureTypeBuilder();
+        SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
         // GeoJSON is always WGS84
         typeBuilder.setCRS(DefaultGeographicCRS.WGS84);
         typeBuilder.setName(baseName);
@@ -355,6 +383,15 @@ public class GeoJSONReader implements AutoCloseable {
                 }
             } else if (value instanceof ArrayNode) {
                 typeBuilder.add(n.getKey(), List.class);
+            } else if (value instanceof TextNode && guessingDates) {
+                // it could be a date too
+                Date date = dateParser.parse(value.asText());
+                if (date != null) {
+                    typeBuilder.add(n.getKey(), Date.class);
+                } else {
+                    typeBuilder.defaultValue("");
+                    typeBuilder.add(n.getKey(), String.class);
+                }
             } else {
                 typeBuilder.defaultValue("");
                 typeBuilder.add(n.getKey(), String.class);

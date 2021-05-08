@@ -670,7 +670,12 @@ public class GeoJSONWriteTest {
                         + "  \"type\" : \"FeatureCollection\",\n" //
                         + "  \"features\" : [ ]\n" //
                         + "}";
-        assertEquals(expected, json);
+        assertEquals(normalizeLineEnds(expected), normalizeLineEnds(json));
+    }
+
+    /** Normalizes line ends to \n, allows for cross-platform string comparisons */
+    private String normalizeLineEnds(String s) {
+        return s.replace("\r\n", "\n").replace('\r', '\n');
     }
 
     @Test
@@ -699,8 +704,9 @@ public class GeoJSONWriteTest {
         String json = writeSingleFeature(feature);
         JsonNode root = new ObjectMapper().readTree(json);
         String isoDatePattern =
-                "(\\d{4})-(\\d{2})-(\\d{2})T(\\d{2})\\:(\\d{2})\\:(\\d{2})\\.(\\d{3})\\+(\\d{4})";
-        assertTrue(root.get("properties").get("date").textValue().matches(isoDatePattern));
+                "(\\d{4})-(\\d{2})-(\\d{2})T(\\d{2})\\:(\\d{2})\\:(\\d{2})\\.(\\d{3})Z";
+        String date = root.get("properties").get("date").textValue();
+        assertTrue(date + " does not match ISO date", date.matches(isoDatePattern));
     }
 
     @Test

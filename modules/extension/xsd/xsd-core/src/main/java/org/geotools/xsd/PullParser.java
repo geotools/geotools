@@ -71,10 +71,7 @@ public class PullParser {
             handler.startDocument();
         }
 
-        int depth = 0;
-
-        LOOP:
-        do {
+        while (pp.hasNext()) {
             int e = pp.next();
 
             switch (e) {
@@ -85,11 +82,9 @@ public class PullParser {
                         handler.startPrefixMapping(pre != null ? pre : "", pp.getNamespaceURI(i));
                     }
 
-                    {
-                        QName qName = pp.getName();
-                        handler.startElement(
-                                pp.getNamespaceURI(), pp.getLocalName(), str(qName), atts);
-                    }
+                    handler.startElement(
+                            pp.getNamespaceURI(), pp.getLocalName(), str(pp.getName()), atts);
+
                     break;
 
                 case XMLStreamReader.CHARACTERS:
@@ -98,12 +93,7 @@ public class PullParser {
                     break;
 
                 case XMLStreamReader.END_ELEMENT:
-                    depth--;
-
-                    {
-                        QName qName = pp.getName();
-                        handler.endElement(pp.getNamespaceURI(), pp.getLocalName(), str(qName));
-                    }
+                    handler.endElement(pp.getNamespaceURI(), pp.getLocalName(), str(pp.getName()));
 
                     count = pp.getNamespaceCount();
                     // undeclare them in reverse order
@@ -116,14 +106,14 @@ public class PullParser {
                         return handler.getObject();
                     }
 
-                    if (depth == 0) {
-                        return null;
-                    }
                     break;
+
                 case XMLStreamReader.END_DOCUMENT:
-                    break LOOP;
+                    handler.endDocument();
+
+                    break;
             }
-        } while (true);
+        }
 
         return null;
     }

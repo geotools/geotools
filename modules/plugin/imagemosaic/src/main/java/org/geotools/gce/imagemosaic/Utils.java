@@ -1292,15 +1292,11 @@ public class Utils {
      */
     public static RenderedImage loadSampleImage(final File sampleImageFile) {
         // serialize it
-        InputStream inStream = null;
-        ObjectInputStream oiStream = null;
-        try {
-
-            // do we have the sample image??
-            if (Utils.checkFileReadable(sampleImageFile)) {
-                inStream = new BufferedInputStream(new FileInputStream(sampleImageFile));
-                oiStream = new ObjectInputStream(inStream);
-
+        // do we have the sample image??
+        if (Utils.checkFileReadable(sampleImageFile)) {
+            try (InputStream inStream =
+                            new BufferedInputStream(new FileInputStream(sampleImageFile));
+                    ObjectInputStream oiStream = new ObjectInputStream(inStream)) {
                 // load the image
                 Object object = oiStream.readObject();
                 if (object instanceof SampleImage) {
@@ -1334,31 +1330,15 @@ public class Utils {
                     }
                     return null;
                 }
-
-            } else {
+            } catch (ClassNotFoundException | IOException e) {
                 if (LOGGER.isLoggable(Level.WARNING))
-                    LOGGER.warning("Unable to find sample image for path " + sampleImageFile);
+                    LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
                 return null;
             }
-        } catch (ClassNotFoundException | IOException e) {
+        } else {
             if (LOGGER.isLoggable(Level.WARNING))
-                LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
+                LOGGER.warning("Unable to find sample image for path " + sampleImageFile);
             return null;
-        } finally {
-            try {
-                if (inStream != null) inStream.close();
-            } catch (Throwable e) {
-
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
-            }
-            try {
-                if (oiStream != null) oiStream.close();
-            } catch (Throwable e) {
-
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
-            }
         }
     }
 

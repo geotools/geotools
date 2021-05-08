@@ -438,17 +438,9 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
         File prjFile = new File(ascFile.getParent(), prjName);
 
         // create the file
-        final BufferedWriter fileWriter = new BufferedWriter(new FileWriter(prjFile));
-        try {
+        try (BufferedWriter fileWriter = new BufferedWriter(new FileWriter(prjFile))) {
             // write information on crs
             fileWriter.write(crs.toWKT());
-        } finally {
-            try {
-                fileWriter.close();
-            } catch (Throwable e) {
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
-            }
         }
     }
 

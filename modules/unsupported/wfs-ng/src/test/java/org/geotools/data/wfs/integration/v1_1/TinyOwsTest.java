@@ -468,9 +468,9 @@ public class TinyOwsTest {
         }
 
         size = 0;
-        SimpleFeatureIterator reader = features.features();
+
         SimpleFeature sf = null;
-        try {
+        try (SimpleFeatureIterator reader = features.features()) {
             while (reader.hasNext()) {
                 if (sf == null) {
                     sf = reader.next();
@@ -479,8 +479,6 @@ public class TinyOwsTest {
                 }
                 size++;
             }
-        } finally {
-            reader.close();
         }
 
         assertEquals(expectedSize, size);

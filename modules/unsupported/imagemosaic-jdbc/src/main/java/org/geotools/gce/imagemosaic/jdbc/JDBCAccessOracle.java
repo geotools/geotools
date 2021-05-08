@@ -185,33 +185,13 @@ class JDBCAccessOracle extends JDBCAccessBase {
     @Override
     protected Integer getSRSID(ImageLevelInfo li, Connection con) throws IOException {
         Number result = null;
-        String schema = null;
 
-        PreparedStatement s = null;
-        try {
-            schema = getSchemaFromSpatialTable(li.getSpatialTableName());
+        String schema = getSchemaFromSpatialTable(li.getSpatialTableName());
+        try (PreparedStatement s = prepareSRSStatement(li, con, schema);
+                ResultSet r = s.executeQuery()) {
 
-            try {
-                if (schema == null) {
-                    s = con.prepareStatement(SRSSelectCurrentSchema);
-                    s.setString(1, li.getSpatialTableName());
-                    s.setString(2, config.getGeomAttributeNameInSpatialTable());
-                } else {
-                    s = con.prepareStatement(SRSSelect);
-                    s.setString(1, schema);
-                    s.setString(2, li.getSpatialTableName());
-                    s.setString(3, config.getGeomAttributeNameInSpatialTable());
-                }
-
-                try (ResultSet r = s.executeQuery()) {
-                    if (r.next()) {
-                        result = (Number) r.getObject(1);
-                    }
-                }
-            } finally {
-                if (s != null) {
-                    s.close();
-                }
+            if (r.next()) {
+                result = (Number) r.getObject(1);
             }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -245,6 +225,22 @@ class JDBCAccessOracle extends JDBCAccessBase {
         }
 
         return result.intValue();
+    }
+
+    private PreparedStatement prepareSRSStatement(ImageLevelInfo li, Connection con, String schema)
+            throws SQLException {
+        PreparedStatement s = null;
+        if (schema == null) {
+            s = con.prepareStatement(SRSSelectCurrentSchema);
+            s.setString(1, li.getSpatialTableName());
+            s.setString(2, config.getGeomAttributeNameInSpatialTable());
+        } else {
+            s = con.prepareStatement(SRSSelect);
+            s.setString(1, schema);
+            s.setString(2, li.getSpatialTableName());
+            s.setString(3, config.getGeomAttributeNameInSpatialTable());
+        }
+        return s;
     }
 
     /*

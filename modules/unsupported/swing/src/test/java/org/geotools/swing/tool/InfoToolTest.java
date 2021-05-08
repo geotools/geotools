@@ -83,17 +83,13 @@ public class InfoToolTest extends CursorToolTestBase {
         SimpleFeatureSource fs = (SimpleFeatureSource) layer.getFeatureSource();
 
         final int featureIndex = rand.nextInt(fs.getFeatures().size());
-        SimpleFeatureIterator iter = fs.getFeatures().features();
         SimpleFeature feature = null;
-        try {
+        try (SimpleFeatureIterator iter = fs.getFeatures().features()) {
             int i = 0;
             while (i <= featureIndex) {
                 feature = iter.next();
                 i++;
             }
-
-        } finally {
-            iter.close();
         }
 
         DirectPosition2D queryPos = TestDataUtils.getPosInFeature(feature);

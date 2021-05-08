@@ -134,12 +134,13 @@ public class ShapefileTest extends TestCaseSupport {
         final URL url1 = TestData.url(STATEPOP); // Backed by InputStream
         final URL url2 = TestData.url(TestCaseSupport.class, STATEPOP); // Backed by File
         final URL url3 = TestData.url(TestCaseSupport.class, STATEPOP_IDX);
-        final ShapefileReader reader1 =
-                new ShapefileReader(new ShpFiles(url1), false, false, new GeometryFactory());
-        final ShapefileReader reader2 =
-                new ShapefileReader(new ShpFiles(url2), false, false, new GeometryFactory());
-        final IndexFile index = new IndexFile(new ShpFiles(url3), false);
-        try {
+        try (ShapefileReader reader1 =
+                        new ShapefileReader(
+                                new ShpFiles(url1), false, false, new GeometryFactory());
+                ShapefileReader reader2 =
+                        new ShapefileReader(
+                                new ShpFiles(url2), false, false, new GeometryFactory());
+                IndexFile index = new IndexFile(new ShpFiles(url3), false)) {
             for (int i = 0; i < index.getRecordCount(); i++) {
                 if (reader1.hasNext()) {
 
@@ -152,10 +153,6 @@ public class ShapefileTest extends TestCaseSupport {
                 }
                 // assertEquals(reader1.nextRecord().offset(),index.getOffset(i));
             }
-        } finally {
-            index.close();
-            reader2.close();
-            reader1.close();
         }
     }
 
@@ -188,17 +185,14 @@ public class ShapefileTest extends TestCaseSupport {
     @Test
     public void testSkippingRecords() throws Exception {
         final URL url = TestData.url(STATEPOP);
-        final ShapefileReader r =
-                new ShapefileReader(new ShpFiles(url), false, false, new GeometryFactory());
-        try {
+        try (ShapefileReader r =
+                new ShapefileReader(new ShpFiles(url), false, false, new GeometryFactory())) {
             int idx = 0;
             while (r.hasNext()) {
                 idx++;
                 r.nextRecord();
             }
             assertEquals(49, idx);
-        } finally {
-            r.close();
         }
     }
 
@@ -216,11 +210,11 @@ public class ShapefileTest extends TestCaseSupport {
     @Test
     public void testShapefileReaderRecord() throws Exception {
         final URL c1 = TestData.url(STATEPOP);
-        ShapefileReader reader =
-                new ShapefileReader(new ShpFiles(c1), false, false, new GeometryFactory());
         URL c2;
-        try {
-            ArrayList<Integer> offsets = new ArrayList<>();
+        ArrayList<Integer> offsets = new ArrayList<>();
+        try (ShapefileReader reader =
+                new ShapefileReader(new ShpFiles(c1), false, false, new GeometryFactory())) {
+
             while (reader.hasNext()) {
                 ShapefileReader.Record record = reader.nextRecord();
                 offsets.add(Integer.valueOf(record.offset()));
@@ -233,12 +227,13 @@ public class ShapefileTest extends TestCaseSupport {
             copyShapefiles(STATEPOP);
             reader.close();
             c2 = TestData.url(TestCaseSupport.class, STATEPOP);
-            reader = new ShapefileReader(new ShpFiles(c2), false, false, new GeometryFactory());
+        }
+
+        try (ShapefileReader reader =
+                new ShapefileReader(new ShpFiles(c2), false, false, new GeometryFactory())) {
             for (Integer offset : offsets) {
                 reader.shapeAt(offset.intValue());
             }
-        } finally {
-            reader.close();
         }
     }
 
@@ -279,16 +274,14 @@ public class ShapefileTest extends TestCaseSupport {
 
     protected void loadShapes(String resource, int expected) throws Exception {
         final URL url = TestData.url(resource);
-        ShapefileReader reader =
-                new ShapefileReader(new ShpFiles(url), false, false, new GeometryFactory());
+
         int cnt = 0;
-        try {
+        try (ShapefileReader reader =
+                new ShapefileReader(new ShpFiles(url), false, false, new GeometryFactory())) {
             while (reader.hasNext()) {
                 reader.nextRecord().shape();
                 cnt++;
             }
-        } finally {
-            reader.close();
         }
         assertEquals("Number of Geometries loaded incorect for : " + resource, expected, cnt);
     }
@@ -296,16 +289,13 @@ public class ShapefileTest extends TestCaseSupport {
     @Test
     public void testReadingSparse() throws IOException {
         File file = TestData.file(TestCaseSupport.class, "sparse/sparse.shp");
-        ShapefileReader reader =
-                new ShapefileReader(new ShpFiles(file), false, false, new GeometryFactory());
         int cnt = 0;
-        try {
+        try (ShapefileReader reader =
+                new ShapefileReader(new ShpFiles(file), false, false, new GeometryFactory())) {
             while (reader.hasNext()) {
                 reader.nextRecord().shape();
                 cnt++;
             }
-        } finally {
-            reader.close();
         }
         assertEquals("Did not read all Geometries from sparse file.", 31, cnt);
     }
@@ -473,16 +463,13 @@ public class ShapefileTest extends TestCaseSupport {
 
     protected void loadMemoryMapped(String resource, int expected) throws Exception {
         final URL url = TestData.url(resource);
-        ShapefileReader reader =
-                new ShapefileReader(new ShpFiles(url), false, false, new GeometryFactory());
         int cnt = 0;
-        try {
+        try (ShapefileReader reader =
+                new ShapefileReader(new ShpFiles(url), false, false, new GeometryFactory())) {
             while (reader.hasNext()) {
                 reader.nextRecord().shape();
                 cnt++;
             }
-        } finally {
-            reader.close();
         }
         assertEquals("Number of Geometries loaded incorect for : " + resource, expected, cnt);
     }

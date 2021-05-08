@@ -298,9 +298,9 @@ public class AxisOrderTest {
 
     private static SimpleFeature iterate(SimpleFeatureCollection features, int expectedSize) {
         int size = 0;
-        SimpleFeatureIterator reader = features.features();
+
         SimpleFeature sf = null;
-        try {
+        try (SimpleFeatureIterator reader = features.features()) {
             while (reader.hasNext()) {
                 if (sf == null) {
                     sf = reader.next();
@@ -309,8 +309,6 @@ public class AxisOrderTest {
                 }
                 size++;
             }
-        } finally {
-            reader.close();
         }
 
         assertEquals(expectedSize, size);

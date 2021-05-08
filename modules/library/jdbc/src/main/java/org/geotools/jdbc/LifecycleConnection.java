@@ -87,6 +87,7 @@ class LifecycleConnection implements Connection {
     }
 
     @Override
+    @SuppressWarnings("PMD.UseTryWithResources") // false positive
     public void close() throws SQLException {
         try {
             for (ConnectionLifecycleListener listener : listeners) {

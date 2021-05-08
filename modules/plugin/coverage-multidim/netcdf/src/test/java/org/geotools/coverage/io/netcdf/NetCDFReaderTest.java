@@ -1008,7 +1008,6 @@ public class NetCDFReaderTest extends Assert {
         final NetCDFReader reader = (NetCDFReader) format.getReader(file.toURI().toURL(), hints);
 
         assertNotNull(format);
-        CloseableIterator<FileGroup> files = null;
         try {
             String[] names = reader.getGridCoverageNames();
             names = new String[] {names[1]};
@@ -1022,15 +1021,16 @@ public class NetCDFReaderTest extends Assert {
                 ResourceInfo info = reader.getInfo(coverageName);
                 assertTrue(info instanceof FileResourceInfo);
                 FileResourceInfo fileInfo = (FileResourceInfo) info;
-                files = fileInfo.getFiles(null);
-
-                int fileGroups = 0;
                 FileGroup fg = null;
-                while (files.hasNext()) {
-                    fg = files.next();
-                    fileGroups++;
+                try (CloseableIterator<FileGroup> files = fileInfo.getFiles(null)) {
+                    int fileGroups = 0;
+
+                    while (files.hasNext()) {
+                        fg = files.next();
+                        fileGroups++;
+                    }
+                    assertEquals(1, fileGroups);
                 }
-                assertEquals(1, fileGroups);
                 File mainFile = fg.getMainFile();
                 assertEquals("O3-NO2", FilenameUtils.getBaseName(mainFile.getAbsolutePath()));
                 Map<String, Object> metadata = fg.getMetadata();
@@ -1056,9 +1056,6 @@ public class NetCDFReaderTest extends Assert {
         } catch (Throwable t) {
             throw new RuntimeException(t);
         } finally {
-            if (files != null) {
-                files.close();
-            }
             if (reader != null) {
                 try {
                     reader.dispose();

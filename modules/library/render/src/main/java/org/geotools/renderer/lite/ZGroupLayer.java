@@ -72,6 +72,10 @@ class ZGroupLayer extends Layer {
         addLayer(layer);
     }
 
+    @SuppressWarnings({
+        "PMD.CloseResource",
+        "PMD.UseTryWithResources"
+    }) // assured closed in the finally method
     public void drawFeatures(Graphics2D graphics, final StreamingRenderer renderer, String layerId)
             throws IOException, FactoryException, NoninvertibleTransformException, SchemaException,
                     TransformException {
@@ -128,8 +132,7 @@ class ZGroupLayer extends Layer {
             }
         } finally {
             if (painters != null) {
-                for (@SuppressWarnings("PMD.CloseResource") // assured closed in the finally method
-                ZGroupLayerPainter painter : painters) {
+                for (ZGroupLayerPainter painter : painters) {
                     painter.close();
                 }
             }
@@ -152,6 +155,10 @@ class ZGroupLayer extends Layer {
         return new SortKey(smallest);
     }
 
+    @SuppressWarnings({
+        "PMD.CloseResource",
+        "PMD.UseTryWithResources"
+    }) // assured closed in the finally method
     private List<ZGroupLayerPainter> buildLayerPainters(
             Graphics2D graphics,
             StreamingRenderer renderer,
@@ -212,8 +219,7 @@ class ZGroupLayer extends Layer {
             closePainters = false;
         } finally {
             if (closePainters) {
-                for (@SuppressWarnings("PMD.CloseResource") // actually closing them here
-                ZGroupLayerPainter painter : painters) {
+                for (ZGroupLayerPainter painter : painters) {
                     try {
                         painter.close();
                     } catch (Exception e) {

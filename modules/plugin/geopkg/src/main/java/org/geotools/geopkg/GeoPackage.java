@@ -797,6 +797,7 @@ public class GeoPackage implements Closeable {
      * @param collection The simple feature collection to add to the geopackage.
      * @throws IOException Any errors occurring while adding the new feature dataset.
      */
+    @SuppressWarnings("PMD.UseTryWithResources") // Transaction needs to be rolled back ìn catch
     public void add(FeatureEntry entry, SimpleFeatureCollection collection) throws IOException {
         FeatureEntry e = new FeatureEntry();
         e.init(entry);
@@ -1111,12 +1112,7 @@ public class GeoPackage implements Closeable {
         properties.put("i", pk.getColumns().get(0).getName());
 
         try (Connection cx = connPool.getConnection()) {
-            try {
-                runScript(SPATIAL_INDEX + ".sql", cx, properties);
-            } finally {
-                cx.close();
-            }
-
+            runScript(SPATIAL_INDEX + ".sql", cx, properties);
         } catch (SQLException ex) {
             throw new IOException(ex);
         }

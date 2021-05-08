@@ -110,24 +110,16 @@ public class DiffTransactionState implements Transaction.State {
         if (diff.isEmpty()) {
             return; // nothing to do
         }
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
-        ContentFeatureStore store;
         ContentEntry entry = state.getEntry();
         Name name = entry.getName();
         ContentDataStore dataStore = entry.getDataStore();
         ContentFeatureSource source = (ContentFeatureSource) dataStore.getFeatureSource(name);
-        if (source instanceof ContentFeatureStore) {
-            // request a plain writer with no events, filtering or locking checks
-            store = (ContentFeatureStore) dataStore.getFeatureSource(name, transaction);
-            writer = store.getWriter(Filter.INCLUDE, ContentDataStore.WRITER_COMMIT);
-        } else {
-            throw new UnsupportedOperationException("not writable");
-        }
         SimpleFeature feature;
         SimpleFeature update;
 
         Throwable cause = null;
-        try {
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                getWriter(name, dataStore, source)) {
             while (writer.hasNext()) {
                 feature = writer.next();
                 String fid = feature.getID();
@@ -190,16 +182,29 @@ public class DiffTransactionState implements Transaction.State {
             throw e;
         } finally {
             try {
-                writer.close();
                 state.fireBatchFeatureEvent(true);
                 diff.clear();
-            } catch (IOException | RuntimeException e) {
+            } catch (RuntimeException e) {
                 if (cause != null) {
                     e.initCause(cause);
                 }
                 throw e;
             }
         }
+    }
+
+    private FeatureWriter<SimpleFeatureType, SimpleFeature> getWriter(
+            Name name, ContentDataStore dataStore, ContentFeatureSource source) throws IOException {
+        ContentFeatureStore store;
+        FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
+        if (source instanceof ContentFeatureStore) {
+            // request a plain writer with no events, filtering or locking checks
+            store = (ContentFeatureStore) dataStore.getFeatureSource(name, transaction);
+            writer = store.getWriter(Filter.INCLUDE, ContentDataStore.WRITER_COMMIT);
+        } else {
+            throw new UnsupportedOperationException("not writable");
+        }
+        return writer;
     }
 
     @Override

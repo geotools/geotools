@@ -155,17 +155,12 @@ abstract class JDBCAccessBase implements JDBCAccess {
      */
     protected void initFromDB(String coverageName, Connection con)
             throws SQLException, IOException {
-        PreparedStatement s = null;
-        ResultSet res = null;
 
-        try {
-            String stmt = config.getSqlSelectCoverageStatement();
-            // TODO, investigate, setString for oracle does not work
-            stmt = stmt.replace("?", "'" + coverageName + "'");
-            s = con.prepareStatement(stmt);
-            // s.setString(1,coverageName);
-            res = s.executeQuery();
-
+        String stmt = config.getSqlSelectCoverageStatement();
+        // TODO, investigate, setString for oracle does not work
+        stmt = stmt.replace("?", "'" + coverageName + "'");
+        try (PreparedStatement s = con.prepareStatement(stmt);
+                ResultSet res = s.executeQuery()) {
             while (res.next()) {
                 ImageLevelInfo imageLevelInfo = new ImageLevelInfo();
                 imageLevelInfo.setCoverageName(coverageName);
@@ -270,14 +265,6 @@ abstract class JDBCAccessBase implements JDBCAccess {
             }
         } catch (SQLException | IOException e) {
             throw (e);
-        } finally {
-            if (res != null) {
-                res.close();
-            }
-
-            if (s != null) {
-                s.close();
-            }
         }
     }
 

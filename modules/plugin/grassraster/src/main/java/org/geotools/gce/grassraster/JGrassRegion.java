@@ -509,11 +509,9 @@ public class JGrassRegion {
      */
     @SuppressWarnings("nls")
     private void readRegionFromFile(String filePath, JGrassRegion region) throws IOException {
-        String line;
-
-        BufferedReader windReader = new BufferedReader(new FileReader(filePath));
-        try {
+        try (BufferedReader windReader = new BufferedReader(new FileReader(filePath))) {
             LinkedHashMap<String, String> store = new LinkedHashMap<>();
+            String line;
             while ((line = windReader.readLine()) != null) {
                 if (line.matches(".*reclass.*")) {
                     /*
@@ -535,9 +533,9 @@ public class JGrassRegion {
                         throw new IOException(
                                 "The reclass cellhead file doesn't seem to exist. Unable to read the file region.");
                     }
-                    windReader.close();
-                    windReader = new BufferedReader(new FileReader(reclassMap));
-                    line = windReader.readLine();
+                    try (BufferedReader rmReader = new BufferedReader(new FileReader(reclassMap))) {
+                        line = rmReader.readLine();
+                    }
                 }
 
                 if (line == null) {
@@ -616,9 +614,6 @@ public class JGrassRegion {
             // what is not needed in JGrass is needed in GRASS, so keep it
             region.setAdditionalGrassEntries(store);
             store = null;
-        } finally {
-            windReader.close();
-            windReader = null;
         }
     }
 

@@ -549,11 +549,9 @@ public class ImageMosaicReaderTest {
 
         // Testing the FileGroupProvider
         int groups = 0;
-        CloseableIterator<FileGroup> filesIterator = null;
-        try {
-            Query query = new Query("water_temp3");
-            query.setFilter(FF.like(FF.property("location"), "*100_20081031T00*"));
-            filesIterator = fileInfo.getFiles(query);
+        Query query = new Query("water_temp3");
+        query.setFilter(FF.like(FF.property("location"), "*100_20081031T00*"));
+        try (CloseableIterator<FileGroup> filesIterator = fileInfo.getFiles(query)) {
             while (filesIterator.hasNext()) {
                 FileGroup group = filesIterator.next();
                 if (groups == 0) {
@@ -569,10 +567,6 @@ public class ImageMosaicReaderTest {
                     assertEquals(envelope.getMaximum(1), metadataBBOX.getMaxY(), DELTA);
                 }
                 groups++;
-            }
-        } finally {
-            if (filesIterator != null) {
-                filesIterator.close();
             }
         }
         // Check the fileGroupProvider returned 4 fileGroups
@@ -3699,27 +3693,17 @@ public class ImageMosaicReaderTest {
         }
 
         // Editing indexer RootMosaicDirectory path
-        InputStream stream = null;
-        OutputStream outStream = null;
-        try {
+        final String indexerPath = directory1.getCanonicalPath() + "/indexer.properties";
+        String path = directory1.getCanonicalPath();
+        path = path.replace("\\", "/");
 
-            final String indexerPath = directory1.getCanonicalPath() + "/indexer.properties";
-            stream = new FileInputStream(indexerPath);
-            String path = directory1.getCanonicalPath();
-            path = path.replace("\\", "/");
-            Properties prop = new Properties();
+        Properties prop = new Properties();
+        try (InputStream stream = new FileInputStream(indexerPath)) {
             prop.load(stream);
-
-            outStream = new FileOutputStream(indexerPath);
+        }
+        try (OutputStream outStream = new FileOutputStream(indexerPath)) {
             prop.setProperty(Prop.ROOT_MOSAIC_DIR, path);
             prop.store(outStream, null);
-        } finally {
-            if (stream != null) {
-                stream.close();
-            }
-            if (outStream != null) {
-                outStream.close();
-            }
         }
         // move month 5 to another dir, we'll harvet it later
         String monthFiveName = "world.200405.3x5400x2700.tiff";
@@ -3811,24 +3795,14 @@ public class ImageMosaicReaderTest {
         }
 
         // Editing indexer RootMosaicDirectory path
-        InputStream stream = null;
-        OutputStream outStream = null;
-        try {
-            final File indexer = new File(mosaic, "indexer.properties");
-            stream = new FileInputStream(indexer);
-            Properties prop = new Properties();
+        final File indexer = new File(mosaic, "indexer.properties");
+        Properties prop = new Properties();
+        try (InputStream stream = new FileInputStream(indexer)) {
             prop.load(stream);
-
-            outStream = new FileOutputStream(indexer);
+        }
+        try (OutputStream outStream = new FileOutputStream(indexer)) {
             prop.setProperty(Prop.INDEXING_DIRECTORIES, data.getCanonicalPath());
             prop.store(outStream, null);
-        } finally {
-            if (stream != null) {
-                stream.close();
-            }
-            if (outStream != null) {
-                outStream.close();
-            }
         }
 
         // ok, let's create the mosaic and check it harvested the data in the "data" directory

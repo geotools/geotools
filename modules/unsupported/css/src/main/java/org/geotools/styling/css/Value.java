@@ -32,7 +32,6 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.NameImpl;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -499,11 +498,6 @@ abstract class Value {
             } catch (Exception e) {
                 throw new RuntimeException("Error looking up process info", e);
             }
-        }
-
-        private boolean isRenderingTransformation(FunctionName fn) {
-            // TODO Auto-generated method stub
-            return false;
         }
     }
 

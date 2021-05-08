@@ -166,6 +166,7 @@ class Granule {
 
     ImageReaderSpi cachedSPI;
 
+    @SuppressWarnings("PMD.UseTryWithResources") // the image input stream might be null
     public Granule(BoundingBox granuleBBOX, File granuleFile) {
         super();
         this.granuleBBOX = ReferencedEnvelope.reference(granuleBBOX);
@@ -230,6 +231,7 @@ class Granule {
         }
     }
 
+    @SuppressWarnings("PMD.UseTryWithResources") // the image input stream might be null
     public RenderedImage loadRaster(
             final ImageReadParam readParameters,
             final int imageIndex,
@@ -454,6 +456,7 @@ class Granule {
         }
     }
 
+    @SuppressWarnings("PMD.UseTryWithResources") // the image input stream might be null
     public Level getLevel(final int index) {
         synchronized (granuleLevels) {
             if (granuleLevels.containsKey(Integer.valueOf(index)))

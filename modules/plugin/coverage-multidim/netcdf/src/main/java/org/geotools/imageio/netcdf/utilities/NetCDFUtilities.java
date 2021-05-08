@@ -762,9 +762,6 @@ public class NetCDFUtilities {
             } catch (XMLStreamException | FactoryConfigurationError e) {
 
             } finally {
-                if (input != null) {
-                    input.close();
-                }
                 if (reader != null) {
                     if (streamSource.getInputStream() != null) {
                         streamSource.getInputStream().close();

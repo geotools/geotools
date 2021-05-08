@@ -101,16 +101,13 @@ public class WFSOnlineTestSupport {
         Query query = new Query(typeName);
         query.setMaxFeatures(5);
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                wfs.getFeatureReader(query, Transaction.AUTO_COMMIT);
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                wfs.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
             assertNotNull("FeatureType was null", reader);
             assertTrue("must have 1 feature -- fair assumption", reader.hasNext());
 
             SimpleFeature next = reader.next();
             assertNotNull(next);
-        } finally {
-            reader.close();
         }
     }
 
@@ -124,9 +121,8 @@ public class WFSOnlineTestSupport {
         query.setPropertyNames(props);
         String fid = null;
         // get
-        FeatureReader<SimpleFeatureType, SimpleFeature> fr =
-                wfs.getFeatureReader(query, Transaction.AUTO_COMMIT);
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> fr =
+                wfs.getFeatureReader(query, Transaction.AUTO_COMMIT); ) {
             assertNotNull("FeatureType was null", ft);
 
             SimpleFeatureType featureType = fr.getFeatureType();
@@ -154,16 +150,14 @@ public class WFSOnlineTestSupport {
                 j++;
             }
             assertTrue(j > 0);
-        } finally {
-            fr.close();
         }
 
         // test fid filter
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         query.setFilter(ff.id(ff.featureId(fid)));
 
-        fr = wfs.getFeatureReader(query, Transaction.AUTO_COMMIT);
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> fr =
+                wfs.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
             assertNotNull("FeatureType was null", ft);
             int j = 0;
             while (fr.hasNext()) {
@@ -171,8 +165,6 @@ public class WFSOnlineTestSupport {
                 j++;
             }
             assertEquals(1, j);
-        } finally {
-            fr.close();
         }
     }
 

@@ -145,16 +145,14 @@ class ShapeFileIndexer implements FileWriter {
 
         int cnt = 0;
 
-        ShapefileReader reader = null;
-
         // Temporary file for building...
         StorageFile storage = shpFiles.getStorageFile(ShpFileType.QIX);
         File treeFile = storage.getFile();
 
-        try {
-            reader = new ShapefileReader(shpFiles, true, false, new GeometryFactory());
+        if (max == -1) {
+            try (ShapefileReader reader =
+                    new ShapefileReader(shpFiles, true, false, new GeometryFactory())) {
 
-            if (max == -1) {
                 // compute a reasonable index max depth, considering a fully developed
                 // 10 levels one already contains 200k index nodes, good for indexing up
                 // to 3M features without consuming too much memory
@@ -168,14 +166,13 @@ class ShapeFileIndexer implements FileWriter {
                 if (max < 10) {
                     max = 10;
                 }
-
-                reader.close();
-                reader = new ShapefileReader(shpFiles, true, false, new GeometryFactory());
             }
+        }
+
+        try (ShapefileReader reader =
+                new ShapefileReader(shpFiles, true, false, new GeometryFactory())) {
 
             cnt = this.buildQuadTree(reader, treeFile, verbose);
-        } finally {
-            if (reader != null) reader.close();
         }
 
         // Final index file
@@ -209,8 +206,7 @@ class ShapeFileIndexer implements FileWriter {
         ShapefileHeader header = reader.getHeader();
         Envelope bounds = new Envelope(header.minX(), header.maxX(), header.minY(), header.maxY());
 
-        QuadTree tree = new QuadTree(numRecs, max, bounds, shpIndex);
-        try {
+        try (QuadTree tree = new QuadTree(numRecs, max, bounds, shpIndex)) {
             Record rec = null;
 
             while (reader.hasNext()) {
@@ -239,8 +235,6 @@ class ShapeFileIndexer implements FileWriter {
                 printStats(tree);
             }
             store.store(tree);
-        } finally {
-            tree.close();
         }
         return cnt;
     }

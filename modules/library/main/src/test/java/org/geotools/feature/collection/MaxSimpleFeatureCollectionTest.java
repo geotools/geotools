@@ -79,27 +79,21 @@ public class MaxSimpleFeatureCollectionTest {
     public void testIterator() {
 
         MaxSimpleFeatureCollection max = new MaxSimpleFeatureCollection(delegate, 5);
-        SimpleFeatureIterator it = max.features();
-        try {
+        try (SimpleFeatureIterator it = max.features()) {
             for (int i = 0; i < 5; i++) {
                 Assert.assertTrue(it.hasNext());
                 Assert.assertNotNull(it.next());
             }
             Assert.assertFalse(it.hasNext());
-        } finally {
-            it.close();
         }
 
         max = new MaxSimpleFeatureCollection(delegate, 7, 5);
-        it = max.features();
-        try {
+        try (SimpleFeatureIterator it = max.features()) {
             for (int i = 0; i < 3; i++) {
                 Assert.assertTrue(it.hasNext());
                 Assert.assertNotNull(it.next());
             }
             Assert.assertFalse(it.hasNext());
-        } finally {
-            it.close();
         }
     }
 }

@@ -378,6 +378,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
     }
 
     @Override
+    @SuppressWarnings("PMD.UseTryWithResources") // transaction is not necessarily created here
     public int removeGranules(Query query, Transaction transaction) {
         Utilities.ensureNonNull("query", query);
         query = mergeHints(query);

@@ -27,7 +27,7 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
@@ -71,9 +71,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @since 2.4
  */
 public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
-
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(AppSchemaDataAccessTest.class);
 
     Name targetName;
 
@@ -336,21 +333,8 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
 
         // test to see if the mapping can successfully substitute a valid narrower type
         FeatureCollection<FeatureType, Feature> content = source.getFeatures();
-        FeatureIterator<Feature> features = content.features();
-        int count = 0;
+        int count = DataUtilities.count(content);
         final int expectedCount = 5;
-        try {
-            while (features.hasNext()) {
-                Feature f = features.next();
-                LOGGER.finest(String.valueOf(f));
-                ++count;
-            }
-        } catch (Exception e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            throw e;
-        } finally {
-            features.close();
-        }
         assertEquals("feature count", expectedCount, count);
 
         // Test DefaultMappingFeatureIterator MaxFeatures support [GEOS-1930]
@@ -358,20 +342,7 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
         Query query = new Query();
         query.setMaxFeatures(expectedCount2);
         FeatureCollection<FeatureType, Feature> content2 = source.getFeatures(query);
-        FeatureIterator<Feature> features2 = content2.features();
-        int count2 = 0;
-        try {
-            while (features2.hasNext()) {
-                Feature f = features2.next();
-                LOGGER.finest(String.valueOf(f));
-                ++count2;
-            }
-        } catch (Exception e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            throw e;
-        } finally {
-            features2.close();
-        }
+        int count2 = DataUtilities.count(content2);
         assertEquals("feature count", expectedCount2, count2);
     }
 

@@ -38,7 +38,7 @@ import org.geotools.util.URLs;
  *
  * @author Jesse
  */
-public class IndexedFidReader implements FIDReader, FileReader {
+public class IndexedFidReader implements FIDReader, FileReader, AutoCloseable {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(IndexedFidReader.class);
     private ReadableByteChannel readChannel;
@@ -235,6 +235,7 @@ public class IndexedFidReader implements FIDReader, FileReader {
     }
 
     @Override
+    @SuppressWarnings("PMD.UseTryWithResources") // not instantiated here
     public void close() throws IOException {
         try {
             if (buffer != null) {

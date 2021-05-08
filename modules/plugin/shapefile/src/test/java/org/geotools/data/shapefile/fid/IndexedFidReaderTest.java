@@ -148,12 +148,12 @@ public class IndexedFidReaderTest extends FIDTestCase {
 
     // test if FID no longer exists.
     @Test
+    @SuppressWarnings("PMD.UseTryWithResources")
     public void testFindDeletedFID() throws Exception {
         reader.close();
 
         ShpFiles shpFiles = new ShpFiles(fixFile);
-        IndexedFidWriter writer = new IndexedFidWriter(shpFiles);
-        try {
+        try (IndexedFidWriter writer = new IndexedFidWriter(shpFiles)) {
             writer.next();
             writer.next();
             writer.next();
@@ -162,7 +162,6 @@ public class IndexedFidReaderTest extends FIDTestCase {
                 writer.next();
             }
         } finally {
-            writer.close();
             reader.close();
         }
 

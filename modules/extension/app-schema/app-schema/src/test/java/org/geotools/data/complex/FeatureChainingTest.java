@@ -296,18 +296,15 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
 
         final String LITHOLOGY = "lithology";
         // get controlled concept features on their own
-        AbstractMappingFeatureIterator iterator =
-                (AbstractMappingFeatureIterator) ccFeatures.features();
         int count = 0;
         Map<String, Feature> featureList = new HashMap<>();
-        try {
+        try (AbstractMappingFeatureIterator iterator =
+                (AbstractMappingFeatureIterator) ccFeatures.features()) {
             while (iterator.hasNext()) {
                 Feature f = iterator.next();
                 featureList.put(f.getIdentifier().getID(), f);
                 count++;
             }
-        } finally {
-            iterator.close();
         }
         assertEquals(5, count);
 

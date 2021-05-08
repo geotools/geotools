@@ -56,9 +56,7 @@ final class GT30Stats {
     public GT30Stats(final URL statsURL) throws IOException {
         final File stats = URLs.urlToFile(statsURL);
 
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new FileReader(stats));
+        try (BufferedReader reader = new BufferedReader(new FileReader(stats))) {
             final String line = reader.readLine();
             if (line == null) {
                 throw new IllegalArgumentException("Invalid empty stats file at " + statsURL);
@@ -72,14 +70,6 @@ final class GT30Stats {
             maximum = Integer.parseInt(stok.nextToken());
             average = Double.parseDouble(stok.nextToken());
             stddev = Double.parseDouble(stok.nextToken());
-
-        } finally {
-            if (reader != null)
-                try {
-                    // freeing
-                    reader.close();
-                } catch (Exception e1) {
-                }
         }
     }
 

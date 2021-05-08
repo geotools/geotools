@@ -306,7 +306,6 @@ public class PointStackerProcess implements VectorProcess {
             double minX,
             double minY)
             throws TransformException {
-        SimpleFeatureIterator featureIt = data.features();
 
         Map<Coordinate, StackedPoint> stackedPts = new HashMap<>();
 
@@ -314,7 +313,7 @@ public class PointStackerProcess implements VectorProcess {
         double[] dstPt = new double[2];
 
         Coordinate indexPt = new Coordinate();
-        try {
+        try (SimpleFeatureIterator featureIt = data.features()) {
             while (featureIt.hasNext()) {
                 SimpleFeature feature = featureIt.next();
                 // get the point location from the geometry
@@ -343,9 +342,6 @@ public class PointStackerProcess implements VectorProcess {
                 }
                 stkPt.add(pout, weightClusterPosition);
             }
-
-        } finally {
-            featureIt.close();
         }
         return stackedPts.values();
     }
@@ -524,19 +520,6 @@ public class PointStackerProcess implements VectorProcess {
             if (pt.distance(centerPt) < location.distance(centerPt)) {
                 location = average(centerPt, pt);
             }
-        }
-
-        /**
-         * Picks the location as the centre point of the cell. This does not give a good
-         * visualization - the gridding is very obvious
-         */
-        private void pickCenterLocation(Coordinate pt) {
-            // strategy - pick first point
-            if (location == null) {
-                location = new Coordinate(pt);
-                return;
-            }
-            location = centerPt;
         }
 
         private static Coordinate average(Coordinate p1, Coordinate p2) {

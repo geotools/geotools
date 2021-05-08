@@ -297,6 +297,7 @@ public class GeoJSONWriteTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.UseTryWithResources") // transaction needed in catch
     public void removeAllExample() throws Exception {
         Map<String, Serializable> params = new HashMap<>();
         params.put(GeoJSONDataStoreFactory.URL_PARAM.key, url);

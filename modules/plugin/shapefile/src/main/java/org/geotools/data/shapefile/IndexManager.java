@@ -148,6 +148,7 @@ class IndexManager {
     }
 
     /** Returns true if the specified index exists, is up to date, and can be read */
+    @SuppressWarnings("PMD.UseTryWithResources") // opened as a test, should not throw on close
     boolean isIndexUseable(ShpFileType indexType) {
         if (shpFiles.isLocal()) {
             if (isIndexStale(indexType) || !shpFiles.exists(indexType)) {
@@ -232,53 +233,44 @@ class IndexManager {
                 new TreeSet<>(new IdentifierComparator(store.getTypeName().getLocalPart()));
         idsSet.addAll(fidFilter.getIdentifiers());
 
-        IndexedFidReader reader = new IndexedFidReader(shpFiles);
-
         List<Data> records = new ArrayList<>(idsSet.size());
-        try {
-            IndexFile shx = store.shpManager.openIndexFile();
-            try {
-
-                DataDefinition def = new DataDefinition("US-ASCII");
-                def.addField(Integer.class);
-                def.addField(Long.class);
-                for (Identifier identifier : idsSet) {
-                    String fid = identifier.toString();
-                    long recno = reader.findFid(fid);
-                    if (recno == -1) {
-                        if (LOGGER.isLoggable(Level.FINEST)) {
-                            LOGGER.finest(
-                                    "fid "
-                                            + fid
-                                            + " not found in index, continuing with next queried fid...");
-                        }
-                        continue;
+        try (IndexedFidReader reader = new IndexedFidReader(shpFiles);
+                IndexFile shx = store.shpManager.openIndexFile()) {
+            DataDefinition def = new DataDefinition("US-ASCII");
+            def.addField(Integer.class);
+            def.addField(Long.class);
+            for (Identifier identifier : idsSet) {
+                String fid = identifier.toString();
+                long recno = reader.findFid(fid);
+                if (recno == -1) {
+                    if (LOGGER.isLoggable(Level.FINEST)) {
+                        LOGGER.finest(
+                                "fid "
+                                        + fid
+                                        + " not found in index, continuing with next queried fid...");
                     }
-                    try {
-                        Data data = new Data(def);
-                        data.addValue(Integer.valueOf((int) recno + 1));
-                        data.addValue(Long.valueOf(shx.getOffsetInBytes((int) recno)));
-                        if (LOGGER.isLoggable(Level.FINEST)) {
-                            LOGGER.finest(
-                                    "fid "
-                                            + fid
-                                            + " found for record #"
-                                            + data.getValue(0)
-                                            + " at index file offset "
-                                            + data.getValue(1));
-                        }
-                        records.add(data);
-                    } catch (Exception e) {
-                        IOException exception = new IOException();
-                        exception.initCause(e);
-                        throw exception;
-                    }
+                    continue;
                 }
-            } finally {
-                shx.close();
+                try {
+                    Data data = new Data(def);
+                    data.addValue(Integer.valueOf((int) recno + 1));
+                    data.addValue(Long.valueOf(shx.getOffsetInBytes((int) recno)));
+                    if (LOGGER.isLoggable(Level.FINEST)) {
+                        LOGGER.finest(
+                                "fid "
+                                        + fid
+                                        + " found for record #"
+                                        + data.getValue(0)
+                                        + " at index file offset "
+                                        + data.getValue(1));
+                    }
+                    records.add(data);
+                } catch (Exception e) {
+                    IOException exception = new IOException();
+                    exception.initCause(e);
+                    throw exception;
+                }
             }
-        } finally {
-            reader.close();
         }
 
         return records;

@@ -54,13 +54,9 @@ public class PostgisPreserveTopologyOnlineTest extends JDBCTestSupport {
         query.setHints(hints);
 
         SimpleFeatureCollection fColl = fs.getFeatures(query);
-        SimpleFeatureIterator iterator = fColl.features();
-
         Geometry simplified = null;
-        try {
+        try (SimpleFeatureIterator iterator = fColl.features()) {
             if (iterator.hasNext()) simplified = (Geometry) iterator.next().getDefaultGeometry();
-        } finally {
-            iterator.close();
         }
 
         // PostGIS 2.2+ should use ST_Simplify's preserveCollapsed flag

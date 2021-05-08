@@ -285,17 +285,10 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         int idx = loadFeatures(sds, typeName).size();
 
         while (idx > 0) {
-            FeatureWriter writer = null;
-
-            try {
-                writer = sds.getFeatureWriter(typeName, Filter.INCLUDE, Transaction.AUTO_COMMIT);
+            try (FeatureWriter writer =
+                    sds.getFeatureWriter(typeName, Filter.INCLUDE, Transaction.AUTO_COMMIT)) {
                 writer.next();
                 writer.remove();
-            } finally {
-                if (writer != null) {
-                    writer.close();
-                    writer = null;
-                }
             }
             idx--;
             assertEquals(idx, countFeatures(loadFeatures(sds, typeName)));

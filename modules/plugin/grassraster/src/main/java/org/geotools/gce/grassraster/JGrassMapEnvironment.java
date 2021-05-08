@@ -741,16 +741,12 @@ public class JGrassMapEnvironment {
     public CoordinateReferenceSystem getCoordinateReferenceSystem() throws Exception {
         File projWtkFile = getPROJ_WKT();
         if (projWtkFile.exists()) {
-            BufferedReader crsReader = new BufferedReader(new FileReader(projWtkFile));
             StringBuffer wtkString = new StringBuffer();
-            try {
-                String line = null;
+            try (BufferedReader crsReader = new BufferedReader(new FileReader(projWtkFile))) {
+                String line;
                 while ((line = crsReader.readLine()) != null) {
                     wtkString.append(line.trim());
                 }
-
-            } finally {
-                crsReader.close();
             }
             CoordinateReferenceSystem readCrs = null;
             try {

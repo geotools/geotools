@@ -41,7 +41,7 @@ import org.geotools.util.NIOUtilities;
  *
  * @author Ian Schneider
  */
-public class IndexFile implements FileReader {
+public class IndexFile implements FileReader, AutoCloseable {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(IndexFile.class);
 
@@ -174,6 +174,7 @@ public class IndexFile implements FileReader {
         this.lastIndex = index;
     }
 
+    @Override
     public void close() throws IOException {
         closed = true;
         if (channel != null && channel.isOpen()) {

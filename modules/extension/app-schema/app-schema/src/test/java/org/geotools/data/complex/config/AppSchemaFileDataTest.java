@@ -255,16 +255,12 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
      */
     private String copyRelativeToAbsolute(String filePathIn, String filePathOut) throws Exception {
 
-        BufferedReader reader = null;
-        PrintWriter writer = null;
         String relativePath;
         String absolutePath = null;
 
-        try {
-            reader = new BufferedReader(new FileReader(filePathIn));
-            writer = new PrintWriter(new FileWriter(filePathOut));
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePathIn));
+                PrintWriter writer = new PrintWriter(new FileWriter(filePathOut))) {
             String line;
-
             while ((line = reader.readLine()) != null) {
                 // change the file path from relative to absolute
                 if (line.trim().startsWith("<value>file:")) {
@@ -283,13 +279,6 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
                                     "CAT_DESC");
                 }
                 writer.println(line);
-            }
-        } finally {
-            if (reader != null) {
-                reader.close();
-            }
-            if (writer != null) {
-                writer.close();
             }
         }
         return absolutePath;

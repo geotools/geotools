@@ -324,6 +324,7 @@ public class GeoJSONWriter implements AutoCloseable {
     }
 
     @Override
+    @SuppressWarnings("PMD.UseTryWithResources") // closing field
     public void close() throws IOException {
         try {
             if (inArray) {

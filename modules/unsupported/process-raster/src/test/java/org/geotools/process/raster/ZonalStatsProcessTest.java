@@ -113,7 +113,6 @@ public class ZonalStatsProcessTest extends Assert {
         TIFFImageReader reader = null;
         GridCoverage2D coverage2D = null;
         GridCoverage2D covClassificator = null;
-        SimpleFeatureIterator iterator = null;
         try {
             // build the feature collection
             final File fileshp = TestData.file(this, "testpolygon.shp");
@@ -185,14 +184,15 @@ public class ZonalStatsProcessTest extends Assert {
             SimpleFeatureCollection sfc =
                     process.execute(coverage2D, null, featureCollection, covClassificator);
 
-            iterator = sfc.features();
-            assertNotNull(iterator);
+            try (SimpleFeatureIterator iterator = sfc.features()) {
+                assertNotNull(iterator);
 
-            while (iterator.hasNext()) {
-                SimpleFeature feature = iterator.next();
-                assertEquals(
-                        (feature.toString()),
-                        results.get(feature.getID() + feature.getAttribute("classification")));
+                while (iterator.hasNext()) {
+                    SimpleFeature feature = iterator.next();
+                    assertEquals(
+                            (feature.toString()),
+                            results.get(feature.getID() + feature.getAttribute("classification")));
+                }
             }
 
         } finally {
@@ -217,12 +217,6 @@ public class ZonalStatsProcessTest extends Assert {
             try {
                 if (covClassificator != null) {
                     covClassificator.dispose(true);
-                }
-            } catch (Exception e) {
-            }
-            try {
-                if (iterator != null) {
-                    iterator.close();
                 }
             } catch (Exception e) {
             }

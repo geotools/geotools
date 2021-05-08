@@ -159,66 +159,56 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
             GridCoverageFactory coverageFactory)
             throws IOException {
         Date start = new Date();
-        Connection con = null;
         List<ImageDecoderThread> threads = new ArrayList<>();
         ExecutorService pool = getExecutorServivicePool();
 
         String gridStatement = statementMap.get(levelInfo);
 
-        try {
-            con = getConnection();
-            try (PreparedStatement s = con.prepareStatement(gridStatement)) {
-                WKBWriter w = new WKBWriter();
-                byte[] bytes = w.write(polyFromEnvelope(requestEnvelope));
-                s.setBytes(1, bytes);
-                s.setInt(2, levelInfo.getSrsId());
+        try (Connection con = getConnection();
+                PreparedStatement s = con.prepareStatement(gridStatement)) {
+            WKBWriter w = new WKBWriter();
+            byte[] bytes = w.write(polyFromEnvelope(requestEnvelope));
+            s.setBytes(1, bytes);
+            s.setInt(2, levelInfo.getSrsId());
 
-                try (ResultSet r = s.executeQuery()) {
-                    while (r.next()) {
-                        // byte[] tileBytes = getTileBytes(r,2);
-                        byte[] tileBytes = r.getBytes(2);
-                        byte[] envBytes = r.getBytes(1);
-                        WKBReader reader = new WKBReader();
-                        Geometry g;
-                        try {
-                            g = reader.read(envBytes);
-                        } catch (ParseException e) {
-                            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                            throw new IOException(e);
-                        }
-                        Envelope env = g.getEnvelopeInternal();
-                        Rectangle2D tmp =
-                                new Rectangle2D.Double(
-                                        env.getMinX(),
-                                        env.getMinY(),
-                                        env.getWidth(),
-                                        env.getHeight());
-                        GeneralEnvelope tileGeneralEnvelope = new GeneralEnvelope(tmp);
-                        tileGeneralEnvelope.setCoordinateReferenceSystem(
-                                requestEnvelope.getCoordinateReferenceSystem());
-
-                        ImageDecoderThread thread =
-                                new ImageDecoderThread(
-                                        tileBytes,
-                                        "",
-                                        tileGeneralEnvelope,
-                                        requestEnvelope,
-                                        levelInfo,
-                                        tileQueue);
-                        // thread.start();
-                        threads.add(thread);
-                        pool.execute(thread);
+            try (ResultSet r = s.executeQuery()) {
+                while (r.next()) {
+                    // byte[] tileBytes = getTileBytes(r,2);
+                    byte[] tileBytes = r.getBytes(2);
+                    byte[] envBytes = r.getBytes(1);
+                    WKBReader reader = new WKBReader();
+                    Geometry g;
+                    try {
+                        g = reader.read(envBytes);
+                    } catch (ParseException e) {
+                        LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                        throw new IOException(e);
                     }
+                    Envelope env = g.getEnvelopeInternal();
+                    Rectangle2D tmp =
+                            new Rectangle2D.Double(
+                                    env.getMinX(), env.getMinY(), env.getWidth(), env.getHeight());
+                    GeneralEnvelope tileGeneralEnvelope = new GeneralEnvelope(tmp);
+                    tileGeneralEnvelope.setCoordinateReferenceSystem(
+                            requestEnvelope.getCoordinateReferenceSystem());
+
+                    ImageDecoderThread thread =
+                            new ImageDecoderThread(
+                                    tileBytes,
+                                    "",
+                                    tileGeneralEnvelope,
+                                    requestEnvelope,
+                                    levelInfo,
+                                    tileQueue);
+                    // thread.start();
+                    threads.add(thread);
+                    pool.execute(thread);
                 }
             }
+
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new IOException(e);
-        } finally {
-            try {
-                if (con != null) con.close();
-            } catch (SQLException e1) {
-            }
         }
 
         if (LOGGER.isLoggable(Level.INFO))
@@ -254,100 +244,89 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
      * @param coverageName the coverage name stored in the sql meta table
      * @param con jdbc connection
      */
-    protected void initFromDB(String coverageName, Connection con)
-            throws SQLException, IOException {
-        PreparedStatement s = null;
-        ResultSet res = null;
+    protected void initFromDB(String coverageName, Connection con) throws SQLException {
 
-        try {
-            String stmt = getConfig().getSqlSelectCoverageStatement();
-            s = con.prepareStatement(stmt);
+        String stmt = getConfig().getSqlSelectCoverageStatement();
+        try (PreparedStatement s = con.prepareStatement(stmt)) {
             s.setString(1, coverageName);
-            res = s.executeQuery();
+            try (ResultSet res = s.executeQuery()) {
 
-            while (res.next()) {
-                ImageLevelInfo imageLevelInfo = new ImageLevelInfo();
-                imageLevelInfo.setCoverageName(coverageName);
-                imageLevelInfo.setTileTableName(
-                        (res.getString(getConfig().getTileTableNameAtribute())));
+                while (res.next()) {
+                    ImageLevelInfo imageLevelInfo = new ImageLevelInfo();
+                    imageLevelInfo.setCoverageName(coverageName);
+                    imageLevelInfo.setTileTableName(
+                            (res.getString(getConfig().getTileTableNameAtribute())));
 
-                imageLevelInfo.setExtentMaxX(
-                        Double.valueOf(res.getDouble(getConfig().getMaxXAttribute())));
+                    imageLevelInfo.setExtentMaxX(
+                            Double.valueOf(res.getDouble(getConfig().getMaxXAttribute())));
 
-                if (res.wasNull()) {
-                    imageLevelInfo.setExtentMaxX(null);
+                    if (res.wasNull()) {
+                        imageLevelInfo.setExtentMaxX(null);
+                    }
+
+                    imageLevelInfo.setExtentMaxY(
+                            Double.valueOf(res.getDouble(getConfig().getMaxYAttribute())));
+
+                    if (res.wasNull()) {
+                        imageLevelInfo.setExtentMaxY(null);
+                    }
+
+                    imageLevelInfo.setExtentMinX(
+                            Double.valueOf(res.getDouble(getConfig().getMinXAttribute())));
+
+                    if (res.wasNull()) {
+                        imageLevelInfo.setExtentMinX(null);
+                    }
+
+                    imageLevelInfo.setExtentMinY(
+                            Double.valueOf(res.getDouble(getConfig().getMinYAttribute())));
+
+                    if (res.wasNull()) {
+                        imageLevelInfo.setExtentMinY(null);
+                    }
+
+                    imageLevelInfo.setResX(
+                            Double.valueOf(res.getDouble(getConfig().getResXAttribute())));
+
+                    if (res.wasNull()) {
+                        imageLevelInfo.setResX(null);
+                    }
+
+                    imageLevelInfo.setResY(
+                            Double.valueOf(res.getDouble(getConfig().getResYAttribute())));
+
+                    if (res.wasNull()) {
+                        imageLevelInfo.setResY(null);
+                    }
+
+                    /*
+                    Set noDataValue on imageLevelInfo based on what
+                    is stored in raster band metadata.
+                    Please note: alternatively this value could be loaded from mosaic config file,
+                    we could add an optional element/attribute to specify this value.
+                    */
+                    Number noDataValue =
+                            getNoDataValue(
+                                    imageLevelInfo.getTileTableName(),
+                                    getConfig().getBlobAttributeNameInTileTable(),
+                                    con);
+                    imageLevelInfo.setNoDataValue(noDataValue);
+
+                    getLevelInfos().add(imageLevelInfo);
+
+                    imageLevelInfo.setCrs(getCRS());
+                    /*
+                    Set SrsId based on what has been specified in mosaic
+                    xml configuration file. It can get overwritten by value retrieved from database in
+                    method calculateResolutionsFromDB(). The reason I added this is: if user has specified
+                    resolutions in the mosaic table, then calculateResolutionsFromDB() will skip setting srsID
+                    which will eventually result in an exception further down the track.
+                     */
+                    imageLevelInfo.setSrsId(getSrsId());
                 }
-
-                imageLevelInfo.setExtentMaxY(
-                        Double.valueOf(res.getDouble(getConfig().getMaxYAttribute())));
-
-                if (res.wasNull()) {
-                    imageLevelInfo.setExtentMaxY(null);
-                }
-
-                imageLevelInfo.setExtentMinX(
-                        Double.valueOf(res.getDouble(getConfig().getMinXAttribute())));
-
-                if (res.wasNull()) {
-                    imageLevelInfo.setExtentMinX(null);
-                }
-
-                imageLevelInfo.setExtentMinY(
-                        Double.valueOf(res.getDouble(getConfig().getMinYAttribute())));
-
-                if (res.wasNull()) {
-                    imageLevelInfo.setExtentMinY(null);
-                }
-
-                imageLevelInfo.setResX(
-                        Double.valueOf(res.getDouble(getConfig().getResXAttribute())));
-
-                if (res.wasNull()) {
-                    imageLevelInfo.setResX(null);
-                }
-
-                imageLevelInfo.setResY(
-                        Double.valueOf(res.getDouble(getConfig().getResYAttribute())));
-
-                if (res.wasNull()) {
-                    imageLevelInfo.setResY(null);
-                }
-
-                /*
-                Set noDataValue on imageLevelInfo based on what
-                is stored in raster band metadata.
-                Please note: alternatively this value could be loaded from mosaic config file,
-                we could add an optional element/attribute to specify this value.
-                */
-                Number noDataValue =
-                        getNoDataValue(
-                                imageLevelInfo.getTileTableName(),
-                                getConfig().getBlobAttributeNameInTileTable(),
-                                con);
-                imageLevelInfo.setNoDataValue(noDataValue);
-
-                getLevelInfos().add(imageLevelInfo);
-
-                imageLevelInfo.setCrs(getCRS());
-                /*
-                Set SrsId based on what has been specified in mosaic
-                xml configuration file. It can get overwritten by value retrieved from database in
-                method calculateResolutionsFromDB(). The reason I added this is: if user has specified
-                resolutions in the mosaic table, then calculateResolutionsFromDB() will skip setting srsID
-                which will eventually result in an exception further down the track.
-                 */
-                imageLevelInfo.setSrsId(getSrsId());
             }
         } catch (SQLException e) {
             throw (e);
-        } finally {
-            if (res != null) {
-                res.close();
-            }
-
-            if (s != null) {
-                s.close();
-            }
         }
     }
 
@@ -357,19 +336,15 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
     private Number getNoDataValue(
             String coverageTableName, String blobAttributeName, Connection con)
             throws SQLException {
-        PreparedStatement s = null;
-        ResultSet res = null;
 
-        try {
-            String stmt =
-                    "select ST_BandNoDataValue("
-                            + blobAttributeName
-                            + ") from "
-                            + coverageTableName
-                            + " limit 1";
-            s = con.prepareStatement(stmt);
-            res = s.executeQuery();
-
+        String stmt =
+                "select ST_BandNoDataValue("
+                        + blobAttributeName
+                        + ") from "
+                        + coverageTableName
+                        + " limit 1";
+        try (PreparedStatement s = con.prepareStatement(stmt);
+                ResultSet res = s.executeQuery()) {
             if (res.next()) {
                 ResultSetMetaData resultMetadata = res.getMetaData();
                 String colType = resultMetadata.getColumnTypeName(1);
@@ -380,13 +355,6 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
                 }
             }
             return null;
-        } finally {
-            if (res != null) {
-                res.close();
-            }
-            if (s != null) {
-                s.close();
-            }
         }
     }
 

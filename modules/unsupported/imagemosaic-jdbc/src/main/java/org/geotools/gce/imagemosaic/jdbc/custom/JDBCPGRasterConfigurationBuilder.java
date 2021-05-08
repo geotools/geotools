@@ -256,17 +256,13 @@ public class JDBCPGRasterConfigurationBuilder {
 
     /** Initialize the string template parsing the available resource */
     private static void initTemplate() {
-        InputStream stream =
-                JDBCPGRasterConfigurationBuilder.class.getResourceAsStream(TEMPLATE_FILE_NAME);
-
-        InputStreamReader streamReader = null;
-        BufferedReader reader = null;
-
-        try {
+        try (InputStream stream =
+                        JDBCPGRasterConfigurationBuilder.class.getResourceAsStream(
+                                TEMPLATE_FILE_NAME);
+                InputStreamReader streamReader = new InputStreamReader(stream);
+                BufferedReader reader = new BufferedReader(streamReader)) {
 
             // Replace with some dedicate method which setup string from resources.
-            streamReader = new InputStreamReader(stream);
-            reader = new BufferedReader(streamReader);
             String line = null;
             StringBuilder stringBuilder = new StringBuilder();
             while ((line = reader.readLine()) != null) {
@@ -274,31 +270,9 @@ public class JDBCPGRasterConfigurationBuilder {
             }
 
             TEMPLATE = stringBuilder.toString();
-
         } catch (IOException e) {
             if (LOGGER.isLoggable(Level.WARNING)) {
                 LOGGER.warning(e.getLocalizedMessage());
-            }
-        } finally {
-
-            // Release resources
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (Exception ignored) {
-                }
-            }
-            if (streamReader != null) {
-                try {
-                    streamReader.close();
-                } catch (Exception ignored) {
-                }
-            }
-            if (stream != null) {
-                try {
-                    stream.close();
-                } catch (Exception ignored) {
-                }
             }
         }
     }
@@ -484,7 +458,6 @@ public class JDBCPGRasterConfigurationBuilder {
 
         URL url = URLs.fileToUrl(configFile);
         Config config = null;
-        Connection connection = null;
         final List<File> filesToBeDeleted = new ArrayList<>();
 
         if (!configFile.exists()) {
@@ -497,39 +470,31 @@ public class JDBCPGRasterConfigurationBuilder {
                 createConfigFile(configFile);
                 config = Config.readFrom(url);
                 DBDialect dialect = DBDialect.getDBDialect(config);
-                connection = dialect.getConnection();
+                try (Connection connection = dialect.getConnection()) {
 
-                // Step 3: configure raster into DB in case they haven't been imported by hand
-                // Manual import may be preferred by the user when dealing with huge datasets
-                if (!isMosaicAlreadyInDB(connection)) {
-                    if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine(
-                                "Proceeding with raster tiles automatic import using raster2pgsql");
-                    }
-                    importTilesIntoDB(connection, filesToBeDeleted);
-                } else {
-                    if (LOGGER.isLoggable(Level.INFO)) {
-                        LOGGER.info(
-                                "Skipping raster tiles import "
-                                        + "since metadata tables and tile tables already exists into the DB");
+                    // Step 3: configure raster into DB in case they haven't been imported by hand
+                    // Manual import may be preferred by the user when dealing with huge datasets
+                    if (!isMosaicAlreadyInDB(connection)) {
+                        if (LOGGER.isLoggable(Level.FINE)) {
+                            LOGGER.fine(
+                                    "Proceeding with raster tiles automatic import using raster2pgsql");
+                        }
+                        importTilesIntoDB(connection, filesToBeDeleted);
+                    } else {
+                        if (LOGGER.isLoggable(Level.INFO)) {
+                            LOGGER.info(
+                                    "Skipping raster tiles import "
+                                            + "since metadata tables and tile tables already exists into the DB");
+                        }
                     }
                 }
-
             } catch (Exception e) {
-
                 // Rollback on configFile (In case something went wrong, delete the configFile)
                 if (configFile.exists()) {
                     configFile.delete();
                 }
                 throw new RuntimeException(e);
             } finally {
-                if (connection != null) {
-                    try {
-                        connection.close();
-                    } catch (Throwable t) {
-                        // Does nothing
-                    }
-                }
                 for (File file : filesToBeDeleted) {
                     try {
                         file.delete();

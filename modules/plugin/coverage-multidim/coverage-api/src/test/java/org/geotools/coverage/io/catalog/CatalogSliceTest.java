@@ -68,6 +68,7 @@ public class CatalogSliceTest extends Assert {
     private static final double DELTA = 0.01d;
 
     @Test
+    @SuppressWarnings("PMD.UseTryWithResources") // transaction needed in catch
     public void createTest() throws Exception {
         // connect to test catalog
         final File parentLocation = new File(TestData.file(this, "."), "db");
@@ -209,6 +210,7 @@ public class CatalogSliceTest extends Assert {
     }
 
     @Test
+    @SuppressWarnings("PMD.UseTryWithResources") // transaction needed in catch
     public void propertyNamesQuery() throws Exception {
         // connect to test catalog
         final File parentLocation = new File(TestData.file(this, "."), "db2");
@@ -311,7 +313,6 @@ public class CatalogSliceTest extends Assert {
 
         assertTrue(INTERNAL_STORE_SPI.canProcess(params));
         DataStore ds = null;
-        SimpleFeatureIterator it = null;
         try {
             // create the store
             ds = INTERNAL_STORE_SPI.createDataStore(params);
@@ -343,20 +344,16 @@ public class CatalogSliceTest extends Assert {
 
             final SimpleFeatureCollection fc = fs.getFeatures(q);
             assertFalse(fc.isEmpty());
-            it = fc.features();
-            while (it.hasNext()) {
-                final SimpleFeature feat = it.next();
+            try (SimpleFeatureIterator it = fc.features()) {
+                while (it.hasNext()) {
+                    final SimpleFeature feat = it.next();
 
-                assertTrue((Integer) feat.getAttribute("new") >= 0);
+                    assertTrue((Integer) feat.getAttribute("new") >= 0);
+                }
             }
-
         } finally {
             if (ds != null) {
                 ds.dispose();
-            }
-
-            if (it != null) {
-                it.close();
             }
         }
     }

@@ -96,6 +96,7 @@ public class GeoSpatialImageReaderTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.UseTryWithResources") // transaction needed in catch
     public void testReader() throws IOException {
         // Reader creation
         GeoSpatialImageReader reader = new TestGeospatialImageReader();

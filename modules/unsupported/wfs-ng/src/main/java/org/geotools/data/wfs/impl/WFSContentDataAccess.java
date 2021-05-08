@@ -153,7 +153,7 @@ public class WFSContentDataAccess implements DataAccess<FeatureType, Feature> {
     public FeatureType getSchema(Name name) throws IOException {
         // If there are no values in this.names it probably means that getNames
         // hasn't been called yet.
-        if (this.names.size() == 0) {
+        if (this.names.isEmpty()) {
             this.getNames();
         }
 

@@ -69,18 +69,13 @@ class JDBCAccessPostGis extends JDBCAccessBase {
      */
     private void initForPostGisVersion() {
         String extentFunctionName = "st_extent";
-        Connection con = null;
-        ResultSet rs = null;
-        PreparedStatement ps = null;
-        try {
-            con = dataSource.getConnection();
-            ps =
-                    con.prepareStatement(
-                            "select proname  from pg_proc where proname='"
-                                    + extentFunctionName
-                                    + "'");
-            rs = ps.executeQuery();
-
+        try (Connection con = dataSource.getConnection();
+                PreparedStatement ps =
+                        con.prepareStatement(
+                                "select proname  from pg_proc where proname='"
+                                        + extentFunctionName
+                                        + "'");
+                ResultSet rs = ps.executeQuery()) {
             if (rs.next() == false) {
                 functionPrefix = "";
                 LOGGER.info(
@@ -91,21 +86,6 @@ class JDBCAccessPostGis extends JDBCAccessBase {
                     Level.WARNING,
                     "could not verify existence of postgis function 'st_extent', falling back to depricated 'extent'");
             functionPrefix = "";
-        } finally {
-            try {
-                if (rs != null) rs.close();
-            } catch (SQLException ex) {
-            } finally {
-                try {
-                    if (ps != null) ps.close();
-                } catch (SQLException ex) {
-                } finally {
-                    try {
-                        if (con != null) con.close();
-                    } catch (SQLException ex) {
-                    }
-                }
-            }
         }
     }
 

@@ -205,10 +205,8 @@ public class SortedReaderTest {
         // make it so that we are not going to hit the disk, but
         // some of the data won't fit in the last page, used to be
         // left in memory and forgotten
-        SimpleFeatureReader sr = null;
-        try {
-            final int PRIME = 173;
-            sr = new SortedFeatureReader(fr, fidAsc, PRIME);
+        final int PRIME = 173;
+        try (SimpleFeatureReader sr = new SortedFeatureReader(fr, fidAsc, PRIME)) {
             String prev = null;
             int count = 0;
             while (sr.hasNext()) {
@@ -221,10 +219,6 @@ public class SortedReaderTest {
                 count++;
             }
             assertEquals(fc.size(), count);
-        } finally {
-            if (sr != null) {
-                sr.close();
-            }
         }
     }
 

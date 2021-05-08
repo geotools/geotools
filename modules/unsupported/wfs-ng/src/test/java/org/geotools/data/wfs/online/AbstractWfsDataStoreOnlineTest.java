@@ -128,9 +128,8 @@ public abstract class AbstractWfsDataStoreOnlineTest {
             // check for service availability only once
             URL url = new URL(SERVER_URL);
             serviceAvailable = Boolean.FALSE;
-            InputStream stream = null;
-            try {
-                stream = url.openStream();
+
+            try (InputStream stream = url.openStream()) {
                 serviceAvailable = Boolean.TRUE;
             } catch (Throwable t) {
                 LOGGER.log(
@@ -142,13 +141,6 @@ public abstract class AbstractWfsDataStoreOnlineTest {
                                 + " test disabled ");
                 url = null;
                 return;
-            } finally {
-                if (stream != null)
-                    try {
-                        stream.close();
-                    } catch (IOException e) {
-                        // whatever
-                    }
             }
         }
 
@@ -526,9 +518,8 @@ public abstract class AbstractWfsDataStoreOnlineTest {
 
         final int expectedCount = wfs.getFeatureSource(query.getTypeName()).getFeatures().size();
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                wfs.getFeatureReader(query, Transaction.AUTO_COMMIT);
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                wfs.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
             assertTrue(reader.hasNext());
             int count = 0;
             while (reader.hasNext()) {
@@ -536,15 +527,13 @@ public abstract class AbstractWfsDataStoreOnlineTest {
                 count++;
             }
             assertEquals(expectedCount, count);
-        } finally {
-            reader.close();
         }
 
         query.setFilter(latLonFiler);
         query.setCoordinateSystem(wgs84LatLon);
 
-        reader = wfs.getFeatureReader(query, Transaction.AUTO_COMMIT);
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                wfs.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
             assertTrue(reader.hasNext());
             int count = 0;
             while (reader.hasNext()) {
@@ -552,8 +541,6 @@ public abstract class AbstractWfsDataStoreOnlineTest {
                 count++;
             }
             assertEquals(expectedCount, count);
-        } finally {
-            reader.close();
         }
     }
 

@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -145,15 +146,7 @@ public class FidQueryTest extends FIDTestCase {
 
     @Test
     public void testDeleteFeature() throws Exception {
-        SimpleFeatureIterator features = featureStore.getFeatures().features();
-        SimpleFeature feature;
-        try {
-            feature = features.next();
-        } finally {
-            if (features != null) {
-                features.close();
-            }
-        }
+        SimpleFeature feature = DataUtilities.first(featureStore.getFeatures());
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         Id fidFilter = ff.id(Collections.singleton(ff.featureId(feature.getID())));
 
@@ -162,13 +155,8 @@ public class FidQueryTest extends FIDTestCase {
 
         assertEquals(fids.size(), featureStore.getCount(Query.ALL));
 
-        features = featureStore.getFeatures(fidFilter).features();
-        try {
+        try (SimpleFeatureIterator features = featureStore.getFeatures(fidFilter).features()) {
             assertFalse(features.hasNext());
-        } finally {
-            if (features != null) {
-                features.close();
-            }
         }
 
         this.assertFidsMatch();

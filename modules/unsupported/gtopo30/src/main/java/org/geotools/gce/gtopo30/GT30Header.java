@@ -94,22 +94,12 @@ final class GT30Header {
     public GT30Header(final URL headerURL) throws IOException {
         final File header = URLs.urlToFile(headerURL);
 
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new FileReader(header));
+        try (BufferedReader reader = new BufferedReader(new FileReader(header))) {
             initMap();
             parseHeaderFile(reader);
             if (!fullPropertySet(this.propertyMap)) {
                 throw new DataSourceException("Needed properties missing in GTOPO30 header file");
             }
-        } finally {
-            if (reader != null)
-                try {
-                    // freeing
-                    reader.close();
-                } catch (Exception e1) {
-                    // TODO log me
-                }
         }
     }
 

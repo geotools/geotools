@@ -24,40 +24,23 @@ public class TestGridShiftLocator extends AbstractFactory implements GridShiftLo
 
     @Override
     public URL locateGrid(String grid) {
-        GZIPInputStream is = null;
-        FileOutputStream fos = null;
+
         try {
             URL compressed = getClass().getResource(grid + ".gz");
             if (compressed != null) {
-                is = new GZIPInputStream(compressed.openStream());
                 File out = new File("./target/" + grid);
-                fos = new FileOutputStream(out);
-                byte[] buf = new byte[1024];
-                int read;
-                while ((read = is.read(buf)) > 0) {
-                    fos.write(buf, 0, read);
+                try (GZIPInputStream is = new GZIPInputStream(compressed.openStream());
+                        FileOutputStream fos = new FileOutputStream(out)) {
+                    byte[] buf = new byte[1024];
+                    int read;
+                    while ((read = is.read(buf)) > 0) {
+                        fos.write(buf, 0, read);
+                    }
                 }
-
                 return out.toURI().toURL();
             }
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Failed to unpack the grid", e);
-        } finally {
-            try {
-                if (is != null) {
-                    is.close();
-                }
-            } catch (IOException e) {
-                //
-            }
-
-            try {
-                if (fos != null) {
-                    fos.close();
-                }
-            } catch (IOException e) {
-                //
-            }
         }
 
         return null;

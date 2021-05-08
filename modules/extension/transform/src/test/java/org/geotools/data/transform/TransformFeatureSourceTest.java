@@ -192,17 +192,11 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
         assertEquals(2, fc.size());
 
         // and now read for good
-        SimpleFeatureIterator fi = null;
         List<String> names = new ArrayList<>();
-        try {
-            fi = fc.features();
+        try (SimpleFeatureIterator fi = fc.features()) {
             while (fi.hasNext()) {
                 SimpleFeature f = fi.next();
                 names.add((String) f.getAttribute("state_name"));
-            }
-        } finally {
-            if (fi != null) {
-                fi.close();
             }
         }
 
@@ -292,17 +286,11 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
         assertEquals(2, fc.size());
 
         // and now read for good
-        SimpleFeatureIterator fi = null;
         List<String> names = new ArrayList<>();
-        try {
-            fi = fc.features();
+        try (SimpleFeatureIterator fi = fc.features()) {
             while (fi.hasNext()) {
                 SimpleFeature f = fi.next();
                 names.add((String) f.getAttribute("name"));
-            }
-        } finally {
-            if (fi != null) {
-                fi.close();
             }
         }
 
@@ -423,34 +411,22 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
         assertEquals(2, fc.size());
 
         // and now read for good
-        SimpleFeatureIterator fi = null;
         List<Number> totals = new ArrayList<>();
-        try {
-            fi = fc.features();
+        try (SimpleFeatureIterator fi = fc.features()) {
             while (fi.hasNext()) {
                 SimpleFeature f = fi.next();
                 totals.add((Number) f.getAttribute("total"));
-            }
-        } finally {
-            if (fi != null) {
-                fi.close();
             }
         }
 
         // grab the two biggest from the original data set
         List<Double> sums = new ArrayList<>();
-        try {
-            fi = STATES.getFeatures().features();
+        try (SimpleFeatureIterator fi = STATES.getFeatures().features()) {
             while (fi.hasNext()) {
                 SimpleFeature f = fi.next();
                 double male = (Double) f.getAttribute("male");
                 double female = (Double) f.getAttribute("female");
                 sums.add(male + female);
-            }
-
-        } finally {
-            if (fi != null) {
-                fi.close();
             }
         }
         Collections.sort(sums);

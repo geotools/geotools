@@ -635,7 +635,6 @@ public class JTextReporter {
         private void onSave() {
             int len = textArea.getDocument().getLength();
             if (len > 0) {
-                Writer writer = null;
                 try {
                     // allow the file chooser to be on top of this dialog
                     boolean alwaysOnTop = isAlwaysOnTop();
@@ -647,34 +646,25 @@ public class JTextReporter {
                     setAlwaysOnTop(alwaysOnTop);
 
                     if (file != null) {
-                        writer = new BufferedWriter(new FileWriter(file));
-                        for (int line = 0; line < textArea.getLineCount(); line++) {
-                            int start = textArea.getLineStartOffset(line);
-                            int end = textArea.getLineEndOffset(line);
-                            String lineText = textArea.getText(start, end - start);
-                            if (lineText.endsWith("\n")) {
-                                lineText = lineText.substring(0, lineText.length() - 1);
+                        try (Writer writer = new BufferedWriter(new FileWriter(file))) {
+                            for (int line = 0; line < textArea.getLineCount(); line++) {
+                                int start = textArea.getLineStartOffset(line);
+                                int end = textArea.getLineEndOffset(line);
+                                String lineText = textArea.getText(start, end - start);
+                                if (lineText.endsWith("\n")) {
+                                    lineText = lineText.substring(0, lineText.length() - 1);
+                                }
+                                writer.write(lineText);
+                                writer.write(NEWLINE);
                             }
-                            writer.write(lineText);
-                            writer.write(NEWLINE);
                         }
                     }
 
                 } catch (IOException ex) {
                     throw new IllegalStateException(ex);
-
                 } catch (BadLocationException ex) {
                     // this should never happen
                     throw new IllegalStateException("Internal error getting report to save");
-
-                } finally {
-                    if (writer != null) {
-                        try {
-                            writer.close();
-                        } catch (IOException ex) {
-                            // having a bad day
-                        }
-                    }
                 }
             }
         }

@@ -5546,6 +5546,7 @@ public class ImageWorker {
      *
      * @return this {@link ImageWorker}.
      */
+    @SuppressWarnings("PMD.UseTryWithResources") // resource might be null
     private ImageWorker write(final Object output, final Iterator<? extends ImageWriter> encoders)
             throws IOException {
         if (encoders != null) {

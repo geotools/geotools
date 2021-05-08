@@ -183,24 +183,13 @@ public class SchemaCache {
 
     /** Store the bytes in the given file, creating any necessary intervening directories. */
     static void store(File file, byte[] bytes) {
-
-        OutputStream output = null;
-        try {
-            if (file.getParentFile() != null && !file.getParentFile().exists()) {
-                file.getParentFile().mkdirs();
-            }
-            output = new BufferedOutputStream(new FileOutputStream(file));
+        if (file.getParentFile() != null && !file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
+        try (OutputStream output = new BufferedOutputStream(new FileOutputStream(file))) {
             output.write(bytes);
         } catch (Exception e) {
             throw new RuntimeException(e);
-        } finally {
-            if (output != null) {
-                try {
-                    output.close();
-                } catch (Exception e) {
-                    // we tried
-                }
-            }
         }
     }
 
@@ -268,11 +257,10 @@ public class SchemaCache {
                                 location.toString()));
                 return null;
             }
-            InputStream input = null;
+
             // read all the blocks into a list
             List<byte[]> blocks = new LinkedList<>();
-            try {
-                input = connection.getInputStream();
+            try (InputStream input = connection.getInputStream()) {
                 while (true) {
                     byte[] block = new byte[blockSize];
                     int count = input.read(block);
@@ -287,14 +275,6 @@ public class SchemaCache {
                         byte[] shortBlock = new byte[count];
                         System.arraycopy(block, 0, shortBlock, 0, count);
                         blocks.add(shortBlock);
-                    }
-                }
-            } finally {
-                if (input != null) {
-                    try {
-                        input.close();
-                    } catch (Exception e) {
-                        // we tried
                     }
                 }
             }

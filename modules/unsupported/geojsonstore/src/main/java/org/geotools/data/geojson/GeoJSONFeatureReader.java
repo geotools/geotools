@@ -73,6 +73,7 @@ public class GeoJSONFeatureReader implements FeatureReader<SimpleFeatureType, Si
     }
 
     @Override
+    @SuppressWarnings("PMD.UseTryWithResources") // closing field
     public void close() throws IOException {
         try {
             if (iterator != null) {

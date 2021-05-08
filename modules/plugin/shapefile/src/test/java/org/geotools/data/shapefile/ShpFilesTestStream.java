@@ -196,7 +196,10 @@ public class ShpFilesTestStream implements org.geotools.data.shapefile.files.Fil
         assertEquals(0, files.numberOfLocks());
     }
 
-    @SuppressWarnings("PMD.CloseResource") // manual handling to try double close
+    @SuppressWarnings({
+        "PMD.CloseResource",
+        "PMD.UseTryWithResources"
+    }) // manual handling to try double close
     private void doRead(ShpFileType shpFileType) throws IOException {
         ReadableByteChannel in = files.getReadChannel(shpFileType, this);
         assertEquals(1, files.numberOfLocks());
@@ -220,7 +223,10 @@ public class ShpFilesTestStream implements org.geotools.data.shapefile.files.Fil
         assertEquals(shpFileType.name(), read);
     }
 
-    @SuppressWarnings("PMD.CloseResource") // manual handling to try double close
+    @SuppressWarnings({
+        "PMD.CloseResource",
+        "PMD.UseTryWithResources"
+    }) // manual handling to try double close
     private void doWrite(ShpFileType shpFileType) throws IOException {
         WritableByteChannel out = files.getWriteChannel(shpFileType, this);
         assertEquals(1, files.numberOfLocks());

@@ -373,6 +373,7 @@ public class GranuleDescriptor {
     private Double[] scales;
     private Double[] offsets;
 
+    @SuppressWarnings("PMD.UseTryWithResources") // ImageInputStream initialized in multiple places
     protected void init(
             final BoundingBox granuleBBOX,
             final URL granuleUrl,
@@ -1024,7 +1025,7 @@ public class GranuleDescriptor {
         ImageInputStream inStream = null;
         ImageReader reader = null;
         boolean cleanupInFinally = request.getReadType() != ReadType.JAI_IMAGEREAD;
-        try {
+        try { // NOPMD for UseTryWithResources, closure is conditional
             //
             // get info about the raster we have to read
             //

@@ -107,11 +107,8 @@ public class IndexedFidWriterTest extends FIDTestCase {
         }
 
         close();
-        IndexedFidReader reader = new IndexedFidReader(shpFiles);
-        try {
+        try (IndexedFidReader reader = new IndexedFidReader(shpFiles)) {
             assertEquals(3, reader.getRemoves());
-        } finally {
-            reader.close();
         }
 
         // remove some more features
@@ -133,11 +130,8 @@ public class IndexedFidWriterTest extends FIDTestCase {
 
         close();
 
-        reader = new IndexedFidReader(shpFiles);
-        try {
+        try (IndexedFidReader reader = new IndexedFidReader(shpFiles)) {
             assertEquals(6, reader.getRemoves());
-        } finally {
-            reader.close();
         }
     }
 

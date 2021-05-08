@@ -246,16 +246,13 @@ public class PropertyDataStoreTest {
     public void testGetFeatureReaderString()
             throws NoSuchElementException, IOException, IllegalAttributeException {
         Query query = new Query("road");
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                store.getFeatureReader(query, Transaction.AUTO_COMMIT);
         int count = 0;
-        try {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                store.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
             while (reader.hasNext()) {
                 reader.next();
                 count++;
             }
-        } finally {
-            reader.close();
         }
         Assert.assertEquals(5, count);
     }
@@ -469,15 +466,12 @@ public class PropertyDataStoreTest {
     public void testGetFeatureSource() throws Exception {
         SimpleFeatureSource road = store.getFeatureSource("road");
         SimpleFeatureCollection features = road.getFeatures();
-        SimpleFeatureIterator reader = features.features();
         List<String> list = new ArrayList<>();
-        try {
+        try (SimpleFeatureIterator reader = features.features()) {
             while (reader.hasNext()) {
                 SimpleFeature next = reader.next();
                 list.add(next.getID());
             }
-        } finally {
-            reader.close();
         }
         Assert.assertEquals("[fid1, fid2, fid3, fid4, fid5]", list.toString());
 

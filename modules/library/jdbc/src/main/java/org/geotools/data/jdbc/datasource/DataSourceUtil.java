@@ -59,6 +59,7 @@ public class DataSourceUtil {
      *     or null, if no check is to be performed
      * @param cachePreparedStatements wheter to cache prepared statements or not
      */
+    @SuppressWarnings("PMD.UseTryWithResources") // just a conn. test, we want to manage closing
     public static ManageableDataSource buildDefaultDataSource(
             String url,
             String driverName,

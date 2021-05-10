@@ -984,6 +984,7 @@ public final class GeoTools {
             Enumeration<URL> urls =
                     AccessController.doPrivileged(
                             new PrivilegedAction<Enumeration<URL>>() {
+                                @Override
                                 public Enumeration<URL> run() {
                                     try {
                                         return ClassLoader.getSystemResources(propFileName);
@@ -1003,6 +1004,7 @@ public final class GeoTools {
             String javaHome =
                     AccessController.doPrivileged(
                             new PrivilegedAction<String>() {
+                                @Override
                                 public String run() {
                                     try {
                                         String javahome = System.getProperty("java.home");

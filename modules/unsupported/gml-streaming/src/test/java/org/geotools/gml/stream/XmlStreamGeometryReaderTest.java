@@ -16,26 +16,22 @@
  */
 package org.geotools.gml.stream;
 
-import static org.junit.Assert.*;
-
-import java.io.InputStream;
-import java.io.StringReader;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamReader;
-import org.geotools.gml3.GML;
 import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
+import org.opengis.referencing.FactoryException;
+
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.IOException;
+import java.io.StringReader;
+
+import static org.junit.Assert.*;
 
 public class XmlStreamGeometryReaderTest {
-    @FunctionalInterface
-    public interface TestFunction<T> {
-        void apply(T t) throws Exception;
-    }
-
     @Test
     public void testUnsafeXMLStreamReader() throws Exception {
         XMLInputFactory f = XMLInputFactory.newInstance();
@@ -51,45 +47,35 @@ public class XmlStreamGeometryReaderTest {
     }
 
     @Test
-    public void testPoint() throws Exception {
-        testWithXmlStreamGeometryReader(
-                "org/geotools/gml/stream/point.gml",
-                "Point",
-                (XmlStreamGeometryReader geometryReader) -> {
-                    Geometry g = geometryReader.readGeometry();
-                    assertNotNull(g);
-                    assertTrue(g instanceof Point);
-                    assertEquals(g.toString(), "POINT (25888.999 387917.524)");
-                });
+    public void testUnknownElement() throws XMLStreamException {
+        XMLInputFactory f = XMLInputFactory.newInstance();
+        f.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
+        XMLStreamReader r = f.createXMLStreamReader(new StringReader("<unknown></unknown>"));
+        XmlStreamGeometryReader geometryReader =
+                new XmlStreamGeometryReader(r, new GeometryFactory());
+        r.nextTag();
+        Exception exception =
+                assertThrows(IllegalStateException.class, geometryReader::readGeometry);
+        assertEquals(exception.getMessage(), "Unrecognized geometry element unknown");
     }
 
     @Test
-    public void testMultiSurface() throws Exception {
-        testWithXmlStreamGeometryReader(
-                "org/geotools/gml/stream/multisurface.gml",
-                "MultiSurface",
-                (XmlStreamGeometryReader geometryReader) -> {
-                    Geometry g = geometryReader.readGeometry();
-                    assertNotNull(g);
-                    assertTrue(g instanceof MultiPolygon);
-                    assertEquals(
-                            g.toString(),
-                            "MULTIPOLYGON (((10.5 3.34, 100 123.456, 150 130, 10.5 3.34)))");
-                });
-    }
-
-    private void testWithXmlStreamGeometryReader(
-            String resource, String element, TestFunction<XmlStreamGeometryReader> tester)
-            throws Exception {
-        try (InputStream input = getClass().getClassLoader().getResourceAsStream(resource)) {
-            XMLInputFactory f = XMLInputFactory.newInstance();
-            f.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
-            XMLStreamReader r = f.createXMLStreamReader(input);
-            XmlStreamGeometryReader geometryReader =
-                    new XmlStreamGeometryReader(r, new GeometryFactory());
-            r.nextTag();
-            r.require(XMLStreamConstants.START_ELEMENT, GML.NAMESPACE, element);
-            tester.apply(geometryReader);
-        }
+    public void testZ() throws XMLStreamException, FactoryException, IOException {
+        XMLInputFactory f = XMLInputFactory.newInstance();
+        f.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
+        XMLStreamReader r =
+                f.createXMLStreamReader(
+                        new StringReader(
+                                "<gml:Point xmlns:gml=\"http://www.opengis.net/gml\" srsDimension=\"3\"><gml:pos>1 2 3</gml:pos></gml:Point>"));
+        XmlStreamGeometryReader geometryReader =
+                new XmlStreamGeometryReader(r, new GeometryFactory());
+        r.nextTag();
+        Geometry g = geometryReader.readGeometry();
+        assertNotNull(g);
+        assertEquals(Point.class, g.getClass());
+        Coordinate c = g.getCoordinate();
+        assertEquals(c.x, 1, 0);
+        assertEquals(c.y, 2, 0);
+        assertEquals(c.z, 3, 0);
     }
 }

@@ -26,10 +26,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -941,10 +945,96 @@ public final class GeoTools {
      */
     public static synchronized InitialContext getInitialContext(final Hints hints)
             throws NamingException {
+        if (hints != null) {
+            try {
+                return new InitialContext(new Hashtable<>(hints));
+            } catch (Exception e) {
+                throw handleException(e);
+            }
+        }
         if (context == null) {
-            context = new InitialContext();
+            try {
+                context = new InitialContext();
+            } catch (Exception e) {
+                throw handleException(e);
+            }
         }
         return context;
+    }
+
+    private static NamingException handleException(Exception e) {
+        final Logger LOGGER = Logging.getLogger(GeoTools.class);
+        final String propFileName = "jndi.properties";
+
+        if (LOGGER.isLoggable(Level.WARNING)) {
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("Error while retriving Initial Context.\n\n")
+                    .append("Exception: ")
+                    .append(e.getMessage())
+                    .append("\n");
+
+            Object contextFactory = System.getProperty(Context.INITIAL_CONTEXT_FACTORY);
+            sb.append("Factory could be taken from System property: ")
+                    .append(Context.INITIAL_CONTEXT_FACTORY)
+                    .append("=")
+                    .append(contextFactory == null ? "" : (String) contextFactory)
+                    .append("\n");
+
+            Enumeration<URL> urls =
+                    AccessController.doPrivileged(
+                            new PrivilegedAction<Enumeration<URL>>() {
+                                public Enumeration<URL> run() {
+                                    try {
+                                        return ClassLoader.getSystemResources(propFileName);
+                                    } catch (IOException e) {
+                                        return null;
+                                    }
+                                }
+                            });
+            if (urls != null) {
+                sb.append("Or from these property files:\n");
+                while (urls.hasMoreElements()) {
+                    sb.append(urls.nextElement().getPath()).append("\n");
+                }
+                sb.append("\n");
+            }
+
+            String javaHome =
+                    AccessController.doPrivileged(
+                            new PrivilegedAction<String>() {
+                                public String run() {
+                                    try {
+                                        String javahome = System.getProperty("java.home");
+                                        if (javahome == null) {
+                                            return null;
+                                        }
+                                        String pathname =
+                                                javahome
+                                                        + java.io.File.separator
+                                                        + "lib"
+                                                        + java.io.File.separator
+                                                        + propFileName;
+                                        return pathname;
+                                    } catch (Exception e) {
+                                        return null;
+                                    }
+                                }
+                            });
+            if (javaHome != null) {
+                sb.append("Or from a file specified by system property java.home:\n")
+                        .append(javaHome)
+                        .append("\n");
+            }
+            LOGGER.log(Level.WARNING, sb.toString());
+        }
+        if (e instanceof NamingException) {
+            return (NamingException) e;
+        } else {
+            NamingException throwing = new NamingException("Couldn't get Initial context.");
+            throwing.setRootCause(e);
+            return throwing;
+        }
     }
 
     /**

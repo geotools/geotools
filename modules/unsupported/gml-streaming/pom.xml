@@ -19,12 +19,5 @@
       <artifactId>gt-main</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <!-- This dependency is only required for GML element name constants. These can be moved into this module at any
-       time so this dependency can be removed -->
-      <groupId>org.geotools.xsd</groupId>
-      <artifactId>gt-xsd-gml3</artifactId>
-      <version>${project.version}</version>
-    </dependency>
   </dependencies>
 </project>

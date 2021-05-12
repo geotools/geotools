@@ -303,7 +303,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
             if (hint instanceof String) {
                 String name = (String) hint;
                 try {
-                    dataSource = (DataSource) GeoTools.getInitialContext(userHints).lookup(name);
+                    dataSource = (DataSource) GeoTools.getInitialContext().lookup(name);
                 } catch (NamingException e) {
                     throw new FactoryException("A EPSG_DATA_SOURCE hint is required:" + e);
                 }

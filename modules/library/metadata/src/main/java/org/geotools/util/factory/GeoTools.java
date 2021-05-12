@@ -33,7 +33,6 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -942,16 +941,22 @@ public final class GeoTools {
      * @throws NamingException if the initial context can't be created.
      * @see #init(InitialContext)
      * @since 2.4
+     * @deprecated hints isn't really used. Use the function without hints
      */
+    @Deprecated
     public static synchronized InitialContext getInitialContext(final Hints hints)
             throws NamingException {
-        if (hints != null) {
-            try {
-                return new InitialContext(new Hashtable<>(hints));
-            } catch (Exception e) {
-                throw handleException(e);
-            }
-        }
+
+        return getInitialContext();
+    }
+
+    /**
+     * Returns the default initial context.
+     *
+     * @return The initial context (never {@code null}).
+     * @throws NamingException if the initial context can't be created.
+     */
+    public static synchronized InitialContext getInitialContext() throws NamingException {
         if (context == null) {
             try {
                 context = new InitialContext();
@@ -1098,7 +1103,7 @@ public final class GeoTools {
                 } else
                     try {
                         if (context == null) {
-                            context = getInitialContext(hints);
+                            context = getInitialContext();
                         }
                         fixed = context.composeName(fixed, part);
                     } catch (NamingException e) {

@@ -94,7 +94,7 @@ public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
         DataSource ds = null;
 
         try {
-            ctx = GeoTools.getInitialContext(GeoTools.getDefaultHints());
+            ctx = GeoTools.getInitialContext();
         } catch (NamingException e) {
             throw new RuntimeException(e);
         }
@@ -136,7 +136,7 @@ public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
     @Override
     public boolean isAvailable() {
         try {
-            GeoTools.getInitialContext(GeoTools.getDefaultHints());
+            GeoTools.getInitialContext();
             return true;
         } catch (NamingException e) {
             return false;

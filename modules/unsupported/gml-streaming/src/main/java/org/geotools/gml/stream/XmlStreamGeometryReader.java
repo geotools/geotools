@@ -43,10 +43,7 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * Parse GML from a StAX XMLStreamReader. Code migrated from the XmlSimpleFeatureParser class from
- * wfs-ng.
- */
+/** Parse GML 3 geometries from a StAX XMLStreamReader. */
 public class XmlStreamGeometryReader {
 
     private final XMLStreamReader reader;

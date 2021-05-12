@@ -17,6 +17,7 @@
 package org.geotools.gce.geotiff;
 
 import it.geosolutions.imageio.plugins.tiff.BaselineTIFFTagSet;
+import it.geosolutions.io.output.adapter.OutputStreamAdapter;
 import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -24,9 +25,11 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.util.Map;
 import java.util.logging.Logger;
+import javax.imageio.stream.FileImageOutputStream;
 import javax.media.jai.PlanarImage;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -772,7 +775,17 @@ public class GeoTiffWriterTest extends Assert {
         String suffix = "outputWithNodataParam";
         suffix += (writeNoDataParam != null ? (writeNoDataParam.toString()) : "none");
         final File output = new File(TestData.file(GeoTiffReaderTest.class, "."), suffix + ".tif");
-        GeoTiffWriter writer = new GeoTiffWriter(output);
+        writeAndRead(coverage, writeNoDataParam, noDataValue, output, null);
+    }
+
+    private void writeAndRead(
+            GridCoverage2D coverage,
+            Boolean writeNoDataParam,
+            double noDataValue,
+            File output,
+            GeoTiffWriter provided)
+            throws IOException {
+        GeoTiffWriter writer = provided != null ? provided : new GeoTiffWriter(output);
         GeneralParameterValue[] writeParams = null;
         if (writeNoDataParam != null) {
             ParameterValue<Boolean> writeNodata = GeoTiffFormat.WRITE_NODATA.createValue();
@@ -802,5 +815,29 @@ public class GeoTiffWriterTest extends Assert {
             assertFalse(props.containsKey(NoDataContainer.GC_NODATA));
         }
         reader.dispose();
+    }
+
+    @Test
+    @SuppressWarnings("PMD.CloseResource")
+    public void testWrappedStream() throws Exception {
+        // Input geotiff including noData information
+        final File input = TestData.file(GeoTiffReaderTest.class, "nodata.tiff");
+
+        // reading the coverage, checking it has nodata
+        GeoTiffReader reader = new GeoTiffReader(input);
+        GridCoverage2D coverage = reader.read(null);
+
+        final File geotiff = TestData.temp(this, "testfile");
+
+        // The streams will be closed by the writeAndRead method doing a dispose
+        FileImageOutputStream fos = new FileImageOutputStream(geotiff);
+        OutputStream os = new OutputStreamAdapter(fos);
+        GeoTiffWriter writer = new GeoTiffWriter(os);
+
+        // Check the writer is actually using the wrapped ImageOutputStream for writing
+        Assert.assertSame(fos, writer.getDestination());
+
+        // Check the write
+        writeAndRead(coverage, null, -9999d, geotiff, writer);
     }
 }

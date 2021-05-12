@@ -503,7 +503,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
                         new WFSFactoryParam<>(name, Integer.class, title, description, 0);
     }
 
-    /** Optional {@code Integer} OCG GML Compatible TypeNames (replace : by _) */
+    /** Optional {@code Boolean} OCG GML Compatible TypeNames (replace : by _) */
     public static final WFSFactoryParam<Boolean> GML_COMPATIBLE_TYPENAMES;
 
     static {

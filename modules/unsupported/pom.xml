@@ -35,7 +35,7 @@
     <module>geojsonstore</module>
     <module>geojson</module>
     <module>mbtiles</module>
-    <module>gml-streaming</module>
+    <module>gml-geometry-streaming</module>
     <module>wfs-ng</module>
     <module>ogr</module>
     <module>postgis-raster</module>

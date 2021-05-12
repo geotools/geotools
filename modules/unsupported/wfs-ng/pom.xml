@@ -113,7 +113,7 @@
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-gml-streaming</artifactId>
+      <artifactId>gt-gml-geometry-streaming</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

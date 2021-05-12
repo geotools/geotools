@@ -8,10 +8,10 @@
     <version>26-SNAPSHOT</version>
   </parent>
 
-  <artifactId>gt-gml-streaming</artifactId>
+  <artifactId>gt-gml-geometry-streaming</artifactId>
   <packaging>jar</packaging>
-  <name>GML XML support using Streaming API for XML (StAX)</name>
-  <description>Efficiently read GML elements using StAX in a streaming manner. No writing.</description>
+  <name>GML geometry XML parsing support using StAX</name>
+  <description>Efficiently read GML geometry elements using StAX in a streaming manner. No writing.</description>
 
   <dependencies>
     <dependency>

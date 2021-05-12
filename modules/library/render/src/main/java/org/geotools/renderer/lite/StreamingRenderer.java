@@ -2654,55 +2654,8 @@ public class StreamingRenderer implements GTRenderer {
                 }
                 boolean cloningRequired = isCloningRequired(lfts);
                 RenderableFeature rf = createRenderableFeature(layerId, cloningRequired);
-                rf.layer = liteFeatureTypeStyle.layer;
-
-                ProjectionHandler handler = liteFeatureTypeStyle.projectionHandler;
-                // Check if a reprojection has been made, in that case, let's update the projection
-                // Handler
-                CoordinateReferenceSystem featureCrs =
-                        features.getSchema().getCoordinateReferenceSystem();
-                ScreenMap screenMap = liteFeatureTypeStyle.screenMap;
-                if (handler != null
-                        && featureCrs != null
-                        && !CRS.equalsIgnoreMetadata(handler.getSourceCRS(), featureCrs)) {
-                    try {
-                        handler =
-                                ProjectionHandlerFinder.getHandler(
-                                        mapExtent, featureCrs, isMapWrappingEnabled());
-                        if (screenMap != null) {
-                            Envelope mapArea = mapExtent;
-                            if (getRenderingBuffer() == 0) {
-                                int metaBuffer = findRenderingBuffer(lfts);
-                                if (metaBuffer > 0) {
-                                    mapArea =
-                                            expandEnvelope(
-                                                    mapArea, worldToScreenTransform, metaBuffer);
-                                }
-                            }
-                            ReferencedEnvelope envelope =
-                                    expandEnvelopeByTransformations(
-                                            lfts, new ReferencedEnvelope(mapArea, destinationCrs));
-                            envelope = new ReferencedEnvelope(envelope, destinationCrs);
-                            SingleCRS crs2D = CRS.getHorizontalCRS(featureCrs);
-                            MathTransform sourceToScreen =
-                                    buildFullTransform(
-                                            crs2D, destinationCrs, worldToScreenTransform);
-                            double[] spans =
-                                    getGeneralizationSpans(
-                                            envelope,
-                                            sourceToScreen,
-                                            worldToScreenTransform,
-                                            featureCrs,
-                                            screenSize);
-                            screenMap.setTransform(sourceToScreen);
-                            screenMap.setSpans(spans[0], spans[1]);
-                        }
-                    } catch (FactoryException | TransformException e) {
-                        fireErrorEvent(e);
-                    }
-                }
-
-                rf.setScreenMap(screenMap);
+                ProjectionHandler handler =
+                        checkForReprojection(features, rf, lfts, liteFeatureTypeStyle);
                 // loop exit condition tested inside try catch
                 // make sure we test hasNext() outside of the try/cath that follows, as that
                 // one is there to make sure a single feature error does not ruin the rendering
@@ -2757,19 +2710,84 @@ public class StreamingRenderer implements GTRenderer {
             // one is there to make sure a single feature error does not ruin the rendering
             // (best effort) whilst an exception in hasNext() + ignoring catch results in
             // an infinite loop
+            // the projection handlers and screen maps are calculated only for the first
+            // feature in the collection and are cached for reuse by subsequent features
+            boolean firstFeature = true;
+            ProjectionHandler[] handlers = new ProjectionHandler[lfts.size()];
+            ScreenMap[] screenMaps = new ScreenMap[lfts.size()];
             while (iterator.hasNext() && !renderingStopRequested) {
                 rf.setFeature(iterator.next());
                 // draw the feature on the main graphics and on the eventual extra image buffers
-                for (LiteFeatureTypeStyle liteFeatureTypeStyle : lfts) {
-                    processFeature(
-                            rf, liteFeatureTypeStyle, liteFeatureTypeStyle.projectionHandler);
+                for (int i = 0; i < lfts.size(); i++) {
+                    LiteFeatureTypeStyle liteFeatureTypeStyle = lfts.get(i);
+                    if (firstFeature) {
+                        handlers[i] =
+                                checkForReprojection(features, rf, lfts, liteFeatureTypeStyle);
+                        screenMaps[i] = rf.screenMap;
+                    } else {
+                        rf.layer = liteFeatureTypeStyle.layer;
+                        rf.setScreenMap(screenMaps[i]);
+                    }
+                    processFeature(rf, liteFeatureTypeStyle, handlers[i]);
                 }
+                firstFeature = false;
             }
             // submit the merge request
             requests.put(new MergeLayersRequest(graphics, lfts));
         } catch (InterruptedException e) {
             fireErrorEvent(e);
         }
+    }
+
+    private ProjectionHandler checkForReprojection(
+            FeatureCollection features,
+            RenderableFeature rf,
+            List<LiteFeatureTypeStyle> lfts,
+            LiteFeatureTypeStyle liteFeatureTypeStyle) {
+        rf.layer = liteFeatureTypeStyle.layer;
+        ProjectionHandler handler = liteFeatureTypeStyle.projectionHandler;
+        // Check if a reprojection has been made, in that case, let's update the
+        // projection handler
+        CoordinateReferenceSystem featureCrs = features.getSchema().getCoordinateReferenceSystem();
+        ScreenMap screenMap = liteFeatureTypeStyle.screenMap;
+        if (handler != null
+                && featureCrs != null
+                && !CRS.equalsIgnoreMetadata(handler.getSourceCRS(), featureCrs)) {
+            try {
+                handler =
+                        ProjectionHandlerFinder.getHandler(
+                                mapExtent, featureCrs, isMapWrappingEnabled());
+                if (screenMap != null) {
+                    Envelope mapArea = mapExtent;
+                    if (getRenderingBuffer() == 0) {
+                        int metaBuffer = findRenderingBuffer(lfts);
+                        if (metaBuffer > 0) {
+                            mapArea = expandEnvelope(mapArea, worldToScreenTransform, metaBuffer);
+                        }
+                    }
+                    ReferencedEnvelope envelope =
+                            expandEnvelopeByTransformations(
+                                    lfts, new ReferencedEnvelope(mapArea, destinationCrs));
+                    envelope = new ReferencedEnvelope(envelope, destinationCrs);
+                    SingleCRS crs2D = CRS.getHorizontalCRS(featureCrs);
+                    MathTransform sourceToScreen =
+                            buildFullTransform(crs2D, destinationCrs, worldToScreenTransform);
+                    double[] spans =
+                            getGeneralizationSpans(
+                                    envelope,
+                                    sourceToScreen,
+                                    worldToScreenTransform,
+                                    featureCrs,
+                                    screenSize);
+                    screenMap.setTransform(sourceToScreen);
+                    screenMap.setSpans(spans[0], spans[1]);
+                }
+            } catch (FactoryException | TransformException e) {
+                fireErrorEvent(e);
+            }
+        }
+        rf.setScreenMap(screenMap);
+        return handler;
     }
 
     /** Tells if geometry cloning is required or not */

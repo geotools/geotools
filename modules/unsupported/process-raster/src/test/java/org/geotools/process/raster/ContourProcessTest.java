@@ -247,31 +247,31 @@ public class ContourProcessTest {
     public void testContourWithTransformAndReprojection_WithOpacitySingleFTS() throws Exception {
         // The style with a single FeatureTypeStyle will use plain rendering.
         // The style with opacity will not use the screenmap.
-        countWhiteSamples("contour_with_opacity.sld");
+        assertWhiteSamples("contour_with_opacity.sld");
     }
 
     @Test
     public void testContourWithTransformAndReprojection_WithoutOpacitySingleFTS() throws Exception {
         // The style with a single FeatureTypeStyle will use plain rendering.
         // The style without opacity will use the screenmap.
-        countWhiteSamples("contour_without_opacity.sld");
+        assertWhiteSamples("contour_without_opacity.sld");
     }
 
     @Test
     public void testContourWithTransformAndReprojection_WithOpacityMultiFTS() throws Exception {
         // The style with multiple FeatureTypeStyles will use optimized rendering.
         // The style with opacity will not use the screenmap.
-        countWhiteSamples("contour_multi_fts_with_opacity.sld");
+        assertWhiteSamples("contour_multi_fts_with_opacity.sld");
     }
 
     @Test
     public void testContourWithTransformAndReprojection_WithoutOpacityMultiFTS() throws Exception {
         // The style with multiple FeatureTypeStyles will use optimized rendering.
         // The style without opacity will use the screenmap.
-        countWhiteSamples("contour_multi_fts_without_opacity.sld");
+        assertWhiteSamples("contour_multi_fts_without_opacity.sld");
     }
 
-    private void countWhiteSamples(String styleName) throws Exception {
+    private void assertWhiteSamples(String styleName) throws Exception {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
         URL url = TestData.getResource(this, styleName);
         Style style = new SLDParser(factory, url).readXML()[0];

@@ -2702,6 +2702,8 @@ public class StreamingRenderer implements GTRenderer {
             // one is there to make sure a single feature error does not ruin the rendering
             // (best effort) whilst an exception in hasNext() + ignoring catch results in
             // an infinite loop
+            // the projection handlers and screen maps are calculated only for the first
+            // feature in the collection and are cached for reuse by subsequent features
             boolean firstFeature = true;
             ProjectionHandler[] handlers = new ProjectionHandler[lfts.size()];
             ScreenMap[] screenMaps = new ScreenMap[lfts.size()];

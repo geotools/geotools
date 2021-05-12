@@ -17,7 +17,7 @@ package org.geotools.gml.stream;
 
 import javax.xml.namespace.QName;
 
-/** Only the constants from the GML schema which are used by XmlStreamGeometryReader. */
+/** Names of GML elements parseable with XmlStreamGeometryReader. */
 public class GML {
     private GML() {}
 

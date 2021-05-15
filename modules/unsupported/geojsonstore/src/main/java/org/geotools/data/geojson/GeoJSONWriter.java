@@ -20,20 +20,31 @@ import com.bedatadriven.jackson.datatype.jts.JtsModule;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationConfig;
+import com.fasterxml.jackson.databind.ser.DefaultSerializerProvider;
+import com.fasterxml.jackson.databind.ser.SerializerFactory;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Array;
 import java.text.NumberFormat;
+import java.util.Collection;
+import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -56,6 +67,15 @@ import org.opengis.referencing.operation.TransformException;
  */
 public class GeoJSONWriter implements AutoCloseable {
     static Logger LOGGER = Logging.getLogger("org.geotools.data.geojson");
+
+    /** Date format (ISO 8601) */
+    public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSX";
+
+    /** Default time zone, GMT */
+    public static final TimeZone DEFAULT_TIME_ZONE = TimeZone.getTimeZone("GMT");
+
+    public static final FastDateFormat DEFAULT_DATE_FORMATTER =
+            FastDateFormat.getInstance(DEFAULT_DATE_FORMAT, DEFAULT_TIME_ZONE);
 
     private int maxDecimals = 4;
 
@@ -83,6 +103,8 @@ public class GeoJSONWriter implements AutoCloseable {
     private final JtsModule module;
     private NumberFormat formatter = NumberFormat.getNumberInstance(Locale.ENGLISH);
     private boolean notWritenBbox = true;
+    private boolean singleFeature = false;
+    private FastDateFormat dateFormatter = DEFAULT_DATE_FORMATTER;
 
     public GeoJSONWriter(OutputStream outputStream) throws IOException {
         // force the output CRS to be long, lat as required by spec
@@ -107,18 +129,20 @@ public class GeoJSONWriter implements AutoCloseable {
 
     /** @throws IOException */
     private void initialise() throws IOException {
-        generator.writeStartObject();
-        generator.writeStringField("type", "FeatureCollection");
-        if (bounds != null && isEncodeFeatureBounds()) {
-            /* If they have provided a bbox we can write it out at the top of the file,
-             * else we'll need to do it at the bottom.
-             */
-            writeBoundingEnvelope();
-            notWritenBbox = false;
+        if (!singleFeature) {
+            generator.writeStartObject();
+            generator.writeStringField("type", "FeatureCollection");
+            if (bounds != null && isEncodeFeatureBounds()) {
+                /* If they have provided a bbox we can write it out at the top of the file,
+                 * else we'll need to do it at the bottom.
+                 */
+                writeBoundingEnvelope();
+                notWritenBbox = false;
+            }
+            generator.writeFieldName("features");
+            generator.writeStartArray();
+            inArray = true;
         }
-        generator.writeFieldName("features");
-        generator.writeStartArray();
-        inArray = true;
         initalised = true;
     }
 
@@ -182,14 +206,8 @@ public class GeoJSONWriter implements AutoCloseable {
                 continue;
             }
             Class<?> binding = p.getType().getBinding();
-            if (binding == Integer.class) {
-                g.writeNumberField(name, (int) value);
-            } else if (binding == Double.class) {
-                g.writeNumberField(name, (double) value);
-            } else {
-                g.writeFieldName(name);
-                g.writeString(value.toString());
-            }
+            g.writeFieldName(name);
+            writeValue(g, value, binding);
         }
         g.writeEndObject();
 
@@ -215,6 +233,52 @@ public class GeoJSONWriter implements AutoCloseable {
         g.flush();
     }
 
+    private void writeValue(JsonGenerator g, Object value, Class<?> binding) throws IOException {
+        if (value == null) {
+            g.writeNull();
+            return;
+        }
+
+        if (binding == Integer.class) {
+            g.writeNumber((int) value);
+        } else if (binding == Double.class) {
+            g.writeNumber((double) value);
+        } else if (binding == Boolean.class) {
+            g.writeBoolean((boolean) value);
+        } else if (Date.class.isAssignableFrom(binding)) {
+            g.writeString(DEFAULT_DATE_FORMATTER.format(value));
+        } else if (Object.class.isAssignableFrom(binding) && value instanceof JsonNode) {
+            ((JsonNode) value)
+                    .serialize(
+                            g,
+                            new DefaultSerializerProvider(
+                                    mapper.getSerializerProvider(),
+                                    mapper.getSerializationConfig(),
+                                    mapper.getSerializerFactory()) {
+                                @Override
+                                public DefaultSerializerProvider createInstance(
+                                        SerializationConfig config, SerializerFactory jsf) {
+                                    throw new UnsupportedOperationException();
+                                }
+                            });
+        } else if (binding.isArray()) {
+            g.writeStartArray();
+            int length = Array.getLength(value);
+            for (int i = 0; i < length; i++) {
+                writeValue(g, Array.get(value, i), binding.getComponentType());
+            }
+            g.writeEndArray();
+        } else if (Collection.class.isAssignableFrom(binding)) {
+            g.writeStartArray();
+            for (Object v : ((Collection) value)) {
+                writeValue(g, v, v == null ? null : v.getClass());
+            }
+            g.writeEndArray();
+        } else {
+            g.writeString(value.toString());
+        }
+    }
+
     private Geometry reprojectGeometry(SimpleFeature currentFeature) {
         Geometry defaultGeometry = (Geometry) currentFeature.getDefaultGeometry();
         CoordinateReferenceSystem inCRS =
@@ -225,7 +289,11 @@ public class GeoJSONWriter implements AutoCloseable {
         if (transform == null || inCRS != lastCRS) {
             lastCRS = inCRS;
             try {
-                transform = CRS.findMathTransform(inCRS, outCRS, true);
+                if (inCRS == null) {
+                    transform = IdentityTransform.create(2);
+                } else {
+                    transform = CRS.findMathTransform(inCRS, outCRS, true);
+                }
             } catch (FactoryException e) {
                 throw new RuntimeException(e);
             }
@@ -362,6 +430,11 @@ public class GeoJSONWriter implements AutoCloseable {
      * @throws IOException
      */
     public void writeFeatureCollection(SimpleFeatureCollection features) throws IOException {
+        // the collection might be empty, but we still need the wrapper JSON
+        // for a collection to be generated
+        if (!initalised) {
+            initialise();
+        }
         try (SimpleFeatureIterator itr = features.features()) {
             while (itr.hasNext()) {
                 SimpleFeature feature = (SimpleFeature) itr.next();
@@ -372,5 +445,58 @@ public class GeoJSONWriter implements AutoCloseable {
 
     public void setBounds(ReferencedEnvelope bbox) {
         bounds = bbox;
+    }
+
+    /** Returns true if the JSON is going to be pretty-printed, false otherwise */
+    public boolean isSingleFeature() {
+        return singleFeature;
+    }
+
+    /**
+     * Turns on and off the single feature mode. In single feature mode the feature collection
+     * wrapper elements won't be emitted. Defaults to false.
+     *
+     * @param singleFeature
+     */
+    public void setSingleFeature(boolean singleFeature) {
+        this.singleFeature = singleFeature;
+    }
+
+    /** Enables/disables pretty printing. */
+    public void setPrettyPrinting(boolean prettyPrint) {
+        if (prettyPrint) generator.setPrettyPrinter(new DefaultPrettyPrinter());
+        else generator.setPrettyPrinter(null);
+    }
+
+    /** Returns true if pretty printing is enabled, false otherwise. */
+    public boolean isPrettyPrinting() {
+        return generator.getPrettyPrinter() != null;
+    }
+
+    /**
+     * Sets the Timezone used to format the date fields. <code>null</code> is a valid value, the JVM
+     * local timezone will be used in that case.
+     */
+    public void setTimeZone(TimeZone tz) {
+        this.dateFormatter = FastDateFormat.getInstance(dateFormatter.getPattern(), tz);
+    }
+
+    /** Returns the timezone used to format dates. Defaults to GMT. */
+    public TimeZone getTimeZone(TimeZone tz) {
+        return dateFormatter.getTimeZone();
+    }
+
+    /**
+     * Sets the date format for time encoding
+     *
+     * @param pattern {@link java.text.SimpleDateFormat} compatible * pattern
+     */
+    public void setDatePattern(String pattern) {
+        this.dateFormatter = FastDateFormat.getInstance(pattern, dateFormatter.getTimeZone());
+    }
+
+    /** Returns the date formatter pattern. Defaults to DEFAULT_DATE_FORMAT */
+    public String getDatePattern() {
+        return this.dateFormatter.getPattern();
     }
 }

@@ -20,6 +20,7 @@ package org.geotools.filter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 import org.geotools.factory.CommonFactoryFinder;
@@ -43,8 +44,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
- * parsez short sections of gml for use in expressions and filters Hopefully we can get away without
- * a full parser here.
+ * parses short sections of gml for use in expressions and filters. Hopefully we can get away
+ * without a full parser here.
  *
  * @author iant
  * @author Niels Charlier
@@ -63,17 +64,19 @@ public final class ExpressionDOMParser {
     /** number of coordinates in a box */
     private static final int NUM_BOX_COORDS = 5;
 
-    /** Creates a new instance of ExpressionXmlParser */
-    private ExpressionDOMParser() {
-        this(CommonFactoryFinder.getFilterFactory2(null));
-        LOGGER.finer("made new logic factory");
-    }
     /** Constructor injection */
     public ExpressionDOMParser(FilterFactory2 factory) {
         ff = factory != null ? factory : CommonFactoryFinder.getFilterFactory2(null);
     }
-    /** Setter injection */
+
+    /**
+     * Setter injection
+     *
+     * @deprecated Will not be API in the future anymore.
+     */
+    @Deprecated
     public void setFilterFactory(FilterFactory2 factory) {
+        Objects.requireNonNull(factory);
         ff = factory;
     }
 

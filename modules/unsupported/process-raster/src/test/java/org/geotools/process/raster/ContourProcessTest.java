@@ -244,24 +244,34 @@ public class ContourProcessTest {
     }
 
     @Test
-    public void testContourWithTransformAndReprojection() throws Exception {
-        int width = 256;
-        int height = 256;
+    public void testContourWithTransformAndReprojection_WithOpacitySingleFTS() throws Exception {
+        // The style with a single FeatureTypeStyle will use plain rendering.
         // The style with opacity will not use the screenmap.
-        int whiteSamples1 = countWhiteSamples("contour_with_opacity.sld", width, height);
-        // The style without opacity will use the screenmap.
-        int whiteSamples2 = countWhiteSamples("contour_without_opacity.sld", width, height);
-        // The white contour lines with the sample data and styles should cover about
-        // 0.25% of the rendered image regardless of whether the screenmap is used.
-        // The bug that this is testing would cause a large number of diagonal lines
-        // to be drawn across the image so the percentage of white pixels with the
-        // bug would be significantly higher.
-        double area = width * height;
-        assertEquals(0.0025, whiteSamples1 / area, 0.0005);
-        assertEquals(0.0025, whiteSamples2 / area, 0.0005);
+        assertWhiteSamples("contour_with_opacity.sld");
     }
 
-    private int countWhiteSamples(String styleName, int width, int height) throws Exception {
+    @Test
+    public void testContourWithTransformAndReprojection_WithoutOpacitySingleFTS() throws Exception {
+        // The style with a single FeatureTypeStyle will use plain rendering.
+        // The style without opacity will use the screenmap.
+        assertWhiteSamples("contour_without_opacity.sld");
+    }
+
+    @Test
+    public void testContourWithTransformAndReprojection_WithOpacityMultiFTS() throws Exception {
+        // The style with multiple FeatureTypeStyles will use optimized rendering.
+        // The style with opacity will not use the screenmap.
+        assertWhiteSamples("contour_multi_fts_with_opacity.sld");
+    }
+
+    @Test
+    public void testContourWithTransformAndReprojection_WithoutOpacityMultiFTS() throws Exception {
+        // The style with multiple FeatureTypeStyles will use optimized rendering.
+        // The style without opacity will use the screenmap.
+        assertWhiteSamples("contour_multi_fts_without_opacity.sld");
+    }
+
+    private void assertWhiteSamples(String styleName) throws Exception {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
         URL url = TestData.getResource(this, styleName);
         Style style = new SLDParser(factory, url).readXML()[0];
@@ -279,6 +289,8 @@ public class ContourProcessTest {
         renderer.setMapContent(mc);
 
         // render the image with the EPSG:4326 projection
+        int width = 256;
+        int height = 256;
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = image.createGraphics();
         renderer.paint(
@@ -295,6 +307,13 @@ public class ContourProcessTest {
                 whiteSamples += raster.getSample(i, j, 0) == 255 ? 1 : 0;
             }
         }
-        return whiteSamples;
+
+        // The white contour lines with the sample data and styles should cover about
+        // 0.25% of the rendered image regardless of whether the screenmap is used.
+        // The bug that this is testing would cause a large number of diagonal lines
+        // to be drawn across the image so the percentage of white pixels with the
+        // bug would be significantly higher.
+        double area = width * height;
+        assertEquals(0.0025, whiteSamples / area, 0.0005);
     }
 }

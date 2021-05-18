@@ -38,6 +38,7 @@ import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.test.TestData;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
@@ -46,9 +47,19 @@ import org.opengis.filter.Filter;
 
 public class ShapefileWithCpgTest extends TestCaseSupport {
 
+    private String savedEnableCPGSwitch;
+
     @Before
     public void setUp() throws Exception {
         copyShapefiles(RUSSIAN);
+        enableCPGSwitch();
+    }
+
+    @After
+    @Override
+    public void tearDown() throws Exception {
+        restoreCPGSwitch();
+        super.tearDown();
     }
 
     @Test
@@ -227,6 +238,19 @@ public class ShapefileWithCpgTest extends TestCaseSupport {
             }
         } finally {
             dataStore.dispose();
+        }
+    }
+
+    private void enableCPGSwitch() {
+        savedEnableCPGSwitch = System.getProperty(ShapefileDataStoreFactory.ENABLE_CPG_SWITCH);
+        System.setProperty(ShapefileDataStoreFactory.ENABLE_CPG_SWITCH, "true");
+    }
+
+    private void restoreCPGSwitch() {
+        if (savedEnableCPGSwitch != null) {
+            System.setProperty(ShapefileDataStoreFactory.ENABLE_CPG_SWITCH, savedEnableCPGSwitch);
+        } else {
+            System.clearProperty(ShapefileDataStoreFactory.ENABLE_CPG_SWITCH);
         }
     }
 }

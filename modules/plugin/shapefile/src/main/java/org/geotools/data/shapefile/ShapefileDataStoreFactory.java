@@ -49,6 +49,11 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
             new Param(
                     "url", URL.class, "url to a .shp file", true, null, new KVP(Param.EXT, "shp"));
 
+    /**
+     * This system property will enable "DBF charset autodetection from CPG sidecar file" feature.
+     */
+    public static final String ENABLE_CPG_SWITCH = "org.geotools.shapefile.enableCPG";
+
     /** Optional - uri of the FeatureType's namespace */
     public static final Param NAMESPACEP =
             new Param(
@@ -248,7 +253,9 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
             store.setMemoryMapped(useMemoryMappedBuffer);
             store.setBufferCachingEnabled(cacheMemoryMaps);
             store.setCharset(dbfCharset);
-            if (!hasParam(DBFCHARSET, params)) {
+            // CPG sidecar file enabled by default
+            boolean enableCPG = Boolean.valueOf(System.getProperty(ENABLE_CPG_SWITCH, "true"));
+            if (enableCPG && !hasParam(DBFCHARSET, params)) {
                 store.setTryCPGFile(true);
             }
             store.setTimeZone(dbfTimeZone);

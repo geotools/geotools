@@ -34,7 +34,17 @@ GeoTools 26.x
 Shapefile
 ^^^^^^^^^
 
-If no explicit charset parameter passed to ``ShapefileDataStoreFactory``, it will now instruct created ``ShapefileDataStore`` to try to figure out DBF file charset from CPG file. If the store fails to read CPG it uses the default charset specified by ``ShapefileDataStoreFactory.DBFCHARSET`` constant, which is usual behavior.
+``ShapefileDataStore`` will autodetect DBF charset from CPG sidecar file, the feature now enabled by default. When this feature 
+enabled the following rules apply:
+
+* if no explicit charset parameter passed to ``ShapefileDataStoreFactory``, it will instruct created ``ShapefileDataStore``
+  to try and figure out DBF file charset from CPG file. In this case, CPG files must contain correct charset name, otherwise, 
+  these files should be removed, or updated properly. 
+* if the store fails to read CPG, it uses the default charset specified by ``ShapefileDataStoreFactory.DBFCHARSET`` constant, 
+  which is usual behavior.
+
+In case of trouble there is an ability to bring old behavior back by setting ``org.geotools.shapefile.enableCPG`` system property
+to "false". This turns autodetection off. The name of the property stored in ``ShapefileDataStoreFactory.ENABLE_CPG_SWITCH`` constant.
 
 GeoTools 25.x
 -------------

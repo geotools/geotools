@@ -28,6 +28,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import org.geotools.geometry.jts.CurvedGeometryFactory;
 import org.geotools.geometry.jts.MultiCurve;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -45,10 +46,13 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /** Parse GML geometries from a StAX XMLStreamReader. */
 public class XmlStreamGeometryReader {
+    public static final double DEFAULT_CURVE_TOLERANCE = Double.MAX_VALUE;
 
     private final XMLStreamReader reader;
 
     private GeometryFactory geomFac;
+
+    private CurvedGeometryFactory curvedGeometryFactory;
 
     private boolean unsafeXMLAllowed = false;
 
@@ -56,9 +60,21 @@ public class XmlStreamGeometryReader {
 
     private final Map<CoordinateReferenceSystem, Boolean> invertAxisNeededCache = new HashMap<>();
 
+    public XmlStreamGeometryReader(final XMLStreamReader reader) {
+        this(reader, new GeometryFactory());
+    }
+
     public XmlStreamGeometryReader(final XMLStreamReader reader, final GeometryFactory geomFac) {
-        this.geomFac = geomFac;
+        this(reader, geomFac, new CurvedGeometryFactory(geomFac, DEFAULT_CURVE_TOLERANCE));
+    }
+
+    public XmlStreamGeometryReader(
+            final XMLStreamReader reader,
+            final GeometryFactory geomFac,
+            final CurvedGeometryFactory curvedGeometryFactory) {
         this.reader = reader;
+        this.geomFac = geomFac;
+        this.curvedGeometryFactory = curvedGeometryFactory;
     }
 
     public void setGeometryFactory(GeometryFactory geomFac) {
@@ -135,6 +151,8 @@ public class XmlStreamGeometryReader {
             geom = parsePoint(dimension, crs);
         } else if (GML.LineString.equals(startingGeometryTagName)) {
             geom = parseLineString(dimension, crs);
+        } else if (GML.Curve.equals(startingGeometryTagName)) {
+            geom = parseCurve(dimension, crs);
         } else if (GML.Polygon.equals(startingGeometryTagName)) {
             geom = parsePolygon(dimension, crs);
         } else if (GML.MultiPoint.equals(startingGeometryTagName)) {
@@ -184,7 +202,7 @@ public class XmlStreamGeometryReader {
                 throw new UnsupportedOperationException(
                         GML.CompositeCurve + " is not supported yet");
             } else if (GML.Curve.equals(startingGeometryTagName)) {
-                throw new UnsupportedOperationException(GML.Curve + " is not supported yet");
+                lines.add(parseCurve(dimension, crs));
             } else if (GML.OrientableCurve.equals(startingGeometryTagName)) {
                 throw new UnsupportedOperationException(
                         GML.OrientableCurve + " is not supported yet");
@@ -196,7 +214,8 @@ public class XmlStreamGeometryReader {
 
         reader.require(END_ELEMENT, GML.NAMESPACE, GML.MultiCurve.getLocalPart());
 
-        MultiCurve geom = new MultiCurve(lines, geomFac, 1.0);
+        MultiCurve geom = this.curvedGeometryFactory.createMultiCurve(lines);
+        geom.setUserData(crs);
         return geom;
     }
 
@@ -385,7 +404,7 @@ public class XmlStreamGeometryReader {
 
         if (GML.exterior.equals(name)) {
             reader.nextTag();
-            shell = parseLinearRing(dimension, crs);
+            shell = parseRing(dimension, crs);
             reader.nextTag();
             reader.require(END_ELEMENT, GML.NAMESPACE, GML.exterior.getLocalPart());
         } else if (GML.outerBoundaryIs.equals(name)) {
@@ -409,12 +428,7 @@ public class XmlStreamGeometryReader {
                 while (true) {
                     reader.require(START_ELEMENT, GML.NAMESPACE, name.getLocalPart());
                     reader.nextTag();
-                    reader.require(START_ELEMENT, GML.NAMESPACE, GML.LinearRing.getLocalPart());
-
-                    LinearRing hole = parseLinearRing(dimension, crs);
-
-                    reader.require(END_ELEMENT, GML.NAMESPACE, GML.LinearRing.getLocalPart());
-
+                    LinearRing hole = parseRing(dimension, crs);
                     holes.add(hole);
 
                     reader.nextTag();
@@ -440,6 +454,48 @@ public class XmlStreamGeometryReader {
         return geom;
     }
 
+    private LinearRing parseRing(final int dimension, CoordinateReferenceSystem crs)
+            throws XMLStreamException, IOException, NoSuchAuthorityCodeException, FactoryException {
+
+        QName name = reader.getName();
+
+        if (GML.LinearRing.equals(name)) {
+            return parseLinearRing(dimension, crs);
+        }
+
+        reader.require(START_ELEMENT, GML.NAMESPACE, GML.Ring.getLocalPart());
+
+        List<LineString> components = new ArrayList<>();
+
+        reader.nextTag();
+        while (true) {
+            reader.require(START_ELEMENT, GML.NAMESPACE, GML.curveMember.getLocalPart());
+            reader.nextTag();
+
+            name = reader.getName();
+            reader.require(START_ELEMENT, GML.NAMESPACE, null);
+            if (GML.LineString.equals(name)) {
+                components.add(parseLineString(dimension, crs));
+            } else {
+                components.add(parseCurve(dimension, crs));
+            }
+
+            reader.nextTag();
+            reader.require(END_ELEMENT, GML.NAMESPACE, GML.curveMember.getLocalPart());
+            reader.nextTag();
+            if (END_ELEMENT == reader.getEventType()
+                    && GML.Ring.getLocalPart().equals(reader.getLocalName())) {
+                // we're done
+                break;
+            }
+        }
+        // createCurvedGeometry() will create a CompoundRing which extends LinearRing
+        LinearRing linearRing =
+                (LinearRing) this.curvedGeometryFactory.createCurvedGeometry(components);
+        linearRing.setUserData(crs);
+        return linearRing;
+    }
+
     private LinearRing parseLinearRing(final int dimension, CoordinateReferenceSystem crs)
             throws XMLStreamException, IOException, NoSuchAuthorityCodeException, FactoryException {
         reader.require(START_ELEMENT, GML.NAMESPACE, GML.LinearRing.getLocalPart());
@@ -454,15 +510,28 @@ public class XmlStreamGeometryReader {
         return linearRing;
     }
 
+    private LineString parseLineStringSegment(int dimension, CoordinateReferenceSystem crs)
+            throws XMLStreamException, IOException, NoSuchAuthorityCodeException, FactoryException {
+        return parseLineString(dimension, crs, true);
+    }
+
     private LineString parseLineString(int dimension, CoordinateReferenceSystem crs)
             throws XMLStreamException, IOException, NoSuchAuthorityCodeException, FactoryException {
+        return parseLineString(dimension, crs, false);
+    }
 
-        reader.require(START_ELEMENT, GML.NAMESPACE, GML.LineString.getLocalPart());
+    private LineString parseLineString(
+            int dimension, CoordinateReferenceSystem crs, final boolean isSegment)
+            throws XMLStreamException, IOException, NoSuchAuthorityCodeException, FactoryException {
+
+        final QName lineStringElement = isSegment ? GML.LineStringSegment : GML.LineString;
+
+        reader.require(START_ELEMENT, GML.NAMESPACE, lineStringElement.getLocalPart());
 
         crs = crs(crs);
         Coordinate[] coordinates = parseLineStringInternal(dimension, crs);
 
-        reader.require(END_ELEMENT, GML.NAMESPACE, GML.LineString.getLocalPart());
+        reader.require(END_ELEMENT, GML.NAMESPACE, lineStringElement.getLocalPart());
 
         LineString geom = geomFac.createLineString(coordinates);
         geom.setUserData(crs);
@@ -521,6 +590,78 @@ public class XmlStreamGeometryReader {
         reader.require(
                 END_ELEMENT, lineElementName.getNamespaceURI(), lineElementName.getLocalPart());
         return lineCoords;
+    }
+
+    private LineString parseCurve(final int dimension, CoordinateReferenceSystem crs)
+            throws XMLStreamException, IOException, NoSuchAuthorityCodeException, FactoryException {
+
+        reader.require(START_ELEMENT, GML.NAMESPACE, GML.Curve.getLocalPart());
+
+        List<LineString> lines = new ArrayList<>(2);
+
+        reader.nextTag();
+        reader.require(START_ELEMENT, GML.NAMESPACE, GML.segments.getLocalPart());
+
+        reader.nextTag();
+        while (true) {
+            reader.require(START_ELEMENT, GML.NAMESPACE, null);
+
+            final QName name = reader.getName();
+
+            if (GML.LineStringSegment.equals(name)) {
+                lines.add(parseLineStringSegment(dimension, crs));
+            } else if (GML.Arc.equals(name)) {
+                lines.add(parseArc(dimension, crs));
+            } else {
+                throw new UnsupportedOperationException(
+                        "Curve segment " + name.getLocalPart() + " is not supported yet");
+            }
+
+            reader.nextTag();
+
+            if (END_ELEMENT == reader.getEventType()
+                    && GML.segments.getLocalPart().equals(reader.getLocalName())) {
+                // we're done
+                break;
+            }
+        }
+
+        reader.nextTag();
+        reader.require(END_ELEMENT, GML.NAMESPACE, GML.Curve.getLocalPart());
+
+        LineString geom = curvedGeometryFactory.createCurvedGeometry(lines);
+        geom.setUserData(crs);
+        return geom;
+    }
+
+    private LineString parseArc(int dimension, CoordinateReferenceSystem crs)
+            throws XMLStreamException, IOException, NoSuchAuthorityCodeException, FactoryException {
+        reader.require(START_ELEMENT, GML.NAMESPACE, GML.Arc.getLocalPart());
+
+        crs = crs(crs);
+
+        reader.nextTag();
+        // This could also be: gml:coordinates (deprecated) or three gml:pos or gml:Point elements
+        reader.require(START_ELEMENT, GML.NAMESPACE, GML.posList.getLocalPart());
+
+        Coordinate[] coordinates = parseCoordList(dimension, crs);
+        reader.nextTag();
+        reader.require(END_ELEMENT, GML.NAMESPACE, GML.Arc.getLocalPart());
+
+        if (coordinates.length != 3) {
+            throw new IllegalStateException("Arc must have 3 control points");
+        }
+        LineString geom =
+                curvedGeometryFactory.createCircularString(
+                        dimension,
+                        coordinates[0].getX(),
+                        coordinates[0].getY(),
+                        coordinates[1].getX(),
+                        coordinates[1].getY(),
+                        coordinates[2].getX(),
+                        coordinates[2].getY());
+        geom.setUserData(crs);
+        return geom;
     }
 
     private Point parsePoint(int dimension, CoordinateReferenceSystem crs)

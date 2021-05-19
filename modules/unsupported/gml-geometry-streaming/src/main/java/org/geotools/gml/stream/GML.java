@@ -23,6 +23,7 @@ public class GML {
 
     public static final String NAMESPACE = "http://www.opengis.net/gml";
 
+    public static final QName Arc = new QName(NAMESPACE, "Arc");
     public static final QName CompositeCurve = new QName(NAMESPACE, "CompositeCurve");
     public static final QName coord = new QName(NAMESPACE, "coord");
     public static final QName coordinates = new QName(NAMESPACE, "coordinates");
@@ -34,6 +35,7 @@ public class GML {
     public static final QName LinearRing = new QName(NAMESPACE, "LinearRing");
     public static final QName LineString = new QName(NAMESPACE, "LineString");
     public static final QName lineStringMember = new QName(NAMESPACE, "lineStringMember");
+    public static final QName LineStringSegment = new QName(NAMESPACE, "LineStringSegment");
     public static final QName MultiCurve = new QName(NAMESPACE, "MultiCurve");
     public static final QName MultiLineString = new QName(NAMESPACE, "MultiLineString");
     public static final QName MultiPoint = new QName(NAMESPACE, "MultiPoint");
@@ -48,6 +50,8 @@ public class GML {
     public static final QName polygonMember = new QName(NAMESPACE, "polygonMember");
     public static final QName pos = new QName(NAMESPACE, "pos");
     public static final QName posList = new QName(NAMESPACE, "posList");
+    public static final QName Ring = new QName(NAMESPACE, "Ring");
+    public static final QName segments = new QName(NAMESPACE, "segments");
     public static final QName srsName = new QName(NAMESPACE, "srsName");
     public static final QName surfaceMember = new QName(NAMESPACE, "surfaceMember");
     public static final QName surfaceMembers = new QName(NAMESPACE, "surfaceMembers");

@@ -19,7 +19,6 @@ package org.geotools.ows.wmts.request;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -330,23 +329,12 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
 
     @Override
     public URL getFinalURL() {
-        String requestUrl = onlineResource.toString();
-        if (WMTSServiceType.REST.equals(type)) {
-            requestUrl = layer.getTemplate(format);
-            if (requestUrl == null) {
-                if (LOGGER.isLoggable(Level.INFO))
-                    LOGGER.info("Template URL not available for format  " + format);
-                type = WMTSServiceType.KVP;
-                requestUrl = onlineResource.toString();
-            }
+        if (WMTSServiceType.REST.equals(type) && layer.getTemplate(format) == null) {
+            LOGGER.info("Template URL not available for format  " + format);
+            type = WMTSServiceType.KVP;
+            return onlineResource;
         }
-        URL ret = null;
-        try {
-            ret = new URL(requestUrl);
-        } catch (MalformedURLException e) {
-            LOGGER.log(Level.SEVERE, "", e);
-        }
-        return ret;
+        return super.getFinalURL();
     }
 
     private TileMatrixSet selectMatrixSet() throws ServiceException, RuntimeException {

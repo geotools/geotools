@@ -330,20 +330,21 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
 
     @Override
     public URL getFinalURL() {
-        if (WMTSServiceType.REST.equals(type)) { 
-        	if (layer.getTemplate(format) == null) {
+        if (WMTSServiceType.REST.equals(type)) {
+            if (layer.getTemplate(format) == null) {
                 LOGGER.info("Template URL not available for format  " + format);
                 type = WMTSServiceType.KVP;
                 return onlineResource;
-        	} else {
-        		try {
-					return new URL(layer.getTemplate(format));
-				} catch (MalformedURLException e) {
-					throw new RuntimeException("URL for GetTile specified within capabilities is wrong.", e);
-				}
-        	}
+            } else {
+                try {
+                    return new URL(layer.getTemplate(format));
+                } catch (MalformedURLException e) {
+                    throw new RuntimeException(
+                            "URL for GetTile specified within capabilities is wrong.", e);
+                }
+            }
         } else {
-        	return super.getFinalURL();
+            return super.getFinalURL();
         }
     }
 

@@ -102,7 +102,7 @@ class WMTSTile extends Tile {
     public URL getUrl() {
         String baseUrl = getService().getTemplateURL();
         if (LOGGER.isLoggable(Level.FINE)) {
-        	LOGGER.fine("baseUrl in tile.getUrl is :" + baseUrl);
+            LOGGER.fine("baseUrl in tile.getUrl is :" + baseUrl);
         }
         TileIdentifier tileIdentifier = getTileIdentifier();
         WMTSServiceType type = getType();
@@ -164,8 +164,8 @@ class WMTSTile extends Tile {
     }
 
     private URL getKVPurl(String baseUrl, TileIdentifier tileIdentifier) throws RuntimeException {
-    	final String lowerBaseUrl = baseUrl.toLowerCase();
-    	
+        final String lowerBaseUrl = baseUrl.toLowerCase();
+
         HashMap<String, Object> params = new HashMap<>();
         params.put("service", "WMTS");
         params.put("version", "1.0.0");
@@ -187,20 +187,21 @@ class WMTSTile extends Tile {
             skipFirst = true;
         }
         for (String key : params.keySet()) {
-        	if (!lowerBaseUrl.contains(key.toLowerCase() + "=")) {
-	            Object val = params.get(key);
-	            try {
-	                if (val != null) {
-	                    arguments.append(skipFirst ? "" : "&")
-	                    		 .append(key)
-	                    		 .append("=")
-	                    		 .append(URLEncoder.encode(val.toString(), "UTF-8"));
-	                    skipFirst = false;
-	                }
-	            } catch (Exception e) {
-	                LOGGER.warning("Could not encode param '" + key + "' with value '" + val + "'");
-	            }
-        	}
+            if (!lowerBaseUrl.contains(key.toLowerCase() + "=")) {
+                Object val = params.get(key);
+                try {
+                    if (val != null) {
+                        arguments
+                                .append(skipFirst ? "" : "&")
+                                .append(key)
+                                .append("=")
+                                .append(URLEncoder.encode(val.toString(), "UTF-8"));
+                        skipFirst = false;
+                    }
+                } catch (Exception e) {
+                    LOGGER.warning("Could not encode param '" + key + "' with value '" + val + "'");
+                }
+            }
         }
 
         try {

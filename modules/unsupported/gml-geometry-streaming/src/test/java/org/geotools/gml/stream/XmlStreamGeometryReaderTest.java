@@ -58,7 +58,9 @@ public class XmlStreamGeometryReaderTest {
         r.nextTag();
         Exception exception =
                 assertThrows(IllegalStateException.class, geometryReader::readGeometry);
-        assertEquals(exception.getMessage(), "Unrecognized geometry element unknown");
+        assertEquals(
+                "Expected a geometry element in the GML namespace but found \"unknown\"",
+                exception.getMessage());
     }
 
     @Test

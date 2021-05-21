@@ -15,44 +15,43 @@
 
 package org.geotools.gml.stream;
 
-import javax.xml.namespace.QName;
-
 /** Names of GML elements parseable with XmlStreamGeometryReader. */
 public class GML {
     private GML() {}
 
     public static final String NAMESPACE = "http://www.opengis.net/gml";
+    public static final String NAMESPACE_3_2 = "http://www.opengis.net/gml/3.2";
 
-    public static final QName Arc = new QName(NAMESPACE, "Arc");
-    public static final QName CompositeCurve = new QName(NAMESPACE, "CompositeCurve");
-    public static final QName coord = new QName(NAMESPACE, "coord");
-    public static final QName coordinates = new QName(NAMESPACE, "coordinates");
-    public static final QName Curve = new QName(NAMESPACE, "Curve");
-    public static final QName curveMember = new QName(NAMESPACE, "curveMember");
-    public static final QName exterior = new QName(NAMESPACE, "exterior");
-    public static final QName innerBoundaryIs = new QName(NAMESPACE, "innerBoundaryIs");
-    public static final QName interior = new QName(NAMESPACE, "interior");
-    public static final QName LinearRing = new QName(NAMESPACE, "LinearRing");
-    public static final QName LineString = new QName(NAMESPACE, "LineString");
-    public static final QName lineStringMember = new QName(NAMESPACE, "lineStringMember");
-    public static final QName LineStringSegment = new QName(NAMESPACE, "LineStringSegment");
-    public static final QName MultiCurve = new QName(NAMESPACE, "MultiCurve");
-    public static final QName MultiLineString = new QName(NAMESPACE, "MultiLineString");
-    public static final QName MultiPoint = new QName(NAMESPACE, "MultiPoint");
-    public static final QName MultiPolygon = new QName(NAMESPACE, "MultiPolygon");
-    public static final QName MultiSurface = new QName(NAMESPACE, "MultiSurface");
-    public static final QName OrientableCurve = new QName(NAMESPACE, "OrientableCurve");
-    public static final QName outerBoundaryIs = new QName(NAMESPACE, "outerBoundaryIs");
-    public static final QName Point = new QName(NAMESPACE, "Point");
-    public static final QName pointMember = new QName(NAMESPACE, "pointMember");
-    public static final QName pointMembers = new QName(NAMESPACE, "pointMembers");
-    public static final QName Polygon = new QName(NAMESPACE, "Polygon");
-    public static final QName polygonMember = new QName(NAMESPACE, "polygonMember");
-    public static final QName pos = new QName(NAMESPACE, "pos");
-    public static final QName posList = new QName(NAMESPACE, "posList");
-    public static final QName Ring = new QName(NAMESPACE, "Ring");
-    public static final QName segments = new QName(NAMESPACE, "segments");
-    public static final QName srsName = new QName(NAMESPACE, "srsName");
-    public static final QName surfaceMember = new QName(NAMESPACE, "surfaceMember");
-    public static final QName surfaceMembers = new QName(NAMESPACE, "surfaceMembers");
+    public static final String Arc = "Arc";
+    public static final String CompositeCurve = "CompositeCurve";
+    public static final String coord = "coord";
+    public static final String coordinates = "coordinates";
+    public static final String Curve = "Curve";
+    public static final String curveMember = "curveMember";
+    public static final String exterior = "exterior";
+    public static final String innerBoundaryIs = "innerBoundaryIs";
+    public static final String interior = "interior";
+    public static final String LinearRing = "LinearRing";
+    public static final String LineString = "LineString";
+    public static final String lineStringMember = "lineStringMember";
+    public static final String LineStringSegment = "LineStringSegment";
+    public static final String MultiCurve = "MultiCurve";
+    public static final String MultiLineString = "MultiLineString";
+    public static final String MultiPoint = "MultiPoint";
+    public static final String MultiPolygon = "MultiPolygon";
+    public static final String MultiSurface = "MultiSurface";
+    public static final String OrientableCurve = "OrientableCurve";
+    public static final String outerBoundaryIs = "outerBoundaryIs";
+    public static final String Point = "Point";
+    public static final String pointMember = "pointMember";
+    public static final String pointMembers = "pointMembers";
+    public static final String Polygon = "Polygon";
+    public static final String polygonMember = "polygonMember";
+    public static final String pos = "pos";
+    public static final String posList = "posList";
+    public static final String Ring = "Ring";
+    public static final String segments = "segments";
+    public static final String srsName = "srsName";
+    public static final String surfaceMember = "surfaceMember";
+    public static final String surfaceMembers = "surfaceMembers";
 }

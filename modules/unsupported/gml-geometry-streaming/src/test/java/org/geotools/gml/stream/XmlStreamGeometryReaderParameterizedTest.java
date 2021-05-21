@@ -19,13 +19,18 @@ package org.geotools.gml.stream;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import org.geotools.geometry.jts.CompoundCurve;
 import org.junit.Test;
@@ -38,7 +43,6 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.referencing.FactoryException;
 import org.xml.sax.SAXException;
 
 @RunWith(Parameterized.class)
@@ -140,39 +144,60 @@ public class XmlStreamGeometryReaderParameterizedTest {
     }
 
     @Test
-    public void test()
-            throws IOException, XMLStreamException, FactoryException, ParserConfigurationException,
-                    SAXException {
-        try (InputStream input =
+    public void test() throws Exception {
+
+        String gml = null;
+
+        try (InputStream gmlBytes =
                 getClass()
                         .getClassLoader()
                         .getResourceAsStream("org/geotools/gml/stream/" + gmlResource)) {
-            XMLInputFactory f = XMLInputFactory.newInstance();
-            f.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
-            XMLStreamReader r = f.createXMLStreamReader(input);
-            XmlStreamGeometryReader geometryReader = new XmlStreamGeometryReader(r);
-            r.nextTag();
-            Geometry g = geometryReader.readGeometry();
-            assertNotNull(g);
-            assertEquals(expectedGeometryClass, g.getClass());
-            assertEquals(expectedWKT, g.toString());
 
-            if (compareXSD) {
-                Geometry xsdGeometry = parseWithXSD();
-                // Compare via default WKT toString()
-                assertEquals(xsdGeometry.toString(), g.toString());
-            }
+            gml =
+                    new BufferedReader(new InputStreamReader(gmlBytes, StandardCharsets.UTF_8))
+                            .lines()
+                            .collect(Collectors.joining("\n"));
+        }
+
+        /* Just use a simple string replace on the namespace URI to make GML 3.2 testcases, assuming no differences in the
+         * geometries exist between GML 2/3.1 and 3.2.
+         */
+        String gml3_2 =
+                gml.replaceAll(
+                        Pattern.quote("http://www.opengis.net/gml"),
+                        "http://www.opengis.net/gml/3.2");
+
+        testWithGmlString(gml, false);
+        testWithGmlString(gml3_2, true);
+    }
+
+    private void testWithGmlString(final String gml, final boolean isGml3_2) throws Exception {
+        XMLInputFactory f = XMLInputFactory.newInstance();
+        f.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
+        XMLStreamReader r = f.createXMLStreamReader(new StringReader(gml));
+        XmlStreamGeometryReader geometryReader = new XmlStreamGeometryReader(r);
+        r.nextTag();
+        Geometry g = geometryReader.readGeometry();
+        assertNotNull(g);
+        assertEquals(expectedGeometryClass, g.getClass());
+        assertEquals(expectedWKT, g.toString());
+
+        if (compareXSD) {
+            Geometry xsdGeometry = parseWithXSD(gml, isGml3_2);
+            // Compare via default WKT toString()
+            assertEquals(xsdGeometry.toString(), g.toString());
         }
     }
 
-    private Geometry parseWithXSD() throws IOException, ParserConfigurationException, SAXException {
-        try (InputStream input =
-                getClass()
-                        .getClassLoader()
-                        .getResourceAsStream("org/geotools/gml/stream/" + gmlResource)) {
-            org.geotools.xsd.Parser parser =
-                    new org.geotools.xsd.Parser(new org.geotools.gml3.GMLConfiguration());
-            return (Geometry) parser.parse(input);
+    private static Geometry parseWithXSD(final String gml, final boolean isGml3_2)
+            throws IOException, ParserConfigurationException, SAXException {
+        org.geotools.xsd.Configuration configuration;
+        if (isGml3_2) {
+            configuration = new org.geotools.gml3.v3_2.GMLConfiguration();
+        } else {
+            configuration = new org.geotools.gml3.GMLConfiguration();
         }
+        org.geotools.xsd.Parser parser = new org.geotools.xsd.Parser(configuration);
+        return (Geometry) parser.parse(new StringReader(gml));
     }
 }

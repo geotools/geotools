@@ -23,7 +23,6 @@ GeoTools ruleset. See https://pmd.github.io/latest/pmd_userdocs_understanding_ru
 </description>
   <rule ref="category/java/bestpractices.xml/AvoidUsingHardCodedIP"/>
   <rule ref="category/java/bestpractices.xml/CheckResultSet"/>
-  <rule ref="category/java/bestpractices.xml/UnusedImports"/>
   <!--rule ref="category/java/bestpractices.xml/UnusedFormalParameter" /-->
   <rule ref="category/java/bestpractices.xml/UnusedLocalVariable"/>
   <rule ref="category/java/bestpractices.xml/UnusedPrivateField"/>
@@ -45,13 +44,9 @@ GeoTools ruleset. See https://pmd.github.io/latest/pmd_userdocs_understanding_ru
   <rule ref="category/java/bestpractices.xml/MissingOverride" />
   <rule ref="category/java/performance.xml/UseArrayListInsteadOfVector" />
 
-  <rule ref="category/java/codestyle.xml/DontImportJavaLang"/>
-  <rule ref="category/java/codestyle.xml/DuplicateImports"/>
   <rule ref="category/java/codestyle.xml/ExtendsObject"/>
   <rule ref="category/java/codestyle.xml/ForLoopShouldBeWhileLoop"/>
-  <!--rule ref="category/java/codestyle.xml/TooManyStaticImports" / -->
   <rule ref="category/java/codestyle.xml/UnnecessaryFullyQualifiedName"/>
-  <!-- rule ref="category/java/codestyle.xml/UnnecessaryModifier" / -->
   <rule ref="category/java/codestyle.xml/UseDiamondOperator" />
   <rule ref="category/java/codestyle.xml/UnnecessaryReturn"/>
   <rule ref="category/java/codestyle.xml/UselessParentheses"/>
@@ -59,12 +54,7 @@ GeoTools ruleset. See https://pmd.github.io/latest/pmd_userdocs_understanding_ru
   <rule ref="category/java/codestyle.xml/UnnecessaryCast" />
   <rule ref="category/java/codestyle.xml/IdenticalCatchBranches" />
   <rule ref="category/java/codestyle.xml/UseShortArrayInitializer" />
-  <!-- rule ref="category/java/design.xml/CollapsibleIfStatements" / -->
-  <!-- rule ref="category/java/design.xml/SimplifiedTernary" / -->
-  <!-- rule ref="category/java/design.xml/UselessOverridingMethod" / -->
-  <!--
-  <rule ref="category/java/errorprone.xml/AvoidBranchingStatementAsLastInLoop" />
--->
+  <rule ref="category/java/codestyle.xml/UnnecessaryImport" />
   <rule ref="category/java/errorprone.xml/AvoidDecimalLiteralsInBigDecimalConstructor"/>
   <rule ref="category/java/errorprone.xml/AvoidMultipleUnaryOperators"/>
   <rule ref="category/java/errorprone.xml/AvoidUsingOctalValues"/>
@@ -72,7 +62,6 @@ GeoTools ruleset. See https://pmd.github.io/latest/pmd_userdocs_understanding_ru
   <rule ref="category/java/errorprone.xml/CheckSkipResult"/>
   <rule ref="category/java/errorprone.xml/ClassCastExceptionWithToArray"/>
   <rule ref="category/java/errorprone.xml/DontUseFloatTypeForLoopIndices"/>
-  <!-- rule ref="category/java/errorprone.xml/EmptyCatchBlock" /-->
   <rule ref="category/java/errorprone.xml/EmptyFinallyBlock"/>
   <rule ref="category/java/errorprone.xml/EmptyIfStmt"/>
   <rule ref="category/java/errorprone.xml/EmptyInitializer"/>
@@ -82,7 +71,6 @@ GeoTools ruleset. See https://pmd.github.io/latest/pmd_userdocs_understanding_ru
   <rule ref="category/java/errorprone.xml/EmptySynchronizedBlock"/>
   <rule ref="category/java/errorprone.xml/EmptyTryBlock"/>
   <rule ref="category/java/errorprone.xml/EmptyWhileStmt"/>
-  <rule ref="category/java/errorprone.xml/ImportFromSamePackage"/>
   <rule ref="category/java/errorprone.xml/JumbledIncrementer"/>
   <rule ref="category/java/errorprone.xml/MisplacedNullCheck"/>
   <rule ref="category/java/errorprone.xml/OverrideBothEqualsAndHashcode"/>

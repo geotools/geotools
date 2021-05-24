@@ -179,24 +179,19 @@ class WMTSTile extends Tile {
         params.put("TileRow", tileIdentifier.getY());
 
         StringBuilder arguments = new StringBuilder();
-        // in theory it should end with ? but there may be other params that the
-        // server needs out of spec
-        boolean skipFirst = false;
-        if (!baseUrl.contains("?")) {
-            arguments.append("?");
-            skipFirst = true;
-        }
+        String separator =  (!baseUrl.contains("?") ? "?" : "&"); 
+
         for (String key : params.keySet()) {
             if (!lowerBaseUrl.contains(key.toLowerCase() + "=")) {
                 Object val = params.get(key);
                 try {
                     if (val != null) {
                         arguments
-                                .append(skipFirst ? "" : "&")
+                                .append(separator)
                                 .append(key)
                                 .append("=")
                                 .append(URLEncoder.encode(val.toString(), "UTF-8"));
-                        skipFirst = false;
+                        separator = "&";
                     }
                 } catch (Exception e) {
                     LOGGER.warning("Could not encode param '" + key + "' with value '" + val + "'");

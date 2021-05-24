@@ -179,7 +179,7 @@ class WMTSTile extends Tile {
         params.put("TileRow", tileIdentifier.getY());
 
         StringBuilder arguments = new StringBuilder();
-        String separator =  (!baseUrl.contains("?") ? "?" : "&"); 
+        String separator = (!baseUrl.contains("?") ? "?" : "&");
 
         for (String key : params.keySet()) {
             if (!lowerBaseUrl.contains(key.toLowerCase() + "=")) {

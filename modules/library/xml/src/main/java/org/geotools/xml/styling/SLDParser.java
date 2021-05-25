@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
@@ -100,7 +101,6 @@ import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.GeoTools;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
-import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
@@ -123,8 +123,6 @@ import org.xml.sax.SAXException;
  * @author jgarnett
  */
 public class SLDParser {
-
-    private static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
 
     /** HISTOGRAM */
     private static final String HISTOGRAM = "histogram";
@@ -201,80 +199,95 @@ public class SLDParser {
 
     private boolean disposeInputSource;
 
-    private ExpressionDOMParser expressionDOMParser = new ExpressionDOMParser(FF);
+    private final ExpressionDOMParser expressionDOMParser;
+
+    /**
+     * Create a SLDParser.
+     *
+     * @param styleFactory The StyleFactory to use to build the style
+     * @param filterFactory The FilterFactory to create Filters.
+     * @throws java.lang.NullPointerException if any of the arguments are null.
+     */
+    public SLDParser(StyleFactory styleFactory, FilterFactory filterFactory) {
+        Objects.requireNonNull(styleFactory);
+        Objects.requireNonNull(filterFactory);
+        this.factory = styleFactory;
+        this.ff = filterFactory;
+        this.expressionDOMParser = new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory2());
+        this.onlineResourceLocator = new DefaultResourceLocator();
+    }
 
     /**
      * Create a Stylereader - use if you already have a dom to parse.
      *
-     * @param factory The StyleFactory to use to build the style
+     * @param styleFactory The StyleFactory to use to build the style
+     * @throws java.lang.NullPointerException if styleFactory is null.
      */
-    public SLDParser(StyleFactory factory) {
-        this(factory, CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
-    }
-
-    public SLDParser(StyleFactory factory, FilterFactory filterFactory) {
-        this.factory = factory;
-        this.ff = filterFactory;
-        this.onlineResourceLocator = new DefaultResourceLocator();
+    public SLDParser(StyleFactory styleFactory) {
+        this(styleFactory, CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
     }
 
     /**
      * Creates a new instance of SLDStyler
      *
-     * @param factory The StyleFactory to use to read the file
+     * @param styleFactory The StyleFactory to use to read the file
      * @param filename The file to be read.
      * @throws java.io.FileNotFoundException - if the file is missing
+     * @throws java.lang.NullPointerException if styleFactory is null.
      */
-    public SLDParser(StyleFactory factory, String filename) throws java.io.FileNotFoundException {
-        this(factory);
-
-        File f = new File(filename);
-        setInput(f);
+    public SLDParser(StyleFactory styleFactory, String filename) throws java.io.FileNotFoundException {
+        this(styleFactory, new File(filename));
     }
 
     /**
      * Creates a new SLDStyle object.
      *
-     * @param factory The StyleFactory to use to read the file
+     * @param styleFactory The StyleFactory to use to read the file
      * @param f the File to be read
      * @throws java.io.FileNotFoundException - if the file is missing
+     * @throws java.lang.NullPointerException if styleFactory is null.
      */
-    public SLDParser(StyleFactory factory, File f) throws java.io.FileNotFoundException {
-        this(factory);
+    public SLDParser(StyleFactory styleFactory, File f) throws java.io.FileNotFoundException {
+        this(styleFactory);
         setInput(f);
     }
 
     /**
      * Creates a new SLDStyle object.
      *
-     * @param factory The StyleFactory to use to read the file
+     * @param styleFactory The StyleFactory to use to read the file
      * @param url the URL to be read.
      * @throws java.io.IOException - if something goes wrong reading the file
+     * @throws java.lang.NullPointerException if styleFactory is null.
      */
-    public SLDParser(StyleFactory factory, java.net.URL url) throws java.io.IOException {
-        this(factory);
+    public SLDParser(StyleFactory styleFactory, java.net.URL url) throws java.io.IOException {
+        this(styleFactory);
         setInput(url);
     }
 
     /**
      * Creates a new SLDStyle object.
      *
-     * @param factory The StyleFactory to use to read the file
+     * @param styleFactory The StyleFactory to use to read the file
      * @param s The inputstream to be read
+     *
+     * @throws java.lang.NullPointerException if styleFactory is null.
      */
-    public SLDParser(StyleFactory factory, java.io.InputStream s) {
-        this(factory);
+    public SLDParser(StyleFactory styleFactory, java.io.InputStream s) {
+        this(styleFactory);
         setInput(s);
     }
 
     /**
      * Creates a new SLDStyle object.
      *
-     * @param factory The StyleFactory to use to read the file
+     * @param styleFactory The StyleFactory to use to read the file
      * @param r The inputstream to be read
+     *
+     * @throws java.lang.NullPointerException if styleFactory is null.
      */
-    public SLDParser(StyleFactory factory, java.io.Reader r) {
-        this(factory);
+    public SLDParser(StyleFactory styleFactory, java.io.Reader r) {
+        this(styleFactory);
         setInput(r);
     }
 
@@ -872,9 +885,7 @@ public class SLDParser {
             } else if (childName.equalsIgnoreCase("Rule")) {
                 rules.add(parseRule(child));
             } else if (childName.equalsIgnoreCase("Transformation")) {
-                ExpressionDOMParser parser =
-                        new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory2(null));
-                Expression tx = parser.expression(getFirstNonTextChild(child));
+                Expression tx = expressionDOMParser.expression(getFirstNonTextChild(child));
                 ft.setTransformation(tx);
             } else if (childName.equalsIgnoreCase(VendorOptionString)) {
                 parseVendorOption(ft.getOptions(), child);
@@ -1340,8 +1351,7 @@ public class SLDParser {
      * values.
      */
     Expression parseParameterValueExpression(Node root, boolean mixedText) {
-        ExpressionDOMParser parser = new ExpressionDOMParser((FilterFactory2) ff);
-        Expression expr = parser.expression(root); // try the provided node first
+        Expression expr = expressionDOMParser.expression(root); // try the provided node first
         if (expr != null) return expr;
         NodeList children = root.getChildNodes();
         // if there is only one CharacterData node - we can make a literal out of it
@@ -1360,7 +1370,7 @@ public class SLDParser {
                     expressionList.add(childExpr);
                 }
             } else {
-                Expression childExpr = parser.expression(child);
+                Expression childExpr = expressionDOMParser.expression(child);
                 if (childExpr != null) {
                     expressionList.add(childExpr);
                 }

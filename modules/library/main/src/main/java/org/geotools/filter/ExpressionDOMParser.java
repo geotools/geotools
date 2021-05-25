@@ -64,20 +64,28 @@ public final class ExpressionDOMParser {
     /** number of coordinates in a box */
     private static final int NUM_BOX_COORDS = 5;
 
+    /**
+     * @param filterFactory The FilterFactory2 to create literals and expressions with.
+     * @throws NullPointerException in case of argument is null.
+     */
+    public ExpressionDOMParser(FilterFactory2 filterFactory) {
+        Objects.requireNonNull(filterFactory);
+        this.ff = filterFactory;
+    }
+
     /** Constructor injection */
-    public ExpressionDOMParser(FilterFactory2 factory) {
-        ff = factory != null ? factory : CommonFactoryFinder.getFilterFactory2(null);
+    public ExpressionDOMParser() {
+        this(CommonFactoryFinder.getFilterFactory2(null));
     }
 
     /**
      * Setter injection
      *
-     * @deprecated Will not be API in the future anymore.
+     * @param filterFactory The FilterFactory2 to create literals and expressions with.
      */
-    @Deprecated
-    public void setFilterFactory(FilterFactory2 factory) {
-        Objects.requireNonNull(factory);
-        ff = factory;
+    public void setFilterFactory(FilterFactory2 filterFactory) {
+        Objects.requireNonNull(filterFactory);
+        ff = filterFactory;
     }
 
     private static NamespaceSupport getNameSpaces(Node node) {

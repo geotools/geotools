@@ -66,7 +66,7 @@ public final class ExpressionDOMParser {
 
     /**
      * @param filterFactory The FilterFactory2 to create literals and expressions with.
-     * @throws NullPointerException in case of argument is null.
+     * @throws NullPointerException in case of filterFactory is null.
      */
     public ExpressionDOMParser(FilterFactory2 filterFactory) {
         Objects.requireNonNull(filterFactory);
@@ -82,6 +82,7 @@ public final class ExpressionDOMParser {
      * Setter injection
      *
      * @param filterFactory The FilterFactory2 to create literals and expressions with.
+     * @throws NullPointerException in case of filterFactory is null.
      */
     public void setFilterFactory(FilterFactory2 filterFactory) {
         Objects.requireNonNull(filterFactory);

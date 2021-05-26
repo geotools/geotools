@@ -159,7 +159,7 @@ public class GeoPackageTest {
         try (Connection cx = geopkg.getDataSource().getConnection();
                 Statement st = cx.createStatement();
                 ResultSet rs = st.executeQuery("PRAGMA application_id;")) {
-            assertEquals(rs.getInt(1), 0x47503130);
+            assertEquals(rs.getInt(1), GeoPackage.GPKG_120_APPID);
         } catch (Exception e) {
             fail(e.getMessage());
         }

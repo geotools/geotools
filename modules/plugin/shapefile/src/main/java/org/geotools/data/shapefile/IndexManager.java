@@ -100,28 +100,46 @@ class IndexManager {
     }
 
     /**
-     * Creates the spatial index is appropriate.
+     * Creates the spatial index if appropriate.
      *
      * @param force Forces the index re-creation even if the spatial index seems to be up to date
      * @return true if the spatial index has been created/updated
+     * @implNote this method will avoid building spatial indexes for the same shapefile
+     *     concurrently, waiting for a running build before proceeding. If {@code force} is {@code
+     *     true}, it will proceed to build the index once the write lock on the QIX file is
+     *     acquired, otherwise, it will do so only if the index is stale.
      */
     public boolean createSpatialIndex(boolean force) {
         // create index as needed
+        if (!shpFiles.isLocal()) {
+            return false;
+        }
         try {
-            if (shpFiles.isLocal() && (isIndexStale(QIX) || force)) {
-                ShapefileDataStoreFactory.LOGGER.fine(
-                        "Creating spatial index for " + shpFiles.get(SHP));
-
-                ShapeFileIndexer indexer = new ShapeFileIndexer();
-                indexer.setShapeFileName(shpFiles);
-                indexer.index(false, new NullProgressListener());
-
-                return true;
+            if (isIndexStale(QIX) || force) {
+                // get a write lock on the .qix, waiting for other index builds
+                final URL treeURL = shpFiles.acquireWrite(QIX, writer);
+                try {
+                    // check again, may force be false and another thread just have created it
+                    if (isIndexStale(treeURL) || force) {
+                        doCreateSpatialIndex();
+                        return true;
+                    }
+                } finally {
+                    shpFiles.unlockWrite(treeURL, writer);
+                }
             }
         } catch (Throwable t) {
             ShapefileDataStoreFactory.LOGGER.log(Level.SEVERE, t.getLocalizedMessage(), t);
         }
         return false;
+    }
+
+    protected void doCreateSpatialIndex() throws Exception {
+        ShapefileDataStoreFactory.LOGGER.fine("Creating spatial index for " + shpFiles.get(SHP));
+
+        ShapeFileIndexer indexer = new ShapeFileIndexer();
+        indexer.setShapeFileName(shpFiles);
+        indexer.index(false, new NullProgressListener());
     }
 
     /** If the fid index can be used and it is missing this method will try to create it */
@@ -189,16 +207,29 @@ class IndexManager {
             throw new IllegalStateException(
                     "This method only applies if the files are local and the file can be created");
 
-        URL shpURL = shpFiles.acquireRead(SHP, writer);
-        URL indexURL = shpFiles.acquireRead(indexType, writer);
+        final URL indexURL = shpFiles.acquireRead(indexType, writer);
         try {
+            return isIndexStale(indexURL);
+        } finally {
+            if (indexURL != null) {
+                shpFiles.unlockRead(indexURL, writer);
+            }
+        }
+    }
 
+    /**
+     * Checks whether the index file addressed by {@code indexURL} is stale in relation to the
+     * {@code .shp/.shx} files without needing to acquire a read-lock on the index URL itself, so it
+     * can be called from a method that already acquired a write lock on it.
+     */
+    private boolean isIndexStale(URL indexURL) {
+        final URL shpURL = shpFiles.acquireRead(SHP, writer);
+        try {
             if (indexURL == null) {
                 return true;
             }
             // indexes require both the SHP and SHX so if either or missing then
-            // you don't need to
-            // index
+            // you don't need to index
             if (!shpFiles.exists(SHX) || !shpFiles.exists(SHP)) {
                 return false;
             }
@@ -212,9 +243,6 @@ class IndexManager {
         } finally {
             if (shpURL != null) {
                 shpFiles.unlockRead(shpURL, writer);
-            }
-            if (indexURL != null) {
-                shpFiles.unlockRead(indexURL, writer);
             }
         }
     }

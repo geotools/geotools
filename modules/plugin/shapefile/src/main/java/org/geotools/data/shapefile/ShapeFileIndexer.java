@@ -128,14 +128,12 @@ class ShapeFileIndexer implements FileWriter {
     }
 
     /**
-     * Index the shapefile denoted by setShapeFileName(String fileName) If when a thread starts,
-     * another thread is indexing the same file, this thread will wait that the first thread ends
-     * indexing; in this case <b>zero</b> is reurned as result of the indexing process.
+     * Indexes the shapefile denoted by setShapeFileName(String fileName).
      *
      * @param verbose enable/disable printing of dots every 500 indexed records
-     * @return The number of indexed records (or zero)
+     * @return The number of indexed records
      */
-    public int index(boolean verbose, ProgressListener listener)
+    public int index(boolean verbose, /*unused*/ ProgressListener listener)
             throws MalformedURLException, IOException, TreeException, StoreException,
                     LockTimeoutException {
 

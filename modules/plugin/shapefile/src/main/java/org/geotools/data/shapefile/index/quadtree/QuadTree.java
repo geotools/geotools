@@ -112,12 +112,13 @@ public class QuadTree implements Closeable {
      * @param recno The record number
      * @param bounds The bounding box
      */
-    public void insert(int recno, Envelope bounds) throws StoreException {
+    public void insert(final int recno, final Envelope bounds) throws StoreException {
         this.insert(this.root, recno, bounds, this.maxDepth);
     }
 
     /** Inserts a shape record id in the quadtree */
-    public void insert(Node node, int recno, Envelope bounds, int maxDepth) throws StoreException {
+    public void insert(Node node, final int recno, final Envelope recBounds, final int maxDepth)
+            throws StoreException {
 
         if (maxDepth > 1 && node.getNumSubNodes() > 0) {
             /*
@@ -127,8 +128,8 @@ public class QuadTree implements Closeable {
             Node subNode = null;
             for (int i = 0; i < node.getNumSubNodes(); i++) {
                 subNode = node.getSubNode(i);
-                if (subNode.getBounds().contains(bounds)) {
-                    this.insert(subNode, recno, bounds, maxDepth - 1);
+                if (subNode.getBounds().contains(recBounds)) {
+                    this.insert(subNode, recno, recBounds, maxDepth - 1);
                     return;
                 }
             }
@@ -153,19 +154,19 @@ public class QuadTree implements Closeable {
             quad4 = tmp[1];
 
             Node subnode = null;
-            if (quad1.contains(bounds)) {
+            if (quad1.contains(recBounds)) {
                 subnode = new Node(quad1);
-            } else if (quad2.contains(bounds)) {
+            } else if (quad2.contains(recBounds)) {
                 subnode = new Node(quad2);
-            } else if (quad3.contains(bounds)) {
+            } else if (quad3.contains(recBounds)) {
                 subnode = new Node(quad3);
-            } else if (quad4.contains(bounds)) {
+            } else if (quad4.contains(recBounds)) {
                 subnode = new Node(quad4);
             }
 
             if (subnode != null) {
                 node.addSubNode(subnode);
-                this.insert(subnode, recno, bounds, maxDepth - 1);
+                this.insert(subnode, recno, recBounds, maxDepth - 1);
                 return;
             }
         }

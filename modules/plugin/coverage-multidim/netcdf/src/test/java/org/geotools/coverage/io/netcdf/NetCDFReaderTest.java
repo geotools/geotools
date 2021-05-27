@@ -21,6 +21,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
 import javax.media.jai.PlanarImage;
+import javax.xml.bind.JAXBException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.GridSampleDimension;
@@ -47,6 +49,7 @@ import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
+import org.geotools.coverage.io.catalog.DataStoreConfiguration;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.coverage.util.FeatureUtilities;
@@ -58,6 +61,7 @@ import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.imageio.netcdf.AncillaryFileManager;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.metadata.iso.extent.GeographicBoundingBoxImpl;
 import org.geotools.referencing.CRS;
@@ -1348,6 +1352,25 @@ public class NetCDFReaderTest extends Assert {
         assertTrue(noData instanceof NoDataContainer);
         d = ((NoDataContainer) noData).getAsSingleValue();
         assertEquals(d, 0d, DELTA);
+    }
+
+    @Test
+    public void NetCDFCachedConfigs() throws IOException, JAXBException, NoSuchAlgorithmException {
+        File netcdf1 = TestData.file(this, "gome/20130101.BrO.DUMMY.nc");
+        File aux = TestData.file(this, "gome/_dummy.xml");
+        File datastore = TestData.file(this, "gome/netcdf_datastore.properties");
+        AncillaryFileManager manager =
+                new AncillaryFileManager(
+                        netcdf1, aux.getAbsolutePath(), datastore.getAbsolutePath());
+        DataStoreConfiguration datastoreConfig1 = manager.getDatastoreConfiguration();
+
+        File netcdf2 = TestData.file(this, "gome/20130101.BrO.DUMMY.nc");
+        manager =
+                new AncillaryFileManager(
+                        netcdf2, aux.getAbsolutePath(), datastore.getAbsolutePath());
+        DataStoreConfiguration datastoreConfig2 = manager.getDatastoreConfiguration();
+
+        Assert.assertSame(datastoreConfig1, datastoreConfig2);
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})

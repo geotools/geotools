@@ -36,6 +36,7 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import javax.measure.Unit;
 import javax.measure.format.MeasurementParseException;
+import org.apache.commons.lang3.StringUtils;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -75,6 +76,7 @@ import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.SimpleInternationalString;
+import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.SampleDimension;
@@ -111,6 +113,10 @@ public class VariableAdapter extends CoverageSourceDescriptor {
     private static final AxisComparator AXIS_COMPARATOR = new CoordinateAxis.AxisComparator();
     public static final int Z = 0;
     public static final int T = 1;
+
+    // We can assume that once "m" has been parsed as Unit Meter object,
+    // we can cache that info.
+    private static final Map<String, Unit> UNITS_CACHE = new SoftValueHashMap<>();
 
     /**
      * Simple chars replacing classes to deal with "custom" chars. As an instance, to be compliant
@@ -890,15 +896,19 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         // Parsing the unit of measure of this variable
         Unit unit = null;
         String unitString = variableDS.getUnitsString();
-        if (unitString != null) {
-            try {
-                unit = NetCDFUnitFormat.parse(unitString);
-            } catch (MeasurementParseException parseException) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(
-                            "Unable to parse the unit:"
-                                    + unitString
-                                    + "\nNo unit will be assigned");
+        if (StringUtils.isNotEmpty(unitString)) {
+            unit = UNITS_CACHE.get(unitString);
+            if (unit == null) {
+                try {
+                    unit = NetCDFUnitFormat.parse(unitString);
+                    UNITS_CACHE.put(unitString, unit);
+                } catch (MeasurementParseException parseException) {
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.fine(
+                                "Unable to parse the unit:"
+                                        + unitString
+                                        + "\nNo unit will be assigned");
+                    }
                 }
             }
         }
@@ -1374,5 +1384,10 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         public List<CoordinateAxis> getCoordinateAxes() {
             return cs.getCoordinateAxes();
         }
+    }
+
+    /** Clear the parsed unit cache */
+    public static void clearCache() {
+        UNITS_CACHE.clear();
     }
 }

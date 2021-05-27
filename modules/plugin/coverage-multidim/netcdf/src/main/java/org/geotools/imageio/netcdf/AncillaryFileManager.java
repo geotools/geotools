@@ -62,6 +62,7 @@ import org.geotools.gce.imagemosaic.properties.PropertiesCollectorFinder;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.geotools.imageio.netcdf.Slice2DIndex.Slice2DIndexManager;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
+import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
@@ -189,6 +190,14 @@ public class AncillaryFileManager implements FileSetManager {
     // dimension name
     private final Map<String, MultipleBandsDimensionInfo> multipleBandsDimensionsInfo =
             new HashMap<>();
+
+    // Indexer and datastore config can be considered static so we can cache them
+    // in order to avoid their repeated unmarshalling when accessing a dataset.
+
+    protected static final Map<String, Indexer> INDEXER_CACHE = new SoftValueHashMap<>();
+
+    protected static final Map<String, DataStoreConfiguration> DATASTORE_CONFIG_CACHE =
+            new SoftValueHashMap<>();
 
     static {
         try {
@@ -515,29 +524,43 @@ public class AncillaryFileManager implements FileSetManager {
 
     /** Retrieve basic indexer properties by scanning the indexer XML instance. */
     protected void initIndexer() throws JAXBException {
-        if (indexerFile.exists() && indexerFile.canRead()) {
+        String indexerPath = indexerFile.getAbsolutePath();
+        Indexer cachedIndexer = INDEXER_CACHE.get(indexerPath);
+        if (cachedIndexer != null) {
+            indexer = cachedIndexer;
+        } else if (indexerFile.exists() && indexerFile.canRead()) {
             Unmarshaller unmarshaller = CONTEXT.createUnmarshaller();
             if (unmarshaller != null) {
                 indexer = (Indexer) unmarshaller.unmarshal(indexerFile);
-                // indexed information about dimensions that supports multiple bands
-                initMultipleBandsDimensionsInfo(indexer);
-                // Parsing schemas
-                final SchemasType schemas = indexer.getSchemas();
-                Map<String, String> schemaMapping = new HashMap<>();
-                if (schemas != null) {
-                    // Map schema names to schema attributes string
-                    List<SchemaType> schemaElements = schemas.getSchema();
-                    for (SchemaType schemaElement : schemaElements) {
-                        schemaMapping.put(schemaElement.getName(), schemaElement.getAttributes());
-                    }
+                if (indexer == null) {
+                    throw new IllegalArgumentException(
+                            "unable to create Indexer for " + indexerPath);
                 }
-
-                // Parsing properties collectors
-                initPropertiesCollectors();
-
-                // Parsing coverages
-                initCoverages(schemaMapping);
+                INDEXER_CACHE.put(indexerFile.getAbsolutePath(), indexer);
+            } else {
+                throw new IllegalArgumentException(
+                        "unable to create Unmarshaller for " + indexerPath);
             }
+        }
+        if (indexer != null) {
+            // indexed information about dimensions that supports multiple bands
+            initMultipleBandsDimensionsInfo(indexer);
+            // Parsing schemas
+            final SchemasType schemas = indexer.getSchemas();
+            Map<String, String> schemaMapping = new HashMap<>();
+            if (schemas != null) {
+                // Map schema names to schema attributes string
+                List<SchemaType> schemaElements = schemas.getSchema();
+                for (SchemaType schemaElement : schemaElements) {
+                    schemaMapping.put(schemaElement.getName(), schemaElement.getAttributes());
+                }
+            }
+
+            // Parsing properties collectors
+            initPropertiesCollectors();
+
+            // Parsing coverages
+            initCoverages(schemaMapping);
         }
     }
 
@@ -589,7 +612,7 @@ public class AncillaryFileManager implements FileSetManager {
 
                 // Add the newly created indexer coverage
                 final Coverage coverage =
-                        createCoverate(coverageName, origName, schemaAttributes, schemaName);
+                        createCoverage(coverageName, origName, schemaAttributes, schemaName);
                 addCoverage(coverage);
             }
         }
@@ -603,7 +626,7 @@ public class AncillaryFileManager implements FileSetManager {
      * @param schemaAttributes schema definition attributes
      * @param schemaName schema name
      */
-    private Coverage createCoverate(
+    private Coverage createCoverage(
             String coverageName, String origName, String schemaAttributes, String schemaName) {
         SchemaType schema = OBJECT_FACTORY.createSchemaType();
         Coverage coverage = OBJECT_FACTORY.createIndexerCoveragesCoverage();
@@ -772,12 +795,17 @@ public class AncillaryFileManager implements FileSetManager {
     public DataStoreConfiguration getDatastoreConfiguration() throws IOException {
         DataStoreConfiguration datastoreConfiguration = null;
         if (datastoreIndexFile != null) {
+            String datastoreFilePath = datastoreIndexFile.getAbsolutePath();
+            datastoreConfiguration = DATASTORE_CONFIG_CACHE.get(datastoreFilePath);
+            if (datastoreConfiguration != null) {
+                return datastoreConfiguration;
+            }
             URL datastoreURL = URLs.fileToUrl(datastoreIndexFile);
             Properties properties = CoverageUtilities.loadPropertiesFromURL(datastoreURL);
             if (properties != null) {
                 String storeName = properties.getProperty(NetCDFUtilities.STORE_NAME);
                 if (storeName != null) {
-                    return new DataStoreConfiguration(storeName);
+                    datastoreConfiguration = new DataStoreConfiguration(storeName);
                 } else {
                     final String SPIClass = properties.getProperty("SPI");
                     try {
@@ -798,11 +826,13 @@ public class AncillaryFileManager implements FileSetManager {
                         datastoreConfiguration.setShared(true);
                         // update params for the shared case
                         checkStoreWrapping(datastoreConfiguration);
+
                     } catch (Exception e) {
                         final IOException ioe = new IOException();
                         throw (IOException) ioe.initCause(e);
                     }
                 }
+                DATASTORE_CONFIG_CACHE.put(datastoreFilePath, datastoreConfiguration);
             }
         } else {
             File parentFile = slicesIndexFile.getParentFile();
@@ -870,5 +900,11 @@ public class AncillaryFileManager implements FileSetManager {
     MultipleBandsDimensionInfo getMultipleBandsDimensionInfo(String dimensionName) {
         // simple lookup in the hash table, if the dimensions is single band we simply return NULL
         return multipleBandsDimensionsInfo.get(dimensionName);
+    }
+
+    /** Clear the parsed configs (datastore and indexer) cache */
+    public static void clearCache() {
+        DATASTORE_CONFIG_CACHE.clear();
+        INDEXER_CACHE.clear();
     }
 }

@@ -19,7 +19,12 @@ package org.geotools.imageio.netcdf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
+import org.geotools.test.TestData;
+import org.junit.Assert;
 import org.junit.Test;
 import ucar.ma2.Array;
 import ucar.ma2.DataType;
@@ -43,5 +48,14 @@ public final class NetCDFUtilitiesTest {
         int[] dimensions = {1, 2, 3, 4, 5, 6, 7, 8};
         DataType varDataType = DataType.INT;
         NetCDFUtilities.getArray(dimensions, varDataType);
+    }
+
+    @Test
+    public void testUriCache() throws IOException {
+        final File file = TestData.file(this, "axistime.nc");
+        URI uri = file.toURI();
+        NetCDFUtilities.FileFormat format1 = NetCDFUtilities.getFormat(uri);
+        NetCDFUtilities.FileFormat format2 = NetCDFUtilities.getFormat(uri);
+        Assert.assertSame(format1, format2);
     }
 }

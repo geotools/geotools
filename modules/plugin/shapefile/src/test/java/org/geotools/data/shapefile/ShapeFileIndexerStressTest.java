@@ -101,9 +101,8 @@ public class ShapeFileIndexerStressTest {
 
     private void addFeatures(ShapefileDataStore store, SimpleFeatureType type, final int count)
             throws IOException {
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                store.getFeatureWriterAppend(Transaction.AUTO_COMMIT);
-        try {
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                store.getFeatureWriterAppend(Transaction.AUTO_COMMIT)) {
             int recno = 0;
             int zlevel = 1;
             while (recno <= count) {
@@ -121,8 +120,6 @@ public class ShapeFileIndexerStressTest {
                 }
                 ++zlevel;
             }
-        } finally {
-            writer.close();
         }
     }
 

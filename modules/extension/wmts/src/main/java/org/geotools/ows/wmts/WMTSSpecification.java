@@ -19,9 +19,13 @@ package org.geotools.ows.wmts;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.commons.lang3.StringUtils;
 import org.geotools.data.ows.AbstractGetCapabilitiesRequest;
 import org.geotools.data.ows.GetCapabilitiesRequest;
 import org.geotools.data.ows.Response;
@@ -35,16 +39,19 @@ import org.geotools.ows.wmts.model.WMTSServiceType;
 import org.geotools.ows.wmts.request.AbstractGetTileRequest;
 import org.geotools.ows.wmts.response.GetTileResponse;
 import org.geotools.ows.wmts.response.WMTSGetCapabilitiesResponse;
+import org.geotools.util.logging.Logging;
 
 /**
+ * WMTS version 1.0.0 specification.
+ *
+ * <p>Used to create GetCapabilities and GetTile requests.
+ *
  * @author ian
  * @author Emanuele Tajariol (etj at geo-solutions dot it)
  */
 public class WMTSSpecification extends Specification {
 
     public static final String WMTS_VERSION = "1.0.0";
-
-    private WMTSServiceType type;
 
     /** */
     public WMTSSpecification() {}
@@ -71,6 +78,12 @@ public class WMTSSpecification extends Specification {
     }
 
     public static class GetTileRequest extends AbstractGetTileRequest {
+
+        private static Logger LOGGER = Logging.getLogger(GetTileRequest.class);
+
+        public static final String DIMENSION_TIME = "time";
+
+        public static final String DIMENSION_ELEVATION = "elevation";
 
         /** */
         public GetTileRequest(
@@ -115,6 +128,84 @@ public class WMTSSpecification extends Specification {
         /** @param type the type to set */
         public void setType(WMTSServiceType type) {
             this.type = type;
+        }
+
+        @Override
+        protected String createTemplateUrl(String tileMatrixSetName) {
+
+            String baseUrl = getFinalURL().toExternalForm();
+
+            String layerString = WMTSHelper.usePercentEncodingForSpace(layer.getName());
+            String styleString =
+                    WMTSHelper.usePercentEncodingForSpace(styleName == null ? "" : styleName);
+
+            String format = getFormat();
+
+            if (StringUtils.isEmpty(format)) {
+                if (!layer.getFormats().isEmpty()) {
+                    format = layer.getFormats().get(0);
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.fine(
+                                "Format is not set, available formats: "
+                                        + layer.getFormats()
+                                        + " -- Selecting "
+                                        + format);
+                    }
+                }
+            }
+
+            if (StringUtils.isEmpty(format)) {
+                format = "image/png";
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.fine("Format not set, trying with " + format);
+            }
+            setFormat(format);
+
+            switch (type) {
+                case KVP:
+                    return WMTSHelper.appendQueryString(
+                            baseUrl,
+                            getKVPparams(layerString, styleString, tileMatrixSetName, format));
+                case REST:
+                    return getRESTurl(baseUrl, layerString, styleString, tileMatrixSetName);
+                default:
+                    throw new IllegalArgumentException("Unexpected WMTS Service type " + type);
+            }
+        }
+
+        private String getRESTurl(
+                String baseUrl, String layerString, String styleString, String tileMatrixSetName) {
+            baseUrl = WMTSHelper.replaceToken(baseUrl, "layer", layerString);
+            baseUrl = WMTSHelper.replaceToken(baseUrl, "style", styleString);
+            baseUrl = WMTSHelper.replaceToken(baseUrl, "tilematrixset", tileMatrixSetName);
+            return baseUrl;
+        }
+
+        /**
+         * Returns the properties for KVP WMTS, as well as placeholder's for the specific parameters
+         * of GetTile
+         *
+         * @param layerString
+         * @param styleString
+         * @param tileMatrixSetName
+         * @param format
+         * @return
+         */
+        public static HashMap<String, String> getKVPparams(
+                String layerString, String styleString, String tileMatrixSetName, String format) {
+            HashMap<String, String> params = new HashMap<>();
+            params.put("service", "WMTS");
+            params.put("version", WMTS_VERSION);
+            params.put("request", "GetTile");
+            params.put("layer", layerString);
+            params.put("style", styleString);
+            params.put("format", format);
+            params.put("tilematrixset", tileMatrixSetName);
+            params.put("TileMatrix", "{TileMatrix}");
+            params.put("TileCol", "{TileCol}");
+            params.put("TileRow", "{TileRow}");
+
+            return params;
         }
     }
 

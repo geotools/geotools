@@ -88,6 +88,9 @@ public class RestWMTSOnlineTest extends OnlineTestCase {
 
             String baseURL =
                     "http://wmsx.zamg.ac.at/mapcacheStatmap/wmts/1.0.0/WMTSCapabilities.xml";
+
+            assertNotNull("Can't find layer grey", capa.getLayer("grey"));
+
             return new WMTSTileService(
                     baseURL,
                     WMTSServiceType.REST,
@@ -154,7 +157,7 @@ public class RestWMTSOnlineTest extends OnlineTestCase {
         double[] expected = {14, 2.925714285714286E7, 3571.4285714285716};
         double delta = 0.00001;
         double[] scales = service.getScaleList();
-        String msg = service.getType() + "::" + service.getLayerName();
+        String msg = "Wrong scales of REST::grey";
         assertEquals(msg, (int) expected[0], scales.length);
         assertEquals(msg, expected[1], scales[0], delta);
         assertEquals(msg, expected[2], scales[13], delta);
@@ -183,7 +186,7 @@ public class RestWMTSOnlineTest extends OnlineTestCase {
         double delta = 0.001;
 
         ReferencedEnvelope env = service.getBounds();
-        String msg = service.getType() + "::" + service.getLayerName();
+        String msg = "Wrong bounds of REST::grey";
         assertEquals(msg, expected.getMinimum(1), env.getMinimum(1), delta);
         assertEquals(msg, expected.getMinimum(0), env.getMinimum(0), delta);
         assertEquals(msg, expected.getMaximum(1), env.getMaximum(1), delta);

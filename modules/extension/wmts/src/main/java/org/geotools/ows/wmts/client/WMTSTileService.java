@@ -94,7 +94,7 @@ public class WMTSTileService extends TileService {
     private Map<String, Object> extrainfo = new HashMap<>();
 
     /**
-     * create a service directly with out parsing the capabilties again.
+     * create a service directly with out parsing the capabilities again.
      *
      * @param templateURL - where to ask for tiles
      * @param type - KVP or REST
@@ -112,7 +112,7 @@ public class WMTSTileService extends TileService {
     }
 
     /**
-     * create a service directly with out parsing the capabilties again.
+     * create a service directly with out parsing the capabilities again.
      *
      * @param templateURL - where to ask for tiles
      * @param type - KVP or REST

@@ -330,23 +330,22 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
 
     @Override
     public URL getFinalURL() {
-        String requestUrl = onlineResource.toString();
         if (WMTSServiceType.REST.equals(type)) {
-            requestUrl = layer.getTemplate(format);
-            if (requestUrl == null) {
-                if (LOGGER.isLoggable(Level.INFO))
-                    LOGGER.info("Template URL not available for format  " + format);
+            if (layer.getTemplate(format) == null) {
+                LOGGER.info("Template URL not available for format  " + format);
                 type = WMTSServiceType.KVP;
-                requestUrl = onlineResource.toString();
+                return onlineResource;
+            } else {
+                try {
+                    return new URL(layer.getTemplate(format));
+                } catch (MalformedURLException e) {
+                    throw new RuntimeException(
+                            "URL for GetTile specified within capabilities is wrong.", e);
+                }
             }
+        } else {
+            return super.getFinalURL();
         }
-        URL ret = null;
-        try {
-            ret = new URL(requestUrl);
-        } catch (MalformedURLException e) {
-            LOGGER.log(Level.SEVERE, "", e);
-        }
-        return ret;
     }
 
     private TileMatrixSet selectMatrixSet() throws ServiceException, RuntimeException {

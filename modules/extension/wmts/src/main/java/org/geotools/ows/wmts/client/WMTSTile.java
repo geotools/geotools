@@ -101,7 +101,9 @@ class WMTSTile extends Tile {
     @Override
     public URL getUrl() {
         String baseUrl = getService().getTemplateURL();
-
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine("baseUrl in tile.getUrl is :" + baseUrl);
+        }
         TileIdentifier tileIdentifier = getTileIdentifier();
         WMTSServiceType type = getType();
         if (null == type) {
@@ -162,11 +164,8 @@ class WMTSTile extends Tile {
     }
 
     private URL getKVPurl(String baseUrl, TileIdentifier tileIdentifier) throws RuntimeException {
-        // in theory it should end with ? but there may be other params that the
-        // server needs out of spec
-        if (!baseUrl.contains("?")) {
-            baseUrl += "?";
-        }
+        final String lowerBaseUrl = baseUrl.toLowerCase();
+
         HashMap<String, Object> params = new HashMap<>();
         params.put("service", "WMTS");
         params.put("version", "1.0.0");
@@ -180,16 +179,23 @@ class WMTSTile extends Tile {
         params.put("TileRow", tileIdentifier.getY());
 
         StringBuilder arguments = new StringBuilder();
+        String separator = (!baseUrl.contains("?") ? "?" : "&");
+
         for (String key : params.keySet()) {
-            Object val = params.get(key);
-            try {
-                if (val != null) {
-                    arguments.append(key).append("=");
-                    arguments.append(URLEncoder.encode(val.toString(), "UTF-8"));
-                    arguments.append('&');
+            if (!lowerBaseUrl.contains(key.toLowerCase() + "=")) {
+                Object val = params.get(key);
+                try {
+                    if (val != null) {
+                        arguments
+                                .append(separator)
+                                .append(key)
+                                .append("=")
+                                .append(URLEncoder.encode(val.toString(), "UTF-8"));
+                        separator = "&";
+                    }
+                } catch (Exception e) {
+                    LOGGER.warning("Could not encode param '" + key + "' with value '" + val + "'");
                 }
-            } catch (Exception e) {
-                LOGGER.warning("Could not encode param '" + key + "' with value '" + val + "'");
             }
         }
 

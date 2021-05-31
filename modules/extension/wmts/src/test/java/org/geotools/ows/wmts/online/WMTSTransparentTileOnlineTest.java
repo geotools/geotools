@@ -90,9 +90,6 @@ public class WMTSTransparentTileOnlineTest extends OnlineTestCase {
 
         MapContent map = new SingleLayerMapContent(layer);
 
-        GTRenderer renderer = new StreamingRenderer();
-        renderer.setMapContent(map);
-
         ReferencedEnvelope mapBounds = service.getBounds();
         double heightToWidth = mapBounds.getSpan(1) / mapBounds.getSpan(0);
         int imageWidth = 600;
@@ -111,6 +108,8 @@ public class WMTSTransparentTileOnlineTest extends OnlineTestCase {
         gr.fill(imageBounds);
 
         // render tiles
+        GTRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(map);
         renderer.paint(gr, imageBounds, mapBounds);
 
         // get first pixel

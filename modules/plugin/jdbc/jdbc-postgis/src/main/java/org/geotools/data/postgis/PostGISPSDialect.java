@@ -299,6 +299,11 @@ public class PostGISPSDialect extends PreparedStatementSQLDialect {
         return super.getArrayComponentTypeName(att);
     }
 
+    @Override
+    public int getDefaultVarcharSize() {
+        return -1;
+    }
+
     public void encodeGeometryValue(Geometry value, int dimension, int srid, StringBuffer sql)
             throws IOException {
         delegate.encodeGeometryValue(value, dimension, srid, sql);

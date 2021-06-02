@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -753,7 +754,8 @@ public class SLDParserTest {
         DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         org.w3c.dom.Document node =
                 builder.parse(
-                        new ByteArrayInputStream(formattedCssStrokeParameter.getBytes("UTF-8")));
+                        new ByteArrayInputStream(
+                                formattedCssStrokeParameter.getBytes(StandardCharsets.UTF_8)));
         SLDParser parser = new SLDParser(styleFactory);
         Stroke stroke = parser.parseStroke(node.getDocumentElement());
         // <strConcat([#], [env([stroke_color], [" + color + "])])>";

@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -35,7 +36,7 @@ public class DbaseNullSupportTest {
     private static final TimeZone tz;
 
     static {
-        cs = Charset.forName("ISO-8859-1");
+        cs = StandardCharsets.ISO_8859_1;
         tz = TimeZone.getTimeZone("UTC");
     }
 

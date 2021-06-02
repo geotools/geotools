@@ -16,6 +16,8 @@
  */
 package org.geotools.data.hana.metadata;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,7 +31,7 @@ public class CsvReaderTest {
     @Test
     public void testValidCsv() throws IOException {
         String csv = "a,\"b\",\"c\"\"d\"\n\",\",\u00e4,";
-        InputStream is = new ByteArrayInputStream(csv.getBytes("UTF-8"));
+        InputStream is = new ByteArrayInputStream(csv.getBytes(UTF_8));
         CsvReader reader = new CsvReader(is);
 
         List<String> row = reader.readNextRow();
@@ -51,7 +53,7 @@ public class CsvReaderTest {
     @Test
     public void testNoMatchingQuote() throws IOException {
         String csv = "\"abc";
-        InputStream is = new ByteArrayInputStream(csv.getBytes("UTF-8"));
+        InputStream is = new ByteArrayInputStream(csv.getBytes(UTF_8));
         CsvReader reader = new CsvReader(is);
         try {
             reader.readNextRow();
@@ -63,7 +65,7 @@ public class CsvReaderTest {
     @Test
     public void testPartiallyQuoted() throws IOException {
         String csv = "\"abc\"xyz";
-        InputStream is = new ByteArrayInputStream(csv.getBytes("UTF-8"));
+        InputStream is = new ByteArrayInputStream(csv.getBytes(UTF_8));
         CsvReader reader = new CsvReader(is);
         try {
             reader.readNextRow();

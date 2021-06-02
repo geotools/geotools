@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import org.geotools.data.DataStore;
@@ -178,7 +179,7 @@ public class UserLayerTest {
         String xml = sldTransformer.transform(sld1);
 
         // unmarshal it back to an SLD instance -------------------------------
-        final InputStream is = new ByteArrayInputStream(xml.getBytes("UTF-8"));
+        final InputStream is = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
         final SLDParser parser = new SLDParser(sf);
         parser.setInput(is);
         final StyledLayerDescriptor sld2 = parser.parseSLD();

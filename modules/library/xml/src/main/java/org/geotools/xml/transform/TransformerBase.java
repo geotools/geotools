@@ -18,6 +18,7 @@ package org.geotools.xml.transform;
 
 import java.io.StringWriter;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -53,7 +54,7 @@ public abstract class TransformerBase {
     private int indentation = -1;
     private boolean xmlDecl = false;
     private boolean nsDecl = true;
-    private Charset charset = Charset.forName("UTF-8");
+    private Charset charset = StandardCharsets.UTF_8;
 
     public static final String XMLNS_NAMESPACE = "http://www.w3.org/2000/xmlns/";
 

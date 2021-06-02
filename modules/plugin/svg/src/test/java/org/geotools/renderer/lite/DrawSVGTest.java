@@ -17,6 +17,7 @@ package org.geotools.renderer.lite;
  *    Lesser General Public License for more details.
  */
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -168,9 +169,9 @@ public class DrawSVGTest {
         LOGGER.finest("writing to file");
         String output = null;
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        try (OutputStreamWriter osw = new OutputStreamWriter(out, "UTF-8")) {
+        try (OutputStreamWriter osw = new OutputStreamWriter(out, UTF_8)) {
             g2d.stream(osw);
-            output = new String(out.toByteArray(), "UTF-8");
+            output = new String(out.toByteArray(), UTF_8);
         }
         assertNotNull(output);
 
@@ -214,9 +215,9 @@ public class DrawSVGTest {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
         String output = null;
-        try (OutputStreamWriter osw = new OutputStreamWriter(out, "UTF-8")) {
+        try (OutputStreamWriter osw = new OutputStreamWriter(out, UTF_8)) {
             g2d.stream(osw);
-            output = new String(out.toByteArray(), "UTF-8");
+            output = new String(out.toByteArray(), UTF_8);
         }
         assertNotNull(output);
         assertTrue(output.contains("path"));
@@ -257,9 +258,9 @@ public class DrawSVGTest {
         LOGGER.finest("writing to file");
         String output = null;
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        try (OutputStreamWriter osw = new OutputStreamWriter(out, "UTF-8")) {
+        try (OutputStreamWriter osw = new OutputStreamWriter(out, UTF_8)) {
             g2d.stream(osw);
-            output = new String(out.toByteArray(), "UTF-8");
+            output = new String(out.toByteArray(), UTF_8);
         }
         assertNotNull(output);
 

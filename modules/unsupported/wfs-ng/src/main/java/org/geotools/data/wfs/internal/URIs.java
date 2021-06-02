@@ -21,6 +21,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -122,7 +123,7 @@ public class URIs {
         try {
             // TODO: URLEncoder also encodes ( and ) which are considered safe chars,
             // see also http://www.w3.org/International/O-URL-code.html
-            return URLDecoder.decode(new String(value.getBytes(), "UTF-8"), "UTF-8");
+            return URLDecoder.decode(new String(value.getBytes(), StandardCharsets.UTF_8), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("This is unexpected", e);
         }

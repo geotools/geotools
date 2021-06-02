@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.sql.PreparedStatement;
 import java.util.StringTokenizer;
 import junit.framework.Test;
@@ -213,7 +214,7 @@ public class PGRasterOnlineTest extends AbstractTest {
             for (String scriptName : scriptNames) {
                 try (InputStream scriptIn =
                                 new URL("file:target/resources/" + scriptName).openStream();
-                        Reader in = new InputStreamReader(scriptIn, "UTF-8")) {
+                        Reader in = new InputStreamReader(scriptIn, StandardCharsets.UTF_8)) {
                     final char[] buffer = new char[0x10000];
                     StringBuilder out = new StringBuilder();
                     int read;

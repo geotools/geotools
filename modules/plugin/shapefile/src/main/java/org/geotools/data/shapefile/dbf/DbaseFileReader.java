@@ -31,6 +31,7 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -622,7 +623,7 @@ public class DbaseFileReader implements FileReader, Closeable {
     public static void main(final String[] args) throws Exception {
         try (final DbaseFileReader reader =
                 new DbaseFileReader(
-                        new ShpFiles(args[0]), false, Charset.forName("ISO-8859-1"), null)) {
+                        new ShpFiles(args[0]), false, StandardCharsets.ISO_8859_1, null)) {
             System.out.println(reader.getHeader());
             int r = 0;
             while (reader.hasNext()) {

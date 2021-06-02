@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 import org.apache.commons.io.IOUtils;
 import org.geotools.styling.css.selector.PseudoClass;
@@ -77,7 +78,8 @@ public class CssBaseTest {
     }
 
     protected String readResource(String resource) throws IOException {
-        return IOUtils.toString(ParserSyntheticTest.class.getResourceAsStream(resource), "UTF-8");
+        return IOUtils.toString(
+                ParserSyntheticTest.class.getResourceAsStream(resource), StandardCharsets.UTF_8);
     }
 
     protected Style translate(String css) {

@@ -16,13 +16,14 @@
  */
 package org.geotools.xs.bindings;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.nio.charset.Charset;
 import org.geotools.util.URLs;
 import org.geotools.xs.TestSchema;
 import org.geotools.xs.XSConfiguration;
@@ -43,12 +44,7 @@ public class XSUnsignedBindingsTest {
 
     @Test
     public void testParseUnsignedInt() throws Exception {
-        Long l =
-                (Long)
-                        p.parse(
-                                new ByteArrayInputStream(
-                                        doc("unsignedInt", "12")
-                                                .getBytes(Charset.forName("UTF-8"))));
+        Long l = (Long) p.parse(new ByteArrayInputStream(doc("unsignedInt", "12").getBytes(UTF_8)));
         Assert.assertEquals(12l, l.longValue());
     }
 
@@ -58,8 +54,7 @@ public class XSUnsignedBindingsTest {
                 (Short)
                         p.parse(
                                 new ByteArrayInputStream(
-                                        doc("unsignedByte", "12")
-                                                .getBytes(Charset.forName("UTF-8"))));
+                                        doc("unsignedByte", "12").getBytes(UTF_8)));
         Assert.assertEquals(12, s.shortValue());
     }
 
@@ -69,8 +64,7 @@ public class XSUnsignedBindingsTest {
                 (Integer)
                         p.parse(
                                 new ByteArrayInputStream(
-                                        doc("unsignedShort", "12")
-                                                .getBytes(Charset.forName("UTF-8"))));
+                                        doc("unsignedShort", "12").getBytes(UTF_8)));
         Assert.assertEquals(12, i.longValue());
     }
 
@@ -80,8 +74,7 @@ public class XSUnsignedBindingsTest {
                 (BigDecimal)
                         p.parse(
                                 new ByteArrayInputStream(
-                                        doc("unsignedLong", "12")
-                                                .getBytes(Charset.forName("UTF-8"))));
+                                        doc("unsignedLong", "12").getBytes(UTF_8)));
         Assert.assertEquals(12l, l.longValue());
     }
 

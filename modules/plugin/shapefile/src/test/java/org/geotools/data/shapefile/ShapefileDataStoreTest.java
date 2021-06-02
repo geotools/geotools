@@ -32,6 +32,7 @@ import java.math.BigInteger;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -248,7 +249,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
      */
     @Test
     public void testLoadingAndReadingUTF8Wrongly() throws Exception {
-        SimpleFeatureCollection features = loadFeatures(UTF8, Charset.forName("ISO-8859-1"), null);
+        SimpleFeatureCollection features = loadFeatures(UTF8, StandardCharsets.ISO_8859_1, null);
 
         try (SimpleFeatureIterator iterator = features.features()) {
             assertTrue(iterator.hasNext());
@@ -274,7 +275,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
      */
     @Test
     public void testLoadingAndReadingUTF8Correctly() throws Exception {
-        SimpleFeatureCollection features = loadFeatures(UTF8, Charset.forName("UTF8"), null);
+        SimpleFeatureCollection features = loadFeatures(UTF8, StandardCharsets.UTF_8, null);
 
         try (SimpleFeatureIterator iterator = features.features()) {
             assertTrue(iterator.hasNext());

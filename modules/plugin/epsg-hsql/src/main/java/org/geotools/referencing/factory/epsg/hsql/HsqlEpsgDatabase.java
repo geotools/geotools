@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -134,7 +135,7 @@ public class HsqlEpsgDatabase {
                         new BufferedReader(
                                 new InputStreamReader(
                                         HsqlEpsgDatabase.class.getResourceAsStream("EPSG.sql"),
-                                        "ISO-8859-1"))) {
+                                        StandardCharsets.ISO_8859_1))) {
             StringBuilder insertStatement = null;
             String line;
             while ((line = in.readLine()) != null) {

@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -423,7 +423,7 @@ public class IntegrationTestWFSClient extends WFSClient {
 
             Configuration configuration = getStrategy().getWfsConfiguration();
             Encoder enc = new Encoder(configuration);
-            enc.setEncoding(Charset.forName("UTF-8"));
+            enc.setEncoding(StandardCharsets.UTF_8);
             enc.setIndenting(true);
             enc.setIndentSize(1);
 
@@ -456,7 +456,7 @@ public class IntegrationTestWFSClient extends WFSClient {
 
             Configuration configuration = getStrategy().getWfsConfiguration();
             Encoder enc = new Encoder(configuration);
-            enc.setEncoding(Charset.forName("UTF-8"));
+            enc.setEncoding(StandardCharsets.UTF_8);
             enc.setIndenting(true);
             enc.setIndentSize(1);
 

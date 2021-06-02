@@ -16,6 +16,8 @@
  */
 package org.geotools.mbstyle;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,7 +50,7 @@ public class MapboxTestUtils {
     /** Reader for a test Mapbox Style file (json). */
     public static Reader readerTestStyle(String filename) throws IOException, ParseException {
         try (InputStream is = MapboxTestUtils.class.getResourceAsStream(filename)) {
-            String fileContents = IOUtils.toString(is, "utf-8");
+            String fileContents = IOUtils.toString(is, UTF_8);
             return new StringReader(fileContents);
         }
     }
@@ -56,7 +58,7 @@ public class MapboxTestUtils {
     /** Read a test Mapbox Style file (json) and parse it into a {@link JSONObject}. */
     public static JSONObject parseTestStyle(String filename) throws IOException, ParseException {
         try (InputStream is = MapboxTestUtils.class.getResourceAsStream(filename)) {
-            String fileContents = IOUtils.toString(is, "utf-8");
+            String fileContents = IOUtils.toString(is, UTF_8);
             return (JSONObject) jsonParser.parse(fileContents);
         }
     }

@@ -32,6 +32,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -335,7 +336,7 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
         Encoder encoder = new Encoder(filterConfig);
         // do not write the xml declaration
         encoder.setOmitXMLDeclaration(true);
-        encoder.setEncoding(Charset.forName("UTF-8"));
+        encoder.setEncoding(StandardCharsets.UTF_8);
 
         String encoded = encoder.encodeAsString(filter, encName);
 
@@ -549,7 +550,7 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
         final Configuration configuration = getWfsConfiguration();
         Charset charset = getConfig().getDefaultEncoding();
         if (null == charset) {
-            charset = Charset.forName("UTF-8");
+            charset = StandardCharsets.UTF_8;
         }
         Encoder encoder = new Encoder(configuration);
         encoder.setEncoding(charset);

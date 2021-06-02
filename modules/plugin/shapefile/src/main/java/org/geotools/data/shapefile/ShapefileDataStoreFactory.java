@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -117,7 +118,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
                     Charset.class,
                     "character used to decode strings from the DBF file",
                     false,
-                    Charset.forName("ISO-8859-1"),
+                    StandardCharsets.ISO_8859_1,
                     new KVP(Param.LEVEL, "advanced")) {
                 /*
                  * This is an example of a non simple Param type where a custom parse method is required.

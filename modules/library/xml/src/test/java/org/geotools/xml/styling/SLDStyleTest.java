@@ -25,6 +25,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -479,7 +480,7 @@ public class SLDStyleTest {
         String xml = aTransformer.transform(sld);
 
         // back to SLD
-        InputStream is = new ByteArrayInputStream(xml.getBytes("UTF-8"));
+        InputStream is = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
 
         SLDParser stylereader = new SLDParser(sf, is);
 

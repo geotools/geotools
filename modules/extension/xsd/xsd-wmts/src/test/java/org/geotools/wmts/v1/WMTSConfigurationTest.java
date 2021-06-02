@@ -24,6 +24,7 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -499,6 +500,7 @@ public class WMTSConfigurationTest {
         tx.setOutputProperty(OutputKeys.INDENT, "yes");
 
         tx.transform(
-                new DOMSource(dom), new StreamResult(new OutputStreamWriter(System.out, "utf-8")));
+                new DOMSource(dom),
+                new StreamResult(new OutputStreamWriter(System.out, StandardCharsets.UTF_8)));
     }
 }

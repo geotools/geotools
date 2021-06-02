@@ -17,6 +17,7 @@
 package org.geotools.data.util;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Set;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
@@ -75,7 +76,7 @@ public class CharsetConverterFactoryTest {
         Converter c = factory.createConverter(Charset.class, String.class, null);
         Assert.assertNotNull(c);
 
-        String charset = c.convert(Charset.forName("UTF-8"), String.class);
+        String charset = c.convert(StandardCharsets.UTF_8, String.class);
         Assert.assertEquals("UTF-8", charset);
     }
 }

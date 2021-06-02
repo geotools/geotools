@@ -21,6 +21,7 @@ import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 import org.geotools.data.shapefile.index.quadtree.StoreException;
 
@@ -52,7 +53,7 @@ public class IndexHeader {
         byte[] tmp = new byte[3];
         buf.get(tmp);
 
-        String s = new String(tmp, "US-ASCII");
+        String s = new String(tmp, StandardCharsets.US_ASCII);
 
         if (!s.equals(SIGNATURE)) {
             // Old file format
@@ -79,7 +80,7 @@ public class IndexHeader {
     }
 
     public void writeTo(ByteBuffer buf) {
-        Charset charSet = Charset.forName("US-ASCII");
+        Charset charSet = StandardCharsets.US_ASCII;
 
         ByteBuffer tmp = charSet.encode(SIGNATURE);
         tmp.position(0);

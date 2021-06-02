@@ -22,6 +22,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -187,7 +188,8 @@ public class SimpleHttpClient implements HTTPClient {
         if (http && username != null && password != null) {
             String userpassword = username + ":" + password;
             String encodedAuthorization =
-                    Base64.encodeBytes(userpassword.getBytes("UTF-8"), Base64.DONT_BREAK_LINES);
+                    Base64.encodeBytes(
+                            userpassword.getBytes(StandardCharsets.UTF_8), Base64.DONT_BREAK_LINES);
             connection.setRequestProperty("Authorization", "Basic " + encodedAuthorization);
         }
         return connection;

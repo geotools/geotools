@@ -16,6 +16,7 @@
  */
 package org.geotools.coverage.io.netcdf.tools;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
@@ -31,7 +32,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -325,7 +325,7 @@ public class H2MigratorTest {
         // check the log files contents
         File netcdfLog = new File(logDir, "migrated.txt");
         assertTrue(netcdfLog.exists());
-        final List<String> netcdfList = Files.readLines(netcdfLog, Charset.forName("UTF-8"));
+        final List<String> netcdfList = Files.readLines(netcdfLog, UTF_8);
         assertEquals(2, netcdfList.size());
         assertThat(
                 netcdfList,
@@ -333,7 +333,7 @@ public class H2MigratorTest {
                         endsWith("multi-coverage-1.nc"), endsWith("multi-coverage-2.nc")));
         File h2Log = new File(logDir, "h2.txt");
         assertTrue(h2Log.exists());
-        final List<String> h2List = Files.readLines(h2Log, Charset.forName("UTF-8"));
+        final List<String> h2List = Files.readLines(h2Log, UTF_8);
         assertEquals(10, h2List.size());
         assertThat(
                 h2List,
@@ -506,7 +506,7 @@ public class H2MigratorTest {
         // check the log files contents
         File netcdfLog = new File(logDir, "migrated.txt");
         assertTrue(netcdfLog.exists());
-        final List<String> netcdfList = Files.readLines(netcdfLog, Charset.forName("UTF-8"));
+        final List<String> netcdfList = Files.readLines(netcdfLog, UTF_8);
         assertEquals(4, netcdfList.size());
         assertThat(
                 netcdfList,
@@ -517,7 +517,7 @@ public class H2MigratorTest {
                         endsWith("20130108.NO2.DUMMY.nc")));
         File h2Log = new File(logDir, "h2.txt");
         assertTrue(h2Log.exists());
-        final List<String> h2List = Files.readLines(h2Log, Charset.forName("UTF-8"));
+        final List<String> h2List = Files.readLines(h2Log, UTF_8);
         assertEquals(20, h2List.size());
         assertThat(h2List, Matchers.everyItem(allOf(endsWith(".db"))));
         // for extra measure, check and remove the H2 dbs, they should not be needed anymore

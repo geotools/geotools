@@ -22,7 +22,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.NoSuchElementException;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -169,7 +169,7 @@ public abstract class WFSTestSupport extends XMLTestSupport {
         docFactory.setNamespaceAware(true);
 
         try (InputStream in = resource.openStream();
-                InputStreamReader reader = new InputStreamReader(in, Charset.forName("UTF-8"))) {
+                InputStreamReader reader = new InputStreamReader(in, StandardCharsets.UTF_8)) {
             InputSource source = new InputSource(new BufferedReader(reader));
             document = docFactory.newDocumentBuilder().parse(source);
         }

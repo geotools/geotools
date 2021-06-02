@@ -21,6 +21,7 @@ import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -331,7 +332,7 @@ public class SchemaResolver {
         byte[] bytesOfMessage = null;
         MessageDigest md = null;
         try {
-            bytesOfMessage = message.getBytes("UTF-8");
+            bytesOfMessage = message.getBytes(StandardCharsets.UTF_8);
             md = MessageDigest.getInstance("MD5");
         } catch (Exception e) {
             throw new RuntimeException(e);

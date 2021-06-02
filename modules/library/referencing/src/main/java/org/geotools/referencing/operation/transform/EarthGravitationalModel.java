@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.StringTokenizer;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -203,7 +204,8 @@ public final class EarthGravitationalModel extends VerticalTransform {
                 throw new FileNotFoundException(filename);
             }
             try (LineNumberReader in =
-                    new LineNumberReader(new InputStreamReader(stream, "ISO-8859-1"))) {
+                    new LineNumberReader(
+                            new InputStreamReader(stream, StandardCharsets.ISO_8859_1))) {
                 String line;
                 while ((line = in.readLine()) != null) {
                     final StringTokenizer tokens = new StringTokenizer(line);

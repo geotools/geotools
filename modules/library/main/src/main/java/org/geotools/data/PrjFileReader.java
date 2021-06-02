@@ -26,6 +26,7 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
+import java.nio.charset.StandardCharsets;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.util.NIOUtilities;
 import org.geotools.util.factory.Hints;
@@ -72,7 +73,7 @@ public class PrjFileReader implements Closeable {
     public PrjFileReader(ReadableByteChannel channel, final Hints hints)
             throws IOException, FactoryException {
         try {
-            Charset chars = Charset.forName("ISO-8859-1");
+            Charset chars = StandardCharsets.ISO_8859_1;
             decoder = chars.newDecoder();
             this.channel = channel;
 
@@ -138,7 +139,7 @@ public class PrjFileReader implements Closeable {
         buffer.order(ByteOrder.LITTLE_ENDIAN);
 
         charBuffer = CharBuffer.allocate(8 * 1024);
-        Charset chars = Charset.forName("ISO-8859-1");
+        Charset chars = StandardCharsets.ISO_8859_1;
         decoder = chars.newDecoder();
     }
 

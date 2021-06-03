@@ -176,7 +176,6 @@ public class WMTSTileService extends TileService {
      * tileMatrixSet.
      *
      * @param templateURL
-     * @param type
      * @param layer
      * @param tileMatrixSet
      */

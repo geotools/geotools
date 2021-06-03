@@ -48,7 +48,7 @@ public class WMTSHelper {
      *
      * <p>Does not add existing parameters
      *
-     * @param base
+     * @param baseUrl
      * @param params
      * @return
      */

@@ -65,7 +65,7 @@ public class WMTSHelperTest {
                 "http://dummy.net/something/parameter/exists?request=original",
                 resultExisting);
 
-        HashMap<String, String> params = new HashMap<String, String>();
+        HashMap<String, String> params = new HashMap<>();
         params.put("param2", "2");
         params.put("param3", "<3");
         String resultTwoWithEncoding =

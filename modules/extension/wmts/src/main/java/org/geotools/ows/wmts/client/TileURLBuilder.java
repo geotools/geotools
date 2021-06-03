@@ -52,7 +52,7 @@ class TileURLBuilder {
         indexes[COL] = lowerTemplate.indexOf(TILECOL);
         indexes[ROW] = lowerTemplate.indexOf(TILEROW);
 
-        parts = new ArrayList<Part>(7);
+        parts = new ArrayList<>(7);
         this.templateURL = templateURL;
         if (indexes[MATRIX] < indexes[COL] && indexes[MATRIX] < indexes[ROW]) {
             addMatrixParts();

@@ -27,8 +27,8 @@ import java.util.function.Predicate;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import org.geotools.geometry.jts.CompoundCurvedGeometry;
 import org.geotools.geometry.jts.CurvedGeometryFactory;
-import org.geotools.geometry.jts.MultiCurve;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.locationtech.jts.geom.Coordinate;
@@ -223,9 +223,7 @@ public class XmlStreamGeometryReader {
 
         reader.require(END_ELEMENT, this.gmlNamespace, GML.MultiCurve);
 
-        MultiCurve geom = this.curvedGeometryFactory.createMultiCurve(lines);
-        geom.setUserData(crs);
-        return geom;
+        return this.curvedGeometryFactory.createMultiCurve(lines);
     }
 
     /**
@@ -275,8 +273,7 @@ public class XmlStreamGeometryReader {
         }
         reader.require(END_ELEMENT, this.gmlNamespace, GML.MultiPoint);
 
-        Geometry geom = geomFac.createMultiPoint(points.toArray(new Point[0]));
-        return geom;
+        return geomFac.createMultiPoint(points.toArray(new Point[0]));
     }
 
     /**
@@ -313,8 +310,7 @@ public class XmlStreamGeometryReader {
 
         reader.require(END_ELEMENT, this.gmlNamespace, GML.MultiLineString);
 
-        MultiLineString geom = geomFac.createMultiLineString(lines.toArray(new LineString[0]));
-        return geom;
+        return geomFac.createMultiLineString(lines.toArray(new LineString[0]));
     }
 
     /**
@@ -363,7 +359,7 @@ public class XmlStreamGeometryReader {
         }
         reader.require(END_ELEMENT, this.gmlNamespace, GML.MultiSurface);
 
-        return geomFac.createMultiPolygon(polygons.toArray(new Polygon[0]));
+        return curvedGeometryFactory.createMultiPolygon(polygons.toArray(new Polygon[0]));
     }
 
     private Geometry parseMultiPolygon(int dimension, CoordinateReferenceSystem crs)
@@ -458,7 +454,7 @@ public class XmlStreamGeometryReader {
         if (holes != null) {
             holesArray = holes.toArray(new LinearRing[0]);
         }
-        Polygon geom = geomFac.createPolygon(shell, holesArray);
+        Polygon geom = curvedGeometryFactory.createPolygon(shell, holesArray);
         geom.setUserData(crs);
         return geom;
     }
@@ -486,7 +482,13 @@ public class XmlStreamGeometryReader {
             if (GML.LineString.equals(name)) {
                 components.add(parseLineString(dimension, crs));
             } else {
-                components.add(parseCurve(dimension, crs));
+                LineString lineString = parseCurve(dimension, crs);
+                // We don't want compound curves containing other compound curves
+                if (lineString instanceof CompoundCurvedGeometry) {
+                    components.addAll(((CompoundCurvedGeometry<?>) lineString).getComponents());
+                } else {
+                    components.add(lineString);
+                }
             }
 
             reader.nextTag();
@@ -645,26 +647,13 @@ public class XmlStreamGeometryReader {
 
         crs = crs(crs);
 
-        reader.nextTag();
-        // This could also be: gml:coordinates (deprecated) or three gml:pos or gml:Point elements
-        reader.require(START_ELEMENT, this.gmlNamespace, GML.posList);
+        Coordinate[] coordinates = parseLineStringInternal(dimension, crs);
 
-        Coordinate[] coordinates = parseCoordList(dimension, crs);
-        reader.nextTag();
         reader.require(END_ELEMENT, this.gmlNamespace, GML.Arc);
 
-        if (coordinates.length != 3) {
-            throw new IllegalStateException("Arc must have 3 control points");
-        }
         LineString geom =
                 curvedGeometryFactory.createCircularString(
-                        dimension,
-                        coordinates[0].getX(),
-                        coordinates[0].getY(),
-                        coordinates[1].getX(),
-                        coordinates[1].getY(),
-                        coordinates[2].getX(),
-                        coordinates[2].getY());
+                        curvedGeometryFactory.getCoordinateSequenceFactory().create(coordinates));
         geom.setUserData(crs);
         return geom;
     }

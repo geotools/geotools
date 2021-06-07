@@ -50,7 +50,6 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
-import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.FeatureId;
 
 /** */
@@ -119,6 +118,8 @@ public class WFSOnlineTestSupport {
 
         Query query = new Query(ft.getTypeName());
         query.setPropertyNames(props);
+        query.setMaxFeatures(5);
+
         String fid = null;
         // get
         try (FeatureReader<SimpleFeatureType, SimpleFeature> fr =
@@ -144,12 +145,6 @@ public class WFSOnlineTestSupport {
             }
             assertNotNull("must have 1 feature ", feature);
             fid = feature.getID();
-            int j = 0;
-            while (fr.hasNext()) {
-                fr.next();
-                j++;
-            }
-            assertTrue(j > 0);
         }
 
         // test fid filter
@@ -169,14 +164,16 @@ public class WFSOnlineTestSupport {
     }
 
     public static void doFeatureReaderWithBBox(
-            DataStore wfs, String typeName, ReferencedEnvelope bbox) throws Exception {
+            DataStore wfs, String typeName, String geometryName, ReferencedEnvelope bbox)
+            throws Exception {
         SimpleFeatureType featureType = wfs.getSchema(typeName);
 
         // take atleast attributeType 3 to avoid the undeclared one .. inherited optional attrs
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
-        Query query = new Query(featureType.getTypeName());
-        PropertyName theGeom = ff.property(featureType.getGeometryDescriptor().getName());
-        Filter filter = ff.bbox(theGeom, bbox);
+        Query query = new Query(typeName);
+        query.setCoordinateSystem(bbox.getCoordinateReferenceSystem());
+        query.setMaxFeatures(5);
+        Filter filter = ff.bbox(ff.property(geometryName), bbox);
 
         query.setFilter(filter);
         try (FeatureReader<SimpleFeatureType, SimpleFeature> fr =

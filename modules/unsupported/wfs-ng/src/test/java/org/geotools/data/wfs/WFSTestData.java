@@ -53,7 +53,7 @@ public class WFSTestData {
          * @param featureTypeName the name as stated in the capabilities
          * @param crs the default feature type CRS as stated in the capabilities
          */
-        TestDataType(
+        public TestDataType(
                 final String folder,
                 final QName qName,
                 final String featureTypeName,

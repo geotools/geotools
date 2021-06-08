@@ -68,7 +68,7 @@ public class KartverketStedsnavnDataStoreOnlineTest extends AbstractWfsDataStore
         super.setUpParameters(params);
         params.put(WFSDataStoreFactory.USE_HTTP_CONNECTION_POOLING.key, "False");
     }
-    
+
     @Override
     @Test
     @Ignore

@@ -51,7 +51,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.util.logging.Logging;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -465,12 +464,6 @@ public abstract class AbstractWfsDataStoreOnlineTest {
         */
     }
 
-    /**
-     * There must be a better way to check for axis flipping than counting all features.
-     *
-     * @throws Exception
-     */
-    @Ignore
     @Test
     public void testDataStoreHandlesAxisFlipping() throws Exception {
         if (Boolean.FALSE.equals(serviceAvailable)) {

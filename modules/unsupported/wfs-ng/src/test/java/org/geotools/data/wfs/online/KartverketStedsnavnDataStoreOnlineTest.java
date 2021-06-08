@@ -22,6 +22,8 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.data.wfs.WFSTestData.TestDataType;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.locationtech.jts.geom.Polygon;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
@@ -65,5 +67,12 @@ public class KartverketStedsnavnDataStoreOnlineTest extends AbstractWfsDataStore
     protected void setUpParameters(final Map<String, Serializable> params) {
         super.setUpParameters(params);
         params.put(WFSDataStoreFactory.USE_HTTP_CONNECTION_POOLING.key, "False");
+    }
+    
+    @Override
+    @Test
+    @Ignore
+    public void testDataStoreHandlesAxisFlipping() {
+        // disabled, not implemented for 2.0.0
     }
 }

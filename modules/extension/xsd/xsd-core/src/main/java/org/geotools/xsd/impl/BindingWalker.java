@@ -119,7 +119,7 @@ public class BindingWalker implements TypeWalker.Visitor {
                     // delegating to parent, because if we dont, any attributes
                     // defined by the type will not be parsed because simple
                     // types cannot have attributes.
-                    // TODO: put this somewhere else, perahps in teh factories
+                    // TODO: put this somewhere else, perhaps in the factories
                     // that create the bindings
                     bindingName = XS.ANYTYPE;
                 }
@@ -158,7 +158,7 @@ public class BindingWalker implements TypeWalker.Visitor {
             // first walk the type hierarchy to get the binding objects
             typeWalker.walk(component.getType(), this);
 
-            // also look up a binding to teh instance itself, if found it will go
+            // also look up a binding to the instance itself, if found it will go
             // at the bottom of the binding hierarchy
             if (component.getName() != null) {
                 QName qName = new QName(component.getTargetNamespace(), component.getName());

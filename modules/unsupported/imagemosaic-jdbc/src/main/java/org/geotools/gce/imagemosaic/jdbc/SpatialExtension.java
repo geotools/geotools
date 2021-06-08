@@ -45,7 +45,7 @@ public enum SpatialExtension {
     /**
      * Factory method for obtaining a SpatialExtension object from a string
      *
-     * @param spatName The string representation for teh SpatialExtension object
+     * @param spatName The string representation for the SpatialExtension object
      * @return the corresponding SpatialExtension object, null if spatname is unknown
      */
     static SpatialExtension fromString(String spatName) {

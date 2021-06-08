@@ -155,7 +155,7 @@ public class PropertyValueCollection extends AbstractCollection<Attribute> {
         public Attribute next() {
             Object value = values.remove();
 
-            // create a new descriptor based on teh xml type
+            // create a new descriptor based on the xml type
             AttributeType xmlType = findType(descriptor.getType().getBinding());
             if (xmlType == null) {
                 throw new RuntimeException(

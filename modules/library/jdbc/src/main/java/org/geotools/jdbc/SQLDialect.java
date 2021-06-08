@@ -263,7 +263,7 @@ public abstract class SQLDialect {
      *
      * <p>Implementing this method is optional. It is used to allow for handling user defined types
      * or "DOMAINS". Dialects that implement this method should set the appropriate information on
-     * the <tt>metadata</tt> object to allow the column to be mapped via teh regular type mapping
+     * the <tt>metadata</tt> object to allow the column to be mapped via the regular type mapping
      * heuristics.
      *
      * @param columnMetaData The column metdata.

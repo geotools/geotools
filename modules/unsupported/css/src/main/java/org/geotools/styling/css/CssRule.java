@@ -395,7 +395,7 @@ public class CssRule {
                 }
             }
         }
-        // if we did not find the z-index property, the only z-index is teh default one (which is
+        // if we did not find the z-index property, the only z-index is the default one (which is
         if (zIndexes.isEmpty()) {
             zIndexes.add(null);
         }

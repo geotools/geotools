@@ -151,7 +151,7 @@ public class TestCaseSupport {
 
     /** Creates a temporary file, to be automatically deleted at the end of the test suite. */
     protected File getTempFile() throws IOException {
-        // force in some valid but weird chars into teh path to be on par with OSX that does it
+        // force in some valid but weird chars into the path to be on par with OSX that does it
         // on its own
         File tmpFile = File.createTempFile("test-+()shp", ".shp");
         tmpFile.deleteOnExit();

@@ -49,7 +49,8 @@ public class KartverketStedsnavnDataStoreOnlineTest extends AbstractWfsDataStore
 
     static final Id fidFilter = ff.id(Collections.singleton(ff.featureId("404676")));
 
-    static final Filter spatialFilter = null;
+    static final Filter spatialFilter =
+            ff.bbox(defaultGeometryName, 68.0, 17.0, 69.0, 18.0, "urn:ogc:def:crs:EPSG::4258");
 
     public KartverketStedsnavnDataStoreOnlineTest() {
         super(

@@ -18,7 +18,6 @@
 package org.geotools.data.wfs.online;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
@@ -318,7 +317,6 @@ public abstract class AbstractWfsDataStoreOnlineTest {
             SimpleFeature next = iterator.next();
             assertNotNull(next);
             assertNotNull(next.getDefaultGeometry());
-            assertFalse(iterator.hasNext());
         }
     }
 

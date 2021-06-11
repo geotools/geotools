@@ -397,7 +397,7 @@ public class MySQLDialect extends SQLDialect {
     public void postCreateTable(String schemaName, SimpleFeatureType featureType, Connection cx)
             throws SQLException, IOException {
 
-        // create teh geometry_columns table if necessary
+        // create the geometry_columns table if necessary
         DatabaseMetaData md = cx.getMetaData();
         ResultSet rs =
                 md.getTables(

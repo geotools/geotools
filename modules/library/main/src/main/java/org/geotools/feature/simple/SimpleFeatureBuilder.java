@@ -223,7 +223,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
      *
      * @param name The name of the attribute.
      * @param value The value of the attribute.
-     * @throws IllegalArgumentException If no such attribute with teh specified name exists.
+     * @throws IllegalArgumentException If no such attribute with the specified name exists.
      */
     public void set(Name name, Object value) {
         set(name.getLocalPart(), value);
@@ -236,7 +236,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
      *
      * @param name The name of the attribute.
      * @param value The value of the attribute.
-     * @throws IllegalArgumentException If no such attribute with teh specified name exists.
+     * @throws IllegalArgumentException If no such attribute with the specified name exists.
      */
     public void set(String name, Object value) {
         int index = featureType.indexOf(name);

@@ -3227,7 +3227,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
             sqlTypes[i] = sqlType;
 
-            // if this a geometric type, get the name from teh dialect
+            // if this a geometric type, get the name from the dialect
             // if ( attributeType instanceof GeometryDescriptor ) {
             if (Geometry.class.isAssignableFrom(clazz)) {
                 String sqlTypeName = dialect.getGeometryTypeName(sqlType);

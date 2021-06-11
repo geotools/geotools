@@ -321,7 +321,7 @@ public abstract class OnlineTestCase extends TestCase {
      * Allows test to create a sample fixture for users.
      *
      * <p>If this method returns a value the first time a fixture is looked up and not found this
-     * method will be called to create a fixture file with teh same id, but suffixed with .template.
+     * method will be called to create a fixture file with the same id, but suffixed with .template.
      */
     protected Properties createExampleFixture() {
         return null;

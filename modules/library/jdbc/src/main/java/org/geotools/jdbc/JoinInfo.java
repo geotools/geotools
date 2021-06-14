@@ -28,6 +28,7 @@ import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
+import org.opengis.filter.Id;
 import org.opengis.filter.expression.PropertyName;
 
 /**
@@ -375,6 +376,15 @@ public class JoinInfo {
             }
 
             return propertyName;
+        }
+
+        /**
+         * Makes the assumption that the Id filter is run against the primary feature type in the
+         * join
+         */
+        @Override
+        public Object visit(Id filter, Object extraData) {
+            return new JoinId(ft1, alias1, filter.getIdentifiers());
         }
     }
 }
